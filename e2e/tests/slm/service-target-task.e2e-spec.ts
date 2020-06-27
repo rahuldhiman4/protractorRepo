@@ -8,11 +8,12 @@ import navigationPage from "../../pageobject/common/navigation.po";
 import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
 import statusConfig from "../../pageobject/settings/common/status-config.po";
 import serviceTargetConfig from '../../pageobject/settings/slm/service-target-blade.po';
-import SlmExpressionBuilder from '../../pageobject/settings/slm/slm-expressionbuilder.pop.po';
+import slmExpressionBuilder from '../../pageobject/settings/slm/slm-expressionbuilder.pop.po';
 import slmProgressBar from '../../pageobject/slm/slm-progressbar.po';
 import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
 import { default as manageTask, default as manageTaskBladePo } from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
+import taskConsolePage from "../../pageobject/task/console-task.po";
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
@@ -73,12 +74,12 @@ describe('Service Target Tests for Tasks', () => {
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             //Create a SVT with 2 mins timeline
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Task Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Task Type', '=', 'SELECTION', 'Manual');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
-            let selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
+            await slmExpressionBuilder.selectExpressionQualification('Task Type', '=', 'SELECTION', 'Manual');
+            await slmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            let selectedExp: string = await slmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Task Type" + "'" + "=" + '"' + "Manual" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
-            await SlmExpressionBuilder.clickOnSaveExpressionButtonForTask();
+            await slmExpressionBuilder.clickOnSaveExpressionButtonForTask();
             await serviceTargetConfig.selectGoal("2");
             await serviceTargetConfig.selectMileStone();
             await serviceTargetConfig.selectExpressionForMeasurementForTask(0, "status", "=", "STATUS", "Assigned");
@@ -172,19 +173,18 @@ describe('Service Target Tests for Tasks', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Task Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Task Type', '=', 'SELECTION', 'Automated');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
-            let selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
+            await slmExpressionBuilder.selectExpressionQualification('Task Type', '=', 'SELECTION', 'Automated');
+            await slmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            let selectedExp: string = await slmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Task Type" + "'" + "=" + '"' + "Automated" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
-            await SlmExpressionBuilder.clickOnSaveExpressionButtonForTask();
+            await slmExpressionBuilder.clickOnSaveExpressionButtonForTask();
             await serviceTargetConfig.selectGoal("2");
             await serviceTargetConfig.selectMileStone();
             await serviceTargetConfig.selectExpressionForMeasurementForTask(0, "status", "=", "STATUS", "Staged");
             await serviceTargetConfig.selectExpressionForMeasurementForTask(1, "status", "=", "STATUS", "Completed");
             await serviceTargetConfig.selectExpressionForMeasurementForTask(2, "status", "=", "STATUS", "Pending");
             await serviceTargetConfig.clickOnSaveSVTButton();
-            // await utilityCommon.refresh();
         });
         it('[DRDMV-13056]: Create a Case', async () => {
             await browser.sleep(1000);
@@ -216,7 +216,6 @@ describe('Service Target Tests for Tasks', () => {
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('SVT from Protractor');
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('Status : InProcess');
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('due on');
-            await utilityCommon.refresh();
             await viewTask.getTaskTypeValue();
             await viewTask.clickOnViewCase();
             await viewCasePage.openTaskCard(1);
@@ -239,11 +238,11 @@ describe('Service Target Tests for Tasks', () => {
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             //Create a SVT with 2 mins timeline
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Task Management');
-            let expressionFieldsVal1 = await SlmExpressionBuilder.getExpressionFieldAvailableAll(firstLevelAssociationFields);
+            let expressionFieldsVal1 = await slmExpressionBuilder.getExpressionFieldAvailableAll(firstLevelAssociationFields);
             expect(expressionFieldsVal1).toBeTruthy('Expression Builder fields does not matches.');
-            let expressionFieldsVal2 = await SlmExpressionBuilder.getFirstLevelExpressionFieldAll(secondLevelAssociationFields);
+            let expressionFieldsVal2 = await slmExpressionBuilder.getFirstLevelExpressionFieldAll(secondLevelAssociationFields);
             expect(expressionFieldsVal2).toBeTruthy('First Level Expression Builder fields does not matches.');
-            let expressionOperatorsVal = await SlmExpressionBuilder.getExpressionFieldOperatorAvailableAll(expressionOperatorFields);
+            let expressionOperatorsVal = await slmExpressionBuilder.getExpressionFieldOperatorAvailableAll(expressionOperatorFields);
             expect(expressionOperatorsVal).toBeTruthy('Expression Builder Operators does not matches.');
         });
     });
@@ -263,12 +262,12 @@ describe('Service Target Tests for Tasks', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Task Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'Critical');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
-            let selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
+            await slmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'Critical');
+            await slmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            let selectedExp: string = await slmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Priority" + "'" + "=" + '"' + "Critical" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
-            await SlmExpressionBuilder.clickOnSaveExpressionButtonForTask();
+            await slmExpressionBuilder.clickOnSaveExpressionButtonForTask();
             await serviceTargetConfig.selectGoal("4");
             await serviceTargetConfig.selectMileStone();
             await serviceTargetConfig.selectExpressionForMeasurementForTask(0, "status", "=", "STATUS", "Assigned");
@@ -364,11 +363,12 @@ describe('Service Target Tests for Tasks', () => {
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickOnTaskLink(summary);
             taskId = await viewTask.getTaskID();
-            await browser.sleep(90000);
+            await browser.sleep(70000);
         })
         it('[DRDMV-13029,DRDMV-13035,DRDMV-13065]: Verify Task SLM Status "Warning" on Task Console', async () => {
-            await browser.sleep(80000);
-            await utilityCommon.refresh();
+            await browser.sleep(70000);
+            await navigationPage.gotoTaskConsole();
+            await taskConsolePage.searchAndOpenTask(taskId);
             expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true);
             await navigationPage.gotoTaskConsole();
             await utilityGrid.searchRecord(taskId);
@@ -389,8 +389,9 @@ describe('Service Target Tests for Tasks', () => {
             await viewTask.clickOnChangeStatus();
             await viewTask.changeTaskStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
-            await browser.sleep(70000);
-            await utilityCommon.refresh();
+            await browser.sleep(90000);
+            await navigationPage.gotoTaskConsole();
+            await taskConsolePage.searchAndOpenTask(taskId);
             expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true);
             await navigationPage.gotoTaskConsole();
             await utilityGrid.searchRecord(taskId);
@@ -432,12 +433,12 @@ describe('Service Target Tests for Tasks', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Psilon', 'Task Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'Critical');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
-            let selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
+            await slmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'Critical');
+            await slmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            let selectedExp: string = await slmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Priority" + "'" + "=" + '"' + "Critical" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
-            await SlmExpressionBuilder.clickOnSaveExpressionButtonForTask();
+            await slmExpressionBuilder.clickOnSaveExpressionButtonForTask();
             await serviceTargetConfig.selectGoal("3");
             await serviceTargetConfig.selectMileStone();
             await serviceTargetConfig.selectExpressionForMeasurementForTask(0, "status", "=", "STATUS", "Planning");

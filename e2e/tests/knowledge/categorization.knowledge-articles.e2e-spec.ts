@@ -302,7 +302,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
 
             //Login with knowledge candidate user
             await loginPage.login(knowledgeCandidateUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.clearFilter();
@@ -333,7 +333,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
 
             //Login with knowledge contributor 
             await loginPage.login(knowledgeContributorUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.clearFilter();
@@ -364,7 +364,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
 
             //Login with knowledge Publisher
             await loginPage.login(knowledgePublisherUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.clearFilter();
@@ -395,7 +395,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
 
             //Login with knowledge coach 
             await loginPage.login(knowledgeCoachUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.clearFilter();

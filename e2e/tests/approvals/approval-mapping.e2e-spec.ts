@@ -484,7 +484,7 @@ describe("Approval Mapping Tests", () => {
             await utilGrid.searchAndOpenHyperlink(approvalMappingName);
             expect(await editApprovalMappingPage.getSearchedCaseTemplate()).toBe(globalCaseTemplateStr);
             expect(await editApprovalMappingPage.getSearchedCaseTemplate()).toBe(petramcoCaseTemplateStr);
-        })
+        });
 
         it('[DRDMV-22195]: Create Apporval Mapping for Global Company', async () => {
             await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
@@ -551,4 +551,5 @@ describe("Approval Mapping Tests", () => {
             await apiHelper.deleteApprovalMapping();
         });
     });
+
 });

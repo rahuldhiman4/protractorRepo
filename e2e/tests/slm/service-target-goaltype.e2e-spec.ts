@@ -47,7 +47,6 @@ describe('Service Level Management - Goal Type Tests', () => {
             expect(await editGoalType.getStatusDropDownFieldValue()).toBe('Active');
             await editGoalType.selectGoalTypeStatus('Inactive');
             await editGoalType.clickSaveGoalTypeButton();
-            // await browser.sleep(1000);
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
             await utilGrid.searchAndOpenHyperlink(goalTypeTitle);
             expect(await editGoalType.getStatusDropDownFieldValue()).toBe('Inactive');
@@ -66,12 +65,10 @@ describe('Service Level Management - Goal Type Tests', () => {
             expect(await createGoalType.isGoalTypeDisabled()).toBeTruthy('Goal Type field is enabled.');
             createGoalType.selectGoalTypeStatus('Active');
             createGoalType.clickSaveGoalTypeButton();
-            await browser.sleep(1000);
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
         it('[DRDMV-2282]: Update Goal Type and Verify warning message appears', async () => {
             await utilGrid.searchAndOpenHyperlink(goalTypeTitle);
-            await browser.sleep(1000);
             expect(await editGoalType.isGoalTypeFieldDisabled()).toBeTruthy('Goal Type field is enabled.');
             expect(await editGoalType.isGoalTypeNameFieldDisabled()).toBeTruthy('Goal Type Name field is enabled.');
             expect(await editGoalType.isSaveButtonDisabled()).toBeTruthy('Save button is enabled.');
@@ -79,7 +76,6 @@ describe('Service Level Management - Goal Type Tests', () => {
             expect(await editGoalType.getStatusDropDownFieldValue()).toBe('Active');
             await editGoalType.selectGoalTypeStatus('Inactive');
             await editGoalType.clickCloseGoalTypeButton();
-            await browser.sleep(1000);
             expect(await utilCommon.isWarningDialogBoxDisplayed()).toBeTruthy('Warning Dialog Box is not displayed.');
             expect(await utilCommon.getWarningDialogTitle()).toBe('Warning!');
             expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue without saving?');
@@ -91,7 +87,6 @@ describe('Service Level Management - Goal Type Tests', () => {
             expect(await createGoalType.isGoalTypeDisabled()).toBeTruthy('Goal Type field is enabled.');
             createGoalType.selectGoalTypeStatus('Active');
             createGoalType.clickSaveGoalTypeButton();
-            await browser.sleep(1000);
             expect(await utilCommon.isPopUpMessagePresent('ERROR (382): The value(s) for this entry violate a unique index that has been defined for this record definition.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
     });

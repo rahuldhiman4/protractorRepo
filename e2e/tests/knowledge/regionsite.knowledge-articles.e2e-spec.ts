@@ -198,7 +198,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await navigationPage.signOut();
 
             await loginPage.login(knowledgeCandidateUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
             await utilGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(regionFieldColumn);
@@ -215,7 +215,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await navigationPage.signOut();
 
             await loginPage.login(knowledgeContributorUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
             await utilGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(regionFieldColumn);
@@ -232,7 +232,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await navigationPage.signOut();
 
             await loginPage.login(knowledgePublisherUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
             await utilGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(regionFieldColumn);
@@ -249,7 +249,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await navigationPage.signOut();
 
             await loginPage.login(knowledgeCoachUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
             await utilGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(regionFieldColumn);
@@ -348,7 +348,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
 
             //Login with Knowledge Candidate
             await loginPage.login(knowledgeCandidateUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
             await utilCommon.waitUntilSpinnerToHide();
             await navigationPage.gotoCreateKnowledge();
@@ -371,7 +371,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
 
             //Login with Knowledge Contributor
             await loginPage.login(knowledgeContributorUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
             await utilCommon.waitUntilSpinnerToHide();
             await navigationPage.gotoCreateKnowledge();
@@ -395,7 +395,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
 
             //Login with Knowledge Publisher
             await loginPage.login(knowledgePublisherUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
             await utilCommon.waitUntilSpinnerToHide();
             await navigationPage.gotoCreateKnowledge();
@@ -418,7 +418,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
 
             //Login with Knowledge Coach
             await loginPage.login(knowledgeCoachUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
             await utilCommon.waitUntilSpinnerToHide();
             await navigationPage.gotoCreateKnowledge();

@@ -71,5 +71,10 @@ class TaskGridPage {
         await utilGrid.clearFilter()
     }
 
+    async searchAndOpenTask(taskId:string):Promise<void>{
+        this.clearFilter();
+        utilityGrid.searchAndOpenHyperlink(taskId);
+    }
+
 }
 export default new TaskGridPage();

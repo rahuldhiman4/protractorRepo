@@ -3,7 +3,7 @@ import apiHelper from '../../api/api.helper';
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePage from '../../pageobject/case/create-case.po';
 import editCasePo from '../../pageobject/case/edit-case.po';
-import { default as viewCasePage, default as viewCasePo } from '../../pageobject/case/view-case.po';
+import { default as viewCasePage } from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
@@ -13,6 +13,7 @@ import serviceTargetInfoPage from '../../pageobject/slm/service-target-info.po';
 import slmProgressBar from '../../pageobject/slm/slm-progressbar.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
+import caseConsolePo from '../../pageobject/case/case-console.po';
 
 let caseBAUser = 'qkatawazi';
 let caseAgentUser = 'qtao';
@@ -33,6 +34,7 @@ describe('Service Target Tests for Cases', () => {
 
     //skhobrag
     describe('[DRDMV-17016,DRDMV-7044]: Check if expression is build by using all available field with different relation', async () => {
+        let caseId=undefined;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
@@ -63,11 +65,12 @@ describe('Service Target Tests for Cases', () => {
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
+            caseId = await viewCasePage.getCaseID();
             await browser.sleep(32000);
         });
         it('[DRDMV-17016,DRDMV-7044]:Verify SVT attached to a Case', async () => {
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
-            expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
+            expect(await viewCasePage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
             await slmProgressBar.clickOnSLAProgressBarInProcessIcon();
             expect(await serviceTargetInfoPage.isServiceTargetInformationBladeDisplayed()).toBeTruthy('Service Target Information Blade is not displayed.');
             expect(await serviceTargetInfoPage.getServiceTargetInformationBladeHeader()).toBe('Service Target Information');
@@ -78,20 +81,23 @@ describe('Service Target Tests for Cases', () => {
             expect(await serviceTargetInfoPage.isServiceTargetInformationInProcessIconDisplayed()).toBeTruthy('SVT In Process Icon on SVT Info Blade is not displayed.');
             expect(await serviceTargetInfoPage.getServiceTargetStatus()).toBe('InProcess');
             await serviceTargetInfoPage.clickOnCloseButton();
-            await browser.sleep(120000);
-            await utilityCommon.refresh();
+            await browser.sleep(90000);
         });
         it('[DRDMV-17016,DRDMV-7044]:Check if expression is build by using all available field with different relation', async () => {
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
             await browser.sleep(70000);
-            await utilityCommon.refresh();
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
-            expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
+            expect(await viewCasePage.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
         });
     });
 
     //skhobrag
     describe('[DRDMV-11913]: [Global] Create a Case with global SVT', async () => {
+        let caseId=undefined;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
@@ -123,20 +129,23 @@ describe('Service Target Tests for Cases', () => {
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
+            caseId = await viewCasePage.getCaseID();
             await browser.sleep(32000);
         });
         it('[DRDMV-11913]: Verify SVT attached to a Case', async () => {
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
-            expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
-            await browser.sleep(120000);
-            await utilityCommon.refresh();
+            expect(await viewCasePage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
+            await browser.sleep(90000);
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
         });
         it('[DRDMV-11913]: [Global] Create a Case with global SVT', async () => {
             expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
             await browser.sleep(70000);
-            await utilityCommon.refresh();
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
-            expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
+            expect(await viewCasePage.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
         });
     });
 
@@ -144,6 +153,7 @@ describe('Service Target Tests for Cases', () => {
     describe('[DRDMV-2027]: Icons representing measurement status on SLA Progress Bar', async () => {
         let selectedExp = '';
         let expectedSelectedExp = '';
+        let caseId=undefined;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
@@ -175,20 +185,23 @@ describe('Service Target Tests for Cases', () => {
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
+            caseId = await viewCasePage.getCaseID();
             await browser.sleep(31000);
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
-            expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
-            await browser.sleep(80000);
+            expect(await viewCasePage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
+            await browser.sleep(90000);
         });
         it('[DRDMV-2027]: Verify SVT warning and missed goal status', async () => {
-            await browser.sleep(30000);
-            await utilityCommon.refresh();
+            // await browser.sleep(30000);
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
-            expect(await viewCasePo.getSlaBarColor()).toBe('rgba(241, 181, 33, 1)'); //orange
+            expect(await viewCasePage.getSlaBarColor()).toBe('rgba(241, 181, 33, 1)'); //orange
             await browser.sleep(60000);
-            await utilityCommon.refresh();
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
-            expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
+            expect(await viewCasePage.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
         });
         it('[DRDMV-2027]: Create another svt', async () => {
             await navigationPage.gotoSettingsPage();
@@ -220,7 +233,7 @@ describe('Service Target Tests for Cases', () => {
             await previewCasePo.clickGoToCaseButton();
             await browser.sleep(31000);
             expect(await slmProgressBar.isSLAProgressBarDualSVTIconDisplayed()).toBe(true); //green
-            expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
+            expect(await viewCasePage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
         });
     });
 
@@ -228,6 +241,7 @@ describe('Service Target Tests for Cases', () => {
     describe('[DRDMV-11914]: [Global] Both svt gets attached if we have Global and company specific SVTs', async () => {
         let selectedExp = '';
         let expectedSelectedExp = '';
+        let caseId=undefined;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
@@ -275,23 +289,25 @@ describe('Service Target Tests for Cases', () => {
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
+            caseId = await viewCasePage.getCaseID();
             await browser.sleep(31000);
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBe(true);
             expect(await slmProgressBar.isSLAProgressBarDualSVTIconDisplayed()).toBe(true); //green
-            expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
-            await browser.sleep(70000);
+            expect(await viewCasePage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
         });
         it('[DRDMV-11914]: Verify Dual SVT in SLA Warning state', async () => {
-            await browser.sleep(100000);
-            await utilityCommon.refresh();
+            await browser.sleep(90000);
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarDualSVTIconDisplayed()).toBe(true); //green
-            expect(await viewCasePo.getSlaBarColor()).toBe('rgba(241, 181, 33, 1)'); //orange
+            expect(await viewCasePage.getSlaBarColor()).toBe('rgba(241, 181, 33, 1)'); //orange
         });
         it('[DRDMV-11914]: Verify Dual SVT in SLA Missed Goal state', async () => {
-            await browser.sleep(90000);
-            await utilityCommon.refresh();
+            await browser.sleep(70000);
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarDualSVTIconDisplayed()).toBe(true); //green
-            expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
+            expect(await viewCasePage.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
         });
         afterAll(async () => {
             await navigationPage.signOut();
@@ -301,6 +317,7 @@ describe('Service Target Tests for Cases', () => {
 
     //skhobrag
     describe('[DRDMV-8365]: Verify the SLA Progress Bar change in color when single SVT attached', async () => {
+        let caseId=undefined;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
@@ -331,54 +348,62 @@ describe('Service Target Tests for Cases', () => {
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
+            caseId = await viewCasePage.getCaseID();
             await browser.sleep(31000);
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBe(true);
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
-            expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
+            expect(await viewCasePage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
         });
         it('[DRDMV-8365]: Verify SVT status when case is in Pending status', async () => {
             await updateStatusBladePo.changeCaseStatus('Pending');
             await updateStatusBladePo.setStatusReason('Customer Response');
             await updateStatusBladePo.clickSaveStatus();
             await browser.sleep(2000);
-            await utilityCommon.refresh();
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarPausedIconDisplayed()).toBe(true); //green
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             await browser.sleep(2000);
-            await utilityCommon.refresh();
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
             await browser.sleep(80000);
         });
         it('[DRDMV-8365]: Verify SVT when its in Warning Pending status', async () => {
-            await browser.sleep(70000);
-            await utilityCommon.refresh();
+            await browser.sleep(50000);
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
             await updateStatusBladePo.changeCaseStatus('Pending');
             await updateStatusBladePo.setStatusReason('Customer Response');
             await updateStatusBladePo.clickSaveStatus();
             await browser.sleep(2000);
-            await utilityCommon.refresh();
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarPausedIconDisplayed()).toBe(true); //green
         });
         it('[DRDMV-8365]: Verify SVT in Missed goal status', async () => {
             browser.sleep(50000);
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
-            await browser.sleep(60000);
-            await utilityCommon.refresh();
+            await browser.sleep(40000);
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
             await updateStatusBladePo.changeCaseStatus('Pending');
             await updateStatusBladePo.setStatusReason('Customer Response');
             await updateStatusBladePo.clickSaveStatus();
             await browser.sleep(2000);
-            await utilityCommon.refresh();
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarPausedIconDisplayed()).toBe(true); //green
             await updateStatusBladePo.changeCaseStatus('Resolved');
             await updateStatusBladePo.setStatusReason('Auto Resolved');
             await updateStatusBladePo.clickSaveStatus();
             await browser.sleep(2000);
-            await utilityCommon.refresh();
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true);
         });
     });
@@ -486,6 +511,7 @@ describe('Service Target Tests for Cases', () => {
 
     //skhobrag
     describe('[DRDMV-6311]: Create an Svt with Pause qualification and identity the SLA bar in different pause conditions', async () => {
+        let caseId = undefined;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
@@ -518,6 +544,7 @@ describe('Service Target Tests for Cases', () => {
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
+            caseId = await viewCasePage.getCaseID();
             await browser.sleep(31000);
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBeTruthy('SVT is not attached to case.');
             await updateStatusBladePo.changeCaseStatus('In Progress');
@@ -535,7 +562,8 @@ describe('Service Target Tests for Cases', () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Pending');
             await browser.sleep(2000);
-            await utilityCommon.refresh();
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
             await slmProgressBar.clickOnSLAProgressBarPausedIcon();
             expect(await serviceTargetInfoPage.isServiceTargetInformationBladeDisplayed()).toBeTruthy('Service Target Information Blade is not displayed.');
             expect(await serviceTargetInfoPage.isServiceTargetInformationPausedIconDisplayed()).toBeTruthy('SVT Pending Icon on SVT Info Blade is not displayed.');
@@ -552,15 +580,17 @@ describe('Service Target Tests for Cases', () => {
             await browser.sleep(70000);
         });
         it('[DRDMV-6311]: Verify svt in warning status', async () => {
-            await browser.sleep(100000);
-            await utilityCommon.refresh();
+            await browser.sleep(70000);
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
             await expect(slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBeTruthy('SLA Warning bar is not displayed');
             await updateStatusBladePo.changeCaseStatus('Pending');
             await updateStatusBladePo.setStatusReason('Customer Response');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Pending');
             await browser.sleep(2000);
-            await utilityCommon.refresh();
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
             await slmProgressBar.clickOnSLAProgressBarPausedIcon();
         });
         it('[DRDMV-6311]: Verify SVT with missed goal status', async () => {
@@ -572,14 +602,16 @@ describe('Service Target Tests for Cases', () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Assigned');
             await browser.sleep(50000);
-            await utilityCommon.refresh();
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
             await expect(slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBeTruthy('SLA Missed Goal bar is not displayed');
             await updateStatusBladePo.changeCaseStatus('Pending');
             await updateStatusBladePo.setStatusReason('Customer Response');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Pending');
             await browser.sleep(2000);
-            await utilityCommon.refresh();
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
             await slmProgressBar.clickOnSLAProgressBarPausedIcon();
             expect(await serviceTargetInfoPage.isServiceTargetInformationBladeDisplayed()).toBeTruthy('Service Target Information Blade is not displayed.');
             expect(await serviceTargetInfoPage.isServiceTargetInformationPausedIconDisplayed()).toBeTruthy('SVT Missed Goal Pending Icon on SVT Info Blade is not displayed.');
@@ -596,6 +628,7 @@ describe('Service Target Tests for Cases', () => {
     describe('[DRDMV-8368]: Verify SLA Progress Bar change in color when multiple SVT attached and one SVT is missed', async () => {
         let selectedExp = '';
         let expectedSelectedExp = '';
+        let caseId = undefined;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
@@ -644,6 +677,7 @@ describe('Service Target Tests for Cases', () => {
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
+            caseId = await viewCasePage.getCaseID();
             await browser.sleep(31000);
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBeTruthy('SVT is not attached to case.');
             expect(await slmProgressBar.isDueInTimeDisplayed()).toBe(true);
@@ -651,17 +685,18 @@ describe('Service Target Tests for Cases', () => {
         });
         it('[DRDMV-8368]: Verify SVT missed goal pending status', async () => {
             browser.sleep(120000);
-            await utilityCommon.refresh();
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
-            expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
+            expect(await viewCasePage.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
             await updateStatusBladePo.changeCaseStatus('Pending');
             await updateStatusBladePo.setStatusReason('Customer Response');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Pending');
-            await utilityCommon.refresh();
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
         });
         it('[DRDMV-8368]: Verify SVT Missed Goal Status', async () => {
-            await utilityCommon.refresh();
             await slmProgressBar.clickOnSLAProgressBarPausedIcon();
             expect(await serviceTargetInfoPage.isServiceTargetInformationBladeDisplayed()).toBeTruthy('Service Target Information Blade is not displayed.');
             expect(await serviceTargetInfoPage.isServiceTargetInformationPausedIconDisplayed()).toBeTruthy('SVT Pending Icon on SVT Info Blade is not displayed.');
@@ -673,7 +708,7 @@ describe('Service Target Tests for Cases', () => {
             await browser.sleep(20000);
             expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
             await browser.sleep(2000);
-            expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
+            expect(await viewCasePage.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
             await slmProgressBar.clickOnSLAProgressBarMissedGoalIcon();
             expect(await serviceTargetInfoPage.isServiceTargetInformationBladeDisplayed()).toBeTruthy('Service Target Information Blade is not displayed.');
             expect(await serviceTargetInfoPage.isServiceTargetInformationMissedGoalIconDisplayed()).toBeTruthy('SVT In Process Icon on SVT Info Blade is not displayed.');
@@ -690,6 +725,7 @@ describe('Service Target Tests for Cases', () => {
     describe('[DRDMV-8367]: Verify the SLA Progress Bar change in color when multiple SVT attached and all SVT are in Pause State', async () => {
         let selectedExp = '';
         let expectedSelectedExp = '';
+        let caseId = undefined;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
@@ -738,8 +774,10 @@ describe('Service Target Tests for Cases', () => {
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
+            caseId = await viewCasePage.getCaseID();
             await browser.sleep(31000);
-            await utilityCommon.refresh();
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBeTruthy('SVT is not attached to case.');
             expect(await slmProgressBar.isDueInTimeDisplayed()).toBe(true);
         });
@@ -765,6 +803,7 @@ describe('Service Target Tests for Cases', () => {
     describe('[DRDMV-8366]: Verify the SLA Progress Bar change in color when multiple SVT attached and one SVT is Met', async () => {
         let selectedExp = '';
         let expectedSelectedExp = '';
+        let caseId = undefined;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
@@ -813,6 +852,7 @@ describe('Service Target Tests for Cases', () => {
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
+            caseId = await viewCasePage.getCaseID();
             await browser.sleep(31000);
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBeTruthy('SVT is not attached to case.');
             expect(await slmProgressBar.isDueInTimeDisplayed()).toBe(true);
@@ -824,14 +864,15 @@ describe('Service Target Tests for Cases', () => {
             expect(await serviceTargetInfoPage.isServiceTargetInformationSVTMetIconDisplayed()).toBeTruthy('SVT Complete Icon on SVT Info Blade is not displayed.');
             expect(await serviceTargetInfoPage.getServiceTargetStatus()).toBe('Met');
             await serviceTargetInfoPage.clickOnCloseButton();
-            expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
+            expect(await viewCasePage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
         });
         it('[DRDMV-8366]: Verify SLA Warning status', async () => {
             await updateStatusBladePo.changeCaseStatus('Pending');
             await updateStatusBladePo.setStatusReason('Customer Response');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Pending');
-            await utilityCommon.refresh();
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
             await slmProgressBar.clickOnSLAProgressBarPausedIcon();
             expect(await serviceTargetInfoPage.isServiceTargetInformationBladeDisplayed()).toBeTruthy('Service Target Information Blade is not displayed.');
             expect(await serviceTargetInfoPage.isServiceTargetInformationPausedIconDisplayed()).toBeTruthy('SVT Pending Icon on SVT Info Blade is not displayed.');
@@ -843,13 +884,16 @@ describe('Service Target Tests for Cases', () => {
             await browser.sleep(80000);
         });
         it('[DRDMV-8366]: Change case status to pending and verify SVT in Paused condition', async () => {
-            await browser.sleep(100000);
+            await browser.sleep(70000);
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
             await expect(slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBeTruthy('SLA Warning bar is not displayed');
             await updateStatusBladePo.changeCaseStatus('Pending');
             await updateStatusBladePo.setStatusReason('Customer Response');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Pending');
-            await utilityCommon.refresh();
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
         });
         it('[DRDMV-8366]: Verify the SLA Progress Bar change in color when multiple SVT attached and one SVT is Met', async () => {
             await slmProgressBar.clickOnSLAProgressBarPausedIcon();
@@ -860,8 +904,9 @@ describe('Service Target Tests for Cases', () => {
             await updateStatusBladePo.changeCaseStatus('Assigned');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Assigned');
-            await browser.sleep(90000);
-            await utilityCommon.refresh();
+            await browser.sleep(70000);
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
             await expect(slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBeTruthy('SLA Missed Goal bar is not displayed');
             await updateStatusBladePo.changeCaseStatus('Pending');
             await updateStatusBladePo.setStatusReason('Customer Response');
@@ -872,7 +917,7 @@ describe('Service Target Tests for Cases', () => {
             expect(await serviceTargetInfoPage.isServiceTargetInformationPausedIconDisplayed()).toBeTruthy('SVT Missed Goal Pending Icon on SVT Info Blade is not displayed.');
             expect(await serviceTargetInfoPage.getServiceTargetStatus()).toBe('Missed Goal Pending');
             await serviceTargetInfoPage.clickOnCloseButton();
-            expect(await viewCasePo.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
+            expect(await viewCasePage.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
         });
         afterAll(async () => {
             await navigationPage.signOut();
@@ -882,6 +927,7 @@ describe('Service Target Tests for Cases', () => {
 
     //skhobrag
     describe('[DRDMV-8370]: Verify Visualization change when Status changes(In Process-> Pending)', async () => {
+        let caseId = undefined;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
@@ -914,22 +960,25 @@ describe('Service Target Tests for Cases', () => {
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
+            caseId = await viewCasePage.getCaseID();
         });
         it('[DRDMV-8370]: Verify Visualization change when Status changes(In Process-> Pending)', async () => {
             await browser.sleep(31000);
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBeTruthy('SVT is not attached to case.');
             expect(await slmProgressBar.isDueInTimeDisplayed()).toBe(true);
-            expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
+            expect(await viewCasePage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
             await updateStatusBladePo.changeCaseStatus('Pending');
             await updateStatusBladePo.setStatusReason('Customer Response');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Pending');
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
             await slmProgressBar.clickOnSLAProgressBarPausedIcon();
             expect(await serviceTargetInfoPage.isServiceTargetInformationBladeDisplayed()).toBeTruthy('Service Target Information Blade is not displayed.');
             expect(await serviceTargetInfoPage.isServiceTargetInformationPausedIconDisplayed()).toBeTruthy('SVT Pending Icon on SVT Info Blade is not displayed.');
             expect(await serviceTargetInfoPage.getServiceTargetStatus()).toBe('Pending');
             await serviceTargetInfoPage.clickOnCloseButton();
-            expect(await viewCasePo.getSlaBarColor()).toBe('rgba(149, 152, 153, 1)');
+            expect(await viewCasePage.getSlaBarColor()).toBe('rgba(149, 152, 153, 1)');
         });
         afterAll(async () => {
             await navigationPage.signOut();
@@ -939,6 +988,7 @@ describe('Service Target Tests for Cases', () => {
 
     //skhobrag
     describe('[DRDMV-8371]: Verify Visualization change when Status changes(In Process-> Met)', async () => {
+        let caseId = undefined;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
@@ -971,12 +1021,15 @@ describe('Service Target Tests for Cases', () => {
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
+            caseId = await viewCasePage.getCaseID();
             await browser.sleep(31000);
         });
         it('[DRDMV-8371]: Verify Visualization change when Status changes(In Process-> Met)', async () => {
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBeTruthy('SVT is not attached to case.');
             expect(await slmProgressBar.isDueInTimeDisplayed()).toBe(true);
-            expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
+            expect(await viewCasePage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
             await updateStatusBladePo.changeCaseStatus('Resolved');
             await updateStatusBladePo.setStatusReason('Auto Resolved');
             await updateStatusBladePo.clickSaveStatus();
@@ -986,7 +1039,7 @@ describe('Service Target Tests for Cases', () => {
             expect(await serviceTargetInfoPage.isServiceTargetInformationSVTMetIconDisplayed()).toBeTruthy('SVT Met Icon on SVT Info Blade is not displayed.');
             expect(await serviceTargetInfoPage.getServiceTargetStatus()).toBe('Met');
             await serviceTargetInfoPage.clickOnCloseButton();
-            expect(await viewCasePo.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
+            expect(await viewCasePage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
         });
         afterAll(async () => {
             await navigationPage.signOut();
@@ -996,6 +1049,7 @@ describe('Service Target Tests for Cases', () => {
 
     //skhobrag
     describe('[DRDMV-8372]: Verify Visualization change when Status changes(Warning-> Met)', async () => {
+        let caseId = undefined;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
@@ -1028,6 +1082,7 @@ describe('Service Target Tests for Cases', () => {
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
+            caseId = await viewCasePage.getCaseID();
             await browser.sleep(31000);
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBeTruthy('SVT is not attached to case.');
             expect(await slmProgressBar.isDueInTimeDisplayed()).toBe(true);
@@ -1035,14 +1090,16 @@ describe('Service Target Tests for Cases', () => {
             await browser.sleep(70000);
         });
         it('[DRDMV-8372]: Verify Visualization change when Status changes(Warning-> Met)', async () => {
-            await browser.sleep(50000);
-            await utilityCommon.refresh();
+            await browser.sleep(20000);
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBeTruthy('SVT Warning Icon is not attached to case.');
             await updateStatusBladePo.changeCaseStatus('Resolved');
             await updateStatusBladePo.setStatusReason('Auto Resolved');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
-            await utilityCommon.refresh();
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarSVTMetIconDisplayed()).toBeTruthy('SVT Met Icon is not attached to case.');
             await slmProgressBar.clickOnSLAProgressBarSVTMetIcon();
             expect(await serviceTargetInfoPage.isServiceTargetInformationBladeDisplayed()).toBeTruthy('Service Target Information Blade is not displayed.');
@@ -1108,6 +1165,7 @@ describe('Service Target Tests for Cases', () => {
 
     //skhobrag
     describe('[DRDMV-8374]: No change is visualization after specified time passed', async () => {
+        let caseId = undefined;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
@@ -1140,18 +1198,21 @@ describe('Service Target Tests for Cases', () => {
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
+            caseId = await viewCasePage.getCaseID();
             await browser.sleep(32000);
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBeTruthy('SVT is not attached to case.');
             expect(await slmProgressBar.isDueInTimeDisplayed()).toBe(true);
             expect(await viewCasePage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
-            await browser.sleep(90000);
+            await browser.sleep(70000);
         });
         it('[DRDMV-8374]: No change is visualization after specified time passed', async () => {
-            await browser.sleep(30000);
-            await utilityCommon.refresh();
+            await browser.sleep(20000);
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBeTruthy('SVT Warning Icon is not attached to case.');
             await browser.sleep(70000);
-            await utilityCommon.refresh();
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
             await expect(slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBeTruthy('SLA Missed Goal bar is not displayed');
             expect(await viewCasePage.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
         });
@@ -1163,6 +1224,7 @@ describe('Service Target Tests for Cases', () => {
 
     //skhobrag
     describe('[DRDMV-2044]: Tooltip text & display allignment for measurements on SLA Progress Bar', async () => {
+        let caseId = undefined;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
@@ -1196,6 +1258,7 @@ describe('Service Target Tests for Cases', () => {
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
+            caseId = await viewCasePage.getCaseID();
             await browser.sleep(31000);
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBeTruthy('SVT is not attached to case.');
             expect(await slmProgressBar.isDueInTimeDisplayed()).toBe(true);
@@ -1241,15 +1304,17 @@ describe('Service Target Tests for Cases', () => {
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
+            caseId = await viewCasePage.getCaseID();
             await browser.sleep(31000);
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBeTruthy('SVT is not attached to case.');
             expect(await slmProgressBar.isDueInTimeDisplayed()).toBe(true);
             expect(await viewCasePage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
-            await browser.sleep(90000);
+            await browser.sleep(70000);
         });
         it('[DRDMV-2044]: Verify SVT with Warning status', async () => {
-            await browser.sleep(40000);
-            await utilityCommon.refresh();
+            await browser.sleep(20000);
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBeTruthy('SVT Warning Icon is not attached to case.');
             expect(await slmProgressBar.isSVTToolTipTextDisplayed()).toBeTruthy("SVT ToolTip Text is not displayed.");
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('SVT from Protractor');
@@ -1258,7 +1323,8 @@ describe('Service Target Tests for Cases', () => {
         });
         it('[DRDMV-2044]: Verify SVT with Missed Goal Status', async () => {
             await browser.sleep(70000);
-            await utilityCommon.refresh();
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
             await expect(slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBeTruthy('SLA Missed Goal bar is not displayed');
             expect(await slmProgressBar.isSVTToolTipTextDisplayed()).toBeTruthy("SVT ToolTip Text is not displayed.");
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('SVT from Protractor');

@@ -70,7 +70,7 @@ describe('Knowledge Article', () => {
             await apiHelper.flagAndUnflagKnowledgeArticle(knowledgeArticleGUID, knowledgeTitile, 1);
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr, 'title not correct');
             await utilityGrid.clearFilter();
@@ -118,7 +118,7 @@ describe('Knowledge Article', () => {
         try {
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr, 'Not expected title');
             await navigationPage.gotoCreateKnowledge();
@@ -211,7 +211,7 @@ describe('Knowledge Article', () => {
             let displayID = KADetails.displayId;
             await navigationPage.signOut();
             await loginPage.login(knowledgeCandidateUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.clearFilter();
@@ -224,7 +224,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             //login with contributor
             await loginPage.login(knowledgeContributorUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             let knowledgeTitile1 = 'knowledgeContributor3095' + randomStr;
@@ -249,7 +249,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             //login with publisher
             await loginPage.login(knowledgePublisherUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             let knowledgeTitile2 = 'knowledgePublisher3095' + randomStr;
@@ -275,7 +275,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             //login with coach
             await loginPage.login(knowledgeCoachUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             let knowledgeTitile3 = 'knowledgeCoachUser3095' + randomStr;
@@ -352,7 +352,7 @@ describe('Knowledge Article', () => {
             let KADetails = await apiHelper.createKnowledgeArticle(articleData);
             await navigationPage.signOut();
             await loginPage.login(knowledgeCandidateUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.clearFilter();
@@ -363,7 +363,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             //login with contributor
             await loginPage.login(knowledgeContributorUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             let knowledgeTitile1 = 'knowledgeContributor3093' + randomStr;
@@ -386,7 +386,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             //login with publisher
             await loginPage.login(knowledgePublisherUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             let knowledgeTitile2 = 'knowledgePublisher3093' + randomStr;
@@ -409,7 +409,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             //login with publisher
             await loginPage.login(knowledgeCoachUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             let knowledgeTitile3 = 'knowledgeCoachUser3093' + randomStr;
@@ -457,7 +457,7 @@ describe('Knowledge Article', () => {
             let KADetails = await apiHelper.createKnowledgeArticle(articleData);
             await navigationPage.signOut();
             await loginPage.login(knowledgeCandidateUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.clearFilter();
@@ -469,7 +469,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             //login with contributor
             await loginPage.login(knowledgeContributorUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             let knowledgeTitile1 = 'knowledgeContributor2586' + randomStr;
@@ -493,7 +493,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             //login with publisher
             await loginPage.login(knowledgePublisherUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             let knowledgeTitile2 = 'knowledgePublisher2586' + randomStr;
@@ -517,7 +517,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             //login with publisher
             await loginPage.login(knowledgeCoachUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             let knowledgeTitile3 = 'knowledgeCoachUser2586' + randomStr;
@@ -842,7 +842,7 @@ describe('Knowledge Article', () => {
             expect(activityTabPo.getFirstPostContent()).toContain(knowledgeTitileSecond, 'Post not present on activity');
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(knowledgeArticleDataSecond.displayId);
@@ -854,7 +854,7 @@ describe('Knowledge Article', () => {
             expect(await activityTabPo.getFirstPostContent()).toContain('Kyle Mills unflagged the article', 'content not displaying on Activity');
             expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitileSecond, 'content not displaying on Activity');
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
@@ -893,7 +893,7 @@ describe('Knowledge Article', () => {
             let KADetails = await apiHelper.createKnowledgeArticle(articleData);
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.clearFilter();
@@ -931,7 +931,7 @@ describe('Knowledge Article', () => {
             }
             let KACoachDetails = await apiHelper.createKnowledgeArticle(articleDataCoach);
             await loginPage.login(knowledgeCoachUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.clearFilter();
@@ -1020,7 +1020,7 @@ describe('Knowledge Article', () => {
         let kaDetails = await apiHelper.createKnowledgeArticle(articleData);
         await navigationPage.signOut();
         await loginPage.login(knowledgeCoachUser);
-        await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+        await navigationPage.switchToApplication(knowledgeManagementApp);
         await utilityCommon.switchToNewTab(1);
         expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
         await utilityGrid.clearFilter();
@@ -1056,7 +1056,7 @@ describe('Knowledge Article', () => {
         let kaDetails = await apiHelper.createKnowledgeArticle(articleData);
         await navigationPage.signOut();
         await loginPage.login(knowledgeCoachUser);
-        await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+        await navigationPage.switchToApplication(knowledgeManagementApp);
         await utilityCommon.switchToNewTab(1);
         expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
         await utilityGrid.clearFilter();
@@ -1096,7 +1096,7 @@ describe('Knowledge Article', () => {
     it('[DRDMV-3461,DRDMV-12610]:[Knowledge Article] Adding one or two or three level operational categorization while creating knowledge articles_Tier1, Tier2 & Tier3', async () => {
         await navigationPage.signOut();
         await loginPage.login(knowledgeCoachUser);
-        await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+        await navigationPage.switchToApplication(knowledgeManagementApp);
         await utilityCommon.switchToNewTab(1);
         await navigationPage.gotoCreateKnowledge();
         await createKnowledgePage.clickOnTemplate('Reference');
@@ -1156,7 +1156,7 @@ describe('Knowledge Article', () => {
         let kaDetails = await apiHelper.createKnowledgeArticle(articleData);
         await navigationPage.signOut();
         await loginPage.login(knowledgeCoachUser);
-        await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+        await navigationPage.switchToApplication(knowledgeManagementApp);
         await utilityCommon.switchToNewTab(1);
         expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
         await utilityGrid.clearFilter();
@@ -1173,7 +1173,7 @@ describe('Knowledge Article', () => {
     it('[DRDMV-2608]:Create KA - with only required and with all fields populating', async () => {
         await navigationPage.signOut();
         await loginPage.login(knowledgeCoachUser);
-        await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+        await navigationPage.switchToApplication(knowledgeManagementApp);
         await utilityCommon.switchToNewTab(1);
         await navigationPage.gotoCreateKnowledge();
         await createKnowledgePage.clickOnTemplate('Reference');
@@ -1227,7 +1227,7 @@ describe('Knowledge Article', () => {
         let kaDetails = await apiHelper.createKnowledgeArticle(articleData);
         await navigationPage.signOut();
         await loginPage.login(knowledgeCoachUser);
-        await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+        await navigationPage.switchToApplication(knowledgeManagementApp);
         await utilityCommon.switchToNewTab(1);
         expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
         await utilityGrid.clearFilter();
@@ -1244,7 +1244,7 @@ describe('Knowledge Article', () => {
         expect(await viewKnowledgeArticlePo.getAssigneeValue()).toContain('Peter Kahn');
         await navigationPage.signOut();
         await loginPage.login('peter');
-        await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+        await navigationPage.switchToApplication(knowledgeManagementApp);
         await utilityCommon.switchToNewTab(1);
         expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
         await utilityGrid.clearFilter();
@@ -1290,7 +1290,7 @@ describe('Knowledge Article', () => {
         it('[DRDMV-4266,DRDMV-4267]:[Attachment] - Create article with maximum attachment - 30 attachments', async () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.clearFilter();
@@ -1339,7 +1339,7 @@ describe('Knowledge Article', () => {
         let imageUrlFieldIndex = 0;
         await navigationPage.signOut();
         await loginPage.login(knowledgeCoachUser);
-        await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+        await navigationPage.switchToApplication(knowledgeManagementApp);
         await utilityCommon.switchToNewTab(1);
         await navigationPage.gotoCreateKnowledge();
         await createKnowledgePage.clickOnTemplate('Reference');
@@ -1409,7 +1409,7 @@ describe('Knowledge Article', () => {
         it('[DRDMV-21679,DRDMV-21681]:Tiggered the Approval on Article and check KA screen by Approver should show Approval component', async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr, 'title not correct');
             await utilityGrid.clearFilter();
@@ -1427,7 +1427,7 @@ describe('Knowledge Article', () => {
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'PublishApproval', "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with Published status not updated.");         
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr, 'title not correct');
             await utilityGrid.clearFilter();
@@ -1438,7 +1438,7 @@ describe('Knowledge Article', () => {
         it('[DRDMV-21679,DRDMV-21681]:Tiggered the Approval on Article and check KA screen by Approver should show Approval component', async () => {
             await navigationPage.signOut();
             await loginPage.login('kayo');
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr, 'title not correct');
             await utilityGrid.clearFilter();
@@ -1509,7 +1509,7 @@ describe('Knowledge Article', () => {
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'PublishApproval', "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with Published status not updated.");         
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr, 'title not correct');
             await utilityGrid.clearFilter();
@@ -1518,7 +1518,7 @@ describe('Knowledge Article', () => {
             await viewKnowledgeArticlePo.clickOnRejectLink();
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr, 'title not correct');
             await utilityGrid.clearFilter();
@@ -1530,7 +1530,7 @@ describe('Knowledge Article', () => {
         it('[DRDMV-20944]:UI- Knowledge Article functioning for  Approval phases such as Publish, Retire and Cancel', async () => {            
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr, 'title not correct');
             await utilityGrid.clearFilter();
@@ -1539,7 +1539,7 @@ describe('Knowledge Article', () => {
             await viewKnowledgeArticlePo.clickOnRejectLink();
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr, 'title not correct');
             await utilityGrid.clearFilter();
@@ -1551,7 +1551,7 @@ describe('Knowledge Article', () => {
         it('[DRDMV-20944]:UI- Knowledge Article functioning for  Approval phases such as Publish, Retire and Cancel', async () => {            
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr, 'title not correct');
             await utilityGrid.clearFilter();
@@ -1560,7 +1560,7 @@ describe('Knowledge Article', () => {
             await viewKnowledgeArticlePo.clickOnApproveLink();
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr, 'title not correct');
             await utilityGrid.clearFilter();
@@ -1572,7 +1572,7 @@ describe('Knowledge Article', () => {
         it('[DRDMV-20944]:UI- Knowledge Article functioning for  Approval phases such as Publish, Retire and Cancel', async () => {            
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr, 'title not correct');
             await utilityGrid.clearFilter();
@@ -1581,7 +1581,7 @@ describe('Knowledge Article', () => {
             await viewKnowledgeArticlePo.clickOnApproveLink();
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr, 'title not correct');
             await utilityGrid.clearFilter();
@@ -1722,7 +1722,7 @@ describe('Knowledge Article', () => {
         it('[DRDMV-753]:[Advanced Search] [Pin/Unpin] Relate Knowledge Article on Knowledge Edit view from Advanced search', async () => {
             await navigationPage.signOut();
             await loginPage.login('kmills');
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.clearFilter();
@@ -1867,7 +1867,7 @@ describe('Knowledge Article', () => {
         it('[DRDMV-620]: Advanced Search UI verification on the Quick Case view', async () => {
             await navigationPage.signOut();
             await loginPage.login('kmills');
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.clearFilter();
