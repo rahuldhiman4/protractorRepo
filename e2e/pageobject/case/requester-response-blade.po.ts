@@ -4,7 +4,7 @@ class RequesterResponseBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         bladeHeading: '.dp-title',
-        dynamicFieldsName: '.simple-field label.form-control-label',
+        dynamicFieldsName: '.simple-field .form-control-label',
         okButton:'[rx-view-component-id="d459dabe-1ccb-4776-b121-874ed4ded902"] button', 
     }
 

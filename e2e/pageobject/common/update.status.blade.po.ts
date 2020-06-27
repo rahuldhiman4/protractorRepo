@@ -65,7 +65,7 @@ class UpdateStatus {
     }
 
     async selectResolutionCode(resolutionCode: string): Promise<void> {
-        await utilityCommon.selectDropDown(this.selectors.resolutionCodeDropDownGuid, resolutionCode);
+        await utilityCommon.selectDropDown(this.selectors.resolutionCodeRequiredTagGuid, resolutionCode);
     }
 
     async isStatusReasonRequiredTextPresent(): Promise<boolean> {

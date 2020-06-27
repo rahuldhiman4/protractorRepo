@@ -365,7 +365,7 @@ class CaseEditPage {
     }
 
     async isDynamicFieldDisplayed(fieldName: string): Promise<boolean> {
-        let dynamicFieldLocator = `.simple-field label`;
+        let dynamicFieldLocator = `.simple-field .form-control-label`;
         let dynamicFields: number = await $$(dynamicFieldLocator).count();
         for (let i = 0; i < dynamicFields; i++) {
             let field = await (await $$(dynamicFieldLocator).get(i).getText()).trim();

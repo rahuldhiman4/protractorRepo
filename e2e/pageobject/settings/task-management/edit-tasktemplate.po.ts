@@ -42,7 +42,7 @@ class EditTaskTemplate {
     async isProcessNameDisabled(): Promise<boolean> {
         return await $(this.selectors.processNameValue).getAttribute('readOnly') == 'true' ? true : false;
     }
-    
+
     async selectTaskCategoryTier1(category1: string): Promise<void> {
         await utilCommon.selectDropDown(this.selectors.taskCategoryDrpDown1, category1);
     }
@@ -146,7 +146,9 @@ class EditTaskTemplate {
     }
 
     async isMangeDynamicFieldLinkDisplayed(): Promise<boolean> {
-        return await $(this.selectors.mangeDynamicField).isDisplayed();
+        return await $(this.selectors.mangeDynamicField).isPresent().then(async (present) => {
+            if (present) return await $(this.selectors.mangeDynamicField).isDisplayed();
+        });
     }
 
     async isDynamicFieldPresent(dynamic: string): Promise<boolean> {
