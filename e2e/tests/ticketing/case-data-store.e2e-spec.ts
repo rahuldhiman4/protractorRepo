@@ -369,12 +369,12 @@ describe('Case Data Store', () => {
             for (let i = 0; i < arr.length; i++) {
                 expect(await viewTaskTemplate.isDynamicFieldPresent(arr[i])).toBeTruthy('field is not present');
             }
-            expect(await viewTaskTemplate.isManageDynamicFieldLinkDisplayed()).toBeTruthy('Link is present');
+            expect(await viewTaskTemplate.isManageDynamicFieldLinkDisplayed()).toBeTruthy('Link is not present');
         });
         it('[DRDMV-13140]: [Dynamic Data] [UI] -Dynamic Fields display on Task Template Edit view UI', async () => {
             //edit
             await viewTaskTemplate.clickOnEditLink();
-            expect(await editTaskTemplate.isMangeDynamicFieldLinkDisplayed()).toBeTruthy('link is present');
+            expect(await editTaskTemplate.isMangeDynamicFieldLinkDisplayed()).toBeTruthy('link is not present');
             for (let i = 0; i < arr.length; i++) {
                 expect(await editTaskTemplate.isDynamicFieldPresent(arr[i])).toBeTruthy('field is not present');
             }
@@ -394,6 +394,8 @@ describe('Case Data Store', () => {
             for (let i = 0; i < arr.length; i++) {
                 expect(await editTaskTemplate.isDynamicFieldPresent(arr[i])).toBeTruthy('field is not present');
             }
+        });
+        afterAll(async () => {
             await editTaskTemplate.clickOnCancelButton();
             await utilCommon.clickOnWarningOk();
         });
