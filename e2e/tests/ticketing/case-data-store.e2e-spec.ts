@@ -649,66 +649,73 @@ describe('Case Data Store', () => {
     //ptidke
     it('[DRDMV-13153]: [Dynamic Data] [UI] - Dynamic fields and groups display on Task Template preview	', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteDynamicFieldAndGroup();
-        let templateData = {
-            "templateName": 'ManualtaskDRDMV-13153' + randomStr,
-            "templateSummary": 'ManualtaskDRDMV-13153' + randomStr,
-            "templateStatus": "Active",
-            "taskCompany": 'Petramco',
-            "ownerCompany": "Petramco",
-            "ownerBusinessUnit": "Facilities Support",
-            "ownerGroup": "Facilities"
+        try {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteDynamicFieldAndGroup();
+            let templateData = {
+                "templateName": 'ManualtaskDRDMV-13153' + randomStr,
+                "templateSummary": 'ManualtaskDRDMV-13153' + randomStr,
+                "templateStatus": "Active",
+                "taskCompany": 'Petramco',
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
+            }
+            let tasktemplate = await apiHelper.createManualTaskTemplate(templateData);
+            await apiHelper.createDynamicDataOnTemplate(tasktemplate.id, 'TASK_TEMPLATE_WITH_CONFIDENTIAL');
+            await navigationPage.gotoCreateCase();
+            await createCasePo.selectRequester('qdu');
+            await createCasePo.setSummary('new cases');
+            await createCasePo.clickSaveCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
+            await viewCasePo.clickAddTaskButton();
+            await manageTaskBladePo.clickAddTaskFromTemplateButton();
+            await utilityGrid.searchAndOpenHyperlink(templateData.templateSummary);
+            expect(await previewTaskTemplateCasesPo.isDynamicGroupDisplayed('TaskGroupLocalCaseTemplate')).toBeTruthy();
+            expect(await previewTaskTemplateCasesPo.isDynamicGroupDisplayed('TaskPulishCaseTemplateData')).toBeTruthy();
+            expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskLocalNonConfidentialDesc')).toBeTruthy();
+            expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskLocalConfidentialDesc')).toBeTruthy();
+            expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TasknonConfidentialPulicDesc')).toBeTruthy();
+            expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskconfidentialPublicDesc')).toBeTruthy();
+            expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskOuterNonConfidentialDesc')).toBeTruthy();
+            expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskListOfDataNameDesc')).toBeTruthy();
+            expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskOuterConfidentialDesc')).toBeTruthy();
+            await previewTaskTemplateCasesPo.clickOnBackButton();
+            await manageTaskBladePo.clickTaskGridCancelButton();
+            await manageTaskBladePo.clickCloseButton();
+            let caseTemplateData = {
+                "templateName": 'caseTemplateNameDRDMV-13153' + randomStr,
+                "templateSummary": 'caseTemplateNameDRDMV-13153' + randomStr,
+                "templateStatus": "Draft",
+                "resolveCaseonLastTaskCompletion": "1",
+                "assignee": "Fritz",
+                "company": "Petramco",
+                "supportGroup": "Facilities",
+                "ownerGroup": "Facilities"
+            }
+            await apiHelper.apiLogin('fritz');
+            let casetemplateddetails = await apiHelper.createCaseTemplate(caseTemplateData);
+            await navigationPage.gotoSettingsPage();
+            await apiHelper.associateCaseTemplateWithOneTaskTemplate(casetemplateddetails.displayId, tasktemplate.displayId);
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await utilGrid.searchAndOpenHyperlink(caseTemplateData.templateSummary);
+            await viewCasetemplatePo.clickOneTask();
+            expect(await previewTaskTemplateCasesPo.isDynamicGroupDisplayed('TaskGroupLocalCaseTemplate')).toBeTruthy();
+            expect(await previewTaskTemplateCasesPo.isDynamicGroupDisplayed('TaskPulishCaseTemplateData')).toBeTruthy();
+            expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskLocalNonConfidentialDesc')).toBeTruthy();
+            expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskLocalConfidentialDesc')).toBeTruthy();
+            expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TasknonConfidentialPulicDesc')).toBeTruthy();
+            expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskconfidentialPublicDesc')).toBeTruthy();
+            expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskOuterNonConfidentialDesc')).toBeTruthy();
+            expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskListOfDataNameDesc')).toBeTruthy();
+            expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskOuterConfidentialDesc')).toBeTruthy();
         }
-        let tasktemplate = await apiHelper.createManualTaskTemplate(templateData);
-        await apiHelper.createDynamicDataOnTemplate(tasktemplate.id, 'TASK_TEMPLATE_WITH_CONFIDENTIAL');
-        await navigationPage.gotoCreateCase();
-        await createCasePo.selectRequester('qdu');
-        await createCasePo.setSummary('new cases');
-        await createCasePo.clickSaveCaseButton();
-        await casePreviewPo.clickGoToCaseButton();
-        await viewCasePo.clickAddTaskButton();
-        await manageTaskBladePo.clickAddTaskFromTemplateButton();
-        await utilityGrid.searchAndOpenHyperlink(templateData.templateSummary);
-        expect(await previewTaskTemplateCasesPo.isDynamicGroupDisplayed('TaskGroupLocalCaseTemplate')).toBeTruthy();
-        expect(await previewTaskTemplateCasesPo.isDynamicGroupDisplayed('TaskPulishCaseTemplateData')).toBeTruthy();
-        expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskLocalNonConfidentialDesc')).toBeTruthy();
-        expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskLocalConfidentialDesc')).toBeTruthy();
-        expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TasknonConfidentialPulicDesc')).toBeTruthy();
-        expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskconfidentialPublicDesc')).toBeTruthy();
-        expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskOuterNonConfidentialDesc')).toBeTruthy();
-        expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskListOfDataNameDesc')).toBeTruthy();
-        expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskOuterConfidentialDesc')).toBeTruthy();
-        await previewTaskTemplateCasesPo.clickOnBackButton();
-        await manageTaskBladePo.clickTaskGridCancelButton();
-        await manageTaskBladePo.clickCloseButton();
-        let caseTemplateData = {
-            "templateName": 'caseTemplateNameDRDMV-13153' + randomStr,
-            "templateSummary": 'caseTemplateNameDRDMV-13153' + randomStr,
-            "templateStatus": "Draft",
-            "resolveCaseonLastTaskCompletion": "1",
-            "assignee": "Fritz",
-            "company": "Petramco",
-            "supportGroup": "Facilities",
-            "ownerGroup": "Facilities"
+        catch (ex) {
+            throw ex;
         }
-        await apiHelper.apiLogin('fritz');
-        let casetemplateddetails = await apiHelper.createCaseTemplate(caseTemplateData);
-        await navigationPage.gotoSettingsPage();
-        await apiHelper.associateCaseTemplateWithOneTaskTemplate(casetemplateddetails.displayId, tasktemplate.displayId);
-        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
-        await utilGrid.searchAndOpenHyperlink(caseTemplateData.templateSummary);
-        await viewCasetemplatePo.clickOneTask();
-        expect(await previewTaskTemplateCasesPo.isDynamicGroupDisplayed('TaskGroupLocalCaseTemplate')).toBeTruthy();
-        expect(await previewTaskTemplateCasesPo.isDynamicGroupDisplayed('TaskPulishCaseTemplateData')).toBeTruthy();
-        expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskLocalNonConfidentialDesc')).toBeTruthy();
-        expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskLocalConfidentialDesc')).toBeTruthy();
-        expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TasknonConfidentialPulicDesc')).toBeTruthy();
-        expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskconfidentialPublicDesc')).toBeTruthy();
-        expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskOuterNonConfidentialDesc')).toBeTruthy();
-        expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskListOfDataNameDesc')).toBeTruthy();
-        expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskOuterConfidentialDesc')).toBeTruthy();
-        await previewTaskTemplateCasesPo.clickOnBackButton();
+        finally {
+            await previewTaskTemplateCasesPo.clickOnBackButton();
+        }
     });
 
     //ptidke
@@ -1042,6 +1049,8 @@ describe('Case Data Store', () => {
             expect(await editCasetemplatePo.isManageDynamicFieldLinkDisplayed()).toBeTruthy('Link not present');
             expect(await editCasetemplatePo.isDynamicFieldDisplayed('newInactive' + randomStr)).toBeTruthy('field not present');
             expect(await editCasetemplatePo.isDynamicFieldDisplayed('newInactiveSys' + randomStr)).toBeTruthy('field not present');
+        });
+        afterAll(async () => {
             await editCasetemplatePo.clickOnCancelButton();
             await utilCommon.clickOnWarningOk();
         });
