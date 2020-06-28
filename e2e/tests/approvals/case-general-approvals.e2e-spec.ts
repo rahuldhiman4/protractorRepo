@@ -105,6 +105,7 @@ describe("Case General Approval Tests", () => {
             await browser.sleep(5000); // sleep added for expression builder loading time
             expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
             expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Create New Approval Flow');
+            await browser.sleep(3000); // sleep added for expression builder loading time
             await approvalConfigurationPage.searchExpressionFieldOption('Category Tier 1');
             await approvalConfigurationPage.clickRecordOption('Record Definition');
             await approvalConfigurationPage.clickRecordOption('Case');
@@ -211,6 +212,7 @@ describe("Case General Approval Tests", () => {
             await browser.sleep(5000); // sleep added for expression builder loading time
             expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
             expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Create New Approval Flow');
+            await browser.sleep(3000); // sleep added for expression builder loading time
             await approvalConfigurationPage.searchExpressionFieldOption('Category Tier 1');
             await approvalConfigurationPage.clickRecordOption('Record Definition');
             await approvalConfigurationPage.clickRecordOption('Case');
@@ -416,6 +418,7 @@ describe("Case General Approval Tests", () => {
             await browser.sleep(5000); // sleep added for expression builder loading time
             expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
             expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Create New Approval Flow');
+            await browser.sleep(3000); // sleep added for expression builder loading time
             await approvalConfigurationPage.searchExpressionFieldOption('Category Tier 1');
             await approvalConfigurationPage.clickRecordOption('Record Definition');
             await approvalConfigurationPage.clickRecordOption('Case');
@@ -551,6 +554,7 @@ describe("Case General Approval Tests", () => {
             await browser.sleep(5000); // sleep added for expression builder loading time
             expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
             expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Create New Approval Flow');
+            await browser.sleep(3000); // sleep added for expression builder loading time
             await approvalConfigurationPage.searchExpressionFieldOption('Category Tier 1');
             await approvalConfigurationPage.clickRecordOption('Record Definition');
             await approvalConfigurationPage.clickRecordOption('Case');
@@ -787,7 +791,7 @@ describe("Case General Approval Tests", () => {
             await browser.sleep(5000); // sleep added for expression builder loading time
             expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
             expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Create New Approval Flow');
-            await browser.sleep(1000); // sleep added for expression builder loading time
+            await browser.sleep(3000); // sleep added for expression builder loading time
             await approvalConfigurationPage.searchExpressionFieldOption('Category Tier 1');
             await approvalConfigurationPage.clickRecordOption('Record Definition');
             await approvalConfigurationPage.clickRecordOption('Case');
@@ -1027,6 +1031,7 @@ describe("Case General Approval Tests", () => {
             await browser.sleep(5000); // sleep added for expression builder loading time
             expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
             expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Create New Approval Flow');
+            await browser.sleep(3000); // sleep added for expression builder loading time
             await approvalConfigurationPage.searchExpressionFieldOption('Category Tier 1');
             await approvalConfigurationPage.clickRecordOption('Record Definition');
             await approvalConfigurationPage.clickRecordOption('Case');
@@ -1185,6 +1190,7 @@ describe("Case General Approval Tests", () => {
             await browser.sleep(5000); // sleep added for expression builder loading time
             expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
             expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Create New Approval Flow');
+            await browser.sleep(3000); // sleep added for expression builder loading time
             await approvalConfigurationPage.searchExpressionFieldOption('Category Tier 1');
             await approvalConfigurationPage.clickRecordOption('Record Definition');
             await approvalConfigurationPage.clickRecordOption('Case');
