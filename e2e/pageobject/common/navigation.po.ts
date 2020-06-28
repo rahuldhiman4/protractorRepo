@@ -172,7 +172,7 @@ class NavigationPage {
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
-            await element(by.buttonText('Quick Case ')).click().then(async () => {
+            await element(by.buttonText('Quick Case')).click().then(async () => {
                 await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             });
         } else await element(by.cssContainingText('button.a-menu__link', 'Quick Case ')).click().then(async () => {

@@ -88,21 +88,21 @@ class ActivityTabPage {
 
     async isLockIconDisplayedInActivity(activityNumber: number): Promise<boolean> {
         return await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.lockIcon).isPresent().then(async (result) => {
-            if (result){
+            if (result) {
                 return await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.lockIcon).isDisplayed();
-            } else return false; 
+            } else return false;
         });
     }
 
-	async isTitleTextDisplayedInActivity(caseActivityLogTitleText: string, activityNumber: number): Promise<boolean> {
+    async isTitleTextDisplayedInActivity(caseActivityLogTitleText: string, activityNumber: number): Promise<boolean> {
         return await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.logTitle).isPresent().then(async (result) => {
-            if (result){
-                let logtitleText=await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.logTitle).getText();
-                     if(logtitleText.includes(caseActivityLogTitleText)){
-                     return true;
-           }
-       }
-       else return false;
+            if (result) {
+                let logtitleText = await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.logTitle).getText();
+                if (logtitleText.includes(caseActivityLogTitleText)) {
+                    return true;
+                }
+            }
+            else return false;
         });
     }
 
@@ -504,6 +504,12 @@ class ActivityTabPage {
     async selectFilterCheckBox(filterCheckBoxText: string): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterCheckbox)));
         await element(by.cssContainingText(this.selectors.filterCheckbox, filterCheckBoxText)).click();
+    }
+
+    async applyActivityFilter(filterCheckbox: string): Promise<void> {
+        await this.clickOnFilterButton();
+        await this.selectFilterCheckBox(filterCheckbox);
+        await this.clickOnFilterApplyButton();
     }
 
     async addAuthorOnFilter(AuthorName: string): Promise<void> {
@@ -990,7 +996,7 @@ class ActivityTabPage {
         });
     }
 
-    async clickShowApproversLink(showApproversLinkLabel:string):Promise<void>{
+    async clickShowApproversLink(showApproversLinkLabel: string): Promise<void> {
         await $(this.selectors.showApproversLink).click();
     }
 }
