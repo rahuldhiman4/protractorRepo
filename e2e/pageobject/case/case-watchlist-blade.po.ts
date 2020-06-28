@@ -19,7 +19,7 @@ class CaseWatchlistBlade {
         removeBtn: '[rx-view-component-id="fdc9b3f0-3baa-48f4-b404-11f6441e676a"] button',
         updateWatchlistEventsButton: '[rx-view-component-id="36e39eb7-fc47-45d3-b435-4b1a4311383d"] button',
         filterPreset: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] button.d-icon-left-filter',
-        clearFilterButton: '.advanced-filter__header-btn',
+        clearFilterButton: 'button.custom-action-btn',
         filterDropdown: '.show__more-tags',
         caseLinks: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] tr td:nth-of-type(2) button',
         clearSearchicon: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] .adapt-search-clear',

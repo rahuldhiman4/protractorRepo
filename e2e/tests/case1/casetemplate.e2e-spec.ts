@@ -35,7 +35,8 @@ describe('Case Template', () => {
             "firstName": "Multiple",
             "lastName": "Company",
             "userId": "nosg",
-            "emailId": "nosg@petramco.com"
+            "emailId": "nosg@petramco.com",
+            "userPermission": "AGGAA5V0GE9Z4AOR0BXUOQ3ZT04EJA;AGGAA5V0GEON8AOZHHGIOY0UZNXGOR;AGGADG1AAO0VGAP8SXEGP7VU2U4ZS8;AGGAA5V0GE9Z4AOR7DBBOQLAW74PH7"
         }
         await apiHelper.createNewUser(userData);
         await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
@@ -674,13 +675,13 @@ describe('Case Template', () => {
             await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
             await editCasetemplatePo.clickEditCaseTemplate();
             let statuses: string[] = ["New", "Assigned", "In Progress", "Resolved", "Closed", "Approval Rejected"];
-            expect(await editCasetemplatePo.allStatusOptionsPresent(statuses)).toBeTruthy();
+            expect(await editCasetemplatePo.allStatusOptionsPresent(statuses)).toBeTruthy('Status in dropdown does not match');
             await editCasetemplatePo.clickOnEditCaseTemplateMetadata();
             let templateStatuses: string[] = ["Draft", "Active", "Inactive"];
-            expect(await editCasetemplatePo.allTemplateStatusOptionsPresent(templateStatuses)).toBeTruthy();
+            expect(await editCasetemplatePo.allTemplateStatusOptionsPresent(templateStatuses)).toBeTruthy('Template Statuses does not match');
             await editCasetemplatePo.clickOnCancelTemplateMetaData();
             let priority: string[] = ["Critical", "High", "Medium", "Low"];
-            expect(await editCasetemplatePo.allPriorityOptionsPresent(priority)).toBeTruthy();
+            expect(await editCasetemplatePo.allPriorityOptionsPresent(priority)).toBeTruthy('Priorities does not match');
             await editCasetemplatePo.changeCaseSummary('Updated Summary');
             await editCasetemplatePo.clickSaveCaseTemplate();
             await utilCommon.closePopUpMessage();
@@ -729,8 +730,6 @@ describe('Case Template', () => {
             await apiHelper.createCaseTemplate(casetemplatePetramco);
         });
         it('[DRDMV-8965,DRDMV-8990]: Changing case template for new case status', async () => {
-            // await navigationPage.signOut();
-            // await loginPage.login('fritz');
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('Franz');
             await createCasePo.setSummary(caseTemplateName);
@@ -752,13 +751,9 @@ describe('Case Template', () => {
             expect(await viewCasePo.getCategoryTier3Value()).toBe('Card Issuance');
             expect(await viewCasePo.getAssignedCompanyText()).toBe('Petramco');
             expect(await activityTabPo.isTextPresentInActivityLog(updatedCaseTemplateName)).toBeTruthy('TemplateText is not available');
-            expect(await activityTabPo.isTextPresentInActivityLog('applied the template')).toBeTruthy();
+            expect(await activityTabPo.isTextPresentInActivityLog('applied the template')).toBeTruthy('Applied Template text is not present');
             await navigationPage.gotoPersonProfile();
             expect(await activityTabPo.isTextPresentInActivityLog(updatedCaseTemplateName)).toBeTruthy("Template is not avilable on profile");
-        });
-        afterAll(async () => {
-            await navigationPage.signOut();
-            await loginPage.login('fritz');
         });
     });
 
@@ -833,7 +828,7 @@ describe('Case Template', () => {
             await createCasePo.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePo.getCaseSummary()).toBe(caseTemplateName);
-            expect(await viewCasePo.isCoreTaskPresent(taskTemplateName)).toBeTruthy();
+            expect(await viewCasePo.isCoreTaskPresent(taskTemplateName)).toBeTruthy('Core task is not present');
         });
         it('[DRDMV-9019]: [Case] [Template Selection] Changing case template for the case in Assigned Status', async () => {
             await viewCasePo.clickEditCaseButton();
@@ -849,7 +844,7 @@ describe('Case Template', () => {
             expect(await viewCasePo.getAssigneeText()).toBe('Fritz Schulz');
             expect(await viewCasePo.getAssignedGroupText()).toBe('Facilities');
             expect(await activityTabPo.isTextPresentInActivityLog(updatedCaseTemplateName)).toBeTruthy('TemplateText is not available');
-            expect(await activityTabPo.isTextPresentInActivityLog('applied the template')).toBeTruthy();
+            expect(await activityTabPo.isTextPresentInActivityLog('applied the template')).toBeTruthy('Applied Template text is not present');
         });
         afterAll(async () => {
             await navigationPage.signOut();
@@ -953,8 +948,8 @@ describe('Case Template', () => {
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(caseTemplateName);
             await viewCaseTemplate.clickOnEditCaseTemplateButton();
-            expect(await editCasetemplatePo.isCaseSummaryReadOnly()).toBeTruthy();
-            expect(await editCasetemplatePo.isCaseCompanyDisabled()).toBeTruthy();
+            expect(await editCasetemplatePo.isCaseSummaryReadOnly()).toBeTruthy('Case Summary is editable');
+            expect(await editCasetemplatePo.isCaseCompanyDisabled()).toBeTruthy('Case Company is enabled');
         });
         afterAll(async () => {
             await navigationPage.signOut();
@@ -1100,32 +1095,39 @@ describe('Case Template', () => {
     });
 
     it('[DRDMV-12556]:Case Template submitter from different company than owner group company can edit the template', async () => {
-        await navigationPage.signOut();
-        await loginPage.login(userData.emailId, 'Password_1234');
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
-        let caseTemplateName: string = "TemplateName" + Math.floor(Math.random() * 100000);
-        await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
-        await createCaseTemplate.setTemplateName(caseTemplateName);
-        await createCaseTemplate.setCaseSummary(caseTemplateName);
-        await createCaseTemplate.setCompanyName('Psilon');
-        await createCaseTemplate.setPriorityValue('Low');
-        await createCaseTemplate.setOwnerCompanyValue('Phylum');
-        await createCaseTemplate.setBusinessUnitDropdownValue('Phylum Support Org1');
-        await createCaseTemplate.setOwnerGroupDropdownValue('Phylum Support Group1');
-        await createCaseTemplate.setTemplateStatusDropdownValue('Draft')
-        await createCaseTemplate.clickSaveCaseTemplate();
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
-        await utilGrid.searchAndOpenHyperlink(caseTemplateName);
-        await editCasetemplatePo.clickOnEditCaseTemplateMetadata();
-        await editCasetemplatePo.changeOwnerCompanyValue('Psilon');
-        await editCasetemplatePo.changeBusinessUnitDropdownValue("Psilon Support Org1");
-        await editCasetemplatePo.changeOwnerGroupDropdownValue("Psilon Support Group1");
-        await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
-        expect(await viewCaseTemplate.getBuisnessUnitValue()).toContain("Psilon Support Org1");
-        expect(await viewCaseTemplate.getOwnerGroupValue()).toContain("Psilon Support Group1");
-        expect(await viewCaseTemplate.getOwnerCompanyValue()).toContain('Psilon');
+        try {
+            await navigationPage.signOut();
+            await loginPage.login(userData.emailId, 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            let caseTemplateName: string = "TemplateName" + Math.floor(Math.random() * 100000);
+            await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
+            await createCaseTemplate.setTemplateName(caseTemplateName);
+            await createCaseTemplate.setCaseSummary(caseTemplateName);
+            await createCaseTemplate.setCompanyName('Psilon');
+            await createCaseTemplate.setPriorityValue('Low');
+            await createCaseTemplate.setOwnerCompanyValue('Phylum');
+            await createCaseTemplate.setBusinessUnitDropdownValue('Phylum Support Org1');
+            await createCaseTemplate.setOwnerGroupDropdownValue('Phylum Support Group1');
+            await createCaseTemplate.setTemplateStatusDropdownValue('Draft')
+            await createCaseTemplate.clickSaveCaseTemplate();
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await utilGrid.searchAndOpenHyperlink(caseTemplateName);
+            await editCasetemplatePo.clickOnEditCaseTemplateMetadata();
+            await editCasetemplatePo.changeOwnerCompanyValue('Psilon');
+            await editCasetemplatePo.changeBusinessUnitDropdownValue("Psilon Support Org1");
+            await editCasetemplatePo.changeOwnerGroupDropdownValue("Psilon Support Group1");
+            await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
+            expect(await viewCaseTemplate.getBuisnessUnitValue()).toContain("Psilon Support Org1");
+            expect(await viewCaseTemplate.getOwnerGroupValue()).toContain("Psilon Support Group1");
+            expect(await viewCaseTemplate.getOwnerCompanyValue()).toContain('Psilon');
+        }
+        catch (ex) { throw ex; }
+        finally {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        }
     });
 
     it('[DRDMV-11979]:[Negative Testing] - Global as well as company specific flowset will list if we select specific company while creating case template.', async () => {
@@ -1328,6 +1330,7 @@ describe('Case Template', () => {
             expect(await viewCasePo.getBusinessUnitText()).toBe('HR Support');
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('fritz');
         });
@@ -1374,8 +1377,11 @@ describe('Case Template', () => {
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "resolveCaseonLastTaskCompletion": "0",
+                "businessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
                 "assignee": "Fritz",
-                "supportGroup": "Facilities"
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
             }
             let newCaseTemplateOne = await apiHelper.createCaseTemplate(templateDataSet);
             let taskTemplateData = {
@@ -1392,7 +1398,7 @@ describe('Case Template', () => {
         });
         it('[DRDMV-19741]: Case behavior when Case Template is changed', async () => {
             await navigationPage.gotoCreateCase();
-            await createCasePo.selectRequester('fritz');
+            await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary('Summary');
             await createCasePo.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
