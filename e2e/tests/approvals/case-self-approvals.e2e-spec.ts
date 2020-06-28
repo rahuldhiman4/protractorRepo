@@ -227,6 +227,7 @@ describe("Case Self Approval Tests", () => {
             await approvalConfigurationPage.clickSelectLink();
             await approvalConfigurationPage.clickFoundationDataSaveButton();
             await approvalConfigurationPage.selectExpressionOperator('AND');
+            await browser.sleep(3000); // sleep added for expression builder loading time
             await approvalConfigurationPage.searchExpressionFieldOption('Category Tier 2');
             await approvalConfigurationPage.selectExpressionFieldOption();
             await browser.sleep(2000); //sleep added for expression builder loading

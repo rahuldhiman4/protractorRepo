@@ -68,7 +68,7 @@ describe('Case Watchlist', () => {
             caseId[i] = response.displayId;
         }
         await utilityGrid.clearFilter();
-        await utilityCommon.refresh();
+        await utilityGrid.searchRecord('Watchlist Test');
         for (let i: number = 0; i < 3; i++) {
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
         }
@@ -92,7 +92,7 @@ describe('Case Watchlist', () => {
             caseId[i] = response.displayId;
         }
         await utilityGrid.clearFilter();
-        await utilityCommon.refresh();
+        await utilityGrid.searchRecord('Watchlist Test');
         for (let i: number = 0; i < 3; i++) {
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
         }
@@ -118,7 +118,7 @@ describe('Case Watchlist', () => {
             caseId[i] = response.displayId;
         }
         await utilityGrid.clearFilter();
-        await utilityCommon.refresh();
+        await utilityGrid.searchRecord('Watchlist Test');
         for (let i: number = 0; i < 3; i++) {
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
         }
@@ -153,7 +153,7 @@ describe('Case Watchlist', () => {
             caseId[i] = response.displayId;
         }
         await utilityGrid.clearFilter();
-        await utilityCommon.refresh();
+        await utilityGrid.searchRecord('Watchlist Test');
         for (let i: number = 0; i < 4; i++) {
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
         }
@@ -176,7 +176,7 @@ describe('Case Watchlist', () => {
             caseId[i] = response.displayId;
         }
         await utilityGrid.clearFilter();
-        await utilityCommon.refresh();
+        await utilityGrid.searchRecord('Watchlist Test');
         for (let i: number = 0; i < 2; i++) {
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
         }
@@ -226,7 +226,7 @@ describe('Case Watchlist', () => {
             await navigationPage.signOut();
             await loginPage.login(qannisStr);
             await utilityGrid.clearFilter();
-            await utilityGrid.sortGridColumn('Case ID', 'desc');
+            await utilityGrid.searchRecord('Watchlist Test');
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId);
             await caseConsole.clickOnAddToWatchlist();
             await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
@@ -238,6 +238,7 @@ describe('Case Watchlist', () => {
             //login with qtao and update the case assignment and case status
             await navigationPage.signOut();
             await loginPage.login(qtaoStr);
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             await updateStatusBladePo.changeCaseStatus(inProgressStr);
             await updateStatusBladePo.clickSaveStatus();
@@ -303,7 +304,7 @@ describe('Case Watchlist', () => {
         let response = await apiHelper.createCase(caseData['caseWatchlist']);
         let caseId = response.displayId;
 
-        await utilityCommon.refresh();
+        await utilityGrid.searchRecord('Watchlist Test');
         await utilityGrid.clickCheckBoxOfValueInGrid(caseId);
         await caseConsole.clickOnAddToWatchlist();
         await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
@@ -403,7 +404,7 @@ describe('Case Watchlist', () => {
         let caseData = require('../../data/ui/case/case.ui.json');
         let response = await apiHelper.createCase(caseData['caseWatchlist']);
         let caseId = response.displayId;
-        await utilityCommon.refresh();
+        await utilityGrid.searchRecord('Watchlist Test')
         await utilityGrid.clickCheckBoxOfValueInGrid(caseId);
         expect(await caseConsole.getAddToWatchlistText()).toBe("Add to Watchlist", "Label is not matching");
         expect(await caseConsole.getWatchlistIconText()).toBe("Watchlist", "Label is not matching");
@@ -417,6 +418,7 @@ describe('Case Watchlist', () => {
         await caseWatchlist.saveEvents();
         await utilityCommon.closePopUpMessage();
         await caseConsole.clickOnWatchlistIcon();
+        console.log(caseId);
         await caseWatchlist.selectCase(caseId);
         expect(await caseWatchlist.getRemoveButtonLabel()).toBe("Remove", "Label is not matching");
         expect(await caseWatchlist.getUpdateWatchlistEventsButtonLabel()).toBe("Update Watchlist Events", "Label is not matching");
@@ -476,7 +478,7 @@ describe('Case Watchlist', () => {
         let caseData = require('../../data/ui/case/case.ui.json');
         let response = await apiHelper.createCase(caseData['caseWatchlist']);
         let caseId = response.displayId;
-        await utilityCommon.refresh();
+        await utilityGrid.searchRecord('Watchlist Test');
         await utilityGrid.clickCheckBoxOfValueInGrid(caseId);
         await caseConsole.clickOnAddToWatchlist();
         await caseWatchlist.addWatchlistEvent(caseGroupAssignmentChangesStr);
@@ -540,7 +542,7 @@ describe('Case Watchlist', () => {
             await navigationPage.signOut();
             await loginPage.login(qtaoStr);
             await utilityGrid.clearFilter();
-            await utilityGrid.sortGridColumn('Case ID', 'desc');
+            await utilityGrid.searchRecord('Watchlist Test');
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId);
             await caseConsole.clickOnAddToWatchlist();
             await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
@@ -615,6 +617,7 @@ describe('Case Watchlist', () => {
             await loginPage.login(qtaoStr);
 
             //Add Case to Watchlist with events Case Status Change and Case Assignment change
+            await utilityGrid.searchRecord('Watchlist Test');
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId);
             await caseConsole.clickOnAddToWatchlist();
             await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
@@ -679,7 +682,7 @@ describe('Case Watchlist', () => {
         let caseId = response.displayId;
 
         //Add the case to watchlist
-        await utilityCommon.refresh();
+        await utilityGrid.searchRecord('Watchlist Test');
         await utilityGrid.clickCheckBoxOfValueInGrid(caseId);
         await caseConsole.clickOnAddToWatchlist();
         await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
@@ -730,7 +733,7 @@ describe('Case Watchlist', () => {
             let response = await apiHelper.createCase(caseData['caseWatchlist']);
             caseId[i] = response.displayId;
         }
-        await utilityCommon.refresh();
+        await utilityGrid.searchRecord('Watchlist Test');
 
         //Adding the cases to watchlist
         for (let i: number = 0; i < 3; i++) {
@@ -743,6 +746,7 @@ describe('Case Watchlist', () => {
         expect(await utilityCommon.getAllPopupMsg()).toContain("Added 3 selected case(s) to the watchlist.");
         await utilityCommon.closePopUpMessage();
 
+        await utilityGrid.searchRecord('Watchlist Test');
         //Adding the cases to watchlist again
         for (let i: number = 0; i < 3; i++) {
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
@@ -760,7 +764,7 @@ describe('Case Watchlist', () => {
         let caseData = require('../../data/ui/case/case.ui.json');
         let response = await apiHelper.createCase(caseData['caseWatchlist']);
         let caseId = response.displayId;
-        await utilityCommon.refresh();
+        await utilityGrid.searchRecord('Watchlist Test');
         await utilityGrid.clickCheckBoxOfValueInGrid(caseId);
         await caseConsole.clickOnAddToWatchlist();
         expect(await caseWatchlist.isSaveEventsButtonEnabled()).toBeFalsy('Save button is enabled');
@@ -807,7 +811,7 @@ describe('Case Watchlist', () => {
         try {
             await navigationPage.signOut();
             await loginPage.login(qannisStr);
-            await utilityGrid.clearFilter();
+            await utilityGrid.searchRecord('Watchlist Test');
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId);
             await caseConsole.clickOnAddToWatchlist();
             await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
@@ -881,7 +885,6 @@ describe('Case Watchlist', () => {
             caseId[i] = response.displayId;
             caseGuid[i] = response.id;
         }
-        await utilityCommon.refresh();
 
         //Write access to qyuan
         let caseAccessDataQyuan = {
@@ -893,6 +896,7 @@ describe('Case Watchlist', () => {
         await apiHelper.updateCaseAccess(caseGuid[0], caseAccessDataQyuan);
         await apiHelper.updateCaseAccess(caseGuid[1], caseAccessDataQyuan);
 
+        await utilityGrid.searchRecord('Watchlist Test');
         //Adding the cases to watchlist
         for (let i: number = 0; i < 2; i++) {
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
@@ -980,6 +984,7 @@ describe('Case Watchlist', () => {
         await apiHelper.updateCaseAccess(caseGuid[0], caseAccessDataQyuan);
         await apiHelper.updateCaseAccess(caseGuid[1], caseAccessDataQyuan);
 
+        await utilityGrid.searchRecord('Watchlist Test');
         //Adding the cases to watchlist
         for (let i: number = 0; i < 2; i++) {
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
@@ -990,6 +995,7 @@ describe('Case Watchlist', () => {
         expect(await utilityCommon.getAllPopupMsg()).toContain("Added 2 selected case(s) to the watchlist.");
 
         //Update the events of first case from Console
+        await utilityGrid.searchRecord('Watchlist Test');
         await utilityGrid.clickCheckBoxOfValueInGrid(caseId[0]);
         await caseConsole.clickOnAddToWatchlist();
         await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);

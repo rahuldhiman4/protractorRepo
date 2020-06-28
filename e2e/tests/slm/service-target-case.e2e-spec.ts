@@ -87,7 +87,7 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
-            await browser.sleep(70000);
+            await browser.sleep(90000);
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
@@ -294,6 +294,7 @@ describe('Service Target Tests for Cases', () => {
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBe(true);
             expect(await slmProgressBar.isSLAProgressBarDualSVTIconDisplayed()).toBe(true); //green
             expect(await viewCasePage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
+            await browser.sleep(40000);
         });
         it('[DRDMV-11914]: Verify Dual SVT in SLA Warning state', async () => {
             await browser.sleep(90000);
@@ -303,7 +304,7 @@ describe('Service Target Tests for Cases', () => {
             expect(await viewCasePage.getSlaBarColor()).toBe('rgba(241, 181, 33, 1)'); //orange
         });
         it('[DRDMV-11914]: Verify Dual SVT in SLA Missed Goal state', async () => {
-            await browser.sleep(70000);
+            await browser.sleep(90000);
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarDualSVTIconDisplayed()).toBe(true); //green
@@ -858,6 +859,8 @@ describe('Service Target Tests for Cases', () => {
             expect(await slmProgressBar.isDueInTimeDisplayed()).toBe(true);
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarSVTMetIconDisplayed()).toBeTruthy('Service Target Complete (Met) Icon is not displayed.');
             await slmProgressBar.clickOnSLAProgressBarSVTMetIcon();
             expect(await serviceTargetInfoPage.isServiceTargetInformationBladeDisplayed()).toBeTruthy('Service Target Information Blade is not displayed.');

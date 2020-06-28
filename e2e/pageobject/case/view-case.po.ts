@@ -183,7 +183,7 @@ class ViewCasePage {
     }
 
     async clickAddToWatchlistLink(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addToWatchlist)));
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addToWatchlist)),7000);
         await $(this.selectors.addToWatchlist).click();
     }
 
