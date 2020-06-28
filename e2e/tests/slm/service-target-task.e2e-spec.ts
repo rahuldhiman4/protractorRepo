@@ -103,8 +103,10 @@ describe('Service Target Tests for Tasks', () => {
         it('[DRDMV-13055]: Add Tasks into Case', async () => {
             await viewCasePage.clickAddTaskButton();
             //Add Manual task and Automation Task in Case
-            await manageTask.addTaskFromTaskTemplate(manualTaskTemp)
+            await manageTask.addTaskFromTaskTemplate(manualTaskTemp);
+            await manageTask.waitUntilNumberOfTaskLinkAppear(1);
             await manageTask.addTaskFromTaskTemplate(automatedTaskTemp);
+            await manageTask.waitUntilNumberOfTaskLinkAppear(2);
             expect(await manageTask.isTaskLinkPresent(manualTaskTemp)).toBeTruthy(manualTaskTemp + ' Task is not added to case');
             expect(await manageTask.isTaskLinkPresent(automatedTaskTemp)).toBeTruthy(automatedTaskTemp + ' Task is not added to case');
             await manageTaskBladePo.clickCloseButton();
@@ -131,6 +133,7 @@ describe('Service Target Tests for Tasks', () => {
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBe(false);
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });
@@ -200,8 +203,10 @@ describe('Service Target Tests for Tasks', () => {
         });
         it('[DRDMV-13056]: Add tasks to case', async () => {
             await viewCasePage.clickAddTaskButton();
-            await manageTask.addTaskFromTaskTemplate(automatedTaskTemp)
+            await manageTask.addTaskFromTaskTemplate(automatedTaskTemp);
+            await manageTask.waitUntilNumberOfTaskLinkAppear(1);
             await manageTask.addTaskFromTaskTemplate(manualTaskTemp);
+            await manageTask.waitUntilNumberOfTaskLinkAppear(2);
             expect(await manageTask.isTaskLinkPresent(manualTaskTemp)).toBeTruthy(manualTaskTemp + ' Task is not added to case');
             expect(await manageTask.isTaskLinkPresent(automatedTaskTemp)).toBeTruthy(automatedTaskTemp + ' Task is not added to case');
             await manageTaskBladePo.clickCloseButton();
@@ -223,6 +228,7 @@ describe('Service Target Tests for Tasks', () => {
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBe(false);
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });
@@ -470,6 +476,7 @@ describe('Service Target Tests for Tasks', () => {
             await adhoctaskTemplate.selectCategoryTier3('Chatter');
             await adhoctaskTemplate.clickSaveAdhoctask();
             await utilityCommon.closePopUpMessage();
+            await manageTask.waitUntilNumberOfTaskLinkAppear(1);
             await manageTaskBladePo.clickCloseButton();
             await browser.sleep(32000);
         });
@@ -498,6 +505,7 @@ describe('Service Target Tests for Tasks', () => {
             expect(await slmProgressBar.isSLAProgressBarSVTMetIconDisplayed()).toBe(true); //green
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });
