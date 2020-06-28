@@ -455,7 +455,7 @@ describe('Create Task Template', () => {
             await activityTabPo.clickOnAttachLink();
             await attachDocumentBladePo.clickOnAdvanceSearchButton();
             await attachDocumentBladePo.searchRecord('drdmv3768_document');
-            await attachDocumentBladePo.selectDocument();
+            await attachDocumentBladePo.selectDocument('drdmv3768_document');
             await attachDocumentBladePo.clickOnAttachButton();
             await activityTabPo.clickOnPostButton();
             await navigationPage.signOut();
