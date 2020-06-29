@@ -329,7 +329,7 @@ describe('Knowledge Article', () => {
             let KADetails = await apiHelper.createKnowledgeArticle(articleData);
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.clearFilter();
@@ -349,7 +349,7 @@ describe('Knowledge Article', () => {
             await viewKnowledgeArticlePo.clickOnKAUsefulYesButton();
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
@@ -377,7 +377,7 @@ describe('Knowledge Article', () => {
                 "assignee": "peter"
             }
             let KACoachDetails = await apiHelper.createKnowledgeArticle(articleDataCoach);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
@@ -436,7 +436,7 @@ describe('Knowledge Article', () => {
             let displayID = KADetails.displayId;
             await navigationPage.signOut();
             await loginPage.login(knowledgeCandidateUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.clearFilter();
@@ -462,7 +462,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             //login with contributor
             await loginPage.login(knowledgeContributorUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.clearFilter();
@@ -488,7 +488,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             //login with publisher
             await loginPage.login(knowledgePublisherUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.clearFilter();
@@ -513,7 +513,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             //login with publisher
             await loginPage.login(knowledgeCoachUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.clearFilter();
@@ -563,7 +563,7 @@ describe('Knowledge Article', () => {
             expect(await apiHelper.updateKnowledgeArticleStatus(KADetails.id, "SMEReview", "KMills", "GB Support 2", "Petramco")).toBeTruthy("Article with SME Review status not updated.");
             await navigationPage.signOut();
             await loginPage.login('kmills');
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             await utilityGrid.clearFilter();
             let knowledgeGridColumnFields: string[] = ["Review Status"];
@@ -616,7 +616,7 @@ describe('Knowledge Article', () => {
             expect(await apiHelper.updateKnowledgeArticleStatus(KADetails.id, "SMEReview", "KMills", "GB Support 2", "Petramco")).toBeTruthy("Article with SME Review status not updated.");
             await navigationPage.signOut();
             await loginPage.login('kmills');
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             await utilityGrid.clearFilter();
             let knowledgeGridColumnFields: string[] = ["Review Status"];
@@ -668,7 +668,7 @@ describe('Knowledge Article', () => {
             expect(await apiHelper.updateKnowledgeArticleStatus(KADetails.id, "Draft")).toBeTruthy("Article with Draft status not updated.");
             await navigationPage.signOut();
             await loginPage.login('kmills');
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
@@ -733,7 +733,7 @@ describe('Knowledge Article', () => {
         try {
             await navigationPage.signOut();
             await loginPage.login('sbadree');
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getMessageOfAccess()).toContain('You do not have access to the Knowledge management application.');
         }
@@ -800,7 +800,7 @@ describe('Knowledge Article', () => {
             //Validation of Knowledge Coach Settings Permission
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await navigationPage.gotoSettingsPage();
             let knowledgeManagementList: string[] = ['Approvals', 'Article Template Styles', 'Article Templates', 'Knowledge Sets', 'Notes Template', 'Status Configuration', 'Knowledge Management'];
             expect(await navigationPage.isSettingSubMenusMatches("Knowledge Management", knowledgeManagementList)).toBeTruthy("Sub menu items not matching");
@@ -811,7 +811,7 @@ describe('Knowledge Article', () => {
             //Validation of Knowledge Publisher Settings Permission
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.isSettingPanelTextMatches("Configuration options not created for these settings.")).toBeTruthy();
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
@@ -823,7 +823,7 @@ describe('Knowledge Article', () => {
             //Validation of Knowledge Contributor Settings Permission
             await navigationPage.signOut();
             await loginPage.login(knowledgeContributorUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.isSettingPanelTextMatches("Configuration options not created for these settings.")).toBeTruthy();
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
@@ -833,7 +833,7 @@ describe('Knowledge Article', () => {
             //Validation of Knowledge Candidate Settings Permission
             await navigationPage.signOut();
             await loginPage.login(knowledgeCandidateUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.isSettingPanelTextMatches("Configuration options not created for these settings.")).toBeTruthy();
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();

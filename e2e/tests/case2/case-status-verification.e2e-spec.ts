@@ -1,22 +1,19 @@
-import apiHelper from '../../api/api.helper';
-import editCasePo from '../../pageobject/case/edit-case.po';
-import activityTabPo from '../../pageobject/social/activity-tab.po';
 import { browser } from "protractor";
+import apiHelper from '../../api/api.helper';
+import caseConsolePo from '../../pageobject/case/case-console.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePage from '../../pageobject/case/create-case.po';
+import editCasePo from '../../pageobject/case/edit-case.po';
 import selectCaseTemplateBlade from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
+import caseAccessTabPo from '../../pageobject/common/case-access-tab.po';
+import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import consoleCasetemplatePo from '../../pageobject/settings/case-management/console-casetemplate.po';
-import createCaseTemplate from '../../pageobject/settings/case-management/create-casetemplate.po';
-import { BWF_BASE_URL } from '../../utils/constants';
-import viewCasetemplatePo from '../../pageobject/settings/case-management/view-casetemplate.po';
 import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
-import caseAccessTabPo from '../../pageobject/common/case-access-tab.po';
-import caseConsolePo from '../../pageobject/case/case-console.po';
-import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
-
+import activityTabPo from '../../pageobject/social/activity-tab.po';
+import { BWF_BASE_URL } from '../../utils/constants';
+import utilityCommon from '../../utils/utility.common';
 
 describe('Case Status Change', () => {
     let statusNew: string = "New";
@@ -75,6 +72,7 @@ describe('Case Status Change', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 
@@ -307,13 +305,13 @@ describe('Case Status Change', () => {
         it('[DRDMV-22361]: Verify Reopen Button With Read Only Users3', async () => {
             await navigationPage.signOut();
             await loginPage.login('qyuan');
-            await caseConsolePo.searchAndOpenCase(case1); 
-            expect (await viewCasePage.isCaseReopenLinkDisabled()).toBeTruthy('FailureMsg1: Reopen button is not disabled');
+            await caseConsolePo.searchAndOpenCase(case1);
+            expect(await viewCasePage.isCaseReopenLinkDisabled()).toBeTruthy('FailureMsg1: Reopen button is not disabled');
             await viewCasePage.clickOnReopenCaseLink();
             expect(await viewCasePage.getTextOfStatus()).toBe(statusResolved, 'FailureMsg2: Resolved status is missing');
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(case2);
-            expect (await viewCasePage.isCaseReopenLinkDisabled()).toBeTruthy('FailureMsg3: Reopen button is not disabled');
+            expect(await viewCasePage.isCaseReopenLinkDisabled()).toBeTruthy('FailureMsg3: Reopen button is not disabled');
             await viewCasePage.clickOnReopenCaseLink();
             expect(await viewCasePage.getTextOfStatus()).toBe(statusClosed, 'FailureMsg4: Close status is missing');
         });
@@ -321,7 +319,7 @@ describe('Case Status Change', () => {
         it('[DRDMV-22361]: Verify Reopen Button With Write Access Users2', async () => {
             await navigationPage.signOut();
             await loginPage.login('qstrong');
-            await caseConsolePo.searchAndOpenCase(case1); 
+            await caseConsolePo.searchAndOpenCase(case1);
 
             expect(await viewCasePage.isCaseReopenLinkPresent()).toBeTruthy('FailureMsg1: reopen button is missing');
             expect(await viewCasePage.getTextOfStatus()).toBe(statusResolved, 'FailureMsg2: Resolved status is missing');
@@ -357,7 +355,7 @@ describe('Case Status Change', () => {
         it('[DRDMV-22361]: Verify Reopen Button With Assignee Users1', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz')
-            await caseConsolePo.searchAndOpenCase(case1); 
+            await caseConsolePo.searchAndOpenCase(case1);
 
             expect(await viewCasePage.isCaseReopenLinkPresent()).toBeTruthy('FailureMsg1: reopen button is missing');
             expect(await viewCasePage.getTextOfStatus()).toBe(statusResolved, 'FailureMsg2: Resolved status is missing');

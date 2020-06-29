@@ -93,61 +93,54 @@ describe("Create Case", () => {
 
     //kgaikwad
     it('[DRDMV-17653]: Check Resolution Code and Resolution Description fields added on Case View and Status Change blade', async () => {
-        try {
-            let randVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            let caseData = {
-                "Requester": "Fritz",
-                "Summary": "Test case for DRDMV-2530",
-                "Assigned Company": "Petramco",
-                "Business Unit": "United States Support",
-                "Support Group": "US Support 3",
-                "Assignee": "qkatawazi"
-            }
-            await apiHelper.apiLogin('qkatawazi');
-            let newCase1 = await apiHelper.createCase(caseData);
-            let caseId: string = newCase1.displayId;
-            await navigationPage.signOut();
-            await loginPage.login("qkatawazi");
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
-            await createMenuItems.clickOnMenuOptionLink();
-            await createMenuItems.selectMenuNameDropDown('Resolution Code');
-            await createMenuItems.clickOnLocalizeLink();
-            await localizeValuePopPo.setLocalizeValue(randVal);
-            await localizeValuePopPo.clickOnSaveButton();
-            await createMenuItems.clickOnSaveButton();
-            await utilGrid.searchRecord(randVal);
 
-            await navigationPage.gotoCaseConsole();
-            await caseConsolePage.searchAndOpenCase(caseId);
-            expect(await $(viewCasePage.selectors.resolutionCodeText).isDisplayed()).toBeTruthy('Missing Resolution Text');
-            expect(await $(viewCasePage.selectors.resolutionDescriptionLabel).isDisplayed()).toBeTruthy('Missing Resolution Description Text');
-            await viewCasePage.clickEditCaseButton();
-            await editCasePage.updateResolutionCode(randVal);
-            await editCasePage.setResolutionDescription(randVal);
-            await editCasePage.clickSaveCase();
-            await utilityCommon.closePopUpMessage();
-            expect(await viewCasePage.getResolutionCodeValue()).toBe(randVal);
-            expect(await viewCasePage.getResolutionDescription()).toBe(randVal);
-            await updateStatusBladePo.changeCaseStatus('Resolved');
-            await updateStatusBladePo.setStatusReason('Customer Follow-Up Required');
-            await viewCasePage.selectResolutionCodeDropDown(randVal);
-            expect(await updateStatusBladePo.isResolutionDescriptionTextBoxEmpty()).toBeFalsy('Resolution Description Text Box is not empty');
-            await updateStatusBladePo.clickSaveStatus();
-            await utilityCommon.closePopUpMessage();
-            expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
-            await updateStatusBladePo.changeCaseStatus('Closed');
-            await viewCasePage.selectResolutionCodeDropDown(randVal);
-            expect(await updateStatusBladePo.isResolutionDescriptionTextBoxEmpty()).toBeFalsy('Resolution Description Text Box is not empty');
-            await updateStatusBladePo.clickSaveStatus();
-            await utilityCommon.closePopUpMessage();
-            expect(await viewCasePage.getTextOfStatus()).toBe('Closed');
-        } catch (error) {
-            throw error;
-        } finally {
-            await navigationPage.signOut();
-            await loginPage.login("qkatawazi");
+        let randVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseData = {
+            "Requester": "Fritz",
+            "Summary": "Test case for DRDMV-2530",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
+            "Assignee": "qkatawazi"
         }
+        await apiHelper.apiLogin('qkatawazi');
+        let newCase1 = await apiHelper.createCase(caseData);
+        let caseId: string = newCase1.displayId;
+
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
+        await createMenuItems.clickOnMenuOptionLink();
+        await createMenuItems.selectMenuNameDropDown('Resolution Code');
+        await createMenuItems.clickOnLocalizeLink();
+        await localizeValuePopPo.setLocalizeValue(randVal);
+        await localizeValuePopPo.clickOnSaveButton();
+        await createMenuItems.clickOnSaveButton();
+        await utilGrid.searchRecord(randVal);
+
+        await navigationPage.gotoCaseConsole();
+        await caseConsolePage.searchAndOpenCase(caseId);
+        expect(await $(viewCasePage.selectors.resolutionCodeText).isDisplayed()).toBeTruthy('Missing Resolution Text');
+        expect(await $(viewCasePage.selectors.resolutionDescriptionLabel).isDisplayed()).toBeTruthy('Missing Resolution Description Text');
+        await viewCasePage.clickEditCaseButton();
+        await editCasePage.updateResolutionCode(randVal);
+        await editCasePage.setResolutionDescription(randVal);
+        await editCasePage.clickSaveCase();
+        await utilityCommon.closePopUpMessage();
+        expect(await viewCasePage.getResolutionCodeValue()).toBe(randVal);
+        expect(await viewCasePage.getResolutionDescription()).toBe(randVal);
+        await updateStatusBladePo.changeCaseStatus('Resolved');
+        await updateStatusBladePo.setStatusReason('Customer Follow-Up Required');
+        await updateStatusBladePo.selectResolutionCode(randVal);
+        expect(await updateStatusBladePo.isResolutionDescriptionTextBoxEmpty()).toBeFalsy('Resolution Description Text Box is not empty');
+        await updateStatusBladePo.clickSaveStatus();
+        await utilityCommon.closePopUpMessage();
+        expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
+        await updateStatusBladePo.changeCaseStatus('Closed');
+        await updateStatusBladePo.selectResolutionCode(randVal);
+        expect(await updateStatusBladePo.isResolutionDescriptionTextBoxEmpty()).toBeFalsy('Resolution Description Text Box is not empty');
+        await updateStatusBladePo.clickSaveStatus();
+        await utilityCommon.closePopUpMessage();
+        expect(await viewCasePage.getTextOfStatus()).toBe('Closed');
     }, 550 * 1000);
 
     //kgaikwad
@@ -275,6 +268,14 @@ describe("Create Case", () => {
             await viewCasePage.clickOnReopenCaseLink();
 
             //add second case template
+            await viewCasePage.clickEditCaseButton();
+            expect(await editCasePage.isChangeCaseTemplateButtonDisplayed()).toBeFalsy('change template button is Displayed');
+            await editCasePage.clickOnCancelCaseButton();
+            await updateStatusBladePo.changeCaseStatus('Resolved');
+            await updateStatusBladePo.setStatusReason('Auto Resolved');
+            await updateStatusBladePo.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('Assigned');
+            await updateStatusBladePo.clickSaveStatus('Assigned');
             await viewCasePage.clickEditCaseButton();
             await editCasePage.clickOnChangeCaseTemplate();
             await selectCaseTemplateBlade.selectCaseTemplate(caseTemplate2);
@@ -789,7 +790,7 @@ describe("Create Case", () => {
             expect(await viewCasePage.isCaseReopenLinkPresent()).toBeTruthy();
             await viewCasePage.clickOnReopenCaseLink();
             await utilityCommon.closePopUpMessage();
-            expect(await viewCasePage.getTextOfStatus()).toBe('New');
+            expect(await viewCasePage.getTextOfStatus()).toBe('In Progress');
         } catch (e) {
             throw e;
         } finally {

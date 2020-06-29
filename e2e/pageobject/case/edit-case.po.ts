@@ -58,7 +58,7 @@ class CaseEditPage {
         activityChangeFile: '.d-icon-file_plus_o',
         closedTip: '.bwf-attachment-container__remove .d-icon-cross',
         attachmentField: '[rx-view-component-id="9d3ef0fc-c49f-425f-a9e1-52422ba87f4f"] .bwf-attachment-button input',
-        dynamicFieldDate: '[class="input-group"] input[ng-model="date"]',
+        dynamicFieldDate: 'bwf-date-field input.form-control.i-date',
         dynamicBooleanValue: 'button.d-icon-check_adapt',
         dynamicFieldDateTime: 'input[ng-model="datetime"]',
         dynamicFieldTime: '.dynamic-time-field input[ng-model="hours"]',
@@ -68,7 +68,7 @@ class CaseEditPage {
         tabText: '.nav-link-wrapper',
     }
 
-    async removeAttachment(): Promise<void> {
+    async removeAttachment(): Promise<void> {
         await $(this.selectors.closedTip).click();
     }
 
@@ -229,7 +229,7 @@ class CaseEditPage {
         return await utilityCommon.isRequiredTagToField(this.selectors.assignedGroupGuid);
     }
 
-    async  isClearContactButtonEnable(): Promise<boolean> {
+    async isClearContactButtonEnable(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.clearContactButton)));
         return await $(this.selectors.clearContactButton).isEnabled();
     }
@@ -365,7 +365,7 @@ class CaseEditPage {
     }
 
     async isDynamicFieldDisplayed(fieldName: string): Promise<boolean> {
-        let dynamicFieldLocator = `.simple-field label`;
+        let dynamicFieldLocator = `.simple-field .form-control-label`;
         let dynamicFields: number = await $$(dynamicFieldLocator).count();
         for (let i = 0; i < dynamicFields; i++) {
             let field = await (await $$(dynamicFieldLocator).get(i).getText()).trim();
@@ -413,6 +413,10 @@ class CaseEditPage {
 
     async setDateTimeDynamicFieldValue(value: string): Promise<void> {
         await utilityCommon.setDateField('376ec3d3-9381-4613-bb06-1e8dbbaf6b18', value);
+    }
+
+    async setInvalidDateTimeDynamicField(value: string): Promise<void> {
+        await $('bwf-datetime-field input.form-control.i-date-time').sendKeys(value);
     }
 
     async selectValueFromList(fieldName: string, value: string): Promise<void> {

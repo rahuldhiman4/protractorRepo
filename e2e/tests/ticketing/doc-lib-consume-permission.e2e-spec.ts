@@ -53,10 +53,6 @@ describe('Document Library Consume Permission', () => {
         await navigationPage.signOut();
     });
 
-    afterEach(async () => {
-        await utilityCommon.refresh();
-    });
-
     it('[DRDMV-13458]: Edit Case - Case manager attaches published document from document library who has write access to that document', async () => {
         try {
             let publish: string[] = ['drdmv13458_publish_document1', 'drdmv13458_publish_document2', 'drdmv13458_publish_document5'];
@@ -115,7 +111,7 @@ describe('Document Library Consume Permission', () => {
             await attachDocumentBladePo.searchRecord(draftDocLibData.docLibTitle);
             expect(await attachDocumentBladePo.isDocumentLibaryPresent(draftDocLibData.docLibTitle)).toBeFalsy('FailuerMsg: draftDocLib4 doc is displayed');
             await attachDocumentBladePo.searchRecord(publish[0]);
-            await attachDocumentBladePo.selectDocument();
+            await attachDocumentBladePo.selectDocument(publish[0]);
             await attachDocumentBladePo.clickOnAttachButton();
             await editCasePo.clickSaveCase();
 
@@ -167,13 +163,11 @@ describe('Document Library Consume Permission', () => {
         await navigationPage.gotoQuickCase();
         await quickCasePo.selectRequesterName('qtao');
         await quickCasePo.setCaseSummary(publishDocLibData1.docLibTitle);
-        // await utilityCommon.waitUntilSpinnerToHide();
         expect(await quickCasePo.isRecommendedKnowledgeEmpty()).toBeTruthy('FailuerMsg: Recommended knowledge is not empty');
 
         await navigationPage.gotoCaseConsole();
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let caseData =
-        {
+        let caseData = {
             "Requester": "qtao",
             "Summary": "Test case for DRDMV-8377RandVal" + summary,
             "Assigned Company": "Petramco",
@@ -188,9 +182,10 @@ describe('Document Library Consume Permission', () => {
         await viewCasePo.clickEditCaseButton();
         await editCasePo.setCaseSummary(publishDocLibData1.docLibTitle);
         await editCasePo.clickSaveCase();
-        await viewCasePo.clickOnTab('Resources')
+        await utilityCommon.closePopUpMessage();
+        await viewCasePo.clickOnTab('Resources');
         expect(await resourcesTabPo.isSearchRecordEmpty(1)).toBeTruthy('Failuer1: Knowledge Article is not empty');
-        await resourcesTabPo.clickOnAdvancedSearchOptions('Knowledge Articles ');
+        await resourcesTabPo.clickOnAdvancedSearchOptions();
         await resourcesTabPo.searchTextAndEnter(publishDocLibData1.docLibTitle);
         expect(await resourcesTabPo.isSearchRecordEmpty(1)).toBeTruthy('Failuer2: Knowledge Article is not empty');
     }, 400 * 1000);
@@ -277,7 +272,6 @@ describe('Document Library Consume Permission', () => {
             await apiHelper.deleteDocumentLibrary(draftDocLibData.docLibTitle);
             await apiHelper.apiLogin(loginId);
             await apiHelper.createDocumentLibrary(draftDocLibData, filePath4);
-            await navigationPage.gotoCaseConsole();
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(caseSummary);
@@ -297,7 +291,7 @@ describe('Document Library Consume Permission', () => {
             await attachDocumentBladePo.searchRecord(draftDocLibData.docLibTitle);
             expect(await attachDocumentBladePo.isDocumentLibaryPresent(draftDocLibData.docLibTitle)).toBeFalsy('FailuerMsg: draftDocLib4 doc is displayed');
             await attachDocumentBladePo.searchRecord(publish[0]);
-            await attachDocumentBladePo.selectDocument();
+            await attachDocumentBladePo.selectDocument(publish[0]);
             await attachDocumentBladePo.clickOnAttachButton();
             await adhoctaskTemplate.clickSaveAdhoctask();
             await utilityCommon.closePopUpMessage();
@@ -411,7 +405,7 @@ describe('Document Library Consume Permission', () => {
             expect(await attachDocumentBladePo.isDocumentLibaryPresent(draftDocLibData.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13508_draft_document doc is displayed');
 
             await attachDocumentBladePo.searchRecord(publish[0]);
-            await attachDocumentBladePo.selectDocument();
+            await attachDocumentBladePo.selectDocument(publish[0]);
             await attachDocumentBladePo.clickOnAttachButton();
             await composeMailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
             await composeMailPo.clickOnSendButton();
@@ -447,83 +441,92 @@ describe('Document Library Consume Permission', () => {
     }, 900 * 1000);
 
     //kgaikwad
-    it('[DRDMV-13534]: Search and UI Validation of document library search view', async () => {
+    describe('[DRDMV-13534]: Search and UI Validation of document library search view', async () => {
         let addNoteText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let publish: string[] = ['drdmv13534_publish_document1', 'drdmv13534_publish_document2', 'drdmv13534_publish_document3', 'drdmv13534_publish_document4', 'drdmv13534_publish_document5', 'drdmv13534_publish_document6', 'drdmv13534_publish_document7', 'drdmv13534_publish_document8', 'drdmv13534_publish_document9', 'drdmv13534_publish_document10', 'drdmv13534_publish_document11'];
-        let files1: string[] = [filePath1, filePath2, filePath3, filePath4, filePath5, filePath1, filePath2, filePath3, filePath4, filePath5, filePath1];
-        for (let i = 0; i < publish.length; i++) {
-            let publishDocLibData1 = {
-                docLibTitle: publish[i],
-                company: 'Petramco',
-                businessUnit: 'United States Support',
-                ownerGroup: 'US Support 3',
+        let publish: string[] = ['drdmv13534_publish_document1', 'drdmv13534_publish_document2'];
+        let files: string[] = [filePath1, filePath2];
+        let documentDate;
+        beforeAll(async () => {
+            for (let i = 0; i < 1; i++) {
+                let publishDocLibData1 = {
+                    docLibTitle: publish[i],
+                    company: 'Petramco',
+                    businessUnit: 'United States Support',
+                    ownerGroup: 'US Support 3',
+                }
+                await apiHelper.apiLogin('tadmin');
+                await apiHelper.deleteDocumentLibrary(publishDocLibData1.docLibTitle);
+                await apiHelper.apiLogin(loginId);
+                let getFilePath1 = files[i];
+                let docLib = await apiHelper.createDocumentLibrary(publishDocLibData1, getFilePath1);
+                await apiHelper.publishDocumentLibrary(docLib);
             }
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteDocumentLibrary(publishDocLibData1.docLibTitle);
-            await apiHelper.apiLogin(loginId);
-            let getFilePath1 = files1[i];
-            let docLib = await apiHelper.createDocumentLibrary(publishDocLibData1, getFilePath1);
-            await apiHelper.publishDocumentLibrary(docLib);
-        }
-        await navigationPage.gotoCaseConsole();
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
-        await documentLibraryConsolePo.searchAndOpenDocumentLibrary(publish[0]);
-        await editDocumentLibraryPo.selectStatus('Draft');
-        await editDocumentLibraryPo.clickOnSaveButton();
-        await documentLibraryConsolePo.searchAndOpenDocumentLibrary(publish[0]);
-        await editDocumentLibraryPo.setCategoryTier1('Employee Relations');
-        await editDocumentLibraryPo.setRegion('Australia');
-        await editDocumentLibraryPo.setSite('Canberra');
-        await editDocumentLibraryPo.selectStatus('Published');
-        await editDocumentLibraryPo.clickOnSaveButton();
-        expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
-        // Create Case
-        await navigationPage.gotoCaseConsole();
-        await navigationPage.gotoCreateCase();
-        await createCasePo.selectRequester('qtao');
-        await createCasePo.setSummary(caseSummary);
-        await createCasePo.clickSaveCaseButton();
-        await previewCasePo.clickGoToCaseButton();
-        await activityTabPo.addActivityNote(addNoteText);
-        await activityTabPo.clickOnAttachLink();
-        await attachDocumentBladePo.clickOnAdvanceSearchButton();
-        await attachDocumentBladePo.searchRecord(publish[0]);
-        expect(await attachDocumentBladePo.isBladeTitleDisplayed()).toBeTruthy(': Attach Document Blade title is missing');
-        expect(await attachDocumentBladePo.getTextOfDocumentListHeading()).toContain('Document Library ');
-        expect(await attachDocumentBladePo.isAttachFromLocalDriveButtonDisplayed()).toBeTruthy('Failure: Attach from local drive button is missing');
-        expect(await attachDocumentBladePo.isAttachButtonDisplayed()).toBeTruthy('Failure: Attach button is missing');
-        expect(await attachDocumentBladePo.isCancelButtonDisplayed()).toBeTruthy('Failure: cancel button is missing');
-        expect(await attachDocumentBladePo.isDocumentTitleDisplayed(publish[0])).toBeTruthy('Failure: bwfJpg.jpg file name is missing');
-        let objDate: Date = new Date();
-        let numYear: number = objDate.getFullYear();
-        let year = new Number(numYear).toString();
-        expect(await attachDocumentBladePo.isUpdatedDateDisplayed(year)).toBeTruthy('Failure: cancel button is missing');
-        expect(await attachDocumentBladePo.isDocumentAttachmentNameDisplayed('bwfJpg.jpg')).toBeTruthy('Failure: attached file name is missing');
-        await attachDocumentBladePo.isDocumentLibaryPresent(publish[0]);
-        await attachDocumentBladePo.searchRecord('%');
-        expect(await attachDocumentBladePo.isPaginationPresent()).toBeTruthy('Failure: Pagination is missing');
-        await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
-        await resourcesTabPo.selectAdvancedSearchFilterOption('Operational Category Tier 1', 'Employee Relations');
-        await resourcesTabPo.selectAdvancedSearchFilterOption('Region', 'Australia');
-        await resourcesTabPo.selectAdvancedSearchFilterOption('Site', 'Canberra');
-        await resourcesTabPo.clickOnAdvancedSearchFiltersButton('Apply');
-        await attachDocumentBladePo.selectDocument();
-        await attachDocumentBladePo.clickOnAttachButton();
-        await activityTabPo.clickOnAttachLink();
-        await attachDocumentBladePo.searchAndAttachDocument(publish[1]);
-        await activityTabPo.clickOnPostButton();
-        // await utilityCommon.waitUntilSpinnerToHide();
-        expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg Attached Document is missing');
-        expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg File is delete sucessfully');
-        await activityTabPo.clickAndDownloadAttachmentFile('bwfJpg.jpg');
-        expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg File is not downloaded.');
-
-        expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('FailureMsg: bwfPdf.pdf Attached Document is missing');
-        expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailureMsg: bwfPdf.pdf File is delete sucessfully');
-        await activityTabPo.clickAndDownloadAttachmentFile('bwfPdf.pdf');
-        expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is not downloaded.');
-    }, 800 * 1000);
+        });
+        it('[DRDMV-13534]: Search and UI Validation of document library search view', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+            await documentLibraryConsolePo.searchAndOpenDocumentLibrary(publish[0]);
+            await editDocumentLibraryPo.selectStatus('Draft');
+            await editDocumentLibraryPo.clickOnSaveButton();
+            await documentLibraryConsolePo.searchAndOpenDocumentLibrary(publish[0]);
+            await editDocumentLibraryPo.setCategoryTier1('Employee Relations');
+            await editDocumentLibraryPo.setRegion('Australia');
+            await editDocumentLibraryPo.setSite('Canberra');
+            await editDocumentLibraryPo.selectStatus('Published');
+            await editDocumentLibraryPo.clickOnSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
+            let objDate: Date = new Date();
+            let allMonths = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            let day = "" + objDate.getDate(); if (day.length == 1) { day = "0" + day; }
+            let month = allMonths[objDate.getMonth()];
+            let year = objDate.getFullYear();
+            // Create Case
+            documentDate = `${month} ${day}, ${year}`; // e.g. June 28, 2020
+            await navigationPage.gotoCreateCase();
+            await createCasePo.selectRequester('qtao');
+            await createCasePo.setSummary(caseSummary);
+            await createCasePo.clickSaveCaseButton();
+            await utilityCommon.closePopUpMessage();
+            await previewCasePo.clickGoToCaseButton();
+            await activityTabPo.addActivityNote(addNoteText);
+        });
+        it('[DRDMV-13534]: Search and UI Validation of document library search view', async () => {
+            await activityTabPo.addActivityNote(addNoteText);
+            await activityTabPo.clickOnAttachLink();
+            await attachDocumentBladePo.clickOnAdvanceSearchButton();
+            await attachDocumentBladePo.searchRecord(publish[0]);
+            expect(await attachDocumentBladePo.isBladeTitleDisplayed()).toBeTruthy(': Attach Document Blade title is missing');
+            expect(await attachDocumentBladePo.getTextOfDocumentListHeading()).toContain('Document Library ');
+            expect(await attachDocumentBladePo.isAttachFromLocalDriveButtonDisplayed()).toBeTruthy('Failure: Attach from local drive button is missing');
+            expect(await attachDocumentBladePo.isAttachButtonDisplayed()).toBeTruthy('Failure: Attach button is missing');
+            expect(await attachDocumentBladePo.isCancelButtonDisplayed()).toBeTruthy('Failure: cancel button is missing');
+            expect(await attachDocumentBladePo.isDocumentInfoDisplayed(publish[0])).toBeTruthy('Failure: Document name is missing');
+            expect(await attachDocumentBladePo.isDocumentInfoDisplayed(documentDate)).toBeTruthy('Failure: Date is missing');
+            expect(await attachDocumentBladePo.isDocumentInfoDisplayed('bwfJpg.jpg')).toBeTruthy('Failure: File name is missing');
+        });
+        it('[DRDMV-13534]: Search and UI Validation of document library search view', async () => {
+            await attachDocumentBladePo.searchRecord('%');
+            expect(await attachDocumentBladePo.isPaginationPresent()).toBeTruthy('Failure: Pagination is missing');
+            await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
+            await resourcesTabPo.selectAdvancedSearchFilterOption('Operational Category Tier 1', 'Employee Relations');
+            await resourcesTabPo.selectAdvancedSearchFilterOption('Region', 'Australia');
+            await resourcesTabPo.selectAdvancedSearchFilterOption('Site', 'Canberra');
+            await resourcesTabPo.clickOnAdvancedSearchFiltersButton('Apply');
+            await attachDocumentBladePo.selectDocument();
+            await attachDocumentBladePo.clickOnAttachButton();
+            await activityTabPo.clickOnAttachLink();
+            await attachDocumentBladePo.searchAndAttachDocument(publish[1]);
+            await activityTabPo.clickOnPostButton();
+            expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg File is delete sucessfully');
+            await activityTabPo.clickAndDownloadAttachmentFile('bwfJpg.jpg');
+            expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg File is not downloaded.');
+            expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('FailureMsg: bwfPdf.pdf Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailureMsg: bwfPdf.pdf File is delete sucessfully');
+            await activityTabPo.clickAndDownloadAttachmentFile('bwfPdf.pdf');
+            expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is not downloaded.');
+        });
+    });
 
     //kgaikwad
     it('[DRDMV-13536]: Attach documents from local drive and document library at the same time', async () => {
@@ -563,9 +566,8 @@ describe('Document Library Consume Permission', () => {
             await activityTabPo.clickOnAttachLink();
             await attachDocumentBladePo.searchAndAttachDocument(publish[1]);
             await activityTabPo.clickOnPostButton();
-            // await utilityCommon.waitUntilSpinnerToHide();
+            await activityTabPo.applyActivityFilter('General Notes');
             expect(await activityTabPo.clickShowMoreLinkInAttachmentActivity(1)).toBeTruthy('show more link is not displayed')
-
             expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg Attached Document is missing');
             expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfJpg.jpg');
@@ -591,12 +593,12 @@ describe('Document Library Consume Permission', () => {
             await navigationPage.signOut();
             await loginPage.login('qstrong');
             await caseConsolePo.searchAndOpenCase(caseId);
-            expect(await activityTabPo.clickShowMoreLinkInAttachmentActivity(1)).toBeTruthy('show more link is not displayed');
+            await activityTabPo.applyActivityFilter('General Notes');
+            expect(await activityTabPo.clickShowMoreLinkInAttachmentActivity(1)).toBeTruthy('show more link is not displayed')
             expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy('FailureMsg:bwfJpg.jpg Attached Document is missing');
             expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfJpg.jpg');
             expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg File is not downloaded.');
-
             expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('FailureMsg:bwfPdf.pdf Attached Document is missing');
             expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailureMsg: bwfPdf.pdf File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfPdf.pdf');
@@ -610,6 +612,8 @@ describe('Document Library Consume Permission', () => {
             await navigationPage.signOut();
             await loginPage.login('hhaas@petramco.com', 'Password_1234');
             await caseConsolePo.searchAndOpenCase(caseId);
+            await activityTabPo.applyActivityFilter('General Notes');
+            expect(await activityTabPo.clickShowMoreLinkInAttachmentActivity(1)).toBeTruthy('show more link is not displayed')
             expect(await activityTabPo.isAttachedFileNameDisplayed('bwfXlsx.xlsx')).toBeTruthy('FailureMsg:bwfXlsx.xlsx Attached Document is missing');
             expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('FailureMsg: bwfXlsx.xlsx File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfXlsx.xlsx');

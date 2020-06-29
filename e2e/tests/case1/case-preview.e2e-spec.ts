@@ -229,7 +229,7 @@ describe("Case Preview", () => {
         await quickCasePo.selectRequesterName('qkatawazi');
         await quickCasePo.selectCaseTemplate(caseTemplateName);
         await quickCasePo.setCaseSummary(caseTemplateName);
-        await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
+        await resources.clickOnAdvancedSearchOptions();
         await resources.enterAdvancedSearchText(caseTemplateName);
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);

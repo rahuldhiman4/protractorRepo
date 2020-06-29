@@ -18,7 +18,7 @@ describe('Knowledge Article Template', () => {
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteArticleTemplate('Template Name DRDMV-1088');
         await loginPage.login('kWilliamson');
-        await navigationPage.switchToAnotherApplication("Knowledge Management");
+        await navigationPage.switchToApplication("Knowledge Management");
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', 'Knowledge Article Templates');
     });
@@ -183,7 +183,7 @@ describe('Knowledge Article Template', () => {
             await createKnowledgePage.clickBackBtn();
 
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
-            await navigationPage.switchToAnotherApplication("Knowledge Management");
+            await navigationPage.switchToApplication("Knowledge Management");
             await utilityCommon.switchToNewTab(1);
             await utilityGrid.clearFilter();
             expect(await utilityGrid.isGridRecordPresent('Article Title KCS')).toBeTruthy('Article is not present');

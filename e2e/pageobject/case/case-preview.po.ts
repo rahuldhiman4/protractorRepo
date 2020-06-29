@@ -6,7 +6,7 @@ class CasePreview {
     selectors = {
         header: '.dp-header span',
         caseSummary: '[rx-view-component-id="2b082dbf-495a-4a0c-aadb-cf78555bbfb0"] span',
-        gotoCaseButton__preview: '[rx-view-component-id="529287cb-4d9d-4729-aa6c-5676980df72e"] button',
+        gotoCaseButton: '[rx-view-component-id="529287cb-4d9d-4729-aa6c-5676980df72e"] button',
         caseId: '[rx-view-component-id="6934b23e-3403-4b21-b4aa-a7a10283c8eb"] .title',
         priority: '[rx-view-component-id="6934b23e-3403-4b21-b4aa-a7a10283c8eb"] .selection-field',
         caseStatus: '[rx-view-component-id="6bbd4072-3626-49a4-8813-b1a456674fc7"] .status-transition',
@@ -132,7 +132,7 @@ class CasePreview {
 
     async clickGoToCaseButton(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.gotoCaseButton__preview)));
-        await $(this.selectors.gotoCaseButton__preview).click();
+        await $(this.selectors.gotoCaseButton).click();
         //        await browser.wait(this.EC.elementToBeClickable($(viewCasePo.selectors.addTaskButton)));
         //        await utilCommon.waitUntilSpinnerToHide();
     }

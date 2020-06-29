@@ -30,6 +30,8 @@ describe('Case Bulk Operation', () => {
 
     afterAll(async () => {
         await utilityCommon.closeAllBlades();
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteApprovalMapping();
         await navigationPage.signOut();
     });
 
@@ -334,7 +336,7 @@ describe('Case Bulk Operation', () => {
 
         await apiHelper.updateCaseStatus(caseGuid, "Resolved", "Customer Follow-Up Required");
         await apiHelper.updateCaseStatus(caseGuid, "Closed");
-
+        await utilityGrid.sortGridColumn('Case ID', 'desc');
         await utilityGrid.clickRefreshIcon();
         for (let i: number = 0; i < 3; i++) {
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);

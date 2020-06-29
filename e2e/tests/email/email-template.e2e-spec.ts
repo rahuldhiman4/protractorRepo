@@ -10,7 +10,7 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 
-describe('EmailTemplate', () => {
+describe('Email Template', () => {
     const emailTemplateData = require('../../data/ui/email/email.template.api.json');
     let label, menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
     beforeAll(async () => {

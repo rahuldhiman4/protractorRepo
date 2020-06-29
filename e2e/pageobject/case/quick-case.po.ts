@@ -28,7 +28,7 @@ class QuickCasePage {
         sourceValue: '.sr-select-bar .btn-xs',
         roleValue: '.select_option_container span',
         descriptionText: 'div.sr-placeholder div.large',
-        resources: 'bwf-smart-recorder-results div.sr-result-placeholder div',
+        resources: '.empty-state__label',
         advancedSearchFields: '[class="row ng-star-inserted"] .dropdown_select label',
         startOverButton: '.sr-footer .text-muted .btn-secondary',
         recommendedKnowledge: 'bwf-search-result-fields .bwf-search-fields__title-text',
@@ -187,7 +187,7 @@ class QuickCasePage {
     }
 
     async getResourcesText(): Promise<string> {
-        return await $$(this.selectors.resources).get(1).getText();
+        return await $(this.selectors.resources).getText();
     }
 
     async selectRoleValue(value: string): Promise<void> {
@@ -225,19 +225,20 @@ class QuickCasePage {
         return await $$('.flex-column bwf-search-result-fields div span').first().getText();
     }
 
-
     async clickOnCaseTemplate(templateName: string): Promise<void> {
-        await $(`div[title=${templateName}]`).click();
+        await $('bwf-search-result-fields').isPresent().then(async (present) => {
+            if (present) await $(`bwf-search-result-fields div[title=${templateName}] span`).click();
+        });
     }
 
-    async setSummaryAndClickOnRecommandedCase(caseID: string,caseSummary:string): Promise<boolean> {
+    async setSummaryAndClickOnRecommandedCase(caseID: string, caseSummary: string): Promise<boolean> {
         let success: boolean = false;
         for (let i: number = 0; i <= 3; i++) {
-		 await $(this.selectors.smartSearchTextBox).sendKeys(caseSummary);
+            await $(this.selectors.smartSearchTextBox).sendKeys(caseSummary);
             browser.sleep(1000);
             success = await $(`div[title=${caseID}]`).isPresent().then(async (result) => {
                 if (result) {
-                   await $(`div[title=${caseID}]`).click();
+                    await $(`div[title=${caseID}]`).click();
                     return true;
                 } else false;
             });
@@ -252,14 +253,14 @@ class QuickCasePage {
         return success;
     }
 
-    async setSummaryAndPinRecommandedCase(caseID: string,caseSummary:string): Promise<boolean> {
+    async setSummaryAndPinRecommandedCase(caseID: string, caseSummary: string): Promise<boolean> {
         let success: boolean = false;
         for (let i: number = 0; i <= 3; i++) {
-		 await $(this.selectors.smartSearchTextBox).sendKeys(caseSummary);
+            await $(this.selectors.smartSearchTextBox).sendKeys(caseSummary);
             browser.sleep(1000);
             success = await $(`div[title=${caseID}]`).isPresent().then(async (result) => {
                 if (result) {
-                   await $(this.selectors.pinFirstRecommendedCase).click();
+                    await $(this.selectors.pinFirstRecommendedCase).click();
                     return true;
                 } else false;
             });

@@ -285,7 +285,7 @@ describe('Document Library Consume UI', () => {
             await attachDocumentBladePo.searchRecord(draftDocLibData.docLibTitle);
             expect(await attachDocumentBladePo.isDocumentLibaryPresent(draftDocLibData.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13524_draft_document doc is displayed');
             await attachDocumentBladePo.searchRecord(publish[0]);
-            await attachDocumentBladePo.selectDocument();
+            await attachDocumentBladePo.selectDocument(publish[0]);
             await attachDocumentBladePo.clickOnAttachButton();
             await editTaskPo.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
@@ -383,7 +383,7 @@ describe('Document Library Consume UI', () => {
         });
         it('[DRDMV-13507]: Search the document', async () => {
             await attachDocumentBladePo.searchRecord(publish[0]);
-            await attachDocumentBladePo.selectDocument();
+            await attachDocumentBladePo.selectDocument(publish[0]);
             await attachDocumentBladePo.clickOnAttachButton();
             await composeMailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
             await composeMailPo.clickOnSendButton();
@@ -478,7 +478,7 @@ describe('Document Library Consume UI', () => {
             await attachDocumentBladePo.searchRecord(draftDocLibData.docLibTitle);
             expect(await attachDocumentBladePo.isDocumentLibaryPresent(draftDocLibData.docLibTitle)).toBeFalsy('FailuerMsg: draftDocLib4 doc is displayed');
             await attachDocumentBladePo.searchRecord(publish[0]);
-            await attachDocumentBladePo.selectDocument();
+            await attachDocumentBladePo.selectDocument(publish[0]);
             await attachDocumentBladePo.clickOnAttachButton();
             await editCasePo.clickSaveCase();
         });
@@ -576,7 +576,7 @@ describe('Document Library Consume UI', () => {
             await attachDocumentBladePo.searchRecord(draftDocLibData.docLibTitle);
             expect(await attachDocumentBladePo.isDocumentLibaryPresent(draftDocLibData.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13480_draft_document doc is displayed');
             await attachDocumentBladePo.searchRecord(publish[0]);
-            await attachDocumentBladePo.selectDocument();
+            await attachDocumentBladePo.selectDocument(publish[0]);
             await attachDocumentBladePo.clickOnAttachButton();
             await activityTabPo.clickOnPostButton();
         });
@@ -674,7 +674,7 @@ describe('Document Library Consume UI', () => {
             await attachDocumentBladePo.searchRecord(draftDocLibData.docLibTitle);
             expect(await attachDocumentBladePo.isDocumentLibaryPresent(draftDocLibData.docLibTitle)).toBeFalsy('FailuerMsg: draftDocLib4 doc is displayed');
             await attachDocumentBladePo.searchRecord(publish[0]);
-            await attachDocumentBladePo.selectDocument();
+            await attachDocumentBladePo.selectDocument(publish[0]);
             await attachDocumentBladePo.clickOnAttachButton();
             await activityTabPo.clickOnPostButton();
         });
@@ -770,7 +770,7 @@ describe('Document Library Consume UI', () => {
             await attachDocumentBladePo.searchRecord(draftDocLibData.docLibTitle);
             expect(await attachDocumentBladePo.isDocumentLibaryPresent(draftDocLibData.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13463_draft_document doc is displayed');
             await attachDocumentBladePo.searchRecord(publish[0]);
-            await attachDocumentBladePo.selectDocument();
+            await attachDocumentBladePo.selectDocument(publish[0]);
             await attachDocumentBladePo.clickOnAttachButton();
             await editCasePo.clickSaveCase();
         });
@@ -866,7 +866,7 @@ describe('Document Library Consume UI', () => {
             await attachDocumentBladePo.searchRecord(draftDocLibData.docLibTitle);
             expect(await attachDocumentBladePo.isDocumentLibaryPresent(draftDocLibData.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13506_draft_document doc is displayed');
             await attachDocumentBladePo.searchRecord(publish[0]);
-            await attachDocumentBladePo.selectDocument();
+            await attachDocumentBladePo.selectDocument(publish[0]);
             await attachDocumentBladePo.clickOnAttachButton();
             await composeMailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
             await composeMailPo.clickOnSendButton();
@@ -963,7 +963,7 @@ describe('Document Library Consume UI', () => {
             await attachDocumentBladePo.searchRecord(draftDocLibData.docLibTitle);
             expect(await attachDocumentBladePo.isDocumentLibaryPresent(draftDocLibData.docLibTitle)).toBeFalsy('FailuerMsg: draftDocLib4 doc is displayed');
             await attachDocumentBladePo.searchRecord(publish[0]);
-            await attachDocumentBladePo.selectDocument();
+            await attachDocumentBladePo.selectDocument(publish[0]);
             await attachDocumentBladePo.clickOnAttachButton();
             await activityTabPo.clickOnPostButton();
             // await utilityCommon.waitUntilSpinnerToHide();

@@ -164,7 +164,7 @@ describe('Create Adhoc task', () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
             await viewCasePage.clickAddTaskButton();
-            await manageTask.addTaskFromTaskTemplate(taskTemplateData.templateName);
+            await manageTask.addTaskFromTaskTemplate(taskTemplateData.templateSummary);
             await manageTask.clickCloseButton();
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus('In Progress');
@@ -370,7 +370,7 @@ describe('Create Adhoc task', () => {
             await adhoctaskTemplate.clickAssignButton();
             await adhoctaskTemplate.clickSaveAdhoctask();
             await utilityCommon.closePopUpMessage();
-            await manageTask.addTaskFromTaskTemplate(`manualTaskTemplate1 ${randomStr}`);
+            await manageTask.addTaskFromTaskTemplate(templateData1.templateSummary);
             await manageTask.clickTaskLink("test" + summary);
             await viewTask.clickOnEditTask();
             await editTask.clickOnAssignToMe();
@@ -560,7 +560,9 @@ describe('Create Adhoc task', () => {
             "businessUnit": "United States Support",
             "supportGroup": "US Support 1"
         }
+
         await navigationPage.gotoTaskConsole();
+        await utilityGrid.clearFilter();
         let caseCreationResponse = await apiHelper.createCase(caseData);
         let taskCreationResponse = await apiHelper.createAdhocTask(caseCreationResponse.id, taskData);
         await apiHelper.changeCaseAssignment(caseCreationResponse.id, 'United States Support', 'US Support 1', 'qtao');

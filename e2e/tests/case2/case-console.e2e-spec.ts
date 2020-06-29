@@ -12,10 +12,23 @@ import utilityCommon from '../../utils/utility.common';
 import utilityGrid from "../../utils/utility.grid";
 
 describe('Case Console', () => {
+    let categName1 = 'DemoCateg1';
+    let categName2 = 'DemoCateg2';
+    let categName3 = 'DemoCateg3';
+    let categName4 = 'DemoCateg4';
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qfeng');
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.createOperationalCategory(categName1);
+        await apiHelper.createOperationalCategory(categName2);
+        await apiHelper.createOperationalCategory(categName3);
+        await apiHelper.createOperationalCategory(categName4);
+        await apiHelper.associateCategoryToOrganization(categName1, 'Petramco');
+        await apiHelper.associateCategoryToCategory(categName1, categName2);
+        await apiHelper.associateCategoryToCategory(categName2, categName3);
+        await apiHelper.associateCategoryToCategory(categName3, categName4);
     });
 
     afterAll(async () => {
@@ -62,7 +75,7 @@ describe('Case Console', () => {
         let labelStr = 'Label';
         let taskCategoryTier4Str = 'Task Category Tier 4';
         let categoryTier4Str = 'Category Tier 4';
-
+        let caseTemplateData, taskTemplateData, assignmentMappingData, readAccessMappingData;
         beforeAll(async () => {
             let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
             label = await menuItemDataFile['sampleMenuItem'].menuItemName + randomStr;
@@ -70,13 +83,13 @@ describe('Case Console', () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createNewMenuItem(menuItemDataFile['sampleMenuItem']);
 
-            let caseTemplateData = {
+            caseTemplateData = {
                 "templateName": 'caseTemplateName' + randomStr,
                 "templateSummary": 'caseTemplateSummary' + randomStr,
-                "categoryTier1": 'Employee Relations',
-                "categoryTier2": 'Compensation',
-                "categoryTier3": 'Bonus',
-                "categoryTier4": 'Cash',
+                "categoryTier1": categName1,
+                "categoryTier2": categName2,
+                "categoryTier3": categName3,
+                "categoryTier4": categName4,
                 "casePriority": "Low",
                 "templateStatus": "Active",
                 "company": "Petramco",
@@ -88,14 +101,14 @@ describe('Case Console', () => {
                 "label": label
             }
 
-            let taskTemplateData = {
+            taskTemplateData = {
                 "templateName": 'task template name ' + randomStr,
                 "templateSummary": `task template summary ${randomStr}`,
                 "templateStatus": "Active",
-                "category1": 'Employee Relations',
-                "category2": "Compensation",
-                "category3": "Bonus",
-                "category4": "Cash",
+                "category1": categName1,
+                "category2": categName2,
+                "category3": categName3,
+                "category4": categName4,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "Facilities Support",
@@ -103,29 +116,29 @@ describe('Case Console', () => {
                 "label": label
             }
 
-            let assignmentMappingData = {
+            assignmentMappingData = {
                 "assignmentMappingName": "Assignment mapping name" + randomStr,
                 "company": "Petramco",
                 "supportCompany": "Petramco",
                 "supportGroup": "Employee Relations",
                 "assignee": "qliu",
-                "categoryTier1": "Employee Relations",
-                "categoryTier2": "Compensation",
-                "categoryTier3": "Bonus",
-                "categoryTier4": "Cash",
+                "categoryTier1": categName1,
+                "categoryTier2": categName2,
+                "categoryTier3": categName3,
+                "categoryTier4": categName4,
                 "label": label
             }
 
-            let readAccessMappingData = {
+            readAccessMappingData = {
                 "configName": 'Read Access Mapping Name' + randomStr,
                 "assignedCompany": 'Petramco',
                 "businessUnit": 'HR Support',
                 "supportGroup": 'Compensation and Benefits',
                 "company": 'Petramco',
-                "category1": 'Employee Relations',
-                "category2": "Compensation",
-                "category3": "Bonus",
-                "category4": "Cash",
+                "category1": categName1,
+                "category2": categName2,
+                "category3": categName3,
+                "category4": categName4,
                 "label": label
             }
 
@@ -142,7 +155,7 @@ describe('Case Console', () => {
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await caseTemplateConsolePO.addColumnOnGrid([labelStr, caseCategoryTier4Str]);
             await utilGrid.searchOnGridConsole('caseTemplateName' + randomStr);
-            expect(await caseTemplateConsolePO.getFirstRecordValue(caseCategoryTier4Str)).toContain('Cash');
+            expect(await caseTemplateConsolePO.getFirstRecordValue(caseCategoryTier4Str)).toContain(caseTemplateData.categoryTier4);
             expect(await caseTemplateConsolePO.getFirstRecordValue(labelStr)).toContain(label);
             await caseTemplateConsolePO.removeColumnFromGrid([labelStr, caseCategoryTier4Str]);
 
@@ -150,15 +163,15 @@ describe('Case Console', () => {
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await taskTemplateConsolePO.addColumn([labelStr, taskCategoryTier4Str]);
             await utilGrid.searchOnGridConsole('task template name ' + randomStr);
-            expect(await taskTemplateConsolePO.getFirstRecordValue(taskCategoryTier4Str)).toContain('Cash');
+            expect(await taskTemplateConsolePO.getFirstRecordValue(taskCategoryTier4Str)).toContain(taskTemplateData.category4);
             expect(await taskTemplateConsolePO.getFirstRecordValue(labelStr)).toContain(label);
-            await taskTemplateConsolePO.addColumn([labelStr, taskCategoryTier4Str]);
+            await taskTemplateConsolePO.removeColumn([labelStr, taskCategoryTier4Str]);
 
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
             await assignmentConfigConsolePo.addColumns([labelStr, categoryTier4Str]);
             await utilGrid.searchOnGridConsole('Assignment mapping name' + randomStr);
-            expect(await assignmentConfigConsolePo.getValueOnAssignmentConfigGrid(categoryTier4Str)).toContain('Cash');
+            expect(await assignmentConfigConsolePo.getValueOnAssignmentConfigGrid(categoryTier4Str)).toContain(assignmentMappingData.categoryTier4);
             expect(await assignmentConfigConsolePo.getValueOnAssignmentConfigGrid(labelStr)).toContain(label);
             await assignmentConfigConsolePo.removeColumns([labelStr, categoryTier4Str]);
 
@@ -166,7 +179,7 @@ describe('Case Console', () => {
             await navigationPage.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
             await readAccessConsolePo.addColumns([labelStr, categoryTier4Str]);
             await utilGrid.searchOnGridConsole('Read Access Mapping Name' + randomStr);
-            expect(await readAccessConsolePo.getValueOnReadAccessConfigGrid(categoryTier4Str)).toContain('Cash');
+            expect(await readAccessConsolePo.getValueOnReadAccessConfigGrid(categoryTier4Str)).toContain(readAccessMappingData.category4);
             expect(await readAccessConsolePo.getValueOnReadAccessConfigGrid(labelStr)).toContain(label);
             await readAccessConsolePo.removeColumns([labelStr, categoryTier4Str]);
         });
