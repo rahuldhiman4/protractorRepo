@@ -277,7 +277,6 @@ describe("Case Self Approval Tests", () => {
             await activityTabPage.clickOnFilterApplyButton();
             expect(await activityTabPage.isActivityBlank()).toBeTruthy('Case Approvals Activity is displayed.');
         });
-
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteApprovalMapping();
