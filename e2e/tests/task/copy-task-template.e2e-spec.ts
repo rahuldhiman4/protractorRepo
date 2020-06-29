@@ -17,12 +17,21 @@ import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
 describe('Copy Task Template', () => {
-    let twoCompanyUser;
+    let twoCompanyUser, userData13548;
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('fritz');
-        // Petramco and Psilon user
+        // user for DRDMV-13548
+        userData13548 = {
+            "firstName": "Fname13548",
+            "lastName": "Lname13548",
+            "userId": "DRDMV-13548",
+            "emailId": "DRDMV-13548@petramco.com",
+        }
         await apiHelper.apiLogin('tadmin');
+        await apiHelper.createNewUser(userData13548);
+        await apiHelper.associatePersonToCompany(userData13548.userId, "Petramco");
+        // Petramco and Psilon user
         twoCompanyUser = {
             "firstName": "CopyTask",
             "lastName": "Psilon",
@@ -106,18 +115,9 @@ describe('Copy Task Template', () => {
 
     describe('[DRDMV-13548]: Create Copy of Task template Submitter not from any Support Group', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let userData, templateData;
+        let templateData;
         let newManualTaskTemplate = 'NewManualtaskDRDMV13548' + randomStr;
         beforeAll(async () => {
-            userData = {
-                "firstName": "Fname13548",
-                "lastName": "Lname13548",
-                "userId": "DRDMV-13548",
-                "emailId": "DRDMV-13548@petramco.com",
-            }
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.createNewUser(userData);
-            await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
             templateData = {
                 "templateName": 'DRDMV13548ManualTask1' + randomStr,
                 "templateSummary": 'manualTaskTemplateSummary1' + randomStr,
@@ -132,7 +132,7 @@ describe('Copy Task Template', () => {
         });
         it('[DRDMV-13548]: Create a Copy of Task template where Submitter do not belong to any Support Groups', async () => {
             await navigationPage.signOut();
-            await loginPage.login(userData.emailId, 'Password_1234');
+            await loginPage.login(userData13548.emailId, 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
@@ -420,6 +420,7 @@ describe('Copy Task Template', () => {
     it('[DRDMV-13574,DRDMV-13553]: Fields copied while creating copy of External Task template', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let updatedTaskTemplate = 'DRDMV13574UpdatedTask' + randomStr;
+        await apiHelper.apiLogin('fritz');
         let templateData = {
             "templateName": 'DRDMV13574ExternalTask' + randomStr,
             "templateSummary": 'DRDMV13574Summary' + randomStr,
@@ -433,7 +434,6 @@ describe('Copy Task Template', () => {
             "ownerBusinessUnit": "Facilities Support",
             "ownerGroup": "Facilities"
         }
-        await apiHelper.apiLogin('fritz');
         await apiHelper.createExternalTaskTemplate(templateData);
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');

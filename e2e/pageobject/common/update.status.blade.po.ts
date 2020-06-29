@@ -65,7 +65,7 @@ class UpdateStatus {
     }
 
     async selectResolutionCode(resolutionCode: string): Promise<void> {
-        if (await $(`[rx-view-component-id="${this.selectors.resolutionCodeRequiredTagGuid}"] .form-control-label`).isPresent()) 
+        if (await $(`[rx-view-component-id="${this.selectors.resolutionCodeRequiredTagGuid}"] .form-control-label`).isPresent())
             await utilityCommon.selectDropDown(this.selectors.resolutionCodeRequiredTagGuid, resolutionCode);
         else await utilityCommon.selectDropDown(this.selectors.resolutionCodeDropDownGuid, resolutionCode);
     }

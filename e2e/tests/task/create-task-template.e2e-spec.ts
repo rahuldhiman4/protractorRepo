@@ -1,4 +1,4 @@
-import { browser } from "protractor";
+import { browser, $ } from "protractor";
 import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from '../../api/api.helper';
 import caseConsolePo from '../../pageobject/case/case-console.po';
@@ -752,6 +752,46 @@ describe('Create Task Template', () => {
         });
     });
 
+    describe('[DRDMV-12111,DRDMV-12110,DRDMV-12109]: Verify Company, Business Unit, Department and Support Group selection hierarchy in Change Owner.', async () => {
+        let randomStr = 'Manual  task' + Math.floor(Math.random() * 1000000);
+        it('[DRDMV-12111,DRDMV-12110,DRDMV-12109]: Create Case tempate template', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await consoleCasetemplatePage.clickOnCreateCaseTemplateButton();
+            await createCaseTemplate.setTemplateName("caseTemplateName" + randomStr);
+            await createCaseTemplate.setCompanyName("Petramco");
+            await createCaseTemplate.setCaseSummary("caseTemplateSummary1" + randomStr);
+            await createCaseTemplate.setOwnerCompanyValue("Petramco");
+            await createCaseTemplate.setBusinessUnitDropdownValue(businessData.orgName);
+            await createCaseTemplate.setDepartmentDropdownValue(departmentData.orgName);
+            await createCaseTemplate.setOwnerGroupDropdownValue(suppGrpData.orgName);
+            await createCaseTemplate.clickSaveCaseTemplate();
+            await utilCommon.closePopUpMessage();
+            expect(await viewCaseTemplate.getOwnerCompanyValue()).toBe("Petramco");
+            expect(await viewCaseTemplate.getOwnerGroupValue()).toBe(suppGrpData.orgName);
+            expect(await viewCaseTemplate.getBuisnessUnitValue()).toBe(businessData.orgName);
+            expect(await viewCaseTemplate.getDepartmentValue()).toBe(departmentData.orgName);
+        });
+        it('[DRDMV-12111,DRDMV-12110,DRDMV-12109]: Create Manual Task template', async () => {
+            //Manual task Template
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await selectTaskTemplate.clickOnManualTaskTemplateButton();
+            await taskTemplate.setTemplateName('manualTaskTemplate' + randomStr);
+            await taskTemplate.setTaskSummary('manualTaskSummary' + randomStr);
+            await taskTemplate.setTaskDescription('Description in manual task');
+            await taskTemplate.selectCompanyByName('Petramco');
+            await taskTemplate.selectBuisnessUnit(businessData.orgName);
+            await taskTemplate.selectDepartment(departmentData.orgName);
+            await taskTemplate.selectOwnerGroup(suppGrpData.orgName)
+            await taskTemplate.clickOnSaveTaskTemplate();
+            expect(await viewTaskTemplate.getOwnerCompanyValue()).toBe('Petramco');
+            expect(await viewTaskTemplate.getOwnerGroupValue()).toBe(suppGrpData.orgName);
+            expect(await viewTaskTemplate.getBuisnessunitValue()).toBe(businessData.orgName);
+            expect(await viewTaskTemplate.getDepartmentValue()).toBe(departmentData.orgName);
+        });
+    });
+
     //ankagraw
     describe('[DRDMV-3830]: [Task Workspace] Filter menu verification', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -825,81 +865,52 @@ describe('Create Task Template', () => {
         it('[DRDMV-3830]: Verify filter with priority values', async () => {
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter("Priority", 'Low', "checkbox");
-            expect(await utilityGrid.isGridRecordPresent('Low')).toBeTruthy("Low not Displayed");
+            let priorityColumnValues = await utilityGrid.getAllValuesFromColumn('Priority');
+            expect(priorityColumnValues.length == 1 && priorityColumnValues[0] == 'Low' == true).toBeTruthy("Low not Displayed");
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter("Priority", 'Medium', "checkbox");
-            expect(await utilityGrid.isGridRecordPresent('Medium')).toBeTruthy("Medium not Displayed");
+            priorityColumnValues = await utilityGrid.getAllValuesFromColumn('Priority');
+            expect(priorityColumnValues.length == 1 && priorityColumnValues[0] == 'Medium' == true).toBeTruthy("Medium not Displayed");
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter("Priority", 'High', "checkbox");
-            expect(await utilityGrid.isGridRecordPresent('High')).toBeTruthy("High not Displayed");
+            priorityColumnValues = await utilityGrid.getAllValuesFromColumn('Priority');
+            expect(priorityColumnValues.length == 1 && priorityColumnValues[0] == 'High' == true).toBeTruthy("High not Displayed");
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter("Priority", 'Critical', "checkbox");
-            expect(await utilityGrid.isGridRecordPresent('Critical')).toBeTruthy("Critical not Displayed");
+            priorityColumnValues = await utilityGrid.getAllValuesFromColumn('Priority');
+            expect(priorityColumnValues.length == 1 && priorityColumnValues[0] == 'Critical' == true).toBeTruthy("Critical not Displayed");
         });
         it('[DRDMV-3830]: Verify filter with status values', async () => {
+            await utilityGrid.searchRecord(''); // clear grid searchbox value
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter("Status", 'Assigned', "default");
-            expect(await utilityGrid.isGridRecordPresent('Assigned')).toBeTruthy("Assigned not Displayed");
+            let statusColumnValues = await utilityGrid.getAllValuesFromColumn('Status');
+            expect(statusColumnValues[0] == 'Assigned' == true).toBeTruthy("Assigned not Displayed");
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter("Status", 'In Progress', "default");
-            expect(await utilityGrid.isGridRecordPresent('In Progress')).toBeTruthy("In Progress not Displayed");
+            statusColumnValues = await utilityGrid.getAllValuesFromColumn('Status');
+            expect(statusColumnValues[0] == 'In Progress' == true).toBeTruthy("In Progress not Displayed");
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter("Status", 'Pending', "default");
-            expect(await utilityGrid.isGridRecordPresent('Pending')).toBeTruthy("Pending not Displayed");
+            statusColumnValues = await utilityGrid.getAllValuesFromColumn('Status');
+            expect(statusColumnValues[0] == 'Pending' == true).toBeTruthy("Pending not Displayed");
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter("Status", 'Completed', "default");
-            expect(await utilityGrid.isGridRecordPresent('Completed')).toBeTruthy("Completed not Displayed");
+            statusColumnValues = await utilityGrid.getAllValuesFromColumn('Status');
+            expect(statusColumnValues[0] == 'Completed' == true).toBeTruthy("Completed not Displayed");
         });
         it('[DRDMV-3830]: Verify filter with modified values', async () => {
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter("Status", 'Closed', "default");
-            expect(await utilityGrid.isGridRecordPresent('Closed')).toBeTruthy("Closed not Displayed");
+            let statusColumnValues = await utilityGrid.getAllValuesFromColumn('Status');
+            expect(statusColumnValues[0] == 'Closed' == true).toBeTruthy("Closed not Displayed");
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter("Status", 'Canceled', "default");
-            expect(await utilityGrid.isGridRecordPresent('Canceled')).toBeTruthy("Canceled not Displayed");
+            statusColumnValues = await utilityGrid.getAllValuesFromColumn('Status');
+            expect(statusColumnValues[0] == 'Canceled' == true).toBeTruthy("Canceled not Displayed");
             await utilityGrid.clearFilter();
             await utilityGrid.typeInFilterExperssion("Modified Date:" + exactDate);
             expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy(newCase1.displayId);
-        });
-    });
-
-    describe('[DRDMV-12111,DRDMV-12110,DRDMV-12109]: Verify Company, Business Unit, Department and Support Group selection hierarchy in Change Owner.', async () => {
-        let randomStr = 'Manual  task' + Math.floor(Math.random() * 1000000);
-        it('[DRDMV-12111,DRDMV-12110,DRDMV-12109]: Create Case tempate template', async () => {
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
-            await consoleCasetemplatePage.clickOnCreateCaseTemplateButton();
-            await createCaseTemplate.setTemplateName("caseTemplateName" + randomStr);
-            await createCaseTemplate.setCompanyName("Petramco");
-            await createCaseTemplate.setCaseSummary("caseTemplateSummary1" + randomStr);
-            await createCaseTemplate.setOwnerCompanyValue("Petramco");
-            await createCaseTemplate.setBusinessUnitDropdownValue(businessData.orgName);
-            await createCaseTemplate.setDepartmentDropdownValue(departmentData.orgName);
-            await createCaseTemplate.setOwnerGroupDropdownValue(suppGrpData.orgName);
-            await createCaseTemplate.clickSaveCaseTemplate();
-            await utilCommon.closePopUpMessage();
-            expect(await viewCaseTemplate.getOwnerCompanyValue()).toBe("Petramco");
-            expect(await viewCaseTemplate.getOwnerGroupValue()).toBe(suppGrpData.orgName);
-            expect(await viewCaseTemplate.getBuisnessUnitValue()).toBe(businessData.orgName);
-            expect(await viewCaseTemplate.getDepartmentValue()).toBe(departmentData.orgName);
-        });
-        it('[DRDMV-12111,DRDMV-12110,DRDMV-12109]: Create Manual Task template', async () => {
-            //Manual task Template
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-            await selectTaskTemplate.clickOnManualTaskTemplateButton();
-            await taskTemplate.setTemplateName('manualTaskTemplate' + randomStr);
-            await taskTemplate.setTaskSummary('manualTaskSummary' + randomStr);
-            await taskTemplate.setTaskDescription('Description in manual task');
-            await taskTemplate.selectCompanyByName('Petramco');
-            await taskTemplate.selectBuisnessUnit(businessData.orgName);
-            await taskTemplate.selectDepartment(departmentData.orgName);
-            await taskTemplate.selectOwnerGroup(suppGrpData.orgName)
-            await taskTemplate.clickOnSaveTaskTemplate();
-            expect(await viewTaskTemplate.getOwnerCompanyValue()).toBe('Petramco');
-            expect(await viewTaskTemplate.getOwnerGroupValue()).toBe(suppGrpData.orgName);
-            expect(await viewTaskTemplate.getBuisnessunitValue()).toBe(businessData.orgName);
-            expect(await viewTaskTemplate.getDepartmentValue()).toBe(departmentData.orgName);
         });
     });
 });

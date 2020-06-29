@@ -574,7 +574,7 @@ describe("Compose Email", () => {
             await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
             await utilGrid.clearFilter();
             await utilGrid.searchAndSelectGridRecord('Case Status Change');
-            await consoleNotificationTemplatePo.clickCopyTmplate();
+            await consoleNotificationTemplatePo.clickCopyTemplate();
             await copyNotificationTemplatePo.setCompanyValue('Petramco');
             await copyNotificationTemplatePo.clickOnCreateCopyButton();
             await editNotificationTemplatePo.clickOnEmailTab();
