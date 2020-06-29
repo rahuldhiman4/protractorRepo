@@ -301,7 +301,7 @@ export class GridOperation {
         } else {
             checkboxRows = await $$('.ui-grid .ui-grid-pinned-container .ui-grid-viewport .ui-grid-row');
         }
-        await checkboxRows[0].$('.ui-grid-selection-row-header-buttons').click();
+        if (checkboxRows[0]) await checkboxRows[0].$('.ui-grid-selection-row-header-buttons').click();
     }
 
     async getNumberOfRecordsInGrid(guid?: string): Promise<number> {
@@ -369,7 +369,7 @@ export class GridOperation {
         await $(this.selectors.searchGridRefreshIcon).click();
     }
 
-    async addFilter(fieldName: string, textValue: string, type: string, guid?: string): Promise<void> {
+    async addFilter(fieldName: string, textValue: string, type: string, guid?: string): Promise<void> {
         let guidId: string = "";
         if (guid) {
             guidId = `[rx-view-component-id="${guid}"] `
