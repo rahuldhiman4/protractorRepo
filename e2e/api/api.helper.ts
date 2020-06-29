@@ -32,7 +32,7 @@ import * as DYNAMIC from '../data/api/ticketing/dynamic.data.api';
 import { CASE_TEMPLATE_PAYLOAD, CASE_TEMPLATE_STATUS_UPDATE_PAYLOAD } from '../data/api/case/case.template.data.api';
 import { UPDATE_PERSON_AS_VIP, ADD_FUNCTIONAL_ROLE } from '../data/api/foundation/update.person.data.api';
 import { SERVICE_TARGET_PAYLOAD } from '../data/api/slm/serviceTarget.api';
-import { ADHOC_TASK_PAYLOAD, UPDATE_TASK_STATUS, TASK_CREATION_FROM_TEMPLATE } from '../data/api/task/task.creation.api';
+import { ADHOC_TASK_PAYLOAD, UPDATE_TASK_STATUS, TASK_CREATION_FROM_TEMPLATE, UPDATE_TASK } from '../data/api/task/task.creation.api';
 import { KNOWLEDGE_APPROVAL_CONFIG, KNOWLEDGE_APPROVAL_FLOW_CONFIG } from '../data/api/knowledge/knowledge-approvals-config.api';
 import { APPROVAL_ACTION } from "../data/api/approval/approval.action.api";
 import { KNOWLEDGE_ARTICLE_EXTERNAL_FLAG } from "../data/api/knowledge/knowledge-article-external.api";
@@ -54,6 +54,9 @@ axios.defaults.headers.common['X-Requested-By'] = 'XMLHttpRequest';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 const commandUri = 'api/rx/application/command';
 const articleTemplateUri = 'api/com.bmc.dsm.knowledge/rx/application/article/template';
+import {UPDATE_CASE} from '../data/ui/case/update.case.data.api';
+import { ICase } from 'e2e/data/api/interface/case.interface.api';
+import { ITask } from 'e2e/data/api/interface/task.interface.api';
 
 export interface IIDs {
     id: string;
@@ -224,6 +227,82 @@ class ApiHelper {
         emailwhiteListData.fieldInstances[18303].value = domainName;
         let updateEmail = await coreApi.updateRecordInstance('com.bmc.arsys.rx.environment-configuration:EmailWhiteListConfiguration', 'AGGADG1AANVNMAPKRHEJP9UCTR5FHR', emailwhiteListData);
         return updateEmail.status == 204;
+    }
+
+    async updateTask(taskGuid: string, data: ITask): Promise<number> {
+        UPDATE_TASK.id = taskGuid;
+        let taskData = UPDATE_TASK;
+        taskData = Object.assign({}, taskData);
+
+        if (data.summary) {
+            let taskSummary = {
+                "id": "8",
+                "value": `${data.summary}`
+            }
+            taskData.fieldInstances["8"] = taskSummary;
+        }
+        
+        if (data.description) {
+            let taskDescription = {
+                "id": "1000000000",
+                "value": `${data.description}`
+            }
+            taskData.fieldInstances["1000000000"] = taskDescription;
+        }
+
+        if (data.priority) {
+            let priorityValue = constants.CasePriority[data.priority];
+            let priorityObj = {
+                "id": "1000000164",
+                "value": `${priorityValue}`
+            }
+            taskData.fieldInstances["1000000164"] = priorityObj;
+        } 
+
+        let updateTaskStatus = await apiCoreUtil.updateRecordInstance("com.bmc.dsm.task-lib:Task", taskGuid, taskData);
+        return updateTaskStatus.status;
+    }
+
+    async updateCase(caseGuid: string, data: ICase): Promise<boolean> {
+        UPDATE_CASE.id = caseGuid;
+        let caseData = UPDATE_CASE;
+        caseData = Object.assign({}, caseData);
+
+        if (data.summary) {
+            let caseSummary = {
+                "id": "8",
+                "value": `${data.summary}`
+            }
+            caseData.fieldInstances["8"] = caseSummary;
+        }
+        
+        if (data.description) {
+            let caseDescription = {
+                "id": "1000000000",
+                "value": `${data.description}`
+            }
+            caseData.fieldInstances["1000000000"] = caseDescription;
+        }
+
+        if (data.casePriority) {
+            let priorityValue = constants.CasePriority[data.casePriority];
+            let priorityObj = {
+                "id": "1000000164",
+                "value": `${priorityValue}`
+            }
+            caseData.fieldInstances["1000000164"] = priorityObj;
+        } 
+
+        if (data.statusChangedDate) {
+            let caseDescription = {
+                "id": 450000172,
+                "value": `${data.statusChangedDate}`
+            }
+            caseData.fieldInstances["450000172"] = caseDescription;
+        }
+
+        let updateCase = await coreApi.updateRecordInstance('com.bmc.dsm.case-lib:Case', caseGuid, caseData);
+        return updateCase.status == 204;
     }
 
     async createCaseTemplate(data: ICaseTemplate): Promise<IIDs> {
@@ -1651,12 +1730,6 @@ class ApiHelper {
                 return !result.includes(false);
             });
         }
-    }
-
-    async updateCase(caseGuid: string, jsonBody: any): Promise<boolean> {
-        jsonBody.id = caseGuid;
-        let updateCase = await coreApi.updateRecordInstance('com.bmc.dsm.case-lib:Case', caseGuid, jsonBody);
-        return updateCase.status == 204;
     }
 
     async runAutomatedCaseTransitionProcess(): Promise<number> {
