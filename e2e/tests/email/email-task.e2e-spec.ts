@@ -35,7 +35,7 @@ describe('Email', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let taskTemplateName = 'Manual task19011' + randomStr;
         let manualTaskSummary = 'ManualSummary19011' + randomStr;
-        var templateData = {
+        let templateData = {
             "templateName": `${taskTemplateName}`,
             "templateSummary": `${manualTaskSummary}`,
             "templateStatus": "Active",
@@ -49,7 +49,7 @@ describe('Email', () => {
 
         let externalTaskTemplateName = 'External task19011' + randomStr;
         let externalTaskSummary = 'ExternalSummary19011' + randomStr;
-        var externaltemplateData = {
+        let externaltemplateData = {
             "templateName": `${externalTaskTemplateName}`,
             "templateSummary": `${externalTaskSummary}`,
             "templateStatus": "Active",
@@ -64,7 +64,7 @@ describe('Email', () => {
         let automatedTaskSummary = 'AutomatedSummary19011' + randomStr;
         let automatedTaskProcess = 'Auto Proces' + randomStr;
 
-        var automatedtemplateData = {
+        let automatedtemplateData = {
             "templateName": `${automatedTaskTemplateName}`,
             "templateSummary": `${automatedTaskSummary}`,
             "templateStatus": "Active",
@@ -77,7 +77,7 @@ describe('Email', () => {
         }
         await apiHelper.createAutomatedTaskTemplate(automatedtemplateData);
 
-        var caseData = {
+        let caseData = {
             "Requester": "qtao",
             "Company": "Petramco",
             "Summary": "Create case for me postman1",
@@ -87,8 +87,8 @@ describe('Email', () => {
             "Assignee": "Qadim Katawazi"
         }
         await apiHelper.apiLogin('fritz');
-        var newCaseTemplate = await apiHelper.createCase(caseData);
-        var displayId: string = newCaseTemplate.displayId;
+        let newCaseTemplate = await apiHelper.createCase(caseData);
+        let displayId: string = newCaseTemplate.displayId;
         await utilityGrid.clearFilter();
         await utilityGrid.searchAndOpenHyperlink(displayId);
         await viewCasePo.clickAddTaskButton();
@@ -121,7 +121,7 @@ describe('Email', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let taskTemplateName = 'Manual task19008' + randomStr;
         let manualTaskSummary = 'ManualSummary19008' + randomStr;
-        var templateData = {
+        let templateData = {
             "templateName": `${taskTemplateName}`,
             "templateSummary": `${manualTaskSummary}`,
             "templateStatus": "Active",
@@ -135,7 +135,7 @@ describe('Email', () => {
 
         let externalTaskTemplateName = 'Externaltask19008' + randomStr;
         let externalTaskSummary = 'ExternalSummary19008' + randomStr;
-        var externaltemplateData = {
+        let externaltemplateData = {
             "templateName": `${externalTaskTemplateName}`,
             "templateSummary": `${externalTaskSummary}`,
             "templateStatus": "Active",
@@ -145,7 +145,7 @@ describe('Email', () => {
             "ownerGroup": "Facilities"
         }
         await apiHelper.createExternalTaskTemplate(externaltemplateData);
-        var caseData = {
+        let caseData = {
             "Requester": "qtao",
             "Company": "Petramco",
             "Summary": "Create case for me postman1",
@@ -155,8 +155,8 @@ describe('Email', () => {
             "Assignee": "Qadim Katawazi"
         }
         await apiHelper.apiLogin('fritz');
-        var newCaseTemplate = await apiHelper.createCase(caseData);
-        var displayId: string = newCaseTemplate.displayId;
+        let newCaseTemplate = await apiHelper.createCase(caseData);
+        let displayId: string = newCaseTemplate.displayId;
         await navigationPage.gotoCaseConsole();
         await utilityGrid.clearFilter();
         await utilityGrid.searchAndOpenHyperlink(displayId);
@@ -223,7 +223,7 @@ describe('Email', () => {
             await loginPage.login('qkatawazi');
             let taskTemplateName = 'Manual  task19009' + randomStr;
             let manualTaskSummary = 'ManualSummary19009' + randomStr;
-            var templateData = {
+            let templateData = {
                 "templateName": `${taskTemplateName}`,
                 "templateSummary": `${manualTaskSummary}`,
                 "templateStatus": "Active",
@@ -237,7 +237,7 @@ describe('Email', () => {
 
             let externalTaskTemplateName = 'External  task19009' + randomStr;
             let externalTaskSummary = 'ExternalSummary19009' + randomStr;
-            var externaltemplateData = {
+            let externaltemplateData = {
                 "templateName": `${externalTaskTemplateName}`,
                 "templateSummary": `${externalTaskSummary}`,
                 "templateStatus": "Active",
@@ -247,7 +247,7 @@ describe('Email', () => {
                 "ownerGroup": "Facilities"
             }
             await apiHelper.createExternalTaskTemplate(externaltemplateData);
-            var caseData = {
+            let caseData = {
                 "Requester": "qtao",
                 "Company": "Petramco",
                 "Summary": "Create case for me postman1",
@@ -257,8 +257,8 @@ describe('Email', () => {
                 "Assignee": "Qadim Katawazi"
             }
             await apiHelper.apiLogin('qkatawazi');
-            var newCaseTemplate = await apiHelper.createCase(caseData);
-            var displayId: string = newCaseTemplate.displayId;
+            let newCaseTemplate = await apiHelper.createCase(caseData);
+            let displayId: string = newCaseTemplate.displayId;
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(displayId);
             await viewCasePo.clickAddTaskButton();
@@ -324,7 +324,7 @@ describe('Email', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let taskTemplateName = 'Manual  task' + randomStr;
         let manualTaskSummary = 'ManualSummary' + randomStr;
-        var templateData = {
+        let templateData = {
             "templateName": `${taskTemplateName}`,
             "templateSummary": `${manualTaskSummary}`,
             "templateStatus": "Active",
@@ -335,7 +335,7 @@ describe('Email', () => {
         }
         await apiHelper.apiLogin('fritz');
         await apiHelper.createManualTaskTemplate(templateData);
-        var caseData = {
+        let caseData = {
             "Requester": "qtao",
             "Company": "Petramco",
             "Summary": "Create case for me postman1",
@@ -345,8 +345,8 @@ describe('Email', () => {
             "Assignee": "Qadim Katawazi"
         }
         await apiHelper.apiLogin('fritz');
-        var newCaseTemplate = await apiHelper.createCase(caseData);
-        var displayId: string = newCaseTemplate.displayId;
+        let newCaseTemplate = await apiHelper.createCase(caseData);
+        let displayId: string = newCaseTemplate.displayId;
         await navigationPage.gotoCaseConsole();
         await utilityGrid.clearFilter();
         await utilityGrid.searchAndOpenHyperlink(displayId);
@@ -368,7 +368,7 @@ describe('Email', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let taskTemplateName = 'Manual  task' + randomStr;
         let manualTaskSummary = 'ManualSummary' + randomStr;
-        var templateData = {
+        let templateData = {
             "templateName": `${taskTemplateName}`,
             "templateSummary": `${manualTaskSummary}`,
             "templateStatus": "Active",
@@ -381,7 +381,7 @@ describe('Email', () => {
         await apiHelper.createManualTaskTemplate(templateData);
         let externalTaskTemplateName = 'External  task' + randomStr;
         let externalTaskSummary = 'ExternalSummary' + randomStr;
-        var externaltemplateData = {
+        let externaltemplateData = {
             "templateName": `${externalTaskTemplateName}`,
             "templateSummary": `${externalTaskSummary}`,
             "templateStatus": "Active",
@@ -391,7 +391,7 @@ describe('Email', () => {
             "ownerGroup": "Facilities"
         }
         await apiHelper.createExternalTaskTemplate(externaltemplateData);
-        var caseData = {
+        let caseData = {
             "Requester": "qtao",
             "Company": "Petramco",
             "Summary": "Create case for me postman1",
@@ -401,8 +401,8 @@ describe('Email', () => {
             "Assignee": "Qadim Katawazi"
         }
         await apiHelper.apiLogin('fritz');
-        var newCaseTemplate = await apiHelper.createCase(caseData);
-        var displayId: string = newCaseTemplate.displayId;
+        let newCaseTemplate = await apiHelper.createCase(caseData);
+        let displayId: string = newCaseTemplate.displayId;
         await navigationPage.gotoCaseConsole();
         await utilityGrid.clearFilter();
         await utilityGrid.searchAndOpenHyperlink(displayId);
@@ -411,7 +411,7 @@ describe('Email', () => {
         await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary);
         await manageTaskBladePo.clickTaskLink(manualTaskSummary);
         await browser.sleep(2000);
-        var ManualtaskID = await viewTaskPo.getTaskID();
+        let ManualtaskID = await viewTaskPo.getTaskID();
         await viewTaskPo.clickEmailLink();
         await emailPo.addAttachment(['../../data/ui/attachment/demo.txt']);
         await emailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
@@ -439,7 +439,7 @@ describe('Email', () => {
         await viewTaskPo.clickOnViewCase();
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.clickTaskLink(externalTaskSummary);
-        var externaltaskID = await viewTaskPo.getTaskID();
+        let externaltaskID = await viewTaskPo.getTaskID();
         await viewTaskPo.clickEmailLink();
         await emailPo.addAttachment(['../../data/ui/attachment/demo.txt']);
         await emailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
@@ -465,11 +465,10 @@ describe('Email', () => {
         await emailPo.setEmailBody('this is third reply');
         await emailPo.clickOnSendButton();
         expect(await activityTabPo.getEmailBody()).toContain('this is third reply');
-    }, 300 * 1000);//, 200 * 1000);
+    }, 300 * 1000);
 
-    //Failed due to application issue...defect logged DRDMV-21883
     it('[DRDMV-19557]: For Reply / Reply All earlier email context should be copied as part of email composition on Case', async () => {
-        var caseData = {
+        let caseData = {
             "Requester": "qtao",
             "Company": "Petramco",
             "Summary": "Create case for Email Test",
@@ -479,8 +478,8 @@ describe('Email', () => {
             "Assignee": "Qadim Katawazi"
         }
         await apiHelper.apiLogin('fritz');
-        var newCaseTemplate = await apiHelper.createCase(caseData);
-        var displayId: string = newCaseTemplate.displayId;
+        let newCaseTemplate = await apiHelper.createCase(caseData);
+        let displayId: string = newCaseTemplate.displayId;
         await navigationPage.gotoCaseConsole();
         await utilityGrid.clearFilter();
         await utilityGrid.searchAndOpenHyperlink(displayId);
@@ -508,9 +507,8 @@ describe('Email', () => {
         expect(await activityTabPo.getEmailBody()).toContain('this is second reply to all');
         await emailPo.setEmailBody('this is third reply');
         await emailPo.clickOnSendButton();
-    });//, 200 * 1000);
+    });
 
-    //Failed due to application issue...defect logged DRDMV-21883    
     it('[DRDMV-19555]: In Case of Reply/Reply All  if we select new Email template then previous contents should not be erased.', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await apiHelper.apiLogin('tadmin');
@@ -524,7 +522,7 @@ describe('Email', () => {
         await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateForSalary']);
         let taskTemplateName = 'Manual task19555' + randomStr;
         let manualTaskSummary = 'ManualSummary19555' + randomStr;
-        var templateData = {
+        let templateData = {
             "templateName": `${taskTemplateName}`,
             "templateSummary": `${manualTaskSummary}`,
             "templateStatus": "Active",
@@ -537,7 +535,7 @@ describe('Email', () => {
         await apiHelper.createManualTaskTemplate(templateData);
         let externalTaskTemplateName = 'Externa task19555' + randomStr;
         let externalTaskSummary = 'ExternalSummary19555' + randomStr;
-        var externaltemplateData = {
+        let externaltemplateData = {
             "templateName": `${externalTaskTemplateName}`,
             "templateSummary": `${externalTaskSummary}`,
             "templateStatus": "Active",
@@ -547,7 +545,7 @@ describe('Email', () => {
             "ownerGroup": "Facilities"
         }
         await apiHelper.createExternalTaskTemplate(externaltemplateData);
-        var caseData = {
+        let caseData = {
             "Requester": "qdu",
             "Company": "Petramco",
             "Summary": "Create case for me postman19555",
@@ -557,8 +555,8 @@ describe('Email', () => {
             "Assignee": "Qadim Katawazi"
         }
         await apiHelper.apiLogin('fritz');
-        var newCaseTemplate = await apiHelper.createCase(caseData);
-        var displayId: string = newCaseTemplate.displayId;
+        let newCaseTemplate = await apiHelper.createCase(caseData);
+        let displayId: string = newCaseTemplate.displayId;
         await navigationPage.gotoCaseConsole();
         await utilityGrid.clearFilter();
         await utilityGrid.searchAndOpenHyperlink(displayId);
@@ -637,7 +635,7 @@ describe('Email', () => {
             await loginPage.login('qkatawazi');
             let taskTemplateName = 'Manual  task19550' + randomStr;
             let manualTaskSummary = 'ManualSummary19550' + randomStr;
-            var templateData = {
+            let templateData = {
                 "templateName": `${taskTemplateName}`,
                 "templateSummary": `${manualTaskSummary}`,
                 "templateStatus": "Active",
@@ -650,7 +648,7 @@ describe('Email', () => {
             await apiHelper.createManualTaskTemplate(templateData);
             let externalTaskTemplateName = 'External  task19550' + randomStr;
             let externalTaskSummary = 'ExternalSummary19550' + randomStr;
-            var externaltemplateData = {
+            let externaltemplateData = {
                 "templateName": `${externalTaskTemplateName}`,
                 "templateSummary": `${externalTaskSummary}`,
                 "templateStatus": "Active",
@@ -660,7 +658,7 @@ describe('Email', () => {
                 "ownerGroup": "Facilities"
             }
             await apiHelper.createExternalTaskTemplate(externaltemplateData);
-            var caseData = {
+            let caseData = {
                 "Requester": "qtao",
                 "Company": "Petramco",
                 "Summary": "Create case for me postman1",
@@ -670,8 +668,8 @@ describe('Email', () => {
                 "Assignee": "Qadim Katawazi"
             }
             await apiHelper.apiLogin('qkatawazi');
-            var newCaseTemplate = await apiHelper.createCase(caseData);
-            var displayId: string = newCaseTemplate.displayId;
+            let newCaseTemplate = await apiHelper.createCase(caseData);
+            let displayId: string = newCaseTemplate.displayId;
             await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(displayId);
@@ -709,7 +707,7 @@ describe('Email', () => {
             await utilityGrid.searchAndOpenHyperlink(ManualtaskID);
             await viewTaskPo.clickOnRequesterEmail();
             await browser.sleep(2000);
-            expect(await emailPo.isSelectEmailTemplateButtonPresent()).toBeTruthy();
+            expect(await emailPo.isSelectEmailTemplateButtonPresent()).toBeFalsy("Email template button visible to task assignee having no case access");
             await emailPo.clickOnDiscardButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         } catch (e) {
