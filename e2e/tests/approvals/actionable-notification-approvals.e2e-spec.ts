@@ -236,7 +236,7 @@ describe("Actionable Notification Approval", () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await notificationPo.clickOnNotificationIcon();
-            await notificationPo.clickActionableLink('Approval for Case ' + response.displayId + ' has been reassigned to another approver.');
+            await notificationPo.clickActionableLink('Approval for Case ' + response.displayId + ' has been reassigned to you.');
             await utilityCommon.switchToNewTab(1);
             expect(await viewCasePage.getCaseID()).toBe(response.displayId);
         }
