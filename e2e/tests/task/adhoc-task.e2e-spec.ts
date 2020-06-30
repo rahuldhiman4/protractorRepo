@@ -218,8 +218,8 @@ describe('Create Adhoc task', () => {
         await manageTask.clickCloseButton();
         await viewCasePage.clickOnTaskLink(summary);
         expect(await viewTask.isAttachedFileNamePresent('demo.txt')).toBeTruthy('Attached file name is missing');
+        await utilCommon.deleteAlreadyDownloadedFile('demo.txt');
         await viewTask.clickOnAttachments('demo.txt');
-        expect(await utilCommon.deleteAlreadyDownloadedFile('demo.txt')).toBeTruthy('File is delete sucessfully');
         expect(await utilCommon.isFileDownloaded('demo.txt')).toBeTruthy('File is not downloaded.');
 
         //Navigated To Case and Verify attachments grid for task attachments
@@ -237,7 +237,8 @@ describe('Create Adhoc task', () => {
         expect(await attachmentInformationBladePo.isTitleNameDisplayed()).toBeTruthy('Title is missing');
         expect(await utilCommon.deleteAlreadyDownloadedFile('demo.txt')).toBeTruthy('File is delete sucessfully');
         await attachmentInformationBladePo.clickDownloadButton();
-        expect(await utilCommon.deleteAlreadyDownloadedFile('demo.txt')).toBeTruthy('File is delete sucessfully');
+        expect(await utilCommon.isFileDownloaded('demo.txt')).toBeTruthy('File is not downloaded.');
+        await utilCommon.deleteAlreadyDownloadedFile('demo.txt');
         await attachmentInformationBladePo.clickCloseButton();
         await attachmentBladePo.clickCloseButton();
     });

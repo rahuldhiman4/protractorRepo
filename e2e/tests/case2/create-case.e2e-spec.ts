@@ -588,7 +588,6 @@ describe("Create Case", () => {
             await createCasePage.setSummary('Summary' + randomStr);
             await createCasePage.clickSelectCaseTemplateButton();
             await selectCaseTemplateBlade.searchAndOpenCaseTemplate(caseTemplateData.templateName);
-            await selectCaseTemplateBlade.clickOnCaseTemplateLink();
             expect(await caseTemplatePreview.isCaseSummaryHeaderDisplayed('Case Summary')).toBeTruthy('Case Summary is not getting displayed');
             expect(await caseTemplatePreview.isCaseCompanyTitleDisplayed('Case Company')).toBeTruthy('Case Company is not getting displayed');
             expect(await caseTemplatePreview.isCaseStatusTitleDisplayed('Case Status')).toBeTruthy('Case Status is not getting displayed');
@@ -608,9 +607,8 @@ describe("Create Case", () => {
             expect(await caseTemplatePreview.getCaseCompanyValue()).toBe('Petramco');
             expect(await caseTemplatePreview.getCasePriority()).toBe('Medium');
             expect(await caseTemplatePreview.getCaseStatus()).toBe('New');
-            await caseTemplatePreview.clickOnBackButton();
-            await selectCaseTemplateBlade.clickOnCancelButton();
 
+            await utilityCommon.closeAllBlades();
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();

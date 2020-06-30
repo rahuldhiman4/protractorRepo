@@ -50,8 +50,6 @@ class AttachDocumentBlade {
         await $(this.selectors.filterApplyButton).click();
     }
 
-
-
     async searchAndAttachDocument(documentName: string): Promise<void> {
         await this.clickOnAdvanceSearchButton();
         await this.searchRecord(documentName);
@@ -68,7 +66,7 @@ class AttachDocumentBlade {
         await $(this.selectors.searchBox).sendKeys(documentName + protractor.Key.ENTER);
         let i: number;
         for (i = 0; i <= 5; i++) {
-            let bolnVal: boolean = await $(this.selectors.iconCircle).isPresent();
+            let bolnVal: boolean = await this.isDocumentInfoDisplayed(documentName);
             if (bolnVal == false) {
                 await browser.sleep(3000);
                 await $(this.selectors.searchBox).clear();
@@ -92,7 +90,9 @@ class AttachDocumentBlade {
                 });
             }
         } else {
-            await $(this.selectors.iconCircle).click();
+            await $(this.selectors.iconCircle).isPresent().then(async () => {
+                await $(this.selectors.iconCircle).click();
+            });
         }
     }
 

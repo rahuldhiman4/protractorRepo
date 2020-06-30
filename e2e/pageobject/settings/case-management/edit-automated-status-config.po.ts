@@ -80,7 +80,9 @@ class AutomatedStatusTransitionConfigEditPage {
 	
 	
 	async saveConfiguration(): Promise<void> {
-        await $(this.selectors.saveButton).click();
+        await $(this.selectors.saveButton).isPresent().then(async () => {
+            await $(this.selectors.saveButton).click();
+        });
     }
 
     async selectEnableToggle(enableStatus: boolean): Promise<void>{

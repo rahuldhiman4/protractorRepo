@@ -519,6 +519,17 @@ describe('Dynamic data', () => {
 
     it('[DRDMV-13948]: [Dynamic Data] [Attachment] - Add different type of files in attachment fields', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let fileName1: string[] = ['articleStatus.png', 'bwfJpg4.jpg', 'bwfJson1.json', 'bwfPdf4.pdf', 'bwfWord1.rtf'];
+        const filesToUpload1 = fileName1.map((file) => { return `../../data/ui/attachment/${file}` });
+        let fileName2: string[] = ['bwfJpg.jpg', 'bwfPdf.pdf', 'bwfWord2.rtf'];
+        const filesToUpload2 = fileName2.map((file) => { return `../../data/ui/attachment/${file}` });
+        //delete existing files
+        for (let i: number = 0; i <= fileName1.length; i++) {
+            await utilityCommon.deleteAlreadyDownloadedFile(`${fileName1[i]}`);
+        }
+        for (let i: number = 0; i <= fileName2.length; i++) {
+            await utilityCommon.deleteAlreadyDownloadedFile(`${fileName2[i]}`);
+        }
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteDynamicFieldAndGroup();
         let caseTemplateName = 'caseTemplateDRDMV-13948' + randomStr;
@@ -555,12 +566,9 @@ describe('Dynamic data', () => {
         expect(await editCasePo.isDynamicFieldDisplayed('attachment2')).toBeTruthy('field is not present');
         expect(await editCasePo.isDynamicFieldDisplayed('attachment3')).toBeTruthy('field is not present');
         // attach files in field 1
-        let fileName1: string[] = ['articleStatus.png', 'bwfJpg4.jpg', 'bwfJson1.json', 'bwfPdf4.pdf', 'bwfWord1.rtf'];
-        const filesToUpload1 = fileName1.map((file) => { return `../../data/ui/attachment/${file}` });
         await editCasePo.addAttachment('attachment1', filesToUpload1);
         await editCasePo.clickSaveCase();
         await viewCasePo.clickShowMoreShowLessLink('attachment1');
-        //download the file
         await viewCasePo.clickOnDownloadFile('articleStatus.png');
         expect(await utilityCommon.isFileDownloaded('articleStatus.png')).toBeTruthy('failureMsg: articleStatus.png File is not downloaded.');
         await viewCasePo.clickOnDownloadFile('bwfJpg4.jpg');
@@ -571,8 +579,9 @@ describe('Dynamic data', () => {
         expect(await utilityCommon.isFileDownloaded('bwfPdf4.pdf')).toBeTruthy('failureMsg: bwfPdf4.pdf File is not downloaded.');
         await viewCasePo.clickOnDownloadFile('bwfWord1.rtf');
         expect(await utilityCommon.isFileDownloaded('bwfWord1.rtf')).toBeTruthy('failureMsg: bwfWord1.rtf File is not downloaded.');
+        //delete downloaded files
         for (let i: number = 0; i <= fileName1.length; i++) {
-            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName1[i]}`)).toBeTruthy('FailuerMsg: File is delete sucessfully');
+            await utilityCommon.deleteAlreadyDownloadedFile(`${fileName1[i]}`);
         }
         await apiHelper.apiLogin('tadmin');
         let recDeleted = await apiHelper.deleteDynamicFieldAndGroup();
@@ -605,19 +614,19 @@ describe('Dynamic data', () => {
         expect(await editTaskPo.isDynamicFieldDisplayed('attachment3')).toBeTruthy('field is not present');
         await editTaskPo.clickOnAssignToMe();
         //attachment3 add 1 file 
-        let fileName2: string[] = ['bwfJpg.jpg', 'bwfPdf.pdf', 'bwfWord2.rtf'];
-        const filesToUpload2 = fileName2.map((file) => { return `../../data/ui/attachment/${file}` });
         await editTaskPo.addAttachmentInDynamicField('attachment1', filesToUpload2);
         await editTaskPo.clickOnSaveButton();
+        await utilityCommon.closePopUpMessage();
         await viewTaskPo.clickShowMoreShowLessLink('attachment1');
-        await viewCasePo.clickOnDownloadFile('bwfJpg.jpg');
+        await viewTaskPo.clickOnDownloadFile('bwfJpg.jpg');
         expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('failureMsg: bwfJpg.jpg File is not downloaded.');
-        await viewCasePo.clickOnDownloadFile('bwfPdf.pdf');
+        await viewTaskPo.clickOnDownloadFile('bwfPdf.pdf');
         expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('failureMsg: bwfPdf.pdf File is not downloaded.');
-        await viewCasePo.clickOnDownloadFile('bwfWord2.rtf');
+        await viewTaskPo.clickOnDownloadFile('bwfWord2.rtf');
         expect(await utilityCommon.isFileDownloaded('bwfWord2.rtf')).toBeTruthy('failureMsg: bwfWord2.rtf File is not downloaded.');
+        //delete downloaded files
         for (let i: number = 0; i <= fileName2.length; i++) {
-            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName2[i]}`)).toBeTruthy('FailuerMsg: File is delete sucessfully');
+            await utilityCommon.deleteAlreadyDownloadedFile(`${fileName2[i]}`);
         }
     }, 320 * 1000);
 

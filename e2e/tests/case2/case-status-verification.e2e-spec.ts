@@ -15,7 +15,7 @@ import activityTabPo from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 
-describe('Case Status Change', () => {
+describe('Case Status Verification', () => {
     let statusNew: string = "New";
     let statusInProgress: string = "In Progress";
     let statusAssigned: string = "Assigned";

@@ -187,12 +187,14 @@ export class Util {
             let element = await togglebutton.$('.d-icon-check')
             let isclicked = await element.getAttribute('aria-pressed');
             if (isclicked == 'false') {
+                await browser.sleep(500); //toggle is slow on settings pages
                 await element.click();
             }
         } else {
             let element = await togglebutton.$('.d-icon-circle_slash_o')
             let isclicked = await element.getAttribute('aria-pressed');
             if (isclicked == 'false') {
+                await browser.sleep(500); //toggle is slow on settings pages
                 await element.click();
             }
         }
