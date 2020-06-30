@@ -592,7 +592,7 @@ describe('Case Activity Multi Logs', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-16771]: [-ve] - Task having large no. of activities eg. more then 100', async () => {
+    describe('[DRDMV-16771]: [-ve] - KA having large no. of activities eg. more then 100', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let knowledgeArticleData;
         beforeAll(async () => {
