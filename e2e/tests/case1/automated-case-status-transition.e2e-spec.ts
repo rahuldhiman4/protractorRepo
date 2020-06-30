@@ -1,7 +1,6 @@
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
 import { AUTO_STATUS_TRANSITION_MANDATORY_FIELDS } from '../../data/ui/case/automated-status-transition.data.ui';
-import { UPDATE_CASE_STATUS_MODIFIED_DATE } from '../../data/ui/case/update.case.data.api';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import notificationPo from '../../pageobject/notification/notification.po';
@@ -205,7 +204,8 @@ describe('Automated Case Status Transition', () => {
         await apiHelper.apiLogin("qkatawazi");
 
         await apiHelper.updateCaseStatus(newCase.id, "Resolved", "Customer Follow-Up Required");
-        await apiHelper.updateCase(newCase.id, UPDATE_CASE_STATUS_MODIFIED_DATE);
+        let updatecase = { "statusChangedDate": "2019-06-13T10:22:21.000Z"};
+        await apiHelper.updateCase(newCase.id, updatecase);
         await apiHelper.apiLogin("tadmin");
         await apiHelper.setDefaultNotificationForUser('qkatawazi', "Alert");
         await apiHelper.runAutomatedCaseTransitionProcess();

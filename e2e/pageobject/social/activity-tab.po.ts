@@ -616,6 +616,10 @@ class ActivityTabPage {
         await $$(this.selectors.activityLogList).get(activityNumber - 1).element(by.cssContainingText('.activity__wrapper div a', linkText)).click();
     }
 
+    async scrollToActivity(activityNumber: number): Promise<void> { //Operates on activity scroll bar.
+        await browser.executeScript("arguments[0].scrollIntoView();", $$('.activity .activity__wrapper').get(activityNumber - 1).getWebElement());
+    }
+
     async isHyperlinkOfActivityDisplay(bodyText: string, authorText: string): Promise<boolean> {
         let bodyTextActivityElement: ElementFinder[] = await $$('.activity__wrapper .collapse-block div');
         for (let i = 0; i < bodyTextActivityElement.length; i++) {
