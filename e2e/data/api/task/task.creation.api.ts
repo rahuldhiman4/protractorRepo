@@ -40,7 +40,7 @@ export const ADHOC_TASK_PAYLOAD = {
         },
         
     }
-}
+};
 
 export const UPDATE_TASK_STATUS = {
     "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
@@ -52,7 +52,7 @@ export const UPDATE_TASK_STATUS = {
             "value": "3000"
         }
     }
-}
+};
 
 export const TASK_CREATION_FROM_TEMPLATE = {
     "resourceType": "com.bmc.arsys.rx.application.process.command.StartProcessInstanceCommand",
@@ -65,4 +65,12 @@ export const TASK_CREATION_FROM_TEMPLATE = {
         "Case ID": "AGGADGG8ECDC0AQHF17OQGH32AFFB8",
         "TaskStatus": 10
     }
-}
+};
+
+export const UPDATE_TASK = {
+    "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
+    "id": "AGGADGG8ECDC0AQHF1L2QGH35OFGC9",
+    "recordDefinitionName": "com.bmc.dsm.task-lib:Task",
+    "fieldInstances": {
+    }
+};

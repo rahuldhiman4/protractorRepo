@@ -11,6 +11,8 @@ import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import viewTaskPo from "../../pageobject/task/view-task.po";
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
+import knowledgeArticlesConsolePo from '../../pageobject/knowledge/knowledge-articles-console.po';
+import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
 
 describe('Case Activity Multi Logs', () => {
 
@@ -442,6 +444,213 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isTextPresentInActivityLog('Assigned Group')).toBeTruthy('FailureMsg: Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('US Support 3')).toBeTruthy('FailureMsg: Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Description')).toBeTruthy('FailureMsg: Text is missing in activity log');
+        });
+    });
+
+    //kgaikwad
+    describe('[DRDMV-16737]: [-ve] - Case having large no. of activities eg. more then 100', async () => {
+        let newCase;
+        beforeAll(async () => {
+            // Create Case
+            let caseData = {
+                "Requester": "qtao",
+                "Summary": "DRDMV-21619_TC",
+                "Assigned Company": "Petramco",
+                "Business Unit": "Canada Support",
+                "Support Group": "CA Support 1",
+                "Assignee": "qdu"
+            }
+
+            await apiHelper.apiLogin('qkatawazi');
+            newCase = await apiHelper.createCase(caseData);
+
+            // Create General Notes 
+            for (let a = 0; a < 103; a++) {
+                await apiHelper.postActivityCommentsWithoutAttachments(`DRDMV-16737 Activity Notes ${a}`, 'Case', newCase.id);
+            }
+
+            // Create Second Activity  
+            for (let b = 0; b < 20; b++) {
+                let updatecase1 = {
+                    "description": "Case_Description_" + b
+                }
+                await apiHelper.updateCase(newCase.id, updatecase1);
+            }
+
+            // Create First Activity  
+            for (let i = 0; i < 10; i++) {
+                let updatecase2 = {
+                    "casePriority": "Low"
+                }
+                let updatecase3 = {
+                    "casePriority": "High"
+                }
+                await apiHelper.updateCase(newCase.id, updatecase2);
+                await apiHelper.updateCase(newCase.id, updatecase3);
+            }
+        });
+
+        it('[DRDMV-16737]: Verify count for first 20 Activity', async () => {
+            await caseConsolePo.searchAndOpenCase(newCase.displayId);
+            for (let i = 1; i <= 20; i++) {
+                await activityTabPage.scrollToActivity(i);
+                expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi changed the case priority', i)).toBeTruthy(`Changed the case priority is missing ${i}`);
+            }
+        });
+
+        it('[DRDMV-16737]: Verify count for second 20 Activity', async () => {
+            for (let j = 21; j <= 40; j++) {
+                await activityTabPage.scrollToActivity(j);
+                expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi changed the following case fields', j)).toBeTruthy(`Changed the following case fields is missing ${j}`);
+            }
+        });
+
+        it('[DRDMV-16737]: Verify Gerneral Notes 100 Activity', async () => {
+            await activityTabPage.clickOnFilterButton();
+            await activityTabPage.selectFilterCheckBox('General Notes');
+            await activityTabPage.clickOnFilterApplyButton();
+            for (let k = 1; k <= 100; k++) {
+                await activityTabPage.scrollToActivity(k);
+                expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi added a note', k)).toBeTruthy(`Changed the following case fields is missing ${k}`);
+            }
+        });
+    });
+
+    //kgaikwad
+    describe('[DRDMV-16763]: [-ve] - Task having large no. of activities eg. more then 100', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let newCase, adhocTaskTemplateData;
+        beforeAll(async () => {
+            // Create Case
+            let caseData = {
+                "Requester": "qtao",
+                "Summary": "DRDMV-16763_TC",
+                "Assigned Company": "Petramco",
+                "Business Unit": "Canada Support",
+                "Support Group": "CA Support 1",
+                "Assignee": "qdu"
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            newCase = await apiHelper.createCase(caseData);
+            // Create Manual Task
+            adhocTaskTemplateData = {
+                "taskName": "DRDMV-16763_" + randomStr,
+                "company": "Petramco",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qfeng",
+            }
+            let task = await apiHelper.createAdhocTask(newCase.id, adhocTaskTemplateData);
+            await apiHelper.updateCaseStatus(newCase.id, 'InProgress');
+
+            // Create General Notes 
+            for (let a = 0; a < 103; a++) {
+                await apiHelper.postActivityCommentsWithoutAttachments(`DRDMV-16737 Task Activity Notes ${a}`, 'Task', task.id);
+            }
+            // Create Second Activity  
+            for (let b = 0; b < 21; b++) {
+                let updateTask1 = { "description": "Task_Description_" + b };
+                await apiHelper.updateTask(task.id, updateTask1);
+            }
+
+            // Create First Activity  
+            for (let c = 0; c < 10; c++) {
+                let updateTask2 = { "priority": "Low" };
+                let updateTask3 = { "priority": "High" };
+                await apiHelper.updateTask(task.id, updateTask2);
+                await apiHelper.updateTask(task.id, updateTask3);
+            }
+        });
+
+        it('[DRDMV-16763]: Verify count for first 20 Activity', async () => {
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(newCase.displayId);
+            await viewCasePo.clickAddTaskButton();
+            await manageTaskBladePo.clickTaskLink(adhocTaskTemplateData.taskName);
+            for (let i = 1; i <= 20; i++) {
+                await activityTabPage.scrollToActivity(i);
+                expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi changed the task priority', i)).toBeTruthy(`Changed the case priority is missing ${i}`);
+            }
+        });
+
+        it('[DRDMV-16763]: Verify count for second 20 Activity', async () => {
+            for (let j = 21; j <= 40; j++) {
+                await activityTabPage.scrollToActivity(j);
+                expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi changed the following task fields', j)).toBeTruthy(`Changed the following case fields is missing ${j}`);
+            }
+        });
+
+        it('[DRDMV-16763]: Verify Gerneral Notes 100 Activity', async () => {
+            await activityTabPage.clickOnFilterButton();
+            await activityTabPage.selectFilterCheckBox('General Notes');
+            await activityTabPage.clickOnFilterApplyButton();
+            for (let k = 1; k <= 100; k++) {
+                await activityTabPage.scrollToActivity(k);
+                expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi added a note', k)).toBeTruthy(`Changed the following case fields is missing ${k}`);
+            }
+        });
+    });
+
+    //kgaikwad
+    describe('[DRDMV-16771]: [-ve] - KA having large no. of activities eg. more then 100', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let knowledgeArticleData;
+        beforeAll(async () => {
+            // Create knowledge Article task template
+            let articleData = {
+                "knowledgeSet": "HR",
+                "title": "DRDMV-16771_KA" + randomStr,
+                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "United Kingdom Support",
+                "assigneeSupportGroup": "GB Support 1",
+                "assignee": "KMills"
+            }
+
+            await apiHelper.apiLogin('qkatawazi');
+            knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData.id, 'Draft')).toBeTruthy('FailureMsg Status Not Set');
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData.id, 'PublishApproval', "qkatawazi", "Compensation and Benefits")).toBeTruthy('Status Not Set');
+
+            // Create General Notes 
+            for (let a = 0; a < 103; a++) {
+                await apiHelper.postActivityCommentsWithoutAttachments(`DRDMV-16771 KA Activity Notes ${a}`, 'KnowledgeArticleTemplate', knowledgeArticleData.id);
+            }
+
+            // Create General Notes 
+            for (let a = 0; a < 20; a++) {
+                await apiHelper.apiLogin('qkatawazi');
+                await apiHelper.flagAndUnflagKnowledgeArticle(knowledgeArticleData.id, "FlagComment1", 1);
+                await apiHelper.apiLogin('kmills');
+                await apiHelper.flagAndUnflagKnowledgeArticle(knowledgeArticleData.id, "FlagComment2", 0);
+            }
+        });
+
+        it('[DRDMV-16771]: Verify count for first & Second 20 Activity', async () => {
+            await navigationPage.gotoKnowledgeConsole();
+            await knowledgeArticlesConsolePo.searchAndOpenKnowledgeArticle(knowledgeArticleData.displayId);
+            await viewKnowledgeArticlePo.clickOnActivityTab();
+            expect(await activityTabPage.isTitleTextDisplayedInActivity('Kyle Mills has provided the feedback for the article', 1)).toBeTruthy('Kyle Mills has provided the feedback for the article for 1 activity');
+            expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi flagged the article', 2)).toBeTruthy('Qadim Katawazi flagged the article for 2 activity');
+
+            for (let i = 3; i <= 40; i++) {
+                await activityTabPage.scrollToActivity(i);
+                if (i % 2 == 0) {
+                    expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi flagged the article', i)).toBeTruthy(`Qadim Katawazi flagged the article for 2 activity ${i}`);
+                } else {
+                    expect(await activityTabPage.isTitleTextDisplayedInActivity('Kyle Mills has provided the feedback for the article', i)).toBeTruthy(`Kyle Mills has provided the feedback for the article for activity ${i}`);
+                }
+            }
+        });
+
+        it('[DRDMV-16771]: Verify Gerneral Notes 100 Activity', async () => {
+            await activityTabPage.clickOnFilterButton();
+            await activityTabPage.selectFilterCheckBox('General Notes');
+            await activityTabPage.clickOnFilterApplyButton();
+            for (let k = 1; k <= 100; k++) {
+                await activityTabPage.scrollToActivity(k);
+                expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi added a note', k)).toBeTruthy(`Changed the following case fields is missing ${k}`);
+            }
         });
     });
 });
