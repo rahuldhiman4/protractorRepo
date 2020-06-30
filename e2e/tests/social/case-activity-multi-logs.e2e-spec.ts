@@ -493,14 +493,14 @@ describe('Case Activity Multi Logs', () => {
         it('[DRDMV-16737]: Verify count for first 20 Activity', async () => {
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
             for (let i = 1; i <= 20; i++) {
-                await activityTabPage.scrollDownActivity(i);
+                await activityTabPage.scrollToActivity(i);
                 expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi changed the case priority', i)).toBeTruthy(`Changed the case priority is missing ${i}`);
             }
         });
 
         it('[DRDMV-16737]: Verify count for second 20 Activity', async () => {
             for (let j = 21; j <= 40; j++) {
-                await activityTabPage.scrollDownActivity(j);
+                await activityTabPage.scrollToActivity(j);
                 expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi changed the following case fields', j)).toBeTruthy(`Changed the following case fields is missing ${j}`);
             }
         });
@@ -510,7 +510,7 @@ describe('Case Activity Multi Logs', () => {
             await activityTabPage.selectFilterCheckBox('General Notes');
             await activityTabPage.clickOnFilterApplyButton();
             for (let k = 1; k <= 100; k++) {
-                await activityTabPage.scrollDownActivity(k);
+                await activityTabPage.scrollToActivity(k);
                 expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi added a note', k)).toBeTruthy(`Changed the following case fields is missing ${k}`);
             }
         });
@@ -568,14 +568,14 @@ describe('Case Activity Multi Logs', () => {
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLink(adhocTaskTemplateData.taskName);
             for (let i = 1; i <= 20; i++) {
-                await activityTabPage.scrollDownActivity(i);
+                await activityTabPage.scrollToActivity(i);
                 expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi changed the task priority', i)).toBeTruthy(`Changed the case priority is missing ${i}`);
             }
         });
 
         it('[DRDMV-16763]: Verify count for second 20 Activity', async () => {
             for (let j = 21; j <= 40; j++) {
-                await activityTabPage.scrollDownActivity(j);
+                await activityTabPage.scrollToActivity(j);
                 expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi changed the following task fields', j)).toBeTruthy(`Changed the following case fields is missing ${j}`);
             }
         });
@@ -585,7 +585,7 @@ describe('Case Activity Multi Logs', () => {
             await activityTabPage.selectFilterCheckBox('General Notes');
             await activityTabPage.clickOnFilterApplyButton();
             for (let k = 1; k <= 100; k++) {
-                await activityTabPage.scrollDownActivity(k);
+                await activityTabPage.scrollToActivity(k);
                 expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi added a note', k)).toBeTruthy(`Changed the following case fields is missing ${k}`);
             }
         });
@@ -634,7 +634,7 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi flagged the article', 2)).toBeTruthy('Qadim Katawazi flagged the article for 2 activity');
 
             for (let i = 3; i <= 40; i++) {
-                await activityTabPage.scrollDownActivity(i);
+                await activityTabPage.scrollToActivity(i);
                 if (i % 2 == 0) {
                     expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi flagged the article', i)).toBeTruthy(`Qadim Katawazi flagged the article for 2 activity ${i}`);
                 } else {
@@ -648,7 +648,7 @@ describe('Case Activity Multi Logs', () => {
             await activityTabPage.selectFilterCheckBox('General Notes');
             await activityTabPage.clickOnFilterApplyButton();
             for (let k = 1; k <= 100; k++) {
-                await activityTabPage.scrollDownActivity(k);
+                await activityTabPage.scrollToActivity(k);
                 expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi added a note', k)).toBeTruthy(`Changed the following case fields is missing ${k}`);
             }
         });

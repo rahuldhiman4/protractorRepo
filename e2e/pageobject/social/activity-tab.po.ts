@@ -616,7 +616,7 @@ class ActivityTabPage {
         await $$(this.selectors.activityLogList).get(activityNumber - 1).element(by.cssContainingText('.activity__wrapper div a', linkText)).click();
     }
 
-    async scrollDownActivity(activityNumber: number): Promise<void> {
+    async scrollToActivity(activityNumber: number): Promise<void> { //Operates on activity scroll bar.
         await browser.executeScript("arguments[0].scrollIntoView();", $$('.activity .activity__wrapper').get(activityNumber - 1).getWebElement());
     }
 

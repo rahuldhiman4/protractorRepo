@@ -55,8 +55,7 @@ axios.defaults.headers.common['Content-Type'] = 'application/json';
 const commandUri = 'api/rx/application/command';
 const articleTemplateUri = 'api/com.bmc.dsm.knowledge/rx/application/article/template';
 import {UPDATE_CASE} from '../data/ui/case/update.case.data.api';
-import { ICase } from 'e2e/data/api/interface/case.interface.api';
-import { ITask } from 'e2e/data/api/interface/task.interface.api';
+import { ICase, ITask } from '../data/api/interface/record-update.interface.api';
 
 export interface IIDs {
     id: string;
