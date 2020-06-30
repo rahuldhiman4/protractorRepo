@@ -575,6 +575,7 @@ describe("Create Case", () => {
             "templateStatus": "Active",
             "templateSummary": `Summary ${randomStr}`,
             "caseStatus": "New",
+            "casePriority": "Medium"
         }
 
         let newTaskTemplate = await apiHelper.createManualTaskTemplate(templateData);

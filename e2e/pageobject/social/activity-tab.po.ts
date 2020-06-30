@@ -10,7 +10,7 @@ class ActivityTabPage {
         activityNoteTextArea: '.cke_enable_context_menu',
         activityCkEditorGuid: '76b9d8a2-54ef-4b24-a086-fc6ff745449d',
         addNoteBox: '.textfield__wrapper .form-control[placeholder="Add a note"]',
-        personPopup: '.dropdown-menu .popup-template',
+        personPopup: 'button .popup-template',
         personPopupCkEditor: '.cke_autocomplete_panel li',
         addNotePostButton: '.activity-feed-note-buttons__right .btn-primary',
         addNoteCancelButton: '.activity-feed-note-buttons__right .btn-secondary',
@@ -22,7 +22,7 @@ class ActivityTabPage {
         filterPopupApplyOrClearButton: '.filter-options button span',
         FilterPopUp: '.bwf-activity-log-filter button[aria-expanded]',
         filterApplyButtonEnableDisabled: '.filter-options button[disabled="disabled"]',
-        filterLists: '.a-tag-active .bwf-text-overflow-ellipsis',
+        filterLists: '.a-tag-active .bwf-text-overflow-ellipsis, .a-tag-active .bwf-text-overflow-ellipsis span',
         nMoreButton: '.bwf-show-more .dropdown-toggle span',
         removeIconFilterList: '.d-flex .close-inverse',
         activityTab: '.nav-link-wrapper',
@@ -391,7 +391,7 @@ class ActivityTabPage {
 
     async removeFilterList(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.removeIconFilterList)));
-        await $(this.selectors.removeIconFilterList).click();
+        await $$(this.selectors.removeIconFilterList).first().click();
     }
 
     async isfilterPresent(): Promise<boolean> {
@@ -439,7 +439,7 @@ class ActivityTabPage {
         if (searchBoxdisplay == true) {
             await this.clickActivityNoteTextBox();
         }
-        await ckEditorOpsPo.setCKEditor(addNoteText);
+        await ckEditorOpsPo.updateCKEditor(addNoteText);
     }
 
     async addPersonInActivityNote(tagPerson: string): Promise<void> {
@@ -516,7 +516,7 @@ class ActivityTabPage {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterAuthor)));
         await $(this.selectors.filterAuthor).click();
         await $(this.selectors.filterAuthor).sendKeys(AuthorName);
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.personPopup)), 3000);
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.personPopup)), 8000);
         await $(this.selectors.personPopup).click();
     }
 
