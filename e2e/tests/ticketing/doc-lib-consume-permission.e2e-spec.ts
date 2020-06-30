@@ -591,8 +591,8 @@ describe('Document Library Consume Permission', () => {
             await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Agent Access');
             await caseAccessTabPo.selectAndAddAgent('qstrong');
             expect(await caseAccessTabPo.isCaseAccessEntityAdded('Quin Strong')).toBeTruthy('Failuer: Quin Strong Agent Name is missing');
-            await caseAccessTabPo.selectAndAddAgent('hhaas');
-            expect(await caseAccessTabPo.isCaseAccessEntityAdded('Hannah Haas')).toBeTruthy('Failuer: Quanah George Agent Name is missing');
+            await caseAccessTabPo.selectAndAddAgent('Fritz');
+            expect(await caseAccessTabPo.isCaseAccessEntityAdded('Fritz Schulz')).toBeTruthy('Failuer: Fritz Schulz Name is missing');
 
             await navigationPage.signOut();
             await loginPage.login('qstrong');
@@ -614,10 +614,9 @@ describe('Document Library Consume Permission', () => {
             expect(await utilityCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailureMsg: bwfXlsx.xlsx File is not downloaded.');
 
             await navigationPage.signOut();
-            await loginPage.login('hhaas@petramco.com', 'Password_1234');
+            await loginPage.login('fritz');
             await caseConsolePo.searchAndOpenCase(caseId);
             await activityTabPo.applyActivityFilter('General Notes');
-            expect(await activityTabPo.clickShowMoreLinkInAttachmentActivity(1)).toBeTruthy('show more link is not displayed')
             expect(await activityTabPo.isAttachedFileNameDisplayed('bwfXlsx.xlsx')).toBeTruthy('FailureMsg:bwfXlsx.xlsx Attached Document is missing');
             expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('FailureMsg: bwfXlsx.xlsx File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfXlsx.xlsx');

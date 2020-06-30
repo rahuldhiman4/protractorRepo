@@ -165,7 +165,7 @@ class ViewTask {
 
     async getTaskStatusValue(): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.taskStatus)));
-        await browser.wait(this.EC.visibilityOf($(this.selectors.taskStatus)),4000);
+        await browser.wait(this.EC.visibilityOf($(this.selectors.taskStatus)), 4000);
         return await (await $(this.selectors.taskStatus).getText()).trim();
     }
 
@@ -329,10 +329,21 @@ class ViewTask {
                 let fieldName = await $$('[rx-view-component-id="4c988a95-b148-475f-b91c-9788d8e6c0cb"] .form-group label').get(i).getText();
                 if (fieldName == label) {
                     await $$('[rx-view-component-id="4c988a95-b148-475f-b91c-9788d8e6c0cb"] .form-group').get(i).$(this.selectors.showMore).click();
+                    break;
                 }
             }
         } else {
             await $$(this.selectors.showMore).first().click();
+        }
+    }
+
+    async clickOnDownloadFile(fileName: string): Promise<void> {
+        let fileCount: number = await $$('span.bwf-attachment-container__file-name').count();
+        for (let i = 0; i < fileCount; i++) {
+            let fileNameText = await $$('span.bwf-attachment-container__file-name').get(i).getText();
+            if (fileName == fileNameText) {
+                await $$('span.bwf-attachment-container__file-name').get(i).click();
+            }
         }
     }
 
