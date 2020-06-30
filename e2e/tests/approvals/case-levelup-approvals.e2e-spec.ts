@@ -115,15 +115,14 @@ describe("Case Level Up Approval Tests", () => {
             await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
             await approvalConfigurationPage.clickApprovalFlowSaveButton();
             await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
-            await navigationPage.signOut();
         });
-
+        
         it('[DRDMV-16542]:Create a case and verify approval details on case', async () => {
             await apiHelper.apiLogin('qfeng');
             let response = await apiHelper.createCase(caseData);
             caseId = response.displayId;
+            await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus('In Progress');
@@ -146,17 +145,16 @@ describe("Case Level Up Approval Tests", () => {
             await showApproversBladePo.clickApproversTab('Approval Decision');
             expect(await showApproversBladePo.getApproversCount()).toBe(0);
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
-            await navigationPage.signOut();
         });
-
+        
         it('[DRDMV-16542]:approve the created case and verify the approval details on case', async () => {
+            await navigationPage.signOut();
             await loginPage.login('qliu');
             await navigationPage.switchToJSApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(caseSummary, 'Approve');
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Resolved");
             await activityTabPage.clickOnFilterButton();
@@ -197,7 +195,6 @@ describe("Case Level Up Approval Tests", () => {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Approval Rejected");
             await activityTabPage.clickOnFilterButton();
@@ -237,7 +234,6 @@ describe("Case Level Up Approval Tests", () => {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Resolved");
             await activityTabPage.clickOnFilterButton();
@@ -362,15 +358,14 @@ describe("Case Level Up Approval Tests", () => {
             await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
             await approvalConfigurationPage.clickApprovalFlowSaveButton();
             await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
-            await navigationPage.signOut();
         });
-
+        
         it('[DRDMV-10833]:Create a case and verify approval details on case', async () => {
             await apiHelper.apiLogin('qfeng');
             let response = await apiHelper.createCase(caseData);
             caseId = response.displayId;
+            await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus('In Progress');
@@ -393,17 +388,16 @@ describe("Case Level Up Approval Tests", () => {
             await showApproversBladePo.clickApproversTab('Approval Decision');
             expect(await showApproversBladePo.getApproversCount()).toBe(0);
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
-            await navigationPage.signOut();
         });
-
+        
         it('[DRDMV-10833]:approve the created case and verify the approval details on case', async () => {
+            await navigationPage.signOut();
             await loginPage.login('qliu');
             await navigationPage.switchToJSApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(caseSummary, 'Approve');
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Resolved");
             await activityTabPage.clickOnFilterButton();
@@ -444,7 +438,6 @@ describe("Case Level Up Approval Tests", () => {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Approval Rejected");
             await activityTabPage.clickOnFilterButton();
@@ -484,7 +477,6 @@ describe("Case Level Up Approval Tests", () => {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Resolved");
             await activityTabPage.clickOnFilterButton();
@@ -630,7 +622,6 @@ describe("Case Level Up Approval Tests", () => {
             caseId = response.displayId;
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
             expect(await viewCasePo.isShowApproversBannerDisplayed()).toBeTruthy('Show Approvers Banner is not displayed');
@@ -652,17 +643,16 @@ describe("Case Level Up Approval Tests", () => {
             await showApproversBladePo.clickApproversTab('Approval Decision');
             expect(await showApproversBladePo.getApproversCount()).toBe(0);
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
-            await navigationPage.signOut();
         });
-
+        
         it('[DRDMV-1369,DRDMV-1368]:Approve the case and verify the case details', async () => {
+            await navigationPage.signOut();
             await loginPage.login('qliu');
             await navigationPage.switchToJSApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(caseSummary, 'Approve');
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
         });
@@ -689,17 +679,16 @@ describe("Case Level Up Approval Tests", () => {
             await browser.sleep(2000);
             expect(await showApproversBladePo.getApproversCount()).toBe(0);
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
-            await navigationPage.signOut();
         });
-
+        
         it('[DRDMV-1369,DRDMV-1368]:Approve the case and verify the case details', async () => {
+            await navigationPage.signOut();
             await loginPage.login('qliu');
             await navigationPage.switchToJSApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(caseSummary, 'On Hold');
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
             await viewCasePo.clickShowApproversLink();
@@ -712,8 +701,6 @@ describe("Case Level Up Approval Tests", () => {
             expect(await showApproversBladePo.isOnHoldIconDisplayed()).toBeTruthy('Approver Person Icon is not displayed');
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         });
-
-
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteApprovalMapping();
@@ -835,7 +822,6 @@ describe("Case Level Up Approval Tests", () => {
             caseId = response.displayId;
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
             expect(await viewCasePo.isShowApproversBannerDisplayed()).toBeTruthy('Show Approvers Banner is not displayed');
@@ -857,17 +843,16 @@ describe("Case Level Up Approval Tests", () => {
             await showApproversBladePo.clickApproversTab('Approval Decision');
             expect(await showApproversBladePo.getApproversCount()).toBe(0);
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
-            await navigationPage.signOut();
         });
-
+        
         it('[DRDMV-12182]:Approve the case and verify the case details', async () => {
+            await navigationPage.signOut();
             await loginPage.login('qliu');
             await navigationPage.switchToJSApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(caseSummary, 'Approve');
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Resolved");
             await activityTabPage.clickOnFilterButton();
@@ -894,7 +879,6 @@ describe("Case Level Up Approval Tests", () => {
             await showApproversBladePo.clickApproversTabFromActivity('Pending Approval');
             expect(await showApproversBladePo.getApproversCountFromActivity()).toBe(0);
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
-            await navigationPage.signOut();
         });
 
         afterAll(async () => {
@@ -1004,7 +988,6 @@ describe("Case Level Up Approval Tests", () => {
             caseId = response.displayId;
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
             expect(await viewCasePo.isShowApproversBannerDisplayed()).toBeTruthy('Show Approvers Banner is not displayed');
@@ -1026,17 +1009,16 @@ describe("Case Level Up Approval Tests", () => {
             await showApproversBladePo.clickApproversTab('Approval Decision');
             expect(await showApproversBladePo.getApproversCount()).toBe(0);
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
-            await navigationPage.signOut();
         });
-
+        
         it('[DRDMV-12181]:Approve the case and verify the case details', async () => {
+            await navigationPage.signOut();
             await loginPage.login('qliu');
             await navigationPage.switchToJSApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(caseSummary, 'Approve');
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("In Progress");
             await activityTabPage.clickOnFilterButton();
@@ -1063,7 +1045,6 @@ describe("Case Level Up Approval Tests", () => {
             await showApproversBladePo.clickApproversTabFromActivity('Pending Approval');
             expect(await showApproversBladePo.getApproversCountFromActivity()).toBe(0);
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
-            await navigationPage.signOut();
         });
 
         afterAll(async () => {

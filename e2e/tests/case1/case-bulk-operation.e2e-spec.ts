@@ -251,6 +251,7 @@ describe('Case Bulk Operation', () => {
         });
         it('[DRDMV-16109]: Verify that Agent creates the Case with BU, Org, Support Group, Department and while Bulk Assignment select only Org and Support Group', async () => {
             await utilityGrid.clickRefreshIcon();
+            await utilityGrid.searchRecord('Bulk Case Assignee');
             for (let i: number = 0; i < 3; i++) {
                 await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
             }
@@ -273,11 +274,11 @@ describe('Case Bulk Operation', () => {
             expect(await utilityCommon.isPopUpMessagePresent('The selected case(s) have been successfully assigned.')).toBeTruthy();
             for (let i: number = 0; i < 3; i++) {
                 await utilityGrid.searchAndOpenHyperlink(caseId[i]);
-                expect(await viewCasePage.getBusinessUnitText()).toBe("BulkOperationBusinessUnit");
-                expect(await viewCasePage.getDepartmentText()).toBe("BulkOperationDepartment");
+                expect(await viewCasePage.getBusinessUnitText()).toBe("BulkOperationBusinessUnit", `Business unit details are not matching for ${caseId[i]}`);
+                expect(await viewCasePage.getDepartmentText()).toBe("BulkOperationDepartment", `Department details are not matching for ${caseId[i]}`);
                 expect(await viewCasePage.getAssignedCompanyText()).toBe("Petramco");
-                expect(await viewCasePage.getAssignedGroupText()).toBe("BulkOperationSupportGroup");
-                expect(await viewCasePage.getAssigneeText()).toBe("BOPerson lnPerson");
+                expect(await viewCasePage.getAssignedGroupText()).toBe("BulkOperationSupportGroup", `Assigned Group details are not matching for ${caseId[i]}`);
+                expect(await viewCasePage.getAssigneeText()).toBe("BOPerson lnPerson", `Assignee details are not matching for ${caseId[i]}`);
                 await navigationPage.gotoCaseConsole();
             }
         });
@@ -337,6 +338,7 @@ describe('Case Bulk Operation', () => {
         await apiHelper.updateCaseStatus(caseGuid, "Resolved", "Customer Follow-Up Required");
         await apiHelper.updateCaseStatus(caseGuid, "Closed");
         await utilityGrid.sortGridColumn('Case ID', 'desc');
+        await utilityGrid.searchRecord('Bulk Case Assignee');
         await utilityGrid.clickRefreshIcon();
         for (let i: number = 0; i < 3; i++) {
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
@@ -411,7 +413,7 @@ describe('Case Bulk Operation', () => {
         await apiHelper.updateCaseStatus(caseGuid[0], 'InProgress');
         await apiHelper.updateCaseStatus(caseGuid[1], 'Canceled', 'Customer Canceled');
         await utilityGrid.clickRefreshIcon();
-
+        await utilityGrid.searchRecord(caseId[0]);
         await utilityGrid.clickCheckBoxOfValueInGrid(caseId[0]);
         await caseConsolePage.clickOnChangeAssignmentButton();
         await changeAssignmentBladePo.setAssignee(petramcoStr, 'United States Support', "US Support 3", 'Qadim Katawazi');
@@ -419,6 +421,7 @@ describe('Case Bulk Operation', () => {
         await utilityCommon.closePopUpMessage();
 
         await caseConsolePage.selectAllCases();
+        await utilityGrid.searchRecord(caseId[1]);
         await utilityGrid.clickCheckBoxOfValueInGrid(caseId[1]);
         await caseConsolePage.clickOnChangeAssignmentButton();
         await changeAssignmentBladePo.setAssignee(petramcoStr, 'United States Support', "US Support 3", 'Qadim Katawazi');

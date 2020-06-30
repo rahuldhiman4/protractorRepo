@@ -97,8 +97,8 @@ describe("Actionable Notification Approval", () => {
         let response = await apiHelper.createCase(caseData);
         await apiHelper.updateCaseStatus(response.id, 'InProgress');
 
-        await navigationPage.gotoSettingsPage();
         try {
+            await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
             await utilGrid.searchAndOpenHyperlink('New Signature Template');
             await notificationTemplateEditPage.openAlertEditMessageText();
@@ -128,8 +128,8 @@ describe("Actionable Notification Approval", () => {
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.approverAction(response.id, 'Approved');
 
-        await navigationPage.gotoSettingsPage();
         try {
+            await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
             await utilGrid.searchAndOpenHyperlink('Approve Template');
             await notificationTemplateEditPage.openAlertEditMessageText();
@@ -236,7 +236,7 @@ describe("Actionable Notification Approval", () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await notificationPo.clickOnNotificationIcon();
-            await notificationPo.clickActionableLink('Approval for Case ' + response.displayId + ' has been reassigned to another approver.');
+            await notificationPo.clickActionableLink('Approval for Case ' + response.displayId + ' has been reassigned to you.');
             await utilityCommon.switchToNewTab(1);
             expect(await viewCasePage.getCaseID()).toBe(response.displayId);
         }

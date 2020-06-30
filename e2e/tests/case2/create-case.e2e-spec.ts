@@ -596,7 +596,7 @@ describe("Create Case", () => {
             expect(await caseTemplatePreview.isCaseCategoryTier1TitleDisplayed('Case Category Tier 1')).toBeTruthy('Case Category Tier 1 is not getting displayed');
             expect(await caseTemplatePreview.isCaseCategoryTier2TitleDisplayed('Case Category Tier 2')).toBeTruthy('Case Category Tier 2 is not getting displayed');
             expect(await caseTemplatePreview.isCaseCategoryTier3TitleDisplayed('Case Category Tier 3')).toBeTruthy('Case Category Tier 3 is not getting displayed');
-            expect(await caseTemplatePreview.isCaseCategoryTier4TitleDisplayed('Case Category Tier 4 is not getting displayed')).toBeTruthy();
+            expect(await caseTemplatePreview.isCaseCategoryTier4TitleDisplayed('Case Category Tier 4')).toBeTruthy('Case Category Tier 4 is not getting displayed');
             expect(await caseTemplatePreview.isFlowsetTitleDisplayed('Flowset')).toBeTruthy('Flowset is not getting displayed');
             expect(await caseTemplatePreview.isLabelTitleDisplayed('Label')).toBeTruthy('Label is not getting displayed');
             expect(await caseTemplatePreview.isCaseDescriptionTitleDisplayed('Case Description')).toBeTruthy('Case Description is not getting displayed');
@@ -626,7 +626,7 @@ describe("Create Case", () => {
             expect(await taskTemplatePreview.isTaskCategoryTier4TitleDisplayed('Task Category Tier 4')).toBeTruthy('Task Category Tier 4 is not getting displayed');
             expect(await taskTemplatePreview.isTaskTypeTitleDisplayed('Task Type')).toBeTruthy('Task Type is not getting displayed');
             expect(await taskTemplatePreview.isLabelTitleDisplayed('Label')).toBeTruthy('Label is not getting displayed');
-            expect(await taskTemplatePreview.isTaskDescriptionTitleDisplayed('Task Description is not getting displayed')).toBeTruthy();
+            expect(await taskTemplatePreview.isTaskDescriptionTitleDisplayed('Task Description')).toBeTruthy('Task Description is not getting displayed');
             expect(await taskTemplatePreview.getTaskTemplateName()).toBe(templateData.templateName);
             expect(await taskTemplatePreview.getTaskSummary()).toBe(templateData.templateSummary);
             expect(await taskTemplatePreview.getTaskCompany()).toBe("Petramco");
@@ -636,6 +636,7 @@ describe("Create Case", () => {
         } catch (e) {
             throw e;
         } finally {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
@@ -751,18 +752,18 @@ describe("Create Case", () => {
 
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy();
+            expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy('Case Reopen Link is present');
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
-            expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy();
+            expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy('Case Reopen Link is present');
             await updateStatusBladePo.changeCaseStatus('Pending');
             await updateStatusBladePo.setStatusReason('Error');
             await updateStatusBladePo.clickSaveStatus();
-            expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy();
+            expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy('Case Reopen Link is present');
             await updateStatusBladePo.changeCaseStatus('Canceled');
             await updateStatusBladePo.setStatusReason('Approval Rejected');
             await updateStatusBladePo.clickSaveStatus();
-            expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy();
+            expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy('Case Reopen Link is present');
 
             //create case
             await navigationPage.gotoCreateCase();
@@ -776,18 +777,18 @@ describe("Create Case", () => {
             await utilityCommon.closePopUpMessage();
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
-            expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy();
+            expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy('Case Reopen Link is present');
             await updateStatusBladePo.changeCaseStatus('Pending');
             await updateStatusBladePo.setStatusReason('Error');
             await updateStatusBladePo.clickSaveStatus();
-            expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy();
+            expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy('Case Reopen Link is present');
             await updateStatusBladePo.changeCaseStatus('Resolved');
             await updateStatusBladePo.setStatusReason('Auto Resolved');
             await updateStatusBladePo.clickSaveStatus();
-            expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy();
+            expect(await viewCasePage.isCaseReopenLinkPresent()).toBeTruthy('Case Reopen Link is not present');
             await updateStatusBladePo.changeCaseStatus('Closed');
             await updateStatusBladePo.clickSaveStatus();
-            expect(await viewCasePage.isCaseReopenLinkPresent()).toBeTruthy();
+            expect(await viewCasePage.isCaseReopenLinkPresent()).toBeTruthy('Case Reopen Link is not present');
             await viewCasePage.clickOnReopenCaseLink();
             await utilityCommon.closePopUpMessage();
             expect(await viewCasePage.getTextOfStatus()).toBe('In Progress');
@@ -1027,6 +1028,7 @@ describe("Create Case", () => {
             expect(await attachmentBladePage.isDownloadButtonEnabled()).toBeTruthy('Download button is disabled');
             await attachmentBladePage.clickDownloadButton();
             expect(await utilCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('File is not downloaded.');
+            await utilityCommon.closeAllBlades();
         } catch (e) {
             throw e;
         } finally {

@@ -228,13 +228,13 @@ describe('Email Template', () => {
         beforeAll(async () => {
             //step 1 login and goto doc lib and create two doc lib
             publishDocData1 = {
-                docLibTitle: 'Public holiday list',
+                docLibTitle: 'Public holiday Doc ' + randomStr,
                 company: 'Petramco',
                 businessUnit: "United States Support",
                 ownerGroup: "US Support 3"
             }
             publishDocData2 = {
-                docLibTitle: 'Bonus Chart',
+                docLibTitle: 'Bonus Chart Doc ' + randomStr,
                 company: 'Petramco',
                 businessUnit: "United States Support",
                 ownerGroup: "US Support 3"
