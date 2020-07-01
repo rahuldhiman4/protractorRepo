@@ -8,16 +8,16 @@ class PreviewTaskTemplateBlade {
         taskSummaryValue: '[rx-view-component-id="a790b9d4-46d5-408c-8f86-4e04a683bc3d"] div.read-only-content',
         taskTemplateName: '[rx-view-component-id="227ba62e-b3ee-4f84-958c-7d2c7f2d2be3"] span',
         taskCompany: '44e56c5d-b8d5-4f23-b4b6-da4d8baa43e9',
-        taskCompanyValue: '[rx-view-component-id="44e56c5d-b8d5-4f23-b4b6-da4d8baa43e9"] .d-textfield__rx-value',
+        taskCompanyValue: '[rx-view-component-id="44e56c5d-b8d5-4f23-b4b6-da4d8baa43e9"] label ~ *',
         taskPriority: 'f4a0b2ba-433c-471f-89b1-e94d0c0f3b43',
-        taskPriorityValue: '[rx-view-component-id="f4a0b2ba-433c-471f-89b1-e94d0c0f3b43"] .d-textfield__rx-value',
+        taskPriorityValue: '[rx-view-component-id="f4a0b2ba-433c-471f-89b1-e94d0c0f3b43"] label ~ *',
         taskSummary: 'a790b9d4-46d5-408c-8f86-4e04a683bc3d',
         taskCategoryTier1: '516cbfcd-dda1-4d15-8508-4e90f7699846',
         taskCategoryTier2: 'ffb8c92f-ff09-41b2-8bd3-fff86c983416',
         taskCategoryTier3: '56354504-a395-4c39-b2ee-c1d937c57349',
         taskCategoryTier4: '9df7b305-6be0-4f50-8c2f-88a61ed85cb4',
         taskType: 'd7598602-1dce-4cf8-af9b-b0083df0e721',
-        taskTypeValue: '[rx-view-component-id="d7598602-1dce-4cf8-af9b-b0083df0e721"] .d-textfield__rx-value',
+        taskTypeValue: '[rx-view-component-id="d7598602-1dce-4cf8-af9b-b0083df0e721"] label ~ *',
         label: 'ef679736-6aaf-4b21-867a-307e154464d8',
         taskDescription: 'f663f6d7-ef45-4170-9dda-6ca2459fad08',
         processName: 'f79145f8-5b9f-4ef5-b573-7920752f860a',
@@ -47,8 +47,10 @@ class PreviewTaskTemplateBlade {
     }
 
     async getTaskCompany(): Promise<string> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.taskCompanyValue)));
-        return await $(this.selectors.taskCompanyValue).getText();
+        return await $(this.selectors.taskCompanyValue).isPresent().then(async (present) => {
+            if (present) return await $(this.selectors.taskCompanyValue).getText();
+            else return "no company";
+        });
     }
 
     async getTaskType(): Promise<string> {
@@ -63,7 +65,7 @@ class PreviewTaskTemplateBlade {
 
     async isTaskSummaryTitleDisplayed(taskSummary: string): Promise<boolean> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.taskummary)));
-        return await utilityCommon.isFieldLabelDisplayed(this.selectors.taskCompany, taskSummary);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.taskSummary, taskSummary);
     }
 
     async isTaskCompanyTitleDisplayed(taskCompany: string): Promise<boolean> {
@@ -99,7 +101,7 @@ class PreviewTaskTemplateBlade {
     }
 
     async isTaskDescriptionTitleDisplayed(taskDescription: string): Promise<boolean> {
-        return await utilityCommon.isFieldLabelDisplayed(this.selectors.taskDescription, taskDescription);
+        return await $('[rx-view-component-id="f663f6d7-ef45-4170-9dda-6ca2459fad08"] bwf-description label').getText() == taskDescription;
     }
 
     async isProcessNameTitleDisplayed(processName: string): Promise<boolean> {
@@ -107,7 +109,7 @@ class PreviewTaskTemplateBlade {
     }
 
     async isDynamicGroupDisplayed(groupName: string): Promise<boolean> {
-        return await $(`[rx-view-component-id="92456067-e396-441c-b1c5-b452bc473991"] .group-container__name__title[title=${groupName}]`).isDisplayed(); 
+        return await $(`[rx-view-component-id="92456067-e396-441c-b1c5-b452bc473991"] .group-container__name__title[title=${groupName}]`).isDisplayed();
     }
 
     async isDynamicFieldDisplayed(fieldName: string): Promise<boolean> {
@@ -120,7 +122,7 @@ class PreviewTaskTemplateBlade {
         }
         return false;
     }
-    
+
     async getAssigneeText(): Promise<string> {
         return await $(this.selectors.assigneeText).getText();
     }

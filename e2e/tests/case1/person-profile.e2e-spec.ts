@@ -14,6 +14,8 @@ import utilityGrid from '../../utils/utility.grid';
 
 describe('Person Profile test', () => {
     beforeAll(async () => {
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.updatePersonAsVIP('Elizabeth', 'Yes');
         await browser.get(BWF_BASE_URL);
         await loginPage.login('elizabeth');
         await navigationPage.gotoPersonProfile();
@@ -61,8 +63,7 @@ describe('Person Profile test', () => {
 
     //asahitya
     it('[DRDMV-14023,DRDMV-16812]: Verify My Profile Console', async () => {
-        await apiHelper.apiLogin('tadmin');
-        await apiHelper.updatePersonAsVIP('Elizabeth', 'Yes');
+        await navigationPage.gotoCaseConsole();
         await navigationPage.gotoPersonProfile();
         expect(await personProfile.getPersonType()).toBe('Employee', 'Person type does not match');
         expect(await personProfile.getJobTitle()).toBe('HR Business Analyst', 'Job tite does not match');
@@ -75,7 +76,6 @@ describe('Person Profile test', () => {
         expect(await personProfile.getContactNumber()).toBe("+19255553456", "Phone number mismatch");
         expect(await personProfile.getEmail()).toBe("elizabeth@bwflabs.localdomain", "Email mismatch");
         expect(await personProfile.getSite()).toBe("Rochester\n70 Linden Oaks, Rochester, New York, 14625, United States ", "Site mismatch");
-        expect(await personProfile.getManagerName()).toBe("Hannah Haas", "Manager name mismatch");
         await personProfile.clickOnTab("Requested Cases");
         await personProfile.clickOnTab("Assigned Cases");
         await personProfile.clickOnTab("Support Groups");
@@ -305,7 +305,7 @@ describe('Person Profile test', () => {
             await viewCasePage.clickOnContactPersonerDrpDwn();
             await viewCasePage.clickContactPersonName();
             await utilityCommon.switchToNewTab(1);
-            expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Qianru Tao', 'Former Manager')).toBeTruthy('Relation does not match');
+            expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Qianru Tao', 'Former Manager')).toBeTruthy('Relation does not match'); //Defect
 
             //Remove the relation and verify that Relation is actually removed
             await relatedTabPage.clickRelatedPersonName('Qianru Tao');

@@ -242,7 +242,6 @@ describe("Case General Approval Tests", () => {
             caseId = response.displayId;
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
             expect(await viewCasePo.isShowApproversBannerDisplayed()).toBeTruthy('Show Approvers Banner is not displayed');
@@ -264,17 +263,16 @@ describe("Case General Approval Tests", () => {
             await showApproversBladePo.clickApproversTab('Approval Decision');
             expect(await showApproversBladePo.getApproversCount()).toBe(0);
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
-            await navigationPage.signOut();
         });
-
+        
         it('[DRDMV-1367,DRDMV-10823]:Approve the case and verify the case details', async () => {
+            await navigationPage.signOut();
             await loginPage.login('qliu');
             await navigationPage.switchToJSApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole('Automated One must Approval Case', 'Approve');
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("In Progress");
             await activityTabPage.clickOnFilterButton();
@@ -301,7 +299,6 @@ describe("Case General Approval Tests", () => {
             await showApproversBladePo.clickApproversTabFromActivity('Pending Approval');
             expect(await showApproversBladePo.getApproversCountFromActivity()).toBe(0);
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
-            await navigationPage.signOut();
         });
 
         it('[DRDMV-1367,DRDMV-10823]:Verify the approvals details on case activity after case rejection', async () => {
@@ -315,7 +312,6 @@ describe("Case General Approval Tests", () => {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Canceled");
             await activityTabPage.clickOnFilterButton();
@@ -338,7 +334,6 @@ describe("Case General Approval Tests", () => {
             await showApproversBladePo.clickApproversTabFromActivity('Pending Approval');
             expect(await showApproversBladePo.getApproversCountFromActivity()).toBe(0);
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
-            await navigationPage.signOut();
         });
 
         afterAll(async () => {
@@ -346,7 +341,6 @@ describe("Case General Approval Tests", () => {
             await apiHelper.deleteApprovalMapping();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
-
         });
 
     });
@@ -448,7 +442,6 @@ describe("Case General Approval Tests", () => {
             caseId = response.displayId;
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
             expect(await viewCasePo.isShowApproversBannerDisplayed()).toBeTruthy('Show Approvers Banner is not displayed');
@@ -584,7 +577,6 @@ describe("Case General Approval Tests", () => {
             caseId = response.displayId;
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
             expect(await viewCasePo.isShowApproversBannerDisplayed()).toBeTruthy('Show Approvers Banner is not displayed');
@@ -606,17 +598,16 @@ describe("Case General Approval Tests", () => {
             await showApproversBladePo.clickApproversTab('Approval Decision');
             expect(await showApproversBladePo.getApproversCount()).toBe(0);
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
-            await navigationPage.signOut();
         });
-
+        
         it('[DRDMV-14049,DRDMV-10824]:Approve the case and verify the case details', async () => {
+            await navigationPage.signOut();
             await loginPage.login('qliu');
             await navigationPage.switchToJSApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(caseSummary1, 'Approve');
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
             expect(await viewCasePo.isShowApproversBannerDisplayed()).toBeTruthy('Show Approvers Banner is not displayed');
@@ -642,17 +633,16 @@ describe("Case General Approval Tests", () => {
             expect(await showApproversBladePo.getApproversCompany('Petramco')).toBeTruthy('Approver Company is not displayed');
             expect(await showApproversBladePo.getApprovedApprovalStatusLabel()).toContain('Approved');
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
-            await navigationPage.signOut();
         });
-
+        
         it('[DRDMV-14049,DRDMV-10824]:Verify the approvals details on case activity', async () => {
+            await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.switchToJSApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(caseSummary1, 'Approve');
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("In Progress");
             await activityTabPage.clickOnFilterButton();
@@ -687,7 +677,6 @@ describe("Case General Approval Tests", () => {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Canceled");
             await activityTabPage.clickOnFilterButton();
@@ -710,16 +699,13 @@ describe("Case General Approval Tests", () => {
             await showApproversBladePo.clickApproversTabFromActivity('Pending Approval');
             expect(await showApproversBladePo.getApproversCountFromActivity()).toBe(0);
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
-            await navigationPage.signOut();
         });
-
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteApprovalMapping();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
-
     });
 
     //skhobrag
@@ -821,7 +807,6 @@ describe("Case General Approval Tests", () => {
             caseId = response.displayId;
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             await updateStatusBladePo.changeCaseStatus('Resolved');
             await updateStatusBladePo.setStatusReason('Auto Resolved');
@@ -848,17 +833,16 @@ describe("Case General Approval Tests", () => {
             await showApproversBladePo.clickApproversTab('Approval Decision');
             expect(await showApproversBladePo.getApproversCount()).toBe(0);
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
-            await navigationPage.signOut();
         });
-
+        
         it('[DRDMV-10832]:Reject the case and verify the case details', async () => {
+            await navigationPage.signOut();
             await loginPage.login('qliu');
             await navigationPage.switchToJSApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(caseSummary, 'Reject');
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
             await activityTabPage.clickOnFilterButton();
@@ -914,17 +898,16 @@ describe("Case General Approval Tests", () => {
             await showApproversBladePo.clickApproversTab('Approval Decision');
             expect(await showApproversBladePo.getApproversCount()).toBe(0);
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
-            await navigationPage.signOut();
         });
-
+        
         it('[DRDMV-10832]:Approve the case and verify the case details', async () => {
+            await navigationPage.signOut();
             await loginPage.login('qliu');
             await navigationPage.switchToJSApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(caseSummary, 'Approve');
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Closed");
             await activityTabPage.clickOnFilterButton();
@@ -951,7 +934,6 @@ describe("Case General Approval Tests", () => {
             await showApproversBladePo.clickApproversTabFromActivity('Pending Approval');
             expect(await showApproversBladePo.getApproversCountFromActivity()).toBe(0);
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
-            await navigationPage.signOut();
         });
 
         afterAll(async () => {

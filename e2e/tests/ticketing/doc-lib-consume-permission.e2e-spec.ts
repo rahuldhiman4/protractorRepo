@@ -443,11 +443,12 @@ describe('Document Library Consume Permission', () => {
     //kgaikwad
     describe('[DRDMV-13534]: Search and UI Validation of document library search view', async () => {
         let addNoteText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let publish: string[] = ['drdmv13534_publish_document1', 'drdmv13534_publish_document2'];
-        let files: string[] = [filePath1, filePath2];
+        // create 11 doc lib to see pagination
+        let publish: string[] = ['drdmv13534_publish_document1', 'drdmv13534_publish_document2', 'drdmv13534_publish_document3', 'drdmv13534_publish_document4', 'drdmv13534_publish_document5', 'drdmv13534_publish_document6', 'drdmv13534_publish_document7', 'drdmv13534_publish_document8', 'drdmv13534_publish_document9', 'drdmv13534_publish_document10', 'drdmv13534_publish_document11'];
+        let files: string[] = [filePath1, filePath2, filePath3, filePath4, filePath5, filePath1, filePath2, filePath3, filePath4, filePath5, filePath1];
         let documentDate;
         beforeAll(async () => {
-            for (let i = 0; i < 1; i++) {
+            for (let i = 0; i < publish.length; i++) {
                 let publishDocLibData1 = {
                     docLibTitle: publish[i],
                     company: 'Petramco',
@@ -526,6 +527,9 @@ describe('Document Library Consume Permission', () => {
             await activityTabPo.clickAndDownloadAttachmentFile('bwfPdf.pdf');
             expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is not downloaded.');
         });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
     });
 
     //kgaikwad
@@ -587,8 +591,8 @@ describe('Document Library Consume Permission', () => {
             await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Agent Access');
             await caseAccessTabPo.selectAndAddAgent('qstrong');
             expect(await caseAccessTabPo.isCaseAccessEntityAdded('Quin Strong')).toBeTruthy('Failuer: Quin Strong Agent Name is missing');
-            await caseAccessTabPo.selectAndAddAgent('hhaas');
-            expect(await caseAccessTabPo.isCaseAccessEntityAdded('Hannah Haas')).toBeTruthy('Failuer: Quanah George Agent Name is missing');
+            await caseAccessTabPo.selectAndAddAgent('Fritz');
+            expect(await caseAccessTabPo.isCaseAccessEntityAdded('Fritz Schulz')).toBeTruthy('Failuer: Fritz Schulz Name is missing');
 
             await navigationPage.signOut();
             await loginPage.login('qstrong');
@@ -610,10 +614,9 @@ describe('Document Library Consume Permission', () => {
             expect(await utilityCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailureMsg: bwfXlsx.xlsx File is not downloaded.');
 
             await navigationPage.signOut();
-            await loginPage.login('hhaas@petramco.com', 'Password_1234');
+            await loginPage.login('fritz');
             await caseConsolePo.searchAndOpenCase(caseId);
             await activityTabPo.applyActivityFilter('General Notes');
-            expect(await activityTabPo.clickShowMoreLinkInAttachmentActivity(1)).toBeTruthy('show more link is not displayed')
             expect(await activityTabPo.isAttachedFileNameDisplayed('bwfXlsx.xlsx')).toBeTruthy('FailureMsg:bwfXlsx.xlsx Attached Document is missing');
             expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('FailureMsg: bwfXlsx.xlsx File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfXlsx.xlsx');

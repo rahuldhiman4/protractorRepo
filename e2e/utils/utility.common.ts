@@ -163,7 +163,7 @@ export class Utility {
     }
 
     async isFieldLabelDisplayed(guid: string, fieldName: string): Promise<boolean> {
-        let fieldLabel = `[rx-view-component-id='${guid}'] rx-read-only-field label, [rx-view-component-id='${guid}'] label.d-textfield__label span`;
+        let fieldLabel = `[rx-view-component-id='${guid}'] rx-read-only-field label, [rx-view-component-id='${guid}'] label.d-textfield__label span, [rx-view-component-id='${guid}'] bwf-read-only-field label`;
         return await element(by.cssContainingText(fieldLabel, fieldName)).isPresent().then(async (result) => {
             if (result) {
                 return await element(by.cssContainingText(fieldLabel, fieldName)).getText() == fieldName ? true : false;
@@ -182,7 +182,7 @@ export class Utility {
         let isRequired: boolean = await $(`[rx-view-component-id="${guid}"] .form-control-required`).isPresent();
         if (!isRequired) {
             let nameElement = await $(`[rx-view-component-id="${guid}"] .form-control-label`);
-            let value: string = await browser.executeScript('return window.getComputedStyle(arguments[0], ":after").content;', nameElement);
+        let value: string = await browser.executeScript('return window.getComputedStyle(arguments[0], ":after").content;', nameElement);
             isRequired = value.trim().substring(3, value.length - 2) === 'required';
         }
         return isRequired;

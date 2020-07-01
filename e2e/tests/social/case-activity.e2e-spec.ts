@@ -71,6 +71,7 @@ describe('Case Activity', () => {
             expect(await activityTabPage.getTextTaskFilterOption('Flag')).toBe('Flag'), 'Flag is missing';
             expect(await activityTabPage.getTextTaskFilterOption('Unflag')).toBe('Unflag'), 'Unflag is missing';
             expect(await activityTabPage.getTextTaskFilterOption('Feedback')).toBe('Feedback'), 'Feedback is missing';
+            expect(await activityTabPage.getTextTaskFilterOption('Review')).toBe('Review');
             expect(await activityTabPage.isAuthorSearchBoxVisible()).toBeTruthy("authorSearchBoxVisbility is not visible");
             // 4th Step: Check box is selected/unselect and Apply button is enabled/disable.   
             await activityTabPage.selectFilterCheckBox('General Notes');
@@ -84,7 +85,8 @@ describe('Case Activity', () => {
             await activityTabPage.selectFilterCheckBox('Flag');
             await activityTabPage.selectFilterCheckBox('Unflag');
             await activityTabPage.selectFilterCheckBox('Feedback');
-            await activityTabPage.addAuthorOnFilter('Angelina Jolie');
+            await activityTabPage.selectFilterCheckBox('Review');
+            await activityTabPage.addAuthorOnFilter('Kadeem Hardison');
             await activityTabPage.clickOnFilterApplyButton();
             expect(await activityTabPage.isFilterPopUpDisplayed()).toBe('false');
             // ii) Selected Filters are displayed in Activity with first filter and + other selected filters
@@ -93,15 +95,16 @@ describe('Case Activity', () => {
             expect(await activityTabPage.getTextFromFilterList('Flag')).toBe('Flag'), 'Flag is missing';
             expect(await activityTabPage.getTextFromFilterList('Unflag')).toBe('Unflag'), 'Unflag is missing';
             expect(await activityTabPage.getTextFromFilterList('Feedback')).toBe('Feedback'), 'Feedback is missing';
-            expect(await activityTabPage.getTextFromFilterList('ajolie')).toBe('Author : ajolie'), 'Author: ajolie is missing';
+            expect(await activityTabPage.getTextFromFilterList('Author')).toBe('Author : Kadeem Hardison'), 'Author: ajolie is missing';
+            expect(await activityTabPage.getTextFromFilterList('Review')).toBe('Review');
             // iii)- Filter is removed and next filter gets displayed in UI and +n more count reduced by 1
-            await activityTabPage.closeNmoreLink();
-            await activityTabPage.clickOnNmoreLink();
+            // await activityTabPage.closeNmoreLink();
+            // await activityTabPage.clickOnNmoreLink();
             expect(await activityTabPage.getTextFromFilterList('General Notes')).toBe('General Notes'), 'General Notes is missing';
-            expect(await activityTabPage.getTextOfNmoreLink()).toBe('4 Show more');
+            expect(await activityTabPage.getTextOfNmoreLink()).toBe('5 Show more');
             await activityTabPage.removeFilterList();
             expect(await activityTabPage.getTextFromFilterList('Flag')).toBe('Flag'), 'Flag is missing';
-            expect(await activityTabPage.getTextOfNmoreLink()).toBe('3 Show more');
+            expect(await activityTabPage.getTextOfNmoreLink()).toBe('4 Show more');
             await activityTabPage.closeNmoreLink();
             // await utilCommon.waitUntilSpinnerToHide();
             // iv)- Click on + n more button (- Selected filter list is displayed )
@@ -109,7 +112,8 @@ describe('Case Activity', () => {
             expect(await activityTabPage.getTextFromFilterList('Flag')).toBe('Flag'), 'Flag is missing';
             expect(await activityTabPage.getTextFromFilterList('Unflag')).toBe('Unflag'), 'Assignment Change is missing';
             expect(await activityTabPage.getTextFromFilterList('Feedback')).toBe('Feedback'), 'Feedback is missing';
-            expect(await activityTabPage.getTextFromFilterList('ajolie')).toBe('Author : ajolie'), 'Author: ajolie is missing';
+            expect(await activityTabPage.getTextFromFilterList('Author')).toBe('Author : Kadeem Hardison');
+            expect(await activityTabPage.getTextFromFilterList('Review')).toBe('Review');
             await activityTabPage.closeNmoreLink();
             //  v) - That particular filter is removed.
             expect(await activityTabPage.getTextFromFilterList('Flag')).toBe('Flag'), 'Flag is missing';
