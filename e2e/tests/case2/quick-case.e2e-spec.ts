@@ -22,9 +22,9 @@ let applyBtn = "Apply";
 describe("Quick Case", () => {
     const requester = "The requester of the case";
     const contact = "Another person contacting on behalf of the requester";
-    let templateName797 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-    let templateSummary797 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-    let caseTemplateId797 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+    let templateName797 = [...Array(15)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+    let templateSummary797 = [...Array(15)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+    let caseTemplateId797 = [...Array(15)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
@@ -83,6 +83,7 @@ describe("Quick Case", () => {
             let qcSummary = await quickCasePo.isCaseSummaryPresentInRecommendedCases(categoryvalues[0]);
             qcSummary = false ? result = false : result = true;
             await expect(result).toBeTruthy(`FailureMsg: Case Summary does not match for ${categoryvalues[i]}`);
+            await quickCasePo.clickStartOverButton();
         }
     });
 
@@ -112,15 +113,6 @@ describe("Quick Case", () => {
         await quickCasePo.saveCase();
         expect(await utilityCommon.getAllPopupMsg()).toContain('Template is Inactive. Cannot create case.', 'FailureMsg: Pop up Msg is missing for inactive template');
         await utilityCommon.closePopUpMessage();
-    });
-
-    it('[DRDMV-800]: [Quick Case] Case creation with requester having same name as other company users', async () => {
-        await quickCase.clickStartOverButton();
-        await quickCase.selectRequesterName('Person1 Person1');
-        await quickCase.setCaseSummary('caseSummary');
-        await quickCase.createCaseButton();
-        await quickCase.gotoCaseButton();
-        expect(await viewCasePo.getRequesterName()).toBe('Person1 Person1');
     });
 
     it('[DRDMV-1205]: [Quick Case] People search', async () => {
@@ -181,72 +173,13 @@ describe("Quick Case", () => {
         });
     });
 
-    describe('[DRDMV-1087]: [Quick Case] Case Template search via !', async () => {
-        let templateData, templateData1, randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let threeCharacterString = randomStr.substr(0, 3);
-        beforeAll(async () => {
-            templateData = {
-                "templateName": randomStr + "Petramco",
-                "templateSummary": randomStr + "Petramco",
-                "categoryTier1": "Purchasing Card",
-                "categoryTier2": "Policies",
-                "categoryTier3": "Card Issuance",
-                "casePriority": "Low",
-                "templateStatus": "Draft",
-                "company": "Petramco",
-            }
-            templateData1 = {
-                "templateName": randomStr + "Psilon",
-                "templateSummary": randomStr + "Psilon",
-                "templateStatus": "Active",
-                "company": 'Psilon',
-                "businessUnit": "Psilon Support Org1",
-                "supportGroup": "Psilon Support Group1",
-                "assignee": "rrovnitov",
-                "ownerBU": 'Psilon Support Org1',
-                "ownerGroup": "Psilon Support Group1"
-            }
-            await apiHelper.apiLogin('qkatawazi');
-            await apiHelper.createCaseTemplate(templateData);
-            await apiHelper.apiLogin('gwixillian');
-            await apiHelper.createCaseTemplate(templateData1);
-        });
-        it('[DRDMV-1087]: Checking change case template button for In Progress', async () => {
-            //Draft Template Search 
-            await navigationPage.gotoQuickCase();
-            await quickCase.clickStartOverButton();
-            await quickCasePo.selectRequesterName("adam");
-            expect(await quickCasePo.selectCaseTemplate(templateData.templateName)).toBeFalsy("Draft Template is founded");;
-            //Active Template Verification
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
-            await utilGrid.searchAndOpenHyperlink(templateData.templateName);
-            await editCaseTemplate.clickOnEditCaseTemplateMetadata();
-            await editCaseTemplate.changeTemplateStatusDropdownValue('Active');
-            await editCaseTemplate.clickOnSaveCaseTemplateMetadata();
-            await utilCommon.closePopUpMessage();
-            await navigationPage.gotoQuickCase();
-            await quickCasePo.clickStartOverButton();
-            await quickCasePo.selectRequesterName("adam");
-            await quickCasePo.selectCaseTemplate(templateData.templateName);
-            await quickCase.setCaseSummary(templateData.templateName);
-            await quickCasePo.saveCase();
-            await previewCasePo.clickGoToCaseButton();
-        });
-        it('[DRDMV-1087]: [Quick Case] Case Template search via !', async () => {
-            //Different Company Search
-            await navigationPage.gotoQuickCase();
-            await quickCasePo.selectRequesterName("adam");
-            expect(await quickCasePo.selectCaseTemplate(templateData1.templateName)).toBeFalsy("Template is same as employee comapny");
-            //3 Character Search Template Verification
-            await quickCasePo.clickStartOverButton();
-            await quickCasePo.selectRequesterName("adam");
-            expect(await quickCasePo.selectCaseTemplate(threeCharacterString)).toBeTruthy("Template is not founded");
-        });
-        afterAll(async () => {
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
-        });
+    it('[DRDMV-800]: [Quick Case] Case creation with requester having same name as other company users', async () => {
+        await navigationPage.gotoQuickCase();
+        await quickCase.selectRequesterName('Person1 Person1');
+        await quickCase.setCaseSummary('caseSummary');
+        await quickCase.createCaseButton();
+        await quickCase.gotoCaseButton();
+        expect(await viewCasePo.getRequesterName()).toBe('Person1 Person1');
     });
 
     describe('[DRDMV-786]: [Quick Case] Case creation with all case statuses in template', async () => {
@@ -259,7 +192,7 @@ describe("Quick Case", () => {
                 "company": "Petramco",
                 "caseStatus": "New",
                 "businessUnit": "HR Support",
-                "supportGroup": "Workforce Administration",
+                "supportGroup": "Workforce Administration"
             }
             templateData2 = {
                 "templateName": randomStr + "Petramco2",
@@ -346,6 +279,74 @@ describe("Quick Case", () => {
             await quickCasePo.saveCase();
             await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePo.getCaseStatusValue()).toContain('In Progress');
+        });
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+    });
+
+    describe('[DRDMV-1087]: [Quick Case] Case Template search via !', async () => {
+        let templateData, templateData1, randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let threeCharacterString = randomStr.substr(0, 3);
+        beforeAll(async () => {
+            templateData = {
+                "templateName": randomStr + "Petramco",
+                "templateSummary": randomStr + "Petramco",
+                "categoryTier1": "Purchasing Card",
+                "categoryTier2": "Policies",
+                "categoryTier3": "Card Issuance",
+                "casePriority": "Low",
+                "templateStatus": "Draft",
+                "company": "Petramco",
+            }
+            templateData1 = {
+                "templateName": randomStr + "Psilon",
+                "templateSummary": randomStr + "Psilon",
+                "templateStatus": "Active",
+                "company": 'Psilon',
+                "businessUnit": "Psilon Support Org1",
+                "supportGroup": "Psilon Support Group1",
+                "assignee": "rrovnitov",
+                "ownerBU": 'Psilon Support Org1',
+                "ownerGroup": "Psilon Support Group1"
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createCaseTemplate(templateData);
+            await apiHelper.apiLogin('gwixillian');
+            await apiHelper.createCaseTemplate(templateData1);
+        });
+        it('[DRDMV-1087]: Checking change case template button for In Progress', async () => {
+            //Draft Template Search 
+            await navigationPage.gotoQuickCase();
+            await quickCase.clickStartOverButton();
+            await quickCasePo.selectRequesterName("adam");
+            expect(await quickCasePo.selectCaseTemplate(templateData.templateName)).toBeFalsy("Draft Template is founded");;
+            //Active Template Verification
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await utilGrid.searchAndOpenHyperlink(templateData.templateName);
+            await editCaseTemplate.clickOnEditCaseTemplateMetadata();
+            await editCaseTemplate.changeTemplateStatusDropdownValue('Active');
+            await editCaseTemplate.clickOnSaveCaseTemplateMetadata();
+            await utilCommon.closePopUpMessage();
+            await navigationPage.gotoQuickCase();
+            await quickCasePo.clickStartOverButton();
+            await quickCasePo.selectRequesterName("adam");
+            await quickCasePo.selectCaseTemplate(templateData.templateName);
+            await quickCase.setCaseSummary(templateData.templateName);
+            await quickCasePo.saveCase();
+            await previewCasePo.clickGoToCaseButton();
+        });
+        it('[DRDMV-1087]: [Quick Case] Case Template search via !', async () => {
+            //Different Company Search
+            await navigationPage.gotoQuickCase();
+            await quickCasePo.selectRequesterName("adam");
+            expect(await quickCasePo.selectCaseTemplate(templateData1.templateName)).toBeFalsy("Template is same as employee comapny");
+            //3 Character Search Template Verification
+            await quickCasePo.clickStartOverButton();
+            await quickCasePo.selectRequesterName("adam");
+            expect(await quickCasePo.selectCaseTemplate(threeCharacterString)).toBeTruthy("Template is not founded");
         });
         afterAll(async () => {
             await navigationPage.signOut();
