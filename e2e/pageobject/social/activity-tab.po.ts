@@ -1,26 +1,28 @@
 import { resolve } from "path";
 import { $, $$, browser, by, element, ElementFinder, Key, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../utils/util.common';
+import ckEditorOpsPo from '../common/ck-editor/ckeditor-ops.po';
 
 class ActivityTabPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        activityNoteCKEditor: 'bwf-rich-text-editor[style="display: block;"]',
+        //        activityNoteCKEditor: '[rx-view-component-id="76b9d8a2-54ef-4b24-a086-fc6ff745449d"] bwf-rich-text-editor[style="display: block;"], bwf-rich-text-editor[style="display: block;"]',
         activityNoteTextArea: '.cke_enable_context_menu',
+        activityCkEditorGuid: '76b9d8a2-54ef-4b24-a086-fc6ff745449d',
         addNoteBox: '.textfield__wrapper .form-control[placeholder="Add a note"]',
-        personPopup: '.dropdown-menu .popup-template',
+        personPopup: 'button .popup-template',
         personPopupCkEditor: '.cke_autocomplete_panel li',
         addNotePostButton: '.activity-feed-note-buttons__right .btn-primary',
         addNoteCancelButton: '.activity-feed-note-buttons__right .btn-secondary',
         addNoteNotesTemplate: '.activity-note .d-icon-note_pencil',
-        activityLog: '.activity__body .activity-title, .activity__body [style="position: relative;"], .activity__body .field, .activity__body .value',
+        activityLog: '.activity__body .activity-title, .activity__body [style="position: relative;"], .activity__body .field, .activity__body .value, .activity__body div',
         filterButton: '.d-icon-filter',
         filterCheckbox: '.checkbox__label span',
-        filterAuthor: '.dropdown input[placeholder="Enter name, email, or login ID"]',
+        filterAuthor: '.dropdown [placeholder="Enter name, email, login ID or employee ID"]',
         filterPopupApplyOrClearButton: '.filter-options button span',
         FilterPopUp: '.bwf-activity-log-filter button[aria-expanded]',
         filterApplyButtonEnableDisabled: '.filter-options button[disabled="disabled"]',
-        filterLists: '.a-tag-active .bwf-text-overflow-ellipsis',
+        filterLists: '.a-tag-active .bwf-text-overflow-ellipsis, .a-tag-active .bwf-text-overflow-ellipsis span',
         nMoreButton: '.bwf-show-more .dropdown-toggle span',
         removeIconFilterList: '.d-flex .close-inverse',
         activityTab: '.nav-link-wrapper',
@@ -71,7 +73,7 @@ class ActivityTabPage {
         bulletIcon: '.cke_button__bulletedlist_icon',
         addNotePublicCheckBoxToolTip: '.d-icon-question_circle_o',
         maximizeMinimizeicon: '.cke_button__maximize_icon',
-        maximizeMinimizeWindow: '.cke_button__maximize_label',
+        maximizeMinimizeWindow: '.cke_button__maximize',
         boldTextCkEditorTextArea: '.cke_enable_context_menu strong',
         italicTextCkEditorTextArea: '.cke_enable_context_menu em',
         underlineTextCkEditorTextArea: '.cke_enable_context_menu u',
@@ -80,18 +82,26 @@ class ActivityTabPage {
         numberListCkEditorTextArea: '.cke_enable_context_menu ol li',
         bulletListTextCkEditorTextArea: '.cke_enable_context_menu ul li',
         linkTextCkEditorTextArea: '.cke_enable_context_menu a',
+        activityLogBody: '.activity__wrapper .collapse-block div div[style="position: relative;"]',
+        showApproversLink: '.activity__wrapper button.btn-sm',
     }
 
     async isLockIconDisplayedInActivity(activityNumber: number): Promise<boolean> {
-        return await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.lockIcon).isDisplayed().then(async (result) => {
-            if (result) return true;
-            else return false;
+        return await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.lockIcon).isPresent().then(async (result) => {
+            if (result) {
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.lockIcon).isDisplayed();
+            } else return false;
         });
     }
 
     async isTitleTextDisplayedInActivity(caseActivityLogTitleText: string, activityNumber: number): Promise<boolean> {
-        return await $$(this.selectors.activityLogList).get(activityNumber - 1).element(by.cssContainingText(this.selectors.logTitle, caseActivityLogTitleText)).isDisplayed().then(async (result) => {
-            if (result) return true;
+        return await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.logTitle).isPresent().then(async (result) => {
+            if (result) {
+                let logtitleText = await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.logTitle).getText();
+                if (logtitleText.includes(caseActivityLogTitleText)) {
+                    return true;
+                }
+            }
             else return false;
         });
     }
@@ -150,6 +160,35 @@ class ActivityTabPage {
                     else return false;
                 });
                 break;
+            }
+
+            case "filePlus": {
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-file_plus_o').isPresent().then(async (result) => {
+                    if (result) return true;
+                    else return false;
+                });
+            }
+
+            case "arrow_exclamation_circle": {
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-list_arrow_exclamation_circle').isPresent().then(async (result) => {
+                    if (result) return true;
+                    else return false;
+                });
+            }
+
+            case "squares_arrows": {
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-squares_arrows').isPresent().then(async (result) => {
+                    if (result) return true;
+                    else return false;
+                });
+                break;
+            }
+
+            case "files_change": {
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-files_change_o').isPresent().then(async (result) => {
+                    if (result) return true;
+                    else return false;
+                });
             }
 
             default: {
@@ -284,6 +323,11 @@ class ActivityTabPage {
         return await $$(this.selectors.logItems).first().getText();
     }
 
+    async isActivityBlank(): Promise<boolean> {
+        //        await utilCommon.waitUntilSpinnerToHide();
+        return !await $(this.selectors.logItems).isPresent();
+    }
+
     async clickOnRefreshButton(): Promise<void> {
         await $(this.selectors.refreshButton).click();
     }
@@ -347,7 +391,7 @@ class ActivityTabPage {
 
     async removeFilterList(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.removeIconFilterList)));
-        await $(this.selectors.removeIconFilterList).click();
+        await $$(this.selectors.removeIconFilterList).first().click();
     }
 
     async isfilterPresent(): Promise<boolean> {
@@ -383,11 +427,11 @@ class ActivityTabPage {
 
     async isFilterPopUpDisplayed(): Promise<string> {
         return await $(this.selectors.FilterPopUp).getAttribute('aria-expanded');
-
     }
 
     async clickActivityNoteTextBox(): Promise<void> {
         await $(this.selectors.addNoteBox).click();
+        await browser.sleep(1500);
     }
 
     async addActivityNote(addNoteText: string): Promise<void> {
@@ -395,13 +439,7 @@ class ActivityTabPage {
         if (searchBoxdisplay == true) {
             await this.clickActivityNoteTextBox();
         }
-        await $(this.selectors.activityNoteCKEditor).isPresent().then(async (result) => {
-            if (result) {
-                await browser.wait(this.EC.elementToBeClickable($(this.selectors.activityNoteTextArea)), 10000).then(async () => {
-                    await $(this.selectors.activityNoteTextArea).sendKeys(addNoteText);
-                });
-            }
-        });
+        await ckEditorOpsPo.updateCKEditor(addNoteText);
     }
 
     async addPersonInActivityNote(tagPerson: string): Promise<void> {
@@ -468,11 +506,17 @@ class ActivityTabPage {
         await element(by.cssContainingText(this.selectors.filterCheckbox, filterCheckBoxText)).click();
     }
 
+    async applyActivityFilter(filterCheckbox: string): Promise<void> {
+        await this.clickOnFilterButton();
+        await this.selectFilterCheckBox(filterCheckbox);
+        await this.clickOnFilterApplyButton();
+    }
+
     async addAuthorOnFilter(AuthorName: string): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterAuthor)));
         await $(this.selectors.filterAuthor).click();
         await $(this.selectors.filterAuthor).sendKeys(AuthorName);
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.personPopup)), 3000);
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.personPopup)), 8000);
         await $(this.selectors.personPopup).click();
     }
 
@@ -552,18 +596,28 @@ class ActivityTabPage {
     }
 
     async isTextPresentInNote(bodyText: string): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($$('[class="activity ng-star-inserted"] bwf-activity-general-notes').first()), 3000);
-        let activityText = await $$('[class="activity ng-star-inserted"] bwf-activity-general-notes').first();
-        let value = await activityText.getText();
-        return value.includes(bodyText) ? true : false;
+        let status: boolean = undefined;
+        await browser.wait(this.EC.visibilityOf($$('[class="activity ng-star-inserted"] bwf-activity-general-notes').first()), 3000).then(async () => {
+            let activityText = await $$('[class="activity ng-star-inserted"] bwf-activity-general-notes').first();
+            let value = await activityText.getText();
+            status = value.includes(bodyText) ? true : false;
+        }).catch(async () => {
+            console.log('Notes is not present');
+            status = false;
+        });
+        return status;
     }
 
     async getCaseViewCount(TitleText: string): Promise<number> {
-        return await element.all(by.cssContainingText(this.selectors.logTitle, TitleText)).count();
+        return await (await element.all(by.cssContainingText(this.selectors.logTitle, TitleText))).length;
     }
 
     async clickOnHyperlinkFromActivity(activityNumber: number, linkText: string): Promise<void> {
         await $$(this.selectors.activityLogList).get(activityNumber - 1).element(by.cssContainingText('.activity__wrapper div a', linkText)).click();
+    }
+
+    async scrollToActivity(activityNumber: number): Promise<void> { //Operates on activity scroll bar.
+        await browser.executeScript("arguments[0].scrollIntoView();", $$('.activity .activity__wrapper').get(activityNumber - 1).getWebElement());
     }
 
     async isHyperlinkOfActivityDisplay(bodyText: string, authorText: string): Promise<boolean> {
@@ -759,13 +813,13 @@ class ActivityTabPage {
     }
 
     async getTextCkEditorTextArea(): Promise<string> {
-        return await $(this.selectors.activityNoteCKEditor).getText();
+        return await $(this.selectors.activityNoteTextArea).getText();
     }
 
     async isCkEditorDisplayed(): Promise<boolean> {
-        return await $(this.selectors.activityNoteCKEditor).isPresent().then(async (link) => {
+        return await $(this.selectors.activityNoteTextArea).isPresent().then(async (link) => {
             if (link) {
-                return await $(this.selectors.activityNoteCKEditor).isDisplayed();
+                return await $(this.selectors.activityNoteTextArea).isDisplayed();
             } else return false;
         });
     }
@@ -795,12 +849,9 @@ class ActivityTabPage {
     }
 
     async isColorTextDisplayedInCkEditorTextArea(colorCode: string, bodyText: string): Promise<boolean> {
-        return element(by.cssContainingText(this.selectors.italicTextCkEditorTextArea, colorCode)).isPresent().then(async (link) => {
+        return await $(`.cke_enable_context_menu span[style="${colorCode}"]`).isPresent().then(async (link) => {
             if (link) {
-                let colorcodeAttribute = await $(this.selectors.italicTextCkEditorTextArea).getAttribute('style') == colorCode ? true : false;
-                if (colorcodeAttribute == true) {
-                    return element(by.cssContainingText(this.selectors.boldTextCkEditorTextArea, bodyText)).isDisplayed();
-                }
+                return element(by.cssContainingText(this.selectors.colorTextCkEditorTextArea, bodyText)).isDisplayed();
             } else return false;
         });
     }
@@ -813,10 +864,10 @@ class ActivityTabPage {
         });
     }
 
-    async isTextRightAlignInCkEditorTextArea(allignment: string, bodyText: string): Promise<boolean> {
-        return element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, allignment)).isPresent().then(async (link) => {
+    async isTextRightAlignInCkEditorTextArea(bodyText: string): Promise<boolean> {
+        return element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
             if (link) {
-                let colorcodeAttribute = await $(this.selectors.alignmentTextCkEditorTextArea).getAttribute('style') == allignment ? true : false;
+                let colorcodeAttribute = await $(this.selectors.alignmentTextCkEditorTextArea).getAttribute('style') == 'text-align: right;' ? true : false;
                 if (colorcodeAttribute == true) {
                     return element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, bodyText)).isDisplayed();
                 }
@@ -824,10 +875,10 @@ class ActivityTabPage {
         });
     }
 
-    async isTextCenterAlignInCkEditorTextArea(allignment: string, bodyText: string): Promise<boolean> {
-        return element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, allignment)).isPresent().then(async (link) => {
+    async isTextCenterAlignInCkEditorTextArea(bodyText: string): Promise<boolean> {
+        return element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
             if (link) {
-                let colorcodeAttribute = await $(this.selectors.alignmentTextCkEditorTextArea).getAttribute('style') == allignment ? true : false;
+                let colorcodeAttribute = await $(this.selectors.alignmentTextCkEditorTextArea).getAttribute('style') == 'text-align: center;' ? true : false;
                 if (colorcodeAttribute == true) {
                     return element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, bodyText)).isDisplayed();
                 }
@@ -860,8 +911,99 @@ class ActivityTabPage {
     }
 
     async getTextCkEditorMinimizeOrMiximize(): Promise<string> {
-        return await $(this.selectors.alignmentTextCkEditorTextArea).getText();
+        return await $(this.selectors.maximizeMinimizeWindow).getAttribute('title');
+    }
+
+
+    async isBoldTextDisplayedInActivity(bodyText: string, activityNumber: number): Promise<boolean> {
+        let getTextmsg = await $$(this.selectors.activityLogBody).get(activityNumber - 1).$('strong').getText();
+        if (getTextmsg.trim().includes(bodyText)) {
+            return true;
+        } else return false;
+    }
+
+    async isItalicTextDisplayedInActivity(bodyText: string, activityNumber: number): Promise<boolean> {
+        let getTextmsg = await $$(this.selectors.activityLogBody).get(activityNumber - 1).$('em').getText();
+        if (getTextmsg.trim().includes(bodyText)) {
+            return true;
+        } else return false;
+    }
+
+    async isUnderlineTextDisplayedInActivity(bodyText: string, activityNumber: number): Promise<boolean> {
+        let getTextmsg = await $$(this.selectors.activityLogBody).get(activityNumber - 1).$('u').getText();
+        if (getTextmsg.trim().includes(bodyText)) {
+            return true;
+        } else return false;
+    }
+
+    async isColorTextDisplayedInActivity(colorCode: string, bodyText: string, activityNumber: number): Promise<boolean> {
+        let getTextmsg = await $$(this.selectors.activityLogBody).get(activityNumber - 1).$(`span[style="${colorCode}"]`).getText();
+        if (getTextmsg.trim().includes(bodyText)) {
+            return true;
+        } else return false;
+    }
+
+    async isLeftAlignTextDisplayedInActivity(bodyText: string, activityNumber: number): Promise<boolean> {
+        let getTextmsg = await $$(this.selectors.activityLogBody).get(activityNumber - 1).$('div').getText();
+        if (getTextmsg.trim().includes(bodyText)) {
+            return true;
+        } else return false;
+    }
+
+    async isRightAlignTextDisplayedInActivity(bodyText: string, activityNumber: number): Promise<boolean> {
+        let getTextmsg = await $$(this.selectors.activityLogBody).get(activityNumber - 1).$('div[style="text-align: right;"]').getText();
+        if (getTextmsg.trim().includes(bodyText)) {
+            return true;
+        } else return false;
+    }
+
+    async isCenterAlignTextDisplayedInActivity(bodyText: string, activityNumber: number): Promise<boolean> {
+        let getTextmsg = await $$(this.selectors.activityLogBody).get(activityNumber - 1).$('div[style="text-align: center;"]').getText();
+        if (getTextmsg.trim().includes(bodyText)) {
+            return true;
+        } else return false;
+    }
+
+    async isNumberListTextDisplayedInActivity(bodyText: string, activityNumber: number): Promise<boolean> {
+        let getTextmsg = await $$(this.selectors.activityLogBody).get(activityNumber - 1).$$('ol li').first().getText();
+        if (getTextmsg.trim().includes(bodyText)) {
+            return true;
+        } else return false;
+    }
+
+    async isBulletListTextDisplayedInActivity(bodyText: string, activityNumber: number): Promise<boolean> {
+        let getTextmsg = await $$(this.selectors.activityLogBody).get(activityNumber - 1).$$('ul li').first().getText();
+        if (getTextmsg.trim().includes(bodyText)) {
+            return true;
+        } else return false;
+    }
+
+    async isHyperLinkLTextDisplayedInActivity(httpHyperlink: string, linkText: string, activityNumber: number): Promise<boolean> {
+        return await $$(this.selectors.activityLogBody).get(activityNumber - 1).$(`a[href="${httpHyperlink}"]`).isPresent().then(async (link) => {
+            if (link) {
+                let getTextlink = await $$(this.selectors.activityLogBody).get(activityNumber - 1).$(`a[href="${httpHyperlink}"]`).getText();
+                if (getTextlink.trim().includes(linkText)) {
+                    return true;
+                }
+            } else return false;
+        });
+    }
+
+    async isNoteTemplateLinkDisplayedInCkEditor(notesTemplateText: string, activityNumber: number): Promise<boolean> {
+        return await $$(this.selectors.activityNoteTextArea).get(activityNumber - 1).$('a').isPresent().then(async (link) => {
+            if (link) {
+                let getTextNotesTemplate = await $$(this.selectors.activityNoteTextArea).get(activityNumber - 1).$$('p').first().getText();
+                if (getTextNotesTemplate.trim().includes(notesTemplateText)) {
+                    return true;
+                }
+            } else return false;
+        });
+    }
+
+    async clickShowApproversLink(showApproversLinkLabel: string): Promise<void> {
+        await $(this.selectors.showApproversLink).click();
     }
 }
+
 
 export default new ActivityTabPage();

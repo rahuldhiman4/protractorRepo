@@ -26,11 +26,12 @@ class NotificationAlerts {
         return status;
     }
 
-    async clickOnActonableLink(msg: string): Promise<void> {
+    async clickActionableLink(msg: string): Promise<void> {
         let cnt: number = await $$(this.selectors.alerts).count();
         for (let i = 0; i < cnt; i++) {
             let notification: string = await $$(this.selectors.alerts).get(i).$('.item-content-text p').getText();
-            if (await notification.includes(msg)) {
+            let trimmedNotification = notification.replace(/\s/g, "");
+            if (trimmedNotification.includes(msg.replace(/\s/g, ""))) {
                 await $$(this.selectors.alerts).get(i).$('.item-content-text p a').click();
                 break;
             }

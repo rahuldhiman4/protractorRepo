@@ -12,6 +12,7 @@ import composeMailPo from '../../pageobject/email/compose-mail.po';
 import createKnowledgePage from "../../pageobject/knowledge/create-knowlege.po";
 import editKnowledgePo from '../../pageobject/knowledge/edit-knowledge.po';
 import knowledgeConsole from '../../pageobject/knowledge/knowledge-articles-console.po';
+import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
 import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
 import createDocumentLibraryPage from '../../pageobject/settings/document-management/create-document-library.po';
 import documentLibraryPage from '../../pageobject/settings/document-management/document-library-console.po';
@@ -20,7 +21,6 @@ import activityTabPo from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from "../../utils/util.grid";
-import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
 import utilityCommon from '../../utils/utility.common';
 
 let caseBAUser = 'qkatawazi';
@@ -84,8 +84,10 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             "categoryTier3": "Incident",
             "region": "Australia",
             "site": "Canberra",
-            "assignee": "KMills",
-            "assigneeSupportGroup": "GB Support 2"
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "United Kingdom Support",
+            "assigneeSupportGroup": "GB Support 1",
+            "assignee": "KMills"
         }
         // Create article in in progress status
         articleData.title = title + "_" + inProgressStatus;
@@ -139,6 +141,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 
@@ -195,7 +198,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await navigationPage.signOut();
 
             await loginPage.login(knowledgeCandidateUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
             await utilGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(regionFieldColumn);
@@ -212,7 +215,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await navigationPage.signOut();
 
             await loginPage.login(knowledgeContributorUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
             await utilGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(regionFieldColumn);
@@ -229,7 +232,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await navigationPage.signOut();
 
             await loginPage.login(knowledgePublisherUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
             await utilGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(regionFieldColumn);
@@ -246,7 +249,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await navigationPage.signOut();
 
             await loginPage.login(knowledgeCoachUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
             await utilGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(regionFieldColumn);
@@ -290,15 +293,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
             await createKnowledgePage.selectSiteDropDownOption(siteFieldVal);
             await createKnowledgePage.clickOnSaveKnowledgeButton();
-            await previewKnowledgePo.clickOnViewArticleLink();
-            await utilCommon.switchToNewWidnow(1);
+            await previewKnowledgePo.clickGoToArticleButton();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
             expect(await editKnowledgePo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
             await editKnowledgePo.selectRegionDropDownOption(regionFieldVal2);
             await editKnowledgePo.selectSiteDropDownOption(siteFieldVal1);
             await editKnowledgePo.saveKnowledgeMedataDataChanges();
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
 
             //Create Knowledge article by Case Manager
@@ -314,15 +315,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
             await createKnowledgePage.selectSiteDropDownOption(siteFieldVal);
             await createKnowledgePage.clickOnSaveKnowledgeButton();
-            await previewKnowledgePo.clickOnViewArticleLink();
-            await utilCommon.switchToNewWidnow(1);
+            await previewKnowledgePo.clickGoToArticleButton();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
             expect(await editKnowledgePo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
             await editKnowledgePo.selectRegionDropDownOption(regionFieldVal2);
             await editKnowledgePo.selectSiteDropDownOption(siteFieldVal1);
             await editKnowledgePo.saveKnowledgeMedataDataChanges();
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
 
             //Create Knowledge article by Case Agent
@@ -338,20 +337,18 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
             await createKnowledgePage.selectSiteDropDownOption(siteFieldVal);
             await createKnowledgePage.clickOnSaveKnowledgeButton();
-            await previewKnowledgePo.clickOnViewArticleLink();
-            await utilCommon.switchToNewWidnow(1);
+            await previewKnowledgePo.clickGoToArticleButton();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
             expect(await editKnowledgePo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
             await editKnowledgePo.selectRegionDropDownOption(regionFieldVal2);
             await editKnowledgePo.selectSiteDropDownOption(siteFieldVal1);
             await editKnowledgePo.saveKnowledgeMedataDataChanges();
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
 
             //Login with Knowledge Candidate
             await loginPage.login(knowledgeCandidateUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
             await utilCommon.waitUntilSpinnerToHide();
             await navigationPage.gotoCreateKnowledge();
@@ -363,20 +360,18 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
             await createKnowledgePage.selectSiteDropDownOption(siteFieldVal);
             await createKnowledgePage.clickOnSaveKnowledgeButton();
-            await previewKnowledgePo.clickOnViewArticleLink();
-            await utilCommon.switchToNewWidnow(2);
+            await previewKnowledgePo.clickGoToArticleButton();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
             expect(await editKnowledgePo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
             await editKnowledgePo.selectRegionDropDownOption(regionFieldVal2);
             await editKnowledgePo.selectSiteDropDownOption(siteFieldVal1);
             await editKnowledgePo.saveKnowledgeMedataDataChanges();
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
 
             //Login with Knowledge Contributor
             await loginPage.login(knowledgeContributorUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
             await utilCommon.waitUntilSpinnerToHide();
             await navigationPage.gotoCreateKnowledge();
@@ -388,8 +383,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
             await createKnowledgePage.selectSiteDropDownOption(siteFieldVal);
             await createKnowledgePage.clickOnSaveKnowledgeButton();
-            await previewKnowledgePo.clickOnViewArticleLink();
-            await utilCommon.switchToNewWidnow(2);
+            await previewKnowledgePo.clickGoToArticleButton();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
             expect(await editKnowledgePo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
@@ -401,7 +395,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
 
             //Login with Knowledge Publisher
             await loginPage.login(knowledgePublisherUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
             await utilCommon.waitUntilSpinnerToHide();
             await navigationPage.gotoCreateKnowledge();
@@ -413,20 +407,18 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
             await createKnowledgePage.selectSiteDropDownOption(siteFieldVal);
             await createKnowledgePage.clickOnSaveKnowledgeButton();
-            await previewKnowledgePo.clickOnViewArticleLink();
-            await utilCommon.switchToNewWidnow(2);
+            await previewKnowledgePo.clickGoToArticleButton();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
             expect(await editKnowledgePo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
             await editKnowledgePo.selectRegionDropDownOption(regionFieldVal2);
             await editKnowledgePo.selectSiteDropDownOption(siteFieldVal1);
             await editKnowledgePo.saveKnowledgeMedataDataChanges();
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
 
             //Login with Knowledge Coach
             await loginPage.login(knowledgeCoachUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
             await utilCommon.waitUntilSpinnerToHide();
             await navigationPage.gotoCreateKnowledge();
@@ -438,21 +430,18 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
             await createKnowledgePage.selectSiteDropDownOption(siteFieldVal);
             await createKnowledgePage.clickOnSaveKnowledgeButton();
-            await previewKnowledgePo.clickOnViewArticleLink();
-            await utilCommon.switchToNewWidnow(2);
+            await previewKnowledgePo.clickGoToArticleButton();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
             expect(await editKnowledgePo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
             await editKnowledgePo.selectRegionDropDownOption(regionFieldVal2);
             await editKnowledgePo.selectSiteDropDownOption(siteFieldVal1);
             await editKnowledgePo.saveKnowledgeMedataDataChanges();
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
         }
         catch (error) {
             throw error;
         }
         finally {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await utilityCommon.refresh();
             await utilCommon.waitUntilSpinnerToHide();
             await navigationPage.signOut();
@@ -697,7 +686,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await previewCasePo.clickGoToCaseButton();
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnAttachLink();
-            await resources.clickOnAdvancedSearchOptions(documentLibraryStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(title);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
@@ -737,7 +726,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await previewCasePo.clickGoToCaseButton();
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnAttachLink();
-            await resources.clickOnAdvancedSearchOptions(documentLibraryStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(title);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
@@ -777,7 +766,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await previewCasePo.clickGoToCaseButton();
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnAttachLink();
-            await resources.clickOnAdvancedSearchOptions(documentLibraryStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(title);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
@@ -825,7 +814,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await quickCase.selectRequesterName(caseAgentUser);
             await quickCase.setCaseSummary(articleInDraftStatus);
             //Search with knowledge article with draft status
-            await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInDraftStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
@@ -841,7 +830,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
 
             //Search with knowledge article with SMEReview status
             await resources.enterAdvancedSearchText(articleInSMEReviewStatus);
-            await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInSMEReviewStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
@@ -857,7 +846,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
 
             //Search with knowledge article with Published status
             await resources.enterAdvancedSearchText(articleInPublishedStatus);
-            await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInPublishedStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
@@ -873,7 +862,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
 
             //Search with knowledge article with Retired status
             await resources.enterAdvancedSearchText(articleInRetiredStatus);
-            await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInRetiredStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
@@ -889,7 +878,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
 
             //Search with knowledge article with Closed status
             await resources.enterAdvancedSearchText(articleInClosedStatus);
-            await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInClosedStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
@@ -905,7 +894,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
 
             //Search with knowledge article with Canceled status
             await resources.enterAdvancedSearchText(articleInCanceledStatus);
-            await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInCanceledStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
@@ -929,7 +918,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await viewCasePage.clickOnTab('Resources');
 
             //Search with knowledge article with draft status
-            await resources.clickOnAdvancedSearchOptions(knowledgeArticlesStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInDraftStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
@@ -1020,7 +1009,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await quickCase.selectRequesterName(caseAgentUser);
             await quickCase.setCaseSummary(articleInDraftStatus);
             //Search with knowledge article with draft status
-            await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInDraftStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
@@ -1035,7 +1024,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInDraftStatus);
 
             //Search with knowledge article with SMEReview status
-            await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInSMEReviewStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
@@ -1050,7 +1039,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInSMEReviewStatus);
 
             //Search with knowledge article with Published status
-            await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInPublishedStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
@@ -1065,7 +1054,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInPublishedStatus);
 
             //Search with knowledge article with Retired status
-            await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInRetiredStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
@@ -1080,7 +1069,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInRetiredStatus);
 
             //Search with knowledge article with Closed status
-            await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInClosedStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
@@ -1095,7 +1084,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInClosedStatus);
 
             //Search with knowledge article with Canceled status
-            await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInCanceledStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
@@ -1119,7 +1108,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await viewCasePage.clickOnTab('Resources');
 
             //Search with knowledge article with draft status
-            await resources.clickOnAdvancedSearchOptions(knowledgeArticlesStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInDraftStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
@@ -1210,7 +1199,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await quickCase.selectRequesterName(caseAgentUser);
             await quickCase.setCaseSummary(articleInDraftStatus);
             //Search with knowledge article with draft status
-            await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInDraftStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
@@ -1225,7 +1214,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInDraftStatus);
 
             //Search with knowledge article with SMEReview status
-            await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInSMEReviewStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
@@ -1240,7 +1229,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInSMEReviewStatus);
 
             //Search with knowledge article with Published status
-            await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInPublishedStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
@@ -1255,7 +1244,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInPublishedStatus);
 
             //Search with knowledge article with Retired status
-            await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInRetiredStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
@@ -1270,7 +1259,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInRetiredStatus);
 
             //Search with knowledge article with Closed status
-            await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInClosedStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
@@ -1285,7 +1274,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInClosedStatus);
 
             //Search with knowledge article with Canceled status
-            await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInCanceledStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
@@ -1309,7 +1298,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await viewCasePage.clickOnTab('Resources');
 
             //Search with knowledge article with draft status
-            await resources.clickOnAdvancedSearchOptions(knowledgeArticlesStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInDraftStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
@@ -1405,4 +1394,4 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await loginPage.login(caseBAUser);
         }
     }, 900 * 1000);
-})
+});

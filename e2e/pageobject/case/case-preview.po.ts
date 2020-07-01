@@ -5,9 +5,8 @@ class CasePreview {
 
     selectors = {
         header: '.dp-header span',
-        viewCaseButton: '[rx-view-component-id="fbfc234b-c34f-4aab-ac54-b3a9eddecebf"] button',
         caseSummary: '[rx-view-component-id="2b082dbf-495a-4a0c-aadb-cf78555bbfb0"] span',
-        gotoCaseButton__preview: '[rx-view-component-id="529287cb-4d9d-4729-aa6c-5676980df72e"] button',
+        gotoCaseButton: '[rx-view-component-id="529287cb-4d9d-4729-aa6c-5676980df72e"] button',
         caseId: '[rx-view-component-id="6934b23e-3403-4b21-b4aa-a7a10283c8eb"] .title',
         priority: '[rx-view-component-id="6934b23e-3403-4b21-b4aa-a7a10283c8eb"] .selection-field',
         caseStatus: '[rx-view-component-id="6bbd4072-3626-49a4-8813-b1a456674fc7"] .status-transition',
@@ -17,7 +16,7 @@ class CasePreview {
         requesterEmailId: '[rx-view-component-id="a108323b-b110-41ed-9ad8-9dc7b0258c77"] .bwf-person-email button',
         requesterSite: '[rx-view-component-id="a108323b-b110-41ed-9ad8-9dc7b0258c77"] .person-site-text',
         caseTemplate: '[rx-view-component-id="ffb8da80-b878-4b11-8aec-3bd146aab6c0"] div[title]',
-        description: '[rx-view-component-id="c5be61e7-f05b-4e30-91d0-e67a32125ff9"] .bwf-description-textarea-read',
+        description: '[rx-view-component-id="c5be61e7-f05b-4e30-91d0-e67a32125ff9"] .collapse-block div div div',
         categoryTier1: '[rx-view-component-id="8668462b-3aac-4f43-8793-fc49aafbd5c6"] div[title]',
         categoryTier2: '[rx-view-component-id="1068f2e1-1d3a-48a4-a0ed-ef1a8631ddc1"] div[title]',
         categoryTier3: '[rx-view-component-id="1f32a2f6-ed6c-4b73-be36-c2990cb5a882"] div[title]',
@@ -30,12 +29,8 @@ class CasePreview {
         source: '[rx-view-component-id="669b71fd-6e23-4625-91f6-139208e47538"] div[title]',
         label: '[rx-view-component-id="ab146574-d991-43bd-8a7b-0be34019164c"] div[title]',
         caseSite: '[rx-view-component-id="974e5fdd-5992-4f87-a640-267c4cc3daae"] div[title]',
-        dynamicFieldsName:'[rx-view-component-id="40c6dac1-3d7a-402d-9d78-6ba29bb1c1f1"] label',
-        backButton:'[rx-view-component-id="1483f92a-0736-4316-b2e5-084927069d38"] button'
-    }
-
-    async clickOnViewCaseLink(): Promise<void> {
-        await $(this.selectors.viewCaseButton).click();
+        dynamicFieldsName: '[rx-view-component-id="40c6dac1-3d7a-402d-9d78-6ba29bb1c1f1"] label',
+        backButton: '[rx-view-component-id="1483f92a-0736-4316-b2e5-084927069d38"] button'
     }
 
     async clickOncreateNewCaseButton(): Promise<void> {
@@ -100,12 +95,8 @@ class CasePreview {
     }
 
     async isDescriptionDisplayed(description: string): Promise<boolean> {
-        let descriptionText = await $(this.selectors.description).getText();
+        let descriptionText = await $$(this.selectors.description).first().getText();
         return descriptionText.includes(description);
-    }
-
-    async isViewCaseButtonDisplayed(): Promise<boolean> {
-        return await $(this.selectors.viewCaseButton).isDisplayed();
     }
 
     async iscreateNewCaseButtonDisplayed(): Promise<boolean> {
@@ -133,15 +124,15 @@ class CasePreview {
     }
 
     async isAssigneeDisplayed(assignee: string): Promise<boolean> {
-      let valueassignee:boolean = await $(this.selectors.assignee + ' .person-link').isPresent();
+        let valueassignee: boolean = await $(this.selectors.assignee + ' .person-link').isPresent();
         if (valueassignee == true) {
-         return await $(this.selectors.assignee + ' .person-link').getText() == assignee ? true : false;
-        }else { return await $(this.selectors.assignee + ' .ac-person-absent').getText() == assignee ? true : false; }
+            return await $(this.selectors.assignee + ' .person-link').getText() == assignee ? true : false;
+        } else { return await $(this.selectors.assignee + ' .ac-person-absent').getText() == assignee ? true : false; }
     }
 
     async clickGoToCaseButton(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.gotoCaseButton__preview)));
-        await $(this.selectors.gotoCaseButton__preview).click();
+        await $(this.selectors.gotoCaseButton).click();
         //        await browser.wait(this.EC.elementToBeClickable($(viewCasePo.selectors.addTaskButton)));
         //        await utilCommon.waitUntilSpinnerToHide();
     }
@@ -155,27 +146,27 @@ class CasePreview {
     }
 
     async isCreateNewCaseButtonDisplayed(): Promise<boolean> {
-        return await $(this.selectors.viewCaseButton).isDisplayed();
+        return await $(this.selectors.createNewCaseButton).isDisplayed();
     }
-    
-    async isGroupDisplayed(groupName:string):Promise<boolean>{
+
+    async isGroupDisplayed(groupName: string): Promise<boolean> {
         return await $(`[rx-view-component-id="40c6dac1-3d7a-402d-9d78-6ba29bb1c1f1"] .group-container__name div[title=${groupName}]`).isDisplayed();
     }
 
-    async isDynamicFieldDisplayed(fieldName:string):Promise<boolean>{
-        let dynamicFields:number= await $$(this.selectors.dynamicFieldsName).count();
-        for(let i=0; i<dynamicFields;i++){
-           let field= await $$(this.selectors.dynamicFieldsName).get(i).getText();
-           if(fieldName==field){
-             return true;
-           }
+    async isDynamicFieldDisplayed(fieldName: string): Promise<boolean> {
+        let dynamicFields: number = await $$(this.selectors.dynamicFieldsName).count();
+        for (let i = 0; i < dynamicFields; i++) {
+            let field = await $$(this.selectors.dynamicFieldsName).get(i).getText();
+            if (fieldName == field) {
+                return true;
+            }
         }
         return false;
-     }
+    }
 
-     async clickBackButton():Promise<void>{
+    async clickBackButton(): Promise<void> {
         await $(this.selectors.backButton).click();
-     }
+    }
 }
 
 export default new CasePreview();

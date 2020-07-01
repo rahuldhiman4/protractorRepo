@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import { filter, find, get, isArray } from 'lodash';
+import { filter, find, forEach, get, isArray, remove, uniqBy } from 'lodash';
 import * as config from './jira.util.config';
 
 const minimist = require("minimist");
@@ -132,6 +132,23 @@ export class CreateJiraCycle {
                     JiraStatus: "NA",
                 });
             }
+        });
+        // Remove duplicate values within array
+        this.passJiraTest = uniqBy(this.passJiraTest, function (record: InputType) { return record.jiraId; });
+        this.failJiraTest = uniqBy(this.failJiraTest, function (record: InputType) { return record.jiraId; });
+        this.skipJiraTest = uniqBy(this.skipJiraTest, function (record: InputType) { return record.jiraId; });
+        // remove duplicate between failed and passed array
+        // this.passJiraTest = compact(this.passJiraTest.map(passedItem => find(this.failJiraTest, { 'jiraId': passedItem.jiraId }) ? undefined : passedItem));
+        forEach(this.failJiraTest, (failEntry: InputType) => {
+            remove(this.passJiraTest, (passEntry: InputType) => {
+                return failEntry.jiraId == passEntry.jiraId;
+            });
+        });
+        // remove duplicate between failed and skipped array
+        forEach(this.failJiraTest, (failEntry: InputType) => {
+            remove(this.skipJiraTest, (skipEntry: InputType) => {
+                return failEntry.jiraId == skipEntry.jiraId;
+            });
         });
     }
 
@@ -291,17 +308,20 @@ export class CreateJiraCycle {
             // get issue id details
             let issueIdApiResponse = await this.getIssueIdDetails(issueId);
             if (issueIdApiResponse) {
-                // Is new status of issue key
-                let lastExecution = issueIdApiResponse.data.executions[0].executionStatus;
-                lastExecution == "1" ? (lastExecutionStatus = "passed")
-                    : ((lastExecution == "2") ? (lastExecutionStatus = "failed")
-                        : (lastExecutionStatus = "skipped"));
+                // Is new execution status
+                let lastExecution = "passed";
+                if (issueIdApiResponse.data.executions[0]) {
+                    lastExecution = issueIdApiResponse.data.executions[0].executionStatus;
+                    lastExecution == "1" ? (lastExecutionStatus = "passed")
+                        : ((lastExecution == "2") ? (lastExecutionStatus = "failed")
+                            : (lastExecutionStatus = "skipped"));
 
-                // calculate pass percentage
-                if (this.generateStats.toLowerCase() == 'true') {
-                    let passPercent = await this.getTotalExecutionAndPassPercent(issueId);
-                    passDetails = passPercent.passPercentage;
-                    totalExe = passPercent.totalExecution;
+                    // calculate pass percentage
+                    if (this.generateStats.toLowerCase() == 'true') {
+                        let passPercent = await this.getTotalExecutionAndPassPercent(issueIdApiResponse);
+                        passDetails = passPercent.passPercentage;
+                        totalExe = passPercent.totalExecution;
+                    }
                 }
             }
             const { fixVersions } = issueDetails.data.fields;
@@ -355,7 +375,8 @@ export class CreateJiraCycle {
         }
         const fields = ['JiraId', 'Description', 'ExecutionStatus', 'IsNewExecutionStatus', 'TotalExecution', 'PassPercent', 'Version', 'Priority', 'JiraStatus'];
         const json2csvParser = new Parser({ fields });
-        fs.writeFileSync('e2e/reports/spec-jira-report/jira-report.csv', json2csvParser.parse(this.jiraReport.concat(this.invalidJiraTest)));
+        //fs.writeFileSync('e2e/reports/spec-jira-report/jira-report.csv', json2csvParser.parse(this.jiraReport.concat(this.invalidJiraTest))); write invalid entries in file
+        fs.writeFileSync('e2e/reports/spec-jira-report/jira-report.csv', json2csvParser.parse(this.jiraReport)); // write only valid entries in CSV file
     }
 
     async writeExecutionSummary() {

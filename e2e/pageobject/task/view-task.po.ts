@@ -18,7 +18,7 @@ class ViewTask {
         categoryTier3Value: '[rx-view-component-id="c8858fb5-5b21-4e0d-a947-c0130a72b51a"] .read-only-content',
         categoryTier4Value: '[rx-view-component-id="ff1636f8-4efe-4447-9c04-f32799904f2b"] .read-only-content',
         labelValue: '[rx-view-component-id="4c2784af-c080-4630-8f16-d9e6b07e87a2"] .read-only-content',
-        descriptionValue: '[rx-view-component-id="6053a7e8-5194-420b-965a-1c3bfe3ad0a1"] .bwf-description-textarea-read',
+        descriptionValue: '[rx-view-component-id="6053a7e8-5194-420b-965a-1c3bfe3ad0a1"] .collapse-block div [style="position: relative;"] label + div',
         processnameValue: '[rx-view-component-id="7260c238-9e41-4d31-90de-2d46443117b4"] .read-only-content',
         statusReason: '[rx-view-component-id="7cdf9e18-c230-4098-8872-ddce9f005373"] .read-only-content',
         taskIdText: '[rx-view-component-id="75371088-cfeb-4554-a939-2fe7b2aa098b"] .text-field',
@@ -99,16 +99,6 @@ class ViewTask {
         await $(this.selectors.taskStatus).click();
     }
 
-    async clickOnSaveStatus(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveStatus)));
-        await $(this.selectors.saveStatus).click();
-    }
-
-    async clickOnCancelStatus(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancleStatus)));
-        await $(this.selectors.cancleStatus).click();
-    }
-
     async changeTaskStatus(statusValue: string): Promise<void> {
         // await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusDropDown)), 2000);
         await utilityCommon.selectDropDown(this.selectors.statusDropDown, statusValue);
@@ -175,7 +165,7 @@ class ViewTask {
 
     async getTaskStatusValue(): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.taskStatus)));
-        await browser.wait(this.EC.visibilityOf($(this.selectors.taskStatus)),4000);
+        await browser.wait(this.EC.visibilityOf($(this.selectors.taskStatus)), 4000);
         return await (await $(this.selectors.taskStatus).getText()).trim();
     }
 
@@ -339,10 +329,21 @@ class ViewTask {
                 let fieldName = await $$('[rx-view-component-id="4c988a95-b148-475f-b91c-9788d8e6c0cb"] .form-group label').get(i).getText();
                 if (fieldName == label) {
                     await $$('[rx-view-component-id="4c988a95-b148-475f-b91c-9788d8e6c0cb"] .form-group').get(i).$(this.selectors.showMore).click();
+                    break;
                 }
             }
         } else {
             await $$(this.selectors.showMore).first().click();
+        }
+    }
+
+    async clickOnDownloadFile(fileName: string): Promise<void> {
+        let fileCount: number = await $$('span.bwf-attachment-container__file-name').count();
+        for (let i = 0; i < fileCount; i++) {
+            let fileNameText = await $$('span.bwf-attachment-container__file-name').get(i).getText();
+            if (fileName == fileNameText) {
+                await $$('span.bwf-attachment-container__file-name').get(i).click();
+            }
         }
     }
 

@@ -26,7 +26,7 @@ class TaskTemplateGridPage {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.searchTemplate)));
         await $(this.selectors.searchTemplate).clear();
         await $(this.selectors.searchTemplate).sendKeys(input, Key.ENTER);
-        //        await utilCommon.waitUntilPopUpDisappear();
+        //        await utilCommon.closePopUpMessage();
     }
 
     async searchAndOpenTaskTemplate(taskName: string): Promise<void> {
@@ -116,6 +116,10 @@ class TaskTemplateGridPage {
 
     async clickOnColumnAndIsColumnSortedDescending(column: string): Promise<boolean> {
         return await utilGrid.isGridColumnSorted(column, 'descending', this.selectors.taskTemplateGuid);
+    }
+
+    async getFirstRecordValue(columnName: string) : Promise<string> {
+        return await utilGrid.getSelectedGridRecordValue(this.selectors.taskTemplateGuid, columnName);
     }
 
 }

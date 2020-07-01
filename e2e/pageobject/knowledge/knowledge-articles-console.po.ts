@@ -1,4 +1,4 @@
-import { $, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, by, element, Key, protractor, ProtractorExpectedConditions, browser } from "protractor";
 import utilGrid from "../../utils/util.grid";
 import utilityGrid from '../../utils/utility.grid';
 
@@ -18,47 +18,54 @@ class KnowledgeArticlesGridConsole {
         applyFilter: '.advanced-filter__actions-buttons .m-start-4',
         removeFilter: '.advanced-filter__actions-buttons button',
         tableValue: '.c-header-container [class="c-header-name"]',
-        getAccessText:'[rx-view-component-id="234d397b-5a98-400a-8c72-9de75e6659d9"]',
+        getAccessText: '[rx-view-component-id="234d397b-5a98-400a-8c72-9de75e6659d9"]',
+    }
+
+    async searchAndOpenKnowledgeArticle(knowledgeId: string): Promise<void> {
+        await utilityGrid.clearFilter();
+        await utilityGrid.searchAndOpenHyperlink(knowledgeId);
     }
 
     async getKnowledgeArticleConsoleTitle(): Promise<string> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.knowledgeArticleConsoleTitle)));
-        return await $(this.selectors.knowledgeArticleConsoleTitle).getText();
+        return await browser.wait(this.EC.visibilityOf($(this.selectors.knowledgeArticleConsoleTitle)), 5000).then(async (result) => {
+            if(result) return await $(this.selectors.knowledgeArticleConsoleTitle).getText();
+            else return "Text Not Found";
+        });
     }
 
     async addColumnOnGrid(columnHeader: string[]): Promise<void> {
-        await utilityGrid.addGridColumn(columnHeader,this.selectors.knowledgeArticleGridConsoleGuid);
-//        await utilCommon.waitUntilSpinnerToHide();
+        await utilityGrid.addGridColumn(columnHeader, this.selectors.knowledgeArticleGridConsoleGuid);
+        //        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async clearGridSearchBox(): Promise<void> {
         await utilGrid.clearGridSearchBox();
-//        await utilCommon.waitUntilSpinnerToHide();
+        //        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async removeColumnOnGrid(columnHeader: string[]): Promise<void> {
-        await utilityGrid.removeGridColumn(columnHeader,this.selectors.knowledgeArticleGridConsoleGuid);
-//        await utilCommon.waitUntilSpinnerToHide();
+        await utilityGrid.removeGridColumn(columnHeader, this.selectors.knowledgeArticleGridConsoleGuid);
+        //        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async isGridColumnSorted(columnHeader: string, sortType: string): Promise<boolean> {
-        return await utilGrid.isGridColumnSorted(columnHeader, sortType, this.selectors.knowledgeArticleGridConsoleGuid);
+        return await utilityGrid.isGridColumnSorted(columnHeader, sortType, this.selectors.knowledgeArticleGridConsoleGuid);
     }
 
     async getSelectedGridRecordValue(columnHeader: string): Promise<string> {
-        return await utilGrid.getSelectedGridRecordValue(this.selectors.knowledgeArticleGridConsoleGuid, columnHeader);
+        return await utilityGrid.getFirstGridRecordColumnValue(this.selectors.knowledgeArticleGridConsoleGuid, columnHeader);
     }
 
     async searchOnGridConsole(columnHeader: string): Promise<void> {
-        return await utilGrid.searchOnGridConsole(columnHeader);
+        return await utilityGrid.searchRecord(columnHeader);
     }
 
     async areGridColumnHeaderMatches(columnHeader: string[]): Promise<boolean> {
-        return await utilGrid.areColumnHeaderMatches(this.selectors.knowledgeArticleGridConsoleGuid, columnHeader);
+        return await utilityGrid.areColumnHeaderMatches(columnHeader);
     }
 
     async isSelectedFilterOptionDisplayedOnGridConsole(gridColumn: string[]): Promise<boolean> {
-        return await utilGrid.areColumnHeaderMatches(this.selectors.knowledgeArticleGridConsoleGuid,gridColumn);
+        return await utilityGrid.areColumnHeaderMatches(gridColumn);
     }
 
     async searchKnowledgeArticle(input: string): Promise<void> {
@@ -83,31 +90,28 @@ class KnowledgeArticlesGridConsole {
     }
 
     async isValueDisplayedInGrid(columnName: string): Promise<string> {
-        return await utilityGrid.getFirstGridRecordColumnValue(columnName,this.selectors.knowledgeArticleGridConsoleGuid);
+        return await utilityGrid.getFirstGridRecordColumnValue(columnName, this.selectors.knowledgeArticleGridConsoleGuid);
     }
 
-    async getNumberOfRecordsInGrid(): Promise<number>{
-        return await utilGrid.getNumberOfRecordsInGrid(this.selectors.knowledgeArticleGridConsoleGuid);
+    async getNumberOfRecordsInGrid(): Promise<number> {
+        return await utilityGrid.getNumberOfRecordsInGrid(this.selectors.knowledgeArticleGridConsoleGuid);
     }
 
-    async getMessageOfAccess():Promise<string>{
+    async getMessageOfAccess(): Promise<string> {
         return await $(this.selectors.getAccessText).getText();
     }
 
-    async isFilterValueOnGridDisplayed(columnField:string,fieldValue: string): Promise<boolean> {
-        let arr: string[] = await utilGrid.getAllValuesFromColoumn((this.selectors.knowledgeArticleGridConsoleGuid), columnField);
+    async isFilterValueOnGridDisplayed(columnField: string, fieldValue: string): Promise<boolean> {
+        let arr: string[] = await utilityGrid.getAllValuesFromColumn((this.selectors.knowledgeArticleGridConsoleGuid), columnField);
         let unique = arr.filter(function (elem, index, self) {
             return index === self.indexOf(elem);
         });
         return unique.length === 1 && unique[0] === fieldValue;
     }
 
-    async applyFilter(fieldName: string, textValue: string,type:string): Promise<void> {
-        await utilGrid.addFilter(fieldName,textValue,type);
+    async applyFilter(fieldName: string, textValue: string, type: string): Promise<void> {
+        await utilityGrid.addFilter(fieldName, textValue, type);
     }
-
-
-
 }
 
 export default new KnowledgeArticlesGridConsole();

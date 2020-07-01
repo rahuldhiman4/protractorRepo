@@ -19,7 +19,7 @@ class FlagUnflagKABlade {
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.unflagButtonOnBlade)));
         await $(this.selectors.unflagButtonOnBlade).click();
 //        await browser.wait(this.EC.invisibilityOf($(this.selectors.flagBlade)));
-//        await utilCommon.waitUntilPopUpDisappear();
+//        await utilCommon.closePopUpMessage();
      }
 
      async clickOnFlageButtonOnBlade():Promise<void>{

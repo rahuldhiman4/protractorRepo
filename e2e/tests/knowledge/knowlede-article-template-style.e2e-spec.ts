@@ -17,6 +17,7 @@ describe('KnowledgeArticlestyle', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 
@@ -84,7 +85,7 @@ describe('KnowledgeArticlestyle', () => {
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
-    });//, 220 * 1000);
+    }, 300 * 1000);
 
     it('[DRDMV-5020]: [Article Styles] Mandatory field validation on template styles', async () => {
         await navigationPage.gotoSettingsPage();
@@ -108,10 +109,11 @@ describe('KnowledgeArticlestyle', () => {
     });
 
     it('[DRDMV-5014,DRDMV-5022]: [Template Styles] Availability of default styles on custom templates', async () => {
+        let styleName: string = "DRDMV-5014" + randomStr;
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', 'Knowledge Article Templates - Business Workflows');
         await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
-        await createKnowledgeArticleTemplatePo.setTemplateName("DRDMV-5014" + randomStr);
+        await createKnowledgeArticleTemplatePo.setTemplateName(styleName);
         await createKnowledgeArticleTemplatePo.clickOnAddSection();
         await createKnowledgeArticleTemplatePo.setKnowledgeSetValue('Global');
         await createKnowledgeArticleTemplatePo.setSectionTitle('NewThings' + randomStr);
@@ -120,7 +122,7 @@ describe('KnowledgeArticlestyle', () => {
         await browser.navigate().back();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Template Styles', 'Template Styles Configuration - Business Workflows');
-        await articleTemplateStylePo.navigateToTemplateName('Global', "DRDMV-5014" + randomStr);
+        await articleTemplateStylePo.navigateToTemplateName('Global', styleName);
         expect(await articleTemplateStylePo.getStyleOfAllTemplate()).toContain('Header 1');
         expect(await articleTemplateStylePo.getStyleOfAllTemplate()).toContain('Header 2');
         expect(await articleTemplateStylePo.getStyleOfAllTemplate()).toContain('Header 3');
@@ -128,12 +130,12 @@ describe('KnowledgeArticlestyle', () => {
         expect(await articleTemplateStylePo.getStyleOfAllTemplate()).toContain('Paragraph');
         expect(await articleTemplateStylePo.isAddNewStyleButtonDisplay()).toBeTruthy('Add new style button not displayed');
         await articleTemplateStylePo.clickAddNewStyle();
-        await articleTemplateStylePo.setStyleName("DRDMV-5014" + randomStr);
+        await articleTemplateStylePo.setStyleName(styleName);
         await articleTemplateStylePo.clickSaveButton();
-        expect(await utilCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
+        expect(await utilCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy("Save Message is not present");
         await articleTemplateStylePo.clickAddNewStyle();
-        await articleTemplateStylePo.setStyleName("DRDMV-5014" + randomStr);
+        await articleTemplateStylePo.setStyleName(styleName);
         await articleTemplateStylePo.clickSaveButton();
-        expect(await utilCommon.isPopUpMessagePresent('is already taken by another style. Please select a different name.')).toBeTruthy();
+        expect(await utilCommon.isPopUpMessagePresent(`The style name ${styleName} is already taken by another style. Please select a different name.`)).toBeTruthy("Duplicate style Message is not present");
     }, 500 * 1000);
-})
+});

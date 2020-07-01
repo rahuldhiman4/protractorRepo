@@ -14,7 +14,8 @@ class CaseEditPage {
         saveCaseButton: '[rx-view-component-id="518308c0-34ea-4e75-a3a8-b4b07fc91de9"] button',
         summary: '[rx-view-component-id="244ffab2-bf04-4769-a5ac-c2a1f430e393"] input',
         summaryGuid: '244ffab2-bf04-4769-a5ac-c2a1f430e393',
-        caseDescription: '[rx-view-component-id="9d3ef0fc-c49f-425f-a9e1-52422ba87f4f"] textarea',
+        descriptionGuid: '9d3ef0fc-c49f-425f-a9e1-52422ba87f4f',
+        descriptionLabel: '[rx-view-component-id="9d3ef0fc-c49f-425f-a9e1-52422ba87f4f"] label',
         priorityGuid: 'add23d12-52e7-4c43-aa78-2aa0c6125bb5',
         priorityRequiredText: '[rx-view-component-id="add23d12-52e7-4c43-aa78-2aa0c6125bb5"] .btn-secondary',
         clearContactButton: '[rx-view-component-id="b28c2da7-08e2-4dfd-bfcd-f836483e625b"] .d-icon-cross',
@@ -57,7 +58,7 @@ class CaseEditPage {
         activityChangeFile: '.d-icon-file_plus_o',
         closedTip: '.bwf-attachment-container__remove .d-icon-cross',
         attachmentField: '[rx-view-component-id="9d3ef0fc-c49f-425f-a9e1-52422ba87f4f"] .bwf-attachment-button input',
-        dynamicFieldDate: '[class="input-group"] input[ng-model="date"]',
+        dynamicFieldDate: 'bwf-date-field input.form-control.i-date',
         dynamicBooleanValue: 'button.d-icon-check_adapt',
         dynamicFieldDateTime: 'input[ng-model="datetime"]',
         dynamicFieldTime: '.dynamic-time-field input[ng-model="hours"]',
@@ -67,7 +68,7 @@ class CaseEditPage {
         tabText: '.nav-link-wrapper',
     }
 
-    async removeAttachment(): Promise<void> {
+    async removeAttachment(): Promise<void> {
         await $(this.selectors.closedTip).click();
     }
 
@@ -87,7 +88,8 @@ class CaseEditPage {
     }
 
     async clickSaveCase(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveCaseButton)));
+        let saveButton = this.selectors.saveCaseButton + '[disabled="disabled"]';
+        await browser.wait(this.EC.invisibilityOf($(saveButton)), 3000);
         await $(this.selectors.saveCaseButton).click();
     }
 
@@ -105,10 +107,10 @@ class CaseEditPage {
     async clearCaseSummary(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.summary)));
         await $(this.selectors.summary).clear();
-        await $(this.selectors.summary).sendKeys('m'+Key.BACK_SPACE);
+        await $(this.selectors.summary).sendKeys('m' + Key.BACK_SPACE);
     }
 
-    async updateCaseSummary(summary: string): Promise<void> {
+    async setCaseSummary(summary: string): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.summary)));
         await $(this.selectors.summary).clear();
         await $(this.selectors.summary).sendKeys(summary);
@@ -178,17 +180,13 @@ class CaseEditPage {
         await utilityCommon.isValuePresentInDropDown(this.selectors.resolutionCodeGuid, resolutionCode);
     }
 
-    async updateResolutionDescription(resolutionDescription: string): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.resolutionDescription)));
+    async setResolutionDescription(resolutionDescription: string): Promise<void> {
         await $(this.selectors.resolutionDescription).clear();
         await $(this.selectors.resolutionDescription).sendKeys(resolutionDescription);
     }
 
-    async updateDescription(descriptionVal: string): Promise<void> {
-        var caseDescriptionSelector = await this.selectors.caseDescription;
-        //        await browser.wait(this.EC.elementToBeClickable($(caseDescriptionSelector)));
-        await $((caseDescriptionSelector)).clear;
-        await $((caseDescriptionSelector)).sendKeys(descriptionVal);
+    async updateDescription(description: string): Promise<void> {
+        await utilityCommon.setCKEditor(description, this.selectors.descriptionGuid);
     }
 
     async clickOnAttachLink(): Promise<void> {
@@ -231,7 +229,7 @@ class CaseEditPage {
         return await utilityCommon.isRequiredTagToField(this.selectors.assignedGroupGuid);
     }
 
-    async  isClearContactButtonEnable(): Promise<boolean> {
+    async isClearContactButtonEnable(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.clearContactButton)));
         return await $(this.selectors.clearContactButton).isEnabled();
     }
@@ -239,14 +237,6 @@ class CaseEditPage {
     async isClearSiteButtonClickable(): Promise<boolean> {
         try {
             return await $(this.selectors.clearSiteField).isEnabled();
-        } catch (error) {
-            return false;
-        }
-    }
-
-    async isDescriptionClickable(): Promise<boolean> {
-        try {
-            return await $(this.selectors.caseDescription).isEnabled();
         } catch (error) {
             return false;
         }
@@ -292,7 +282,7 @@ class CaseEditPage {
 
     async isResourcePresent(): Promise<boolean> {
         // Resources tab is linked text, hence this type of validation
-        return await element(by.cssContainingText(this.selectors.tabText,'Resources'));    
+        return await element(by.cssContainingText(this.selectors.tabText, 'Resources'));
     }
 
     async getAssignedCompanyReadable(): Promise<string> {
@@ -375,7 +365,7 @@ class CaseEditPage {
     }
 
     async isDynamicFieldDisplayed(fieldName: string): Promise<boolean> {
-        let dynamicFieldLocator = `.simple-field label`;
+        let dynamicFieldLocator = `.simple-field .form-control-label`;
         let dynamicFields: number = await $$(dynamicFieldLocator).count();
         for (let i = 0; i < dynamicFields; i++) {
             let field = await (await $$(dynamicFieldLocator).get(i).getText()).trim();
@@ -422,11 +412,15 @@ class CaseEditPage {
     }
 
     async setDateTimeDynamicFieldValue(value: string): Promise<void> {
-        await utilityCommon.setDateField('376ec3d3-9381-4613-bb06-1e8dbbaf6b18',value);
+        await utilityCommon.setDateField('376ec3d3-9381-4613-bb06-1e8dbbaf6b18', value);
     }
- 
-     async selectValueFromList(fieldName: string, value: string): Promise<void> {
-        await utilityCommon.selectDropDown('376ec3d3-9381-4613-bb06-1e8dbbaf6b18',value); 
+
+    async setInvalidDateTimeDynamicField(value: string): Promise<void> {
+        await $('bwf-datetime-field input.form-control.i-date-time').sendKeys(value);
+    }
+
+    async selectValueFromList(fieldName: string, value: string): Promise<void> {
+        await utilityCommon.selectDropDown('376ec3d3-9381-4613-bb06-1e8dbbaf6b18', value);
     }
 
     async setTimeInDynamicField(value: string): Promise<void> {

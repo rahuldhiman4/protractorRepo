@@ -58,11 +58,12 @@ export class GridOperation {
         );
     }
 
-    async isGridRecordPresent(searchRecord: string): Promise<boolean> {
-         await this.clearGridSearchBox();
-         await this.searchOnGridConsole(searchRecord);
-        //        await browser.sleep(5000);
-        return await $(this.selectors.gridRecordPresent).isPresent();
+    async isGridRecordPresent(searchRecord: string, guid?: string): Promise<boolean> {
+        await this.clearGridSearchBox(guid);
+        await this.searchOnGridConsole(searchRecord, guid);
+        let gridRecord = this.selectors.gridRecordPresent;
+        if (guid) { gridRecord = `[rx-view-component-id="${guid}"] ` + gridRecord; }
+        return await $(gridRecord).isPresent();
     }
 
     async addGridColumn(guid: string, columnName: string[]): Promise<void> {
@@ -112,11 +113,12 @@ export class GridOperation {
         await element(by.cssContainingText('.ui-grid__link', id)).click();
     }
 
-    async clearGridSearchBox() {
-        let clearBtn: boolean = await $(this.selectors.clearGridSearchBoxButton).isDisplayed();
+    async clearGridSearchBox(guid?: string) {
+        let searchBoxCrossIcon: string = this.selectors.clearGridSearchBoxButton;
+        if (guid) { searchBoxCrossIcon = `[rx-view-component-id="${guid}"] ` + searchBoxCrossIcon; }
+        let clearBtn: boolean = await $(searchBoxCrossIcon).isDisplayed();
         if (clearBtn == true) {
-            //            await browser.wait(this.EC.visibilityOf($(this.selectors.clearGridSearchBoxButton)));
-            await $(this.selectors.clearGridSearchBoxButton).click();
+            await $(searchBoxCrossIcon).click();
         } else { console.log('Grid search box is already cleared') }
     }
 
@@ -159,14 +161,15 @@ export class GridOperation {
         await element(by.xpath(checkbox)).click();
     }
 
-    async searchAndSelectAllCheckBox(gridId: string, value: string) {
+    async searchAndSelectFirstCheckBox(gridId: string, value: string) {
         //        await browser.wait(this.EC.elementToBeClickable($(this.getGridLocator('summaryField', gridId))));	
+        await $(this.getGridLocator('summaryField', gridId)).clear();
         await $(this.getGridLocator('summaryField', gridId)).sendKeys(value);
         //        await browser.wait(this.EC.elementToBeClickable($(this.getGridLocator('searchButton', gridId))));	
         await $(this.getGridLocator('searchButton', gridId)).click();
         //        browser.sleep(3000);	
         //        await browser.wait(this.EC.elementToBeClickable(element(by.model(this.selectors.selectAllCheckBox))));	
-        await element(by.model(this.selectors.selectAllCheckBox)).click();
+        await $(this.getGridLocator('firstCheckBox', gridId)).click();
     }
 
     async selectAllCheckBox() {
@@ -175,6 +178,7 @@ export class GridOperation {
 
     async searchAndSelectAllCheckBoxWOGrid(value: string) {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.summaryField1)));	
+        await $(this.selectors.summaryField1).clear();
         await $(this.selectors.summaryField1).sendKeys(value);
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.searchButton1)));	
         await $(this.selectors.searchButton1).click();
@@ -271,11 +275,19 @@ export class GridOperation {
         }
     }
 
-    async searchOnGridConsole(searchValue: string): Promise<void> {
-        await $(this.selectors.searchInput).clear();
-        await $(this.selectors.searchInput).sendKeys(searchValue);
-        await $(this.selectors.searchIcon).click();
-        await $(this.selectors.refreshButton).click();
+    async searchOnGridConsole(searchValue: string, guid?: string): Promise<void> {
+        let searchBoxInput: string = this.selectors.searchInput;
+        let gridRefreshButton: string = this.selectors.refreshButton;
+        let gridSearchIcon: string = this.selectors.searchIcon;
+        if (guid) {
+            searchBoxInput = `[rx-view-component-id="${guid}"] ` + searchBoxInput;
+            gridRefreshButton = `[rx-view-component-id="${guid}"] ` + gridRefreshButton;
+            gridSearchIcon = `[rx-view-component-id="${guid}"] ` + gridSearchIcon;
+        }
+        await $(searchBoxInput).clear();
+        await $(gridRefreshButton).click();
+        await $(searchBoxInput).sendKeys(searchValue);
+        await $(gridSearchIcon).click();
     }
 
     async searchAndSelectGridRecord(searchValue: string, guid?: string): Promise<void> {
@@ -289,7 +301,7 @@ export class GridOperation {
         } else {
             checkboxRows = await $$('.ui-grid .ui-grid-pinned-container .ui-grid-viewport .ui-grid-row');
         }
-        await checkboxRows[0].$('.ui-grid-selection-row-header-buttons').click();
+        if (checkboxRows[0]) await checkboxRows[0].$('.ui-grid-selection-row-header-buttons').click();
     }
 
     async getNumberOfRecordsInGrid(guid?: string): Promise<number> {
@@ -330,7 +342,6 @@ export class GridOperation {
         columnPosition = columnPosition + 1;
         var gridRows: number = await element.all(by.xpath(gridRecords)).count();
         let gridRecordCellValue;
-        console.log(gridRows);
         for (let i: number = 1; i <= gridRows; i++) {
             try {
                 gridRecordCellValue = `(//*[@rx-view-component-id=${guid}]//div[@class="ui-grid-cell-contents"]/parent::div/parent::div)[${i}]/div[${columnPosition}]/div`;
@@ -358,7 +369,7 @@ export class GridOperation {
         await $(this.selectors.searchGridRefreshIcon).click();
     }
 
-    async addFilter(fieldName: string, textValue: string, type: string, guid?: string): Promise<void> {
+    async addFilter(fieldName: string, textValue: string, type: string, guid?: string): Promise<void> {
         let guidId: string = "";
         if (guid) {
             guidId = `[rx-view-component-id="${guid}"] `
@@ -368,7 +379,7 @@ export class GridOperation {
         await $(guidId + this.selectors.filterIcon).click();
         await element.all(by.cssContainingText(guidId + this.selectors.filterItems, fieldName)).last().click();
         // await browser.wait(this.EC.elementToBeClickable(fldLocator));
-        
+
         switch (type) {
             case "checkbox": {
                 let cbox = `.rx-search-filter-option[title='${textValue}']`

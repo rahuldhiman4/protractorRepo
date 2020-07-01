@@ -1,4 +1,5 @@
-import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, protractor, ProtractorExpectedConditions } from "protractor";
+import utilityCommon from '../../utils/utility.common';
 
 class PreviewKnowledge {
 
@@ -7,24 +8,13 @@ class PreviewKnowledge {
         knowledgeTitle: '[rx-view-component-id="05394582-02a7-4211-823e-9230fe094aa9"] h3',
         knowledgeSection: '.doc-editor-read-mode p',
         knowledgeArticleID: '.d-icon-lightbulb_o',
-        viewArticle: '[rx-view-component-id="57f95ac6-4144-400f-a591-657ea98316dd"] button',
-        backButton: '[rx-view-component-id="88ec72f0-2c65-4640-9455-54b6db3517f2"] button',
+        backButton: '[rx-view-component-id="75d55491-37d4-40f2-83ef-35019670e355"] button',
+        goToArticleButton: '[rx-view-component-id="5c11d82c-8269-41fc-a93f-374252adc4c2"] button',
         statusOfKA: '[rx-view-component-id="09044fe7-3bcd-48e9-98f3-96c482b37b77"] .status-transition'
-
     }
     async getKnowledgeArticleTitle(): Promise<string> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.knowledgeTitle)));
         return await $(this.selectors.knowledgeTitle).getText();
-    }
-
-    async isViewArticleLInkDisplay(): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.viewArticle)));
-        return await $(this.selectors.viewArticle).isDisplayed();
-    }
-
-    async clickOnViewArticleLink(): Promise<void> {
-        await browser.sleep(3000);
-        await $(this.selectors.viewArticle).click();
     }
 
     async isStatusOfKADisplay(): Promise<boolean> {
@@ -35,6 +25,11 @@ class PreviewKnowledge {
     async isBackButtonDisplay(): Promise<boolean> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.backButton)));
         return await $(this.selectors.backButton).isDisplayed();
+    }
+
+    async clickGoToArticleButton(): Promise<void> {
+        await $(this.selectors.goToArticleButton).click();
+        await utilityCommon.clickOnApplicationWarningYesNoButton('Yes'); // please remove this after defect fix DRDMV-22182
     }
 
     async clickOnBackButton(): Promise<void> {

@@ -19,19 +19,39 @@ describe('Login and create case from API', () => {
 
     it('create case template', async () => {
         let templateData = {
-            "templateName": "case template 2",
-            "templateSummary": "case template summary 2",
+            "templateName": "case template 6",
+            "templateSummary": "case template summary 6",
             "templateStatus": "Draft",
-            //"company": '- Global -'
-            "company": 'Petramco'
+            "company": '- Global -',
+            "ownerCompany": 'Petramco',
+            "ownerBU": 'Unites States Support',
+            "ownerGroup": 'US Support 1',
         }
 
-        await apiHelper.apiLogin('qkatawazi');
-        let newCaseTemplate = await apiHelper.createCaseTemplate(templateData);
+        let templateData2 = {
+            "templateName": 'caseTemplateName13',
+            "templateSummary": 'caseTemplateName13',
+            "categoryTier1": "Purchasing Card",
+            "categoryTier2": "Policies",
+            "categoryTier3": "Card Issuance",
+            "casePriority": "Low",
+            "templateStatus": "Active",
+            "company": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBU": "Facilities Support",
+            "ownerGroup": "Facilities",
+            "assigneeCompany": "Petramco",
+            "assigneeBU": "Facilities Support",
+            "assigneeSupportGroup": "Facilities",
+            "assignee": "Floretta",
+        }
+
+        await apiHelper.apiLogin('fritz');
+        let newCaseTemplate = await apiHelper.createCaseTemplate(templateData2);
         console.log("active case Template is created===", newCaseTemplate.id);
         console.log("active case Template is created===", newCaseTemplate.displayId);
         let caseTemplateStatusUpdate = await apiHelper.updateCaseTemplateStatus(newCaseTemplate.id, 'Inactive');
-        console.log("Case template status update==>", caseTemplateStatusUpdate);        
+        console.log("Case template status update==>", caseTemplateStatusUpdate);
     });
 
     it('create manual task template', async () => {
@@ -39,7 +59,10 @@ describe('Login and create case from API', () => {
             "templateName": "task template 1",
             "templateSummary": "task template summary 1",
             "templateStatus": "Active",
-            "company": '- Global -'
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
 
         await apiHelper.apiLogin('qkatawazi');
@@ -53,6 +76,10 @@ describe('Login and create case from API', () => {
             "templateName": "external task template 2",
             "templateSummary": "external task template summary 2",
             "templateStatus": "Active",
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
 
         await apiHelper.apiLogin('qkatawazi');
@@ -68,6 +95,10 @@ describe('Login and create case from API', () => {
             "templateStatus": "Active",
             "processBundle": "com.bmc.dsm.case-lib",
             "processName": "Task Process new 1",
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
 
         await apiHelper.apiLogin('qkatawazi');
@@ -89,39 +120,82 @@ describe('Login and create case from API', () => {
     });
 
     it('Associate task template to case template', async () => {
-
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await apiHelper.apiLogin('qkatawazi');
 
-        let caseTemplateData = {
-            "templateName": "case template name 5",
-            "templateSummary": "case template summary 5",
+        let caseTemplateData1 = {
+            "templateName": "case template1 " + randomStr,
+            "templateSummary": "case template1 summary " + randomStr,
             "templateStatus": "Active",
         }
-        let newCaseTemplate = await apiHelper.createCaseTemplate(caseTemplateData);
-        let manualTaskTemplateData = {
-            "templateName": "manual task template name 5",
-            "templateSummary": "manual task template summary 5",
+        let newCaseTemplate1 = await apiHelper.createCaseTemplate(caseTemplateData1);
+
+        let caseTemplateData2 = {
+            "templateName": "case template2 " + randomStr,
+            "templateSummary": "case template2 summary " + randomStr,
             "templateStatus": "Active",
+        }
+        let newCaseTemplate2 = await apiHelper.createCaseTemplate(caseTemplateData2);
+
+        let caseTemplateData3 = {
+            "templateName": "case template3 " + randomStr,
+            "templateSummary": "case template3 summary " + randomStr,
+            "templateStatus": "Active",
+        }
+        let newCaseTemplate3 = await apiHelper.createCaseTemplate(caseTemplateData3);
+
+        let caseTemplateData4 = {
+            "templateName": "case template4 " + randomStr,
+            "templateSummary": "case template4 summary " + randomStr,
+            "templateStatus": "Active",
+        }
+        let newCaseTemplate4 = await apiHelper.createCaseTemplate(caseTemplateData4);
+
+        let manualTaskTemplateData = {
+            "templateName": "manual task template name " + randomStr,
+            "templateSummary": "manual task template summary " + randomStr,
+            "templateStatus": "Active",
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         let manualTaskTemplate = await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
 
+        let externalTaskTemplateData = {
+            "templateName": "external task template name " + randomStr,
+            "templateSummary": "external task template summary " + randomStr,
+            "templateStatus": "Active",
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
+        }
+        let externalTaskTemplate = await apiHelper.createExternalTaskTemplate(externalTaskTemplateData);
+
         let autoTaskTemplateData = {
-            "templateName": "auto task template 5",
-            "templateSummary": "auto task template summary 5",
+            "templateName": "auto task template " + randomStr,
+            "templateSummary": "auto task template summary " + randomStr,
             "templateStatus": "Active",
             "processBundle": "com.bmc.dsm.case-lib",
-            "processName": "Case Process 5",
+            "processName": "Case Process " + randomStr,
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         let autoTaskTemplate = await apiHelper.createAutomatedTaskTemplate(autoTaskTemplateData);
 
-        console.log(newCaseTemplate.id, "\ntaskID\n", manualTaskTemplate.id, "\ntaskID\n", autoTaskTemplate.id);
-        console.log(newCaseTemplate.displayId, "\ntaskID\n", manualTaskTemplate.displayId, "\ntaskID\n", autoTaskTemplate.displayId);
-
-        await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId);
-        await apiHelper.associateCaseTemplateWithTwoTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId, autoTaskTemplate.displayId, "sequential");
-        await apiHelper.associateCaseTemplateWithTwoTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId, autoTaskTemplate.displayId, "parallel");
-        //await apiHelper.associateCaseTemplateWithOneTaskTemplate('CTPL-0000000214', 'TTPL-0000000506');
-        //await apiHelper.associateCaseTemplateWithTwoTaskTemplate('CTPL-0000000215', 'TTPL-0000000517', 'TTPL-0000000518', "sequential");
+        console.log("Case Template with one task: ", caseTemplateData1.templateName, manualTaskTemplate.displayId);
+        await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate1.displayId, manualTaskTemplate.displayId);
+        console.log("Case Template with two sequence task: ", caseTemplateData2.templateName, manualTaskTemplate.displayId, autoTaskTemplate.displayId);
+        await apiHelper.associateCaseTemplateWithTwoTaskTemplate(newCaseTemplate2.displayId, manualTaskTemplate.displayId, autoTaskTemplate.displayId, "sequential");
+        console.log("Case Template with two parallel task: ", caseTemplateData3.templateName, externalTaskTemplate.displayId, autoTaskTemplate.displayId);
+        await apiHelper.associateCaseTemplateWithTwoTaskTemplate(newCaseTemplate3.displayId, externalTaskTemplate.displayId, autoTaskTemplate.displayId, "parallel");
+        console.log("Case Template with three sequential task: ", caseTemplateData4.templateName, manualTaskTemplate.displayId, externalTaskTemplate.displayId, autoTaskTemplate.displayId);
+        await apiHelper.associateCaseTemplateWithThreeTaskTemplate(newCaseTemplate4.displayId, manualTaskTemplate.displayId, externalTaskTemplate.displayId, autoTaskTemplate.displayId);
+        // await apiHelper.associateCaseTemplateWithOneTaskTemplate('CTPL-0000000214', 'TTPL-0000000506');
+        // await apiHelper.associateCaseTemplateWithTwoTaskTemplate('CTPL-0000000215', 'TTPL-0000000517', 'TTPL-0000000518', "sequential");
     });
 
     it('create Email template', async () => {
@@ -211,7 +285,7 @@ describe('Login and create case from API', () => {
 
     it('Create doc lib', async () => {
         let docLibData = {
-            docLibTitle : 'NewDocLib',
+            docLibTitle: 'NewDocLib',
             company: 'Petramco',
             ownerGroup: 'Facilities',
             shareExternally: true
@@ -224,7 +298,7 @@ describe('Login and create case from API', () => {
         let docLib = await apiHelper.createDocumentLibrary(docLibData, filePath);
         await apiHelper.apiLogin('fritz');   //Always login from the owner group member to assign access 
         let docLibReadAccess = await apiHelper.giveReadAccessToDocLib(docLib, "Compensation and Benefits");
-        console.log("Read Access defined?..",docLibReadAccess)
+        console.log("Read Access defined?..", docLibReadAccess)
         let docLibPublished = await apiHelper.publishDocumentLibrary(docLib);
         console.log("doc lib created, published?.. ", docLibPublished);
     });

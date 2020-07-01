@@ -43,7 +43,7 @@ export const OUTGOINGEMAIL = {
     "fieldInstances": {
         "123": {
             "id": 123,
-            "value": "bmc@12345"
+            "value": "Bmc@12345"
         },
         "18037": {
             "id": 18037,

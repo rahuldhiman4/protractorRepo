@@ -30,13 +30,17 @@ export const ADHOC_TASK_PAYLOAD = {
             "id": 536870913,
             "value": "AGGADGG8ECDC0AQHE8DVQGG9YHCF4M"
         },
+        "450000381": {
+            "id": 450000381,
+            "value": "418e2e2d2ed191a494d959573aaf74a03c77b0b6f1f2cdc95ab31d37a4d67e7c4a28a199aee20f1875c64c22476204480461bc34867b181b6da7e390ffc7db5b"
+          },
         "1000000001": {
             "id": 1000000001,
             "value": "5a30545b15c828bf11139ffa453419200d69684e9d423ab2f3e869e6bb386507ee9ee24b1252f990cf587177918283e34694939025cd17154380ba49ce43f330"
         },
         
     }
-}
+};
 
 export const UPDATE_TASK_STATUS = {
     "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
@@ -48,7 +52,7 @@ export const UPDATE_TASK_STATUS = {
             "value": "3000"
         }
     }
-}
+};
 
 export const TASK_CREATION_FROM_TEMPLATE = {
     "resourceType": "com.bmc.arsys.rx.application.process.command.StartProcessInstanceCommand",
@@ -61,4 +65,12 @@ export const TASK_CREATION_FROM_TEMPLATE = {
         "Case ID": "AGGADGG8ECDC0AQHF17OQGH32AFFB8",
         "TaskStatus": 10
     }
-}
+};
+
+export const UPDATE_TASK = {
+    "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
+    "id": "AGGADGG8ECDC0AQHF1L2QGH35OFGC9",
+    "recordDefinitionName": "com.bmc.dsm.task-lib:Task",
+    "fieldInstances": {
+    }
+};

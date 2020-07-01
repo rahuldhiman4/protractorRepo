@@ -11,7 +11,7 @@ class CaseTemplateConsole {
         copyCaseTemplate: '[rx-view-component-id="92e13921-bf7b-494e-9d65-609a07c36505"] button',
         gridGUID: "1c10246e-18ed-4201-91b7-210e7a975f9c",
         searchButton: "1c10246e-18ed-4201-91b7-210e7a975f9c",
-        gridLink: '[rx-view-component-id="1c10246e-18ed-4201-91b7-210e7a975f9c"] .ui-grid__link',
+        gridLink: '.ui-grid__link',
         recordvalue: '.ui-grid-canvas .ui-grid-row'
     }
 
@@ -47,7 +47,7 @@ class CaseTemplateConsole {
         await utilGrid.removeGridColumn(this.selectors.gridGUID, columnName)
     }
 
-    async isValueDisplayed(columnName: string): Promise<string> {
+    async getFirstRecordValue(columnName: string): Promise<string> {
         return await utilGrid.getSelectedGridRecordValue(this.selectors.gridGUID, columnName);
     }
 
@@ -58,6 +58,10 @@ class CaseTemplateConsole {
     async moreRecordsArePresentAfterClear(): Promise<number> {
 //        await utilCommon.waitUntilSpinnerToHide();
         return await $$(this.selectors.recordvalue).count();
+    }
+
+    async getTemplateCountFromGrid(): Promise<number> {
+        return await $$(this.selectors.gridLink).count();
     }
 }
 

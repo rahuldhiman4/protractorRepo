@@ -77,7 +77,7 @@ class CreateFlowset {
     async clickSaveButton(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.savebutton)));
         await ($(this.selectors.savebutton)).click();
-        //        await utilCommon.waitUntilPopUpDisappear();
+        //        await utilCommon.closePopUpMessage();
     }
 
     async clickCancelButton(): Promise<void> {

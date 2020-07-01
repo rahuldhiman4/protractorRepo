@@ -13,15 +13,15 @@ import resources from '../../pageobject/common/resources-tab.po';
 import createKnowledgePage from "../../pageobject/knowledge/create-knowlege.po";
 import editKnowledgePage from '../../pageobject/knowledge/edit-knowledge.po';
 import knowledgeConsole from '../../pageobject/knowledge/knowledge-articles-console.po';
+import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
 import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
 import createDocumentLibraryPage from '../../pageobject/settings/document-management/create-document-library.po';
 import documentLibraryConsolePage from '../../pageobject/settings/document-management/document-library-console.po';
 import editDocumentLibraryPage from '../../pageobject/settings/document-management/edit-document-library.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
-import utilGrid from "../../utils/util.grid";
-import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
 import utilityCommon from '../../utils/utility.common';
+import utilityGrid from "../../utils/utility.grid";
 
 let caseBAUser = 'qkatawazi';
 let caseAgentUser = 'qtao';
@@ -64,6 +64,7 @@ let retiredStatus = "Retired";
 let closedStatus = "Closed";
 let canceledStatus = "Canceled";
 let title = "DRDMV-19004 KnowledgeArticle";
+let knowledgeSetTitle = undefined;
 
 describe('Knowledge Articles - Categorization Tests', () => {
     const filePath = '../../../data/ui/attachment/articleStatus.png';
@@ -78,6 +79,41 @@ describe('Knowledge Articles - Categorization Tests', () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login(caseBAUser);
         await apiHelper.apiLogin(knowledgePublisherUser);
+
+        let knowledgeSetData = {
+            "knowledgeSetTitle": "Knowledge Set Petramco",
+            "knowledgeSetDesc": "Knowledge Description Petramco",
+            "company": "Petramco"
+        }
+
+        let knowledgeApprovalFlowData = {
+            "flowName": "Preset Filter",
+            "approver": "KMills",
+            "qualification": "'Operational Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.cddc9f6098ac421a1aa40ec9be503abb0fda61530bc9dbb22e7049cba9c5839018ba7205a392cd9f37141091bbe33e28405caff795929e4d805fa787dfea2c0c.304405421}"
+        }
+
+        let knowledgeApprovalMappingData = {
+            "configName": "Approval Config Name",
+            "company": "Petramco",
+            "status1": "CancelApproval",
+            "status2": "PublishApproval",
+            "status3": "RetireApproval"
+        }
+
+        //Create Knowledge Configuraton
+        const randomStr = [...Array(2)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        knowledgeSetTitle = knowledgeSetData.knowledgeSetTitle + randomStr;
+
+        knowledgeSetData.knowledgeSetTitle = knowledgeSetTitle;
+        await apiHelper.createKnowledgeSet(knowledgeSetData);
+
+        let approvalConfigGlobalTitle = knowledgeApprovalFlowData.flowName + randomStr;
+        knowledgeApprovalFlowData.flowName = approvalConfigGlobalTitle;
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.deleteKnowledgeApprovalMapping();
+        await apiHelper.createKnowledgeApprovalFlow(knowledgeApprovalFlowData);
+        await apiHelper.createKnowledgeApprovalMapping(knowledgeApprovalMappingData);
+
         let articleData = {
             "knowledgeSet": "HR",
             "title": "KnowledgeArticle",
@@ -87,9 +123,13 @@ describe('Knowledge Articles - Categorization Tests', () => {
             "categoryTier3": "Incident",
             "region": "Australia",
             "site": "Canberra",
-            "assignee": "KMills",
-            "assigneeSupportGroup": "GB Support 2"
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "United Kingdom Support",
+            "assigneeSupportGroup": "GB Support 1",
+            "assignee": "KMills"
         }
+
+        await apiHelper.apiLogin(knowledgePublisherUser);
         // Create article in in progress status
         articleData.title = title + "_" + inProgressStatus;
         let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
@@ -111,40 +151,44 @@ describe('Knowledge Articles - Categorization Tests', () => {
         knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         knowledgeArticleGUID = knowledgeArticleData.id;
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, draftStatus)).toBeTruthy("Article with Draft status not updated.");
-        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, publishedStatus)).toBeTruthy("Article with Published status not updated.");
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'PublishApproval', "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with Published status not updated.");
+        await apiHelper.approverAction(knowledgeArticleGUID, 'Approved');
 
         //Create article in Retired status
         articleData.title = title + "_" + retiredStatus;
         knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         knowledgeArticleGUID = knowledgeArticleData.id;
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, draftStatus)).toBeTruthy("Article with Draft status not updated.");
-        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, publishedStatus)).toBeTruthy("Article with Published status not updated.");
-        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, retiredStatus)).toBeTruthy("Article with Retired status not updated.");
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'PublishApproval', "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with Published status not updated.");
+        await apiHelper.approverAction(knowledgeArticleGUID, 'Approved');
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'RetireApproval', "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with Retired status not updated.");
+        await apiHelper.approverAction(knowledgeArticleGUID, 'Approved');
 
         //Create article in Closed status
         articleData.title = title + "_" + closedStatus;
         knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         knowledgeArticleGUID = knowledgeArticleData.id;
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, draftStatus)).toBeTruthy("Article with Draft status not updated.");
-        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, publishedStatus)).toBeTruthy("Article with Published status not updated.");
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'PublishApproval', "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with Published status not updated.");
+        await apiHelper.approverAction(knowledgeArticleGUID, 'Approved');
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'RetireApproval', "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with Retired status not updated.");
+        await apiHelper.approverAction(knowledgeArticleGUID, 'Approved');
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, closedStatus)).toBeTruthy("Article with Closed status not updated.");
 
         //Create article in Canceled status
         articleData.title = title + "_" + canceledStatus;
         knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         knowledgeArticleGUID = knowledgeArticleData.id;
-        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, canceledStatus)).toBeTruthy("Article with Canceled status not updated.");
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'CancelApproval', "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with Canceled status not updated.");
+        await apiHelper.approverAction(knowledgeArticleGUID, 'Approved');
     });//, 180 * 1000);
 
     afterEach(async () => {
         await utilityCommon.refresh();
     });
 
-    afterEach(async () => {
-        await utilityCommon.refresh();
-    });
-
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 
@@ -167,8 +211,6 @@ describe('Knowledge Articles - Categorization Tests', () => {
         await apiHelper.associateCategoryUnderDomainTag('Applications', domainTag);
     }
 
-
-
     it('[DRDMV-18999,DRDMV-19000,DRDMV-19002]:Verify the search functionality of knowledge articles console for category tiers 1,2 and 3', async () => {
         let categoryTierFieldColumns: string[] = ["Category Tier 1", "Category Tier 2", "Category Tier 3"];
         let knowledgeGridColumnFields: string[] = ["Article ID", "Title", "Knowledge Set", "Status", "Assignee", "Company", "Template Name", "Reviewer", "Modified By", "Created Date", "Modified Date", "Flagged", "Category Tier 1", "Category Tier 2", "Category Tier 3"];
@@ -176,7 +218,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
         try {
             //* Login with Case BA
             await navigationPage.gotoKnowledgeConsole();
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(categoryTierFieldColumns);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
             await knowledgeConsole.searchOnGridConsole(categoryTier1FieldVal);
@@ -205,7 +247,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             //Login with case Manager
             await loginPage.login(caseManagerUser);
             await navigationPage.gotoKnowledgeConsole();
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(categoryTierFieldColumns);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
             await knowledgeConsole.searchOnGridConsole(categoryTier1FieldVal);
@@ -233,7 +275,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             //Login with Case Agent user
             await loginPage.login(caseAgentUser);
             await navigationPage.gotoKnowledgeConsole();
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(categoryTierFieldColumns);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
             await knowledgeConsole.searchOnGridConsole(categoryTier1FieldVal);
@@ -260,10 +302,10 @@ describe('Knowledge Articles - Categorization Tests', () => {
 
             //Login with knowledge candidate user
             await loginPage.login(knowledgeCandidateUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(categoryTierFieldColumns);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
             await knowledgeConsole.searchOnGridConsole(categoryTier1FieldVal);
@@ -291,10 +333,10 @@ describe('Knowledge Articles - Categorization Tests', () => {
 
             //Login with knowledge contributor 
             await loginPage.login(knowledgeContributorUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(categoryTierFieldColumns);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
             await knowledgeConsole.searchOnGridConsole(categoryTier1FieldVal);
@@ -322,10 +364,10 @@ describe('Knowledge Articles - Categorization Tests', () => {
 
             //Login with knowledge Publisher
             await loginPage.login(knowledgePublisherUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(categoryTierFieldColumns);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
             await knowledgeConsole.searchOnGridConsole(categoryTier1FieldVal);
@@ -353,10 +395,10 @@ describe('Knowledge Articles - Categorization Tests', () => {
 
             //Login with knowledge coach 
             await loginPage.login(knowledgeCoachUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(categoryTierFieldColumns);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
             await knowledgeConsole.searchOnGridConsole(categoryTier1FieldVal);
@@ -400,7 +442,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await quickCase.selectRequesterName(caseAgentUser);
             await quickCase.setCaseSummary(articleInDraftStatus);
             //Search with knowledge article with draft status
-            await resources.clickOnAdvancedSearchOptions(recommendedKnowledgeStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInDraftStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
@@ -458,7 +500,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await viewCasePage.clickOnTab('Resources');
 
             //Search with knowledge article with draft status
-            await resources.clickOnAdvancedSearchOptions(knowledgeArticlesStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInDraftStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
@@ -513,7 +555,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await quickCase.selectRequesterName(caseAgentUser);
             await quickCase.setCaseSummary(articleInDraftStatus);
             //Search with knowledge article with draft status
-            await resources.clickOnAdvancedSearchOptions(recommendedKnowledgeStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInDraftStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
@@ -571,7 +613,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await viewCasePage.clickOnTab('Resources');
 
             //Search with knowledge article with draft status
-            await resources.clickOnAdvancedSearchOptions(knowledgeArticlesStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInDraftStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
@@ -626,7 +668,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await quickCase.selectRequesterName(caseManagerUser);
             await quickCase.setCaseSummary(articleInDraftStatus);
             //Search with knowledge article with draft status
-            await resources.clickOnAdvancedSearchOptions(recommendedKnowledgeStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInDraftStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
@@ -684,7 +726,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await viewCasePage.clickOnTab('Resources');
 
             //Search with knowledge article with draft status
-            await resources.clickOnAdvancedSearchOptions(knowledgeArticlesStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInDraftStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
@@ -778,7 +820,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await viewCasePage.clickEditCaseButton();
             await editCasePage.clickOnAttachLink();
 
-            await resources.clickOnAdvancedSearchOptions(documentLibraryStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(title);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1ForDocumentLibrary, categoryTier1FieldVal);
@@ -798,7 +840,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await viewCasePage.clickEditCaseButton();
             await editCasePage.clickOnAttachLink();
 
-            await resources.clickOnAdvancedSearchOptions(documentLibraryStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(title);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1ForDocumentLibrary, categoryTier1FieldVal);
@@ -816,7 +858,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await previewCasePo.clickGoToCaseButton();
             await viewCasePage.clickEditCaseButton();
             await editCasePage.clickOnAttachLink();
-            await resources.clickOnAdvancedSearchOptions(documentLibraryStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(title);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1ForDocumentLibrary, categoryTier1FieldVal);
@@ -877,8 +919,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await createKnowledgePage.selectCategoryTier2Option(categoryTier2FieldVal);
             await createKnowledgePage.selectCategoryTier3Option(categoryTier3FieldVal);
             await createKnowledgePage.clickOnSaveKnowledgeButton();
-            await previewKnowledgePo.clickOnViewArticleLink();
-            await utilCommon.switchToNewWidnow(1);
+            await previewKnowledgePo.clickGoToArticleButton();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePage.getCategoryTier1SelectedValue(categoryTier1)).toBe(categoryTier1FieldVal);
         }
@@ -886,8 +927,6 @@ describe('Knowledge Articles - Categorization Tests', () => {
             throw error;
         }
         finally {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
-            await utilityCommon.refresh();
             await apiHelper.apiLogin('tadmin');
             let domainTagData = domainTagDataFile['DomainTagDataPsilon'];
             let domainTag = await apiHelper.createDomainTag(domainTagData);
@@ -896,4 +935,4 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await loginPage.login(caseBAUser);
         }
     });//, 240 * 1000);
-})
+});

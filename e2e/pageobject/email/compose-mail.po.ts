@@ -5,7 +5,6 @@ class ComposeMail {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         title: '.modal-title',
-        crossIcon: 'button.close-inverse',
         commonId: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"]',
         selectEmailTemplateLink: '.select-template-button',
         attachLink: '.attachment-button button',
@@ -152,17 +151,17 @@ class ComposeMail {
     }
 
     async clickOnDiscardButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.discardButton)), 2000);
-        await $(this.selectors.discardButton).click();
+        await $(this.selectors.discardButton).isPresent().then(async (present) => {
+            if (present) {
+                await browser.wait(this.EC.elementToBeClickable($(this.selectors.discardButton)), 2000);
+                await $(this.selectors.discardButton).click();
+            }
+        });
     }
 
     async isComposeEmailTitlePresent(title: string): Promise<boolean> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.title)));
         return await element(by.cssContainingText((this.selectors.title), title)).isPresent();
-    }
-
-    async closeComposeEmail(): Promise<void> {
-        await $(this.selectors.crossIcon).click();
     }
 
     async isSubjectPresent(): Promise<boolean> {
@@ -274,10 +273,10 @@ class ComposeMail {
     }
 
     async isSelectEmailTemplateButtonPresent(): Promise<boolean> {
-        if (await $(this.selectors.selectEmailTemplateLink).isPresent()) {
-            return await $(this.selectors.selectEmailTemplateLink).isDisplayed();
-        }
-        return $(this.selectors.selectEmailTemplateLink).isPresent();
+        return await $(this.selectors.selectEmailTemplateLink).isPresent().then(async (result) => {
+            if (result) return await $(this.selectors.selectEmailTemplateLink).isDisplayed();
+            else return false;
+        });
     }
 
 
@@ -303,7 +302,7 @@ class ComposeMail {
             await $$(this.selectors.toCcInput).get(1).sendKeys(emailIdForToOrCc);
         }
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.popupEmail)), 4000);
-        await $(this.selectors.popupEmail).click();
+        await $$(this.selectors.popupEmail).first().click();
     }
 
     async getSubjectInputValue(): Promise<string> {

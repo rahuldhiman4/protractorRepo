@@ -4,7 +4,7 @@ import { IDepartment } from '../data/api/interface/department.interface.api';
 import { IKnowledgeArticles } from '../data/api/interface/knowledge.articles.interface.api';
 import { IPerson } from '../data/api/interface/person.interface.api';
 import { ISupportGroup } from '../data/api/interface/support.group.interface.api';
-import { ITaskTemplate } from '../data/api/interface/task.template.interface.api';
+import { ITaskTemplate, IAdhocTask } from '../data/api/interface/task.template.interface.api';
 import { ICaseApprovalMapping } from '../data/api/interface/case.approval.mapping.interface.api';
 import { browser } from 'protractor';
 import { default as apiCoreUtil, default as coreApi } from "../api/api.core.util";
@@ -19,7 +19,7 @@ import { IMenuItem } from '../data/api/interface/menu.Items.interface.api';
 import { INotesTemplate } from '../data/api/interface/notes.template.interface.api';
 import { FLAG_UNFLAG_KA } from '../data/api/knowledge/flag-unflag.data.api';
 import { AUTOMATED_CASE_STATUS_TRANSITION } from '../data/api/shared-services/process.data.api';
-import { ONE_TASKFLOW, TWO_TASKFLOW_PARALLEL, TWO_TASKFLOW_SEQUENTIAL } from '../data/api/task/taskflow.process.data.api';
+import { ONE_TASKFLOW, TWO_TASKFLOW_PARALLEL, TWO_TASKFLOW_SEQUENTIAL, THREE_TASKFLOW_SEQUENTIAL, PROCESS_DOCUMENT } from '../data/api/task/taskflow.process.data.api';
 import { DOC_LIB_DRAFT, DOC_LIB_PUBLISH, DOC_LIB_READ_ACCESS } from '../data/api/ticketing/document-library.data.api';
 import { IDocumentLib } from '../data/api/interface/doc.lib.interface.api';
 import { IKnowledgeSet } from '../data/api/interface/knowledge-set.interface.api';
@@ -30,9 +30,9 @@ import { INCOMINGMAIL, EMAILCONFIG, OUTGOINGEMAIL } from '../data/api/email/emai
 import { EMAIL_WHITELIST } from '../data/api/email/email.whitelist.data.api';
 import * as DYNAMIC from '../data/api/ticketing/dynamic.data.api';
 import { CASE_TEMPLATE_PAYLOAD, CASE_TEMPLATE_STATUS_UPDATE_PAYLOAD } from '../data/api/case/case.template.data.api';
-import { UPDATE_PERSON_AS_VIP } from '../data/api/foundation/update.person.data.api';
+import { UPDATE_PERSON_AS_VIP, ADD_FUNCTIONAL_ROLE } from '../data/api/foundation/update.person.data.api';
 import { SERVICE_TARGET_PAYLOAD } from '../data/api/slm/serviceTarget.api';
-import { ADHOC_TASK_PAYLOAD, UPDATE_TASK_STATUS, TASK_CREATION_FROM_TEMPLATE } from '../data/api/task/task.creation.api';
+import { ADHOC_TASK_PAYLOAD, UPDATE_TASK_STATUS, TASK_CREATION_FROM_TEMPLATE, UPDATE_TASK } from '../data/api/task/task.creation.api';
 import { KNOWLEDGE_APPROVAL_CONFIG, KNOWLEDGE_APPROVAL_FLOW_CONFIG } from '../data/api/knowledge/knowledge-approvals-config.api';
 import { APPROVAL_ACTION } from "../data/api/approval/approval.action.api";
 import { KNOWLEDGE_ARTICLE_EXTERNAL_FLAG } from "../data/api/knowledge/knowledge-article-external.api";
@@ -42,12 +42,20 @@ import { ACTIONABLE_NOTIFICATIONS_ENABLEMENT_SETTING } from '../data/api/shared-
 import { ADD_TO_WATCHLIST } from '../data/api/case/case.watchlist.api';
 import { CASE_APPROVAL_FLOW } from '../data/api/approval/case.approval.flow.api';
 import { CASE_APPROVAL_MAPPING } from '../data/api/approval/case.approval.mapping.api';
+import { KNOWLEDGE_ARTICLE_PAYLOAD, UPDATE_KNOWLEDGE_ARTICLE_PAYLOAD } from '../data/api/knowledge/knowledge.article.api';
+import { BUSINESS_TIME_SHARED_ENTITY } from '../data/api/slm/business.time.shared.entity.api';
+import { BUSINESS_TIME_SEGMENT } from '../data/api/slm/business.time.segment.api';
+import { CASE_REOPEN } from '../data/api/case/case.reopen.api';
+import { POST_ACTIVITY } from '../data/api/social/post.activity.api';
+import { CASE_READ_ACCESS } from '../data/api/case/case.read.access.api';
 
 axios.defaults.baseURL = browser.baseUrl;
 axios.defaults.headers.common['X-Requested-By'] = 'XMLHttpRequest';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 const commandUri = 'api/rx/application/command';
 const articleTemplateUri = 'api/com.bmc.dsm.knowledge/rx/application/article/template';
+import {UPDATE_CASE} from '../data/ui/case/update.case.data.api';
+import { ICase, ITask } from '../data/api/interface/record-update.interface.api';
 
 export interface IIDs {
     id: string;
@@ -70,7 +78,7 @@ class ApiHelper {
             "api/rx/authentication/loginrequest",
             { "userName": username, "password": password },
         )
-        console.log('Login API Status =============>', response.status);
+        console.log('Login API Status of ' + user + ' =============>', response.status);
         axios.defaults.headers.common['Cookie'] = `AR-JWT=${response.data}`;
     }
 
@@ -173,6 +181,33 @@ class ApiHelper {
         };
     }
 
+    async deleteAllEmailConfiguration(): Promise<boolean> {
+        let emailConfigDataPageUri = "api/rx/application/datapage?dataPageType=com.bmc.arsys.rx.application.record.datapage.RecordInstanceDataPageQuery&pageSize=50&propertySelection=7,1,recordContext._associations.IDGADG1AANVNMAPHAJWGPGDM6B8LR5.nodeA%5B0%5D.1000000010,1000000001,450000156,450000153,379&recorddefinition=com.bmc.dsm.email-lib:Email+Box+Registration&shouldIncludeTotalSize=false&sortBy=450000156&startIndex=0";
+        let allEmailConfig = await axios.get(
+            emailConfigDataPageUri
+        );
+        let deletAllEmailConfig = allEmailConfig.data.data.map(async (obj: string) => {
+            return await coreApi.deleteRecordInstance('com.bmc.dsm.email-lib:Email Box Registration', obj[379]);
+        });
+
+        let incomingMailDataPageUri = "api/rx/application/datapage?dataPageType=com.bmc.arsys.rx.application.record.datapage.RecordInstanceDataPageQuery&pageSize=50&propertySelection=179,1,18037,18217,7,379&queryExpression=((%2718049%27%3D%220%22))&recorddefinition=AR+System+Email+Mailbox+Configuration&shouldIncludeTotalSize=false&sortBy=7&startIndex=0";
+        let allIncomingMail = await axios.get(
+            incomingMailDataPageUri
+        );
+        let deletAllIncomingMail = allIncomingMail.data.data.map(async (obj: string) => {
+            return await coreApi.deleteRecordInstance('AR System Email Mailbox Configuration', obj[379]);
+        });
+
+        let outgoingMailDataPageUri = "api/rx/application/datapage?dataPageType=com.bmc.arsys.rx.application.record.datapage.RecordInstanceDataPageQuery&pageSize=50&propertySelection=7,179,1,18217,18037,18147,379&queryExpression=((%2718049%27%3D%221%22))&recorddefinition=AR+System+Email+Mailbox+Configuration&shouldIncludeTotalSize=false&startIndex=0";
+        let allOutgoingMail = await axios.get(
+            outgoingMailDataPageUri
+        );
+        let deletAllOutgoingMail = allOutgoingMail.data.data.map(async (obj: string) => {
+            return await coreApi.deleteRecordInstance('AR System Email Mailbox Configuration', obj[379]);
+        });
+        return deletAllEmailConfig == deletAllIncomingMail == deletAllOutgoingMail;
+    }
+
     async getHTMLBodyOfEmail(emailSubject: string): Promise<string> {
         return await coreApi.getEmailHTMLBody(emailSubject);
     }
@@ -193,9 +228,86 @@ class ApiHelper {
         return updateEmail.status == 204;
     }
 
+    async updateTask(taskGuid: string, data: ITask): Promise<number> {
+        UPDATE_TASK.id = taskGuid;
+        let taskData = UPDATE_TASK;
+        taskData = Object.assign({}, taskData);
+
+        if (data.summary) {
+            let taskSummary = {
+                "id": "8",
+                "value": `${data.summary}`
+            }
+            taskData.fieldInstances["8"] = taskSummary;
+        }
+        
+        if (data.description) {
+            let taskDescription = {
+                "id": "1000000000",
+                "value": `${data.description}`
+            }
+            taskData.fieldInstances["1000000000"] = taskDescription;
+        }
+
+        if (data.priority) {
+            let priorityValue = constants.CasePriority[data.priority];
+            let priorityObj = {
+                "id": "1000000164",
+                "value": `${priorityValue}`
+            }
+            taskData.fieldInstances["1000000164"] = priorityObj;
+        } 
+
+        let updateTaskStatus = await apiCoreUtil.updateRecordInstance("com.bmc.dsm.task-lib:Task", taskGuid, taskData);
+        return updateTaskStatus.status;
+    }
+
+    async updateCase(caseGuid: string, data: ICase): Promise<boolean> {
+        UPDATE_CASE.id = caseGuid;
+        let caseData = UPDATE_CASE;
+        caseData = Object.assign({}, caseData);
+
+        if (data.summary) {
+            let caseSummary = {
+                "id": "8",
+                "value": `${data.summary}`
+            }
+            caseData.fieldInstances["8"] = caseSummary;
+        }
+        
+        if (data.description) {
+            let caseDescription = {
+                "id": "1000000000",
+                "value": `${data.description}`
+            }
+            caseData.fieldInstances["1000000000"] = caseDescription;
+        }
+
+        if (data.casePriority) {
+            let priorityValue = constants.CasePriority[data.casePriority];
+            let priorityObj = {
+                "id": "1000000164",
+                "value": `${priorityValue}`
+            }
+            caseData.fieldInstances["1000000164"] = priorityObj;
+        } 
+
+        if (data.statusChangedDate) {
+            let caseDescription = {
+                "id": 450000172,
+                "value": `${data.statusChangedDate}`
+            }
+            caseData.fieldInstances["450000172"] = caseDescription;
+        }
+
+        let updateCase = await coreApi.updateRecordInstance('com.bmc.dsm.case-lib:Case', caseGuid, caseData);
+        return updateCase.status == 204;
+    }
+
     async createCaseTemplate(data: ICaseTemplate): Promise<IIDs> {
-        let templateDataFile = CASE_TEMPLATE_PAYLOAD;
-        let templateData = await templateDataFile.CaseTemplateData;
+        let templateData = CASE_TEMPLATE_PAYLOAD;
+        templateData = Object.assign({}, templateData);
+
         templateData.fieldInstances[8].value = data.templateSummary;
         templateData.fieldInstances[1000001437].value = data.templateName;
         templateData.fieldInstances[7].value = constants.CaseTemplate[data.templateStatus];
@@ -205,8 +317,8 @@ class ApiHelper {
         templateData.fieldInstances[300287900].value = data.ownerGroup ? await coreApi.getSupportGroupGuid(data.ownerGroup) : templateData.fieldInstances[300287900].value;
         templateData.fieldInstances[1000000063].value = data.categoryTier1 ? await coreApi.getCategoryGuid(data.categoryTier1) : templateData.fieldInstances[1000000063].value;
         templateData.fieldInstances[1000000064].value = data.categoryTier2 ? await coreApi.getCategoryGuid(data.categoryTier2) : templateData.fieldInstances[1000000064].value;
-        templateData.fieldInstances[1000000065].value = data.categoryTier3 ? await coreApi.getCategoryGuid(data.categoryTier2) : templateData.fieldInstances[1000000065].value;
-        templateData.fieldInstances[450000061].value = data.description ? await coreApi.getCategoryGuid(data.categoryTier2) : templateData.fieldInstances[450000061].value;
+        templateData.fieldInstances[1000000065].value = data.categoryTier3 ? await coreApi.getCategoryGuid(data.categoryTier3) : templateData.fieldInstances[1000000065].value;
+        templateData.fieldInstances[450000061].value = data.description ? data.description : templateData.fieldInstances[450000061].value;
 
         if (data.caseStatus) {
             let statusValue = constants.CaseStatus[data.caseStatus];
@@ -226,6 +338,23 @@ class ApiHelper {
             templateData.fieldInstances["450000010"] = caseTemplateStatusGuid;
         }
 
+        if (data.statusReason) {
+            let statusReasonGuid = await coreApi.getStatusChangeReasonGuid(data.statusReason);
+            let statusReasonObj = {
+                "id": "1000000881",
+                "value": `${statusReasonGuid}`
+            }
+            templateData.fieldInstances["1000000881"] = statusReasonObj;
+        }
+
+        if (data.allowCaseReopen == false) {
+            let allowCaseReopenObj = {
+                "id": "450000159",
+                "value": 0
+            }
+            templateData.fieldInstances["450000159"] = allowCaseReopenObj;
+        }
+
         if (data.casePriority) {
             let priorityValue = constants.CasePriority[data.casePriority];
             let priorityObj = {
@@ -235,6 +364,23 @@ class ApiHelper {
             templateData.fieldInstances["1000000164"] = priorityObj;
         }
 
+        if (data.resolutionCode) {
+            let resolutionCodeObj = {
+                "id": "450000162",
+                "value": `${data.resolutionCode}`
+            }
+            templateData.fieldInstances["450000162"] = resolutionCodeObj;
+        }
+
+
+        if (data.resolutionDescription) {
+            let resolutionDescriptionObj = {
+                "id": "450000164",
+                "value": `${data.resolutionDescription}`
+            }
+            templateData.fieldInstances["450000164"] = resolutionDescriptionObj;
+        }
+
         if (data.assignee) {
             let assignee = await coreApi.getPersonGuid(data.assignee);
             let caseTemplateDataAssignee = {
@@ -242,6 +388,15 @@ class ApiHelper {
                 "value": `${assignee}`
             }
             templateData.fieldInstances["450000152"] = caseTemplateDataAssignee;
+        }
+
+        if (data.label) {
+            let labelGuid = await coreApi.getLabelGuid(data.label);
+            let caseTemplateDataLabel = {
+                "id": 450000160,
+                "value": `${labelGuid}`
+            }
+            templateData.fieldInstances["450000160"] = caseTemplateDataLabel;
         }
 
         if (data.supportGroup) {
@@ -266,6 +421,15 @@ class ApiHelper {
                 "value": `${assigneeBusinessUnit}`
             }
             templateData.fieldInstances["450000381"] = caseTemplateDataBusinessUnit;
+        }
+
+        if (data.categoryTier4) {
+            let categoryTier4 = await coreApi.getCategoryGuid(data.categoryTier4);
+            let caseTemplateDataCategoryTier4 = {
+                "id": 450000158,
+                "value": `${categoryTier4}`
+            }
+            templateData.fieldInstances["450000158"] = caseTemplateDataCategoryTier4;
         }
 
         if (data.resolveCaseonLastTaskCompletion) {
@@ -377,18 +541,20 @@ class ApiHelper {
         templateData.fieldInstances[7].value = constants.TaskTemplate[data.templateStatus];
         templateData.fieldInstances[8].value = data.templateSummary;
         templateData.fieldInstances[1000001437].value = data.templateName;
-        templateData.fieldInstances[301566300].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : templateData.fieldInstances[301566300].value;
-        templateData.fieldInstances[1000000001].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : templateData.fieldInstances[1000000001].value;
+        templateData.fieldInstances[301566300].value = data.ownerCompany ? await apiCoreUtil.getOrganizationGuid(data.ownerCompany) : templateData.fieldInstances[301566300].value;
+        templateData.fieldInstances[1000000001].value = data.taskCompany ? await apiCoreUtil.getOrganizationGuid(data.taskCompany) : templateData.fieldInstances[1000000001].value;
+        templateData.fieldInstances[300287900].value = data.ownerGroup ? await apiCoreUtil.getSupportGroupGuid(data.ownerGroup) : templateData.fieldInstances[300287900].value;
+        templateData.fieldInstances[450000401].value = data.ownerBusinessUnit ? await apiCoreUtil.getBusinessUnitGuid(data.ownerBusinessUnit) : templateData.fieldInstances[450000401].value;
         if (data.assignee) {
             let assignee = await coreApi.getPersonGuid(data.assignee);
-            let caseTemplateDataAssignee = {
+            let templateDataAssignee = {
                 "id": 450000152,
                 "value": `${assignee}`
             }
-            templateData.fieldInstances["450000152"] = caseTemplateDataAssignee;
+            templateData.fieldInstances["450000152"] = templateDataAssignee;
         }
         if (data.supportGroup) {
-            let assignedCompanyGuid = await coreApi.getOrganizationGuid(data.company);
+            let assignedCompanyGuid = await coreApi.getOrganizationGuid(data.ownerCompany);
             let taskTemplateDataassignedCompany = {
                 "id": 450000153,
                 "value": `${assignedCompanyGuid}`
@@ -396,19 +562,66 @@ class ApiHelper {
             templateData.fieldInstances["450000153"] = taskTemplateDataassignedCompany;
 
             let assigneeSupportGroup = await coreApi.getSupportGroupGuid(data.supportGroup);
-            let caseTemplateDataSupportGroup = {
+            let templateDataSupportGroup = {
                 "id": 1000000217,
                 "value": `${assigneeSupportGroup}`
             }
-            templateData.fieldInstances["1000000217"] = caseTemplateDataSupportGroup;
+            templateData.fieldInstances["1000000217"] = templateDataSupportGroup;
         }
         if (data.businessUnit) {
             let assigneeBusinessUnit = await coreApi.getBusinessUnitGuid(data.businessUnit);
-            let caseTemplateDataBusinessUnit = {
+            let templateDataBusinessUnit = {
                 "id": 450000381,
                 "value": `${assigneeBusinessUnit}`
             }
-            templateData.fieldInstances["450000381"] = caseTemplateDataBusinessUnit;
+            templateData.fieldInstances["450000381"] = templateDataBusinessUnit;
+        }
+        if (data.category1) {
+            let categoryGuid = await coreApi.getCategoryGuid(data.category1);
+            let templateCategory1 = {
+                "id": 1000000063,
+                "value": `${categoryGuid}`
+            }
+            templateData.fieldInstances["1000000063"] = templateCategory1;
+        }
+        if (data.category2) {
+            let categoryGuid = await coreApi.getCategoryGuid(data.category2);
+            let templateCategory2 = {
+                "id": 1000000064,
+                "value": `${categoryGuid}`
+            }
+            templateData.fieldInstances["1000000064"] = templateCategory2;
+        }
+        if (data.category3) {
+            let categoryGuid = await coreApi.getCategoryGuid(data.category3);
+            let templateCategory3 = {
+                "id": 1000000065,
+                "value": `${categoryGuid}`
+            }
+            templateData.fieldInstances["1000000065"] = templateCategory3;
+        }
+        if (data.category4) {
+            let categoryTier4 = await coreApi.getCategoryGuid(data.category4);
+            let caseTemplateDataCategoryTier4 = {
+                "id": 450000157,
+                "value": `${categoryTier4}`
+            }
+            templateData.fieldInstances["450000157"] = caseTemplateDataCategoryTier4;
+        }
+        if (data.label) {
+            let labelGuid = await coreApi.getLabelGuid(data.label);
+            let taskTemplateDataLabel = {
+                "id": 450000160,
+                "value": `${labelGuid}`
+            }
+            templateData.fieldInstances["450000160"] = taskTemplateDataLabel;
+        }
+        if (data.description) {
+            let descriptionData = {
+                "id": 450000061,
+                "value": data.description
+            }
+            templateData.fieldInstances["450000061"] = descriptionData;
         }
         let newTaskTemplate: AxiosResponse = await coreApi.createRecordInstance(templateData);
         console.log('Create Manual Task Template API Status =============>', newTaskTemplate.status);
@@ -428,19 +641,22 @@ class ApiHelper {
         templateData.fieldInstances[7].value = constants.TaskTemplate[data.templateStatus];
         templateData.fieldInstances[8].value = data.templateSummary;
         templateData.fieldInstances[1000001437].value = data.templateName;
-        templateData.fieldInstances[301566300].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : templateData.fieldInstances[301566300].value;
-        templateData.fieldInstances[1000000001].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : templateData.fieldInstances[1000000001].value;
+        templateData.fieldInstances[301566300].value = data.ownerCompany ? await apiCoreUtil.getOrganizationGuid(data.ownerCompany) : templateData.fieldInstances[301566300].value;
+        templateData.fieldInstances[1000000001].value = data.taskCompany ? await apiCoreUtil.getOrganizationGuid(data.taskCompany) : templateData.fieldInstances[1000000001].value;
+        templateData.fieldInstances[300287900].value = data.ownerGroup ? await apiCoreUtil.getSupportGroupGuid(data.ownerGroup) : templateData.fieldInstances[300287900].value;
+        templateData.fieldInstances[450000401].value = data.ownerBusinessUnit ? await apiCoreUtil.getBusinessUnitGuid(data.ownerBusinessUnit) : templateData.fieldInstances[450000401].value;
+
         if (data.assignee) {
             let assignee = await coreApi.getPersonGuid(data.assignee);
-            let caseTemplateDataAssignee = {
+            let templateDataAssignee = {
                 "id": 450000152,
                 "value": `${assignee}`
             }
-            templateData.fieldInstances["450000152"] = caseTemplateDataAssignee;
+            templateData.fieldInstances["450000152"] = templateDataAssignee;
         }
 
         if (data.supportGroup) {
-            let assignedCompanyGuid = await coreApi.getOrganizationGuid(data.company);
+            let assignedCompanyGuid = await coreApi.getOrganizationGuid(data.ownerCompany);
             let taskTemplateDataassignedCompany = {
                 "id": 450000153,
                 "value": `${assignedCompanyGuid}`
@@ -448,20 +664,51 @@ class ApiHelper {
             templateData.fieldInstances["450000153"] = taskTemplateDataassignedCompany;
 
             let assigneeSupportGroup = await coreApi.getSupportGroupGuid(data.supportGroup);
-            let caseTemplateDataSupportGroup = {
+            let templateDataSupportGroup = {
                 "id": 1000000217,
                 "value": `${assigneeSupportGroup}`
             }
-            templateData.fieldInstances["1000000217"] = caseTemplateDataSupportGroup;
+            templateData.fieldInstances["1000000217"] = templateDataSupportGroup;
         }
 
         if (data.businessUnit) {
             let assigneeBusinessUnit = await coreApi.getBusinessUnitGuid(data.businessUnit);
-            let caseTemplateDataBusinessUnit = {
+            let templateDataBusinessUnit = {
                 "id": 450000381,
                 "value": `${assigneeBusinessUnit}`
             }
-            templateData.fieldInstances["450000381"] = caseTemplateDataBusinessUnit;
+            templateData.fieldInstances["450000381"] = templateDataBusinessUnit;
+        }
+        if (data.category1) {
+            let categoryGuid = await coreApi.getCategoryGuid(data.category1);
+            let templateCategory1 = {
+                "id": 1000000063,
+                "value": `${categoryGuid}`
+            }
+            templateData.fieldInstances["1000000063"] = templateCategory1;
+        }
+        if (data.category2) {
+            let categoryGuid = await coreApi.getCategoryGuid(data.category2);
+            let templateCategory2 = {
+                "id": 1000000064,
+                "value": `${categoryGuid}`
+            }
+            templateData.fieldInstances["1000000064"] = templateCategory2;
+        }
+        if (data.category3) {
+            let categoryGuid = await coreApi.getCategoryGuid(data.category3);
+            let templateCategory3 = {
+                "id": 1000000065,
+                "value": `${categoryGuid}`
+            }
+            templateData.fieldInstances["1000000065"] = templateCategory3;
+        }
+        if (data.description) {
+            let descriptionData = {
+                "id": 450000061,
+                "value": data.description
+            }
+            templateData.fieldInstances["450000061"] = descriptionData;
         }
         let newTaskTemplate: AxiosResponse = await coreApi.createRecordInstance(templateData);
 
@@ -484,6 +731,10 @@ class ApiHelper {
         templateData.fieldInstances[1000001437].value = data.templateName;
         templateData.fieldInstances[450000154].value = data.processBundle;
         templateData.fieldInstances[450000141].value = data.processName;
+        templateData.fieldInstances[301566300].value = data.ownerCompany ? await apiCoreUtil.getOrganizationGuid(data.ownerCompany) : templateData.fieldInstances[301566300].value;
+        templateData.fieldInstances[1000000001].value = data.taskCompany ? await apiCoreUtil.getOrganizationGuid(data.taskCompany) : templateData.fieldInstances[1000000001].value;
+        templateData.fieldInstances[300287900].value = data.ownerGroup ? await apiCoreUtil.getSupportGroupGuid(data.ownerGroup) : templateData.fieldInstances[300287900].value;
+        templateData.fieldInstances[450000401].value = data.ownerBusinessUnit ? await apiCoreUtil.getBusinessUnitGuid(data.ownerBusinessUnit) : templateData.fieldInstances[450000401].value;
         if (data.priority) {
             let priority = constants.CasePriority[data.priority];
             let taskTemplateDataPriority = {
@@ -492,12 +743,37 @@ class ApiHelper {
             }
             templateData.fieldInstances["1000000164"] = taskTemplateDataPriority;
         }
-
-        data.company ? templateData.fieldInstances[301566300].value = await apiCoreUtil.getOrganizationGuid(data.company) : templateData.fieldInstances[301566300].value;
-        data.ownerGroup ? templateData.fieldInstances[300287900].value = await apiCoreUtil.getSupportGroupGuid(data.ownerGroup) : templateData.fieldInstances[300287900].value;
-        data.taskCompany ? templateData.fieldInstances[1000000001].value = await apiCoreUtil.getOrganizationGuid(data.taskCompany) : templateData.fieldInstances[1000000001].value;
-        //data.company ? templateData.fieldInstances[301566300].value = data.templateSummary;
-
+        if (data.category1) {
+            let categoryGuid = await coreApi.getCategoryGuid(data.category1);
+            let templateCategory1 = {
+                "id": 1000000063,
+                "value": `${categoryGuid}`
+            }
+            templateData.fieldInstances["1000000063"] = templateCategory1;
+        }
+        if (data.category2) {
+            let categoryGuid = await coreApi.getCategoryGuid(data.category2);
+            let templateCategory2 = {
+                "id": 1000000064,
+                "value": `${categoryGuid}`
+            }
+            templateData.fieldInstances["1000000064"] = templateCategory2;
+        }
+        if (data.category3) {
+            let categoryGuid = await coreApi.getCategoryGuid(data.category3);
+            let templateCategory3 = {
+                "id": 1000000065,
+                "value": `${categoryGuid}`
+            }
+            templateData.fieldInstances["1000000065"] = templateCategory3;
+        }
+        if (data.description) {
+            let descriptionData = {
+                "id": 450000061,
+                "value": data.description
+            }
+            templateData.fieldInstances["450000061"] = descriptionData;
+        }
         let newTaskTemplate: AxiosResponse = await coreApi.createRecordInstance(templateData);
 
         console.log('Create Automated Task Template API Status =============>', newTaskTemplate.status);
@@ -515,7 +791,7 @@ class ApiHelper {
         processData.targetTemplateId = taskTemplateDetails.data.id;
         processData.targetTemplateName = data.templateName;
         processData.targetProcess = data.processBundle + ":" + data.processName;
-        data.company ? processData.targetProcessTag = await apiCoreUtil.getOrganizationGuid(data.company) : processData.targetProcessTag;
+        data.ownerCompany ? processData.targetProcessTag = await apiCoreUtil.getOrganizationGuid(data.ownerCompany) : processData.targetProcessTag;
         let newAutoTemplateProcess: AxiosResponse = await coreApi.createProcessForAutoTaskTemplate(processData);
         console.log('Create Process for Automated Task Template API Status =============>', newAutoTemplateProcess.status);
 
@@ -629,7 +905,7 @@ class ApiHelper {
             userData.fieldInstances[1000000018].value = data.lastName;
             userData.fieldInstances[4].value = data.userId;
             userData.fieldInstances[430000002].value = data.userPermission ? data.userPermission : userData.fieldInstances[430000002].value;
-            //data.emailId ? userData.fieldInstances[1000000048].value = data.emailId : null;
+            userData.fieldInstances[1000000048].value = data.emailId ? data.emailId : userData.fieldInstances[1000000048].value;
             const newUser = await coreApi.createRecordInstance(userData);
             console.log('Create New User Details API Status =============>', newUser.status);
 
@@ -730,16 +1006,27 @@ class ApiHelper {
         oneTaskFlowProcess = Object.assign({}, oneTaskFlowProcess);
         let taskTemplateGuid = await coreApi.getTaskTemplateGuid(taskTemplateId);
         let randomString: string = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        // give new name to process
         oneTaskFlowProcess.name = oneTaskFlowProcess.name + "_" + randomString;
+        // get case company and update in payload
+        oneTaskFlowProcess.tags[0] = await apiCoreUtil.getCaseTemplateCompanyGuid(caseTemplateId);
+        // update task template data in payload
         let taskTemplateJsonData = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.task-lib:Task Template", taskTemplateGuid);
         let taskSummary = taskTemplateJsonData.fieldInstances[8].value;
-
-        oneTaskFlowProcess.flowElements[2].inputMap[0].expression = `"${taskSummary}"`;
-        oneTaskFlowProcess.flowElements[2].inputMap[3].expression = `"${taskTemplateGuid}"`;
-
+        let taskName = taskTemplateJsonData.fieldInstances[1000001437].value;
+        oneTaskFlowProcess.flowElements[2].inputMap[1].expression = `"${taskSummary}"`;
+        oneTaskFlowProcess.flowElements[2].inputMap[2].expression = `"${taskTemplateGuid}"`;
+        oneTaskFlowProcess.layout = (oneTaskFlowProcess.layout).replace("New Task", taskName);
+        // create new doc and update in payload
+        let docData = PROCESS_DOCUMENT;
+        docData.name = docData.name + "_" + randomString;
+        let newDocForProcess: AxiosResponse = await coreApi.createDocumentForProcess(docData);
+        console.log('Create Document for TaskFlow Process =============>', newDocForProcess.status);
+        oneTaskFlowProcess.inputParams[0].documentDefinitionName = docData.name;
+        // create process
         let processGuid = await coreApi.createProcess(oneTaskFlowProcess);
         console.log('New Process Created =============>', oneTaskFlowProcess.name, "=====GUID:", processGuid);
-
+        // link task flow process to case template
         let caseTemplateGuid = await coreApi.getCaseTemplateGuid(caseTemplateId);
         let caseTemplateJsonData = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid);
         caseTemplateJsonData.fieldInstances[450000165].value = oneTaskFlowProcess.name;
@@ -757,24 +1044,85 @@ class ApiHelper {
         twoTaskFlowProcess = Object.assign({}, twoTaskFlowProcess);
         let taskTemplateGuid1 = await coreApi.getTaskTemplateGuid(taskTemplateId1);
         let taskTemplateGuid2 = await coreApi.getTaskTemplateGuid(taskTemplateId2);
+        // give new name to process
         let randomString: string = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         twoTaskFlowProcess.name = await twoTaskFlowProcess.name + "_" + randomString;
-
+        // get case company and update in payload
+        twoTaskFlowProcess.tags[0] = await apiCoreUtil.getCaseTemplateCompanyGuid(caseTemplateId);
+        // update task template data in payload
         let taskTemplateJsonData1 = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.task-lib:Task Template", taskTemplateGuid1);
         let taskSummary1 = taskTemplateJsonData1.fieldInstances[8].value;
+        let taskName1 = taskTemplateJsonData1.fieldInstances[1000001437].value;
         let taskTemplateJsonData2 = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.task-lib:Task Template", taskTemplateGuid2);
         let taskSummary2 = taskTemplateJsonData2.fieldInstances[8].value;
-
+        let taskName2 = taskTemplateJsonData2.fieldInstances[1000001437].value;
         twoTaskFlowProcess.flowElements[2].inputMap[1].expression = `"${taskSummary1}"`;
         twoTaskFlowProcess.flowElements[3].inputMap[1].expression = `"${taskSummary2}"`;
         twoTaskFlowProcess.flowElements[2].inputMap[2].expression = `"${taskTemplateGuid1}"`;
         twoTaskFlowProcess.flowElements[3].inputMap[2].expression = `"${taskTemplateGuid2}"`;
-
+        twoTaskFlowProcess.layout = (twoTaskFlowProcess.layout).replace("New Task 1", taskName1);
+        twoTaskFlowProcess.layout = (twoTaskFlowProcess.layout).replace("New Task 2", taskName2);
+        // create new doc and update in payload
+        let docData = PROCESS_DOCUMENT;
+        docData.name = docData.name + "_" + randomString;
+        let newDocForProcess: AxiosResponse = await coreApi.createDocumentForProcess(docData);
+        console.log('Create Document for TaskFlow Process =============>', newDocForProcess.status);
+        twoTaskFlowProcess.inputParams[0].documentDefinitionName = docData.name;
+        // create process
         let processGuid = await coreApi.createProcess(twoTaskFlowProcess);
         console.log('New Process Created =============>', twoTaskFlowProcess.name, "=====GUID:", processGuid);
+        // link task flow process to case template
         let caseTemplateGuid = await coreApi.getCaseTemplateGuid(caseTemplateId);
         let caseTemplateJsonData = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid);
         caseTemplateJsonData.fieldInstances[450000165].value = twoTaskFlowProcess.name;
+        await apiCoreUtil.updateRecordInstance("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid, caseTemplateJsonData);
+    }
+
+    async associateCaseTemplateWithThreeTaskTemplate(caseTemplateId: string, taskTemplateId1: string, taskTemplateId2: string, taskTemplateId3: string, structure?: any): Promise<void> {
+        let threeTaskFlowProcess: any = THREE_TASKFLOW_SEQUENTIAL;
+        if (structure) threeTaskFlowProcess = threeTaskFlowProcess;
+
+        threeTaskFlowProcess = Object.assign({}, threeTaskFlowProcess);
+        let taskTemplateGuid1 = await coreApi.getTaskTemplateGuid(taskTemplateId1);
+        let taskTemplateGuid2 = await coreApi.getTaskTemplateGuid(taskTemplateId2);
+        let taskTemplateGuid3 = await coreApi.getTaskTemplateGuid(taskTemplateId3);
+        // give new name to process        
+        let randomString: string = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        threeTaskFlowProcess.name = await threeTaskFlowProcess.name + "_" + randomString;
+        // get case company and update in payload
+        threeTaskFlowProcess.tags[0] = await apiCoreUtil.getCaseTemplateCompanyGuid(caseTemplateId);
+        // update task template data in payload
+        let taskTemplateJsonData1 = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.task-lib:Task Template", taskTemplateGuid1);
+        let taskSummary1 = taskTemplateJsonData1.fieldInstances[8].value;
+        let taskName1 = taskTemplateJsonData1.fieldInstances[1000001437].value;
+        let taskTemplateJsonData2 = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.task-lib:Task Template", taskTemplateGuid2);
+        let taskSummary2 = taskTemplateJsonData2.fieldInstances[8].value;
+        let taskName2 = taskTemplateJsonData2.fieldInstances[1000001437].value;
+        let taskTemplateJsonData3 = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.task-lib:Task Template", taskTemplateGuid3);
+        let taskSummary3 = taskTemplateJsonData3.fieldInstances[8].value;
+        let taskName3 = taskTemplateJsonData3.fieldInstances[1000001437].value;
+        threeTaskFlowProcess.flowElements[2].inputMap[1].expression = `"${taskSummary1}"`;
+        threeTaskFlowProcess.flowElements[3].inputMap[1].expression = `"${taskSummary2}"`;
+        threeTaskFlowProcess.flowElements[4].inputMap[1].expression = `"${taskSummary3}"`;
+        threeTaskFlowProcess.flowElements[2].inputMap[2].expression = `"${taskTemplateGuid1}"`;
+        threeTaskFlowProcess.flowElements[3].inputMap[2].expression = `"${taskTemplateGuid2}"`;
+        threeTaskFlowProcess.flowElements[4].inputMap[2].expression = `"${taskTemplateGuid3}"`;
+        threeTaskFlowProcess.layout = (threeTaskFlowProcess.layout).replace("New Task 1", taskName1);
+        threeTaskFlowProcess.layout = (threeTaskFlowProcess.layout).replace("New Task 2", taskName2);
+        threeTaskFlowProcess.layout = (threeTaskFlowProcess.layout).replace("New Task 3", taskName3);
+        // create new doc and update in payload
+        let docData = PROCESS_DOCUMENT;
+        docData.name = docData.name + "_" + randomString;
+        let newDocForProcess: AxiosResponse = await coreApi.createDocumentForProcess(docData);
+        console.log('Create Document for TaskFlow Process =============>', newDocForProcess.status);
+        threeTaskFlowProcess.inputParams[0].documentDefinitionName = docData.name;
+        // create process
+        let processGuid = await coreApi.createProcess(threeTaskFlowProcess);
+        console.log('New Process Created =============>', threeTaskFlowProcess.name, "=====GUID:", processGuid);
+        // link task flow process to case template
+        let caseTemplateGuid = await coreApi.getCaseTemplateGuid(caseTemplateId);
+        let caseTemplateJsonData = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid);
+        caseTemplateJsonData.fieldInstances[450000165].value = threeTaskFlowProcess.name;
         await apiCoreUtil.updateRecordInstance("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid, caseTemplateJsonData);
     }
 
@@ -869,22 +1217,79 @@ class ApiHelper {
     }
 
     async createKnowledgeArticle(data: IKnowledgeArticles, attachment?: string): Promise<IIDs> {
-        let knowledgeArticleFile = await require('../data/api/knowledge/knowledge.article.api.json');
-        let knowledgeArticleData = await knowledgeArticleFile.KnowledgeArticleData;
+        let knowledgeArticleData = KNOWLEDGE_ARTICLE_PAYLOAD;
         let knowledgeArticleResponse: AxiosResponse;
 
         if (attachment) {
             knowledgeArticleData.fieldInstances[301820700].value = data.knowledgeSet;
             knowledgeArticleData.fieldInstances[302300502].value = data.title;
             knowledgeArticleData.fieldInstances[302312187].value = data.templateId;
+            knowledgeArticleData.fieldInstances[1000000001].value = data.company ? await coreApi.getOrganizationGuid(data.company) : knowledgeArticleData.fieldInstances[1000000001].value;
             knowledgeArticleData.fieldInstances[302301262].value = data.keyword ? data.keyword : knowledgeArticleData.fieldInstances[302301262].value;
-            knowledgeArticleData.fieldInstances[1000000063].value = data.categoryTier1 ? await apiCoreUtil.getCategoryGuid(data.categoryTier1) : knowledgeArticleData.fieldInstances[1000000063].value;
-            knowledgeArticleData.fieldInstances[1000000064].value = data.categoryTier2 ? await apiCoreUtil.getCategoryGuid(data.categoryTier2) : knowledgeArticleData.fieldInstances[1000000064].value;
-            knowledgeArticleData.fieldInstances[1000000065].value = data.categoryTier3 ? await apiCoreUtil.getCategoryGuid(data.categoryTier3) : knowledgeArticleData.fieldInstances[1000000065].value;
-            knowledgeArticleData.fieldInstances[200000007].value = data.region ? await apiCoreUtil.getRegionGuid(data.region) : knowledgeArticleData.fieldInstances[200000007].value;
-            knowledgeArticleData.fieldInstances[260000001].value = data.site ? await apiCoreUtil.getSiteGuid(data.site) : knowledgeArticleData.fieldInstances[260000001].value;
-            knowledgeArticleData.fieldInstances[450000157].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : knowledgeArticleData.fieldInstances[450000157].value;
             knowledgeArticleData.fieldInstances[302311201].value = data.articleDesc ? data.articleDesc : knowledgeArticleData.fieldInstances[302311201].value;
+
+            if (data.assignedCompany) {
+                let companyGuid = await coreApi.getOrganizationGuid(data.assignedCompany);
+                let assignedCompanyData = {
+                    "id": 450000157,
+                    "value": `${companyGuid}`
+                }
+                knowledgeArticleData.fieldInstances["450000157"] = assignedCompanyData;
+            }
+
+            if (data.site) {
+                let siteGuid = await coreApi.getSiteGuid(data.site);
+                let siteData = {
+                    "id": 260000001,
+                    "value": `${siteGuid}`
+                }
+                knowledgeArticleData.fieldInstances["260000001"] = siteData;
+            }
+
+            if (data.region) {
+                let regionGuid = await coreApi.getRegionGuid(data.region);
+                let regionData = {
+                    "id": 200000007,
+                    "value": `${regionGuid}`
+                }
+                knowledgeArticleData.fieldInstances["200000007"] = regionData;
+            }
+
+            if (data.categoryTier1) {
+                let categGuid = await coreApi.getCategoryGuid(data.categoryTier1);
+                let categData = {
+                    "id": 1000000063,
+                    "value": `${categGuid}`
+                }
+                knowledgeArticleData.fieldInstances["1000000063"] = categData;
+            }
+
+            if (data.categoryTier2) {
+                let categGuid = await coreApi.getCategoryGuid(data.categoryTier2);
+                let categData = {
+                    "id": 1000000064,
+                    "value": `${categGuid}`
+                }
+                knowledgeArticleData.fieldInstances["1000000064"] = categData;
+            }
+
+            if (data.categoryTier3) {
+                let categGuid = await coreApi.getCategoryGuid(data.categoryTier3);
+                let categData = {
+                    "id": 1000000065,
+                    "value": `${categGuid}`
+                }
+                knowledgeArticleData.fieldInstances["1000000065"] = categData;
+            }
+
+            if (data.assigneeBusinessUnit) {
+                let businessUnitGuid = await coreApi.getBusinessUnitGuid(data.assigneeBusinessUnit);
+                let businessUnitData = {
+                    "id": 450000381,
+                    "value": `${businessUnitGuid}`
+                }
+                knowledgeArticleData.fieldInstances["450000381"] = businessUnitData;
+            }
 
             if (data.assigneeSupportGroup) {
                 let assigneeSupportGroup = await coreApi.getSupportGroupGuid(data.assigneeSupportGroup);
@@ -893,15 +1298,17 @@ class ApiHelper {
                     "value": `${assigneeSupportGroup}`
                 }
                 knowledgeArticleData.fieldInstances["302300512"] = assineeSupportGroupData;
-                if (data.assignee) {
-                    let assigneeGuid = await coreApi.getPersonGuid(data.assignee);
-                    let assigneeData = {
-                        "id": 302300513,
-                        "value": `${assigneeGuid}`
-                    }
-                    knowledgeArticleData.fieldInstances["302300513"] = assigneeData;
-                }
             }
+
+            if (data.assignee) {
+                let assigneeGuid = await coreApi.getPersonGuid(data.assignee);
+                let assigneeData = {
+                    "id": 302300513,
+                    "value": `${assigneeGuid}`
+                }
+                knowledgeArticleData.fieldInstances["302300513"] = assigneeData;
+            }
+
             let articleData = {
                 recordInstance: knowledgeArticleData,
                 302302781: attachment
@@ -912,14 +1319,72 @@ class ApiHelper {
             knowledgeArticleData.fieldInstances[301820700].value = data.knowledgeSet;
             knowledgeArticleData.fieldInstances[302300502].value = data.title;
             knowledgeArticleData.fieldInstances[302312187].value = data.templateId;
+            knowledgeArticleData.fieldInstances[1000000001].value = data.company ? await coreApi.getOrganizationGuid(data.company) : knowledgeArticleData.fieldInstances[1000000001].value;
             knowledgeArticleData.fieldInstances[302301262].value = data.keyword ? data.keyword : knowledgeArticleData.fieldInstances[302301262].value;
-            knowledgeArticleData.fieldInstances[1000000063].value = data.categoryTier1 ? await apiCoreUtil.getCategoryGuid(data.categoryTier1) : knowledgeArticleData.fieldInstances[1000000063].value;
-            knowledgeArticleData.fieldInstances[1000000064].value = data.categoryTier2 ? await apiCoreUtil.getCategoryGuid(data.categoryTier2) : knowledgeArticleData.fieldInstances[1000000064].value;
-            knowledgeArticleData.fieldInstances[1000000065].value = data.categoryTier3 ? await apiCoreUtil.getCategoryGuid(data.categoryTier3) : knowledgeArticleData.fieldInstances[1000000065].value;
-            knowledgeArticleData.fieldInstances[200000007].value = data.region ? await apiCoreUtil.getRegionGuid(data.region) : knowledgeArticleData.fieldInstances[200000007].value;
-            knowledgeArticleData.fieldInstances[260000001].value = data.site ? await apiCoreUtil.getSiteGuid(data.site) : knowledgeArticleData.fieldInstances[260000001].value;
-            knowledgeArticleData.fieldInstances[450000157].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : knowledgeArticleData.fieldInstances[450000157].value;
             knowledgeArticleData.fieldInstances[302311201].value = data.articleDesc ? data.articleDesc : knowledgeArticleData.fieldInstances[302311201].value;
+
+            if (data.assignedCompany) {
+                let companyGuid = await coreApi.getOrganizationGuid(data.assignedCompany);
+                let assignedCompanyData = {
+                    "id": 450000157,
+                    "value": `${companyGuid}`
+                }
+                knowledgeArticleData.fieldInstances["450000157"] = assignedCompanyData;
+            }
+
+            if (data.site) {
+                let siteGuid = await coreApi.getSiteGuid(data.site);
+                let siteData = {
+                    "id": 260000001,
+                    "value": `${siteGuid}`
+                }
+                knowledgeArticleData.fieldInstances["260000001"] = siteData;
+            }
+
+            if (data.region) {
+                let regionGuid = await coreApi.getRegionGuid(data.region);
+                let regionData = {
+                    "id": 200000007,
+                    "value": `${regionGuid}`
+                }
+                knowledgeArticleData.fieldInstances["200000007"] = regionData;
+            }
+
+            if (data.categoryTier1) {
+                let categGuid = await coreApi.getCategoryGuid(data.categoryTier1);
+                let categData = {
+                    "id": 1000000063,
+                    "value": `${categGuid}`
+                }
+                knowledgeArticleData.fieldInstances["1000000063"] = categData;
+            }
+
+            if (data.categoryTier2) {
+                let categGuid = await coreApi.getCategoryGuid(data.categoryTier2);
+                let categData = {
+                    "id": 1000000064,
+                    "value": `${categGuid}`
+                }
+                knowledgeArticleData.fieldInstances["1000000064"] = categData;
+            }
+
+            if (data.categoryTier3) {
+                let categGuid = await coreApi.getCategoryGuid(data.categoryTier3);
+                let categData = {
+                    "id": 1000000065,
+                    "value": `${categGuid}`
+                }
+                knowledgeArticleData.fieldInstances["1000000065"] = categData;
+            }
+
+            if (data.assigneeBusinessUnit) {
+                let businessUnitGuid = await coreApi.getBusinessUnitGuid(data.assigneeBusinessUnit);
+                let businessUnitData = {
+                    "id": 450000381,
+                    "value": `${businessUnitGuid}`
+                }
+                knowledgeArticleData.fieldInstances["450000381"] = businessUnitData;
+            }
 
             if (data.assigneeSupportGroup) {
                 let assigneeSupportGroup = await coreApi.getSupportGroupGuid(data.assigneeSupportGroup);
@@ -929,6 +1394,7 @@ class ApiHelper {
                 }
                 knowledgeArticleData.fieldInstances["302300512"] = assineeSupportGroupData;
             }
+
             if (data.assignee) {
                 let assigneeGuid = await coreApi.getPersonGuid(data.assignee);
                 let assigneeData = {
@@ -937,6 +1403,7 @@ class ApiHelper {
                 }
                 knowledgeArticleData.fieldInstances["302300513"] = assigneeData;
             }
+
             knowledgeArticleResponse = await coreApi.createRecordInstance(knowledgeArticleData);
             console.log('Create Knowledge Article API Status =============>', knowledgeArticleResponse.status);
         }
@@ -950,8 +1417,7 @@ class ApiHelper {
     }
 
     async updateKnowledgeArticleStatus(articleGuid: string, articleStatus: string, reviewer?: string, reviewerGroup?: string, reviewerOrg?: string): Promise<boolean> {
-        let knowledgeArticleFile = await require('../data/api/knowledge/knowledge.article.api.json');
-        let knowledgeArticleData = await knowledgeArticleFile.UpdateKnowledgeArticleData;
+        let knowledgeArticleData = UPDATE_KNOWLEDGE_ARTICLE_PAYLOAD;
         knowledgeArticleData.id = articleGuid;
         knowledgeArticleData.fieldInstances[302300500].value = constants.Knowledge[articleStatus];
         knowledgeArticleData.fieldInstances[536870913].value = await coreApi.getStatusGuid('com.bmc.dsm.knowledge', constants.Knowledge[articleStatus], articleStatus);
@@ -1065,7 +1531,6 @@ class ApiHelper {
 
     async createNewMenuItem(data: IMenuItem): Promise<IIDs> {
         let randomStr = [...Array(6)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        console.log(data);
         let menuItemFile = await require('../data/api/shared-services/menuItemConfiguration.api.json');
         console.log('New Menu Item API Status =============>');
         let menuItemData = await menuItemFile.MenuItemConfiguration;
@@ -1171,21 +1636,6 @@ class ApiHelper {
         return updatedOrgData.status == 204;
     }
 
-    async updateNotificationEmailListForSupportGroup(supportGroup: string, notificationList: string): Promise<void> {
-        let supportGroupGuid: string = await coreApi.getSupportGroupGuid(supportGroup);
-        let notificationEmailFile = await require('../data/api/foundation/notifications.email.list.update.api.json');
-        let notificationEmailList = await notificationEmailFile.NotificationEmailList;
-        notificationEmailList["id"] = supportGroupGuid;
-        notificationEmailList.fieldInstances[303500800]["value"] = notificationList;
-        let uri: string = "api/rx/application/record/recordinstance/com.bmc.arsys.rx.foundation%3ASupport%20Group/" + supportGroupGuid;
-        const notificationSetting = await axios.put(
-            uri,
-            notificationEmailList
-        );
-        console.log("Set Notification Email List status ==>>> " + notificationSetting.status);
-    }
-
-
     async updateCaseAccess(caseGuid: string, data: any): Promise<number> {
         let accessFile = await require('../data/api/case/case.access.api.json');
         let caseAccessData = await accessFile.CaseAccess;
@@ -1213,6 +1663,8 @@ class ApiHelper {
         }
 
         let updateCaseStatus = await apiCoreUtil.updateRecordInstance("com.bmc.dsm.case-lib:Case", caseGuid, statusData);
+        await browser.sleep(1000); // hardwait to reflect updated status
+        console.log(`Changing the case to ${status} API status is =============>`, updateCaseStatus.status);
         return updateCaseStatus.status;
     }
 
@@ -1280,12 +1732,6 @@ class ApiHelper {
         }
     }
 
-    async updateCase(caseGuid: string, jsonBody: any): Promise<boolean> {
-        jsonBody.id = caseGuid;
-        let updateCase = await coreApi.updateRecordInstance('com.bmc.dsm.case-lib:Case', caseGuid, jsonBody);
-        return updateCase.status == 204;
-    }
-
     async runAutomatedCaseTransitionProcess(): Promise<number> {
         let response = await axios.post(
             commandUri,
@@ -1347,7 +1793,6 @@ class ApiHelper {
         if (orgId == null) { orgId = await coreApi.getDepartmentGuid(orgName); }
         if (orgId == null) { orgId = await coreApi.getSupportGroupGuid(orgName); }
         readAccessDocLibPayload['processInputValues']['Value'] = orgId;
-        console.log(readAccessDocLibPayload);
         const readAccessDocLibResponse = await axios.post(commandUri, readAccessDocLibPayload);
         console.log('Read Access Doc Lib API Status =============>', readAccessDocLibResponse.status);
         return readAccessDocLibResponse.status == 201;
@@ -1474,11 +1919,12 @@ class ApiHelper {
         };
     }
 
-    async createAdhocTask(caseGuid: string, taskData: any): Promise<IIDs> {
+    async createAdhocTask(caseGuid: string, taskData: IAdhocTask): Promise<IIDs> {
         ADHOC_TASK_PAYLOAD.fieldInstances[8].value = taskData.taskName;
         ADHOC_TASK_PAYLOAD.fieldInstances[536870913].value = caseGuid;
         ADHOC_TASK_PAYLOAD.fieldInstances[1000000001].value = await coreApi.getOrganizationGuid(taskData.company);
         ADHOC_TASK_PAYLOAD.fieldInstances[450000152].value = await coreApi.getPersonGuid(taskData.assignee);
+        ADHOC_TASK_PAYLOAD.fieldInstances[450000381].value = await coreApi.getBusinessUnitGuid(taskData.businessUnit);
         ADHOC_TASK_PAYLOAD.fieldInstances[1000000217].value = await coreApi.getSupportGroupGuid(taskData.supportGroup);
         taskData.priority ? ADHOC_TASK_PAYLOAD.fieldInstances[1000000164].value = constants.CasePriority[taskData.priority] : ADHOC_TASK_PAYLOAD.fieldInstances[1000000164].value;
 
@@ -1508,6 +1954,7 @@ class ApiHelper {
         }
 
         let updateTaskStatus = await apiCoreUtil.updateRecordInstance("com.bmc.dsm.task-lib:Task", taskGuid, UPDATE_TASK_STATUS);
+        await browser.sleep(1000); // hardwait to reflect updated status
         return updateTaskStatus.status;
     }
 
@@ -1631,8 +2078,9 @@ class ApiHelper {
         return response.status == 204;
     }
 
-    async changeCaseAssignment(caseGuid: string, supportGroup: string, assignee?: string): Promise<boolean> {
+    async changeCaseAssignment(caseGuid: string, businessUnit: string, supportGroup: string, assignee?: string): Promise<boolean> {
         UPDATE_CASE_ASSIGNMENT.id = caseGuid;
+        UPDATE_CASE_ASSIGNMENT.fieldInstances[450000381].value = await coreApi.getBusinessUnitGuid(businessUnit);
         UPDATE_CASE_ASSIGNMENT.fieldInstances[1000000217].value = await coreApi.getSupportGroupGuid(supportGroup);
         if (assignee) UPDATE_CASE_ASSIGNMENT.fieldInstances[450000152].value = await coreApi.getPersonGuid(assignee);
         let updateAssignmentResponse = await coreApi.updateRecordInstance('com.bmc.dsm.case-lib:Case', caseGuid, UPDATE_CASE_ASSIGNMENT);
@@ -1645,7 +2093,7 @@ class ApiHelper {
             headers: { 'request-overlay-group': 'Petramco' }
         };
 
-        ACTIONABLE_NOTIFICATIONS_ENABLEMENT_SETTING.fieldInstances[3205].value = browser.baseUrl + '/';
+        ACTIONABLE_NOTIFICATIONS_ENABLEMENT_SETTING.fieldInstances[3205].value = browser.baseUrl;
         let response = await axios.post(
             'api/rx/application/record/recordinstance',
             ACTIONABLE_NOTIFICATIONS_ENABLEMENT_SETTING,
@@ -1677,7 +2125,7 @@ class ApiHelper {
         return response.status == 204;
     }
 
-    async createCaseApprovalMapping(data: ICaseApprovalMapping): Promise<boolean> {
+    async createCaseApprovalMapping(data: ICaseApprovalMapping): Promise<IIDs> {
         CASE_APPROVAL_MAPPING.fieldInstances[303715900].value = await coreApi.getStatusGuid('com.bmc.dsm.case-lib', constants.CaseStatus[data.triggerStatus]);
         CASE_APPROVAL_MAPPING.fieldInstances[450000152].value = constants.CaseStatus[data.triggerStatus];
         CASE_APPROVAL_MAPPING.fieldInstances[450000153].value = constants.CaseStatus[data.approvedStatus];
@@ -1688,7 +2136,191 @@ class ApiHelper {
         if (data.company) CASE_APPROVAL_MAPPING.fieldInstances[1000000001].value = await coreApi.getOrganizationGuid(data.company);
         let response = await coreApi.createRecordInstance(CASE_APPROVAL_MAPPING);
         console.log('Case Approval Mapping API Status =============>', response.status);
+
+        const approvalMapping = await axios.get(
+            response.headers.location
+        );
+        return {
+            id: approvalMapping.data.id,
+            displayId: approvalMapping.data.displayId
+        };
+    }
+
+    async createBusinessTimeSharedEntity(name: string, status?: number): Promise<boolean> {
+        if (status) BUSINESS_TIME_SHARED_ENTITY.fieldInstances[7].value = status;
+        BUSINESS_TIME_SHARED_ENTITY.fieldInstances[8].value = name;
+        let response = await coreApi.createRecordInstance(BUSINESS_TIME_SHARED_ENTITY);
+        console.log('Create Business Shared Entity API Status =============>', response.status);
         return response.status == 204;
+    }
+
+    async createBusinessTimeSegment(name: string): Promise<IIDs> {
+        BUSINESS_TIME_SEGMENT.fieldInstances[8].value = name;
+        let response = await coreApi.createRecordInstance(BUSINESS_TIME_SHARED_ENTITY);
+        console.log('Create Business Time Segment API Status =============>', response.status);
+        const businessTimeSegment = await axios.get(
+            response.headers.location
+        );
+        return {
+            id: businessTimeSegment.data.id,
+            displayId: businessTimeSegment.data.displayId
+        };
+    }
+
+    async deleteArticleTemplate(articleTemplateName?: string): Promise<boolean> {
+        if (articleTemplateName) {
+            let allRecords = await coreApi.getGuid("com.bmc.dsm.knowledge:Template Configuration");
+            let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+                return obj[301820705] === articleTemplateName;
+            });
+            for (let i = 0; i < entityObj.length; i++) {
+                let guid = entityObj.length >= 1 ? entityObj[i]['379'] || null : null;
+                await coreApi.deleteRecordInstance('com.bmc.dsm.knowledge:Template Configuration', guid);
+            }
+            return true;
+        }
+        else {
+            let allArticleTemplateRecords = await coreApi.getGuid("com.bmc.dsm.knowledge:Template Configuration");
+            let allArticleTemplateArrayMap = allArticleTemplateRecords.data.data.map(async (obj: string) => {
+                return await coreApi.deleteRecordInstance('com.bmc.dsm.knowledge:Template Configuration', obj[379]);
+            });
+            return await Promise.all(allArticleTemplateArrayMap).then(async (result) => {
+                return !result.includes(false);
+            });
+        }
+    }
+
+    async deleteKnowledgeSet(knowledgeSetName?: string): Promise<boolean> {
+        if (knowledgeSetName) {
+            let allRecords = await coreApi.getGuid("com.bmc.dsm.knowledge:Knowledge Set");
+            let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+                return obj[301820700].includes(knowledgeSetName);
+            });
+            for (let i = 0; i < entityObj.length; i++) {
+                let guid = entityObj.length >= 1 ? entityObj[i]['379'] || null : null;
+                await coreApi.deleteRecordInstance('com.bmc.dsm.knowledge:Knowledge Set', guid);
+            }
+            return true;
+        }
+        else {
+            let allArticleTemplateRecords = await coreApi.getGuid("com.bmc.dsm.knowledge:Knowledge Set");
+            let allArticleTemplateArrayMap = allArticleTemplateRecords.data.data.map(async (obj: string) => {
+                return await coreApi.deleteRecordInstance('com.bmc.dsm.knowledge:Knowledge Set', obj[379]);
+            });
+            return await Promise.all(allArticleTemplateArrayMap).then(async (result) => {
+                return !result.includes(false);
+            });
+        }
+    }
+
+    async addFunctionalRole(person: string, functionalRoleGuid?: string): Promise<boolean> {
+        let userRoles = await coreApi.getPersonFunctionalRoles(person);
+        let personGuid = await coreApi.getPersonGuid(person)
+        ADD_FUNCTIONAL_ROLE.fieldInstances[430000002].value = userRoles + ';' + functionalRoleGuid;
+        let response = await coreApi.updateRecordInstance('com.bmc.arsys.rx.foundation:Person', personGuid, ADD_FUNCTIONAL_ROLE);
+        console.log(`Functional role of ${person} is successfully updated  =============>`, response.status);
+        return response.status == 204;
+    }
+
+    async associateCaseTemplateWithApprovalMapping(templatedId: string, approvalMapping: string): Promise<boolean> {
+        let url = "api/com.bmc.dsm.shared-services-lib/rx/application/association/com.bmc.dsm.case-lib:Case Approval Mapping to Case Template/" + approvalMapping + "/" + templatedId + "?allowDuplicates=true";
+        let response = await axios.post(
+            url,
+            {}
+        )
+        console.log('Association API Status =============>', response.status);
+        return response.status == 204;
+    }
+
+    async reopenCase(caseGuid: string): Promise<boolean> {
+        CASE_REOPEN.processInputValues["Case ID"] = caseGuid;
+        let response = await axios.post(
+            commandUri,
+            CASE_REOPEN
+        )
+        console.log('Reopen API Status  =============>', response.status);
+        return response.status == 201;
+    }
+
+    async postActivityCommentsWithoutAttachments(comment: string, module: string, moduleGuid: string): Promise<boolean> {
+        POST_ACTIVITY.dataSource = module;
+        POST_ACTIVITY.text = comment;
+        let uri = `/api/com.bmc.dsm.social-lib/rx/application/activity/${module}/${moduleGuid}`;
+        let response = await axios.post(
+            uri,
+            POST_ACTIVITY
+        )
+        console.log('Comments posting API Status  =============>', response.status);
+        return response.status == 200;
+    }
+
+    async sendApprovalQuestions(recordGuid: string, user: string, questions: string, caseId: string): Promise<boolean> {
+        let signatureId = await coreApi.getSignatureId(recordGuid);
+        let formData = {
+            to: user,
+            question: questions,
+            application: 'com.bmc.dsm.case-lib:Case',
+            applicationRequestId: caseId,
+            signatureID: signatureId
+        }
+
+        let response = await coreApi.multiFormPostWithAttachment(formData, 'api/com.bmc.arsys.rx.approval/rx/application/approval/moreinformation/question');
+        console.log('More Info API Status =============>', response.status);
+        return response.status == 204;
+    }
+
+    async createReadAccessMapping(data: any): Promise<boolean> {
+        CASE_READ_ACCESS.fieldInstances[450000381].value = await apiCoreUtil.getBusinessUnitGuid(data.businessUnit);
+        CASE_READ_ACCESS.fieldInstances[1000000217].value = await apiCoreUtil.getSupportGroupGuid(data.supportGroup);
+        CASE_READ_ACCESS.fieldInstances[450000153].value = await apiCoreUtil.getOrganizationGuid(data.assignedCompany);
+        CASE_READ_ACCESS.fieldInstances[1000001437].value = data.configName;
+        CASE_READ_ACCESS.fieldInstances[1000000001].value = await apiCoreUtil.getOrganizationGuid(data.company);
+
+        if (data.category1) {
+            let categoryTier1 = await coreApi.getCategoryGuid(data.category1);
+            let category1Data = {
+                "id": 1000000063,
+                "value": `${categoryTier1}`
+            }
+            CASE_READ_ACCESS.fieldInstances["1000000063"] = category1Data;
+        }
+        if (data.category2) {
+            let categoryTier2 = await coreApi.getCategoryGuid(data.category2);
+            let category2Data = {
+                "id": 1000000064,
+                "value": `${categoryTier2}`
+            }
+            CASE_READ_ACCESS.fieldInstances["1000000064"] = category2Data;
+        }
+        if (data.category3) {
+            let categoryTier3 = await coreApi.getCategoryGuid(data.category3);
+            let category3Data = {
+                "id": 1000000065,
+                "value": `${categoryTier3}`
+            }
+            CASE_READ_ACCESS.fieldInstances["1000000065"] = category3Data;
+        }
+        if (data.category4) {
+            let categoryTier4 = await coreApi.getCategoryGuid(data.category4);
+            let category4Data = {
+                "id": 450000158,
+                "value": `${categoryTier4}`
+            }
+            CASE_READ_ACCESS.fieldInstances["450000158"] = category4Data;
+        }
+
+        if (data.label) {
+            let label = await coreApi.getLabelGuid(data.label);
+            let labelData = {
+                "id": 450000159,
+                "value": `${label}`
+            }
+            CASE_READ_ACCESS.fieldInstances["450000159"] = labelData;
+        }
+
+        let readAccessMapping: AxiosResponse = await coreApi.createRecordInstance(CASE_READ_ACCESS);
+        console.log('Read Access Mapping Status =============>', readAccessMapping.status);
+        return readAccessMapping.status == 201;
     }
 
 }

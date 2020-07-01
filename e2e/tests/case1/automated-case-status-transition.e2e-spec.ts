@@ -1,6 +1,6 @@
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
-import { UPDATE_CASE_STATUS_MODIFIED_DATE } from '../../data/ui/case/update.case.data.api';
+import { AUTO_STATUS_TRANSITION_MANDATORY_FIELDS } from '../../data/ui/case/automated-status-transition.data.ui';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import notificationPo from '../../pageobject/notification/notification.po';
@@ -21,104 +21,94 @@ describe('Automated Case Status Transition', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 
-    afterEach(async () => {
-        await utilityCommon.refresh();
+    //asahitya
+    describe('[DRDMV-17551]: Case business analyst - automatic case status transtion rule console', async () => {
+        let configName1, configName2, randomStr = [...Array(7)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        it('[DRDMV-17551]: Create two records', async () => {
+            //Create first Record
+            configName1 = AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.name = 'ConfigName1' + randomStr;
+            AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.changeStatusAfter = Math.floor(Math.random() * 180) + 1;
+            await automatedStatusTransitionConsole.clickAddAutomatedStatusTransitionBtn();
+            await automatedStatusTransitionCreatePage.createAutomatedStatusTransition(AUTO_STATUS_TRANSITION_MANDATORY_FIELDS);
+
+            //Create Second Record
+            configName2 = AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.name = 'ConfigName2' + randomStr;
+            AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.changeStatusAfter = Math.floor(Math.random() * 180) + 1;
+            await automatedStatusTransitionConsole.clickAddAutomatedStatusTransitionBtn();
+            await automatedStatusTransitionCreatePage.createAutomatedStatusTransition(AUTO_STATUS_TRANSITION_MANDATORY_FIELDS);
+            expect(await utilGrid.isGridRecordPresent(configName1)).toBeTruthy();
+            await utilGrid.clearGridSearchBox();
+            expect(await utilGrid.isGridRecordPresent(configName2)).toBeTruthy();
+            await utilGrid.clearGridSearchBox();
+            await utilGrid.addFilter("Name", configName1, 'text');
+            expect(await utilGrid.isGridRecordPresent(configName1)).toBeTruthy();
+        });
+        it('[DRDMV-17551]: Case business analyst - automatic case status transtion rule console', async () => {
+            await utilGrid.clearGridSearchBox();
+            expect(await utilGrid.isGridRecordPresent(configName2)).toBeFalsy();
+            await utilGrid.clearGridSearchBox();
+            await utilGrid.clearFilter();
+            await automatedStatusTransitionConsole.addGridColumns(['Category Tier 1', 'Category Tier 2', 'Category Tier 3', 'Category Tier 4', 'From Status Reason', 'ID', 'To Status Reason', 'Label']);
+            expect(await automatedStatusTransitionConsole.areGridColumnMatches(['Name', 'Company', 'From Status', 'To Status', 'Days Inactive', 'Enabled', 'Flowset', 'Category Tier 1', 'Category Tier 2', 'Category Tier 3', 'Category Tier 4', 'From Status Reason', 'ID', 'To Status Reason', 'Label']))
+            await automatedStatusTransitionConsole.removeGridColumns(['Category Tier 1', 'Category Tier 2', 'Category Tier 3', 'Category Tier 4', 'From Status Reason', 'ID', 'To Status Reason', 'Label']);
+            await automatedStatusTransitionConsole.isGridColumnSorted('Days Inactive');
+
+            await utilGrid.searchAndOpenHyperlink(configName1);
+            expect(await automatedStatusTransitionEditPage.isCategoryTier1FieldEnabled()).toBeTruthy("Category Tier 1 is disabled");
+            expect(await automatedStatusTransitionEditPage.isCategoryTier2FieldEnabled()).toBeTruthy("Category Tier 2 is disabled");
+            expect(await automatedStatusTransitionEditPage.isCategoryTier3FieldEnabled()).toBeTruthy("Category Tier 3 is disabled");
+            expect(await automatedStatusTransitionEditPage.isCategoryTier4FieldEnabled()).toBeTruthy("Category Tier 4 is disabled");
+            expect(await automatedStatusTransitionEditPage.isFlowsetFieldEnabled()).toBeTruthy("Flowset is disabled");
+            expect(await automatedStatusTransitionEditPage.isFromStatusFieldEnabled()).toBeTruthy("From Status is disabled");
+            expect(await automatedStatusTransitionEditPage.isToStatusFieldEnabled()).toBeTruthy("To Status is disabled");
+            expect(await automatedStatusTransitionEditPage.isNumberOfDaysFieldEnabled()).toBeTruthy("Change After Days is disabled");
+            expect(await automatedStatusTransitionEditPage.isToStatusReasonFieldEnabled()).toBeTruthy("To Staus Reason is disabled");
+            expect(await automatedStatusTransitionEditPage.isFromStatusReasonFieldEnabled()).toBeTruthy("From Staus Reason is disabled");
+        });
+        afterAll(async () => {
+            await utilCommon.closeBladeOnSettings();
+        });
     });
 
     //asahitya
-    it('[DRDMV-17551]: Case business analyst - automatic case status transtion rule console', async () => {
-        let automatedStatusTransitionData = await require('../../data/ui/case/automatedStatusTransition.ui.json');
+    describe('[DRDMV-17553]: Case manager - automatic case status transtion rule console validations', async () => {
+        let configName1, configName2, randomStr = [...Array(7)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        beforeAll(async () => {
+            //Create first Record
+            configName1 = AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.name = 'ConfigName1' + randomStr;
+            AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.changeStatusAfter = Math.floor(Math.random() * 180) + 1;
+            await automatedStatusTransitionConsole.clickAddAutomatedStatusTransitionBtn();
+            await automatedStatusTransitionCreatePage.createAutomatedStatusTransition(AUTO_STATUS_TRANSITION_MANDATORY_FIELDS);
 
-        //Create first Record
-        let configName1: string = [...Array(7)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        automatedStatusTransitionData['automatedStatusTransitionWithMandatoryFields'].name = configName1;
-        automatedStatusTransitionData['automatedStatusTransitionWithMandatoryFields'].changeStatusAfter = Math.floor(Math.random() * 180) + 1;
-        await automatedStatusTransitionConsole.clickAddAutomatedStatusTransitionBtn();
-        await automatedStatusTransitionCreatePage.createAutomatedStatusTransition(automatedStatusTransitionData);
-
-        //Create Second Record
-        let configName2: string = [...Array(7)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        automatedStatusTransitionData['automatedStatusTransitionWithMandatoryFields'].name = configName2;
-        automatedStatusTransitionData['automatedStatusTransitionWithMandatoryFields'].changeStatusAfter = Math.floor(Math.random() * 180) + 1;
-        await automatedStatusTransitionConsole.clickAddAutomatedStatusTransitionBtn();
-        await automatedStatusTransitionCreatePage.createAutomatedStatusTransition(automatedStatusTransitionData);
-
-        expect(await utilGrid.isGridRecordPresent(configName1)).toBeTruthy();
-        await utilGrid.clearGridSearchBox();
-        expect(await utilGrid.isGridRecordPresent(configName2)).toBeTruthy();
-        await utilGrid.clearGridSearchBox();
-
-        await utilGrid.addFilter("Name", configName1, 'text');
-        expect(await utilGrid.isGridRecordPresent(configName1)).toBeTruthy();
-        await utilGrid.clearGridSearchBox();
-        expect(await utilGrid.isGridRecordPresent(configName2)).toBeFalsy();
-        await utilGrid.clearGridSearchBox();
-
-        await utilGrid.clearFilter();
-
-        await automatedStatusTransitionConsole.addGridColumns(['Category Tier 1', 'Category Tier 2', 'Category Tier 3', 'Category Tier 4', 'From Status Reason', 'ID', 'To Status Reason', 'Label']);
-
-        expect(await automatedStatusTransitionConsole.areGridColumnMatches(['Name', 'Company', 'From Status', 'To Status', 'Days Inactive', 'Enabled', 'Flowset', 'Category Tier 1', 'Category Tier 2', 'Category Tier 3', 'Category Tier 4', 'From Status Reason', 'ID', 'To Status Reason', 'Label']))
-        await automatedStatusTransitionConsole.removeGridColumns(['Category Tier 1', 'Category Tier 2', 'Category Tier 3', 'Category Tier 4', 'From Status Reason', 'ID', 'To Status Reason', 'Label']);
-        await utilityCommon.refresh();
-        await automatedStatusTransitionConsole.isGridColumnSorted('Days Inactive');
-
-        await utilGrid.searchAndOpenHyperlink(configName1);
-        expect(await automatedStatusTransitionEditPage.isCategoryTier1FieldEnabled()).toBeTruthy("Category Tier 1 is disabled");
-        expect(await automatedStatusTransitionEditPage.isCategoryTier2FieldEnabled()).toBeTruthy("Category Tier 2 is disabled");
-        expect(await automatedStatusTransitionEditPage.isCategoryTier3FieldEnabled()).toBeTruthy("Category Tier 3 is disabled");
-        expect(await automatedStatusTransitionEditPage.isCategoryTier4FieldEnabled()).toBeTruthy("Category Tier 4 is disabled");
-        expect(await automatedStatusTransitionEditPage.isFlowsetFieldEnabled()).toBeTruthy("Flowset is disabled");
-        expect(await automatedStatusTransitionEditPage.isFromStatusFieldEnabled()).toBeTruthy("From Status is disabled");
-        expect(await automatedStatusTransitionEditPage.isToStatusFieldEnabled()).toBeTruthy("To Status is disabled");
-        expect(await automatedStatusTransitionEditPage.isNumberOfDaysFieldEnabled()).toBeTruthy("Change After Days is disabled");
-        expect(await automatedStatusTransitionEditPage.isToStatusReasonFieldEnabled()).toBeTruthy("To Staus Reason is disabled");
-        expect(await automatedStatusTransitionEditPage.isFromStatusReasonFieldEnabled()).toBeTruthy("From Staus Reason is disabled");
-    }, 340 * 1000);//, 180 * 1000);
-
-    //asahitya
-    it('[DRDMV-17553]: Case manager - automatic case status transtion rule console validations', async () => {
-        let automatedStatusTransitionData = await require('../../data/ui/case/automatedStatusTransition.ui.json');
-
-        //Create first Record
-        let configName1: string = [...Array(7)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        automatedStatusTransitionData['automatedStatusTransitionWithMandatoryFields'].name = configName1;
-        automatedStatusTransitionData['automatedStatusTransitionWithMandatoryFields'].changeStatusAfter = Math.floor(Math.random() * 180) + 1;
-        await automatedStatusTransitionConsole.clickAddAutomatedStatusTransitionBtn();
-        await automatedStatusTransitionCreatePage.createAutomatedStatusTransition(automatedStatusTransitionData);
-
-        //Create Second Record
-        let configName2: string = [...Array(7)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        automatedStatusTransitionData['automatedStatusTransitionWithMandatoryFields'].name = configName2;
-        automatedStatusTransitionData['automatedStatusTransitionWithMandatoryFields'].changeStatusAfter = Math.floor(Math.random() * 180) + 1;
-        await automatedStatusTransitionConsole.clickAddAutomatedStatusTransitionBtn();
-        await automatedStatusTransitionCreatePage.createAutomatedStatusTransition(automatedStatusTransitionData);
-
-        try {
+            //Create Second Record
+            configName2 = AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.name = 'ConfigName2' + randomStr;
+            AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.changeStatusAfter = Math.floor(Math.random() * 180) + 1;
+            await automatedStatusTransitionConsole.clickAddAutomatedStatusTransitionBtn();
+            await automatedStatusTransitionCreatePage.createAutomatedStatusTransition(AUTO_STATUS_TRANSITION_MANDATORY_FIELDS);
+        });
+        it('[DRDMV-17553]: Search and presence of existing rule test', async () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', 'Configure Automated Status Transitions - Business Workflows');
-
-            expect(await automatedStatusTransitionConsole.isAddAutomatedStatusTransitionBtnEnabled()).toBeFalsy();
+            expect(await automatedStatusTransitionConsole.isAddAutomatedStatusTransitionBtnPresent()).toBeFalsy();
             await utilGrid.searchAndSelectGridRecord(configName1);
-            expect(await automatedStatusTransitionConsole.isDeleteAutomatedStatusTransitionBtnEnabled()).toBeFalsy();
-            await utilityCommon.refresh();
-            await utilCommon.waitUntilSpinnerToHide();
+            expect(await automatedStatusTransitionConsole.isDeleteAutomatedStatusTransitionBtnPresent()).toBeFalsy();
             await automatedStatusTransitionConsole.openAutomatedTransitionConfig(configName1);
             expect(await automatedStatusTransitionEditPage.isAutomatedStatusTransitionNameEnabled()).toBeFalsy();
             expect(await automatedStatusTransitionEditPage.isAutomatedStatusTransitionSaveBtnEnabled()).toBeFalsy();
-            await utilityCommon.refresh();
-
+            await utilCommon.closeBladeOnSettings();
             //Search and presence of existing rule test
             expect(await utilGrid.isGridRecordPresent(configName1)).toBeTruthy();
             await utilGrid.clearGridSearchBox();
             expect(await utilGrid.isGridRecordPresent(configName2)).toBeTruthy();
             await utilGrid.clearGridSearchBox();
-
+        });
+        it('[DRDMV-17553]: Case manager - automatic case status transtion rule console validations', async () => {
             //Filter test
             await utilGrid.addFilter("Name", configName1, 'text');
             expect(await utilGrid.isGridRecordPresent(configName1)).toBeTruthy();
@@ -131,38 +121,32 @@ describe('Automated Case Status Transition', () => {
             await automatedStatusTransitionConsole.addGridColumns(['Category Tier 1', 'Category Tier 2', 'Category Tier 3', 'Category Tier 4', 'From Status Reason', 'ID', 'To Status Reason', 'Label']);
             expect(await automatedStatusTransitionConsole.areGridColumnMatches(['Name', 'Company', 'From Status', 'To Status', 'Days Inactive', 'Enabled', 'Flowset', 'Category Tier 1', 'Category Tier 2', 'Category Tier 3', 'Category Tier 4', 'From Status Reason', 'ID', 'To Status Reason', 'Label']))
             await automatedStatusTransitionConsole.removeGridColumns(['Category Tier 1', 'Category Tier 2', 'Category Tier 3', 'Category Tier 4', 'From Status Reason', 'ID', 'To Status Reason', 'Label']);
-            await utilityCommon.refresh();
             await automatedStatusTransitionConsole.isGridColumnSorted('Days Inactive');
-        }
-        catch (ex) {
-            throw ex;
-        }
-        finally {
+        });
+        afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', 'Configure Automated Status Transitions - Business Workflows');
-        }
-    }, 470 * 1000);
+        });
+    });
 
     //asahitya
     it('[DRDMV-17561]: Toggle status for Automatic case status transition configuration rule', async () => {
-        let configName: string = [...Array(7)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let automatedStatusTransitionData = await require('../../data/ui/case/automatedStatusTransition.ui.json');
-        automatedStatusTransitionData['automatedStatusTransitionWithMandatoryFields'].name = configName;
-        automatedStatusTransitionData['automatedStatusTransitionWithMandatoryFields'].changeStatusAfter = Math.floor(Math.random() * 180) + 1;
+        AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.name = [...Array(7)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.changeStatusAfter = Math.floor(Math.random() * 180) + 1;
         await automatedStatusTransitionConsole.clickAddAutomatedStatusTransitionBtn();
-        await automatedStatusTransitionCreatePage.createAutomatedStatusTransition(automatedStatusTransitionData);
+        await automatedStatusTransitionCreatePage.createAutomatedStatusTransition(AUTO_STATUS_TRANSITION_MANDATORY_FIELDS);
 
-        await utilGrid.searchAndOpenHyperlink(configName);
+        await utilGrid.searchAndOpenHyperlink(AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.name);
         await automatedStatusTransitionEditPage.selectEnableToggle(false);
         await automatedStatusTransitionEditPage.saveConfiguration();
-        expect(await automatedStatusTransitionConsole.getEnabledColumnValueOfRule(configName)).toBe('False');
+        expect(await automatedStatusTransitionConsole.getEnabledColumnValueOfRule(AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.name)).toBe('False');
 
-        await utilGrid.searchAndOpenHyperlink(configName);
+        await utilGrid.searchAndOpenHyperlink(AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.name);
         await automatedStatusTransitionEditPage.selectEnableToggle(true);
         await automatedStatusTransitionEditPage.saveConfiguration();
-        expect(await automatedStatusTransitionConsole.getEnabledColumnValueOfRule(configName)).toBe('True');
+        expect(await automatedStatusTransitionConsole.getEnabledColumnValueOfRule(AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.name)).toBe('True');
     });
 
     it('[DRDMV-17557]: Duplicate detection - create new automatic case transition rule which has field values same as existing rule', async () => {
@@ -201,9 +185,7 @@ describe('Automated Case Status Transition', () => {
         //Create the case
         await apiHelper.apiLogin("qfeng");
         let caseData = require('../../data/ui/case/case.ui.json');
-        let response = await apiHelper.createCase(caseData['bulkCaseAssignee_Assigned']);
-        let caseId = await response.displayId;
-        let caseGuid = await response.id;
+        let newCase = await apiHelper.createCase(caseData['bulkCaseAssignee_Assigned']);
 
         //Create the Automated status transition
         let configName: string = [...Array(7)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -221,27 +203,29 @@ describe('Automated Case Status Transition', () => {
         //Update the case status to Resolved, update the modified date and run the Process
         await apiHelper.apiLogin("qkatawazi");
 
-        await apiHelper.updateCaseStatus(caseGuid, "Resolved", "Customer Follow-Up Required");
-        await apiHelper.updateCase(caseGuid, UPDATE_CASE_STATUS_MODIFIED_DATE);
+        await apiHelper.updateCaseStatus(newCase.id, "Resolved", "Customer Follow-Up Required");
+        let updatecase = { "statusChangedDate": "2019-06-13T10:22:21.000Z"};
+        await apiHelper.updateCase(newCase.id, updatecase);
         await apiHelper.apiLogin("tadmin");
         await apiHelper.setDefaultNotificationForUser('qkatawazi', "Alert");
         await apiHelper.runAutomatedCaseTransitionProcess();
 
         await navigationPage.gotoCaseConsole();
-        await utilityCommon.refresh();
+        await utilityCommon.refresh(); // required to get alert notification
         await notificationPo.clickOnNotificationIcon();
-        expect(await notificationPo.isAlertPresent('Petramco Administrator changed the status of ' + caseId + ' to Closed')).toBeTruthy('Alert message is not present');
+        expect(await notificationPo.isAlertPresent('tadmin Tenant Administrator changed the status of ' + newCase.displayId + ' to Closed')).toBeTruthy('Alert message is not present');
+        await utilCommon.closePopUpMessage();
     });
 
     //ankagraw
     it('[DRDMV-17567]: Automated case status transtion rule -Creation form validations', async () => {
-        let configName: string = [...Array(7)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let randomStr: string = [...Array(7)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let days: any = Math.floor(Math.random() * 180) + 1;
         let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
         await apiHelper.apiLogin('tadmin');
         await apiHelper.associateCategoryToCategory('Bonus', 'Failure');
 
-        let label = await menuItemDataFile['sampleMenuItem'].menuItemName + configName;
+        let label = await menuItemDataFile['sampleMenuItem'].menuItemName + randomStr;
         menuItemDataFile['sampleMenuItem'].menuItemName = label;
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createNewMenuItem(menuItemDataFile['sampleMenuItem']);
@@ -257,7 +241,7 @@ describe('Automated Case Status Transition', () => {
         expect(await automatedStatusTransitionCreatePage.isFromStatusEnabled()).toBeFalsy("From Status field Enabled");
         await automatedStatusTransitionCreatePage.setCompany('Petramco');
         await automatedStatusTransitionCreatePage.setFlowset('Human Resources');
-        await automatedStatusTransitionCreatePage.setName(configName);
+        await automatedStatusTransitionCreatePage.setName(randomStr);
         expect(await automatedStatusTransitionCreatePage.isFromStatusEnabled()).toBeTruthy("From Status field disabled");
         await automatedStatusTransitionCreatePage.setFromStatus('Resolved');
         await automatedStatusTransitionCreatePage.setToStatus('Closed');
@@ -270,5 +254,5 @@ describe('Automated Case Status Transition', () => {
         await automatedStatusTransitionCreatePage.setCategoryTier4Value('Failure');
         await automatedStatusTransitionCreatePage.setLabelValue(label);
         await automatedStatusTransitionCreatePage.saveConfig();
-    });//, 180 * 1000);
-})
+    });
+});

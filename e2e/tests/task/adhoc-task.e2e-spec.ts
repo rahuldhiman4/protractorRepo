@@ -6,12 +6,11 @@ import caseConsolePo from '../../pageobject/case/case-console.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePage from '../../pageobject/case/create-case.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
-import changeAssignmentOldBlade from '../../pageobject/common/change-assignment-old-blade.po';
+import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
-import selectTaskTemplate from "../../pageobject/settings/task-management/console-tasktemplate.po";
-import taskTemplate from "../../pageobject/settings/task-management/create-tasktemplate.po";
+import activityTabPo from '../../pageobject/social/activity-tab.po';
 import taskConsole from "../../pageobject/task/console-task.po";
 import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
 import editTask from "../../pageobject/task/edit-task.po";
@@ -21,8 +20,6 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
-import activityTabPo from '../../pageobject/social/activity-tab.po';
 
 describe('Create Adhoc task', () => {
     beforeAll(async () => {
@@ -31,11 +28,8 @@ describe('Create Adhoc task', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
-    });
-
-    afterEach(async () => {
-        await utilityCommon.refresh();
     });
 
     it('[DRDMV-3820,DRDMV-1239]: Adhoc Task Create view (UI verification)', async () => {
@@ -72,168 +66,134 @@ describe('Create Adhoc task', () => {
         await adhoctaskTemplate.selectCategoryTier1('Applications');
         await adhoctaskTemplate.selectCategoryTier2('Social');
         await adhoctaskTemplate.selectCategoryTier3('Chatter');
-        await adhoctaskTemplate.clickOnSaveAdhoctask();
-        await utilityCommon.waitUntilPopUpDisappear();
-        expect(await manageTask.isTaskLinkOnManageTask(summary)).toBeTruthy();
+        await adhoctaskTemplate.clickSaveAdhoctask();
+        await utilityCommon.closePopUpMessage();
+        expect(await manageTask.isTaskLinkPresent(summary)).toBeTruthy();
+        await manageTask.clickCloseButton();
     });
 
-    it('[DRDMV-3821]: Adhoc Task details view (UI verification)', async () => {
-        let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
-        await navigationPage.gotoCreateCase();
-        await createCasePage.selectRequester("adam");
-        await createCasePage.setSummary('Summary ' + summary);
-        await createCasePage.clickAssignToMeButton();
-        await createCasePage.clickSaveCaseButton();
-        await previewCasePo.clickGoToCaseButton();
-
-        //Adhoc task validation
-        await viewCasePage.clickAddTaskButton();
-        await manageTask.clickAddAdhocTaskButton();
-        await adhoctaskTemplate.setSummary(summary);
-        await adhoctaskTemplate.setDescription("Description");
-        await adhoctaskTemplate.selectPriority('High');
-        await adhoctaskTemplate.selectCategoryTier1('Applications');
-        await adhoctaskTemplate.selectCategoryTier2('Social');
-        await adhoctaskTemplate.selectCategoryTier3('Chatter');
-        //await adhoctaskTemplate.selectLabel('test');
-        await adhoctaskTemplate.clickOnSaveAdhoctask();
-        await utilityCommon.waitUntilPopUpDisappear();
-        await manageTask.clickTaskLinkOnManageTask(summary);
-        expect(await viewTask.isTaskSummaryDisplayed()).toBeTruthy();
-        expect(await viewTask.isTaskIdTextDisplayed()).toBeTruthy();
-        expect(await viewTask.isTaskIconDisplayed()).toBeTruthy();
-        expect(await viewTask.isTaskPriorityDisplayed()).toBeTruthy();
-        expect(await viewTask.isTaskTimeDetailsDisplayed()).toBeTruthy();
-        expect(await viewTask.isCaseSummaryDisplayed()).toBeTruthy();
-        expect(await viewTask.isRequesterNameDisplayed()).toBeTruthy();
-        expect(await viewTask.isRequesterContactDisplayed()).toBeTruthy();
-        expect(await viewTask.isRequesterMailDisplayed()).toBeTruthy();
-        expect(await viewTask.isEditLinkDisplayed()).toBeTruthy();
-        expect(await viewTask.isCategoryTier1ValueDisplayed()).toBeTruthy();
-        expect(await viewTask.isCategoryTier2ValueDisplayed()).toBeTruthy();
-        expect(await viewTask.isCategoryTier3ValueDisplayed()).toBeTruthy();
-        expect(await viewTask.isAssigneeNameDisplayed()).toBeTruthy();
-        expect(await viewTask.isAssignCompanyDisplayed()).toBeTruthy();
-        expect(await viewTask.isAssignGroupTextDisplayed()).toBeTruthy();
-        expect(await viewTask.clickOnTab('Activity')); // validation to check activity tab is present
-    }, 300 * 1000);
-
-    it('[DRDMV-7130]: [Automatic Task] - Create Ad hoc Task', async () => {
-        let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
-        await navigationPage.gotoCreateCase();
-        await createCasePage.selectRequester("adam");
-        await createCasePage.setSummary('Summary ' + summary);
-        await createCasePage.clickAssignToMeButton();
-        await createCasePage.clickSaveCaseButton();
-        await previewCasePo.clickGoToCaseButton();
-
-        //Adhoc task validation
-        await viewCasePage.clickAddTaskButton();
-        await manageTask.clickAddAdhocTaskButton();
-        await adhoctaskTemplate.setSummary(summary);
-        expect(await adhoctaskTemplate.isProcessFieldPresent()).toBeFalsy();
-        await adhoctaskTemplate.setDescription("Description")
-        await adhoctaskTemplate.clickOnSaveAdhoctask();
-        await utilityCommon.waitUntilPopUpDisappear();
-        await manageTask.clickTaskLinkOnManageTask(summary);
-        expect(await viewTask.getTaskTypeValue()).toBe('Manual');
-        expect(await viewTask.isProcessNameValue()).toBeFalsy();
+    describe('[DRDMV-3821,DRDMV-7130,DRDMV-1580,DRDMV-12243]: Adhoc Task details validation', async () => {
+        let summary = 'Adhoc task ' + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let newCase, caseData;
+        beforeAll(async () => {
+            caseData = {
+                "Requester": "apavlik",
+                "Summary": "DRDMV-3821 " + summary,
+            }
+            await apiHelper.apiLogin('qtao');
+            newCase = await apiHelper.createCase(caseData);
+        });
+        it('[DRDMV-3821,DRDMV-7130,DRDMV-1580,DRDMV-12243]: Create Adhoc Task', async () => {
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(newCase.displayId);
+            //Adhoc task validation
+            await viewCasePage.clickAddTaskButton();
+            await manageTask.clickAddAdhocTaskButton();
+            expect(await adhoctaskTemplate.isAttachmentButtonDisplayed()).toBeTruthy();
+            await adhoctaskTemplate.setSummary(summary);
+            await adhoctaskTemplate.setDescription("Description");
+            await adhoctaskTemplate.selectPriority('High');
+            await adhoctaskTemplate.selectCategoryTier1('Applications');
+            await adhoctaskTemplate.selectCategoryTier2('Social');
+            await adhoctaskTemplate.selectCategoryTier3('Chatter');
+            await adhoctaskTemplate.clickAssignToMeButton();
+            await adhoctaskTemplate.clickSaveAdhoctask();
+            await utilityCommon.closePopUpMessage();
+        });
+        it('[DRDMV-3821,DRDMV-7130,DRDMV-1580,DRDMV-12243]: Adhoc Task details view (UI verification)', async () => {
+            await manageTask.clickTaskLink(summary);
+            expect(await adhoctaskTemplate.isProcessFieldPresent()).toBeFalsy();
+            expect(await viewTask.getTaskTypeValue()).toBe('Manual');
+            expect(await viewTask.isProcessNameValue()).toBeFalsy();
+            expect(await viewTask.isTaskSummaryDisplayed()).toBeTruthy();
+            expect(await viewTask.isTaskIdTextDisplayed()).toBeTruthy();
+            expect(await viewTask.isTaskIconDisplayed()).toBeTruthy();
+            expect(await viewTask.isTaskPriorityDisplayed()).toBeTruthy();
+            expect(await viewTask.isTaskTimeDetailsDisplayed()).toBeTruthy();
+            expect(await viewTask.isCaseSummaryDisplayed()).toBeTruthy();
+            expect(await viewTask.isRequesterNameDisplayed()).toBeTruthy();
+            expect(await viewTask.isRequesterContactDisplayed()).toBeTruthy();
+            expect(await viewTask.isRequesterMailDisplayed()).toBeTruthy();
+            expect(await viewTask.isEditLinkDisplayed()).toBeTruthy();
+            expect(await viewTask.isCategoryTier1ValueDisplayed()).toBeTruthy();
+            expect(await viewTask.isCategoryTier2ValueDisplayed()).toBeTruthy();
+            expect(await viewTask.isCategoryTier3ValueDisplayed()).toBeTruthy();
+            expect(await viewTask.isAssigneeNameDisplayed()).toBeTruthy();
+            expect(await viewTask.isAssignCompanyDisplayed()).toBeTruthy();
+            expect(await viewTask.isAssignGroupTextDisplayed()).toBeTruthy();
+            expect(await viewTask.clickOnTab('Activity')); // validation to check activity tab is present
+            await viewTask.clickOnViewCase();
+            expect(await viewCasePage.getCaseSummary()).toBe(caseData.Summary);
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
     });
 
-    it('[DRDMV-1580,DRDMV-12243]: Adhoc Task details view (UI verification))', async () => {
-        let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
-        await navigationPage.gotoCreateCase();
-        await createCasePage.selectRequester("adam");
-        await createCasePage.setSummary('Summary ' + summary);
-        await createCasePage.clickAssignToMeButton();
-        await createCasePage.clickSaveCaseButton();
-        await previewCasePo.clickGoToCaseButton();
-
-        //Adhoc task validation
-        await viewCasePage.clickAddTaskButton();
-        await manageTask.clickAddAdhocTaskButton();
-        expect(await adhoctaskTemplate.isAttachmentButtonDisplayed()).toBeTruthy();
-        await adhoctaskTemplate.setSummary(summary);
-        await adhoctaskTemplate.setDescription("Description");
-        await adhoctaskTemplate.selectPriority('High');
-        await adhoctaskTemplate.clickOnSaveAdhoctask();
-        await utilityCommon.waitUntilPopUpDisappear();
-        await manageTask.clickTaskLinkOnManageTask(summary);
-        expect(await viewTask.isCaseSummaryDisplayed()).toBeTruthy("case summary is displayed ");
-        expect(await viewTask.isRequesterNameDisplayed()).toBeTruthy("requester name is displayed ");
-        expect(await viewTask.isRequesterContactDisplayed()).toBeTruthy("requester contact is displayed ");
-        expect(await viewTask.isRequesterMailDisplayed()).toBeTruthy("requester mail is displayed ");
-        expect(await viewTask.isEditLinkDisplayed()).toBeTruthy("edit link is displayed ");
-        expect(await viewTask.isViewCaseLinkDisplayed()).toBeTruthy("view case link is displayed ");
-        await viewTask.clickOnViewCase();
-        expect(await viewCasePage.getCaseSummary()).toBe('Summary ' + summary);
+    describe('[DRDMV-1500]: [Permissions] Navigating to case from the task', async () => {
+        let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let newCase, taskTemplateData;
+        beforeAll(async () => {
+            // create manual task template
+            taskTemplateData = {
+                "templateName": `${randomStr} Manual task`,
+                "templateSummary": `${randomStr} Manual task summary`,
+                "templateStatus": "Active",
+                "taskCompany": "Petramco",
+                "buisnessUnit": "HR Support",
+                "supportGroup": "Workforce Administration",
+                "assignee": "Elizabeth",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "HR Support",
+                "ownerGroup": "Workforce Administration"
+            }
+            // create case
+            let caseData = {
+                "Requester": "apavlik",
+                "Summary": 'Summary ' + randomStr,
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 1",
+                "Assignee": "qtao"
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createManualTaskTemplate(taskTemplateData);
+            newCase = await apiHelper.createCase(caseData);
+        });
+        it('[DRDMV-1500]: Add task to Case and set case to In Progress', async () => {
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(newCase.displayId);
+            await viewCasePage.clickAddTaskButton();
+            await manageTask.addTaskFromTaskTemplate(taskTemplateData.templateSummary);
+            await manageTask.clickCloseButton();
+            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.clickSaveStatus('In Progress');
+        });
+        it('[DRDMV-1500]: Case View link is not visible', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('elizabeth');
+            await navigationPage.gotoTaskConsole();
+            await utilityGrid.clearFilter();
+            await taskConsole.setTaskSearchBoxValue(taskTemplateData.templateSummary);
+            expect(await utilityGrid.getFirstGridRecordColumnValue('Case ID')).toBe("", " Case Id Displayed in Task console");
+            await utilityGrid.searchAndOpenHyperlink(taskTemplateData.templateSummary);
+            expect(await viewTask.isCaseViewLinkDisplayed()).toBeFalsy('Case View Link is displayed');
+        });
+        it('[DRDMV-1500]: [Permissions] Navigating to case from the task', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qfeng');
+            await navigationPage.gotoTaskConsole();
+            await utilityGrid.clearFilter();
+            await taskConsole.setTaskSearchBoxValue(taskTemplateData.templateSummary);
+            expect(await utilityGrid.getFirstGridRecordColumnValue('Case ID')).toBe(newCase.displayId, " Case Id NOT displayed in Task console");
+            await utilityGrid.searchAndOpenHyperlink(taskTemplateData.templateSummary);
+            expect(await viewTask.isCaseViewLinkDisplayed()).toBeTruthy('Case View Link is not displayed');
+        });
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login("qtao");
+        });
     });
-
-    it('[DRDMV-1500]: [Permissions] Navigating to case from the task', async () => {
-
-        await navigationPage.signOut();
-        await loginPage.login('qkatawazi');
-
-        //Automation Task template
-        let manualTaskTemplate = 'Manual  task' + Math.floor(Math.random() * 1000000);
-        let manualTaskSummary = 'Summary' + Math.floor(Math.random() * 1000000);
-        //Manual task Template
-        await navigationPage.gotoSettingsPage();
-        expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
-            .toEqual('Task Templates - Business Workflows');
-        await selectTaskTemplate.clickOnManualTaskTemplateButton();
-        await taskTemplate.setTemplateName(manualTaskTemplate);
-        await taskTemplate.setTaskSummary(manualTaskSummary);
-        await taskTemplate.setTaskDescription('Description in manual task');
-        await taskTemplate.selectCompanyByName('Petramco');
-        await taskTemplate.clickOnAssignment();
-        await changeAssignmentOldBlade.selectCompany('Petramco');
-        await changeAssignmentBladePo.selectBusinessUnit('HR Support');
-        await changeAssignmentOldBlade.selectSupportGroup('Workforce Administration');
-        await changeAssignmentOldBlade.selectAssignee('elizabeth');
-        await changeAssignmentOldBlade.clickOnAssignButton();
-        await taskTemplate.selectTemplateStatus('Active');
-        await taskTemplate.selectBuisnessUnit('HR Support');
-        await taskTemplate.selectOwnerGroup('Workforce Administration');
-        await taskTemplate.clickOnSaveTaskTemplate();
-        await utilCommon.waitUntilPopUpDisappear();
-
-        await navigationPage.gotoCreateCase();
-        await createCasePage.selectRequester("adam");
-        await createCasePage.setSummary('Summary ' + manualTaskSummary);
-        await createCasePage.clickAssignToMeButton();
-        await createCasePage.clickSaveCaseButton();
-        await previewCasePo.clickGoToCaseButton();
-        let newCaseID: string = await viewCasePage.getCaseID();
-        await viewCasePage.clickAddTaskButton();
-
-        //Add Manual task and Automation Task in Case
-        await manageTask.addTaskFromTaskTemplate(manualTaskTemplate);
-        await manageTask.clickOnCloseButton();
-        await updateStatusBladePo.changeCaseStatus('In Progress');
-        await updateStatusBladePo.clickSaveStatus('In Progress');
-
-        //different user
-        await navigationPage.signOut();
-        await loginPage.login('qliu');
-        await navigationPage.gotoTaskConsole();
-        await utilityGrid.clearFilter();
-        await taskConsole.setTaskSearchBoxValue(manualTaskSummary);
-        expect(await utilityGrid.getFirstGridRecordColumnValue('Case ID')).toBe("", " Case Id Displayed in Task console");
-        await utilityGrid.searchAndOpenHyperlink(manualTaskSummary);
-        expect(await viewTask.isCaseViewLinkDisplayed()).toBeFalsy('Case View Link is displayed');
-
-        await navigationPage.signOut();
-        await loginPage.login('qkatawazi');
-        await navigationPage.gotoTaskConsole();
-        await utilityGrid.clearFilter();
-        await taskConsole.setTaskSearchBoxValue(manualTaskSummary);
-        expect(await utilityGrid.getFirstGridRecordColumnValue('Case ID')).toBe(newCaseID, " Case Id NOT displayed in Task console");
-        await utilityGrid.searchAndOpenHyperlink(manualTaskSummary);
-        expect(await viewTask.isCaseViewLinkDisplayed()).toBeTruthy('Case View Link is not displayed');
-        await navigationPage.signOut();
-        await loginPage.login('qtao');
-    }, 570 * 1000);
 
     it('[DRDMV-12249,DRDMV-12244]: Verify task creation with attachments & Verify attachment grid from case', async () => {
         let filePath = '../../data/ui/attachment/demo.txt';
@@ -244,7 +204,6 @@ describe('Create Adhoc task', () => {
         }
         await apiHelper.apiLogin('qtao');
         let newCaseTemplate = await apiHelper.createCase(caseData);
-        await navigationPage.gotoCaseConsole();
         await caseConsolePo.searchAndOpenCase(newCaseTemplate.displayId);
 
         //Adhoc task validation
@@ -254,18 +213,19 @@ describe('Create Adhoc task', () => {
         await adhoctaskTemplate.setSummary(summary);
         await adhoctaskTemplate.setDescription("Description");
         await adhoctaskTemplate.addAttachment([filePath]);
-        await adhoctaskTemplate.clickOnSaveAdhoctask();
-        await manageTask.clickOnCloseButton();
+        await adhoctaskTemplate.clickSaveAdhoctask();
+        await utilityCommon.closePopUpMessage();
+        await manageTask.clickCloseButton();
         await viewCasePage.clickOnTaskLink(summary);
         expect(await viewTask.isAttachedFileNamePresent('demo.txt')).toBeTruthy('Attached file name is missing');
+        await utilCommon.deleteAlreadyDownloadedFile('demo.txt');
         await viewTask.clickOnAttachments('demo.txt');
-        expect(await utilCommon.deleteAlreadyDownloadedFile('demo.txt')).toBeTruthy('File is delete sucessfully');
         expect(await utilCommon.isFileDownloaded('demo.txt')).toBeTruthy('File is not downloaded.');
 
         //Navigated To Case and Verify attachments grid for task attachments
         await viewTask.clickOnViewCase();
         await viewCasePage.clickAttachmentsLink();
-        await attachmentBladePo.clickOnFileName('demo');
+        await attachmentBladePo.clickFileName('demo');
         let finalDate: string = await utilCommon.getCurrentDate();
         expect(await attachmentInformationBladePo.isDownloadButtonDisplayed()).toBeTruthy('download button is missing');
         expect(await attachmentInformationBladePo.isCloseButtonDisplayed()).toBeTruthy('close button is missing');
@@ -276,9 +236,12 @@ describe('Create Adhoc task', () => {
         expect(await attachmentInformationBladePo.getValuesOfInformation(' Qianru Tao')).toBe('Created by: Qianru Tao', 'Created by is missing');
         expect(await attachmentInformationBladePo.isTitleNameDisplayed()).toBeTruthy('Title is missing');
         expect(await utilCommon.deleteAlreadyDownloadedFile('demo.txt')).toBeTruthy('File is delete sucessfully');
-        await attachmentInformationBladePo.clickOnDownloadButton();
-        expect(await utilCommon.deleteAlreadyDownloadedFile('demo.txt')).toBeTruthy('File is delete sucessfully');
-    });//, 200 * 1000);
+        await attachmentInformationBladePo.clickDownloadButton();
+        expect(await utilCommon.isFileDownloaded('demo.txt')).toBeTruthy('File is not downloaded.');
+        await utilCommon.deleteAlreadyDownloadedFile('demo.txt');
+        await attachmentInformationBladePo.clickCloseButton();
+        await attachmentBladePo.clickCloseButton();
+    });
 
     it('[DRDMV-12245]: Verify task attachments deletion', async () => {
         let filePath = '../../data/ui/attachment/demo.txt';
@@ -289,7 +252,6 @@ describe('Create Adhoc task', () => {
         }
         await apiHelper.apiLogin('qtao');
         let newCaseTemplate = await apiHelper.createCase(caseData);
-        console.log("case is created===", newCaseTemplate.id);
         await navigationPage.gotoCaseConsole();
         await caseConsolePo.searchAndOpenCase(newCaseTemplate.displayId);
 
@@ -300,15 +262,16 @@ describe('Create Adhoc task', () => {
         await adhoctaskTemplate.setSummary(summary);
         await adhoctaskTemplate.setDescription("Description");
         await adhoctaskTemplate.addAttachment([filePath]);
-        await adhoctaskTemplate.clickOnSaveAdhoctask();
-        await manageTask.clickOnCloseButton();
+        await adhoctaskTemplate.clickSaveAdhoctask();
+        await utilityCommon.closePopUpMessage();
+        await manageTask.clickCloseButton();
         await viewCasePage.clickOnTaskLink(summary);
         expect(await viewTask.isAttachedFileNamePresent('demo.txt')).toBeTruthy('Attached file name is not available');
         await viewTask.clickOnEditTask();
         await editTask.removeAttachment('demo.txt');
         await viewTask.clickOnSaveViewAdhoctask();
         expect(await viewTask.isAttachedFileNamePresent('demo.txt')).toBeFalsy('Attached file name is available');
-    });//, 180 * 1000);
+    });
 
     it('[DRDMV-12246]: Verify attachment addition on edit task mode', async () => {
         let filePath = '../../data/ui/attachment/demo.txt';
@@ -319,7 +282,6 @@ describe('Create Adhoc task', () => {
         }
         await apiHelper.apiLogin('qtao');
         let newCaseTemplate = await apiHelper.createCase(caseData);
-        console.log("case is created===", newCaseTemplate.id);
         await navigationPage.gotoCaseConsole();
         await caseConsolePo.searchAndOpenCase(newCaseTemplate.displayId);
 
@@ -328,14 +290,15 @@ describe('Create Adhoc task', () => {
         await manageTask.clickAddAdhocTaskButton();
         await adhoctaskTemplate.setSummary(summary);
         await adhoctaskTemplate.setDescription("Description");
-        await adhoctaskTemplate.clickOnSaveAdhoctask();
-        await manageTask.clickOnCloseButton();
+        await adhoctaskTemplate.clickSaveAdhoctask();
+        await utilityCommon.closePopUpMessage();
+        await manageTask.clickCloseButton();
         await viewCasePage.clickOnTaskLink(summary);
         await viewTask.clickOnEditTask();
         await editTask.addAttachment([filePath]);
         await viewTask.clickOnSaveViewAdhoctask();
         expect(await viewTask.isAttachedFileNamePresent('demo')).toBeTruthy('Attached file name is not available');
-    });//, 180 * 1000);
+    });
 
     it('[DRDMV-12248,DRDMV-12247,DRDMV-12250]: Verify max attachments added to task', async () => {
         let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
@@ -344,10 +307,9 @@ describe('Create Adhoc task', () => {
             "Summary": summary
         }
         await apiHelper.apiLogin('qtao');
-        let newCaseTemplate = await apiHelper.createCase(caseData);
-        console.log("case is created===", newCaseTemplate.id);
+        let newCase = await apiHelper.createCase(caseData);
         await navigationPage.gotoCaseConsole();
-        await caseConsolePo.searchAndOpenCase(newCaseTemplate.displayId);
+        await caseConsolePo.searchAndOpenCase(newCase.displayId);
 
         //Adhoc task validation
         await viewCasePage.clickAddTaskButton();
@@ -361,11 +323,10 @@ describe('Create Adhoc task', () => {
         await adhoctaskTemplate.addAttachmentInDescription(filesToUpload1);
         expect(await adhoctaskTemplate.isAttachmentButtonEnabled()).toBeFalsy('Attachment button is enabled');
         expect(await adhoctaskTemplate.getAttachmentLimitWarningText()).toBe('The maximum number of attachments allowed is 20');
-        await adhoctaskTemplate.clickOnSaveAdhoctask();
-        await utilCommon.waitUntilPopUpDisappear();
-        // hardwait to upload multiple files
-        await browser.sleep(10000);
-        await manageTask.clickTaskLinkOnManageTask(summary);
+        await adhoctaskTemplate.clickSaveAdhoctask();
+        await utilCommon.closePopUpMessage();
+        await browser.sleep(10000); // hardwait to upload multiple files
+        await manageTask.clickTaskLink(summary);
         await viewTask.clickShowMoreShowLessLink();
         let fileName2: string[] = ['articleStatus.png', 'bwfJpg.jpg', 'bwfJpg1.jpg', 'bwfJpg2.jpg', 'bwfJpg3.jpg', 'bwfJpg4.jpg', 'bwfJson1.json', 'bwfJson2.json', 'bwfJson3.json', 'bwfJson4.json', 'bwfJson5.json', 'bwfPdf.pdf', 'bwfPdf1.pdf', 'bwfPdf2.pdf', 'bwfPdf3.pdf', 'bwfPdf4.pdf', 'bwfWord1.rtf', 'bwfWord2.rtf', 'bwfXlsx.xlsx', 'demo.txt'];
         for (let j: number = 0; j < fileName2.length; j++) {
@@ -375,45 +336,56 @@ describe('Create Adhoc task', () => {
         expect(await viewTask.getShowMoreLessAttachmentsLinkText()).toBe('18 more');
     });
 
-    it('[DRDMV-5480]: [Assignment] Changing the Assignment when editing the task by the member of one Support Group', async () => {
+    describe('[DRDMV-5480]: [Assignment] Changing the Assignment', async () => {
         let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let templateData1 = {
-            "templateName": `manualTaskTemplate1 ${randomStr}`,
-            "templateSummary": `manualTaskTemplateSummary1 ${randomStr}`,
-            "templateStatus": "Active",
-        }
-
-        await apiHelper.apiLogin('qkatawazi');
-        await apiHelper.createManualTaskTemplate(templateData1);
-        try {
+        let templateData1, caseData, newCase;
+        beforeAll(async () => {
+            //Create Manual Task
+            templateData1 = {
+                "templateName": `manualTaskTemplate1 ${randomStr}`,
+                "templateSummary": `manualTaskTemplateSummary1 ${randomStr}`,
+                "templateStatus": "Active",
+                "taskCompany": 'Petramco',
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createManualTaskTemplate(templateData1);
             //Create Case
+            caseData = {
+                "Requester": "apavlik",
+                "Summary": 'Summary ' + summary,
+            }
+            await apiHelper.apiLogin('franz');
+            newCase = await apiHelper.createCase(caseData);
+        });
+        it('[DRDMV-5480]: Assignee validation1', async () => {
             await navigationPage.signOut();
-            await loginPage.login('franz')
-            await navigationPage.gotoCreateCase();
-            await createCasePage.selectRequester("adam");
-            await createCasePage.setSummary('Summary ' + summary);
-            await createCasePage.clickAssignToMeButton();
-            await createCasePage.clickSaveCaseButton();
-            await previewCasePo.clickGoToCaseButton();
-
-            //Adhoc task validation
+            await loginPage.login('franz');
+            await caseConsolePo.searchAndOpenCase(newCase.displayId);
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickAddAdhocTaskButton();
             await adhoctaskTemplate.setSummary("test" + summary);
-            await adhoctaskTemplate.clickOnAssignButton();
-            await adhoctaskTemplate.clickOnSaveAdhoctask();
-            await manageTask.addTaskFromTaskTemplate(`manualTaskTemplate1 ${randomStr}`);
-            await manageTask.clickTaskLinkOnManageTask("test" + summary);
+            await adhoctaskTemplate.clickAssignButton();
+            await adhoctaskTemplate.clickSaveAdhoctask();
+            await utilityCommon.closePopUpMessage();
+            await manageTask.addTaskFromTaskTemplate(templateData1.templateSummary);
+            await manageTask.clickTaskLink("test" + summary);
             await viewTask.clickOnEditTask();
             await editTask.clickOnAssignToMe();
             await editTask.clickOnSaveButton();
+            await utilityCommon.closePopUpMessage();
             expect((await viewTask.getAssigneeText()).trim()).toBe('Franz Schwarz');
+        });
+        it('[DRDMV-5480]: Assignee validation2', async () => {
             await viewTask.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
             await changeAssignmentBladePo.selectAssignee("Fritz Schulz");
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
+            await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssigneeText()).toBe('Fritz Schulz');
             expect(await activityTabPo.getAllTaskActivity('Fritz Schulz')).toBe('Fritz Schulz');
             await viewTask.clickOnEditTask();
@@ -421,14 +393,18 @@ describe('Create Adhoc task', () => {
             await changeAssignmentBladePo.clickOnAssignToMeCheckBox();
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
+            await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssigneeText()).toBe('Franz Schwarz');
+        });
+        it('[DRDMV-5480]: Assignee validation3', async () => {
             await viewTask.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
             await changeAssignmentBladePo.selectBusinessUnit('Facilities Support');
             await changeAssignmentBladePo.selectSupportGroup('Facilities');
-            await changeAssignmentBladePo.selectAssigneeAsSupportGroup('Facilities');
+            await changeAssignmentBladePo.selectAssignToSupportGroup();
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
+            await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssignedGroupText()).toBe('Facilities');
             await viewTask.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
@@ -439,38 +415,45 @@ describe('Create Adhoc task', () => {
             await changeAssignmentBladePo.selectAssignee('Qadim Katawazi');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
+            await utilityCommon.closePopUpMessage();
             expect(await activityTabPo.getAllTaskActivity('Qadim Katawazi')).toBe('Qadim Katawazi');
             expect(await viewTask.getAssigneeText()).toBe('Qadim Katawazi');
+        });
+        it('[DRDMV-5480]: Assignee validation4', async () => {
             await viewTask.clickOnEditTask();
-            await editTask.clickOnAssignToMe();
+            await editTask.clickOnAssignToMe(); // Failing due to slow API response, check with dev
             await editTask.clickOnSaveButton();
+            await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssigneeText()).toBe('Franz Schwarz');
             await viewTask.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
             await changeAssignmentBladePo.selectBusinessUnit('Facilities Support');
             await changeAssignmentBladePo.selectSupportGroup('Facilities');
-            await changeAssignmentBladePo.selectAssigneeAsSupportGroup('Facilities');
+            await changeAssignmentBladePo.selectAssignToSupportGroup();
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
+            await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssignedGroupText()).toBe('Facilities');
             await viewTask.clickOnEditTask();
             await editTask.clickOnAssignToMe();
             await editTask.clickOnSaveButton();
             expect(await viewTask.getAssigneeText()).toBe('Franz Schwarz');
+        });
+        it('[DRDMV-5480]: Second Task validation1', async () => {
             await viewTask.clickOnViewCase()
-
-            // second task template
             await viewCasePage.clickAddTaskButton();
-            await manageTask.clickTaskLinkOnManageTask(`manualTaskTemplateSummary1 ${randomStr}`);
+            await manageTask.clickTaskLink(`manualTaskTemplateSummary1 ${randomStr}`);
             await viewTask.clickOnEditTask();
             await editTask.clickOnAssignToMe();
             await editTask.clickOnSaveButton();
+            await utilityCommon.closePopUpMessage();
             expect((await viewTask.getAssigneeText()).trim()).toBe('Franz Schwarz');
             await viewTask.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
             await changeAssignmentBladePo.selectAssignee("Fritz Schulz");
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
+            await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssigneeText()).toBe('Fritz Schulz');
             expect(await activityTabPo.getAllTaskActivity('Fritz Schulz')).toBe('Fritz Schulz');
             await viewTask.clickOnEditTask();
@@ -478,14 +461,18 @@ describe('Create Adhoc task', () => {
             await changeAssignmentBladePo.clickOnAssignToMeCheckBox();
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
+            await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssigneeText()).toBe('Franz Schwarz');
+        });
+        it('[DRDMV-5480]: Second Task validation2', async () => {
             await viewTask.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
             await changeAssignmentBladePo.selectBusinessUnit('Facilities Support');
             await changeAssignmentBladePo.selectSupportGroup('Facilities');
-            await changeAssignmentBladePo.selectAssigneeAsSupportGroup('Facilities');
+            await changeAssignmentBladePo.selectAssignToSupportGroup();
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
+            await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssignedGroupText()).toBe('Facilities');
             await viewTask.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
@@ -496,35 +483,39 @@ describe('Create Adhoc task', () => {
             await changeAssignmentBladePo.selectAssignee('Qadim Katawazi');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
+            await utilityCommon.closePopUpMessage();
             expect(await activityTabPo.getAllTaskActivity('Qadim Katawazi')).toBe('Qadim Katawazi');
             expect(await viewTask.getAssigneeText()).toBe('Qadim Katawazi');
+        });
+        it('[DRDMV-5480]: [Assignment] Changing the Assignment when editing the task by the member of one Support Group', async () => {
             await viewTask.clickOnEditTask();
             await editTask.clickOnAssignToMe();
             await editTask.clickOnSaveButton();
+            await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssigneeText()).toBe('Franz Schwarz');
             await viewTask.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
             await changeAssignmentBladePo.selectBusinessUnit('Facilities Support');
             await changeAssignmentBladePo.selectSupportGroup('Facilities');
-            await changeAssignmentBladePo.selectAssigneeAsSupportGroup('Facilities');
+            await changeAssignmentBladePo.selectAssignToSupportGroup();
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
+            await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssignedGroupText()).toBe('Facilities');
             await viewTask.clickOnEditTask();
             await editTask.clickOnAssignToMe();
             await editTask.clickOnSaveButton();
             expect(await viewTask.getAssigneeText()).toBe('Franz Schwarz');
-
-        } catch (error) {
-            throw error;
-        } finally {
+        });
+        afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login("qtao");
-        }
-    }, 280 * 1000);
+        });
+    });
 
     it('[DRDMV-3828]: [Task Workspace] Task Workspace verification', async () => {
         await navigationPage.gotoTaskConsole();
+        await utilityGrid.clearFilter();
         let allHeaders: string[] = ["Task ID", "Case ID", "Priority", "Task Type", "Status", "Summary", "Assigned Group", "Assignee", "Modified Date", "SLM Status"];
         let remainingHeaders: string[] = ["Task ID", "Case ID", "Priority", "Task Type", "Status", "Summary", "Assigned Group", "Assignee", "Modified Date"]
         let removeHeader: string[] = ["SLM Status"];
@@ -553,4 +544,36 @@ describe('Create Adhoc task', () => {
         await utilityGrid.isGridColumnSorted("Modified Date", "desc");
     });
 
+    it('[DRDMV-22295]: Manual Task status should not be changed to "In Progress" from "Staged" if assignee is empty', async () => {
+        await apiHelper.apiLogin('qfeng');
+        let caseData = {
+            "Description": "Case DRDMV-3828",
+            "Requester": "Elizabeth",
+            "Summary": "Simple test case summary",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3"
+        }
+
+        let taskData = {
+            "taskName": "Task DRDMV-3828",
+            "company": "Petramco",
+            "businessUnit": "United States Support",
+            "supportGroup": "US Support 1"
+        }
+
+        await navigationPage.gotoTaskConsole();
+        await utilityGrid.clearFilter();
+        let caseCreationResponse = await apiHelper.createCase(caseData);
+        let taskCreationResponse = await apiHelper.createAdhocTask(caseCreationResponse.id, taskData);
+        await apiHelper.changeCaseAssignment(caseCreationResponse.id, 'United States Support', 'US Support 1', 'qtao');
+        await apiHelper.updateCaseStatus(caseCreationResponse.id, 'InProgress');
+        await utilityGrid.searchAndOpenHyperlink(taskCreationResponse.displayId);
+        await viewTask.clickOnChangeStatus();
+        await updateStatusBladePo.changeStatus("In Progress");
+        expect(await updateStatusBladePo.isSaveUpdateStatusButtonEnabled()).toBeFalsy('Save button is enabled');
+        expect(await updateStatusBladePo.getValidationMessage()).toBe('Assignee is required for this task status.  Please select an assignee.');
+        await utilityCommon.closeAllBlades();
+        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+    });
 });

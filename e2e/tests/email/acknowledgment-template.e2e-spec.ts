@@ -25,11 +25,27 @@ describe('Acknowledgment Template', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 
     afterEach(async () => {
         await utilityCommon.refresh();
+    });
+
+    //ankagraw
+    it('[DRDMV-10897]: Acknowledgment Template : Acknowledgment Template creation UI validations', async () => {
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
+        await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
+        expect(await createAcknowledgmentTemplatesPo.isTemplateNameRequired()).toBeTruthy();
+        expect(await createAcknowledgmentTemplatesPo.isCompanyRequired()).toBeTruthy();
+        expect(await createAcknowledgmentTemplatesPo.isStatusRequired()).toBeTruthy();
+        expect(await createAcknowledgmentTemplatesPo.isSubjectRequired()).toBeTruthy();
+        expect(await createAcknowledgmentTemplatesPo.isModuleDisabled()).toBeTruthy();
+        expect(await createAcknowledgmentTemplatesPo.isLocaleDisabled()).toBeTruthy();
+        await createAcknowledgmentTemplatesPo.clickOnCancelButton();
+        await utilCommon.clickOnWarningOk();
     });
 
     //kgaikwad
@@ -56,7 +72,7 @@ describe('Acknowledgment Template', () => {
         await createAcknowledgmentTemplatesPo.setSubject(subject);
         await createAcknowledgmentTemplatesPo.setBody(body);
         await createAcknowledgmentTemplatesPo.clickOnSaveButton();
-        await utilCommon.waitUntilPopUpDisappear();
+        await utilCommon.closePopUpMessage();
         let arr: string[] = ["Label"];
         await consoleAcknowledgmentTemplatePo.addColumnOnGrid(arr);
         let arr2: string[] = ['Template Name', 'Subject', "Company", "Status", "Label"];
@@ -76,7 +92,7 @@ describe('Acknowledgment Template', () => {
         await createAcknowledgmentTemplatesPo.setSubject(subject);
         await createAcknowledgmentTemplatesPo.setBody(body);
         await createAcknowledgmentTemplatesPo.clickOnSaveButton();
-        await utilCommon.waitUntilPopUpDisappear();
+        await utilCommon.closePopUpMessage();
         await consoleAcknowledgmentTemplatePo.searchOnGridConsole(templateName2);
         expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Template Name')).toBe(templateName2, 'Public template name is missing');
         expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Subject')).toBe(subject, 'Public template subject is missing');
@@ -94,7 +110,7 @@ describe('Acknowledgment Template', () => {
         await consoleAcknowledgmentTemplatePo.clickOnDeleteButton();
         await utilCommon.waitUntilSpinnerToHide();
         expect(await consoleAcknowledgmentTemplatePo.isGridRecordPresent(templateName2)).toBeFalsy('Public template name is preset on grid')
-    }, 470 * 1000);
+    }, 500 * 1000);
 
     //kgaikwad
     it('[DRDMV-10900,DRDMV-10924,DRDMV-10923]: Acknowledgment Template : Edit Acknowledgment Template UI validation', async () => {
@@ -119,7 +135,7 @@ describe('Acknowledgment Template', () => {
         await createAcknowledgmentTemplatesPo.setSubject(subject);
         await createAcknowledgmentTemplatesPo.setBody(body);
         await createAcknowledgmentTemplatesPo.clickOnSaveButton();
-        await utilCommon.waitUntilPopUpDisappear();
+        await utilCommon.closePopUpMessage();
 
         await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
         await createAcknowledgmentTemplatesPo.setTemplateName(templateName2);
@@ -130,7 +146,7 @@ describe('Acknowledgment Template', () => {
         await createAcknowledgmentTemplatesPo.setSubject(subject);
         await createAcknowledgmentTemplatesPo.setBody(body);
         await createAcknowledgmentTemplatesPo.clickOnSaveButton();
-        await utilCommon.waitUntilPopUpDisappear();
+        await utilCommon.closePopUpMessage();
         // DRDMV-10900
         await utilGrid.clearFilter();
         await consoleAcknowledgmentTemplatePo.searchAndOpenAcknowledgmentTemplate(templateName);
@@ -150,12 +166,12 @@ describe('Acknowledgment Template', () => {
         await editAcknowledgmentTemplatePo.clickOnGridEditButton();
         await editAcknowledgmentTemplatePo.updateEditMessageTextBladeBody(body2);
         await editAcknowledgmentTemplatePo.clickOnEditMessageTextBladeSaveButton();
-        await utilCommon.waitUntilPopUpDisappear();
+        await utilCommon.closePopUpMessage();
         await editAcknowledgmentTemplatePo.searchAndSelectGridRecord('subject');
         await editAcknowledgmentTemplatePo.clickOnGridEditButton();
         await editAcknowledgmentTemplatePo.updateEditMessageTextBladeSubject(subject2);
         await editAcknowledgmentTemplatePo.clickOnEditMessageTextBladeSaveButton();
-        await utilCommon.waitUntilPopUpDisappear();
+        await utilCommon.closePopUpMessage();
         await consoleAcknowledgmentTemplatePo.searchOnGridConsole('body');
         expect(await editAcknowledgmentTemplatePo.getSelectedGridRecordValue('Message')).toContain(body2, 'body not updated correctly');
         await consoleAcknowledgmentTemplatePo.searchOnGridConsole('subject');
@@ -187,7 +203,7 @@ describe('Acknowledgment Template', () => {
         expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Subject')).toBe(subject, 'Search Subject is missing in column');
         await consoleAcknowledgmentTemplatePo.searchOnGridConsole('Petramco');
         expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Company')).toBe('Petramco', 'Search Company is missing in column');
-    }, 700 * 1000);
+    }, 800 * 1000);
 
     //ptidke
     it('[DRDMV-10902]: Acknowledgment Template: Acknowledgment Template creation with same name', async () => {
@@ -247,5 +263,5 @@ describe('Acknowledgment Template', () => {
         await utilCommon.closePopUpMessage();
         await createAcknowledgmentTemplatesPo.clickOnCancelButton();
         await utilCommon.clickOnWarningOk();
-    }, 450 * 1000);
-})
+    }, 650 * 1000);
+});

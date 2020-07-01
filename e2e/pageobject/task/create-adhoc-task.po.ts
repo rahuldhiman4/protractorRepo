@@ -7,7 +7,7 @@ class CreateAdhocTaskTemplatePage {
 
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        description: '[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] textarea',
+        descriptionGuid: '84ebb434-1cf8-4363-94d2-c77d9c9e2f68',
         taskSummary: '[rx-view-component-id="76b6b259-a085-4d9f-91ac-8c5cbb2bc725"] input',
         priority: 'fe14bbd7-3b72-4e88-b224-b58d3a0eb132',
         label: '156b3220-56a1-4349-b595-670961ff215c',
@@ -15,7 +15,7 @@ class CreateAdhocTaskTemplatePage {
         categoryTier2: 'de41a8b5-6db3-4ae9-b8f1-5268dfd464b3',
         categoryTier3: 'f6c05c79-5859-4651-8d44-56e83670944a',
         categoryTier4: '10c2b8c0-3171-49c7-b27e-95d123fb5d9a',
-        assignButton: '[rx-view-component-id="92301e09-2079-4181-b80c-e18536f9dc6e"] button',
+        assignToMeButton: '[rx-view-component-id="92301e09-2079-4181-b80c-e18536f9dc6e"] button',
         changeAssignmentButton: '[rx-view-component-id="1b94ca7a-b3e0-49b7-94a3-70c1aff3c8a4"] button',
         saveAdhocTask: '[rx-view-component-id="e971ed74-8ded-44a4-945f-338067be3df9"] button',
         canceladhocTask: '[rx-view-component-id="73fcc0fa-3282-42a2-bf5d-0e4e4de5fcac"] button',
@@ -40,8 +40,7 @@ class CreateAdhocTaskTemplatePage {
     }
 
     async setDescription(description: string): Promise<void> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.description)));
-        await $(this.selectors.description).sendKeys(description);
+        await utilityCommon.setCKEditor(description, this.selectors.descriptionGuid);
     }
 
     async setSummary(summary: string): Promise<void> {
@@ -49,14 +48,18 @@ class CreateAdhocTaskTemplatePage {
         await $(this.selectors.taskSummary).sendKeys(summary);
     }
 
-    async clickOnSaveAdhoctask(): Promise<void> {
+    async clickSaveAdhoctask(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveAdhocTask)));
         await $(this.selectors.saveAdhocTask).click();
     }
 
-    async clickOnchangeAssignmentButton(): Promise<void> {
+    async clickChangeAssignmentButton(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.changeAssignmentButton)));
         await $(this.selectors.changeAssignmentButton).click();
+    }
+
+    async clickAssignToMeButton(): Promise<void> {
+        await $(this.selectors.assignToMeButton).click();
     }
 
     async isAttachmentButtonDisplayed(): Promise<boolean> {
@@ -64,7 +67,7 @@ class CreateAdhocTaskTemplatePage {
         return await $(this.selectors.attachmentLink).isDisplayed();
     }
 
-    async clickOnAttachButton(): Promise<void> {
+    async clickAttachButton(): Promise<void> {
         await $(this.selectors.attachmentLink).click();
     }
 
@@ -73,12 +76,12 @@ class CreateAdhocTaskTemplatePage {
         return await $(this.selectors.changeAssignmentButton).isDisplayed();
     }
 
-    async clickOnAssignButton(): Promise<void> {
+    async clickAssignButton(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignButton)));
-        await $(this.selectors.assignButton).click();
+        await $(this.selectors.assignToMeButton).click();
     }
 
-    async clickOnCancelAdhoctask(): Promise<void> {
+    async clickCancelAdhoctask(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.canceladhocTask)));
         await $(this.selectors.canceladhocTask).click();
     }
@@ -165,7 +168,7 @@ class CreateAdhocTaskTemplatePage {
 
     async isAssignToMeButtonDisplayd(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.assignButton)));
-        return await $(this.selectors.assignButton).isDisplayed();
+        return await $(this.selectors.assignToMeButton).isDisplayed();
     }
 
     async getchangeAssignmentButtonText(): Promise<string> {
@@ -191,8 +194,8 @@ class CreateAdhocTaskTemplatePage {
 
     async addAttachmentInDescription(fileToUpload: string[]): Promise<void> {
         const absPathArray = fileToUpload.map((curStr) => { return resolve(__dirname, curStr) });
-        console.log(absPathArray);
         await $(this.selectors.attachmentField).sendKeys(absPathArray.join('\n'));
     }
 }
+
 export default new CreateAdhocTaskTemplatePage();

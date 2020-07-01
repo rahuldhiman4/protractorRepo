@@ -25,7 +25,7 @@ class ViewCasePage {
         contactPersonName: '[rx-view-component-id="b28c2da7-08e2-4dfd-bfcd-f836483e625b"] .person-main a',
         contactPersonContact: '[rx-view-component-id="b28c2da7-08e2-4dfd-bfcd-f836483e625b"] .person-phone-link',
         contactPersonEmail: '[rx-view-component-id="b28c2da7-08e2-4dfd-bfcd-f836483e625b"] .bwf-button-link',
-        descriptionText: '[rx-view-component-id="9d3ef0fc-c49f-425f-a9e1-52422ba87f4f"] .bwf-read-only-content',
+        descriptionText: '[rx-view-component-id="9d3ef0fc-c49f-425f-a9e1-52422ba87f4f"] label+div',
         assigneeText: '[rx-view-component-id="dfe65f6f-7aea-476c-8042-f3aa34e3fb04"] .person-link',
         assignedGroupText: '[rx-view-component-id="66c1bbab-901d-42ed-b5e6-a04cb54d559f"] .read-only-content',
         departmentText: '[rx-view-component-id="795da3b4-6442-4b07-b6e1-7ce7c9987352"] .read-only-content',
@@ -38,12 +38,12 @@ class ViewCasePage {
         inprogressErrorMsg: '[rx-view-component-id="dd40ce76-9d16-4c6a-b1a1-16fe6aa6721f"] p',
         label: '[rx-view-component-id="2415f5bb-1b76-4359-a034-ff16f8e26f7b"] .read-only-content',
         resolutionCodeText: '[rx-view-component-id="32eeffe4-f5c1-4fc8-9c91-25946cc86d66"] label',
-        resolutionDescriptionText: '[rx-view-component-id="923de542-50b0-482f-a370-3823d0c07645"] .bwf-read-only-content',
         resolutionCodeValue: '[rx-view-component-id="32eeffe4-f5c1-4fc8-9c91-25946cc86d66"] .read-only-content',
-        resolutionDescriptionValue: '[rx-view-component-id="923de542-50b0-482f-a370-3823d0c07645"] .bwf-read-only-content',
+        resolutionDescriptionLabel: '[rx-view-component-id="923de542-50b0-482f-a370-3823d0c07645"] label',
+        resolutionDescriptionValue: '[rx-view-component-id="923de542-50b0-482f-a370-3823d0c07645"] .mb-2',
         priority: '[rx-view-component-id="7b47ca08-e9d4-4656-8f96-3bc751c098b0"] .selection-field',
         emailLink: '[rx-view-component-id="58a437ec-fc5b-4721-a583-1d6c80cfe6a6"] button',
-        addedTaskFromCaseTemplate: '.task-summary-wrapper .task-summary__name',
+        addedTaskFromCaseTemplate: '.task-summary__name',
         taskCardArrow: '[class="d-icon-angle_right task-list__task-card__preview-icon"]',
         attachmentFile: '[rx-view-component-id="9d3ef0fc-c49f-425f-a9e1-52422ba87f4f"] .bwf-attachment-container__file-name',
         caseTemplate: '[rx-view-component-id="a3fed42a-3de2-4df8-880f-a7528c3999e6"] .read-only-content',
@@ -53,8 +53,26 @@ class ViewCasePage {
         dynamicFieldsValue: '[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .read-only-content',
         slaProgressBar: '.progress-bar',
         tab: '.nav-item button',
+        showApproversBanner: '.rx-runtime-view-canvas-item-margin [rx-view-component-id="f288e1bb-9273-4ddd-98da-175d0c9b7413"]',
+        pendingApprovalsInfo: '[rx-view-component-id="9766d3d3-3f7c-43fe-8237-473d88298daa"] span[aria-label="Status of case approvals"] span',
+        showApproversLink: '.show-approvers-button-container',
+        showMoreDescription: '[rx-view-component-id="9d3ef0fc-c49f-425f-a9e1-52422ba87f4f"] button',
+        approvalButtons: '.approval-buttons span',
+        approveButton: '.d-icon-left-check_shield',
+        rejectButton: '.d-icon-left-cross_circle',
     }
 
+    async clickDescriptionShowMore(): Promise<void> {
+        await $(this.selectors.showMoreDescription).click();
+    }
+
+    async isImageDisplayed(value: string): Promise<boolean> {
+        return await $(`.bwf-description-read-state img[src="${value}"]`).isDisplayed();
+    }
+
+    async isColorTextPresent(value: string): Promise<boolean> {
+        return await $(`.bwf-description-read-state span[style="${value}"]`).isPresent();
+    }
     async isGroupNameDisplayed(groupName: string): Promise<boolean> {
         return await $(`[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .group-container__name__title[title=${groupName}]`).isDisplayed();
     }
@@ -78,17 +96,13 @@ class ViewCasePage {
         await $(this.selectors.requesterEmail).click();
     }
 
-    async clickOnContactEmail(): Promise<void>{
+    async clickOnContactEmail(): Promise<void> {
         await $(this.selectors.contactEmail).click();
     }
 
     async isEmailLinkPresent(): Promise<boolean> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailLink)));
         return await $(this.selectors.emailLink).isPresent();
-    }
-
-    async selectResolutionCodeDropDown(resolutionCode: string): Promise<void> {
-        await updateStatusBlade.selectResolutionCode(resolutionCode);
     }
 
     async getResolutionCodeValue(): Promise<string> {
@@ -112,7 +126,15 @@ class ViewCasePage {
     async clickOnReopenCaseLink(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.reOpenCase)));
         await $(this.selectors.reOpenCase).click();
-        //        await utilCommon.waitUntilPopUpDisappear();
+        //        await utilCommon.closePopUpMessage();
+    }
+
+    async isCaseReopenLinkDisabled(): Promise<boolean> {
+        return await $(this.selectors.reOpenCase).isPresent().then(async (result) => {
+            if (result){
+                return await $(this.selectors.reOpenCase).getAttribute("disabled") == "true";
+            }else return false;
+        });
     }
 
     async getErrorMsgOfInprogressStatus(): Promise<string> {
@@ -161,7 +183,7 @@ class ViewCasePage {
     }
 
     async clickAddToWatchlistLink(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addToWatchlist)));
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addToWatchlist)),7000);
         await $(this.selectors.addToWatchlist).click();
     }
 
@@ -183,8 +205,13 @@ class ViewCasePage {
     }
 
     async clickAddTaskButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addTaskButton)),3000);
-        await $(this.selectors.addTaskButton).click();
+        await $(this.selectors.addTaskButton).isPresent().then(async (link) => {
+            if (link) {
+                await utilityCommon.scrollUpOrDownTillElement(this.selectors.addTaskButton);
+                await $(this.selectors.addTaskButton).click();
+            } else console.log('Add Task button not found');
+        });
+
     }
 
     async isAddtaskButtonDisplayed(): Promise<boolean> {
@@ -205,6 +232,10 @@ class ViewCasePage {
     async getRequesterName(): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.requesterName)));
         return await $(this.selectors.requesterName).getText();
+    }
+
+    async clickRequsterName() {
+        await $(this.selectors.requesterName).click();
     }
 
     async getRequesterPhoneNo(): Promise<string> {
@@ -298,11 +329,18 @@ class ViewCasePage {
     }
 
     async isCoreTaskPresent(taskSummary: string): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText(this.selectors.addedTaskFromCaseTemplate, taskSummary))));
+        await browser.wait(this.EC.or(async () => {
+            let count = await $$(this.selectors.addedTaskFromCaseTemplate).count();
+            return count >= 1;
+        }), 5000);
         return await element(by.cssContainingText(this.selectors.addedTaskFromCaseTemplate, taskSummary)).isDisplayed();
     }
 
     async clickOnTaskLink(taskSummary: string): Promise<void> {
+        await browser.wait(this.EC.or(async () => {
+            let count = await $$(this.selectors.addedTaskFromCaseTemplate).count();
+            return count >= 1;
+        }), 5000);
         await element(by.cssContainingText(this.selectors.addedTaskFromCaseTemplate, taskSummary)).click();
     }
 
@@ -312,6 +350,7 @@ class ViewCasePage {
     }
 
     async clickOnTab(tabName: string): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText(this.selectors.tab, tabName))), 6000);
         await element(by.cssContainingText(this.selectors.tab, tabName)).click();
     }
 
@@ -396,6 +435,56 @@ class ViewCasePage {
             }
         }
         return undefined;
+    }
+
+    async isAssigneeNameDisplayed(): Promise<boolean> {
+        return await $(this.selectors.assigneeText).isPresent().then(async (link) => {
+            if (link) {
+                return await $(this.selectors.assigneeText).isDisplayed();
+            } else return false;
+        });
+    }
+
+    async clickAssigneeLink(): Promise<void> {
+        await $(this.selectors.assigneeText).click();
+    }
+
+    async clickContactPersonName(): Promise<void> {
+        await $(this.selectors.contactPersonName).click();
+    }
+
+    async isShowApproversBannerDisplayed(): Promise<boolean> {
+        return await $(this.selectors.showApproversBanner).isPresent().then(async (link) => {
+            if (link) {
+                return await $(this.selectors.showApproversBanner).isDisplayed();
+            } else return false;
+        });
+    }
+
+    async clickShowApproversLink(): Promise<void> {
+        await $(this.selectors.showApproversBanner).$(this.selectors.showApproversLink).click();
+    }
+
+    async getShowPendingApproversInfo(): Promise<string> {
+        return await $(this.selectors.pendingApprovalsInfo).getAttribute('aria-label');
+    }
+
+    async getApprovedApproversInfo(): Promise<string> {
+        return await $$(this.selectors.pendingApprovalsInfo).last().getAttribute('aria-label');
+    }
+
+    async isApprovalButtonsPresent(buttonText: string): Promise<boolean> {
+        return await element(by.cssContainingText(this.selectors.approvalButtons, buttonText)).isPresent().then(async (result) => {
+            if (result) return await element(by.cssContainingText(this.selectors.approvalButtons, buttonText)).isDisplayed();
+        });
+    }
+
+    async clickOnApproveLink(): Promise<void> {
+        await $(this.selectors.approveButton).click();
+    }
+
+    async clickOnRejectLink(): Promise<void> {
+        await $(this.selectors.rejectButton).click();
     }
 }
 

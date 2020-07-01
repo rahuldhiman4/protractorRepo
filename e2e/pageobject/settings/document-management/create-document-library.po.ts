@@ -3,6 +3,7 @@ import { $, browser, protractor, ProtractorExpectedConditions, element, by } fro
 import utilCommon from '../../../utils/util.common';
 import utilGrid from '../../../utils/util.grid';
 
+
 class DocumentLibraryPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
@@ -13,6 +14,7 @@ class DocumentLibraryPage {
         attachmentField: '[rx-view-component-id="d9a66a3a-d637-45d7-bb1c-bd60a50c5914"] input',
         attachmentGuid: 'd9a66a3a-d637-45d7-bb1c-bd60a50c5914',
         companyFieldGuid: 'cc6775d9-040f-4fde-bddf-7ab2334d6881',
+        businessUnitFieldGuid: '3b6ebf9c-13f1-4924-8740-3f720ae8335a',
         ownerGroupFieldGuid: '001ddea2-b59d-49dc-ac5e-628f3a75e9fa',
         deleteButton: '[rx-view-component-id="6e44c878-cc4a-4de1-8626-c786b5d309d7"] button',
         saveButton: '[rx-view-component-id="2ddf1845-1e5a-48f9-b6fd-1497f9be0daf"] button',
@@ -43,7 +45,7 @@ class DocumentLibraryPage {
         buisnessUnit:    '3b6ebf9c-13f1-4924-8740-3f720ae8335a',
         keyWordGuid:     'afdfcbdf-13c4-45ec-8870-f53a0bf32bac',
         cancelGuid:      '00107b90-bb31-4776-a855-44fea128a0de',
-        cancelButton:    '[rx-view-component-id="00107b90-bb31-4776-a855-44fea128a0de"] button',
+        cancelButton:    '[rx-view-component-id="00107b90-bb31-4776-a855-44fea128a0de"] button'
     }
 
     async addAttachment(fileToUpload: string): Promise<void> {
@@ -165,6 +167,9 @@ class DocumentLibraryPage {
         await utilCommon.selectDropDown(this.selectors.companyFieldGuid, companyName);
     }
 
+    async selectBusinessUnit(buisnessUnit:string):Promise<void>{
+        await utilCommon.selectDropDown(this.selectors.buisnessUnit, buisnessUnit);
+    }
     async selectOwnerGroup(ownerGroupName: string): Promise<void> {
         await utilCommon.selectDropDown(this.selectors.ownerGroupFieldGuid, ownerGroupName);
     }

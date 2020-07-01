@@ -3,5 +3,5 @@ export interface IAutomatedStatusTransitionConfig {
     company: string;
     fromStatus: string;
     toStatus: string;
-    changeStatusAfter: string;
+    changeStatusAfter: number;
 }

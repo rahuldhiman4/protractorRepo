@@ -20,7 +20,8 @@ export class GridOperations {
         filterCheckboxOptions: '.a-select-inline__list .a-select-inline__item .checkbox__label',
         filterTab: '.nav-item button',
         visibleColumnButton: '.d-icon-left-lines_vertical',
-        refreshIcon: 'button[rx-id="refresh-button"]'
+        refreshIcon: 'button[rx-id="refresh-button"]',
+        filterSearchValueBox: '.adapt-mt-input-container input',
     }
 
     async searchRecord(searchValue: string, guid?: string): Promise<void> {
@@ -28,6 +29,13 @@ export class GridOperations {
         if (guid) { searchTextBoxLocator = `[rx-view-component-id="${guid}"] ` + searchTextBoxLocator; }
         await $(searchTextBoxLocator).clear();
         await $(searchTextBoxLocator).sendKeys(searchValue + protractor.Key.ENTER);
+    }
+
+    async typeInFilterExperssion(date: string): Promise<void> {
+        await $(this.selectors.filterPresetBtn).click();
+        await $(this.selectors.filterSearchValueBox).clear();
+        await $(this.selectors.filterSearchValueBox).sendKeys(date, Key.ENTER);
+
     }
 
     async isGridRecordPresent(searchRecord: string, guid?: string): Promise<boolean> {
@@ -65,9 +73,7 @@ export class GridOperations {
         let refreshIcon = this.selectors.refreshIcon;
         if (guid) {
             let gridGuid = `[rx-view-component-id="${guid}"] `;
-            appliedPresetFilter = gridGuid + appliedPresetFilter;
             filterPresetBtn = gridGuid + filterPresetBtn;
-            clearBtn = gridGuid + clearBtn;
             refreshIcon = gridGuid + refreshIcon;
         }
         await $(appliedPresetFilter).isPresent().then(async (result) => {
@@ -78,7 +84,7 @@ export class GridOperations {
             } else {
                 console.log("Filters are already cleared");
             }
-        })
+        });
     }
 
     async addGridColumn(columnNameList: string[], guid?: string): Promise<void> {
@@ -216,6 +222,26 @@ export class GridOperations {
         );
     }
 
+    //Accepts sortType as 'asc' or 'desc'
+    async sortGridColumn(columnName: string, sortType: string, guid?: string): Promise<void> {
+        let columnHeaderLocator = '.c-header-container .c-header-name';
+        let columnContainerLocator = '.c-header-container';
+        if (guid) {
+            columnHeaderLocator = `[rx-view-component-id='${guid}'] ` + columnHeaderLocator;
+            columnContainerLocator = `[rx-view-component-id='${guid}'] ` + columnContainerLocator;
+        }
+        let columnHeaderContainer = await $$(columnContainerLocator);
+        for (let i = 0; i < await columnHeaderContainer.length; i++) {
+            if (await $$(columnHeaderLocator).get(i).getText() == columnName) {
+                for (let j = 0; j < 3; j++) {
+                    let b: string = await $$(columnContainerLocator).get(i).$$('.c-header-sort svg path').getAttribute('class') + '';
+                    if (b.includes('ng-star-inserted') && b.includes(sortType)) break;
+                    else await $$(columnContainerLocator).get(i).$$('.c-header-sort').click();
+                }
+            }
+        }
+    }
+
     async addFilter(fieldName: string, textValue: string, type: string, guid?: string): Promise<void> {
         let guidId: string = "";
         let refreshIcon = this.selectors.refreshIcon;
@@ -250,12 +276,14 @@ export class GridOperations {
     }
 
     async applyPresetFilter(filterName: string, guid?: string): Promise<void> {
+        let refreshIcon = 'button[rx-id="refresh-button"]';
         let guidId: string = "";
-        if (guid) { guidId = `[rx-view-component-id="${guid}"] `; }
+        if (guid) guidId = `[rx-view-component-id="${guid}"] `;
         await $(guidId + this.selectors.filterPresetBtn).click();
-        await $$(this.selectors.filterTab).get(1).click();
-        await element(by.cssContainingText('.radio__item', filterName)).click();
-        await utilityCommon.refresh();
+        await $$(this.selectors.filterTab).get(1).click().then(async () => {
+            await element(by.cssContainingText('.radio__item', filterName)).click();
+        });
+        await $(guidId + refreshIcon).click();
     }
 
     async getAppliedFilterName(guid?: string): Promise<string> {
@@ -277,6 +305,21 @@ export class GridOperations {
         if (await checkboxLocator.isPresent()) await checkboxLocator.click();
         else await radioButtonLocator.click();
     }
+
+    async clearFilterPreset(): Promise<void> {
+        await $(this.selectors.filterPresetBtn).click();
+        await $$('button.nav-link').first().click();
+        await $(this.selectors.refreshIcon).click();
+        await this.clearFilter();
+    }
+
+    async clickRefreshIcon(guidId?: string): Promise<void> {
+        if (guidId) await $(`[rx-view-component-id="${guidId}"] ` + this.selectors.refreshIcon).click();
+        else await $(this.selectors.refreshIcon).click();
+    }
+
 }
+
+
 
 export default new GridOperations();

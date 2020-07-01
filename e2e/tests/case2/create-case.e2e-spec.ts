@@ -22,21 +22,21 @@ import addReadAccess from '../../pageobject/settings/case-management/add-read-ac
 import consoleCasetemplatePo from '../../pageobject/settings/case-management/console-casetemplate.po';
 import createCaseTemplate from '../../pageobject/settings/case-management/create-casetemplate.po';
 import editCaseTemplate from '../../pageobject/settings/case-management/edit-casetemplate.po';
-import caseTemplatePreview from '../../pageobject/settings/case-management/preview-case-template-cases.po';
+import caseTemplatePreview from '../../pageobject/settings/case-management/preview-case-template.po';
 import consoleReadAcess from '../../pageobject/settings/case-management/read-access-console.po';
 import viewCaseTemplate from '../../pageobject/settings/case-management/view-casetemplate.po';
 import selectTaskTemplate from "../../pageobject/settings/task-management/console-tasktemplate.po";
 import createTaskTemplate from '../../pageobject/settings/task-management/create-tasktemplate.po';
-import taskTemplatePreview from '../../pageobject/settings/task-management/preview-task-template-cases.po';
+import taskTemplatePreview from '../../pageobject/settings/task-management/preview-task-template.po';
 import viewTasktemplatePage from '../../pageobject/settings/task-management/view-tasktemplate.po';
 import { default as activityPo, default as activityTabPo } from '../../pageobject/social/activity-tab.po';
 import taskConsolepage from "../../pageobject/task/console-task.po";
+import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
 import manageTask from "../../pageobject/task/manage-task-blade.po";
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
-import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
 import utilityGrid from '../../utils/utility.grid';
 
 describe("Create Case", () => {
@@ -50,6 +50,7 @@ describe("Create Case", () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 
@@ -88,71 +89,89 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    });//, 200 * 1000);
+    }, 300 * 1000);
 
     //kgaikwad
     it('[DRDMV-17653]: Check Resolution Code and Resolution Description fields added on Case View and Status Change blade', async () => {
-        try {
-            let randVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
-            await createMenuItems.clickOnMenuOptionLink();
-            await createMenuItems.selectMenuNameDropDown('Resolution Code');
-            await createMenuItems.clickOnLocalizeLink();
-            //await utilCommon.waitUntilSpinnerToHide();
-            await localizeValuePopPo.setLocalizeValue(randVal);
-            await localizeValuePopPo.clickOnSaveButton();
-            await createMenuItems.clickOnSaveButton();
-            //await utilCommon.waitUntilPopUpDisappear();
-            await utilGrid.searchRecord(randVal);
-            await navigationPage.gotoCaseConsole();
-            let caseData = {
-                "Requester": "Fritz",
-                "Summary": "Test case for DRDMV-2530",
-                "Assigned Company": "Petramco",
-                "Business Unit": "United States Support",
-                "Support Group": "US Support 3",
-                "Assignee": "qkatawazi"
-            }
-            await apiHelper.apiLogin('qkatawazi');
-            let newCase1 = await apiHelper.createCase(caseData);
-            let caseId: string = newCase1.displayId;
-            console.log(caseId);
-            await navigationPage.signOut();
-            await loginPage.login("qtao");
-            await caseConsolePage.searchAndOpenCase(caseId);
-            expect(await $(viewCasePage.selectors.resolutionCodeText).isDisplayed()).toBeTruthy('Missing Resolution Text');
-            expect(await $(viewCasePage.selectors.resolutionDescriptionText).isDisplayed()).toBeTruthy('Missing Resolution Description Text');
-            await viewCasePage.clickEditCaseButton();
-            await editCasePage.updateResolutionCode(randVal);
-            await editCasePage.updateResolutionDescription(randVal);
-            await editCasePage.clickSaveCase();
-            expect(await viewCasePage.getResolutionCodeValue()).toBe(randVal);
-            expect(await viewCasePage.getResolutionDescription()).toBe(randVal);
-            await updateStatusBladePo.changeCaseStatus('Resolved');
-            await updateStatusBladePo.setStatusReason('Customer Follow-Up Required');
-            await viewCasePage.selectResolutionCodeDropDown(randVal);
-            expect(await updateStatusBladePo.isResolutionDescriptionTextBoxEmpty()).toBeFalsy('Resolution Description Text Box is not empty');
-            await updateStatusBladePo.clickSaveStatus();
-            //await utilCommon.waitUntilPopUpDisappear();
-            expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
-            await updateStatusBladePo.changeCaseStatus('Closed');
-            await viewCasePage.selectResolutionCodeDropDown(randVal);
-            expect(await updateStatusBladePo.isResolutionDescriptionTextBoxEmpty()).toBeFalsy('Resolution Description Text Box is not empty');
-            await updateStatusBladePo.clickSaveStatus();
-            //await utilCommon.waitUntilPopUpDisappear();
-            expect(await viewCasePage.getTextOfStatus()).toBe('Closed');
-        } catch (error) {
-            throw error;
-        } finally {
-            await navigationPage.signOut();
-            await loginPage.login("qkatawazi");
+
+        let randVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseData = {
+            "Requester": "Fritz",
+            "Summary": "Test case for DRDMV-2530",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
+            "Assignee": "qkatawazi"
         }
+        await apiHelper.apiLogin('qkatawazi');
+        let newCase1 = await apiHelper.createCase(caseData);
+        let caseId: string = newCase1.displayId;
+
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
+        await createMenuItems.clickOnMenuOptionLink();
+        await createMenuItems.selectMenuNameDropDown('Resolution Code');
+        await createMenuItems.clickOnLocalizeLink();
+        await localizeValuePopPo.setLocalizeValue(randVal);
+        await localizeValuePopPo.clickOnSaveButton();
+        await createMenuItems.clickOnSaveButton();
+        await utilGrid.searchRecord(randVal);
+
+        await navigationPage.gotoCaseConsole();
+        await caseConsolePage.searchAndOpenCase(caseId);
+        expect(await $(viewCasePage.selectors.resolutionCodeText).isDisplayed()).toBeTruthy('Missing Resolution Text');
+        expect(await $(viewCasePage.selectors.resolutionDescriptionLabel).isDisplayed()).toBeTruthy('Missing Resolution Description Text');
+        await viewCasePage.clickEditCaseButton();
+        await editCasePage.updateResolutionCode(randVal);
+        await editCasePage.setResolutionDescription(randVal);
+        await editCasePage.clickSaveCase();
+        await utilityCommon.closePopUpMessage();
+        expect(await viewCasePage.getResolutionCodeValue()).toBe(randVal);
+        expect(await viewCasePage.getResolutionDescription()).toBe(randVal);
+        await updateStatusBladePo.changeCaseStatus('Resolved');
+        await updateStatusBladePo.setStatusReason('Customer Follow-Up Required');
+        await updateStatusBladePo.selectResolutionCode(randVal);
+        expect(await updateStatusBladePo.isResolutionDescriptionTextBoxEmpty()).toBeFalsy('Resolution Description Text Box is not empty');
+        await updateStatusBladePo.clickSaveStatus();
+        await utilityCommon.closePopUpMessage();
+        expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
+        await updateStatusBladePo.changeCaseStatus('Closed');
+        await updateStatusBladePo.selectResolutionCode(randVal);
+        expect(await updateStatusBladePo.isResolutionDescriptionTextBoxEmpty()).toBeFalsy('Resolution Description Text Box is not empty');
+        await updateStatusBladePo.clickSaveStatus();
+        await utilityCommon.closePopUpMessage();
+        expect(await viewCasePage.getTextOfStatus()).toBe('Closed');
     }, 550 * 1000);
 
     //kgaikwad
     it('[DRDMV-18031]: [UI]Resolution Code can be view on Case with respect to input in field "Available on UI"', async () => {
         let randVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseData1 =
+        {
+            "Requester": "qtao",
+            "Summary": "Test case for DRDMV-2530",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
+            "Assignee": "qkatawazi"
+        }
+        let caseData2 =
+        {
+            "Requester": "qtao",
+            "Summary": "Test case for DRDMV-2530",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
+            "Assignee": "qkatawazi"
+        }
+        await apiHelper.apiLogin("qkatawazi");
+        let newCase1 = await apiHelper.createCase(caseData1);
+        let caseId1: string = newCase1.displayId;
+        let newCase2 = await apiHelper.createCase(caseData2);
+        let caseId2: string = newCase2.displayId;
+
+        await navigationPage.signOut();
+        await loginPage.login("qkatawazi");
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
         await createMenuItems.clickOnMenuOptionLink();
@@ -165,42 +184,21 @@ describe("Create Case", () => {
         await createMenuItems.clickOnSaveButton();
 
         await navigationPage.gotoCaseConsole();
-        let caseData1 =
-        {
-            "Requester": "qtao",
-            "Summary": "Test case for DRDMV-2530",
-            "Assigned Company": "Petramco",
-            "Business Unit": "United States Support",
-            "Support Group": "US Support 3",
-            "Assignee": "qkatawazi"
-        }
-        await apiHelper.apiLogin('qkatawazi');
-        let newCase1 = await apiHelper.createCase(caseData1);
-        let caseId1: string = newCase1.displayId;
         await caseConsolePage.searchAndOpenCase(caseId1);
         await viewCasePage.clickEditCaseButton();
         await editCasePage.updateResolutionCode(randVal);
+        await editCasePage.setCaseSummary('Updated Summary');
         await editCasePage.clickSaveCase();
+        await utilityCommon.closePopUpMessage();
 
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
         await menuItemConsole.searchAndEditMenuOption(randVal);
         await editMenuItemsConfigPo.selectAvailableOnUIToggleButton(false);
         await editMenuItemsConfigPo.clickOnSaveButton();
+        await utilCommon.closePopUpMessage();
 
         await navigationPage.gotoCaseConsole();
-        let caseData2 =
-        {
-            "Requester": "qtao",
-            "Summary": "Test case for DRDMV-2530",
-            "Assigned Company": "Petramco",
-            "Business Unit": "United States Support",
-            "Support Group": "US Support 3",
-            "Assignee": "qkatawazi"
-        }
-        await apiHelper.apiLogin('qkatawazi');
-        let newCase2 = await apiHelper.createCase(caseData2);
-        let caseId2: string = newCase2.displayId;
         await caseConsolePage.searchAndOpenCase(caseId2);
         await viewCasePage.clickEditCaseButton();
         expect(await editCasePage.isValuePresentInResolutionCode(randVal)).toBeFalsy('RandomCode is missing');
@@ -232,6 +230,7 @@ describe("Create Case", () => {
             await createCaseTemplate.setAllowCaseReopenValue('Yes');
             await createCaseTemplate.setTemplateStatusDropdownValue('Active');
             await createCaseTemplate.clickSaveCaseTemplate();
+            await utilCommon.closePopUpMessage();
 
             //case template without reopen case
             await navigationPage.gotoSettingsPage();
@@ -242,10 +241,11 @@ describe("Create Case", () => {
             await createCaseTemplate.setCaseSummary(caseTemplateSummary2);
             await createCaseTemplate.setCaseStatusValue("Assigned");
             await createCaseTemplate.clickOnChangeAssignmentButton();
-            await changAssignmentOldPage.setAssignee('Petramco', 'United States Support','US Support 3', 'Qianru Tao')
+            await changAssignmentOldPage.setAssignee('Petramco', 'United States Support', 'US Support 3', 'Adam Pavlik')
             await createCaseTemplate.setAllowCaseReopenValue('No');
             await createCaseTemplate.setTemplateStatusDropdownValue('Active');
             await createCaseTemplate.clickSaveCaseTemplate();
+            await utilCommon.closePopUpMessage();
 
             //create case
             await navigationPage.signOut();
@@ -256,7 +256,6 @@ describe("Create Case", () => {
             await createCasePage.clickSelectCaseTemplateButton();
             await selectCaseTemplateBlade.selectCaseTemplate(caseTemplate1);
             await createCasePage.clickAssignToMeButton();
-
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await updateStatusBladePo.changeCaseStatus('In Progress');
@@ -269,6 +268,14 @@ describe("Create Case", () => {
             await viewCasePage.clickOnReopenCaseLink();
 
             //add second case template
+            await viewCasePage.clickEditCaseButton();
+            expect(await editCasePage.isChangeCaseTemplateButtonDisplayed()).toBeFalsy('change template button is Displayed');
+            await editCasePage.clickOnCancelCaseButton();
+            await updateStatusBladePo.changeCaseStatus('Resolved');
+            await updateStatusBladePo.setStatusReason('Auto Resolved');
+            await updateStatusBladePo.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('Assigned');
+            await updateStatusBladePo.clickSaveStatus('Assigned');
             await viewCasePage.clickEditCaseButton();
             await editCasePage.clickOnChangeCaseTemplate();
             await selectCaseTemplateBlade.selectCaseTemplate(caseTemplate2);
@@ -287,7 +294,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         }
-    }, 800 * 1000);
+    }, 900 * 1000);
 
     //ankagraw
     it('[DRDMV-1191,DRDMV-1198]: [Case Creation] Case creation with/without mandatory fields populated ', async () => {
@@ -301,7 +308,7 @@ describe("Create Case", () => {
         expect(await createCasePage.isSaveCaseButtonEnabled()).toBeFalsy();
         //expect(await utilCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).tobeTruthy; Save button wont enable unless summary is set
         //await utilCommon.closePopUpMessage();
-        //await utilCommon.waitUntilPopUpDisappear();
+        //await utilCommon.closePopUpMessage();
         await createCasePage.setSummary(caseSummary);
         expect(await createCasePage.allPriorityOptionsPresent(prioirtyValue)).toBeTruthy('Priority is not present');
         await createCasePage.clickAssignToMeButton();
@@ -480,7 +487,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 850 * 1000);
+    }, 950 * 1000);
 
     //ankagraw
     it('[DRDMV-1237]: [Global navigation] Navigation to Workspaces and Create subitems in the Shell ', async () => {
@@ -556,6 +563,10 @@ describe("Create Case", () => {
             "templateName": `manualTaskTemplateActive ${randomStr}`,
             "templateSummary": `manualTaskTemplateActive ${randomStr}`,
             "templateStatus": "Active",
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('qkatawazi');
 
@@ -564,6 +575,7 @@ describe("Create Case", () => {
             "templateStatus": "Active",
             "templateSummary": `Summary ${randomStr}`,
             "caseStatus": "New",
+            "casePriority": "Medium"
         }
 
         let newTaskTemplate = await apiHelper.createManualTaskTemplate(templateData);
@@ -577,7 +589,6 @@ describe("Create Case", () => {
             await createCasePage.setSummary('Summary' + randomStr);
             await createCasePage.clickSelectCaseTemplateButton();
             await selectCaseTemplateBlade.searchAndOpenCaseTemplate(caseTemplateData.templateName);
-            await selectCaseTemplateBlade.clickOnCaseTemplateLink();
             expect(await caseTemplatePreview.isCaseSummaryHeaderDisplayed('Case Summary')).toBeTruthy('Case Summary is not getting displayed');
             expect(await caseTemplatePreview.isCaseCompanyTitleDisplayed('Case Company')).toBeTruthy('Case Company is not getting displayed');
             expect(await caseTemplatePreview.isCaseStatusTitleDisplayed('Case Status')).toBeTruthy('Case Status is not getting displayed');
@@ -585,7 +596,7 @@ describe("Create Case", () => {
             expect(await caseTemplatePreview.isCaseCategoryTier1TitleDisplayed('Case Category Tier 1')).toBeTruthy('Case Category Tier 1 is not getting displayed');
             expect(await caseTemplatePreview.isCaseCategoryTier2TitleDisplayed('Case Category Tier 2')).toBeTruthy('Case Category Tier 2 is not getting displayed');
             expect(await caseTemplatePreview.isCaseCategoryTier3TitleDisplayed('Case Category Tier 3')).toBeTruthy('Case Category Tier 3 is not getting displayed');
-            expect(await caseTemplatePreview.isCaseCategoryTier4TitleDisplayed('Case Category Tier 4 is not getting displayed')).toBeTruthy();
+            expect(await caseTemplatePreview.isCaseCategoryTier4TitleDisplayed('Case Category Tier 4')).toBeTruthy('Case Category Tier 4 is not getting displayed');
             expect(await caseTemplatePreview.isFlowsetTitleDisplayed('Flowset')).toBeTruthy('Flowset is not getting displayed');
             expect(await caseTemplatePreview.isLabelTitleDisplayed('Label')).toBeTruthy('Label is not getting displayed');
             expect(await caseTemplatePreview.isCaseDescriptionTitleDisplayed('Case Description')).toBeTruthy('Case Description is not getting displayed');
@@ -597,15 +608,14 @@ describe("Create Case", () => {
             expect(await caseTemplatePreview.getCaseCompanyValue()).toBe('Petramco');
             expect(await caseTemplatePreview.getCasePriority()).toBe('Medium');
             expect(await caseTemplatePreview.getCaseStatus()).toBe('New');
-            await caseTemplatePreview.clickOnBackButton();
-            await selectCaseTemplateBlade.clickOnCancelButton();
 
+            await utilityCommon.closeAllBlades();
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickAddTaskFromTemplateButton();
-            await manageTask.searchTaskAndClickOnLink(templateData.templateName);
+            await manageTask.searchAndOpenTaskTemplate(templateData.templateName);
             expect(await taskTemplatePreview.isTaskSummaryTitleDisplayed('Task Summary')).toBeTruthy('Task Summary is not getting displayed');
             expect(await taskTemplatePreview.isTaskCompanyTitleDisplayed('Task Company')).toBeTruthy('Task Company is not getting displayed');
             expect(await taskTemplatePreview.isTaskPriorityTitleDisplayed('Task Priority')).toBeTruthy('Task Priority is not getting displayed');
@@ -615,7 +625,7 @@ describe("Create Case", () => {
             expect(await taskTemplatePreview.isTaskCategoryTier4TitleDisplayed('Task Category Tier 4')).toBeTruthy('Task Category Tier 4 is not getting displayed');
             expect(await taskTemplatePreview.isTaskTypeTitleDisplayed('Task Type')).toBeTruthy('Task Type is not getting displayed');
             expect(await taskTemplatePreview.isLabelTitleDisplayed('Label')).toBeTruthy('Label is not getting displayed');
-            expect(await taskTemplatePreview.isTaskDescriptionTitleDisplayed('Task Description is not getting displayed')).toBeTruthy();
+            expect(await taskTemplatePreview.isTaskDescriptionTitleDisplayed('Task Description')).toBeTruthy('Task Description is not getting displayed');
             expect(await taskTemplatePreview.getTaskTemplateName()).toBe(templateData.templateName);
             expect(await taskTemplatePreview.getTaskSummary()).toBe(templateData.templateSummary);
             expect(await taskTemplatePreview.getTaskCompany()).toBe("Petramco");
@@ -625,6 +635,7 @@ describe("Create Case", () => {
         } catch (e) {
             throw e;
         } finally {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
@@ -661,7 +672,7 @@ describe("Create Case", () => {
             await createTaskTemplate.selectTemplateStatus('Active');
             await createTaskTemplate.clickOnSaveTaskTemplate();
             await expect(viewTasktemplatePage.getOwnerCompanyValue()).toBe("Petramco");
-            //await utilCommon.waitUntilPopUpDisappear();
+            //await utilCommon.closePopUpMessage();
 
             //Create Case
             await navigationPage.signOut();
@@ -676,8 +687,8 @@ describe("Create Case", () => {
             await manageTask.clickAddTaskFromTemplateButton();
             await manageTask.setTaskSearchBoxValue(TaskSummary);
             await manageTask.clickFirstCheckBoxInTaskTemplateSearchGrid();
-            await manageTask.clickOnTaskGridSaveButton();
-            await manageTask.clickOnCloseButton();
+            await manageTask.clickTaskGridSaveButton();
+            await manageTask.clickCloseButton();
 
             await apiHelper.apiLogin('tadmin');
             let userData = {
@@ -688,7 +699,7 @@ describe("Create Case", () => {
             await apiHelper.createNewUser(userData);
             await apiHelper.associatePersonToCompany(userData.userId, "Psilon");
             await navigationPage.signOut();
-            await loginPage.loginWithCredentials(userData.userId + "@petramco.com", 'Password_1234');
+            await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
             //Create Case
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
@@ -699,15 +710,15 @@ describe("Create Case", () => {
             await manageTask.clickAddTaskFromTemplateButton();
             await manageTask.setTaskSearchBoxValue(TaskSummary);
             await manageTask.clickFirstCheckBoxInTaskTemplateSearchGrid();
-            await manageTask.clickOnTaskGridSaveButton();
-            await manageTask.clickOnCloseButton();
+            await manageTask.clickTaskGridSaveButton();
+            await manageTask.clickCloseButton();
         } catch (e) {
             throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 500 * 1000);
+    }, 600 * 1000);
 
     //ankagraw
     it('[DRDMV-15974]: Verify the status transition Closed->New is available only when Closed case is Reopened', async () => {
@@ -740,18 +751,18 @@ describe("Create Case", () => {
 
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy();
+            expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy('Case Reopen Link is present');
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
-            expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy();
+            expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy('Case Reopen Link is present');
             await updateStatusBladePo.changeCaseStatus('Pending');
             await updateStatusBladePo.setStatusReason('Error');
             await updateStatusBladePo.clickSaveStatus();
-            expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy();
+            expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy('Case Reopen Link is present');
             await updateStatusBladePo.changeCaseStatus('Canceled');
             await updateStatusBladePo.setStatusReason('Approval Rejected');
             await updateStatusBladePo.clickSaveStatus();
-            expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy();
+            expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy('Case Reopen Link is present');
 
             //create case
             await navigationPage.gotoCreateCase();
@@ -762,29 +773,31 @@ describe("Create Case", () => {
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
+            await utilityCommon.closePopUpMessage();
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
-            expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy();
+            expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy('Case Reopen Link is present');
             await updateStatusBladePo.changeCaseStatus('Pending');
             await updateStatusBladePo.setStatusReason('Error');
             await updateStatusBladePo.clickSaveStatus();
-            expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy();
+            expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy('Case Reopen Link is present');
             await updateStatusBladePo.changeCaseStatus('Resolved');
             await updateStatusBladePo.setStatusReason('Auto Resolved');
             await updateStatusBladePo.clickSaveStatus();
-            expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy();
+            expect(await viewCasePage.isCaseReopenLinkPresent()).toBeTruthy('Case Reopen Link is not present');
             await updateStatusBladePo.changeCaseStatus('Closed');
             await updateStatusBladePo.clickSaveStatus();
-            expect(await viewCasePage.isCaseReopenLinkPresent()).toBeTruthy();
+            expect(await viewCasePage.isCaseReopenLinkPresent()).toBeTruthy('Case Reopen Link is not present');
             await viewCasePage.clickOnReopenCaseLink();
-            expect(await viewCasePage.getTextOfStatus()).toBe('New');
+            await utilityCommon.closePopUpMessage();
+            expect(await viewCasePage.getTextOfStatus()).toBe('In Progress');
         } catch (e) {
             throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 800 * 1000);
+    }, 900 * 1000);
 
     //ankagraw
     it('[DRDMV-5479,DRDMV-1192]: Verify case assignment on Create Case', async () => {
@@ -807,16 +820,16 @@ describe("Create Case", () => {
             await createCasePage.clickChangeAssignmentButton();
             await changeAssignmentPage.clickOnAssignToMeCheckBox();
             expect(await changeAssignmentPage.getAssigneeName()).toBe('Qiao Feng');
-            await changeAssignmentPage.clickOnAssignButton();
+            await changeAssignmentPage.clickOnCancelButton();
             await createCasePage.clickChangeAssignmentButton();
             await changeAssignmentPage.selectBusinessUnit('United States Support')
             await changeAssignmentPage.selectSupportGroup('US Support 3');
-            await changeAssignmentPage.selectAssigneeAsSupportGroup('US Support 3');
+            await changeAssignmentPage.selectAssignToSupportGroup();
             await changeAssignmentPage.clickOnAssignButton();
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            expect(await viewCasePage.getAssignedGroupText()).toBe('Compensation and Benefits');
+            expect(await viewCasePage.getAssignedGroupText()).toBe('US Support 3');
             expect(await viewCasePage.getAssigneeText()).toBe('Qiao Feng');
         } catch (e) {
             throw e;
@@ -827,57 +840,59 @@ describe("Create Case", () => {
     }, 350 * 1000);
 
     //ankagraw
-    it('[DRDMV-11818]: [Global Case Template] Create/Update Case template with company and flowset as Global', async () => {
-        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let caseTemplate1 = 'Case Template 1' + randomStr;
-
-        let caseTemplateSummary1 = 'Summary 1' + randomStr;
-        let flowsetData = require('../../data/ui/case/flowset.ui.json');
-        let flowsetName: string = await flowsetData['flowsetGlobalFields'].flowsetName + randomStr;
-        flowsetData['flowsetGlobalFields'].flowsetName = flowsetName;
-        await apiHelper.apiLogin('qkatawazi');
-        await apiHelper.createNewFlowset(flowsetData['flowsetGlobalFields']);
-
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
-        await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
-        await createCaseTemplate.setTemplateName(caseTemplate1);
-        await createCaseTemplate.setCompanyName('- Global -');
-        await createCaseTemplate.setCaseSummary(caseTemplateSummary1);
-        await createCaseTemplate.setFlowsetValue(flowsetName);
-        await createCaseTemplate.setTemplateStatusDropdownValue('Active');
-        await createCaseTemplate.clickSaveCaseTemplate();
-        //expect(await utilCommon.isErrorMsgPresent()).toBeTruthy(); //no error message
-        //await utilCommon.waitUntilPopUpDisappear();
-        expect(await viewCaseTemplate.getCaseCompanyValue()).toBe('- Global -');
-        expect(await viewCaseTemplate.getFlowsetValue()).toBe(flowsetName);
-        await viewCaseTemplate.clickOnEditCaseTemplateButton();
-        expect(await editCaseTemplate.isCaseCompanyDisabled()).toBeTruthy();
-
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
-        await consoleReadAcess.clickOnReadAccessConfiguration();
-        await addReadAccess.setReadAccessConfigurationName("test");
-        await addReadAccess.selectCompany('Global');
-        await addReadAccess.selectFlowset(flowsetName);
-        await addReadAccess.selectSupportCompany('Petramco');
-        await addReadAccess.selectBusinessUnit('Australia Support');
-        await addReadAccess.selectSupportGroup('AU Support 2');
-        await addReadAccess.clickOnSave();
+    it('[DRDMV-11818,DRDMV-11821]: [Global Case Template] Create/Update Case template with company and flowset as Global', async () => {
         try {
+            let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let caseTemplate1 = 'Case Template 1' + randomStr;
+            let caseTemplateSummary1 = 'Summary 1' + randomStr;
+            let flowsetData = require('../../data/ui/case/flowset.ui.json');
+            let flowsetName: string = await flowsetData['flowsetGlobalFields'].flowsetName + randomStr;
+            flowsetData['flowsetGlobalFields'].flowsetName = flowsetName;
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createNewFlowset(flowsetData['flowsetGlobalFields']);
+
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
+            await createCaseTemplate.setTemplateName(caseTemplate1);
+            await createCaseTemplate.setCompanyName('- Global -');
+            await createCaseTemplate.setCaseSummary(caseTemplateSummary1);
+            await createCaseTemplate.setFlowsetValue(flowsetName);
+            await createCaseTemplate.setTemplateStatusDropdownValue('Active');
+            await createCaseTemplate.clickSaveCaseTemplate();
+            //expect(await utilCommon.isErrorMsgPresent()).toBeTruthy(); //no error message
+            //await utilCommon.closePopUpMessage();
+            expect(await viewCaseTemplate.getCaseCompanyValue()).toBe('- Global -');
+            expect(await viewCaseTemplate.getFlowsetValue()).toBe(flowsetName);
+            await viewCaseTemplate.clickOnEditCaseTemplateButton();
+            expect(await editCaseTemplate.isCaseCompanyDisabled()).toBeTruthy();
+
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            await consoleReadAcess.clickOnReadAccessConfiguration();
+            await addReadAccess.setReadAccessConfigurationName("test");
+            await addReadAccess.selectCompany('Global');
+            await addReadAccess.selectFlowset(flowsetName);
+            await addReadAccess.selectSupportCompany('Petramco');
+            await addReadAccess.selectBusinessUnit('Australia Support');
+            await addReadAccess.selectSupportGroup('AU Support 2');
+            await addReadAccess.clickOnSave();
+
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await consoleCasetemplatePo.searchAndClickOnCaseTemplate(caseTemplate1);
-            await expect(viewCaseTemplate.getCaseCompanyValue()).toBe('- Global -');
+            expect(await viewCaseTemplate.getCaseCompanyValue()).toBe('- Global -');
+            await viewCaseTemplate.clickOnEditCaseTemplateButton();
+            expect(await editCaseTemplate.isCaseSummaryReadOnly()).toBeTruthy();
         } catch (e) {
             throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 400 * 1000);
+    }, 600 * 1000);
 
     //ankagraw
     it('[DRDMV-1614]: [Case] Fields validation for case in New status ', async () => {
@@ -899,7 +914,7 @@ describe("Create Case", () => {
             // expect(await utilCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.').tobeTruthy();
             // await utilCommon.closePopUpMessage();
             await expect(createCasePage.isSaveCaseButtonEnabled()).toBeFalsy("Save button is Enabled");
-            //await utilCommon.waitUntilPopUpDisappear();
+            //await utilCommon.closePopUpMessage();
             await createCasePage.setSummary(caseSummary);
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
@@ -958,10 +973,22 @@ describe("Create Case", () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let activityNoteText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let filePath = '../../data/ui/attachment/bwfPdf.pdf';
+        let caseTemplateName = "CaseTemplate" + randomStr;
         let petramcoStr = "Petramco";
         let aUsupportStr = "AU Support 1";
         let kasiaOstlunsStr = "Kasia Ostlun";
-
+        let CaseTemplateData = {
+            "templateName": caseTemplateName,
+            "templateSummary": caseTemplateName,
+            "templateStatus": "Active",
+            "company": "Petramco",
+            "categoryTier1": "Purchasing Card",
+            "categoryTier2": "Policies",
+            "categoryTier3": "Card Issuance",
+            "priority": "Low",
+        }
+        await apiHelper.apiLogin('qtao');
+        await apiHelper.createCaseTemplate(CaseTemplateData);
         try {
             await navigationPage.signOut();
             await loginPage.login("qtao");
@@ -969,7 +996,7 @@ describe("Create Case", () => {
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Summary' + randomStr);
             await createCasePage.clickSelectCaseTemplateButton();
-            await selectCaseTemplateBlade.selectCaseTemplate('Change My Legal Name');
+            await selectCaseTemplateBlade.selectCaseTemplate(caseTemplateName);
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
@@ -981,7 +1008,8 @@ describe("Create Case", () => {
             await changeAssignmentPage.setAssignee(petramcoStr, 'Australia Support', aUsupportStr, kasiaOstlunsStr);
             await editCasePage.clickSaveCase();
             expect(await activityPo.isTextPresentInActivityLog("Kasia Ostlun")).toBeTruthy("Text is not present in activiy tab1");
-            expect(await activityPo.isTextPresentInActivityLog("changed the case assignment")).toBeTruthy("Text is not present in activiy tab2");
+            await activityPo.clickShowMoreLinkInActivity(1);
+            expect(await activityPo.isTextPresentInActivityLog("changed the following case fields")).toBeTruthy("Text is not present in activiy tab2");
             expect(await activityPo.isTextPresentInActivityLog("Assignee")).toBeTruthy("Text is not present in activiy tab3");
             expect(await activityPo.isTextPresentInActivityLog("Assigned Group")).toBeTruthy("Text is not present in activiy tab4");
             expect(await activityPo.isTextPresentInActivityLog("AU Support 1")).toBeTruthy("Text is not present in activiy tab5");
@@ -997,17 +1025,17 @@ describe("Create Case", () => {
             await viewCasePage.clickAttachmentsLink();
             await attachmentBladePage.searchAndSelectCheckBox('bwfPdf');
             expect(await attachmentBladePage.isDownloadButtonEnabled()).toBeTruthy('Download button is disabled');
-            await attachmentBladePage.clickOnDownloadButton();
+            await attachmentBladePage.clickDownloadButton();
             expect(await utilCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('File is not downloaded.');
+            await utilityCommon.closeAllBlades();
         } catch (e) {
             throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 350 * 1000);
+    }, 650 * 1000);
 
-    //Bug -DRDMV-21676
     it('[DRDMV-11700]: Verify  sort on all attachments grid', async () => {
         let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
         let activityNoteText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -1033,15 +1061,14 @@ describe("Create Case", () => {
         let fileName2: string[] = ['bwfXsl.xsl', 'bwfXml.xml', 'bwfJson3.json', 'bwfJson4.json', 'bwfJson5.json'];
         const filesToUpload2 = fileName2.map((file) => { return `../../data/ui/attachment/${file}` });
         await adhoctaskTemplate.addAttachmentInDescription(filesToUpload2);
-        await adhoctaskTemplate.clickOnSaveAdhoctask();
-        await manageTask.clickOnCloseButton();
-        await utilCommon.waitUntilPopUpDisappear();
+        await adhoctaskTemplate.clickSaveAdhoctask();
+        await utilityCommon.closePopUpMessage();
+        await manageTask.clickCloseButton();
+        await utilCommon.closePopUpMessage();
         await viewCasePage.clickAttachmentsLink();
 
         expect(await utilityGrid.isGridColumnSorted('Attachments', 'desc')).toBeTruthy("Attachment Not Sorted Desecnding");
         expect(await utilityGrid.isGridColumnSorted('Attachments', 'asc')).toBeTruthy("Attachment Not Sorted Asecnding");
-        expect(await utilityGrid.isGridColumnSorted('Attached to', 'desc')).toBeTruthy("Attached to Not Sorted Desecnding");
-        expect(await utilityGrid.isGridColumnSorted('Attached to', 'asc')).toBeTruthy("Attached to Not Sorted Asecnding");
         expect(await utilityGrid.isGridColumnSorted('Media type', 'desc')).toBeTruthy("Media type Not Sorted Desecnding");
         expect(await utilityGrid.isGridColumnSorted('Media type', 'asc')).toBeTruthy("Media type Not Sorted Asecnding");
         expect(await utilityGrid.isGridColumnSorted('Created date', 'desc')).toBeTruthy("Created date Not Sorted Desecnding");

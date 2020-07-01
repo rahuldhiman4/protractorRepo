@@ -1,22 +1,22 @@
 {
     "caseData_DRDMV18972": {
         "requester1": "Thad Esser",
-        "requester2": "Qiwei Liu",
+        "requester2": "RA3 Liu",
         "caseSummary": "Creating Quick Case"
     },
     "caseData_DRDMV18973": {
-        "requester": "Qiwei Liu",
+        "requester": "RA3 Liu",
         "contact": "Thad Esser",
         "caseSummary": "Change my Last Name"
     },
     "caseData_DRDMV18980": {
-        "requester": "Qiwei Liu",
+        "requester": "RA3 Liu",
         "requester2": "Qiang Du",
         "description": "Change my Last Name",
         "contact": "Thad Esser"
     },
     "caseData_DRDMV18983": {
-        "requester": "Qiwei Liu",
+        "requester": "RA3 Liu",
         "description": "Change my Last Name",
         "warningMsg": "Requester not found"
     },
@@ -39,9 +39,8 @@
         "Requester": "Elizabeth",
         "Priority": "4000",
         "Summary": "Testing case creation with maximal input data",
-        "Business Unit": "United States Support",
-        "Support Group": "US Support 3",
-        "Assignee": "qkatawazi"
+        "Business Unit": "HR Support",
+        "Support Group": "Compensation and Benefits"
     },
     "DRDMV-14088": {
         "Status": "2000",
@@ -71,7 +70,7 @@
         "Description": "This case was created by java integration tests",
         "Requester": "qkatawazi",
         "Priority": "4000",
-        "Summary": "Testing Realated Persons",
+        "Summary": "Watchlist Test",
         "Assigned Company": "Petramco",
         "Business Unit": "United States Support",
         "Support Group": "US Support 3",
@@ -83,7 +82,7 @@
         "Description": "This case was created by java integration tests",
         "Requester": "qkatawazi",
         "Priority": "4000",
-        "Summary": "Testing Realated Persons",
+        "Summary": "Watchlist Test",
         "Assigned Company": "Petramco",
         "Business Unit": "United States Support",
         "Support Group": "US Support 3",
@@ -95,7 +94,7 @@
         "Description": "This case was created by java integration tests",
         "Requester": "qkatawazi",
         "Priority": "4000",
-        "Summary": "Testing Realated Persons",
+        "Summary": "Watchlist Test",
         "Assigned Company": "Petramco",
         "Business Unit": "United States Support",
         "Support Group": "US Support 3"
@@ -106,7 +105,7 @@
         "Description": "This case was created by java integration tests",
         "Requester": "Elizabeth",
         "Priority": "4000",
-        "Summary": "Testing Realated Persons",
+        "Summary": "Watchlist Test",
         "Assigned Company": "Petramco",
         "Business Unit": "United States Support",
         "Support Group": "US Support 3",
@@ -172,6 +171,7 @@
         "Description": "Simple test case desc",
         "Requester": "qfeng",
         "Summary": "Simple test case summary",
+        "Assigned Company": "Petramco",
         "Business Unit": "United States Support",
         "Support Group": "US Support 3"
     },
@@ -189,7 +189,7 @@
         "Description": "Actionable Notification Desc",
         "Requester": "qkatawazi",
         "Summary": "Actionable Notification ",
-        "Support Group": "Compensation and Benefits",
-        "Status": "1000"
+        "Business Unit": "United States Support",
+        "Support Group": "US Support 3"
     }
 }

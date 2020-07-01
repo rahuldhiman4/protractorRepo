@@ -10,18 +10,20 @@ export interface ICaseTemplate {
     categoryTier1?: string;
     categoryTier2?: string;
     categoryTier3?: string;
+    categoryTier4?: string;
     businessUnit?: string;
     supportGroup?: string;
     assignee?: string;
     description?: string;
-    resolutionCode?: boolean;
-    resolutionDescription?: boolean,
+    resolutionCode?: string;
+    resolutionDescription?: string,
     caseStatus?: string,
     statusReason?: string,
     casePriority?: string,
     identityValidation?: string,
     assignmentMethod?: string,
     taskFailureConfiguration?: string,
-    allowCaseReopen?: string,
-    resolveCaseonLastTaskCompletion?:string
+    allowCaseReopen?: boolean,
+    resolveCaseonLastTaskCompletion?:string,
+    label?:string
 }

@@ -33,7 +33,7 @@ class SelectCaseTemplateBlade {
     async clickOnAllTemplateTab(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.allTemplates)));
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.allTemplates)));
-        await $$(this.selectors.allTemplates).last().click();
+        await element(by.cssContainingText(this.selectors.allTemplates,'All Templates')).click(); 
     }
 
     async searchAndOpenCaseTemplate(input: string): Promise<void> {
@@ -48,6 +48,7 @@ class SelectCaseTemplateBlade {
 
     async selectCaseTemplate(templateName: string): Promise<void> {
         await this.clickOnAllTemplateTab();
+        await utilityGrid.clearFilter(); 
         await utilityGrid.searchAndSelectGridRecord(templateName);
         await this.clickOnApplyButton();
         //        await browser.wait(this.EC.invisibilityOf($('.modal-content')));

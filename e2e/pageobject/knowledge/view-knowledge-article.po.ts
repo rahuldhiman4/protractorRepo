@@ -1,4 +1,5 @@
 import { $, $$, by, element, browser, protractor, ProtractorExpectedConditions } from "protractor";
+import resources from '../../pageobject/common/resources-tab.po';
 
 class ViewKnowledgePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -48,6 +49,11 @@ class ViewKnowledgePage {
         unflagOption: '[rx-view-component-id="b54365bf-0ead-4c54-8c8b-42aced61690e"] span',
         editKnowledgeAccess: '[rx-view-component-id="cbdd812c-4899-4503-84ab-412020d820df"] button',
         tab: 'button[role="tab"] span.nav-link-wrapper',
+        attachmentName: 'bwf-attachment-viewer .bwf-attachment-container__file-name',
+        expandAllAttachment: '.bwf-attachment-viewer .d-icon-plus',
+        approvalButtons: '.approval-buttons span',
+        approveButton: '.d-icon-left-check_shield',
+        rejectButton: '.d-icon-left-cross_circle',
     }
 
     async clickOnKAUsefulYesButton(): Promise<void> {
@@ -75,7 +81,7 @@ class ViewKnowledgePage {
     }
 
     async getStatusValue(): Promise<string> {
-        //        await utilCommon.waitUntilPopUpDisappear();
+        //        await utilCommon.closePopUpMessage();
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChange)));
         return await $(this.selectors.statusChange).getText();
     }
@@ -101,8 +107,11 @@ class ViewKnowledgePage {
     }
 
     async isEditLinkDisplayedOnKA(): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editLinkOnKA)));
-        return await $(this.selectors.editLinkOnKA).isDisplayed();
+        return await $(this.selectors.editLinkOnKA).isPresent().then(async (link) => {
+            if (link) {
+                return await $(this.selectors.editLinkOnKA).isDisplayed();
+            }
+        });
     }
 
 
@@ -135,7 +144,7 @@ class ViewKnowledgePage {
     }
 
     async clickOnTab(tabName: string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.tab)),3000);
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.tab)), 3000);
         await element(by.cssContainingText(this.selectors.tab, tabName)).click();
     }
 
@@ -368,7 +377,47 @@ class ViewKnowledgePage {
         await $(this.selectors.editKnowledgeAccess).click();
     }
 
+    async isAttachedFileNamePresent(fileName: string): Promise<boolean> {
+        return await element(by.cssContainingText(this.selectors.attachmentName, fileName)).isPresent().then(async (result) => {
+            if (result) return await element(by.cssContainingText(this.selectors.attachmentName, fileName)).isDisplayed();
+        });
+    }
 
+    async clickShowMoreButton(): Promise<void> {
+        await $(this.selectors.expandAllAttachment).click();
+    }
+
+    async getAttachmentCountFromKA(): Promise<number> {
+        return await $$(this.selectors.attachmentName).count();
+    }
+
+    async clickOnAttachment(attachmentName: string): Promise<void> {
+        await element(by.cssContainingText(this.selectors.attachmentName, attachmentName)).click();
+    }
+
+    async isImageDisplayedOnDescription(value: string): Promise<boolean> {
+        let locator = `.doc-editor__section-content img[src='${value}']`;
+        let imageIsDisplayed: boolean = await $(locator).isDisplayed();
+        return imageIsDisplayed;
+    }
+
+    async clickOnAttachments(attachmentName: string): Promise<void> {
+        await element(by.cssContainingText(this.selectors.attachmentName, attachmentName)).click();
+    }
+    
+    async isApprovalButtonsPresent(buttonText: string): Promise<boolean> {
+        return await element(by.cssContainingText(this.selectors.approvalButtons, buttonText)).isPresent().then(async (result) => {
+            if (result) return await element(by.cssContainingText(this.selectors.approvalButtons, buttonText)).isDisplayed();
+        });
+    }
+
+    async clickOnApproveLink(): Promise<void> {
+        await $(this.selectors.approveButton).click();
+    }
+
+    async clickOnRejectLink(): Promise<void> {
+        await $(this.selectors.rejectButton).click();
+    }
 }
 
 export default new ViewKnowledgePage();

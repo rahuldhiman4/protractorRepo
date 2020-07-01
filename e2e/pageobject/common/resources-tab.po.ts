@@ -12,14 +12,17 @@ export class Resources {
         smartSearchResult: 'bwf-smart-recorder-results h1',
         advancedSearchButton: 'span.d-icon-search',
         backButton: 'span.d-icon-angle_left',
-        knowledgeTitle: '[rx-view-component-id="aacf8477-f930-4983-820d-1b9fa12441c0"] div.bwf-search-fields__title-text'
+        knowledgeTitle: '[rx-view-component-id="aacf8477-f930-4983-820d-1b9fa12441c0"] div.bwf-search-fields__title-text',
+        advancedSearchFields: '[class="row ng-star-inserted"] .dropdown_select',
+        recommendedKnowledgeGuid: '[rx-view-component-id="dceba6c7-a422-4937-8314-e7c6c1bc2ce1"]',
+        paginationNextButton: '.content-outlet .page-next',
     }
 
     async isSearchRecordEmpty(recordNumber: number): Promise<boolean> {
         return await $$('.bwf-search-result p').get(recordNumber - 1).isPresent();
     }
 
-    async clickOnAdvancedSearchOptions(searchArea: string): Promise<void> {
+    async clickOnAdvancedSearchOptions(): Promise<void> {
         let advancedSearchButton = await $('span.d-icon-search');
         //        await browser.wait(this.EC.elementToBeClickable(advancedSearchButton));
         await advancedSearchButton.click();
@@ -91,6 +94,7 @@ export class Resources {
     async isApplyOrClearButtonButtonEnabled(buttonText: string): Promise<boolean> {
         return await element(by.cssContainingText('.pull-right .d-button_small', buttonText)).isEnabled();
     }
+
     async getAdvancedSearchResultForParticularSection(headingType: string): Promise<string> {
         //await browser.wait(this.EC.elementToBeClickable($(this.selectors.advancedSearchResult)));
         const searchResult = await element(by.xpath(`//*[contains(@title,"${headingType}")]/..//*[contains(@class,"bwf-search-fields__title-text")]`));
@@ -127,6 +131,60 @@ export class Resources {
                 return await $(`[title="${resourceName}"]`).isDisplayed();
             } else return false;
         });
+    }
+
+    async isFilterAvailable(filterText: string): Promise<boolean> {
+        return await element(by.cssContainingText(this.selectors.advancedSearchFields, filterText)).isPresent().then(async (link) => {
+            if (link) {
+                return await element(by.cssContainingText(this.selectors.advancedSearchFields, filterText)).isDisplayed();
+            } else return false;
+        });
+    }
+
+    async clickArrowFirstRecommendedKnowledge(): Promise<void> {
+        let sections = $$('div.bwf-search-result');
+        for(let i=0; i<(await sections).length; i++){
+            let sectionLocator = sections.get(i).$('h2');
+            if((await sectionLocator.getText()).includes('Recommended Knowledge')) {
+                await sections.get(i).$$('div.search-result-fields').first().click();
+            }
+        }
+    }
+
+    async getKnowledgeArticleInfo(): Promise<string> {
+        return await $$('.flex-column bwf-search-result-fields div span').getText();
+    }
+
+    async pinRecommendedKnowledgeArticles(numberOfArticles: number): Promise<void> {
+        for (let i = 0; i < numberOfArticles; i++) {
+            await $$('adapt-icon[class="search-item__unpin-icon"]').get(i).click();
+        }
+    }
+
+    async unpinRecommendedKnowledgeArticles(numberOfArticles: number): Promise<void> {
+        for (let i = 0; i < numberOfArticles; i++) {
+            await $$('adapt-icon[class="search-item__pin-icon"]').get(i).click();
+        }
+    }
+
+    async isFirstPinnedArticleDisplayed(): Promise<boolean> {
+        return await $('adapt-icon[class="search-item__pin-icon"]').isPresent().then(async (link) => {
+            if (link) {
+                return await $('adapt-icon[class="search-item__pin-icon"]').isDisplayed();
+            }
+        });
+    }
+
+    async getCountOfPinKnowledgeArticles(): Promise<number> {
+        return await $$('adapt-icon[class="search-item__pin-icon"]').count();    
+    }
+
+    async clickOnBackButton(): Promise<void> {
+        await $(this.selectors.backButton).click();
+    }
+
+    async clickPaginationNext(): Promise<void> {
+        await $(this.selectors.paginationNextButton).click();
     }
 }
 

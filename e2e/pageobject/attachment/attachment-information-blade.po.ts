@@ -22,18 +22,19 @@ class AttachmentBlade {
         return await $(this.selectors.close).isDisplayed();
     }
 
-    async clickOnDownloadButton(): Promise<void> {
+    async clickDownloadButton(): Promise<void> {
         await $(this.selectors.download).click();
     }
 
-    async clickOnCloseButton(): Promise<void> {
-        await $(this.selectors.close).click();
+    async clickCloseButton(): Promise<void> {
+        await $(this.selectors.close).isEnabled().then(async (result) => {
+            if (result) await $(this.selectors.close).click();
+        });
     }
 
     async isTitleNameDisplayed(): Promise<boolean> {
         return await $(this.selectors.title).getText() == 'Attachment Information' ? true : false;
     }
-
 
 }
 

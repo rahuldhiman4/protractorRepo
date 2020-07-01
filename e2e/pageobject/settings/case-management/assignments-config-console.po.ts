@@ -11,14 +11,14 @@ class AssignmentsConfigConsolePage {
         deleteButton: '[rx-view-component-id="10da8112-39a0-4be3-9388-f526f2fd1bbd"] button'
     }
 
-    async isAddAssignmentsBtnDisabled(): Promise<boolean> {
+    async isAddAssignmentsBtnDisplayed(): Promise<boolean> {
 //        await browser.wait(this.EC.visibilityOf($(this.selectors.addAssignmentBtn)));
-        return await $(this.selectors.addAssignmentBtn).getAttribute("disabled") == "true";
+        return await $(this.selectors.addAssignmentBtn).isPresent();
     }
 
-    async isDeleteAssignmentConfigBtnDisabled(): Promise<boolean> {
+    async isDeleteAssignmentConfigBtnDisplayed(): Promise<boolean> {
 //        await browser.wait(this.EC.visibilityOf($(this.selectors.deleteButton)));
-        return await $(this.selectors.deleteButton).getAttribute("disabled") == "true";
+        return await $(this.selectors.deleteButton).isPresent();
     }
 
     async searchAndClickOnAssignmentConfig(assignmentMappingName: string): Promise<void> {
@@ -49,11 +49,11 @@ class AssignmentsConfigConsolePage {
         return await utilGrid.areColumnHeaderMatches(this.selectors.guid, columnNames);
     }
 
-    async addRequestedCaseAssignmentGridColumn(columnNames: string[]): Promise<void> {
+    async addColumns(columnNames: string[]): Promise<void> {
         await utilGrid.addGridColumn(this.selectors.guid, columnNames);
     }
 
-    async removeRequestedCaseAssignmentGridColumn(columnNames: string[]): Promise<void> {
+    async removeColumns(columnNames: string[]): Promise<void> {
         await utilGrid.removeGridColumn(this.selectors.guid, columnNames);
     }
 

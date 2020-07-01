@@ -1,3 +1,4 @@
+
 import { $, browser } from "protractor";
 import apiHelper from '../../api/api.helper';
 import caseConsole from '../../pageobject/case/case-console.po';
@@ -8,7 +9,7 @@ import quickCasePo from '../../pageobject/case/quick-case.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import { default as updateStatusBlade, default as updateStatusBladePo } from '../../pageobject/common/update.status.blade.po';
+import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
 import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
 import { BWF_BASE_URL } from '../../utils/constants';
@@ -29,325 +30,117 @@ describe('Case Status Change', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 
-    afterEach(async () => {
-        await utilityCommon.refresh();
-    });
-
-    //kgaikwad
-    it('[DRDMV-2530]: [Case Status] Case status change from New', async () => {
+    describe('[DRDMV-2530]: [Case Status] Case status change from New', async () => {
         let priority: string = "Medium";
         let summary: string = "Test case for DRDMV-2530";
-        let caseData =
-        {
-            "Requester": "qtao",
-            "Summary": "Test case for DRDMV-2530",
-        }
-        await apiHelper.apiLogin('qkatawazi');
-        let newCase1 = await apiHelper.createCase(caseData);
-        let caseId1: string = newCase1.displayId;
-
-        await caseConsole.searchAndOpenCase(caseId1);
-        await viewCasePage.clickEditCaseButton();
-        expect(await viewCasePage.isEditLinkDisplay()).toBeFalsy('edit link should not display');
-        await editCasePage.clickOnCancelCaseButton();
-        await viewCasePage.clickOnStatus();
-        let statuses: string[] = ["New", "Assigned", "In Progress", "Pending", "Canceled"];
-        let boln: boolean = await updateStatusBladePo.allStatusOptionsPresent(statuses);
-        expect(boln).toBeTruthy('Status does not match On view case');
-        await updateStatusBladePo.clickCancelButton();
-        expect(await viewCasePage.getTextOfStatus()).toBe(statusNew);
-        await navigationPage.gotoCaseConsole();
-        await caseConsole.searchCase(caseId1);
-        expect(await caseConsole.isCaseIdPresent(caseId1)).toBeTruthy("CaseID not matching");
-        expect(await caseConsole.isCasePriorityPresent(priority)).toBeTruthy("Priority not matching");
-        expect(await caseConsole.isCaseStatusPresent(statusNew)).toBeTruthy("Status New not matching");
-        expect(await caseConsole.isCaseSummaryPresent(summary)).toBeTruthy("Summary not matching");
-        await caseConsole.searchAndOpenCase(caseId1);
-        // Select Assigned status and save.
-        await updateStatusBladePo.changeCaseStatus(statusAssigned);
-        await updateStatusBladePo.clickSaveStatus(statusAssigned);
-        expect(await viewCasePage.getTextOfStatus()).toBe(statusAssigned);
-        await navigationPage.gotoCaseConsole();
-        await caseConsole.searchCase(caseId1);
-        expect(await caseConsole.isCaseIdPresent(caseId1)).toBeTruthy("CaseID not matching");
-        expect(await caseConsole.isCasePriorityPresent(priority)).toBeTruthy("Priority not matching");
-        expect(await caseConsole.isCaseStatusPresent(statusAssigned)).toBeTruthy("Status Assigned not matching");
-        expect(await caseConsole.isCaseSummaryPresent(summary)).toBeTruthy("Summary not matching");
-        console.log('Assigned status success');
-        // - Change status from New to Canceled.
-        let newCase2 = await apiHelper.createCase(caseData);
-        let caseId2: string = newCase2.displayId;
-        await caseConsole.searchCase(caseId2);
-        expect(await caseConsole.isCaseIdPresent(caseId2)).toBeTruthy("CaseID not matching");
-        expect(await caseConsole.isCasePriorityPresent(priority)).toBeTruthy("Priority not matching");
-        expect(await caseConsole.isCaseStatusPresent(statusNew)).toBeTruthy("Status New not matching");
-        expect(await caseConsole.isCaseSummaryPresent(summary)).toBeTruthy("Summary not matching");
-        await caseConsole.searchAndOpenCase(caseId2);
-        expect(await viewCasePage.getTextOfStatus()).toBe(statusNew);
-        await updateStatusBladePo.changeCaseStatus(statusCanceled);
-        let cancelStatusReasons: string[] = ['Select None', 'Approval Rejected', 'Customer Canceled'];
-        expect(await updateStatusBladePo.allStatusReasonOptionsPresent(cancelStatusReasons)).toBeTruthy('Cancel status reason options mismatch');
-        await updateStatusBladePo.clickOnstatusReason();
-        await updateStatusBladePo.setStatusReason('Customer Canceled');
-        await updateStatusBladePo.clickSaveStatus();
-        await expect(await viewCasePage.getTextOfStatus()).toBe(statusCanceled), 'Status should be New to Cancelled';
-        await navigationPage.gotoCaseConsole();
-        await caseConsole.searchCase(caseId2);
-        expect(await caseConsole.isCaseIdPresent(caseId2)).toBeTruthy("CaseID not matching");
-        expect(await caseConsole.isCasePriorityPresent(priority)).toBeTruthy("Priority not matching");
-        expect(await caseConsole.isCaseStatusPresent(statusCanceled)).toBeTruthy("Status Cancelled not matching");
-        expect(await caseConsole.isCaseSummaryPresent(summary)).toBeTruthy("Summary not matching");
-        console.log('Canceled status success');
-        // - Change status from New to Pending.
-        let newCase3 = await apiHelper.createCase(caseData);
-        let caseId3: string = newCase3.displayId;
-        await caseConsole.searchCase(caseId3);
-        expect(await caseConsole.isCaseIdPresent(caseId3)).toBeTruthy("CaseID not matching");
-        expect(await caseConsole.isCasePriorityPresent(priority)).toBeTruthy("Priority not matching");
-        expect(await caseConsole.isCaseStatusPresent(statusNew)).toBeTruthy("Status New not matching");
-        expect(await caseConsole.isCaseSummaryPresent(summary)).toBeTruthy("Summary not matching");
-        await caseConsole.searchAndOpenCase(caseId3);
-        expect(await viewCasePage.getTextOfStatus()).toBe(statusNew), 'status should be new of status';
-        await updateStatusBladePo.changeCaseStatus(statusPending);
-        let pendingStatusReasons: string[] = ['Select None', 'Approval', 'Customer Response', 'Error', 'Required Fields Are Missing', 'Third Party'];
-        expect(await updateStatusBladePo.allStatusReasonOptionsPresent(pendingStatusReasons)).toBeTruthy('Pending status reason options mismatch');
-        await updateStatusBladePo.clickOnstatusReason();
-        await updateStatusBladePo.setStatusReason('Approval');
-        await updateStatusBladePo.clickSaveStatus();
-        expect(await utilityCommon.getAllPopupMsg()).toContain('Case status updated to Pending for Approval only when approval is initiated. You cannot manually select this status.');
-        await utilityCommon.closePopUpMessage();
-        await updateStatusBladePo.setStatusReason('Customer Response');
-        await updateStatusBladePo.clickSaveStatus();
-        expect(await viewCasePage.getTextOfStatus()).toBe(statusPending), 'status should be new of Pending';
-        await navigationPage.gotoCaseConsole();
-        await caseConsole.searchCase(caseId3);
-        expect(await caseConsole.isCaseIdPresent(caseId3)).toBeTruthy("CaseID not matching");
-        expect(await caseConsole.isCasePriorityPresent(priority)).toBeTruthy("Priority not matching");
-        expect(await caseConsole.isCaseStatusPresent(statusPending)).toBeTruthy("Status Pending not matching");
-        expect(await caseConsole.isCaseSummaryPresent(summary)).toBeTruthy("Summary not matching");
-    }, 450 * 1000);
-
-    //kgaikwad
-    it('[DRDMV-1618]: [Case] Fields validation for case in Resolved status', async () => {
-        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        await navigationPage.gotoCreateCase();
-        await createCasePage.selectRequester("adam");
-        await createCasePage.setSummary('Summary ' + summary);
-        await createCasePage.clickAssignToMeButton();
-        await createCasePage.setContactName('qtao');
-        await createCasePage.clickSaveCaseButton();
-        await previewCasePo.clickGoToCaseButton();
-        console.log(await viewCasePage.getCaseID());
-        expect(await viewCasePage.getTextOfStatus()).toBe(statusAssigned);
-        await updateStatusBladePo.changeCaseStatus(statusResolved);
-        await updateStatusBladePo.setStatusReason('Auto Resolved');
-        await updateStatusBladePo.clickSaveStatus(statusResolved);
-        expect(await viewCasePage.getTextOfStatus()).toBe(statusResolved);
-        await viewCasePage.clickEditCaseButton();
-        expect(await editCasePage.isSummaryRequiredText()).toBeTruthy('Required Text not displayed');
-        expect(await editCasePage.isPriorityRequiredText()).toBeTruthy('Required Text not displayed');
-        // * Optional fields are: Contact, Description, Category Tiers (1-3), Assignee.
-        expect(await $(editCasePage.selectors.contact).isPresent()).toBeTruthy('Contact not present');
-        expect(await $(editCasePage.selectors.caseDescription).isPresent()).toBeTruthy('Description not present');
-        expect(await $(editCasePage.selectors.categoryTier1Drpbox).isPresent()).toBeTruthy('Categ1 not present');
-        expect(await $(editCasePage.selectors.categoryTier2Drpbox).isPresent()).toBeTruthy('Categ2 not present');
-        expect(await $(editCasePage.selectors.categoryTier3Drpbox).isPresent()).toBeTruthy('Categ3 not present');
-        expect(await $(editCasePage.selectors.assigneee).isPresent()).toBeTruthy('Description not present');
-        await editCasePage.clearCaseSummary();
-        await editCasePage.clickSaveCase();
-        expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.');
-        await utilityCommon.closePopUpMessage();
-        await editCasePage.updateCaseSummary('Pending AC');
-        await editCasePage.clickSaveCase();
-        expect(await utilityCommon.getAllPopupMsg()).toContain('Saved successfully.');
-    });//, 180 * 1000);
-
-    //kgaikwad
-    it('[DRDMV-1197]: [Case Status] Case status change from Closed', async () => {
-        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        await navigationPage.gotoCreateCase();
-        await createCasePage.selectRequester("adam");
-        await createCasePage.setSummary('Summary ' + summary);
-        await createCasePage.clickAssignToMeButton();
-        await createCasePage.setContactName('qtao');
-        await createCasePage.clickSaveCaseButton();
-        await previewCasePo.clickGoToCaseButton();
-        console.log(await viewCasePage.getCaseID());
-        await updateStatusBladePo.changeCaseStatus(statusResolved);
-        await updateStatusBladePo.setStatusReason('Customer Follow-Up Required');
-        await updateStatusBladePo.clickSaveStatus(statusResolved);
-        expect(await viewCasePage.getTextOfStatus()).toBe(statusResolved);
-        await updateStatusBladePo.changeCaseStatus(statusClosed);
-        await updateStatusBladePo.clickSaveStatus(statusClosed);
-        expect(await viewCasePage.getTextOfStatus()).toBe(statusClosed);
-        await viewCasePage.clickOnStatus();
-        expect(await $(updateStatusBlade.selectors.saveUpdateStatus).isPresent()).toBeFalsy('Update Statue blade is displayed');
+        let newCase1, newCase2, newCase3;
+        let caseId1: string, caseId2: string, caseId3: string;
+        beforeAll(async () => {
+            let caseData =
+            {
+                "Requester": "qtao",
+                "Summary": "Test case for DRDMV-2530",
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            newCase1 = await apiHelper.createCase(caseData);
+            caseId1 = newCase1.displayId;
+            newCase2 = await apiHelper.createCase(caseData);
+            caseId2 = newCase2.displayId;
+            newCase3 = await apiHelper.createCase(caseData);
+            caseId3 = newCase3.displayId;
+        });
+        it('[DRDMV-2530]: Checking change case template button for In Progress', async () => {
+            await caseConsole.searchAndOpenCase(caseId1);
+            await viewCasePage.clickEditCaseButton();
+            expect(await viewCasePage.isEditLinkDisplay()).toBeFalsy('edit link should not display');
+            await editCasePage.clickOnCancelCaseButton();
+            await viewCasePage.clickOnStatus();
+            let statuses: string[] = ["New", "Assigned", "In Progress", "Pending", "Canceled"];
+            let boln: boolean = await updateStatusBladePo.allStatusOptionsPresent(statuses);
+            expect(boln).toBeTruthy('Status does not match On view case');
+            await updateStatusBladePo.clickCancelButton();
+            expect(await viewCasePage.getTextOfStatus()).toBe(statusNew);
+            await navigationPage.gotoCaseConsole();
+            await caseConsole.searchCase(caseId1);
+            expect(await caseConsole.isCaseIdPresent(caseId1)).toBeTruthy("CaseID not matching");
+            expect(await caseConsole.isCasePriorityPresent(priority)).toBeTruthy("Priority not matching");
+            expect(await caseConsole.isCaseStatusPresent(statusNew)).toBeTruthy("Status New not matching");
+            expect(await caseConsole.isCaseSummaryPresent(summary)).toBeTruthy("Summary not matching");
+        });
+        it('[DRDMV-2530]: Checking change case template button for Resolved', async () => {
+            await caseConsole.searchAndOpenCase(caseId1);
+            await updateStatusBladePo.changeCaseStatus(statusAssigned);
+            await updateStatusBladePo.clickSaveStatus(statusAssigned);
+            expect(await viewCasePage.getTextOfStatus()).toBe(statusAssigned);
+            await navigationPage.gotoCaseConsole();
+            await caseConsole.searchCase(caseId1);
+            expect(await caseConsole.isCaseIdPresent(caseId1)).toBeTruthy("CaseID not matching");
+            expect(await caseConsole.isCasePriorityPresent(priority)).toBeTruthy("Priority not matching");
+            expect(await caseConsole.isCaseStatusPresent(statusAssigned)).toBeTruthy("Status Assigned not matching");
+            expect(await caseConsole.isCaseSummaryPresent(summary)).toBeTruthy("Summary not matching");
+        });
+        it('[DRDMV-2530]: Checking change case template button for Closed', async () => {
+            await caseConsole.searchCase(caseId2);
+            expect(await caseConsole.isCaseIdPresent(caseId2)).toBeTruthy("CaseID not matching");
+            expect(await caseConsole.isCasePriorityPresent(priority)).toBeTruthy("Priority not matching");
+            expect(await caseConsole.isCaseStatusPresent(statusNew)).toBeTruthy("Status New not matching");
+            expect(await caseConsole.isCaseSummaryPresent(summary)).toBeTruthy("Summary not matching");
+            await caseConsole.searchAndOpenCase(caseId2);
+            expect(await viewCasePage.getTextOfStatus()).toBe(statusNew);
+            await updateStatusBladePo.changeCaseStatus(statusCanceled);
+            let cancelStatusReasons: string[] = ['None', 'Approval Rejected', 'Customer Canceled'];
+            expect(await updateStatusBladePo.allStatusReasonOptionsPresent(cancelStatusReasons)).toBeTruthy('Cancel status reason options mismatch');
+            await updateStatusBladePo.clickOnstatusReason();
+            await updateStatusBladePo.setStatusReason('Customer Canceled');
+            await updateStatusBladePo.clickSaveStatus();
+            await expect(await viewCasePage.getTextOfStatus()).toBe(statusCanceled), 'Status should be New to Cancelled';
+            await navigationPage.gotoCaseConsole();
+            await caseConsole.searchCase(caseId2);
+            expect(await caseConsole.isCaseIdPresent(caseId2)).toBeTruthy("CaseID not matching");
+            expect(await caseConsole.isCasePriorityPresent(priority)).toBeTruthy("Priority not matching");
+            expect(await caseConsole.isCaseStatusPresent(statusCanceled)).toBeTruthy("Status Cancelled not matching");
+            expect(await caseConsole.isCaseSummaryPresent(summary)).toBeTruthy("Summary not matching");
+        });
+        it('[DRDMV-2530]: [Case Status] Case status change from New', async () => {
+            await caseConsole.searchCase(caseId3);
+            expect(await caseConsole.isCaseIdPresent(caseId3)).toBeTruthy("CaseID not matching");
+            expect(await caseConsole.isCasePriorityPresent(priority)).toBeTruthy("Priority not matching");
+            expect(await caseConsole.isCaseStatusPresent(statusNew)).toBeTruthy("Status New not matching");
+            expect(await caseConsole.isCaseSummaryPresent(summary)).toBeTruthy("Summary not matching");
+            await caseConsole.searchAndOpenCase(caseId3);
+            expect(await viewCasePage.getTextOfStatus()).toBe(statusNew), 'status should be new of status';
+            await updateStatusBladePo.changeCaseStatus(statusPending);
+            let pendingStatusReasons: string[] = ['None', 'Approval', 'Customer Response', 'Error', 'Required Fields Are Missing', 'Third Party'];
+            expect(await updateStatusBladePo.allStatusReasonOptionsPresent(pendingStatusReasons)).toBeTruthy('Pending status reason options mismatch');
+            await updateStatusBladePo.clickOnstatusReason();
+            await updateStatusBladePo.setStatusReason('Approval');
+            await updateStatusBladePo.clickSaveStatus();
+            expect(await utilityCommon.getAllPopupMsg()).toContain('Case status updated to Pending for Approval only when approval is initiated. You cannot manually select this status.');
+            await utilityCommon.closePopUpMessage();
+            await updateStatusBladePo.setStatusReason('Customer Response');
+            await updateStatusBladePo.clickSaveStatus();
+            expect(await viewCasePage.getTextOfStatus()).toBe(statusPending), 'status should be new of Pending';
+            await navigationPage.gotoCaseConsole();
+            await caseConsole.searchCase(caseId3);
+            expect(await caseConsole.isCaseIdPresent(caseId3)).toBeTruthy("CaseID not matching");
+            expect(await caseConsole.isCasePriorityPresent(priority)).toBeTruthy("Priority not matching");
+            expect(await caseConsole.isCaseStatusPresent(statusPending)).toBeTruthy("Status Pending not matching");
+            expect(await caseConsole.isCaseSummaryPresent(summary)).toBeTruthy("Summary not matching");
+        });
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+        });
     });
 
     //kgaikwad
-    it('[DRDMV-1233]: [Case Status Reason] Status Reason change without status transition', async () => {
+    describe('[DRDMV-1616]: [Case] Fields validation for case In Progress status', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        await navigationPage.gotoCreateCase();
-        await createCasePage.selectRequester("adam");
-        await createCasePage.setSummary('Summary ' + summary);
-        await createCasePage.clickAssignToMeButton();
-        await createCasePage.setContactName('qtao');
-        await createCasePage.clickSaveCaseButton();
-        await previewCasePo.clickGoToCaseButton();
-        await updateStatusBladePo.changeCaseStatus(statusPending);
-        let pendingStatusReasons: string[] = ['Select None', 'Approval', 'Customer Response', 'Error', 'Required Fields Are Missing', 'Third Party'];
-        expect(await updateStatusBladePo.allStatusReasonOptionsPresent(pendingStatusReasons)).toBeTruthy('Pending status reason options mismatch');
-        await updateStatusBladePo.clickOnstatusReason();
-        await updateStatusBladePo.setStatusReason('Approval');
-        await updateStatusBladePo.clickSaveStatus();
-        await expect(await utilityCommon.getAllPopupMsg()).toContain('Case status updated to Pending for Approval only when approval is initiated. You cannot manually select this status.');
-        await utilityCommon.closePopUpMessage();
-        await updateStatusBladePo.setStatusReason('Customer Response');
-        await updateStatusBladePo.clickSaveStatus();
-        expect(await viewCasePage.getTextOfStatus()).toBe(statusPending);
-        await navigationPage.gotoCreateCase();
-        await createCasePage.selectRequester("adam");
-        await createCasePage.setSummary('Summary ' + summary);
-        await createCasePage.clickAssignToMeButton();
-        await createCasePage.setContactName('qtao');
-        await createCasePage.clickSaveCaseButton();
-        await previewCasePo.clickGoToCaseButton();
-        await updateStatusBladePo.changeCaseStatus(statusResolved);
-        let resolvedStatusReasons: string[] = ['Select None', 'Auto Resolved', 'Customer Follow-Up Required', 'No Further Action Required'];
-        await expect(await updateStatusBladePo.allStatusReasonOptionsPresent(resolvedStatusReasons)).toBeTruthy('Resolved status reason options mismatch');
-        await updateStatusBladePo.clickOnstatusReason();
-        await updateStatusBladePo.setStatusReason('Auto Resolved');
-        await updateStatusBladePo.clickSaveStatus();
-    });//, 180 * 1000);
-
-    //kgaikwad
-    it('[DRDMV-1616]: [Case] Fields validation for case In Progress status', async () => {
-        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        await navigationPage.gotoCreateCase();
-        await createCasePage.selectRequester("adam");
-        await createCasePage.setSummary('Summary ' + summary);
-        await createCasePage.clickAssignToMeButton();
-        await createCasePage.setContactName('qtao');
-        await createCasePage.clickSaveCaseButton();
-        await previewCasePo.clickGoToCaseButton();
-        await updateStatusBladePo.changeCaseStatus(statusInProgress);
-        await updateStatusBladePo.clickSaveStatus(statusInProgress);
-        expect(await viewCasePage.getTextOfStatus()).toBe(statusInProgress);
-        await viewCasePage.clickEditCaseButton();
-        expect(await editCasePage.isSummaryRequiredText()).toBeTruthy('Required Text not displayed');
-        expect(await editCasePage.isPriorityRequiredText()).toBeTruthy('Required Text not displayed');
-        expect(await $(editCasePage.selectors.contact).isPresent()).toBeTruthy('Contact not present');
-        expect(await $(editCasePage.selectors.caseDescription).isPresent()).toBeTruthy('Description not present');
-        expect(await $(editCasePage.selectors.categoryTier1Drpbox).isPresent()).toBeTruthy('Categ1 not present');
-        expect(await $(editCasePage.selectors.categoryTier2Drpbox).isPresent()).toBeTruthy('Categ2 not present');
-        expect(await $(editCasePage.selectors.categoryTier3Drpbox).isPresent()).toBeTruthy('Categ3 not present');
-        expect(await $(editCasePage.selectors.assigneee).isPresent()).toBeTruthy('Assignee not present');
-        await editCasePage.clearCaseSummary();
-        await editCasePage.clickSaveCase();
-        expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.');
-        await utilityCommon.closePopUpMessage();
-        await editCasePage.updateCaseSummary('pendingAC');
-        await editCasePage.clickSaveCase();
-        expect(await utilityCommon.getAllPopupMsg()).toContain('Saved successfully.');
-
-        await navigationPage.gotoCreateCase();
-        await createCasePage.selectRequester("adam");
-        await createCasePage.setSummary('Summary ' + summary);
-        await createCasePage.setContactName('qtao');
-        await createCasePage.clickSaveCaseButton();
-        await previewCasePo.clickGoToCaseButton();
-        await updateStatusBladePo.changeCaseStatus(statusInProgress);
-        expect(await viewCasePage.getErrorMsgOfInprogressStatus()).toBe('Assignee is required for this case status.  Please select an assignee. ');
-        await updateStatusBladePo.clickCancelButton();
-        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
-        expect(await viewCasePage.getTextOfStatus()).toBe(statusNew);
-
-        await navigationPage.gotoCreateCase();
-        await createCasePage.selectRequester("adam");
-        await createCasePage.setSummary('Summary ' + summary);
-        await createCasePage.setContactName('qtao');
-        await createCasePage.clickSaveCaseButton();
-        await previewCasePo.clickGoToCaseButton();
-        await updateStatusBladePo.changeCaseStatus(statusAssigned);
-        await updateStatusBladePo.clickSaveStatus(statusAssigned);
-        expect(await viewCasePage.getTextOfStatus()).toBe(statusAssigned);
-        await updateStatusBladePo.changeCaseStatus(statusInProgress);
-        expect(await viewCasePage.getErrorMsgOfInprogressStatus()).toBe('Assignee is required for this case status.  Please select an assignee. ');
-        await updateStatusBladePo.clickCancelButton();
-        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
-        expect(await viewCasePage.getTextOfStatus()).toBe(statusAssigned);
-
-        await navigationPage.gotoCreateCase();
-        await createCasePage.selectRequester("adam");
-        await createCasePage.setSummary('Summary ' + summary);
-        await createCasePage.setContactName('qtao');
-        await createCasePage.clickSaveCaseButton();
-        await previewCasePo.clickGoToCaseButton();
-        await updateStatusBladePo.changeCaseStatus(statusPending);
-        await updateStatusBladePo.setStatusReason('Customer Response');
-        await updateStatusBladePo.clickSaveStatus(statusPending);
-        expect(await viewCasePage.getTextOfStatus()).toBe(statusPending);
-        await updateStatusBladePo.changeCaseStatus(statusInProgress);
-        expect(await viewCasePage.getErrorMsgOfInprogressStatus()).toBe('Assignee is required for this case status.  Please select an assignee. ');
-    }, 450 * 1000);
-
-    //kgaikwad
-    it('[DRDMV-1227]: [Case Status] Case status change from Canceled', async () => {
-        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        await navigationPage.gotoCreateCase();
-        await createCasePage.selectRequester("adam");
-        await createCasePage.setSummary('Summary ' + summary);
-        await createCasePage.clickAssignToMeButton();
-        await createCasePage.setContactName('qtao');
-        await createCasePage.clickSaveCaseButton();
-        await previewCasePo.clickGoToCaseButton();
-        console.log(await viewCasePage.getCaseID());
-        await updateStatusBladePo.changeCaseStatus(statusCanceled);
-        await updateStatusBladePo.setStatusReason('Approval Rejected');
-        await updateStatusBladePo.clickSaveStatus(statusCanceled);
-        expect(await viewCasePage.getTextOfStatus()).toBe(statusCanceled);
-        await viewCasePage.clickOnStatus();
-        expect(await $(updateStatusBlade.selectors.saveUpdateStatus).isPresent()).toBeFalsy('Update Statue blade is displayed');
-    });
-
-    //kgaikwad
-    it('[DRDMV-1615]: [Case] Fields validation for case in Assigned status', async () => {
-        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        await navigationPage.gotoCreateCase();
-        await createCasePage.selectRequester("adam");
-        await createCasePage.setSummary('Summary ' + summary);
-        await createCasePage.clickAssignToMeButton();
-        await createCasePage.setContactName('qtao');
-        await createCasePage.clickSaveCaseButton();
-        await previewCasePo.clickGoToCaseButton();
-        console.log(await viewCasePage.getCaseID());
-        expect(await viewCasePage.getTextOfStatus()).toBe(statusAssigned);
-        await viewCasePage.clickEditCaseButton();
-        expect(await editCasePage.isSummaryRequiredText()).toBeTruthy('Required Text not displayed');
-        expect(await editCasePage.isPriorityRequiredText()).toBeTruthy('Required Text not displayed');
-        // * Optional fields are: Contact, Description, Category Tiers (1-3), Assignee.
-        expect(await $(editCasePage.selectors.contact).isPresent()).toBeTruthy('Contact not present');
-        expect(await $(editCasePage.selectors.caseDescription).isPresent()).toBeTruthy('Description not present');
-        expect(await $(editCasePage.selectors.categoryTier1Drpbox).isPresent()).toBeTruthy('Categ1 not present');
-        expect(await $(editCasePage.selectors.categoryTier2Drpbox).isPresent()).toBeTruthy('Categ2 not present');
-        expect(await $(editCasePage.selectors.categoryTier3Drpbox).isPresent()).toBeTruthy('Categ3 not present');
-        expect(await $(editCasePage.selectors.assigneee).isPresent()).toBeTruthy('Description not present');
-        await editCasePage.clearCaseSummary();
-        await editCasePage.clickSaveCase();
-        expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.');
-        await utilityCommon.closePopUpMessage();
-        await editCasePage.updateCaseSummary('pendingAC');
-        await editCasePage.clickSaveCase();
-        expect(await utilityCommon.getAllPopupMsg()).toContain('Saved successfully.');
-    });
-
-    //kgaikwad
-    it('[DRDMV-1617]: [Case] Fields validation for case in Pending status', async () => {
-        try {
-            let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        it('[DRDMV-1616]: Checking change case template button for In Progress', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary('Summary ' + summary);
@@ -355,17 +148,16 @@ describe('Case Status Change', () => {
             await createCasePage.setContactName('qtao');
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            console.log(await viewCasePage.getCaseID());
-            await updateStatusBladePo.changeCaseStatus(statusPending);
-            await updateStatusBladePo.setStatusReason('Customer Response');
-            await updateStatusBladePo.clickSaveStatus(statusPending);
-            expect(await viewCasePage.getTextOfStatus()).toBe(statusPending);
+            await updateStatusBladePo.changeCaseStatus(statusInProgress);
+            await updateStatusBladePo.clickSaveStatus(statusInProgress);
+            expect(await viewCasePage.getTextOfStatus()).toBe(statusInProgress);
             await viewCasePage.clickEditCaseButton();
+        });
+        it('[DRDMV-1616]: Checking change case template button for Resolved', async () => {
             expect(await editCasePage.isSummaryRequiredText()).toBeTruthy('Required Text not displayed');
             expect(await editCasePage.isPriorityRequiredText()).toBeTruthy('Required Text not displayed');
-            // * Optional fields are: Contact, Description, Category Tiers (1-3), Assignee.
             expect(await $(editCasePage.selectors.contact).isPresent()).toBeTruthy('Contact not present');
-            expect(await $(editCasePage.selectors.caseDescription).isPresent()).toBeTruthy('Description not present');
+            expect(await $(editCasePage.selectors.descriptionLabel).isPresent()).toBeTruthy('Description not present');
             expect(await $(editCasePage.selectors.categoryTier1Drpbox).isPresent()).toBeTruthy('Categ1 not present');
             expect(await $(editCasePage.selectors.categoryTier2Drpbox).isPresent()).toBeTruthy('Categ2 not present');
             expect(await $(editCasePage.selectors.categoryTier3Drpbox).isPresent()).toBeTruthy('Categ3 not present');
@@ -374,28 +166,75 @@ describe('Case Status Change', () => {
             await editCasePage.clickSaveCase();
             expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.');
             await utilityCommon.closePopUpMessage();
-            await editCasePage.updateCaseSummary('pendingAC');
+            await editCasePage.setCaseSummary('pendingAC');
             await editCasePage.clickSaveCase();
             expect(await utilityCommon.getAllPopupMsg()).toContain('Saved successfully.');
-        } catch (e) {
-            throw e;
-        } finally {
+        });
+        it('[DRDMV-1616]: Checking change case template button for Closed', async () => {
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester("adam");
+            await createCasePage.setSummary('Summary ' + summary);
+            await createCasePage.setContactName('qtao');
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            await updateStatusBladePo.changeCaseStatus(statusInProgress);
+            expect(await viewCasePage.getErrorMsgOfInprogressStatus()).toBe('Assignee is required for this case status.  Please select an assignee. ');
+            await updateStatusBladePo.clickCancelButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+            expect(await viewCasePage.getTextOfStatus()).toBe(statusNew);
+        });
+        it('[DRDMV-1616]: Checking change case template button for Pending', async () => {
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester("adam");
+            await createCasePage.setSummary('Summary ' + summary);
+            await createCasePage.setContactName('qtao');
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            await updateStatusBladePo.changeCaseStatus(statusAssigned);
+            await updateStatusBladePo.clickSaveStatus(statusAssigned);
+            expect(await viewCasePage.getTextOfStatus()).toBe(statusAssigned);
+            await updateStatusBladePo.changeCaseStatus(statusInProgress);
+            expect(await viewCasePage.getErrorMsgOfInprogressStatus()).toBe('Assignee is required for this case status.  Please select an assignee. ');
+            await updateStatusBladePo.clickCancelButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+            expect(await viewCasePage.getTextOfStatus()).toBe(statusAssigned);
+        });
+        it('[DRDMV-1616]: [Case] Fields validation for case In Progress status', async () => {
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester("adam");
+            await createCasePage.setSummary('Summary ' + summary);
+            await createCasePage.setContactName('qtao');
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            await updateStatusBladePo.changeCaseStatus(statusPending);
+            await updateStatusBladePo.setStatusReason('Customer Response');
+            await updateStatusBladePo.clickSaveStatus(statusPending);
+            expect(await viewCasePage.getTextOfStatus()).toBe(statusPending);
+            await updateStatusBladePo.changeCaseStatus(statusInProgress);
+            expect(await viewCasePage.getErrorMsgOfInprogressStatus()).toBe('Assignee is required for this case status.  Please select an assignee. ');
+            await updateStatusBladePo.clickCancelButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+        });
+        afterAll(async () => {
             await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
-        }
-    });//, 180 * 1000);
+            await loginPage.login('fritz');
+        });
+    });
 
     //ankagraw
-    it('[DRDMV-1199]: [Case Status] Case status change from In Progress', async () => {
-        try {
+    describe('[DRDMV-1199]: [Case Status] Case status change from In Progress', async () => {
+        const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let summary1: string = randomStr + "Summary 1";
+        let summary2: string = randomStr + "Summary 2";
+        let summary3 = randomStr + "Summary 3";
+        let manualTask = 'manual task' + randomStr;
+        let manualSummary = 'manual' + randomStr;
+        let newCase1, newCase2, newCase3;
+        let caseId1: string, caseId2: string, caseId3: string;
+        let statusOptions: string[] = ["In Progress", "Pending", "Resolved", "Canceled"];
+        beforeAll(async () => {
             await navigationPage.signOut();
-            await loginPage.login('qtao');
-            const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            let summary1: string = randomStr + "Summary 1";
-            let summary2: string = randomStr + "Summary 2";
-            let summary3 = randomStr + "Summary 3";
-            let manualTask = 'manual task' + randomStr;
-            let manualSummary = 'manual' + randomStr;
+            await loginPage.login('qkatawazi');
             let caseData1 =
             {
                 "Requester": "qtao",
@@ -406,7 +245,6 @@ describe('Case Status Change', () => {
                 "Assignee": "qkatawazi",
                 "Status": "3000",
             }
-
             let caseData2 =
             {
                 "Requester": "qtao",
@@ -417,7 +255,6 @@ describe('Case Status Change', () => {
                 "Assignee": "qkatawazi",
                 "Status": "3000",
             }
-
             let caseData3 =
             {
                 "Requester": "qtao",
@@ -428,22 +265,25 @@ describe('Case Status Change', () => {
                 "Assignee": "qkatawazi",
                 "Status": "3000",
             }
-
             let templateData1 = {
                 "templateName": manualTask,
                 "templateSummary": manualSummary,
                 "templateStatus": "Active",
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
             }
             await apiHelper.apiLogin('qkatawazi');
-            let newCase1 = await apiHelper.createCase(caseData1);
-            let caseId1: string = newCase1.displayId;
-            let newCase2 = await apiHelper.createCase(caseData2);
-            let caseId2: string = newCase2.displayId;
-            let newCase3 = await apiHelper.createCase(caseData3);
-            let caseId3: string = newCase3.displayId;
+            newCase1 = await apiHelper.createCase(caseData1);
+            caseId1 = newCase1.displayId;
+            newCase2 = await apiHelper.createCase(caseData2);
+            caseId2 = newCase2.displayId;
+            newCase3 = await apiHelper.createCase(caseData3);
+            caseId3 = newCase3.displayId;
             let temp1 = await apiHelper.createManualTaskTemplate(templateData1);
-            let statusOptions: string[] = ["In Progress", "Pending", "Resolved", "Canceled"];
-
+        });
+        it('[DRDMV-1199]: Updating the case status -Pending', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId1);
             await viewCasePage.clickOnStatus();
@@ -451,47 +291,51 @@ describe('Case Status Change', () => {
             await updateStatusBladePo.clickCancelButton();
             await viewCasePage.clickAddTaskButton();
             await manageTask.addTaskFromTaskTemplate(manualTask);
-            await manageTask.clickOnCloseButton();
+            await manageTask.clickCloseButton();
             await updateStatusBladePo.changeCaseStatus('Pending');
             await updateStatusBladePo.setStatusReason('Third Party');
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickAddTaskButton();
-            await manageTask.clickTaskLinkOnManageTask(manualSummary);
+            await manageTask.clickTaskLink(manualSummary);
             expect(await viewTask.getTaskStatusValue()).toBe('Assigned', 'Assigned status not found');
-
+        });
+        it('[DRDMV-1199]: Updating the case status -Resolved', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId2);
             await updateStatusBladePo.changeCaseStatus('Resolved');
             await updateStatusBladePo.setStatusReason('Auto Resolved');
             await updateStatusBladePo.clickSaveStatus();
-
+        });
+        it('[DRDMV-1199]: [Case Status] Case status change from In Progress', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId3);
             await viewCasePage.clickAddTaskButton();
             await manageTask.addTaskFromTaskTemplate(manualTask);
-            await manageTask.clickOnCloseButton();
+            await manageTask.clickCloseButton();
             await updateStatusBladePo.changeCaseStatus('Canceled');
             await updateStatusBladePo.setStatusReason('Approval Rejected');
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.openTaskCard(1);
-            await manageTask.clickTaskLinkOnManageTask(manualSummary);
+            await manageTask.clickTaskLink(manualSummary);
             expect(await viewTask.getTaskStatusValue()).toBe('Canceled', 'canceled status not found');
-        } catch (e) {
-            throw e;
-        } finally {
+        });
+        afterAll(async () => {
             await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
-        }
-    }, 500 * 1000);
+            await loginPage.login('fritz');
+        });
+    });
 
     //apdeshmu
-    it('[DRDMV-1196]: [Case Status] Case status change from Resolved', async () => {
-        try {
-            const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            let summary1: string = randomStr + "Summary 1";
-            let summary2: string = randomStr + "Summary 2";
-            let summary3 = randomStr + "Summary 3";
-            let summary4 = randomStr + "Summary 4";
+    describe('[DRDMV-1196]: [Case Status] Case status change from Resolved', async () => {
+        const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let summary1: string = randomStr + "Summary 1";
+        let summary2: string = randomStr + "Summary 2";
+        let summary3 = randomStr + "Summary 3";
+        let summary4 = randomStr + "Summary 4";
+        let newCase1, newCase2, newCase3, newCase4;
+        let caseId1: string, caseId2: string, caseId3: string, caseId4: string;
+        let statusOptions: string[] = ["Resolved", "Assigned", "In Progress", "Pending", "Closed"];
+        beforeAll(async () => {
             let caseData1 =
             {
                 "Requester": "qtao",
@@ -533,16 +377,16 @@ describe('Case Status Change', () => {
                 "Status": "Resolved",
             }
             await apiHelper.apiLogin('qkatawazi');
-            let newCase1 = await apiHelper.createCase(caseData1);
-            let caseId1: string = newCase1.displayId;
-            let newCase2 = await apiHelper.createCase(caseData2);
-            let caseId2: string = newCase2.displayId;
-            let newCase3 = await apiHelper.createCase(caseData3);
-            let caseId3: string = newCase3.displayId;
-            let newCase4 = await apiHelper.createCase(caseData4);
-            let caseId4: string = newCase4.displayId;
-
-            let statusOptions: string[] = ["Resolved", "Assigned", "In Progress", "Pending", "Closed"];
+            newCase1 = await apiHelper.createCase(caseData1);
+            caseId1 = newCase1.displayId;
+            newCase2 = await apiHelper.createCase(caseData2);
+            caseId2 = newCase2.displayId;
+            newCase3 = await apiHelper.createCase(caseData3);
+            caseId3 = newCase3.displayId;
+            newCase4 = await apiHelper.createCase(caseData4);
+            caseId4 = newCase4.displayId;
+        });
+        it('[DRDMV-1196]: Case status change from -Pending', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoCaseConsole();
@@ -551,86 +395,91 @@ describe('Case Status Change', () => {
             expect(await updateStatusBladePo.allStatusOptionsPresent(statusOptions)).toBeTruthy("Status Options is not present");
             await updateStatusBladePo.clickCancelButton();
             await updateStatusBladePo.changeCaseStatus('Pending');
-            await updateStatusBlade.isStatusReasonRequiredTextPresent();
+            await updateStatusBladePo.isStatusReasonRequiredTextPresent();
             await updateStatusBladePo.setStatusReason('Third Party');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Pending');
-
+        });
+        it('[DRDMV-1196]: Case status change from -In Progress', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId2);
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('In Progress');
-
+        });
+        it('[DRDMV-1196]: Case status change from -Assigned', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId3);
             await updateStatusBladePo.changeCaseStatus('Assigned');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Assigned');
-
+        });
+        it('[DRDMV-1196]: [Case Status] Case status change from Resolved', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId4);
             await updateStatusBladePo.changeCaseStatus('Closed');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Closed');
-        } catch (e) {
-            throw e;
-        } finally {
+        });
+        afterAll(async () => {
             await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
-        }
-    }, 420 * 1000);
+            await loginPage.login('fritz');
+        });
+    });
 
     //apdeshmu
-    it('[DRDMV-1619]: [Case] Fields validation for case in Canceled status', async () => {
-        try {
-            const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            let summary1: string = randomStr + "Summary 1";
-            let summary2: string = randomStr + "Summary 2";
-            let summary3 = randomStr + "Summary 3";
-            let summary4 = randomStr + "Summary 4";
-            let caseTemplateName1 = randomStr + "DRDMV1087Petramco4";
-            let caseData1 =
+    describe('[DRDMV-1619]: [Case] Fields validation for case in Canceled status', async () => {
+        let templateData, randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let summary1: string = randomStr + "Summary 1";
+        let summary2: string = randomStr + "Summary 2";
+        let summary3 = randomStr + "Summary 3";
+        let summary4 = randomStr + "Summary 4";
+        let newCase1, newCase2, newCase3, newCase4;
+        let caseId1: string, caseId2: string, caseId3: string, caseId4: string;
+        let caseData1, caseData2, caseData3, caseData4;
+        let caseTemplateName1 = randomStr + "Petramco";
+        beforeAll(async () => {
+            caseData1 =
             {
                 "Requester": "qtao",
                 "Summary": summary1,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
-                "Support Group": "US Support 3",
+                "Support Group": "US Support 1",
                 "Assignee": "qkatawazi",
                 "Status": "New",
             }
-            let caseData2 =
+            caseData2 =
             {
                 "Requester": "qtao",
                 "Summary": summary2,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
-                "Support Group": "US Support 3",
+                "Support Group": "US Support 1",
                 "Assignee": "qkatawazi",
                 "Status": "Assigned",
             }
-            let caseData3 =
+            caseData3 =
             {
                 "Requester": "qtao",
                 "Summary": summary3,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
-                "Support Group": "US Support 3",
+                "Support Group": "US Support 1",
                 "Assignee": "qkatawazi",
                 "Status": "In Progress",
             }
-            let caseData4 =
+            caseData4 =
             {
                 "Requester": "qtao",
                 "Summary": summary4,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
-                "Support Group": "US Support 3",
+                "Support Group": "US Support 1",
                 "Assignee": "qkatawazi",
                 "Status": "Pending",
             }
-            let templateData1 = {
+            templateData = {
                 "templateName": caseTemplateName1,
                 "templateSummary": caseTemplateName1,
                 "categoryTier1": "Purchasing Card",
@@ -639,18 +488,19 @@ describe('Case Status Change', () => {
                 "casePriority": "Low",
                 "templateStatus": "Active",
                 "company": "Petramco",
-                "caseStatus": "New"
             }
             await apiHelper.apiLogin('qkatawazi');
-            let newCase1 = await apiHelper.createCase(caseData1);
-            let caseId1: string = newCase1.displayId;
-            let newCase2 = await apiHelper.createCase(caseData2);
-            let caseId2: string = newCase2.displayId;
-            let newCase3 = await apiHelper.createCase(caseData3);
-            let caseId3: string = newCase3.displayId;
-            let newCase4 = await apiHelper.createCase(caseData4);
-            let caseId4: string = newCase4.displayId;
-            await apiHelper.createCaseTemplate(templateData1);
+            await apiHelper.createCaseTemplate(templateData);
+            newCase1 = await apiHelper.createCase(caseData1);
+            caseId1 = newCase1.displayId;
+            newCase2 = await apiHelper.createCase(caseData2);
+            caseId2 = newCase2.displayId;
+            newCase3 = await apiHelper.createCase(caseData3);
+            caseId3 = newCase3.displayId;
+            newCase4 = await apiHelper.createCase(caseData4);
+            caseId4 = newCase4.displayId;
+        });
+        it('[DRDMV-1619]: Fields validation for case in Canceled status', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoQuickCase();
@@ -662,10 +512,12 @@ describe('Case Status Change', () => {
             await updateStatusBladePo.setStatusReason('Approval Rejected');
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickEditCaseButton();
-            await editCasePage.updateCaseSummary(summary1);
+            await editCasePage.setCaseSummary(summary1);
             await expect(editCasePage.isSaveCaseEnable()).toBeFalsy("Save button Visible");
             await editCasePage.clickOnCancelCaseButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+        });
+        it('[DRDMV-1619]: Fields validation for case in Canceled status', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId1);
             await viewCasePage.clickEditCaseButton();
@@ -673,13 +525,14 @@ describe('Case Status Change', () => {
             expect(await editCasePage.isPriorityRequiredText()).toBeTruthy("Priority Required text not present");
             expect(await editCasePage.isAssignedCompanyRequiredText()).toBeTruthy("Assigned Company Required text not present");
             expect(await editCasePage.isAssignedGroupRequiredText()).toBeTruthy("Assigned Group Required text not present");
-            await editCasePage.updateCaseSummary(summary1);
+            await editCasePage.setCaseSummary(summary1);
             await editCasePage.clickSaveCase();
             await updateStatusBladePo.changeCaseStatus('Canceled');
             await updateStatusBladePo.setStatusReason('Approval Rejected');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Canceled');
-
+        });
+        it('[DRDMV-1619]: Fields validation for case in Canceled status', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId2);
             await viewCasePage.clickEditCaseButton();
@@ -687,13 +540,14 @@ describe('Case Status Change', () => {
             expect(await editCasePage.isPriorityRequiredText()).toBeTruthy("Priority Required text not present");
             expect(await editCasePage.isAssignedCompanyRequiredText()).toBeTruthy("Assigned Company Required text not present");
             expect(await editCasePage.isAssignedGroupRequiredText()).toBeTruthy("Assigned Group Required text not present");
-            await editCasePage.updateCaseSummary(summary2);
+            await editCasePage.setCaseSummary(summary2);
             await editCasePage.clickSaveCase();
             await updateStatusBladePo.changeCaseStatus('Canceled');
             await updateStatusBladePo.setStatusReason('Approval Rejected');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Canceled');
-
+        });
+        it('[DRDMV-1619]: Fields validation for case in Canceled status', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId3);
             await viewCasePage.clickEditCaseButton();
@@ -701,12 +555,15 @@ describe('Case Status Change', () => {
             expect(await editCasePage.isPriorityRequiredText()).toBeTruthy("Priority Required text not present");
             expect(await editCasePage.isAssignedCompanyRequiredText()).toBeTruthy("Assigned Company Required text not present");
             expect(await editCasePage.isAssignedGroupRequiredText()).toBeTruthy("Assigned Group Required text not present");
-            await editCasePage.updateCaseSummary(summary3);
+            await editCasePage.clickOnAssignToMe();
+            await editCasePage.setCaseSummary(summary3);
             await editCasePage.clickSaveCase();
             await updateStatusBladePo.changeCaseStatus('Canceled');
             await updateStatusBladePo.setStatusReason('Approval Rejected');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Canceled');
+        });
+        it('[DRDMV-1619]: [Case] Fields validation for case in Canceled status', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId4);
             await viewCasePage.clickEditCaseButton();
@@ -714,30 +571,32 @@ describe('Case Status Change', () => {
             expect(await editCasePage.isPriorityRequiredText()).toBeTruthy("Priority Required text not present");
             expect(await editCasePage.isAssignedCompanyRequiredText()).toBeTruthy("Assigned Company Required text not present");
             expect(await editCasePage.isAssignedGroupRequiredText()).toBeTruthy("Assigned Group Required text not present");
-            await editCasePage.updateCaseSummary(summary4);
-
+            await editCasePage.clickOnAssignToMe();
+            await editCasePage.setCaseSummary(summary4);
             await editCasePage.clickSaveCase();
             await updateStatusBladePo.changeCaseStatus('Canceled');
             await updateStatusBladePo.setStatusReason('Approval Rejected');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Canceled');
-        } catch (e) {
-            throw e;
-        } finally {
+        });
+        afterAll(async () => {
             await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
-        }
-    }, 600 * 1000);
+            await loginPage.login('fritz');
+        });
+    });
 
     //apdeshmu
-    it('[DRDMV-1200]: [Case Status] Case status change from Pending', async () => {
-        try {
-            const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            let summary1: string = randomStr + "Summary 1";
-            let summary2: string = randomStr + "Summary 2";
-            let summary3 = randomStr + "Summary 3";
-            let summary4 = randomStr + "Summary 4";
-            let summary5 = randomStr + "Summary 5";
+    describe('[DRDMV-1200]: [Case Status] Case status change from Pending', async () => {
+        const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let summary1: string = randomStr + "Summary 1";
+        let summary2: string = randomStr + "Summary 2";
+        let summary3 = randomStr + "Summary 3";
+        let summary4 = randomStr + "Summary 4";
+        let summary5 = randomStr + "Summary 5";
+        let newCase1, newCase2, newCase3, newCase4, newCase5;
+        let caseId1: string, caseId2: string, caseId3: string, caseId4: string, caseId5: string;
+        let statusOptions: string[] = ["Pending", "Assigned", "In Progress", "Resolved", "Canceled", "Closed", "Approval Rejected"];
+        beforeAll(async () => {
             let caseData1 =
             {
                 "Requester": "qtao",
@@ -789,17 +648,18 @@ describe('Case Status Change', () => {
                 "Status": "Pending",
             }
             await apiHelper.apiLogin('qkatawazi');
-            let newCase1 = await apiHelper.createCase(caseData1);
-            let caseId1: string = newCase1.displayId;
-            let newCase2 = await apiHelper.createCase(caseData2);
-            let caseId2: string = newCase2.displayId;
-            let newCase3 = await apiHelper.createCase(caseData3);
-            let caseId3: string = newCase3.displayId;
-            let newCase4 = await apiHelper.createCase(caseData4);
-            let caseId4: string = newCase4.displayId;
-            let newCase5 = await apiHelper.createCase(caseData5);
-            let caseId5: string = newCase5.displayId;
-            let statusOptions: string[] = ["Pending", "Assigned", "In Progress", "Resolved", "Canceled", "Closed"];
+            newCase1 = await apiHelper.createCase(caseData1);
+            caseId1 = newCase1.displayId;
+            newCase2 = await apiHelper.createCase(caseData2);
+            caseId2 = newCase2.displayId;
+            newCase3 = await apiHelper.createCase(caseData3);
+            caseId3 = newCase3.displayId;
+            newCase4 = await apiHelper.createCase(caseData4);
+            caseId4 = newCase4.displayId;
+            newCase5 = await apiHelper.createCase(caseData5);
+            caseId5 = newCase5.displayId;
+        });
+        it('[DRDMV-1200]: Case status change from Pending', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoCaseConsole();
@@ -807,12 +667,13 @@ describe('Case Status Change', () => {
             await viewCasePage.clickOnStatus();
             expect(await updateStatusBladePo.allStatusOptionsPresent(statusOptions)).toBeTruthy("Status Options is not present");
             await updateStatusBladePo.clickCancelButton();
-            await browser.refresh();
             await updateStatusBladePo.changeCaseStatus('Resolved');
-            await updateStatusBlade.isStatusReasonRequiredTextPresent();
+            await updateStatusBladePo.isStatusReasonRequiredTextPresent();
             await updateStatusBladePo.setStatusReason('Auto Resolved');
             await updateStatusBladePo.clickSaveStatus();
             await expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
+        });
+        it('[DRDMV-1200]: Case status change from Pending', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId2);
             await viewCasePage.clickEditCaseButton();
@@ -821,6 +682,8 @@ describe('Case Status Change', () => {
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             await expect(await viewCasePage.getTextOfStatus()).toBe('In Progress');
+        });
+        it('[DRDMV-1200]: Case status change from Pending', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId3);
             await updateStatusBladePo.changeCaseStatus('Assigned');
@@ -831,27 +694,30 @@ describe('Case Status Change', () => {
             await updateStatusBladePo.changeCaseStatus('Closed');
             await updateStatusBladePo.clickSaveStatus();
             await expect(await viewCasePage.getTextOfStatus()).toBe('Closed');
+        });
+        it('[DRDMV-1200]: [Case Status] Case status change from Pending', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId5);
             await updateStatusBladePo.changeCaseStatus('Canceled');
-            await updateStatusBlade.isStatusReasonRequiredTextPresent();
+            await updateStatusBladePo.isStatusReasonRequiredTextPresent();
             await updateStatusBladePo.setStatusReason('Customer Canceled');
             await updateStatusBladePo.clickSaveStatus();
             await expect(await viewCasePage.getTextOfStatus()).toBe('Canceled');
-        } catch (e) {
-            throw e;
-        } finally {
+        });
+        afterAll(async () => {
             await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
-        }
-    }, 500 * 1000);
+            await loginPage.login('fritz');
+        });
+    });
 
     //apdeshmu
-    it('[DRDMV-4680]: [Status Blade] Case Status Blade view', async () => {
-        try {
-            const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            let summary1: string = randomStr + "Summary 1";
-            let summary2: string = randomStr + "Summary 2";
+    describe('[DRDMV-4680]: [Status Blade] Case Status Blade view', async () => {
+        const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let summary1: string = randomStr + "Summary 1";
+        let summary2: string = randomStr + "Summary 2";
+        let newCase1, newCase2;
+        let caseId1: string, caseId2: string;
+        beforeAll(async () => {
             let caseData1 =
             {
                 "Requester": "qtao",
@@ -873,25 +739,28 @@ describe('Case Status Change', () => {
                 "Status": "New",
             }
             await apiHelper.apiLogin('qkatawazi');
-            let newCase1 = await apiHelper.createCase(caseData1);
-            let caseId1: string = newCase1.displayId;
-            let newCase2 = await apiHelper.createCase(caseData2);
-            let caseId2: string = newCase2.displayId;
-
+            newCase1 = await apiHelper.createCase(caseData1);
+            caseId1 = newCase1.displayId;
+            newCase2 = await apiHelper.createCase(caseData2);
+            caseId2 = newCase2.displayId;
+        });
+        it('[DRDMV-4680]: Case Status Blade view', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId1);
             await viewCasePage.clickOnStatus();
-            await updateStatusBlade.isChangeStatusFieldPresent();
-            await updateStatusBlade.isCancelUpdateStatusButtonPresent();
-            await updateStatusBlade.isStatusReasonFieldPresent();
-            expect(await updateStatusBlade.isSaveUpdateStatusButtonPresent()).toBeFalsy("Save Button is enabled");
+            await updateStatusBladePo.isChangeStatusFieldPresent();
+            await updateStatusBladePo.isCancelUpdateStatusButtonPresent();
+            await updateStatusBladePo.isStatusReasonFieldPresent();
+            expect(await updateStatusBladePo.isSaveUpdateStatusButtonEnabled()).toBeFalsy("Save Button is enabled");
             await updateStatusBladePo.clickCancelButton();
+        });
+        it('[DRDMV-4680]: [Status Blade] Case Status Blade view', async () => {
             await updateStatusBladePo.changeCaseStatus('Resolved');
-            await updateStatusBlade.isStatusReasonRequiredTextPresent();
+            await updateStatusBladePo.isStatusReasonRequiredTextPresent();
             await updateStatusBladePo.setStatusReason('Auto Resolved');
-            expect(await updateStatusBlade.isSaveUpdateStatusButtonPresent()).toBeTruthy("Save Button is enabled");
+            expect(await updateStatusBladePo.isSaveUpdateStatusButtonEnabled()).toBeTruthy("Save Button is enabled");
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
             await navigationPage.gotoCaseConsole();
@@ -899,11 +768,191 @@ describe('Case Status Change', () => {
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+        });
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+        });
+    });
+
+    //kgaikwad
+    it('[DRDMV-1618]: [Case] Fields validation for case in Resolved status', async () => {
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.deleteApprovalMapping();
+        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await navigationPage.gotoCreateCase();
+        await createCasePage.selectRequester("adam");
+        await createCasePage.setSummary('Summary ' + summary);
+        await createCasePage.clickAssignToMeButton();
+        await createCasePage.setContactName('qtao');
+        await createCasePage.clickSaveCaseButton();
+        await previewCasePo.clickGoToCaseButton();
+        expect(await viewCasePage.getTextOfStatus()).toBe(statusAssigned);
+        await updateStatusBladePo.changeCaseStatus(statusResolved);
+        await updateStatusBladePo.setStatusReason('Auto Resolved');
+        await updateStatusBladePo.clickSaveStatus(statusResolved);
+        expect(await viewCasePage.getTextOfStatus()).toBe(statusResolved);
+        await viewCasePage.clickEditCaseButton();
+        expect(await editCasePage.isSummaryRequiredText()).toBeTruthy('Required Text not displayed');
+        expect(await editCasePage.isPriorityRequiredText()).toBeTruthy('Required Text not displayed');
+        // * Optional fields are: Contact, Description, Category Tiers (1-3), Assignee.
+        expect(await $(editCasePage.selectors.contact).isPresent()).toBeTruthy('Contact not present');
+        expect(await $(editCasePage.selectors.descriptionLabel).isPresent()).toBeTruthy('Description not present');
+        expect(await $(editCasePage.selectors.categoryTier1Drpbox).isPresent()).toBeTruthy('Categ1 not present');
+        expect(await $(editCasePage.selectors.categoryTier2Drpbox).isPresent()).toBeTruthy('Categ2 not present');
+        expect(await $(editCasePage.selectors.categoryTier3Drpbox).isPresent()).toBeTruthy('Categ3 not present');
+        expect(await $(editCasePage.selectors.assigneee).isPresent()).toBeTruthy('Description not present');
+        await editCasePage.clearCaseSummary();
+        await editCasePage.clickSaveCase();
+        expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy();
+        await utilityCommon.closePopUpMessage();
+        await editCasePage.setCaseSummary('Pending AC');
+        await editCasePage.clickSaveCase();
+        expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
+    });
+
+    //kgaikwad
+    it('[DRDMV-1197]: [Case Status] Case status change from Closed', async () => {
+        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await navigationPage.gotoCreateCase();
+        await createCasePage.selectRequester("adam");
+        await createCasePage.setSummary('Summary ' + summary);
+        await createCasePage.clickAssignToMeButton();
+        await createCasePage.setContactName('qtao');
+        await createCasePage.clickSaveCaseButton();
+        await previewCasePo.clickGoToCaseButton();
+        await updateStatusBladePo.changeCaseStatus(statusResolved);
+        await updateStatusBladePo.setStatusReason('Customer Follow-Up Required');
+        await updateStatusBladePo.clickSaveStatus(statusResolved);
+        expect(await viewCasePage.getTextOfStatus()).toBe(statusResolved);
+        await updateStatusBladePo.changeCaseStatus(statusClosed);
+        await updateStatusBladePo.clickSaveStatus(statusClosed);
+        expect(await viewCasePage.getTextOfStatus()).toBe(statusClosed);
+        await viewCasePage.clickOnStatus();
+        expect(await $(updateStatusBladePo.selectors.saveUpdateStatus).isPresent()).toBeFalsy('Update Statue blade is displayed');
+    });
+
+    //kgaikwad
+    it('[DRDMV-1233]: [Case Status Reason] Status Reason change without status transition', async () => {
+        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await navigationPage.gotoCreateCase();
+        await createCasePage.selectRequester("adam");
+        await createCasePage.setSummary('Summary ' + summary);
+        await createCasePage.clickAssignToMeButton();
+        await createCasePage.setContactName('qtao');
+        await createCasePage.clickSaveCaseButton();
+        await previewCasePo.clickGoToCaseButton();
+        await updateStatusBladePo.changeCaseStatus(statusPending);
+        let pendingStatusReasons: string[] = ['None', 'Approval', 'Customer Response', 'Error', 'Required Fields Are Missing', 'Third Party'];
+        expect(await updateStatusBladePo.allStatusReasonOptionsPresent(pendingStatusReasons)).toBeTruthy('Pending status reason options mismatch');
+        await updateStatusBladePo.clickOnstatusReason();
+        await updateStatusBladePo.setStatusReason('Approval');
+        await updateStatusBladePo.clickSaveStatus();
+        await expect(await utilityCommon.getAllPopupMsg()).toContain('Case status updated to Pending for Approval only when approval is initiated. You cannot manually select this status.');
+        await utilityCommon.closePopUpMessage();
+        await updateStatusBladePo.setStatusReason('Customer Response');
+        await updateStatusBladePo.clickSaveStatus();
+        expect(await viewCasePage.getTextOfStatus()).toBe(statusPending);
+        await navigationPage.gotoCreateCase();
+        await createCasePage.selectRequester("adam");
+        await createCasePage.setSummary('Summary ' + summary);
+        await createCasePage.clickAssignToMeButton();
+        await createCasePage.setContactName('qtao');
+        await createCasePage.clickSaveCaseButton();
+        await previewCasePo.clickGoToCaseButton();
+        await updateStatusBladePo.changeCaseStatus(statusResolved);
+        let resolvedStatusReasons: string[] = ['None', 'Auto Resolved', 'Customer Follow-Up Required', 'No Further Action Required'];
+        await expect(await updateStatusBladePo.allStatusReasonOptionsPresent(resolvedStatusReasons)).toBeTruthy('Resolved status reason options mismatch');
+        await updateStatusBladePo.clickOnstatusReason();
+        await updateStatusBladePo.setStatusReason('Auto Resolved');
+        await updateStatusBladePo.clickSaveStatus();
+    });
+
+    //kgaikwad
+    it('[DRDMV-1227]: [Case Status] Case status change from Canceled', async () => {
+        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await navigationPage.gotoCreateCase();
+        await createCasePage.selectRequester("adam");
+        await createCasePage.setSummary('Summary ' + summary);
+        await createCasePage.clickAssignToMeButton();
+        await createCasePage.setContactName('qtao');
+        await createCasePage.clickSaveCaseButton();
+        await previewCasePo.clickGoToCaseButton();
+        await updateStatusBladePo.changeCaseStatus(statusCanceled);
+        await updateStatusBladePo.setStatusReason('Approval Rejected');
+        await updateStatusBladePo.clickSaveStatus(statusCanceled);
+        expect(await viewCasePage.getTextOfStatus()).toBe(statusCanceled);
+        await viewCasePage.clickOnStatus();
+        expect(await $(updateStatusBladePo.selectors.saveUpdateStatus).isPresent()).toBeFalsy('Update Statue blade is displayed');
+    });
+
+    //kgaikwad
+    it('[DRDMV-1615]: [Case] Fields validation for case in Assigned status', async () => {
+        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await navigationPage.gotoCreateCase();
+        await createCasePage.selectRequester("adam");
+        await createCasePage.setSummary('Summary ' + summary);
+        await createCasePage.clickAssignToMeButton();
+        await createCasePage.setContactName('qtao');
+        await createCasePage.clickSaveCaseButton();
+        await previewCasePo.clickGoToCaseButton();
+        expect(await viewCasePage.getTextOfStatus()).toBe(statusAssigned);
+        await viewCasePage.clickEditCaseButton();
+        expect(await editCasePage.isSummaryRequiredText()).toBeTruthy('Required Text not displayed');
+        expect(await editCasePage.isPriorityRequiredText()).toBeTruthy('Required Text not displayed');
+        // * Optional fields are: Contact, Description, Category Tiers (1-3), Assignee.
+        expect(await $(editCasePage.selectors.contact).isPresent()).toBeTruthy('Contact not present');
+        expect(await $(editCasePage.selectors.descriptionLabel).isPresent()).toBeTruthy('Description not present');
+        expect(await $(editCasePage.selectors.categoryTier1Drpbox).isPresent()).toBeTruthy('Categ1 not present');
+        expect(await $(editCasePage.selectors.categoryTier2Drpbox).isPresent()).toBeTruthy('Categ2 not present');
+        expect(await $(editCasePage.selectors.categoryTier3Drpbox).isPresent()).toBeTruthy('Categ3 not present');
+        expect(await $(editCasePage.selectors.assigneee).isPresent()).toBeTruthy('Description not present');
+        await editCasePage.clearCaseSummary();
+        await editCasePage.clickSaveCase();
+        expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.');
+        await utilityCommon.closePopUpMessage();
+        await editCasePage.setCaseSummary('pendingAC');
+        await editCasePage.clickSaveCase();
+        expect(await utilityCommon.getAllPopupMsg()).toContain('Saved successfully.');
+    });
+
+    //kgaikwad
+    it('[DRDMV-1617]: [Case] Fields validation for case in Pending status', async () => {
+        try {
+            let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester("adam");
+            await createCasePage.setSummary('Summary ' + summary);
+            await createCasePage.clickAssignToMeButton();
+            await createCasePage.setContactName('qtao');
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            await updateStatusBladePo.changeCaseStatus(statusPending);
+            await updateStatusBladePo.setStatusReason('Customer Response');
+            await updateStatusBladePo.clickSaveStatus(statusPending);
+            expect(await viewCasePage.getTextOfStatus()).toBe(statusPending);
+            await viewCasePage.clickEditCaseButton();
+            expect(await editCasePage.isSummaryRequiredText()).toBeTruthy('Required Text not displayed');
+            expect(await editCasePage.isPriorityRequiredText()).toBeTruthy('Required Text not displayed');
+            // * Optional fields are: Contact, Description, Category Tiers (1-3), Assignee.
+            expect(await $(editCasePage.selectors.contact).isPresent()).toBeTruthy('Contact not present');
+            expect(await $(editCasePage.selectors.descriptionLabel).isPresent()).toBeTruthy('Description not present');
+            expect(await $(editCasePage.selectors.categoryTier1Drpbox).isPresent()).toBeTruthy('Categ1 not present');
+            expect(await $(editCasePage.selectors.categoryTier2Drpbox).isPresent()).toBeTruthy('Categ2 not present');
+            expect(await $(editCasePage.selectors.categoryTier3Drpbox).isPresent()).toBeTruthy('Categ3 not present');
+            expect(await $(editCasePage.selectors.assigneee).isPresent()).toBeTruthy('Assignee not present');
+            await editCasePage.clearCaseSummary();
+            await editCasePage.clickSaveCase();
+            expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.');
+            await utilityCommon.closePopUpMessage();
+            await editCasePage.setCaseSummary('pendingAC');
+            await editCasePage.clickSaveCase();
+            expect(await utilityCommon.getAllPopupMsg()).toContain('Saved successfully.');
         } catch (e) {
             throw e;
         } finally {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 280 * 1000);
+    });
 });

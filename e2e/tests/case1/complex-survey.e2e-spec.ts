@@ -4,15 +4,17 @@ import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import activityTabPage from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL } from '../../utils/constants';
+import utilityCommon from '../../utils/utility.common';
 import utilityGrid from "../../utils/utility.grid";
 
 describe('Complex Surveys', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
-        await loginPage.login('qtao');
+        await loginPage.login('qfeng');
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 
@@ -326,4 +328,4 @@ describe('Complex Surveys', () => {
         await activityTabPage.clickOnFilterApplyButton();
         expect(await activityTabPage.isOnlySurveyRecordFiltered()).toBeTruthy("Multiple records are present");
     });
-})
+});

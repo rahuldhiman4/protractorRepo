@@ -18,8 +18,8 @@ class CaseWatchlistBlade {
         searchIcon: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] .adapt-search-button',
         removeBtn: '[rx-view-component-id="fdc9b3f0-3baa-48f4-b404-11f6441e676a"] button',
         updateWatchlistEventsButton: '[rx-view-component-id="36e39eb7-fc47-45d3-b435-4b1a4311383d"] button',
-        filterPreset: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] .rx-filter-presets-dropdown__trigger',
-        clearFilterButton: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] button[rx-id="clear-button"]',
+        filterPreset: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] button.d-icon-left-filter',
+        clearFilterButton: 'button.custom-action-btn',
         filterDropdown: '.show__more-tags',
         caseLinks: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] tr td:nth-of-type(2) button',
         clearSearchicon: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] .adapt-search-clear',
@@ -135,14 +135,13 @@ class CaseWatchlistBlade {
     }
 
     async clearWatchlistFilter(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterPreset)));
+        let clearFilterLocator =  await $$(this.selectors.clearFilterButton).first();
         try {
-            if (await $(this.selectors.filterDropdown).isDisplayed()) {
-                await $(this.selectors.filterPreset).click();
-//                await browser.wait(this.EC.elementToBeClickable($(this.selectors.clearFilterButton)));
-                await $(this.selectors.clearFilterButton).click();
-//                await utilCommon.waitUntilSpinnerToHide();
+            await $(this.selectors.filterPreset).click();
+            if (await clearFilterLocator.isEnabled()) {
+                await clearFilterLocator.click();
             }
+            await $('[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] .d-icon-refresh').click();
         }
         catch (Ex) {
             console.log("Filters are already cleared");

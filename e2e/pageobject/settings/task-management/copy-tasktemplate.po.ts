@@ -18,8 +18,9 @@ class Copytaskpage {
         companyGiud: 'f62bd26b-c464-4dff-ab7b-e4446d1cbf99',
         clearProcessBundleId: '[title="Process Bundle ID"] [rx-id="clear-selection-button"] i',
         processBundle: '5f30b3d4-caa2-4c28-8af6-cebf094bc2e8',
-        ownerGuid: '908e526e-917a-4360-94e9-768362f6a573',
+        ownerGuid: '61278673-8106-419c-83e4-a9e00f12f835',
         ownerGroupValueOnCopy: '[rx-view-component-id="61278673-8106-419c-83e4-a9e00f12f835"] .ui-select-match-text',
+        buisnessUnitGuid: 'a81cc2df-7b89-4367-81f7-f0ad5e786ca2',
     }
 
     async unSelectCopyExistingProcess(): Promise<string> {
@@ -36,7 +37,7 @@ class Copytaskpage {
         await $(this.selectors.templateName).sendKeys(input);
     }
 
-    async isOwnerGroupEmpty(): Promise<boolean> {
+    async isOwnerGroupEmpty(): Promise<boolean> {
         let element = await $(this.selectors.ownerGroupValueOnCopy)
         let value = await element.getAttribute('aria-label');
         if (value == '') {
@@ -90,6 +91,10 @@ class Copytaskpage {
 
     async selectOwnerGroup(ownerGroup: string): Promise<void> {
         await util.selectDropDown(this.selectors.ownerGuid, ownerGroup);
+    }
+
+    async selectBuisnessUnitGroup(ownerGroup: string): Promise<void> {
+        await util.selectDropDown(this.selectors.buisnessUnitGuid, ownerGroup);
     }
 }
 

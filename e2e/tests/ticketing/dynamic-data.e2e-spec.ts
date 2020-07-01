@@ -30,9 +30,9 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
+import utilityGrid from '../../utils/utility.grid';
 
 describe('Dynamic data', () => {
-    const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
     const manageNotificationTempNavigation = 'Notification Configuration--Manage Templates';
     const notifTempGridPageTitle = 'Manage Notification Template - Business Workflows';
     beforeAll(async () => {
@@ -41,14 +41,12 @@ describe('Dynamic data', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 
-    afterEach(async () => {
-        await utilityCommon.refresh();
-    });
-
     it('[DRDMV-19353]: Accessibility of Dynamic Fields in Notification and Dynamic Templates', async () => {
+        const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await apiHelper.apiLogin('tadmin');
         let recDeleted = await apiHelper.deleteDynamicFieldAndGroup();
         console.log("Record deleted...", recDeleted);
@@ -58,6 +56,12 @@ describe('Dynamic data', () => {
             "templateName": `${caseTemplateName}`,
             "templateSummary": `${caseTemaplateSummary}`,
             "templateStatus": "Active",
+            "assignee": "Fritz",
+            "company": "Petramco",
+            "businessUnit": "Facilities Support",
+            "ownerBU": "Facilities Support",
+            "supportGroup": "Facilities",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('fritz');
         let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
@@ -79,6 +83,10 @@ describe('Dynamic data', () => {
             "templateName": `${taskTemplateName}`,
             "templateSummary": `${manualTaskSummary}`,
             "templateStatus": "Active",
+            "taskCompany": 'Petramco',
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         let tasktemplate = await apiHelper.createManualTaskTemplate(templateData);
         await apiHelper.createDynamicDataOnTemplate(tasktemplate.id, 'DYNAMIC_DATA_FOR_TASK_TEMPLATE');
@@ -88,7 +96,10 @@ describe('Dynamic data', () => {
             "templateName": `${globalTaskTemplateName}`,
             "templateSummary": `${globalmanualTaskSummary}`,
             "templateStatus": "Active",
-            "company": "- Global -"
+            "taskCompany": '- Global -',
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
 
         let globalTasktemplate = await apiHelper.createManualTaskTemplate(gloabalTaskData);
@@ -163,9 +174,10 @@ describe('Dynamic data', () => {
         await addFieldsPopPo.clickOnOkButtonOfEditor();
         await createDocumentTemplatePo.clickOnCancelButton();
         await utilCommon.clickOnWarningOk();
-    }, 980 * 1000);
+    }, 1100 * 1000);
 
     it('[DRDMV-19270]: Associated and Dynamic fields usage on Notification/Email/Activity Templates', async () => {
+        const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await apiHelper.apiLogin('tadmin');
         let recDeleted = await apiHelper.deleteDynamicFieldAndGroup();
         console.log("Record deleted...", recDeleted);
@@ -175,6 +187,12 @@ describe('Dynamic data', () => {
             "templateName": `${caseTemplateName}`,
             "templateSummary": `${caseTemaplateSummary}`,
             "templateStatus": "Active",
+            "assignee": "Fritz",
+            "company": "Petramco",
+            "businessUnit": "Facilities Support",
+            "ownerBU": "Facilities Support",
+            "supportGroup": "Facilities",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('fritz');
         let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
@@ -185,10 +203,13 @@ describe('Dynamic data', () => {
             "templateName": `${taskTemplateName}`,
             "templateSummary": `${manualTaskSummary}`,
             "templateStatus": "Active",
+            "taskCompany": 'Petramco',
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         let tasktemplate = await apiHelper.createManualTaskTemplate(templateData);
         await apiHelper.createDynamicDataOnTemplate(tasktemplate.id, 'TASK_TEMPLATE_WITH_CONFIDENTIAL');
-        await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
         await consoleNotificationTemplatePo.clickOnCreateNotificationTemplate();
@@ -241,7 +262,7 @@ describe('Dynamic data', () => {
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteEmailOrNotificationTemplate("Notification" + randomStr);
         await createNotificationTemplatePo.selectModuleName('Cases');
-        await createNotificationTemplatePo.selectEvent('Case Reassignment');
+        await createNotificationTemplatePo.selectEvent('Approve');
         await createNotificationTemplatePo.setTemplateName("NotificationNew" + randomStr);
         await createNotificationTemplatePo.setDescription("NotificationNew Description " + randomStr);
         await createNotificationTemplatePo.clickOnInsertFieldOfAlert();
@@ -293,7 +314,6 @@ describe('Dynamic data', () => {
         await createNotificationTemplatePo.clickOnSaveButton();
         expect(await editNotificationTemplatePo.getHeaderText()).toContain('Edit Notification Template');
         await editNotificationTemplatePo.clickOnCancelButton();
-        await navigationPage.gotoCaseConsole();
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteEmailOrNotificationTemplate("NotificationNew" + randomStr);
         await navigationPage.gotoSettingsPage();
@@ -324,7 +344,6 @@ describe('Dynamic data', () => {
         await createEmailTemplatePo.clickOnSaveButton();
         await utilGrid.searchRecord('emailTemp' + randomStr);
         expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Template Name')).toContain('emailTemp' + randomStr, 'value is not displaying in Grid');
-        await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', 'Activity Notes Template Console - Task - Business Workflows');
         await consoleNotestemplatePo.clickOnCreateNotesTemplate();
@@ -378,9 +397,10 @@ describe('Dynamic data', () => {
         expect(await createNotestemplatePo.isDynamicFieldDisplayedInBody('Additional Site Details')).toBeTruthy();
         await createNotestemplatePo.clickOnSaveButton();
         expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
-    }, 750 * 1000);
+    }, 850 * 1000);
 
     it('[DRDMV-13567]: [Dynamic Data] [Attachment] - Case UI when it has Dynamic Fields including Attachment', async () => {
+        const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteDynamicFieldAndGroup();
         let caseTemplateName = 'caseTemplateDRDMV-13567' + randomStr;
@@ -389,6 +409,12 @@ describe('Dynamic data', () => {
             "templateName": `${caseTemplateName}`,
             "templateSummary": `${caseTemaplateSummary}`,
             "templateStatus": "Active",
+            "assignee": "Fritz",
+            "company": "Petramco",
+            "businessUnit": "Facilities Support",
+            "ownerBU": "Facilities Support",
+            "supportGroup": "Facilities",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('fritz');
         let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
@@ -433,6 +459,7 @@ describe('Dynamic data', () => {
     }, 300 * 1000);
 
     it('[DRDMV-13947]: [Dynamic Data] [Attachment] - Task UI when it has Dynamic Fields including Attachment', async () => {
+        const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteDynamicFieldAndGroup();
         let taskTemplateName = 'ManualtaskDRDMV-13947' + randomStr;
@@ -441,6 +468,10 @@ describe('Dynamic data', () => {
             "templateName": `${taskTemplateName}`,
             "templateSummary": `${manualTaskSummary}`,
             "templateStatus": "Active",
+            "taskCompany": 'Petramco',
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         let tasktemplate = await apiHelper.createManualTaskTemplate(templateData);
         await apiHelper.createDynamicDataOnTemplate(tasktemplate.id, 'TASK_TEMPLATE__DYNAMIC_FIELDS');
@@ -451,7 +482,7 @@ describe('Dynamic data', () => {
         await previewCasePo.clickGoToCaseButton();
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate(taskTemplateName);
-        await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
+        await manageTaskBladePo.clickTaskLink(manualTaskSummary);
         await viewTaskPo.clickOnEditTask();
         //dynamic fields
         expect(await editTaskPo.isDynamicFieldDisplayed('temp')).toBeTruthy('field is not present');
@@ -487,6 +518,18 @@ describe('Dynamic data', () => {
     });
 
     it('[DRDMV-13948]: [Dynamic Data] [Attachment] - Add different type of files in attachment fields', async () => {
+        const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let fileName1: string[] = ['articleStatus.png', 'bwfJpg4.jpg', 'bwfJson1.json', 'bwfPdf4.pdf', 'bwfWord1.rtf'];
+        const filesToUpload1 = fileName1.map((file) => { return `../../data/ui/attachment/${file}` });
+        let fileName2: string[] = ['bwfJpg.jpg', 'bwfPdf.pdf', 'bwfWord2.rtf'];
+        const filesToUpload2 = fileName2.map((file) => { return `../../data/ui/attachment/${file}` });
+        //delete existing files
+        for (let i: number = 0; i <= fileName1.length; i++) {
+            await utilityCommon.deleteAlreadyDownloadedFile(`${fileName1[i]}`);
+        }
+        for (let i: number = 0; i <= fileName2.length; i++) {
+            await utilityCommon.deleteAlreadyDownloadedFile(`${fileName2[i]}`);
+        }
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteDynamicFieldAndGroup();
         let caseTemplateName = 'caseTemplateDRDMV-13948' + randomStr;
@@ -495,11 +538,16 @@ describe('Dynamic data', () => {
             "templateName": `${caseTemplateName}`,
             "templateSummary": `${caseTemaplateSummary}`,
             "templateStatus": "Active",
+            "assignee": "Fritz",
+            "company": "Petramco",
+            "businessUnit": "Facilities Support",
+            "ownerBU": "Facilities Support",
+            "supportGroup": "Facilities",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('fritz');
         let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
         await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_DYNAMIC_FIELDS');
-        await navigationPage.gotoCaseConsole();
         await navigationPage.gotoCreateCase();
         await createCasePo.selectRequester('qkatawazi');
         await createCasePo.setSummary('new cases');
@@ -518,12 +566,9 @@ describe('Dynamic data', () => {
         expect(await editCasePo.isDynamicFieldDisplayed('attachment2')).toBeTruthy('field is not present');
         expect(await editCasePo.isDynamicFieldDisplayed('attachment3')).toBeTruthy('field is not present');
         // attach files in field 1
-        let fileName1: string[] = ['articleStatus.png', 'bwfJpg4.jpg', 'bwfJson1.json', 'bwfPdf4.pdf', 'bwfWord1.rtf'];
-        const filesToUpload1 = fileName1.map((file) => { return `../../data/ui/attachment/${file}` });
         await editCasePo.addAttachment('attachment1', filesToUpload1);
         await editCasePo.clickSaveCase();
         await viewCasePo.clickShowMoreShowLessLink('attachment1');
-        //download the file
         await viewCasePo.clickOnDownloadFile('articleStatus.png');
         expect(await utilityCommon.isFileDownloaded('articleStatus.png')).toBeTruthy('failureMsg: articleStatus.png File is not downloaded.');
         await viewCasePo.clickOnDownloadFile('bwfJpg4.jpg');
@@ -534,8 +579,9 @@ describe('Dynamic data', () => {
         expect(await utilityCommon.isFileDownloaded('bwfPdf4.pdf')).toBeTruthy('failureMsg: bwfPdf4.pdf File is not downloaded.');
         await viewCasePo.clickOnDownloadFile('bwfWord1.rtf');
         expect(await utilityCommon.isFileDownloaded('bwfWord1.rtf')).toBeTruthy('failureMsg: bwfWord1.rtf File is not downloaded.');
+        //delete downloaded files
         for (let i: number = 0; i <= fileName1.length; i++) {
-            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName1[i]}`)).toBeTruthy('FailuerMsg: File is delete sucessfully');
+            await utilityCommon.deleteAlreadyDownloadedFile(`${fileName1[i]}`);
         }
         await apiHelper.apiLogin('tadmin');
         let recDeleted = await apiHelper.deleteDynamicFieldAndGroup();
@@ -546,12 +592,16 @@ describe('Dynamic data', () => {
             "templateName": `${taskTemplateName}`,
             "templateSummary": `${manualTaskSummary}`,
             "templateStatus": "Active",
+            "taskCompany": 'Petramco',
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         let tasktemplate = await apiHelper.createManualTaskTemplate(templateData);
         await apiHelper.createDynamicDataOnTemplate(tasktemplate.id, 'TASK_TEMPLATE__DYNAMIC_FIELDS');
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate(taskTemplateName);
-        await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
+        await manageTaskBladePo.clickTaskLink(manualTaskSummary);
         await viewTaskPo.clickOnEditTask();
         //dynamic fields
         expect(await editTaskPo.isDynamicFieldDisplayed('temp')).toBeTruthy('field is not present');
@@ -564,23 +614,24 @@ describe('Dynamic data', () => {
         expect(await editTaskPo.isDynamicFieldDisplayed('attachment3')).toBeTruthy('field is not present');
         await editTaskPo.clickOnAssignToMe();
         //attachment3 add 1 file 
-        let fileName2: string[] = ['bwfJpg.jpg', 'bwfPdf.pdf', 'bwfWord2.rtf'];
-        const filesToUpload2 = fileName2.map((file) => { return `../../data/ui/attachment/${file}` });
         await editTaskPo.addAttachmentInDynamicField('attachment1', filesToUpload2);
         await editTaskPo.clickOnSaveButton();
+        await utilityCommon.closePopUpMessage();
         await viewTaskPo.clickShowMoreShowLessLink('attachment1');
-        await viewCasePo.clickOnDownloadFile('bwfJpg.jpg');
+        await viewTaskPo.clickOnDownloadFile('bwfJpg.jpg');
         expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('failureMsg: bwfJpg.jpg File is not downloaded.');
-        await viewCasePo.clickOnDownloadFile('bwfPdf.pdf');
+        await viewTaskPo.clickOnDownloadFile('bwfPdf.pdf');
         expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('failureMsg: bwfPdf.pdf File is not downloaded.');
-        await viewCasePo.clickOnDownloadFile('bwfWord2.rtf');
+        await viewTaskPo.clickOnDownloadFile('bwfWord2.rtf');
         expect(await utilityCommon.isFileDownloaded('bwfWord2.rtf')).toBeTruthy('failureMsg: bwfWord2.rtf File is not downloaded.');
+        //delete downloaded files
         for (let i: number = 0; i <= fileName2.length; i++) {
-            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName2[i]}`)).toBeTruthy('FailuerMsg: File is delete sucessfully');
+            await utilityCommon.deleteAlreadyDownloadedFile(`${fileName2[i]}`);
         }
     }, 320 * 1000);
 
     it('[DRDMV-13161]: [-ve] [Dynamic Data] - Task UI with dynamic data having long description/labels with large data in different fields', async () => {
+        const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let dynamicfield1 = 'theNewDynamicFieldsIsgettingMouseOveredMouseOvered';
         let dynamicfield2 = 'theSecondDynamicFieldsIsgettingMouseOveredMouseOvered';
         let dynamicfield3 = 'theThirdDynamicFieldsIsgettingMouseOveredMouseOvered';
@@ -593,6 +644,10 @@ describe('Dynamic data', () => {
             "templateName": `${taskTemplateName}`,
             "templateSummary": `${manualTaskSummary}`,
             "templateStatus": "Active",
+            "taskCompany": 'Petramco',
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         let tasktemplate = await apiHelper.createManualTaskTemplate(templateData);
         await apiHelper.createDynamicDataOnTemplate(tasktemplate.id, 'TASK_TEMPLATE_LONG__DYNAMIC_FIELDS');
@@ -604,6 +659,10 @@ describe('Dynamic data', () => {
             "templateName": `${externalTask}`,
             "templateSummary": `${externalTaskSummary}`,
             "templateStatus": "Active",
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('qkatawazi');
         let externalTaskTemplate = await apiHelper.createExternalTaskTemplate(externalTemplateData);
@@ -619,11 +678,14 @@ describe('Dynamic data', () => {
             "templateStatus": "Active",
             "processBundle": "com.bmc.dsm.case-lib",
             "processName": `${processName}`,
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('qkatawazi');
         let autoTaskTemplate = await apiHelper.createAutomatedTaskTemplate(automationTemplateData);
         await apiHelper.createDynamicDataOnTemplate(autoTaskTemplate.id, 'AUTOMATED_TASK_TEMPLATE_LONG__DYNAMIC');
-        await navigationPage.gotoCaseConsole();
         await navigationPage.gotoCreateCase();
         await createCasePo.selectRequester('qkatawazi');
         await createCasePo.clickAssignToMeButton();
@@ -635,8 +697,8 @@ describe('Dynamic data', () => {
         await manageTaskBladePo.addTaskFromTaskTemplate(automatedTask);
         await manageTaskBladePo.addTaskFromTaskTemplate(taskTemplateName);
         await manageTaskBladePo.addTaskFromTaskTemplate(externalTask);
-        await utilCommon.waitUntilPopUpDisappear();
-        await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
+        await utilityCommon.closePopUpMessage();
+        await manageTaskBladePo.clickTaskLink(manualTaskSummary);
         //verify dynamic field
         expect(await viewTaskPo.getDynamicFieldName(dynamicfield1)).toContain(dynamicfield1);
         expect(await viewTaskPo.getDynamicFieldName(dynamicfield2)).toContain(dynamicfield2);
@@ -655,11 +717,12 @@ describe('Dynamic data', () => {
         expect(await viewTaskPo.getDynamicFieldValue(dynamicfield3)).toContain(dynamicfield4);
         expect(await viewTaskPo.getDynamicFieldValue(dynamicfield4)).toContain('100');
         await navigationPage.gotoCaseConsole();
+        await utilityGrid.clearFilter();
         await caseConsolePo.searchAndOpenCase(caseId);
         await updateStatusBladePo.changeCaseStatus('In Progress');
         await updateStatusBladePo.clickSaveStatus('In Progress');
         await viewCasePo.clickAddTaskButton();
-        await manageTaskBladePo.clickTaskLinkOnManageTask(externalTaskSummary);
+        await manageTaskBladePo.clickTaskLink(externalTaskSummary);
         //verify dynamic field on external task
         expect(await viewTaskPo.getDynamicFieldName('theExternalDynamicFieldsIsgettingMouseOveredMouseOvered')).toContain('theExternalDynamicFieldsIsgettingMouseOveredMouseOvered');
         expect(await viewTaskPo.getDynamicFieldName('theSecondExternalDynamicFieldsIsgettingMouseOveredMouseOvered')).toContain('theSecondExternalDynamicFieldsIsgettingMouseOveredMouseOvered');
@@ -673,11 +736,9 @@ describe('Dynamic data', () => {
         //verify input field values are peresent are not 
         expect(await viewTaskPo.getDynamicFieldValue('temp1theNewExternalDynamicFieldsIsgettingMouseOveredMouseOvered')).toContain('200');
         expect(await viewTaskPo.getDynamicFieldValue('theSecondExternalDynamicFieldsIsgettingMouseOveredMouseOvered')).toContain('temp1theNewExternalDynamicFieldsIsgettingMouseOveredMouseOvered');
-        await viewTaskPo.clickOnViewCase();
-        await viewCasePo.clickAddTaskButton();
-
-        await manageTaskBladePo.clickTaskLinkOnManageTask(automatedTaskSummary);
-
+        await navigationPage.gotoCaseConsole();
+        await utilityGrid.searchAndOpenHyperlink(caseId);
+        await viewCasePo.clickOnTaskLink(automatedTaskSummary);
         expect(await viewTaskPo.getDynamicFieldName('theautomatedDynamicFieldsIsgettingMouseOveredMouseOvered')).toContain('theautomatedDynamicFieldsIsgettingMouseOveredMouseOvered');
         expect(await viewTaskPo.getDynamicFieldName('theSecondautomatedDynamicFieldsIsgettingMouseOveredMouseOvered')).toContain('theSecondautomatedDynamicFieldsIsgettingMouseOveredMouseOvered');
         expect(await viewTaskPo.getDynamicFieldName('theThirdDynamicautomatedFieldsIsgettingMouseOveredMouseOvered')).toContain('theThirdDynamicautomatedFieldsIsgettingMouseOveredMouseOvered');
@@ -693,6 +754,7 @@ describe('Dynamic data', () => {
 
     // ptidke
     it('[DRDMV-13128]: [Dynamic Data] - Create Case with Case Template having dynamic fields and Update dynamic fields data in Case', async () => {
+        const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteDynamicFieldAndGroup();
         let caseTemplateName = randomStr + 'caseTemplateDRDMV-13128';
@@ -701,6 +763,12 @@ describe('Dynamic data', () => {
             "templateName": `${caseTemplateName}`,
             "templateSummary": `${caseTemaplateSummary}`,
             "templateStatus": "Active",
+            "assignee": "Fritz",
+            "company": "Petramco",
+            "businessUnit": "Facilities Support",
+            "ownerBU": "Facilities Support",
+            "supportGroup": "Facilities",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('fritz');
         let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
@@ -721,7 +789,7 @@ describe('Dynamic data', () => {
         await editCasePo.setTimeInDynamicField('02');
         await editCasePo.selectValueFromList('dynamicList', 'listvalues');
         await editCasePo.clickSaveCase();
-        await utilCommon.waitUntilPopUpDisappear();
+        await utilCommon.closePopUpMessage();
         //verify update values on case view
         expect(await viewCasePo.getValueOfDynamicFields('temp')).toBe('newtemp');
         expect(await viewCasePo.getValueOfDynamicFields('temp1')).toBe('333');
@@ -735,6 +803,7 @@ describe('Dynamic data', () => {
 
     // ptidke
     it('[DRDMV-13127]: [Dynamic Data] - Create Case from Create Case with Template having dynamic fields and also have field with source as Requester', async () => {
+        const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteDynamicFieldAndGroup();
         let caseTemplateName = randomStr + 'caseTemplateDRDMV-13127';
@@ -743,11 +812,16 @@ describe('Dynamic data', () => {
             "templateName": `${caseTemplateName}`,
             "templateSummary": `${caseTemaplateSummary}`,
             "templateStatus": "Active",
+            "assignee": "Fritz",
+            "company": "Petramco",
+            "businessUnit": "Facilities Support",
+            "ownerBU": "Facilities Support",
+            "supportGroup": "Facilities",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('fritz');
         let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
         await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_REQUESTER_DYNAMIC_FIELDS');
-        await navigationPage.gotoCaseConsole();
         await navigationPage.gotoCreateCase();
         await createCasePo.selectRequester('qkatawazi');
         await createCasePo.setSummary('Summary');
@@ -779,151 +853,175 @@ describe('Dynamic data', () => {
     }, 250 * 1000);
 
     //ptidke
-    it('[DRDMV-13158]: [-ve] [UI] [Dynamic Data] - Update Task dynamic fields with invalid data', async () => {
-        await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteDynamicFieldAndGroup();
-        let taskTemplateName = 'ManualtaskDRDMV-13158' + randomStr;
-        let manualTaskSummary = 'ManualSummaryDRDMV-13158' + randomStr;
-        let templateData = {
-            "templateName": `${taskTemplateName}`,
-            "templateSummary": `${manualTaskSummary}`,
-            "templateStatus": "Active",
-        }
-        let tasktemplate = await apiHelper.createManualTaskTemplate(templateData);
-        await apiHelper.createDynamicDataOnTemplate(tasktemplate.id, 'TASK_TEMPLATE__DYNAMIC_FIELDS');
-        let externalTask = 'externalTaskDRDMV-13158' + randomStr;
-        let externalTaskSummary = 'externalSummaryDRDMV-13158' + randomStr;
-        await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteDynamicFieldAndGroup();
-        let externalTemplateData = {
-            "templateName": `${externalTask}`,
-            "templateSummary": `${externalTaskSummary}`,
-            "templateStatus": "Active",
-        }
-        await apiHelper.apiLogin('qkatawazi');
-        let externalTaskTemplate = await apiHelper.createExternalTaskTemplate(externalTemplateData);
-        await apiHelper.createDynamicDataOnTemplate(externalTaskTemplate.id, 'EXTERNAL_TASK_TEMPLATE__DYNAMIC_FIELDS');
-        await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteDynamicFieldAndGroup();
-        let automatedTask = 'automatedTaskDRDMV-13158' + randomStr;
-        let automatedTaskSummary = 'automatedSummaryDRDMV-13158' + randomStr;
-        let automationTemplateData = {
-            "templateName": `${automatedTask}`,
-            "templateSummary": `${automatedTaskSummary}`,
-            "templateStatus": "Active",
-            "processBundle": "ccom.bmc.dsm.case-lib",
-            "processName": "Case Managment 1",
-        }
-        await apiHelper.apiLogin('qkatawazi');
-        let autoTaskTemplate = await apiHelper.createAutomatedTaskTemplate(automationTemplateData);
-        await apiHelper.createDynamicDataOnTemplate(autoTaskTemplate.id, 'AUTOMATED_TASK_TEMPLATE__DYNAMIC_FIELDS');
-        await navigationPage.gotoCreateCase();
-        await createCasePo.selectRequester('qkatawazi');
-        await createCasePo.setSummary('new cases');
-        await createCasePo.clickSaveCaseButton();
-        await previewCasePo.clickGoToCaseButton();
-        await viewCasePo.clickAddTaskButton();
-        await manageTaskBladePo.addTaskFromTaskTemplate(taskTemplateName);
-        await manageTaskBladePo.addTaskFromTaskTemplate(automatedTask);
-        await manageTaskBladePo.addTaskFromTaskTemplate(externalTask);
-        await utilCommon.waitUntilPopUpDisappear();
-        await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
-        //verify dynamic field
-        await viewTaskPo.clickOnEditTask();
-        await editTaskPo.setDynamicFieldValue('temp', 'sssssss');
-        await editTaskPo.setDynamicFieldValue('temp1', 'sssssss');
-        await editTaskPo.clickOnAssignToMe();
-        await editTaskPo.setDateValueInDynamicField('wrong date');
-        await editTaskPo.clickOnSaveButton();
-        expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy("Wrong pop up message");
-        await editTaskPo.setDateTimeDynamicFieldValue('wrongdatetime');
-        await editTaskPo.clickOnSaveButton();
-        expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy("Wrong pop up message");
-        //  await utilCommon.waitUntilPopUpDisappear();
-        await editTaskPo.clickOnCancelButton();
-        await utilCommon.clickOnWarningOk();
-        await viewTaskPo.clickOnEditTask();
-        await editTaskPo.setDateValueInDynamicField('2020-03-01');
-        await editTaskPo.setDateTimeDynamicFieldValue('2020-03-04');
-        await editTaskPo.clickOnAssignToMe();
-        await editTaskPo.setDynamicFieldValue('temp1', 'sssssss');
-        await editTaskPo.clickOnSaveButton();
-        await utilCommon.waitUntilPopUpDisappear();
-        //verify update values on case view
-        expect(await viewTaskPo.getDynamicFieldValue('temp2')).toBe('Mar 1, 2020');
-        expect(await viewTaskPo.getDynamicFieldValue('temp4')).toBe('Mar 4, 2020 12:00 AM');
-        expect(await viewTaskPo.getDynamicFieldValue('temp1')).toBe('-');
+    describe('[DRDMV-13158]: [-ve] [UI] [Dynamic Data] - Update Task dynamic fields with invalid data', async () => {
+        const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let manualTaskTemplateData, externalTaskTemplateData, automationTaskTemplateData;
+        beforeAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteDynamicFieldAndGroup();
+            manualTaskTemplateData = {
+                "templateName": 'ManualtaskDRDMV-13158' + randomStr,
+                "templateSummary": 'ManualSummaryDRDMV-13158' + randomStr,
+                "templateStatus": "Active",
+                "taskCompany": 'Petramco',
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
+            }
+            let tasktemplate = await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
+            await apiHelper.createDynamicDataOnTemplate(tasktemplate.id, 'TASK_TEMPLATE__DYNAMIC_FIELDS');
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteDynamicFieldAndGroup();
+            externalTaskTemplateData = {
+                "templateName": 'ExternalTaskDRDMV-13158' + randomStr,
+                "templateSummary": 'ExternalSummaryDRDMV-13158' + randomStr,
+                "templateStatus": "Active",
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            let externalTaskTemplate = await apiHelper.createExternalTaskTemplate(externalTaskTemplateData);
+            await apiHelper.createDynamicDataOnTemplate(externalTaskTemplate.id, 'EXTERNAL_TASK_TEMPLATE__DYNAMIC_FIELDS');
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteDynamicFieldAndGroup();
+            automationTaskTemplateData = {
+                "templateName": 'AutomatedTaskDRDMV-13158' + randomStr,
+                "templateSummary": 'AutomatedSummaryDRDMV-13158' + randomStr,
+                "templateStatus": "Active",
+                "processBundle": "com.bmc.dsm.case-lib",
+                "processName": "Case Process " + randomStr,
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
+            }
 
-        await viewTaskPo.clickOnViewCase();
-        await viewCasePo.clickAddTaskButton();
-        await manageTaskBladePo.clickTaskLinkOnManageTask(externalTaskSummary);
-
-        await viewTaskPo.clickOnEditTask();
-        await editTaskPo.setDynamicFieldValue('externalText', 'sssssss');
-        await editTaskPo.clickOnAssignToMe();
-        await editTaskPo.setDateValueInDynamicField('wrong date');
-        await editTaskPo.clickOnSaveButton();
-        expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy("Wrong pop up message");
-        await editTaskPo.setDateTimeDynamicFieldValue('wrongdatetime');
-        await editTaskPo.clickOnSaveButton();
-        expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy("Wrong pop up message");
-        await editTaskPo.clickOnCancelButton();
-        await utilCommon.clickOnWarningOk();
-        await viewTaskPo.clickOnEditTask();
-        await editTaskPo.setDateValueInDynamicField('2020-03-01');
-        await editTaskPo.setDateTimeDynamicFieldValue('2020-03-04');
-        await editTaskPo.clickOnAssignToMe();
-        await editTaskPo.setDynamicFieldValue('externalNumber', 'sssssss');
-        await editTaskPo.clickOnSaveButton();
-        await utilCommon.waitUntilPopUpDisappear();
-        //verify update values on case view
-        expect(await viewTaskPo.getDynamicFieldValue('externalDate')).toBe('Mar 1, 2020');
-        expect(await viewTaskPo.getDynamicFieldValue('externalDateTime')).toBe('Mar 4, 2020 12:00 AM');
-        expect(await viewTaskPo.getDynamicFieldValue('externalNumber')).toBe('');
-        await viewTaskPo.clickOnViewCase();
-        await viewCasePo.clickEditCaseButton();
-        await editCasePo.clickOnAssignToMe();
-        await editCasePo.clickSaveCase();
-        await utilCommon.waitUntilPopUpDisappear();
-        await updateStatusBladePo.changeCaseStatus('In Progress');
-        await updateStatusBladePo.clickSaveStatus('In Progress');
-        await utilityCommon.waitUntilPopUpDisappear();
-        await viewCasePo.clickAddTaskButton();
-        await manageTaskBladePo.clickTaskLinkOnManageTask(automatedTaskSummary);
-        await viewTaskPo.clickOnEditTask();
-        await editTaskPo.setDynamicFieldValue('automatedText', 'sssssss');
-        await editTaskPo.setDateValueInDynamicField('wrong date');
-        await editTaskPo.clickOnSaveButton();
-        expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy("Wrong pop up message");
-        await editTaskPo.setDateTimeDynamicFieldValue('wrongdatetime');
-        await editTaskPo.clickOnSaveButton();
-        expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy("Wrong pop up message");
-        await editTaskPo.clickOnCancelButton();
-        await utilCommon.clickOnWarningOk();
-        await viewTaskPo.clickOnEditTask();
-        await editTaskPo.setDateValueInDynamicField('2020-03-01');
-        await editTaskPo.setDateTimeDynamicFieldValue('2020-03-04');
-        await editTaskPo.setDynamicFieldValue('automatedNumber', 'values');
-        await editTaskPo.clickOnSaveButton();
-        await utilityCommon.waitUntilPopUpDisappear();
-        //verify update values on case view
-        expect(await viewTaskPo.getDynamicFieldValue('automatedDate')).toBe('Mar 1, 2020');
-        expect(await viewTaskPo.getDynamicFieldValue('automatedDateTime')).toBe('Mar 4, 2020 12:00 AM');
-        expect(await viewTaskPo.getDynamicFieldValue('automatedNumber')).toBe('');
-    }, 270 * 1000);
+            await apiHelper.apiLogin('qkatawazi');
+            let autoTaskTemplate = await apiHelper.createAutomatedTaskTemplate(automationTaskTemplateData);
+            await apiHelper.createDynamicDataOnTemplate(autoTaskTemplate.id, 'AUTOMATED_TASK_TEMPLATE__DYNAMIC_FIELDS');
+        });
+        it('[DRDMV-13158]: [-ve] [UI] [Dynamic Data] - Update Task dynamic fields with invalid data', async () => {
+            await navigationPage.gotoCreateCase();
+            await createCasePo.selectRequester('qkatawazi');
+            await createCasePo.setSummary('new cases');
+            await createCasePo.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            await viewCasePo.clickAddTaskButton();
+            await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskTemplateData.templateSummary);
+            await manageTaskBladePo.waitUntilNumberOfTaskLinkAppear(1);
+            await manageTaskBladePo.addTaskFromTaskTemplate(automationTaskTemplateData.templateSummary);
+            await manageTaskBladePo.waitUntilNumberOfTaskLinkAppear(2);
+            await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskTemplateData.templateSummary);
+            await manageTaskBladePo.waitUntilNumberOfTaskLinkAppear(3);
+            await utilCommon.closePopUpMessage();
+        });
+        it('[DRDMV-13158]: [-ve] [UI] [Dynamic Data] - Update Task dynamic fields with invalid data', async () => {
+            await manageTaskBladePo.clickTaskLink(manualTaskTemplateData.templateSummary);
+            //verify dynamic field
+            await viewTaskPo.clickOnEditTask();
+            await editTaskPo.setDynamicFieldValue('temp', 'sssssss');
+            await editTaskPo.setDynamicFieldValue('temp1', 'eee');
+            await editTaskPo.setDateValueInDynamicField('wrong date');
+            await editTaskPo.clickOnAssignToMe();
+            await editCasePo.clickSaveCase();
+            expect(await utilityCommon.getDialoguePopupMessage()).toBe("The dynamic field contains invalid data that will not be saved. Do you want to proceed?");
+            await utilityCommon.clickOnApplicationWarningYesNoButton("No");
+            await editCasePo.setInvalidDateTimeDynamicField('wrongdatetime');
+            await editCasePo.clickSaveCase();
+            expect(await utilityCommon.getDialoguePopupMessage()).toBe("The dynamic field contains invalid data that will not be saved. Do you want to proceed?");
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+            await viewTaskPo.clickOnEditTask();
+            await editTaskPo.setDateValueInDynamicField('2020-03-01');
+            await editTaskPo.setDateTimeDynamicFieldValue('2020-03-04');
+            await editTaskPo.clickOnAssignToMe();
+            await editTaskPo.setDynamicFieldValue('temp1', 'eee');
+            await editTaskPo.clickOnSaveButton();
+            await utilCommon.closePopUpMessage();
+            //verify update values on case view
+            expect(await viewTaskPo.getDynamicFieldValue('temp2')).toBe('Mar 1, 2020');
+            expect(await viewTaskPo.getDynamicFieldValue('temp4')).toBe('Mar 4, 2020 12:00 AM');
+            expect(await viewTaskPo.getDynamicFieldValue('temp1')).toBe('-');
+        });
+        it('[DRDMV-13158]: [-ve] [UI] [Dynamic Data] - Update Task dynamic fields with invalid data', async () => {
+            await viewTaskPo.clickOnViewCase();
+            await viewCasePo.clickAddTaskButton();
+            await manageTaskBladePo.clickTaskLink(externalTaskTemplateData.templateSummary);
+            await viewTaskPo.clickOnEditTask();
+            await editTaskPo.setDynamicFieldValue('temp', 'sssssss');
+            await editTaskPo.setDynamicFieldValue('temp1', 'eee');
+            await editTaskPo.setDateValueInDynamicField('wrong date');
+            await editTaskPo.clickOnAssignToMe();
+            await editCasePo.clickSaveCase();
+            expect(await utilityCommon.getDialoguePopupMessage()).toBe("The dynamic field contains invalid data that will not be saved. Do you want to proceed?");
+            await utilityCommon.clickOnApplicationWarningYesNoButton("No");
+            await editCasePo.setInvalidDateTimeDynamicField('wrongdatetime');
+            await editCasePo.clickSaveCase();
+            expect(await utilityCommon.getDialoguePopupMessage()).toBe("The dynamic field contains invalid data that will not be saved. Do you want to proceed?");
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+            await viewTaskPo.clickOnEditTask();
+            await editTaskPo.setDateValueInDynamicField('2020-03-01');
+            await editTaskPo.setDateTimeDynamicFieldValue('2020-03-04');
+            await editTaskPo.clickOnAssignToMe();
+            await editTaskPo.setDynamicFieldValue('externalNumber', 'sssssss');
+            await editTaskPo.clickOnSaveButton();
+            await utilCommon.closePopUpMessage();
+            //verify update values on case view
+            expect(await viewTaskPo.getDynamicFieldValue('externalDate')).toBe('Mar 1, 2020');
+            expect(await viewTaskPo.getDynamicFieldValue('externalDateTime')).toBe('Mar 4, 2020 12:00 AM');
+            expect(await viewTaskPo.getDynamicFieldValue('externalNumber')).toBe('');
+        });
+        it('[DRDMV-13158]: [-ve] [UI] [Dynamic Data] - Update Task dynamic fields with invalid data', async () => {
+            await viewTaskPo.clickOnViewCase();
+            await viewCasePo.clickEditCaseButton();
+            await editCasePo.clickOnAssignToMe();
+            await editCasePo.clickSaveCase();
+            await utilCommon.closePopUpMessage();
+            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.clickSaveStatus('In Progress');
+            await utilityCommon.closePopUpMessage();
+            await viewCasePo.clickAddTaskButton();
+            await manageTaskBladePo.clickTaskLink(automationTaskTemplateData.templateSummary);
+            await viewTaskPo.clickOnEditTask();
+            await editTaskPo.setDynamicFieldValue('temp', 'sssssss');
+            await editTaskPo.setDynamicFieldValue('temp1', 'eee');
+            await editTaskPo.setDateValueInDynamicField('wrong date');
+            await editTaskPo.clickOnAssignToMe();
+            await editCasePo.clickSaveCase();
+            expect(await utilityCommon.getDialoguePopupMessage()).toBe("The dynamic field contains invalid data that will not be saved. Do you want to proceed?");
+            await utilityCommon.clickOnApplicationWarningYesNoButton("No");
+            await editCasePo.setInvalidDateTimeDynamicField('wrongdatetime');
+            await editCasePo.clickSaveCase();
+            expect(await utilityCommon.getDialoguePopupMessage()).toBe("The dynamic field contains invalid data that will not be saved. Do you want to proceed?");
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+            await viewTaskPo.clickOnEditTask();
+            await editTaskPo.setDateValueInDynamicField('2020-03-01');
+            await editTaskPo.setDateTimeDynamicFieldValue('2020-03-04');
+            await editTaskPo.setDynamicFieldValue('automatedNumber', 'values');
+            await editTaskPo.clickOnSaveButton();
+            await utilityCommon.closePopUpMessage();
+            //verify update values on case view
+            expect(await viewTaskPo.getDynamicFieldValue('automatedDate')).toBe('Mar 1, 2020');
+            expect(await viewTaskPo.getDynamicFieldValue('automatedDateTime')).toBe('Mar 4, 2020 12:00 AM');
+            expect(await viewTaskPo.getDynamicFieldValue('automatedNumber')).toBe('');
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        })
+    });
 
     //ptidke
     it('[DRDMV-13116]:[-ve] [Dynamic Data] - Add 2 or more new fields in Case Template with same Name (ID)', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let caseTemplateName = 'caseTemplateName13116' + randomStr;
-        let casTemplateSummary = 'CaseSummarySummary13116' + randomStr;
         let templateData = {
-            "templateName": `${caseTemplateName}`,
-            "templateSummary": `${casTemplateSummary}`,
+            "templateName": 'CaseTemplateName13116' + randomStr,
+            "templateSummary": 'CaseSummarySummary13116' + randomStr,
             "templateStatus": "Draft",
-            "resolveCaseonLastTaskCompletion": "1",
             "assignee": "Fritz",
             "company": "Petramco",
+            "businessUnit": "Facilities Support",
+            "ownerBU": "Facilities Support",
             "supportGroup": "Facilities",
             "ownerGroup": "Facilities"
         }
@@ -931,22 +1029,25 @@ describe('Dynamic data', () => {
         await apiHelper.createCaseTemplate(templateData);
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
-        await utilGrid.searchAndOpenHyperlink(caseTemplateName);
+        await utilGrid.searchAndOpenHyperlink(templateData.templateName);
         await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
         await dynamicFieldsPo.clickOnDynamicField();
         await dynamicFieldsPo.setFieldName('news' + randomStr);
         await dynamicFieldsPo.setDescriptionName('newDescri' + randomStr);
         await dynamicFieldsPo.clickSaveButton();
+        await utilCommon.closePopUpMessage();
         //duplicate
         await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
         await dynamicFieldsPo.clickOnDynamicField();
         await dynamicFieldsPo.setFieldName('news' + randomStr);
         await dynamicFieldsPo.setDescriptionName('newDescri' + randomStr);
         await dynamicFieldsPo.clickSaveButton();
-        expect(await utilityCommon.isPopUpMessagePresent('ERROR (970): Message not found, [bundleId = Ticketing-AppID, messageNum = 970] Duplicate Attributes Please remove duplicates and save again.')).toBeTruthy("Wrong pop up message");
+        expect(await utilCommon.isPopUpMessagePresent('ERROR (970): Message not found, [bundleId = Ticketing-AppID, messageNum = 970] Duplicate Attributes Please remove duplicates and save again.')).toBeTruthy("Wrong pop up message");
+        await utilCommon.closePopUpMessage();
         await dynamicFieldsPo.setFieldName('newName' + randomStr);
         await dynamicFieldsPo.setDescriptionName('NewDescription' + randomStr);
         await dynamicFieldsPo.clickSaveButton();
+        await utilCommon.closePopUpMessage();
         expect(await viewCasetemplatePo.isDynamicFieldDisplayed('NewDescription' + randomStr)).toBeTruthy();
         expect(await viewCasetemplatePo.isDynamicFieldDisplayed('newDescri' + randomStr)).toBeTruthy();
         await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
@@ -955,14 +1056,17 @@ describe('Dynamic data', () => {
         await dynamicFieldsPo.setDescriptionName('NewDescription' + randomStr);
         await dynamicFieldsPo.clickSaveButton();
         expect(await utilCommon.isPopUpMessagePresent('ERROR (970): Message not found, [bundleId = Ticketing-AppID, messageNum = 970] Duplicate Attributes Please remove duplicates and save again.')).toBeTruthy('Wrong pop up message');
+        await utilCommon.closePopUpMessage();
         await dynamicFieldsPo.setFieldName('newNameUpdate' + randomStr);
         await dynamicFieldsPo.setDescriptionName('NewUpdatedDescription' + randomStr);
         await dynamicFieldsPo.clickSaveButton();
+        await utilCommon.closePopUpMessage();
         expect(await viewCasetemplatePo.isDynamicFieldDisplayed('NewUpdatedDescription' + randomStr)).toBeTruthy();
     });//, 180 * 1000);
 
     //ptidke
     it('[DRDMV-13132,DRDMV-13124]:[-ve] [Dynamic Data] [UI] - Update Case dynamic fields with invalid data', async () => {
+        const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteDynamicFieldAndGroup();
         let caseTemplateName = randomStr + 'caseTemplateDRDMV-13132';
@@ -992,17 +1096,15 @@ describe('Dynamic data', () => {
         expect(await viewCasePo.isDynamicFieldDisplayed('dynamicList')).toBeTruthy('dynamic fields not present');
         await viewCasePo.clickEditCaseButton();
         await editCasePo.setDynamicFieldValue('temp', 'newtemp');
-        await editCasePo.setDynamicFieldValue('temp1', 'newtempres');
-        await editCasePo.clickSaveCase();
-        expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy("Wrong pop up message");
+        await editCasePo.setDynamicFieldValue('temp1', 'eeee');
         await editCasePo.setDateValueInDynamicField('wrong date');
         await editCasePo.clickSaveCase();
-        expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy("Wrong pop up message");
-        await editCasePo.setDateTimeDynamicFieldValue('wrongdatetime');
+        expect(await utilityCommon.getDialoguePopupMessage()).toBe("The dynamic field contains invalid data that will not be saved. Do you want to proceed?");
+        await utilityCommon.clickOnApplicationWarningYesNoButton("No");
+        await editCasePo.setInvalidDateTimeDynamicField('wrongdatetime');
         await editCasePo.clickSaveCase();
-        expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy("Wrong pop up message");
-        await editCasePo.clickOnCancelCaseButton();
-        await utilCommon.clickOnWarningOk();
+        expect(await utilityCommon.getDialoguePopupMessage()).toBe("The dynamic field contains invalid data that will not be saved. Do you want to proceed?");
+        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         expect(await viewCasePo.getValueOfDynamicFields('temp1')).toBe('-', 'field should be empty');
         expect(await viewCasePo.getValueOfDynamicFields('temp2')).toBe('-', 'field should be empty');
         expect(await viewCasePo.getValueOfDynamicFields('temp4')).toBe('-', 'field should be empty');
@@ -1010,6 +1112,7 @@ describe('Dynamic data', () => {
 
     //ptidke
     it('[DRDMV-13125]:[Dynamic Data] - Create Case from Create Case with Template having dynamic fields but does not have field with source as Requester', async () => {
+        const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteDynamicFieldAndGroup();
         let caseTemplateName = randomStr + 'caseTemplateDRDMV-13125';
@@ -1018,12 +1121,18 @@ describe('Dynamic data', () => {
             "templateName": `${caseTemplateName}`,
             "templateSummary": `${caseTemaplateSummary}`,
             "templateStatus": "Active",
+            "assignee": "Fritz",
+            "company": "Petramco",
+            "businessUnit": "Facilities Support",
+            "ownerBU": "Facilities Support",
+            "supportGroup": "Facilities",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('fritz');
         let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
         await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_DYNAMIC_FIELDS');
         await navigationPage.gotoCreateCase();
-        await createCasePo.selectRequester('qkatawazi');
+        await createCasePo.selectRequester('qdu');
         await createCasePo.setSummary('new cases');
         await createCasePo.clickSelectCaseTemplateButton();
         await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);

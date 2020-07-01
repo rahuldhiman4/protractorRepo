@@ -2,7 +2,6 @@ import { $, $$, browser, by, element, ElementFinder, protractor, ProtractorExpec
 
 const fs = require('fs');
 
-
 export class Util {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
@@ -24,6 +23,8 @@ export class Util {
         warningMsgText: '.modal-content .modal-title-message, .modal-content .d-modal__title',
         warningMsgTextKnowledgeStyle: '.d-modal__content .d-modal__content-item',
         backArrow: '[class="d-button d-icon-left-undo d-button_link d-button_small"]',
+        ckEditor: '.cke_inner',
+        ckEditorTextArea: '.cke_editable_themed',
     }
 
     async clickOnBackArrow(): Promise<void> {
@@ -121,7 +122,7 @@ export class Util {
     }
 
     async isErrorMsgPresent(): Promise<boolean> {
-            return await $(this.selectors.errorMsg).isDisplayed();
+        return await $(this.selectors.errorMsg).isDisplayed();
     }
 
     async isPopUpMessagePresent(expectedMsg: string, actualNumberOfPopups?: number): Promise<boolean> {
@@ -165,7 +166,7 @@ export class Util {
     }
 
     async clickOnWarningOk(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.warningOk)), 2000).then(async (result) => {
+        await $(this.selectors.warningOk).isPresent().then(async (result) => {
             if (result) {
                 await $(this.selectors.warningOk).click();
             }
@@ -186,12 +187,14 @@ export class Util {
             let element = await togglebutton.$('.d-icon-check')
             let isclicked = await element.getAttribute('aria-pressed');
             if (isclicked == 'false') {
+                await browser.sleep(500); //toggle is slow on settings pages
                 await element.click();
             }
         } else {
             let element = await togglebutton.$('.d-icon-circle_slash_o')
             let isclicked = await element.getAttribute('aria-pressed');
             if (isclicked == 'false') {
+                await browser.sleep(500); //toggle is slow on settings pages
                 await element.click();
             }
         }
@@ -270,6 +273,12 @@ export class Util {
 
     async isRequiredTagToField(guid: string): Promise<boolean> {
         let nameElement = await $(`[rx-view-component-id="${guid}"] span`);
+        let value: string = await browser.executeScript('return window.getComputedStyle(arguments[0], ":after").content;', nameElement);
+        return value.trim().substring(3, value.length - 2) === 'required';
+    }
+
+    async isRequiredTagToFieldElement(element: ElementFinder): Promise<boolean> {
+        let nameElement = element;
         let value: string = await browser.executeScript('return window.getComputedStyle(arguments[0], ":after").content;', nameElement);
         return value.trim().substring(3, value.length - 2) === 'required';
     }
@@ -364,6 +373,66 @@ export class Util {
         }
         await browser.waitForAngularEnabled(true);
         return arr;
+    }
+
+    async setCKEditor(description: string, guid?: string): Promise<void> {
+        let ckEditorLocator = this.selectors.ckEditor;
+        let ckEditorTextAreaLocator = this.selectors.ckEditorTextArea;
+        if (guid) {
+            ckEditorLocator = `[rx-view-component-id="${guid}"] ${this.selectors.ckEditor}`;
+            ckEditorTextAreaLocator = `[rx-view-component-id="${guid}"] ${this.selectors.ckEditorTextArea}`;
+        }
+        await $(ckEditorLocator).isPresent().then(async (result) => {
+            if (result) {
+                await browser.wait(this.EC.elementToBeClickable($(ckEditorTextAreaLocator)), 3000).then(async () => {
+                    await $(ckEditorTextAreaLocator).clear();
+                    await $(ckEditorTextAreaLocator).sendKeys(description);
+                });
+            }
+        });
+    }
+
+    async updateCKEditor(description: string, guid?: string): Promise<void> {
+        let ckEditorLocator = this.selectors.ckEditor;
+        let ckEditorTextAreaLocator = this.selectors.ckEditorTextArea;
+        if (guid) {
+            ckEditorLocator = `[rx-view-component-id="${guid}"] ${this.selectors.ckEditor}`;
+            ckEditorTextAreaLocator = `[rx-view-component-id="${guid}"] ${this.selectors.ckEditorTextArea}`;
+        }
+        await $(ckEditorLocator).isPresent().then(async (result) => {
+            if (result) {
+                await browser.wait(this.EC.elementToBeClickable($(ckEditorTextAreaLocator)), 3000).then(async () => {
+                    await $(ckEditorTextAreaLocator).sendKeys(description);
+                });
+            }
+        });
+    }
+
+    async getCKEditorText(guid?: string): Promise<string> {
+        let ckEditorLocator = this.selectors.ckEditor;
+        let ckEditorTextAreaLocator = this.selectors.ckEditorTextArea;
+        if (guid) {
+            ckEditorLocator = `[rx-view-component-id="${guid}"] ${this.selectors.ckEditor}`;
+            ckEditorTextAreaLocator = `[rx-view-component-id="${guid}"] ${this.selectors.ckEditorTextArea}`;
+        }
+        return await $(ckEditorLocator).isPresent().then(async (result) => {
+            if (result) {
+                return await browser.wait(this.EC.visibilityOf($(ckEditorTextAreaLocator)), 3000).then(async () => {
+                    return await $(ckEditorTextAreaLocator).getText();
+                });
+            }
+        });
+    }
+
+    async closeBladeOnSettings(): Promise<void> {
+        await $('body').sendKeys(protractor.Key.ESCAPE);
+        await this.clickOnWarningOk();
+    }
+
+    async isButtonVisible(buttonName: string): Promise<boolean> {
+        return await element(by.cssContainingText('button.d-button', buttonName)).isPresent().then( async (result) => {
+            if(result) return await element(by.cssContainingText('button.d-button', buttonName)).isDisplayed();
+        })
     }
 }
 

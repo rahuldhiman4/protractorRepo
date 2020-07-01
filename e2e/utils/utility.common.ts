@@ -8,10 +8,10 @@ export class Utility {
     selectors = {
         dropdownBox: '.dropdown-toggle',
         dropDownInput: 'input.form-control',
-        dropDownNoneOpt: '.dropdown_select__btn',
+        dropDownNoneOpt: '.dropdown-item span',
         dropDownOption: '.dropdown_select__menu-content button',
-        warningDialog: '.modal-content .modal-title, .modal-content .d-modal__title',
-        warningDialogMsg: '.modal-content .modal-body, .modal-content .d-modal__content-item',
+        dialogMessageTitle: '.modal-content .modal-title, .modal-content .d-modal__title',
+        dialogMessageText: '.modal-content .modal-body, .modal-content .d-modal__content-item',
         popUpMsgLocator: '.a-toast__details div',
         popupMsgTitle: '.a-toast__summary',
         closeTipMsg: '.a-toast__close-button',
@@ -27,6 +27,8 @@ export class Utility {
         meridiemClock: '.a3t-clock--control-item',
         okDateTimePicker: '.btn-primary',
         clearDateTimePicker: '.btn-secondary',
+        ckEditor: 'bwf-rich-text-editor[style="display: block;"], .activity-feed-note-text-container',
+        ckEditorTextArea: '.cke_enable_context_menu',
     }
 
     async selectDropDown(guid: string, value: string): Promise<void> {
@@ -47,7 +49,7 @@ export class Utility {
     async clearDropDown(guid: string): Promise<void> {
         const dropDown = await $(`[rx-view-component-id="${guid}"]`);
         const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
-        const dropDownSelectNoneItem = await dropDown.$(this.selectors.dropDownNoneOpt);
+        const dropDownSelectNoneItem = await dropDown.element(by.cssContainingText(this.selectors.dropDownNoneOpt, 'None'));
         await dropDownBoxElement.click();
         await dropDownSelectNoneItem.click();
         await dropDownBoxElement.click();
@@ -84,7 +86,7 @@ export class Utility {
         await browser.executeScript("arguments[0].scrollIntoView();", $(`${element}`).getWebElement());
     }
 
-    async isPopUpMessagePresent(expectedMsg: string, actualNumberOfPopups?: number): Promise<boolean> {
+    async isPopUpMessagePresent(expectedMsg: string, actualNumberOfPopups?: number): Promise<boolean> {
         let arr: string[] = await this.getAllPopupMsg(actualNumberOfPopups);
         return arr.includes(expectedMsg);
     }
@@ -154,7 +156,6 @@ export class Utility {
         return str;
     }
 
-
     async getSelectedFieldValue(fieldName: string): Promise<string> {
         let metadataField = `//span[@class='d-textfield__item'][text()='${fieldName}']/following-sibling::*//span[contains(@class,'ui-select-match-text')]`;
         let actualFieldVal: string = await element(by.xpath(metadataField)).getText();
@@ -162,7 +163,7 @@ export class Utility {
     }
 
     async isFieldLabelDisplayed(guid: string, fieldName: string): Promise<boolean> {
-        let fieldLabel = `[rx-view-component-id='${guid}'] rx-read-only-field label, [rx-view-component-id='${guid}'] label.d-textfield__label span`;
+        let fieldLabel = `[rx-view-component-id='${guid}'] rx-read-only-field label, [rx-view-component-id='${guid}'] label.d-textfield__label span, [rx-view-component-id='${guid}'] bwf-read-only-field label`;
         return await element(by.cssContainingText(fieldLabel, fieldName)).isPresent().then(async (result) => {
             if (result) {
                 return await element(by.cssContainingText(fieldLabel, fieldName)).getText() == fieldName ? true : false;
@@ -180,11 +181,20 @@ export class Utility {
     async isRequiredTagToField(guid: string): Promise<boolean> {
         let isRequired: boolean = await $(`[rx-view-component-id="${guid}"] .form-control-required`).isPresent();
         if (!isRequired) {
-            let nameElement = await $(`[rx-view-component-id="${guid}"] label`);
-            let value: string = await browser.executeScript('return window.getComputedStyle(arguments[0], ":after").content;', nameElement);
+            let nameElement = await $(`[rx-view-component-id="${guid}"] .form-control-label`);
+        let value: string = await browser.executeScript('return window.getComputedStyle(arguments[0], ":after").content;', nameElement);
             isRequired = value.trim().substring(3, value.length - 2) === 'required';
         }
         return isRequired;
+    }
+
+    async isRequiredTagToFieldElement(nameElement: ElementFinder): Promise<boolean> {
+        return await nameElement.isPresent().then(async (result) => {
+            if (result) {
+                let value: string = await browser.executeScript('return window.getComputedStyle(arguments[0], ":after").content;', nameElement);
+                return value.trim().substring(3, value.length - 2) === 'required';
+            } else return false;
+        });
     }
 
     async deleteAlreadyDownloadedFile(fileName: string): Promise<boolean> {
@@ -229,79 +239,85 @@ export class Utility {
 
     async setDateField(guid: string, dateValue: string): Promise<void> {
         //expects dateValue as format 04-01-2023 06:11 PM  -  DD-MM-YYYY HH:MM PM/AM
-        let currentDate = new Date();
-        let currentMonth = currentDate.getMonth() + 1;      //incrementing 1 because getmonth() function returns 0 for jan and 11 for dec
-        let arr = dateValue.split(" ");
-        let date = arr[0].split("-");
-        let time = arr[1].split(":");
-        let meridiem = arr[2];
-        let day: number = +date[0];
-        let month: number = +date[1];
-        let year: number = +date[2];
-        let hour: number = +time[0];
-        let minutes: number = +time[1];
-        let yearDifference = year - currentDate.getFullYear();
-        let monthDifference = month - currentMonth;
-        let dateFieldGuid = await $(`[rx-view-component-id='${guid}']`);
-        let dateFieldElement = await dateFieldGuid.$(this.selectors.dateFieldPicker);
-        await dateFieldElement.click();
-        if (yearDifference > 0) {
-            for (let i = 0; i < yearDifference; i++) {
-                await dateFieldGuid.$(this.selectors.yearDate).$(this.selectors.rightNavigation).click();
-            }
-        }
-        else if (yearDifference < 0) {
-            for (let i = 0; i < (currentDate.getFullYear() - year); i++) {
-                await dateFieldGuid.$(this.selectors.yearDate).$(this.selectors.leftNavigation).click();
-            }
-        }
+        if (dateValue.includes(":") && dateValue.includes("-")) { // validates correct date format
 
-        if (monthDifference > 0) {
-            for (let i = 0; i < monthDifference; i++) {
-                await dateFieldGuid.$(this.selectors.monthDate).$(this.selectors.rightNavigation).click();
-            }
-        }
-        else if (monthDifference < 0) {
-            for (let i = 0; i < (currentMonth - month); i++) {
-                await dateFieldGuid.$(this.selectors.monthDate).$(this.selectors.leftNavigation).click();
-            }
-        }
-
-        await browser.sleep(2000);
-        let numberOfDays = await dateFieldGuid.$$(this.selectors.calendarDays).count();
-        let dayToCompare: string = day + ", " + year;
-        for (let i = 0; i < numberOfDays; i++) {
-            let activeDayElement: string = await dateFieldGuid.$$(this.selectors.calendarDays).get(i).getAttribute('aria-label');
-            if (activeDayElement.search(dayToCompare) != -1) {
-                await dateFieldGuid.$$(this.selectors.calendarDays).get(i).click();
-                break;
-            }
-        }
-
-        await dateFieldGuid.$(this.selectors.selectTimeArrow).click();
-        let degrees = hour * 30;
-        await dateFieldGuid.$(`.a3t-clock--tick-label[style="transform: rotate(-${degrees}deg);"]`).click();
-        degrees = minutes * 6;
-        await dateFieldGuid.$(`.a3t-clock--tick-label[style="transform: rotate(-${degrees}deg);"]`).click();
-        let isActive = false;
-        let activeCounter = await dateFieldGuid.$$(this.selectors.activeMeridiemClock).count();
-        for (let i = 0; i < activeCounter; i++) {
-            if (await dateFieldGuid.$$(this.selectors.activeMeridiemClock).get(i).getText() == meridiem) {
-                isActive = true;
-                break;
-            }
-        }
-
-        if (isActive == false) {
-            let counter = await dateFieldGuid.$$(this.selectors.meridiemClock).count();
-            for (let i = 0; i < counter; i++) {
-                if (await dateFieldGuid.$$(this.selectors.meridiemClock).get(i).getText() == meridiem) {
-                    await dateFieldGuid.$$(this.selectors.meridiemClock).get(i).click();
+            let currentDate = new Date();
+            let currentMonth = currentDate.getMonth() + 1;      //incrementing 1 because getmonth() function returns 0 for jan and 11 for dec
+            let arr = dateValue.split(" ");
+            let date = arr[0].split("-");
+            let time = arr[1].split(":");
+            let meridiem = arr[2];
+            let day: number = +date[0];
+            let month: number = +date[1];
+            let year: number = +date[2];
+            let hour: number = +time[0];
+            let minutes: number = +time[1];
+            let yearDifference = year - currentDate.getFullYear();
+            let monthDifference = month - currentMonth;
+            let dateFieldGuid = await $(`[rx-view-component-id='${guid}']`);
+            let dateFieldElement = await dateFieldGuid.$(this.selectors.dateFieldPicker);
+            await dateFieldElement.click();
+            if (yearDifference > 0) {
+                for (let i = 0; i < yearDifference; i++) {
+                    await dateFieldGuid.$(this.selectors.yearDate).$(this.selectors.rightNavigation).click();
                 }
             }
-        }
+            else if (yearDifference < 0) {
+                for (let i = 0; i < (currentDate.getFullYear() - year); i++) {
+                    await dateFieldGuid.$(this.selectors.yearDate).$(this.selectors.leftNavigation).click();
+                }
+            }
 
-        await dateFieldGuid.$(this.selectors.okDateTimePicker).click();
+            if (monthDifference > 0) {
+                for (let i = 0; i < monthDifference; i++) {
+                    await dateFieldGuid.$(this.selectors.monthDate).$(this.selectors.rightNavigation).click();
+                }
+            }
+            else if (monthDifference < 0) {
+                for (let i = 0; i < (currentMonth - month); i++) {
+                    await dateFieldGuid.$(this.selectors.monthDate).$(this.selectors.leftNavigation).click();
+                }
+            }
+
+            await browser.sleep(2000);
+            let numberOfDays = await dateFieldGuid.$$(this.selectors.calendarDays).count();
+            let dayToCompare: string = day + ", " + year;
+            for (let i = 0; i < numberOfDays; i++) {
+                let activeDayElement: string = await dateFieldGuid.$$(this.selectors.calendarDays).get(i).getAttribute('aria-label');
+                if (activeDayElement.search(dayToCompare) != -1) {
+                    await dateFieldGuid.$$(this.selectors.calendarDays).get(i).click();
+                    break;
+                }
+            }
+
+            await dateFieldGuid.$(this.selectors.selectTimeArrow).click();
+            let degrees = hour * 30;
+            await dateFieldGuid.$(`.a3t-clock--tick-label[style="transform: rotate(-${degrees}deg);"]`).click();
+            degrees = minutes * 6;
+            await dateFieldGuid.$(`.a3t-clock--tick-label[style="transform: rotate(-${degrees}deg);"]`).click();
+            let isActive = false;
+            let activeCounter = await dateFieldGuid.$$(this.selectors.activeMeridiemClock).count();
+            for (let i = 0; i < activeCounter; i++) {
+                if (await dateFieldGuid.$$(this.selectors.activeMeridiemClock).get(i).getText() == meridiem) {
+                    isActive = true;
+                    break;
+                }
+            }
+
+            if (isActive == false) {
+                let counter = await dateFieldGuid.$$(this.selectors.meridiemClock).count();
+                for (let i = 0; i < counter; i++) {
+                    if (await dateFieldGuid.$$(this.selectors.meridiemClock).get(i).getText() == meridiem) {
+                        await dateFieldGuid.$$(this.selectors.meridiemClock).get(i).click();
+                    }
+                }
+            }
+            await dateFieldGuid.$(this.selectors.okDateTimePicker).click();
+        }
+    }
+
+    async getDialoguePopupMessage(): Promise<string> {
+        return await $(this.selectors.dialogMessageText).getText();
     }
 
     async isPopupMsgsMatches(msgs: string[], actualNumberOfPopups?: number): Promise<boolean> {
@@ -368,7 +384,74 @@ export class Utility {
     }
 
     async clickOnApplicationWarningYesNoButton(buttonName: string): Promise<void> {
-        await element(by.cssContainingText('.modal-footer adapt-button', buttonName)).click();
+        await $('rx-modal').isPresent().then(async (result) => {
+            if (result) await element(by.cssContainingText('.modal-footer adapt-button', buttonName)).click();
+        });
+    }
+
+    async setCKEditor(description: string, guid?: string): Promise<void> {
+        let ckEditorLocator = this.selectors.ckEditor;
+        let ckEditorTextAreaLocator = this.selectors.ckEditorTextArea;
+        if (guid) {
+            ckEditorLocator = `[rx-view-component-id="${guid}"] ${this.selectors.ckEditor}`;
+            ckEditorTextAreaLocator = `[rx-view-component-id="${guid}"] ${this.selectors.ckEditorTextArea}`;
+        }
+        await $(ckEditorLocator).isPresent().then(async (result) => {
+            if (result) {
+                await browser.wait(this.EC.elementToBeClickable($(ckEditorTextAreaLocator)), 3000).then(async () => {
+                    await $(ckEditorTextAreaLocator).clear();
+                    await $(ckEditorTextAreaLocator).sendKeys(description);
+                });
+            }
+        });
+    }
+
+    async updateCKEditor(description: string, guid?: string): Promise<void> {
+        let ckEditorLocator = this.selectors.ckEditor;
+        let ckEditorTextAreaLocator = this.selectors.ckEditorTextArea;
+        if (guid) {
+            ckEditorLocator = `[rx-view-component-id="${guid}"] ${this.selectors.ckEditor}`;
+            ckEditorTextAreaLocator = `[rx-view-component-id="${guid}"] ${this.selectors.ckEditorTextArea}`;
+        }
+        await $(ckEditorLocator).isPresent().then(async (result) => {
+            if (result) {
+                await browser.wait(this.EC.elementToBeClickable($(ckEditorTextAreaLocator)), 3000).then(async () => {
+                    await $(ckEditorTextAreaLocator).sendKeys(description);
+                });
+            }
+        });
+    }
+
+    async getCKEditorText(guid?: string): Promise<string> {
+        let ckEditorLocator = this.selectors.ckEditor;
+        let ckEditorTextAreaLocator = this.selectors.ckEditorTextArea;
+        if (guid) {
+            ckEditorLocator = `[rx-view-component-id="${guid}"] ${this.selectors.ckEditor}`;
+            ckEditorTextAreaLocator = `[rx-view-component-id="${guid}"] ${this.selectors.ckEditorTextArea}`;
+        }
+        return await $(ckEditorLocator).isPresent().then(async (result) => {
+            if (result) {
+                return await browser.wait(this.EC.visibilityOf($(ckEditorTextAreaLocator)), 3000).then(async () => {
+                    return await $(ckEditorTextAreaLocator).getText();
+                });
+            }
+        });
+    }
+
+    async getOldDate(noOfDays: number): Promise<Date> {
+        let d: Date = new Date();
+        d.setDate(d.getDate() - noOfDays);
+        return d;
+    }
+
+    async closeAllBlades(): Promise<void> {
+        await $('body').sendKeys(protractor.Key.ESCAPE);
+        await $('.modal-title').isPresent().then(async (result) => {
+            if (result) await this.clickOnApplicationWarningYesNoButton("Yes");
+        });
+        for (let i: number = 0; i < 2; i++) {
+            await $('body').sendKeys(protractor.Key.ESCAPE);
+        }
     }
 }
 

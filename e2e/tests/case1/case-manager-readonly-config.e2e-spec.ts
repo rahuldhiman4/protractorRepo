@@ -1,5 +1,6 @@
 import { browser } from "protractor";
 import apiHelper from "../../api/api.helper";
+import { NOTES_TEMPLATE_MANDATORY_FIELD } from '../../data/ui/Social/notesTemplate.api';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import menuItemEditPage from "../../pageobject/settings/application-config/edit-menu-items-config.po";
@@ -39,6 +40,7 @@ describe('Case Manager Read-only Config', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 
@@ -51,9 +53,9 @@ describe('Case Manager Read-only Config', () => {
         await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
-        expect(await assignmentConfigConsole.isAddAssignmentsBtnDisabled()).toBeTruthy();
+        expect(await assignmentConfigConsole.isAddAssignmentsBtnDisplayed()).toBeFalsy();
         await utilGrid.searchAndSelectAllCheckBoxWOGrid("Benefits Assignment");
-        expect(await assignmentConfigConsole.isDeleteAssignmentConfigBtnDisabled()).toBeTruthy();
+        expect(await assignmentConfigConsole.isDeleteAssignmentConfigBtnDisplayed()).toBeFalsy();
         await utilityCommon.refresh();
         await utilGrid.searchAndOpenHyperlink("Benefits Assignment");
         expect(await assignmentConfigEditPage.isEditAssignmentNameDisabled()).toBeTruthy();
@@ -67,9 +69,9 @@ describe('Case Manager Read-only Config', () => {
         await navigationPage.gotoCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
-        expect(await caseReadAccessConfigConsole.isAddButtonDisabled()).toBeTruthy();
+        expect(await caseReadAccessConfigConsole.isAddButtonDisplayed()).toBeFalsy();
         await utilGrid.searchAndSelectAllCheckBoxWOGrid("Relocation - Facilities Access Mapping");
-        expect(await caseReadAccessConfigConsole.isDeleteButtonDisabled()).toBeTruthy();
+        expect(await caseReadAccessConfigConsole.isDeleteButtonDisplayed()).toBeFalsy();
         await utilityCommon.refresh();
         await utilGrid.searchAndOpenHyperlink("Relocation - Facilities Access Mapping");
         expect(await caseReadAccessConfigEditPage.isAccessMappingNameDisabled()).toBeTruthy();
@@ -83,7 +85,7 @@ describe('Case Manager Read-only Config', () => {
         await navigationPage.gotoCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
-        expect(await processLibraryConfigConsole.isRegisterProcessBtnDisabled()).toBeTruthy();
+        expect(await processLibraryConfigConsole.isRegisterProcessBtnDisplayed()).toBeFalsy();
         await utilGrid.searchAndOpenHyperlink("Facilities - Lifecycle Investigation");
         expect(await processLibraryEditPage.isDescriptionDisabled()).toBeTruthy("Description field is enabled");
         expect(await processLibraryEditPage.isStatusDisabled()).toBeTruthy("Status field is enabled");
@@ -96,7 +98,7 @@ describe('Case Manager Read-only Config', () => {
         await navigationPage.gotoCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
-        expect(await menuItemsConfigConsole.isAddButtonDisabled()).toBeTruthy();
+        expect(await menuItemsConfigConsole.isAddButtonDisplayed()).toBeFalsy();
         await utilGrid.searchAndOpenHyperlink("Email");
         expect(await menuItemEditPage.isMenuItemsStatusDisabled()).toBeTruthy("Status field is enabled");
         expect(await menuItemEditPage.isDefaultToggleBtnDisabled()).toBeTruthy("Default Toggle is enabled");
@@ -127,7 +129,7 @@ describe('Case Manager Read-only Config', () => {
         await navigationPage.gotoCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Service Level Management--Goal Type', 'Goal Type - Business Workflows');
-        expect(await goalTypeConfigConsole.isAddGoalTypeBtnDisabled()).toBeTruthy("Add button is enabled");
+        expect(await goalTypeConfigConsole.isAddGoalTypeBtnDisplayed()).toBeFalsy("Add button is enabled");
         await utilGrid.searchAndOpenHyperlink("Case Resolution Time");
         expect(await goalTypeEditPage.isStatusFieldDisabled()).toBeTruthy("Status field is enabled");
         expect(await goalTypeEditPage.isSaveButtonDisabled()).toBeTruthy("Save button is enabled");
@@ -152,10 +154,12 @@ describe('Case Manager Read-only Config', () => {
 
     // asahitya
     it('[DRDMV-18093]: Check Case manager is not able to perform Create Update operation on Business Time Shared Entity', async () => {
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.createBusinessTimeSharedEntity('India Business Hours');
         await navigationPage.gotoCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Service Level Management--Business Time Shared Entity', 'Business Time Shared Entity Console - Business Workflows');
-        expect(await businessTimeSharedEntityConfigConsole.isAddBtnDisabled()).toBeTruthy("Add button is enabled");
+        expect(await businessTimeSharedEntityConfigConsole.isAddBtnDisplayed()).toBeFalsy("Add button is enabled");
         await utilGrid.searchAndOpenHyperlink("India Business Hours");
         await businessTimeEntityConfigEditPage.updateStatus("Pending");
         expect(await businessTimeEntityConfigEditPage.isSaveBtnDisabled()).toBeTruthy("Save button is enabled");
@@ -167,10 +171,12 @@ describe('Case Manager Read-only Config', () => {
 
     // asahitya
     it('[DRDMV-18083]: Check Case manager is not able to perform Create Update operation on Business Time Segment', async () => {
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.createBusinessTimeSegment('India Available M-F 9AM-5PM');
         await navigationPage.gotoCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Service Level Management--Business Time Segment', 'Business Time Segment Console - Business Workflows');
-        expect(await businessTimeSegmentConfigConsole.isAddBusinessSegmentBtnDisabled()).toBeTruthy("Add Business Time Segment button is enabled");
+        expect(await businessTimeSegmentConfigConsole.isAddBusinessSegmentBtnDisplayed()).toBeFalsy("Add Business Time Segment button is enabled");
         await utilGrid.searchAndOpenHyperlink("India Available M-F 9AM-5PM");
         await businessTimeSegmentConfigEditPage.updateStatus("Draft");
         await businessTimeSegmentConfigEditPage.clickNextButton();
@@ -183,19 +189,17 @@ describe('Case Manager Read-only Config', () => {
         //API call to create the case notes template
         await apiHelper.apiLogin('qkatawazi');
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let notesTemplateData = require('../../data/ui/social/notesTemplate.ui.json');
-        let notesTemplateName: string = await notesTemplateData['notesTemplateWithMandatoryField'].templateName + randomStr;
-        notesTemplateData['notesTemplateWithMandatoryField'].templateName = notesTemplateName;
-        await apiHelper.createNotesTemplate("Case", notesTemplateData['notesTemplateWithMandatoryField']);
+        NOTES_TEMPLATE_MANDATORY_FIELD.templateName = NOTES_TEMPLATE_MANDATORY_FIELD.templateName + randomStr;
+        await apiHelper.createNotesTemplate("Case", NOTES_TEMPLATE_MANDATORY_FIELD);
 
         await navigationPage.gotoCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
-        expect(await notesTemplateConsole.isAddNotesTemplateBtnDisabled()).toBeTruthy("Add notes template button is enabled");
-        await utilGrid.clickCheckBoxOfValueInGrid(notesTemplateName);
-        expect(await notesTemplateConsole.isDeleteNotesTemplateBtnDisabled()).toBeTruthy("Delete notes template button is enabled");
+        expect(await notesTemplateConsole.isAddNotesTemplateBtnDisplayed()).toBeFalsy("Add notes template button is enabled");
+        await utilGrid.clickCheckBoxOfValueInGrid(NOTES_TEMPLATE_MANDATORY_FIELD.templateName);
+        expect(await notesTemplateConsole.isDeleteNotesTemplateBtnDisplayed()).toBeFalsy("Delete notes template button is enabled");
         await utilityCommon.refresh();
-        await utilGrid.searchAndOpenHyperlink(notesTemplateName);
+        await utilGrid.searchAndOpenHyperlink(NOTES_TEMPLATE_MANDATORY_FIELD.templateName);
         expect(await editNotesTemplateConfig.isStatusFieldDisabled()).toBeTruthy("Status field is enabled");
         expect(await editNotesTemplateConfig.isDescriptionFieldDisabled()).toBeTruthy("Description field is enabled");
         await utilityCommon.refresh();
@@ -206,19 +210,17 @@ describe('Case Manager Read-only Config', () => {
         //API call to create the case notes template
         await apiHelper.apiLogin('qkatawazi');
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let notesTemplateData = require('../../data/ui/social/notesTemplate.ui.json');
-        let notesTemplateName: string = await notesTemplateData['notesTemplateWithMandatoryField'].templateName + randomStr;
-        notesTemplateData['notesTemplateWithMandatoryField'].templateName = notesTemplateName;
-        await apiHelper.createNotesTemplate("Task", notesTemplateData['notesTemplateWithMandatoryField']);
+        NOTES_TEMPLATE_MANDATORY_FIELD.templateName = NOTES_TEMPLATE_MANDATORY_FIELD.templateName + randomStr;
+        await apiHelper.createNotesTemplate("Task", NOTES_TEMPLATE_MANDATORY_FIELD);
 
         await navigationPage.gotoCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', 'Activity Notes Template Console - Task - Business Workflows');
-        expect(await notesTemplateConsole.isAddNotesTemplateBtnDisabled()).toBeTruthy("Add notes template button is enabled");
-        await utilGrid.clickCheckBoxOfValueInGrid(notesTemplateName);
-        expect(await notesTemplateConsole.isDeleteNotesTemplateBtnDisabled()).toBeTruthy("Delete notes template button is enabled");
+        expect(await notesTemplateConsole.isAddNotesTemplateBtnDisplayed()).toBeFalsy("Add notes template button is enabled");
+        await utilGrid.clickCheckBoxOfValueInGrid(NOTES_TEMPLATE_MANDATORY_FIELD.templateName);
+        expect(await notesTemplateConsole.isDeleteNotesTemplateBtnDisplayed()).toBeFalsy("Delete notes template button is enabled");
         await utilityCommon.refresh();
-        await utilGrid.searchAndOpenHyperlink(notesTemplateName);
+        await utilGrid.searchAndOpenHyperlink(NOTES_TEMPLATE_MANDATORY_FIELD.templateName);
         expect(await editNotesTemplateConfig.isStatusFieldDisabled()).toBeTruthy("Status field is enabled");
         expect(await editNotesTemplateConfig.isDescriptionFieldDisabled()).toBeTruthy("Description field is enabled");
         await utilityCommon.refresh();
@@ -229,19 +231,17 @@ describe('Case Manager Read-only Config', () => {
         //API call to create the case notes template
         await apiHelper.apiLogin('qkatawazi');
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let notesTemplateData = require('../../data/ui/social/notesTemplate.ui.json');
-        let notesTemplateName: string = await notesTemplateData['notesTemplateWithMandatoryField'].templateName + randomStr;
-        notesTemplateData['notesTemplateWithMandatoryField'].templateName = notesTemplateName;
-        await apiHelper.createNotesTemplate("People", notesTemplateData['notesTemplateWithMandatoryField']);
+        NOTES_TEMPLATE_MANDATORY_FIELD.templateName = NOTES_TEMPLATE_MANDATORY_FIELD.templateName + randomStr;
+        await apiHelper.createNotesTemplate("People", NOTES_TEMPLATE_MANDATORY_FIELD);
 
         await navigationPage.gotoCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'Activity Notes Template Console - Person - Business Workflows');
-        expect(await notesTemplateConsole.isAddNotesTemplateBtnDisabled()).toBeTruthy("Add notes template button is enabled");
-        await utilGrid.clickCheckBoxOfValueInGrid(notesTemplateName);
-        expect(await notesTemplateConsole.isDeleteNotesTemplateBtnDisabled()).toBeTruthy("Delete notes template button is enabled");
+        expect(await notesTemplateConsole.isAddNotesTemplateBtnDisplayed()).toBeFalsy("Add notes template button is enabled");
+        await utilGrid.clickCheckBoxOfValueInGrid(NOTES_TEMPLATE_MANDATORY_FIELD.templateName);
+        expect(await notesTemplateConsole.isDeleteNotesTemplateBtnDisplayed()).toBeFalsy("Delete notes template button is enabled");
         await utilityCommon.refresh();
-        await utilGrid.searchAndOpenHyperlink(notesTemplateName);
+        await utilGrid.searchAndOpenHyperlink(NOTES_TEMPLATE_MANDATORY_FIELD.templateName);
         expect(await editNotesTemplateConfig.isStatusFieldDisabled()).toBeTruthy("Status field is enabled");
         expect(await editNotesTemplateConfig.isDescriptionFieldDisabled()).toBeTruthy("Description field is enabled");
         await utilityCommon.refresh();
@@ -260,7 +260,7 @@ describe('Case Manager Read-only Config', () => {
         await navigationPage.gotoCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', 'Flowsets - Console - Business Workflows');
-        expect(await flowsetConsole.isAddFlowsetButtonDisabled()).toBeTruthy("Add button is enabled");
+        expect(await flowsetConsole.isAddFlowsetButtonDisplayed()).toBeFalsy("Add button is enabled");
         await utilGrid.searchAndOpenHyperlink(flowsetName);
         expect(await flowsetEditPage.isAddAssociationBtnDisabled()).toBeTruthy("Add Associate Category button is enabled");
         expect(await flowsetEditPage.isFlowsetNameDisabled()).toBeTruthy("Flowset name  is enabled");
@@ -319,10 +319,10 @@ describe('Case Manager Read-only Config', () => {
         await navigationPage.gotoCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
-        expect(await emailTemplateConsolePage.isAddEmailTemplateButtonEnabled()).toBeFalsy('Add Email Template Button is enabled');
+        expect(await emailTemplateConsolePage.isAddEmailTemplateButtonDisplayed()).toBeFalsy('Add Email Template Button is enabled');
         await utilGrid.searchRecord(emailTemplateName);
         await utilGrid.clickCheckBoxOfValueInGrid(emailTemplateName);
-        expect(await emailTemplateConsolePage.isDeleteEmailTemplateButtonEnabled()).toBeFalsy('Delete Template Button is enabled');
+        expect(await emailTemplateConsolePage.isDeleteEmailTemplateButtonDisplayed()).toBeFalsy('Delete Template Button is enabled');
         await utilityCommon.refresh();
         await utilGrid.searchAndOpenHyperlink(emailTemplateName);
         expect(await editEmailTemplatePage.isTemplateNameEnabled()).toBeFalsy('Template Name is enabled');
@@ -347,10 +347,10 @@ describe('Case Manager Read-only Config', () => {
         await navigationPage.gotoCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
-        expect(await acknowledgementTemplateConsolePage.isAddAcknowledgeTemplateButtonEnabled()).toBeFalsy('Add Email Template Button is enabled');
+        expect(await acknowledgementTemplateConsolePage.isAddAcknowledgeTemplateButtonDisplayed()).toBeFalsy('Add Email Template Button is enabled');
         await utilGrid.searchRecord(emailTemplateName);
         await utilGrid.clickCheckBoxOfValueInGrid(emailTemplateName);
-        expect(await acknowledgementTemplateConsolePage.isDeleteAcknowledgementTemplateButtonEnabled()).toBeFalsy('Delete Template Button is enabled');
+        expect(await acknowledgementTemplateConsolePage.isDeleteAcknowledgementTemplateButtonDisplayed()).toBeFalsy('Delete Template Button is enabled');
         await utilityCommon.refresh();
         await utilGrid.searchAndOpenHyperlink(emailTemplateName);
         expect(await editAcknowledementTemplatePage.isTemplateNameEnabled()).toBeFalsy('Template Name is enabled');
@@ -361,6 +361,5 @@ describe('Case Manager Read-only Config', () => {
         await editAcknowledementTemplatePage.clickOnSubjectCheckbox();
         expect(await editAcknowledementTemplatePage.isEditButtonEnabled()).toBeFalsy('Edit Subject button is enabled');
         await utilityCommon.refresh();
-    });//, 150 * 1000);
-
-})
+    });
+});

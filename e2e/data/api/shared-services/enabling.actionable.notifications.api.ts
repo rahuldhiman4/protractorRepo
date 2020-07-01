@@ -16,7 +16,7 @@ export const ACTIONABLE_NOTIFICATIONS_ENABLEMENT_SETTING = {
         },
         "3205": {
             "id": 3205,
-            "value": "http://clm-pun-srgud0.bmc.com:8008/"
+            "value": "http://clm-pun-srgud0.bmc.com:8008"
         }
     }
 }

@@ -20,8 +20,8 @@ import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-ar
 import activityTabPo from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
-import utilGrid from "../../utils/util.grid";
 import utilityCommon from '../../utils/utility.common';
+import utilityGrid from "../../utils/utility.grid";
 
 let caseBAUser = 'qkatawazi';
 let caseAgentUser = 'qtao';
@@ -101,11 +101,13 @@ describe('Knowledge Articles - Versioning Tests', () => {
         let knowledgeSet = await apiHelper.createKnowledgeSet(knowledgeSetData);
         await apiHelper.createKnowledgeArticleTemplate(knowledgeSetData.knowledgeSetTitle, knowledgeSet.id, knowledgeArticleTemplateData);
     });
+
     afterEach(async () => {
         await utilityCommon.refresh();
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 
@@ -113,35 +115,24 @@ describe('Knowledge Articles - Versioning Tests', () => {
     it('[DRDMV-20656]: Verify that the newly created article shows the article version', async () => {
         let knowledgeTitleStr = 'Versioning for article' + "_" + randomStr;
         let knowledgeRefStr = 'KnowledgeReference' + randomStr;
-        try {
-            await navigationPage.signOut();
-            await loginPage.login('qtao');
-            await navigationPage.gotoCreateKnowledge();
-            await createKnowledgePage.clickOnTemplate('Reference');
-            await createKnowledgePage.clickOnUseSelectedTemplateButton();
-            await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeTitleStr);
-            await createKnowledgePage.setReferenceValue(knowledgeRefStr)
-            await createKnowledgePage.selectKnowledgeSet('HR');
-            await createKnowledgePage.clickOnSaveKnowledgeButton();
-            expect(await previewKnowledgePo.getKnowledgeArticleTitle()).toContain(knowledgeTitleStr, 'Article title not matched.');
-            await previewKnowledgePo.clickOnViewArticleLink();
-            await utilityCommon.switchToNewTab(1);
-            expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Article view screen is not displayed');
-            expect(await viewKnowledgeArticlePo.isArticleVersionDisplayed()).toBeTruthy('Article version on View knowledge article is not displayed');
-            let actualVersion = await viewKnowledgeArticlePo.getArticleVersion();
-            let actualDate = await viewKnowledgeArticlePo.formatDate();
-            console.log(actualDate);
-            let expectedVersion = "Version " + "1" + " - " + actualDate;
-            expect(actualVersion).toBe(expectedVersion);
-        }
-        catch (e) {
-            throw e;
-        }
-        finally {
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
-            await utilityCommon.refresh();
-            await utilCommon.waitUntilSpinnerToHide();
-        }
+        await navigationPage.signOut();
+        await loginPage.login('qtao');
+        await navigationPage.gotoCreateKnowledge();
+        await createKnowledgePage.clickOnTemplate('Reference');
+        await createKnowledgePage.clickOnUseSelectedTemplateButton();
+        await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeTitleStr);
+        await createKnowledgePage.setReferenceValue(knowledgeRefStr)
+        await createKnowledgePage.selectKnowledgeSet('HR');
+        await createKnowledgePage.clickOnSaveKnowledgeButton();
+        expect(await previewKnowledgePo.getKnowledgeArticleTitle()).toContain(knowledgeTitleStr, 'Article title not matched.');
+        await previewKnowledgePo.clickGoToArticleButton();
+        expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Article view screen is not displayed');
+        expect(await viewKnowledgeArticlePo.isArticleVersionDisplayed()).toBeTruthy('Article version on View knowledge article is not displayed');
+        let actualVersion = await viewKnowledgeArticlePo.getArticleVersion();
+        let actualDate = await viewKnowledgeArticlePo.formatDate();
+        console.log(actualDate);
+        let expectedVersion = "Version " + "1" + " - " + actualDate;
+        expect(actualVersion).toBe(expectedVersion);
     });//, 150 * 1000);
 
     //skhobrag
@@ -164,9 +155,10 @@ describe('Knowledge Articles - Versioning Tests', () => {
             "categoryTier3": "Incident",
             "region": "Australia",
             "site": "Canberra",
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "United Kingdom Support",
+            "assigneeSupportGroup": "GB Support 1",
             "assignee": "KMills",
-            "assigneeSupportGroup": "GB Support 2",
-            "company": "Petramco",
             "articleDesc": `${knowledgeTitleStr} Desc`
         }
         let articleHelpFulCounterData = {
@@ -182,11 +174,11 @@ describe('Knowledge Articles - Versioning Tests', () => {
         try {
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(articleDetails.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Article view screen is not displayed');
             expect(await viewKnowledgeArticlePo.isArticleVersionDisplayed()).toBeTruthy('Article version on View knowledge article is not displayed');
             let actualVersion = await viewKnowledgeArticlePo.getArticleVersion();
@@ -209,10 +201,10 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(articleDetails.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await viewKnowledgeArticlePo.isReviewMessageDisplayed('Knowledge Article is in Review')).toBeTruthy();
             await viewKnowledgeArticlePo.clickOnEditLink();
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(minorEditOption)).toBeFalsy('Minor Edit Option is displayed for SME Review Knowledge Article.');
@@ -232,7 +224,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(knowledgeTitleStr);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(articleData.articleDesc);
             expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStr);
-            expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.company);
+            expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.assignedCompany);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAuthor()).toBe('Qianru Tao');
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe(articleData.categoryTier1);
             expect(await viewKnowledgeArticlePo.getCategoryTier2Value()).toBe(articleData.categoryTier2);
@@ -263,7 +255,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(updatedArticleTitle);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(updatedArticleDesc);
             expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStr);
-            expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.company);
+            expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.assignedCompany);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAuthor()).toBe('Qianru Tao');
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe(articleData.categoryTier1);
             expect(await viewKnowledgeArticlePo.getCategoryTier2Value()).toBe(articleData.categoryTier2);
@@ -312,9 +304,10 @@ describe('Knowledge Articles - Versioning Tests', () => {
                 "categoryTier3": "Incident",
                 "region": "Australia",
                 "site": "Canberra",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "United Kingdom Support",
+                "assigneeSupportGroup": "GB Support 1",
                 "assignee": "KMills",
-                "assigneeSupportGroup": "GB Support 2",
-                "company": "Petramco",
                 "articleDesc": `${knowledgeTitleStr} Desc`
             }
 
@@ -325,135 +318,127 @@ describe('Knowledge Articles - Versioning Tests', () => {
             let knowledgeGridColumnFieldsWithoutVersion: string[] = ["Article ID", "Title", "Knowledge Set", "Status", "Assignee", "Company", "Template Name", "Reviewer", "Modified By", "Created Date", "Modified Date", "Flagged"];
 
             await navigationPage.gotoKnowledgeConsole();
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(versionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
-            await utilGrid.searchOnGridConsole(versionFieldVal);
+            await utilityGrid.searchRecord(versionFieldVal);
             let versionVal: string = await knowledgeConsole.getSelectedGridRecordValue(versionField);
             expect(versionVal).toEqual(versionFieldVal);
             await knowledgeConsole.removeColumnOnGrid(versionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFieldsWithoutVersion)).toBe(true);
-            await utilGrid.searchOnGridConsole(versionFieldVal);
+            await utilityGrid.searchRecord(versionFieldVal);
             versionVal = await knowledgeConsole.getSelectedGridRecordValue(versionField);
             expect(versionVal).toEqual(emptyStr);
-            await utilGrid.addFilter(versionField, versionFieldVal, 'counter');
-            expect(await utilGrid.isGridRecordPresent(knowledgeTitleStr)).toBeTruthy();
-            await utilGrid.clearGridSearchBox();
+            await utilityGrid.addFilter(versionField, versionFieldVal, 'counter');
+            expect(await utilityGrid.isGridRecordPresent(knowledgeTitleStr)).toBeTruthy();
             await navigationPage.signOut();
 
             await loginPage.login(caseManagerUser);
             await navigationPage.gotoKnowledgeConsole();
-            await utilGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(versionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
-            await utilGrid.searchOnGridConsole(versionFieldVal);
+            await utilityGrid.searchRecord(versionFieldVal);
             versionVal = await knowledgeConsole.getSelectedGridRecordValue(versionField);
             expect(versionVal).toEqual(versionFieldVal);
             await knowledgeConsole.removeColumnOnGrid(versionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFieldsWithoutVersion)).toBe(true);
-            await utilGrid.searchOnGridConsole(versionFieldVal);
+            await utilityGrid.searchRecord(versionFieldVal);
             versionVal = await knowledgeConsole.getSelectedGridRecordValue(versionField);
             expect(versionVal).toEqual(emptyStr);
-            await utilGrid.addFilter(versionField, versionFieldVal, 'counter');
-            expect(await utilGrid.isGridRecordPresent(knowledgeTitleStr)).toBeTruthy();
-            await utilGrid.clearGridSearchBox();
+            await utilityGrid.addFilter(versionField, versionFieldVal, 'counter');
+            expect(await utilityGrid.isGridRecordPresent(knowledgeTitleStr)).toBeTruthy();
             await navigationPage.signOut();
 
             await loginPage.login(caseAgentUser);
             await navigationPage.gotoKnowledgeConsole();
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(versionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
-            await utilGrid.searchOnGridConsole(versionFieldVal);
+            await utilityGrid.searchRecord(versionFieldVal);
             versionVal = await knowledgeConsole.getSelectedGridRecordValue(versionField);
             expect(versionVal).toEqual(versionFieldVal);
             await knowledgeConsole.removeColumnOnGrid(versionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFieldsWithoutVersion)).toBe(true);
-            await utilGrid.searchOnGridConsole(versionFieldVal);
+            await utilityGrid.searchRecord(versionFieldVal);
             versionVal = await knowledgeConsole.getSelectedGridRecordValue(versionField);
             expect(versionVal).toEqual(emptyStr);
-            await utilGrid.addFilter(versionField, versionFieldVal, 'counter');
-            expect(await utilGrid.isGridRecordPresent(knowledgeTitleStr)).toBeTruthy();
-            await utilGrid.clearGridSearchBox();
+            await utilityGrid.addFilter(versionField, versionFieldVal, 'counter');
+            expect(await utilityGrid.isGridRecordPresent(knowledgeTitleStr)).toBeTruthy();
             await navigationPage.signOut();
 
             await loginPage.login(knowledgeCandidateUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(versionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
-            await utilGrid.searchOnGridConsole(versionFieldVal);
+            await utilityGrid.searchRecord(versionFieldVal);
             versionVal = await knowledgeConsole.getSelectedGridRecordValue(versionField);
             expect(versionVal).toEqual(versionFieldVal);
             await knowledgeConsole.removeColumnOnGrid(versionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFieldsWithoutVersion)).toBe(true);
-            await utilGrid.searchOnGridConsole(versionFieldVal);
+            await utilityGrid.searchRecord(versionFieldVal);
             versionVal = await knowledgeConsole.getSelectedGridRecordValue(versionField);
             expect(versionVal).toEqual(emptyStr);
-            await utilGrid.addFilter(versionField, versionFieldVal, 'counter');
-            expect(await utilGrid.isGridRecordPresent(knowledgeTitleStr)).toBeTruthy();
-            await utilGrid.clearGridSearchBox();
+            await utilityGrid.addFilter(versionField, versionFieldVal, 'counter');
+            expect(await utilityGrid.isGridRecordPresent(knowledgeTitleStr)).toBeTruthy();
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
 
             await loginPage.login(knowledgeContributorUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(versionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
-            await utilGrid.searchOnGridConsole(versionFieldVal);
+            await utilityGrid.searchRecord(versionFieldVal);
             versionVal = await knowledgeConsole.getSelectedGridRecordValue(versionField);
             expect(versionVal).toEqual(versionFieldVal);
             await knowledgeConsole.removeColumnOnGrid(versionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFieldsWithoutVersion)).toBe(true);
-            await utilGrid.searchOnGridConsole(versionFieldVal);
+            await utilityGrid.searchRecord(versionFieldVal);
             versionVal = await knowledgeConsole.getSelectedGridRecordValue(versionField);
             expect(versionVal).toEqual(emptyStr);
-            await utilGrid.addFilter(versionField, versionFieldVal, 'counter');
-            expect(await utilGrid.isGridRecordPresent(knowledgeTitleStr)).toBeTruthy();
-            await utilGrid.clearGridSearchBox();
+            await utilityGrid.addFilter(versionField, versionFieldVal, 'counter');
+            expect(await utilityGrid.isGridRecordPresent(knowledgeTitleStr)).toBeTruthy();
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
 
             await loginPage.login(knowledgePublisherUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(versionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
-            await utilGrid.searchOnGridConsole(versionFieldVal);
+            await utilityGrid.searchRecord(versionFieldVal);
             versionVal = await knowledgeConsole.getSelectedGridRecordValue(versionField);
             expect(versionVal).toEqual(versionFieldVal);
             await knowledgeConsole.removeColumnOnGrid(versionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFieldsWithoutVersion)).toBe(true);
-            await utilGrid.searchOnGridConsole(versionFieldVal);
+            await utilityGrid.searchRecord(versionFieldVal);
             versionVal = await knowledgeConsole.getSelectedGridRecordValue(versionField);
             expect(versionVal).toEqual(emptyStr);
-            await utilGrid.addFilter(versionField, versionFieldVal, 'counter');
-            expect(await utilGrid.isGridRecordPresent(knowledgeTitleStr)).toBeTruthy();
-            await utilGrid.clearGridSearchBox();
+            await utilityGrid.addFilter(versionField, versionFieldVal, 'counter');
+            expect(await utilityGrid.isGridRecordPresent(knowledgeTitleStr)).toBeTruthy();
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
 
             await loginPage.login(knowledgeCoachUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(versionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
-            await utilGrid.searchOnGridConsole(versionFieldVal);
+            await utilityGrid.searchRecord(versionFieldVal);
             versionVal = await knowledgeConsole.getSelectedGridRecordValue(versionField);
             expect(versionVal).toEqual(versionFieldVal);
             await knowledgeConsole.removeColumnOnGrid(versionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFieldsWithoutVersion)).toBe(true);
-            await utilGrid.searchOnGridConsole(versionFieldVal);
+            await utilityGrid.searchRecord(versionFieldVal);
             versionVal = await knowledgeConsole.getSelectedGridRecordValue(versionField);
             expect(versionVal).toEqual(emptyStr);
-            await utilGrid.addFilter(versionField, versionFieldVal, 'counter');
-            expect(await utilGrid.isGridRecordPresent(knowledgeTitleStr)).toBeTruthy();
-            await utilGrid.clearGridSearchBox();
+            await utilityGrid.addFilter(versionField, versionFieldVal, 'counter');
+            expect(await utilityGrid.isGridRecordPresent(knowledgeTitleStr)).toBeTruthy();
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
         }
         catch (error) {
@@ -476,7 +461,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await quickCase.setCaseSummary(articleInDraftStatus);
 
             //Search with knowledge article with published status and different versions   
-            await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInDraftStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
@@ -493,7 +478,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await viewCasePage.clickOnTab(resourcesTabStr);
 
             //Search with knowledge article with published status and different versions
-            await resources.clickOnAdvancedSearchOptions(knowledgeArticlesStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInDraftStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
@@ -508,7 +493,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await quickCase.setCaseSummary(articleInDraftStatus);
 
             //Search with knowledge article with published status and different versions            
-            await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInDraftStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
@@ -525,7 +510,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await viewCasePage.clickOnTab(resourcesTabStr);
 
             //Search with knowledge article with published status and different versions
-            await resources.clickOnAdvancedSearchOptions(knowledgeArticlesStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInDraftStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
@@ -540,7 +525,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await quickCase.setCaseSummary(articleInDraftStatus);
 
             //Search with knowledge article with published status and different versions
-            await resources.clickOnAdvancedSearchOptions(RecommendedKnowledgeStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInDraftStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
@@ -557,7 +542,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await viewCasePage.clickOnTab(resourcesTabStr);
 
             //Search with knowledge article with published status and different versions
-            await resources.clickOnAdvancedSearchOptions(knowledgeArticlesStr);
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInDraftStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
@@ -597,9 +582,10 @@ describe('Knowledge Articles - Versioning Tests', () => {
             "categoryTier3": "Incident",
             "region": "Australia",
             "site": "Canberra",
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "United Kingdom Support",
+            "assigneeSupportGroup": "GB Support 1",
             "assignee": "KMills",
-            "assigneeSupportGroup": "GB Support 2",
-            "company": "Petramco",
             "articleDesc": `${knowledgeTitleStr} Desc`
         }
         let articleHelpFulCounterData = {
@@ -615,11 +601,11 @@ describe('Knowledge Articles - Versioning Tests', () => {
         try {
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(articleDetails.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Article view screen is not displayed');
             expect(await viewKnowledgeArticlePo.isArticleVersionDisplayed()).toBeTruthy('Article version on View knowledge article is not displayed');
             let actualVersion = await viewKnowledgeArticlePo.getArticleVersion();
@@ -642,10 +628,10 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(articleDetails.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await viewKnowledgeArticlePo.isReviewMessageDisplayed('Knowledge Article is in Review')).toBeTruthy();
             await viewKnowledgeArticlePo.clickOnEditLink();
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(minorEditOption)).toBeFalsy('Minor Edit Option is displayed for SME Review Knowledge Article.');
@@ -671,7 +657,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(knowledgeTitleStr);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(articleData.articleDesc);
             expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStr);
-            expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.company);
+            expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.assignedCompany);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAuthor()).toBe('Qianru Tao');
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe(articleData.categoryTier1);
             expect(await viewKnowledgeArticlePo.getCategoryTier2Value()).toBe(articleData.categoryTier2);
@@ -708,7 +694,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(updatedArticleTitle);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(updatedArticleDesc);
             expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStr);
-            expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.company);
+            expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.assignedCompany);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAuthor()).toBe('Kane Williamson');
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe(articleData.categoryTier1);
             expect(await viewKnowledgeArticlePo.getCategoryTier2Value()).toBe(articleData.categoryTier2);
@@ -740,7 +726,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(knowledgeTitleStr);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(articleData.articleDesc);
             expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStr);
-            expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.company);
+            expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.assignedCompany);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAuthor()).toBe('Qianru Tao');
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe(articleData.categoryTier1);
             expect(await viewKnowledgeArticlePo.getCategoryTier2Value()).toBe(articleData.categoryTier2);
@@ -789,9 +775,10 @@ describe('Knowledge Articles - Versioning Tests', () => {
             "categoryTier3": "Incident",
             "region": "Australia",
             "site": "Canberra",
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "United Kingdom Support",
+            "assigneeSupportGroup": "GB Support 1",
             "assignee": "KMills",
-            "assigneeSupportGroup": "GB Support 2",
-            "company": "Petramco",
             "articleDesc": `${knowledgeTitleStr} Desc`
         }
         let articleHelpFulCounterData = {
@@ -806,11 +793,11 @@ describe('Knowledge Articles - Versioning Tests', () => {
         try {
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(articleDetails.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Article view screen is not displayed');
             expect(await viewKnowledgeArticlePo.isArticleVersionDisplayed()).toBeTruthy('Article version on View knowledge article is not displayed');
             let actualVersion = await viewKnowledgeArticlePo.getArticleVersion();
@@ -823,10 +810,10 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(articleDetails.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await viewKnowledgeArticlePo.isReviewMessageDisplayed('Knowledge Article is in Review')).toBeTruthy();
             await viewKnowledgeArticlePo.clickReviewPendingLink();
             await reviewCommentsPo.setTextInTellUsMore(articleDetails.displayId);
@@ -895,9 +882,10 @@ describe('Knowledge Articles - Versioning Tests', () => {
             "categoryTier3": "Incident",
             "region": "Australia",
             "site": "Canberra",
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "United Kingdom Support",
+            "assigneeSupportGroup": "GB Support 1",
             "assignee": "KMills",
-            "assigneeSupportGroup": "GB Support 2",
-            "company": "Petramco",
             "articleDesc": `${knowledgeTitleStr} Desc`
         }
         let articleHelpFulCounterData = {
@@ -912,11 +900,11 @@ describe('Knowledge Articles - Versioning Tests', () => {
         try {
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(articleDetails.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Article view screen is not displayed');
             expect(await viewKnowledgeArticlePo.isArticleVersionDisplayed()).toBeTruthy('Article version on View knowledge article is not displayed');
             let actualVersion = await viewKnowledgeArticlePo.getArticleVersion();
@@ -929,10 +917,10 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(articleDetails.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await viewKnowledgeArticlePo.isReviewMessageDisplayed('Knowledge Article is in Review')).toBeTruthy();
             await viewKnowledgeArticlePo.clickReviewPendingLink();
             await reviewCommentsPo.setTextInTellUsMore(articleDetails.displayId);
@@ -982,8 +970,8 @@ describe('Knowledge Articles - Versioning Tests', () => {
 
             await loginPage.login('qgeorge');
             await navigationPage.gotoKnowledgeConsole();
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(articleDetails.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             await viewKnowledgeArticlePo.clickOnEditLink();
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(minorEditOption)).toBeTruthy('Minor Edit Option is displayed for Published Knowledge Article.');
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(majorEditOption)).toBeTruthy('Major Edit Option is displayed for Published Knowledge Article.');
@@ -1026,9 +1014,10 @@ describe('Knowledge Articles - Versioning Tests', () => {
             "categoryTier3": "Incident",
             "region": "Australia",
             "site": "Canberra",
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "United Kingdom Support",
+            "assigneeSupportGroup": "GB Support 1",
             "assignee": "KMills",
-            "assigneeSupportGroup": "GB Support 2",
-            "company": "Petramco",
             "articleDesc": `${knowledgeTitleStr} Desc`
         }
         let articleHelpFulCounterData = {
@@ -1043,11 +1032,11 @@ describe('Knowledge Articles - Versioning Tests', () => {
         try {
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(articleDetails.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Article view screen is not displayed');
             expect(await viewKnowledgeArticlePo.isArticleVersionDisplayed()).toBeTruthy('Article version on View knowledge article is not displayed');
             let actualVersion = await viewKnowledgeArticlePo.getArticleVersion();
@@ -1056,14 +1045,14 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(actualVersion).toBe(expectedVersion);
             await editKnowledgePage.setKnowledgeStatus('Draft');
             expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Article is updated with Draft status.');
-            await statusBladeKnowledgeArticlePo.setKnowledgeStatusWithReviewerDetails('SME Review', 'Petramco', 'Australia Support','AU Support 3', 'Kane Williamson');
+            await statusBladeKnowledgeArticlePo.setKnowledgeStatusWithReviewerDetails('SME Review', 'Petramco', 'Australia Support', 'AU Support 3', 'Kane Williamson');
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(articleDetails.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await viewKnowledgeArticlePo.isReviewMessageDisplayed('Knowledge Article is in Review')).toBeTruthy();
             await viewKnowledgeArticlePo.clickReviewPendingLink();
             await reviewCommentsPo.setTextInTellUsMore(articleDetails.displayId);
@@ -1101,7 +1090,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
 
             await loginPage.login('elizabeth');
             await navigationPage.gotoKnowledgeConsole();
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(versionFieldColumns);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
             await knowledgeConsole.searchOnGridConsole(updatedArticleTitle);
@@ -1112,7 +1101,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(previousVersionNum).toBe(expectedPreviousVersionNum);
             await knowledgeConsole.removeColumnOnGrid(versionFieldColumns);
 
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
         }
         catch (e) {
             throw e;
@@ -1147,9 +1136,10 @@ describe('Knowledge Articles - Versioning Tests', () => {
             "categoryTier3": "Incident",
             "region": "Australia",
             "site": "Canberra",
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "United Kingdom Support",
+            "assigneeSupportGroup": "GB Support 1",
             "assignee": "KMills",
-            "assigneeSupportGroup": "GB Support 2",
-            "company": "Petramco",
             "articleDesc": `${knowledgeTitleStr} Desc`
         }
         let articleHelpFulCounterData = {
@@ -1165,11 +1155,11 @@ describe('Knowledge Articles - Versioning Tests', () => {
         try {
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(articleDetails.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Article view screen is not displayed');
             expect(await viewKnowledgeArticlePo.isArticleVersionDisplayed()).toBeTruthy('Article version on View knowledge article is not displayed');
             let actualVersion = await viewKnowledgeArticlePo.getArticleVersion();
@@ -1192,10 +1182,10 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(articleDetails.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await viewKnowledgeArticlePo.isReviewMessageDisplayed('Knowledge Article is in Review')).toBeTruthy();
             await viewKnowledgeArticlePo.clickOnEditLink();
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(minorEditOption)).toBeFalsy('Minor Edit Option is displayed for SME Review Knowledge Article.');
@@ -1221,7 +1211,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(knowledgeTitleStr);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(articleData.articleDesc);
             expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStr);
-            expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.company);
+            expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.assignedCompany);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAuthor()).toBe('Qianru Tao');
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe(articleData.categoryTier1);
             expect(await viewKnowledgeArticlePo.getCategoryTier2Value()).toBe(articleData.categoryTier2);
@@ -1267,7 +1257,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await utilityCommon.refresh();
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(updatedArticleDesc);
             expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStr);
-            expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.company);
+            expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.assignedCompany);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAuthor()).toBe('Kane Williamson');
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe(articleData.categoryTier1);
             expect(await viewKnowledgeArticlePo.getCategoryTier2Value()).toBe(articleData.categoryTier2);
@@ -1314,7 +1304,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(updatedArticleTitle + "_for Version 3");
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(updatedArticleDesc + "_for Version 3");
             expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStr);
-            expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.company);
+            expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.assignedCompany);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAuthor()).toBe('Kane Williamson');
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe(articleData.categoryTier1);
             expect(await viewKnowledgeArticlePo.getCategoryTier2Value()).toBe(articleData.categoryTier2);
@@ -1370,9 +1360,10 @@ describe('Knowledge Articles - Versioning Tests', () => {
             "categoryTier3": "Incident",
             "region": "Australia",
             "site": "Canberra",
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "United Kingdom Support",
+            "assigneeSupportGroup": "GB Support 1",
             "assignee": "KMills",
-            "assigneeSupportGroup": "GB Support 2",
-            "company": "Petramco",
             "articleDesc": `${knowledgeTitleStr} Desc`
         }
         let articleHelpFulCounterData = {
@@ -1387,11 +1378,11 @@ describe('Knowledge Articles - Versioning Tests', () => {
         try {
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(articleDetails.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Article view screen is not displayed');
             expect(await viewKnowledgeArticlePo.isArticleVersionDisplayed()).toBeTruthy('Article version on View knowledge article is not displayed');
             let actualVersion = await viewKnowledgeArticlePo.getArticleVersion();
@@ -1449,10 +1440,10 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(articleDetails.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await viewKnowledgeArticlePo.isReviewMessageDisplayed('Knowledge Article is in Review')).toBeTruthy();
             await viewKnowledgeArticlePo.clickOnEditLink();
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(minorEditOption)).toBeFalsy('Minor Edit Option is displayed for SME Review Knowledge Article.');
@@ -1478,10 +1469,10 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
-            await navigationPage.switchToAnotherApplication(knowledgeManagementApp);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(articleDetails.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             await viewKnowledgeArticlePo.clickOnEditLink();
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(minorEditOption)).toBeTruthy('Minor Edit Option is displayed for Published Knowledge Article.');
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(majorEditOption)).toBeTruthy('Major Edit Option is displayed for Published Knowledge Article.');
@@ -1503,7 +1494,4 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await loginPage.login(caseBAUser);
         }
     }, 400 * 1000);
-
-
-
-})
+});

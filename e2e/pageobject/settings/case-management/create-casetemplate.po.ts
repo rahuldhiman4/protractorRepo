@@ -1,4 +1,4 @@
-import { $, browser, protractor, ProtractorExpectedConditions, element, by, ElementFinder } from "protractor";
+import { $, browser, protractor, ProtractorExpectedConditions, element, by, ElementFinder, Key } from "protractor";
 import { ICaseTemplate } from "../../../data/ui/interface/caseTemplate.interface";
 import caseTemplateGrid from "../../../pageobject/settings/case-management/console-casetemplate.po";
 import changeAssignemetOldBlade from '../../common/change-assignment-old-blade.po';
@@ -12,7 +12,7 @@ class CreateCaseTemplate {
         copyCaseTemplateOnCreate: '[rx-view-component-id="92e13921-bf7b-494e-9d65-609a07c36505"] button',
         templateName: '[rx-view-component-id="432c5f23-8c50-490d-9e94-8912ac4cd5e1"] input',
         caseSummary: '[rx-view-component-id="9aac1caa-d110-450e-a9a2-d87168ec6162"] input',
-        caseDescription: '[rx-view-component-id="0e50e51b-b99d-481c-8c1e-cb92e8803634"] textarea',
+        caseDescriptionGuid: '9023c12e-819f-4964-8079-b11cd6c0b860',
         saveButton: '[rx-view-component-id="fee3e577-173c-4dec-8265-ec81580ed26d"] button',
         cancelButton: '[rx-view-component-id="be371341-8b3f-4433-93fa-33d242984010"] button',
         companyDropDown: '127214a1-bfc0-4a8c-acb7-cd2be137fa3c',
@@ -42,6 +42,8 @@ class CreateCaseTemplate {
         clearButton: '[rx-view-component-id="863df084-ff37-4099-85d9-2bfcc4783adc"] button',
         reopentimelineDays: '[rx-view-component-id="c562f849-8baa-4324-bbfc-77f34c4cdbde"] input',
         searchInput: 'input[type="search"]',
+        ckEditor: '.cke_inner',
+        ckEditorTextArea: '.cke_editable_themed',
     }
 
     async setCompanyName(companyValue: string): Promise<void> {
@@ -89,7 +91,10 @@ class CreateCaseTemplate {
     }
 
     async setStatusReasonValue(StatusReasonValue: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.statusReason, StatusReasonValue);
+        await $('[rx-view-component-id="ffcb232a-0ef2-4e6f-9fc1-5d75c1576fd1"] label').isPresent().then(async(present)=>{
+            if(present) await utilCommon.selectDropDown('ffcb232a-0ef2-4e6f-9fc1-5d75c1576fd1', StatusReasonValue);
+            else await utilCommon.selectDropDown(this.selectors.statusReason, StatusReasonValue);
+        });
     }
 
     async setIdentityValidationValue(identityValidationValue: string): Promise<void> {
@@ -170,10 +175,19 @@ class CreateCaseTemplate {
         await $(this.selectors.caseSummary).sendKeys(caseSummaryValue);
     }
 
+     
+    async updateDescription(caseDescription:string):Promise<void>{
+        await $(this.selectors.ckEditor).isPresent().then(async (result) => {
+            if (result) {
+                await browser.wait(this.EC.elementToBeClickable($(this.selectors.ckEditorTextArea)), 3000).then(async () => {
+                    await $(this.selectors.ckEditorTextArea).sendKeys(caseDescription);
+                });
+            }
+        });
+    } 
+
     async setCaseDescription(caseDescription: string): Promise<void> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.caseDescription)));
-        await $(this.selectors.caseDescription).clear();
-        await $(this.selectors.caseDescription).sendKeys(caseDescription);
+        await utilCommon.setCKEditor(caseDescription, this.selectors.caseDescriptionGuid);
     }
 
     async createCaseTemplateWithMandatoryFields(caseTemplate: ICaseTemplate): Promise<void> {

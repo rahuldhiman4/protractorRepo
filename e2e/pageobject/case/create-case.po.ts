@@ -29,7 +29,7 @@ class CreateCasePage {
         siteOption: '[rx-view-component-id="1113b368-e1eb-40e9-898f-65c075565462"] .dropdown_select__menu-content button',
         priorityDropDown: '[rx-view-component-id="367e71d0-f31f-452a-934b-d7a78125cdf1"] .dropdown-toggle',
         priorityOption: '[rx-view-component-id="367e71d0-f31f-452a-934b-d7a78125cdf1"] .dropdown_select__menu-content button',
-        description: '[rx-view-component-id="e494b462-7749-44aa-922e-fc5d9b3dd5cb"] textarea',
+        descriptionGuid: 'e494b462-7749-44aa-922e-fc5d9b3dd5cb',
         categoryTier1Guid: '9e97113b-b045-4cd6-b776-368bea50f137',
         categoryTier2Guid: '20067485-2b38-44a0-a6ed-aec998df377b',
         categoryTier3Guid: '9bfb3795-0543-4a17-a374-28dc586d1e03',
@@ -40,13 +40,13 @@ class CreateCasePage {
         clearTemplateButton: '[rx-view-component-id="d996182c-0930-40ed-987f-43e6da0a8d8a"] button',
         company: '[rx-view-component-id="a7cfc996-f8c8-4ef0-afe4-18ca7e1fef88"] .dropdown-toggle',
         contactGuid: 'e1f5a770-e416-4ed1-bfea-eefeed86544b',
-        descriptionGuid: 'e494b462-7749-44aa-922e-fc5d9b3dd5cb',
         assigneGuid: '43c3e9ee-dde2-4e10-94e9-c6ee68217cda',
         assignedGroupGuid: '79750d81-d8e5-447e-b923-94c54f2d3310',
         labelGuid: '47f29467-cdd3-4e04-a7f2-ceb795e8b6e5',
         attachmentField: '[rx-view-component-id="e494b462-7749-44aa-922e-fc5d9b3dd5cb"] input[type="file"]',
         clearRequesterButton: '[rx-view-component-id="be946309-c359-40fe-a579-1a0e0d04bb01"] .d-icon-cross',
         templateValue: 'td .btn-link',
+        cancelButton: '[rx-view-component-id="3e34f97b-e0f1-492e-bb7d-609b5ccc8d4f"] button'
     }
 
     async addDescriptionAttachment(fileToUpload: string[]): Promise<void> {
@@ -188,8 +188,7 @@ class CreateCasePage {
     }
 
     async setDescription(description: string): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.description)));
-        await $(this.selectors.description).sendKeys(description);
+        await utilityCommon.setCKEditor(description, this.selectors.descriptionGuid);
     }
 
     async selectCategoryTier1(categValue: string): Promise<void> {
@@ -268,10 +267,6 @@ class CreateCasePage {
         await utilityCommon.isFieldLabelDisplayed(this.selectors.contactGuid, contact);
     }
 
-    async getDescriptionTitle(description: string): Promise<void> {
-        await utilityCommon.isFieldLabelDisplayed(this.selectors.descriptionGuid, description);
-    }
-
     async getAssigneeTitle(assignee: string): Promise<void> {
         await utilityCommon.isFieldLabelDisplayed(this.selectors.assigneGuid, assignee);
     }
@@ -284,6 +279,10 @@ class CreateCasePage {
         await selectCasetemplateBladePo.clickOnAllTemplateTab();
         await utilityGrid.searchRecord(templateName);
         return await element(by.cssContainingText(this.selectors.templateValue,templateName)).isPresent();
+    }
+
+    async clickCancelButton():Promise<void>{
+        await $(this.selectors.cancelButton).click();
     }
 }
 

@@ -33,7 +33,7 @@ class SlmProgressBar {
 
     async isSLAProgressBarWarningIconDisplayed(): Promise<boolean> {
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.slaProgressBarWarning)),40000);
-        return await $(this.selectors.slaProgressBarWarning).isDisplayed();
+        return await $(this.selectors.slaProgressBarWarning).isPresent();
     }
 
     async clickOnSLAProgressBarWarningIcon() {

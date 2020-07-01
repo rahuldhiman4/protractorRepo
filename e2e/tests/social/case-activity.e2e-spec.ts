@@ -5,6 +5,7 @@ import addRelatedPopupPage from '../../pageobject/case/add-relation-pop.po';
 import caseConsolePo from '../../pageobject/case/case-console.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCase from '../../pageobject/case/create-case.po';
+import quickCasePo from '../../pageobject/case/quick-case.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
 import caseAccessTabPo from '../../pageobject/common/case-access-tab.po';
 import loginPage from "../../pageobject/common/login.po";
@@ -25,7 +26,6 @@ import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
-import quickCasePo from '../../pageobject/case/quick-case.po';
 import utilityGrid from '../../utils/utility.grid';
 
 describe('Case Activity', () => {
@@ -38,6 +38,7 @@ describe('Case Activity', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 
@@ -56,9 +57,8 @@ describe('Case Activity', () => {
             await createKnowlegePo.addTextInKnowlegeTitleField('test case for DRDMV-16767');
             await createKnowlegePo.selectKnowledgeSet('HR');
             await createKnowlegePo.clickOnSaveKnowledgeButton();
-            await previewKnowledgePo.clickOnViewArticleLink();
-            await utilityCommon.switchToNewTab(1);
-            await utilityCommon.refresh();
+            await utilityCommon.closePopUpMessage();
+            await previewKnowledgePo.clickGoToArticleButton();
             await expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Edit button missing on knoledge page.');
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             // 2nd Step: Inspect Case Activity UI - Click on Filter       
@@ -71,6 +71,7 @@ describe('Case Activity', () => {
             expect(await activityTabPage.getTextTaskFilterOption('Flag')).toBe('Flag'), 'Flag is missing';
             expect(await activityTabPage.getTextTaskFilterOption('Unflag')).toBe('Unflag'), 'Unflag is missing';
             expect(await activityTabPage.getTextTaskFilterOption('Feedback')).toBe('Feedback'), 'Feedback is missing';
+            expect(await activityTabPage.getTextTaskFilterOption('Review')).toBe('Review');
             expect(await activityTabPage.isAuthorSearchBoxVisible()).toBeTruthy("authorSearchBoxVisbility is not visible");
             // 4th Step: Check box is selected/unselect and Apply button is enabled/disable.   
             await activityTabPage.selectFilterCheckBox('General Notes');
@@ -84,7 +85,8 @@ describe('Case Activity', () => {
             await activityTabPage.selectFilterCheckBox('Flag');
             await activityTabPage.selectFilterCheckBox('Unflag');
             await activityTabPage.selectFilterCheckBox('Feedback');
-            await activityTabPage.addAuthorOnFilter('Angelina Jolie');
+            await activityTabPage.selectFilterCheckBox('Review');
+            await activityTabPage.addAuthorOnFilter('Kadeem Hardison');
             await activityTabPage.clickOnFilterApplyButton();
             expect(await activityTabPage.isFilterPopUpDisplayed()).toBe('false');
             // ii) Selected Filters are displayed in Activity with first filter and + other selected filters
@@ -93,15 +95,16 @@ describe('Case Activity', () => {
             expect(await activityTabPage.getTextFromFilterList('Flag')).toBe('Flag'), 'Flag is missing';
             expect(await activityTabPage.getTextFromFilterList('Unflag')).toBe('Unflag'), 'Unflag is missing';
             expect(await activityTabPage.getTextFromFilterList('Feedback')).toBe('Feedback'), 'Feedback is missing';
-            expect(await activityTabPage.getTextFromFilterList('ajolie')).toBe('Author : ajolie'), 'Author: ajolie is missing';
+            expect(await activityTabPage.getTextFromFilterList('Author')).toBe('Author : Kadeem Hardison'), 'Author: ajolie is missing';
+            expect(await activityTabPage.getTextFromFilterList('Review')).toBe('Review');
             // iii)- Filter is removed and next filter gets displayed in UI and +n more count reduced by 1
-            await activityTabPage.closeNmoreLink();
-            await activityTabPage.clickOnNmoreLink();
+            // await activityTabPage.closeNmoreLink();
+            // await activityTabPage.clickOnNmoreLink();
             expect(await activityTabPage.getTextFromFilterList('General Notes')).toBe('General Notes'), 'General Notes is missing';
-            expect(await activityTabPage.getTextOfNmoreLink()).toBe('4 Show more');
+            expect(await activityTabPage.getTextOfNmoreLink()).toBe('5 Show more');
             await activityTabPage.removeFilterList();
             expect(await activityTabPage.getTextFromFilterList('Flag')).toBe('Flag'), 'Flag is missing';
-            expect(await activityTabPage.getTextOfNmoreLink()).toBe('3 Show more');
+            expect(await activityTabPage.getTextOfNmoreLink()).toBe('4 Show more');
             await activityTabPage.closeNmoreLink();
             // await utilCommon.waitUntilSpinnerToHide();
             // iv)- Click on + n more button (- Selected filter list is displayed )
@@ -109,7 +112,8 @@ describe('Case Activity', () => {
             expect(await activityTabPage.getTextFromFilterList('Flag')).toBe('Flag'), 'Flag is missing';
             expect(await activityTabPage.getTextFromFilterList('Unflag')).toBe('Unflag'), 'Assignment Change is missing';
             expect(await activityTabPage.getTextFromFilterList('Feedback')).toBe('Feedback'), 'Feedback is missing';
-            expect(await activityTabPage.getTextFromFilterList('ajolie')).toBe('Author : ajolie'), 'Author: ajolie is missing';
+            expect(await activityTabPage.getTextFromFilterList('Author')).toBe('Author : Kadeem Hardison');
+            expect(await activityTabPage.getTextFromFilterList('Review')).toBe('Review');
             await activityTabPage.closeNmoreLink();
             //  v) - That particular filter is removed.
             expect(await activityTabPage.getTextFromFilterList('Flag')).toBe('Flag'), 'Flag is missing';
@@ -155,9 +159,8 @@ describe('Case Activity', () => {
             await createKnowlegePo.addTextInKnowlegeTitleField('test case for DRDMV-16768');
             await createKnowlegePo.selectKnowledgeSet('HR');
             await createKnowlegePo.clickOnSaveKnowledgeButton();
-            await previewKnowledgePo.clickOnViewArticleLink();
-            await utilityCommon.switchToNewTab(1);
-            await utilityCommon.refresh();
+            await utilityCommon.closePopUpMessage();
+            await previewKnowledgePo.clickGoToArticleButton();
             await expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Edit button missing on knoledge page.');
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             // 2nd step: From Task Activity > Click on Filter and In Author filter > Search for all type of users from pre condition who have added comment in Task
@@ -174,7 +177,7 @@ describe('Case Activity', () => {
             await activityTabPage.removeAuthorFromFilter();
             await activityTabPage.addAuthorOnFilter('Hannah Haas');
             await activityTabPage.removeAuthorFromFilter();
-            await activityTabPage.addAuthorOnFilter('Qiwei Liu');
+            await activityTabPage.addAuthorOnFilter('Quigley Heroux');
             await activityTabPage.removeAuthorFromFilter();
             await activityTabPage.addAuthorOnFilter('Samuel Badree');
             await activityTabPage.removeAuthorFromFilter();
@@ -222,7 +225,10 @@ describe('Case Activity', () => {
                 "templateName": "DRDMV-16773_task template" + summary,
                 "templateSummary": "DRDMV-16773_Manual_task template summary" + summary,
                 "templateStatus": "Active",
-                "company": '- Global -'
+                "taskCompany": '- Global -',
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createManualTaskTemplate(manualTemplateData);
@@ -238,17 +244,17 @@ describe('Case Activity', () => {
             await previewCasePo.clickGoToCaseButton();
 
             await activityTabPage.addActivityNote(caseBodyText);
-            await activityTabPage.addPersonInActivityNote('Jonathan Lowell Spencer Storm');
+            await activityTabPage.addPersonInActivityNote('Jacqueline Featherstonehaugh');
             await activityTabPage.clickOnPostButton();
-            expect(await activityTabPage.isHyperlinkOfActivityDisplay(caseBodyText, 'Jonathan Lowell Spencer Storm')).toBeTruthy('PersonName is not displayed correctly');
+            expect(await activityTabPage.isHyperlinkOfActivityDisplay(caseBodyText, 'Jacqueline Featherstonehaugh')).toBeTruthy('PersonName is not displayed correctly');
             // 2nd Step: Open Task from pre condition and inspect its activities
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateData.templateName);
-            await manageTaskBladePo.clickTaskLinkOnManageTask(manualTemplateData.templateSummary);
+            await manageTaskBladePo.clickTaskLink(manualTemplateData.templateSummary);
             await activityTabPage.addActivityNote(taskBodyText);
-            await activityTabPage.addPersonInActivityNote('Jonathan Lowell Spencer Storm');
+            await activityTabPage.addPersonInActivityNote('Jacqueline Featherstonehaugh');
             await activityTabPage.clickOnPostButton();
-            expect(await activityTabPage.isHyperlinkOfActivityDisplay(taskBodyText, 'Jonathan Lowell Spencer Storm')).toBeTruthy('PersonName is not displayed correctly');
+            expect(await activityTabPage.isHyperlinkOfActivityDisplay(taskBodyText, 'Jacqueline Featherstonehaugh')).toBeTruthy('PersonName is not displayed correctly');
             // 3rd Step: Open KA from pre condition and inspect its activities
             await navigationPage.gotoCreateKnowledge();
             await expect(browser.getTitle()).toBe('Knowledge Article Templates Preview - Business Workflows'), 'Knowledge page title is missing';
@@ -257,15 +263,14 @@ describe('Case Activity', () => {
             await createKnowlegePo.addTextInKnowlegeTitleField('test case for DRDMV-16773');
             await createKnowlegePo.selectKnowledgeSet('HR');
             await createKnowlegePo.clickOnSaveKnowledgeButton();
-            await previewKnowledgePo.clickOnViewArticleLink();
-            await utilCommon.switchToNewWidnow(1);
-            await utilityCommon.refresh();
+            await utilityCommon.closePopUpMessage();
+            await previewKnowledgePo.clickGoToArticleButton();
             await expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Edit button missing on knoledge page.');
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             await activityTabPage.addActivityNote(knowledgeBodyText);
-            await activityTabPage.addPersonInActivityNote('Jonathan Lowell Spencer Storm');
+            await activityTabPage.addPersonInActivityNote('Jacqueline Featherstonehaugh');
             await activityTabPage.clickOnPostButton();
-            expect(await activityTabPage.isHyperlinkOfActivityDisplay(knowledgeBodyText, 'Jonathan Lowell Spencer Storm')).toBeTruthy('PersonName is not displayed correctly');
+            expect(await activityTabPage.isHyperlinkOfActivityDisplay(knowledgeBodyText, 'Jacqueline Featherstonehaugh')).toBeTruthy('PersonName is not displayed correctly');
         } catch (e) {
             throw e;
         } finally {
@@ -358,7 +363,10 @@ describe('Case Activity', () => {
             "templateName": "DRDMV-21617_task template" + summary,
             "templateSummary": "DRDMV-21617_Manual_task template summary" + summary,
             "templateStatus": "Active",
-            "company": '- Global -'
+            "taskCompany": '- Global -',
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createManualTaskTemplate(manualTemplateData);
@@ -371,7 +379,7 @@ describe('Case Activity', () => {
         await previewCasePo.clickGoToCaseButton();
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateData.templateSummary);
-        await manageTaskBladePo.clickTaskLinkOnManageTask(manualTemplateData.templateSummary);
+        await manageTaskBladePo.clickTaskLink(manualTemplateData.templateSummary);
         // 2nd step: From Task Activity > Click on Filter and In Author filter > Search for all type of users from pre condition who have added comment in Task
         await activityTabPage.clickOnFilterButton();
         await activityTabPage.addAuthorOnFilter('Elizabeth Peters');
@@ -386,7 +394,7 @@ describe('Case Activity', () => {
         await activityTabPage.removeAuthorFromFilter();
         await activityTabPage.addAuthorOnFilter('Hannah Haas');
         await activityTabPage.removeAuthorFromFilter();
-        await activityTabPage.addAuthorOnFilter('Qiwei Liu');
+        await activityTabPage.addAuthorOnFilter('Quigley Heroux');
         await activityTabPage.removeAuthorFromFilter();
         await activityTabPage.addAuthorOnFilter('Samuel Badree');
         await activityTabPage.removeAuthorFromFilter();
@@ -434,7 +442,7 @@ describe('Case Activity', () => {
         await activityTabPage.removeAuthorFromFilter();
         // 3rd In Author field search for User using *First Name*, *Last Name*, *Email*, *Login ID*, and *Person ID*
         await activityTabPage.addAuthorOnFilter('Angelina');//FirstName
-        await activityTabPage.removeAuthorFromFilter();
+        await activityTabPage.clearAuthorSearchBoxOnFilter();
         await activityTabPage.addAuthorOnFilter('Steyn');//LastName
         await activityTabPage.removeAuthorFromFilter();
         await activityTabPage.addAuthorOnFilter('aborder@petramco.com');//Email        
@@ -469,7 +477,10 @@ describe('Case Activity', () => {
             "templateName": "DRDMV-21617_task template" + randomString,
             "templateSummary": "DRDMV-21617_Manual_task template summary" + randomString,
             "templateStatus": "Active",
-            "company": '- Global -'
+            "taskCompany": '- Global -',
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createManualTaskTemplate(manualTemplateData);
@@ -483,7 +494,7 @@ describe('Case Activity', () => {
         // On view case page.
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateData.templateSummary);
-        await manageTaskBladePo.clickTaskLinkOnManageTask(manualTemplateData.templateSummary);
+        await manageTaskBladePo.clickTaskLink(manualTemplateData.templateSummary);
 
         // 2nd step: Inspect Task Activity UI - Click on FIlter
         await activityTabPage.clickOnFilterButton();
@@ -568,6 +579,10 @@ describe('Case Activity', () => {
             "templateStatus": "Active",
             "processBundle": "com.bmc.dsm.case-lib",
             "processName": "Case Process ",
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
 
         autoTemplateData.templateName = autoTemplateData.templateName + randomString;
@@ -588,7 +603,7 @@ describe('Case Activity', () => {
         // On view case page.
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate(autoTemplateData.templateSummary);
-        await manageTaskBladePo.clickTaskLinkOnManageTask(autoTemplateData.templateSummary);
+        await manageTaskBladePo.clickTaskLink(autoTemplateData.templateSummary);
 
         // 2nd step: Inspect Task Activity UI - Click on FIlter
         await activityTabPage.clickOnFilterButton();
@@ -669,6 +684,10 @@ describe('Case Activity', () => {
             "templateName": "external task template name ",
             "templateSummary": "external task template summary ",
             "templateStatus": "Active",
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         };
         externalTemplateData.templateName = externalTemplateData.templateName + randomStr;
         externalTemplateData.templateSummary = externalTemplateData.templateSummary + randomStr;
@@ -686,7 +705,7 @@ describe('Case Activity', () => {
         // On view case page.
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate(externalTemplateData.templateSummary);
-        await manageTaskBladePo.clickTaskLinkOnManageTask(externalTemplateData.templateSummary);
+        await manageTaskBladePo.clickTaskLink(externalTemplateData.templateSummary);
 
         // 2nd step: Inspect Task Activity UI - Click on FIlter
         await activityTabPage.clickOnFilterButton();
@@ -766,7 +785,6 @@ describe('Case Activity', () => {
     }, 420 * 1000);
 
     //kgaikwad
-    // Ok
     it('[DRDMV-18048]: While adding a note on Case one or more agent can be tagged in Comment', async () => {
         await navigationPage.gotoCreateCase();
         await createCase.selectRequester('Al Allbrook');
@@ -801,7 +819,10 @@ describe('Case Activity', () => {
                 "templateName": "DRDMV-21617_task template" + summary,
                 "templateSummary": "DRDMV-21617_Manual_task template summary" + summary,
                 "templateStatus": "Active",
-                "company": '- Global -'
+                "taskCompany": '- Global -',
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createManualTaskTemplate(manualTemplateData);
@@ -825,7 +846,7 @@ describe('Case Activity', () => {
             // 3nd step verification, From Case > Activity > Task related note > Click on Person name
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateData.templateSummary);
-            await manageTaskBladePo.clickTaskLinkOnManageTask(manualTemplateData.templateSummary);
+            await manageTaskBladePo.clickTaskLink(manualTemplateData.templateSummary);
 
             // View task page
             await expect(browser.getTitle()).toBe('Task Edit - Business Workflows');
@@ -853,11 +874,10 @@ describe('Case Activity', () => {
             await createKnowlegePo.addTextInKnowlegeTitleField('Knowledge Article for DRDMV-16754');
             await createKnowlegePo.selectKnowledgeSet('HR');
             await createKnowlegePo.clickOnSaveKnowledgeButton();
-            await previewKnowledgePo.clickOnViewArticleLink();
+            await utilityCommon.closePopUpMessage();
+            await previewKnowledgePo.clickGoToArticleButton();
 
             // View Knowledege Page
-            await utilityCommon.switchToNewTab(1);
-            await utilityCommon.refresh();
             await expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('knowoledge Edit link is missing');
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             await activityTabPage.addActivityNote(knowledgeBodyText);
@@ -880,6 +900,10 @@ describe('Case Activity', () => {
             "templateStatus": "Active",
             "processBundle": "com.bmc.dsm.case-lib",
             "processName": "Case Process ",
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
 
         autoTemplateData.templateName = autoTemplateData.templateName + randomString;
@@ -899,7 +923,7 @@ describe('Case Activity', () => {
         await previewCasePo.clickGoToCaseButton();
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate(autoTemplateData.templateName);
-        await manageTaskBladePo.clickTaskLinkOnManageTask(autoTemplateData.templateSummary);
+        await manageTaskBladePo.clickTaskLink(autoTemplateData.templateSummary);
         //single line comment
         await activityTabPage.addActivityNote(taskBodyText);
         await activityTabPage.clickOnPostButton();
@@ -942,21 +966,23 @@ describe('Case Activity', () => {
             let caseData = {
                 "Requester": "Fritz",
                 "Summary": "Test case for DRDMV-8377RandVal" + summary,
-                "Support Group": "Compensation and Benefits",
-                "Assignee": "qtao"
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
+                "Assignee": "qfeng"
             }
             await apiHelper.apiLogin('qkatawazi');
             let newCase = await apiHelper.createCase(caseData);
             let caseId: string = newCase.displayId;
-            await navigationPage.gotoCaseConsole();
+            await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
             await activityTabPage.clickOnRefreshButton();
             await navigationPage.signOut();
-            await loginPage.login('qtao');
+            await loginPage.login('qfeng');
             await caseConsolePo.searchAndOpenCase(caseId);
             await activityTabPage.clickOnRefreshButton();
             await expect(await activityTabPage.getCaseViewCount('Qadim Katawazi  viewed the case. ')).toEqual(1);
-            await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
+            await expect(await activityTabPage.getCaseViewCount('Qiao Feng  viewed the case. ')).toEqual(1);
             await navigationPage.gotoPersonProfile();
             await expect(await personProfilePo.getCaseViewCount(' Viewed the  ' + caseId)).toEqual(1);
         } catch (e) {
@@ -977,6 +1003,10 @@ describe('Case Activity', () => {
                 "templateName": "DRDMV-16589_tempname_" + randomString,
                 "templateSummary": "DRDMV-16589_tempSummary_" + randomString,
                 "templateStatus": "Active",
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
@@ -984,40 +1014,43 @@ describe('Case Activity', () => {
             let caseData = {
                 "Requester": "Fritz",
                 "Summary": summary,
-                "Support Group": "Compensation and Benefits",
-                "Assignee": "qtao"
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
+                "Assignee": "qfeng"
             }
             await apiHelper.apiLogin('qkatawazi');
             let newCase = await apiHelper.createCase(caseData);
             let caseId: string = newCase.displayId;
             await navigationPage.signOut();
-            await loginPage.login('qtao');
+            await loginPage.login('qfeng');
             await caseConsolePo.searchAndOpenCase(caseId);
-            // Open Task
+            // // Open Task
+            expect(await viewCasePo.getCaseID()).toBe(caseId, 'CaseId is missing in qfreng user');
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskTemplateData.templateName);
-            await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskTemplateData.templateSummary);
+            await manageTaskBladePo.clickTaskLink(manualTaskTemplateData.templateSummary);
             await viewTaskPo.clickOnViewCase();
             // Goto case   
             await activityTabPage.clickOnRefreshButton();
-            await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
+            await expect(await activityTabPage.getCaseViewCount('Qiao Feng  viewed the case. ')).toEqual(1);
             // Goto Quick Case
             await navigationPage.gotoQuickCase();
-            await quickCasePo.selectRequesterName('qtao');
+            await quickCasePo.selectRequesterName('qfeng');
             await quickCasePo.setCaseSummary(caseData.Summary);
             await quickCasePo.clickOnCaseSummaryInRecommendedCases(caseData.Summary);
             await quickCasePo.gotoCaseButton();
             await activityTabPage.clickOnRefreshButton();
-            await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
+            await expect(await activityTabPage.getCaseViewCount('Qiao Feng  viewed the case. ')).toEqual(1);
             await navigationPage.gotoQuickCase();
-            await quickCasePo.selectRequesterName('qtao');
+            await quickCasePo.selectRequesterName('qfeng');
             await quickCasePo.setCaseSummary(caseData.Summary);
             await quickCasePo.saveCase();
             await quickCasePo.gotoCaseButton();
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
             await expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('FailuerMsg: Email Link is not present');
-            await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
+            await expect(await activityTabPage.getCaseViewCount('Qiao Feng  viewed the case. ')).toEqual(1);
 
             await viewCasePo.clickOnTab('Related Persons');
             await relatedTabPage.addRelatedPerson();
@@ -1033,7 +1066,7 @@ describe('Case Activity', () => {
             await expect(await viewCasePo.getCaseID()).toBe(caseId, 'FailureMsg: CaseId is missing');
             await activityTabPage.clickOnRefreshButton();
             await expect(await activityTabPage.getCaseViewCount('Elizabeth Peters  viewed the case. ')).toEqual(1);
-            await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
+            await expect(await activityTabPage.getCaseViewCount('Qiao Feng  viewed the case. ')).toEqual(1);
         } catch (e) {
             throw e;
         } finally {
@@ -1052,9 +1085,13 @@ describe('Case Activity', () => {
             let caseData = {
                 "Requester": "Fritz",
                 "Summary": "DRDMV-16591_TC" + summary,
-                "Support Group": "Compensation and Benefits",
-                "Assignee": "qtao"
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
+                "Assignee": "qfeng"
             }
+
+            //Create a case with qfeng as Write Permission, qtao has no permission and Fabian as Read Permission
             await apiHelper.apiLogin('qkatawazi');
             let newCase = await apiHelper.createCase(caseData);
             let caseId: string = newCase.displayId;
@@ -1065,33 +1102,33 @@ describe('Case Activity', () => {
             //Read Access Agent
             await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Agent Access');
             await caseAccessTabPo.selectAndAddAgent('Fabian');
-            await expect(await caseAccessTabPo.isAgentNameOrSupportGroupNameDisplayed('Fabian Krause')).toBeTruthy('Failuer:Fabian Krause Agent Name is missing');
-            // Write Access Agent
-            await caseAccessTabPo.selectAgentWithWriteAccess('qyuan');
-            await expect(await caseAccessTabPo.isAgentNameOrSupportGroupNameDisplayed('Qing Yuan')).toBeTruthy('Failuer: Qing Yuan Agent Name is missing');
-            getUrl = await browser.getCurrentUrl();
+            await expect(await caseAccessTabPo.isCaseAccessEntityAdded('Fabian Krause')).toBeTruthy('Failuer:Fabian Krause Agent Name is missing');
 
-            // Login with Read User
+            //Login with Read Permission User
             await navigationPage.signOut();
-            await loginPage.loginWithCredentials('Fabian@petramco.com', passwd);
+            await loginPage.login('fabian');
             await caseConsolePo.searchAndOpenCase(caseId);
             await expect(await viewCasePo.getCaseID()).toBe(caseId, 'FailureMsg: CaseId is missing with Fabian User');
-            // Login with Write User and check read user count
+
+            //Login with Write User and check read user count
             await navigationPage.signOut();
-            await loginPage.loginWithCredentials('qyuan@petramco.com', passwd);
+            await loginPage.login('qfeng');
             await caseConsolePo.searchAndOpenCase(caseId);
             await expect(await viewCasePo.getCaseID()).toBe(caseId, 'FailureMsg: CaseId is missing with qyuan User');
             await expect(await activityTabPage.getCaseViewCount('Fabian Krause  viewed the case. ')).toEqual(1);
-            // Login with Read user and check write user count
+
+            //Login with Read user and check write user count
             await navigationPage.signOut();
-            await loginPage.loginWithCredentials('Fabian@petramco.com', passwd);
+            await loginPage.login('fabian');
             await caseConsolePo.searchAndOpenCase(caseId);
             await expect(await viewCasePo.getCaseID()).toBe(caseId, 'FailureMsg: CaseId is missing with qyuan User');
-            await expect(await activityTabPage.getCaseViewCount('Qing Yuan  viewed the case. ')).toEqual(1);
+            await expect(await activityTabPage.getCaseViewCount('Qiao Feng  viewed the case. ')).toEqual(1);
+            let url: string = await browser.getCurrentUrl();
+
             // Login with No Access user
             await navigationPage.signOut();
-            await loginPage.loginWithCredentials('qannis@petramco.com', passwd);
-            await browser.get(getUrl);
+            await loginPage.login('qtao');
+            await browser.get(url);
             await expect(await utilityCommon.getAllPopupMsg()).toContain('ERROR (302): Record Instance does not exist in the database. com.bmc.dsm.case-lib:Case:');
         } catch (e) {
             throw e;
@@ -1105,25 +1142,29 @@ describe('Case Activity', () => {
     it('[DRDMV-18052]: Alert Notification should be send to tagged persons other than Assignee and Requester', async () => {
         try {
             let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            await navigationPage.signOut();
+            await loginPage.login('qfeng');
             // Create Case
             let caseData = {
                 "Requester": "apavlik",
                 "Summary": "DRDMV-18052_TC" + summary,
-                "Support Group": "Compensation and Benefits",
-                "Assignee": "qtao"
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
+                "Assignee": "qkatawazi"
             }
 
-            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.apiLogin('qfeng');
             let newCase = await apiHelper.createCase(caseData);
             let caseId: string = newCase.displayId;
             await caseConsolePo.searchAndOpenCase(caseId);
             await activityTabPage.addActivityNote('From DRDMV-18052 ');
-            await activityTabPage.addPersonInActivityNote('fritz');
+            await activityTabPage.addPersonInActivityNote('qkatawazi');
             await activityTabPage.clickOnPostButton();
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('qkatawazi');
             await notificationPo.clickOnNotificationIcon();
-            await expect(await notificationPo.isAlertPresent('Qadim Katawazi mentioned you on ' + caseId)).toBeTruthy('Alert message is not present');
+            await expect(await notificationPo.isAlertPresent('Qiao Feng added a note to ' + caseId)).toBeTruthy('Alert message is not present');
         } catch (e) {
             throw e;
         } finally {
@@ -1157,8 +1198,10 @@ describe('Case Activity', () => {
         let caseData = {
             "Requester": "Fritz",
             "Summary": "DRDMV-16730_TC" + summary,
-            "Support Group": "Compensation and Benefits",
-            "Assignee": "qtao"
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
+            "Assignee": "qfeng"
         }
 
         await apiHelper.apiLogin('qkatawazi');
@@ -1243,111 +1286,110 @@ describe('Case Activity', () => {
 
     //kgaikwad
     it('[DRDMV-16765]:Validate Show More/Less option in KA Activity Tab', async () => {
-        try{
-        let randomValues1 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let randomValues2 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let randomValues3 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let randomValues4 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let randomValues5 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let randomValues6 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let addNoteBodyText1 = `${randomValues1}\n${randomValues2}\n${randomValues3}\n${randomValues4}\n${randomValues5}`;
-        let addNoteBodyText2 = `${randomValues1}\n${randomValues2}\n${randomValues3}\n${randomValues4}\n${randomValues5}\n${randomValues6}`;
+        try {
+            let randomValues1 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let randomValues2 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let randomValues3 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let randomValues4 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let randomValues5 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let randomValues6 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let addNoteBodyText1 = `${randomValues1}\n${randomValues2}\n${randomValues3}\n${randomValues4}\n${randomValues5}`;
+            let addNoteBodyText2 = `${randomValues1}\n${randomValues2}\n${randomValues3}\n${randomValues4}\n${randomValues5}\n${randomValues6}`;
 
-        let filePath1 = '../../data/ui/attachment/articleStatus.png';
-        let filePath2 = '../../data/ui/attachment/bwfJpg.jpg';
-        let filePath4 = '../../data/ui/attachment/bwfJpg2.jpg';
-        let filePath5 = '../../data/ui/attachment/bwfJpg3.jpg';
-        let filePath7 = '../../data/ui/attachment/bwfJson1.json';
-        let filePath8 = '../../data/ui/attachment/bwfJson2.json';
-        let filePath9 = '../../data/ui/attachment/bwfJson3.json';
-        let filePath10 = '../../data/ui/attachment/bwfJson4.json';
-        let filePath11 = '../../data/ui/attachment/bwfJson5.json';
+            let filePath1 = '../../data/ui/attachment/articleStatus.png';
+            let filePath2 = '../../data/ui/attachment/bwfJpg.jpg';
+            let filePath4 = '../../data/ui/attachment/bwfJpg2.jpg';
+            let filePath5 = '../../data/ui/attachment/bwfJpg3.jpg';
+            let filePath7 = '../../data/ui/attachment/bwfJson1.json';
+            let filePath8 = '../../data/ui/attachment/bwfJson2.json';
+            let filePath9 = '../../data/ui/attachment/bwfJson3.json';
+            let filePath10 = '../../data/ui/attachment/bwfJson4.json';
+            let filePath11 = '../../data/ui/attachment/bwfJson5.json';
 
-        // Create KA
-        await navigationPage.gotoCreateKnowledge();
-        await expect(browser.getTitle()).toBe('Knowledge Article Templates Preview - Business Workflows'), 'Knowledge Article title is missing';
-        await createKnowlegePo.clickOnTemplate('Reference');
-        await createKnowlegePo.clickOnUseSelectedTemplateButton();
-        await createKnowlegePo.addTextInKnowlegeTitleField('test_KA_for_DRDMV-16765');
-        await createKnowlegePo.selectKnowledgeSet('HR');
-        await createKnowlegePo.clickOnSaveKnowledgeButton();
-        await previewKnowledgePo.clickOnViewArticleLink();
-        await utilityCommon.switchToNewTab(1);
-        await utilityCommon.refresh();
-        await expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Edit button missing on knoledge page.');
-        await viewKnowledgeArticlePo.clickOnTab('Activity');
-        // Verify logs with 5 lines or less than 5 lines
-        await activityTabPage.addActivityNote(addNoteBodyText1);
-        await activityTabPage.clickOnPostButton();
-        await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText1, 1)).toBeTruthy('FailureMsg1: BodyText is missing');
-        await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeFalsy('FailureMsg2: Show more link is displayed');
-        // Verify logs with more than 5 lines
-        await activityTabPage.addActivityNote(addNoteBodyText2);
-        await activityTabPage.clickOnPostButton();
-        await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg3: BodyText is missing');
-        await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg4: Show more link is displayed');
-        await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg5: BodyText is missing');
-        await expect(await activityTabPage.clickShowLessLinkInActivity(1)).toBeTruthy('FailureMsg6: Show less missing for body text');
-        await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg7: Show more link is displayed');
-        await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg8: BodyText is missing');
-        // Verify logs with 5 lines  with 3 attachment
-        await activityTabPage.addActivityNote(addNoteBodyText1);
-        await activityTabPage.addAttachment([filePath1, filePath2]);
-        await activityTabPage.clickOnPostButton();
-        await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeFalsy('FailureMsg12: Show more link for attachment is missing')
-        await expect(await activityTabPage.isAttachedFileNameDisplayed('articleStatus.png')).toBeTruthy(`FailureMsg9: ${filePath1} is missing`);
-        await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy(`FailureMsg10: ${filePath2} is missing`);
-        await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText1, 1)).toBeTruthy('FailureMsg13: BodyText is missing');
-        await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeFalsy('FailureMsg14: Show more link is displayed');
-        // Verify logs with more than 5 lines  with 3 attachment
-        await activityTabPage.addActivityNote(addNoteBodyText2);
-        await activityTabPage.addAttachment([filePath4, filePath5]);
-        await activityTabPage.clickOnPostButton();
-        await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeFalsy('FailureMsg18: Show more link for attachment is missing')
-        await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg2.jpg')).toBeTruthy(`FailureMsg15: ${filePath4} is missing`);
-        await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg3.jpg')).toBeTruthy(`FailureMsg16: ${filePath5} is missing`);
-        await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg19: Show more link is displayed');
-        await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg20: BodyText is missing');
-        await expect(await activityTabPage.clickShowLessLinkInActivity(1)).toBeTruthy('FailureMsg21: Show less missing for body text');
-        // Verify logs with more than 5 lines  with more than 4 attachment
-        await activityTabPage.addActivityNote(addNoteBodyText2);
-        await activityTabPage.addAttachment([filePath7, filePath8, filePath9, filePath10, filePath11]);
-        await activityTabPage.clickOnPostButton();
-        await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg22: BodyText is missing');
-        await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg23: Show More missing for body text');
-        await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeTruthy('FailureMsg24: Show more link for attachment is missing')
-        await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg25: BodyText is missing');
-        await expect(activityTabPage.clickShowLessLinkInActivity(1)).toBeTruthy('FailureMsg43: ShowLess link is missing')
-        await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg26: BodyText is missing');
+            // Create KA
+            await navigationPage.gotoCreateKnowledge();
+            await expect(browser.getTitle()).toBe('Knowledge Article Templates Preview - Business Workflows'), 'Knowledge Article title is missing';
+            await createKnowlegePo.clickOnTemplate('Reference');
+            await createKnowlegePo.clickOnUseSelectedTemplateButton();
+            await createKnowlegePo.addTextInKnowlegeTitleField('test_KA_for_DRDMV-16765');
+            await createKnowlegePo.selectKnowledgeSet('HR');
+            await createKnowlegePo.clickOnSaveKnowledgeButton();
+            await utilityCommon.closePopUpMessage();
+            await previewKnowledgePo.clickGoToArticleButton();
+            await expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Edit button missing on knoledge page.');
+            await viewKnowledgeArticlePo.clickOnTab('Activity');
+            // Verify logs with 5 lines or less than 5 lines
+            await activityTabPage.addActivityNote(addNoteBodyText1);
+            await activityTabPage.clickOnPostButton();
+            await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText1, 1)).toBeTruthy('FailureMsg1: BodyText is missing');
+            await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeFalsy('FailureMsg2: Show more link is displayed');
+            // Verify logs with more than 5 lines
+            await activityTabPage.addActivityNote(addNoteBodyText2);
+            await activityTabPage.clickOnPostButton();
+            await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg3: BodyText is missing');
+            await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg4: Show more link is displayed');
+            await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg5: BodyText is missing');
+            await expect(await activityTabPage.clickShowLessLinkInActivity(1)).toBeTruthy('FailureMsg6: Show less missing for body text');
+            await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg7: Show more link is displayed');
+            await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg8: BodyText is missing');
+            // Verify logs with 5 lines  with 3 attachment
+            await activityTabPage.addActivityNote(addNoteBodyText1);
+            await activityTabPage.addAttachment([filePath1, filePath2]);
+            await activityTabPage.clickOnPostButton();
+            await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeFalsy('FailureMsg12: Show more link for attachment is missing')
+            await expect(await activityTabPage.isAttachedFileNameDisplayed('articleStatus.png')).toBeTruthy(`FailureMsg9: ${filePath1} is missing`);
+            await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy(`FailureMsg10: ${filePath2} is missing`);
+            await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText1, 1)).toBeTruthy('FailureMsg13: BodyText is missing');
+            await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeFalsy('FailureMsg14: Show more link is displayed');
+            // Verify logs with more than 5 lines  with 3 attachment
+            await activityTabPage.addActivityNote(addNoteBodyText2);
+            await activityTabPage.addAttachment([filePath4, filePath5]);
+            await activityTabPage.clickOnPostButton();
+            await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeFalsy('FailureMsg18: Show more link for attachment is missing')
+            await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg2.jpg')).toBeTruthy(`FailureMsg15: ${filePath4} is missing`);
+            await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg3.jpg')).toBeTruthy(`FailureMsg16: ${filePath5} is missing`);
+            await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg19: Show more link is displayed');
+            await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg20: BodyText is missing');
+            await expect(await activityTabPage.clickShowLessLinkInActivity(1)).toBeTruthy('FailureMsg21: Show less missing for body text');
+            // Verify logs with more than 5 lines  with more than 4 attachment
+            await activityTabPage.addActivityNote(addNoteBodyText2);
+            await activityTabPage.addAttachment([filePath7, filePath8, filePath9, filePath10, filePath11]);
+            await activityTabPage.clickOnPostButton();
+            await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg22: BodyText is missing');
+            await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg23: Show More missing for body text');
+            await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeTruthy('FailureMsg24: Show more link for attachment is missing')
+            await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg25: BodyText is missing');
+            await expect(activityTabPage.clickShowLessLinkInActivity(1)).toBeTruthy('FailureMsg43: ShowLess link is missing')
+            await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg26: BodyText is missing');
 
-        await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJson1.json')).toBeTruthy(`FailureMsg27: ${filePath7} is missing`);
-        await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJson2.json')).toBeTruthy(`FailureMsg28: ${filePath8} is missing`);
-        await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJson3.json')).toBeTruthy(`FailureMsg29: ${filePath9} is missing`);
-        await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJson4.json')).toBeTruthy(`FailureMsg30: ${filePath10} is missing`);
-        await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJson5.json')).toBeTruthy(`FailureMsg31: ${filePath11} is missing`);
+            await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJson1.json')).toBeTruthy(`FailureMsg27: ${filePath7} is missing`);
+            await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJson2.json')).toBeTruthy(`FailureMsg28: ${filePath8} is missing`);
+            await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJson3.json')).toBeTruthy(`FailureMsg29: ${filePath9} is missing`);
+            await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJson4.json')).toBeTruthy(`FailureMsg30: ${filePath10} is missing`);
+            await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJson5.json')).toBeTruthy(`FailureMsg31: ${filePath11} is missing`);
 
-        // Download Attachments Files
-        await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJson1.json')).toBeTruthy('FailureMsg32: bwfJson1.json File is delete sucessfully');
-        await activityTabPage.clickAndDownloadAttachmentFile('bwfJson1.json')
-        await expect(await utilityCommon.isFileDownloaded('bwfJson1.json')).toBeTruthy('FailureMsg33.json File is not downloaded.');
+            // Download Attachments Files
+            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJson1.json')).toBeTruthy('FailureMsg32: bwfJson1.json File is delete sucessfully');
+            await activityTabPage.clickAndDownloadAttachmentFile('bwfJson1.json')
+            await expect(await utilityCommon.isFileDownloaded('bwfJson1.json')).toBeTruthy('FailureMsg33.json File is not downloaded.');
 
-        await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJson2.json')).toBeTruthy('FailureMsg34: bwfJson2.json File is delete sucessfully');
-        await activityTabPage.clickAndDownloadAttachmentFile('bwfJson2.json')
-        await expect(await utilityCommon.isFileDownloaded('bwfJson2.json')).toBeTruthy('FailureMsg35: bwfJson2.json File is not downloaded.');
+            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJson2.json')).toBeTruthy('FailureMsg34: bwfJson2.json File is delete sucessfully');
+            await activityTabPage.clickAndDownloadAttachmentFile('bwfJson2.json')
+            await expect(await utilityCommon.isFileDownloaded('bwfJson2.json')).toBeTruthy('FailureMsg35: bwfJson2.json File is not downloaded.');
 
-        await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJson3.json')).toBeTruthy('FailureMsg36: bwfJson3.json File is delete sucessfully');
-        await activityTabPage.clickAndDownloadAttachmentFile('bwfJson3.json')
-        await expect(await utilityCommon.isFileDownloaded('bwfJson3.json')).toBeTruthy('FailureMsg37: bwfJson3.json File is not downloaded.');
+            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJson3.json')).toBeTruthy('FailureMsg36: bwfJson3.json File is delete sucessfully');
+            await activityTabPage.clickAndDownloadAttachmentFile('bwfJson3.json')
+            await expect(await utilityCommon.isFileDownloaded('bwfJson3.json')).toBeTruthy('FailureMsg37: bwfJson3.json File is not downloaded.');
 
-        await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJson4.json')).toBeTruthy('FailureMsg38: bwfJson4.json File is delete sucessfully');
-        await activityTabPage.clickAndDownloadAttachmentFile('bwfJson4.json')
-        await expect(await utilityCommon.isFileDownloaded('bwfJson4.json')).toBeTruthy('FailureMsg39: bwfJson4.json File is not downloaded.');
+            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJson4.json')).toBeTruthy('FailureMsg38: bwfJson4.json File is delete sucessfully');
+            await activityTabPage.clickAndDownloadAttachmentFile('bwfJson4.json')
+            await expect(await utilityCommon.isFileDownloaded('bwfJson4.json')).toBeTruthy('FailureMsg39: bwfJson4.json File is not downloaded.');
 
-        await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJson5.json')).toBeTruthy('FailureMsg40: bwfJson5.json File is delete sucessfully');
-        await activityTabPage.clickAndDownloadAttachmentFile('bwfJson5.json')
-        await expect(await utilityCommon.isFileDownloaded('bwfJson5.json')).toBeTruthy('FailureMsg41: bwfJson5.json File is not downloaded.');
+            await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJson5.json')).toBeTruthy('FailureMsg40: bwfJson5.json File is delete sucessfully');
+            await activityTabPage.clickAndDownloadAttachmentFile('bwfJson5.json')
+            await expect(await utilityCommon.isFileDownloaded('bwfJson5.json')).toBeTruthy('FailureMsg41: bwfJson5.json File is not downloaded.');
 
-        await expect(activityTabPage.clickShowLessLinkInAttachmentActivity(1)).toBeTruthy('FailureMsg42: Show less link for attachment is missing');
+            await expect(activityTabPage.clickShowLessLinkInAttachmentActivity(1)).toBeTruthy('FailureMsg42: Show less link for attachment is missing');
         }
         catch (e) {
             throw e;
@@ -1371,7 +1413,7 @@ describe('Case Activity', () => {
 
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
-            await navigationPage.switchToAnotherApplication('Knowledge Management');
+            await navigationPage.switchToApplication('Knowledge Management');
             await utilCommon.switchToNewWidnow(1);
 
             await apiHelper.apiLogin(knowledgePublisherUser);
@@ -1379,9 +1421,10 @@ describe('Case Activity', () => {
                 "knowledgeSet": "HR",
                 "title": `${knowledgeTitile}`,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-                "assignee": "KMills",
-                "assigneeSupportGroup": "GB Support 2",
-                "company": "Petramco"
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "United Kingdom Support",
+                "assigneeSupportGroup": "GB Support 1",
+                "assignee": "KMills"
             }
             let KADetails = await apiHelper.createKnowledgeArticle(articleData);
             expect(await apiHelper.updateKnowledgeArticleStatus(KADetails.id, "Draft")).toBeTruthy("Article with Draft status not updated.");
@@ -1389,22 +1432,21 @@ describe('Case Activity', () => {
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
             await expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Edit button missing on knoledge page.');
-
             await viewKnowledgeArticlePo.clickOnFlagButton();
             await flagUnflagKnowledgePo.setTextInTellUsMore(flag);
             await flagUnflagKnowledgePo.clickOnFlageButtonOnBlade();
 
-            await utilityCommon.waitUntilPopUpDisappear();
+            await utilityCommon.closePopUpMessage();
             await viewKnowledgeArticlePo.clickOnUnFlagButton();
             await flagUnflagKnowledgePo.setTextInTellUsMore(unFlag);
             await flagUnflagKnowledgePo.clickOnUnFlageButtonOnBlade();
 
-            await utilityCommon.waitUntilPopUpDisappear();
+            await utilityCommon.closePopUpMessage();
             await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
             await feedbackBladeKnowledgeArticlePo.setTextInTellUsMore(feedback);
             await feedbackBladeKnowledgeArticlePo.clickOnSaveButtonOnFeedBack();
 
-            await utilityCommon.waitUntilPopUpDisappear();
+            await utilityCommon.closePopUpMessage();
             await viewKnowledgeArticlePo.clickReviewPendingLink();
             await reviewCommentsPo.setTextInTellUsMore(reviewPending);
             await reviewCommentsPo.clickApprovedButton();
@@ -1451,5 +1493,5 @@ describe('Case Activity', () => {
             await loginPage.login('qkatawazi');
         }
     });//, 220 * 1000);
+});
 
-})

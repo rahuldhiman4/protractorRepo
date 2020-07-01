@@ -1,5 +1,4 @@
-import { $, $$, by, element, protractor, ProtractorExpectedConditions, browser } from "protractor";
-import utilGrid from '../../../utils/util.grid';
+import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 
 class NotificationTemplateGridPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -16,44 +15,24 @@ class NotificationTemplateGridPage {
         saveButton: "[rx-view-component-id='50e25982-5452-4f20-ac79-5682de7cb467'] button",
         createNotificationTemplate: "[rx-view-component-id='48d1ab7c-3e17-458c-9d57-4acb72f49595'] button",
         searchBox: "[rx-view-component-id='7d5c5beb-d652-4bf9-9fc7-ccc7100d3b77'] [rx-id='search-text-input']",
-        guid: '7d5c5beb-d652-4bf9-9fc7-ccc7100d3b77', 
-        deleteButton:'[rx-view-component-id="78c3aad2-3ffa-4212-ab32-0055553d7048"] button'
+        guid: '7d5c5beb-d652-4bf9-9fc7-ccc7100d3b77',
+        deleteButton: '[rx-view-component-id="78c3aad2-3ffa-4212-ab32-0055553d7048"] button'
     }
 
     async isCopyTemplateButtonDisabled(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.copyTemplate)));
         return await $(this.selectors.copyTemplate).getAttribute("disabled") == "true";
     }
 
-    async clickOnDeleteButton():Promise<void>{
-        await $(this.selectors.deleteButton).click();
-    }
-
-    async searchTemplate(tempName: string) {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.searchBox)));
-        await $(this.selectors.searchBox).clear();
-        await $(this.selectors.searchBox).sendKeys(tempName);
-        await $(this.selectors.searchButton).click();
-        //        await browser.sleep(1000);
-    }
-
     async selectTemplate() {
-        //        await browser.wait(this.EC.visibilityOf($$(this.selectors.selectTemplateCheckBox).first()));
         await $$(this.selectors.selectTemplateCheckBox).first().click();
     }
 
-    async clickAndOpenTemplate(tempName: string) {
-        //        await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText("a[class='ui-grid__link']", tempName))));
-        await element(by.cssContainingText("a[class='ui-grid__link']", tempName)).click();
-    }
-
-    async clickCopyTmplate() {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.copyTemplate)),3000);
+    async clickCopyTemplate() {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.copyTemplate)), 3000);
         await $(this.selectors.copyTemplate).click();
     }
 
     async getTitleCopyNotificationTemplateWindow(): Promise<String> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.copyTemplateWindow)));
         return $(this.selectors.copyTemplateWindow).getText();
     }
 
@@ -62,22 +41,16 @@ class NotificationTemplateGridPage {
     }
 
     async setCompanyDropDownValPresentInCopyTempWindow(company: string) {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.companyDropDownCopyTempWindow)));
         await $(this.selectors.companyDropDownCopyTempWindow).click();
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.companyDropDownCopyTempWindow).$('input')));
         await $(this.selectors.companyDropDownCopyTempWindow).$('input').sendKeys(company);
-        //        await browser.wait(this.EC.visibilityOf($$(this.selectors.companyDropDownValueCopyTempWindow).first()));
         await $$(this.selectors.companyDropDownValueCopyTempWindow).first().click();
     }
 
     async clearCompanyDropDownValPresentInCopyTempWindow() {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.clearCompanyDropDownCopyTempWindow)));
         await $(this.selectors.clearCompanyDropDownCopyTempWindow).click();
     }
 
     async clickOnCreateNotificationTemplate(): Promise<void> {
-        //        await utilCommon.waitUntilSpinnerToHide();
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.createNotificationTemplate)));
         await $(this.selectors.createNotificationTemplate).click();
     }
 
@@ -86,7 +59,6 @@ class NotificationTemplateGridPage {
     }
 
     async setTemplateNamePresentInCopyTempWindow(tempName: string) {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.tempNameCopyTempWindow)));
         await $(this.selectors.tempNameCopyTempWindow).clear();
         await $(this.selectors.tempNameCopyTempWindow).sendKeys(tempName);
     }
@@ -96,14 +68,8 @@ class NotificationTemplateGridPage {
     }
 
     async clickCopyTemplateButtonInCopyTempWindow() {
-        //        await browser.wait(this.EC.visibilityOf(element(by.buttonText('Create Copy'))));
         element(by.buttonText('Create Copy')).click();
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
-    }
-
-    async getValueOnAssignmentConfigGrid(columnName: string): Promise<string> {
-        return await utilGrid.getSelectedGridRecordValue(this.selectors.guid, columnName);
     }
 }
 
