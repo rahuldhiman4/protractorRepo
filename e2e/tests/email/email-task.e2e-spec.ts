@@ -2,7 +2,6 @@ import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
 import viewCasePo from "../../pageobject/case/view-case.po";
 import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
-import changeAssignmentOldBladePo from '../../pageobject/common/change-assignment-old-blade.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import emailPo from '../../pageobject/email/compose-mail.po';
@@ -24,6 +23,7 @@ describe('Email', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 
@@ -35,108 +35,135 @@ describe('Email', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let taskTemplateName = 'Manual task19011' + randomStr;
         let manualTaskSummary = 'ManualSummary19011' + randomStr;
-        var templateData = {
+        let templateData = {
             "templateName": `${taskTemplateName}`,
             "templateSummary": `${manualTaskSummary}`,
             "templateStatus": "Active",
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('fritz');
         await apiHelper.createManualTaskTemplate(templateData);
 
         let externalTaskTemplateName = 'External task19011' + randomStr;
         let externalTaskSummary = 'ExternalSummary19011' + randomStr;
-        var externaltemplateData = {
+        let externaltemplateData = {
             "templateName": `${externalTaskTemplateName}`,
             "templateSummary": `${externalTaskSummary}`,
             "templateStatus": "Active",
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.createExternalTaskTemplate(externaltemplateData);
 
         let automatedTaskTemplateName = 'Automated task19011' + randomStr;
         let automatedTaskSummary = 'AutomatedSummary19011' + randomStr;
-        var automatedtemplateData = {
+        let automatedTaskProcess = 'Auto Proces' + randomStr;
+
+        let automatedtemplateData = {
             "templateName": `${automatedTaskTemplateName}`,
             "templateSummary": `${automatedTaskSummary}`,
             "templateStatus": "Active",
             "processBundle": "com.bmc.dsm.case-lib",
-            "processName": "Auto Process",
+            "processName": `${automatedTaskProcess}`,
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.createAutomatedTaskTemplate(automatedtemplateData);
 
-        var caseData = {
+        let caseData = {
             "Requester": "qtao",
             "Company": "Petramco",
             "Summary": "Create case for me postman1",
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "Qadim Katawazi"
         }
         await apiHelper.apiLogin('fritz');
-        var newCaseTemplate = await apiHelper.createCase(caseData);
-        var displayId: string = newCaseTemplate.displayId;
+        let newCaseTemplate = await apiHelper.createCase(caseData);
+        let displayId: string = newCaseTemplate.displayId;
         await utilityGrid.clearFilter();
         await utilityGrid.searchAndOpenHyperlink(displayId);
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary);
         await manageTaskBladePo.addTaskFromTaskTemplate(automatedTaskSummary);
         await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary);
-        await manageTaskBladePo.clickTaskLinkOnManageTask(automatedTaskSummary);
+        await manageTaskBladePo.clickTaskLink(automatedTaskSummary);
         await expect(emailPo.isEmailIconLinkPresent()).toBeTruthy();
         await viewTaskPo.clickEmailLink();
         await emailPo.clickOnDiscardButton();
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         await viewTaskPo.clickOnViewCase();
         await viewCasePo.clickAddTaskButton();
-        await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
+        await manageTaskBladePo.clickTaskLink(manualTaskSummary);
         await expect(emailPo.isEmailIconLinkPresent()).toBeTruthy();
         await viewTaskPo.clickEmailLink();
         await emailPo.clickOnDiscardButton();
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         await viewTaskPo.clickOnViewCase();
         await viewCasePo.clickAddTaskButton();
-        await manageTaskBladePo.clickTaskLinkOnManageTask(externalTaskSummary);
+        await manageTaskBladePo.clickTaskLink(externalTaskSummary);
         await expect(emailPo.isEmailIconLinkPresent()).toBeTruthy();
         await viewTaskPo.clickEmailLink();
         await emailPo.clickOnDiscardButton();
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
-    });
+    }, 250 * 1000);
 
+    //Failed due to application issue...defect logged DRDMV-21883
     it('[DRDMV-19008]: Email icon and Requester email link should open compose email dialog in Task', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let taskTemplateName = 'Manual task19008' + randomStr;
         let manualTaskSummary = 'ManualSummary19008' + randomStr;
-        var templateData = {
+        let templateData = {
             "templateName": `${taskTemplateName}`,
             "templateSummary": `${manualTaskSummary}`,
             "templateStatus": "Active",
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('fritz');
         await apiHelper.createManualTaskTemplate(templateData);
 
         let externalTaskTemplateName = 'Externaltask19008' + randomStr;
         let externalTaskSummary = 'ExternalSummary19008' + randomStr;
-        var externaltemplateData = {
+        let externaltemplateData = {
             "templateName": `${externalTaskTemplateName}`,
             "templateSummary": `${externalTaskSummary}`,
             "templateStatus": "Active",
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.createExternalTaskTemplate(externaltemplateData);
-        var caseData = {
+        let caseData = {
             "Requester": "qtao",
             "Company": "Petramco",
             "Summary": "Create case for me postman1",
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "Qadim Katawazi"
         }
         await apiHelper.apiLogin('fritz');
-        var newCaseTemplate = await apiHelper.createCase(caseData);
-        var displayId: string = newCaseTemplate.displayId;
+        let newCaseTemplate = await apiHelper.createCase(caseData);
+        let displayId: string = newCaseTemplate.displayId;
         await navigationPage.gotoCaseConsole();
         await utilityGrid.clearFilter();
         await utilityGrid.searchAndOpenHyperlink(displayId);
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary);
         await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary);
-        await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
+        await manageTaskBladePo.clickTaskLink(manualTaskSummary);
         await browser.sleep(2000);
         await expect(await emailPo.isEmailIconLinkPresent()).toBeTruthy();
         let ManualtaskID = await viewTaskPo.getTaskID();
@@ -164,7 +191,7 @@ describe('Email', () => {
         expect(await activityTabPo.getEmailTitle()).toContain('Fritz Schulz sent an email');
         await viewTaskPo.clickOnViewCase();
         await viewCasePo.clickAddTaskButton();
-        await manageTaskBladePo.clickTaskLinkOnManageTask(externalTaskSummary);
+        await manageTaskBladePo.clickTaskLink(externalTaskSummary);
         await expect(emailPo.isEmailIconLinkPresent()).toBeTruthy();
         let ExternaltaskID = await viewTaskPo.getTaskID();
         await viewTaskPo.clickEmailLink();
@@ -187,7 +214,7 @@ describe('Email', () => {
         //verify activity email post
         await emailPo.clickOnSendButton();
         expect(await activityTabPo.getEmailTitle()).toContain('Fritz Schulz sent an email');
-    }, 300 * 1000);
+    }, 450 * 1000);
 
     it('[DRDMV-19009]: Verify Subject of Email from Task Compose email', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -196,38 +223,48 @@ describe('Email', () => {
             await loginPage.login('qkatawazi');
             let taskTemplateName = 'Manual  task19009' + randomStr;
             let manualTaskSummary = 'ManualSummary19009' + randomStr;
-            var templateData = {
+            let templateData = {
                 "templateName": `${taskTemplateName}`,
                 "templateSummary": `${manualTaskSummary}`,
                 "templateStatus": "Active",
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
             }
             await apiHelper.apiLogin('fritz');
             await apiHelper.createManualTaskTemplate(templateData);
 
             let externalTaskTemplateName = 'External  task19009' + randomStr;
             let externalTaskSummary = 'ExternalSummary19009' + randomStr;
-            var externaltemplateData = {
+            let externaltemplateData = {
                 "templateName": `${externalTaskTemplateName}`,
                 "templateSummary": `${externalTaskSummary}`,
                 "templateStatus": "Active",
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
             }
             await apiHelper.createExternalTaskTemplate(externaltemplateData);
-            var caseData = {
+            let caseData = {
                 "Requester": "qtao",
                 "Company": "Petramco",
                 "Summary": "Create case for me postman1",
-                "Support Group": "Compensation and Benefits",
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
                 "Assignee": "Qadim Katawazi"
             }
             await apiHelper.apiLogin('qkatawazi');
-            var newCaseTemplate = await apiHelper.createCase(caseData);
-            var displayId: string = newCaseTemplate.displayId;
+            let newCaseTemplate = await apiHelper.createCase(caseData);
+            let displayId: string = newCaseTemplate.displayId;
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(displayId);
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary);
             await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary);
-            await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
+            await manageTaskBladePo.clickTaskLink(manualTaskSummary);
             await browser.sleep(2000);
             await viewTaskPo.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
@@ -245,7 +282,7 @@ describe('Email', () => {
             await viewTaskPo.clickOnViewCase();
             await viewCasePo.clickAddTaskButton();
             //verify activity email post
-            await manageTaskBladePo.clickTaskLinkOnManageTask(externalTaskSummary);
+            await manageTaskBladePo.clickTaskLink(externalTaskSummary);
             await viewTaskPo.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
             await changeAssignmentBladePo.selectBusinessUnit('Facilities Support');
@@ -287,23 +324,29 @@ describe('Email', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let taskTemplateName = 'Manual  task' + randomStr;
         let manualTaskSummary = 'ManualSummary' + randomStr;
-        var templateData = {
+        let templateData = {
             "templateName": `${taskTemplateName}`,
             "templateSummary": `${manualTaskSummary}`,
             "templateStatus": "Active",
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('fritz');
         await apiHelper.createManualTaskTemplate(templateData);
-        var caseData = {
+        let caseData = {
             "Requester": "qtao",
             "Company": "Petramco",
             "Summary": "Create case for me postman1",
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "Qadim Katawazi"
         }
         await apiHelper.apiLogin('fritz');
-        var newCaseTemplate = await apiHelper.createCase(caseData);
-        var displayId: string = newCaseTemplate.displayId;
+        let newCaseTemplate = await apiHelper.createCase(caseData);
+        let displayId: string = newCaseTemplate.displayId;
         await navigationPage.gotoCaseConsole();
         await utilityGrid.clearFilter();
         await utilityGrid.searchAndOpenHyperlink(displayId);
@@ -313,51 +356,62 @@ describe('Email', () => {
         await expect(activityTabPo.getActivityNotesText('Reply all')).toBeFalsy();
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary);
-        await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
+        await manageTaskBladePo.clickTaskLink(manualTaskSummary);
         await activityTabPo.addActivityNote('This is case notes templates');
         await activityTabPo.clickOnPostButton();
         await expect(activityTabPo.getActivityNotesText('Reply')).toBeFalsy();
         await expect(activityTabPo.getActivityNotesText('Reply all')).toBeFalsy();
     });
 
+    //Failed due to application issue...defect logged DRDMV-21883
     it('[DRDMV-19556]: Reply / Reply All earlier email context should be copied as part of email composition on Task', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let taskTemplateName = 'Manual  task' + randomStr;
         let manualTaskSummary = 'ManualSummary' + randomStr;
-        var templateData = {
+        let templateData = {
             "templateName": `${taskTemplateName}`,
             "templateSummary": `${manualTaskSummary}`,
             "templateStatus": "Active",
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('fritz');
         await apiHelper.createManualTaskTemplate(templateData);
         let externalTaskTemplateName = 'External  task' + randomStr;
         let externalTaskSummary = 'ExternalSummary' + randomStr;
-        var externaltemplateData = {
+        let externaltemplateData = {
             "templateName": `${externalTaskTemplateName}`,
             "templateSummary": `${externalTaskSummary}`,
             "templateStatus": "Active",
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.createExternalTaskTemplate(externaltemplateData);
-        var caseData = {
+        let caseData = {
             "Requester": "qtao",
             "Company": "Petramco",
             "Summary": "Create case for me postman1",
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "Qadim Katawazi"
         }
         await apiHelper.apiLogin('fritz');
-        var newCaseTemplate = await apiHelper.createCase(caseData);
-        var displayId: string = newCaseTemplate.displayId;
+        let newCaseTemplate = await apiHelper.createCase(caseData);
+        let displayId: string = newCaseTemplate.displayId;
         await navigationPage.gotoCaseConsole();
         await utilityGrid.clearFilter();
         await utilityGrid.searchAndOpenHyperlink(displayId);
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary);
         await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary);
-        await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
+        await manageTaskBladePo.clickTaskLink(manualTaskSummary);
         await browser.sleep(2000);
-        var ManualtaskID = await viewTaskPo.getTaskID();
+        let ManualtaskID = await viewTaskPo.getTaskID();
         await viewTaskPo.clickEmailLink();
         await emailPo.addAttachment(['../../data/ui/attachment/demo.txt']);
         await emailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
@@ -384,8 +438,8 @@ describe('Email', () => {
         await emailPo.clickOnSendButton();
         await viewTaskPo.clickOnViewCase();
         await viewCasePo.clickAddTaskButton();
-        await manageTaskBladePo.clickTaskLinkOnManageTask(externalTaskSummary);
-        var externaltaskID = await viewTaskPo.getTaskID();
+        await manageTaskBladePo.clickTaskLink(externalTaskSummary);
+        let externaltaskID = await viewTaskPo.getTaskID();
         await viewTaskPo.clickEmailLink();
         await emailPo.addAttachment(['../../data/ui/attachment/demo.txt']);
         await emailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
@@ -411,19 +465,21 @@ describe('Email', () => {
         await emailPo.setEmailBody('this is third reply');
         await emailPo.clickOnSendButton();
         expect(await activityTabPo.getEmailBody()).toContain('this is third reply');
-    });//, 200 * 1000);
+    }, 300 * 1000);
 
     it('[DRDMV-19557]: For Reply / Reply All earlier email context should be copied as part of email composition on Case', async () => {
-        var caseData = {
+        let caseData = {
             "Requester": "qtao",
             "Company": "Petramco",
             "Summary": "Create case for Email Test",
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "Qadim Katawazi"
         }
         await apiHelper.apiLogin('fritz');
-        var newCaseTemplate = await apiHelper.createCase(caseData);
-        var displayId: string = newCaseTemplate.displayId;
+        let newCaseTemplate = await apiHelper.createCase(caseData);
+        let displayId: string = newCaseTemplate.displayId;
         await navigationPage.gotoCaseConsole();
         await utilityGrid.clearFilter();
         await utilityGrid.searchAndOpenHyperlink(displayId);
@@ -451,7 +507,7 @@ describe('Email', () => {
         expect(await activityTabPo.getEmailBody()).toContain('this is second reply to all');
         await emailPo.setEmailBody('this is third reply');
         await emailPo.clickOnSendButton();
-    });//, 200 * 1000);
+    });
 
     it('[DRDMV-19555]: In Case of Reply/Reply All  if we select new Email template then previous contents should not be erased.', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -466,38 +522,48 @@ describe('Email', () => {
         await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateForSalary']);
         let taskTemplateName = 'Manual task19555' + randomStr;
         let manualTaskSummary = 'ManualSummary19555' + randomStr;
-        var templateData = {
+        let templateData = {
             "templateName": `${taskTemplateName}`,
             "templateSummary": `${manualTaskSummary}`,
             "templateStatus": "Active",
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.apiLogin('fritz');
         await apiHelper.createManualTaskTemplate(templateData);
         let externalTaskTemplateName = 'Externa task19555' + randomStr;
         let externalTaskSummary = 'ExternalSummary19555' + randomStr;
-        var externaltemplateData = {
+        let externaltemplateData = {
             "templateName": `${externalTaskTemplateName}`,
             "templateSummary": `${externalTaskSummary}`,
             "templateStatus": "Active",
+            "taskCompany": "Petramco",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "Facilities Support",
+            "ownerGroup": "Facilities"
         }
         await apiHelper.createExternalTaskTemplate(externaltemplateData);
-        var caseData = {
+        let caseData = {
             "Requester": "qdu",
             "Company": "Petramco",
             "Summary": "Create case for me postman19555",
-            "Support Group": "Compensation and Benefits",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
             "Assignee": "Qadim Katawazi"
         }
         await apiHelper.apiLogin('fritz');
-        var newCaseTemplate = await apiHelper.createCase(caseData);
-        var displayId: string = newCaseTemplate.displayId;
+        let newCaseTemplate = await apiHelper.createCase(caseData);
+        let displayId: string = newCaseTemplate.displayId;
         await navigationPage.gotoCaseConsole();
         await utilityGrid.clearFilter();
         await utilityGrid.searchAndOpenHyperlink(displayId);
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary);
         await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary);
-        await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
+        await manageTaskBladePo.clickTaskLink(manualTaskSummary);
         await viewTaskPo.clickOnEditTask();
         await editTask.clickOnChangeAssignementButton();
         await changeAssignmentBladePo.selectBusinessUnit('Facilities Support');
@@ -523,7 +589,7 @@ describe('Email', () => {
         await emailPo.clickOnSendButton();
         await viewTaskPo.clickOnViewCase();
         await viewCasePo.clickAddTaskButton();
-        await manageTaskBladePo.clickTaskLinkOnManageTask(externalTaskSummary);
+        await manageTaskBladePo.clickTaskLink(externalTaskSummary);
         await viewTaskPo.clickOnEditTask();
         await editTask.clickOnChangeAssignementButton();
         await changeAssignmentBladePo.selectBusinessUnit('Facilities Support');
@@ -547,7 +613,7 @@ describe('Email', () => {
         await emailTemplateBladePo.clickOnApplyButton();
         expect(await emailPo.getEmailBody()).toContain('Hi Team ,\n\nI am taking leave today.\n\nThanks.');
         await emailPo.clickOnSendButton();
-    },330 * 1000);
+    }, 330 * 1000);
 
     it('[DRDMV-19552]: Verify task acknowledgement template are listed in Email Acknowledgement template and In Email Configuration', async () => {
         await navigationPage.gotoSettingsPage();
@@ -569,38 +635,48 @@ describe('Email', () => {
             await loginPage.login('qkatawazi');
             let taskTemplateName = 'Manual  task19550' + randomStr;
             let manualTaskSummary = 'ManualSummary19550' + randomStr;
-            var templateData = {
+            let templateData = {
                 "templateName": `${taskTemplateName}`,
                 "templateSummary": `${manualTaskSummary}`,
                 "templateStatus": "Active",
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
             }
             await apiHelper.apiLogin('fritz');
             await apiHelper.createManualTaskTemplate(templateData);
             let externalTaskTemplateName = 'External  task19550' + randomStr;
             let externalTaskSummary = 'ExternalSummary19550' + randomStr;
-            var externaltemplateData = {
+            let externaltemplateData = {
                 "templateName": `${externalTaskTemplateName}`,
                 "templateSummary": `${externalTaskSummary}`,
                 "templateStatus": "Active",
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
             }
             await apiHelper.createExternalTaskTemplate(externaltemplateData);
-            var caseData = {
+            let caseData = {
                 "Requester": "qtao",
                 "Company": "Petramco",
                 "Summary": "Create case for me postman1",
-                "Support Group": "Compensation and Benefits",
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
                 "Assignee": "Qadim Katawazi"
             }
             await apiHelper.apiLogin('qkatawazi');
-            var newCaseTemplate = await apiHelper.createCase(caseData);
-            var displayId: string = newCaseTemplate.displayId;
+            let newCaseTemplate = await apiHelper.createCase(caseData);
+            let displayId: string = newCaseTemplate.displayId;
             await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(displayId);
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary);
             await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary);
-            await manageTaskBladePo.clickTaskLinkOnManageTask(manualTaskSummary);
+            await manageTaskBladePo.clickTaskLink(manualTaskSummary);
             await viewTaskPo.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
             await changeAssignmentBladePo.selectBusinessUnit('Facilities Support');
@@ -612,11 +688,11 @@ describe('Email', () => {
             await viewTaskPo.clickOnViewCase();
             await viewCasePo.clickAddTaskButton();
             //verify activity email post
-            await manageTaskBladePo.clickTaskLinkOnManageTask(externalTaskSummary);
+            await manageTaskBladePo.clickTaskLink(externalTaskSummary);
             await viewTaskPo.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
-            await changeAssignmentBladePo.selectBusinessUnit('HR Support');
-            await changeAssignmentBladePo.selectSupportGroup('Compensation and Benefits');
+            await changeAssignmentBladePo.selectBusinessUnit('United States Support');
+            await changeAssignmentBladePo.selectSupportGroup('US Support 3');
             await changeAssignmentBladePo.selectAssignee('Qadim Katawazi');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
@@ -630,7 +706,8 @@ describe('Email', () => {
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(ManualtaskID);
             await viewTaskPo.clickOnRequesterEmail();
-            expect(await emailPo.isSelectEmailTemplateButtonPresent()).toBeFalsy();
+            await browser.sleep(2000);
+            expect(await emailPo.isSelectEmailTemplateButtonPresent()).toBeFalsy("Email template button visible to task assignee having no case access");
             await emailPo.clickOnDiscardButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         } catch (e) {
@@ -640,5 +717,5 @@ describe('Email', () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
         }
-    }, 380 * 1000);
-})
+    }, 400 * 1000);
+});
