@@ -106,8 +106,8 @@ class AttachmentBlade {
         await $(this.selectors.refreshButton).click();
     }
 
-    async getRecordValue(columnName: any): Promise<string> {
-        return await utilityGrid.getFirstGridRecordColumnValue(columnName);
+    async getGridColumnValues(columnName: any): Promise<string[]> {
+        return await utilityGrid.getAllValuesFromColumn(columnName);
     }
 
     async clickFileName(attachment: string): Promise<void> {

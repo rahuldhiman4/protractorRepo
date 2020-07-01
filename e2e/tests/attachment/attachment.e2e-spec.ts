@@ -48,9 +48,9 @@ describe("Attachment", () => {
         expect(await attachmentBladePo.getTextOfColumnHeader('Attached to ')).toBe('Attached to', 'Attached to column header is missing');
         expect(await attachmentBladePo.getTextOfColumnHeader('Media type ')).toBe('Media type', 'Media type  column header is missing');
         expect(await attachmentBladePo.getTextOfColumnHeader('Created date ')).toBe('Created date', 'Created date column header is missing');
-        expect(await attachmentBladePo.getRecordValue('Attachments')).toBe('bwfJpg', 'Attachment file name is missing');
-        expect(await attachmentBladePo.getRecordValue('Attached to')).toBe('Case', 'Attach to column value is missing');
-        expect(await attachmentBladePo.getRecordValue('Media type')).toBe('image/jpeg', 'Media type column value is missing');
+        expect(await (await attachmentBladePo.getGridColumnValues('Attachments')).includes('bwfJpg')).toBeTruthy('Attachment file name is missing');
+        expect(await (await attachmentBladePo.getGridColumnValues('Attached to')).includes('Case')).toBeTruthy('Attach to column value is missing');
+        expect(await (await attachmentBladePo.getGridColumnValues('Media type')).includes('image/jpeg')).toBeTruthy('Media type column value is missing');
 
         let year: string;
         let month: string;
@@ -77,7 +77,7 @@ describe("Attachment", () => {
         }
 
         finalDate = date + '/' + month + '/' + year;
-        expect(await attachmentBladePo.getRecordValue(finalDate)).toContain(finalDate);
+        expect(await (await attachmentBladePo.getGridColumnValues('Created date'))[0].includes(finalDate)).toBeTruthy('CreateDate is not present');
         expect(await attachmentBladePo.isDownloadButtonDisplayed()).toBeTruthy('Download button is missing');
         expect(await attachmentBladePo.isCloseButtonDisplayed()).toBeTruthy('Close button is missing');
         await attachmentBladePo.clickDownloadButton();
@@ -145,7 +145,7 @@ describe("Attachment", () => {
             await viewCasePo.clickAttachmentsLink();
             expect(await utilCommon.deleteAlreadyDownloadedFile('demo.txt')).toBeTruthy('File is delete sucessfully');
             await attachmentBladePo.searchAndSelectCheckBox('demo');
-            expect(await attachmentBladePo.getRecordValue('Attachments')).toBe('demo', 'demo txt file name is missing');
+            expect(await (await attachmentBladePo.getGridColumnValues('Attachments')).includes('demo')).toBeTruthy('demo txt file name is missing');
             await attachmentBladePo.clickDownloadButton();
             expect(await utilCommon.isFileDownloaded('demo.txt')).toBeTruthy('File is not downloaded.');
         });
@@ -176,7 +176,7 @@ describe("Attachment", () => {
         expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('Attached file name is missing');
         await viewCasePo.clickAttachmentsLink();
         expect(await attachmentBladePo.getTextOfColumnHeader('Attached to ')).toBe('Attached to', 'Attached to column header is missing');
-        expect(await attachmentBladePo.getRecordValue('Attachments')).toBe('bwfPdf', 'Attachment file name is missing');
+        expect(await (await attachmentBladePo.getGridColumnValues('Attachments')).includes('bwfPdf')).toBeTruthy('Attachment file name is missing');
         expect(await utilCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('File is deleted sucessfully');
         // DRDMV-11698
         expect(await attachmentBladePo.isDownloadButtonEnabled()).toBeFalsy('Download button is enabled');
@@ -233,8 +233,8 @@ describe("Attachment", () => {
             await utilityCommon.closePopUpMessage();
             await manageTaskPo.clickCloseButton();
             await viewCasePo.clickAttachmentsLink();
-            expect(await attachmentBladePo.getRecordValue('Attachments')).toBe('bwfXlsx', 'Attachment file name is missing');
-            expect(await attachmentBladePo.getRecordValue('Attached to')).toBe('Task', 'Attach to column value is missing');
+            expect(await (await attachmentBladePo.getGridColumnValues('Attachments')).includes('bwfXlsx')).toBeTruthy('Attachment file name is missing');
+            expect(await (await attachmentBladePo.getGridColumnValues('Attached to')).includes('Task')).toBeTruthy('Attach to column value is missing');
             expect(await utilCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('File is delete sucessfully');
             await attachmentBladePo.searchAndSelectCheckBox('bwfXlsx');
             await attachmentBladePo.clickDownloadButton();
@@ -251,10 +251,8 @@ describe("Attachment", () => {
             expect(await activityTabPo.isAttachedFileNameDisplayed('bwfWord1.rtf')).toBeTruthy('Attached file name is missing');
             await viewTaskPo.clickOnViewCase();
             await viewCasePo.clickAttachmentsLink();
-            await attachmentBladePo.searchAttachmentOnGrid('bwfWord1'); //this method is used because first record needs to be bwfWord1
-            await attachmentBladePo.searchAttachment('bwfWord1'); //if searchAttachment() modified to search always then reindexing takes time
-            expect(await attachmentBladePo.getRecordValue('Attachments')).toBe('bwfWord1', 'Attachment file name is missing');
-            expect(await attachmentBladePo.getRecordValue('Attached to')).toBe('Social', 'Attach to column value is missing');
+            expect(await (await attachmentBladePo.getGridColumnValues('Attachments')).includes('bwfWord1')).toBeTruthy('Attachment file name is missing');
+            expect(await (await attachmentBladePo.getGridColumnValues('Attached to')).includes('Social')).toBeTruthy('Attach to column value is missing');
             expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfWord1.rtf')).toBeTruthy('File is delete sucessfully');
             await attachmentBladePo.searchAndSelectCheckBox('bwfWord1');
             await attachmentBladePo.clickDownloadButton();

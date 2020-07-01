@@ -663,7 +663,7 @@ describe("Compose Email", () => {
             //table width size attaribute
             await expect(body.includes('<table border="1" cellspacing="1" cellpadding="1">')).toBeTruthy('Table properties not displayed');
             //image
-            await expect(body.includes('<a>Google</a>')).toBeTruthy('link tag is not displaying');
+            await expect(body.includes('<a target="_blank">Google</a>')).toBeTruthy('link tag is not displaying');
             //font 
             await expect(body.includes('<td><span style="font-size:18px;">SettingFontSize</span></td>')).toBeTruthy('Font Size is not present');
             //right allign
