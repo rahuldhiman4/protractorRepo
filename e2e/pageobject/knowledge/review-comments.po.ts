@@ -36,6 +36,10 @@ class ReviewCommentBlade {
     async isCancelButtonDisplay(): Promise<boolean> {
         return await $(this.selectors.cancelButton).isDisplayed();
     }
+
+    async clickCancelButton(): Promise<void> {
+        await $(this.selectors.cancelButton).click();
+    }
 }
 
 export default new ReviewCommentBlade();
