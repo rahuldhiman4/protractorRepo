@@ -34,9 +34,9 @@ describe("Actionable Notification Approval", () => {
         let caseTemplateData = {
             "templateName": 'caseTemplateName' + randomStr,
             "templateSummary": 'caseTemplateSummary' + randomStr,
-            "categoryTier1": 'Applications',
-            "categoryTier2": 'Social',
-            "categoryTier3": 'Chatter',
+            "categoryTier1": 'Failure',
+            "categoryTier2": 'Computer',
+            "categoryTier3": 'Memory',
             "casePriority": "Low",
             "templateStatus": "Active",
             "company": "Petramco",
@@ -61,7 +61,6 @@ describe("Actionable Notification Approval", () => {
             "company": "Petramco",
             "mappingName": "Bulk Operation Mapping"
         }
-        await apiHelper.apiLogin('qkatawazi');
         let approvalMappingId = await apiHelper.createCaseApprovalMapping(approvalMappingData);
         await apiHelper.associateCaseTemplateWithApprovalMapping(caseTemplateResponse.id, approvalMappingId.id);
 
@@ -69,7 +68,7 @@ describe("Actionable Notification Approval", () => {
         let approvalFlowData = {
             "flowName": `Bulk Operation ${randomStr}`,
             "approver": "qkatawazi",
-            "qualification": "'Category Tier 3' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.c2636a9ab1d4aa37cf23b2cf0dbd1f9ea3a5d6046a3ad0ad998c63411e41815d81709de7a5f6153e78fc47ebcc9c3f3f4db51dd0d9e44084eb3a345df03cb66d.304405421}"
+            "qualification": "'Category Tier 3' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.3191c35b400e44f4d4713ae358a43839d9bc9871fcabf0457ea0e73b477a86ab9f90c3f495aa7868bf1bb98b3077c6af56e114c89234f179071b03d05665ec32.304405421}"
         }
         await apiHelper.createCaseApprovalFlow(approvalFlowData);
 

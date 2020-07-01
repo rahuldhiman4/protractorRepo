@@ -53,7 +53,7 @@ class KnowledgeArticlesGridConsole {
     }
 
     async getSelectedGridRecordValue(columnHeader: string): Promise<string> {
-        return await utilityGrid.getFirstGridRecordColumnValue(this.selectors.knowledgeArticleGridConsoleGuid, columnHeader);
+        return await utilityGrid.getFirstGridRecordColumnValue(columnHeader,this.selectors.knowledgeArticleGridConsoleGuid);
     }
 
     async searchOnGridConsole(columnHeader: string): Promise<void> {
