@@ -70,7 +70,7 @@ describe('Dynamic Hidden Data', () => {
             await createTaskTemplate.setcreateNewProcess(false);
             expect(await createTaskTemplate.isProcessTitlePresent("New Process Name")).toBeFalsy("New Process Title Present");
         });
-        it('[DRDMV-13168]: [Dynamic Data] [UI] - Automated Task Template UI on create and on Edit', async () => {
+        it('[DRDMV-13168]: Create a template', async () => {
             await createTaskTemplate.setTemplateName(automatedTaskTemplate1);
             await createTaskTemplate.setTaskSummary(automatedTaskSummary1);
             await createTaskTemplate.setTaskDescription('Description in manual task');
@@ -78,6 +78,8 @@ describe('Dynamic Hidden Data', () => {
             await createTaskTemplate.setNewProcessName('Business Workflows', processName);
             await createTaskTemplate.clickOnSaveTaskTemplate();
             await utilCommon.closePopUpMessage();
+        });
+        it('[DRDMV-13168]: [Dynamic Data] [UI] - Automated Task Template UI on create and on Edit', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(automatedTaskTemplate1);
@@ -384,7 +386,7 @@ describe('Dynamic Hidden Data', () => {
             }
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             let newCaseTemplate = await apiHelper.createCaseTemplate(caseTemplateData);
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'hiddenField');
         });
@@ -510,7 +512,7 @@ describe('Dynamic Hidden Data', () => {
             }
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             let newCaseTemplate = await apiHelper.createCaseTemplate(caseTemplateData);
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'DynamicGroupContainsHiddenFieldDRDMV21416');
         });

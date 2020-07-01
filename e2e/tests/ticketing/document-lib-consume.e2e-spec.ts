@@ -113,6 +113,9 @@ describe('Document Library Consume UI', () => {
             expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('failureMsg: bwfJpg.jpg File is not downloaded.');
             await attachmentBladePo.clickCloseButton();
         });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
     });
 
     //kgaikwad
@@ -161,9 +164,9 @@ describe('Document Library Consume UI', () => {
             await caseConsolePo.searchAndOpenCase(caseId);
             await viewCasePo.clickEditCaseButton();
             await editCasePo.clickOnAttachLink();
-            await attachDocumentBladePo.searchAndAttachDocument('drdmv13533_publish_document1');
+            await attachDocumentBladePo.searchAndAttachDocument(publishDocLibData1.docLibTitle);
             await editCasePo.clickOnAttachLink();
-            await attachDocumentBladePo.searchAndAttachDocument("drdmv13533_publish_document2");
+            await attachDocumentBladePo.searchAndAttachDocument(publishDocLibData2.docLibTitle);
             await editCasePo.clickSaveCase();
             await viewCasePo.clickOnTab('Case Access');
             await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Agent Access');
@@ -183,6 +186,7 @@ describe('Document Library Consume UI', () => {
             expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailuerMsg5: File is not downloaded.');
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -314,6 +318,9 @@ describe('Document Library Consume UI', () => {
             await viewTaskPo.clickOnAttachedDocumentFile('bwfXlsx.xlsx');
             expect(await utilityCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is not downloaded.');
         });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
     });
 
     //kgaikwad
@@ -412,6 +419,7 @@ describe('Document Library Consume UI', () => {
             expect(await utilityCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is not downloaded.');
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -506,6 +514,7 @@ describe('Document Library Consume UI', () => {
             expect(await utilityCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is not downloaded.');
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -605,6 +614,7 @@ describe('Document Library Consume UI', () => {
             await activityTabPo.clickAndDownloadAttachmentFile('bwfXlsx.xlsx');
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -703,6 +713,7 @@ describe('Document Library Consume UI', () => {
             expect(await utilityCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is not downloaded.');
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -798,6 +809,7 @@ describe('Document Library Consume UI', () => {
             expect(await utilityCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is not downloaded.');
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -895,6 +907,7 @@ describe('Document Library Consume UI', () => {
             expect(await utilityCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is not downloaded.');
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
