@@ -34,7 +34,7 @@ import { UPDATE_PERSON_AS_VIP, ADD_FUNCTIONAL_ROLE } from '../data/api/foundatio
 import { SERVICE_TARGET_PAYLOAD } from '../data/api/slm/serviceTarget.api';
 import { ADHOC_TASK_PAYLOAD, UPDATE_TASK_STATUS, TASK_CREATION_FROM_TEMPLATE, UPDATE_TASK } from '../data/api/task/task.creation.api';
 import { KNOWLEDGE_APPROVAL_CONFIG, KNOWLEDGE_APPROVAL_FLOW_CONFIG } from '../data/api/knowledge/knowledge-approvals-config.api';
-import { APPROVAL_ACTION } from "../data/api/approval/approval.action.api";
+import { APPROVAL_ACTION, MORE_INFO_RETURN_ACTION } from "../data/api/approval/approval.action.api";
 import { KNOWLEDGE_ARTICLE_EXTERNAL_FLAG } from "../data/api/knowledge/knowledge-article-external.api";
 import { AUTO_TASK_TEMPLATE_PAYLOAD, MANUAL_TASK_TEMPLATE_PAYLOAD, EXTERNAL_TASK_TEMPLATE_PAYLOAD, DOC_FOR_AUTO_TASK_TEMPLATE, PROCESS_FOR_AUTO_TASK_TEMPLATE } from '../data/api/task/task.template.api';
 import { UPDATE_CASE_ASSIGNMENT } from '../data/api/case/update.case.assignment.api';
@@ -46,8 +46,10 @@ import { KNOWLEDGE_ARTICLE_PAYLOAD, UPDATE_KNOWLEDGE_ARTICLE_PAYLOAD } from '../
 import { BUSINESS_TIME_SHARED_ENTITY } from '../data/api/slm/business.time.shared.entity.api';
 import { BUSINESS_TIME_SEGMENT } from '../data/api/slm/business.time.segment.api';
 import { CASE_REOPEN } from '../data/api/case/case.reopen.api';
-import { POST_ACTIVITY } from '../data/api/social/post.activity.api';
+import { POST_ACTIVITY, POST_ACTIVITY_WITH_ATTACHMENT } from '../data/api/social/post.activity.api';
 import { CASE_READ_ACCESS } from '../data/api/case/case.read.access.api';
+import * as uuid from 'uuid';
+let fs = require('fs');
 
 axios.defaults.baseURL = browser.baseUrl;
 axios.defaults.headers.common['X-Requested-By'] = 'XMLHttpRequest';
@@ -2323,6 +2325,41 @@ class ApiHelper {
         return readAccessMapping.status == 201;
     }
 
+    async postActivityCommentsWithAttachments(comment: string, module: string, moduleGuid: string, attachment: string): Promise<boolean> {
+        // Creating the attachment
+        let guid = uuid.v4();    
+        let mdata = `{"attachmentGroupId":"${moduleGuid + guid}","relatedRD":"com.bmc.dsm.case-lib:Case","relatedRI":"${moduleGuid}","publicPermissions":false,"dataSource":"Social","draft":false}`;
+        let filename = fs.createReadStream(attachment.toString());
+        let formData = {
+            attachmentGroupId: moduleGuid + guid,
+            file_0: filename,
+            metadata: mdata
+        }
+        let response1: AxiosResponse;
+        response1 = await coreApi.multiFormPostWithAttachment(formData, 'api/com.bmc.dsm.attachment-service-lib/rx/application/v1/attachment/group');
+        console.log('Create Attachment API Status  =============>', response1.status);
+
+        // Posting on Social Activity
+        POST_ACTIVITY_WITH_ATTACHMENT.dataSource = module;
+        POST_ACTIVITY_WITH_ATTACHMENT.text = comment;
+        POST_ACTIVITY_WITH_ATTACHMENT.attachmentsGroupId = moduleGuid + guid;
+
+        let uri = `/api/com.bmc.dsm.social-lib/rx/application/activity/${module}/${moduleGuid}`;
+        let response = await axios.post(
+            uri,
+            POST_ACTIVITY_WITH_ATTACHMENT
+        )
+        console.log('Comments posting API Status  =============>', response.status);
+        return response.status == 200;
+    }
+
+    async moreInfoResponseOnApprovalAction(caseId: string, reply: string): Promise<boolean>{
+        MORE_INFO_RETURN_ACTION.id = await coreApi.getMoreInfoGuid(caseId);
+        MORE_INFO_RETURN_ACTION.fieldInstances[13301].value = reply;
+        let response = await coreApi.updateRecordInstance('AP:More Information', MORE_INFO_RETURN_ACTION.id, MORE_INFO_RETURN_ACTION);
+        console.log('More Info Return API Status =============>', response.status);
+        return response.status == 204;
+    }
 }
 
 export default new ApiHelper();

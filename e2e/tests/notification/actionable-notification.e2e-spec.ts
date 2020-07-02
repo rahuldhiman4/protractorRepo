@@ -484,4 +484,85 @@ describe("Actionable Notifications", () => {
             await loginPage.login('qkatawazi');
         }
     });
+
+    //asahitya
+    it('[DRDMV-16839]: Check out of the box notification-"Notes from Activity Feed in Case with attachment" is actionable for type Alert', async () => {
+        const attachment = 'e2e/data/ui/attachment/articleStatus.png';
+        await apiHelper.apiLogin('qtao');
+        let response1 = await apiHelper.createCase(caseData['actionableNotificationWithAssignee']);
+        await apiHelper.postActivityCommentsWithAttachments('Attachment is Posted for Actionable Notifications', 'Case', response1.id, attachment);
+
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
+        await utilGrid.searchAndOpenHyperlink('Notes from Activity Feed in Case with attachment');
+        await notificationTemplateEditPage.openAlertEditMessageText();
+        expect(await notificationTemplateEditPage.isFieldClickable('Parent_DisplayID')).toBeTruthy('Parent_DisplayID is not clickable');
+        await notificationTemplateEditPage.cancelAlertMessageText();
+        await utilCommon.clickOnWarningOk();
+        await notificationTemplateEditPage.clickOnEmailTab();
+        await notificationTemplateEditPage.openEmailBodyEditMessageText();
+        expect(await notificationTemplateEditPage.isFieldClickable('Parent_DisplayID')).toBeTruthy('Parent_DisplayID is not clickable');
+
+        try {
+            await navigationPage.signOut();
+            await loginPage.login('qfeng');
+            await notificationPo.clickOnNotificationIcon();
+            await notificationPo.clickActionableLink(`Qianru Tao added a note to ${response1.displayId}`);
+            await utilityCommon.switchToNewTab(1);
+            expect(await viewCasePage.getCaseID()).toBe(response1.displayId);
+        }
+        catch (ex) {
+            throw ex;
+        }
+        finally {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        }
+    });
+
+     //asahitya
+     it('[DRDMV-16844]: Check out of the box notification-"Notes from Activity Feed in Task with attachment" is actionable for type Alert', async () => {
+        let taskData = {
+            "taskName": "DRDMV-16841",
+            "company": "Petramco",
+            "businessUnit": "United States Support",
+            "supportGroup": "US Support 3",
+            "assignee": "qfeng",
+        }
+        const attachment = 'e2e/data/ui/attachment/articleStatus.png';
+
+        await apiHelper.apiLogin('qtao');
+        let response1 = await apiHelper.createCase(caseData['actionableNotificationWithAssignee']);
+        let response2 = await apiHelper.createAdhocTask(response1.id, taskData);
+        await apiHelper.updateCaseStatus(response1.id, 'InProgress');
+        await apiHelper.postActivityCommentsWithAttachments('Actionable Notifications', 'Task', response2.id, attachment);
+
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
+        await utilGrid.searchAndOpenHyperlink('Notes from Activity Feed in Task with attachment');
+        await notificationTemplateEditPage.openAlertEditMessageText();
+        expect(await notificationTemplateEditPage.isFieldClickable('Parent_DisplayID')).toBeTruthy('Parent_DisplayID is not clickable');
+        await notificationTemplateEditPage.cancelAlertMessageText();
+        await utilCommon.clickOnWarningOk();
+        await notificationTemplateEditPage.clickOnEmailTab();
+        await notificationTemplateEditPage.openEmailBodyEditMessageText();
+        expect(await notificationTemplateEditPage.isFieldClickable('Parent_DisplayID')).toBeTruthy('Parent_DisplayID is not clickable');
+
+        try {
+            await navigationPage.signOut();
+            await loginPage.login('qfeng');
+            await notificationPo.clickOnNotificationIcon();
+            await notificationPo.clickActionableLink(`Qianru Tao added a note to ${response2.displayId}`);
+            await utilityCommon.switchToNewTab(1);
+            expect(await viewTaskPasge.getTaskID()).toBe(response2.displayId);
+        }
+        catch (ex) {
+            throw ex;
+        }
+        finally {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        }
+    });
+    
 })

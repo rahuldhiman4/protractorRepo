@@ -307,4 +307,36 @@ describe("Actionable Notification Approval", () => {
         catch (ex) { throw ex; }
         finally { await utilityCommon.switchToDefaultWindowClosingOtherTabs(); }
     });
+
+    //asahitya
+    it('[DRDMV-16872]: Check out of the box notification-"More Info Return Template" is actionable for type Alert', async () => {
+        await apiHelper.apiLogin('qfeng');
+        let response = await apiHelper.createCase(caseData);
+        await apiHelper.updateCaseStatus(response.id, 'InProgress');
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.sendApprovalQuestions(response.id, 'qdu', 'Sample Question', response.displayId);
+        await apiHelper.apiLogin('qdu');
+        await apiHelper.moreInfoResponseOnApprovalAction(response.displayId, 'Reply');
+
+        try {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
+            await utilGrid.searchAndOpenHyperlink('More Info Return Template');
+            await notificationTemplateEditPage.openAlertEditMessageText();
+            expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
+            await notificationTemplateEditPage.cancelAlertMessageText();
+            await utilCommon.clickOnWarningOk();
+            await notificationTemplateEditPage.clickOnEmailTab();
+            await notificationTemplateEditPage.openEmailBodyEditMessageText();
+            expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+            await browser.refresh(); //After Refresh notifications are getting displayed
+            await notificationPo.clickOnNotificationIcon();
+            await notificationPo.clickActionableLink(`Additional information about Case ${response.displayId} has been provided.`);
+            await utilityCommon.switchToNewTab(1);
+            expect(await viewCasePage.getCaseID()).toBe(response.displayId);
+        }
+        catch (ex) { throw ex; }
+        finally { await utilityCommon.switchToDefaultWindowClosingOtherTabs(); }
+    });
 });
