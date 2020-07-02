@@ -121,7 +121,7 @@ describe("Attachment", () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-11713]: Upload attachment via compose email & verify all attachments grid', async () => {
+    describe('[DRDMV-11713, DRDMV-9028]: Upload attachment via compose email & verify all attachments grid', async () => {
         let caseData, newCase;
         beforeAll(async () => {
             caseData = {
@@ -135,13 +135,26 @@ describe("Attachment", () => {
             await apiHelper.apiLogin('qkatawazi');
             newCase = await apiHelper.createCase(caseData);
         });
-        it('[DRDMV-11713]: Upload attachment via compose email & verify all attachments grid', async () => {
+        it('[DRDMV-11713, DRDMV-9028]: Upload attachment via compose email & verify all attachments grid', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(newCase.displayId);
             await viewCasePo.clickOnEmailLink();
-            await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+
             await composeMail.addAttachment(['../../data/ui/attachment/demo.txt']);
+            expect(await composeMail.getFileDisplayedFileName()).toContain('demo.txt');
+
+            await composeMail.setToOrCCInputTetxbox('To', 'franz@bwflabs.localdomain');
+            expect(await composeMail.getToEmailPerson()).toContain('Franz Schwarz');
+            await composeMail.setToOrCCInputTetxbox('Cc', 'franz@bwflabs.localdomain');
+            expect(await composeMail.getToEmailPerson()).toContain('Franz Schwarz');
+            await composeMail.setEmailBody('This is email body');
             await composeMail.clickOnSendButton();
+
+            await activityTabPo.clickShowMoreForEmailActivity();
+            expect(await activityTabPo.getFirstPostContent()).toContain('This is email body');
+            expect(await activityTabPo.getFirstPostContent()).toContain('Qianru Tao sent an email');
+            expect(await activityTabPo.isAttachedFileNameDisplayed('demo.txt')).toBeTruthy('Attached file not Present');
+
             await viewCasePo.clickAttachmentsLink();
             expect(await utilCommon.deleteAlreadyDownloadedFile('demo.txt')).toBeTruthy('File is delete sucessfully');
             await attachmentBladePo.searchAndSelectCheckBox('demo');
@@ -472,6 +485,44 @@ describe("Attachment", () => {
         });
         afterAll(async () => {
             await attachmentBladePo.clickCloseButton();
+        });
+    });
+
+    describe('[DRDMV-9032]: Negative -Verify large number of attachments. Click on Send button in Compose Email', async () => {
+        let newCase;
+        beforeAll(async () => {
+            let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let caseData = {
+                "Requester": "qdu",
+                "Summary": "Test case for DRDMV-9028 RandVal" + randomString,
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
+                "Assignee": "qkatawazi"
+            }
+            await apiHelper.apiLogin('qtao');
+            newCase = await apiHelper.createCase(caseData);
+        });
+        it('[DRDMV-9032]: Negative -Verify large number of attachments. Click on Send button in Compose Email', async () => {
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
+            await caseConsole.searchAndOpenCase(newCase.displayId);
+            await viewCasePo.clickOnEmailLink();
+            await composeMail.setToOrCCInputTetxbox('To', 'franz@bwflabs.localdomain');
+            await composeMail.setEmailBody("With mutiple attachmnents");
+            let filesToUpload: string[] = [];
+            for (let i = 0; i <= 20; i++) {
+                filesToUpload.push('../../data/ui/attachment/demo.txt');
+            }
+            await composeMail.addAttachment(filesToUpload);
+            await composeMail.clickOnSendButton();
+            await utilityCommon.closePopUpMessage();
+            await activityTabPo.clickShowMoreForEmailActivity();
+            await activityTabPo.clickPlusIconOnMultipleAttachmentInActivity();
+            expect(await activityTabPo.getAttachmentCount()).toBe(21);
+        });
+        afterAll(async () => {
+            await composeMail.clickOnDiscardButton();
         });
     });
 });
