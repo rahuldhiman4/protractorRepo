@@ -269,6 +269,14 @@ class ApiCoreUtil {
         }
     }
 
+    async getMoreInfoGuid(caseId: string): Promise<string> {
+        let allRecords = await this.getGuid("AP:More+Information");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj[10051] === caseId;
+        });
+        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+    }
+
     async associateFoundationElements(associationName: string, entity1: string, entity2: string): Promise<void> {
         const associateEntities = await axios.post(
             "api/rx/application/command",
