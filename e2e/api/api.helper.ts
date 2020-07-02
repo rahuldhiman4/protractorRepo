@@ -26,7 +26,7 @@ import { IKnowledgeSet } from '../data/api/interface/knowledge-set.interface.api
 import { KnowledegeSet_ASSOCIATION, KNOWLEDGE_SET, KNOWLEDGESET_PERMISSION } from '../data/api/knowledge/knowledge-set.data.api';
 import { IknowledgeSetPermissions } from '../data/api/interface/knowledge-set.permissions.interface.api';
 import { KNOWLEDGEARTICLE_TEMPLATE, KNOWLEDGEARTICLE_HELPFULCOUNTER } from '../data/api/knowledge/knowledge-article.template.api';
-import { INCOMINGMAIL, EMAILCONFIG, OUTGOINGEMAIL } from '../data/api/email/email.configuration.data.api';
+import { INCOMINGMAIL_DEFAULT, EMAILCONFIG_DEFAULT, OUTGOINGEMAIL_DEFAULT } from '../data/api/email/email.configuration.data.api';
 import { EMAIL_WHITELIST } from '../data/api/email/email.whitelist.data.api';
 import * as DYNAMIC from '../data/api/ticketing/dynamic.data.api';
 import { CASE_TEMPLATE_PAYLOAD, CASE_TEMPLATE_STATUS_UPDATE_PAYLOAD } from '../data/api/case/case.template.data.api';
@@ -155,10 +155,10 @@ class ApiHelper {
         console.log('Create Dynamic on Template API Status =============>', newCaseTemplate.status);
     }
 
-    async createEmailConfiguration(): Promise<EmailGUIDs> {
-        let incomingMailBox = INCOMINGMAIL;
-        let emailMailBox = EMAILCONFIG;
-        let outGoingMailBox = OUTGOINGEMAIL;
+    async createEmailConfiguration(incomingMailBox?: any, outGoingMailBox?: any, emailMailBox?: any): Promise<EmailGUIDs> {
+        if (!incomingMailBox) incomingMailBox = INCOMINGMAIL_DEFAULT;
+        if (!emailMailBox) emailMailBox = EMAILCONFIG_DEFAULT;
+        if (!outGoingMailBox) outGoingMailBox = OUTGOINGEMAIL_DEFAULT;
         let incomingMail: AxiosResponse = await coreApi.createRecordInstance(incomingMailBox);
         console.log('Configure Incoming Email API Status =============>', incomingMail.status);
         let outgoing: AxiosResponse = await coreApi.createRecordInstance(outGoingMailBox);
