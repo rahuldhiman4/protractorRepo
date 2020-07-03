@@ -38,15 +38,24 @@ import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import editReadAccess from "../../pageobject/settings/case-management/edit-read-access-config.po";
+import apiCoreUtil from '../../api/api.core.util';
+import caseAccessTabPo from '../../pageobject/common/case-access-tab.po';
 
 describe("Create Case", () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     const requester = "Requester";
     const contact = "Contact";
+    const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
+    const departmentDataFile = require('../../data/ui/foundation/department.ui.json');
+    const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
+    const personDataFile = require('../../data/ui/foundation/person.ui.json');
+    let businessData, departmentData, suppGrpData, personData;
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
+        await foundationData("Petramco");
     });
 
     afterAll(async () => {
@@ -1074,4 +1083,82 @@ describe("Create Case", () => {
         expect(await utilityGrid.isGridColumnSorted('Created date', 'desc')).toBeTruthy("Created date Not Sorted Desecnding");
         expect(await utilityGrid.isGridColumnSorted('Created date', 'asc')).toBeTruthy("Created date Not Sorted Asecnding");
     }, 400 * 1000);
+
+    it('[DRDMV-12060]:[Read Access] Editing Read Access Mappings Company to Global', async () => {
+        let randVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+        await consoleReadAcess.clickOnReadAccessConfiguration();
+        await addReadAccess.setReadAccessConfigurationName("ReadAccess" + randVal);
+        await addReadAccess.selectCompany('Petramco');
+        await addReadAccess.selectSupportCompany('Petramco');
+        await addReadAccess.selectBusinessUnit('Australia Support');
+        await addReadAccess.selectSupportGroup('AU Support 2');
+        await addReadAccess.clickOnSave();
+        await utilGrid.searchAndOpenHyperlink("ReadAccess" + randVal);
+        await editReadAccess.selectCompany('Global');
+        await editReadAccess.clickOnSave();
+        await utilGrid.searchAndOpenHyperlink("ReadAccess" + randVal);
+        expect(await editReadAccess.isCompanyFieldDisabled()).toBeTruthy('Company is not disabled');
+        await editReadAccess.clickOnCancel();
+        await utilCommon.clickOnWarningOk();
+        await utilGrid.searchAndSelectGridRecord("ReadAccess" + randVal);
+        await consoleReadAcess.clickDeleteButton();
+        await utilCommon.clickOnWarningOk();
+        expect(await utilCommon.isPopUpMessagePresent('Record(s) deleted successfully.')).toBeTruthy('Successfull message is not appeared');
+    });
+
+    async function foundationData(company: string) {
+        await apiHelper.apiLogin('tadmin');
+        businessData = businessDataFile['BusinessUnitData'];
+        departmentData = departmentDataFile['DepartmentData'];
+        suppGrpData = supportGrpDataFile['SuppGrpData'];
+        personData = personDataFile['PersonData'];
+        let orgId = await apiCoreUtil.getOrganizationGuid(company);
+        businessData.relatedOrgId = orgId;
+        let businessUnitId = await apiHelper.createBusinessUnit(businessData);
+        departmentData.relatedOrgId = businessUnitId;
+        let depId = await apiHelper.createDepartment(departmentData);
+        suppGrpData.relatedOrgId = depId;
+        await apiHelper.createSupportGroup(suppGrpData);
+        await apiHelper.createNewUser(personData);
+        await apiHelper.associatePersonToSupportGroup(personData.userId, suppGrpData.orgName);
+        await apiHelper.associatePersonToCompany(personData.userId, company)
+    }
+
+    it('[DRDMV-11985]:[Read Access] Verify Global read acess configuration applied to case if read acess configuration qualification matches', async () => {
+        let randVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+        await consoleReadAcess.clickOnReadAccessConfiguration();
+        await addReadAccess.setReadAccessConfigurationName("ReadAccess" + randVal);
+        await addReadAccess.selectCompany('Global');
+        await addReadAccess.selectPriority('Critical');
+        await addReadAccess.selectCategoryTier1('Purchasing Card');
+        await addReadAccess.selectSupportCompany('Petramco');
+        await addReadAccess.selectBusinessUnit(businessData.orgName);
+        await addReadAccess.selectDepartment(departmentData.orgName);
+        await addReadAccess.selectSupportGroup(suppGrpData.orgName);
+        await addReadAccess.clickOnSave();
+        await utilCommon.closePopUpMessage();
+
+        await navigationPage.gotoCreateCase();
+        await createCasePage.selectRequester('adam');
+        await createCasePage.setSummary('set summary');
+        await createCasePage.selectCategoryTier1('Purchasing Card');
+        await createCasePage.setPriority('Critical');
+        await createCasePage.clickChangeAssignmentButton();
+        await changeAssignmentPage.selectCompany('Petramco');
+        await changeAssignmentPage.selectBusinessUnit('United States Support')
+        await changeAssignmentPage.selectSupportGroup('US Support 3');
+        await changeAssignmentPage.selectAssignee('Qadim Katawazi');
+        await changeAssignmentPage.clickOnAssignButton();
+        await createCasePage.clickSaveCaseButton();
+        await previewCasePo.clickGoToCaseButton();
+        await viewCasePage.clickOnTab('Case Access');
+        expect(await caseAccessTabPo.isCaseAccessEntityAdded(suppGrpData.orgName)).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+        expect(await caseAccessTabPo.isCaseAccessEntityAdded('Qadim Katawazi')).toBeTruthy('FailuerMsg1: Agent Name is missing');
+        expect(await caseAccessTabPo.isSupportGroupWriteAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have write access');
+        expect(await caseAccessTabPo.isSupportGroupReadAccessDisplayed(suppGrpData.orgName)).toBeTruthy('Support Group does not have read access');
+    });
 });
