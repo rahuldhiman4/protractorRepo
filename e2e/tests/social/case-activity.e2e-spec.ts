@@ -35,6 +35,8 @@ describe('Case Activity', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.setDefaultNotificationForUser('qkatawazi', "Alert");
     });
 
     afterAll(async () => {
@@ -529,7 +531,7 @@ describe('Case Activity', () => {
         await activityTabPage.selectFilterCheckBox('Status Change');
         await activityTabPage.selectFilterCheckBox('Assignment Change');
         await activityTabPage.selectFilterCheckBox('Category Change');
-        await activityTabPage.addAuthorOnFilter('Angelina Jolie');
+        await activityTabPage.addAuthorOnFilter('Kadeem Hardison');
         await activityTabPage.clickOnFilterApplyButton();
 
         await expect(await activityTabPage.isFilterPopUpDisplayed()).toBe('false');
@@ -540,7 +542,7 @@ describe('Case Activity', () => {
         await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change');
         await expect(await activityTabPage.getTextFromFilterList('Assignment Change')).toBe('Assignment Change');
         await expect(await activityTabPage.getTextFromFilterList('Category Change')).toBe('Category Change');
-        await expect(await activityTabPage.getTextFromFilterList('ajolie')).toBe('Author : ajolie');
+        expect(await activityTabPage.getTextFromFilterList('Author')).toBe('Author : Kadeem Hardison');
         // iii)- Filter is removed and next filter gets displayed in UI and +n more count reduced by 1
         await activityTabPage.closeNmoreLink();
         await activityTabPage.clickOnNmoreLink();
@@ -557,7 +559,7 @@ describe('Case Activity', () => {
         await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change');
         await expect(await activityTabPage.getTextFromFilterList('Assignment Change')).toBe('Assignment Change');
         await expect(await activityTabPage.getTextFromFilterList('Category Change')).toBe('Category Change');
-        await expect(await activityTabPage.getTextFromFilterList('ajolie')).toBe('Author : ajolie');
+        expect(await activityTabPage.getTextFromFilterList('Author')).toBe('Author : Kadeem Hardison');
         await activityTabPage.closeNmoreLink();
         //  v) - That particular filter is removed.
         await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change');
@@ -637,7 +639,7 @@ describe('Case Activity', () => {
         await activityTabPage.selectFilterCheckBox('Status Change');
         await activityTabPage.selectFilterCheckBox('Assignment Change');
         await activityTabPage.selectFilterCheckBox('Category Change');
-        await activityTabPage.addAuthorOnFilter('Angelina Jolie');
+        await activityTabPage.addAuthorOnFilter('Kadeem Hardison');
 
         await activityTabPage.clickOnFilterApplyButton();
         await expect(await activityTabPage.isFilterPopUpDisplayed()).toBe('false');
@@ -648,7 +650,7 @@ describe('Case Activity', () => {
         await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change');
         await expect(await activityTabPage.getTextFromFilterList('Assignment Change')).toBe('Assignment Change');
         await expect(await activityTabPage.getTextFromFilterList('Category Change')).toBe('Category Change');
-        await expect(await activityTabPage.getTextFromFilterList('ajolie')).toBe('Author : ajolie');
+        expect(await activityTabPage.getTextFromFilterList('Author')).toBe('Author : Kadeem Hardison');
         // iii)- Filter is removed and next filter gets displayed in UI and +n more count reduced by 1
         await activityTabPage.closeNmoreLink();
         await activityTabPage.clickOnNmoreLink();
@@ -664,7 +666,7 @@ describe('Case Activity', () => {
         await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change');
         await expect(await activityTabPage.getTextFromFilterList('Assignment Change')).toBe('Assignment Change');
         await expect(await activityTabPage.getTextFromFilterList('Category Change')).toBe('Category Change');
-        await expect(await activityTabPage.getTextFromFilterList('ajolie')).toBe('Author : ajolie');
+        expect(await activityTabPage.getTextFromFilterList('Author')).toBe('Author : Kadeem Hardison');
         await activityTabPage.closeNmoreLink();
         //  v) - That particular filter is removed.
         await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change');
@@ -743,7 +745,7 @@ describe('Case Activity', () => {
         await activityTabPage.selectFilterCheckBox('Status Change');
         await activityTabPage.selectFilterCheckBox('Assignment Change');
         await activityTabPage.selectFilterCheckBox('Category Change');
-        await activityTabPage.addAuthorOnFilter('Angelina Jolie');
+        await activityTabPage.addAuthorOnFilter('Kadeem Hardison');
         await activityTabPage.clickOnFilterApplyButton();
 
         await expect(await activityTabPage.isFilterPopUpDisplayed()).toBe('false');
@@ -754,7 +756,7 @@ describe('Case Activity', () => {
         await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change');
         await expect(await activityTabPage.getTextFromFilterList('Assignment Change')).toBe('Assignment Change');
         await expect(await activityTabPage.getTextFromFilterList('Category Change')).toBe('Category Change');
-        await expect(await activityTabPage.getTextFromFilterList('ajolie')).toBe('Author : ajolie');
+        expect(await activityTabPage.getTextFromFilterList('Author')).toBe('Author : Kadeem Hardison');
         // iii)- Filter is removed and next filter gets displayed in UI and +n more count reduced by 1
         await activityTabPage.closeNmoreLink();
         await activityTabPage.clickOnNmoreLink();
@@ -770,7 +772,7 @@ describe('Case Activity', () => {
         await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change');
         await expect(await activityTabPage.getTextFromFilterList('Assignment Change')).toBe('Assignment Change');
         await expect(await activityTabPage.getTextFromFilterList('Category Change')).toBe('Category Change');
-        await expect(await activityTabPage.getTextFromFilterList('ajolie')).toBe('Author : ajolie');
+        expect(await activityTabPage.getTextFromFilterList('Author')).toBe('Author : Kadeem Hardison');
         await activityTabPage.closeNmoreLink();
         //  v) - That particular filter is removed.
         await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change');
@@ -1036,14 +1038,14 @@ describe('Case Activity', () => {
             await expect(await activityTabPage.getCaseViewCount('Qiao Feng  viewed the case. ')).toEqual(1);
             // Goto Quick Case
             await navigationPage.gotoQuickCase();
-            await quickCasePo.selectRequesterName('qfeng');
+            await quickCasePo.selectRequesterName('Fritz');
             await quickCasePo.setCaseSummary(caseData.Summary);
             await quickCasePo.clickOnCaseSummaryInRecommendedCases(caseData.Summary);
             await quickCasePo.gotoCaseButton();
             await activityTabPage.clickOnRefreshButton();
             await expect(await activityTabPage.getCaseViewCount('Qiao Feng  viewed the case. ')).toEqual(1);
             await navigationPage.gotoQuickCase();
-            await quickCasePo.selectRequesterName('qfeng');
+            await quickCasePo.selectRequesterName('Fritz');
             await quickCasePo.setCaseSummary(caseData.Summary);
             await quickCasePo.saveCase();
             await quickCasePo.gotoCaseButton();
@@ -1054,18 +1056,18 @@ describe('Case Activity', () => {
 
             await viewCasePo.clickOnTab('Related Persons');
             await relatedTabPage.addRelatedPerson();
-            await addRelatedPopupPage.addPerson('Elizabeth Peters', 'Related to');
+            await addRelatedPopupPage.addPerson('Qadim Katawazi', 'Related to');
             await relatedTabPage.waitUntilNewRelatedPersonAdded(1);
-            await expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Elizabeth Peters', 'Related to')).toBeTruthy();
+            await expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Qadim Katawazi', 'Related to')).toBeTruthy();
 
             await navigationPage.signOut();
-            await loginPage.login('elizabeth');
+            await loginPage.login('qkatawazi');
             await navigationPage.gotoPersonProfile();
             await personProfilePo.clickOnTab('Related Cases');
             await relatedCaseTab.clickOnCaseSummaryLink(caseData.Summary);
             await expect(await viewCasePo.getCaseID()).toBe(caseId, 'FailureMsg: CaseId is missing');
             await activityTabPage.clickOnRefreshButton();
-            await expect(await activityTabPage.getCaseViewCount('Elizabeth Peters  viewed the case. ')).toEqual(1);
+            await expect(await activityTabPage.getCaseViewCount('Qadim Katawazi  viewed the case. ')).toEqual(1);
             await expect(await activityTabPage.getCaseViewCount('Qiao Feng  viewed the case. ')).toEqual(1);
         } catch (e) {
             throw e;
@@ -1129,7 +1131,7 @@ describe('Case Activity', () => {
             await navigationPage.signOut();
             await loginPage.login('qtao');
             await browser.get(url);
-            await expect(await utilityCommon.getAllPopupMsg()).toContain('ERROR (302): Record Instance does not exist in the database. com.bmc.dsm.case-lib:Case:');
+            await expect(await utilityCommon.getAllPopupMsg()).toContain(`Record Instance does not exist in the database. com.bmc.dsm.case-lib:Case:${newCase.id}`);
         } catch (e) {
             throw e;
         } finally {
@@ -1450,7 +1452,8 @@ describe('Case Activity', () => {
             await viewKnowledgeArticlePo.clickReviewPendingLink();
             await reviewCommentsPo.setTextInTellUsMore(reviewPending);
             await reviewCommentsPo.clickApprovedButton();
-
+            await utilityCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             await activityTabPage.addActivityNote(addNoteBodyText);
             await activityTabPage.clickOnPostButton();

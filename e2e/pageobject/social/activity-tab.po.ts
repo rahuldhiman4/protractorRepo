@@ -108,7 +108,7 @@ class ActivityTabPage {
     }
 
     async isBodyDisplayedInActivity(caseActivityLogTitleText: string, activityNumber: number): Promise<boolean> {
-        return await $$(this.selectors.activityLogList).get(activityNumber - 1).element(by.cssContainingText('.body', caseActivityLogTitleText)).isDisplayed().then(async (result) => {
+        return await $$(this.selectors.activityLogList).get(activityNumber - 1).element(by.cssContainingText('.activity__body', caseActivityLogTitleText)).isDisplayed().then(async (result) => {
             if (result) return true;
             else return false;
         });
@@ -156,7 +156,7 @@ class ActivityTabPage {
             }
 
             case "flag": {
-                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('d-icon-flag').isDisplayed().then(async (result) => {
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-flag').isDisplayed().then(async (result) => {
                     if (result) return true;
                     else return false;
                 });
@@ -618,7 +618,7 @@ class ActivityTabPage {
     }
 
     async clickOnHyperlinkFromActivity(activityNumber: number, linkText: string): Promise<void> {
-        await $$(this.selectors.activityLogList).get(activityNumber - 1).element(by.cssContainingText('.activity-title a', linkText)).click();
+        await $$(this.selectors.activityLogList).get(activityNumber - 1).element(by.cssContainingText('.activity__wrapper div a', linkText)).click();
     }
 
     async scrollToActivity(activityNumber: number): Promise<void> { //Operates on activity scroll bar.
