@@ -6,7 +6,7 @@ class ViewKnowledgePage {
     selectors = {
         statusChange: '[rx-view-component-id="dc403f44-1bde-406f-a3bf-00128644a011"] span',
         editLinkKnowledgeMetadata: '[rx-view-component-id="56cc9627-6ef9-46f8-9b76-728349193ed2"] .btn-link',
-        editLinkOnKA: '[rx-view-component-id="ee521675-2407-4b2a-9470-013bfb328b30"] .float-right',
+        editLinkOnKA: '[rx-view-component-id="ee521675-2407-4b2a-9470-013bfb328b30"] .edit-button button',
         unflagButton: '[rx-view-component-id="b54365bf-0ead-4c54-8c8b-42aced61690e"] button',
         falgButton: '[rx-view-component-id="89dd2264-1895-4a7b-a0a4-01a4834a403b"] button',
         assigneeName: '[rx-view-component-id="5365589a-13ad-41f0-8831-b20175beb761"] .read-only-content',

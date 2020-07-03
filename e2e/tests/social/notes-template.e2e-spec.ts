@@ -344,7 +344,7 @@ describe('Notes template', () => {
             await apiHelper.apiLogin('qdu');
             newCase2 = await apiHelper.createCase(caseData2);
         });
-        it('Case Agent consume People Notes Template in People profile', async () => {
+        it('[DRDMV-16578]: Case Agent consume People Notes Template in People profile', async () => {
             await navigationPage.signOut();
             await loginPage.login('franz');
             await utilityGrid.clearFilter();
