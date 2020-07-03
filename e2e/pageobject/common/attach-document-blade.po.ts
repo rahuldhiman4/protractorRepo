@@ -66,9 +66,10 @@ class AttachDocumentBlade {
         await $(this.selectors.searchBox).sendKeys(documentName + protractor.Key.ENTER);
         let i: number;
         for (i = 0; i <= 5; i++) {
+            console.log("Searching for doc lib count: ", i);
             let bolnVal: boolean = await this.isDocumentInfoDisplayed(documentName);
             if (bolnVal == false) {
-                await browser.sleep(3000);
+                await browser.sleep(5000);
                 await $(this.selectors.searchBox).clear();
                 await $(this.selectors.searchBox).sendKeys(documentName + protractor.Key.ENTER);
             } else {

@@ -37,6 +37,10 @@ class ReadAccessConsolePage {
         return await utilGrid.getSelectedGridRecordValue(this.selectors.guid,columnName);
     }
 
+    async clickDeleteButton(): Promise<void> {
+        await $(this.selectors.deleteButton).click();
+    }
+
 }
 
 export default new ReadAccessConsolePage();

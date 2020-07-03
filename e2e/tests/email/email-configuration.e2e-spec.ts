@@ -11,6 +11,8 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
+import { INCOMINGMAIL_COMPANY_ONE, OUTGOINGEMAIL_COMPANY_ONE, EMAILCONFIG_COMPANY_ONE,INCOMINGMAIL_COMPANY_PSILON,OUTGOINGEMAIL_COMPANY_PSILON,EMAILCONFIG_COMPANY_PSILON } from '../../data/api/email/email.configuration.data.api';
+import apiCoreUtil from '../../api/api.core.util';
 
 describe('Email Configuration', () => {
     let emailID = "bmctemptestemail@gmail.com";
@@ -113,18 +115,6 @@ describe('Email Configuration', () => {
     });
 
     //ankagraw
-    it('[DRDMV-10410,DRDMV-10418,DRDMV-10428]: Support Group: Associate Support group tab in Email Configuration.', async () => {
-        await navigationPage.gotoSettingsPage();
-        expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
-        await utilGrid.searchAndOpenHyperlink(emailID);
-        await editEmailConfigPo.selectTab("Associated Support Group");
-        expect(await editEmailConfigPo.isSupportGroupListHeaderPresentInAssociatedSupportGroupTab()).toBeTruthy();
-        expect(await editEmailConfigPo.isAssociatedSupportGroupListHeaderPresentInAssociatedSupportGroupTab()).toBeTruthy();
-        await editEmailConfigPo.selectBusinessUnitInAssociatedSupportGroupTab("Facilities Support");
-        expect(await editEmailConfigPo.getSupportGroupFromSupportGroupListInAssociatedSupportGroupTab()).toBe("Facilities");
-    });
-
-    //ankagraw
     it('[DRDMV-10419]: Support Group: Default Email checkbox', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
@@ -160,5 +150,80 @@ describe('Email Configuration', () => {
             await editEmailConfigPo.clickSaveAcknowledgementTemplate();
             expect(await editEmailConfigPo.isRecordPresentInAcknowledgementTemplateGrid('Case Create Ack Template')).toBeTruthy();
         });
+    });
+
+    async function foundationData(company: string,businessUnit:string,supportGroup:string) {
+        let businessData, suppGrpData;
+        const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
+        const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
+        await apiHelper.apiLogin('tadmin');
+        businessData = businessDataFile[businessUnit];
+        suppGrpData = supportGrpDataFile[supportGroup];
+        await browser.sleep(15000); //New user is created above, waiting for its backend access preperation
+        let orgId = await apiCoreUtil.getOrganizationGuid(company);
+        businessData.relatedOrgId = orgId;
+        let businessUnitId = await apiHelper.createBusinessUnit(businessData);
+        await apiHelper.createSupportGroup(suppGrpData);
+        suppGrpData.relatedOrgId = businessUnitId;
+    };
+    //ankagraw
+    describe('[DRDMV-10410,DRDMV-10418,DRDMV-10428,DRDMV-10433,DRDMV-10434,DRDMV-10435,DRDMV-10415]: Support Group: Associate Support group tab in Email Configuration.', async () => {
+        beforeAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.createEmailConfiguration(INCOMINGMAIL_COMPANY_ONE, OUTGOINGEMAIL_COMPANY_ONE, EMAILCONFIG_COMPANY_ONE);
+            await apiHelper.createEmailConfiguration(INCOMINGMAIL_COMPANY_PSILON, OUTGOINGEMAIL_COMPANY_PSILON, EMAILCONFIG_COMPANY_PSILON);
+            await foundationData("Petramco","BusinessUnitData10410","SuppGrpData10410");
+            await foundationData("Psilon","BusinessUnitDataPsilon","SuppGrpDataPsilon");
+        });
+        it('[DRDMV-10410,DRDMV-10418,DRDMV-10428,DRDMV-10433,DRDMV-10434,DRDMV-10435,DRDMV-10415]: Associate Support group tab in General Email Configuration.', async () => {
+            await navigationPage.gotoSettingsPage();
+            expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
+            await utilGrid.searchAndOpenHyperlink(emailID);
+            await editEmailConfigPo.selectTab("Associated Support Group");
+            expect(await editEmailConfigPo.isSupportGroupListHeaderPresentInAssociatedSupportGroupTab()).toBeTruthy();
+            expect(await editEmailConfigPo.isAssociatedSupportGroupListHeaderPresentInAssociatedSupportGroupTab()).toBeTruthy();
+            expect(await editEmailConfigPo.isValueAvailableExclusionsSubjectInAssociatePublicExclusionSubjectsPresent('UI-SupportGroup-Psilon')).toBeFalsy();
+            await editEmailConfigPo.selectBusinessUnitInAssociatedSupportGroupTab("UI-BusinessUnit-10410");
+            await editEmailConfigPo.searchAvailableExclusionsSubjectInAssociatePublicExclusionSubjects("UI-SupportGroup-10410");
+            expect(await editEmailConfigPo.getSupportGroupFromSupportGroupListInAssociatedSupportGroupTab()).toBe("UI-SupportGroup-10410");
+            await editEmailConfigPo.clickSupportGroup();
+            await editEmailConfigPo.clickAssociatedSupportGroupRightArrow();
+            await editEmailConfigPo.searchAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects("UI-SupportGroup-10410");
+            expect(await editEmailConfigPo.getAssociatedSupportGroupFromAssociatedSupportGroupListInAssociatedSupportGroupTab()).toBe("UI-SupportGroup-10410");
+            await editEmailConfigPo.cancelEditEmailConfigConfig();
+        });
+        it('[DRDMV-10410,DRDMV-10418,DRDMV-10428,DRDMV-10433,DRDMV-10434,DRDMV-10435,DRDMV-10415]: Support Group: Associate Support group tab in Email Configuration.', async () => {
+            await navigationPage.gotoSettingsPage();
+            expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
+            await utilGrid.searchAndOpenHyperlink("bwfqa2019@gmail.com");
+            await editEmailConfigPo.selectTab("Associated Support Group");
+            await editEmailConfigPo.selectBusinessUnitInAssociatedSupportGroupTab("UI-BusinessUnit-10410");
+            await editEmailConfigPo.searchAvailableExclusionsSubjectInAssociatePublicExclusionSubjects("UI-SupportGroup-10410");
+            expect(await editEmailConfigPo.getSupportGroupFromSupportGroupListInAssociatedSupportGroupTab()).toBe("UI-SupportGroup-10410");
+            await editEmailConfigPo.clickSupportGroup();
+            await editEmailConfigPo.clickAssociatedSupportGroupRightArrow();
+            expect(await utilCommon.isErrorMsgPresent()).toBeTruthy();
+        });
+        it('[DRDMV-10410,DRDMV-10418,DRDMV-10428,DRDMV-10433,DRDMV-10434,DRDMV-10435,DRDMV-10415]: Support Group: Associate Support group tab in Email Configuration.', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('gwixillian')
+            await navigationPage.gotoSettingsPage();
+            expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
+            expect(await utilGrid.isGridRecordPresent(emailID)).toBeFalsy();
+            expect(await utilGrid.isGridRecordPresent("psilon@gmail.com")).toBeTruthy();
+            await utilGrid.searchAndOpenHyperlink("psilon@gmail.com");
+            await editEmailConfigPo.selectTab("Associated Support Group");
+            expect(await editEmailConfigPo.getSupportGroupFromSupportGroupListInAssociatedSupportGroupTab()).toBe("UI-SupportGroup-Psilon");
+            await editEmailConfigPo.clickSupportGroup();
+            await editEmailConfigPo.clickAssociatedSupportGroupRightArrow();
+            expect(await editEmailConfigPo.getAssociatedSupportGroupFromAssociatedSupportGroupListInAssociatedSupportGroupTab()).toBe("UI-SupportGroup-Psilon");
+            await editEmailConfigPo.cancelEditEmailConfigConfig();
+        });
+
+    afterAll(async () => {
+        await utilityCommon.closeAllBlades();
+        await navigationPage.signOut();
+        await loginPage.login('qkatawazi');
+    });
     });
 });

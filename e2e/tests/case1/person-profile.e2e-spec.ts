@@ -294,7 +294,7 @@ describe('Person Profile test', () => {
             await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Relationships--Person to Person', 'Person To Person Relationship console - Business Workflows');
-            await relationshipsConfigsPage.setRelationshipName('Former Manager', 'Former Manager updated');
+            await relationshipsConfigsPage.setRelationshipName('Former Manager', 'relation updated');
             await relationshipsConfigsPage.saveConfig();
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
 

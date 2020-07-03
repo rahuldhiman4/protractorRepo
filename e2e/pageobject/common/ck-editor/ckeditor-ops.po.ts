@@ -157,6 +157,15 @@ class CKEditor {
         await browser.waitForAngularEnabled(true);
     }
 
+    async isStyleApplied(value:string,tagName:string,guid?:string):Promise<boolean>{
+        let locator=`.cke_wysiwyg_div ${tagName}`;
+        if(guid){
+            locator=`[rx-view-component-id="${guid}"] .cke_wysiwyg_div ${tagName}`;
+        }
+        let text = await $(locator).getText();
+        return text.includes(value);   
+    }
+
     async selectStyles(styleValue:string,guidId?:string):Promise<void>{
         if (guidId) { await $(`[rx-view-component-id="${guidId}"] ` + this.selectors.styleDropDown).click(); }
         else { await $(this.selectors.styleDropDown).click(); }

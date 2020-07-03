@@ -22,6 +22,7 @@ class ActivityTabPage {
         filterPopupApplyOrClearButton: '.filter-options button span',
         FilterPopUp: '.bwf-activity-log-filter button[aria-expanded]',
         filterApplyButtonEnableDisabled: '.filter-options button[disabled="disabled"]',
+        filterApplyBtn: '.filter-options button',
         filterLists: '.a-tag-active .bwf-text-overflow-ellipsis, .a-tag-active .bwf-text-overflow-ellipsis span',
         nMoreButton: '.bwf-show-more .dropdown-toggle span',
         removeIconFilterList: '.d-flex .close-inverse',
@@ -486,6 +487,10 @@ class ActivityTabPage {
         return await $$(this.selectors.filterApplyButtonEnableDisabled).count();
     }
 
+    async isApplyFilterButtonEnabled(): Promise<boolean> {
+        return await $$(this.selectors.filterApplyBtn).last().isEnabled();
+    }
+
     async getTextTaskFilterOption(filterCheckBox: string): Promise<string> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterCheckbox)));
         return await element(by.cssContainingText(`${this.selectors.filterCheckbox}[class*='ng']`, filterCheckBox)).getText();
@@ -613,7 +618,7 @@ class ActivityTabPage {
     }
 
     async clickOnHyperlinkFromActivity(activityNumber: number, linkText: string): Promise<void> {
-        await $$(this.selectors.activityLogList).get(activityNumber - 1).element(by.cssContainingText('.activity__wrapper div a', linkText)).click();
+        await $$(this.selectors.activityLogList).get(activityNumber - 1).element(by.cssContainingText('.activity-title a', linkText)).click();
     }
 
     async scrollToActivity(activityNumber: number): Promise<void> { //Operates on activity scroll bar.
