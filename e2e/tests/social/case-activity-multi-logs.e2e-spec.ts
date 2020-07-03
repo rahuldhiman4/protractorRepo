@@ -139,7 +139,7 @@ describe('Case Activity Multi Logs', () => {
     });
 
     //kgaikwad
-    fdescribe('[DRDMV-16755]: All type of social activities are displayed correctly in Task Activity tab', async () => {
+    describe('[DRDMV-16755]: All type of social activities are displayed correctly in Task Activity tab', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let manualTemplateSummary, autoTemplateData, externalTemplateSummary, newCase;
 
