@@ -406,7 +406,7 @@ describe('Person Profile test', () => {
     it('[DRDMV-17019]: Check agent cannot view notes to own Person profile in agent work history tab', async () => {
         await navigationPage.gotoPersonProfile();
         await relatedTabPage.addRelatedPerson();
-        await addRelatedPopupPage.addPerson('Qiang Du', 'Former Manager');
+        await addRelatedPopupPage.addPerson('Qiang Du', 'Parent');
         await relatedTabPage.clickRelatedPersonName('Qiang Du');
         await utilityCommon.switchToNewTab(1);
         await activityTabPage.addActivityNote("DRDMV-17019");

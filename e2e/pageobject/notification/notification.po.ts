@@ -29,7 +29,7 @@ class NotificationAlerts {
     async clickActionableLink(msg: string): Promise<void> {
         let cnt: number = await $$(this.selectors.alerts).count();
         for (let i = 0; i < cnt; i++) {
-            let notification: string = await $$(this.selectors.alerts).get(i).$('.item-content-text p').getText();
+            let notification: string = await $$(this.selectors.alerts).get(i).$('.item-content-text').getText();
             let trimmedNotification = notification.replace(/\s/g, "");
             if (trimmedNotification.includes(msg.replace(/\s/g, ""))) {
                 await $$(this.selectors.alerts).get(i).$('.item-content-text p a').click();

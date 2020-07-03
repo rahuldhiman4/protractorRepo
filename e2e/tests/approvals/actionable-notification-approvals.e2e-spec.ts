@@ -142,7 +142,7 @@ describe("Actionable Notification Approval", () => {
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await browser.refresh(); //After Refresh notifications are getting displayed
             await notificationPo.clickOnNotificationIcon();
-            await notificationPo.clickActionableLink(response.displayId + ' has been approved. Resolved');
+            await notificationPo.clickActionableLink(response.displayId + ' has been approved');
             await utilityCommon.switchToNewTab(1);
             expect(await viewCasePage.getCaseID()).toBe(response.displayId);
         }
