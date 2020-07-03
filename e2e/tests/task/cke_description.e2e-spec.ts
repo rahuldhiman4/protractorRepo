@@ -307,4 +307,4 @@ describe('CKE Description', () => {
             await loginPage.login('qkatawazi');
         });
     });  
-})
+});

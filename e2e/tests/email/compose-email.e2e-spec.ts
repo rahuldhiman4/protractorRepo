@@ -732,11 +732,11 @@ describe("Compose Email", () => {
             await utilityCommon.closePopUpMessage();
             let subject = `Fritz Schulz changed the status of ${newCase.displayId} to In Progress`;
             console.log("Subject of the email: ", subject);
+            await browser.sleep(15000); // hardwait to appear email message in "AR System Email Messages"
             await apiHelper.apiLogin('tadmin');
-            await browser.sleep(8000);
             let body = await apiHelper.getHTMLBodyOfEmail(subject);
-            //color span
             console.log('body:', body);
+            //color span
             await expect(body.includes('<td><span style="color:#3498db;">SettingColor</span></td>')).toBeTruthy('Color is not available');
             //table width size attaribute
             await expect(body.includes('<table summary="NotiFicationT" border="1" cellspacing="1" cellpadding="1" style="height: 200px; width: 500px;">')).toBeTruthy('Table properties not displayed');
@@ -983,11 +983,7 @@ describe("Compose Email", () => {
             await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateWithMandatoryField']);
             let caseData = {
                 "Requester": "apavlik",
-                "Summary": "Test case for DRDMV-10388 RandVal" + randomString,
-                "Assigned Company": "Petramco",
-                "Business Unit": "United States Support",
-                "Support Group": "US Support 1",
-                "Assignee": "qtao"
+                "Summary": "Test case for DRDMV-10388 RandVal" + randomString
             }
             await apiHelper.apiLogin('qtao');
             newCase = await apiHelper.createCase(caseData);
@@ -1080,10 +1076,6 @@ describe("Compose Email", () => {
             let caseData = {
                 "Requester": "apavlik",
                 "Summary": "Test case for DRDMV-10387 RandVal" + randomString,
-                "Assigned Company": "Petramco",
-                "Business Unit": "United States Support",
-                "Support Group": "US Support 1",
-                "Assignee": "qtao"
             }
             await apiHelper.apiLogin('qtao');
             newCase = await apiHelper.createCase(caseData);
