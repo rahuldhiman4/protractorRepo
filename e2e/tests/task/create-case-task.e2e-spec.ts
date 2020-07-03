@@ -23,9 +23,8 @@ import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
-let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
-
 describe('Create Case Task', () => {
+    let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
@@ -119,18 +118,18 @@ describe('Create Case Task', () => {
 
     //ankagraw
     describe('[DRDMV-7148,DRDMV-7140,DRDMV-745,DRDMV-793]: Automatic Task data validation once Task is created', async () => {
-        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let menuItemName: string = await menuItemDataFile['sampleMenuItem'].menuItemName + randomStr;
+        let menuItem, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let autmationTaskTemplateWithRequiredData = 'Automatic task With Required Field' + Math.floor(Math.random() * 1000000);
         let autmationTaskSummaryWithRequiredData = 'Automatic task Summary With Required Field' + Math.floor(Math.random() * 1000000);
         let automationTaskTemplateWithallField = 'Automation task with All field' + Math.floor(Math.random() * 1000000);
         let automationTaskSummaryWithallField = 'Automation task Summary with All field' + Math.floor(Math.random() * 1000000) + 1;
         beforeAll(async () => {
-            menuItemDataFile['sampleMenuItem'].menuItemName = menuItemName;
+            menuItem = menuItemDataFile['sampleMenuItem'];
+            menuItem.menuItemName = "TestMenuItemName" + randomStr;
             await apiHelper.apiLogin('tadmin');
             await apiHelper.associateCategoryToCategory('Chatter', 'Failure');
             await apiHelper.apiLogin('qkatawazi');
-            await apiHelper.createNewMenuItem(menuItemDataFile['sampleMenuItem']);
+            await apiHelper.createNewMenuItem(menuItem);
         });
         it('[DRDMV-7148,DRDMV-7140,DRDMV-745,DRDMV-793]: Create manual task template', async () => {
             //Automated task Template with Required Data
@@ -157,7 +156,7 @@ describe('Create Case Task', () => {
             await taskTemplate.setTaskDescription('All field get added in this task template');
             await taskTemplate.selectCompanyByName('Petramco');
             await taskTemplate.setNewProcessName('Business Workflows', `Get Request Status Data2 ${randomStr}`);
-            await taskTemplate.selectLabel(menuItemName);
+            await taskTemplate.selectLabel(menuItem.menuItemName);
             await taskTemplate.selectTaskCategoryTier1('Applications');
             await taskTemplate.selectTaskCategoryTier2('Social');
             await taskTemplate.selectTaskCategoryTier3('Chatter');
@@ -191,7 +190,7 @@ describe('Create Case Task', () => {
             expect(await viewTask.getTaskTypeValue()).toBe('Automated');
             expect(await viewTask.getProcessNameValue()).toBe(`com.bmc.dsm.bwfa:Get Request Status Data2 ${randomStr}`);
             expect((await viewTask.getDescriptionValue()).trim()).toBe('All field get added in this task template');
-            expect(await viewTask.getLabelValue()).toBe(menuItemName);
+            expect(await viewTask.getLabelValue()).toBe(menuItem.menuItemName);
             expect(await viewTask.getCategoryTier1Value()).toBe('Applications');
             expect(await viewTask.getCategoryTier2Value()).toBe('Social');
             expect(await viewTask.getCategoryTier3Value()).toBe('Chatter');
@@ -204,7 +203,7 @@ describe('Create Case Task', () => {
             await manageTask.clickTaskLink(autmationTaskSummaryWithRequiredData);
             expect(await viewTask.getTaskTypeValue()).toBe('Automated');
             expect(await viewTask.getProcessNameValue()).toBe(`com.bmc.dsm.bwfa:Get Request Status Data1 ${randomStr}`);
-            expect(await viewTask.getDescriptionValue()).toBe(' - ', "getDescriptionValue");
+            expect(await viewTask.getDescriptionValue()).toBe('-', "getDescriptionValue");
             expect(await viewTask.getLabelValue()).toBe('-', "getLabelValue");
             expect(await viewTask.getCategoryTier1Value()).toBe('-', "getCategoryTier1Value");
             expect(await viewTask.getCategoryTier2Value()).toBe('-', "getCategoryTier2Value");

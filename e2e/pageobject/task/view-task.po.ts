@@ -18,7 +18,7 @@ class ViewTask {
         categoryTier3Value: '[rx-view-component-id="c8858fb5-5b21-4e0d-a947-c0130a72b51a"] .read-only-content',
         categoryTier4Value: '[rx-view-component-id="ff1636f8-4efe-4447-9c04-f32799904f2b"] .read-only-content',
         labelValue: '[rx-view-component-id="4c2784af-c080-4630-8f16-d9e6b07e87a2"] .read-only-content',
-        descriptionValue: '[rx-view-component-id="6053a7e8-5194-420b-965a-1c3bfe3ad0a1"] .collapse-block div [style="position: relative;"] label + div',
+        descriptionValue: '[rx-view-component-id="6053a7e8-5194-420b-965a-1c3bfe3ad0a1"] .collapse-block div [style="position: relative;"]',
         processnameValue: '[rx-view-component-id="7260c238-9e41-4d31-90de-2d46443117b4"] .read-only-content',
         statusReason: '[rx-view-component-id="7cdf9e18-c230-4098-8872-ddce9f005373"] .read-only-content',
         taskIdText: '[rx-view-component-id="75371088-cfeb-4554-a939-2fe7b2aa098b"] .text-field',

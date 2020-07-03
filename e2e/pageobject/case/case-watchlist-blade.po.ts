@@ -26,9 +26,7 @@ class CaseWatchlistBlade {
     }
 
     async addWatchlistEvent(eventName: string): Promise<void> {
-        let locator = await element(by.cssContainingText(this.selectors.watchlistEvents, eventName));
-//        await browser.wait(this.EC.elementToBeClickable(locator));
-        await locator.click();
+        await element(by.cssContainingText(this.selectors.watchlistEvents, eventName)).click();
     }
 
     async saveEvents(): Promise<void> {

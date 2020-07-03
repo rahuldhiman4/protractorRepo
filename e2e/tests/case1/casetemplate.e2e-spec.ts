@@ -745,6 +745,7 @@ describe('Case Template', () => {
             await selectCasetemplateBladePo.selectCaseTemplate(updatedCaseTemplateName);
             await editCasePo.clickSaveCase();
             await utilityCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             expect(await viewCasePo.getPriorityValue()).toBe('Low');
             expect(await viewCasePo.getCaseStatusValue()).toContain('New');
             expect(await viewCasePo.getCategoryTier1Value()).toBe('Purchasing Card');
@@ -838,6 +839,7 @@ describe('Case Template', () => {
             await editCasePo.clickOnChangeCaseTemplate();
             await selectCasetemplateBladePo.selectCaseTemplate(updatedCaseTemplateName);
             await editCasePo.clickSaveCase();
+            await utilityCommon.closePopUpMessage();
             await utilityCommon.closePopUpMessage();
             expect(await viewCasePo.getPriorityValue()).toBe('Low');
             expect(await viewCasePo.getCaseStatusValue()).toContain('Assigned');
