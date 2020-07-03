@@ -49,11 +49,18 @@ class EditKnowledgePage {
         siteGuid: '6c3548bc-bd52-4da6-b365-f546ca7bd744',
         uploadAttachmentField : '[rx-view-component-id="1f42f6d7-99cc-4c07-9249-94172d98d526"] input[type="file"]',
         closedTip: '.bwf-attachment-container__remove .d-icon-cross',
+        closedStatusChangeGuid: 'b71875a3-b23a-4fc4-8f0f-0e29f2e6eb74',
     }
 
     async setKnowledgeStatus(newStatus: string): Promise<void> {
         await $(this.selectors.statusChange).click();
         await utilityCommon.selectDropDown(this.selectors.statusChangeDrpDwnGuid, newStatus);
+        await $(this.selectors.statusSaveBtn).click();
+    }
+
+    async setClosedKnowledgeStatus(newStatus: string): Promise<void> {
+        await $(this.selectors.statusChange).click();
+        await utilityCommon.selectDropDown(this.selectors.closedStatusChangeGuid, newStatus);
         await $(this.selectors.statusSaveBtn).click();
     }
 
