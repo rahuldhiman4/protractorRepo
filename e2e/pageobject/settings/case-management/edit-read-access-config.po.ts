@@ -1,4 +1,5 @@
 import { $, $$, browser, protractor, ProtractorExpectedConditions } from "protractor";
+import utilCommon from '../../../utils/util.common'
 
 class ReadAccessConfigEditPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -7,7 +8,10 @@ class ReadAccessConfigEditPage {
         supportGroup: '[rx-view-component-id="59fae521-483b-4d6a-93ed-84c88919351a"] .d-textfield__label',
         editName: '[rx-view-component-id="5aa348b9-f853-4b0f-bbff-a23d2e153f6a"] input',
         defaultToggle: '[rx-view-component-id="fa6bad05-195e-4df6-a7f1-daf55b2e0571"] button',
-        saveButton: '[rx-view-component-id="5ea49da6-8472-4848-a29e-917a0932ea24"] button'
+        saveButton: '[rx-view-component-id="5ea49da6-8472-4848-a29e-917a0932ea24"] button',
+        companyField: '[rx-view-component-id="2d60a97e-67aa-41fe-94f9-72e83556789b"] span.form-control',
+        companyGuid: '2d60a97e-67aa-41fe-94f9-72e83556789b',
+        cancelButton: '[rx-view-component-id="4161aa6c-2565-4f6e-85af-088df3db222e"] button',
     }
 
     async isAccessMappingNameDisabled(): Promise<boolean> {
@@ -27,6 +31,21 @@ class ReadAccessConfigEditPage {
         return await $(this.selectors.saveButton).getAttribute("disabled") == "true";
     }
 
+    async isCompanyFieldDisabled(): Promise<boolean> {
+        return await $(this.selectors.companyField).getAttribute("disabled") == "true";
+    }
+
+    async selectCompany(company: string): Promise<void> {
+        await utilCommon.selectDropDown(this.selectors.companyGuid, company);
+    }
+
+    async clickOnSave(): Promise<void> {
+        await $(this.selectors.saveButton).click();
+    }
+
+    async clickOnCancel(): Promise<void> {
+        await $(this.selectors.cancelButton).click();
+    }
 }
 
 export default new ReadAccessConfigEditPage();
