@@ -168,7 +168,7 @@ describe('Case Activity CKE Styling', () => {
         expect(await activityTabPage.isPublicCheckBoxToolTipIconDisplayed()).toBeTruthy('Public checkbox tool tip missing');
         await activityTabPage.clickOnCancelButton();
         await activityTabPage.clickActivityNoteTextBox();
-        expect(await activityTabPage.getTextCkEditorTextArea()).toBe('           ');
+        expect(await activityTabPage.getTextCkEditorTextArea()).toBe('');
 
         // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         // Goto Manual Task
@@ -244,7 +244,7 @@ describe('Case Activity CKE Styling', () => {
         expect(await activityTabPage.isPublicCheckBoxToolTipIconDisplayed()).toBeTruthy('Public checkbox tool tip missing');
         await activityTabPage.clickOnCancelButton();
         await activityTabPage.clickActivityNoteTextBox();
-        expect(await activityTabPage.getTextCkEditorTextArea()).toBe('           ');
+        expect(await activityTabPage.getTextCkEditorTextArea()).toBe('');
         await viewTaskPo.clickOnViewCase();
         // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         // Goto Automated Task
@@ -318,7 +318,7 @@ describe('Case Activity CKE Styling', () => {
         expect(await activityTabPage.isPublicCheckBoxToolTipIconDisplayed()).toBeTruthy('Public checkbox tool tip missing');
         await activityTabPage.clickOnCancelButton();
         await activityTabPage.clickActivityNoteTextBox();
-        expect(await activityTabPage.getTextCkEditorTextArea()).toBe('           ');
+        expect(await activityTabPage.getTextCkEditorTextArea()).toBe('');
         await viewTaskPo.clickOnViewCase();
         // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         // Goto External Task
@@ -392,7 +392,7 @@ describe('Case Activity CKE Styling', () => {
         expect(await activityTabPage.isPublicCheckBoxToolTipIconDisplayed()).toBeTruthy('Public checkbox tool tip missing');
         await activityTabPage.clickOnCancelButton();
         await activityTabPage.clickActivityNoteTextBox();
-        expect(await activityTabPage.getTextCkEditorTextArea()).toBe('           ');
+        expect(await activityTabPage.getTextCkEditorTextArea()).toBe('');
         await viewTaskPo.clickOnViewCase();
 
         // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -475,7 +475,7 @@ describe('Case Activity CKE Styling', () => {
         expect(await activityTabPage.isPublicCheckBoxToolTipIconDisplayed()).toBeTruthy('Public checkbox tool tip missing');
         await activityTabPage.clickOnCancelButton();
         await activityTabPage.clickActivityNoteTextBox();
-        expect(await activityTabPage.getTextCkEditorTextArea()).toBe('           ');
+        expect(await activityTabPage.getTextCkEditorTextArea()).toBe('');
     }, 1100 * 1000);
 
     //kgaikwad
@@ -590,7 +590,7 @@ describe('Case Activity CKE Styling', () => {
             await activityTabPage.clickMaximizeMinimizeIcon();
             await activityTabPage.clickOnCancelButton();
             await activityTabPage.clickActivityNoteTextBox();
-            expect(await activityTabPage.getTextCkEditorTextArea()).toBe('           ');
+            expect(await activityTabPage.getTextCkEditorTextArea()).toBe('');
 
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Profile View CK Editor
@@ -664,7 +664,7 @@ describe('Case Activity CKE Styling', () => {
             await activityTabPage.clickMaximizeMinimizeIcon();
             await activityTabPage.clickOnCancelButton();
             await activityTabPage.clickActivityNoteTextBox();
-            expect(await activityTabPage.getTextCkEditorTextArea()).toBe('           ');
+            expect(await activityTabPage.getTextCkEditorTextArea()).toBe('');
         } catch (e) {
             throw e;
         } finally {
