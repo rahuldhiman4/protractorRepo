@@ -1053,7 +1053,7 @@ describe('Knowledge Article', () => {
         await utilityGrid.clearFilter();
         await utilityGrid.searchAndOpenHyperlink(kaDetails.displayId);
         await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
-        await editKnowledgePage.removeRegionValue();
+        await editKnowledgePage.removeRegionValue('Clear');
         await editKnowledgePage.saveKnowledgeMedataDataChanges();
         expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('-');
         expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(articleData.title);
@@ -1141,9 +1141,9 @@ describe('Knowledge Article', () => {
         expect(await viewKnowledgeArticlePo.getCategoryTier2Value()).toBe('Invoices');
         expect(await viewKnowledgeArticlePo.getCategoryTier3Value()).toBe('Payment');
         await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
-        await editKnowledgePage.removeCategoryTier1();
-        await editKnowledgePage.removeCategoryTier2();
-        await editKnowledgePage.removeCategoryTier3();
+        await editKnowledgePage.removeCategoryTier1('None');
+        await editKnowledgePage.removeCategoryTier2('None');
+        await editKnowledgePage.removeCategoryTier3('None');
         await editKnowledgePage.saveKnowledgeMedataDataChanges();
         await utilityCommon.closePopUpMessage();
         expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe('-');
@@ -2206,7 +2206,6 @@ describe('Knowledge Article', () => {
     describe('[DRDMV-5064]: Article Reviewer Assignment notification for article moved to SME Review status', async () => {
         let knowledgeArticleData;
         beforeAll(async () => {
-            await apiHelper.apiLogin('peter');
             let articleData = {
                 "knowledgeSet": "HR",
                 "title": "KnowledgeArticle",
@@ -2221,26 +2220,26 @@ describe('Knowledge Article', () => {
                 "assigneeSupportGroup": "GB Support 1",
                 "assignee": "KMills"
             }
+            await apiHelper.apiLogin('kWilliamson');
             knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData.id, "Draft")).toBeTruthy("Article with Draft status not updated.");
         });
         it('[DRDMV-5064]: Article Reviewer Assignment notification for article moved to SME Review status', async () => {
             await navigationPage.signOut();
-            await loginPage.login('peter');
+            await loginPage.login('kWilliamson');
             await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr, 'title not correct');
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
-            console.log(knowledgeArticleData.displayId);
             expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Status not Set');
-            await statusBladeKnowledgeArticlePo.setKnowledgeStatusWithReviewerDetails('SME Review', 'Petramco', 'HR Support', 'Compensation and Benefits', 'Elizabeth Peters')
+            await statusBladeKnowledgeArticlePo.setKnowledgeStatusWithReviewerDetails('SME Review', 'Petramco', 'HR Support', 'Compensation and Benefits', 'Peter Kahn')
             expect(await editKnowledgePage.getStatusValue()).toContain('SME Review', 'Status not Set');
             expect(await viewKnowledgeArticlePo.isReviewMessageDisplayed('Knowledge Article is in Review')).toBeTruthy();
         });
         it('[DRDMV-5064]: Article Reviewer Assignment notification for article moved to SME Review status', async () => {
             await navigationPage.signOut();
-            await loginPage.login('elizabeth');
+            await loginPage.login('peter');
             await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr, 'title not correct');
