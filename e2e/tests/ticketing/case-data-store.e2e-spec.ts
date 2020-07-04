@@ -290,7 +290,7 @@ describe('Case Data Store', () => {
             //entered field validation
             expect(await viewCasePo.getValueOfDynamicFields(field1InGroup)).toBe('New values for field 1 group');
             expect(await viewCasePo.getValueOfDynamicFields(field2InGroup)).toBe('8888899');
-            expect(await viewCasePo.getValueOfDynamicFields(field4OutSideGroup)).toBe('True');
+            expect(await viewCasePo.getValueOfDynamicFields(field4OutSideGroup)).toBe('Yes');
             expect(await viewCasePo.getValueOfDynamicFields(field1OutSideGroup)).toBe('field1 outside group');
             expect(await viewCasePo.getValueOfDynamicFields(field2OutSideGroup)).toBe('809888');
         });

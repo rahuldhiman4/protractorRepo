@@ -11,7 +11,7 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
-import { INCOMINGMAIL_COMPANY_ONE, OUTGOINGEMAIL_COMPANY_ONE, EMAILCONFIG_COMPANY_ONE,INCOMINGMAIL_COMPANY_PSILON,OUTGOINGEMAIL_COMPANY_PSILON,EMAILCONFIG_COMPANY_PSILON } from '../../data/api/email/email.configuration.data.api';
+import { INCOMINGMAIL_COMPANY_ONE, OUTGOINGEMAIL_COMPANY_ONE, EMAILCONFIG_COMPANY_ONE, INCOMINGMAIL_COMPANY_PSILON, OUTGOINGEMAIL_COMPANY_PSILON, EMAILCONFIG_COMPANY_PSILON } from '../../data/api/email/email.configuration.data.api';
 import apiCoreUtil from '../../api/api.core.util';
 
 describe('Email Configuration', () => {
@@ -22,6 +22,8 @@ describe('Email Configuration', () => {
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteAllEmailConfiguration();
         await apiHelper.createEmailConfiguration();
+        await apiHelper.createEmailConfiguration(INCOMINGMAIL_COMPANY_ONE, OUTGOINGEMAIL_COMPANY_ONE, EMAILCONFIG_COMPANY_ONE);
+        await apiHelper.createEmailConfiguration(INCOMINGMAIL_COMPANY_PSILON, OUTGOINGEMAIL_COMPANY_PSILON, EMAILCONFIG_COMPANY_PSILON);
     });
 
     afterAll(async () => {
@@ -152,7 +154,7 @@ describe('Email Configuration', () => {
         });
     });
 
-    async function foundationData(company: string,businessUnit:string,supportGroup:string) {
+    async function foundationData(company: string, businessUnit: string, supportGroup: string) {
         let businessData, suppGrpData;
         const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
         const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
@@ -168,30 +170,40 @@ describe('Email Configuration', () => {
     };
     //ankagraw
     describe('[DRDMV-10410,DRDMV-10418,DRDMV-10428,DRDMV-10433,DRDMV-10434,DRDMV-10435,DRDMV-10415]: Support Group: Associate Support group tab in Email Configuration.', async () => {
+        let offlineSupportGroup;
         beforeAll(async () => {
+             offlineSupportGroup =  {
+                "orgName": "OfflineSupportGroup",
+                "relatedOrgId": null,
+                "status": "Offline"
+            };
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.createEmailConfiguration(INCOMINGMAIL_COMPANY_ONE, OUTGOINGEMAIL_COMPANY_ONE, EMAILCONFIG_COMPANY_ONE);
             await apiHelper.createEmailConfiguration(INCOMINGMAIL_COMPANY_PSILON, OUTGOINGEMAIL_COMPANY_PSILON, EMAILCONFIG_COMPANY_PSILON);
-            await foundationData("Petramco","BusinessUnitData10410","SuppGrpData10410");
-            await foundationData("Psilon","BusinessUnitDataPsilon","SuppGrpDataPsilon");
+            await foundationData("Psilon", "BusinessUnitDataPsilon", "SuppGrpDataPsilon");
+            await foundationData("Petramco", "BusinessUnitData10410", "SuppGrpData10410"); 
+            // offlineSupportGroup.relatedOrgId = await apiCoreUtil.getBusinessUnitGuid("BusinessUnitData10410");
+            // await apiHelper.createSupportGroup(offlineSupportGroup); 
         });
-        it('[DRDMV-10410,DRDMV-10418,DRDMV-10428,DRDMV-10433,DRDMV-10434,DRDMV-10435,DRDMV-10415]: Associate Support group tab in General Email Configuration.', async () => {
+         it('[DRDMV-10410,DRDMV-10418,DRDMV-10428,DRDMV-10433,DRDMV-10434,DRDMV-10435,DRDMV-10415]: Associate Support group tab in General Email Configuration.', async () => {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
             await utilGrid.searchAndOpenHyperlink(emailID);
             await editEmailConfigPo.selectTab("Associated Support Group");
             expect(await editEmailConfigPo.isSupportGroupListHeaderPresentInAssociatedSupportGroupTab()).toBeTruthy();
             expect(await editEmailConfigPo.isAssociatedSupportGroupListHeaderPresentInAssociatedSupportGroupTab()).toBeTruthy();
-            expect(await editEmailConfigPo.isValueAvailableExclusionsSubjectInAssociatePublicExclusionSubjectsPresent('UI-SupportGroup-Psilon')).toBeFalsy();
+            await editEmailConfigPo.selectBusinessUnitInAssociatedSupportGroupTab("Facilities Support");
+            await editEmailConfigPo.searchAvailableExclusionsSubjectInAssociatePublicExclusionSubjects("Facilities");
+            expect(await editEmailConfigPo.getSupportGroupFromSupportGroupListInAssociatedSupportGroupTab()).toBe("Facilities");
             await editEmailConfigPo.selectBusinessUnitInAssociatedSupportGroupTab("UI-BusinessUnit-10410");
             await editEmailConfigPo.searchAvailableExclusionsSubjectInAssociatePublicExclusionSubjects("UI-SupportGroup-10410");
+            expect(await editEmailConfigPo.getSupportGroupFromSupportGroupListInAssociatedSupportGroupTab()).toBeNull();
             expect(await editEmailConfigPo.getSupportGroupFromSupportGroupListInAssociatedSupportGroupTab()).toBe("UI-SupportGroup-10410");
             await editEmailConfigPo.clickSupportGroup();
             await editEmailConfigPo.clickAssociatedSupportGroupRightArrow();
             await editEmailConfigPo.searchAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects("UI-SupportGroup-10410");
             expect(await editEmailConfigPo.getAssociatedSupportGroupFromAssociatedSupportGroupListInAssociatedSupportGroupTab()).toBe("UI-SupportGroup-10410");
             await editEmailConfigPo.cancelEditEmailConfigConfig();
-        });
+         });
         it('[DRDMV-10410,DRDMV-10418,DRDMV-10428,DRDMV-10433,DRDMV-10434,DRDMV-10435,DRDMV-10415]: Support Group: Associate Support group tab in Email Configuration.', async () => {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
@@ -220,10 +232,174 @@ describe('Email Configuration', () => {
             await editEmailConfigPo.cancelEditEmailConfigConfig();
         });
 
-    afterAll(async () => {
-        await utilityCommon.closeAllBlades();
-        await navigationPage.signOut();
-        await loginPage.login('qkatawazi');
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
     });
+
+    //ankagraw
+    describe('[DRDMV-10461,DRDMV-10763]: Exclusion Subject: Re-add Deleted public exclusion subject', async () => {
+        let randomStr = Math.floor(Math.random() * 1000000);
+        it('[DRDMV-10461,DRDMV-10763]: Exclusion Subject: Re-add Deleted public exclusion subject', async () => {
+            await navigationPage.gotoSettingsPage();
+            expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
+            await utilGrid.searchAndOpenHyperlink(emailID);
+            await editEmailConfigPo.clickNewExclusiveSubjectsButton();
+            await newExclusiveSubjectPo.setSubject("Private" + randomStr);
+            await newExclusiveSubjectPo.setSortOrder('20');
+            await newExclusiveSubjectPo.clickSaveButton();
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Out Of Office')).toBeTruthy();
+            await utilGrid.clickCheckBoxOfValueInGrid('Out Of Office');
+            await editEmailConfigPo.removeExclusiveSubjectsButton();
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Out Of Office')).toBeFalsy();
+            await utilGrid.clickCheckBoxOfValueInGrid("Private" + randomStr);
+            await editEmailConfigPo.removeExclusiveSubjectsButton();
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid("Private" + randomStr)).toBeFalsy();
+        });
+        it('[DRDMV-10461,DRDMV-10763]: Exclusion Subject: Re-add Deleted public exclusion subject', async () => {
+            await editEmailConfigPo.clickNewAvailableGlobalSubjects();
+            await editEmailConfigPo.searchAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects("Private" + randomStr);
+            expect(await editEmailConfigPo.isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent("Private" + randomStr)).toBeFalsy();
+            await editEmailConfigPo.searchAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects("Out Of Office");
+            expect(await editEmailConfigPo.isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent('Out Of Office')).toBeFalsy();
+            await editEmailConfigPo.searchAvailableExclusionsSubjectInAssociatePublicExclusionSubjects("Out Of Office");
+            expect(await editEmailConfigPo.isValueAvailableExclusionsSubjectInAssociatePublicExclusionSubjectsPresent('Out Of Office')).toBeTruthy();
+            await editEmailConfigPo.clickAvailableExclusionSubjectsCheckbox();
+            await editEmailConfigPo.clickAssociatedSupportGroupRightArrow();
+            await editEmailConfigPo.searchAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects("Out Of Office");
+            expect(await editEmailConfigPo.isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent('Out Of Office')).toBeTruthy();
+            await editEmailConfigPo.closedAssociatePublicExclusionSubjects();
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Out Of Office')).toBeTruthy();
+        });
+    });
+
+    //ankagraw
+    describe('[DRDMV-10764]: Exclusion Subject: Available exclusion subject list for multiple email configurations of same & different companies', async () => {
+        let randomStr = Math.floor(Math.random() * 1000000);
+        it('[DRDMV-10764]: Exclusion Subject: Available exclusion subject list for multiple email configurations of same & different companies', async () => {
+            await navigationPage.gotoSettingsPage();
+            expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
+            await utilGrid.searchAndOpenHyperlink(emailID);
+            await editEmailConfigPo.clickNewExclusiveSubjectsButton();
+            await newExclusiveSubjectPo.setSubject("Private" + randomStr);
+            await newExclusiveSubjectPo.setSortOrder('20');
+            await newExclusiveSubjectPo.clickSaveButton();
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Out Of Office')).toBeTruthy();
+            await utilGrid.clickCheckBoxOfValueInGrid('Out Of Office');
+            await editEmailConfigPo.removeExclusiveSubjectsButton();
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Out Of Office')).toBeFalsy();
+            await editEmailConfigPo.clickNewAvailableGlobalSubjects();
+            await editEmailConfigPo.searchAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects("Out Of Office");
+            expect(await editEmailConfigPo.isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent('Out Of Office')).toBeFalsy();
+            await editEmailConfigPo.searchAvailableExclusionsSubjectInAssociatePublicExclusionSubjects("Out Of Office");
+            expect(await editEmailConfigPo.isValueAvailableExclusionsSubjectInAssociatePublicExclusionSubjectsPresent('Out Of Office')).toBeTruthy();
+        });
+        it('[DRDMV-10764]: Exclusion Subject: Available exclusion subject list for multiple email configurations of same & different companies', async () => {
+            await editEmailConfigPo.searchAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects("Out Of Office");
+            expect(await editEmailConfigPo.isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent('Out Of Office')).toBeFalsy();
+            await editEmailConfigPo.searchAvailableExclusionsSubjectInAssociatePublicExclusionSubjects("Out Of Office");
+            expect(await editEmailConfigPo.isValueAvailableExclusionsSubjectInAssociatePublicExclusionSubjectsPresent('Out Of Office')).toBeTruthy();
+            await navigationPage.gotoSettingsPage();
+            expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
+            await utilGrid.searchAndOpenHyperlink("bwfqa2019@gmail.com");
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Out Of Office')).toBeTruthy();
+            await utilGrid.clickCheckBoxOfValueInGrid('Out Of Office');
+            await editEmailConfigPo.removeExclusiveSubjectsButton();
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Out Of Office')).toBeFalsy();
+        });
+        it('[DRDMV-10764]: Exclusion Subject: Available exclusion subject list for multiple email configurations of same & different companies', async () => {
+            await editEmailConfigPo.clickNewAvailableGlobalSubjects();
+            await editEmailConfigPo.searchAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects("Out Of Office");
+            expect(await editEmailConfigPo.isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent('Out Of Office')).toBeFalsy();
+            await editEmailConfigPo.searchAvailableExclusionsSubjectInAssociatePublicExclusionSubjects("Out Of Office");
+            expect(await editEmailConfigPo.isValueAvailableExclusionsSubjectInAssociatePublicExclusionSubjectsPresent('Out Of Office')).toBeTruthy();
+        });
+        it('[DRDMV-10764]: Exclusion Subject: Available exclusion subject list for multiple email configurations of same & different companies', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('gwixillian')
+            await navigationPage.gotoSettingsPage();
+            expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
+            await utilGrid.searchAndOpenHyperlink("psilon@gmail.com");
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Out Of Office')).toBeTruthy();
+            await utilGrid.clickCheckBoxOfValueInGrid('Out Of Office');
+            await editEmailConfigPo.removeExclusiveSubjectsButton();
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Out Of Office')).toBeFalsy();
+        });
+        it('[DRDMV-10764]: Exclusion Subject: Available exclusion subject list for multiple email configurations of same & different companies', async () => {
+            await editEmailConfigPo.clickNewAvailableGlobalSubjects();
+            await editEmailConfigPo.searchAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects("Private" + randomStr);
+            expect(await editEmailConfigPo.isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent("Private" + randomStr)).toBeFalsy();
+            await editEmailConfigPo.searchAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects("Out Of Office");
+            expect(await editEmailConfigPo.isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent('Out Of Office')).toBeFalsy();
+            await editEmailConfigPo.searchAvailableExclusionsSubjectInAssociatePublicExclusionSubjects("Out Of Office");
+            expect(await editEmailConfigPo.isValueAvailableExclusionsSubjectInAssociatePublicExclusionSubjectsPresent('Out Of Office')).toBeTruthy();
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+    });
+
+    //ankagraw
+    describe('[DRDMV-10762]: Exclusion Subject: Associate exclusion subject list verification for newly added exclusion subject', async () => {
+        let randomStr = Math.floor(Math.random() * 1000000);
+        it('[DRDMV-10762]: Add exclusive subject', async () => {
+            await navigationPage.gotoSettingsPage();
+            expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
+            await utilGrid.searchAndOpenHyperlink(emailID);
+            await editEmailConfigPo.clickNewExclusiveSubjectsButton();
+            await newExclusiveSubjectPo.setSubject("Global" + randomStr);
+            await newExclusiveSubjectPo.setSortOrder('20');
+            await newExclusiveSubjectPo.selectGlobal("True");
+            await newExclusiveSubjectPo.clickSaveButton();
+            await editEmailConfigPo.clickNewAvailableGlobalSubjects();
+            await editEmailConfigPo.searchAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects("Global" + randomStr);
+            expect(await editEmailConfigPo.isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent("Global" + randomStr)).toBeTruthy();
+        });
+        it('[DRDMV-10762]: Exclusion Subject: Associate exclusion subject list verification for newly added exclusion subject', async () => {
+            await editEmailConfigPo.closedAssociatePublicExclusionSubjects();
+            await editEmailConfigPo.clickNewExclusiveSubjectsButton();
+            await newExclusiveSubjectPo.setSubject("Private" + randomStr);
+            await newExclusiveSubjectPo.setSortOrder('20');
+            await newExclusiveSubjectPo.clickSaveButton();
+            await editEmailConfigPo.clickNewAvailableGlobalSubjects();
+            await editEmailConfigPo.searchAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects("Private" + randomStr);
+            expect(await editEmailConfigPo.isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent("Private" + randomStr)).toBeFalsy();
+        });
+    });
+
+    //ankagraw
+    describe('[DRDMV-10765,DRDMV-10766]: Exclusion Subject: Associate exclusion subject validation for newly added public subject with newly added email config', async () => {
+        let randomStr = Math.floor(Math.random() * 1000000);
+        it('[DRDMV-10765,DRDMV-10766]: Add exclusive subject', async () => {
+            await navigationPage.gotoSettingsPage();
+            expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
+            await utilGrid.searchAndOpenHyperlink(emailID);
+            await editEmailConfigPo.clickNewExclusiveSubjectsButton();
+            await newExclusiveSubjectPo.setSubject("Global" + randomStr);
+            await newExclusiveSubjectPo.setSortOrder('20');
+            await newExclusiveSubjectPo.selectGlobal("True");
+            await newExclusiveSubjectPo.clickSaveButton();
+            await editEmailConfigPo.clickNewAvailableGlobalSubjects();
+            await editEmailConfigPo.searchAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects("Global" + randomStr);
+            expect(await editEmailConfigPo.isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent("Global" + randomStr)).toBeTruthy();
+        });
+        it('[DRDMV-10765,DRDMV-10766]: Exclusion Subject: Associate exclusion subject validation for newly added public subject with newly added email config', async () => {
+            await editEmailConfigPo.closedAssociatePublicExclusionSubjects();
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteAllEmailConfiguration();
+            await apiHelper.createEmailConfiguration(INCOMINGMAIL_COMPANY_PSILON, OUTGOINGEMAIL_COMPANY_PSILON, EMAILCONFIG_COMPANY_PSILON);
+            await navigationPage.signOut();
+            await loginPage.login('gwixillian')
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
+            await utilGrid.searchAndOpenHyperlink("psilon@gmail.com");
+            await editEmailConfigPo.clickNewAvailableGlobalSubjects();
+            await editEmailConfigPo.searchAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects("Global" + randomStr);
+            expect(await editEmailConfigPo.isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent("Global" + randomStr)).toBeTruthy();
+        });
     });
 });
