@@ -115,7 +115,9 @@ describe('Knowledge Article', () => {
         await previewKnowledgePo.clickGoToArticleButton();
         expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy();
         await editKnowledgePage.setKnowledgeStatus(knowledgeData.DraftStatus);
+        await utilityCommon.closePopUpMessage();
         await editKnowledgePage.setKnowledgeStatusWithoutSave(knowledgeData.ReviewStatus);
+        await utilityCommon.closePopUpMessage();
         expect(await editKnowledgePage.isReviewerCompanyFieldDisbaledOnStatusChangeBlade()).toBeTruthy();
         expect(await editKnowledgePage.isReviewerBusinessUnitFieldDisbaledOnStatusChangeBlade()).toBeTruthy();
         expect(await editKnowledgePage.isReviewerDepartmentfieldDisbaledOnStatusChangeBlade()).toBeTruthy();
@@ -130,7 +132,6 @@ describe('Knowledge Article', () => {
         await changeAssignmentBlade.selectSupportGroup(suppGrpData.orgName);
         await changeAssignmentBlade.selectAssignee(personData.firstName);
         await changeAssignmentBlade.clickOnAssignButton();
-        await browser.sleep(1000);
         await editKnowledgePage.clickSaveStatusBtn();
         await utilityCommon.closePopUpMessage();
         await editKnowledgePage.isReviewPendingButtonDisplayed();
@@ -169,7 +170,6 @@ describe('Knowledge Article', () => {
         await editKnowledgePage.verifyKnowledgeMetadata('Assigned Group', suppGrpData.orgName);
     });//, 240 * 1000);
 
-    //Need to change implementation 
     it('[DRDMV-19081]: Assignment fields is not available on Status Change blade except when Status= SME Review', async () => {
         let knowledgeDataFile = require("../../data/ui/knowledge/knowledgeArticle.ui.json")
         let knowledgeData = knowledgeDataFile['DRDMV-19081'];
@@ -181,10 +181,32 @@ describe('Knowledge Article', () => {
         await createKnowledgePage.clickOnSaveKnowledgeButton();
         await previewKnowledgePo.clickGoToArticleButton();
         expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy();
-        await editKnowledgePage.setKnowledgeStatusAndVerifyAssignmentNotAppear(knowledgeData.DraftStatus);
-        await editKnowledgePage.setKnowledgeStatusAndVerifyAssignmentNotAppear(knowledgeData.PublishedStatus);
-        await editKnowledgePage.setKnowledgeStatusAndVerifyAssignmentNotAppear(knowledgeData.RetiredStatus);
-        await editKnowledgePage.setKnowledgeStatusAndVerifyAssignmentNotAppear(knowledgeData.ClosedStatus);
+        await editKnowledgePage.setKnowledgeStatusWithoutSave('Draft');
+        expect(await editKnowledgePage.isAssignToMeReviewerBladePresent()).toBeFalsy();
+        await editKnowledgePage.clickSaveStatusBtn();
+        await utilityCommon.closePopUpMessage();
+        await editKnowledgePage.setKnowledgeStatusWithoutSave('SME Review');
+        expect(await editKnowledgePage.isAssignToMeReviewerBladePresent()).toBeTruthy();
+        await editKnowledgePage.clickCancelStatusBtn();
+        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+        await editKnowledgePage.setKnowledgeStatus('Publish Approval');
+        await utilityCommon.closePopUpMessage();
+        await utilityCommon.closePopUpMessage();
+        await editKnowledgePage.setKnowledgeStatusWithoutSave('Published');
+        expect(await editKnowledgePage.isAssignToMeReviewerBladePresent()).toBeFalsy();
+        await editKnowledgePage.clickCancelStatusBtn();
+        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+        await editKnowledgePage.setKnowledgeStatus('Retire Approval');
+        await utilityCommon.closePopUpMessage();
+        await utilityCommon.closePopUpMessage();
+        await editKnowledgePage.setClosedKnowledgeStatusWithoutSave('Retired');
+        expect(await editKnowledgePage.isAssignToMeReviewerBladePresent()).toBeFalsy();
+        await editKnowledgePage.clickCancelStatusBtn();
+        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+        await editKnowledgePage.setClosedKnowledgeStatusWithoutSave('Closed');
+        expect(await editKnowledgePage.isAssignToMeReviewerBladePresent()).toBeFalsy();
+        await editKnowledgePage.clickCancelStatusBtn();
+        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
     });
 
     it('[DRDMV-19508]: On Create KA, Change Assignment blade should process properly', async () => {
@@ -253,6 +275,7 @@ describe('Knowledge Article', () => {
             await changeAssignmentBlade.clickOnSupportGroup('UI-SupportGroup-19501');
             await changeAssignmentBlade.clickOnAssignButton();
             await createKnowledgePage.clickOnSaveKnowledgeButton();
+            await previewKnowledgePo.clickGoToArticleButton();
         }
         catch (error) {
             throw error;
@@ -261,7 +284,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
-    });//, 170 * 1000);
+    });
 
     async function foundationData19082(company: string) {
         await apiHelper.apiLogin('tadmin');
@@ -310,114 +333,6 @@ describe('Knowledge Article', () => {
             await loginPage.login('peter');
         }
     });//, 170 * 1000);
-
-    it('[DRDMV-2985]: Article creation and possible status changes - Knowledge Publisher & Coach', async () => {
-        try {
-            await apiHelper.apiLogin("tadmin");
-            await apiHelper.deleteKnowledgeApprovalMapping();
-            let knowledgeTitile = 'knowledge2985' + randomStr;
-            await apiHelper.apiLogin(knowledgePublisherUser);
-            let articleData = {
-                "knowledgeSet": "HR",
-                "title": `${knowledgeTitile}`,
-                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-                "assignedCompany": "Petramco",
-                "assigneeBusinessUnit": "Australia Support",
-                "assigneeSupportGroup": "AU Support 3",
-                "assignee": "KWilliamson",
-            }
-            let KADetails = await apiHelper.createKnowledgeArticle(articleData);
-            await navigationPage.signOut();
-            await loginPage.login(knowledgePublisherUser);
-            await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilityCommon.switchToNewTab(1);
-            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilityGrid.clearFilter();
-            await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
-            await editKnowledgePage.setKnowledgeStatus('Draft');
-            expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Status not Set');
-            await navigationPage.gotoKnoweldgeConsoleFromKM();
-            await utilityGrid.clearFilter();
-            await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
-            expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Status not Set');
-            await statusBladeKnowledgeArticlePo.setKnowledgeStatusWithReviewerDetails('SME Review', 'Petramco', 'Australia Support', 'AU Support 3', 'Kane Williamson')
-            expect(await editKnowledgePage.getStatusValue()).toContain('SME Review', 'Status not Set');
-            await navigationPage.gotoKnoweldgeConsoleFromKM();
-            await utilityGrid.clearFilter();
-            await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
-            expect(await editKnowledgePage.getStatusValue()).toContain('SME Review', 'Status not Set');
-            await viewKnowledgeArticlePo.clickOnKAUsefulYesButton();
-            await navigationPage.signOut();
-            await loginPage.login(knowledgeCoachUser);
-            await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilityCommon.switchToNewTab(1);
-            await utilityGrid.clearFilter();
-            await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
-            expect(await viewKnowledgeArticlePo.isReviewMessageDisplayed('Knowledge Article is in Review')).toBeTruthy();
-            await viewKnowledgeArticlePo.clickReviewPendingLink();
-            await reviewCommentsPo.setTextInTellUsMore(KADetails.displayId);
-            await reviewCommentsPo.clickApprovedButton();
-            await viewKnowledgeArticlePo.clickOnKAUsefulYesButton();
-            expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Status not Set');
-            await editKnowledgePage.setKnowledgeStatus('Retired Approval');
-            expect(await editKnowledgePage.getStatusValue()).toContain('Retired', 'Status not Set');
-            await editKnowledgePage.setKnowledgeStatus('Closed');
-            expect(await editKnowledgePage.getStatusValue()).toContain('Closed', 'Status not Set');
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
-            //login with coachlet
-            let knowledgeTitileCoach = 'knowledgeCoach2985' + randomStr;
-            await apiHelper.apiLogin(knowledgeCoachUser);
-            let articleDataCoach = {
-                "knowledgeSet": "HR",
-                "title": `${knowledgeTitileCoach}`,
-                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-                "assignedCompany": "Petramco",
-                "assigneeBusinessUnit": "HR Support",
-                "assigneeSupportGroup": "Compensation and Benefits",
-                "assignee": "peter"
-            }
-            let KACoachDetails = await apiHelper.createKnowledgeArticle(articleDataCoach);
-            await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilityCommon.switchToNewTab(1);
-            await utilityGrid.clearFilter();
-            await utilityGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
-            await editKnowledgePage.setKnowledgeStatus('Draft');
-            expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Status not Set');
-            await navigationPage.gotoKnoweldgeConsoleFromKM();
-            await utilityGrid.clearFilter();
-            await utilityGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
-            expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Status not Set');
-            await statusBladeKnowledgeArticlePo.setKnowledgeStatusWithReviewerDetails('SME Review', 'Petramco', 'HR Support', 'Compensation and Benefits', 'Peter Kahn')
-            expect(await editKnowledgePage.getStatusValue()).toContain('SME Review', 'Status not Set');
-            await navigationPage.gotoKnoweldgeConsoleFromKM();
-            await utilityGrid.clearFilter();
-            await utilityGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
-            expect(await editKnowledgePage.getStatusValue()).toContain('SME Review', 'Status not Set');
-            await viewKnowledgeArticlePo.clickOnKAUsefulYesButton();
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
-            await navigationPage.signOut();
-            await loginPage.login('peter');
-            await navigationPage.gotoKnowledgeConsole();
-            await utilityGrid.clearFilter();
-            await utilityGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
-            await viewKnowledgeArticlePo.clickReviewPendingLink();
-            await reviewCommentsPo.setTextInTellUsMore(KACoachDetails.displayId);
-            await reviewCommentsPo.clickApprovedButton();
-            await viewKnowledgeArticlePo.clickOnKAUsefulYesButton();
-            expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Status not Set');
-            await editKnowledgePage.setKnowledgeStatus('Retired');
-            expect(await editKnowledgePage.getStatusValue()).toContain('Retired', 'Status not Set');
-            await editKnowledgePage.setKnowledgeStatus('Closed');
-            expect(await editKnowledgePage.getStatusValue()).toContain('Closed', 'Status not Set');
-        }
-        catch (e) {
-            throw e;
-        }
-        finally {
-            await navigationPage.signOut();
-            await loginPage.login('peter');
-        }
-    }, 300 * 1000);
 
     it('[DRDMV-3542]: [Post Comments] Post Feedback on knowledge article', async () => {
         try {
@@ -579,6 +494,7 @@ describe('Knowledge Article', () => {
             expect(await reviewCommentsPo.isTellUsMoreDisplayed()).toBeTruthy('Tell us more not present');
             await reviewCommentsPo.setTextInTellUsMore(knowledgeTitile);
             await reviewCommentsPo.clickApprovedButton();
+            await utilityCommon.closePopUpMessage();
             expect(await viewKnowledgeArticlePo.getStatusValue()).toContain('Published', 'value is not matched with status')
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             expect(await activityTabPo.getFirstPostContent()).toContain('Kyle Mills reviewed this article and provided this comment');
@@ -632,6 +548,7 @@ describe('Knowledge Article', () => {
             expect(await reviewCommentsPo.isTellUsMoreDisplayed()).toBeTruthy('Tell us more not present');
             await reviewCommentsPo.setTextInTellUsMore(knowledgeTitile);
             await reviewCommentsPo.clickRejectedButton();
+            await utilityCommon.closePopUpMessage();
             expect(await viewKnowledgeArticlePo.getStatusValue()).toContain('Draft', 'value is not matched with status')
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             expect(await activityTabPo.getFirstPostContent()).toContain('Kyle Mills reviewed this article and provided this comment');
@@ -765,15 +682,15 @@ describe('Knowledge Article', () => {
             await editKnowledgePage.selectRegionDropDownOption('EMEA');
             await editKnowledgePage.selectSiteDropDownOption('Barcelona 1');
             await editKnowledgePage.saveKnowledgeMedataDataChanges();
+            await utilityCommon.closePopUpMessage();
             expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('EMEA');
             expect(await viewKnowledgeArticlePo.getSiteValue()).toBe('Barcelona 1');
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
-            await editKnowledgePage.removeRegionValue();
+            await editKnowledgePage.removeRegionValue('Clear');
+            await editKnowledgePage.removeSiteValue('Clear');
             await editKnowledgePage.saveKnowledgeMedataDataChanges();
-            expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('');
-            expect(await viewKnowledgeArticlePo.getSiteValue()).toBe('');
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
-            await utilityCommon.refresh();
+            expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('-');
+            expect(await viewKnowledgeArticlePo.getSiteValueAfterClear()).toBe('-');
             await navigationPage.gotoCreateKnowledge();
             await createKnowledgePage.clickOnTemplate('Reference');
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
@@ -790,8 +707,8 @@ describe('Knowledge Article', () => {
             throw e;
         }
         finally {
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
-            await previewKnowledgePo.clickOnBackButton();
+            await navigationPage.signOut();
+            await loginPage.login('peter');
         }
     });//, 150 * 1000);
 
@@ -842,4 +759,128 @@ describe('Knowledge Article', () => {
         });
     });
 
+    describe('[DRDMV-2985]: Article creation and possible status changes - Knowledge Publisher & Coach', async () => {
+        let KADetails, KACoachDetails,articleDataCoach;
+        beforeAll(async () => {
+            await apiHelper.apiLogin("tadmin");
+            await apiHelper.deleteKnowledgeApprovalMapping();
+            let knowledgeTitile = 'knowledge2985' + randomStr;
+            let articleData = {
+                "knowledgeSet": "HR",
+                "title": `${knowledgeTitile}`,
+                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "Australia Support",
+                "assigneeSupportGroup": "AU Support 3",
+                "assignee": "KWilliamson",
+            }
+            await apiHelper.apiLogin(knowledgePublisherUser);
+            KADetails = await apiHelper.createKnowledgeArticle(articleData);
+            let knowledgeTitileCoach = 'knowledgeCoach2985' + randomStr;
+            articleDataCoach = {
+                "knowledgeSet": "HR",
+                "title": `${knowledgeTitileCoach}`,
+                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "HR Support",
+                "assigneeSupportGroup": "Compensation and Benefits",
+                "assignee": "peter"
+            }
+        });
+        it('[DRDMV-2985]: Article creation and possible status changes - Knowledge Publisher & Coach', async () => {
+            await navigationPage.signOut();
+            await loginPage.login(knowledgePublisherUser);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
+            await utilityCommon.switchToNewTab(1);
+            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
+            await editKnowledgePage.setKnowledgeStatus('Draft');
+            await utilityCommon.closePopUpMessage();
+            expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Status not Set');
+            await navigationPage.gotoKnoweldgeConsoleFromKM();
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
+            expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Status not Set');
+            await statusBladeKnowledgeArticlePo.setKnowledgeStatusWithReviewerDetails('SME Review', 'Petramco', 'Australia Support', 'AU Support 3', 'Kane Williamson')
+            await utilityCommon.closePopUpMessage();
+            expect(await editKnowledgePage.getStatusValue()).toContain('SME Review', 'Status not Set');
+            await navigationPage.gotoKnoweldgeConsoleFromKM();
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
+            expect(await editKnowledgePage.getStatusValue()).toContain('SME Review', 'Status not Set');
+            await viewKnowledgeArticlePo.clickOnKAUsefulYesButton();
+        });
+        it('[DRDMV-2985]: Article creation and possible status changes - Knowledge Publisher & Coach', async () => {
+            await navigationPage.signOut();
+            await loginPage.login(knowledgeCoachUser);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
+            await utilityCommon.switchToNewTab(1);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
+            expect(await viewKnowledgeArticlePo.isReviewMessageDisplayed('Knowledge Article is in Review')).toBeTruthy();
+            await viewKnowledgeArticlePo.clickReviewPendingLink();
+            await reviewCommentsPo.setTextInTellUsMore(KADetails.displayId);
+            await reviewCommentsPo.clickApprovedButton();
+            await utilityCommon.closePopUpMessage();
+            await viewKnowledgeArticlePo.clickOnKAUsefulYesButton();
+            expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Status not Set');
+            await editKnowledgePage.setKnowledgeStatus('Retire Approval');
+            await utilityCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
+            expect(await editKnowledgePage.getStatusValue()).toContain('Retired', 'Status not Set');
+            await editKnowledgePage.setClosedKnowledgeStatus('Closed');
+            await utilityCommon.closePopUpMessage();
+            expect(await editKnowledgePage.getStatusValue()).toContain('Closed', 'Status not Set');
+        }); 
+        it('[DRDMV-2985]: Article creation and possible status changes - Knowledge Publisher & Coach', async () => {
+            await apiHelper.apiLogin(knowledgeCoachUser);
+            KACoachDetails = await apiHelper.createKnowledgeArticle(articleDataCoach);
+            await navigationPage.signOut();
+            await loginPage.login(knowledgeCoachUser);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
+            await utilityCommon.switchToNewTab(1);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
+            await editKnowledgePage.setKnowledgeStatus('Draft');
+            await utilityCommon.closePopUpMessage();
+            expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Status not Set');
+            await navigationPage.gotoKnoweldgeConsoleFromKM();
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
+            expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Status not Set');
+            await statusBladeKnowledgeArticlePo.setKnowledgeStatusWithReviewerDetails('SME Review', 'Petramco', 'HR Support', 'Compensation and Benefits', 'Peter Kahn')
+            await utilityCommon.closePopUpMessage();
+            expect(await editKnowledgePage.getStatusValue()).toContain('SME Review', 'Status not Set');
+            await navigationPage.gotoKnoweldgeConsoleFromKM();
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
+            expect(await editKnowledgePage.getStatusValue()).toContain('SME Review', 'Status not Set');
+            await viewKnowledgeArticlePo.clickOnKAUsefulYesButton();
+        });
+        it('[DRDMV-2985]: Article creation and possible status changes - Knowledge Publisher & Coach', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('peter');
+            await navigationPage.gotoKnowledgeConsole();
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
+            await viewKnowledgeArticlePo.clickReviewPendingLink();
+            await reviewCommentsPo.setTextInTellUsMore(KACoachDetails.displayId);
+            await reviewCommentsPo.clickApprovedButton();
+            await utilityCommon.closePopUpMessage();
+            await viewKnowledgeArticlePo.clickOnKAUsefulYesButton();
+            expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Status not Set');
+            await editKnowledgePage.setKnowledgeStatus('Retire Approval');
+            await utilityCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
+            expect(await editKnowledgePage.getStatusValue()).toContain('Retired', 'Status not Set');
+            await editKnowledgePage.setClosedKnowledgeStatus('Closed');
+            await utilityCommon.closePopUpMessage();
+            expect(await editKnowledgePage.getStatusValue()).toContain('Closed', 'Status not Set');
+        });
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('peter');
+        });
+    });
 })
