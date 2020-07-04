@@ -73,4 +73,8 @@ export enum CasePriority {
 
 export enum ProcessLibConf {
     Active = 10
+};
+
+export enum SupportGroup {
+    Offline = 2
 }
