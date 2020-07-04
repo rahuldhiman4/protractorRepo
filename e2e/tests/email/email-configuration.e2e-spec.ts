@@ -172,7 +172,7 @@ describe('Email Configuration', () => {
     describe('[DRDMV-10410,DRDMV-10418,DRDMV-10428,DRDMV-10433,DRDMV-10434,DRDMV-10435,DRDMV-10415]: Support Group: Associate Support group tab in Email Configuration.', async () => {
         let offlineSupportGroup;
         beforeAll(async () => {
-             offlineSupportGroup =  {
+            offlineSupportGroup = {
                 "orgName": "OfflineSupportGroup",
                 "relatedOrgId": null,
                 "status": "Offline"
@@ -180,11 +180,11 @@ describe('Email Configuration', () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.createEmailConfiguration(INCOMINGMAIL_COMPANY_PSILON, OUTGOINGEMAIL_COMPANY_PSILON, EMAILCONFIG_COMPANY_PSILON);
             await foundationData("Psilon", "BusinessUnitDataPsilon", "SuppGrpDataPsilon");
-            await foundationData("Petramco", "BusinessUnitData10410", "SuppGrpData10410"); 
+            await foundationData("Petramco", "BusinessUnitData10410", "SuppGrpData10410");
             // offlineSupportGroup.relatedOrgId = await apiCoreUtil.getBusinessUnitGuid("BusinessUnitData10410");
             // await apiHelper.createSupportGroup(offlineSupportGroup); 
         });
-         it('[DRDMV-10410,DRDMV-10418,DRDMV-10428,DRDMV-10433,DRDMV-10434,DRDMV-10435,DRDMV-10415]: Associate Support group tab in General Email Configuration.', async () => {
+        it('[DRDMV-10410,DRDMV-10418,DRDMV-10428,DRDMV-10433,DRDMV-10434,DRDMV-10435,DRDMV-10415]: Associate Support group tab in General Email Configuration.', async () => {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
             await utilGrid.searchAndOpenHyperlink(emailID);
@@ -203,7 +203,7 @@ describe('Email Configuration', () => {
             await editEmailConfigPo.searchAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects("UI-SupportGroup-10410");
             expect(await editEmailConfigPo.getAssociatedSupportGroupFromAssociatedSupportGroupListInAssociatedSupportGroupTab()).toBe("UI-SupportGroup-10410");
             await editEmailConfigPo.cancelEditEmailConfigConfig();
-         });
+        });
         it('[DRDMV-10410,DRDMV-10418,DRDMV-10428,DRDMV-10433,DRDMV-10434,DRDMV-10435,DRDMV-10415]: Support Group: Associate Support group tab in Email Configuration.', async () => {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
@@ -297,10 +297,6 @@ describe('Email Configuration', () => {
             expect(await editEmailConfigPo.isValueAvailableExclusionsSubjectInAssociatePublicExclusionSubjectsPresent('Out Of Office')).toBeTruthy();
         });
         it('[DRDMV-10764]: Exclusion Subject: Available exclusion subject list for multiple email configurations of same & different companies', async () => {
-            await editEmailConfigPo.searchAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects("Out Of Office");
-            expect(await editEmailConfigPo.isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent('Out Of Office')).toBeFalsy();
-            await editEmailConfigPo.searchAvailableExclusionsSubjectInAssociatePublicExclusionSubjects("Out Of Office");
-            expect(await editEmailConfigPo.isValueAvailableExclusionsSubjectInAssociatePublicExclusionSubjectsPresent('Out Of Office')).toBeTruthy();
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
             await utilGrid.searchAndOpenHyperlink("bwfqa2019@gmail.com");
@@ -308,8 +304,6 @@ describe('Email Configuration', () => {
             await utilGrid.clickCheckBoxOfValueInGrid('Out Of Office');
             await editEmailConfigPo.removeExclusiveSubjectsButton();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Out Of Office')).toBeFalsy();
-        });
-        it('[DRDMV-10764]: Exclusion Subject: Available exclusion subject list for multiple email configurations of same & different companies', async () => {
             await editEmailConfigPo.clickNewAvailableGlobalSubjects();
             await editEmailConfigPo.searchAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects("Out Of Office");
             expect(await editEmailConfigPo.isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent('Out Of Office')).toBeFalsy();
@@ -328,6 +322,8 @@ describe('Email Configuration', () => {
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Out Of Office')).toBeFalsy();
         });
         it('[DRDMV-10764]: Exclusion Subject: Available exclusion subject list for multiple email configurations of same & different companies', async () => {
+            await utilGrid.searchRecord("Private" + randomStr);
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid("Private" + randomStr)).toBeFalsy("Private comment is present");
             await editEmailConfigPo.clickNewAvailableGlobalSubjects();
             await editEmailConfigPo.searchAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects("Private" + randomStr);
             expect(await editEmailConfigPo.isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent("Private" + randomStr)).toBeFalsy();
