@@ -54,7 +54,7 @@ describe("Case Self Approval Tests", () => {
                 "categoryTier1": 'Applications',
                 "categoryTier2": 'Social',
                 "categoryTier3": 'Chatter',
-                "casePriority": "Critical",
+                "casePriority": "Medium",
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "businessUnit": "United States Support",
@@ -155,7 +155,7 @@ describe("Case Self Approval Tests", () => {
     });
 
     //skhobrag
-    describe('[DRDMV-10821]:[Approval] - Case Self Approval with Process', async () => {
+    fdescribe('[DRDMV-10821]:[Approval] - Case Self Approval with Process', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseData = undefined;
         let caseId: string;
@@ -168,7 +168,7 @@ describe("Case Self Approval Tests", () => {
                 "templateSummary": 'Automated Self Approval without process',
                 "categoryTier1": 'Applications',
                 "categoryTier2": 'Social',
-                "casePriority": "Critical",
+                "casePriority": "Low",
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "businessUnit": "United States Support",
@@ -261,7 +261,7 @@ describe("Case Self Approval Tests", () => {
 
         it('[DRDMV-10821]:Create case with non mathching summary and verify self approval without process', async () => {
             await navigationPage.gotoCreateCase();
-            await createCasePo.selectRequester('qkatawazi');
+            await createCasePo.selectRequester('qdu');
             await createCasePo.setSummary('Automated Self Approval with process');
             await createCasePo.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectCaseTemplate('caseTemplateForSelfApprovalWithoutProcessWithCriticalPriority' + randomStr);
