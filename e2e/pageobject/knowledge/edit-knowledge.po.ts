@@ -228,10 +228,6 @@ class EditKnowledgePage {
         return await $(this.selectors.knowledgeReviewerValue).getText()
     }
 
-    async removeRegionValue(optionValue:string): Promise<void> {
-        await utilityCommon.clearDropDown('6c3548bc-bd52-4da6-b365-f546ca7bd744',optionValue);
-    }
-
     async isArticleEditOptionDisplayed(editOption: string): Promise<boolean> {
         // await browser.wait(this.EC.elementToBeClickable($(this.selectors.articleEditOption)),2000);
         return await element(by.cssContainingText(this.selectors.articleEditOption, editOption)).isDisplayed();
@@ -344,20 +340,24 @@ class EditKnowledgePage {
         await $(this.selectors.closedTip).click();
     }
 
-    async removeCategoryTier1(optionValue:string): Promise<void> {
-        await utilityCommon.clearDropDown(this.selectors.categoryTier1Guid,optionValue);
+    async removeCategoryTier1(): Promise<void> {
+        await utilityCommon.clearDropDown(this.selectors.categoryTier1Guid,'None');
     }
     
-    async removeCategoryTier2(optionValue:string): Promise<void> {
-        await utilityCommon.clearDropDown(this.selectors.categoryTier2Guid,optionValue);
+    async removeCategoryTier2(): Promise<void> {
+        await utilityCommon.clearDropDown(this.selectors.categoryTier2Guid,'None');
     }
     
-    async removeCategoryTier3(optionValue:string): Promise<void> {
-        await utilityCommon.clearDropDown(this.selectors.categoryTier3Guid,optionValue);
+    async removeCategoryTier3(): Promise<void> {
+        await utilityCommon.clearDropDown(this.selectors.categoryTier3Guid,'None');
     }
 
-    async removeSiteValue(optionValue:string): Promise<void> {
-        await utilityCommon.clearDropDown('ff94cecf-1b32-46c2-a207-cd3e426d52f7',optionValue);
+    async removeSiteValue(): Promise<void> {
+        await utilityCommon.clearDropDown('ff94cecf-1b32-46c2-a207-cd3e426d52f7','Clear');
+    }
+
+    async removeRegionValue(): Promise<void> {
+        await utilityCommon.clearDropDown('6c3548bc-bd52-4da6-b365-f546ca7bd744','Clear');
     }
 }
 

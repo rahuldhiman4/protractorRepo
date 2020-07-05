@@ -686,8 +686,8 @@ describe('Knowledge Article', () => {
             expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('EMEA');
             expect(await viewKnowledgeArticlePo.getSiteValue()).toBe('Barcelona 1');
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
-            await editKnowledgePage.removeRegionValue('Clear');
-            await editKnowledgePage.removeSiteValue('Clear');
+            await editKnowledgePage.removeRegionValue();
+            await editKnowledgePage.removeSiteValue();
             await editKnowledgePage.saveKnowledgeMedataDataChanges();
             expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('-');
             expect(await viewKnowledgeArticlePo.getSiteValueAfterClear()).toBe('-');
