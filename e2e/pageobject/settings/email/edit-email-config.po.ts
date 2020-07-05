@@ -17,7 +17,7 @@ export class EditEmailConfig {
         searchAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects: '[class="col-left association-list-spacing"] input[rx-id="search-source-text-input"]',
         listAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects: '[class="col-left association-list-spacing"] .km-group-list-item__info',
         cancelEditEmailConfig: '[rx-view-component-id="bf51aff6-d0a3-484a-bed1-e11a78971aee"] button',
-        cancelAssociatePublicExclusionSubjects: '[rx-view-component-id="71177700-7a94-435f-b594-24ae7bc4e22b"] button',
+        closedAssociatePublicExclusionSubjects: '[rx-view-component-id="71177700-7a94-435f-b594-24ae7bc4e22b"] button',
         acknowledgementTemplateEditButton: '[rx-view-component-id="dd7a7212-432d-4c79-a33b-b7cc8abf787e"] button',
         saveAcknowledgementTemplate: '[rx-view-component-id="3c7ff456-1517-42d4-a770-bf4e641c7303"] button',
         cancelAcknowledgementTemplate: '[rx-view-component-id="e163832a-f819-43f0-af68-87aa1d5c671a"] button',
@@ -49,7 +49,10 @@ export class EditEmailConfig {
     }
 
     async getAssociatedSupportGroupFromAssociatedSupportGroupListInAssociatedSupportGroupTab(): Promise<string> {
-        return await $(this.selectors.associatedSupportGroupValueassociatedSupportGroup).getText();
+        return await $(this.selectors.associatedSupportGroupValueassociatedSupportGroup).isPresent().then(async (present) => {
+            if(present) return await $(this.selectors.associatedSupportGroupValueassociatedSupportGroup).getText();
+            else return null;
+        });
     }
 
     async isSupportGroupListHeaderPresentInAssociatedSupportGroupTab(): Promise<boolean> {
@@ -174,8 +177,8 @@ export class EditEmailConfig {
         await $(this.selectors.cancelEditEmailConfig).click();
     }
 
-    async cancelAssociatePublicExclusionSubjects(): Promise<void> {
-        await $(this.selectors.cancelAssociatePublicExclusionSubjects).click();
+    async closedAssociatePublicExclusionSubjects(): Promise<void> {
+        await $(this.selectors.closedAssociatePublicExclusionSubjects).click();
     }
 
 }

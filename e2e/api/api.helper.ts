@@ -56,7 +56,7 @@ axios.defaults.headers.common['X-Requested-By'] = 'XMLHttpRequest';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 const commandUri = 'api/rx/application/command';
 const articleTemplateUri = 'api/com.bmc.dsm.knowledge/rx/application/article/template';
-import {UPDATE_CASE} from '../data/ui/case/update.case.data.api';
+import { UPDATE_CASE } from '../data/ui/case/update.case.data.api';
 import { ICase, ITask } from '../data/api/interface/record-update.interface.api';
 
 export interface IIDs {
@@ -242,7 +242,7 @@ class ApiHelper {
             }
             taskData.fieldInstances["8"] = taskSummary;
         }
-        
+
         if (data.description) {
             let taskDescription = {
                 "id": "1000000000",
@@ -258,7 +258,7 @@ class ApiHelper {
                 "value": `${priorityValue}`
             }
             taskData.fieldInstances["1000000164"] = priorityObj;
-        } 
+        }
 
         let updateTaskStatus = await apiCoreUtil.updateRecordInstance("com.bmc.dsm.task-lib:Task", taskGuid, taskData);
         return updateTaskStatus.status;
@@ -276,7 +276,7 @@ class ApiHelper {
             }
             caseData.fieldInstances["8"] = caseSummary;
         }
-        
+
         if (data.description) {
             let caseDescription = {
                 "id": "1000000000",
@@ -292,7 +292,7 @@ class ApiHelper {
                 "value": `${priorityValue}`
             }
             caseData.fieldInstances["1000000164"] = priorityObj;
-        } 
+        }
 
         if (data.statusChangedDate) {
             let caseDescription = {
@@ -880,6 +880,15 @@ class ApiHelper {
             if (data.domainTag != null) {
                 let domainGuid = await apiCoreUtil.getDomainTagGuid(data.domainTag);
                 suppGrpData.fieldInstances[304417331].value = domainGuid;
+            }
+
+            if (data.status != null) {
+                let statusValue = constants.SupportGroup[data.status];
+                let statusObj = {
+                    "id": "7",
+                    "value": `${statusValue}`
+                }
+                suppGrpData.fieldInstances["7"] = statusObj;
             }
 
             const newSuppGrp = await coreApi.createRecordInstance(suppGrpData);
@@ -2327,7 +2336,7 @@ class ApiHelper {
 
     async postActivityCommentsWithAttachments(comment: string, module: string, moduleGuid: string, attachment: string): Promise<boolean> {
         // Creating the attachment
-        let guid = uuid.v4();    
+        let guid = uuid.v4();
         let mdata = `{"attachmentGroupId":"${moduleGuid + guid}","relatedRD":"com.bmc.dsm.case-lib:Case","relatedRI":"${moduleGuid}","publicPermissions":false,"dataSource":"Social","draft":false}`;
         let filename = fs.createReadStream(attachment.toString());
         let formData = {
@@ -2353,7 +2362,7 @@ class ApiHelper {
         return response.status == 200;
     }
 
-    async moreInfoResponseOnApprovalAction(caseId: string, reply: string): Promise<boolean>{
+    async moreInfoResponseOnApprovalAction(caseId: string, reply: string): Promise<boolean> {
         MORE_INFO_RETURN_ACTION.id = await coreApi.getMoreInfoGuid(caseId);
         MORE_INFO_RETURN_ACTION.fieldInstances[13301].value = reply;
         let response = await coreApi.updateRecordInstance('AP:More Information', MORE_INFO_RETURN_ACTION.id, MORE_INFO_RETURN_ACTION);

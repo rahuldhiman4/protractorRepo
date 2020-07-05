@@ -8,6 +8,7 @@ class EditKnowledgePage {
     selectors = {
         statusChange: 'ux-status-transition .status-transition',
         statusSaveBtn: '[rx-view-component-id="e45ca390-e752-4bd5-97c7-69618d609d59"] button',
+        statusCancelBtn: '[rx-view-component-id="cf381d41-6377-4ee2-9cbc-87b59207eb3d"] button',
         changeReviewerBtn: '[rx-view-component-id="f8c32272-6166-4001-a2dc-60762b5f6d69"] button',
         assigneToMeReviewerAssign: '[rx-view-component-id="7b202136-47a8-4234-b369-c300297055c6"] button',
         reviewerCompanyfldStatusBlade: '[rx-view-component-id="b4f529dc-f3b8-476a-b25d-40f5e6b71b5f"] button',
@@ -49,11 +50,18 @@ class EditKnowledgePage {
         siteGuid: '6c3548bc-bd52-4da6-b365-f546ca7bd744',
         uploadAttachmentField : '[rx-view-component-id="1f42f6d7-99cc-4c07-9249-94172d98d526"] input[type="file"]',
         closedTip: '.bwf-attachment-container__remove .d-icon-cross',
+        closedStatusChangeGuid: 'b71875a3-b23a-4fc4-8f0f-0e29f2e6eb74',
     }
 
     async setKnowledgeStatus(newStatus: string): Promise<void> {
         await $(this.selectors.statusChange).click();
         await utilityCommon.selectDropDown(this.selectors.statusChangeDrpDwnGuid, newStatus);
+        await $(this.selectors.statusSaveBtn).click();
+    }
+
+    async setClosedKnowledgeStatus(newStatus: string): Promise<void> {
+        await $(this.selectors.statusChange).click();
+        await utilityCommon.selectDropDown(this.selectors.closedStatusChangeGuid, newStatus);
         await $(this.selectors.statusSaveBtn).click();
     }
 
@@ -69,8 +77,7 @@ class EditKnowledgePage {
     async setKnowledgeStatusAndVerifyAssignmentNotAppear(newStatus: string): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChange)));
         await $(this.selectors.statusChange).click();
-        await utilityCommon.selectDropDown(this.selectors.statusChangeDrpDwnGuid, newStatus);
-        expect(await $(this.selectors.assigneToMeReviewerAssign).isDisplayed()).toBeFalsy();
+        await utilityCommon.selectDropDown(this.selectors.statusChangeDrpDwnGuid, newStatus);      
         await $(this.selectors.statusSaveBtn).click();
     }
 
@@ -79,8 +86,17 @@ class EditKnowledgePage {
         await utilityCommon.selectDropDown(this.selectors.statusChangeDrpDwnGuid, newStatus);
     }
 
+    async setClosedKnowledgeStatusWithoutSave(newStatus: string): Promise<void> {
+        await $(this.selectors.statusChange).click();
+        await utilityCommon.selectDropDown(this.selectors.closedStatusChangeGuid, newStatus);
+    }
+
     async clickSaveStatusBtn(): Promise<void> {
         await $(this.selectors.statusSaveBtn).click();
+    }
+
+    async clickCancelStatusBtn(): Promise<void> {
+        await $(this.selectors.statusCancelBtn).click();
     }
 
     async clickChangeAssignmentButton(): Promise<void> {
@@ -131,8 +147,11 @@ class EditKnowledgePage {
     }
 
     async isAssignToMeReviewerBladePresent(): Promise<Boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.assigneToMeReviewerAssign)));
-        return await $(this.selectors.assigneToMeReviewerAssign).isDisplayed();
+        return $(this.selectors.assigneToMeReviewerAssign).isPresent().then(async (link) => {
+            if (link) {
+                return $(this.selectors.assigneToMeReviewerAssign).isDisplayed();
+            } else return false;
+        });
     }
 
     async clickAssignToMeReviewerBlade(): Promise<void> {
@@ -207,10 +226,6 @@ class EditKnowledgePage {
 
     async getReviewerValue(): Promise<string> {
         return await $(this.selectors.knowledgeReviewerValue).getText()
-    }
-
-    async removeRegionValue(): Promise<void> {
-        await utilityCommon.clearDropDown('6c3548bc-bd52-4da6-b365-f546ca7bd744');
     }
 
     async isArticleEditOptionDisplayed(editOption: string): Promise<boolean> {
@@ -326,15 +341,23 @@ class EditKnowledgePage {
     }
 
     async removeCategoryTier1(): Promise<void> {
-        await utilityCommon.clearDropDown(this.selectors.categoryTier1Guid);
+        await utilityCommon.clearDropDown(this.selectors.categoryTier1Guid,'None');
     }
     
     async removeCategoryTier2(): Promise<void> {
-        await utilityCommon.clearDropDown(this.selectors.categoryTier2Guid);
+        await utilityCommon.clearDropDown(this.selectors.categoryTier2Guid,'None');
     }
     
     async removeCategoryTier3(): Promise<void> {
-        await utilityCommon.clearDropDown(this.selectors.categoryTier3Guid);
+        await utilityCommon.clearDropDown(this.selectors.categoryTier3Guid,'None');
+    }
+
+    async removeSiteValue(): Promise<void> {
+        await utilityCommon.clearDropDown('ff94cecf-1b32-46c2-a207-cd3e426d52f7','Clear');
+    }
+
+    async removeRegionValue(): Promise<void> {
+        await utilityCommon.clearDropDown('6c3548bc-bd52-4da6-b365-f546ca7bd744','Clear');
     }
 }
 
