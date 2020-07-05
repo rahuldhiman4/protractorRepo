@@ -24,7 +24,8 @@ class EditTask {
         dynamicDateTime: 'input[ng-model="datetime"]',
         taskSummary: '[rx-view-component-id="1261e01e-00fb-4e2c-b2ac-72e837f9fcea"] input',
         dynamicFieldName: '[rx-view-component-id="4c988a95-b148-475f-b91c-9788d8e6c0cb"] label',
-        ckeditorGuid: '6053a7e8-5194-420b-965a-1c3bfe3ad0a1'
+        ckeditorGuid: '6053a7e8-5194-420b-965a-1c3bfe3ad0a1',
+        refreshActivity: '.d-icon-left-refresh',
     }
 
     async isAutomatedTaskTypeDisabled(): Promise<boolean> {
@@ -64,6 +65,11 @@ class EditTask {
     async clickOnAssignToMe() {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignToMe)));
         await $(this.selectors.assignToMe).click();
+    }
+
+    async clickOnRefreshActivity() {
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignToMe)));
+        await $(this.selectors.refreshActivity).click();
     }
 
     async clickOnChangeAssignementButton() {
