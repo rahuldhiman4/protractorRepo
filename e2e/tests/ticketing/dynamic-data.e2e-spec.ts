@@ -505,6 +505,8 @@ describe('Dynamic data', () => {
         let filesToUpload2 = fileName2.map((file) => { return `../../data/ui/attachment/${file}` });
         await editTaskPo.addAttachmentInDynamicField('attachment1', filesToUpload2);
         await editTaskPo.clickOnSaveButton();
+        await utilCommon.closePopUpMessage();
+        await editTaskPo.clickOnRefreshActivity();
         //verify show more and show less button
         expect(await viewTaskPo.getShowMoreLessAttachmentsLinkText('attachment1')).toContain('more');
         await viewTaskPo.clickShowMoreShowLessLink('attachment1');
@@ -923,7 +925,7 @@ describe('Dynamic data', () => {
             await viewTaskPo.clickOnEditTask();
             await editTaskPo.setDynamicFieldValue('temp', 'sssssss');
             await editTaskPo.setDynamicFieldValue('temp1', 'eee');
-            await editTaskPo.setDateValueInDynamicField('wrong date');
+            await editTaskPo.setDateValueInDynamicField('eee');
             await editTaskPo.clickOnAssignToMe();
             await editCasePo.clickSaveCase();
             expect(await utilityCommon.getDialoguePopupMessage()).toBe("The dynamic field contains invalid data that will not be saved. Do you want to proceed?");
