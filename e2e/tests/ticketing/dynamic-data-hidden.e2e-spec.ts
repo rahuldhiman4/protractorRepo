@@ -381,7 +381,9 @@ describe('Dynamic Hidden Data', () => {
                 "templateStatus": "Active",
                 "assignee": "qkatawazi",
                 "company": "Petramco",
+                "businessUnit":"United States Support",
                 "supportGroup": "US Support 3",
+                 "ownerBU": "United States Support",
                 "ownerGroup": "US Support 3"
             }
             await apiHelper.apiLogin('tadmin');
@@ -507,7 +509,9 @@ describe('Dynamic Hidden Data', () => {
                 "templateStatus": "Active",
                 "assignee": "qkatawazi",
                 "company": "Petramco",
+                "businessUnit":"United States Support",
                 "supportGroup": "US Support 3",
+                 "ownerBU": "United States Support",
                 "ownerGroup": "US Support 3"
             }
             await apiHelper.apiLogin('tadmin');

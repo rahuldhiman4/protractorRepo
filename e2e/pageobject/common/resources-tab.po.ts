@@ -9,7 +9,7 @@ export class Resources {
         advancedSearchSettingsBtnClose: 'button.opened-advance-search-option',
         advancedSearchResult: 'div.sr-search-result-components .bwf-search-fields__title-text',
         headingName: '.km-group__header span',
-        smartSearchResult: 'bwf-smart-recorder-results h1',
+        smartSearchResult: '.sr-search-result-components h2',
         advancedSearchButton: 'span.d-icon-search',
         backButton: 'span.d-icon-angle_left',
         knowledgeTitle: '[rx-view-component-id="aacf8477-f930-4983-820d-1b9fa12441c0"] div.bwf-search-fields__title-text',
