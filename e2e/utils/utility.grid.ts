@@ -79,7 +79,9 @@ export class GridOperations {
         // await $(appliedPresetFilter).isPresent().then(async (result) => {
         //     if (result) {
         await $(filterPresetBtn).click();
-        await $$(clearBtn).first().click();
+        await $$(clearBtn).first().isPresent().then(async (present) => {
+            if (present) await $$(clearBtn).first().click();
+        });
         await $(refreshIcon).click();
         //     } else {
         //         console.log("Filters are already cleared");
