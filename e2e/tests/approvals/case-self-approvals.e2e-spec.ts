@@ -155,7 +155,7 @@ describe("Case Self Approval Tests", () => {
     });
 
     //skhobrag
-    fdescribe('[DRDMV-10821]:[Approval] - Case Self Approval with Process', async () => {
+    describe('[DRDMV-10821]:[Approval] - Case Self Approval with Process', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseData = undefined;
         let caseId: string;

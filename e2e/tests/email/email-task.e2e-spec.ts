@@ -16,7 +16,7 @@ import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
-describe('Email', () => {
+describe('Email Task', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         loginPage.login("fritz");
@@ -531,9 +531,7 @@ describe('Email', () => {
             "ownerBusinessUnit": "Facilities Support",
             "ownerGroup": "Facilities"
         }
-        await apiHelper.apiLogin('fritz');
-        await apiHelper.createManualTaskTemplate(templateData);
-        let externalTaskTemplateName = 'Externa task19555' + randomStr;
+        let externalTaskTemplateName = 'Externaltask19555' + randomStr;
         let externalTaskSummary = 'ExternalSummary19555' + randomStr;
         let externaltemplateData = {
             "templateName": `${externalTaskTemplateName}`,
@@ -544,7 +542,6 @@ describe('Email', () => {
             "ownerBusinessUnit": "Facilities Support",
             "ownerGroup": "Facilities"
         }
-        await apiHelper.createExternalTaskTemplate(externaltemplateData);
         let caseData = {
             "Requester": "qdu",
             "Company": "Petramco",
@@ -555,6 +552,8 @@ describe('Email', () => {
             "Assignee": "Qadim Katawazi"
         }
         await apiHelper.apiLogin('fritz');
+        await apiHelper.createManualTaskTemplate(templateData);
+        await apiHelper.createExternalTaskTemplate(externaltemplateData);
         let newCaseTemplate = await apiHelper.createCase(caseData);
         let displayId: string = newCaseTemplate.displayId;
         await navigationPage.gotoCaseConsole();
