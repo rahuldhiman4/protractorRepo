@@ -1053,7 +1053,7 @@ describe('Knowledge Article', () => {
         await utilityGrid.clearFilter();
         await utilityGrid.searchAndOpenHyperlink(kaDetails.displayId);
         await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
-        await editKnowledgePage.removeRegionValue('Clear');
+        await editKnowledgePage.removeRegionValue();
         await editKnowledgePage.saveKnowledgeMedataDataChanges();
         expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('-');
         expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(articleData.title);
@@ -1141,9 +1141,9 @@ describe('Knowledge Article', () => {
         expect(await viewKnowledgeArticlePo.getCategoryTier2Value()).toBe('Invoices');
         expect(await viewKnowledgeArticlePo.getCategoryTier3Value()).toBe('Payment');
         await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
-        await editKnowledgePage.removeCategoryTier1('None');
-        await editKnowledgePage.removeCategoryTier2('None');
-        await editKnowledgePage.removeCategoryTier3('None');
+        await editKnowledgePage.removeCategoryTier1();
+        await editKnowledgePage.removeCategoryTier2();
+        await editKnowledgePage.removeCategoryTier3();
         await editKnowledgePage.saveKnowledgeMedataDataChanges();
         await utilityCommon.closePopUpMessage();
         expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe('-');
