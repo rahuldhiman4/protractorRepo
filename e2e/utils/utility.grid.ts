@@ -76,15 +76,15 @@ export class GridOperations {
             filterPresetBtn = gridGuid + filterPresetBtn;
             refreshIcon = gridGuid + refreshIcon;
         }
-        await $(appliedPresetFilter).isPresent().then(async (result) => {
-            if (result) {
-                await $(filterPresetBtn).click();
-                await $$(clearBtn).first().click();
-                await $(refreshIcon).click();
-            } else {
-                console.log("Filters are already cleared");
-            }
-        });
+        // await $(appliedPresetFilter).isPresent().then(async (result) => {
+        //     if (result) {
+        await $(filterPresetBtn).click();
+        await $$(clearBtn).first().click();
+        await $(refreshIcon).click();
+        //     } else {
+        //         console.log("Filters are already cleared");
+        //     }
+        // });
     }
 
     async addGridColumn(columnNameList: string[], guid?: string): Promise<void> {

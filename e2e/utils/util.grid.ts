@@ -189,15 +189,15 @@ export class GridOperation {
 
     async clearFilter(): Promise<void> {
         //      await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterPreset)));
-        // await $(this.selectors.filterClose).isPresent().then(async (result) => {
-        //     if (result) {
-        await $(this.selectors.filterPreset).click();
-        await $(this.selectors.clearFilterButton).click();
-        await utilCommon.waitUntilSpinnerToHide();
-        //     } else {
-        //         console.log("Filters are already cleared");
-        //     }
-        // });
+        await $(this.selectors.filterClose).isPresent().then(async (result) => {
+            if (result) {
+                await $(this.selectors.filterPreset).click();
+                await $(this.selectors.clearFilterButton).click();
+                await utilCommon.waitUntilSpinnerToHide();
+            } else {
+                console.log("Filters are already cleared");
+            }
+        });
     }
 
     async clickOnSelectedGridRecord(guid: string, columnHeader: string): Promise<void> {
