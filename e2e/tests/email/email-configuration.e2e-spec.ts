@@ -15,15 +15,23 @@ import { INCOMINGMAIL_COMPANY_ONE, OUTGOINGEMAIL_COMPANY_ONE, EMAILCONFIG_COMPAN
 import apiCoreUtil from '../../api/api.core.util';
 
 describe('Email Configuration', () => {
-    let emailID = "bmctemptestemail@gmail.com";
+    let offlineSupportGroup, emailID = "bmctemptestemail@gmail.com";
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteAllEmailConfiguration();
         await apiHelper.createEmailConfiguration();
-        await apiHelper.createEmailConfiguration(INCOMINGMAIL_COMPANY_ONE, OUTGOINGEMAIL_COMPANY_ONE, EMAILCONFIG_COMPANY_ONE);
-        await apiHelper.createEmailConfiguration(INCOMINGMAIL_COMPANY_PSILON, OUTGOINGEMAIL_COMPANY_PSILON, EMAILCONFIG_COMPANY_PSILON);
+        await foundationData("Petramco", "BusinessUnitData10410", "SuppGrpData10410");
+        await foundationData("Psilon", "BusinessUnitDataPsilon", "SuppGrpDataPsilon");
+        offlineSupportGroup = {
+            "orgName": "OfflineSupportGroup",
+            "relatedOrgId": null,
+            "status": "Offline"
+        };
+        offlineSupportGroup.relatedOrgId = await apiCoreUtil.getBusinessUnitGuid("BusinessUnitData10410");
+        await apiHelper.createSupportGroup(offlineSupportGroup);
+        await apiHelper.createSupportGroup(offlineSupportGroup);
     });
 
     afterAll(async () => {
@@ -32,6 +40,21 @@ describe('Email Configuration', () => {
         await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
+
+    async function foundationData(company: string, businessUnit: string, supportGroup: string) {
+        let businessData, suppGrpData;
+        const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
+        const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
+        await apiHelper.apiLogin('tadmin');
+        businessData = businessDataFile[businessUnit];
+        suppGrpData = supportGrpDataFile[supportGroup];
+        await browser.sleep(15000); //waiting fordata to be reflected on UI
+        let orgId = await apiCoreUtil.getOrganizationGuid(company);
+        businessData.relatedOrgId = orgId;
+        let businessUnitId = await apiHelper.createBusinessUnit(businessData);
+        suppGrpData.relatedOrgId = businessUnitId;
+        await apiHelper.createSupportGroup(suppGrpData);
+    };
 
     //ankagraw
     describe('[DRDMV-8528,DRDMV-8527]: [Email Configuration] Verify Email configuration Grid view', async () => {
@@ -58,6 +81,9 @@ describe('Email Configuration', () => {
             await createEmailConfigPo.setDescription("test ");
             await createEmailConfigPo.selectStatus("Active");
             await createEmailConfigPo.clickSave();
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades(); // escape is working on these settings pages
         });
     });
 
@@ -114,6 +140,9 @@ describe('Email Configuration', () => {
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeTruthy();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeFalsy();
         });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades(); // escape is working on these settings pages
+        });
     });
 
     //ankagraw
@@ -152,37 +181,17 @@ describe('Email Configuration', () => {
             await editEmailConfigPo.clickSaveAcknowledgementTemplate();
             expect(await editEmailConfigPo.isRecordPresentInAcknowledgementTemplateGrid('Case Create Ack Template')).toBeTruthy();
         });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades(); // escape is working on these settings pages
+        });
     });
 
-    async function foundationData(company: string, businessUnit: string, supportGroup: string) {
-        let businessData, suppGrpData;
-        const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
-        const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
-        await apiHelper.apiLogin('tadmin');
-        businessData = businessDataFile[businessUnit];
-        suppGrpData = supportGrpDataFile[supportGroup];
-        await browser.sleep(15000); //New user is created above, waiting for its backend access preperation
-        let orgId = await apiCoreUtil.getOrganizationGuid(company);
-        businessData.relatedOrgId = orgId;
-        let businessUnitId = await apiHelper.createBusinessUnit(businessData);
-        await apiHelper.createSupportGroup(suppGrpData);
-        suppGrpData.relatedOrgId = businessUnitId;
-    };
     //ankagraw
     describe('[DRDMV-10410,DRDMV-10418,DRDMV-10428,DRDMV-10433,DRDMV-10434,DRDMV-10435,DRDMV-10415]: Support Group: Associate Support group tab in Email Configuration.', async () => {
-        let offlineSupportGroup;
         beforeAll(async () => {
-            offlineSupportGroup = {
-                "orgName": "OfflineSupportGroup",
-                "relatedOrgId": null,
-                "status": "Offline"
-            };
             await apiHelper.apiLogin('tadmin');
+            await apiHelper.createEmailConfiguration(INCOMINGMAIL_COMPANY_ONE, OUTGOINGEMAIL_COMPANY_ONE, EMAILCONFIG_COMPANY_ONE);
             await apiHelper.createEmailConfiguration(INCOMINGMAIL_COMPANY_PSILON, OUTGOINGEMAIL_COMPANY_PSILON, EMAILCONFIG_COMPANY_PSILON);
-            await foundationData("Psilon", "BusinessUnitDataPsilon", "SuppGrpDataPsilon");
-            await foundationData("Petramco", "BusinessUnitData10410", "SuppGrpData10410");
-            // offlineSupportGroup.relatedOrgId = await apiCoreUtil.getBusinessUnitGuid("BusinessUnitData10410");
-            // await apiHelper.createSupportGroup(offlineSupportGroup); 
         });
          it('[DRDMV-10410,DRDMV-10418,DRDMV-10428,DRDMV-10433,DRDMV-10434,DRDMV-10435,DRDMV-10415]: Associate Support group tab in General Email Configuration.', async () => {
             await navigationPage.gotoSettingsPage();
@@ -192,15 +201,14 @@ describe('Email Configuration', () => {
             expect(await editEmailConfigPo.isSupportGroupListHeaderPresentInAssociatedSupportGroupTab()).toBeTruthy();
             expect(await editEmailConfigPo.isAssociatedSupportGroupListHeaderPresentInAssociatedSupportGroupTab()).toBeTruthy();
             await editEmailConfigPo.selectBusinessUnitInAssociatedSupportGroupTab("Facilities Support");
-            await editEmailConfigPo.searchAvailableExclusionsSubjectInAssociatePublicExclusionSubjects("Facilities");
+            await editEmailConfigPo.searchAvailableEntitiesToBeAssociated("Facilities");
             expect(await editEmailConfigPo.getSupportGroupFromSupportGroupListInAssociatedSupportGroupTab()).toBe("Facilities");
             await editEmailConfigPo.selectBusinessUnitInAssociatedSupportGroupTab("UI-BusinessUnit-10410");
-            await editEmailConfigPo.searchAvailableExclusionsSubjectInAssociatePublicExclusionSubjects("UI-SupportGroup-10410");
-            expect(await editEmailConfigPo.getSupportGroupFromSupportGroupListInAssociatedSupportGroupTab()).toBeNull();
+            await editEmailConfigPo.searchAvailableEntitiesToBeAssociated("UI-SupportGroup-10410");
             expect(await editEmailConfigPo.getSupportGroupFromSupportGroupListInAssociatedSupportGroupTab()).toBe("UI-SupportGroup-10410");
             await editEmailConfigPo.clickSupportGroup();
             await editEmailConfigPo.clickAssociatedSupportGroupRightArrow();
-            await editEmailConfigPo.searchAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects("UI-SupportGroup-10410");
+            await editEmailConfigPo.searchAssociatedEntitiesToBeRemoveAssociation("UI-SupportGroup-10410");
             expect(await editEmailConfigPo.getAssociatedSupportGroupFromAssociatedSupportGroupListInAssociatedSupportGroupTab()).toBe("UI-SupportGroup-10410");
             await editEmailConfigPo.cancelEditEmailConfigConfig();
          });
@@ -210,7 +218,9 @@ describe('Email Configuration', () => {
             await utilGrid.searchAndOpenHyperlink("bwfqa2019@gmail.com");
             await editEmailConfigPo.selectTab("Associated Support Group");
             await editEmailConfigPo.selectBusinessUnitInAssociatedSupportGroupTab("UI-BusinessUnit-10410");
-            await editEmailConfigPo.searchAvailableExclusionsSubjectInAssociatePublicExclusionSubjects("UI-SupportGroup-10410");
+            await editEmailConfigPo.searchAvailableEntitiesToBeAssociated(offlineSupportGroup.orgName);
+            expect(await editEmailConfigPo.getSupportGroupFromSupportGroupListInAssociatedSupportGroupTab()).toBeNull();
+            await editEmailConfigPo.searchAvailableEntitiesToBeAssociated("UI-SupportGroup-10410");
             expect(await editEmailConfigPo.getSupportGroupFromSupportGroupListInAssociatedSupportGroupTab()).toBe("UI-SupportGroup-10410");
             await editEmailConfigPo.clickSupportGroup();
             await editEmailConfigPo.clickAssociatedSupportGroupRightArrow();
@@ -218,20 +228,20 @@ describe('Email Configuration', () => {
         });
         it('[DRDMV-10410,DRDMV-10418,DRDMV-10428,DRDMV-10433,DRDMV-10434,DRDMV-10435,DRDMV-10415]: Support Group: Associate Support group tab in Email Configuration.', async () => {
             await navigationPage.signOut();
-            await loginPage.login('gwixillian')
+            await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
             expect(await utilGrid.isGridRecordPresent(emailID)).toBeFalsy();
             expect(await utilGrid.isGridRecordPresent("psilon@gmail.com")).toBeTruthy();
             await utilGrid.searchAndOpenHyperlink("psilon@gmail.com");
             await editEmailConfigPo.selectTab("Associated Support Group");
+            await editEmailConfigPo.selectBusinessUnitInAssociatedSupportGroupTab("UI-BusinessUnit-Psilon");
             expect(await editEmailConfigPo.getSupportGroupFromSupportGroupListInAssociatedSupportGroupTab()).toBe("UI-SupportGroup-Psilon");
             await editEmailConfigPo.clickSupportGroup();
             await editEmailConfigPo.clickAssociatedSupportGroupRightArrow();
             expect(await editEmailConfigPo.getAssociatedSupportGroupFromAssociatedSupportGroupListInAssociatedSupportGroupTab()).toBe("UI-SupportGroup-Psilon");
             await editEmailConfigPo.cancelEditEmailConfigConfig();
         });
-
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
@@ -254,24 +264,28 @@ describe('Email Configuration', () => {
             await utilGrid.clickCheckBoxOfValueInGrid('Out Of Office');
             await editEmailConfigPo.removeExclusiveSubjectsButton();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Out Of Office')).toBeFalsy();
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid("Private" + randomStr)).toBeTruthy();
             await utilGrid.clickCheckBoxOfValueInGrid("Private" + randomStr);
             await editEmailConfigPo.removeExclusiveSubjectsButton();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid("Private" + randomStr)).toBeFalsy();
         });
         it('[DRDMV-10461,DRDMV-10763]: Exclusion Subject: Re-add Deleted public exclusion subject', async () => {
             await editEmailConfigPo.clickNewAvailableGlobalSubjects();
-            await editEmailConfigPo.searchAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects("Private" + randomStr);
+            await editEmailConfigPo.searchAssociatedEntitiesToBeRemoveAssociation("Private" + randomStr);
             expect(await editEmailConfigPo.isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent("Private" + randomStr)).toBeFalsy();
-            await editEmailConfigPo.searchAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects("Out Of Office");
+            await editEmailConfigPo.searchAssociatedEntitiesToBeRemoveAssociation("Out Of Office");
             expect(await editEmailConfigPo.isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent('Out Of Office')).toBeFalsy();
-            await editEmailConfigPo.searchAvailableExclusionsSubjectInAssociatePublicExclusionSubjects("Out Of Office");
+            await editEmailConfigPo.searchAvailableEntitiesToBeAssociated("Out Of Office");
             expect(await editEmailConfigPo.isValueAvailableExclusionsSubjectInAssociatePublicExclusionSubjectsPresent('Out Of Office')).toBeTruthy();
             await editEmailConfigPo.clickAvailableExclusionSubjectsCheckbox();
             await editEmailConfigPo.clickAssociatedSupportGroupRightArrow();
-            await editEmailConfigPo.searchAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects("Out Of Office");
+            await editEmailConfigPo.searchAssociatedEntitiesToBeRemoveAssociation("Out Of Office");
             expect(await editEmailConfigPo.isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent('Out Of Office')).toBeTruthy();
             await editEmailConfigPo.closedAssociatePublicExclusionSubjects();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Out Of Office')).toBeTruthy();
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades(); // escape is working on these settings pages
         });
     });
 
@@ -291,9 +305,9 @@ describe('Email Configuration', () => {
             await editEmailConfigPo.removeExclusiveSubjectsButton();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Out Of Office')).toBeFalsy();
             await editEmailConfigPo.clickNewAvailableGlobalSubjects();
-            await editEmailConfigPo.searchAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects("Out Of Office");
+            await editEmailConfigPo.searchAssociatedEntitiesToBeRemoveAssociation("Out Of Office");
             expect(await editEmailConfigPo.isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent('Out Of Office')).toBeFalsy();
-            await editEmailConfigPo.searchAvailableExclusionsSubjectInAssociatePublicExclusionSubjects("Out Of Office");
+            await editEmailConfigPo.searchAvailableEntitiesToBeAssociated("Out Of Office");
             expect(await editEmailConfigPo.isValueAvailableExclusionsSubjectInAssociatePublicExclusionSubjectsPresent('Out Of Office')).toBeTruthy();
         });
         it('[DRDMV-10764]: Exclusion Subject: Available exclusion subject list for multiple email configurations of same & different companies', async () => {
@@ -305,9 +319,9 @@ describe('Email Configuration', () => {
             await editEmailConfigPo.removeExclusiveSubjectsButton();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Out Of Office')).toBeFalsy();
             await editEmailConfigPo.clickNewAvailableGlobalSubjects();
-            await editEmailConfigPo.searchAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects("Out Of Office");
+            await editEmailConfigPo.searchAssociatedEntitiesToBeRemoveAssociation("Out Of Office");
             expect(await editEmailConfigPo.isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent('Out Of Office')).toBeFalsy();
-            await editEmailConfigPo.searchAvailableExclusionsSubjectInAssociatePublicExclusionSubjects("Out Of Office");
+            await editEmailConfigPo.searchAvailableEntitiesToBeAssociated("Out Of Office");
             expect(await editEmailConfigPo.isValueAvailableExclusionsSubjectInAssociatePublicExclusionSubjectsPresent('Out Of Office')).toBeTruthy();
         });
         it('[DRDMV-10764]: Exclusion Subject: Available exclusion subject list for multiple email configurations of same & different companies', async () => {
@@ -325,11 +339,11 @@ describe('Email Configuration', () => {
             await utilGrid.searchRecord("Private" + randomStr);
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid("Private" + randomStr)).toBeFalsy("Private comment is present");
             await editEmailConfigPo.clickNewAvailableGlobalSubjects();
-            await editEmailConfigPo.searchAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects("Private" + randomStr);
+            await editEmailConfigPo.searchAssociatedEntitiesToBeRemoveAssociation("Private" + randomStr);
             expect(await editEmailConfigPo.isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent("Private" + randomStr)).toBeFalsy();
-            await editEmailConfigPo.searchAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects("Out Of Office");
+            await editEmailConfigPo.searchAssociatedEntitiesToBeRemoveAssociation("Out Of Office");
             expect(await editEmailConfigPo.isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent('Out Of Office')).toBeFalsy();
-            await editEmailConfigPo.searchAvailableExclusionsSubjectInAssociatePublicExclusionSubjects("Out Of Office");
+            await editEmailConfigPo.searchAvailableEntitiesToBeAssociated("Out Of Office");
             expect(await editEmailConfigPo.isValueAvailableExclusionsSubjectInAssociatePublicExclusionSubjectsPresent('Out Of Office')).toBeTruthy();
         });
         afterAll(async () => {
@@ -352,7 +366,7 @@ describe('Email Configuration', () => {
             await newExclusiveSubjectPo.selectGlobal("True");
             await newExclusiveSubjectPo.clickSaveButton();
             await editEmailConfigPo.clickNewAvailableGlobalSubjects();
-            await editEmailConfigPo.searchAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects("Global" + randomStr);
+            await editEmailConfigPo.searchAssociatedEntitiesToBeRemoveAssociation("Global" + randomStr);
             expect(await editEmailConfigPo.isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent("Global" + randomStr)).toBeTruthy();
         });
         it('[DRDMV-10762]: Exclusion Subject: Associate exclusion subject list verification for newly added exclusion subject', async () => {
@@ -362,8 +376,11 @@ describe('Email Configuration', () => {
             await newExclusiveSubjectPo.setSortOrder('20');
             await newExclusiveSubjectPo.clickSaveButton();
             await editEmailConfigPo.clickNewAvailableGlobalSubjects();
-            await editEmailConfigPo.searchAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects("Private" + randomStr);
+            await editEmailConfigPo.searchAssociatedEntitiesToBeRemoveAssociation("Private" + randomStr);
             expect(await editEmailConfigPo.isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent("Private" + randomStr)).toBeFalsy();
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades(); // escape is working on these settings pages
         });
     });
 
@@ -380,7 +397,7 @@ describe('Email Configuration', () => {
             await newExclusiveSubjectPo.selectGlobal("True");
             await newExclusiveSubjectPo.clickSaveButton();
             await editEmailConfigPo.clickNewAvailableGlobalSubjects();
-            await editEmailConfigPo.searchAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects("Global" + randomStr);
+            await editEmailConfigPo.searchAssociatedEntitiesToBeRemoveAssociation("Global" + randomStr);
             expect(await editEmailConfigPo.isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent("Global" + randomStr)).toBeTruthy();
         });
         it('[DRDMV-10765,DRDMV-10766]: Exclusion Subject: Associate exclusion subject validation for newly added public subject with newly added email config', async () => {
@@ -394,8 +411,11 @@ describe('Email Configuration', () => {
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
             await utilGrid.searchAndOpenHyperlink("psilon@gmail.com");
             await editEmailConfigPo.clickNewAvailableGlobalSubjects();
-            await editEmailConfigPo.searchAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects("Global" + randomStr);
+            await editEmailConfigPo.searchAssociatedEntitiesToBeRemoveAssociation("Global" + randomStr);
             expect(await editEmailConfigPo.isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent("Global" + randomStr)).toBeTruthy();
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades(); // escape is working on these settings pages
         });
     });
 });
