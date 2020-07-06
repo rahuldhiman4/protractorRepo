@@ -21,6 +21,7 @@ import activityTabPo from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from "../../utils/util.grid";
+import utilityGrid from "../../utils/utility.grid";
 import utilityCommon from '../../utils/utility.common';
 
 let caseBAUser = 'qkatawazi';
@@ -30,7 +31,7 @@ let knowledgeCandidateUser = 'kayo';
 let knowledgeContributorUser = 'kkohri';
 let knowledgePublisherUser = 'kmills';
 let knowledgeCoachUser = 'kWilliamson';
-let emptyStr = undefined;
+let emptyStr = "";
 let articleInDraftStatus = 'DRDMV-19572 KnowledgeArticle_Draft';
 let articleInSMEReviewStatus = 'DRDMV-19572 KnowledgeArticle_SMEReview';
 let articleInPublishedStatus = 'DRDMV-19572 KnowledgeArticle_Published';
@@ -46,6 +47,7 @@ let regionFieldVal2 = "Central America";
 let siteFieldVal1 = "Mexico City";
 let knowledgeManagementApp = "Knowledge Management";
 let companyStr = "Petramco";
+let hrSupportStr = "HR Support";
 let ownerSupportGroup = "Compensation and Benefits";
 let documentLibraryColumnHeader = "Title";
 let applyBtn = "Apply";
@@ -57,10 +59,10 @@ let knowledgeArticlesStr = "Knowledge Articles ";
 let draftStatus = "Draft";
 let inProgressStatus = "In Progress";
 let smeReviewStatus = "SME Review";
-let publishedStatus = "Published";
-let retiredStatus = "Retired";
+let publishedApprovalStatus = "PublishApproval";
+let retiredApprovalStatus = "RetireApproval";
 let closedStatus = "Closed";
-let canceledStatus = "Canceled";
+let canceledApprovalStatus = "CancelApproval";
 var title = "DRDMV-19572 KnowledgeArticle";
 
 describe('Knowledge Articles - Location (Region / Site) Tests', () => {
@@ -74,6 +76,8 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login(caseBAUser);
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteKnowledgeApprovalMapping();
         await apiHelper.apiLogin(knowledgePublisherUser);
         var articleData = {
             "knowledgeSet": "HR",
@@ -107,33 +111,37 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, smeReviewStatus, "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with SME Review status not updated.");
 
         //Create article in Published status
-        articleData.title = title + "_" + publishedStatus;
+        articleData.title = title + "_" + publishedApprovalStatus;
         var knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         var knowledgeArticleGUID = knowledgeArticleData.id;
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, draftStatus)).toBeTruthy("Article with Draft status not updated.");
-        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, publishedStatus)).toBeTruthy("Article with Published status not updated.");
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, publishedApprovalStatus)).toBeTruthy("Article with Published status not updated.");
 
         //Create article in Retired status
-        articleData.title = title + "_" + retiredStatus;
+        articleData.title = title + "_" + retiredApprovalStatus;
         var knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         var knowledgeArticleGUID = knowledgeArticleData.id;
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, draftStatus)).toBeTruthy("Article with Draft status not updated.");
-        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, publishedStatus)).toBeTruthy("Article with Published status not updated.");
-        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, retiredStatus)).toBeTruthy("Article with Retired status not updated.");
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, publishedApprovalStatus)).toBeTruthy("Article with Published status not updated.");
+        await browser.sleep(5000);
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, retiredApprovalStatus)).toBeTruthy("Article with Retired status not updated.");
 
         //Create article in Closed status
         articleData.title = title + "_" + closedStatus;
         var knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         var knowledgeArticleGUID = knowledgeArticleData.id;
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, draftStatus)).toBeTruthy("Article with Draft status not updated.");
-        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, publishedStatus)).toBeTruthy("Article with Published status not updated.");
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, publishedApprovalStatus)).toBeTruthy("Article with Published status not updated.");
+        await browser.sleep(5000);
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, retiredApprovalStatus)).toBeTruthy("Article with Published status not updated.");
+        await browser.sleep(5000);
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, closedStatus)).toBeTruthy("Article with Closed status not updated.");
 
         //Create article in Canceled status
-        articleData.title = title + "_" + canceledStatus;
+        articleData.title = title + "_" + canceledApprovalStatus;
         var knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         var knowledgeArticleGUID = knowledgeArticleData.id;
-        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, canceledStatus)).toBeTruthy("Article with Canceled status not updated.");
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, canceledApprovalStatus)).toBeTruthy("Article with Canceled status not updated.");
     }, 3 * 60 * 1000);
 
     afterEach(async () => {
@@ -145,142 +153,137 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await navigationPage.signOut();
     });
 
-    it('[DRDMV-19569,DRDMV-19570,DRDMV-19571]:Verify the search functionality of knowledge articles console for Region', async () => {
-        try {
-            let regionFieldColumn: string[] = ["Region"];
-            let knowledgeGridColumnFields: string[] = ["Article ID", "Title", "Knowledge Set", "Status", "Assignee", "Company", "Template Name", "Reviewer", "Modified By", "Created Date", "Modified Date", "Flagged", "Region"];
-            let knowledgeGridColumnFieldsWithoutRegion: string[] = ["Article ID", "Title", "Knowledge Set", "Status", "Assignee", "Company", "Template Name", "Reviewer", "Modified By", "Created Date", "Modified Date", "Flagged"];
+    describe('[DRDMV-19569,DRDMV-19570,DRDMV-19571]:Verify the search functionality of knowledge articles console for Region', () => {
+        let regionFieldColumn: string[] = ["Region"];
+        let knowledgeGridColumnFields: string[] = ["Article ID", "Title", "Knowledge Set", "Status", "Assignee", "Company", "Template Name", "Reviewer", "Modified By", "Created Date", "Modified Date", "Flagged", "Region"];
+        let knowledgeGridColumnFieldsWithoutRegion: string[] = ["Article ID", "Title", "Knowledge Set", "Status", "Assignee", "Company", "Template Name", "Reviewer", "Modified By", "Created Date", "Modified Date", "Flagged"];
+        let regionVal: string = undefined;
 
+        it('[DRDMV-19569,DRDMV-19570,DRDMV-19571]:Verify the search functionality of knowledge articles console for Region', async () => {
             await navigationPage.gotoKnowledgeConsole();
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(regionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
-            await utilGrid.searchOnGridConsole(regionFieldVal);
-            let regionVal: string = await knowledgeConsole.getSelectedGridRecordValue(regionField);
-            expect(regionVal).toEqual(regionFieldVal);
-
+            await utilityGrid.searchRecord(regionFieldVal);
+            expect(await utilityGrid.isEntireColumnContainsSameValue(regionField, regionFieldVal)).toBeTruthy('Search results does not match');
             await knowledgeConsole.removeColumnOnGrid(regionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFieldsWithoutRegion)).toBe(true);
-            await utilGrid.searchOnGridConsole(regionFieldVal);
+            await utilityGrid.searchRecord(regionFieldVal);
             regionVal = await knowledgeConsole.getSelectedGridRecordValue(regionField);
             expect(regionVal).toEqual(emptyStr);
             await navigationPage.signOut();
 
             await loginPage.login(caseManagerUser);
             await navigationPage.gotoKnowledgeConsole();
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(regionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
-            await utilGrid.searchOnGridConsole(regionFieldVal);
-            regionVal = await knowledgeConsole.getSelectedGridRecordValue(regionField);
-            expect(regionVal).toEqual(regionFieldVal);
-
+            await utilityGrid.searchRecord(regionFieldVal);
+            expect(await utilityGrid.isEntireColumnContainsSameValue(regionField, regionFieldVal)).toBeTruthy('Search results does not match');
             await knowledgeConsole.removeColumnOnGrid(regionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFieldsWithoutRegion)).toBe(true);
-            await utilGrid.searchOnGridConsole(regionFieldVal);
+            await utilityGrid.searchRecord(regionFieldVal);
             regionVal = await knowledgeConsole.getSelectedGridRecordValue(regionField);
             expect(regionVal).toEqual(emptyStr);
             await navigationPage.signOut();
+        });
 
+        it('[DRDMV-19569,DRDMV-19570,DRDMV-19571]:Verify the search functionality of knowledge articles console for Region', async () => {
             await loginPage.login(caseAgentUser);
             await navigationPage.gotoKnowledgeConsole();
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(regionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
-            await utilGrid.searchOnGridConsole(regionFieldVal);
-            regionVal = await knowledgeConsole.getSelectedGridRecordValue(regionField);
-            expect(regionVal).toEqual(regionFieldVal);
+            await utilityGrid.searchRecord(regionFieldVal);
+            expect(await utilityGrid.isEntireColumnContainsSameValue(regionField, regionFieldVal)).toBeTruthy('Search results does not match');
             await knowledgeConsole.removeColumnOnGrid(regionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFieldsWithoutRegion)).toBe(true);
-            await utilGrid.searchOnGridConsole(regionFieldVal);
+            await utilityGrid.searchRecord(regionFieldVal);
             regionVal = await knowledgeConsole.getSelectedGridRecordValue(regionField);
             expect(regionVal).toEqual(emptyStr);
             await navigationPage.signOut();
 
             await loginPage.login(knowledgeCandidateUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
-            await utilGrid.clearFilter();
+            await utilityCommon.switchToNewTab(1);
+            await utilityGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(regionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
-            await utilGrid.searchOnGridConsole(regionFieldVal);
-            regionVal = await knowledgeConsole.getSelectedGridRecordValue(regionField);
-            expect(regionVal).toEqual(regionFieldVal);
+            await utilityGrid.searchRecord(regionFieldVal);
+            expect(await utilityGrid.isEntireColumnContainsSameValue(regionField, regionFieldVal)).toBeTruthy('Search results does not match');
             await knowledgeConsole.removeColumnOnGrid(regionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFieldsWithoutRegion)).toBe(true);
-            await utilGrid.searchOnGridConsole(regionFieldVal);
+            await utilityGrid.searchRecord(regionFieldVal);
             regionVal = await knowledgeConsole.getSelectedGridRecordValue(regionField);
             expect(regionVal).toEqual(emptyStr);
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
+        });
 
+        it('[DRDMV-19569,DRDMV-19570,DRDMV-19571]:Verify the search functionality of knowledge articles console for Region', async () => {
             await loginPage.login(knowledgeContributorUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
-            await utilGrid.clearFilter();
+            await utilityCommon.switchToNewTab(1);
+            await utilityGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(regionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
-            await utilGrid.searchOnGridConsole(regionFieldVal);
-            regionVal = await knowledgeConsole.getSelectedGridRecordValue(regionField);
-            expect(regionVal).toEqual(regionFieldVal);
+            await utilityGrid.searchRecord(regionFieldVal);
+            expect(await utilityGrid.isEntireColumnContainsSameValue(regionField, regionFieldVal)).toBeTruthy('Search results does not match');
             await knowledgeConsole.removeColumnOnGrid(regionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFieldsWithoutRegion)).toBe(true);
-            await utilGrid.searchOnGridConsole(regionFieldVal);
+            await utilityGrid.searchRecord(regionFieldVal);
             regionVal = await knowledgeConsole.getSelectedGridRecordValue(regionField);
             expect(regionVal).toEqual(emptyStr);
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
 
             await loginPage.login(knowledgePublisherUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
-            await utilGrid.clearFilter();
+            await utilityCommon.switchToNewTab(1);
+            await utilityGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(regionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
-            await utilGrid.searchOnGridConsole(regionFieldVal);
-            regionVal = await knowledgeConsole.getSelectedGridRecordValue(regionField);
-            expect(regionVal).toEqual(regionFieldVal);
+            await utilityGrid.searchRecord(regionFieldVal);
+            expect(await utilityGrid.isEntireColumnContainsSameValue(regionField, regionFieldVal)).toBeTruthy('Search results does not match');
             await knowledgeConsole.removeColumnOnGrid(regionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFieldsWithoutRegion)).toBe(true);
-            await utilGrid.searchOnGridConsole(regionFieldVal);
+            await utilityGrid.searchRecord(regionFieldVal);
             regionVal = await knowledgeConsole.getSelectedGridRecordValue(regionField);
             expect(regionVal).toEqual(emptyStr);
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
+        });
 
+        it('[DRDMV-19569,DRDMV-19570,DRDMV-19571]:Verify the search functionality of knowledge articles console for Region', async () => {
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
-            await utilGrid.clearFilter();
+            await utilityCommon.switchToNewTab(1);
+            await utilityGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(regionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
-            await utilGrid.searchOnGridConsole(regionFieldVal);
-            regionVal = await knowledgeConsole.getSelectedGridRecordValue(regionField);
-            expect(regionVal).toEqual(regionFieldVal);
+            await utilityGrid.searchRecord(regionFieldVal);
+            expect(await utilityGrid.isEntireColumnContainsSameValue(regionField, regionFieldVal)).toBeTruthy('Search results does not match');
             await knowledgeConsole.removeColumnOnGrid(regionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFieldsWithoutRegion)).toBe(true);
-            await utilGrid.searchOnGridConsole(regionFieldVal);
+            await utilityGrid.searchRecord(regionFieldVal);
             regionVal = await knowledgeConsole.getSelectedGridRecordValue(regionField);
             expect(regionVal).toEqual(emptyStr);
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
-        }
-        catch (error) {
-            throw error;
-        }
-        finally {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
-            await utilityCommon.refresh();
-            await utilCommon.waitUntilSpinnerToHide();
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+        });
+
+        afterAll(async () => {
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
-        }
+        });
 
-    }, 480 * 1000);
+    });
 
-    it('[DRDMV-19565,DRDMV-19567,DRDMV-19568]:Verify the Save functionality of Region and Site fields on Knowledge Articles Create / Edit screen', async () => {
+    describe('[DRDMV-19565,DRDMV-19567,DRDMV-19568]:Verify the Save functionality of Region and Site fields on Knowledge Articles Create / Edit screen', () => {
         let knowledgeDataFile = require("../../data/ui/knowledge/knowledgeArticle.ui.json");
         let knowledgeData = knowledgeDataFile['DRDMV-19020'];
-        try {
+
+        it('[DRDMV-19565,DRDMV-19567,DRDMV-19568]:Verify the Save functionality of Region and Site fields on Knowledge Articles Create / Edit screen', async () => {
             //* Check the Availability of Region with Case Business Analyst
             await navigationPage.gotoKnowledgeConsole();
             await utilCommon.waitUntilSpinnerToHide();
@@ -295,8 +298,8 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
-            expect(await editKnowledgePo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
-            expect(await editKnowledgePo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
+            expect(await editKnowledgePo.getSelectedFieldValue(regionField)).toBe(regionFieldVal);
+            expect(await editKnowledgePo.getSelectedFieldValue(siteField)).toBe(siteFieldVal);
             await editKnowledgePo.selectRegionDropDownOption(regionFieldVal2);
             await editKnowledgePo.selectSiteDropDownOption(siteFieldVal1);
             await editKnowledgePo.saveKnowledgeMedataDataChanges();
@@ -317,13 +320,15 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
-            expect(await editKnowledgePo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
-            expect(await editKnowledgePo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
+            expect(await editKnowledgePo.getSelectedFieldValue(regionField)).toBe(regionFieldVal);
+            expect(await editKnowledgePo.getSelectedFieldValue(siteField)).toBe(siteFieldVal);
             await editKnowledgePo.selectRegionDropDownOption(regionFieldVal2);
             await editKnowledgePo.selectSiteDropDownOption(siteFieldVal1);
             await editKnowledgePo.saveKnowledgeMedataDataChanges();
             await navigationPage.signOut();
+        });
 
+        it('[DRDMV-19565,DRDMV-19567,DRDMV-19568]:Verify the Save functionality of Region and Site fields on Knowledge Articles Create / Edit screen', async () => {
             //Create Knowledge article by Case Agent
             await loginPage.login(caseAgentUser);
             await navigationPage.gotoKnowledgeConsole();
@@ -339,8 +344,8 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
-            expect(await editKnowledgePo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
-            expect(await editKnowledgePo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
+            expect(await editKnowledgePo.getSelectedFieldValue(regionField)).toBe(regionFieldVal);
+            expect(await editKnowledgePo.getSelectedFieldValue(siteField)).toBe(siteFieldVal);
             await editKnowledgePo.selectRegionDropDownOption(regionFieldVal2);
             await editKnowledgePo.selectSiteDropDownOption(siteFieldVal1);
             await editKnowledgePo.saveKnowledgeMedataDataChanges();
@@ -362,13 +367,15 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
-            expect(await editKnowledgePo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
-            expect(await editKnowledgePo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
+            expect(await editKnowledgePo.getSelectedFieldValue(regionField)).toBe(regionFieldVal);
+            expect(await editKnowledgePo.getSelectedFieldValue(siteField)).toBe(siteFieldVal);
             await editKnowledgePo.selectRegionDropDownOption(regionFieldVal2);
             await editKnowledgePo.selectSiteDropDownOption(siteFieldVal1);
             await editKnowledgePo.saveKnowledgeMedataDataChanges();
             await navigationPage.signOut();
+        });
 
+        it('[DRDMV-19565,DRDMV-19567,DRDMV-19568]:Verify the Save functionality of Region and Site fields on Knowledge Articles Create / Edit screen', async () => {
             //Login with Knowledge Contributor
             await loginPage.login(knowledgeContributorUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -385,8 +392,8 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
-            expect(await editKnowledgePo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
-            expect(await editKnowledgePo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
+            expect(await editKnowledgePo.getSelectedFieldValue(regionField)).toBe(regionFieldVal);
+            expect(await editKnowledgePo.getSelectedFieldValue(siteField)).toBe(siteFieldVal);
             await editKnowledgePo.selectRegionDropDownOption(regionFieldVal2);
             await editKnowledgePo.selectSiteDropDownOption(siteFieldVal1);
             await editKnowledgePo.saveKnowledgeMedataDataChanges();
@@ -409,13 +416,15 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
-            expect(await editKnowledgePo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
-            expect(await editKnowledgePo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
+            expect(await editKnowledgePo.getSelectedFieldValue(regionField)).toBe(regionFieldVal);
+            expect(await editKnowledgePo.getSelectedFieldValue(siteField)).toBe(siteFieldVal);
             await editKnowledgePo.selectRegionDropDownOption(regionFieldVal2);
             await editKnowledgePo.selectSiteDropDownOption(siteFieldVal1);
             await editKnowledgePo.saveKnowledgeMedataDataChanges();
             await navigationPage.signOut();
+        });
 
+        it('[DRDMV-19565,DRDMV-19567,DRDMV-19568]:Verify the Save functionality of Region and Site fields on Knowledge Articles Create / Edit screen', async () => {
             //Login with Knowledge Coach
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -432,45 +441,45 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
-            expect(await editKnowledgePo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
-            expect(await editKnowledgePo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
+            expect(await editKnowledgePo.getSelectedFieldValue(regionField)).toBe(regionFieldVal);
+            expect(await editKnowledgePo.getSelectedFieldValue(siteField)).toBe(siteFieldVal);
             await editKnowledgePo.selectRegionDropDownOption(regionFieldVal2);
             await editKnowledgePo.selectSiteDropDownOption(siteFieldVal1);
             await editKnowledgePo.saveKnowledgeMedataDataChanges();
-        }
-        catch (error) {
-            throw error;
-        }
-        finally {
+        });
+
+        afterAll(async () => {
             await utilityCommon.refresh();
             await utilCommon.waitUntilSpinnerToHide();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
+        });
+    });
+
+    describe('[DRDMV-19574]:Verify the Save functionality of Region and Site fields on Document Library Create / Edit screen', () => {
+        let caseAgentuserData = {
+            "firstName": "caseAgent",
+            "lastName": "user",
+            "userId": "caseAgent",
+            "userPermission": "AGGAA5V0GE9Z4AOR0BXUOQ3ZT04EJA;AGGAA5V0GEON8AOZHHGIOY0UZNXGOR;AGGADG1AAO0VGAP8SXEGP7VU2U4ZS8",
         }
-    }, 600 * 1000);
+        let caseManageruserData = {
+            "firstName": "caseManager",
+            "lastName": "user",
+            "userId": "caseManager",
+            "userPermission": "AGGAA5V0GE9Z4AOR7CWOOQLASE4PHJ;AGGAA5V0GEON8AOZHHGIOY0UZNXGOR;AGGADG1AAO0VGAP8SXEGP7VU2U4ZS8",
+        }
 
-    it('[DRDMV-19574]:Verify the Save functionality of Region and Site fields on Document Library Create / Edit screen', async () => {
-        try {
+        beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
-            var caseAgentuserData = {
-                "firstName": "caseAgent",
-                "lastName": "user",
-                "userId": "caseAgent",
-                "userPermission": "AGGAA5V0GE9Z4AOR0BXUOQ3ZT04EJA;AGGAA5V0GEON8AOZHHGIOY0UZNXGOR;AGGADG1AAO0VGAP8SXEGP7VU2U4ZS8",
-            }
-            var caseManageruserData = {
-                "firstName": "caseManager",
-                "lastName": "user",
-                "userId": "caseManager",
-                "userPermission": "AGGAA5V0GE9Z4AOR7CWOOQLASE4PHJ;AGGAA5V0GEON8AOZHHGIOY0UZNXGOR;AGGADG1AAO0VGAP8SXEGP7VU2U4ZS8",
-            }
-
             await apiHelper.createNewUser(caseAgentuserData);
             await apiHelper.associatePersonToCompany(caseAgentuserData.userId, "Petramco");
 
             await apiHelper.createNewUser(caseManageruserData);
             await apiHelper.associatePersonToCompany(caseManageruserData.userId, "Petramco");
+        });
 
+        it('[DRDMV-19574]:Verify the Save functionality of Region and Site fields on Document Library Create / Edit screen', async () => {
             //Create a document library
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows'))
@@ -480,20 +489,22 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             let title = `Document-${new Date().valueOf()}`;
             await createDocumentLibraryPage.setTitle(title);
             await createDocumentLibraryPage.selectCompany(companyStr);
+            await createDocumentLibraryPage.selectBusinessUnit(hrSupportStr);
             await createDocumentLibraryPage.selectOwnerGroup(ownerSupportGroup);
             await createDocumentLibraryPage.selectRegion(regionFieldVal);
             await createDocumentLibraryPage.selectSite(siteFieldVal);
             await createDocumentLibraryPage.saveNewDocument();
-            await utilGrid.searchOnGridConsole(title);
-            await createDocumentLibraryPage.clickOnSelectedGridRecord(documentLibraryColumnHeader);
+            await utilGrid.searchAndOpenHyperlink(title);
             expect(await editDocumentLibraryPo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
             expect(await editDocumentLibraryPo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
-            await createDocumentLibraryPage.selectRegion(regionFieldVal2);
-            await createDocumentLibraryPage.selectSite(siteFieldVal1);
-            await createDocumentLibraryPage.selectStatus(documentLibraryStatus);
-            await createDocumentLibraryPage.saveUpdatedDocument();
+            await editDocumentLibraryPo.setRegion(regionFieldVal2);
+            await editDocumentLibraryPo.setSite(siteFieldVal1);
+            await editDocumentLibraryPo.selectStatus(documentLibraryStatus);
+            await editDocumentLibraryPo.clickOnSaveButton();
             await navigationPage.signOut();
+        });
 
+        it('[DRDMV-19574]:Verify the Save functionality of Region and Site fields on Document Library Create / Edit screen', async () => {
             //Login with Case Manager
             await loginPage.login(caseManageruserData.userId);
             //Create a document library
@@ -505,6 +516,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             title = `Document-${new Date().valueOf()}`;
             await createDocumentLibraryPage.setTitle(title);
             await createDocumentLibraryPage.selectCompany(companyStr);
+            await createDocumentLibraryPage.selectBusinessUnit(hrSupportStr);
             await createDocumentLibraryPage.selectOwnerGroup(ownerSupportGroup);
             await createDocumentLibraryPage.selectRegion(regionFieldVal);
             await createDocumentLibraryPage.selectSite(siteFieldVal);
@@ -513,12 +525,14 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createDocumentLibraryPage.clickOnSelectedGridRecord(documentLibraryColumnHeader);
             expect(await editDocumentLibraryPo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
             expect(await editDocumentLibraryPo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
-            await createDocumentLibraryPage.selectRegion(regionFieldVal2);
-            await createDocumentLibraryPage.selectSite(siteFieldVal1);
-            await createDocumentLibraryPage.selectStatus(documentLibraryStatus);
-            await createDocumentLibraryPage.saveUpdatedDocument();
+            await editDocumentLibraryPo.setRegion(regionFieldVal2);
+            await editDocumentLibraryPo.setSite(siteFieldVal1);
+            await editDocumentLibraryPo.selectStatus(documentLibraryStatus);
+            await editDocumentLibraryPo.clickOnSaveButton();
             await navigationPage.signOut();
+        });
 
+        it('[DRDMV-19574]:Verify the Save functionality of Region and Site fields on Document Library Create / Edit screen', async () => {
             //Login with Case Agent
             await loginPage.login(caseAgentuserData.userId);
             //Create a document library
@@ -530,6 +544,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             title = `Document-${new Date().valueOf()}`;
             await createDocumentLibraryPage.setTitle(title);
             await createDocumentLibraryPage.selectCompany(companyStr);
+            await createDocumentLibraryPage.selectBusinessUnit(hrSupportStr);
             await createDocumentLibraryPage.selectOwnerGroup(ownerSupportGroup);
             await createDocumentLibraryPage.selectRegion(regionFieldVal);
             await createDocumentLibraryPage.selectSite(siteFieldVal);
@@ -538,23 +553,21 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createDocumentLibraryPage.clickOnSelectedGridRecord(documentLibraryColumnHeader);
             expect(await editDocumentLibraryPo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
             expect(await editDocumentLibraryPo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
-            await createDocumentLibraryPage.selectRegion(regionFieldVal2);
-            await createDocumentLibraryPage.selectSite(siteFieldVal1);
-            await createDocumentLibraryPage.selectStatus(documentLibraryStatus);
-            await createDocumentLibraryPage.saveUpdatedDocument();
+            await editDocumentLibraryPo.setRegion(regionFieldVal2);
+            await editDocumentLibraryPo.setSite(siteFieldVal1);
+            await editDocumentLibraryPo.selectStatus(documentLibraryStatus);
+            await editDocumentLibraryPo.clickOnSaveButton();;
             await navigationPage.signOut();
-        }
-        catch (error) {
-            throw error;
-        }
-        finally {
+        });
+
+        afterAll(async () => {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await utilityCommon.refresh();
             await utilCommon.waitUntilSpinnerToHide();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
-        }
-    }, 600 * 1000);
+        });
+    });
 
     it('[DRDMV-19575]:Verify the search functionality of Document library console for Region', async () => {
         try {
@@ -820,13 +833,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInDraftStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInDraftStatus)).toEqual(articleInDraftStatus);
             await resources.enterAdvancedSearchText(articleInDraftStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInDraftStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInDraftStatus)).toEqual(articleInDraftStatus);
 
             //Search with knowledge article with SMEReview status
             await resources.enterAdvancedSearchText(articleInSMEReviewStatus);
@@ -836,13 +849,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInSMEReviewStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInSMEReviewStatus)).toEqual(articleInSMEReviewStatus);
             await resources.enterAdvancedSearchText(articleInSMEReviewStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInSMEReviewStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInSMEReviewStatus)).toEqual(articleInSMEReviewStatus);
 
             //Search with knowledge article with Published status
             await resources.enterAdvancedSearchText(articleInPublishedStatus);
@@ -852,13 +865,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInPublishedStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInPublishedStatus)).toEqual(articleInPublishedStatus);
             await resources.enterAdvancedSearchText(articleInPublishedStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInPublishedStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInPublishedStatus)).toEqual(articleInPublishedStatus);
 
             //Search with knowledge article with Retired status
             await resources.enterAdvancedSearchText(articleInRetiredStatus);
@@ -868,13 +881,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInRetiredStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInRetiredStatus)).toEqual(articleInRetiredStatus);
             await resources.enterAdvancedSearchText(articleInRetiredStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInRetiredStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInRetiredStatus)).toEqual(articleInRetiredStatus);
 
             //Search with knowledge article with Closed status
             await resources.enterAdvancedSearchText(articleInClosedStatus);
@@ -884,13 +897,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInClosedStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInClosedStatus)).toEqual(articleInClosedStatus);
             await resources.enterAdvancedSearchText(articleInClosedStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInClosedStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInClosedStatus)).toEqual(articleInClosedStatus);
 
             //Search with knowledge article with Canceled status
             await resources.enterAdvancedSearchText(articleInCanceledStatus);
@@ -900,13 +913,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInCanceledStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInCanceledStatus)).toEqual(articleInCanceledStatus);
             await resources.enterAdvancedSearchText(articleInCanceledStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInCanceledStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInCanceledStatus)).toEqual(articleInCanceledStatus);
 
             //Navigate to Create case
             await navigationPage.gotoCreateCase();

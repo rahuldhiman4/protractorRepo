@@ -208,6 +208,17 @@ class EditKnowledgePage {
         return await utilCommon.getSelectedFieldValue(fieldName);
     }
 
+    async getSelectedFieldValue(fieldName: string): Promise<string> {
+        let fieldLocator = await $$('adapt-select');
+        let fieldValue: string = undefined;
+        for(let i:number =0; i< fieldLocator.length; i++) {
+            if(await fieldLocator[i].$('.form-control-label span').getText()==fieldName) {
+                fieldValue = await fieldLocator[i].$('button').getText();
+            }
+        }
+        return fieldValue;
+    }
+
     async clickOnSaveButtonOfKA(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButtonONKA)));
         await $(this.selectors.saveButtonONKA).click();

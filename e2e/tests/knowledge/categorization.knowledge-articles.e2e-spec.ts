@@ -34,10 +34,9 @@ let categoryTier1 = 'Category Tier 1';
 let categoryTier2 = 'Category Tier 2';
 let categoryTier3 = 'Category Tier 3';
 let categoryTier4 = 'Category Tier 4';
-let categoryTier1FieldVal = 'Applications';
-let categoryTier1FieldVal1 = 'Employee Relations';
-let categoryTier2FieldVal = 'Help Desk';
-let categoryTier3FieldVal = 'Incident';
+let categoryTier1FieldVal = 'Employee Relations';
+let categoryTier2FieldVal = 'Compensation';
+let categoryTier3FieldVal = 'Bonus';
 let knowledgeManagementApp = "Knowledge Management";
 let knowledgeArticlesTitleStr = "Knowledge Articles";
 let advancedSearchOptionCategoryTier1 = "Operational Category Tier 1";
@@ -45,7 +44,7 @@ let advancedSearchOptionCategoryTier1ForDocumentLibrary = "Operational Category 
 let knowledgeArticlesStr = "Knowledge Articles ";
 let recommendedKnowledgeStr = "Recommended Knowledge ";
 let applyBtn = "Apply";
-let emptyStr = undefined;
+let emptyStr = '';
 let articleInDraftStatus = 'DRDMV-19004 KnowledgeArticle_Draft';
 let articleInSMEReviewStatus = 'DRDMV-19004 KnowledgeArticle_SMEReview';
 let articleInPublishedStatus = 'DRDMV-19004 KnowledgeArticle_Published';
@@ -72,55 +71,19 @@ describe('Knowledge Articles - Categorization Tests', () => {
     const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
     const departmentDataFile = require('../../data/ui/foundation/department.ui.json');
     const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
-    const personDataFile = require('../../data/ui/foundation/person.ui.json');
     const domainTagDataFile = require('../../data/ui/foundation/domainTag.ui.json');
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login(caseBAUser);
-        await apiHelper.apiLogin(knowledgePublisherUser);
-
-        let knowledgeSetData = {
-            "knowledgeSetTitle": "Knowledge Set Petramco",
-            "knowledgeSetDesc": "Knowledge Description Petramco",
-            "company": "Petramco"
-        }
-
-        let knowledgeApprovalFlowData = {
-            "flowName": "Preset Filter",
-            "approver": "KMills",
-            "qualification": "'Operational Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.cddc9f6098ac421a1aa40ec9be503abb0fda61530bc9dbb22e7049cba9c5839018ba7205a392cd9f37141091bbe33e28405caff795929e4d805fa787dfea2c0c.304405421}"
-        }
-
-        let knowledgeApprovalMappingData = {
-            "configName": "Approval Config Name",
-            "company": "Petramco",
-            "status1": "CancelApproval",
-            "status2": "PublishApproval",
-            "status3": "RetireApproval"
-        }
-
-        //Create Knowledge Configuraton
-        const randomStr = [...Array(2)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        knowledgeSetTitle = knowledgeSetData.knowledgeSetTitle + randomStr;
-
-        knowledgeSetData.knowledgeSetTitle = knowledgeSetTitle;
-        await apiHelper.createKnowledgeSet(knowledgeSetData);
-
-        let approvalConfigGlobalTitle = knowledgeApprovalFlowData.flowName + randomStr;
-        knowledgeApprovalFlowData.flowName = approvalConfigGlobalTitle;
-        await apiHelper.apiLogin('qkatawazi');
-        await apiHelper.deleteKnowledgeApprovalMapping();
-        await apiHelper.createKnowledgeApprovalFlow(knowledgeApprovalFlowData);
-        await apiHelper.createKnowledgeApprovalMapping(knowledgeApprovalMappingData);
 
         let articleData = {
             "knowledgeSet": "HR",
             "title": "KnowledgeArticle",
             "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-            "categoryTier1": "Applications",
-            "categoryTier2": "Help Desk",
-            "categoryTier3": "Incident",
+            "categoryTier1": "Employee Relations",
+            "categoryTier2": "Compensation",
+            "categoryTier3": "Bonus",
             "region": "Australia",
             "site": "Canberra",
             "assignedCompany": "Petramco",
@@ -152,7 +115,6 @@ describe('Knowledge Articles - Categorization Tests', () => {
         knowledgeArticleGUID = knowledgeArticleData.id;
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, draftStatus)).toBeTruthy("Article with Draft status not updated.");
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'PublishApproval', "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with Published status not updated.");
-        await apiHelper.approverAction(knowledgeArticleGUID, 'Approved');
 
         //Create article in Retired status
         articleData.title = title + "_" + retiredStatus;
@@ -160,9 +122,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
         knowledgeArticleGUID = knowledgeArticleData.id;
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, draftStatus)).toBeTruthy("Article with Draft status not updated.");
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'PublishApproval', "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with Published status not updated.");
-        await apiHelper.approverAction(knowledgeArticleGUID, 'Approved');
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'RetireApproval', "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with Retired status not updated.");
-        await apiHelper.approverAction(knowledgeArticleGUID, 'Approved');
 
         //Create article in Closed status
         articleData.title = title + "_" + closedStatus;
@@ -170,9 +130,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
         knowledgeArticleGUID = knowledgeArticleData.id;
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, draftStatus)).toBeTruthy("Article with Draft status not updated.");
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'PublishApproval', "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with Published status not updated.");
-        await apiHelper.approverAction(knowledgeArticleGUID, 'Approved');
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'RetireApproval', "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with Retired status not updated.");
-        await apiHelper.approverAction(knowledgeArticleGUID, 'Approved');
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, closedStatus)).toBeTruthy("Article with Closed status not updated.");
 
         //Create article in Canceled status
@@ -180,8 +138,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
         knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         knowledgeArticleGUID = knowledgeArticleData.id;
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'CancelApproval', "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with Canceled status not updated.");
-        await apiHelper.approverAction(knowledgeArticleGUID, 'Approved');
-    });//, 180 * 1000);
+    });
 
     afterEach(async () => {
         await utilityCommon.refresh();
@@ -211,11 +168,10 @@ describe('Knowledge Articles - Categorization Tests', () => {
         await apiHelper.associateCategoryUnderDomainTag('Applications', domainTag);
     }
 
-    it('[DRDMV-18999,DRDMV-19000,DRDMV-19002]:Verify the search functionality of knowledge articles console for category tiers 1,2 and 3', async () => {
+    describe('[DRDMV-18999,DRDMV-19000,DRDMV-19002]:Verify the search functionality of knowledge articles console for category tiers 1,2 and 3', () => {
         let categoryTierFieldColumns: string[] = ["Category Tier 1", "Category Tier 2", "Category Tier 3"];
         let knowledgeGridColumnFields: string[] = ["Article ID", "Title", "Knowledge Set", "Status", "Assignee", "Company", "Template Name", "Reviewer", "Modified By", "Created Date", "Modified Date", "Flagged", "Category Tier 1", "Category Tier 2", "Category Tier 3"];
-
-        try {
+        it('[DRDMV-18999,DRDMV-19000,DRDMV-19002]:Verify the search functionality of knowledge articles console for category tiers 1,2 and 3', async () => {
             //* Login with Case BA
             await navigationPage.gotoKnowledgeConsole();
             await utilityGrid.clearFilter();
@@ -271,7 +227,9 @@ describe('Knowledge Articles - Categorization Tests', () => {
             expect(categoryTier2Val).toEqual(emptyStr);
             expect(categoryTier3Val).toEqual(emptyStr);
             await navigationPage.signOut();
+        });
 
+        it('[DRDMV-18999,DRDMV-19000,DRDMV-19002]:Verify the search functionality of knowledge articles console for category tiers 1,2 and 3', async () => {
             //Login with Case Agent user
             await loginPage.login(caseAgentUser);
             await navigationPage.gotoKnowledgeConsole();
@@ -279,11 +237,11 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await knowledgeConsole.addColumnOnGrid(categoryTierFieldColumns);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
             await knowledgeConsole.searchOnGridConsole(categoryTier1FieldVal);
-            categoryTier1Val = await knowledgeConsole.getSelectedGridRecordValue(categoryTier1);
+            let categoryTier1Val = await knowledgeConsole.getSelectedGridRecordValue(categoryTier1);
             await knowledgeConsole.searchOnGridConsole(categoryTier2FieldVal);
-            categoryTier2Val = await knowledgeConsole.getSelectedGridRecordValue(categoryTier2);
+            let categoryTier2Val = await knowledgeConsole.getSelectedGridRecordValue(categoryTier2);
             await knowledgeConsole.searchOnGridConsole(categoryTier3FieldVal);
-            categoryTier3Val = await knowledgeConsole.getSelectedGridRecordValue(categoryTier3);
+            let categoryTier3Val = await knowledgeConsole.getSelectedGridRecordValue(categoryTier3);
             expect(categoryTier1Val).toEqual(categoryTier1FieldVal);
             expect(categoryTier2Val).toEqual(categoryTier2FieldVal);
             expect(categoryTier3Val).toEqual(categoryTier3FieldVal);
@@ -330,7 +288,9 @@ describe('Knowledge Articles - Categorization Tests', () => {
             expect(categoryTier3Val).toEqual(emptyStr);
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
+        });
 
+        it('[DRDMV-18999,DRDMV-19000,DRDMV-19002]:Verify the search functionality of knowledge articles console for category tiers 1,2 and 3', async () => {
             //Login with knowledge contributor 
             await loginPage.login(knowledgeContributorUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -340,11 +300,11 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await knowledgeConsole.addColumnOnGrid(categoryTierFieldColumns);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
             await knowledgeConsole.searchOnGridConsole(categoryTier1FieldVal);
-            categoryTier1Val = await knowledgeConsole.getSelectedGridRecordValue(categoryTier1);
+            let categoryTier1Val = await knowledgeConsole.getSelectedGridRecordValue(categoryTier1);
             await knowledgeConsole.searchOnGridConsole(categoryTier2FieldVal);
-            categoryTier2Val = await knowledgeConsole.getSelectedGridRecordValue(categoryTier2);
+            let categoryTier2Val = await knowledgeConsole.getSelectedGridRecordValue(categoryTier2);
             await knowledgeConsole.searchOnGridConsole(categoryTier3FieldVal);
-            categoryTier3Val = await knowledgeConsole.getSelectedGridRecordValue(categoryTier3);
+            let categoryTier3Val = await knowledgeConsole.getSelectedGridRecordValue(categoryTier3);
             expect(categoryTier1Val).toEqual(categoryTier1FieldVal);
             expect(categoryTier2Val).toEqual(categoryTier2FieldVal);
             expect(categoryTier3Val).toEqual(categoryTier3FieldVal);
@@ -392,7 +352,9 @@ describe('Knowledge Articles - Categorization Tests', () => {
             expect(categoryTier3Val).toEqual(emptyStr);
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
+        });
 
+        it('[DRDMV-18999,DRDMV-19000,DRDMV-19002]:Verify the search functionality of knowledge articles console for category tiers 1,2 and 3', async () => {
             //Login with knowledge coach 
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -402,11 +364,11 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await knowledgeConsole.addColumnOnGrid(categoryTierFieldColumns);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
             await knowledgeConsole.searchOnGridConsole(categoryTier1FieldVal);
-            categoryTier1Val = await knowledgeConsole.getSelectedGridRecordValue(categoryTier1);
+            let categoryTier1Val = await knowledgeConsole.getSelectedGridRecordValue(categoryTier1);
             await knowledgeConsole.searchOnGridConsole(categoryTier2FieldVal);
-            categoryTier2Val = await knowledgeConsole.getSelectedGridRecordValue(categoryTier2);
+            let categoryTier2Val = await knowledgeConsole.getSelectedGridRecordValue(categoryTier2);
             await knowledgeConsole.searchOnGridConsole(categoryTier3FieldVal);
-            categoryTier3Val = await knowledgeConsole.getSelectedGridRecordValue(categoryTier3);
+            let categoryTier3Val = await knowledgeConsole.getSelectedGridRecordValue(categoryTier3);
             expect(categoryTier1Val).toEqual(categoryTier1FieldVal);
             expect(categoryTier2Val).toEqual(categoryTier2FieldVal);
             expect(categoryTier3Val).toEqual(categoryTier3FieldVal);
@@ -422,21 +384,19 @@ describe('Knowledge Articles - Categorization Tests', () => {
             expect(categoryTier2Val).toEqual(emptyStr);
             expect(categoryTier3Val).toEqual(emptyStr);
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
-        }
-        catch (error) {
-            throw error;
-        }
-        finally {
+        });
+
+        afterAll(async () => {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await utilityCommon.refresh();
             await utilCommon.waitUntilSpinnerToHide();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
-        }
-    }, 650 * 1000);
+        });
+    });
 
-    it('[DRDMV-19004]:Verify the knowledge articles search based on category tier on Quick case / Create case', async () => {
-        try {
+    describe('[DRDMV-19004]:Verify the knowledge articles search based on category tier on Quick case / Create case', () => {
+        it('[DRDMV-19004]:Verify the knowledge articles search based on category tier on Quick case / Create case', async () => {
             //* Check the Availability of Category Tiers with Case BA
             await navigationPage.gotoQuickCase();
             await quickCase.selectRequesterName(caseAgentUser);
@@ -448,7 +408,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(recommendedKnowledgeStr)).toEqual(articleInDraftStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInDraftStatus)).toEqual(articleInDraftStatus);
 
             //Search with knowledge article with SMEReview status
             await resources.enterAdvancedSearchText(articleInSMEReviewStatus);
@@ -456,7 +416,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(recommendedKnowledgeStr)).toEqual(articleInSMEReviewStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInSMEReviewStatus)).toEqual(articleInSMEReviewStatus);
 
             //Search with knowledge article with Published status
             await resources.enterAdvancedSearchText(articleInPublishedStatus);
@@ -464,7 +424,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(recommendedKnowledgeStr)).toEqual(articleInPublishedStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInPublishedStatus)).toEqual(articleInPublishedStatus);
 
             //Search with knowledge article with Retired status
             await resources.enterAdvancedSearchText(articleInRetiredStatus);
@@ -472,7 +432,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(recommendedKnowledgeStr)).toEqual(articleInRetiredStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInRetiredStatus)).toEqual(articleInRetiredStatus);
 
             //Search with knowledge article with Closed status
             await resources.enterAdvancedSearchText(articleInClosedStatus);
@@ -480,7 +440,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(recommendedKnowledgeStr)).toEqual(articleInClosedStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInClosedStatus)).toEqual(articleInClosedStatus);
 
             //Search with knowledge article with Canceled status
             await resources.enterAdvancedSearchText(articleInCanceledStatus);
@@ -488,8 +448,10 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(recommendedKnowledgeStr)).toEqual(articleInCanceledStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInCanceledStatus)).toEqual(articleInCanceledStatus);
+        });
 
+        it('[DRDMV-19004]:Verify the knowledge articles search based on category tier on Quick case / Create case', async () => {
             //Navigate to Create case
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
@@ -506,7 +468,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInDraftStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInDraftStatus)).toEqual(articleInDraftStatus);
 
             //Search with knowledge article with SMEReview status
             await resources.enterAdvancedSearchText(articleInSMEReviewStatus);
@@ -514,7 +476,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInSMEReviewStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInSMEReviewStatus)).toEqual(articleInSMEReviewStatus);
 
             //Search with knowledge article with Published status
             await resources.enterAdvancedSearchText(articleInPublishedStatus);
@@ -522,7 +484,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInPublishedStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInPublishedStatus)).toEqual(articleInPublishedStatus);
 
             //Search with knowledge article with Retired status
             await resources.enterAdvancedSearchText(articleInRetiredStatus);
@@ -530,7 +492,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInRetiredStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInRetiredStatus)).toEqual(articleInRetiredStatus);
 
             //Search with knowledge article with Closed status
             await resources.enterAdvancedSearchText(articleInClosedStatus);
@@ -538,7 +500,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInClosedStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInClosedStatus)).toEqual(articleInClosedStatus);
 
             //Search with knowledge article with Canceled status
             await resources.enterAdvancedSearchText(articleInCanceledStatus);
@@ -546,9 +508,11 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInCanceledStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInCanceledStatus)).toEqual(articleInCanceledStatus);
             await navigationPage.signOut();
+        });
 
+        it('[DRDMV-19004]:Verify the knowledge articles search based on category tier on Quick case / Create case', async () => {
             //Login with Case Manager
             await loginPage.login(caseManagerUser);
             await navigationPage.gotoQuickCase();
@@ -561,7 +525,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(recommendedKnowledgeStr)).toEqual(articleInDraftStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInDraftStatus)).toEqual(articleInDraftStatus);
 
             //Search with knowledge article with SMEReview status
             await resources.enterAdvancedSearchText(articleInSMEReviewStatus);
@@ -569,7 +533,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(recommendedKnowledgeStr)).toEqual(articleInSMEReviewStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInSMEReviewStatus)).toEqual(articleInSMEReviewStatus);
 
             //Search with knowledge article with Published status
             await resources.enterAdvancedSearchText(articleInPublishedStatus);
@@ -577,7 +541,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(recommendedKnowledgeStr)).toEqual(articleInPublishedStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInPublishedStatus)).toEqual(articleInPublishedStatus);
 
             //Search with knowledge article with Retired status
             await resources.enterAdvancedSearchText(articleInRetiredStatus);
@@ -585,7 +549,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(recommendedKnowledgeStr)).toEqual(articleInRetiredStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInRetiredStatus)).toEqual(articleInRetiredStatus);
 
             //Search with knowledge article with Closed status
             await resources.enterAdvancedSearchText(articleInClosedStatus);
@@ -593,7 +557,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(recommendedKnowledgeStr)).toEqual(articleInClosedStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInClosedStatus)).toEqual(articleInClosedStatus);
 
             //Search with knowledge article with Canceled status
             await resources.enterAdvancedSearchText(articleInCanceledStatus);
@@ -601,8 +565,10 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(recommendedKnowledgeStr)).toEqual(articleInCanceledStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInCanceledStatus)).toEqual(articleInCanceledStatus);
+        });
 
+        it('[DRDMV-19004]:Verify the knowledge articles search based on category tier on Quick case / Create case', async () => {
             //Navigate to Create case
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
@@ -619,7 +585,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInDraftStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInDraftStatus)).toEqual(articleInDraftStatus);
 
             //Search with knowledge article with SMEReview status
             await resources.enterAdvancedSearchText(articleInSMEReviewStatus);
@@ -627,7 +593,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInSMEReviewStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInSMEReviewStatus)).toEqual(articleInSMEReviewStatus);
 
             //Search with knowledge article with Published status
             await resources.enterAdvancedSearchText(articleInPublishedStatus);
@@ -635,7 +601,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInPublishedStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInPublishedStatus)).toEqual(articleInPublishedStatus);
 
             //Search with knowledge article with Retired status
             await resources.enterAdvancedSearchText(articleInRetiredStatus);
@@ -643,7 +609,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInRetiredStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInRetiredStatus)).toEqual(articleInRetiredStatus);
 
             //Search with knowledge article with Closed status
             await resources.enterAdvancedSearchText(articleInClosedStatus);
@@ -651,7 +617,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInClosedStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInClosedStatus)).toEqual(articleInClosedStatus);
 
             //Search with knowledge article with Canceled status
             await resources.enterAdvancedSearchText(articleInCanceledStatus);
@@ -659,9 +625,11 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInCanceledStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInCanceledStatus)).toEqual(articleInCanceledStatus);
             await navigationPage.signOut();
+        });
 
+        it('[DRDMV-19004]:Verify the knowledge articles search based on category tier on Quick case / Create case', async () => {
             //Login with Case Agent
             await loginPage.login(caseAgentUser);
             await navigationPage.gotoQuickCase();
@@ -674,7 +642,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(recommendedKnowledgeStr)).toEqual(articleInDraftStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInDraftStatus)).toEqual(articleInDraftStatus);
 
             //Search with knowledge article with SMEReview status
             await resources.enterAdvancedSearchText(articleInSMEReviewStatus);
@@ -682,7 +650,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(recommendedKnowledgeStr)).toEqual(articleInSMEReviewStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInSMEReviewStatus)).toEqual(articleInSMEReviewStatus);
 
             //Search with knowledge article with Published status
             await resources.enterAdvancedSearchText(articleInPublishedStatus);
@@ -690,7 +658,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(recommendedKnowledgeStr)).toEqual(articleInPublishedStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInPublishedStatus)).toEqual(articleInPublishedStatus);
 
             //Search with knowledge article with Retired status
             await resources.enterAdvancedSearchText(articleInRetiredStatus);
@@ -698,7 +666,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(recommendedKnowledgeStr)).toEqual(articleInRetiredStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInRetiredStatus)).toEqual(articleInRetiredStatus);
 
             //Search with knowledge article with Closed status
             await resources.enterAdvancedSearchText(articleInClosedStatus);
@@ -706,7 +674,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(recommendedKnowledgeStr)).toEqual(articleInClosedStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInClosedStatus)).toEqual(articleInClosedStatus);
 
             //Search with knowledge article with Canceled status
             await resources.enterAdvancedSearchText(articleInCanceledStatus);
@@ -714,8 +682,10 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(recommendedKnowledgeStr)).toEqual(articleInCanceledStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInCanceledStatus)).toEqual(articleInCanceledStatus);
+        });
 
+        it('[DRDMV-19004]:Verify the knowledge articles search based on category tier on Quick case / Create case', async () => {
             //Navigate to Create case
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
@@ -732,7 +702,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInDraftStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInDraftStatus)).toEqual(articleInDraftStatus);
 
             //Search with knowledge article with SMEReview status
             await resources.enterAdvancedSearchText(articleInSMEReviewStatus);
@@ -740,7 +710,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInSMEReviewStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInSMEReviewStatus)).toEqual(articleInSMEReviewStatus);
 
             //Search with knowledge article with Published status
             await resources.enterAdvancedSearchText(articleInPublishedStatus);
@@ -748,7 +718,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInPublishedStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInPublishedStatus)).toEqual(articleInPublishedStatus);
 
             //Search with knowledge article with Retired status
             await resources.enterAdvancedSearchText(articleInRetiredStatus);
@@ -756,7 +726,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInRetiredStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInRetiredStatus)).toEqual(articleInRetiredStatus);
 
             //Search with knowledge article with Closed status
             await resources.enterAdvancedSearchText(articleInClosedStatus);
@@ -764,7 +734,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInClosedStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInClosedStatus)).toEqual(articleInClosedStatus);
 
             //Search with knowledge article with Canceled status
             await resources.enterAdvancedSearchText(articleInCanceledStatus);
@@ -772,19 +742,17 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1, categoryTier1FieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInCanceledStatus);
-        }
-        catch (error) {
-            throw error;
-        }
-        finally {
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInCanceledStatus)).toEqual(articleInCanceledStatus);
+        });
+
+        afterAll(async () => {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await utilityCommon.refresh();
             await utilCommon.waitUntilSpinnerToHide();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
-        }
-    }, 780 * 1000);
+        });
+    });
 
     it('[DRDMV-19005]:Verify the document search based on category tier from attachments', async () => {
         //Create a document library
@@ -826,7 +794,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1ForDocumentLibrary, categoryTier1FieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(documentLibraryStr)).toEqual(title);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(title)).toEqual(title);
             await navigationPage.signOut();
 
             //Login with Case Agent
@@ -846,7 +814,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1ForDocumentLibrary, categoryTier1FieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(documentLibraryStr)).toEqual(title);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(title)).toEqual(title);
             await navigationPage.signOut();
 
             await loginPage.login(caseBAUser);
@@ -864,7 +832,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1ForDocumentLibrary, categoryTier1FieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(documentLibraryStr)).toEqual(title);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(title)).toEqual(title);
         }
         catch (error) {
             throw error;
@@ -876,7 +844,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         }
-    }, 480 * 1000);
+    });
 
     it('[DRDMV-19356,DRDMV-19082]:Verify the domain configurations are honored while selecting category tiers on Knowledge articles and documents library', async () => {
         await foundationData2002('Psilon');
