@@ -348,7 +348,6 @@ describe('Document Library Consume UI', () => {
                     "ownerGroup": "Facilities",
                     "shareExternally": true,
                 }
-
                 await apiHelper.apiLogin('tadmin');
                 await apiHelper.deleteDocumentLibrary(publishDocLibData1.docLibTitle);
                 await apiHelper.apiLogin(caseAgentuserData.userId);
@@ -356,7 +355,6 @@ describe('Document Library Consume UI', () => {
                 let docLib = await apiHelper.createDocumentLibrary(publishDocLibData1, getFilePath1);
                 await apiHelper.publishDocumentLibrary(docLib);
             }
-
             draftDocLibData = {
                 docLibTitle: 'drdmv13507_draft_document',
                 "company": "Petramco",
@@ -364,7 +362,6 @@ describe('Document Library Consume UI', () => {
                 "ownerGroup": "Facilities",
                 "shareExternally": true,
             }
-
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDocumentLibrary(draftDocLibData.docLibTitle);
             await apiHelper.apiLogin(caseAgentuserData.userId);
@@ -419,6 +416,7 @@ describe('Document Library Consume UI', () => {
             expect(await utilityCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is not downloaded.');
         });
         afterAll(async () => {
+            await composeMailPo.clickOnDiscardButton();
             await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
