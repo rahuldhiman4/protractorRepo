@@ -89,9 +89,8 @@ class ActivityTabPage {
 
     async isLockIconDisplayedInActivity(activityNumber: number): Promise<boolean> {
         return await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.lockIcon).isPresent().then(async (result) => {
-            if (result) {
-                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.lockIcon).isDisplayed();
-            } else return false;
+            if (result) return await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.lockIcon).isDisplayed();
+            else return false;
         });
     }
 
@@ -99,19 +98,14 @@ class ActivityTabPage {
         return await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.logTitle).isPresent().then(async (result) => {
             if (result) {
                 let logtitleText = await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.logTitle).getText();
-                if (logtitleText.includes(caseActivityLogTitleText)) {
-                    return true;
-                }
+                return logtitleText.includes(caseActivityLogTitleText);
             }
             else return false;
         });
     }
 
     async isBodyDisplayedInActivity(caseActivityLogTitleText: string, activityNumber: number): Promise<boolean> {
-        return await $$(this.selectors.activityLogList).get(activityNumber - 1).element(by.cssContainingText('.activity__body', caseActivityLogTitleText)).isDisplayed().then(async (result) => {
-            if (result) return true;
-            else return false;
-        });
+        return await $$(this.selectors.activityLogList).get(activityNumber - 1).element(by.cssContainingText('.activity__body', caseActivityLogTitleText)).isDisplayed();
     }
 
     async isAddNoteTextDisplayedInActivity(bodyText: string, activityNumber: number): Promise<boolean> {
@@ -124,72 +118,45 @@ class ActivityTabPage {
     async isLogIconDisplayedInActivity(iconName: string, activityNumber: number): Promise<boolean> {
         switch (iconName) {
             case "note_pencil": {
-                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-note_pencil').isDisplayed().then(async (result) => {
-                    if (result) return true;
-                    else return false;
-                });
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-note_pencil').isDisplayed();
                 break;
             }
 
             case "pencil": {
-                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-pencil').isDisplayed().then(async (result) => {
-                    if (result) return true;
-                    else return false;
-                });
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-pencil').isDisplayed();
                 break;
             }
 
             case "comments": {
-                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-comments').isDisplayed().then(async (result) => {
-                    if (result) return true;
-                    else return false;
-                });
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-comments').isDisplayed();
                 break;
             }
 
             case "unflag": {
-                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-flag_o').isDisplayed().then(async (result) => {
-                    if (result) return true;
-                    else return false;
-                });
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-flag_o').isDisplayed();
                 break;
             }
 
             case "flag": {
-                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-flag').isDisplayed().then(async (result) => {
-                    if (result) return true;
-                    else return false;
-                });
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-flag').isDisplayed();
                 break;
             }
 
             case "filePlus": {
-                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-file_plus_o').isPresent().then(async (result) => {
-                    if (result) return true;
-                    else return false;
-                });
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-file_plus_o').isPresent();
             }
 
             case "arrow_exclamation_circle": {
-                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-list_arrow_exclamation_circle').isPresent().then(async (result) => {
-                    if (result) return true;
-                    else return false;
-                });
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-list_arrow_exclamation_circle').isPresent();
             }
 
             case "squares_arrows": {
-                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-squares_arrows').isPresent().then(async (result) => {
-                    if (result) return true;
-                    else return false;
-                });
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-squares_arrows').isPresent();
                 break;
             }
 
             case "files_change": {
-                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-files_change_o').isPresent().then(async (result) => {
-                    if (result) return true;
-                    else return false;
-                });
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-files_change_o').isPresent();
             }
 
             default: {
@@ -290,10 +257,8 @@ class ActivityTabPage {
 
     async isAttachedFileNameDisplayed(fileName: string): Promise<boolean> {
         return await element(by.cssContainingText(this.selectors.AttachedfileName, fileName)).isPresent().then(async (link) => {
-            if (link) {
-                await element(by.cssContainingText(this.selectors.AttachedfileName, fileName)).isDisplayed();
-                return true;
-            } else return false;
+            if (link) return await element(by.cssContainingText(this.selectors.AttachedfileName, fileName)).isDisplayed();
+            else return false;
         });
     }
 
@@ -631,9 +596,8 @@ class ActivityTabPage {
             let bodyTextActivity = await bodyTextActivityElement[i].getText();
             if (bodyTextActivity.includes(bodyText)) {
                 return await element(by.cssContainingText('.activity__wrapper .collapse-block div a', authorText)).isPresent().then(async (link) => {
-                    if (link) {
-                        return await element(by.cssContainingText('.activity__wrapper .collapse-block div a', authorText)).isDisplayed();
-                    } else return false;
+                    if (link) return await element(by.cssContainingText('.activity__wrapper .collapse-block div a', authorText)).isDisplayed();
+                    else return false;
                 });
             }
         }
@@ -650,9 +614,8 @@ class ActivityTabPage {
 
     async isLinkedTextPresentInBodyOfFirstActivity(value: string): Promise<boolean> {
         return await element(by.cssContainingText('.activity__wrapper .collapse-block div a', value)).isPresent().then(async (link) => {
-            if (link) {
-                return await element(by.cssContainingText('.activity__wrapper .collapse-block div a', value)).isDisplayed();
-            } else return false;
+            if (link) return await element(by.cssContainingText('.activity__wrapper .collapse-block div a', value)).isDisplayed();
+            else return false;
         });
     }
 
@@ -756,10 +719,8 @@ class ActivityTabPage {
 
     async isPublicCheckBoxToolTipIconDisplayed(): Promise<boolean> {
         return await $(this.selectors.addNotePublicCheckBoxToolTip).isPresent().then(async (link) => {
-            if (link) {
-                await $(this.selectors.addNotePublicCheckBoxToolTip).isDisplayed();
-                return true;
-            } else return false;
+            if (link) return await $(this.selectors.addNotePublicCheckBoxToolTip).isDisplayed();
+            else return false;
         });
     }
 
@@ -823,49 +784,43 @@ class ActivityTabPage {
 
     async isCkEditorDisplayed(): Promise<boolean> {
         return await $(this.selectors.activityNoteTextArea).isPresent().then(async (link) => {
-            if (link) {
-                return await $(this.selectors.activityNoteTextArea).isDisplayed();
-            } else return false;
+            if (link) return await $(this.selectors.activityNoteTextArea).isDisplayed();
+            else return false;
         });
     }
 
     async isBoldTextDisplayedInCkEditorTextArea(bodyText: string): Promise<boolean> {
         return element(by.cssContainingText(this.selectors.boldTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
-            if (link) {
-                return element(by.cssContainingText(this.selectors.boldTextCkEditorTextArea, bodyText)).isDisplayed();
-            } else return false;
+            if (link) return element(by.cssContainingText(this.selectors.boldTextCkEditorTextArea, bodyText)).isDisplayed();
+            else return false;
         });
     }
 
     async isItalicTextDisplayedInCkEditorTextArea(bodyText: string): Promise<boolean> {
         return element(by.cssContainingText(this.selectors.italicTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
-            if (link) {
-                return element(by.cssContainingText(this.selectors.italicTextCkEditorTextArea, bodyText)).isDisplayed();
-            } else return false;
+            if (link) return element(by.cssContainingText(this.selectors.italicTextCkEditorTextArea, bodyText)).isDisplayed();
+            else return false;
         });
     }
 
     async isUnderlineTextDisplayedInCkEditorTextArea(bodyText: string): Promise<boolean> {
         return element(by.cssContainingText(this.selectors.underlineTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
-            if (link) {
-                return element(by.cssContainingText(this.selectors.underlineTextCkEditorTextArea, bodyText)).isDisplayed();
-            } else return false;
+            if (link) return element(by.cssContainingText(this.selectors.underlineTextCkEditorTextArea, bodyText)).isDisplayed();
+            else return false;
         });
     }
 
     async isColorTextDisplayedInCkEditorTextArea(colorCode: string, bodyText: string): Promise<boolean> {
         return await $(`.cke_enable_context_menu span[style="${colorCode}"]`).isPresent().then(async (link) => {
-            if (link) {
-                return element(by.cssContainingText(this.selectors.colorTextCkEditorTextArea, bodyText)).isDisplayed();
-            } else return false;
+            if (link) return element(by.cssContainingText(this.selectors.colorTextCkEditorTextArea, bodyText)).isDisplayed();
+            else return false;
         });
     }
 
     async isTextLeftAlignInCkEditorTextArea(bodyText: string): Promise<boolean> {
         return element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
-            if (link) {
-                return element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, bodyText)).isDisplayed();
-            } else return false;
+            if (link) return element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, bodyText)).isDisplayed();
+            else return false;
         });
     }
 
@@ -893,25 +848,22 @@ class ActivityTabPage {
 
     async isNumberListDisplayedInCkEditorTextArea(bodyText: string): Promise<boolean> {
         return element(by.cssContainingText(this.selectors.numberListCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
-            if (link) {
-                return element(by.cssContainingText(this.selectors.numberListCkEditorTextArea, bodyText)).isDisplayed();
-            } else return false;
+            if (link) return element(by.cssContainingText(this.selectors.numberListCkEditorTextArea, bodyText)).isDisplayed();
+            else return false;
         });
     }
 
     async isBulletListDisplayedInCkEditorTextArea(bodyText: string): Promise<boolean> {
         return element(by.cssContainingText(this.selectors.bulletListTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
-            if (link) {
-                return element(by.cssContainingText(this.selectors.bulletListTextCkEditorTextArea, bodyText)).isDisplayed();
-            } else return false;
+            if (link) return element(by.cssContainingText(this.selectors.bulletListTextCkEditorTextArea, bodyText)).isDisplayed();
+            else return false;
         });
     }
 
     async isLinkDisplayedInCkEditorTextArea(bodyText: string): Promise<boolean> {
         return element(by.cssContainingText(this.selectors.linkTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
-            if (link) {
-                return element(by.cssContainingText(this.selectors.linkTextCkEditorTextArea, bodyText)).isDisplayed();
-            } else return false;
+            if (link) return element(by.cssContainingText(this.selectors.linkTextCkEditorTextArea, bodyText)).isDisplayed();
+            else return false;
         });
     }
 
@@ -987,9 +939,7 @@ class ActivityTabPage {
         return await $$(this.selectors.activityLogBody).get(activityNumber - 1).$(`a[href="${httpHyperlink}"]`).isPresent().then(async (link) => {
             if (link) {
                 let getTextlink = await $$(this.selectors.activityLogBody).get(activityNumber - 1).$(`a[href="${httpHyperlink}"]`).getText();
-                if (getTextlink.trim().includes(linkText)) {
-                    return true;
-                }
+                return getTextlink.trim().includes(linkText);
             } else return false;
         });
     }
@@ -998,9 +948,7 @@ class ActivityTabPage {
         return await $$(this.selectors.activityNoteTextArea).get(activityNumber - 1).$('a').isPresent().then(async (link) => {
             if (link) {
                 let getTextNotesTemplate = await $$(this.selectors.activityNoteTextArea).get(activityNumber - 1).$$('p').first().getText();
-                if (getTextNotesTemplate.trim().includes(notesTemplateText)) {
-                    return true;
-                }
+                return getTextNotesTemplate.trim().includes(notesTemplateText)
             } else return false;
         });
     }

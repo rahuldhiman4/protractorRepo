@@ -92,9 +92,8 @@ class ArticleTemplateStyle {
 
     async isSectionTitlePresent(sectionTitleText: string): Promise<boolean> {
         return await element(by.cssContainingText(this.selectors.sectionTitle, sectionTitleText)).isPresent().then(async (link) => {
-            if (link) {
-                return await element(by.cssContainingText(this.selectors.sectionTitle, sectionTitleText)).isDisplayed();
-            } return false;
+            if (link) return await element(by.cssContainingText(this.selectors.sectionTitle, sectionTitleText)).isDisplayed();
+            else return false;
         });
     }
 

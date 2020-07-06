@@ -94,12 +94,14 @@ class CaseAccessTab {
     async isSupportGroupWriteAccessDisplayed(supportGroupText: string): Promise<boolean> {
         return await element(by.xpath(`//*[@aria-label="${supportGroupText}"]//../span[contains(@class,'d-icon-pencil')]`)).isPresent().then(async (result) => {
             if (result) return await element(by.xpath(`//*[@aria-label="${supportGroupText}"]//../span[contains(@class,'d-icon-pencil')]`)).isDisplayed();
+            else return false;
         });
     }
 
     async isSupportGroupReadAccessDisplayed(supportGroupText: string): Promise<boolean> {
         return await element(by.xpath(`//*[@aria-label="${supportGroupText}"]//../span[contains(@class,'d-icon-eye')]`)).isPresent().then(async (result) => {
             if (result) return await element(by.xpath(`//*[@aria-label="${supportGroupText}"]//../span[contains(@class,'d-icon-eye')]`)).isDisplayed();
+            else return false;
         });
     }
 }

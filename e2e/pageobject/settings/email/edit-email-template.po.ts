@@ -199,10 +199,8 @@ class CreateEmailTemplateBlade {
 
     async isAttachedFileNameDisplayed(fileName: string): Promise<boolean> {
         return await element(by.cssContainingText(this.selectors.AttachedfileName, fileName)).isPresent().then(async (link) => {
-            if (link) {
-                await element(by.cssContainingText(this.selectors.AttachedfileName, fileName)).isDisplayed();
-                return true;
-            } else return false;
+            if (link) return await element(by.cssContainingText(this.selectors.AttachedfileName, fileName)).isDisplayed();
+            else return false;
         });
     }
 }

@@ -101,9 +101,8 @@ class ApprovalsConsole {
 
     async isCreateNewApprovalFlowPopUpDisplayed(): Promise<boolean> {
         return await $(this.selectors.createNewApprovalFlowPopUp).isPresent().then(async (link) => {
-            if (link) {
-                return await $(this.selectors.createNewApprovalFlowPopUp).isDisplayed();
-            } else return false;
+            if (link) return await $(this.selectors.createNewApprovalFlowPopUp).isDisplayed();
+            else return false;
         });
     }
 
@@ -140,9 +139,7 @@ class ApprovalsConsole {
         await element(by.cssContainingText(this.selectors.expressionValueOptions, expressionOption)).click();
 
         await element(by.cssContainingText(this.selectors.expressionValueOptions, expressionOption)).getAttribute('aria-expanded').then(async (result) => {
-            if (result) {
-                await element(by.cssContainingText(this.selectors.expressionValueOptionSelector, expressionValueOption)).click();
-            }
+            if (result) await element(by.cssContainingText(this.selectors.expressionValueOptionSelector, expressionValueOption)).click();
         });
     }
 

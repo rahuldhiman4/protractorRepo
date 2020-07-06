@@ -148,6 +148,7 @@ class EditTaskTemplate {
     async isMangeDynamicFieldLinkDisplayed(): Promise<boolean> {
         return await $(this.selectors.mangeDynamicField).isPresent().then(async (present) => {
             if (present) return await $(this.selectors.mangeDynamicField).isDisplayed();
+            else return false;
         });
     }
 

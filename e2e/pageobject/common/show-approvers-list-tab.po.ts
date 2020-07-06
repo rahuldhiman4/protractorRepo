@@ -39,9 +39,8 @@ class ShowApproversBlade {
 
     async isShowApproversBladeDisplayed(): Promise<boolean> {
         return await $(this.selectors.showApproversBlade).isPresent().then(async (link) => {
-            if (link) {
-                return await $(this.selectors.showApproversBlade).isDisplayed();
-            } else return false;
+            if (link) return await $(this.selectors.showApproversBlade).isDisplayed();
+            else return false;
         });
     }
 
@@ -153,8 +152,8 @@ class ShowApproversBlade {
         return await $(this.selectors.awaitingApproverIconActivity).isDisplayed();
     }
 
-    async getClosedApprovalStatusLabelFromActivity(approvalStatus:string): Promise<string> {
-        return await element(by.cssContainingText(this.selectors.closedApproverLabelActivity,approvalStatus)).getText();
+    async getClosedApprovalStatusLabelFromActivity(approvalStatus: string): Promise<string> {
+        return await element(by.cssContainingText(this.selectors.closedApproverLabelActivity, approvalStatus)).getText();
     }
 
     async isClosedApproverIconDisplayedFromActivity(): Promise<boolean> {

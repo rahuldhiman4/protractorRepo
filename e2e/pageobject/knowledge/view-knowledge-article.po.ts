@@ -113,9 +113,8 @@ class ViewKnowledgePage {
 
     async isEditLinkDisplayedOnKA(): Promise<boolean> {
         return await $(this.selectors.editLinkOnKA).isPresent().then(async (link) => {
-            if (link) {
-                return await $(this.selectors.editLinkOnKA).isDisplayed();
-            }
+            if (link) return await $(this.selectors.editLinkOnKA).isDisplayed();
+            else return false;
         });
     }
 
@@ -385,6 +384,7 @@ class ViewKnowledgePage {
     async isAttachedFileNamePresent(fileName: string): Promise<boolean> {
         return await element(by.cssContainingText(this.selectors.attachmentName, fileName)).isPresent().then(async (result) => {
             if (result) return await element(by.cssContainingText(this.selectors.attachmentName, fileName)).isDisplayed();
+            else return false;
         });
     }
 
@@ -413,6 +413,7 @@ class ViewKnowledgePage {
     async isApprovalButtonsPresent(buttonText: string): Promise<boolean> {
         return await element(by.cssContainingText(this.selectors.approvalButtons, buttonText)).isPresent().then(async (result) => {
             if (result) return await element(by.cssContainingText(this.selectors.approvalButtons, buttonText)).isDisplayed();
+            else return false;
         });
     }
 
