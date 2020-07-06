@@ -320,6 +320,13 @@ export class GridOperations {
         else await $(this.selectors.refreshIcon).click();
     }
 
+    async isEntireColumnContainsSameValue(columnHeader: string, value: string, guid?: string): Promise<boolean> {
+        let allValues: string[] = undefined;
+        guid ? allValues = await this.getAllValuesFromColumn(columnHeader, guid): allValues = await this.getAllValuesFromColumn(columnHeader);
+        const allEqual = arr => arr.every( v => v === arr[0] )
+        return allEqual( allValues ) && allValues[0] === value;
+    }
+
 }
 
 
