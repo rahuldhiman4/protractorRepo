@@ -23,6 +23,7 @@ class AttachDocumentBlade {
     async isDocumentInfoDisplayed(documentInfo: string): Promise<boolean> {
         return await $(this.selectors.documentSearchResults + ` [title="${documentInfo}"]`).isPresent().then(async (present) => {
             if (present) return await $(this.selectors.documentSearchResults + ` [title="${documentInfo}"]`).isDisplayed();
+            else return false;
         });
     }
 

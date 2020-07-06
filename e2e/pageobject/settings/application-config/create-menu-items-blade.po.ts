@@ -56,9 +56,8 @@ class CreateNewMenuOptionPage {
 
     async isToggleButtonDisplayed(): Promise<boolean> {
         return await $(this.selectors.toggleButtonCheckIcon).isPresent().then(async (result) => {
-            if (result){
-                return await $(this.selectors.toggleButtonCheckIcon).isDisplayed();
-            } else return false;
+            if (result) return await $(this.selectors.toggleButtonCheckIcon).isDisplayed();
+            else return false;
         });
     }
 
@@ -89,17 +88,15 @@ class CreateNewMenuOptionPage {
 
     async isSaveButtonDisplayed(): Promise<boolean> {
         return await $(this.selectors.saveButton).isPresent().then(async (result) => {
-            if (result) {
-                return await $(this.selectors.saveButton).isDisplayed();
-            } else return false;
+            if (result) return await $(this.selectors.saveButton).isDisplayed();
+            else return false;
         });
     }
 
     async isCancelButtonDisplayed(): Promise<boolean> {
         return await $(this.selectors.cancelButton).isPresent().then(async (result) => {
-            if (result) {
-                return await $(this.selectors.cancelButton).isDisplayed();
-            } else return false;
+            if (result) return await $(this.selectors.cancelButton).isDisplayed();
+            else return false;
         });
     }
 

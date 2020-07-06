@@ -124,11 +124,8 @@ class DynamicField {
 
     async isDynamicFieldPresentInDynamicSection(value: string): Promise<boolean> {
         return await $(`.rx-record-grid-column-editor__available-list-inner span[title=${value}]`).isPresent().then(async (result) => {
-            if (result) {
-                return await $(`.rx-record-grid-column-editor__available-list-inner span[title=${value}]`).isDisplayed();
-            } else {
-                return false;
-            }
+            if (result) return await $(`.rx-record-grid-column-editor__available-list-inner span[title=${value}]`).isDisplayed();
+            else return false;
         });
     }
 

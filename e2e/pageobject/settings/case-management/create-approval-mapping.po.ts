@@ -175,9 +175,8 @@ class CreateApprovalMapping {
 
     async isSaveApprovalMappingBtnEnabled(): Promise<boolean> {
         return await $(this.selectors.saveButton).isPresent().then(async (result) => {
-            if (result) {
-                return await $(this.selectors.saveButton).getAttribute("disabled") == "disabled";
-            } else return false;
+            if (result) return await $(this.selectors.saveButton).getAttribute("disabled") == "disabled";
+            else return false;
         });
     }
 

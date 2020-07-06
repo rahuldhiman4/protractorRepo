@@ -91,8 +91,8 @@ class CreateCaseTemplate {
     }
 
     async setStatusReasonValue(StatusReasonValue: string): Promise<void> {
-        await $('[rx-view-component-id="ffcb232a-0ef2-4e6f-9fc1-5d75c1576fd1"] label').isPresent().then(async(present)=>{
-            if(present) await utilCommon.selectDropDown('ffcb232a-0ef2-4e6f-9fc1-5d75c1576fd1', StatusReasonValue);
+        await $('[rx-view-component-id="ffcb232a-0ef2-4e6f-9fc1-5d75c1576fd1"] label').isPresent().then(async (present) => {
+            if (present) await utilCommon.selectDropDown('ffcb232a-0ef2-4e6f-9fc1-5d75c1576fd1', StatusReasonValue);
             else await utilCommon.selectDropDown(this.selectors.statusReason, StatusReasonValue);
         });
     }
@@ -175,8 +175,8 @@ class CreateCaseTemplate {
         await $(this.selectors.caseSummary).sendKeys(caseSummaryValue);
     }
 
-     
-    async updateDescription(caseDescription:string):Promise<void>{
+
+    async updateDescription(caseDescription: string): Promise<void> {
         await $(this.selectors.ckEditor).isPresent().then(async (result) => {
             if (result) {
                 await browser.wait(this.EC.elementToBeClickable($(this.selectors.ckEditorTextArea)), 3000).then(async () => {
@@ -184,7 +184,7 @@ class CreateCaseTemplate {
                 });
             }
         });
-    } 
+    }
 
     async setCaseDescription(caseDescription: string): Promise<void> {
         await utilCommon.setCKEditor(caseDescription, this.selectors.caseDescriptionGuid);

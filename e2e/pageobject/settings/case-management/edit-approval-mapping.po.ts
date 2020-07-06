@@ -135,9 +135,8 @@ class EditApprovalMapping {
 
     async isSaveApprovalMappingBtnEnabled(): Promise<boolean> {
         return await $(this.selectors.saveButton).isPresent().then(async (result) => {
-            if (result) {
-                return await $(this.selectors.saveButton).getAttribute("disabled") == "disabled";
-            } else return false;
+            if (result) return await $(this.selectors.saveButton).getAttribute("disabled") == "disabled";
+            else return false;
         });
     }
 
@@ -173,17 +172,15 @@ class EditApprovalMapping {
 
     async isSelectCaseTemplateforApprovalRightArrawBtnEnabled(): Promise<boolean> {
         return await $(this.selectors.selectCaseTemplateBtn).isPresent().then(async (result) => {
-            if (result) {
-                return await $(this.selectors.selectCaseTemplateBtn).getAttribute("disabled") == "disabled";
-            } else return false;
+            if (result) return await $(this.selectors.selectCaseTemplateBtn).getAttribute("disabled") == "disabled";
+            else return false;
         });
     }
 
     async isSelectCaseTemplateforApprovalLeftArrawBtnEnabled(): Promise<boolean> {
         return await $(this.selectors.deselectCaseTemplateBtn).isPresent().then(async (result) => {
-            if (result) {
-                return await $(this.selectors.deselectCaseTemplateBtn).getAttribute("disabled") == "disabled";
-            } else return false;
+            if (result) return await $(this.selectors.deselectCaseTemplateBtn).getAttribute("disabled") == "disabled";
+            else return false;
         });
     }
 
@@ -205,17 +202,15 @@ class EditApprovalMapping {
 
     async isSearchedCaseTemplateDisplayed():Promise<boolean>{
         return await $$(this.selectors.caseTemplateSelectionArea).first().$(this.selectors.searchedCaseTemplateText).isPresent().then(async (result) => {
-            if (result) {
-                return await $$(this.selectors.caseTemplateSelectionArea).first().$(this.selectors.searchedCaseTemplateText).isDisplayed();
-            } else return false;
+            if (result) return await $$(this.selectors.caseTemplateSelectionArea).first().$(this.selectors.searchedCaseTemplateText).isDisplayed();
+            else return false;
         });
     }
 
     async isSearchedAssociatedCaseTemplateDisplayed():Promise<boolean>{
         return await $$(this.selectors.caseTemplateSelectionArea).last().$(this.selectors.searchedCaseTemplateText).isPresent().then(async (result) => {
-            if (result) {
-                return await $$(this.selectors.caseTemplateSelectionArea).last().$(this.selectors.searchedCaseTemplateText).isDisplayed();
-            } else return false;
+            if (result) return await $$(this.selectors.caseTemplateSelectionArea).last().$(this.selectors.searchedCaseTemplateText).isDisplayed();
+            else return false;
         });
     }
 
