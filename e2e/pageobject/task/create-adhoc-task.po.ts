@@ -43,6 +43,10 @@ class CreateAdhocTaskTemplatePage {
         await utilityCommon.setCKEditor(description, this.selectors.descriptionGuid);
     }
 
+    async updateTaskDescription(description:string):Promise<void>{
+        await utilityCommon.updateCKEditor(description, this.selectors.descriptionGuid);
+    }
+
     async setSummary(summary: string): Promise<void> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.taskSummary)));
         await $(this.selectors.taskSummary).sendKeys(summary);
