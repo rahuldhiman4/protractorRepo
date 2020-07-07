@@ -113,15 +113,15 @@ export class Resources {
     }
 
     async isRecommendedKnowledgePresent(knowledgeTitle: string): Promise<boolean> {
-        return this.isResourcePresent(knowledgeTitle);
+        return await this.isResourcePresent(knowledgeTitle);
     }
 
     async isRecommendedTemplatePresent(caseTemplateName: string): Promise<boolean> {
-        return this.isResourcePresent(caseTemplateName);
+        return await this.isResourcePresent(caseTemplateName);
     }
 
     async isRecommendedCasePresent(caseSummary: string): Promise<boolean> {
-        return this.isResourcePresent(caseSummary);
+        return await this.isResourcePresent(caseSummary);
     }
 
     async isResourcePresent(resourceName: string): Promise<boolean> {

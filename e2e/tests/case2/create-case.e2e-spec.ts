@@ -711,7 +711,7 @@ describe("Create Case", () => {
             await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
             //Create Case
             await navigationPage.gotoCreateCase();
-            await createCasePage.selectRequester('adam');
+            await createCasePage.selectRequester('Glit');
             await createCasePage.setSummary('Summary');
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();

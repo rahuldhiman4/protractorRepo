@@ -54,9 +54,13 @@ describe("Quick Case", () => {
         }
         await apiHelper.apiLogin('tadmin');
         await apiHelper.createNewUser(userData1);
+        await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
         await apiHelper.createNewUser(userData2);
+        await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
         await apiHelper.createNewUser(userData3);
+        await apiHelper.associatePersonToCompany(userData3.userId, "Petramco");
         await apiHelper.createNewUser(userData4);
+        await apiHelper.associatePersonToCompany(userData4.userId, "Petramco");
     });
 
     afterAll(async () => {

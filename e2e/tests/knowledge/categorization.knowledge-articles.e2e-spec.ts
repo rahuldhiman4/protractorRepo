@@ -91,6 +91,8 @@ describe('Knowledge Articles - Categorization Tests', () => {
             "assigneeSupportGroup": "GB Support 1",
             "assignee": "KMills"
         }
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteKnowledgeApprovalMapping();
 
         await apiHelper.apiLogin(knowledgePublisherUser);
         // Create article in in progress status
@@ -573,7 +575,8 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary(articleInDraftStatus);
-            await createCasePage.clickAssignToMeButton();
+            await createCasePage.clickChangeAssignmentButton();
+            await changeAssignmentBlade.setAssignee('Petramco', 'Canada Support', 'CA Support 1', 'Qiang Du');
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Resources');
@@ -746,6 +749,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
         });
 
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await utilityCommon.refresh();
             await utilCommon.waitUntilSpinnerToHide();
