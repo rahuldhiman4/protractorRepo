@@ -5,16 +5,16 @@ import utilCommon from '../../../utils/util.common';
 export class EditEmailConfig {
     selectors = {
         selectTab: '[rx-view-component-id="024c3dd3-089e-4b4f-b28c-cf4abca6ebc7"] li a',
-        availableExclusionSubjectsCheckbox:'.km-group-list-item__icon-container i',
+        availableExclusionSubjectsCheckbox: '.km-group-list-item__icon-container i',
         newExclusiveSubjects: '[rx-view-component-id="1b6dd9a4-78f9-40c4-8b4b-42d85782cb1c"] button',
         newAvailableGlobalSubjects: '[rx-view-component-id="f9002d64-77ec-4a52-9786-1e1a75dfbe8c"] button',
         editEmailConfigGuid: '777cfc71-16a2-4c51-96a5-92c0f974155e',
         removeExclusiveSubject: '[rx-view-component-id="3e830938-202e-40a3-87f6-647c25ac7f7b"] button',
         editExclusiveSubject: '[rx-view-component-id="22c22bf8-34aa-4c38-aa73-8a14bee53380"] button',
         exclusiveSubjectGuid: '75ef6a19-343a-4387-a1d3-144ef4fdf110',
-        searchAvailableExclusionsSubjectInAssociatePublicExclusionSubjects: '[class="source-list-spacing col-left"] input[rx-id="search-source-text-input"]',
+        searchAvailableEntitiesTextBox: '[class="source-list-spacing col-left"] input[rx-id="search-source-text-input"]',
         listAvailableExclusionsSubjectInAssociatePublicExclusionSubjects: '[class="source-list-spacing col-left"] .km-group-list-item__info',
-        searchAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects: '[class="col-left association-list-spacing"] input[rx-id="search-source-text-input"]',
+        searchAssociatedEntitiesToBeRemoveTextBox: '[class="col-left association-list-spacing"] input[rx-id="search-source-text-input"]',
         listAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects: '[class="col-left association-list-spacing"] .km-group-list-item__info',
         cancelEditEmailConfig: '[rx-view-component-id="bf51aff6-d0a3-484a-bed1-e11a78971aee"] button',
         closedAssociatePublicExclusionSubjects: '[rx-view-component-id="71177700-7a94-435f-b594-24ae7bc4e22b"] button',
@@ -45,12 +45,15 @@ export class EditEmailConfig {
     }
 
     async getSupportGroupFromSupportGroupListInAssociatedSupportGroupTab(): Promise<string> {
-        return await $(this.selectors.associatedSupportGroupSearchResult).getText();
+        return await $(this.selectors.associatedSupportGroupSearchResult).isPresent().then(async (present) => {
+            if (present) return await $(this.selectors.associatedSupportGroupSearchResult).getText();
+            else return null;
+        });
     }
 
     async getAssociatedSupportGroupFromAssociatedSupportGroupListInAssociatedSupportGroupTab(): Promise<string> {
         return await $(this.selectors.associatedSupportGroupValueassociatedSupportGroup).isPresent().then(async (present) => {
-            if(present) return await $(this.selectors.associatedSupportGroupValueassociatedSupportGroup).getText();
+            if (present) return await $(this.selectors.associatedSupportGroupValueassociatedSupportGroup).getText();
             else return null;
         });
     }
@@ -95,18 +98,18 @@ export class EditEmailConfig {
         return await $(this.selectors.saveEditEmailConfig).isEnabled();
     }
 
-    async searchAvailableExclusionsSubjectInAssociatePublicExclusionSubjects(searchvalue: string): Promise<void> {
-        await $(this.selectors.searchAvailableExclusionsSubjectInAssociatePublicExclusionSubjects).clear();
-        await $(this.selectors.searchAvailableExclusionsSubjectInAssociatePublicExclusionSubjects).sendKeys(searchvalue);
+    async searchAvailableEntitiesToBeAssociated(searchvalue: string): Promise<void> {
+        await $(this.selectors.searchAvailableEntitiesTextBox).clear();
+        await $(this.selectors.searchAvailableEntitiesTextBox).sendKeys(searchvalue);
     }
 
     async isValueAvailableExclusionsSubjectInAssociatePublicExclusionSubjectsPresent(searchvalue: string): Promise<boolean> {
         return await element(by.cssContainingText(this.selectors.listAvailableExclusionsSubjectInAssociatePublicExclusionSubjects, searchvalue)).isPresent();
     }
 
-    async searchAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects(searchvalue: string): Promise<void> {
-        await $(this.selectors.searchAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects).clear();
-        await $(this.selectors.searchAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects).sendKeys(searchvalue);
+    async searchAssociatedEntitiesToBeRemoveAssociation(searchvalue: string): Promise<void> {
+        await $(this.selectors.searchAssociatedEntitiesToBeRemoveTextBox).clear();
+        await $(this.selectors.searchAssociatedEntitiesToBeRemoveTextBox).sendKeys(searchvalue);
     }
 
     async isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent(searchvalue: string): Promise<boolean> {

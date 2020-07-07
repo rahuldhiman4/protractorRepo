@@ -77,12 +77,14 @@ class UpdateStatus {
     async isChangeStatusFieldPresent(): Promise<boolean> {
         return await $(`[rx-view-component-id="${this.selectors.caseStatusDropDownGuid}"] button`).isPresent().then(async (present) => {
             if (present) return $(`[rx-view-component-id="${this.selectors.caseStatusDropDownGuid}"] button`).isDisplayed();
+            else return false;
         });
     }
 
     async isStatusReasonFieldPresent(): Promise<boolean> {
         return await $(this.selectors.caseStatusReasonDropDown).isPresent().then(async (present) => {
             if (present) return await $(this.selectors.caseStatusReasonDropDown).isDisplayed();
+            else return false;
         });
     }
 
@@ -93,6 +95,7 @@ class UpdateStatus {
     async isCancelUpdateStatusButtonPresent(): Promise<boolean> {
         return await $(this.selectors.cancelUpdateStatus).isPresent().then(async (present) => {
             if (present) return await $(this.selectors.cancelUpdateStatus).isDisplayed();
+            else return false;
         });
     }
 

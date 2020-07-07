@@ -9,7 +9,7 @@ export class Resources {
         advancedSearchSettingsBtnClose: 'button.opened-advance-search-option',
         advancedSearchResult: 'div.sr-search-result-components .bwf-search-fields__title-text',
         headingName: '.km-group__header span',
-        smartSearchResult: 'bwf-smart-recorder-results h1',
+        smartSearchResult: '.sr-search-result-components h2',
         advancedSearchButton: 'span.d-icon-search',
         backButton: 'span.d-icon-angle_left',
         knowledgeTitle: '[rx-view-component-id="aacf8477-f930-4983-820d-1b9fa12441c0"] div.bwf-search-fields__title-text',
@@ -127,17 +127,15 @@ export class Resources {
     async isResourcePresent(resourceName: string): Promise<boolean> {
         // need to wait until spinner to hide (three dots)
         return await $(`[title="${resourceName}"]`).isPresent().then(async (link) => {
-            if (link) {
-                return await $(`[title="${resourceName}"]`).isDisplayed();
-            } else return false;
+            if (link) return await $(`[title="${resourceName}"]`).isDisplayed();
+            else return false;
         });
     }
 
     async isFilterAvailable(filterText: string): Promise<boolean> {
         return await element(by.cssContainingText(this.selectors.advancedSearchFields, filterText)).isPresent().then(async (link) => {
-            if (link) {
-                return await element(by.cssContainingText(this.selectors.advancedSearchFields, filterText)).isDisplayed();
-            } else return false;
+            if (link) return await element(by.cssContainingText(this.selectors.advancedSearchFields, filterText)).isDisplayed();
+            else return false;
         });
     }
 
@@ -169,9 +167,8 @@ export class Resources {
 
     async isFirstPinnedArticleDisplayed(): Promise<boolean> {
         return await $('adapt-icon[class="search-item__pin-icon"]').isPresent().then(async (link) => {
-            if (link) {
-                return await $('adapt-icon[class="search-item__pin-icon"]').isDisplayed();
-            }
+            if (link) return await $('adapt-icon[class="search-item__pin-icon"]').isDisplayed();
+            else return false;
         });
     }
 

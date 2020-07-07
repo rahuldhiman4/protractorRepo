@@ -9,8 +9,8 @@ class EditKnowledgeSet {
 
     async isApplicationNameListed(applicationName: string): Promise<boolean> {
         return await element(by.cssContainingText(this.selectors.listedApplicationNames, applicationName)).isPresent().then(async (result) => {
-            if (result)
-                return await element(by.cssContainingText(this.selectors.listedApplicationNames, applicationName)).isDisplayed();
+            if (result) return await element(by.cssContainingText(this.selectors.listedApplicationNames, applicationName)).isDisplayed();
+            else return false;
         });
     }
 

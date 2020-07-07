@@ -49,6 +49,7 @@ describe("Notification Template", () => {
             await editNotificationTemplate.clickOnCancelButton();
             //Validate if the new copied template is created
             await utilGrid.clickCheckBoxOfValueInGrid("Task SLA Missed");
+            await utilGrid.clearFilter();
             expect(await utilGrid.isGridRecordPresent(notificationTemplateName)).toBeTruthy("Notification template not copied");
         });
         afterAll(async () => {

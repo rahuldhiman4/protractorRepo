@@ -476,6 +476,7 @@ class ViewCasePage {
     async isApprovalButtonsPresent(buttonText: string): Promise<boolean> {
         return await element(by.cssContainingText(this.selectors.approvalButtons, buttonText)).isPresent().then(async (result) => {
             if (result) return await element(by.cssContainingText(this.selectors.approvalButtons, buttonText)).isDisplayed();
+            else return false;
         });
     }
 

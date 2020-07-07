@@ -50,6 +50,7 @@ describe("Compose Email", () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qtao");
         await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteAllEmailConfiguration();
         emailGuid = await apiHelper.createEmailConfiguration();
         incomingGUID = await emailGuid.incomingMailGUID;
         outgoingGUID = await emailGuid.outGoingMailGUID;
