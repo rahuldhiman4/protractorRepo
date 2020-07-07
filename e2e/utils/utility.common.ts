@@ -27,7 +27,7 @@ export class Utility {
         meridiemClock: '.a3t-clock--control-item',
         okDateTimePicker: '.btn-primary',
         clearDateTimePicker: '.btn-secondary',
-        ckEditor: 'bwf-rich-text-editor[style="display: block;"], .activity-feed-note-text-container',
+        ckEditor: 'bwf-rich-text-editor[style="display: block;"], .activity-feed-note-text-container,.doc-editor',
         ckEditorTextArea: '.cke_enable_context_menu',
     }
 
