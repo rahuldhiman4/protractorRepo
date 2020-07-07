@@ -36,7 +36,6 @@ describe('Knowledge Article', () => {
         await loginPage.login('peter');
         await foundationData('Petramco');
         await foundationData19501('Petramco');
-        await foundationData19082('Petramco');
     });
 
     afterAll(async () => {
@@ -138,10 +137,10 @@ describe('Knowledge Article', () => {
     });
 
     it('[DRDMV-19080]: On Edit KA, Change Assignment blade should process properly ', async () => {
-        let businessData = businessDataFile['BusinessUnitData19082'];
-        let departmentData = departmentDataFile['DepartmentData19082'];
-        let suppGrpData = supportGrpDataFile['SuppGrpData19082'];
-        let personData = personDataFile['PersonData19082'];
+        let businessData = businessDataFile['BusinessUnitData'];
+        let departmentData = departmentDataFile['DepartmentData'];
+        let suppGrpData = supportGrpDataFile['SuppGrpData'];
+        let personData = personDataFile['PersonData'];
         let knowledgeDataFile = require("../../data/ui/knowledge/knowledgeArticle.ui.json")
         let knowledgeData = knowledgeDataFile['DRDMV-19080'];
         await navigationPage.gotoCreateKnowledge();
@@ -285,24 +284,6 @@ describe('Knowledge Article', () => {
             await loginPage.login('peter');
         }
     });
-
-    async function foundationData19082(company: string) {
-        await apiHelper.apiLogin('tadmin');
-        let businessData = (businessDataFile['BusinessUnitData19082']);
-        let departmentData = departmentDataFile['DepartmentData19082'];
-        let suppGrpData = supportGrpDataFile['SuppGrpData19082'];
-        let personData = personDataFile['PersonData19082'];
-        let orgId = await apiCoreUtil.getOrganizationGuid(company);
-        businessData.relatedOrgId = orgId;
-        let businessUnitId = await apiHelper.createBusinessUnit(businessData);
-        departmentData.relatedOrgId = businessUnitId;
-        let depId = await apiHelper.createDepartment(departmentData);
-        suppGrpData.relatedOrgId = depId;
-        await apiHelper.createSupportGroup(suppGrpData);
-        await apiHelper.createNewUser(personData);
-        await apiHelper.associatePersonToSupportGroup(personData.userId, suppGrpData.orgName);
-        await apiHelper.associatePersonToCompany(personData.userId, company)
-    }
 
     it('[DRDMV-799,DRDMV-788]: [KM-BWF integration] [Knowledge Article] Mandatory fields of the Create Knowledge Article view', async () => {
         try {
@@ -494,6 +475,7 @@ describe('Knowledge Article', () => {
             expect(await reviewCommentsPo.isTellUsMoreDisplayed()).toBeTruthy('Tell us more not present');
             await reviewCommentsPo.setTextInTellUsMore(knowledgeTitile);
             await reviewCommentsPo.clickApprovedButton();
+            await utilityCommon.closePopUpMessage();
             await utilityCommon.closePopUpMessage();
             expect(await viewKnowledgeArticlePo.getStatusValue()).toContain('Published', 'value is not matched with status')
             await viewKnowledgeArticlePo.clickOnTab('Activity');
