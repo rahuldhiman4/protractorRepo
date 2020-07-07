@@ -5,10 +5,10 @@ import imagePropertiesPo from '../../../pageobject/settings/common/image-propert
 class CKEValidation {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        boldText: '.rx-description-textarea-read strong , .bwf-description-read-state em',
-        italicText: '.rx-description-textarea-read em , .bwf-description-read-state em',
-        underLineText: '.rx-description-textarea-read u , .bwf-description-read-state u',
-        linkText: '.rx-description-textarea-read div a , .bwf-description-read-state div a',
+        boldText: '.rx-description-textarea-read strong, .bwf-description-read-state strong',
+        italicText: '.rx-description-textarea-read em, .bwf-description-read-state em',
+        underLineText: '.rx-description-textarea-read u, .bwf-description-read-state u',
+        linkText: '.rx-description-textarea-read div a, .bwf-description-read-state div a',
         descriptionView: '.rx-description-textarea-read, .bwf-description-read-state'
     }
 
@@ -17,19 +17,24 @@ class CKEValidation {
         return text.includes(value);
     }
 
+    async getTableCellAlignText(alignValue:string):Promise<string>{
+        let locator=`table td[style="${alignValue}"]`;
+        return await $(locator).getText();
+    }
+
     async isFormatedTextDisplayed(value: string, tagName: string, guid?: string): Promise<boolean> {
-        let locator = await $(this.selectors.descriptionView).$(` ${tagName}`);
-        if (guid) locator = `[rx-view-component-id="${guid}"] .bwf-description-read-state ${tagName}`;
-        let text = await $(locator).getText();
+        let descriptionView = `${this.selectors.descriptionView} ${tagName}`;
+        if (guid) descriptionView = `[rx-view-component-id="${guid}"] ${this.selectors.descriptionView} ${tagName}`;
+        let text = await $(descriptionView).getText();
         return text.includes(value);
     }
 
     async clickLinkInCKE(linkValue: string, guid?: string): Promise<void> {
-        let locator = await $(this.selectors.descriptionView).$(`a[href="${linkValue}"`);
+        let descriptionViewLink = `a[href="http://${linkValue}"]`;
         if (guid) {
-            locator = await $[`rx-view-component-id="${guid}"`].$(this.selectors.descriptionView).$(`a[href="${linkValue}"`);
+            descriptionViewLink = `[rx-view-component-id="${guid}"] ${this.selectors.descriptionView} a[href="http://${linkValue}"]`;
         }
-        await $(locator).click();
+        await $(descriptionViewLink).click();
     }
 
     async getColorFontStyleOfText(value: string): Promise<string> {
@@ -59,6 +64,7 @@ class CKEValidation {
     }
 
     async isTitleDisplayed(title: string): Promise<boolean> {
+        await browser.sleep(1000);
         let text = await browser.getTitle();
         return text.includes(title);
     }
