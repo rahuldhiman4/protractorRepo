@@ -509,9 +509,9 @@ describe('Email Task', () => {
         await emailPo.clickOnSendButton();
     });
 
-    it('[DRDMV-19555]: In Case of Reply/Reply All  if we select new Email template then previous contents should not be erased.', async () => {
+    it('[DRDMV-19555]: In Case of Reply/Reply All if we select new Email template then previous contents should not be erased.', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        await apiHelper.apiLogin('tadmin');
+        await apiHelper.apiLogin('fritz');
         let emailTemplateData = require('../../data/ui/email/email.template.api.json');
         let emailTemplateName: string = await emailTemplateData['emailTemplateWithMandatoryField'].TemplateName + randomStr;
         emailTemplateData['emailTemplateWithMandatoryField'].TemplateName = emailTemplateName;
@@ -551,7 +551,6 @@ describe('Email Task', () => {
             "Support Group": "US Support 3",
             "Assignee": "Qadim Katawazi"
         }
-        await apiHelper.apiLogin('fritz');
         await apiHelper.createManualTaskTemplate(templateData);
         await apiHelper.createExternalTaskTemplate(externaltemplateData);
         let newCaseTemplate = await apiHelper.createCase(caseData);

@@ -1,4 +1,4 @@
-import { $, $$, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, protractor, ProtractorExpectedConditions, browser } from "protractor";
 
 class TableProperties {
 
@@ -11,7 +11,7 @@ class TableProperties {
     }
 
     async getTableParentElementIndex(): Promise<number> {
-        let i = 0;
+        let i: number = 0;
         let elementsCount = await $$('.cke_dialog_body .cke_dialog_title').count();
         for (i = 0; i < elementsCount; i++) {
             let actualText = await $$('.cke_dialog_body .cke_dialog_title').get(i).getText();

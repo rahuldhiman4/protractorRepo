@@ -1,4 +1,5 @@
 import { $, protractor, ProtractorExpectedConditions, $$, element, by, browser } from "protractor";
+import utilCommon from '../../../utils/util.common';
 class EditNotificationTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
@@ -12,11 +13,16 @@ class EditNotificationTemplate {
         selectAlertSubjectCheckbox: '[rx-view-component-id="2c84ca97-2ff6-4325-ae14-3f2ed0c556ac"] .ui-grid-selection-row-header-buttons',
         editCheckbox: 'button.d-icon-left-pencil',
         clickableField: 'div.cke_contents.cke_reset span',
-        cancelAlertMessageTextButton: '[rx-view-component-id="780514cc-7344-44a5-88af-5af509619ab0"] button'
+        cancelAlertMessageTextButton: '[rx-view-component-id="780514cc-7344-44a5-88af-5af509619ab0"] button',
+        DefaultNotificationMethodGuid: "911e28fd-89bb-4ee0-bea9-1d22e48f1134"
     }
 
     async selectCheckBoxOfBody(): Promise<void> {
         await $$(this.selectors.selectCheckBoxEmailTab).get(1).click();
+    }
+
+    async selectDefaultNotificationMethod(notification: string): Promise<void> {
+        await utilCommon.selectDropDown(this.selectors.DefaultNotificationMethodGuid, notification);
     }
 
     async clickOnCancelButton(): Promise<void> {
