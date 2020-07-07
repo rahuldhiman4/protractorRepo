@@ -100,6 +100,10 @@ export const OUTGOINGEMAIL_DEFAULT = {
         "18217": {
             "id": 18217,
             "value": "Temp"
+        },
+        "18221": {
+            "id": 18221,
+            "value": 0
         }
     }
 };

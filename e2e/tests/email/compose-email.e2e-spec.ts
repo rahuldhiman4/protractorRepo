@@ -665,6 +665,7 @@ describe("Compose Email", () => {
             await consoleNotificationTemplatePo.clickCopyTemplate();
             await copyNotificationTemplatePo.setCompanyValue('Petramco');
             await copyNotificationTemplatePo.clickOnCreateCopyButton();
+            await editNotificationTemplatePo.selectDefaultNotificationMethod('Email');
             await editNotificationTemplatePo.clickOnEmailTab();
             await editNotificationTemplatePo.selectCheckBoxOfBody();
             await editNotificationTemplatePo.clickOnEditButtonOfEmailTab();
@@ -733,18 +734,18 @@ describe("Compose Email", () => {
             await utilityCommon.closePopUpMessage();
             let subject = `Fritz Schulz changed the status of ${newCase.displayId} to In Progress`;
             console.log("Subject of the email: ", subject);
-            await browser.sleep(15000); // hardwait to appear email message in "AR System Email Messages"
+            await browser.sleep(8000); // hardwait to appear email message in "AR System Email Messages"
             await apiHelper.apiLogin('tadmin');
             let body = await apiHelper.getHTMLBodyOfEmail(subject);
             console.log('body:', body);
             //color span
             await expect(body.includes('<td><span style="color:#3498db;">SettingColor</span></td>')).toBeTruthy('Color is not available');
             //table width size attaribute
-            await expect(body.includes('<table summary="NotiFicationT" border="1" cellspacing="1" cellpadding="1" style="height: 200px; width: 500px;">')).toBeTruthy('Table properties not displayed');
+            await expect(body.includes('<table summary="NotiFicationT" border="1" cellspacing="1" cellpadding="1" style="height:200px;width:500px;">')).toBeTruthy('Table properties not displayed');
             //image
             await expect(body.includes('<a target="_blank">Google</a>')).toBeTruthy('link tag is not displaying');
             //font 
-            await expect(body.includes('<td><span style="font-size:20px;">SettingFontSize</span></td>')).toBeTruthy('Font Size is not present');
+            await expect(body.includes('<td><span style="font-size:18px;">SettingFontSize</span></td>')).toBeTruthy('Font Size is not present');
             //right allign
             await expect(body.includes('<td style="text-align: right;">FirstRightAlign</td>')).toBeTruthy('Right Alignment is not present');
             //center align
@@ -974,7 +975,7 @@ describe("Compose Email", () => {
         let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase, emailTemplateName, emailDescription, emailSubject;
         beforeAll(async () => {
-            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.apiLogin('fritz');
             emailTemplateName = await emailTemplateData['emailTemplateWithMandatoryField'].TemplateName + randomString;
             emailDescription = await emailTemplateData['emailTemplateWithMandatoryField'].Description + randomString;
             emailSubject = await emailTemplateData['emailTemplateWithMandatoryField'].EmailMessageSubject + randomString;
@@ -1066,7 +1067,7 @@ describe("Compose Email", () => {
         let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase, emailTemplateName, emailSubject, emailDescription;
         beforeAll(async () => {
-            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.apiLogin('fritz');
             emailTemplateName = await emailTemplateData['emailTemplateWithMandatoryField'].TemplateName + randomString;
             emailDescription = await emailTemplateData['emailTemplateWithMandatoryField'].Description + randomString;
             emailSubject = await emailTemplateData['emailTemplateWithMandatoryField'].EmailMessageSubject + randomString;
