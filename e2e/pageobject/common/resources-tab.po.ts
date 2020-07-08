@@ -96,9 +96,8 @@ export class Resources {
     }
 
     async getAdvancedSearchResultForParticularSection(headingType: string): Promise<string> {
-        //await browser.wait(this.EC.elementToBeClickable($(this.selectors.advancedSearchResult)));
-        const searchResult = await element(by.xpath(`//*[contains(@title,"${headingType}")]/..//*[contains(@class,"bwf-search-fields__title-text")]`));
-        return await searchResult.getText();
+        await browser.wait(this.EC.visibilityOf(element(by.cssContainingText('div.bwf-search-fields__title-text span', headingType))), 5000);
+        return await element(by.cssContainingText('div.bwf-search-fields__title-text span', headingType)).getText();
     }
 
     async getCountOfHeading(headerName: string): Promise<string> {
