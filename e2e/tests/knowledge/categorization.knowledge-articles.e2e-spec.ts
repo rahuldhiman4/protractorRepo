@@ -87,8 +87,8 @@ describe('Knowledge Articles - Categorization Tests', () => {
             "assignee": "KMills"
         }
         await apiHelper.apiLogin('tadmin');
-       await foundationData2002('Psilon');
-       await apiHelper.deleteKnowledgeApprovalMapping();
+        await foundationData2002('Psilon');
+        await apiHelper.deleteKnowledgeApprovalMapping();
 
         await apiHelper.apiLogin(knowledgePublisherUser);
         // Create article in in progress status
@@ -745,9 +745,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
 
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
-            await utilityCommon.refresh();
-            await utilCommon.waitUntilSpinnerToHide();
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });
@@ -762,6 +760,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             "Support Group": "Facilities",
             "Assignee": "Frieda",
         }
+        let title = `Document-${new Date().valueOf()}`;
 
         it('[DRDMV-19005]:Verify the document search based on category tier from attachments', async () => {
             //Create a document library
@@ -770,7 +769,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows'))
                 .toEqual('Document Library Console - Business Workflows');
-            let title = `Document-${new Date().valueOf()}`;
+            
             title = "DRDMV-19005Case " + title;
             await createDocumentLibraryPage.openAddNewDocumentBlade();
             await createDocumentLibraryPage.addAttachment(filePath);
@@ -785,12 +784,18 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await documentLibraryConsolePage.searchAndOpenDocumentLibrary(title);
             await editDocumentLibraryPage.selectStatus(documentLibraryStatus);
             await editDocumentLibraryPage.clickOnSaveButton();
-
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+            await navigationPage.signOut();
+        });
+
+        it('[DRDMV-19005]:Verify the document search based on category tier from attachments', async () => {
+            //Login with Case Manager
+            await loginPage.login('frieda');
             await apiHelper.apiLogin('fritz');
-            let response3 = await apiHelper.createCase(caseData);
+
+            let response1 = await apiHelper.createCase(caseData);
             await utilityGrid.clearFilter();
-            await utilityGrid.searchAndOpenHyperlink(response3.displayId);
+            await utilityGrid.searchAndOpenHyperlink(response1.displayId);
             await viewCasePage.clickEditCaseButton();
             await editCasePage.clickOnAttachLink();
             await resources.clickOnAdvancedSearchOptions();
@@ -805,13 +810,12 @@ describe('Knowledge Articles - Categorization Tests', () => {
         });
 
         it('[DRDMV-19005]:Verify the document search based on category tier from attachments', async () => {
-            //Login with Case Manager
-            await loginPage.login('frieda');
+            //Login with Case Agent
+            await loginPage.login('fabian');
             await apiHelper.apiLogin('fritz');
-
-            let response1 = await apiHelper.createCase(caseData);
+            let response2 = await apiHelper.createCase(caseData);
             await utilityGrid.clearFilter();
-            await utilityGrid.searchAndOpenHyperlink(response1.displayId);
+            await utilityGrid.searchAndOpenHyperlink(response2.displayId);
             await viewCasePage.clickEditCaseButton();
             await editCasePage.clickOnAttachLink();
 
@@ -824,13 +828,15 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await expect(await resources.getAdvancedSearchResultForParticularSection(title)).toEqual(title);
             await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
+        });
 
-            //Login with Case Agent
-            await loginPage.login('fabian');
+        it('[DRDMV-19005]:Verify the document search based on category tier from attachments', async () => {
+            //Login with Case BA
+            await loginPage.login('fritz');
             await apiHelper.apiLogin('fritz');
-            let response2 = await apiHelper.createCase(caseData);
+            let response3 = await apiHelper.createCase(caseData);
             await utilityGrid.clearFilter();
-            await utilityGrid.searchAndOpenHyperlink(response2.displayId);
+            await utilityGrid.searchAndOpenHyperlink(response3.displayId);
             await viewCasePage.clickEditCaseButton();
             await editCasePage.clickOnAttachLink();
 
@@ -851,8 +857,6 @@ describe('Knowledge Articles - Categorization Tests', () => {
     });
 
     it('[DRDMV-19356,DRDMV-19082]:Verify the domain configurations are honored while selecting category tiers on Knowledge articles and documents library', async () => {
-        
-        let knowledgeDataFile = require("../../data/ui/knowledge/knowledgeArticle.ui.json");
         let knowledgeSetTitleStr = 'versionedKnowledgeSet_' + randomStr;
         let knowledgeSetData = {
             knowledgeSetTitle: `${knowledgeSetTitleStr}`,
@@ -893,7 +897,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
-            expect(await editKnowledgePage.getCategoryTier1SelectedValue(categoryTier1FieldVal)).toBe(categoryTier1FieldVal);
+            expect(await editKnowledgePage.getCategoryTier1SelectedValue()).toBe(categoryTier1FieldVal);
         }
         catch (error) {
             throw error;

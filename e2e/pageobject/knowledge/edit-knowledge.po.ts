@@ -196,8 +196,8 @@ class EditKnowledgePage {
         return await $(this.selectors.reviewPendingBtn).isDisplayed();
     }
 
-    async getCategoryTier1SelectedValue(fieldName: string): Promise<string> {
-        return await utilCommon.getSelectedFieldValue(fieldName);
+    async getCategoryTier1SelectedValue(): Promise<string> {
+        return await utilityCommon.getSelectedFieldValue('2e629e99-f2fa-48a2-910b-0652a6bf032f');
     }
 
     async getRegionSelectedValue(fieldName: string): Promise<string> {
