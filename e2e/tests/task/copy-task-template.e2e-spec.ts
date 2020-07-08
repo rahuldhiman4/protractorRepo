@@ -233,10 +233,8 @@ describe('Copy Task Template', () => {
     it('[DRDMV-14217,DRDMV-13737]: Copy of Automated task template created across company and no new Process is created', async () => {
         try {
             const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            await apiHelper.apiLogin('tadmin');
             //let automationTaskTemplate = 'DRDMV14217Automationtask' + randomStr;
             let newAutomationTaskTemplate = 'NewAutomationtaskDRDMV14217' + randomStr;
-            let newAutomationTaskProcess = 'NewProcessDRDMV14217' + randomStr;
             let templateData = {
                 "templateName": 'DRDMV14217Automationtask' + randomStr,
                 "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
@@ -266,7 +264,7 @@ describe('Copy Task Template', () => {
             await utilCommon.clickOnWarningOk();
             await utilCommon.clickOnBackArrow();
             await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
-            expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.bmc.dsm.case-lib:' + newAutomationTaskProcess);
+            expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.bmc.dsm.case-lib:' + templateData.processName);
         } catch (e) {
             throw e;
         } finally {
