@@ -1966,6 +1966,7 @@ class ApiHelper {
 
         let updateTaskStatus = await apiCoreUtil.updateRecordInstance("com.bmc.dsm.task-lib:Task", taskGuid, UPDATE_TASK_STATUS);
         await browser.sleep(1000); // hardwait to reflect updated status
+        console.log(`Update task status to ${status} API status is ${updateTaskStatus.status}`);
         return updateTaskStatus.status;
     }
 
