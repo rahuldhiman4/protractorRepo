@@ -953,7 +953,7 @@ describe('Dynamic data', () => {
             await viewTaskPo.clickOnEditTask();
             await editTaskPo.setDynamicFieldValue('temp', 'sssssss');
             await editTaskPo.setDynamicFieldValue('temp1', 'eee');
-            await editTaskPo.setDateValueInDynamicField('wrong date');
+            await editTaskPo.setDateValueInDynamicField('eee');
             await editTaskPo.clickOnAssignToMe();
             await editCasePo.clickSaveCase();
             expect(await utilityCommon.getDialoguePopupMessage()).toBe("The dynamic field contains invalid data that will not be saved. Do you want to proceed?");
