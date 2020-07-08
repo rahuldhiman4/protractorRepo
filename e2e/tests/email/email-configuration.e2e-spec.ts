@@ -190,8 +190,6 @@ describe('Email Configuration', () => {
     describe('[DRDMV-10410,DRDMV-10418,DRDMV-10428,DRDMV-10433,DRDMV-10434,DRDMV-10435,DRDMV-10415]: Support Group: Associate Support group tab in Email Configuration.', async () => {
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteAllEmailConfiguration();
-            await apiHelper.createEmailConfiguration();
             await apiHelper.createEmailConfiguration(INCOMINGMAIL_COMPANY_ONE, OUTGOINGEMAIL_COMPANY_ONE, EMAILCONFIG_COMPANY_ONE);
             await apiHelper.createEmailConfiguration(INCOMINGMAIL_COMPANY_PSILON, OUTGOINGEMAIL_COMPANY_PSILON, EMAILCONFIG_COMPANY_PSILON);
         });
