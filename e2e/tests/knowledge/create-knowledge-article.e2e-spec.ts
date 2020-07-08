@@ -314,133 +314,7 @@ describe('Knowledge Article', () => {
             await loginPage.login('peter');
         }
     });//, 170 * 1000);
-
-    it('[DRDMV-3542]: [Post Comments] Post Feedback on knowledge article', async () => {
-        try {
-            let knowledgeTitile = 'knowledge3542' + randomStr;
-            await apiHelper.apiLogin(knowledgeCandidateUser);
-            let articleData = {
-                "knowledgeSet": "HR",
-                "title": `${knowledgeTitile}`,
-                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-                "assignedCompany": "Petramco",
-                "assigneeBusinessUnit": "United Kingdom Support",
-                "assigneeSupportGroup": "US Support 1",
-                "assignee": "kayo"
-            }
-            let KADetails = await apiHelper.createKnowledgeArticle(articleData);
-            let displayID = KADetails.displayId;
-            await navigationPage.signOut();
-            await loginPage.login(knowledgeCandidateUser);
-            await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilityCommon.switchToNewTab(1);
-            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilityGrid.clearFilter();
-            await utilityGrid.searchAndOpenHyperlink(displayID);
-            await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
-            expect(await feedbackBladeKnowledgeArticlePo.isTellUsMoreDisplayedWithReuqired()).toContain('required', 'required not present with comment box');
-            expect(await feedbackBladeKnowledgeArticlePo.isSaveButtonDisplayed()).toBeTruthy('Save button not present');
-            expect(await feedbackBladeKnowledgeArticlePo.isCancelButtonDisplayed()).toBeTruthy('Cancel button not present');
-            expect(await feedbackBladeKnowledgeArticlePo.isFlagDisplayed()).toBeTruthy('Flag button not present');
-            expect(await feedbackBladeKnowledgeArticlePo.isSaveButtonEnabled()).toBeFalsy('save button is enabled');
-            await feedbackBladeKnowledgeArticlePo.clickCancelButtonOnFeedBack();
-            await utilityCommon.clickOnApplicationWarningYesNoButton("No");
-            await feedbackBladeKnowledgeArticlePo.clickCancelButtonOnFeedBack();
-            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
-            expect(await viewKnowledgeArticlePo.isKAUsefulYesButtonDisplayed()).toBeTruthy('Yes button is displayed');
-            await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
-            await feedbackBladeKnowledgeArticlePo.setTextInTellUsMore(knowledgeTitile);
-            await feedbackBladeKnowledgeArticlePo.clickOnSaveButtonOnFeedBack();
-            await viewKnowledgeArticlePo.clickOnTab('Activity');
-            await activityTabPo.clickOnRefreshButton();
-            expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitile, 'content not displaying on Activity');
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
-            await navigationPage.signOut();
-            //login with contributor
-            await loginPage.login(knowledgeContributorUser);
-            await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilityCommon.switchToNewTab(1);
-            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilityGrid.clearFilter();
-            await utilityGrid.searchAndOpenHyperlink(displayID);
-            await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
-            expect(await feedbackBladeKnowledgeArticlePo.isTellUsMoreDisplayedWithReuqired()).toContain('required', 'required not present with comment box');
-            expect(await feedbackBladeKnowledgeArticlePo.isSaveButtonDisplayed()).toBeTruthy('Save button not present');
-            expect(await feedbackBladeKnowledgeArticlePo.isCancelButtonDisplayed()).toBeTruthy('Cancel button not present');
-            expect(await feedbackBladeKnowledgeArticlePo.isFlagDisplayed()).toBeTruthy('Flag button not present');
-            expect(await feedbackBladeKnowledgeArticlePo.isSaveButtonEnabled()).toBeFalsy('save button is enabled');
-            await feedbackBladeKnowledgeArticlePo.clickCancelButtonOnFeedBack();
-            await utilityCommon.clickOnApplicationWarningYesNoButton("No");
-            await feedbackBladeKnowledgeArticlePo.clickCancelButtonOnFeedBack();
-            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
-            expect(await viewKnowledgeArticlePo.isKAUsefulYesButtonDisplayed()).toBeTruthy('Yes button is displayed');
-            await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
-            await feedbackBladeKnowledgeArticlePo.setTextInTellUsMore(knowledgeTitile);
-            await feedbackBladeKnowledgeArticlePo.clickOnSaveButtonOnFeedBack();
-            await viewKnowledgeArticlePo.clickOnTab('Activity');
-            await activityTabPo.clickOnRefreshButton();
-            expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitile, 'content not displaying on Activity');
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
-            await navigationPage.signOut();
-            //login with publisher
-            await loginPage.login(knowledgePublisherUser);
-            await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilityCommon.switchToNewTab(1);
-            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilityGrid.clearFilter();
-            await utilityGrid.searchAndOpenHyperlink(displayID);
-            await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
-            expect(await feedbackBladeKnowledgeArticlePo.isTellUsMoreDisplayedWithReuqired()).toContain('required', 'required not present with comment box');
-            expect(await feedbackBladeKnowledgeArticlePo.isSaveButtonDisplayed()).toBeTruthy('Save button not present');
-            expect(await feedbackBladeKnowledgeArticlePo.isCancelButtonDisplayed()).toBeTruthy('Cancel button not present');
-            expect(await feedbackBladeKnowledgeArticlePo.isFlagDisplayed()).toBeTruthy('Flag button not present');
-            expect(await feedbackBladeKnowledgeArticlePo.isSaveButtonEnabled()).toBeFalsy('save button is enabled');
-            await feedbackBladeKnowledgeArticlePo.clickCancelButtonOnFeedBack();
-            await utilityCommon.clickOnApplicationWarningYesNoButton("No");
-            await feedbackBladeKnowledgeArticlePo.clickCancelButtonOnFeedBack();
-            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
-            expect(await viewKnowledgeArticlePo.isKAUsefulYesButtonDisplayed()).toBeTruthy('Yes button is displayed');
-            await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
-            await feedbackBladeKnowledgeArticlePo.setTextInTellUsMore(knowledgeTitile);
-            await feedbackBladeKnowledgeArticlePo.clickOnSaveButtonOnFeedBack();
-            await viewKnowledgeArticlePo.clickOnTab('Activity');
-            await activityTabPo.clickOnRefreshButton();
-            expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitile, 'content not displaying on Activity');
-            await navigationPage.signOut();
-            //login with publisher
-            await loginPage.login(knowledgeCoachUser);
-            await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilityCommon.switchToNewTab(1);
-            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilityGrid.clearFilter();
-            await utilityGrid.searchAndOpenHyperlink(displayID);
-            await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
-            expect(await feedbackBladeKnowledgeArticlePo.isTellUsMoreDisplayedWithReuqired()).toContain('required', 'required not present with comment box');
-            expect(await feedbackBladeKnowledgeArticlePo.isSaveButtonDisplayed()).toBeTruthy('Save button not present');
-            expect(await feedbackBladeKnowledgeArticlePo.isCancelButtonDisplayed()).toBeTruthy('Cancel button not present');
-            expect(await feedbackBladeKnowledgeArticlePo.isFlagDisplayed()).toBeTruthy('Flag button not present');
-            expect(await feedbackBladeKnowledgeArticlePo.isSaveButtonEnabled()).toBeFalsy('save button is enabled');
-            await feedbackBladeKnowledgeArticlePo.clickCancelButtonOnFeedBack();
-            await utilityCommon.clickOnApplicationWarningYesNoButton("No");
-            await feedbackBladeKnowledgeArticlePo.clickCancelButtonOnFeedBack();
-            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
-            expect(await viewKnowledgeArticlePo.isKAUsefulYesButtonDisplayed()).toBeTruthy('Yes button is displayed');
-            await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
-            await feedbackBladeKnowledgeArticlePo.setTextInTellUsMore(knowledgeTitile);
-            await feedbackBladeKnowledgeArticlePo.clickOnSaveButtonOnFeedBack();
-            await viewKnowledgeArticlePo.clickOnTab('Activity');
-            await activityTabPo.clickOnRefreshButton();
-            expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitile, 'content not displaying on Activity');
-        }
-        catch (e) {
-            throw e;
-        }
-        finally {
-            await navigationPage.signOut();
-            await loginPage.login('peter');
-        }
-    }, 400 * 1000);
-
+   
     it('[DRDMV-5058]: Review article in SME Review status & Approve article', async () => {
         try {
             let knowledgeTitile = 'knowledge5058' + randomStr;
@@ -859,6 +733,128 @@ describe('Knowledge Article', () => {
             await editKnowledgePage.setClosedKnowledgeStatus('Closed');
             await utilityCommon.closePopUpMessage();
             expect(await editKnowledgePage.getStatusValue()).toContain('Closed', 'Status not Set');
+        });
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('peter');
+        });
+    });
+
+    describe('[DRDMV-3542]: [Post Comments] Post Feedback on knowledge article', async () => {
+        let displayID,knowledgeTitile;
+        beforeAll(async () => {
+            knowledgeTitile = 'knowledge3542' + randomStr;
+            await apiHelper.apiLogin(knowledgeCandidateUser);
+            let articleData = {
+                "knowledgeSet": "HR",
+                "title": `${knowledgeTitile}`,
+                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "United Kingdom Support",
+                "assigneeSupportGroup": "US Support 1",
+                "assignee": "kayo"
+            }
+            let KADetails = await apiHelper.createKnowledgeArticle(articleData);
+            displayID = KADetails.displayId;
+        });
+        it('[DRDMV-3542]: [Post Comments] Post Feedback on knowledge article', async () => {
+            await navigationPage.signOut();
+            await loginPage.login(knowledgeCandidateUser);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
+            await utilityCommon.switchToNewTab(1);
+            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(displayID);
+            await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
+            expect(await feedbackBladeKnowledgeArticlePo.isTellUsMoreDisplayedWithReuqired()).toContain('required', 'required not present with comment box');
+            expect(await feedbackBladeKnowledgeArticlePo.isSaveButtonDisplayed()).toBeTruthy('Save button not present');
+            expect(await feedbackBladeKnowledgeArticlePo.isCancelButtonDisplayed()).toBeTruthy('Cancel button not present');
+            expect(await feedbackBladeKnowledgeArticlePo.isFlagDisplayed()).toBeTruthy('Flag button not present');
+            expect(await feedbackBladeKnowledgeArticlePo.isSaveButtonEnabled()).toBeFalsy('save button is enabled');
+            await feedbackBladeKnowledgeArticlePo.clickCancelButtonOnFeedBack();
+            expect(await viewKnowledgeArticlePo.isKAUsefulYesButtonDisplayed()).toBeTruthy('Yes button is displayed');
+            await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
+            await feedbackBladeKnowledgeArticlePo.setTextInTellUsMore(knowledgeTitile);
+            await feedbackBladeKnowledgeArticlePo.clickOnSaveButtonOnFeedBack();
+            await utilityCommon.closePopUpMessage();
+            await viewKnowledgeArticlePo.clickOnTab('Activity');
+            await activityTabPo.clickOnRefreshButton();
+            expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitile, 'content not displaying on Activity');
+        });
+        it('[DRDMV-3542]: [Post Comments] Post Feedback on knowledge article', async () => {
+            await navigationPage.signOut();
+            //login with contributor
+            await loginPage.login(knowledgeContributorUser);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
+            await utilityCommon.switchToNewTab(1);
+            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(displayID);
+            await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
+            expect(await feedbackBladeKnowledgeArticlePo.isTellUsMoreDisplayedWithReuqired()).toContain('required', 'required not present with comment box');
+            expect(await feedbackBladeKnowledgeArticlePo.isSaveButtonDisplayed()).toBeTruthy('Save button not present');
+            expect(await feedbackBladeKnowledgeArticlePo.isCancelButtonDisplayed()).toBeTruthy('Cancel button not present');
+            expect(await feedbackBladeKnowledgeArticlePo.isFlagDisplayed()).toBeTruthy('Flag button not present');
+            expect(await feedbackBladeKnowledgeArticlePo.isSaveButtonEnabled()).toBeFalsy('save button is enabled');
+            await feedbackBladeKnowledgeArticlePo.clickCancelButtonOnFeedBack();
+            expect(await viewKnowledgeArticlePo.isKAUsefulYesButtonDisplayed()).toBeTruthy('Yes button is displayed');
+            await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
+            await feedbackBladeKnowledgeArticlePo.setTextInTellUsMore(knowledgeTitile);
+            await feedbackBladeKnowledgeArticlePo.clickOnSaveButtonOnFeedBack();
+            await utilityCommon.closePopUpMessage();
+            await viewKnowledgeArticlePo.clickOnTab('Activity');
+            await activityTabPo.clickOnRefreshButton();
+            expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitile, 'content not displaying on Activity');
+        }); 
+        it('[DRDMV-3542]: [Post Comments] Post Feedback on knowledge article', async () => {
+            await navigationPage.signOut();
+            //login with publisher
+            await loginPage.login(knowledgePublisherUser);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
+            await utilityCommon.switchToNewTab(1);
+            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(displayID);
+            await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
+            expect(await feedbackBladeKnowledgeArticlePo.isTellUsMoreDisplayedWithReuqired()).toContain('required', 'required not present with comment box');
+            expect(await feedbackBladeKnowledgeArticlePo.isSaveButtonDisplayed()).toBeTruthy('Save button not present');
+            expect(await feedbackBladeKnowledgeArticlePo.isCancelButtonDisplayed()).toBeTruthy('Cancel button not present');
+            expect(await feedbackBladeKnowledgeArticlePo.isFlagDisplayed()).toBeTruthy('Flag button not present');
+            expect(await feedbackBladeKnowledgeArticlePo.isSaveButtonEnabled()).toBeFalsy('save button is enabled');
+            await feedbackBladeKnowledgeArticlePo.clickCancelButtonOnFeedBack();
+            expect(await viewKnowledgeArticlePo.isKAUsefulYesButtonDisplayed()).toBeTruthy('Yes button is displayed');
+            await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
+            await feedbackBladeKnowledgeArticlePo.setTextInTellUsMore(knowledgeTitile);
+            await feedbackBladeKnowledgeArticlePo.clickOnSaveButtonOnFeedBack();
+            await utilityCommon.closePopUpMessage();
+            await viewKnowledgeArticlePo.clickOnTab('Activity');
+            await activityTabPo.clickOnRefreshButton();
+            expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitile, 'content not displaying on Activity');
+        });
+        it('[DRDMV-3542]: [Post Comments] Post Feedback on knowledge article', async () => {
+            await navigationPage.signOut();
+            //login with publisher
+            await loginPage.login(knowledgeCoachUser);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
+            await utilityCommon.switchToNewTab(1);
+            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(displayID);
+            await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
+            expect(await feedbackBladeKnowledgeArticlePo.isTellUsMoreDisplayedWithReuqired()).toContain('required', 'required not present with comment box');
+            expect(await feedbackBladeKnowledgeArticlePo.isSaveButtonDisplayed()).toBeTruthy('Save button not present');
+            expect(await feedbackBladeKnowledgeArticlePo.isCancelButtonDisplayed()).toBeTruthy('Cancel button not present');
+            expect(await feedbackBladeKnowledgeArticlePo.isFlagDisplayed()).toBeTruthy('Flag button not present');
+            expect(await feedbackBladeKnowledgeArticlePo.isSaveButtonEnabled()).toBeFalsy('save button is enabled');
+            await feedbackBladeKnowledgeArticlePo.clickCancelButtonOnFeedBack();
+            expect(await viewKnowledgeArticlePo.isKAUsefulYesButtonDisplayed()).toBeTruthy('Yes button is displayed');
+            await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
+            await feedbackBladeKnowledgeArticlePo.setTextInTellUsMore(knowledgeTitile);
+            await feedbackBladeKnowledgeArticlePo.clickOnSaveButtonOnFeedBack();
+            await utilityCommon.closePopUpMessage();
+            await viewKnowledgeArticlePo.clickOnTab('Activity');
+            await activityTabPo.clickOnRefreshButton();
+            expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitile, 'content not displaying on Activity');
         });
         afterAll(async () => {
             await navigationPage.signOut();
