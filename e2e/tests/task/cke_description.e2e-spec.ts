@@ -178,7 +178,7 @@ describe('CKE Description', () => {
             await ckeditorOpsPo.setDataInTable(2, 2, randomString, 'tableSummary');
             await ckeditorOpsPo.clickInTableCell(1, 2, 'tableSummary');
             await ckeditorOpsPo.clickOnRightAlignIcon();
-            await ckeditorOpsPo.setDataInTable(2, 2, randomString, 'tableSummary');
+            await ckeditorOpsPo.setDataInTable(1, 2, randomString, 'tableSummary');
             await createCaseTemplate.setPriorityValue(caseTemplateAllFields.casePriority);
             await createCaseTemplate.setBusinessUnitDropdownValue(caseTemplateAllFields.ownerBusinessUnit);
             await createCaseTemplate.setOwnerGroupDropdownValue(caseTemplateAllFields.ownerGroup);

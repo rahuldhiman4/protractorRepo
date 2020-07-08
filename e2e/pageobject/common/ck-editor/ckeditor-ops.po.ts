@@ -143,6 +143,7 @@ class CKEditor {
     async clickOnCenterAlignIcon(guidId?: string): Promise<void> {
         if (guidId) await $(`[rx-view-component-id="${guidId}"] ` + this.selectors.centerAlignIcon).click();
         else await $(this.selectors.centerAlignIcon).click();
+        await browser.sleep(1000);
     }
 
     async selectColor(colorValue: string, guidId?: string): Promise<void> {
