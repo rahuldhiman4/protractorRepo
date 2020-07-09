@@ -1516,21 +1516,6 @@ class ApiHelper {
         };
     }
 
-    async createNewDomainTag(domainTag: string): Promise<IIDs> {
-        let domainTagFile = await require('../data/api/foundation/domain.tag.api.json');
-        let domainTagData = await domainTagFile.createDomainTag;
-        domainTagData.fieldInstances[8].value = domainTag;
-        let domainTagResponse: AxiosResponse = await coreApi.createRecordInstance(domainTagData);
-        console.log('Create Domain Tag API Status =============>', domainTagResponse.status);
-        const domainTagDetails = await axios.get(
-            await domainTagResponse.headers.location
-        );
-        return {
-            id: domainTagDetails.data.id,
-            displayId: domainTagDetails.data.displayId
-        };
-    }
-
     async enableDomainTag(category: string): Promise<boolean> {
         let domainTagFile = await require('../data/api/foundation/domain.tag.api.json');
         let domainTagData = await domainTagFile.enableDomainTag;

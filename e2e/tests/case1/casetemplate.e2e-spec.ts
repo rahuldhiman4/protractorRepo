@@ -1423,12 +1423,13 @@ describe('Case Template', () => {
             await editCasePo.clickOnChangeCaseTemplate();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateNameWithNoValue);
             await editCasePo.clickSaveCase();
-        });
-        it('[DRDMV-19741]: Case behavior when Case Template is changed', async () => {
             await utilCommon.closePopUpMessage();
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus('In Progress');
-            await viewCasePo.openTaskCard(1);
+            await utilCommon.closePopUpMessage();
+        });
+        it('[DRDMV-19741]: Case behavior when Case Template is changed', async () => {
+             await viewCasePo.openTaskCard(1);
             await manageTaskBladePo.clickTaskLink(ManualTaskTempSummary);
             await viewTaskPo.clickOnChangeStatus();
             await viewTaskPo.changeTaskStatus('Completed');
@@ -1452,6 +1453,7 @@ describe('Case Template', () => {
         it('[DRDMV-19741]: [RESOLVE_CASE_ON_LAST_TASK_COMPLETION] - Case behavior when Case Template is changed', async () => {
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus('In Progress');
+            await utilCommon.closePopUpMessage();
             await viewCasePo.openTaskCard(1);
             await manageTaskBladePo.clickTaskLink(taskTemplateSummaryYesValue);
             await viewTaskPo.clickOnChangeStatus();

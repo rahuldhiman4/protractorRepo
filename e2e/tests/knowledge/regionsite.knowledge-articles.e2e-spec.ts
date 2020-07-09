@@ -80,6 +80,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             "categoryTier3": "Incident",
             "region": "Australia",
             "site": "Canberra",
+            "company": "Petramco",
             "assignedCompany": "Petramco",
             "assigneeBusinessUnit": "United Kingdom Support",
             "assigneeSupportGroup": "GB Support 1",
@@ -615,8 +616,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             expect(await documentLibraryPage.getSelectedGridRecordValue(regionField)).toEqual(regionFieldVal);
 
             await documentLibraryPage.removeColumnOnGrid(regionFields);
-            await utilGrid.searchOnGridConsole(regionFieldVal);
-            expect(await documentLibraryPage.getSelectedGridRecordValue(regionField)).toEqual(emptyStr);
+            expect(await utilGrid.isGridRecordPresent(regionFieldVal)).toBeFalsy('Record is present')
             await navigationPage.signOut();
 
             //Login with Case Agent
@@ -629,8 +629,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             expect(await documentLibraryPage.getSelectedGridRecordValue(regionField)).toEqual(regionFieldVal);
 
             await documentLibraryPage.removeColumnOnGrid(regionFields);
-            await utilGrid.searchOnGridConsole(regionFieldVal);
-            expect(await documentLibraryPage.getSelectedGridRecordValue(regionField)).toEqual(emptyStr);
+            expect(await utilGrid.isGridRecordPresent(regionFieldVal)).toBeFalsy('Record is present')
         });
 
         afterAll(async () => {
@@ -656,7 +655,6 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
                 .toEqual('Document Library Console - Business Workflows');
             await createDocumentLibraryPage.openAddNewDocumentBlade();
             await createDocumentLibraryPage.addAttachment(filePath);
-            
             await createDocumentLibraryPage.setTitle(title);
             await createDocumentLibraryPage.selectCompany(companyStr);
             await createDocumentLibraryPage.selectBusinessUnit('Facilities Support');
@@ -695,7 +693,8 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
             await expect(await resources.getAdvancedSearchResultForParticularSection(documentLibraryStr)).toEqual(title);
-        
+            await utilityCommon.closeAllBlades();
+
             await viewCasePage.clickOnEmailLink();
             await composeMailPo.clickOnAttachmentLink();
             await resources.enterAdvancedSearchText(title);
@@ -710,6 +709,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
             await expect(await resources.getAdvancedSearchResultForParticularSection(title)).toEqual(title);
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
         });
 
@@ -737,6 +737,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
             await expect(await resources.getAdvancedSearchResultForParticularSection(title)).toEqual(title);
+            await utilityCommon.closeAllBlades();
 
             await viewCasePage.clickOnEmailLink();
             await composeMailPo.clickOnAttachmentLink();
@@ -752,10 +753,11 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
             await expect(await resources.getAdvancedSearchResultForParticularSection(title)).toEqual(title);
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
         });
 
-        it('[DRDMV-19573]:Verify the document search based on Region and Site from attachments', async () => {        
+        it('[DRDMV-19573]:Verify the document search based on Region and Site from attachments', async () => {
             //Navigate to Create case
             await loginPage.login('fabian');
             await navigationPage.gotoCreateCase();
@@ -805,8 +807,9 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         });
     });
 
-    it('[DRDMV-19572]:Verify the knowledge articles search based on Region and Site on Quick case / Create case', async () => {
-        try {
+    describe('[DRDMV-19572]:Verify the knowledge articles search based on Region and Site on Quick case / Create case', () => {
+
+        it('[DRDMV-19572]:Verify the knowledge articles search based on Region and Site on Quick case / Create case', async () => {
             await navigationPage.gotoQuickCase();
             await quickCase.selectRequesterName(caseAgentUser);
             await quickCase.setCaseSummary(articleInDraftStatus);
@@ -826,7 +829,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await expect(await resources.getAdvancedSearchResultForParticularSection(articleInDraftStatus)).toEqual(articleInDraftStatus);
 
             //Search with knowledge article with SMEReview status
-            await resources.enterAdvancedSearchText(articleInSMEReviewStatus);
+            await resources.clickOnBackButton();
             await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInSMEReviewStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
@@ -842,7 +845,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await expect(await resources.getAdvancedSearchResultForParticularSection(articleInSMEReviewStatus)).toEqual(articleInSMEReviewStatus);
 
             //Search with knowledge article with Published status
-            await resources.enterAdvancedSearchText(articleInPublishedStatus);
+            await resources.clickOnBackButton();
             await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInPublishedStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
@@ -856,7 +859,9 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
             await expect(await resources.getAdvancedSearchResultForParticularSection(articleInPublishedStatus)).toEqual(articleInPublishedStatus);
+        });
 
+        it('[DRDMV-19572]:Verify the knowledge articles search based on Region and Site on Quick case / Create case', async () => {
             //Search with knowledge article with Retired status
             await resources.enterAdvancedSearchText(articleInRetiredStatus);
             await resources.clickOnAdvancedSearchOptions();
@@ -904,7 +909,9 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
             await expect(await resources.getAdvancedSearchResultForParticularSection(articleInCanceledStatus)).toEqual(articleInCanceledStatus);
+        });
 
+        it('[DRDMV-19572]:Verify the knowledge articles search based on Region and Site on Quick case / Create case', async () => {
             //Navigate to Create case
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
@@ -956,7 +963,9 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
             await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInPublishedStatus);
+        });
 
+        it('[DRDMV-19572]:Verify the knowledge articles search based on Region and Site on Quick case / Create case', async () => {
             //Search with knowledge article with Retired status
             await resources.enterAdvancedSearchText(articleInRetiredStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
@@ -999,7 +1008,9 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await resources.clickOnAdvancedSearchSettingsIconToClose();
             await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInCanceledStatus);
             await navigationPage.signOut();
+        });
 
+        it('[DRDMV-19572]:Verify the knowledge articles search based on Region and Site on Quick case / Create case', async () => {
             //Login with Case Manager
             await loginPage.login(caseManagerUser);
             await navigationPage.gotoQuickCase();
@@ -1049,7 +1060,9 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
             await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInPublishedStatus);
+        });
 
+        it('[DRDMV-19572]:Verify the knowledge articles search based on Region and Site on Quick case / Create case', async () => {
             //Search with knowledge article with Retired status
             await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInRetiredStatus);
@@ -1094,7 +1107,9 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
             await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInCanceledStatus);
+        });
 
+        it('[DRDMV-19572]:Verify the knowledge articles search based on Region and Site on Quick case / Create case', async () => {
             //Navigate to Create case
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
@@ -1146,7 +1161,9 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
             await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInPublishedStatus);
+        });
 
+        it('[DRDMV-19572]:Verify the knowledge articles search based on Region and Site on Quick case / Create case', async () => {
             //Search with knowledge article with Retired status
             await resources.enterAdvancedSearchText(articleInRetiredStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
@@ -1189,7 +1206,9 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await resources.clickOnAdvancedSearchSettingsIconToClose();
             await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInCanceledStatus);
             await navigationPage.signOut();
+        });
 
+        it('[DRDMV-19572]:Verify the knowledge articles search based on Region and Site on Quick case / Create case', async () => {
             //Login as Case Agent
             await loginPage.login(caseManagerUser);
             await navigationPage.gotoQuickCase();
@@ -1239,7 +1258,9 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
             await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInPublishedStatus);
+        });
 
+        it('[DRDMV-19572]:Verify the knowledge articles search based on Region and Site on Quick case / Create case', async () => {
             //Search with knowledge article with Retired status
             await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInRetiredStatus);
@@ -1284,7 +1305,9 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
             await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInCanceledStatus);
+        });
 
+        it('[DRDMV-19572]:Verify the knowledge articles search based on Region and Site on Quick case / Create case', async () => {
             //Navigate to Create case
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
@@ -1336,7 +1359,9 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
             await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInPublishedStatus);
+        });
 
+        it('[DRDMV-19572]:Verify the knowledge articles search based on Region and Site on Quick case / Create case', async () => {
             //Search with knowledge article with Retired status
             await resources.enterAdvancedSearchText(articleInRetiredStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
@@ -1378,17 +1403,14 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
             await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInCanceledStatus);
-            await navigationPage.signOut();
-        }
-        catch (error) {
-            throw error;
-        }
-        finally {
+        });
+
+        afterAll(async () => {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
-            await utilityCommon.refresh();
-            await utilCommon.waitUntilSpinnerToHide();
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
-        }
-    }, 900 * 1000);
+        });
+    });
+
 });

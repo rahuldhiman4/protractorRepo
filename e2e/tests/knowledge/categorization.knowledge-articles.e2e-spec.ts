@@ -79,6 +79,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             "categoryTier1": "Employee Relations",
             "categoryTier2": "Compensation",
             "categoryTier3": "Bonus",
+            "company": "Petramco",
             "region": "Australia",
             "site": "Canberra",
             "assignedCompany": "Petramco",
@@ -87,7 +88,6 @@ describe('Knowledge Articles - Categorization Tests', () => {
             "assignee": "KMills"
         }
         await apiHelper.apiLogin('tadmin');
-        await foundationData2002('Psilon');
         await apiHelper.deleteKnowledgeApprovalMapping();
 
         await apiHelper.apiLogin(knowledgePublisherUser);
@@ -769,7 +769,6 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows'))
                 .toEqual('Document Library Console - Business Workflows');
-            
             title = "DRDMV-19005Case " + title;
             await createDocumentLibraryPage.openAddNewDocumentBlade();
             await createDocumentLibraryPage.addAttachment(filePath);
@@ -864,6 +863,9 @@ describe('Knowledge Articles - Categorization Tests', () => {
             company: 'Psilon'
         }
 
+        await apiHelper.apiLogin('tadmin');
+        await foundationData2002('Psilon');
+
         await apiHelper.apiLogin('gderuno');
         await apiHelper.createKnowledgeSet(knowledgeSetData);
 
@@ -910,5 +912,5 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         }
-    });//, 240 * 1000);
+    });
 });
