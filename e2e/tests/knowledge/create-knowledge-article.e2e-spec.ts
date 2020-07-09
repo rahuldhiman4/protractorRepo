@@ -350,8 +350,10 @@ describe('Knowledge Article', () => {
             await reviewCommentsPo.setTextInTellUsMore(knowledgeTitile);
             await reviewCommentsPo.clickApprovedButton();
             await utilityCommon.closePopUpMessage();
-            await utilityCommon.closePopUpMessage();
-            expect(await viewKnowledgeArticlePo.getStatusValue()).toContain('Published', 'value is not matched with status')
+            await navigationPage.gotoKnoweldgeConsoleFromKM();
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
+            expect(await viewKnowledgeArticlePo.getStatusValue()).toContain('Published', 'value is not matched with status')            
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             expect(await activityTabPo.getFirstPostContent()).toContain('Kyle Mills reviewed this article and provided this comment');
             expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitile)
@@ -638,10 +640,12 @@ describe('Knowledge Article', () => {
                 "title": `${knowledgeTitileCoach}`,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
                 "assignedCompany": "Petramco",
-                "assigneeBusinessUnit": "HR Support",
-                "assigneeSupportGroup": "Compensation and Benefits",
-                "assignee": "peter"
+                "assigneeBusinessUnit": "United Kingdom Support",
+                "assigneeSupportGroup": "GB Support 1",
+                "assignee": "KMills"
             }
+            await apiHelper.apiLogin("peter");
+            KACoachDetails = await apiHelper.createKnowledgeArticle(articleDataCoach);
         });
         it('[DRDMV-2985]: Article creation and possible status changes - Knowledge Publisher & Coach', async () => {
             await navigationPage.signOut();
@@ -669,7 +673,7 @@ describe('Knowledge Article', () => {
         });
         it('[DRDMV-2985]: Article creation and possible status changes - Knowledge Publisher & Coach', async () => {
             await navigationPage.signOut();
-            await loginPage.login(knowledgeCoachUser);
+            await loginPage.login('kWilliamson');
             await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             await utilityGrid.clearFilter();
@@ -690,10 +694,8 @@ describe('Knowledge Article', () => {
             expect(await editKnowledgePage.getStatusValue()).toContain('Closed', 'Status not Set');
         }); 
         it('[DRDMV-2985]: Article creation and possible status changes - Knowledge Publisher & Coach', async () => {
-            await apiHelper.apiLogin(knowledgeCoachUser);
-            KACoachDetails = await apiHelper.createKnowledgeArticle(articleDataCoach);
             await navigationPage.signOut();
-            await loginPage.login(knowledgeCoachUser);
+            await loginPage.login('peter');
             await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             await utilityGrid.clearFilter();
@@ -715,8 +717,6 @@ describe('Knowledge Article', () => {
             await viewKnowledgeArticlePo.clickOnKAUsefulYesButton();
         });
         it('[DRDMV-2985]: Article creation and possible status changes - Knowledge Publisher & Coach', async () => {
-            await navigationPage.signOut();
-            await loginPage.login('peter');
             await navigationPage.gotoKnowledgeConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
