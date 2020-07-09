@@ -654,6 +654,7 @@ class ApiHelper {
 
     async createExternalTaskTemplate(data: ITaskTemplate): Promise<IIDs> {
         let templateData = EXTERNAL_TASK_TEMPLATE_PAYLOAD;
+        templateData = Object.assign({}, templateData);
         templateData.fieldInstances[7].value = constants.TaskTemplate[data.templateStatus];
         templateData.fieldInstances[8].value = data.templateSummary;
         templateData.fieldInstances[1000001437].value = data.templateName;
@@ -1964,7 +1965,7 @@ class ApiHelper {
         }
 
         let updateTaskStatus = await apiCoreUtil.updateRecordInstance("com.bmc.dsm.task-lib:Task", taskGuid, UPDATE_TASK_STATUS);
-        await browser.sleep(1000); // hardwait to reflect updated status
+        await browser.sleep(5000); // hardwait to reflect updated status
         console.log(`Update task status to ${status} API status is ${updateTaskStatus.status}`);
         return updateTaskStatus.status;
     }

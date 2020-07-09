@@ -31,7 +31,6 @@ describe('Email Configuration', () => {
         };
         offlineSupportGroup.relatedOrgId = await apiCoreUtil.getBusinessUnitGuid("BusinessUnitData10410");
         await apiHelper.createSupportGroup(offlineSupportGroup);
-        await apiHelper.createSupportGroup(offlineSupportGroup);
     });
 
     afterAll(async () => {
