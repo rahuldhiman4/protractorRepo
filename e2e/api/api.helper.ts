@@ -2237,7 +2237,7 @@ class ApiHelper {
         }
     }
 
-    async addFunctionalRole(person: string, functionalRoleGuid?: string): Promise<boolean> {
+    async addFunctionalRole(person: string, functionalRoleGuid: string): Promise<boolean> {
         let addFunctionalRolePayload = cloneDeep(ADD_FUNCTIONAL_ROLE);
         let userRoles = await coreApi.getPersonFunctionalRoles(person);
         let personGuid = await coreApi.getPersonGuid(person)
