@@ -16,10 +16,6 @@ export const CASE_STATUS_CHANGE = {
             "id": 450000021,
             "value": "3000"
         },
-        "1000000881": {
-            "id": 1000000881,
-            "value": null
-        }
     }
 };
 
