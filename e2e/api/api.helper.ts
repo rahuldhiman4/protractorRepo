@@ -1,54 +1,56 @@
 import axios, { AxiosResponse } from "axios";
-import { IBusinessUnit } from '../data/api/interface/business.unit.interface.api';
-import { IDepartment } from '../data/api/interface/department.interface.api';
-import { IKnowledgeArticles } from '../data/api/interface/knowledge.articles.interface.api';
-import { IPerson } from '../data/api/interface/person.interface.api';
-import { ISupportGroup } from '../data/api/interface/support.group.interface.api';
-import { ITaskTemplate, IAdhocTask } from '../data/api/interface/task.template.interface.api';
-import { ICaseApprovalMapping } from '../data/api/interface/case.approval.mapping.interface.api';
 import { browser } from 'protractor';
+import * as uuid from 'uuid';
 import { default as apiCoreUtil, default as coreApi } from "../api/api.core.util";
 import * as constants from "../api/constant.api";
+import { APPROVAL_ACTION, MORE_INFO_RETURN_ACTION } from "../data/api/approval/approval.action.api";
+import { CASE_APPROVAL_FLOW } from '../data/api/approval/case.approval.flow.api';
+import { CASE_APPROVAL_MAPPING } from '../data/api/approval/case.approval.mapping.api';
+import { CASE_READ_ACCESS } from '../data/api/case/case.read.access.api';
+import { CASE_REOPEN } from '../data/api/case/case.reopen.api';
+import { CASE_TEMPLATE_PAYLOAD, CASE_TEMPLATE_STATUS_UPDATE_PAYLOAD } from '../data/api/case/case.template.data.api';
+import { ADD_TO_WATCHLIST } from '../data/api/case/case.watchlist.api';
+import { CASE_STATUS_CHANGE, UPDATE_CASE, UPDATE_CASE_ASSIGNMENT } from '../data/api/case/update.case.api';
+import { EMAILCONFIG_DEFAULT, INCOMINGMAIL_DEFAULT, OUTGOINGEMAIL_DEFAULT } from '../data/api/email/email.configuration.data.api';
+import { EMAIL_WHITELIST } from '../data/api/email/email.whitelist.data.api';
 import { NEW_PROCESS_LIB } from '../data/api/flowset/create-process-lib';
+import { ADD_FUNCTIONAL_ROLE, UPDATE_PERSON_AS_VIP } from '../data/api/foundation/update.person.data.api';
+import { IBusinessUnit } from '../data/api/interface/business.unit.interface.api';
+import { ICaseApprovalMapping } from '../data/api/interface/case.approval.mapping.interface.api';
 import { ICaseAssignmentMapping } from "../data/api/interface/case.assignment.mapping.interface.api";
 import { ICaseTemplate } from "../data/api/interface/case.template.interface.api";
+import { IDepartment } from '../data/api/interface/department.interface.api';
+import { IDocumentLib } from '../data/api/interface/doc.lib.interface.api';
 import { IDomainTag } from '../data/api/interface/domain.tag.interface.api';
 import { IEmailTemplate } from '../data/api/interface/email.template.interface.api';
 import { IFlowset, IProcessLibConfig } from '../data/api/interface/flowset.interface.api';
+import { IKnowledgeSet } from '../data/api/interface/knowledge-set.interface.api';
+import { IknowledgeSetPermissions } from '../data/api/interface/knowledge-set.permissions.interface.api';
+import { IKnowledgeArticles } from '../data/api/interface/knowledge.articles.interface.api';
 import { IMenuItem } from '../data/api/interface/menu.Items.interface.api';
 import { INotesTemplate } from '../data/api/interface/notes.template.interface.api';
+import { IPerson } from '../data/api/interface/person.interface.api';
+import { ICase, ITask } from '../data/api/interface/record-update.interface.api';
+import { ISupportGroup } from '../data/api/interface/support.group.interface.api';
+import { IAdhocTask, ITaskTemplate } from '../data/api/interface/task.template.interface.api';
 import { FLAG_UNFLAG_KA } from '../data/api/knowledge/flag-unflag.data.api';
-import { AUTOMATED_CASE_STATUS_TRANSITION } from '../data/api/shared-services/process.data.api';
-import { ONE_TASKFLOW, TWO_TASKFLOW_PARALLEL, TWO_TASKFLOW_SEQUENTIAL, THREE_TASKFLOW_SEQUENTIAL, PROCESS_DOCUMENT } from '../data/api/task/taskflow.process.data.api';
-import { DOC_LIB_DRAFT, DOC_LIB_PUBLISH, DOC_LIB_READ_ACCESS } from '../data/api/ticketing/document-library.data.api';
-import { IDocumentLib } from '../data/api/interface/doc.lib.interface.api';
-import { IKnowledgeSet } from '../data/api/interface/knowledge-set.interface.api';
-import { KnowledegeSet_ASSOCIATION, KNOWLEDGE_SET, KNOWLEDGESET_PERMISSION } from '../data/api/knowledge/knowledge-set.data.api';
-import { IknowledgeSetPermissions } from '../data/api/interface/knowledge-set.permissions.interface.api';
-import { KNOWLEDGEARTICLE_TEMPLATE, KNOWLEDGEARTICLE_HELPFULCOUNTER } from '../data/api/knowledge/knowledge-article.template.api';
-import { INCOMINGMAIL_DEFAULT, EMAILCONFIG_DEFAULT, OUTGOINGEMAIL_DEFAULT } from '../data/api/email/email.configuration.data.api';
-import { EMAIL_WHITELIST } from '../data/api/email/email.whitelist.data.api';
-import * as DYNAMIC from '../data/api/ticketing/dynamic.data.api';
-import { CASE_TEMPLATE_PAYLOAD, CASE_TEMPLATE_STATUS_UPDATE_PAYLOAD } from '../data/api/case/case.template.data.api';
-import { UPDATE_PERSON_AS_VIP, ADD_FUNCTIONAL_ROLE } from '../data/api/foundation/update.person.data.api';
-import { SERVICE_TARGET_PAYLOAD } from '../data/api/slm/serviceTarget.api';
-import { ADHOC_TASK_PAYLOAD, UPDATE_TASK_STATUS, TASK_CREATION_FROM_TEMPLATE, UPDATE_TASK } from '../data/api/task/task.creation.api';
 import { KNOWLEDGE_APPROVAL_CONFIG, KNOWLEDGE_APPROVAL_FLOW_CONFIG } from '../data/api/knowledge/knowledge-approvals-config.api';
-import { APPROVAL_ACTION, MORE_INFO_RETURN_ACTION } from "../data/api/approval/approval.action.api";
 import { KNOWLEDGE_ARTICLE_EXTERNAL_FLAG } from "../data/api/knowledge/knowledge-article-external.api";
-import { AUTO_TASK_TEMPLATE_PAYLOAD, MANUAL_TASK_TEMPLATE_PAYLOAD, EXTERNAL_TASK_TEMPLATE_PAYLOAD, DOC_FOR_AUTO_TASK_TEMPLATE, PROCESS_FOR_AUTO_TASK_TEMPLATE } from '../data/api/task/task.template.api';
-import { UPDATE_CASE_ASSIGNMENT } from '../data/api/case/update.case.assignment.api';
-import { ACTIONABLE_NOTIFICATIONS_ENABLEMENT_SETTING } from '../data/api/shared-services/enabling.actionable.notifications.api';
-import { ADD_TO_WATCHLIST } from '../data/api/case/case.watchlist.api';
-import { CASE_APPROVAL_FLOW } from '../data/api/approval/case.approval.flow.api';
-import { CASE_APPROVAL_MAPPING } from '../data/api/approval/case.approval.mapping.api';
+import { KNOWLEDGEARTICLE_HELPFULCOUNTER, KNOWLEDGEARTICLE_TEMPLATE } from '../data/api/knowledge/knowledge-article.template.api';
+import { KnowledegeSet_ASSOCIATION, KNOWLEDGESET_PERMISSION, KNOWLEDGE_SET } from '../data/api/knowledge/knowledge-set.data.api';
 import { KNOWLEDGE_ARTICLE_PAYLOAD, UPDATE_KNOWLEDGE_ARTICLE_PAYLOAD } from '../data/api/knowledge/knowledge.article.api';
-import { BUSINESS_TIME_SHARED_ENTITY } from '../data/api/slm/business.time.shared.entity.api';
+import { ACTIONABLE_NOTIFICATIONS_ENABLEMENT_SETTING } from '../data/api/shared-services/enabling.actionable.notifications.api';
+import { AUTOMATED_CASE_STATUS_TRANSITION } from '../data/api/shared-services/process.data.api';
 import { BUSINESS_TIME_SEGMENT } from '../data/api/slm/business.time.segment.api';
-import { CASE_REOPEN } from '../data/api/case/case.reopen.api';
+import { BUSINESS_TIME_SHARED_ENTITY } from '../data/api/slm/business.time.shared.entity.api';
+import { SERVICE_TARGET_PAYLOAD } from '../data/api/slm/serviceTarget.api';
 import { POST_ACTIVITY, POST_ACTIVITY_WITH_ATTACHMENT } from '../data/api/social/post.activity.api';
-import { CASE_READ_ACCESS } from '../data/api/case/case.read.access.api';
-import * as uuid from 'uuid';
+import { ADHOC_TASK_PAYLOAD, TASK_CREATION_FROM_TEMPLATE, UPDATE_TASK, UPDATE_TASK_STATUS } from '../data/api/task/task.creation.api';
+import { AUTO_TASK_TEMPLATE_PAYLOAD, DOC_FOR_AUTO_TASK_TEMPLATE, EXTERNAL_TASK_TEMPLATE_PAYLOAD, MANUAL_TASK_TEMPLATE_PAYLOAD, PROCESS_FOR_AUTO_TASK_TEMPLATE } from '../data/api/task/task.template.api';
+import { ONE_TASKFLOW, PROCESS_DOCUMENT, THREE_TASKFLOW_SEQUENTIAL, TWO_TASKFLOW_PARALLEL, TWO_TASKFLOW_SEQUENTIAL } from '../data/api/task/taskflow.process.data.api';
+import { DOC_LIB_DRAFT, DOC_LIB_PUBLISH, DOC_LIB_READ_ACCESS } from '../data/api/ticketing/document-library.data.api';
+import * as DYNAMIC from '../data/api/ticketing/dynamic.data.api';
+
 let fs = require('fs');
 
 axios.defaults.baseURL = browser.baseUrl;
@@ -56,8 +58,6 @@ axios.defaults.headers.common['X-Requested-By'] = 'XMLHttpRequest';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 const commandUri = 'api/rx/application/command';
 const articleTemplateUri = 'api/com.bmc.dsm.knowledge/rx/application/article/template';
-import { UPDATE_CASE } from '../data/ui/case/update.case.data.api';
-import { ICase, ITask } from '../data/api/interface/record-update.interface.api';
 
 export interface IIDs {
     id: string;
@@ -245,9 +245,9 @@ class ApiHelper {
     }
 
     async updateTask(taskGuid: string, data: ITask): Promise<number> {
-        UPDATE_TASK.id = taskGuid;
         let taskData = UPDATE_TASK;
         taskData = Object.assign({}, taskData);
+        taskData.id = taskGuid;
 
         if (data.summary) {
             let taskSummary = {
@@ -279,9 +279,9 @@ class ApiHelper {
     }
 
     async updateCase(caseGuid: string, data: ICase): Promise<boolean> {
-        UPDATE_CASE.id = caseGuid;
         let caseData = UPDATE_CASE;
         caseData = Object.assign({}, caseData);
+        caseData.id = caseGuid;
 
         if (data.summary) {
             let caseSummary = {
@@ -1243,8 +1243,9 @@ class ApiHelper {
     }
 
     async createKnowledgeArticle(data: IKnowledgeArticles, attachment?: string): Promise<IIDs> {
-        let knowledgeArticleData = KNOWLEDGE_ARTICLE_PAYLOAD;
         let knowledgeArticleResponse: AxiosResponse;
+        let knowledgeArticleData = KNOWLEDGE_ARTICLE_PAYLOAD;
+        knowledgeArticleData = Object.assign({}, knowledgeArticleData);
 
         if (attachment) {
             knowledgeArticleData.fieldInstances[301820700].value = data.knowledgeSet;
@@ -1444,6 +1445,7 @@ class ApiHelper {
 
     async updateKnowledgeArticleStatus(articleGuid: string, articleStatus: string, reviewer?: string, reviewerGroup?: string, reviewerOrg?: string): Promise<boolean> {
         let knowledgeArticleData = UPDATE_KNOWLEDGE_ARTICLE_PAYLOAD;
+        knowledgeArticleData = Object.assign({}, knowledgeArticleData);
         knowledgeArticleData.id = articleGuid;
         knowledgeArticleData.fieldInstances[302300500].value = constants.Knowledge[articleStatus];
         knowledgeArticleData.fieldInstances[536870913].value = await coreApi.getStatusGuid('com.bmc.dsm.knowledge', constants.Knowledge[articleStatus], articleStatus);
@@ -1509,7 +1511,7 @@ class ApiHelper {
         const flowsetDetails = await axios.get(
             flowset.headers.location
         );
-        console.log('New Case Details API Status =============>', flowsetDetails.status);
+        console.log('New Flowset Details API Status =============>', flowsetDetails.status);
 
         return {
             id: flowsetDetails.data.id,
@@ -1665,15 +1667,13 @@ class ApiHelper {
     }
 
     async updateCaseStatus(caseGuid: string, status: string, statusReason?: string): Promise<number> {
-        let updateStatusFile = await require('../data/api/case/update.case.status.api.json');
-        let statusData = await updateStatusFile.CaseStatusChange;
-        statusData["id"] = caseGuid;
-        statusData.fieldInstances[450000021]["value"] = constants.CaseStatus[status];
+        CASE_STATUS_CHANGE.id = caseGuid;
+        CASE_STATUS_CHANGE.fieldInstances[450000021]["value"] = constants.CaseStatus[status];
         if (statusReason) {
-            statusData.fieldInstances[1000000881]["value"] = await apiCoreUtil.getStatusChangeReasonGuid(statusReason);
+            CASE_STATUS_CHANGE.fieldInstances[1000000881]["value"] = await apiCoreUtil.getStatusChangeReasonGuid(statusReason);
         }
 
-        let updateCaseStatus = await apiCoreUtil.updateRecordInstance("com.bmc.dsm.case-lib:Case", caseGuid, statusData);
+        let updateCaseStatus = await apiCoreUtil.updateRecordInstance("com.bmc.dsm.case-lib:Case", caseGuid, CASE_STATUS_CHANGE);
         await browser.sleep(1000); // hardwait to reflect updated status
         console.log(`Changing the case to ${status} API status is =============>`, updateCaseStatus.status);
         return updateCaseStatus.status;
@@ -1965,7 +1965,7 @@ class ApiHelper {
         }
 
         let updateTaskStatus = await apiCoreUtil.updateRecordInstance("com.bmc.dsm.task-lib:Task", taskGuid, UPDATE_TASK_STATUS);
-        await browser.sleep(5000); // hardwait to reflect updated status
+        await browser.sleep(1000); // hardwait to reflect updated status
         console.log(`Update task status to ${status} API status is ${updateTaskStatus.status}`);
         return updateTaskStatus.status;
     }
