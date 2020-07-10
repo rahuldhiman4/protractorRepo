@@ -717,7 +717,7 @@ describe('Knowledge Article', () => {
             await viewKnowledgeArticlePo.clickOnKAUsefulYesButton();
         });
         it('[DRDMV-2985]: Article creation and possible status changes - Knowledge Publisher & Coach', async () => {
-            await navigationPage.gotoKnowledgeConsole();
+            await navigationPage.gotoKnoweldgeConsoleFromKM();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
             await viewKnowledgeArticlePo.clickReviewPendingLink();

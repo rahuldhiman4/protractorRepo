@@ -1,3 +1,24 @@
+export const UPDATE_CASE = {
+    "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
+    "id": "AGGADG1AAO0VGAP5NS16P4QTM62U3X",
+    "recordDefinitionName": "com.bmc.dsm.case-lib:Case",
+    "fieldInstances": {
+
+    }
+};
+
+export const CASE_STATUS_CHANGE = {
+    "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
+    "id": "AGGADGG8ECDC0AQEDHPXQDF40ROTPN",
+    "recordDefinitionName": "com.bmc.dsm.case-lib:Case",
+    "fieldInstances": {
+        "450000021": {
+            "id": 450000021,
+            "value": "3000"
+        },
+    }
+};
+
 export const UPDATE_CASE_ASSIGNMENT = {
     "id": "AGGADGG8ECDC0AQ0HMGFQJJ9VW68SH",
     "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
@@ -16,4 +37,4 @@ export const UPDATE_CASE_ASSIGNMENT = {
             "value": "f9d8013969d86b23496b4d92842ec6eda167adb3b4c5bc485802086d67f21ba45e93f7e17ead5eab67f1e8646dc1d451a776b5bc07e43d8900dc2af897a73609"
         }
     }
-}
+};

@@ -1146,6 +1146,7 @@ describe("Compose Email", () => {
             expect(await composeMail.isSendButtonPresent()).toBeTruthy('Send Button is missing');
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await composeMail.clickOnDiscardButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
