@@ -46,7 +46,7 @@ import { BUSINESS_TIME_SEGMENT } from '../data/api/slm/business.time.segment.api
 import { BUSINESS_TIME_SHARED_ENTITY } from '../data/api/slm/business.time.shared.entity.api';
 import { SERVICE_TARGET_PAYLOAD } from '../data/api/slm/serviceTarget.api';
 import { POST_ACTIVITY, POST_ACTIVITY_WITH_ATTACHMENT } from '../data/api/social/post.activity.api';
-import { ADHOC_TASK_PAYLOAD, TASK_CREATION_FROM_TEMPLATE, UPDATE_TASK, UPDATE_TASK_STATUS } from '../data/api/task/task.creation.api';
+import { ADHOC_TASK_PAYLOAD, TASK_CREATION_FROM_TEMPLATE, UPDATE_TASK, UPDATE_TASK_STATUS, REGISTER_ADHOC_TASK } from '../data/api/task/task.creation.api';
 import { AUTO_TASK_TEMPLATE_PAYLOAD, DOC_FOR_AUTO_TASK_TEMPLATE, EXTERNAL_TASK_TEMPLATE_PAYLOAD, MANUAL_TASK_TEMPLATE_PAYLOAD, PROCESS_FOR_AUTO_TASK_TEMPLATE } from '../data/api/task/task.template.api';
 import { ONE_TASKFLOW, PROCESS_DOCUMENT, THREE_TASKFLOW_SEQUENTIAL, TWO_TASKFLOW_PARALLEL, TWO_TASKFLOW_SEQUENTIAL } from '../data/api/task/taskflow.process.data.api';
 import { DOC_LIB_DRAFT, DOC_LIB_PUBLISH, DOC_LIB_READ_ACCESS } from '../data/api/ticketing/document-library.data.api';
@@ -1944,6 +1944,14 @@ class ApiHelper {
             await createTaskResponse.headers.location
         );
         console.log('New Task Details API Status =============>', taskDetails.status);
+
+        let registerAdhocTask = cloneDeep(REGISTER_ADHOC_TASK);
+        registerAdhocTask.processInputValues["Task Id"] = taskDetails.data.id;
+        const registerAdhocTaskResponse = await axios.post(
+            commandUri,
+            registerAdhocTask
+        );
+        console.log('Register Adhoc Task API Status =============>', registerAdhocTaskResponse.status);
 
         return {
             id: taskDetails.data.id,
