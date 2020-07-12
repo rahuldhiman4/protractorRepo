@@ -633,7 +633,7 @@ describe('Task Console Preset Filter', () => {
             expect(await utilityGrid.isGridRecordPresent(taskId[7])).toBeFalsy(taskId[7] + ' :Record is available');
         });
         it('[DRDMV-20889]: Validate the All Open Breached Tasks filter after applying and removing the filter', async () => {
-            browser.sleep(120000);
+            browser.sleep(140000);
             for (let i: number = 4; i < 7; i++) {
                 expect(await utilityGrid.isGridRecordPresent(taskId[i])).toBeTruthy(taskId[i] + ' :Record is not available');
             }
@@ -732,7 +732,7 @@ describe('Task Console Preset Filter', () => {
             await browser.sleep(130000);
         });
         it('[DRDMV-22433]: Validate the My Open Breached Tasks filter after applying and removing the filter', async () => {
-            browser.sleep(120000);
+            browser.sleep(140000);
             for (let i: number = 5; i < 8; i++) {
                 expect(await utilityGrid.isGridRecordPresent(taskId[i])).toBeTruthy(taskId[i] + ' :Record is not available');
             }

@@ -515,8 +515,10 @@ describe("Quick Case", () => {
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName("adam");
             await quickCasePo.selectCaseTemplate(CaseTemplateData.templateName);
+            await quickCasePo.clickStartOverButton();
             await quickCasePo.selectRequesterName("fritz");
             await quickCase.selectDrpDownValueByIndex('Another person contacting on behalf of the requester', 1);
+            await quickCasePo.clickStartOverButton();
             await quickCasePo.selectRequesterName("chetan");
             await quickCase.setCaseSummary(CaseTemplateData.templateName);
             await utilCommon.waitUntilSpinnerToHide();
@@ -697,6 +699,7 @@ describe("Quick Case", () => {
             expect(await previewCaseTemplateCasesPo.getCasePriority()).toBe("Low");
             await previewCaseTemplateCasesPo.clickOnBackButton();
             await resources.clickOnAdvancedSearchOptions();
+            await browser.sleep(5000) //Hard wait to reflect the created article changes
             await resources.searchTextAndEnter(CaseTemplateData.templateName);
             await resources.clickArrowFirstRecommendedKnowledge();
         });

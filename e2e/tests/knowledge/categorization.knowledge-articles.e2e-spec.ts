@@ -158,9 +158,11 @@ describe('Knowledge Articles - Categorization Tests', () => {
         businessData.relatedOrgId = orgId;
         let businessUnitId = await apiHelper.createBusinessUnit(businessData);
         departmentData.relatedOrgId = businessUnitId;
+        await browser.sleep(5000); //waiting for data to be reflected on UI
         let depId = await apiHelper.createDepartment(departmentData);
         suppGrpData.relatedOrgId = depId;
         await apiHelper.createSupportGroup(suppGrpData);
+        await browser.sleep(9000); //waiting for data to be reflected on UI
         await apiHelper.associatePersonToSupportGroup('dbomei', suppGrpData.orgName);
         await apiHelper.associateCategoryUnderDomainTag('Applications', domainTag);
     }

@@ -514,7 +514,7 @@ describe('Case Console Preset Filter', () => {
 
             let response9 = await apiHelper.createCase(caseData.NEW_CRITICAL_ASSIGNEDTOLOGGEDINUSER);
             caseId.push(response9.displayId);
-            browser.sleep(120000);
+            browser.sleep(130000);
 
         });
 
@@ -523,7 +523,7 @@ describe('Case Console Preset Filter', () => {
             expect(await utilityGrid.getAppliedFilterName()).toBe('My Open Breached Cases');
 
             //Waiting for SVT to Breached
-            browser.sleep(150000);
+            browser.sleep(160000);
             for (let i: number = 0; i < 4; i++) {
                 expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeTruthy(caseId[i] + ' :Record is not available');
             }
