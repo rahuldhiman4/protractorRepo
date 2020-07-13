@@ -73,7 +73,8 @@
         "firstName": "Ashish",
         "lastName": "Nehra",
         "userId": "anehra",
-        "company": "Phyto"
+        "company": "Phyto",
+        "userPermission": "AGGAA5V0GE9Z4AOR0BXUOQ3ZT04EJA;AGGAA5V0GE9Z4AOR7DBBOQLAW74PH7;AGGAA5V0H3XY6AOTLKINOSP72R7YAE"
     },
     "PhytoCaseAdmin2": {
         "firstName": "Zaheer",
