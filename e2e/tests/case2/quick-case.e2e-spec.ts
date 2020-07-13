@@ -191,7 +191,7 @@ describe("Quick Case", () => {
     });
 
     describe('[DRDMV-786]: [Quick Case] Case creation with all case statuses in template', async () => {
-        let templateData1, templateData2, templateData3, templateData4, randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let templateData1, templateData2, templateData3, templateData4, randomStr = [...Array(15)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             templateData1 = {
                 "templateName": randomStr + "Petramco1",
@@ -295,7 +295,7 @@ describe("Quick Case", () => {
     });
 
     describe('[DRDMV-1087]: [Quick Case] Case Template search via !', async () => {
-        let templateData, templateData1, randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let templateData, templateData1, randomStr = [...Array(15)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let threeCharacterString = randomStr.substr(0, 3);
         beforeAll(async () => {
             templateData = {

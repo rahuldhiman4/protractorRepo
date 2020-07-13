@@ -383,6 +383,8 @@ describe('Case Data Store', () => {
             //Inactive
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+        });
+        it('[DRDMV-13140]: Dynamic Fields display on Task Template Edit view UI', async () => {
             await utilGrid.searchAndOpenHyperlink(inactiveTemplateName);
             for (let i = 0; i < arr.length; i++) {
                 expect(await viewTaskTemplate.isDynamicFieldPresent(arr[i])).toBeTruthy('field is not present');
@@ -504,7 +506,7 @@ describe('Case Data Store', () => {
             await quickCasePo.selectCaseTemplate(casetemplateData.templateName);
             await quickCasePo.createCaseButton();
             //case preview
-             await utilityCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             expect(await casePreviewPo.isGroupDisplayed(group1)).toBeTruthy('group is not present');
             expect(await casePreviewPo.isGroupDisplayed(group2)).toBeTruthy('group is not present');
             for (let i = 0; i < dynamicFields.length; i++) {

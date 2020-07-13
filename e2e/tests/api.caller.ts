@@ -17,6 +17,23 @@ describe('Login and create case from API', () => {
         console.log("case is created===", newCaseTemplate.displayId);
     });
 
+    it('update case status', async () => {
+        let caseData = {
+            "Requester": "Fritz",
+            "Summary": "Test case for inProgress task",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
+            "Assignee": "qkatawazi"
+        };
+        await apiHelper.apiLogin('qkatawazi');
+        let newCase = await apiHelper.createCase(caseData);
+        let newCase2 = await apiHelper.createCase(caseData);
+        console.log("case is created===", newCase.displayId, newCase2.displayId);
+        await apiHelper.updateCaseStatus(newCase.id, "Pending", 'Customer Canceled');
+        await apiHelper.updateCaseStatus(newCase2.id, "InProgress");
+    });
+
     it('create case template', async () => {
         let templateData = {
             "templateName": "case template 6",
@@ -201,7 +218,7 @@ describe('Login and create case from API', () => {
     it('create Email template', async () => {
         await apiHelper.apiLogin('tadmin');
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let emailTemplateData = require('../data/ui/email/email.template.ui.json');
+        let emailTemplateData = require('../../data/ui/email/email.template.ui.json');
         let emailTemplateName: string = await emailTemplateData['emailTemplateWithMandatoryField'].TemplateName + randomStr;
         emailTemplateData['notesTemplateWithMandatoryField'].templateName = emailTemplateName;
         await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateWithMandatoryField']);
