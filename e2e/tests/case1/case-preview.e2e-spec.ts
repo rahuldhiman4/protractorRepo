@@ -10,7 +10,7 @@ import resources from '../../pageobject/common/resources-tab.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 
-let caseTemplateName = "Case Preview Sample " + [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+let caseTemplateName = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('') + " Case Preview Sample";
 
 describe("Case Preview", () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
