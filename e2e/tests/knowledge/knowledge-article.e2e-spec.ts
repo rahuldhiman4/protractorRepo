@@ -803,11 +803,12 @@ describe('Knowledge Article', () => {
         }
     }, 300 * 1000);
 
-    it('[DRDMV-5192]: Unflag the article', async () => {
-        try {
-            let knowledgeTitile = 'knowledge5192' + randomStr;
-            let knowledgeTitileSecond = 'knowledgeNewUnflag' + randomStr;
-            await apiHelper.apiLogin('peter');
+    describe('[DRDMV-5192]: Unflag the article', async () => {
+        let knowledgeArticleData, knowledgeArticleDataSecond;
+        let knowledgeTitile = 'knowledge5192' + randomStr;
+        let knowledgeTitileSecond = 'knowledgeNewUnflag' + randomStr;
+        beforeAll(async () => {
+           await apiHelper.apiLogin('peter');
             let articleDataFirst = {
                 "knowledgeSet": "HR",
                 "title": `${knowledgeTitile}`,
@@ -836,9 +837,10 @@ describe('Knowledge Article', () => {
                 "assigneeSupportGroup": "GB Support 1",
                 "assignee": "KMills"
             }
-
-            let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleDataFirst);
-            let knowledgeArticleDataSecond = await apiHelper.createKnowledgeArticle(articleDataSecond);
+            knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleDataFirst);
+            knowledgeArticleDataSecond = await apiHelper.createKnowledgeArticle(articleDataSecond);
+        });
+        it('[DRDMV-5192]: Unflag the article', async () => {
             await navigationPage.gotoKnowledgeConsole()
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
@@ -862,6 +864,8 @@ describe('Knowledge Article', () => {
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             await activityTabPo.clickOnRefreshButton();
             expect(activityTabPo.getFirstPostContent()).toContain(knowledgeTitileSecond, 'Post not present on activity');
+        });
+        it('[DRDMV-5192]: Unflag the article', async () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -889,14 +893,12 @@ describe('Knowledge Article', () => {
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.getFirstPostContent()).toContain('Kyle Mills unflagged the article', 'content not displaying on Activity');
             expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitile, 'content not displaying on Activity');
-        } catch (e) {
-            throw e;
-        }
-        finally {
+        });
+        afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('peter');
-        }
-    }, 350 * 1000);
+        });
+    });
 
     describe('[DRDMV-2746]: Article status transition - In Progress->Draft->Published->Closed', async () => {
         let KADetails,KACoachDetails;
