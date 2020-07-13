@@ -2396,6 +2396,28 @@ class ApiHelper {
         console.log('More Info Return API Status =============>', response.status);
         return response.status == 204;
     }
+
+    async deleteAutomatedCaseStatusTransition(configName?: string): Promise<boolean> {
+        if (configName) {
+            let allRecords = await coreApi.getGuid("com.bmc.dsm.shared-services-lib:Automated Status Transition Rules");
+            let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+                return obj[1000001437] === configName;
+            });
+            let configGuid = entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
+            if (configGuid) {
+                return await coreApi.deleteRecordInstance('com.bmc.dsm.shared-services-lib:Automated Status Transition Rules', configGuid);
+            }
+        } else {
+            let allConfigsMapRecords = await coreApi.getGuid("com.bmc.dsm.shared-services-lib:Automated Status Transition Rules");
+            let allConfigsArrayMap = allConfigsMapRecords.data.data.map(async (obj: string) => {
+                return await coreApi.deleteRecordInstance('com.bmc.dsm.shared-services-lib:Automated Status Transition Rules', obj[379]);
+            });
+            return await Promise.all(allConfigsArrayMap).then(async (result) => {
+                return !result.includes(false);
+            });
+        }
+    }
+
 }
 
 export default new ApiHelper();

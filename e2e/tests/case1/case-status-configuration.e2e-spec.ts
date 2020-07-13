@@ -37,7 +37,7 @@ describe('Case Status Configuration', () => {
         await apiHelper.associatePersonToCompany(personData3.userId, 'Phyto');
 
         //Wait to reflect the user created above
-        await browser.sleep(12000);
+        await browser.sleep(15000);
         await loginPage.login('anehra@petramco.com', 'Password_1234');
     });
 
@@ -128,7 +128,8 @@ describe('Case Status Configuration', () => {
         flowsetData = require('../../data/ui/case/flowset.ui.json');
         flowsetName = await flowsetData['flowsetPhytoFields'].flowsetName + randomStr;
         flowsetData['flowsetPhytoFields'].flowsetName = flowsetName;
-        await apiHelper.apiLoginWithCredential('anehra@petramco.com', 'Password_1234');
+        await apiHelper.apiLoginWithCredential('tadmin@petramco.com', 'Password_1234');
+        let flowset = flowsetData['flowsetPhytoFields'];
         await apiHelper.createNewFlowset(flowsetData['flowsetPhytoFields']);
 
         await navigationPage.gotoSettingsPage();
