@@ -96,8 +96,13 @@ export class Resources {
     }
 
     async getAdvancedSearchResultForParticularSection(headingType: string): Promise<string> {
-        await browser.wait(this.EC.visibilityOf(element(by.cssContainingText('div.bwf-search-fields__title-text span', headingType))), 5000);
-        return await element(by.cssContainingText('div.bwf-search-fields__title-text span', headingType)).getText();
+        return await element(by.cssContainingText('div.bwf-search-fields__title-text span', headingType)).isPresent().then(async (result) => {
+            if (result) {
+                return await browser.wait(this.EC.visibilityOf(element(by.cssContainingText('div.bwf-search-fields__title-text span', headingType))), 5000).then(async () => {
+                    return await await element(by.cssContainingText('div.bwf-search-fields__title-text span', headingType)).getText();
+                });
+            }
+        });
     }
 
     async getCountOfHeading(headerName: string): Promise<string> {

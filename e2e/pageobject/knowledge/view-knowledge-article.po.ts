@@ -135,7 +135,10 @@ class ViewKnowledgePage {
 
 
     async isUnFlagButtonDisplayed(): Promise<boolean> {
-        return await $(this.selectors.unflagButton).isDisplayed();
+        return await $(this.selectors.unflagButton).isPresent().then(async (link) => {
+            if (link) return await $(this.selectors.unflagButton).isDisplayed();
+            else return false;
+        });
     }
 
     async clickOnActivityTab(): Promise<void> {
