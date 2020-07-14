@@ -87,7 +87,7 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
-            await browser.sleep(90000);
+            await browser.sleep(70000);
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
@@ -1119,6 +1119,7 @@ describe('Service Target Tests for Cases', () => {
 
     //skhobrag
     describe('[DRDMV-8373]: Verify Visualization change when Case is no longer match SVT configurations(In Process->Detached)', async () => {
+        let caseId = '';
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
@@ -1152,12 +1153,15 @@ describe('Service Target Tests for Cases', () => {
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await browser.sleep(31000);
+            caseId = await viewCasePage.getCaseID();
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBeTruthy('SVT is not attached to case.');
             expect(await slmProgressBar.isDueInTimeDisplayed()).toBe(true);
             expect(await viewCasePage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
             await viewCasePage.clickEditCaseButton();
             await editCasePo.updateCasePriority('Low');
             await editCasePo.clickSaveCase();
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBeFalsy('SVT is not attached to case.');
         });
         afterAll(async () => {
