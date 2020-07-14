@@ -47,82 +47,6 @@ describe('Case Status Configuration', () => {
     });
 
     //asahitya
-    it('[DRDMV-13632]: Verify User not able to delete mandatory status for Knowledge', async () => {
-        await navigationPage.signOut()
-        await loginPage.login('stendulkar@petramco.com', 'Password_1234');
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Knowledge Management--Status Configuration', 'Configure Knowledge Status Transition - Business Workflows');
-        await statusConfigPo.setCompanyDropdown('Phyto', 'knowledge');
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.addCustomStatus("In Progress", "Draft", "Custom");
-        await statusConfigPo.clickOnBackButton();
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.clickEditStatus("Draft");
-        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
-        await statusConfigPo.clickOnBackButton();
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.clickEditStatus("Progress");
-        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
-        await statusConfigPo.clickOnBackButton();
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.clickEditStatus("SME"); //Need to change
-        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
-        await statusConfigPo.clickOnBackButton();
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.clickEditStatus("Approval");
-        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
-        await statusConfigPo.clickOnBackButton();
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.clickEditStatus("Closed");
-        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
-        await statusConfigPo.clickOnBackButton();
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.clickEditStatus("Published");
-        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
-        await statusConfigPo.clickOnBackButton();
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.clickEditStatus("Canceled");
-        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
-        await statusConfigPo.clickOnBackButton();
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.clickEditStatus("Retired");
-        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
-        await statusConfigPo.clickOnBackButton();
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.clickEditStatus("Custom");
-        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
-        await statusConfigPo.clickOnDeleteButton();
-        await utilCommon.clickOnWarningOk();
-        await statusConfigPo.clickOnBackButton();
-    }, 300 * 1000);
-
-    //asahitya
-    it('[DRDMV-13635]:Verify UI for Knowledge status configuration', async () => {
-        try {
-            await navigationPage.signOut()
-            await loginPage.login('stendulkar@petramco.com', 'Password_1234');
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Status Configuration', 'Configure Knowledge Status Transition - Business Workflows');
-            expect(await statusConfigPo.getTitleValue('knowledge')).toBe('Knowledge Status Configuration');
-            expect(await statusConfigPo.isCompanyRequiredText('knowledge')).toBeTruthy();
-            expect(await statusConfigPo.getDefaultCompanyValue()).toBe('- Global -');
-            expect(await statusConfigPo.getStatusLifeCycle()).toBe('Status Lifecycle for - Global -');
-            await statusConfigPo.setCompanyDropdown("Phyto", 'knowledge');
-            expect(await statusConfigPo.isEditLifeCycleBtnDisabled()).toBeFalsy('Button is disabled');
-            await statusConfigPo.clickEditLifeCycleLink();
-            await statusConfigPo.clickEditStatus("Canceled");
-            await statusConfigPo.clickOnCancelButton();
-        }
-        catch (ex) {
-            throw ex;
-        }
-        finally {
-            await navigationPage.signOut();
-            await loginPage.login('anehra@petramco.com', 'Password_1234');
-        }
-    });
-
-    //asahitya
     it('[DRDMV-13617]: Verify User not able to delete mandatory status for case', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         flowsetData = require('../../data/ui/case/flowset.ui.json');
@@ -309,6 +233,82 @@ describe('Case Status Configuration', () => {
         await utilCommon.clickOnWarningOk();
         await statusConfigPo.clickOnBackButton();
     }, 270 * 1000);
+
+    //asahitya
+    it('[DRDMV-13632]: Verify User not able to delete mandatory status for Knowledge', async () => {
+        await navigationPage.signOut()
+        await loginPage.login('stendulkar@petramco.com', 'Password_1234');
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Knowledge Management--Status Configuration', 'Configure Knowledge Status Transition - Business Workflows');
+        await statusConfigPo.setCompanyDropdown('Phyto', 'knowledge');
+        await statusConfigPo.clickEditLifeCycleLink();
+        await statusConfigPo.addCustomStatus("In Progress", "Draft", "Custom");
+        await statusConfigPo.clickOnBackButton();
+        await statusConfigPo.clickEditLifeCycleLink();
+        await statusConfigPo.clickEditStatus("Draft");
+        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
+        await statusConfigPo.clickOnBackButton();
+        await statusConfigPo.clickEditLifeCycleLink();
+        await statusConfigPo.clickEditStatus("Progress");
+        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
+        await statusConfigPo.clickOnBackButton();
+        await statusConfigPo.clickEditLifeCycleLink();
+        await statusConfigPo.clickEditStatus("SME"); //Need to change
+        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
+        await statusConfigPo.clickOnBackButton();
+        await statusConfigPo.clickEditLifeCycleLink();
+        await statusConfigPo.clickEditStatus("Approval");
+        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
+        await statusConfigPo.clickOnBackButton();
+        await statusConfigPo.clickEditLifeCycleLink();
+        await statusConfigPo.clickEditStatus("Closed");
+        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
+        await statusConfigPo.clickOnBackButton();
+        await statusConfigPo.clickEditLifeCycleLink();
+        await statusConfigPo.clickEditStatus("Published");
+        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
+        await statusConfigPo.clickOnBackButton();
+        await statusConfigPo.clickEditLifeCycleLink();
+        await statusConfigPo.clickEditStatus("Canceled");
+        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
+        await statusConfigPo.clickOnBackButton();
+        await statusConfigPo.clickEditLifeCycleLink();
+        await statusConfigPo.clickEditStatus("Retired");
+        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
+        await statusConfigPo.clickOnBackButton();
+        await statusConfigPo.clickEditLifeCycleLink();
+        await statusConfigPo.clickEditStatus("Custom");
+        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
+        await statusConfigPo.clickOnDeleteButton();
+        await utilCommon.clickOnWarningOk();
+        await statusConfigPo.clickOnBackButton();
+    }, 300 * 1000);
+
+    //asahitya
+    it('[DRDMV-13635]:Verify UI for Knowledge status configuration', async () => {
+        try {
+            await navigationPage.signOut()
+            await loginPage.login('stendulkar@petramco.com', 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Status Configuration', 'Configure Knowledge Status Transition - Business Workflows');
+            expect(await statusConfigPo.getTitleValue('knowledge')).toBe('Knowledge Status Configuration');
+            expect(await statusConfigPo.isCompanyRequiredText('knowledge')).toBeTruthy();
+            expect(await statusConfigPo.getDefaultCompanyValue()).toBe('- Global -');
+            expect(await statusConfigPo.getStatusLifeCycle()).toBe('Status Lifecycle for - Global -');
+            await statusConfigPo.setCompanyDropdown("Phyto", 'knowledge');
+            expect(await statusConfigPo.isEditLifeCycleBtnDisabled()).toBeFalsy('Button is disabled');
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditStatus("Canceled");
+            await statusConfigPo.clickOnCancelButton();
+        }
+        catch (ex) {
+            throw ex;
+        }
+        finally {
+            await navigationPage.signOut();
+            await loginPage.login('anehra@petramco.com', 'Password_1234');
+        }
+    });
 
     //asahitya
     it('[DRDMV-13624]:Verify UI for Task status configuration', async () => {
