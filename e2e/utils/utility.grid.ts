@@ -76,17 +76,15 @@ export class GridOperations {
             filterPresetBtn = gridGuid + filterPresetBtn;
             refreshIcon = gridGuid + refreshIcon;
         }
-        // await $(appliedPresetFilter).isPresent().then(async (result) => {
-        //     if (result) {
-        await $(filterPresetBtn).click();
-        await $$(clearBtn).first().isPresent().then(async (present) => {
-            if (present) await $$(clearBtn).first().click();
+        await $(appliedPresetFilter).isPresent().then(async (result) => {
+            if (result) {
+                await $(filterPresetBtn).click();
+                await $$(clearBtn).first().click();
+                await $(refreshIcon).click();
+            } else {
+                console.log("Filters are already cleared");
+            }
         });
-        await $(refreshIcon).click();
-        //     } else {
-        //         console.log("Filters are already cleared");
-        //     }
-        // });
     }
 
     async addGridColumn(columnNameList: string[], guid?: string): Promise<void> {
@@ -322,9 +320,9 @@ export class GridOperations {
 
     async isEntireColumnContainsSameValue(columnHeader: string, value: string, guid?: string): Promise<boolean> {
         let allValues: string[] = undefined;
-        guid ? allValues = await this.getAllValuesFromColumn(columnHeader, guid): allValues = await this.getAllValuesFromColumn(columnHeader);
-        const allEqual = arr => arr.every( v => v === arr[0] )
-        return allEqual( allValues ) && allValues[0] === value;
+        guid ? allValues = await this.getAllValuesFromColumn(columnHeader, guid) : allValues = await this.getAllValuesFromColumn(columnHeader);
+        const allEqual = arr => arr.every(v => v === arr[0])
+        return allEqual(allValues) && allValues[0] === value;
     }
 
 }

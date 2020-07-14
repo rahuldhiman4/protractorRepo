@@ -380,16 +380,18 @@ describe('Case Data Store', () => {
             }
             await editTaskTemplate.clickOnCancelButton();
             await utilCommon.clickOnWarningOk();
+        });
+        it('[DRDMV-13140]: Dynamic Fields display on Task Template Edit view UI', async () => {
             //Inactive
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-        });
-        it('[DRDMV-13140]: Dynamic Fields display on Task Template Edit view UI', async () => {
             await utilGrid.searchAndOpenHyperlink(inactiveTemplateName);
             for (let i = 0; i < arr.length; i++) {
                 expect(await viewTaskTemplate.isDynamicFieldPresent(arr[i])).toBeTruthy('field is not present');
             }
             expect(await viewTaskTemplate.isManageDynamicFieldLinkDisplayed()).toBeTruthy('Link is not present');
+        });
+        it('[DRDMV-13140]: Dynamic Fields display on Task Template Edit view UI', async () => {
             //edit
             await viewTaskTemplate.clickOnEditLink();
             expect(await editTaskTemplate.isMangeDynamicFieldLinkDisplayed()).toBeTruthy('link not present');

@@ -68,6 +68,7 @@ describe("Approval Mapping Tests", () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', 'Configure Case Approvals - Business Workflows');
             await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
+            await createApprovalMappingPage.setApprovalMappingName(approvalMappingName);
             expect(await createApprovalMappingPage.getCreateApprovalMappingHeaderText()).toBe('Add Approval Mapping');
 
             //Verify no. of fields displayed on Add Approval Mapping screen
@@ -93,7 +94,6 @@ describe("Approval Mapping Tests", () => {
             expect(await createApprovalMappingPage.getApprovalMappingStatusTriggerMessage()).toBe(approvalTriggerMsg);
             expect(await createApprovalMappingPage.getApprovalMappingStatusMappingLabelText()).toBe(approvalStatusMappingLabel);
             expect(await createApprovalMappingPage.getApprovalMappingStatusMappingMessage()).toBe(approvalMappingMsg);
-            await createApprovalMappingPage.setApprovalMappingName(approvalMappingName);
             await createApprovalMappingPage.selectCompany('Petramco');
 
             //Verify status Mapping drop down options when status trigger is Assigned
@@ -482,8 +482,11 @@ describe("Approval Mapping Tests", () => {
             await editApprovalMappingPage.clickCaseTemplateforApprovalRightArrawBtn();
             await editApprovalMappingPage.clickCancelApprovalMappingBtn();
             await utilGrid.searchAndOpenHyperlink(approvalMappingName);
-            expect(await editApprovalMappingPage.getSearchedCaseTemplate()).toBe(globalCaseTemplateStr);
-            expect(await editApprovalMappingPage.getSearchedCaseTemplate()).toBe(petramcoCaseTemplateStr);
+            await editApprovalMappingPage.searchAssociatedCaseTemplate(globalCaseTemplateStr);
+            expect(await editApprovalMappingPage.getAssociatedCaseTemplate()).toBe(globalCaseTemplateStr, `${globalCaseTemplateStr} Associated template doesn't match`);
+            await editApprovalMappingPage.searchAssociatedCaseTemplate(petramcoCaseTemplateStr);
+            expect(await editApprovalMappingPage.getAssociatedCaseTemplate()).toBe(petramcoCaseTemplateStr, `${petramcoCaseTemplateStr} Associated template doesn't match`);
+            await editApprovalMappingPage.clickCancelApprovalMappingBtn();
         });
 
         it('[DRDMV-22195]: Create Apporval Mapping for Global Company', async () => {

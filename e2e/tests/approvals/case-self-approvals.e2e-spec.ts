@@ -89,8 +89,10 @@ describe("Case Self Approval Tests", () => {
             caseData1 = {
                 "Requester": "qdu",
                 "Summary": "Non Automated Self Approval without process",
-                "Origin": "Agent",
-                "Case Template ID": caseTemplateDisplayId
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
+                "Assignee": "qkatawazi"
             }
         });
 
@@ -157,7 +159,7 @@ describe("Case Self Approval Tests", () => {
     //skhobrag
     describe('[DRDMV-10821]:[Approval] - Case Self Approval with Process', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let caseData = undefined;
+        let caseData = undefined, caseData1 = undefined;
         let caseId: string;
         let approvalMappingData = undefined;
 
@@ -200,6 +202,15 @@ describe("Case Self Approval Tests", () => {
                 "Summary": "Automated Self Approval with process",
                 "Origin": "Agent",
                 "Case Template ID": caseTemplateDisplayId
+            };
+
+            caseData1 = {
+                "Requester": "qdu",
+                "Summary": "Non Automated Self Approval",
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
+                "Assignee": "qkatawazi"
             }
         });
 
@@ -259,16 +270,10 @@ describe("Case Self Approval Tests", () => {
             expect(await activityTabPage.getFirstPostContent()).toContain('Case was self-approved');
         });
 
-        it('[DRDMV-10821]:Create case with non mathching summary and verify self approval without process', async () => {
-            await navigationPage.gotoCreateCase();
-            await createCasePo.selectRequester('qdu');
-            await createCasePo.setSummary('Automated Self Approval with process');
-            await createCasePo.clickSelectCaseTemplateButton();
-            await selectCasetemplateBladePo.selectCaseTemplate('caseTemplateForSelfApprovalWithoutProcessWithCriticalPriority' + randomStr);
-            await createCasePo.selectCategoryTier2('Help Desk');
-            await createCasePo.clickSaveCaseButton();
-            await casePreviewPo.clickGoToCaseButton();
-            caseId = await viewCasePo.getCaseID();
+        it('[DRDMV-10821]:Create case with non matching summary and verify self approval without process', async () => {
+            await apiHelper.apiLogin('qfeng');
+            let response = await apiHelper.createCase(caseData1);
+            caseId = response.displayId;
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
