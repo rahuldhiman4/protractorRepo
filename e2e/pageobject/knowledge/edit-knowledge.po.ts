@@ -11,11 +11,11 @@ class EditKnowledgePage {
         statusCancelBtn: '[rx-view-component-id="cf381d41-6377-4ee2-9cbc-87b59207eb3d"] button',
         changeReviewerBtn: '[rx-view-component-id="f8c32272-6166-4001-a2dc-60762b5f6d69"] button',
         assigneToMeReviewerAssign: '[rx-view-component-id="7b202136-47a8-4234-b369-c300297055c6"] button',
-        reviewerCompanyfldStatusBlade: '[rx-view-component-id="b4f529dc-f3b8-476a-b25d-40f5e6b71b5f"] button',
-        reviewerBUfldStatusBlade: '[rx-view-component-id="bd3d17d2-074a-41e6-8d27-c5d47c6b6a63"] button',
-        reviewerDepfldStatusBlade: '[rx-view-component-id="a70e47b4-b9fb-4a34-86ac-b263178e39ed"] button',
-        reviewerGrpfldStatusBlade: '[rx-view-component-id="0605287c-c69c-45d9-b346-60a441174f8c"] button',
-        reviewerfldStatusBlade: '[rx-view-component-id="8c7814b7-de3d-4067-8ea6-cf4d15943bf6"] button',
+        reviewerCompanyfldStatusBlade: '[rx-view-component-id="b4f529dc-f3b8-476a-b25d-40f5e6b71b5f"] adapt-select',
+        reviewerBUfldStatusBlade: '[rx-view-component-id="bd3d17d2-074a-41e6-8d27-c5d47c6b6a63"] adapt-select',
+        reviewerDepfldStatusBlade: '[rx-view-component-id="a70e47b4-b9fb-4a34-86ac-b263178e39ed"] adapt-select',
+        reviewerGrpfldStatusBlade: '[rx-view-component-id="0605287c-c69c-45d9-b346-60a441174f8c"] adapt-select',
+        reviewerfldStatusBlade: '[rx-view-component-id="8c7814b7-de3d-4067-8ea6-cf4d15943bf6"] adapt-select',
         reviewPendingBtn: '[rx-view-component-id="f0cf7f67-da22-4149-a54d-ec3b95fe05e6"] button',
         editLinkKnowledgeMetadata: '[rx-view-component-id="56cc9627-6ef9-46f8-9b76-728349193ed2"] .float-right button',
         saveBtnEditMetadata: '[rx-view-component-id="15dcacfb-8cb2-49b7-a5db-fe0e16b311dc"] button',
@@ -160,27 +160,27 @@ class EditKnowledgePage {
     }
 
     async isReviewerCompanyFieldDisbaledOnStatusChangeBlade(): Promise<Boolean> {
-        return await $(this.selectors.reviewerCompanyfldStatusBlade).getAttribute("disabled") == "true";
+        return await $(this.selectors.reviewerCompanyfldStatusBlade).getAttribute("aria-readonly") == "true";
     }
 
     async isReviewerBusinessUnitFieldDisbaledOnStatusChangeBlade(): Promise<Boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.reviewerBUfldStatusBlade)));
-        return await $(this.selectors.reviewerBUfldStatusBlade).getAttribute("disabled") == "true";
+        return await $(this.selectors.reviewerBUfldStatusBlade).getAttribute("aria-readonly") == "true";
     }
 
     async isReviewerDepartmentfieldDisbaledOnStatusChangeBlade(): Promise<Boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.reviewerDepfldStatusBlade)));
-        return await $(this.selectors.reviewerDepfldStatusBlade).getAttribute("disabled") == "true";
+        return await $(this.selectors.reviewerDepfldStatusBlade).getAttribute("aria-readonly") == "true";
     }
 
     async isReviewerGrpFieldDisbaledOnStatusChangeBlade(): Promise<Boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.reviewerGrpfldStatusBlade)));
-        return await $(this.selectors.reviewerGrpfldStatusBlade).getAttribute("disabled") == "true";
+        return await $(this.selectors.reviewerGrpfldStatusBlade).getAttribute("aria-readonly") == "true";
     }
 
     async isReviewerFieldDisbaledOnStatusChangeBlade(): Promise<Boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.reviewerfldStatusBlade)));
-        return await $(this.selectors.reviewerfldStatusBlade).getAttribute("disabled") == "true";
+        return await $(this.selectors.reviewerfldStatusBlade).getAttribute("aria-disabled") == "true";
     }
 
     async isReviewerFieldDisabledInEdit(): Promise<boolean> {

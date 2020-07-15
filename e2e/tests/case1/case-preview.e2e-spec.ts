@@ -234,6 +234,7 @@ describe("Case Preview", () => {
         await resources.clickOnAdvancedSearchSettingsIconToOpen();
         await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
         await resources.pinRecommendedKnowledgeArticles(1);
+        await resources.clickOnAdvancedSearchSettingsIconToClose();
         await quickCasePo.pinRecommendedCases(1);
         await quickCasePo.saveCase();
         expect(await casePreviewPo.isTitleDisplayed()).toBeTruthy('failureMsg: Case Preview Title is missing');
