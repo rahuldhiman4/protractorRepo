@@ -9,7 +9,7 @@ class ShowApproversBlade {
         approvalsHelpText: 'fieldset.dp-size-rx-sm .alert-info',
         approvers: 'fieldset.dp-size-rx-sm .active .bwf-approver-list-group-list-item',
         approverName: 'fieldset.dp-size-rx-sm .active .bwf-approver-list-group-list-item .bwf-approver-list-group-list-item-description',
-        approverPersonIcon: 'fieldset.dp-size-rx-sm .active .bwf-approver-list-group-list-item .d-icon-user_circle',
+        approverPersonIcon: 'fieldset.dp-size-rx-sm .bwf-approver-list-group-list-item-info',
         approverCompany: 'fieldset.dp-size-rx-sm .active .bwf-approver-list-group-list-item [class="pt-1"]',
         awaitingApproverIcon: 'fieldset.dp-size-rx-sm .active .bwf-approver-list-group-list-item-icon-container .d-icon-clock_o',
         awaitingApproverLabel: 'fieldset.dp-size-rx-sm .active .bwf-approver-list-group-list-item-icon-container .d-icon-clock_o + span',
