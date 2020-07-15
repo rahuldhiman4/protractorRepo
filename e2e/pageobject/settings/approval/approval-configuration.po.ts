@@ -137,7 +137,7 @@ class ApprovalsConsole {
 
     async selectExpressionValuesOptions(expressionOption: string, expressionValueOption: string): Promise<void> {
         await element(by.cssContainingText(this.selectors.expressionValueOptions, expressionOption)).click();
-
+        await browser.sleep(1000); // sometimes expression option is not expanded
         await element(by.cssContainingText(this.selectors.expressionValueOptions, expressionOption)).getAttribute('aria-expanded').then(async (result) => {
             if (result) await element(by.cssContainingText(this.selectors.expressionValueOptionSelector, expressionValueOption)).click();
         });

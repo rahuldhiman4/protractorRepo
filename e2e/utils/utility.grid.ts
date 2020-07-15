@@ -316,6 +316,7 @@ export class GridOperations {
     async clickRefreshIcon(guidId?: string): Promise<void> {
         if (guidId) await $(`[rx-view-component-id="${guidId}"] ` + this.selectors.refreshIcon).click();
         else await $(this.selectors.refreshIcon).click();
+        await browser.sleep(1000); // sometime refresh grid takes time
     }
 
     async isEntireColumnContainsSameValue(columnHeader: string, value: string, guid?: string): Promise<boolean> {

@@ -152,14 +152,14 @@ describe("Case General Approval Tests", () => {
         let caseData = undefined;
         let caseId: string;
         let approvalMappingData = undefined;
+        let caseTemplateDataWithMatchingCriteria;
 
         beforeAll(async () => {
             // Create Case Template through API
-            let caseTemplateDataWithMatchingCriteria = {
+            caseTemplateDataWithMatchingCriteria = {
                 "templateName": 'caseTemplateForSelfApprovalWithoutProcessWithCriticalPriority' + randomStr,
                 "templateSummary": 'Automated One must Approval Case',
-                "categoryTier1": 'Applications',
-                "casePriority": "Critical",
+                "categoryTier1": 'Phones',
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "businessUnit": "United States Support",
@@ -187,7 +187,7 @@ describe("Case General Approval Tests", () => {
             await apiHelper.associateCaseTemplateWithApprovalMapping(caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
 
             caseData = {
-                "Requester": "10843User1",
+                "Requester": "apavlik",
                 "Summary": "Automated One must Approval Case",
                 "Origin": "Agent",
                 "Case Template ID": caseTemplateDisplayId
@@ -223,7 +223,7 @@ describe("Case General Approval Tests", () => {
             await browser.sleep(1000); // sleep added for expression builder loading time
             await approvalConfigurationPage.clickExpressionOperatorLinkToSelectExpressionValue();
             await approvalConfigurationPage.selectExpressionValuesOptions('Categorization', 'Operational');
-            await approvalConfigurationPage.searchFoundationDataToApprovalExpression('Applications');
+            await approvalConfigurationPage.searchFoundationDataToApprovalExpression(caseTemplateDataWithMatchingCriteria.categoryTier1);
             await approvalConfigurationPage.clickSelectLink();
             await approvalConfigurationPage.clickFoundationDataSaveButton();
             await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
@@ -264,7 +264,7 @@ describe("Case General Approval Tests", () => {
             expect(await showApproversBladePo.getApproversCount()).toBe(0);
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         });
-        
+
         it('[DRDMV-1367,DRDMV-10823]:Approve the case and verify the case details', async () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
@@ -312,6 +312,7 @@ describe("Case General Approval Tests", () => {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Canceled");
             await activityTabPage.clickOnFilterButton();
@@ -599,7 +600,7 @@ describe("Case General Approval Tests", () => {
             expect(await showApproversBladePo.getApproversCount()).toBe(0);
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         });
-        
+
         it('[DRDMV-14049,DRDMV-10824]:Approve the case and verify the case details', async () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
@@ -634,7 +635,7 @@ describe("Case General Approval Tests", () => {
             expect(await showApproversBladePo.getApprovedApprovalStatusLabel()).toContain('Approved');
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         });
-        
+
         it('[DRDMV-14049,DRDMV-10824]:Verify the approvals details on case activity', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
@@ -834,7 +835,7 @@ describe("Case General Approval Tests", () => {
             expect(await showApproversBladePo.getApproversCount()).toBe(0);
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         });
-        
+
         it('[DRDMV-10832]:Reject the case and verify the case details', async () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
@@ -899,7 +900,7 @@ describe("Case General Approval Tests", () => {
             expect(await showApproversBladePo.getApproversCount()).toBe(0);
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         });
-        
+
         it('[DRDMV-10832]:Approve the case and verify the case details', async () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
@@ -960,7 +961,6 @@ describe("Case General Approval Tests", () => {
                 "templateName": 'caseTemplateForSelfApprovalWithoutProcessWithCriticalPriority' + randomStr,
                 "templateSummary": 'Automated One must Approval Case' + randomStr,
                 "categoryTier1": 'Fixed Assets',
-                "casePriority": "Critical",
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "businessUnit": "United States Support",
@@ -1073,7 +1073,6 @@ describe("Case General Approval Tests", () => {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("In Progress");
             await activityTabPage.clickOnFilterButton();
@@ -1118,13 +1117,13 @@ describe("Case General Approval Tests", () => {
         let caseData = undefined;
         let caseId: string;
         let approvalMappingData = undefined;
+        let caseTemplateDataWithMatchingCriteria;
         beforeAll(async () => {
             // Create Case Template through API
-            let caseTemplateDataWithMatchingCriteria = {
+            caseTemplateDataWithMatchingCriteria = {
                 "templateName": 'caseTemplateForSelfApprovalWithoutProcessWithCriticalPriority' + randomStr,
                 "templateSummary": 'Automated One must Approval Case',
-                "categoryTier1": 'Applications',
-                "casePriority": "Critical",
+                "categoryTier1": 'Projectors',
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "businessUnit": "United States Support",
@@ -1183,7 +1182,7 @@ describe("Case General Approval Tests", () => {
             await browser.sleep(1000); // sleep added for expression builder loading time
             await approvalConfigurationPage.clickExpressionOperatorLinkToSelectExpressionValue();
             await approvalConfigurationPage.selectExpressionValuesOptions('Categorization', 'Operational');
-            await approvalConfigurationPage.searchFoundationDataToApprovalExpression('Applications');
+            await approvalConfigurationPage.searchFoundationDataToApprovalExpression(caseTemplateDataWithMatchingCriteria.categoryTier1);
             await approvalConfigurationPage.clickSelectLink();
             await approvalConfigurationPage.clickFoundationDataSaveButton();
             await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
@@ -1196,10 +1195,11 @@ describe("Case General Approval Tests", () => {
             await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
         });
         it('[DRDMV-22395,DRDMV-22398]:Tiggered the Approval on Case and check Case View screen by Approver should show Approval component', async () => {
-            await apiHelper.apiLogin('qliu');
+            await apiHelper.apiLogin('fritz');
             let response = await apiHelper.createCase(caseData);
             caseId = response.displayId;
-            await navigationPage.gotoCaseConsole();
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.isApprovalButtonsPresent("Approve")).toBeFalsy();
@@ -1220,8 +1220,7 @@ describe("Case General Approval Tests", () => {
         });
         it('[DRDMV-22395,DRDMV-22398]:Tiggered the Approval on Case and check Case View screen by Approver should show Approval component', async () => {
             await navigationPage.signOut();
-            await loginPage.login('qliu');
-            await navigationPage.gotoCaseConsole();
+            await loginPage.login('qkatawazi');
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
@@ -1234,6 +1233,9 @@ describe("Case General Approval Tests", () => {
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("In Progress");
+            await activityTabPage.clickOnFilterButton();
+            await activityTabPage.selectFilterCheckBox('Approvals');
+            await activityTabPage.clickOnFilterApplyButton();
             expect(await activityTabPage.getFirstPostContent()).toContain('Case was approved');
             await activityTabPage.clickShowApproversLink('Show Approvers');
             expect(await showApproversBladePo.isShowApproversBladeOnActivityDisplayed()).toBeTruthy('Approver List blade is not displayed');
@@ -1252,7 +1254,8 @@ describe("Case General Approval Tests", () => {
             await apiHelper.apiLogin('qliu');
             let response = await apiHelper.createCase(caseData);
             caseId = response.displayId;
-            await navigationPage.gotoCaseConsole();
+            await navigationPage.signOut();
+            await loginPage.login('qliu');
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
@@ -1261,6 +1264,9 @@ describe("Case General Approval Tests", () => {
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Canceled");
+            await activityTabPage.clickOnFilterButton();
+            await activityTabPage.selectFilterCheckBox('Approvals');
+            await activityTabPage.clickOnFilterApplyButton();
             expect(await activityTabPage.getFirstPostContent()).toContain('Case was rejected');
             await activityTabPage.clickShowApproversLink('Show Approvers');
             expect(await showApproversBladePo.isShowApproversBladeOnActivityDisplayed()).toBeTruthy('Approver List blade is not displayed');
