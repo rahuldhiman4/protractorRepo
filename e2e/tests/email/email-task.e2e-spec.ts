@@ -509,17 +509,16 @@ describe('Email Task', () => {
         await emailPo.clickOnSendButton();
     });
 
-    it('[DRDMV-19555]: In Case of Reply/Reply All  if we select new Email template then previous contents should not be erased.', async () => {
+    it('[DRDMV-19555]: In Case of Reply/Reply All if we select new Email template then previous contents should not be erased.', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        await apiHelper.apiLogin('tadmin');
         let emailTemplateData = require('../../data/ui/email/email.template.api.json');
-        let emailTemplateName: string = await emailTemplateData['emailTemplateWithMandatoryField'].TemplateName + randomStr;
-        emailTemplateData['emailTemplateWithMandatoryField'].TemplateName = emailTemplateName;
-        //second email template
-        await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateWithMandatoryField']);
-        let emailSalaryTemplate: string = await emailTemplateData['emailTemplateForSalary'].TemplateName + randomStr;
-        emailTemplateData['emailTemplateForSalary'].TemplateName = emailSalaryTemplate;
-        await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateForSalary']);
+        let emailTemplateDataForTest1 = await emailTemplateData['emailTemplateWithMandatoryField'];
+        emailTemplateDataForTest1.TemplateName = 'TemplateWithMandatoryField' + randomStr;
+        let emailTemplateDataForTest2 = await emailTemplateData['emailTemplateForSalary'];
+        emailTemplateDataForTest2.TemplateName = 'TemplateForSalary' + randomStr;
+        await apiHelper.apiLogin('fritz');
+        await apiHelper.createEmailTemplate(emailTemplateDataForTest1);
+        await apiHelper.createEmailTemplate(emailTemplateDataForTest2);
         let taskTemplateName = 'Manual task19555' + randomStr;
         let manualTaskSummary = 'ManualSummary19555' + randomStr;
         let templateData = {
@@ -551,7 +550,6 @@ describe('Email Task', () => {
             "Support Group": "US Support 3",
             "Assignee": "Qadim Katawazi"
         }
-        await apiHelper.apiLogin('fritz');
         await apiHelper.createManualTaskTemplate(templateData);
         await apiHelper.createExternalTaskTemplate(externaltemplateData);
         let newCaseTemplate = await apiHelper.createCase(caseData);
@@ -572,7 +570,7 @@ describe('Email Task', () => {
         await editTask.clickOnSaveButton();
         await viewTaskPo.clickOnRequesterEmail();
         await emailPo.clickOnSelectTempalteButton();
-        await emailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateName);
+        await emailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateDataForTest1.TemplateName);
         await emailTemplateBladePo.clickOnApplyButton();
         await emailPo.clickOnSendButton();
         await utilityCommon.refresh();
@@ -582,7 +580,7 @@ describe('Email Task', () => {
         expect(await emailPo.getToEmailPerson()).toContain('Fritz Schulz');
         expect(await emailPo.getEmailBody()).toContain('Hi Team ,\n\nI am taking leave today.\n\nThanks.');
         await emailPo.clickOnSelectTempalteButton();
-        await emailTemplateBladePo.searchAndSelectEmailTemplate(emailSalaryTemplate);
+        await emailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateDataForTest2.TemplateName);
         await emailTemplateBladePo.clickOnApplyButton();
         expect(await emailPo.getEmailBody()).toContain('Hi Team ,\n\nI am taking leave today.\n\nThanks.');
         await emailPo.clickOnSendButton();
@@ -599,7 +597,7 @@ describe('Email Task', () => {
         await viewTaskPo.clickOnRequesterEmail();
         await emailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
         await emailPo.clickOnSelectTempalteButton();
-        await emailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateName);
+        await emailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateDataForTest1.TemplateName);
         await emailTemplateBladePo.clickOnApplyButton();
         await emailPo.clickOnSendButton();
         await utilityCommon.refresh();
@@ -608,7 +606,7 @@ describe('Email Task', () => {
         expect(await emailPo.getToEmailPerson()).toContain('Fritz Schulz');
         expect(await emailPo.getEmailBody()).toContain('Hi Team ,\n\nI am taking leave today.\n\nThanks.');
         await emailPo.clickOnSelectTempalteButton();
-        await emailTemplateBladePo.searchAndSelectEmailTemplate(emailSalaryTemplate);
+        await emailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateDataForTest2.TemplateName);
         await emailTemplateBladePo.clickOnApplyButton();
         expect(await emailPo.getEmailBody()).toContain('Hi Team ,\n\nI am taking leave today.\n\nThanks.');
         await emailPo.clickOnSendButton();

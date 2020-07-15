@@ -16,6 +16,9 @@ import apiCoreUtil from '../../api/api.core.util';
 
 describe('Email Configuration', () => {
     let offlineSupportGroup, emailID = "bmctemptestemail@gmail.com";
+    const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
+    const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
+
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
@@ -31,7 +34,6 @@ describe('Email Configuration', () => {
         };
         offlineSupportGroup.relatedOrgId = await apiCoreUtil.getBusinessUnitGuid("BusinessUnitData10410");
         await apiHelper.createSupportGroup(offlineSupportGroup);
-        await apiHelper.createSupportGroup(offlineSupportGroup);
     });
 
     afterAll(async () => {
@@ -42,18 +44,16 @@ describe('Email Configuration', () => {
     });
 
     async function foundationData(company: string, businessUnit: string, supportGroup: string) {
-        let businessData, suppGrpData;
-        const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
-        const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
         await apiHelper.apiLogin('tadmin');
-        businessData = businessDataFile[businessUnit];
-        suppGrpData = supportGrpDataFile[supportGroup];
-        await browser.sleep(15000); //waiting fordata to be reflected on UI
+        let businessData = businessDataFile[businessUnit];
+        let suppGrpData = supportGrpDataFile[supportGroup];
         let orgId = await apiCoreUtil.getOrganizationGuid(company);
         businessData.relatedOrgId = orgId;
         let businessUnitId = await apiHelper.createBusinessUnit(businessData);
+        await browser.sleep(5000); //waiting fordata to be reflected on UI
         suppGrpData.relatedOrgId = businessUnitId;
         await apiHelper.createSupportGroup(suppGrpData);
+        await browser.sleep(9000); //waiting fordata to be reflected on UI
     };
 
     //ankagraw
@@ -191,9 +191,8 @@ describe('Email Configuration', () => {
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.createEmailConfiguration(INCOMINGMAIL_COMPANY_ONE, OUTGOINGEMAIL_COMPANY_ONE, EMAILCONFIG_COMPANY_ONE);
-            await apiHelper.createEmailConfiguration(INCOMINGMAIL_COMPANY_PSILON, OUTGOINGEMAIL_COMPANY_PSILON, EMAILCONFIG_COMPANY_PSILON);
         });
-         it('[DRDMV-10410,DRDMV-10418,DRDMV-10428,DRDMV-10433,DRDMV-10434,DRDMV-10435,DRDMV-10415]: Associate Support group tab in General Email Configuration.', async () => {
+        it('[DRDMV-10410,DRDMV-10418,DRDMV-10428,DRDMV-10433,DRDMV-10434,DRDMV-10435,DRDMV-10415]: Associate Support group tab in General Email Configuration.', async () => {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
             await utilGrid.searchAndOpenHyperlink(emailID);
@@ -211,7 +210,7 @@ describe('Email Configuration', () => {
             await editEmailConfigPo.searchAssociatedEntitiesToBeRemoveAssociation("UI-SupportGroup-10410");
             expect(await editEmailConfigPo.getAssociatedSupportGroupFromAssociatedSupportGroupListInAssociatedSupportGroupTab()).toBe("UI-SupportGroup-10410");
             await editEmailConfigPo.cancelEditEmailConfigConfig();
-         });
+        });
         it('[DRDMV-10410,DRDMV-10418,DRDMV-10428,DRDMV-10433,DRDMV-10434,DRDMV-10435,DRDMV-10415]: Support Group: Associate Support group tab in Email Configuration.', async () => {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
@@ -229,6 +228,8 @@ describe('Email Configuration', () => {
         it('[DRDMV-10410,DRDMV-10418,DRDMV-10428,DRDMV-10433,DRDMV-10434,DRDMV-10435,DRDMV-10415]: Support Group: Associate Support group tab in Email Configuration.', async () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.createEmailConfiguration(INCOMINGMAIL_COMPANY_PSILON, OUTGOINGEMAIL_COMPANY_PSILON, EMAILCONFIG_COMPANY_PSILON);
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
             expect(await utilGrid.isGridRecordPresent(emailID)).toBeFalsy();

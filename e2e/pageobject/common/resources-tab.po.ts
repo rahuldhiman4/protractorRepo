@@ -96,9 +96,13 @@ export class Resources {
     }
 
     async getAdvancedSearchResultForParticularSection(headingType: string): Promise<string> {
-        //await browser.wait(this.EC.elementToBeClickable($(this.selectors.advancedSearchResult)));
-        const searchResult = await element(by.xpath(`//*[contains(@title,"${headingType}")]/..//*[contains(@class,"bwf-search-fields__title-text")]`));
-        return await searchResult.getText();
+        return await element(by.cssContainingText('div.bwf-search-fields__title-text span', headingType)).isPresent().then(async (result) => {
+            if (result) {
+                return await browser.wait(this.EC.visibilityOf(element(by.cssContainingText('div.bwf-search-fields__title-text span', headingType))), 5000).then(async () => {
+                    return await await element(by.cssContainingText('div.bwf-search-fields__title-text span', headingType)).getText();
+                });
+            }
+        });
     }
 
     async getCountOfHeading(headerName: string): Promise<string> {
@@ -113,15 +117,15 @@ export class Resources {
     }
 
     async isRecommendedKnowledgePresent(knowledgeTitle: string): Promise<boolean> {
-        return this.isResourcePresent(knowledgeTitle);
+        return await this.isResourcePresent(knowledgeTitle);
     }
 
     async isRecommendedTemplatePresent(caseTemplateName: string): Promise<boolean> {
-        return this.isResourcePresent(caseTemplateName);
+        return await this.isResourcePresent(caseTemplateName);
     }
 
     async isRecommendedCasePresent(caseSummary: string): Promise<boolean> {
-        return this.isResourcePresent(caseSummary);
+        return await this.isResourcePresent(caseSummary);
     }
 
     async isResourcePresent(resourceName: string): Promise<boolean> {

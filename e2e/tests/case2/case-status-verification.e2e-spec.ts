@@ -262,9 +262,11 @@ describe('Case Status Verification', () => {
             await viewCasePage.clickOnTab('Case Access');
             await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Agent Access');
             await caseAccessTabPo.selectAndAddAgent('Qing Yuan');
-            await expect(await caseAccessTabPo.isCaseAccessEntityAdded('Qing Yuan')).toBeTruthy('Failuer: Qing Yuan Agent Name is missing');
+            
             //Give Write Access User3
             await caseAccessTabPo.selectAgentWithWriteAccess('qstrong');
+
+            expect(await caseAccessTabPo.isCaseAccessEntityAdded('Qing Yuan')).toBeTruthy('Failuer: Qing Yuan Agent Name is missing');
             expect(await caseAccessTabPo.isCaseAccessEntityAdded('Quin Strong')).toBeTruthy('Failuer: Quin Strong Agent Name is missing');
             await updateStatusBladePo.changeCaseStatus(statusResolved);
             await updateStatusBladePo.setStatusReason('Auto Resolved');

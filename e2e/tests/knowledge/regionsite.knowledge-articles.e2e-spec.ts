@@ -1,6 +1,5 @@
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
-import { Knowledge } from '../../api/constant.api';
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePage from '../../pageobject/case/create-case.po';
 import quickCase from '../../pageobject/case/quick-case.po';
@@ -42,7 +41,6 @@ let regionField = "Region";
 let siteField = "Site";
 let regionFieldVal = "Australia";
 let siteFieldVal = "Canberra";
-let siteFieldVal2 = "Athens";
 let regionFieldVal2 = "Central America";
 let siteFieldVal1 = "Mexico City";
 let knowledgeManagementApp = "Knowledge Management";
@@ -66,12 +64,6 @@ let canceledApprovalStatus = "CancelApproval";
 var title = "DRDMV-19572 KnowledgeArticle";
 
 describe('Knowledge Articles - Location (Region / Site) Tests', () => {
-    const draft: any = Knowledge.Draft;
-    const smeReview: any = Knowledge.SMEReview;
-    const published: any = Knowledge.Published;
-    const retired: any = Knowledge.Retired;
-    const closed: any = Knowledge.Closed;
-    const canceled: any = Knowledge.Canceled;
     const filePath = '../../../data/ui/attachment/articleStatus.png';
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
@@ -88,6 +80,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             "categoryTier3": "Incident",
             "region": "Australia",
             "site": "Canberra",
+            "company": "Petramco",
             "assignedCompany": "Petramco",
             "assigneeBusinessUnit": "United Kingdom Support",
             "assigneeSupportGroup": "GB Support 1",
@@ -95,58 +88,54 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         }
         // Create article in in progress status
         articleData.title = title + "_" + inProgressStatus;
-        var knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
+        await apiHelper.createKnowledgeArticle(articleData);
 
         //Create article in draft status
         articleData.title = title + "_" + draftStatus;
-        var knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
-        var knowledgeArticleGUID = knowledgeArticleData.id;
-        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, draftStatus)).toBeTruthy("Article with Draft status not updated.");
+        let knowledgeArticleData1 = await apiHelper.createKnowledgeArticle(articleData);
+        let knowledgeArticleGUID1 = knowledgeArticleData1.id;
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID1, draftStatus)).toBeTruthy("Article with Draft status not updated.");
 
         //Create article in SMEReview status
         articleData.title = title + "_" + smeReviewStatus;
-        var knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
-        var knowledgeArticleGUID = knowledgeArticleData.id;
-        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, draftStatus)).toBeTruthy("Article with Draft status not updated.");
-        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, smeReviewStatus, "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with SME Review status not updated.");
+        let knowledgeArticleData2 = await apiHelper.createKnowledgeArticle(articleData);
+        let knowledgeArticleGUID2 = knowledgeArticleData2.id;
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID2, draftStatus)).toBeTruthy("Article with Draft status not updated.");
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID2, smeReviewStatus, "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with SME Review status not updated.");
 
         //Create article in Published status
         articleData.title = title + "_" + publishedApprovalStatus;
-        var knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
-        var knowledgeArticleGUID = knowledgeArticleData.id;
-        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, draftStatus)).toBeTruthy("Article with Draft status not updated.");
-        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, publishedApprovalStatus)).toBeTruthy("Article with Published status not updated.");
+        let knowledgeArticleData3 = await apiHelper.createKnowledgeArticle(articleData);
+        let knowledgeArticleGUID3 = knowledgeArticleData3.id;
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID3, draftStatus)).toBeTruthy("Article with Draft status not updated.");
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID3, publishedApprovalStatus)).toBeTruthy("Article with Published status not updated.");
 
         //Create article in Retired status
         articleData.title = title + "_" + retiredApprovalStatus;
-        var knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
-        var knowledgeArticleGUID = knowledgeArticleData.id;
-        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, draftStatus)).toBeTruthy("Article with Draft status not updated.");
-        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, publishedApprovalStatus)).toBeTruthy("Article with Published status not updated.");
+        let knowledgeArticleData4 = await apiHelper.createKnowledgeArticle(articleData);
+        let knowledgeArticleGUID4 = knowledgeArticleData4.id;
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID4, draftStatus)).toBeTruthy("Article with Draft status not updated.");
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID4, publishedApprovalStatus)).toBeTruthy("Article with Published status not updated.");
         await browser.sleep(5000);
-        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, retiredApprovalStatus)).toBeTruthy("Article with Retired status not updated.");
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID4, retiredApprovalStatus)).toBeTruthy("Article with Retired status not updated.");
 
         //Create article in Closed status
         articleData.title = title + "_" + closedStatus;
-        var knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
-        var knowledgeArticleGUID = knowledgeArticleData.id;
-        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, draftStatus)).toBeTruthy("Article with Draft status not updated.");
-        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, publishedApprovalStatus)).toBeTruthy("Article with Published status not updated.");
+        let knowledgeArticleData5 = await apiHelper.createKnowledgeArticle(articleData);
+        let knowledgeArticleGUID5 = knowledgeArticleData5.id;
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID5, draftStatus)).toBeTruthy("Article with Draft status not updated.");
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID5, publishedApprovalStatus)).toBeTruthy("Article with Published status not updated.");
         await browser.sleep(5000);
-        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, retiredApprovalStatus)).toBeTruthy("Article with Published status not updated.");
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID5, retiredApprovalStatus)).toBeTruthy("Article with Published status not updated.");
         await browser.sleep(5000);
-        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, closedStatus)).toBeTruthy("Article with Closed status not updated.");
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID5, closedStatus)).toBeTruthy("Article with Closed status not updated.");
 
         //Create article in Canceled status
         articleData.title = title + "_" + canceledApprovalStatus;
-        var knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
-        var knowledgeArticleGUID = knowledgeArticleData.id;
-        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, canceledApprovalStatus)).toBeTruthy("Article with Canceled status not updated.");
+        let knowledgeArticleData6 = await apiHelper.createKnowledgeArticle(articleData);
+        let knowledgeArticleGUID6 = knowledgeArticleData6.id;
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID6, canceledApprovalStatus)).toBeTruthy("Article with Canceled status not updated.");
     }, 3 * 60 * 1000);
-
-    afterEach(async () => {
-        await utilityCommon.refresh();
-    });
 
     afterAll(async () => {
         await utilityCommon.closeAllBlades();
@@ -306,9 +295,8 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await navigationPage.signOut();
 
             //Create Knowledge article by Case Manager
-            await loginPage.login(caseManagerUser);
+            await loginPage.login('frieda');
             await navigationPage.gotoKnowledgeConsole();
-            await utilCommon.waitUntilSpinnerToHide();
             await navigationPage.gotoCreateKnowledge();
             await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
@@ -449,8 +437,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         });
 
         afterAll(async () => {
-            await utilityCommon.refresh();
-            await utilCommon.waitUntilSpinnerToHide();
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });
@@ -469,6 +456,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             "userId": "caseManager",
             "userPermission": "AGGAA5V0GE9Z4AOR7CWOOQLASE4PHJ;AGGAA5V0GEON8AOZHHGIOY0UZNXGOR;AGGADG1AAO0VGAP8SXEGP7VU2U4ZS8",
         }
+        let title = `Document-${new Date().valueOf()}`;
 
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
@@ -486,7 +474,6 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
                 .toEqual('Document Library Console - Business Workflows');
             await createDocumentLibraryPage.openAddNewDocumentBlade();
             await createDocumentLibraryPage.addAttachment(filePath);
-            let title = `Document-${new Date().valueOf()}`;
             await createDocumentLibraryPage.setTitle(title);
             await createDocumentLibraryPage.selectCompany(companyStr);
             await createDocumentLibraryPage.selectBusinessUnit(hrSupportStr);
@@ -506,14 +493,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
 
         it('[DRDMV-19574]:Verify the Save functionality of Region and Site fields on Document Library Create / Edit screen', async () => {
             //Login with Case Manager
-            await loginPage.login(caseManageruserData.userId);
+            await loginPage.login(caseManageruserData.userId + '@petramco.com', 'Password_1234');
             //Create a document library
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows'))
                 .toEqual('Document Library Console - Business Workflows');
             await createDocumentLibraryPage.openAddNewDocumentBlade();
             await createDocumentLibraryPage.addAttachment(filePath);
-            title = `Document-${new Date().valueOf()}`;
             await createDocumentLibraryPage.setTitle(title);
             await createDocumentLibraryPage.selectCompany(companyStr);
             await createDocumentLibraryPage.selectBusinessUnit(hrSupportStr);
@@ -521,8 +507,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createDocumentLibraryPage.selectRegion(regionFieldVal);
             await createDocumentLibraryPage.selectSite(siteFieldVal);
             await createDocumentLibraryPage.saveNewDocument();
-            await utilGrid.searchOnGridConsole(title);
-            await createDocumentLibraryPage.clickOnSelectedGridRecord(documentLibraryColumnHeader);
+            await utilGrid.searchAndOpenHyperlink(title);
             expect(await editDocumentLibraryPo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
             expect(await editDocumentLibraryPo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
             await editDocumentLibraryPo.setRegion(regionFieldVal2);
@@ -534,7 +519,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
 
         it('[DRDMV-19574]:Verify the Save functionality of Region and Site fields on Document Library Create / Edit screen', async () => {
             //Login with Case Agent
-            await loginPage.login(caseAgentuserData.userId);
+            await loginPage.login(caseAgentuserData.userId + '@petramco.com', 'Password_1234');
             //Create a document library
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows'))
@@ -549,8 +534,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createDocumentLibraryPage.selectRegion(regionFieldVal);
             await createDocumentLibraryPage.selectSite(siteFieldVal);
             await createDocumentLibraryPage.saveNewDocument();
-            await utilGrid.searchOnGridConsole(title);
-            await createDocumentLibraryPage.clickOnSelectedGridRecord(documentLibraryColumnHeader);
+            await utilGrid.searchAndOpenHyperlink(title);
             expect(await editDocumentLibraryPo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
             expect(await editDocumentLibraryPo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
             await editDocumentLibraryPo.setRegion(regionFieldVal2);
@@ -569,30 +553,31 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         });
     });
 
-    it('[DRDMV-19575]:Verify the search functionality of Document library console for Region', async () => {
-        try {
-            await apiHelper.apiLogin('tadmin');
-            var regionFields: string[] = ["Region"];
-            var siteFields: string[] = ["Site"];
+    describe('[DRDMV-19575]:Verify the search functionality of Document library console for Region', () => {
+        let regionFields: string[] = ["Region"];
+        let emptyStr = undefined;
+        let caseAgentuserData = {
+            "firstName": "caseAgent",
+            "lastName": "user",
+            "userId": "caseAgent",
+            "userPermission": "AGGAA5V0GE9Z4AOR0BXUOQ3ZT04EJA;AGGAA5V0GEON8AOZHHGIOY0UZNXGOR;AGGADG1AAO0VGAP8SXEGP7VU2U4ZS8",
+        }
+        let caseManageruserData = {
+            "firstName": "caseManager",
+            "lastName": "user",
+            "userId": "caseManager",
+            "userPermission": "AGGAA5V0GE9Z4AOR7CWOOQLASE4PHJ;AGGAA5V0GEON8AOZHHGIOY0UZNXGOR;AGGADG1AAO0VGAP8SXEGP7VU2U4ZS8",
+        }
 
-            var caseAgentuserData = {
-                "firstName": "caseAgent",
-                "lastName": "user",
-                "userId": "caseAgent",
-                "userPermission": "AGGAA5V0GE9Z4AOR0BXUOQ3ZT04EJA;AGGAA5V0GEON8AOZHHGIOY0UZNXGOR;AGGADG1AAO0VGAP8SXEGP7VU2U4ZS8",
-            }
-            var caseManageruserData = {
-                "firstName": "caseManager",
-                "lastName": "user",
-                "userId": "caseManager",
-                "userPermission": "AGGAA5V0GE9Z4AOR7CWOOQLASE4PHJ;AGGAA5V0GEON8AOZHHGIOY0UZNXGOR;AGGADG1AAO0VGAP8SXEGP7VU2U4ZS8",
-            }
+        beforeAll(async () => {
+            await apiHelper.apiLogin('tadmin');
             await apiHelper.createNewUser(caseAgentuserData);
             await apiHelper.associatePersonToCompany(caseAgentuserData.userId, "Petramco");
-
             await apiHelper.createNewUser(caseManageruserData);
             await apiHelper.associatePersonToCompany(caseManageruserData.userId, "Petramco");
+        });
 
+        it('[DRDMV-19575]:Verify the search functionality of Document library console for Region', async () => {
             //*Create a document library
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows'))
@@ -602,6 +587,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             let title = `Document-${new Date().valueOf()}`;
             await createDocumentLibraryPage.setTitle(title);
             await createDocumentLibraryPage.selectCompany(companyStr);
+            await createDocumentLibraryPage.selectBusinessUnit('HR Support');
             await createDocumentLibraryPage.selectOwnerGroup(ownerSupportGroup);
             await createDocumentLibraryPage.selectRegion(regionFieldVal);
             await createDocumentLibraryPage.selectSite(siteFieldVal);
@@ -612,84 +598,79 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
                 .toEqual('Document Library Console - Business Workflows');
             await documentLibraryPage.addColumnOnGrid(regionFields);
             await utilGrid.searchOnGridConsole(regionFieldVal);
-            let regionVal = await documentLibraryPage.getSelectedGridRecordValue(regionField);
-            console.log(regionVal);
-            expect(regionVal).toEqual(regionFieldVal);
+            expect(await documentLibraryPage.getSelectedGridRecordValue(regionField)).toEqual(regionFieldVal);
             await documentLibraryPage.removeColumnOnGrid(regionFields);
             await utilGrid.searchOnGridConsole(regionFieldVal);
-            regionVal = await documentLibraryPage.getSelectedGridRecordValue(regionField);
-            expect(regionVal).toEqual(emptyStr);
+            expect(await documentLibraryPage.getSelectedGridRecordValue(regionField)).toEqual(emptyStr);
             await navigationPage.signOut();
+        });
 
+        it('[DRDMV-19575]:Verify the search functionality of Document library console for Region', async () => {
             //Login with Case Manager
-            await loginPage.login(caseManageruserData.userId);
+            await loginPage.login(caseManageruserData.userId + '@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows'))
                 .toEqual('Document Library Console - Business Workflows');
             await documentLibraryPage.addColumnOnGrid(regionFields);
             await utilGrid.searchOnGridConsole(regionFieldVal);
-            regionVal = await documentLibraryPage.getSelectedGridRecordValue(regionField);
-            expect(regionVal).toEqual(regionFieldVal);
+            expect(await documentLibraryPage.getSelectedGridRecordValue(regionField)).toEqual(regionFieldVal);
 
             await documentLibraryPage.removeColumnOnGrid(regionFields);
-            await utilGrid.searchOnGridConsole(regionFieldVal);
-            regionVal = await documentLibraryPage.getSelectedGridRecordValue(regionField);
-            expect(regionVal).toEqual(emptyStr);
+            expect(await utilGrid.isGridRecordPresent(regionFieldVal)).toBeFalsy('Record is present')
             await navigationPage.signOut();
 
             //Login with Case Agent
-            await loginPage.login(caseAgentuserData.userId);
+            await loginPage.login(caseAgentuserData.userId + '@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows'))
                 .toEqual('Document Library Console - Business Workflows');
             await documentLibraryPage.addColumnOnGrid(regionFields);
             await utilGrid.searchOnGridConsole(regionFieldVal);
-            regionVal = await documentLibraryPage.getSelectedGridRecordValue(regionField);
-            expect(regionVal).toEqual(regionFieldVal);
+            expect(await documentLibraryPage.getSelectedGridRecordValue(regionField)).toEqual(regionFieldVal);
 
             await documentLibraryPage.removeColumnOnGrid(regionFields);
-            await utilGrid.searchOnGridConsole(regionFieldVal);
-            regionVal = await documentLibraryPage.getSelectedGridRecordValue(regionField);
-            expect(regionVal).toEqual(emptyStr);
-            await navigationPage.signOut();
-        }
-        catch (error) {
-            throw error;
-        }
-        finally {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
-            await utilityCommon.refresh();
-            await utilCommon.waitUntilSpinnerToHide();
+            expect(await utilGrid.isGridRecordPresent(regionFieldVal)).toBeFalsy('Record is present')
+        });
+
+        afterAll(async () => {
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
-        }
-    }, 420 * 1000);
+        });
+    });
 
-    it('[DRDMV-19573]:Verify the document search based on Region and Site from attachments', async () => {
-        try {
-            let caseSummary = `Case for Document Search-${new Date().valueOf()}`;
+    describe('[DRDMV-19573]:Verify the document search based on Region and Site from attachments', () => {
+        let caseSummary = `Case for Document Search-${new Date().valueOf()}`;
+        let title = `Document-${new Date().valueOf()}`;
 
+        beforeAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+        })
+
+        it('[DRDMV-19573]:Verify the document search based on Region and Site from attachments', async () => {
             //Create a document library
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows'))
                 .toEqual('Document Library Console - Business Workflows');
             await createDocumentLibraryPage.openAddNewDocumentBlade();
             await createDocumentLibraryPage.addAttachment(filePath);
-            let title = `Document-${new Date().valueOf()}`;
             await createDocumentLibraryPage.setTitle(title);
             await createDocumentLibraryPage.selectCompany(companyStr);
-            await createDocumentLibraryPage.selectOwnerGroup(ownerSupportGroup);
+            await createDocumentLibraryPage.selectBusinessUnit('Facilities Support');
+            await createDocumentLibraryPage.selectOwnerGroup('Facilities');
             await createDocumentLibraryPage.selectRegion(regionFieldVal);
             await createDocumentLibraryPage.selectSite(siteFieldVal);
             await createDocumentLibraryPage.saveNewDocument();
-            await utilGrid.searchOnGridConsole(title);
-            await createDocumentLibraryPage.clickOnSelectedGridRecord(documentLibraryColumnHeader);
+            await utilGrid.searchAndOpenHyperlink(title);
             expect(await editDocumentLibraryPo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
             expect(await editDocumentLibraryPo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
             await createDocumentLibraryPage.selectStatus(documentLibraryStatus);
             await createDocumentLibraryPage.saveUpdatedDocument();
             await browser.sleep(30000);
+        });
 
+        it('[DRDMV-19573]:Verify the document search based on Region and Site from attachments', async () => {
             //Navigate to Create case
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
@@ -705,13 +686,14 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(documentLibraryStr)).toEqual(title);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(title)).toEqual(title);
             await resources.enterAdvancedSearchText(title);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
             await expect(await resources.getAdvancedSearchResultForParticularSection(documentLibraryStr)).toEqual(title);
+            await utilityCommon.closeAllBlades();
 
             await viewCasePage.clickOnEmailLink();
             await composeMailPo.clickOnAttachmentLink();
@@ -720,17 +702,20 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(documentLibraryStr)).toEqual(title);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(title)).toEqual(title);
             await resources.enterAdvancedSearchText(title);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(documentLibraryStr)).toEqual(title);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(title)).toEqual(title);
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
+        });
 
+        it('[DRDMV-19573]:Verify the document search based on Region and Site from attachments', async () => {
             //Navigate to Create case
-            await loginPage.login(caseManagerUser);
+            await loginPage.login('frieda');
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary(caseSummary);
@@ -745,13 +730,14 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(documentLibraryStr)).toEqual(title);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(title)).toEqual(title);
             await resources.enterAdvancedSearchText(title);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(documentLibraryStr)).toEqual(title);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(title)).toEqual(title);
+            await utilityCommon.closeAllBlades();
 
             await viewCasePage.clickOnEmailLink();
             await composeMailPo.clickOnAttachmentLink();
@@ -760,17 +746,20 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(documentLibraryStr)).toEqual(title);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(title)).toEqual(title);
             await resources.enterAdvancedSearchText(title);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(documentLibraryStr)).toEqual(title);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(title)).toEqual(title);
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
+        });
 
+        it('[DRDMV-19573]:Verify the document search based on Region and Site from attachments', async () => {
             //Navigate to Create case
-            await loginPage.login(caseAgentUser);
+            await loginPage.login('fabian');
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary(caseSummary);
@@ -785,13 +774,14 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(documentLibraryStr)).toEqual(title);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(title)).toEqual(title);
             await resources.enterAdvancedSearchText(title);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(documentLibraryStr)).toEqual(title);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(title)).toEqual(title);
+            await utilityCommon.closeAllBlades();
 
             await viewCasePage.clickOnEmailLink();
             await composeMailPo.clickOnAttachmentLink();
@@ -800,29 +790,26 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(documentLibraryStr)).toEqual(title);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(title)).toEqual(title);
             await resources.enterAdvancedSearchText(title);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(documentLibraryStr)).toEqual(title);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(title)).toEqual(title);
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
-        }
-        catch (error) {
-            throw error;
-        }
-        finally {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
-            await utilityCommon.refresh();
-            await utilCommon.waitUntilSpinnerToHide();
+        });
+
+        afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
-        }
-    }, 540 * 1000);
+        });
+    });
 
-    it('[DRDMV-19572]:Verify the knowledge articles search based on Region and Site on Quick case / Create case', async () => {
-        try {
+    describe('[DRDMV-19572]:Verify the knowledge articles search based on Region and Site on Quick case / Create case', () => {
+
+        it('[DRDMV-19572]:Verify the knowledge articles search based on Region and Site on Quick case / Create case', async () => {
             await navigationPage.gotoQuickCase();
             await quickCase.selectRequesterName(caseAgentUser);
             await quickCase.setCaseSummary(articleInDraftStatus);
@@ -842,7 +829,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await expect(await resources.getAdvancedSearchResultForParticularSection(articleInDraftStatus)).toEqual(articleInDraftStatus);
 
             //Search with knowledge article with SMEReview status
-            await resources.enterAdvancedSearchText(articleInSMEReviewStatus);
+            await resources.clickOnBackButton();
             await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInSMEReviewStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
@@ -858,7 +845,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await expect(await resources.getAdvancedSearchResultForParticularSection(articleInSMEReviewStatus)).toEqual(articleInSMEReviewStatus);
 
             //Search with knowledge article with Published status
-            await resources.enterAdvancedSearchText(articleInPublishedStatus);
+            await resources.clickOnBackButton();
             await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInPublishedStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
@@ -872,7 +859,9 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
             await expect(await resources.getAdvancedSearchResultForParticularSection(articleInPublishedStatus)).toEqual(articleInPublishedStatus);
+        });
 
+        it('[DRDMV-19572]:Verify the knowledge articles search based on Region and Site on Quick case / Create case', async () => {
             //Search with knowledge article with Retired status
             await resources.enterAdvancedSearchText(articleInRetiredStatus);
             await resources.clickOnAdvancedSearchOptions();
@@ -920,7 +909,9 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
             await expect(await resources.getAdvancedSearchResultForParticularSection(articleInCanceledStatus)).toEqual(articleInCanceledStatus);
+        });
 
+        it('[DRDMV-19572]:Verify the knowledge articles search based on Region and Site on Quick case / Create case', async () => {
             //Navigate to Create case
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
@@ -972,7 +963,9 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
             await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInPublishedStatus);
+        });
 
+        it('[DRDMV-19572]:Verify the knowledge articles search based on Region and Site on Quick case / Create case', async () => {
             //Search with knowledge article with Retired status
             await resources.enterAdvancedSearchText(articleInRetiredStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
@@ -1015,7 +1008,9 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await resources.clickOnAdvancedSearchSettingsIconToClose();
             await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInCanceledStatus);
             await navigationPage.signOut();
+        });
 
+        it('[DRDMV-19572]:Verify the knowledge articles search based on Region and Site on Quick case / Create case', async () => {
             //Login with Case Manager
             await loginPage.login(caseManagerUser);
             await navigationPage.gotoQuickCase();
@@ -1065,7 +1060,9 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
             await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInPublishedStatus);
+        });
 
+        it('[DRDMV-19572]:Verify the knowledge articles search based on Region and Site on Quick case / Create case', async () => {
             //Search with knowledge article with Retired status
             await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInRetiredStatus);
@@ -1110,7 +1107,9 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
             await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInCanceledStatus);
+        });
 
+        it('[DRDMV-19572]:Verify the knowledge articles search based on Region and Site on Quick case / Create case', async () => {
             //Navigate to Create case
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
@@ -1162,7 +1161,9 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
             await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInPublishedStatus);
+        });
 
+        it('[DRDMV-19572]:Verify the knowledge articles search based on Region and Site on Quick case / Create case', async () => {
             //Search with knowledge article with Retired status
             await resources.enterAdvancedSearchText(articleInRetiredStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
@@ -1205,7 +1206,9 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await resources.clickOnAdvancedSearchSettingsIconToClose();
             await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInCanceledStatus);
             await navigationPage.signOut();
+        });
 
+        it('[DRDMV-19572]:Verify the knowledge articles search based on Region and Site on Quick case / Create case', async () => {
             //Login as Case Agent
             await loginPage.login(caseManagerUser);
             await navigationPage.gotoQuickCase();
@@ -1255,7 +1258,9 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
             await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInPublishedStatus);
+        });
 
+        it('[DRDMV-19572]:Verify the knowledge articles search based on Region and Site on Quick case / Create case', async () => {
             //Search with knowledge article with Retired status
             await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInRetiredStatus);
@@ -1300,7 +1305,9 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
             await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInCanceledStatus);
+        });
 
+        it('[DRDMV-19572]:Verify the knowledge articles search based on Region and Site on Quick case / Create case', async () => {
             //Navigate to Create case
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
@@ -1352,7 +1359,9 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
             await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInPublishedStatus);
+        });
 
+        it('[DRDMV-19572]:Verify the knowledge articles search based on Region and Site on Quick case / Create case', async () => {
             //Search with knowledge article with Retired status
             await resources.enterAdvancedSearchText(articleInRetiredStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
@@ -1394,17 +1403,14 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
             await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInCanceledStatus);
-            await navigationPage.signOut();
-        }
-        catch (error) {
-            throw error;
-        }
-        finally {
+        });
+
+        afterAll(async () => {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
-            await utilityCommon.refresh();
-            await utilCommon.waitUntilSpinnerToHide();
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
-        }
-    }, 900 * 1000);
+        });
+    });
+
 });

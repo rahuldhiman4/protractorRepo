@@ -41,8 +41,6 @@ let knowledgeManagementApp = "Knowledge Management";
 let knowledgeArticlesTitleStr = "Knowledge Articles";
 let advancedSearchOptionCategoryTier1 = "Operational Category Tier 1";
 let advancedSearchOptionCategoryTier1ForDocumentLibrary = "Operational Category 1";
-let knowledgeArticlesStr = "Knowledge Articles ";
-let recommendedKnowledgeStr = "Recommended Knowledge ";
 let applyBtn = "Apply";
 let emptyStr = '';
 let articleInDraftStatus = 'DRDMV-19004 KnowledgeArticle_Draft';
@@ -52,8 +50,6 @@ let articleInRetiredStatus = 'DRDMV-19004 KnowledgeArticle_Retired';
 let articleInClosedStatus = 'DRDMV-19004 KnowledgeArticle_Closed';
 let articleInCanceledStatus = 'DRDMV-19004 KnowledgeArticle_Canceled';
 let companyStr = "Petramco";
-let ownerSupportGroup = "Compensation and Benefits";
-let documentLibraryStr = "Document Library ";
 let documentLibraryStatus = "Published";
 let draftStatus = "Draft";
 let inProgressStatus = "In Progress";
@@ -63,7 +59,6 @@ let retiredStatus = "Retired";
 let closedStatus = "Closed";
 let canceledStatus = "Canceled";
 let title = "DRDMV-19004 KnowledgeArticle";
-let knowledgeSetTitle = undefined;
 
 describe('Knowledge Articles - Categorization Tests', () => {
     const filePath = '../../../data/ui/attachment/articleStatus.png';
@@ -84,6 +79,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             "categoryTier1": "Employee Relations",
             "categoryTier2": "Compensation",
             "categoryTier3": "Bonus",
+            "company": "Petramco",
             "region": "Australia",
             "site": "Canberra",
             "assignedCompany": "Petramco",
@@ -91,6 +87,8 @@ describe('Knowledge Articles - Categorization Tests', () => {
             "assigneeSupportGroup": "GB Support 1",
             "assignee": "KMills"
         }
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteKnowledgeApprovalMapping();
 
         await apiHelper.apiLogin(knowledgePublisherUser);
         // Create article in in progress status
@@ -122,6 +120,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
         knowledgeArticleGUID = knowledgeArticleData.id;
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, draftStatus)).toBeTruthy("Article with Draft status not updated.");
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'PublishApproval', "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with Published status not updated.");
+        await browser.sleep(5000); //Takes time to update and reflect the status
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'RetireApproval', "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with Retired status not updated.");
 
         //Create article in Closed status
@@ -130,7 +129,9 @@ describe('Knowledge Articles - Categorization Tests', () => {
         knowledgeArticleGUID = knowledgeArticleData.id;
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, draftStatus)).toBeTruthy("Article with Draft status not updated.");
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'PublishApproval', "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with Published status not updated.");
+        await browser.sleep(5000); //Takes time to update and reflect the status
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'RetireApproval', "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with Retired status not updated.");
+        await browser.sleep(5000); //Takes time to update and reflect the status
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, closedStatus)).toBeTruthy("Article with Closed status not updated.");
 
         //Create article in Canceled status
@@ -138,10 +139,6 @@ describe('Knowledge Articles - Categorization Tests', () => {
         knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         knowledgeArticleGUID = knowledgeArticleData.id;
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'CancelApproval', "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with Canceled status not updated.");
-    });
-
-    afterEach(async () => {
-        await utilityCommon.refresh();
     });
 
     afterAll(async () => {
@@ -161,9 +158,12 @@ describe('Knowledge Articles - Categorization Tests', () => {
         businessData.relatedOrgId = orgId;
         let businessUnitId = await apiHelper.createBusinessUnit(businessData);
         departmentData.relatedOrgId = businessUnitId;
+        await browser.sleep(5000); //waiting for data to be reflected on UI
         let depId = await apiHelper.createDepartment(departmentData);
+        await browser.sleep(7000); //waiting for data to be reflected on UI
         suppGrpData.relatedOrgId = depId;
         await apiHelper.createSupportGroup(suppGrpData);
+        await browser.sleep(9000); //waiting for data to be reflected on UI
         await apiHelper.associatePersonToSupportGroup('dbomei', suppGrpData.orgName);
         await apiHelper.associateCategoryUnderDomainTag('Applications', domainTag);
     }
@@ -573,7 +573,8 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary(articleInDraftStatus);
-            await createCasePage.clickAssignToMeButton();
+            await createCasePage.clickChangeAssignmentButton();
+            await changeAssignmentBlade.setAssignee('Petramco', 'Canada Support', 'CA Support 1', 'Qiang Du');
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Resources');
@@ -746,27 +747,38 @@ describe('Knowledge Articles - Categorization Tests', () => {
         });
 
         afterAll(async () => {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
-            await utilityCommon.refresh();
-            await utilCommon.waitUntilSpinnerToHide();
+            await utilityCommon.closeAllBlades();
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });
     });
 
-    it('[DRDMV-19005]:Verify the document search based on category tier from attachments', async () => {
-        //Create a document library
-        try {
+    describe('[DRDMV-19005]:Verify the document search based on category tier from attachments', () => {
+        let caseData = {
+            "Requester": "qkatawazi",
+            "Summary": "DRDMV-19005",
+            "Assigned Company": "Petramco",
+            "Business Unit": "Facilities Support",
+            "Support Group": "Facilities",
+            "Assignee": "Frieda",
+        }
+        let title = `Document-${new Date().valueOf()}`;
+
+        it('[DRDMV-19005]:Verify the document search based on category tier from attachments', async () => {
+            //Create a document library
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows'))
                 .toEqual('Document Library Console - Business Workflows');
-            let title = `Document-${new Date().valueOf()}`;
             title = "DRDMV-19005Case " + title;
             await createDocumentLibraryPage.openAddNewDocumentBlade();
             await createDocumentLibraryPage.addAttachment(filePath);
             await createDocumentLibraryPage.setTitle(title);
             await createDocumentLibraryPage.selectCompany(companyStr);
-            await createDocumentLibraryPage.selectOwnerGroup(ownerSupportGroup);
+            await createDocumentLibraryPage.selectBusinessUnit('Facilities Support');
+            await createDocumentLibraryPage.selectOwnerGroup('Facilities');
             await createDocumentLibraryPage.selectCategoryTier1(categoryTier1FieldVal);
             await createDocumentLibraryPage.selectCategoryTier2(categoryTier2FieldVal);
             await createDocumentLibraryPage.selectCategoryTier3(categoryTier3FieldVal);
@@ -774,20 +786,20 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await documentLibraryConsolePage.searchAndOpenDocumentLibrary(title);
             await editDocumentLibraryPage.selectStatus(documentLibraryStatus);
             await editDocumentLibraryPage.clickOnSaveButton();
-            await utilCommon.waitUntilSpinnerToHide();
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
+        });
 
+        it('[DRDMV-19005]:Verify the document search based on category tier from attachments', async () => {
             //Login with Case Manager
-            await loginPage.login(caseManagerUser);
-            await navigationPage.gotoCreateCase();
-            await createCasePage.selectRequester("adam");
-            await createCasePage.setSummary(title);
-            await createCasePage.clickAssignToMeButton();
-            await createCasePage.clickSaveCaseButton();
-            await previewCasePo.clickGoToCaseButton();
+            await loginPage.login('frieda');
+            await apiHelper.apiLogin('fritz');
+
+            let response1 = await apiHelper.createCase(caseData);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(response1.displayId);
             await viewCasePage.clickEditCaseButton();
             await editCasePage.clickOnAttachLink();
-
             await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(title);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
@@ -795,16 +807,17 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
             await expect(await resources.getAdvancedSearchResultForParticularSection(title)).toEqual(title);
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
+        });
 
+        it('[DRDMV-19005]:Verify the document search based on category tier from attachments', async () => {
             //Login with Case Agent
-            await loginPage.login(caseAgentUser);
-            await navigationPage.gotoCreateCase();
-            await createCasePage.selectRequester("adam");
-            await createCasePage.setSummary(title);
-            await createCasePage.clickAssignToMeButton();
-            await createCasePage.clickSaveCaseButton();
-            await previewCasePo.clickGoToCaseButton();
+            await loginPage.login('fabian');
+            await apiHelper.apiLogin('fritz');
+            let response2 = await apiHelper.createCase(caseData);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(response2.displayId);
             await viewCasePage.clickEditCaseButton();
             await editCasePage.clickOnAttachLink();
 
@@ -815,17 +828,20 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
             await expect(await resources.getAdvancedSearchResultForParticularSection(title)).toEqual(title);
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
+        });
 
-            await loginPage.login(caseBAUser);
-            await navigationPage.gotoCreateCase();
-            await createCasePage.selectRequester("adam");
-            await createCasePage.setSummary(title);
-            await createCasePage.clickAssignToMeButton();
-            await createCasePage.clickSaveCaseButton();
-            await previewCasePo.clickGoToCaseButton();
+        it('[DRDMV-19005]:Verify the document search based on category tier from attachments', async () => {
+            //Login with Case BA
+            await loginPage.login('fritz');
+            await apiHelper.apiLogin('fritz');
+            let response3 = await apiHelper.createCase(caseData);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(response3.displayId);
             await viewCasePage.clickEditCaseButton();
             await editCasePage.clickOnAttachLink();
+
             await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(title);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
@@ -833,28 +849,25 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
             await expect(await resources.getAdvancedSearchResultForParticularSection(title)).toEqual(title);
-        }
-        catch (error) {
-            throw error;
-        }
-        finally {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
-            await utilityCommon.refresh();
-            await utilCommon.waitUntilSpinnerToHide();
+            await utilityCommon.closeAllBlades();
+        });
+
+        afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
-        }
+        });
     });
 
     it('[DRDMV-19356,DRDMV-19082]:Verify the domain configurations are honored while selecting category tiers on Knowledge articles and documents library', async () => {
-        await foundationData2002('Psilon');
-        let knowledgeDataFile = require("../../data/ui/knowledge/knowledgeArticle.ui.json");
         let knowledgeSetTitleStr = 'versionedKnowledgeSet_' + randomStr;
         let knowledgeSetData = {
             knowledgeSetTitle: `${knowledgeSetTitleStr}`,
             knowledgeSetDesc: `${knowledgeSetTitleStr}+'Desc'`,
             company: 'Psilon'
         }
+
+        await apiHelper.apiLogin('tadmin');
+        await foundationData2002('Psilon');
 
         await apiHelper.apiLogin('gderuno');
         await apiHelper.createKnowledgeSet(knowledgeSetData);
@@ -889,7 +902,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
-            expect(await editKnowledgePage.getCategoryTier1SelectedValue(categoryTier1)).toBe(categoryTier1FieldVal);
+            expect(await editKnowledgePage.getCategoryTier1SelectedValue()).toBe(categoryTier1FieldVal);
         }
         catch (error) {
             throw error;
@@ -902,5 +915,5 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         }
-    });//, 240 * 1000);
+    });
 });

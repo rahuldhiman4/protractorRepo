@@ -20,7 +20,7 @@ class EditTask {
         categoryTier3: 'c8858fb5-5b21-4e0d-a947-c0130a72b51a',
         categoryTier4: 'ff1636f8-4efe-4447-9c04-f32799904f2b',
         priority: 'e638927a-e1e1-46e7-bfe3-8fe9904a5c5a',
-        dynamicDate: '[class="input-group"] input[ng-model="date"]',
+        dynamicDate: '.i-date',
         dynamicDateTime: 'input[ng-model="datetime"]',
         taskSummary: '[rx-view-component-id="1261e01e-00fb-4e2c-b2ac-72e837f9fcea"] input',
         dynamicFieldName: '[rx-view-component-id="4c988a95-b148-475f-b91c-9788d8e6c0cb"] label',

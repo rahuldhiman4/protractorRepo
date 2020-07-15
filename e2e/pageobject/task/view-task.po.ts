@@ -12,7 +12,7 @@ class ViewTask {
         allStatus: '.dropdown_select__menu .dropdown-item',
         updateStatusDropDown: '[rx-view-component-id="8b4cef48-0a4c-4ec1-bc4c-cce47179c964"] button',
         taskTypeValue: '[rx-view-component-id="057f2521-313b-40c9-be56-829827512abf"] .read-only-content',
-        editButton: '.edit-button button',
+        editButton: '[rx-view-component-id="14e8cc41-ae6a-41e1-8932-850fbeec57d0"] [btn-type="tertiary"]',
         categoryTier1Value: '[rx-view-component-id="909ad3ad-6706-4d46-bb5a-bc48fa6ca98e"] .read-only-content',
         categoryTier2Value: '[rx-view-component-id="49d231d9-ee81-4d7c-90af-d7ca785a32d4"] .read-only-content',
         categoryTier3Value: '[rx-view-component-id="c8858fb5-5b21-4e0d-a947-c0130a72b51a"] .read-only-content',

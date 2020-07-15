@@ -17,7 +17,7 @@ export const KNOWLEDGE_SET = {
     }
 };
 
-export const KnowledegeSet_ASSOCIATION = 
+export const KNOWLEDEGESET_ASSOCIATION = 
 [
     {
       "associationDefinitionName": "com.bmc.dsm.knowledge:AppName_KS",

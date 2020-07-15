@@ -27,7 +27,7 @@ export class Utility {
         meridiemClock: '.a3t-clock--control-item',
         okDateTimePicker: '.btn-primary',
         clearDateTimePicker: '.btn-secondary',
-        ckEditor: 'bwf-rich-text-editor[style="display: block;"], .activity-feed-note-text-container',
+        ckEditor: 'bwf-rich-text-editor[style="display: block;"], .activity-feed-note-text-container,.doc-editor',
         ckEditorTextArea: '.cke_enable_context_menu',
     }
 
@@ -156,14 +156,12 @@ export class Utility {
         return str;
     }
 
-    async getSelectedFieldValue(fieldName: string): Promise<string> {
-        let metadataField = `//span[@class='d-textfield__item'][text()='${fieldName}']/following-sibling::*//span[contains(@class,'ui-select-match-text')]`;
-        let actualFieldVal: string = await element(by.xpath(metadataField)).getText();
-        return actualFieldVal;
+    async getSelectedFieldValue(guid: string): Promise<string> {
+        return await $(`[rx-view-component-id="${guid}"] button`).getText()
     }
 
     async isFieldLabelDisplayed(guid: string, fieldName: string): Promise<boolean> {
-        let fieldLabel = `[rx-view-component-id='${guid}'] rx-read-only-field label, [rx-view-component-id='${guid}'] label.d-textfield__label span, [rx-view-component-id='${guid}'] bwf-read-only-field label`;
+        let fieldLabel = `[rx-view-component-id='${guid}'] rx-read-only-field label, [rx-view-component-id='${guid}'] label.d-textfield__label span, [rx-view-component-id='${guid}'] bwf-read-only-field label, [rx-view-component-id='${guid}'] adapt-select .form-control-label span`;
         return await element(by.cssContainingText(fieldLabel, fieldName)).isPresent().then(async (result) => {
             if (result) {
                 return await element(by.cssContainingText(fieldLabel, fieldName)).getText() == fieldName ? true : false;

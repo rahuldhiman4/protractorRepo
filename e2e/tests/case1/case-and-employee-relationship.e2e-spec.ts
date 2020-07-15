@@ -379,10 +379,6 @@ describe('Case And Employee Relationship', () => {
             console.log('body:', body);
             expect(body.includes('<br>DRDMV-16247')).toBeTruthy('Email does not match');
         });
-        afterAll(async () => {
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteAllEmailConfiguration();
-        });
     });
 
     //asahitya

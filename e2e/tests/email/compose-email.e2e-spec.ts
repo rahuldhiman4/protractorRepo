@@ -253,12 +253,12 @@ describe("Compose Email", () => {
     //Failed due to application issue...defect logged DRDMV-21883
     describe('[DRDMV-10394,DRDMV-10397]: Apply Email Template', async () => {
         let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let newCase, emailTemplateName;
+        let newCase, emailTemplateDataForTest;
         beforeAll(async () => {
+            emailTemplateDataForTest = await emailTemplateData['emailTemplateWithMandatoryField'];
+            emailTemplateDataForTest.TemplateName = 'TemplateWithMandatoryField' + randomString;
             await apiHelper.apiLogin('qkatawazi');
-            emailTemplateName = await emailTemplateData['emailTemplateWithMandatoryField'].TemplateName + randomString;
-            emailTemplateData['emailTemplateWithMandatoryField'].TemplateName = emailTemplateName;
-            await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateWithMandatoryField']);
+            await apiHelper.createEmailTemplate(emailTemplateDataForTest);
             let caseData = {
                 "Requester": "qkatawazi",
                 "Summary": "Test case for DRDMV-10394 RandVal" + randomString,
@@ -278,18 +278,18 @@ describe("Compose Email", () => {
             expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
             await viewCasePo.clickOnEmailLink();
             await composeMail.clickOnSelectEmailTemplateLink();
-            await selectEmailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateName);
+            await selectEmailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateDataForTest.TemplateName);
             await selectEmailTemplateBladePo.clickOnApplyButton();
             await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
             expect(await composeMail.getEmailBody()).toContain('Hi Team ,\n\nI am taking leave today.\n\nThanks.');
             expect(await composeMail.getSubject()).toContain(caseId);
-            expect(await composeMail.getSubjectInputValue()).toContain('Leave summary');
+            expect(await composeMail.getSubjectInputValue()).toContain(emailTemplateDataForTest.EmailMessageSubject);
             await composeMail.clickOnSendButton();
             await utilityCommon.closePopUpMessage();
             expect(await activityTabPo.getEmailTitle()).toContain('Qianru Tao sent an email');
-            expect(await activityTabPo.getEmailTemplateDetails()).toContain(emailTemplateName);
+            expect(await activityTabPo.getEmailTemplateDetails()).toContain(emailTemplateDataForTest.TemplateName);
             expect(await activityTabPo.getRecipientInTo()).toContain('To: Fritz Schulz');
-            expect(await activityTabPo.getEmailSubject()).toContain(caseId + ':' + 'Leave summary');
+            expect(await activityTabPo.getEmailSubject()).toContain(caseId + ':' + emailTemplateDataForTest.EmailMessageSubject);
             await activityTabPo.clickShowMoreForEmailActivity();
             expect(await activityTabPo.getEmailBody()).toContain('I am taking leave today.');
         });
@@ -303,12 +303,12 @@ describe("Compose Email", () => {
     //kgaikwad
     describe('[DRDMV-10401,DRDMV-10393]: Email Body override with template details', async () => {
         let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let newCase, emailTemplateName;
+        let newCase, emailTemplateDataForTest;
         beforeAll(async () => {
+            emailTemplateDataForTest = await emailTemplateData['emailTemplateWithMandatoryField'];
+            emailTemplateDataForTest.TemplateName = 'TemplateWithMandatoryField' + randomString;
             await apiHelper.apiLogin('qkatawazi');
-            emailTemplateName = await emailTemplateData['emailTemplateWithMandatoryField'].TemplateName + randomString;
-            emailTemplateData['emailTemplateWithMandatoryField'].TemplateName = emailTemplateName;
-            await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateWithMandatoryField']);
+            await apiHelper.createEmailTemplate(emailTemplateDataForTest);
             let caseData = {
                 "Requester": "qkatawazi",
                 "Summary": "Test case for DRDMV-10401 RandVal" + randomString,
@@ -330,12 +330,12 @@ describe("Compose Email", () => {
             expect(await composeMail.getSubject()).toContain(caseId);
             await composeMail.clickOnSelectEmailTemplateLink();
             await utilCommon.waitUntilSpinnerToHide();
-            await selectEmailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateName);
+            await selectEmailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateDataForTest.TemplateName);
             await selectEmailTemplateBladePo.clickOnApplyButton();
             await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
             expect(await composeMail.getEmailBody()).toContain('Hi Team ,\n\nI am taking leave today.\n\nThanks.');
             expect(await composeMail.getSubject()).toContain(caseId); ////part of DRDMV-10393
-            expect(await composeMail.getSubjectInputValue()).toContain('Leave summary');
+            expect(await composeMail.getSubjectInputValue()).toContain(emailTemplateDataForTest.EmailMessageSubject);
             expect((await composeMail.isTextPresentInEmailBody('qtao@petramco.com'))).toBeFalsy();
             expect((await composeMail.isTextPresentInEmailBody('Qianru Tao'))).toBeFalsy();
             await composeMail.clickOnSendButton();
@@ -350,12 +350,12 @@ describe("Compose Email", () => {
     //ptidke
     describe('[DRDMV-10398,DRDMV-10396,DRDMV-10402]:Email Template List Update in case compose email', async () => {
         let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let newCase, emailTemplateName;
+        let newCase, emailTemplateDataForTest;
         beforeAll(async () => {
+            emailTemplateDataForTest = await emailTemplateData['emailTemplateWithMandatoryField'];
+            emailTemplateDataForTest.TemplateName = 'TemplateWithMandatoryField' + randomString;
             await apiHelper.apiLogin('qkatawazi');
-            emailTemplateName = await emailTemplateData['emailTemplateWithMandatoryField'].TemplateName + randomString;
-            emailTemplateData['emailTemplateWithMandatoryField'].TemplateName = emailTemplateName;
-            await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateWithMandatoryField']);
+            await apiHelper.createEmailTemplate(emailTemplateDataForTest);
             let caseData = {
                 "Requester": "qdu",
                 "Summary": "Test case for DRDMV-10398 RandVal" + randomString,
@@ -375,18 +375,18 @@ describe("Compose Email", () => {
             expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
             await viewCasePo.clickOnRequestersEmail();
             await composeMail.clickOnSelectEmailTemplateLink();
-            await selectEmailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateName);
+            await selectEmailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateDataForTest.TemplateName);
             await selectEmailTemplateBladePo.clickOnApplyButton();
             await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
             expect(await composeMail.getEmailBody()).toContain('Hi Team ,\n\nI am taking leave today.\n\nThanks.');
             expect(await composeMail.getSubject()).toContain(caseId);
-            expect(await composeMail.getSubjectInputValue()).toContain('Leave summary');
-            expect(await composeMail.getEmailTemplateNameHeading()).toContain(emailTemplateName);
+            expect(await composeMail.getSubjectInputValue()).toContain(emailTemplateDataForTest.EmailMessageSubject);
+            expect(await composeMail.getEmailTemplateNameHeading()).toContain(emailTemplateDataForTest.TemplateName);
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteEmailOrNotificationTemplate(emailTemplateName);
+            await apiHelper.deleteEmailOrNotificationTemplate(emailTemplateDataForTest.TemplateName);
             await composeMail.clickOnSelectEmailTemplateLink();
-            await utilityGrid.searchRecord(emailTemplateName);
-            expect(await selectEmailTemplateBladePo.isEmailTemplateGridEmpty(emailTemplateName)).toBeFalsy('Email template grid is not empty');
+            await utilityGrid.searchRecord(emailTemplateDataForTest.TemplateName);
+            expect(await selectEmailTemplateBladePo.isEmailTemplateGridEmpty(emailTemplateDataForTest.TemplateName)).toBeFalsy('Email template grid is not empty');
             await selectEmailTemplateBladePo.clickOnCancelButton();
             await composeMail.clickOnSendButton();
         });
@@ -399,16 +399,16 @@ describe("Compose Email", () => {
 
     //kgaikwad
     describe('[DRDMV-10395]: Email template Update', async () => {
-        let newCase, emailTemplate1, emailTemplate2;
+        let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let newCase, emailTemplateDataForTest1, emailTemplateDataForTest2;
         beforeAll(async () => {
-            let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            emailTemplateDataForTest1 = await emailTemplateData['emailTemplateWithMandatoryField'];
+            emailTemplateDataForTest1.TemplateName = 'TemplateWithMandatoryField' + randomString;
+            emailTemplateDataForTest2 = await emailTemplateData['emailTemplateForSalary'];
+            emailTemplateDataForTest2.TemplateName = 'TemplateForSalary' + randomString;
             await apiHelper.apiLogin('qkatawazi');
-            emailTemplate1 = await emailTemplateData['emailTemplateWithMandatoryField'].TemplateName + randomString;
-            emailTemplateData['emailTemplateWithMandatoryField'].TemplateName = emailTemplate1;
-            await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateWithMandatoryField']);
-            emailTemplate2 = await emailTemplateData['emailTemplateForSalary'].TemplateName + randomString;
-            emailTemplateData['emailTemplateForSalary'].TemplateName = emailTemplate2;
-            await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateForSalary']);
+            await apiHelper.createEmailTemplate(emailTemplateDataForTest1);
+            await apiHelper.createEmailTemplate(emailTemplateDataForTest2);
             let caseData = {
                 "Requester": "qdu",
                 "Summary": "Test case for DRDMV-10395 RandVal" + randomString,
@@ -430,20 +430,20 @@ describe("Compose Email", () => {
             expect(await composeMail.getSubject()).toContain(caseId);
             await composeMail.clickOnSelectEmailTemplateLink();
             await utilCommon.waitUntilSpinnerToHide();
-            await selectEmailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplate1);
+            await selectEmailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateDataForTest1.TemplateName);
             await selectEmailTemplateBladePo.clickOnApplyButton();
             await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
             expect(await composeMail.getEmailBody()).toContain('I am taking leave today.', 'Email Body 1 does not match');
             expect(await composeMail.getSubject()).toContain(caseId);
-            expect(await composeMail.getSubjectInputValue()).toContain('Leave summary', 'Subject value 1 does not match');
-            expect(await composeMail.getEmailTemplateNameHeading()).toContain(emailTemplate1, 'email Template Name 1 does not match');
+            expect(await composeMail.getSubjectInputValue()).toContain(emailTemplateDataForTest1.EmailMessageSubject, 'Subject value 1 does not match');
+            expect(await composeMail.getEmailTemplateNameHeading()).toContain(emailTemplateDataForTest1.TemplateName, 'email Template Name 1 does not match');
             await composeMail.clickOnSelectEmailTemplateLink();
-            await selectEmailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplate2);
+            await selectEmailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateDataForTest2.TemplateName);
             await selectEmailTemplateBladePo.clickOnApplyButton();
             expect(await composeMail.getEmailBody()).toContain('I have checked my salary.', 'Email Body 2 does not match');
             expect(await composeMail.getSubject()).toContain(caseId);
-            expect(await composeMail.getSubjectInputValue()).toContain('Salary summary', 'Subject 2 does not match');
-            expect(await composeMail.getEmailTemplateNameHeading()).toContain(emailTemplate2, 'Email Template name heading does not match');
+            expect(await composeMail.getSubjectInputValue()).toContain(emailTemplateDataForTest2.EmailMessageSubject, 'Subject 2 does not match');
+            expect(await composeMail.getEmailTemplateNameHeading()).toContain(emailTemplateDataForTest2.TemplateName, 'Email Template name heading does not match');
             await composeMail.clickOnSendButton();
         });
         afterAll(async () => {
@@ -665,6 +665,7 @@ describe("Compose Email", () => {
             await consoleNotificationTemplatePo.clickCopyTemplate();
             await copyNotificationTemplatePo.setCompanyValue('Petramco');
             await copyNotificationTemplatePo.clickOnCreateCopyButton();
+            await editNotificationTemplatePo.selectDefaultNotificationMethod('Email');
             await editNotificationTemplatePo.clickOnEmailTab();
             await editNotificationTemplatePo.selectCheckBoxOfBody();
             await editNotificationTemplatePo.clickOnEditButtonOfEmailTab();
@@ -740,11 +741,11 @@ describe("Compose Email", () => {
             //color span
             await expect(body.includes('<td><span style="color:#3498db;">SettingColor</span></td>')).toBeTruthy('Color is not available');
             //table width size attaribute
-            await expect(body.includes('<table summary="NotiFicationT" border="1" cellspacing="1" cellpadding="1" style="height: 200px; width: 500px;">')).toBeTruthy('Table properties not displayed');
+            await expect(body.includes('<table summary="NotiFicationT" border="1" cellspacing="1" cellpadding="1" style="height:200px;width:500px;">')).toBeTruthy('Table properties not displayed');
             //image
             await expect(body.includes('<a target="_blank">Google</a>')).toBeTruthy('link tag is not displaying');
             //font 
-            await expect(body.includes('<td><span style="font-size:20px;">SettingFontSize</span></td>')).toBeTruthy('Font Size is not present');
+            await expect(body.includes('<td><span style="font-size:18px;">SettingFontSize</span></td>')).toBeTruthy('Font Size is not present');
             //right allign
             await expect(body.includes('<td style="text-align: right;">FirstRightAlign</td>')).toBeTruthy('Right Alignment is not present');
             //center align
@@ -972,16 +973,14 @@ describe("Compose Email", () => {
     //Bug-21778
     describe('[DRDMV-10388]: Search on Email Template Grid on Compose Email UI', async () => {
         let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let newCase, emailTemplateName, emailDescription, emailSubject;
+        let newCase, emailTemplateDataForTest;
         beforeAll(async () => {
+            emailTemplateDataForTest = await emailTemplateData['emailTemplateWithMandatoryField'];
+            emailTemplateDataForTest.TemplateName = 'TemplateWithMandatoryField' + randomString;
+            emailTemplateDataForTest.Description = 'MandatoryFieldDescription' + randomString;
+            emailTemplateDataForTest.EmailMessageSubject = 'MandatoryFieldSubject' + randomString;
             await apiHelper.apiLogin('qkatawazi');
-            emailTemplateName = await emailTemplateData['emailTemplateWithMandatoryField'].TemplateName + randomString;
-            emailDescription = await emailTemplateData['emailTemplateWithMandatoryField'].Description + randomString;
-            emailSubject = await emailTemplateData['emailTemplateWithMandatoryField'].EmailMessageSubject + randomString;
-            emailTemplateData['emailTemplateWithMandatoryField'].TemplateName = emailTemplateName;
-            emailTemplateData['emailTemplateWithMandatoryField'].Description = emailDescription;
-            emailTemplateData['emailTemplateWithMandatoryField'].EmailMessageSubject = emailSubject;
-            await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateWithMandatoryField']);
+            await apiHelper.createEmailTemplate(emailTemplateDataForTest);
             let caseData = {
                 "Requester": "apavlik",
                 "Summary": "Test case for DRDMV-10388 RandVal" + randomString
@@ -997,12 +996,12 @@ describe("Compose Email", () => {
             await composeMail.clickOnSelectEmailTemplateLink();
             let columns: string[] = ["Description"];
             await selectEmailTemplateBladePo.addGridColumn(columns);
-            await selectEmailTemplateBladePo.searchEmailTemplate(emailTemplateName);
-            expect(await selectEmailTemplateBladePo.getGridRecordValue("Template Name")).toBe(emailTemplateName);
-            await selectEmailTemplateBladePo.searchEmailTemplate(emailDescription);
-            expect(await selectEmailTemplateBladePo.getGridRecordValue("Template Name")).toBe(emailTemplateName);
-            await selectEmailTemplateBladePo.searchEmailTemplate(emailSubject);
-            expect(await selectEmailTemplateBladePo.getGridRecordValue("Template Name")).toBe(emailTemplateName);
+            await selectEmailTemplateBladePo.searchEmailTemplate(emailTemplateDataForTest.TemplateName);
+            expect(await selectEmailTemplateBladePo.getGridRecordValue("Template Name")).toBe(emailTemplateDataForTest.TemplateName);
+            await selectEmailTemplateBladePo.searchEmailTemplate(emailTemplateDataForTest.Description);
+            expect(await selectEmailTemplateBladePo.getGridRecordValue("Template Name")).toBe(emailTemplateDataForTest.TemplateName);
+            await selectEmailTemplateBladePo.searchEmailTemplate(emailTemplateDataForTest.EmailMessageSubject);
+            expect(await selectEmailTemplateBladePo.getGridRecordValue("Template Name")).toBe(emailTemplateDataForTest.TemplateName);
             await selectEmailTemplateBladePo.removeGridColumn(columns);
             await selectEmailTemplateBladePo.clickOnCancelButton();
         });
@@ -1064,16 +1063,14 @@ describe("Compose Email", () => {
     //@Bug(DRDMV-21808)
     describe('[DRDMV-10387]: Filters on Email Template Grid on Compose Email UI', async () => {
         let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let newCase, emailTemplateName, emailSubject, emailDescription;
+        let newCase, emailTemplateDataForTest;
         beforeAll(async () => {
+            emailTemplateDataForTest = await emailTemplateData['emailTemplateWithMandatoryField'];
+            emailTemplateDataForTest.TemplateName = 'TemplateWithMandatoryField' + randomString;
+            emailTemplateDataForTest.Description = 'MandatoryFieldDescription' + randomString;
+            emailTemplateDataForTest.EmailMessageSubject = 'MandatoryFieldSubject' + randomString;
             await apiHelper.apiLogin('qkatawazi');
-            emailTemplateName = await emailTemplateData['emailTemplateWithMandatoryField'].TemplateName + randomString;
-            emailDescription = await emailTemplateData['emailTemplateWithMandatoryField'].Description + randomString;
-            emailSubject = await emailTemplateData['emailTemplateWithMandatoryField'].EmailMessageSubject + randomString;
-            emailTemplateData['emailTemplateWithMandatoryField'].TemplateName = emailTemplateName;
-            emailTemplateData['emailTemplateWithMandatoryField'].Description = emailDescription;
-            emailTemplateData['emailTemplateWithMandatoryField'].EmailMessageSubject = emailSubject;
-            await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateWithMandatoryField']);
+            await apiHelper.createEmailTemplate(emailTemplateDataForTest);
             let caseData = {
                 "Requester": "apavlik",
                 "Summary": "Test case for DRDMV-10387 RandVal" + randomString,
@@ -1088,19 +1085,19 @@ describe("Compose Email", () => {
             await viewCasePo.clickOnEmailLink();
             await composeMail.clickOnSelectEmailTemplateLink();
             await selectEmailTemplateBladePo.clearFilter();
-            await selectEmailTemplateBladePo.addFilter("Template Name", emailTemplateName, "searchbox");
-            expect(await selectEmailTemplateBladePo.getGridRecordValue("Template Name")).toBe(emailTemplateName);
+            await selectEmailTemplateBladePo.addFilter("Template Name", emailTemplateDataForTest.TemplateName, "searchbox");
+            expect(await selectEmailTemplateBladePo.getGridRecordValue("Template Name")).toBe(emailTemplateDataForTest.TemplateName);
             await selectEmailTemplateBladePo.clearFilter();
-            await selectEmailTemplateBladePo.addFilter("Message Subject", emailSubject, "searchbox");
-            expect(await selectEmailTemplateBladePo.getGridRecordValue("Template Name")).toBe(emailTemplateName);
+            await selectEmailTemplateBladePo.addFilter("Message Subject", emailTemplateDataForTest.EmailMessageSubject, "searchbox");
+            expect(await selectEmailTemplateBladePo.getGridRecordValue("Template Name")).toBe(emailTemplateDataForTest.TemplateName);
             await selectEmailTemplateBladePo.clearFilter();
-            await selectEmailTemplateBladePo.addFilter("Description", emailDescription, "searchbox");
-            expect(await selectEmailTemplateBladePo.getGridRecordValue("Template Name")).toBe(emailTemplateName);
+            await selectEmailTemplateBladePo.addFilter("Description", emailTemplateDataForTest.Description, "searchbox");
+            expect(await selectEmailTemplateBladePo.getGridRecordValue("Template Name")).toBe(emailTemplateDataForTest.TemplateName);
             await selectEmailTemplateBladePo.clearFilter();
             await selectEmailTemplateBladePo.addFilter("Company", "Petramco", "searchbox");
             //Searching and validating with filtering to company as, there can be multiple records for 1 company
-            await selectEmailTemplateBladePo.searchEmailTemplate(emailTemplateName);
-            expect(await selectEmailTemplateBladePo.getGridRecordValue("Template Name")).toBe(emailTemplateName);
+            await selectEmailTemplateBladePo.searchEmailTemplate(emailTemplateDataForTest.TemplateName);
+            expect(await selectEmailTemplateBladePo.getGridRecordValue("Template Name")).toBe(emailTemplateDataForTest.TemplateName);
             await selectEmailTemplateBladePo.clearFilter();
             await selectEmailTemplateBladePo.clickOnCancelButton();
         });
@@ -1149,6 +1146,7 @@ describe("Compose Email", () => {
             expect(await composeMail.isSendButtonPresent()).toBeTruthy('Send Button is missing');
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await composeMail.clickOnDiscardButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });

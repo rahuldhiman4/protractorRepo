@@ -488,6 +488,8 @@ describe('Case Status Change', () => {
                 "casePriority": "Low",
                 "templateStatus": "Active",
                 "company": "Petramco",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createCaseTemplate(templateData);

@@ -29,6 +29,9 @@ describe('Automated Case Status Transition', () => {
     describe('[DRDMV-17551]: Case business analyst - automatic case status transtion rule console', async () => {
         let configName1, configName2, randomStr = [...Array(7)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         it('[DRDMV-17551]: Create two records', async () => {
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.deleteAutomatedCaseStatusTransition();
+
             //Create first Record
             configName1 = AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.name = 'ConfigName1' + randomStr;
             AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.changeStatusAfter = Math.floor(Math.random() * 180) + 1;
@@ -78,6 +81,9 @@ describe('Automated Case Status Transition', () => {
     describe('[DRDMV-17553]: Case manager - automatic case status transtion rule console validations', async () => {
         let configName1, configName2, randomStr = [...Array(7)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.deleteAutomatedCaseStatusTransition();
+
             //Create first Record
             configName1 = AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.name = 'ConfigName1' + randomStr;
             AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.changeStatusAfter = Math.floor(Math.random() * 180) + 1;
@@ -133,6 +139,9 @@ describe('Automated Case Status Transition', () => {
 
     //asahitya
     it('[DRDMV-17561]: Toggle status for Automatic case status transition configuration rule', async () => {
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.deleteAutomatedCaseStatusTransition();
+
         AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.name = [...Array(7)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.changeStatusAfter = Math.floor(Math.random() * 180) + 1;
         await automatedStatusTransitionConsole.clickAddAutomatedStatusTransitionBtn();
@@ -150,6 +159,9 @@ describe('Automated Case Status Transition', () => {
     });
 
     it('[DRDMV-17557]: Duplicate detection - create new automatic case transition rule which has field values same as existing rule', async () => {
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.deleteAutomatedCaseStatusTransition();
+
         let configName: string = [...Array(7)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let days: any = Math.floor(Math.random() * 180) + 1;
 
@@ -182,6 +194,9 @@ describe('Automated Case Status Transition', () => {
     });
 
     it('[DRDMV-17566]: Automatic status transition of a case - Notification is sent to assignee', async () => {
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.deleteAutomatedCaseStatusTransition();
+
         //Create the case
         await apiHelper.apiLogin("qfeng");
         let caseData = require('../../data/ui/case/case.ui.json');
@@ -204,7 +219,7 @@ describe('Automated Case Status Transition', () => {
         await apiHelper.apiLogin("qkatawazi");
 
         await apiHelper.updateCaseStatus(newCase.id, "Resolved", "Customer Follow-Up Required");
-        let updatecase = { "statusChangedDate": "2019-06-13T10:22:21.000Z"};
+        let updatecase = { "statusChangedDate": "2019-06-13T10:22:21.000Z" };
         await apiHelper.updateCase(newCase.id, updatecase);
         await apiHelper.apiLogin("tadmin");
         await apiHelper.setDefaultNotificationForUser('qkatawazi', "Alert");
@@ -219,6 +234,9 @@ describe('Automated Case Status Transition', () => {
 
     //ankagraw
     it('[DRDMV-17567]: Automated case status transtion rule -Creation form validations', async () => {
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.deleteAutomatedCaseStatusTransition();
+
         let randomStr: string = [...Array(7)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let days: any = Math.floor(Math.random() * 180) + 1;
         let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');

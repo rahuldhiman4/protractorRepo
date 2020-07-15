@@ -1,54 +1,57 @@
 import axios, { AxiosResponse } from "axios";
-import { IBusinessUnit } from '../data/api/interface/business.unit.interface.api';
-import { IDepartment } from '../data/api/interface/department.interface.api';
-import { IKnowledgeArticles } from '../data/api/interface/knowledge.articles.interface.api';
-import { IPerson } from '../data/api/interface/person.interface.api';
-import { ISupportGroup } from '../data/api/interface/support.group.interface.api';
-import { ITaskTemplate, IAdhocTask } from '../data/api/interface/task.template.interface.api';
-import { ICaseApprovalMapping } from '../data/api/interface/case.approval.mapping.interface.api';
+import { cloneDeep } from 'lodash';
 import { browser } from 'protractor';
+import * as uuid from 'uuid';
 import { default as apiCoreUtil, default as coreApi } from "../api/api.core.util";
 import * as constants from "../api/constant.api";
+import { APPROVAL_ACTION, MORE_INFO_RETURN_ACTION } from "../data/api/approval/approval.action.api";
+import { CASE_APPROVAL_FLOW } from '../data/api/approval/case.approval.flow.api';
+import { CASE_APPROVAL_MAPPING } from '../data/api/approval/case.approval.mapping.api';
+import { CASE_READ_ACCESS } from '../data/api/case/case.read.access.api';
+import { CASE_REOPEN } from '../data/api/case/case.reopen.api';
+import { CASE_TEMPLATE_PAYLOAD, CASE_TEMPLATE_STATUS_UPDATE_PAYLOAD } from '../data/api/case/case.template.data.api';
+import { ADD_TO_WATCHLIST } from '../data/api/case/case.watchlist.api';
+import { CASE_STATUS_CHANGE, UPDATE_CASE, UPDATE_CASE_ASSIGNMENT } from '../data/api/case/update.case.api';
+import { EMAILCONFIG_DEFAULT, INCOMINGMAIL_DEFAULT, OUTGOINGEMAIL_DEFAULT } from '../data/api/email/email.configuration.data.api';
+import { EMAIL_WHITELIST } from '../data/api/email/email.whitelist.data.api';
 import { NEW_PROCESS_LIB } from '../data/api/flowset/create-process-lib';
+import { ADD_FUNCTIONAL_ROLE, UPDATE_PERSON_AS_VIP } from '../data/api/foundation/update.person.data.api';
+import { IBusinessUnit } from '../data/api/interface/business.unit.interface.api';
+import { ICaseApprovalMapping } from '../data/api/interface/case.approval.mapping.interface.api';
 import { ICaseAssignmentMapping } from "../data/api/interface/case.assignment.mapping.interface.api";
 import { ICaseTemplate } from "../data/api/interface/case.template.interface.api";
+import { IDepartment } from '../data/api/interface/department.interface.api';
+import { IDocumentLib } from '../data/api/interface/doc.lib.interface.api';
 import { IDomainTag } from '../data/api/interface/domain.tag.interface.api';
 import { IEmailTemplate } from '../data/api/interface/email.template.interface.api';
 import { IFlowset, IProcessLibConfig } from '../data/api/interface/flowset.interface.api';
+import { IKnowledgeSet } from '../data/api/interface/knowledge-set.interface.api';
+import { IknowledgeSetPermissions } from '../data/api/interface/knowledge-set.permissions.interface.api';
+import { IKnowledgeArticles } from '../data/api/interface/knowledge.articles.interface.api';
 import { IMenuItem } from '../data/api/interface/menu.Items.interface.api';
 import { INotesTemplate } from '../data/api/interface/notes.template.interface.api';
+import { IPerson } from '../data/api/interface/person.interface.api';
+import { ICase, ITask } from '../data/api/interface/record-update.interface.api';
+import { ISupportGroup } from '../data/api/interface/support.group.interface.api';
+import { IAdhocTask, ITaskTemplate } from '../data/api/interface/task.template.interface.api';
 import { FLAG_UNFLAG_KA } from '../data/api/knowledge/flag-unflag.data.api';
-import { AUTOMATED_CASE_STATUS_TRANSITION } from '../data/api/shared-services/process.data.api';
-import { ONE_TASKFLOW, TWO_TASKFLOW_PARALLEL, TWO_TASKFLOW_SEQUENTIAL, THREE_TASKFLOW_SEQUENTIAL, PROCESS_DOCUMENT } from '../data/api/task/taskflow.process.data.api';
-import { DOC_LIB_DRAFT, DOC_LIB_PUBLISH, DOC_LIB_READ_ACCESS } from '../data/api/ticketing/document-library.data.api';
-import { IDocumentLib } from '../data/api/interface/doc.lib.interface.api';
-import { IKnowledgeSet } from '../data/api/interface/knowledge-set.interface.api';
-import { KnowledegeSet_ASSOCIATION, KNOWLEDGE_SET, KNOWLEDGESET_PERMISSION } from '../data/api/knowledge/knowledge-set.data.api';
-import { IknowledgeSetPermissions } from '../data/api/interface/knowledge-set.permissions.interface.api';
-import { KNOWLEDGEARTICLE_TEMPLATE, KNOWLEDGEARTICLE_HELPFULCOUNTER } from '../data/api/knowledge/knowledge-article.template.api';
-import { INCOMINGMAIL_DEFAULT, EMAILCONFIG_DEFAULT, OUTGOINGEMAIL_DEFAULT } from '../data/api/email/email.configuration.data.api';
-import { EMAIL_WHITELIST } from '../data/api/email/email.whitelist.data.api';
-import * as DYNAMIC from '../data/api/ticketing/dynamic.data.api';
-import { CASE_TEMPLATE_PAYLOAD, CASE_TEMPLATE_STATUS_UPDATE_PAYLOAD } from '../data/api/case/case.template.data.api';
-import { UPDATE_PERSON_AS_VIP, ADD_FUNCTIONAL_ROLE } from '../data/api/foundation/update.person.data.api';
-import { SERVICE_TARGET_PAYLOAD } from '../data/api/slm/serviceTarget.api';
-import { ADHOC_TASK_PAYLOAD, UPDATE_TASK_STATUS, TASK_CREATION_FROM_TEMPLATE, UPDATE_TASK } from '../data/api/task/task.creation.api';
 import { KNOWLEDGE_APPROVAL_CONFIG, KNOWLEDGE_APPROVAL_FLOW_CONFIG } from '../data/api/knowledge/knowledge-approvals-config.api';
-import { APPROVAL_ACTION, MORE_INFO_RETURN_ACTION } from "../data/api/approval/approval.action.api";
 import { KNOWLEDGE_ARTICLE_EXTERNAL_FLAG } from "../data/api/knowledge/knowledge-article-external.api";
-import { AUTO_TASK_TEMPLATE_PAYLOAD, MANUAL_TASK_TEMPLATE_PAYLOAD, EXTERNAL_TASK_TEMPLATE_PAYLOAD, DOC_FOR_AUTO_TASK_TEMPLATE, PROCESS_FOR_AUTO_TASK_TEMPLATE } from '../data/api/task/task.template.api';
-import { UPDATE_CASE_ASSIGNMENT } from '../data/api/case/update.case.assignment.api';
-import { ACTIONABLE_NOTIFICATIONS_ENABLEMENT_SETTING } from '../data/api/shared-services/enabling.actionable.notifications.api';
-import { ADD_TO_WATCHLIST } from '../data/api/case/case.watchlist.api';
-import { CASE_APPROVAL_FLOW } from '../data/api/approval/case.approval.flow.api';
-import { CASE_APPROVAL_MAPPING } from '../data/api/approval/case.approval.mapping.api';
+import { KNOWLEDGEARTICLE_HELPFULCOUNTER, KNOWLEDGEARTICLE_TEMPLATE } from '../data/api/knowledge/knowledge-article.template.api';
+import { KNOWLEDEGESET_ASSOCIATION, KNOWLEDGESET_PERMISSION, KNOWLEDGE_SET } from '../data/api/knowledge/knowledge-set.data.api';
 import { KNOWLEDGE_ARTICLE_PAYLOAD, UPDATE_KNOWLEDGE_ARTICLE_PAYLOAD } from '../data/api/knowledge/knowledge.article.api';
-import { BUSINESS_TIME_SHARED_ENTITY } from '../data/api/slm/business.time.shared.entity.api';
+import { ACTIONABLE_NOTIFICATIONS_ENABLEMENT_SETTING } from '../data/api/shared-services/enabling.actionable.notifications.api';
+import { AUTOMATED_CASE_STATUS_TRANSITION } from '../data/api/shared-services/process.data.api';
 import { BUSINESS_TIME_SEGMENT } from '../data/api/slm/business.time.segment.api';
-import { CASE_REOPEN } from '../data/api/case/case.reopen.api';
+import { BUSINESS_TIME_SHARED_ENTITY } from '../data/api/slm/business.time.shared.entity.api';
+import { SERVICE_TARGET_PAYLOAD } from '../data/api/slm/serviceTarget.api';
 import { POST_ACTIVITY, POST_ACTIVITY_WITH_ATTACHMENT } from '../data/api/social/post.activity.api';
-import { CASE_READ_ACCESS } from '../data/api/case/case.read.access.api';
-import * as uuid from 'uuid';
+import { ADHOC_TASK_PAYLOAD, TASK_CREATION_FROM_TEMPLATE, UPDATE_TASK, UPDATE_TASK_STATUS, REGISTER_ADHOC_TASK } from '../data/api/task/task.creation.api';
+import { AUTO_TASK_TEMPLATE_PAYLOAD, DOC_FOR_AUTO_TASK_TEMPLATE, EXTERNAL_TASK_TEMPLATE_PAYLOAD, MANUAL_TASK_TEMPLATE_PAYLOAD, PROCESS_FOR_AUTO_TASK_TEMPLATE } from '../data/api/task/task.template.api';
+import { ONE_TASKFLOW, PROCESS_DOCUMENT, THREE_TASKFLOW_SEQUENTIAL, TWO_TASKFLOW_PARALLEL, TWO_TASKFLOW_SEQUENTIAL } from '../data/api/task/taskflow.process.data.api';
+import { DOC_LIB_DRAFT, DOC_LIB_PUBLISH, DOC_LIB_READ_ACCESS } from '../data/api/ticketing/document-library.data.api';
+import * as DYNAMIC from '../data/api/ticketing/dynamic.data.api';
+
 let fs = require('fs');
 
 axios.defaults.baseURL = browser.baseUrl;
@@ -56,8 +59,6 @@ axios.defaults.headers.common['X-Requested-By'] = 'XMLHttpRequest';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 const commandUri = 'api/rx/application/command';
 const articleTemplateUri = 'api/com.bmc.dsm.knowledge/rx/application/article/template';
-import { UPDATE_CASE } from '../data/ui/case/update.case.data.api';
-import { ICase, ITask } from '../data/api/interface/record-update.interface.api';
 
 export interface IIDs {
     id: string;
@@ -158,9 +159,9 @@ class ApiHelper {
     }
 
     async createEmailConfiguration(incomingMailBox?: any, outGoingMailBox?: any, emailMailBox?: any): Promise<EmailGUIDs> {
-        if (!incomingMailBox) incomingMailBox = INCOMINGMAIL_DEFAULT;
-        if (!emailMailBox) emailMailBox = EMAILCONFIG_DEFAULT;
-        if (!outGoingMailBox) outGoingMailBox = OUTGOINGEMAIL_DEFAULT;
+        if (!incomingMailBox) incomingMailBox = cloneDeep(INCOMINGMAIL_DEFAULT);
+        if (!emailMailBox) emailMailBox = cloneDeep(EMAILCONFIG_DEFAULT);
+        if (!outGoingMailBox) outGoingMailBox = cloneDeep(OUTGOINGEMAIL_DEFAULT);
         let incomingMail: AxiosResponse = await coreApi.createRecordInstance(incomingMailBox);
         console.log('Configure Incoming Email API Status =============>', incomingMail.status);
         let outgoing: AxiosResponse = await coreApi.createRecordInstance(outGoingMailBox);
@@ -188,26 +189,37 @@ class ApiHelper {
         let allEmailConfig = await axios.get(
             emailConfigDataPageUri
         );
-        let deletAllEmailConfig = allEmailConfig.data.data.map(async (obj: string) => {
+        let deleteAllEmailConfigMap = allEmailConfig.data.data.map(async (obj: string) => {
             return await coreApi.deleteRecordInstance('com.bmc.dsm.email-lib:Email Box Registration', obj[379]);
+        });
+        let deleteAllEmailConfig: boolean = await Promise.all(deleteAllEmailConfigMap).then(async (result) => {
+            return !result.includes(false);
         });
 
         let incomingMailDataPageUri = "api/rx/application/datapage?dataPageType=com.bmc.arsys.rx.application.record.datapage.RecordInstanceDataPageQuery&pageSize=50&propertySelection=179,1,18037,18217,7,379&queryExpression=((%2718049%27%3D%220%22))&recorddefinition=AR+System+Email+Mailbox+Configuration&shouldIncludeTotalSize=false&sortBy=7&startIndex=0";
         let allIncomingMail = await axios.get(
             incomingMailDataPageUri
         );
-        let deletAllIncomingMail = allIncomingMail.data.data.map(async (obj: string) => {
+        let deleteAllIncomingMailMap = allIncomingMail.data.data.map(async (obj: string) => {
             return await coreApi.deleteRecordInstance('AR System Email Mailbox Configuration', obj[379]);
+        });
+        let deleteAllIncomingMail: boolean = await Promise.all(deleteAllIncomingMailMap).then(async (result) => {
+            return !result.includes(false);
         });
 
         let outgoingMailDataPageUri = "api/rx/application/datapage?dataPageType=com.bmc.arsys.rx.application.record.datapage.RecordInstanceDataPageQuery&pageSize=50&propertySelection=7,179,1,18217,18037,18147,379&queryExpression=((%2718049%27%3D%221%22))&recorddefinition=AR+System+Email+Mailbox+Configuration&shouldIncludeTotalSize=false&startIndex=0";
         let allOutgoingMail = await axios.get(
             outgoingMailDataPageUri
         );
-        let deletAllOutgoingMail = allOutgoingMail.data.data.map(async (obj: string) => {
+        let deleteAllOutgoingMailMap = allOutgoingMail.data.data.map(async (obj: string) => {
             return await coreApi.deleteRecordInstance('AR System Email Mailbox Configuration', obj[379]);
         });
-        return deletAllEmailConfig == deletAllIncomingMail == deletAllOutgoingMail;
+        let deleteAllOutgoingMail: boolean = await Promise.all(deleteAllOutgoingMailMap).then(async (result) => {
+            return !result.includes(false);
+        });
+
+        console.log('AllEmailConfiguration deleted =============>', deleteAllEmailConfig == deleteAllIncomingMail == deleteAllOutgoingMail);
+        return deleteAllEmailConfig == deleteAllIncomingMail == deleteAllOutgoingMail;
     }
 
     async getHTMLBodyOfEmail(emailSubject: string): Promise<string> {
@@ -231,9 +243,8 @@ class ApiHelper {
     }
 
     async updateTask(taskGuid: string, data: ITask): Promise<number> {
-        UPDATE_TASK.id = taskGuid;
-        let taskData = UPDATE_TASK;
-        taskData = Object.assign({}, taskData);
+        let taskData = cloneDeep(UPDATE_TASK);
+        taskData.id = taskGuid;
 
         if (data.summary) {
             let taskSummary = {
@@ -265,9 +276,8 @@ class ApiHelper {
     }
 
     async updateCase(caseGuid: string, data: ICase): Promise<boolean> {
-        UPDATE_CASE.id = caseGuid;
-        let caseData = UPDATE_CASE;
-        caseData = Object.assign({}, caseData);
+        let caseData = cloneDeep(UPDATE_CASE);
+        caseData.id = caseGuid;
 
         if (data.summary) {
             let caseSummary = {
@@ -307,8 +317,7 @@ class ApiHelper {
     }
 
     async createCaseTemplate(data: ICaseTemplate): Promise<IIDs> {
-        let templateData = CASE_TEMPLATE_PAYLOAD;
-        templateData = Object.assign({}, templateData);
+        let templateData = cloneDeep(CASE_TEMPLATE_PAYLOAD);
 
         templateData.fieldInstances[8].value = data.templateSummary;
         templateData.fieldInstances[1000001437].value = data.templateName;
@@ -457,7 +466,7 @@ class ApiHelper {
     }
 
     async updateCaseTemplateStatus(caseTemplateGuid: string, status: string): Promise<number> {
-        let updateStatusPayload = CASE_TEMPLATE_STATUS_UPDATE_PAYLOAD;
+        let updateStatusPayload = cloneDeep(CASE_TEMPLATE_STATUS_UPDATE_PAYLOAD);
         updateStatusPayload.id = caseTemplateGuid;
         updateStatusPayload.fieldInstances[7].value = constants.CaseTemplate[status];
         let updateCaseStatus = await apiCoreUtil.updateRecordInstance("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid, updateStatusPayload);
@@ -539,7 +548,7 @@ class ApiHelper {
     }
 
     async createManualTaskTemplate(data: ITaskTemplate): Promise<IIDs> {
-        let templateData = MANUAL_TASK_TEMPLATE_PAYLOAD;
+        let templateData = cloneDeep(MANUAL_TASK_TEMPLATE_PAYLOAD);
         templateData.fieldInstances[7].value = constants.TaskTemplate[data.templateStatus];
         templateData.fieldInstances[8].value = data.templateSummary;
         templateData.fieldInstances[1000001437].value = data.templateName;
@@ -639,7 +648,7 @@ class ApiHelper {
     }
 
     async createExternalTaskTemplate(data: ITaskTemplate): Promise<IIDs> {
-        let templateData = EXTERNAL_TASK_TEMPLATE_PAYLOAD;
+        let templateData = cloneDeep(EXTERNAL_TASK_TEMPLATE_PAYLOAD);
         templateData.fieldInstances[7].value = constants.TaskTemplate[data.templateStatus];
         templateData.fieldInstances[8].value = data.templateSummary;
         templateData.fieldInstances[1000001437].value = data.templateName;
@@ -727,7 +736,7 @@ class ApiHelper {
     }
 
     async createAutomatedTaskTemplate(data: ITaskTemplate): Promise<IIDs> {
-        let templateData = AUTO_TASK_TEMPLATE_PAYLOAD;
+        let templateData = cloneDeep(AUTO_TASK_TEMPLATE_PAYLOAD);
         templateData.fieldInstances[7].value = constants.TaskTemplate[data.templateStatus];
         templateData.fieldInstances[8].value = data.templateSummary;
         templateData.fieldInstances[1000001437].value = data.templateName;
@@ -783,13 +792,13 @@ class ApiHelper {
             await newTaskTemplate.headers.location
         );
 
-        let docData = DOC_FOR_AUTO_TASK_TEMPLATE;
+        let docData = cloneDeep(DOC_FOR_AUTO_TASK_TEMPLATE);
         docData.targetTemplateId = taskTemplateDetails.data.id;
         docData.targetTemplateName = data.templateName;
         let newAutoTemplateDoc: AxiosResponse = await coreApi.createDocumentForAutoTaskTemplate(docData);
         console.log('Create Document for Automated Task Template API Status =============>', newAutoTemplateDoc.status);
 
-        let processData = PROCESS_FOR_AUTO_TASK_TEMPLATE;
+        let processData = cloneDeep(PROCESS_FOR_AUTO_TASK_TEMPLATE);
         processData.targetTemplateId = taskTemplateDetails.data.id;
         processData.targetTemplateName = data.templateName;
         processData.targetProcess = data.processBundle + ":" + data.processName;
@@ -1013,8 +1022,7 @@ class ApiHelper {
     }
 
     async associateCaseTemplateWithOneTaskTemplate(caseTemplateId: string, taskTemplateId: string): Promise<void> {
-        let oneTaskFlowProcess = ONE_TASKFLOW;
-        oneTaskFlowProcess = Object.assign({}, oneTaskFlowProcess);
+        let oneTaskFlowProcess = cloneDeep(ONE_TASKFLOW);
         let taskTemplateGuid = await coreApi.getTaskTemplateGuid(taskTemplateId);
         let randomString: string = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         // give new name to process
@@ -1029,7 +1037,7 @@ class ApiHelper {
         oneTaskFlowProcess.flowElements[2].inputMap[2].expression = `"${taskTemplateGuid}"`;
         oneTaskFlowProcess.layout = (oneTaskFlowProcess.layout).replace("New Task", taskName);
         // create new doc and update in payload
-        let docData = PROCESS_DOCUMENT;
+        let docData = cloneDeep(PROCESS_DOCUMENT);
         docData.name = docData.name + "_" + randomString;
         let newDocForProcess: AxiosResponse = await coreApi.createDocumentForProcess(docData);
         console.log('Create Document for TaskFlow Process =============>', newDocForProcess.status);
@@ -1047,12 +1055,11 @@ class ApiHelper {
     async associateCaseTemplateWithTwoTaskTemplate(caseTemplateId: string, taskTemplateId1: string, taskTemplateId2: string, order: string): Promise<void> {
         let twoTaskFlowProcess: any;
         if (order.toLocaleLowerCase() === 'sequential')
-            twoTaskFlowProcess = TWO_TASKFLOW_SEQUENTIAL;
+            twoTaskFlowProcess = cloneDeep(TWO_TASKFLOW_SEQUENTIAL);
 
         if (order.toLocaleLowerCase() === 'parallel')
-            twoTaskFlowProcess = TWO_TASKFLOW_PARALLEL;
+            twoTaskFlowProcess = cloneDeep(TWO_TASKFLOW_PARALLEL);
 
-        twoTaskFlowProcess = Object.assign({}, twoTaskFlowProcess);
         let taskTemplateGuid1 = await coreApi.getTaskTemplateGuid(taskTemplateId1);
         let taskTemplateGuid2 = await coreApi.getTaskTemplateGuid(taskTemplateId2);
         // give new name to process
@@ -1074,7 +1081,7 @@ class ApiHelper {
         twoTaskFlowProcess.layout = (twoTaskFlowProcess.layout).replace("New Task 1", taskName1);
         twoTaskFlowProcess.layout = (twoTaskFlowProcess.layout).replace("New Task 2", taskName2);
         // create new doc and update in payload
-        let docData = PROCESS_DOCUMENT;
+        let docData = cloneDeep(PROCESS_DOCUMENT);
         docData.name = docData.name + "_" + randomString;
         let newDocForProcess: AxiosResponse = await coreApi.createDocumentForProcess(docData);
         console.log('Create Document for TaskFlow Process =============>', newDocForProcess.status);
@@ -1090,10 +1097,9 @@ class ApiHelper {
     }
 
     async associateCaseTemplateWithThreeTaskTemplate(caseTemplateId: string, taskTemplateId1: string, taskTemplateId2: string, taskTemplateId3: string, structure?: any): Promise<void> {
-        let threeTaskFlowProcess: any = THREE_TASKFLOW_SEQUENTIAL;
+        let threeTaskFlowProcess: any = cloneDeep(THREE_TASKFLOW_SEQUENTIAL);
         if (structure) threeTaskFlowProcess = threeTaskFlowProcess;
 
-        threeTaskFlowProcess = Object.assign({}, threeTaskFlowProcess);
         let taskTemplateGuid1 = await coreApi.getTaskTemplateGuid(taskTemplateId1);
         let taskTemplateGuid2 = await coreApi.getTaskTemplateGuid(taskTemplateId2);
         let taskTemplateGuid3 = await coreApi.getTaskTemplateGuid(taskTemplateId3);
@@ -1122,7 +1128,7 @@ class ApiHelper {
         threeTaskFlowProcess.layout = (threeTaskFlowProcess.layout).replace("New Task 2", taskName2);
         threeTaskFlowProcess.layout = (threeTaskFlowProcess.layout).replace("New Task 3", taskName3);
         // create new doc and update in payload
-        let docData = PROCESS_DOCUMENT;
+        let docData = cloneDeep(PROCESS_DOCUMENT);
         docData.name = docData.name + "_" + randomString;
         let newDocForProcess: AxiosResponse = await coreApi.createDocumentForProcess(docData);
         console.log('Create Document for TaskFlow Process =============>', newDocForProcess.status);
@@ -1228,8 +1234,8 @@ class ApiHelper {
     }
 
     async createKnowledgeArticle(data: IKnowledgeArticles, attachment?: string): Promise<IIDs> {
-        let knowledgeArticleData = KNOWLEDGE_ARTICLE_PAYLOAD;
         let knowledgeArticleResponse: AxiosResponse;
+        let knowledgeArticleData = cloneDeep(KNOWLEDGE_ARTICLE_PAYLOAD);
 
         if (attachment) {
             knowledgeArticleData.fieldInstances[301820700].value = data.knowledgeSet;
@@ -1428,7 +1434,7 @@ class ApiHelper {
     }
 
     async updateKnowledgeArticleStatus(articleGuid: string, articleStatus: string, reviewer?: string, reviewerGroup?: string, reviewerOrg?: string): Promise<boolean> {
-        let knowledgeArticleData = UPDATE_KNOWLEDGE_ARTICLE_PAYLOAD;
+        let knowledgeArticleData = cloneDeep(UPDATE_KNOWLEDGE_ARTICLE_PAYLOAD);
         knowledgeArticleData.id = articleGuid;
         knowledgeArticleData.fieldInstances[302300500].value = constants.Knowledge[articleStatus];
         knowledgeArticleData.fieldInstances[536870913].value = await coreApi.getStatusGuid('com.bmc.dsm.knowledge', constants.Knowledge[articleStatus], articleStatus);
@@ -1460,7 +1466,7 @@ class ApiHelper {
     }
 
     async flagAndUnflagKnowledgeArticle(knowledgeGuid: string, feedbackCommnent, flagUnflag: number): Promise<boolean> {
-        let flagAndUnflagData = FLAG_UNFLAG_KA;
+        let flagAndUnflagData = cloneDeep(FLAG_UNFLAG_KA);
         flagAndUnflagData.processInputValues.ParentID = `${knowledgeGuid}`;
         flagAndUnflagData.processInputValues.Feedback = `${feedbackCommnent}`;
         flagAndUnflagData.processInputValues.GUID = `${knowledgeGuid}`;
@@ -1494,26 +1500,11 @@ class ApiHelper {
         const flowsetDetails = await axios.get(
             flowset.headers.location
         );
-        console.log('New Case Details API Status =============>', flowsetDetails.status);
+        console.log('New Flowset Details API Status =============>', flowsetDetails.status);
 
         return {
             id: flowsetDetails.data.id,
             displayId: flowsetDetails.data.displayId
-        };
-    }
-
-    async createNewDomainTag(domainTag: string): Promise<IIDs> {
-        let domainTagFile = await require('../data/api/foundation/domain.tag.api.json');
-        let domainTagData = await domainTagFile.createDomainTag;
-        domainTagData.fieldInstances[8].value = domainTag;
-        let domainTagResponse: AxiosResponse = await coreApi.createRecordInstance(domainTagData);
-        console.log('Create Domain Tag API Status =============>', domainTagResponse.status);
-        const domainTagDetails = await axios.get(
-            await domainTagResponse.headers.location
-        );
-        return {
-            id: domainTagDetails.data.id,
-            displayId: domainTagDetails.data.displayId
         };
     }
 
@@ -1665,22 +1656,26 @@ class ApiHelper {
     }
 
     async updateCaseStatus(caseGuid: string, status: string, statusReason?: string): Promise<number> {
-        let updateStatusFile = await require('../data/api/case/update.case.status.api.json');
-        let statusData = await updateStatusFile.CaseStatusChange;
-        statusData["id"] = caseGuid;
-        statusData.fieldInstances[450000021]["value"] = constants.CaseStatus[status];
+        let caseStatusChange = cloneDeep(CASE_STATUS_CHANGE);
+        caseStatusChange.id = caseGuid;
+        caseStatusChange.fieldInstances[450000021]["value"] = constants.CaseStatus[status];
         if (statusReason) {
-            statusData.fieldInstances[1000000881]["value"] = await apiCoreUtil.getStatusChangeReasonGuid(statusReason);
+            let statusReasonGuid = await apiCoreUtil.getStatusChangeReasonGuid(statusReason);
+            let caseStatusReasonPayload = {
+                "id": "1000000881",
+                "value": `${statusReasonGuid}`
+            }
+            caseStatusChange.fieldInstances[1000000881] = caseStatusReasonPayload;
         }
 
-        let updateCaseStatus = await apiCoreUtil.updateRecordInstance("com.bmc.dsm.case-lib:Case", caseGuid, statusData);
+        let updateCaseStatus = await apiCoreUtil.updateRecordInstance("com.bmc.dsm.case-lib:Case", caseGuid, caseStatusChange);
         await browser.sleep(1000); // hardwait to reflect updated status
         console.log(`Changing the case to ${status} API status is =============>`, updateCaseStatus.status);
         return updateCaseStatus.status;
     }
 
     async createProcessLibConfig(data: IProcessLibConfig): Promise<IIDs> {
-        let newProcessConfig = NEW_PROCESS_LIB;
+        let newProcessConfig = cloneDeep(NEW_PROCESS_LIB);
         newProcessConfig.fieldInstances[61001]["value"] = data.applicationServicesLib;
         newProcessConfig.fieldInstances[450000002]["value"] = data.processName;
         newProcessConfig.fieldInstances[450000003]["value"] = data.processAliasName;
@@ -1744,15 +1739,16 @@ class ApiHelper {
     }
 
     async runAutomatedCaseTransitionProcess(): Promise<number> {
+        let automatedCaseTransition = cloneDeep(AUTOMATED_CASE_STATUS_TRANSITION);
         let response = await axios.post(
             commandUri,
-            AUTOMATED_CASE_STATUS_TRANSITION
+            automatedCaseTransition
         )
         return response.status;
     }
 
     async createDocumentLibrary(docLibDetails: IDocumentLib, filePath: string): Promise<IIDs> {
-        let documentLibRecordInstanceJson = DOC_LIB_DRAFT;
+        let documentLibRecordInstanceJson = cloneDeep(DOC_LIB_DRAFT);
         documentLibRecordInstanceJson.fieldInstances[302300502].value = docLibDetails.docLibTitle;
         documentLibRecordInstanceJson.fieldInstances[1000000001].value = await apiCoreUtil.getOrganizationGuid(docLibDetails.company);
         documentLibRecordInstanceJson.fieldInstances[302300512].value = await apiCoreUtil.getSupportGroupGuid(docLibDetails.ownerGroup);
@@ -1787,7 +1783,7 @@ class ApiHelper {
     }
 
     async publishDocumentLibrary(docLibInfo: IIDs): Promise<boolean> {
-        let publishDocLibPayload = DOC_LIB_PUBLISH;
+        let publishDocLibPayload = cloneDeep(DOC_LIB_PUBLISH);
         publishDocLibPayload.id = docLibInfo.id;
         publishDocLibPayload.displayId = docLibInfo.displayId;
 
@@ -1797,7 +1793,7 @@ class ApiHelper {
     }
 
     async giveReadAccessToDocLib(docLibInfo: IIDs, orgName: string): Promise<boolean> {
-        let readAccessDocLibPayload = DOC_LIB_READ_ACCESS;
+        let readAccessDocLibPayload = cloneDeep(DOC_LIB_READ_ACCESS);
         readAccessDocLibPayload['processInputValues']['Record Instance ID'] = docLibInfo.id;
         let orgId = await coreApi.getOrganizationGuid(orgName);
         if (orgId == null) { orgId = await coreApi.getBusinessUnitGuid(orgName); }
@@ -1817,12 +1813,12 @@ class ApiHelper {
     }
 
     async createKnowledgeSet(knowledgeSetDetails: IKnowledgeSet): Promise<IIDs> {
-        let knowledgeSetData = KNOWLEDGE_SET;
+        let knowledgeSetData = cloneDeep(KNOWLEDGE_SET);
         knowledgeSetData.fieldInstances[8].value = knowledgeSetDetails.knowledgeSetDesc;
         knowledgeSetData.fieldInstances[301820700].value = knowledgeSetDetails.knowledgeSetTitle;
         knowledgeSetData.fieldInstances[1000000001].value = await apiCoreUtil.getOrganizationGuid(knowledgeSetDetails.company);
 
-        let recordInstanceKSetAssociationJson = KnowledegeSet_ASSOCIATION;
+        let recordInstanceKSetAssociationJson = cloneDeep(KNOWLEDEGESET_ASSOCIATION);
         let data = {
             recordInstance: knowledgeSetData,
             associationOperations: recordInstanceKSetAssociationJson
@@ -1840,7 +1836,7 @@ class ApiHelper {
     }
 
     async updateKnowledgeSetPermissions(knowledgeSetId: string, isSupportGroup: string, knowledgeSetPermissionDetails: IknowledgeSetPermissions): Promise<boolean> {
-        let knowledgeSetAccess = KNOWLEDGESET_PERMISSION;
+        let knowledgeSetAccess = cloneDeep(KNOWLEDGESET_PERMISSION);
         knowledgeSetAccess.processInputValues["Record Instance ID"] = knowledgeSetId;
         knowledgeSetAccess.processInputValues.Operation = knowledgeSetPermissionDetails.operation;
         knowledgeSetAccess.processInputValues.Type = knowledgeSetPermissionDetails.type;
@@ -1862,7 +1858,7 @@ class ApiHelper {
     }
 
     async createKnowledgeArticleTemplate(knowledgeSetTitle: string, knowledgeSetId: string, data: any): Promise<boolean> {
-        let knowledgeSetTemplateData = KNOWLEDGEARTICLE_TEMPLATE;
+        let knowledgeSetTemplateData = cloneDeep(KNOWLEDGEARTICLE_TEMPLATE);
         knowledgeSetTemplateData.sections[0].title = data.title;
         knowledgeSetTemplateData.templateName = data.templateName;
         knowledgeSetTemplateData.knowledgeSet = knowledgeSetTitle;
@@ -1879,7 +1875,7 @@ class ApiHelper {
     }
 
     async updateKnowledgeArticleViewAndHelpFulCounter(knowledgeArticleGuid: string, data: any): Promise<boolean> {
-        let knowledgeArticleHelpfulCounterData = KNOWLEDGEARTICLE_HELPFULCOUNTER;
+        let knowledgeArticleHelpfulCounterData = cloneDeep(KNOWLEDGEARTICLE_HELPFULCOUNTER);
         knowledgeArticleHelpfulCounterData.id = knowledgeArticleGuid;
         knowledgeArticleHelpfulCounterData.fieldInstances[302299521].value = data.linkedCounter;
         knowledgeArticleHelpfulCounterData.fieldInstances[302309761].value = data.helpfulPercentage;
@@ -1892,32 +1888,34 @@ class ApiHelper {
             uri,
             knowledgeArticleHelpfulCounterData
         );
-        console.log("Alert status ==>>> " + updateArticleHelpfulCounterResponse.status);
+        console.log("Alert status ===== " + updateArticleHelpfulCounterResponse.status);
         return updateArticleHelpfulCounterResponse.status == 204;
     }
 
     async updatePersonAsVIP(personName: string, vipStatus: string): Promise<boolean> {
+        let updatePersonAsVip = cloneDeep(UPDATE_PERSON_AS_VIP);
         let personGuid = await coreApi.getPersonGuid(personName);
-        UPDATE_PERSON_AS_VIP.id = personGuid;
-        vipStatus == 'Yes' ? UPDATE_PERSON_AS_VIP.fieldInstances[1000000026].value = 100 : 200;
-        let updatePersonAsVIPResponse = await coreApi.updateRecordInstance('com.bmc.arsys.rx.foundation:Person', personGuid, UPDATE_PERSON_AS_VIP);
+        updatePersonAsVip.id = personGuid;
+        vipStatus == 'Yes' ? updatePersonAsVip.fieldInstances[1000000026].value = 100 : 200;
+        let updatePersonAsVIPResponse = await coreApi.updateRecordInstance('com.bmc.arsys.rx.foundation:Person', personGuid, updatePersonAsVip);
         return updatePersonAsVIPResponse.status == 204;
     }
 
     async createSVT(svtData: any): Promise<IIDs> {
-        SERVICE_TARGET_PAYLOAD.fieldInstances[300271400].value = svtData.terms;
-        SERVICE_TARGET_PAYLOAD.fieldInstances[304412691].value = svtData.readableTerms;
-        SERVICE_TARGET_PAYLOAD.fieldInstances[300273000].value = svtData.startWhen;
-        SERVICE_TARGET_PAYLOAD.fieldInstances[304411891].value = svtData.readableStartWhen;
-        SERVICE_TARGET_PAYLOAD.fieldInstances[300273100].value = svtData.stopWhen;
-        SERVICE_TARGET_PAYLOAD.fieldInstances[304411911].value = svtData.readableStopWhen;
-        SERVICE_TARGET_PAYLOAD.fieldInstances[300398100].value = svtData.goalTimeMinutes;
-        SERVICE_TARGET_PAYLOAD.fieldInstances[490000400].value = svtData.svtName;
-        SERVICE_TARGET_PAYLOAD.fieldInstances[300523400].value = await coreApi.getDataSourceGuid(svtData.dataSource);
-        SERVICE_TARGET_PAYLOAD.fieldInstances[304412961].value = await coreApi.getOrganizationGuid(svtData.company);
+        let serviceTargetPayload = cloneDeep(SERVICE_TARGET_PAYLOAD);
+        serviceTargetPayload.fieldInstances[300271400].value = svtData.terms;
+        serviceTargetPayload.fieldInstances[304412691].value = svtData.readableTerms;
+        serviceTargetPayload.fieldInstances[300273000].value = svtData.startWhen;
+        serviceTargetPayload.fieldInstances[304411891].value = svtData.readableStartWhen;
+        serviceTargetPayload.fieldInstances[300273100].value = svtData.stopWhen;
+        serviceTargetPayload.fieldInstances[304411911].value = svtData.readableStopWhen;
+        serviceTargetPayload.fieldInstances[300398100].value = svtData.goalTimeMinutes;
+        serviceTargetPayload.fieldInstances[490000400].value = svtData.svtName;
+        serviceTargetPayload.fieldInstances[300523400].value = await coreApi.getDataSourceGuid(svtData.dataSource);
+        serviceTargetPayload.fieldInstances[304412961].value = await coreApi.getOrganizationGuid(svtData.company);
         //SERVICE_TARGET.fieldInstances[300272100].value = -1
 
-        let slmResponse: AxiosResponse = await coreApi.createRecordInstance(SERVICE_TARGET_PAYLOAD);
+        let slmResponse: AxiosResponse = await coreApi.createRecordInstance(serviceTargetPayload);
         console.log('Create Service Target API Status =============>', slmResponse.status);
         const slmDetails = await axios.get(
             await slmResponse.headers.location
@@ -1931,20 +1929,29 @@ class ApiHelper {
     }
 
     async createAdhocTask(caseGuid: string, taskData: IAdhocTask): Promise<IIDs> {
-        ADHOC_TASK_PAYLOAD.fieldInstances[8].value = taskData.taskName;
-        ADHOC_TASK_PAYLOAD.fieldInstances[536870913].value = caseGuid;
-        ADHOC_TASK_PAYLOAD.fieldInstances[1000000001].value = await coreApi.getOrganizationGuid(taskData.company);
-        ADHOC_TASK_PAYLOAD.fieldInstances[450000152].value = await coreApi.getPersonGuid(taskData.assignee);
-        ADHOC_TASK_PAYLOAD.fieldInstances[450000381].value = await coreApi.getBusinessUnitGuid(taskData.businessUnit);
-        ADHOC_TASK_PAYLOAD.fieldInstances[1000000217].value = await coreApi.getSupportGroupGuid(taskData.supportGroup);
-        taskData.priority ? ADHOC_TASK_PAYLOAD.fieldInstances[1000000164].value = constants.CasePriority[taskData.priority] : ADHOC_TASK_PAYLOAD.fieldInstances[1000000164].value;
+        let adhocTaskPayload = cloneDeep(ADHOC_TASK_PAYLOAD);
+        adhocTaskPayload.fieldInstances[8].value = taskData.taskName;
+        adhocTaskPayload.fieldInstances[536870913].value = caseGuid;
+        adhocTaskPayload.fieldInstances[1000000001].value = await coreApi.getOrganizationGuid(taskData.company);
+        adhocTaskPayload.fieldInstances[450000152].value = await coreApi.getPersonGuid(taskData.assignee);
+        adhocTaskPayload.fieldInstances[450000381].value = await coreApi.getBusinessUnitGuid(taskData.businessUnit);
+        adhocTaskPayload.fieldInstances[1000000217].value = await coreApi.getSupportGroupGuid(taskData.supportGroup);
+        taskData.priority ? adhocTaskPayload.fieldInstances[1000000164].value = constants.CasePriority[taskData.priority] : adhocTaskPayload.fieldInstances[1000000164].value;
 
-        let createTaskResponse = await coreApi.createRecordInstance(ADHOC_TASK_PAYLOAD);
+        let createTaskResponse = await coreApi.createRecordInstance(adhocTaskPayload);
         console.log('Create Task API Status =============>', createTaskResponse.status);
         const taskDetails = await axios.get(
             await createTaskResponse.headers.location
         );
         console.log('New Task Details API Status =============>', taskDetails.status);
+
+        let registerAdhocTask = cloneDeep(REGISTER_ADHOC_TASK);
+        registerAdhocTask.processInputValues["Task Id"] = taskDetails.data.id;
+        const registerAdhocTaskResponse = await axios.post(
+            commandUri,
+            registerAdhocTask
+        );
+        console.log('Register Adhoc Task API Status =============>', registerAdhocTaskResponse.status);
 
         return {
             id: taskDetails.data.id,
@@ -1953,32 +1960,35 @@ class ApiHelper {
     }
 
     async updateTaskStatus(taskGuid: string, status: string, statusReason?: string): Promise<number> {
-        UPDATE_TASK_STATUS.id = taskGuid;
-        UPDATE_TASK_STATUS.fieldInstances[450000021]["value"] = constants.TaskStatus[status];
+        let updateTaskStatusPayload = cloneDeep(UPDATE_TASK_STATUS);
+        updateTaskStatusPayload.id = taskGuid;
+        updateTaskStatusPayload.fieldInstances[450000021]["value"] = constants.TaskStatus[status];
         if (statusReason) {
             let statusValue = await apiCoreUtil.getStatusChangeReasonGuid(statusReason);
             let taskStatusReason = {
                 "id": "1000000881",
                 "value": `${statusValue}`
             }
-            UPDATE_TASK_STATUS.fieldInstances["1000000881"] = taskStatusReason;
+            updateTaskStatusPayload.fieldInstances["1000000881"] = taskStatusReason;
         }
 
-        let updateTaskStatus = await apiCoreUtil.updateRecordInstance("com.bmc.dsm.task-lib:Task", taskGuid, UPDATE_TASK_STATUS);
+        let updateTaskStatus = await apiCoreUtil.updateRecordInstance("com.bmc.dsm.task-lib:Task", taskGuid, updateTaskStatusPayload);
         await browser.sleep(1000); // hardwait to reflect updated status
+        console.log(`Update task status to ${status} API status is ${updateTaskStatus.status}`);
         return updateTaskStatus.status;
     }
 
     async addTaskToCase(taskData: any, caseGuid: string): Promise<AxiosResponse> {
+        let taskCreationFromTemplate = cloneDeep(TASK_CREATION_FROM_TEMPLATE);
         let templateName = await coreApi.getTaskTemplateGuid(taskData.templateName);
-        TASK_CREATION_FROM_TEMPLATE.processInputValues["Case Company"] = await coreApi.getOrganizationGuid(taskData.company);
-        TASK_CREATION_FROM_TEMPLATE.processInputValues["Case ID"] = caseGuid;
-        TASK_CREATION_FROM_TEMPLATE.processInputValues["Requester ID"] = await coreApi.getPersonGuid(taskData.requesterId);
-        TASK_CREATION_FROM_TEMPLATE.processInputValues["Selected Templates"] = "[{\"379\":\"" + templateName + "\"}]";
+        taskCreationFromTemplate.processInputValues["Case Company"] = await coreApi.getOrganizationGuid(taskData.company);
+        taskCreationFromTemplate.processInputValues["Case ID"] = caseGuid;
+        taskCreationFromTemplate.processInputValues["Requester ID"] = await coreApi.getPersonGuid(taskData.requesterId);
+        taskCreationFromTemplate.processInputValues["Selected Templates"] = "[{\"379\":\"" + templateName + "\"}]";
 
         const createTaskResponse = await axios.post(
             commandUri,
-            TASK_CREATION_FROM_TEMPLATE
+            taskCreationFromTemplate
         );
         console.log('Add Task to Case from Task Template API Status =============>', createTaskResponse.status);
         return createTaskResponse;
@@ -2015,29 +2025,31 @@ class ApiHelper {
     }
 
     async createKnowledgeApprovalMapping(data: any): Promise<boolean> {
-        KNOWLEDGE_APPROVAL_CONFIG.fieldInstances[1000000001].value = await apiCoreUtil.getOrganizationGuid(data.company);
-        KNOWLEDGE_APPROVAL_CONFIG.fieldInstances[1000001437].value = data.configName;
-        KNOWLEDGE_APPROVAL_CONFIG.fieldInstances[302300500].value = constants.Knowledge[data.status1];
+        let knowledgeApprovalConfig = cloneDeep(KNOWLEDGE_APPROVAL_CONFIG);
+        knowledgeApprovalConfig.fieldInstances[1000000001].value = await apiCoreUtil.getOrganizationGuid(data.company);
+        knowledgeApprovalConfig.fieldInstances[1000001437].value = data.configName;
+        knowledgeApprovalConfig.fieldInstances[302300500].value = constants.Knowledge[data.status1];
         if (data.status2) {
-            KNOWLEDGE_APPROVAL_CONFIG.fieldInstances[302300500].value = KNOWLEDGE_APPROVAL_CONFIG.fieldInstances[302300500].value + ';' + constants.Knowledge[data.status2];
+            knowledgeApprovalConfig.fieldInstances[302300500].value = knowledgeApprovalConfig.fieldInstances[302300500].value + ';' + constants.Knowledge[data.status2];
         }
         if (data.status3) {
-            KNOWLEDGE_APPROVAL_CONFIG.fieldInstances[302300500].value = KNOWLEDGE_APPROVAL_CONFIG.fieldInstances[302300500].value + ';' + constants.Knowledge[data.status3];
+            knowledgeApprovalConfig.fieldInstances[302300500].value = knowledgeApprovalConfig.fieldInstances[302300500].value + ';' + constants.Knowledge[data.status3];
         }
 
-        let knowledgeApproval: AxiosResponse = await coreApi.createRecordInstance(KNOWLEDGE_APPROVAL_CONFIG);
+        let knowledgeApproval: AxiosResponse = await coreApi.createRecordInstance(knowledgeApprovalConfig);
         console.log('Knowledge Approvals Status =============>', knowledgeApproval.status);
         return knowledgeApproval.status == 201;
     }
 
     async createKnowledgeApprovalFlow(data: any): Promise<boolean> {
-        KNOWLEDGE_APPROVAL_FLOW_CONFIG.approvalFlowConfigurationList[0].flowName = data.flowName;
-        KNOWLEDGE_APPROVAL_FLOW_CONFIG.approvalFlowConfigurationList[0].approvers = 'U:' + data.approver;
-        KNOWLEDGE_APPROVAL_FLOW_CONFIG.approvalFlowConfigurationList[0].qualification = data.qualification;
+        let knowledgeApprovalFlowConfig = cloneDeep(KNOWLEDGE_APPROVAL_FLOW_CONFIG);
+        knowledgeApprovalFlowConfig.approvalFlowConfigurationList[0].flowName = data.flowName;
+        knowledgeApprovalFlowConfig.approvalFlowConfigurationList[0].approvers = 'U:' + data.approver;
+        knowledgeApprovalFlowConfig.approvalFlowConfigurationList[0].qualification = data.qualification;
 
         let response = await axios.put(
             "api/com.bmc.arsys.rx.approval/rx/application/approval/flowconfiguration/com.bmc.dsm.knowledge:Knowledge Article Template/flowGroupName/Default Article Approval Flow Group",
-            KNOWLEDGE_APPROVAL_FLOW_CONFIG,
+            knowledgeApprovalFlowConfig,
         )
         console.log('Knowledge Approval Flow Status =============>', response.status);
         return response.status == 204;
@@ -2065,49 +2077,53 @@ class ApiHelper {
     }
 
     async approverAction(recordGuid: string, action: string, assignee?: string): Promise<boolean> {
-        APPROVAL_ACTION.commands[0].command = action;
-        APPROVAL_ACTION.commands[0].requestID = await coreApi.getSignatureInstanceId(recordGuid);
+        let approvalAction = cloneDeep(APPROVAL_ACTION);
+        approvalAction.commands[0].command = action;
+        approvalAction.commands[0].requestID = await coreApi.getSignatureInstanceId(recordGuid);
         if (assignee) {
-            APPROVAL_ACTION.commands[0]["assignToApprovers"] = assignee;
+            approvalAction.commands[0]["assignToApprovers"] = assignee;
         }
 
         await browser.sleep(20000);
         let response = await axios.post(
             commandUri,
-            APPROVAL_ACTION
+            approvalAction
         );
         console.log('Approver Action API Status =============>', response.status);
         return response.status == 200;
     }
 
     async updateKnowledgeArticleExternalFlag(articleGuid: string, isExternal: boolean): Promise<boolean> {
-        KNOWLEDGE_ARTICLE_EXTERNAL_FLAG.id = articleGuid;
-        isExternal ? KNOWLEDGE_ARTICLE_EXTERNAL_FLAG.fieldInstances[302312186].value = 0 : KNOWLEDGE_ARTICLE_EXTERNAL_FLAG.fieldInstances[302312186].value = 1;
-        let response = await coreApi.updateRecordInstance('com.bmc.dsm.knowledge:Knowledge Article Template', articleGuid, KNOWLEDGE_ARTICLE_EXTERNAL_FLAG);
+        let knowledgeArticleExtFlag = cloneDeep(KNOWLEDGE_ARTICLE_EXTERNAL_FLAG);
+        knowledgeArticleExtFlag.id = articleGuid;
+        isExternal ? knowledgeArticleExtFlag.fieldInstances[302312186].value = 0 : knowledgeArticleExtFlag.fieldInstances[302312186].value = 1;
+        let response = await coreApi.updateRecordInstance('com.bmc.dsm.knowledge:Knowledge Article Template', articleGuid, knowledgeArticleExtFlag);
 
         console.log('Update Knowledge Article External Flag API Status =============>', response.status);
         return response.status == 204;
     }
 
     async changeCaseAssignment(caseGuid: string, businessUnit: string, supportGroup: string, assignee?: string): Promise<boolean> {
-        UPDATE_CASE_ASSIGNMENT.id = caseGuid;
-        UPDATE_CASE_ASSIGNMENT.fieldInstances[450000381].value = await coreApi.getBusinessUnitGuid(businessUnit);
-        UPDATE_CASE_ASSIGNMENT.fieldInstances[1000000217].value = await coreApi.getSupportGroupGuid(supportGroup);
-        if (assignee) UPDATE_CASE_ASSIGNMENT.fieldInstances[450000152].value = await coreApi.getPersonGuid(assignee);
-        let updateAssignmentResponse = await coreApi.updateRecordInstance('com.bmc.dsm.case-lib:Case', caseGuid, UPDATE_CASE_ASSIGNMENT);
+        let updateCaseAssignment = cloneDeep(UPDATE_CASE_ASSIGNMENT);
+        updateCaseAssignment.id = caseGuid;
+        updateCaseAssignment.fieldInstances[450000381].value = await coreApi.getBusinessUnitGuid(businessUnit);
+        updateCaseAssignment.fieldInstances[1000000217].value = await coreApi.getSupportGroupGuid(supportGroup);
+        if (assignee) updateCaseAssignment.fieldInstances[450000152].value = await coreApi.getPersonGuid(assignee);
+        let updateAssignmentResponse = await coreApi.updateRecordInstance('com.bmc.dsm.case-lib:Case', caseGuid, updateCaseAssignment);
         console.log('Update Case Assignment API Status =============>', updateAssignmentResponse.status);
         return updateAssignmentResponse.status == 204;
     }
 
     async enableActionableNotificationSetting(): Promise<boolean> {
+        let actionableNotificationEnableSettings = cloneDeep(ACTIONABLE_NOTIFICATIONS_ENABLEMENT_SETTING);
         let config = {
             headers: { 'request-overlay-group': 'Petramco' }
         };
 
-        ACTIONABLE_NOTIFICATIONS_ENABLEMENT_SETTING.fieldInstances[3205].value = browser.baseUrl;
+        actionableNotificationEnableSettings.fieldInstances[3205].value = browser.baseUrl;
         let response = await axios.post(
             'api/rx/application/record/recordinstance',
-            ACTIONABLE_NOTIFICATIONS_ENABLEMENT_SETTING,
+            actionableNotificationEnableSettings,
             config
         );
         console.log('Enabling Actionable Notifications API status =============>', response.status);
@@ -2115,37 +2131,40 @@ class ApiHelper {
     }
 
     async addCaseToWatchlistAllEvents(caseGuid: string): Promise<boolean> {
-        ADD_TO_WATCHLIST.processInputValues.Cases[0][379] = caseGuid;
+        let addToWatchlist = cloneDeep(ADD_TO_WATCHLIST);
+        addToWatchlist.processInputValues.Cases[0][379] = caseGuid;
         let response = await axios.post(
             commandUri,
-            ADD_TO_WATCHLIST
+            addToWatchlist
         );
         console.log('Add Case to Watchlist API status =============>', response.status);
         return response.status == 200;
     }
 
     async createCaseApprovalFlow(data: any): Promise<boolean> {
-        CASE_APPROVAL_FLOW.approvalFlowConfigurationList[0].flowName = data.flowName;
-        CASE_APPROVAL_FLOW.approvalFlowConfigurationList[0].approvers = 'U:' + data.approver;
-        CASE_APPROVAL_FLOW.approvalFlowConfigurationList[0].qualification = data.qualification;
+        let caseApprovalFlow = cloneDeep(CASE_APPROVAL_FLOW);
+        caseApprovalFlow.approvalFlowConfigurationList[0].flowName = data.flowName;
+        caseApprovalFlow.approvalFlowConfigurationList[0].approvers = 'U:' + data.approver;
+        caseApprovalFlow.approvalFlowConfigurationList[0].qualification = data.qualification;
         let response = await axios.put(
             "api/com.bmc.arsys.rx.approval/rx/application/approval/flowconfiguration/com.bmc.dsm.case-lib:Case/flowGroupName/BWFA Group",
-            CASE_APPROVAL_FLOW,
+            caseApprovalFlow,
         )
         console.log('Case Approval Flow API Status =============>', response.status);
         return response.status == 204;
     }
 
     async createCaseApprovalMapping(data: ICaseApprovalMapping): Promise<IIDs> {
-        CASE_APPROVAL_MAPPING.fieldInstances[303715900].value = await coreApi.getStatusGuid('com.bmc.dsm.case-lib', constants.CaseStatus[data.triggerStatus]);
-        CASE_APPROVAL_MAPPING.fieldInstances[450000152].value = constants.CaseStatus[data.triggerStatus];
-        CASE_APPROVAL_MAPPING.fieldInstances[450000153].value = constants.CaseStatus[data.approvedStatus];
-        CASE_APPROVAL_MAPPING.fieldInstances[450000154].value = constants.CaseStatus[data.rejectStatus];
-        CASE_APPROVAL_MAPPING.fieldInstances[450000155].value = constants.CaseStatus[data.errorStatus];
-        CASE_APPROVAL_MAPPING.fieldInstances[450000158].value = constants.CaseStatus[data.noApprovalFoundStatus];
-        CASE_APPROVAL_MAPPING.fieldInstances[1000001437].value = data.mappingName;
-        if (data.company) CASE_APPROVAL_MAPPING.fieldInstances[1000000001].value = await coreApi.getOrganizationGuid(data.company);
-        let response = await coreApi.createRecordInstance(CASE_APPROVAL_MAPPING);
+        let caseApprovalMapping = cloneDeep(CASE_APPROVAL_MAPPING);
+        caseApprovalMapping.fieldInstances[303715900].value = await coreApi.getStatusGuid('com.bmc.dsm.case-lib', constants.CaseStatus[data.triggerStatus]);
+        caseApprovalMapping.fieldInstances[450000152].value = constants.CaseStatus[data.triggerStatus];
+        caseApprovalMapping.fieldInstances[450000153].value = constants.CaseStatus[data.approvedStatus];
+        caseApprovalMapping.fieldInstances[450000154].value = constants.CaseStatus[data.rejectStatus];
+        caseApprovalMapping.fieldInstances[450000155].value = constants.CaseStatus[data.errorStatus];
+        caseApprovalMapping.fieldInstances[450000158].value = constants.CaseStatus[data.noApprovalFoundStatus];
+        caseApprovalMapping.fieldInstances[1000001437].value = data.mappingName;
+        if (data.company) caseApprovalMapping.fieldInstances[1000000001].value = await coreApi.getOrganizationGuid(data.company);
+        let response = await coreApi.createRecordInstance(caseApprovalMapping);
         console.log('Case Approval Mapping API Status =============>', response.status);
 
         const approvalMapping = await axios.get(
@@ -2158,16 +2177,18 @@ class ApiHelper {
     }
 
     async createBusinessTimeSharedEntity(name: string, status?: number): Promise<boolean> {
-        if (status) BUSINESS_TIME_SHARED_ENTITY.fieldInstances[7].value = status;
-        BUSINESS_TIME_SHARED_ENTITY.fieldInstances[8].value = name;
-        let response = await coreApi.createRecordInstance(BUSINESS_TIME_SHARED_ENTITY);
+        let businessTimeSharedEntity = cloneDeep(BUSINESS_TIME_SHARED_ENTITY);
+        if (status) businessTimeSharedEntity.fieldInstances[7].value = status;
+        businessTimeSharedEntity.fieldInstances[8].value = name;
+        let response = await coreApi.createRecordInstance(businessTimeSharedEntity);
         console.log('Create Business Shared Entity API Status =============>', response.status);
         return response.status == 204;
     }
 
     async createBusinessTimeSegment(name: string): Promise<IIDs> {
-        BUSINESS_TIME_SEGMENT.fieldInstances[8].value = name;
-        let response = await coreApi.createRecordInstance(BUSINESS_TIME_SHARED_ENTITY);
+        let businessTimeSegmentPayload = cloneDeep(BUSINESS_TIME_SEGMENT);
+        businessTimeSegmentPayload.fieldInstances[8].value = name;
+        let response = await coreApi.createRecordInstance(businessTimeSegmentPayload);
         console.log('Create Business Time Segment API Status =============>', response.status);
         const businessTimeSegment = await axios.get(
             response.headers.location
@@ -2224,11 +2245,12 @@ class ApiHelper {
         }
     }
 
-    async addFunctionalRole(person: string, functionalRoleGuid?: string): Promise<boolean> {
+    async addFunctionalRole(person: string, functionalRoleGuid: string): Promise<boolean> {
+        let addFunctionalRolePayload = cloneDeep(ADD_FUNCTIONAL_ROLE);
         let userRoles = await coreApi.getPersonFunctionalRoles(person);
         let personGuid = await coreApi.getPersonGuid(person)
-        ADD_FUNCTIONAL_ROLE.fieldInstances[430000002].value = userRoles + ';' + functionalRoleGuid;
-        let response = await coreApi.updateRecordInstance('com.bmc.arsys.rx.foundation:Person', personGuid, ADD_FUNCTIONAL_ROLE);
+        addFunctionalRolePayload.fieldInstances[430000002].value = userRoles + ';' + functionalRoleGuid;
+        let response = await coreApi.updateRecordInstance('com.bmc.arsys.rx.foundation:Person', personGuid, addFunctionalRolePayload);
         console.log(`Functional role of ${person} is successfully updated  =============>`, response.status);
         return response.status == 204;
     }
@@ -2244,22 +2266,24 @@ class ApiHelper {
     }
 
     async reopenCase(caseGuid: string): Promise<boolean> {
-        CASE_REOPEN.processInputValues["Case ID"] = caseGuid;
+        let caseReopen = cloneDeep(CASE_REOPEN);
+        caseReopen.processInputValues["Case ID"] = caseGuid;
         let response = await axios.post(
             commandUri,
-            CASE_REOPEN
+            caseReopen
         )
         console.log('Reopen API Status  =============>', response.status);
         return response.status == 201;
     }
 
     async postActivityCommentsWithoutAttachments(comment: string, module: string, moduleGuid: string): Promise<boolean> {
-        POST_ACTIVITY.dataSource = module;
-        POST_ACTIVITY.text = comment;
+        let postActivity = cloneDeep(POST_ACTIVITY);
+        postActivity.dataSource = module;
+        postActivity.text = comment;
         let uri = `/api/com.bmc.dsm.social-lib/rx/application/activity/${module}/${moduleGuid}`;
         let response = await axios.post(
             uri,
-            POST_ACTIVITY
+            postActivity
         )
         console.log('Comments posting API Status  =============>', response.status);
         return response.status == 200;
@@ -2281,11 +2305,12 @@ class ApiHelper {
     }
 
     async createReadAccessMapping(data: any): Promise<boolean> {
-        CASE_READ_ACCESS.fieldInstances[450000381].value = await apiCoreUtil.getBusinessUnitGuid(data.businessUnit);
-        CASE_READ_ACCESS.fieldInstances[1000000217].value = await apiCoreUtil.getSupportGroupGuid(data.supportGroup);
-        CASE_READ_ACCESS.fieldInstances[450000153].value = await apiCoreUtil.getOrganizationGuid(data.assignedCompany);
-        CASE_READ_ACCESS.fieldInstances[1000001437].value = data.configName;
-        CASE_READ_ACCESS.fieldInstances[1000000001].value = await apiCoreUtil.getOrganizationGuid(data.company);
+        let caseReadAccess = cloneDeep(CASE_READ_ACCESS);
+        caseReadAccess.fieldInstances[450000381].value = await apiCoreUtil.getBusinessUnitGuid(data.businessUnit);
+        caseReadAccess.fieldInstances[1000000217].value = await apiCoreUtil.getSupportGroupGuid(data.supportGroup);
+        caseReadAccess.fieldInstances[450000153].value = await apiCoreUtil.getOrganizationGuid(data.assignedCompany);
+        caseReadAccess.fieldInstances[1000001437].value = data.configName;
+        caseReadAccess.fieldInstances[1000000001].value = await apiCoreUtil.getOrganizationGuid(data.company);
 
         if (data.category1) {
             let categoryTier1 = await coreApi.getCategoryGuid(data.category1);
@@ -2293,7 +2318,7 @@ class ApiHelper {
                 "id": 1000000063,
                 "value": `${categoryTier1}`
             }
-            CASE_READ_ACCESS.fieldInstances["1000000063"] = category1Data;
+            caseReadAccess.fieldInstances["1000000063"] = category1Data;
         }
         if (data.category2) {
             let categoryTier2 = await coreApi.getCategoryGuid(data.category2);
@@ -2301,7 +2326,7 @@ class ApiHelper {
                 "id": 1000000064,
                 "value": `${categoryTier2}`
             }
-            CASE_READ_ACCESS.fieldInstances["1000000064"] = category2Data;
+            caseReadAccess.fieldInstances["1000000064"] = category2Data;
         }
         if (data.category3) {
             let categoryTier3 = await coreApi.getCategoryGuid(data.category3);
@@ -2309,7 +2334,7 @@ class ApiHelper {
                 "id": 1000000065,
                 "value": `${categoryTier3}`
             }
-            CASE_READ_ACCESS.fieldInstances["1000000065"] = category3Data;
+            caseReadAccess.fieldInstances["1000000065"] = category3Data;
         }
         if (data.category4) {
             let categoryTier4 = await coreApi.getCategoryGuid(data.category4);
@@ -2317,7 +2342,7 @@ class ApiHelper {
                 "id": 450000158,
                 "value": `${categoryTier4}`
             }
-            CASE_READ_ACCESS.fieldInstances["450000158"] = category4Data;
+            caseReadAccess.fieldInstances["450000158"] = category4Data;
         }
 
         if (data.label) {
@@ -2326,10 +2351,10 @@ class ApiHelper {
                 "id": 450000159,
                 "value": `${label}`
             }
-            CASE_READ_ACCESS.fieldInstances["450000159"] = labelData;
+            caseReadAccess.fieldInstances["450000159"] = labelData;
         }
 
-        let readAccessMapping: AxiosResponse = await coreApi.createRecordInstance(CASE_READ_ACCESS);
+        let readAccessMapping: AxiosResponse = await coreApi.createRecordInstance(caseReadAccess);
         console.log('Read Access Mapping Status =============>', readAccessMapping.status);
         return readAccessMapping.status == 201;
     }
@@ -2349,26 +2374,50 @@ class ApiHelper {
         console.log('Create Attachment API Status  =============>', response1.status);
 
         // Posting on Social Activity
-        POST_ACTIVITY_WITH_ATTACHMENT.dataSource = module;
-        POST_ACTIVITY_WITH_ATTACHMENT.text = comment;
-        POST_ACTIVITY_WITH_ATTACHMENT.attachmentsGroupId = moduleGuid + guid;
+        let postActivityWithAttachment = cloneDeep(POST_ACTIVITY_WITH_ATTACHMENT);
+        postActivityWithAttachment.dataSource = module;
+        postActivityWithAttachment.text = comment;
+        postActivityWithAttachment.attachmentsGroupId = moduleGuid + guid;
 
         let uri = `/api/com.bmc.dsm.social-lib/rx/application/activity/${module}/${moduleGuid}`;
         let response = await axios.post(
             uri,
-            POST_ACTIVITY_WITH_ATTACHMENT
+            postActivityWithAttachment
         )
         console.log('Comments posting API Status  =============>', response.status);
         return response.status == 200;
     }
 
     async moreInfoResponseOnApprovalAction(caseId: string, reply: string): Promise<boolean> {
-        MORE_INFO_RETURN_ACTION.id = await coreApi.getMoreInfoGuid(caseId);
-        MORE_INFO_RETURN_ACTION.fieldInstances[13301].value = reply;
-        let response = await coreApi.updateRecordInstance('AP:More Information', MORE_INFO_RETURN_ACTION.id, MORE_INFO_RETURN_ACTION);
+        let moreInfoReturnAction = cloneDeep(MORE_INFO_RETURN_ACTION);
+        moreInfoReturnAction.id = await coreApi.getMoreInfoGuid(caseId);
+        moreInfoReturnAction.fieldInstances[13301].value = reply;
+        let response = await coreApi.updateRecordInstance('AP:More Information', moreInfoReturnAction.id, moreInfoReturnAction);
         console.log('More Info Return API Status =============>', response.status);
         return response.status == 204;
     }
+
+    async deleteAutomatedCaseStatusTransition(configName?: string): Promise<boolean> {
+        if (configName) {
+            let allRecords = await coreApi.getGuid("com.bmc.dsm.shared-services-lib:Automated Status Transition Rules");
+            let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+                return obj[1000001437] === configName;
+            });
+            let configGuid = entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
+            if (configGuid) {
+                return await coreApi.deleteRecordInstance('com.bmc.dsm.shared-services-lib:Automated Status Transition Rules', configGuid);
+            }
+        } else {
+            let allConfigsMapRecords = await coreApi.getGuid("com.bmc.dsm.shared-services-lib:Automated Status Transition Rules");
+            let allConfigsArrayMap = allConfigsMapRecords.data.data.map(async (obj: string) => {
+                return await coreApi.deleteRecordInstance('com.bmc.dsm.shared-services-lib:Automated Status Transition Rules', obj[379]);
+            });
+            return await Promise.all(allConfigsArrayMap).then(async (result) => {
+                return !result.includes(false);
+            });
+        }
+    }
+
 }
 
 export default new ApiHelper();
