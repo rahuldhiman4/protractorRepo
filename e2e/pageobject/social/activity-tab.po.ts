@@ -804,8 +804,8 @@ class ActivityTabPage {
     }
 
     async isUnderlineTextDisplayedInCkEditorTextArea(bodyText: string): Promise<boolean> {
-        return element(by.cssContainingText(this.selectors.underlineTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
-            if (link) return element(by.cssContainingText(this.selectors.underlineTextCkEditorTextArea, bodyText)).isDisplayed();
+        return element.all(by.cssContainingText(this.selectors.underlineTextCkEditorTextArea, bodyText)).get(0).isPresent().then(async (link) => {
+            if (link) return element.all(by.cssContainingText(this.selectors.underlineTextCkEditorTextArea, bodyText)).get(0).isDisplayed();
             else return false;
         });
     }

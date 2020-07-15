@@ -211,15 +211,15 @@ describe('Case Activity Multi Logs', () => {
             await manageTaskBladePo.clickTaskLink(autoTemplateData.templateSummary);
             expect(await viewTaskPo.getTaskStatusValue()).toBe('Completed', 'FailureMsg1: Automated task status is not completed');
             // Create Task Activity 
-            expect(await activityTabPage.isLogIconDisplayedInActivity('filePlus', 5)).toBeTruthy('FailureMsg2: log icon is missing');
-            expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi created the task', 5)).toBeTruthy('FailureMsg4: log title is missing');
+            expect(await activityTabPage.isLogIconDisplayedInActivity('filePlus', 3)).toBeTruthy('FailureMsg2: log icon is missing');
+            expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi created the task', 3)).toBeTruthy('FailureMsg4: log title is missing');
             expect(await activityTabPage.isTextPresentInActivityLog('Summary')).toBeTruthy('FailureMsg5: Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog(autoTemplateData.templateSummary)).toBeTruthy('FailureMsg6: Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Status')).toBeTruthy('FailureMsg7: Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Staged')).toBeTruthy('FailureMsg8: Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('In Progress')).toBeTruthy('FailureMsg9: Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Completed')).toBeTruthy('FailureMsg10: Text is missing in activity log');
-            expect(await activityTabPage.isLockIconDisplayedInActivity(5)).toBeTruthy('FailureMsg3: lock icon missing in activity logs');
+            expect(await activityTabPage.isLockIconDisplayedInActivity(3)).toBeTruthy('FailureMsg3: lock icon missing in activity logs');
         });
 
         it('[DRDMV-16755]: Automation Task Validate Add Notes Activity', async () => {
@@ -279,9 +279,9 @@ describe('Case Activity Multi Logs', () => {
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLink(manualTemplateSummary);
             // Create Task Activity 
-            expect(await activityTabPage.isLogIconDisplayedInActivity('filePlus', 4)).toBeTruthy('FailureMsg2: log icon is missing');
-            expect(await activityTabPage.isLockIconDisplayedInActivity(4)).toBeTruthy('FailureMsg3: lock icon missing in activity logs');
-            expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi created the task', 4)).toBeTruthy('FailureMsg4: log title is missing');
+            expect(await activityTabPage.isLogIconDisplayedInActivity('filePlus', 2)).toBeTruthy('FailureMsg2: log icon is missing');
+            expect(await activityTabPage.isLockIconDisplayedInActivity(2)).toBeTruthy('FailureMsg3: lock icon missing in activity logs');
+            expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi created the task', 2)).toBeTruthy('FailureMsg4: log title is missing');
             expect(await activityTabPage.isTextPresentInActivityLog('Summary')).toBeTruthy('FailureMsg5: Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog(manualTemplateSummary)).toBeTruthy('FailureMsg6: Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Status')).toBeTruthy('FailureMsg7: Text is missing in activity log');
@@ -367,8 +367,8 @@ describe('Case Activity Multi Logs', () => {
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLink(externalTemplateSummary);
             // Verify Task Activity 
-            expect(await activityTabPage.isLogIconDisplayedInActivity('filePlus', 4)).toBeTruthy('FailureMsg2: log icon is missing');
-            expect(await activityTabPage.isLockIconDisplayedInActivity(4)).toBeTruthy('FailureMsg3: lock icon missing in activity logs');
+            expect(await activityTabPage.isLogIconDisplayedInActivity('filePlus', 2)).toBeTruthy('FailureMsg2: log icon is missing');
+            expect(await activityTabPage.isLockIconDisplayedInActivity(2)).toBeTruthy('FailureMsg3: lock icon missing in activity logs');
             expect(await activityTabPage.isTextPresentInActivityLog('Qadim Katawazi created the task')).toBeTruthy('FailureMsg4: log title is missing');
             expect(await activityTabPage.isTextPresentInActivityLog('Summary')).toBeTruthy('FailureMsg5: Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog(externalTemplateSummary)).toBeTruthy('FailureMsg6: Text is missing in activity log');

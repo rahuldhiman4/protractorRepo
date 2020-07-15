@@ -121,6 +121,17 @@ class CreateKnowledgePage {
         for (let i = 0; i < fldsCount; i++) {
             let elem = await $$(this.selectors.knowledgeMetadataSection).get(i);
             if (await elem.$('.adapt-select-label-wrapper').getText() == fldName) {
+                return await elem.getAttribute("aria-readonly") == "true" ? true : false;
+            }
+        }
+    }
+
+    async isAssignedToFieldDisabled(fldName: String): Promise<boolean> {
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.knowledgeMetadataSection)));
+        let fldsCount = await $$(this.selectors.knowledgeMetadataSection).count();
+        for (let i = 0; i < fldsCount; i++) {
+            let elem = await $$(this.selectors.knowledgeMetadataSection).get(i);
+            if (await elem.$('.adapt-select-label-wrapper').getText() == fldName) {
                 return await elem.getAttribute("aria-disabled") == "true" ? true : false;
             }
         }

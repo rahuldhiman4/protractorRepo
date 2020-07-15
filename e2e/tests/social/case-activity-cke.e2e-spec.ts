@@ -507,7 +507,7 @@ describe('Case Activity CKE', () => {
         await activityTabPage.addAttachment(['../../data/ui/attachment/bwfPdf.pdf']);
         await activityTabPage.clickOnPostButton();
         expect(await activityTabPage.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('FailureMsg Image missing in activity tab');
-    }, 1100 * 1000);
+    }, 1500 * 1000);
 
     //kgaikwad
     it('[DRDMV-21619]:2_Verify the Comments posted in activity without notes template', async () => {
@@ -721,7 +721,7 @@ describe('Case Activity CKE', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
-    }, 660 * 1000);
+    }, 1000 * 1000);
 
     //kgaikwad
     it('[DRDMV-21620]:Verify the Comments posted in activity with notes template.', async () => {
