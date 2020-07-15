@@ -53,6 +53,7 @@ class LoginPage {
             await $(userLocator).clear();
             await $(userLocator).sendKeys(user);
         })
+        console.log(`Login to BWF with ${user}`);
         await $(passwordLocator).clear();
         await $(passwordLocator).sendKeys(password);
         await $(signInButtonLocator).click();

@@ -155,6 +155,7 @@ describe("Actionable Notification Approval", () => {
         await apiHelper.apiLogin('qfeng');
         let response = await apiHelper.createCase(caseData);
         await apiHelper.updateCaseStatus(response.id, 'InProgress');
+        await browser.sleep(3000); //Hard wait required to trigger the Approval
         await apiHelper.updateCaseStatus(response.id, 'Canceled', 'Customer Canceled');
 
         try {

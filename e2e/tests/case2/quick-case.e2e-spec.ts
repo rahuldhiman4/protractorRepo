@@ -299,6 +299,8 @@ describe("Quick Case", () => {
                 "casePriority": "Low",
                 "templateStatus": "Draft",
                 "company": "Petramco",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3"
             }
             templateData1 = {
                 "templateName": randomStr + "CaseTemplatePsilon DRDMV1087",
@@ -521,7 +523,7 @@ describe("Quick Case", () => {
             await quickCasePo.selectRequesterName("chetan");
             await quickCasePo.setCaseSummary(caseTemplateData.templateName);
             await utilCommon.waitUntilSpinnerToHide();
-            await quickCasePo.pinRecommendedCases(1);
+            await quickCasePo.pinRecommendedCases(0);
             await resourcesPo.clickOnAdvancedSearchOptions();
             await resourcesPo.enterAdvancedSearchText(caseTemplateData.templateName);
             await resourcesPo.clickOnAdvancedSearchSettingsIconToOpen();

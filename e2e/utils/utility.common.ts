@@ -36,6 +36,7 @@ export class Utility {
         const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
         const dropDownInputElement: ElementFinder = await dropDown.$(this.selectors.dropDownInput);
         await dropDownBoxElement.click();
+        console.log(`Selecting dropdown value: ${value}`);
         let isSearchPresent: boolean = await dropDownInputElement.isPresent();
         if (isSearchPresent) await dropDownInputElement.sendKeys(value);
 
