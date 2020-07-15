@@ -258,7 +258,14 @@ class ViewTaskTemplate {
 
     async isEditButtonPresent(): Promise<boolean> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editLink)));
-        return await $(this.selectors.editLink).isDisplayed();
+        return await $(this.selectors.editLink).isPresent().then(async (result) => {
+            if (result) {
+                return await $(this.selectors.editLink).isDisplayed();
+            } else {
+                console.log("editLink not present");
+                return false;
+            }
+        });;
     }
 
     async getAssigneeText(): Promise<string> {

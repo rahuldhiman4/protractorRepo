@@ -95,7 +95,7 @@ describe('Create Case Task', () => {
             await manageTask.clickTaskLink(manualTaskTemplateData.templateSummary);
             await viewTask.clickOnEditTask();
             expect(await editTask.getTaskTypeValue()).toBe('Manual');
-            expect(await editTask.getTaskTypeValueAttribute('disabled')).toBeTruthy();
+            expect(await editTask.getTaskTypeValueAttribute('class')).toContain("disabled");
             expect(await editTask.processNamePresentInTask()).toBeFalsy();
             await editTask.clickOnCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
@@ -106,7 +106,7 @@ describe('Create Case Task', () => {
             await manageTask.clickTaskLink(autoTaskTemplateData.templateSummary);
             await viewTask.clickOnEditTask();
             expect(await editTask.getTaskTypeValue()).toBe('Automated');
-            expect(await editTask.getTaskTypeValueAttribute('disabled')).toBeTruthy();
+            expect(await editTask.getTaskTypeValueAttribute('class')).toContain("disabled");
             expect(await editTask.processNamePresentInTask()).toBeTruthy();
             await editTask.clickOnCancelButton();
         });
