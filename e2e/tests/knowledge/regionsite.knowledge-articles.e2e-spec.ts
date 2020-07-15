@@ -280,9 +280,9 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
             await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
+            await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
             await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
             await createKnowledgePage.clickAssignToMeButton();
-            await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
             await createKnowledgePage.selectSiteDropDownOption(siteFieldVal);
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
@@ -301,9 +301,9 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
             await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
+            await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
             await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
             await createKnowledgePage.clickAssignToMeButton();
-            await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
             await createKnowledgePage.selectSiteDropDownOption(siteFieldVal);
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
@@ -325,9 +325,9 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
             await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
+            await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
             await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
             await createKnowledgePage.clickAssignToMeButton();
-            await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
             await createKnowledgePage.selectSiteDropDownOption(siteFieldVal);
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
@@ -348,9 +348,9 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
             await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
+            await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
             await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
             await createKnowledgePage.clickAssignToMeButton();
-            await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
             await createKnowledgePage.selectSiteDropDownOption(siteFieldVal);
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
@@ -373,9 +373,9 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
             await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
+            await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
             await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
             await createKnowledgePage.clickAssignToMeButton();
-            await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
             await createKnowledgePage.selectSiteDropDownOption(siteFieldVal);
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
@@ -397,9 +397,9 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
             await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
+            await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
             await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
             await createKnowledgePage.clickAssignToMeButton();
-            await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
             await createKnowledgePage.selectSiteDropDownOption(siteFieldVal);
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
@@ -422,9 +422,9 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
             await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
+            await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
             await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
             await createKnowledgePage.clickAssignToMeButton();
-            await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
             await createKnowledgePage.selectSiteDropDownOption(siteFieldVal);
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();

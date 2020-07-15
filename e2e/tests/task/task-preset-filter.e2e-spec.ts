@@ -629,7 +629,7 @@ describe('Task Console Preset Filter', () => {
             await utilityGrid.applyPresetFilter('All Open Breached Tasks');
             expect(await utilityGrid.getAppliedFilterName()).toBe('All Open Breached Tasks');
 
-            await browser.sleep(130000);
+            await browser.sleep(150000);
             expect(await utilityGrid.isGridRecordPresent(taskId[7])).toBeFalsy(taskId[7] + ' :Record is available');
         });
         it('[DRDMV-20889]: Validate the All Open Breached Tasks filter after applying and removing the filter', async () => {
