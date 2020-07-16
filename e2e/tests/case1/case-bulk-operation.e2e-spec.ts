@@ -98,18 +98,18 @@ describe('Case Bulk Operation', () => {
 
     describe('[DRDMV-15984]: Verify that once Assignee is changed from Bulk operation then respective support groups get the notification', async () => {
         let caseId: string[] = [];
+        let caseDataForTest = caseData['bulkCaseAssignee_New'];
         beforeAll(async () => {
             await apiHelper.apiLogin(qfengStr);
-            let caseDataForTest = caseData['bulkCaseAssignee_New'];
             caseDataForTest.Summary = "DRDMV-15984 Bulk Case Assignee";
             for (let i: number = 0; i < 3; i++) {
                 let response = await apiHelper.createCase(caseDataForTest);
                 caseId[i] = response.displayId;
             }
-            await utilityGrid.clickRefreshIcon();
-            await utilityGrid.searchRecord(caseDataForTest.Summary);
         });
         it('[DRDMV-15984]: Verify that once Assignee is changed from Bulk operation then respective support groups get the notification', async () => {
+            await utilityGrid.clickRefreshIcon();
+            await utilityGrid.searchRecord(caseDataForTest.Summary);
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId[0]);
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId[1]);
             await caseConsolePage.clickOnChangeAssignmentButton();
