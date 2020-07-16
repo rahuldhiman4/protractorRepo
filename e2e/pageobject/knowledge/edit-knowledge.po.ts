@@ -51,6 +51,7 @@ class EditKnowledgePage {
         uploadAttachmentField : '[rx-view-component-id="1f42f6d7-99cc-4c07-9249-94172d98d526"] input[type="file"]',
         closedTip: '.bwf-attachment-container__remove .d-icon-cross',
         closedStatusChangeGuid: 'b71875a3-b23a-4fc4-8f0f-0e29f2e6eb74',
+        changeAssignment: '[rx-view-component-id="3da1754d-3c41-4b04-9e1c-f5f5a6b3226f"] button',
     }
 
     async setKnowledgeStatus(newStatus: string): Promise<void> {
@@ -101,7 +102,7 @@ class EditKnowledgePage {
 
     async clickChangeAssignmentButton(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable(element(by.buttonText('Change Assignment'))));
-        await element(by.buttonText('Change Assignment')).click();
+        await $(this.selectors.changeAssignment).click();
     }
 
     async saveKnowledgeMedataDataChanges(): Promise<void> {
