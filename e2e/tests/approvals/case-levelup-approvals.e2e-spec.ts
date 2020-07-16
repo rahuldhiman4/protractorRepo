@@ -137,7 +137,7 @@ describe("Case Level Up Approval Tests", () => {
             expect(await showApproversBladePo.getApprovalsHelpTextOnShowApproversBlade()).toContain('One of following people must approve this case:');
             expect(await showApproversBladePo.getApproversCount()).toBe(1);
             expect(await showApproversBladePo.getApproversName('RA3 Liu')).toBeTruthy('Approver not present');
-            expect(await showApproversBladePo.isApproverPersonIconDisplayed()).toBeTruthy('Approver Person Icon is not displayed');
+            expect(await showApproversBladePo.isApproverPersonIconDisplayed('RA3 Liu')).toBeTruthy('Approver Person Icon is not displayed');
             expect(await showApproversBladePo.isAwaitingApproverIconDisplayed()).toBeTruthy('Awaiting approver icon is not displayed');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompany('Petramco')).toBeTruthy('Approver Company is not displayed');
@@ -380,7 +380,7 @@ describe("Case Level Up Approval Tests", () => {
             expect(await showApproversBladePo.getApprovalsHelpTextOnShowApproversBlade()).toContain('One of following people must approve this case:');
             expect(await showApproversBladePo.getApproversCount()).toBe(1);
             expect(await showApproversBladePo.getApproversName('RA3 Liu')).toBeTruthy('Approver not present');
-            expect(await showApproversBladePo.isApproverPersonIconDisplayed()).toBeTruthy('Approver Person Icon is not displayed');
+            expect(await showApproversBladePo.isApproverPersonIconDisplayed('RA3 Liu')).toBeTruthy('Approver Person Icon is not displayed');
             expect(await showApproversBladePo.isAwaitingApproverIconDisplayed()).toBeTruthy('Awaiting approver icon is not displayed');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompany('Petramco')).toBeTruthy('Approver Company is not displayed');
@@ -635,7 +635,7 @@ describe("Case Level Up Approval Tests", () => {
             expect(await showApproversBladePo.getApproversCount()).toBe(2);
             expect(await showApproversBladePo.getApproversName('Qadim Katawazi')).toBeTruthy('Approver not present');
             expect(await showApproversBladePo.getApproversName('RA3 Liu')).toBeTruthy('Approver not present');
-            expect(await showApproversBladePo.isApproverPersonIconDisplayed()).toBeTruthy('Approver Person Icon is not displayed');
+            expect(await showApproversBladePo.isApproverPersonIconDisplayed('RA3 Liu')).toBeTruthy('Approver Person Icon is not displayed');
             expect(await showApproversBladePo.isAwaitingApproverIconDisplayed()).toBeTruthy('Awaiting approver icon is not displayed');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompany('Petramco')).toBeTruthy('Approver Company is not displayed');
@@ -670,7 +670,7 @@ describe("Case Level Up Approval Tests", () => {
             expect(await showApproversBladePo.getApproversCount()).toBe(2);
             expect(await showApproversBladePo.getApproversName('Qadim Katawazi')).toBeTruthy('Approver not present');
             expect(await showApproversBladePo.getApproversName('RA3 Liu')).toBeTruthy('Approver not present');
-            expect(await showApproversBladePo.isApproverPersonIconDisplayed()).toBeTruthy('Approver Person Icon is not displayed');
+            expect(await showApproversBladePo.isApproverPersonIconDisplayed('RA3 Liu')).toBeTruthy('Approver Person Icon is not displayed');
             expect(await showApproversBladePo.isAwaitingApproverIconDisplayed()).toBeTruthy('Awaiting approver icon is not displayed');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompany('Petramco')).toBeTruthy('Approver Company is not displayed');
@@ -835,7 +835,7 @@ describe("Case Level Up Approval Tests", () => {
             expect(await showApproversBladePo.getApproversCount()).toBe(2);
             expect(await showApproversBladePo.getApproversName('Qadim Katawazi')).toBeTruthy('Approver not present');
             expect(await showApproversBladePo.getApproversName('RA3 Liu')).toBeTruthy('Approver not present');
-            expect(await showApproversBladePo.isApproverPersonIconDisplayed()).toBeTruthy('Approver Person Icon is not displayed');
+            expect(await showApproversBladePo.isApproverPersonIconDisplayed('RA3 Liu')).toBeTruthy('Approver Person Icon is not displayed');
             expect(await showApproversBladePo.isAwaitingApproverIconDisplayed()).toBeTruthy('Awaiting approver icon is not displayed');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompany('Petramco')).toBeTruthy('Approver Company is not displayed');
@@ -1001,7 +1001,7 @@ describe("Case Level Up Approval Tests", () => {
             expect(await showApproversBladePo.getApproversCount()).toBe(2);
             expect(await showApproversBladePo.getApproversName('Qadim Katawazi')).toBeTruthy('Approver not present');
             expect(await showApproversBladePo.getApproversName('RA3 Liu')).toBeTruthy('Approver not present');
-            expect(await showApproversBladePo.isApproverPersonIconDisplayed()).toBeTruthy('Approver Person Icon is not displayed');
+            expect(await showApproversBladePo.isApproverPersonIconDisplayed('RA3 Liu')).toBeTruthy('Approver Person Icon is not displayed');
             expect(await showApproversBladePo.isAwaitingApproverIconDisplayed()).toBeTruthy('Awaiting approver icon is not displayed');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompany('Petramco')).toBeTruthy('Approver Company is not displayed');

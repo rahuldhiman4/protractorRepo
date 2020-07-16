@@ -370,18 +370,19 @@ describe('Case Data Store', () => {
                 expect(await viewTaskTemplate.isDynamicFieldPresent(arr[i])).toBeTruthy('field is not present');
             }
             expect(await viewTaskTemplate.isManageDynamicFieldLinkDisplayed()).toBeTruthy('Link is not present');
-        });
-        it('[DRDMV-13140]: [Dynamic Data] [UI] -Dynamic Fields display on Task Template Edit view UI', async () => {
             //edit
             await viewTaskTemplate.clickOnEditLink();
+        });
+        it('[DRDMV-13140]: [Dynamic Data] [UI] -Dynamic Fields display on Task Template Edit view UI', async () => {
+
             expect(await editTaskTemplate.isMangeDynamicFieldLinkDisplayed()).toBeTruthy('link is not present');
             for (let i = 0; i < arr.length; i++) {
                 expect(await editTaskTemplate.isDynamicFieldPresent(arr[i])).toBeTruthy('field is not present');
             }
-            await editTaskTemplate.clickOnCancelButton();
-            await utilCommon.clickOnWarningOk();
         });
         it('[DRDMV-13140]: Dynamic Fields display on Task Template Edit view UI', async () => {
+            await editTaskTemplate.clickOnCancelButton();
+            await utilCommon.clickOnWarningOk();
             //Inactive
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');

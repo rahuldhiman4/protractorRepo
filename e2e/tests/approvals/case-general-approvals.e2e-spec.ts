@@ -255,7 +255,7 @@ describe("Case General Approval Tests", () => {
             expect(await showApproversBladePo.getApproversCount()).toBe(2);
             expect(await showApproversBladePo.getApproversName('Qadim Katawazi')).toBeTruthy('Approver not present');
             expect(await showApproversBladePo.getApproversName('RA3 Liu')).toBeTruthy('Approver not present');
-            expect(await showApproversBladePo.isApproverPersonIconDisplayed()).toBeTruthy('Approver Person Icon is not displayed');
+            expect(await showApproversBladePo.isApproverPersonIconDisplayed('RA3 Liu')).toBeTruthy('Approver Person Icon is not displayed');
             expect(await showApproversBladePo.isAwaitingApproverIconDisplayed()).toBeTruthy('Awaiting approver icon is not displayed');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompany('Petramco')).toBeTruthy('Approver Company is not displayed');
@@ -486,7 +486,6 @@ describe("Case General Approval Tests", () => {
                 "templateName": 'caseTemplateForSelfApprovalWithoutProcessWithCriticalPriority' + randomStr,
                 "templateSummary": 'Automated All must Approval Case' + randomStr,
                 "categoryTier1": 'Employee Relations',
-                "casePriority": "Critical",
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "businessUnit": "United States Support",
@@ -591,7 +590,7 @@ describe("Case General Approval Tests", () => {
             expect(await showApproversBladePo.getApproversCount()).toBe(2);
             expect(await showApproversBladePo.getApproversName('Qadim Katawazi')).toBeTruthy('Approver not present');
             expect(await showApproversBladePo.getApproversName('RA3 Liu')).toBeTruthy('Approver not present');
-            expect(await showApproversBladePo.isApproverPersonIconDisplayed()).toBeTruthy('Approver Person Icon is not displayed');
+            expect(await showApproversBladePo.isApproverPersonIconDisplayed('RA3 Liu')).toBeTruthy('Approver Person Icon is not displayed');
             expect(await showApproversBladePo.isAwaitingApproverIconDisplayed()).toBeTruthy('Awaiting approver icon is not displayed');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompany('Petramco')).toBeTruthy('Approver Company is not displayed');
@@ -622,14 +621,14 @@ describe("Case General Approval Tests", () => {
             expect(await showApproversBladePo.getApprovalsHelpTextOnShowApproversBlade()).toContain('All of the following people must approve this case:');
             expect(await showApproversBladePo.getApproversCount()).toBe(1);
             expect(await showApproversBladePo.getApproversName('Qadim Katawazi')).toBeTruthy('Approver not present');
-            expect(await showApproversBladePo.isApproverPersonIconDisplayed()).toBeTruthy('Approver Person Icon is not displayed');
+            expect(await showApproversBladePo.isApproverPersonIconDisplayed('Qadim Katawazi')).toBeTruthy('Approver Person Icon is not displayed');
             expect(await showApproversBladePo.isAwaitingApproverIconDisplayed()).toBeTruthy('Awaiting approver icon is not displayed');
             expect(await showApproversBladePo.getApproversCompany('Petramco')).toBeTruthy('Approver Company is not displayed');
             expect(await showApproversBladePo.getApprovalStatusLabel()).toContain('Awaiting Approval');
             await showApproversBladePo.clickApproversTab('Approval Decision');
             expect(await showApproversBladePo.getApproversCount()).toBe(1);
             expect(await showApproversBladePo.getApproversName('RA3 Liu')).toBeTruthy('Approver not present');
-            expect(await showApproversBladePo.isApproverPersonIconDisplayed()).toBeTruthy('Approver Person Icon is not displayed');
+            expect(await showApproversBladePo.isApproverPersonIconDisplayed('RA3 Liu')).toBeTruthy('Approver Person Icon is not displayed');
             expect(await showApproversBladePo.isApprovedApproverIconDisplayed()).toBeTruthy('Approved icon is not displayed');
             expect(await showApproversBladePo.getApproversCompany('Petramco')).toBeTruthy('Approver Company is not displayed');
             expect(await showApproversBladePo.getApprovedApprovalStatusLabel()).toContain('Approved');
@@ -678,6 +677,7 @@ describe("Case General Approval Tests", () => {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Canceled");
             await activityTabPage.clickOnFilterButton();
@@ -826,7 +826,7 @@ describe("Case General Approval Tests", () => {
             expect(await showApproversBladePo.getApproversCount()).toBe(2);
             expect(await showApproversBladePo.getApproversName('Qadim Katawazi')).toBeTruthy('Approver not present');
             expect(await showApproversBladePo.getApproversName('RA3 Liu')).toBeTruthy('Approver not present');
-            expect(await showApproversBladePo.isApproverPersonIconDisplayed()).toBeTruthy('Approver Person Icon is not displayed');
+            expect(await showApproversBladePo.isApproverPersonIconDisplayed('RA3 Liu')).toBeTruthy('Approver Person Icon is not displayed');
             expect(await showApproversBladePo.isAwaitingApproverIconDisplayed()).toBeTruthy('Awaiting approver icon is not displayed');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompany('Petramco')).toBeTruthy('Approver Company is not displayed');
@@ -891,7 +891,7 @@ describe("Case General Approval Tests", () => {
             expect(await showApproversBladePo.getApproversCount()).toBe(2);
             expect(await showApproversBladePo.getApproversName('Qadim Katawazi')).toBeTruthy('Approver not present');
             expect(await showApproversBladePo.getApproversName('RA3 Liu')).toBeTruthy('Approver not present');
-            expect(await showApproversBladePo.isApproverPersonIconDisplayed()).toBeTruthy('Approver Person Icon is not displayed');
+            expect(await showApproversBladePo.isApproverPersonIconDisplayed('RA3 Liu')).toBeTruthy('Approver Person Icon is not displayed');
             expect(await showApproversBladePo.isAwaitingApproverIconDisplayed()).toBeTruthy('Awaiting approver icon is not displayed');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompany('Petramco')).toBeTruthy('Approver Company is not displayed');
@@ -1055,7 +1055,7 @@ describe("Case General Approval Tests", () => {
             expect(await showApproversBladePo.getApproversCount()).toBe(4);
             expect(await showApproversBladePo.getApproversName('Elizabeth Peters')).toBeTruthy('Approver not present');
             expect(await showApproversBladePo.getApproversName('Hannah Haas')).toBeTruthy('Approver not present');
-            expect(await showApproversBladePo.isApproverPersonIconDisplayed()).toBeTruthy('Approver Person Icon is not displayed');
+            expect(await showApproversBladePo.isApproverPersonIconDisplayed('Hannah Haas')).toBeTruthy('Approver Person Icon is not displayed');
             expect(await showApproversBladePo.isAwaitingApproverIconDisplayed()).toBeTruthy('Awaiting approver icon is not displayed');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompany('Petramco')).toBeTruthy('Approver Company is not displayed');
@@ -1209,7 +1209,7 @@ describe("Case General Approval Tests", () => {
             expect(await showApproversBladePo.getApproversTabLabel('Approval Decision')).toContain('Approval Decision (0)');
             expect(await showApproversBladePo.getApprovalsHelpTextOnShowApproversBlade()).toContain('One of following people must approve this case:');
             expect(await showApproversBladePo.getApproversName('RA3 Liu')).toBeTruthy('Approver not present');
-            expect(await showApproversBladePo.isApproverPersonIconDisplayed()).toBeTruthy('Approver Person Icon is not displayed');
+            expect(await showApproversBladePo.isApproverPersonIconDisplayed('RA3 Liu')).toBeTruthy('Approver Person Icon is not displayed');
             expect(await showApproversBladePo.isAwaitingApproverIconDisplayed()).toBeTruthy('Awaiting approver icon is not displayed');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompany('Petramco')).toBeTruthy('Approver Company is not displayed');
