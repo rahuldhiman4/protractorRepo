@@ -204,7 +204,7 @@ class NavigationPage {
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
-            await element(by.buttonText('My Profile ')).click().then(async () => {
+            await element(by.buttonText('My Profile')).click().then(async () => {
                 await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             });
         } else {
