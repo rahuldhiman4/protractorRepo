@@ -802,6 +802,8 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         });
 
         afterAll(async () => {
+            await composeMailPo.clickOnDiscardButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });

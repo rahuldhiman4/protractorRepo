@@ -770,8 +770,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows'))
-                .toEqual('Document Library Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
             title = "DRDMV-19005Case " + title;
             await createDocumentLibraryPage.openAddNewDocumentBlade();
             await createDocumentLibraryPage.addAttachment(filePath);
@@ -787,11 +786,11 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await editDocumentLibraryPage.selectStatus(documentLibraryStatus);
             await editDocumentLibraryPage.clickOnSaveButton();
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
-            await navigationPage.signOut();
         });
-
+        
         it('[DRDMV-19005]:Verify the document search based on category tier from attachments', async () => {
             //Login with Case Manager
+            await navigationPage.signOut();
             await loginPage.login('frieda');
             await apiHelper.apiLogin('fritz');
 
@@ -808,11 +807,11 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.clickOnAdvancedSearchSettingsIconToClose();
             await expect(await resources.getAdvancedSearchResultForParticularSection(title)).toEqual(title);
             await utilityCommon.closeAllBlades();
-            await navigationPage.signOut();
         });
-
+        
         it('[DRDMV-19005]:Verify the document search based on category tier from attachments', async () => {
             //Login with Case Agent
+            await navigationPage.signOut();
             await loginPage.login('fabian');
             await apiHelper.apiLogin('fritz');
             let response2 = await apiHelper.createCase(caseData);
@@ -829,11 +828,11 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.clickOnAdvancedSearchSettingsIconToClose();
             await expect(await resources.getAdvancedSearchResultForParticularSection(title)).toEqual(title);
             await utilityCommon.closeAllBlades();
-            await navigationPage.signOut();
         });
-
+        
         it('[DRDMV-19005]:Verify the document search based on category tier from attachments', async () => {
             //Login with Case BA
+            await navigationPage.signOut();
             await loginPage.login('fritz');
             await apiHelper.apiLogin('fritz');
             let response3 = await apiHelper.createCase(caseData);
@@ -851,7 +850,6 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await expect(await resources.getAdvancedSearchResultForParticularSection(title)).toEqual(title);
             await utilityCommon.closeAllBlades();
         });
-
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);

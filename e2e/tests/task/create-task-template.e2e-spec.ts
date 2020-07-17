@@ -324,7 +324,7 @@ describe('Create Task Template', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(taskTemplateName);
-            await viewTaskTemplate.getTaskTemplateId();
+            taskTemplateId = await viewTaskTemplate.getTaskTemplateId();
             await editTaskTemplate.clickOnEditMetadataLink();
             await editTaskTemplate.selectTemplateStatus('Draft');
             await editTaskTemplate.clickOnSaveMetadata();
@@ -746,6 +746,8 @@ describe('Create Task Template', () => {
             await updateStatusBladePo.changeStatus("Completed");
             await updateStatusBladePo.setStatusReason("Successful")
             await updateStatusBladePo.clickSaveStatus();
+            await utilityCommon.closePopUpMessage();
+            await browser.sleep(1000); // required to udpated case stauts after completing all tasks
             await viewTask.clickOnViewCase();
             expect(await viewCasePage.getCaseStatusValue()).toBe("Resolved");
             expect(await viewCasePage.isAddtaskButtonDisplayed()).toBeFalsy();
