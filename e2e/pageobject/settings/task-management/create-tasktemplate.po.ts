@@ -55,6 +55,10 @@ class CreateTaskTemplatePage {
         await utilCommon.setCKEditor(inputValue, this.selectors.taskDescriptionGuid);
     }
 
+    async updateTaskDescription(inputValue: string): Promise<void> {
+        await utilCommon.updateCKEditor(inputValue, this.selectors.taskDescriptionGuid);
+    }
+
     async clickOnAssignment(): Promise<void> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.changeAssignmentButton)));
         await $(this.selectors.changeAssignmentButton).click();

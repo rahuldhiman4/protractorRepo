@@ -75,12 +75,6 @@ class CreateEmailTemplateBlade {
         await utilGrid.searchAndSelectGridRecord(value);
     }
 
-    async updateTemplateName(templateName: string): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.templateName)));
-        await $(this.selectors.templateName).clear();
-        await $(this.selectors.templateName).sendKeys(templateName);
-    }
-
     async isModuleNameDisabled(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.moduleName)));
         return await $(this.selectors.moduleName).getAttribute("disabled") == "true";
@@ -199,10 +193,8 @@ class CreateEmailTemplateBlade {
 
     async isAttachedFileNameDisplayed(fileName: string): Promise<boolean> {
         return await element(by.cssContainingText(this.selectors.AttachedfileName, fileName)).isPresent().then(async (link) => {
-            if (link) {
-                await element(by.cssContainingText(this.selectors.AttachedfileName, fileName)).isDisplayed();
-                return true;
-            } else return false;
+            if (link) return await element(by.cssContainingText(this.selectors.AttachedfileName, fileName)).isDisplayed();
+            else return false;
         });
     }
 }

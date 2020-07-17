@@ -41,11 +41,11 @@ class DocumentLibraryPage {
         attachButton: '[rx-view-component-id="9e3b3bb5-8a95-45d9-bbd1-deb35af4bc37"] button',
         attachmentMaxLimitMsgText: '.ux-attachment-maxlimit-warning',
         descriptionGuid: 'd66ee2b3-fb51-4b16-be2a-80e83d9e6e75',
-        departmentGuid:  '16c03e64-8767-490e-b32e-d712b8ec4fbe',
-        buisnessUnit:    '3b6ebf9c-13f1-4924-8740-3f720ae8335a',
-        keyWordGuid:     'afdfcbdf-13c4-45ec-8870-f53a0bf32bac',
-        cancelGuid:      '00107b90-bb31-4776-a855-44fea128a0de',
-        cancelButton:    '[rx-view-component-id="00107b90-bb31-4776-a855-44fea128a0de"] button'
+        departmentGuid: '16c03e64-8767-490e-b32e-d712b8ec4fbe',
+        buisnessUnit: '3b6ebf9c-13f1-4924-8740-3f720ae8335a',
+        keyWordGuid: 'afdfcbdf-13c4-45ec-8870-f53a0bf32bac',
+        cancelGuid: '00107b90-bb31-4776-a855-44fea128a0de',
+        cancelButton: '[rx-view-component-id="00107b90-bb31-4776-a855-44fea128a0de"] button'
     }
 
     async addAttachment(fileToUpload: string): Promise<void> {
@@ -58,63 +58,63 @@ class DocumentLibraryPage {
         return await $(this.selectors.attachmentLink).isEnabled();
     }
 
-    async attachmentTextPresent(textValue:string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.attachmentGuid,textValue);
+    async attachmentTextPresent(textValue: string): Promise<boolean> {
+        return await utilCommon.isFieldLabelDisplayed(this.selectors.attachmentGuid, textValue);
     }
 
-    async titleTextPresent(textValue:string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.titleGuid,textValue);
+    async titleTextPresent(textValue: string): Promise<boolean> {
+        return await utilCommon.isFieldLabelDisplayed(this.selectors.titleGuid, textValue);
     }
 
-    async descriptionTextPresent(textValue:string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.descriptionGuid,textValue);
+    async descriptionTextPresent(textValue: string): Promise<boolean> {
+        return await utilCommon.isFieldLabelDisplayed(this.selectors.descriptionGuid, textValue);
     }
 
-    async companyTextPresent(textValue:string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.companyFieldGuid,textValue);
+    async companyTextPresent(textValue: string): Promise<boolean> {
+        return await utilCommon.isFieldLabelDisplayed(this.selectors.companyFieldGuid, textValue);
     }
 
-    async departmentTextPresent(textValue:string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.departmentGuid,textValue);
+    async departmentTextPresent(textValue: string): Promise<boolean> {
+        return await utilCommon.isFieldLabelDisplayed(this.selectors.departmentGuid, textValue);
     }
 
-    async buisnessUnitTextPresent(textValue:string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.buisnessUnit,textValue);
+    async buisnessUnitTextPresent(textValue: string): Promise<boolean> {
+        return await utilCommon.isFieldLabelDisplayed(this.selectors.buisnessUnit, textValue);
     }
 
-    async OwnerGroupTextPresent(textValue:string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.ownerGroupFieldGuid,textValue);
+    async OwnerGroupTextPresent(textValue: string): Promise<boolean> {
+        return await utilCommon.isFieldLabelDisplayed(this.selectors.ownerGroupFieldGuid, textValue);
     }
 
-    async keyWordTextPresent(textValue:string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.keyWordGuid,textValue);
+    async keyWordTextPresent(textValue: string): Promise<boolean> {
+        return await utilCommon.isFieldLabelDisplayed(this.selectors.keyWordGuid, textValue);
     }
 
-    async categoryTier1TextPresent(textValue:string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.category1,textValue);
+    async categoryTier1TextPresent(textValue: string): Promise<boolean> {
+        return await utilCommon.isFieldLabelDisplayed(this.selectors.category1, textValue);
     }
 
-    async categoryTier2TextPresent(textValue:string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.category2,textValue);
+    async categoryTier2TextPresent(textValue: string): Promise<boolean> {
+        return await utilCommon.isFieldLabelDisplayed(this.selectors.category2, textValue);
     }
 
-    async categoryTier3TextPresent(textValue:string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.category3,textValue);
+    async categoryTier3TextPresent(textValue: string): Promise<boolean> {
+        return await utilCommon.isFieldLabelDisplayed(this.selectors.category3, textValue);
     }
 
-    async categoryTier4TextPresent(textValue:string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.category4,textValue);
+    async categoryTier4TextPresent(textValue: string): Promise<boolean> {
+        return await utilCommon.isFieldLabelDisplayed(this.selectors.category4, textValue);
     }
 
-    async regionTextPresent(textValue:string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.region,textValue);
+    async regionTextPresent(textValue: string): Promise<boolean> {
+        return await utilCommon.isFieldLabelDisplayed(this.selectors.region, textValue);
     }
 
-    async siteTextPresent(textValue:string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.site,textValue);
+    async siteTextPresent(textValue: string): Promise<boolean> {
+        return await utilCommon.isFieldLabelDisplayed(this.selectors.site, textValue);
     }
 
-    async saveTextPresent(textValue:string): Promise<boolean> {
+    async saveTextPresent(textValue: string): Promise<boolean> {
         return await $(this.selectors.saveButton).then(async (result) => {
             if (result) {
                 return await $(this.selectors.saveButton).getText() == textValue ? true : false;
@@ -125,7 +125,7 @@ class DocumentLibraryPage {
         });
     }
 
-    async cancelTextPresent(textValue:string): Promise<boolean> {
+    async cancelTextPresent(textValue: string): Promise<boolean> {
         return await $(this.selectors.cancelButton).getText().then(async (result) => {
             if (result) {
                 return await $(this.selectors.cancelButton).getText() == textValue ? true : false;
@@ -167,7 +167,7 @@ class DocumentLibraryPage {
         await utilCommon.selectDropDown(this.selectors.companyFieldGuid, companyName);
     }
 
-    async selectBusinessUnit(buisnessUnit:string):Promise<void>{
+    async selectBusinessUnit(buisnessUnit: string): Promise<void> {
         await utilCommon.selectDropDown(this.selectors.buisnessUnit, buisnessUnit);
     }
     async selectOwnerGroup(ownerGroupName: string): Promise<void> {
@@ -181,25 +181,25 @@ class DocumentLibraryPage {
 
     async isSaveButtonEnabled(): Promise<boolean> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
-       return await $(this.selectors.saveButton).isEnabled();
+        return await $(this.selectors.saveButton).isEnabled();
     }
 
     async isSaveButtonDisplayed(): Promise<boolean> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
-       return await $(this.selectors.saveButton).isDisplayed();
+        return await $(this.selectors.saveButton).isDisplayed();
     }
 
     async isDeleteButtonDisplayed(): Promise<boolean> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
-       return await $(this.selectors.deleteButton).isPresent().then(async (result) => {
-        if (result) return await $(this.selectors.deleteButton).isDisplayed();
-        else return false;
-    });
+        return await $(this.selectors.deleteButton).isPresent().then(async (result) => {
+            if (result) return await $(this.selectors.deleteButton).isDisplayed();
+            else return false;
+        });
     }
 
     async isCancelButtonDisplayed(): Promise<boolean> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
-       return await $(this.selectors.cancelButton).isDisplayed();
+        return await $(this.selectors.cancelButton).isDisplayed();
     }
 
     async selectCategoryTier1(categValue: string): Promise<void> {
@@ -239,7 +239,7 @@ class DocumentLibraryPage {
     async clickOnSelectedGridRecord(documentLibraryColumnHeader: string): Promise<void> {
         await utilGrid.clickOnSelectedGridRecord(this.selectors.documentHamburgerGuid, documentLibraryColumnHeader);
     }
-    
+
     async isAttachmentButtonEnabled(): Promise<boolean> {
         return await $(this.selectors.attachButton).isEnabled();
     }

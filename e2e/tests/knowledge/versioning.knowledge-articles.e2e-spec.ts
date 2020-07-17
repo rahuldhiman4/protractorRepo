@@ -197,7 +197,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(majorEditOption)).toBeFalsy('Major Edit Option is displayed for Draft Knowledge Article.');
             await editKnowledgePage.clickArticleCancelButton();
             await utilCommon.clickOnWarningOk();
-            await statusBladeKnowledgeArticlePo.setKnowledgeStatusWithReviewerDetails('SME Review', 'Petramco', 'Australia support', 'AU Support 3', 'Kane Williamson');
+            await statusBladeKnowledgeArticlePo.setKnowledgeStatusWithReviewerDetails('SME Review', 'Petramco', 'Australia Support', 'AU Support 3', 'Kane Williamson');
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
@@ -757,7 +757,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         }
-    }, 350 * 1000);
+    }, 500 * 1000);
 
     //skhobrag
     it('[DRDMV-20744]: Verify the article status of previous version articles when the new versioned article is moved to Published status', async () => {

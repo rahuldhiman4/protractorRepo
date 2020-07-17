@@ -65,6 +65,7 @@ describe('Service Level Management - Goal Type Tests', () => {
             expect(await createGoalType.isGoalTypeDisabled()).toBeTruthy('Goal Type field is enabled.');
             createGoalType.selectGoalTypeStatus('Active');
             createGoalType.clickSaveGoalTypeButton();
+            await browser.sleep(2000); // sleep added for pop up message display since it takes some time to get pop up there
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
         it('[DRDMV-2282]: Update Goal Type and Verify warning message appears', async () => {
@@ -78,8 +79,9 @@ describe('Service Level Management - Goal Type Tests', () => {
             await editGoalType.clickCloseGoalTypeButton();
             expect(await utilCommon.isWarningDialogBoxDisplayed()).toBeTruthy('Warning Dialog Box is not displayed.');
             expect(await utilCommon.getWarningDialogTitle()).toBe('Warning!');
-            expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue without saving?');
+            expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue?');
             await utilCommon.clickOnWarningOk();
+            await browser.sleep(2000); // sleep added for pop up message display since it takes some time to get pop up there
         });
         it('[DRDMV-2282]: Create Goal Type with Save Title and verify error message', async () => {
             await createGoalType.clickCreateGoalTypeConfigButton();
@@ -87,6 +89,7 @@ describe('Service Level Management - Goal Type Tests', () => {
             expect(await createGoalType.isGoalTypeDisabled()).toBeTruthy('Goal Type field is enabled.');
             createGoalType.selectGoalTypeStatus('Active');
             createGoalType.clickSaveGoalTypeButton();
+            await browser.sleep(2000); // sleep added for pop up message display since it takes some time to get pop up there
             expect(await utilCommon.isPopUpMessagePresent('ERROR (382): The value(s) for this entry violate a unique index that has been defined for this record definition.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
     });

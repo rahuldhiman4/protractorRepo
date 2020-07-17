@@ -12,9 +12,9 @@ class CaseAccessTab {
         searchSupportGroup: '[placeholder="Search for Support Groups"]',
         searchInputField: '[placeholder="Filter options"]',
         agentAssignWriteAccess: '.access-group-checkbox .checkbox__input',
-        addButton:'.input-group-btn button',
+        addButton: '.input-group-btn button',
     }
-    
+
     async clickOnSupportGroupAccessORAgentAccessButton(agentName: string): Promise<void> {
         // await $(this.selectors.agentAccess).click();
         await element(by.cssContainingText(this.selectors.agentAccess, agentName)).click();
@@ -56,9 +56,9 @@ class CaseAccessTab {
         let option = await element(by.cssContainingText(this.selectors.dropdownList, SupportValue));
         await option.click();
     }
-    
-    async selectBusinessUnit(businessUnitValue: string,dropDownList:string): Promise<void> {
-        await element(by.cssContainingText(this.selectors.dropDownType,dropDownList)).click();
+
+    async selectBusinessUnit(businessUnitValue: string, dropDownList: string): Promise<void> {
+        await element(by.cssContainingText(this.selectors.dropDownType, dropDownList)).click();
         await $(this.selectors.searchInputField).sendKeys(businessUnitValue);
         let option = await element(by.cssContainingText(this.selectors.dropdownList, businessUnitValue));
         await option.click();
@@ -91,6 +91,18 @@ class CaseAccessTab {
             }
         }
     }
+    async isSupportGroupWriteAccessDisplayed(supportGroupText: string): Promise<boolean> {
+        return await element(by.xpath(`//*[@aria-label="${supportGroupText}"]//../span[contains(@class,'d-icon-pencil')]`)).isPresent().then(async (result) => {
+            if (result) return await element(by.xpath(`//*[@aria-label="${supportGroupText}"]//../span[contains(@class,'d-icon-pencil')]`)).isDisplayed();
+            else return false;
+        });
+    }
 
+    async isSupportGroupReadAccessDisplayed(supportGroupText: string): Promise<boolean> {
+        return await element(by.xpath(`//*[@aria-label="${supportGroupText}"]//../span[contains(@class,'d-icon-eye')]`)).isPresent().then(async (result) => {
+            if (result) return await element(by.xpath(`//*[@aria-label="${supportGroupText}"]//../span[contains(@class,'d-icon-eye')]`)).isDisplayed();
+            else return false;
+        });
+    }
 }
 export default new CaseAccessTab();

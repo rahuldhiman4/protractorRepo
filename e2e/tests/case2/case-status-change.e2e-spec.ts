@@ -488,6 +488,8 @@ describe('Case Status Change', () => {
                 "casePriority": "Low",
                 "templateStatus": "Active",
                 "company": "Petramco",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createCaseTemplate(templateData);
@@ -676,9 +678,6 @@ describe('Case Status Change', () => {
         it('[DRDMV-1200]: Case status change from Pending', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId2);
-            await viewCasePage.clickEditCaseButton();
-            await editCasePage.clickOnAssignToMe();
-            await editCasePage.clickSaveCase();
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             await expect(await viewCasePage.getTextOfStatus()).toBe('In Progress');
@@ -705,6 +704,7 @@ describe('Case Status Change', () => {
             await expect(await viewCasePage.getTextOfStatus()).toBe('Canceled');
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('fritz');
         });

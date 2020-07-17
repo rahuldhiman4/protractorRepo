@@ -1,21 +1,20 @@
-import { $, $$, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, protractor, ProtractorExpectedConditions, browser } from "protractor";
 
 class TableProperties {
 
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        tablePropertiesInput: '.cke_single_page  tbody input',
-        dropdownValues: '.cke_single_page select.cke_dialog_ui_input_select',
+        tablePropertiesInput: ' table tbody input',
+        dropdownValues: ' table tbody select.cke_dialog_ui_input_select',
         okButton: '.cke_dialog_ui_button_ok',
         tableDialogWindow: '.cke_dialog_body'
     }
 
     async getTableParentElementIndex(): Promise<number> {
-        let i = 0;
-        let elementsCount = await $$('.cke_dialog_body').count();
+        let i: number = 0;
+        let elementsCount = await $$('.cke_dialog_body .cke_dialog_title').count();
         for (i = 0; i < elementsCount; i++) {
-            let tempElement = await $$('.cke_dialog_body').get(i);
-            let actualText = await tempElement.$('div').getText();
+            let actualText = await $$('.cke_dialog_body .cke_dialog_title').get(i).getText();
             if (actualText == 'Table Properties') {
                 break;
             }
@@ -39,6 +38,7 @@ class TableProperties {
     async clickOnOkButton(): Promise<void> {
         let index = await this.getTableParentElementIndex();
         await $$(this.selectors.tableDialogWindow).get(index).$(this.selectors.okButton).click();
+        await browser.sleep(1000);
     }
 
 }

@@ -193,6 +193,7 @@ describe('Case Activity Multi Logs', () => {
 
         it('[DRDMV-16755]: Add Automation, Manual, External Task In Case And Change Case Status To In-Progress', async () => {
             // Adding Task
+            await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(autoTemplateData.templateSummary);
@@ -465,7 +466,8 @@ describe('Case Activity Multi Logs', () => {
             newCase = await apiHelper.createCase(caseData);
 
             // Create General Notes 
-            for (let a = 0; a < 103; a++) {
+            for (let a = 0; a < 100; a++) {
+                await browser.sleep(1000);
                 await apiHelper.postActivityCommentsWithoutAttachments(`DRDMV-16737 Activity Notes ${a}`, 'Case', newCase.id);
             }
 
@@ -474,6 +476,7 @@ describe('Case Activity Multi Logs', () => {
                 let updatecase1 = {
                     "description": "Case_Description_" + b
                 }
+                await browser.sleep(1000);
                 await apiHelper.updateCase(newCase.id, updatecase1);
             }
 
@@ -485,12 +488,14 @@ describe('Case Activity Multi Logs', () => {
                 let updatecase3 = {
                     "casePriority": "High"
                 }
+                await browser.sleep(1000);
                 await apiHelper.updateCase(newCase.id, updatecase2);
                 await apiHelper.updateCase(newCase.id, updatecase3);
             }
         });
 
         it('[DRDMV-16737]: Verify count for first 20 Activity', async () => {
+            await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
             for (let i = 1; i <= 20; i++) {
                 await activityTabPage.scrollToActivity(i);
@@ -544,12 +549,14 @@ describe('Case Activity Multi Logs', () => {
             await apiHelper.updateCaseStatus(newCase.id, 'InProgress');
 
             // Create General Notes 
-            for (let a = 0; a < 103; a++) {
+            for (let a = 0; a < 100; a++) {
+                await browser.sleep(1000);
                 await apiHelper.postActivityCommentsWithoutAttachments(`DRDMV-16737 Task Activity Notes ${a}`, 'Task', task.id);
             }
             // Create Second Activity  
-            for (let b = 0; b < 21; b++) {
+            for (let b = 0; b < 20; b++) {
                 let updateTask1 = { "description": "Task_Description_" + b };
+                await browser.sleep(1000);
                 await apiHelper.updateTask(task.id, updateTask1);
             }
 
@@ -557,6 +564,7 @@ describe('Case Activity Multi Logs', () => {
             for (let c = 0; c < 10; c++) {
                 let updateTask2 = { "priority": "Low" };
                 let updateTask3 = { "priority": "High" };
+                await browser.sleep(1000);
                 await apiHelper.updateTask(task.id, updateTask2);
                 await apiHelper.updateTask(task.id, updateTask3);
             }
@@ -613,12 +621,14 @@ describe('Case Activity Multi Logs', () => {
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData.id, 'PublishApproval', "qkatawazi", "Compensation and Benefits")).toBeTruthy('Status Not Set');
 
             // Create General Notes 
-            for (let a = 0; a < 103; a++) {
+            for (let a = 0; a < 100; a++) {
+                await browser.sleep(1000);
                 await apiHelper.postActivityCommentsWithoutAttachments(`DRDMV-16771 KA Activity Notes ${a}`, 'KnowledgeArticleTemplate', knowledgeArticleData.id);
             }
 
             // Create General Notes 
             for (let a = 0; a < 20; a++) {
+                await browser.sleep(1000);
                 await apiHelper.apiLogin('qkatawazi');
                 await apiHelper.flagAndUnflagKnowledgeArticle(knowledgeArticleData.id, "FlagComment1", 1);
                 await apiHelper.apiLogin('kmills');

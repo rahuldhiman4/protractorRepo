@@ -166,9 +166,9 @@ describe('Service Target - Second Level Association Tests', () => {
         await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
 
         //Verify second level association for Company
-        await slmExpressionBuilder.selectSecondLevelExpressionQualification('Company', 'Type', "=", 'NAMED_LIST', "Operating Organization");
+        await slmExpressionBuilder.selectSecondLevelExpressionQualification('Company', 'Type', "like", 'NAMED_LIST', "Operating Organization");
         let selectedExpx = await slmExpressionBuilder.getSelectedExpression();
-        var expectedSelectedExp = "'" + "Company > Type" + "'" + "=" + '"' + "Operating Organization" + '"'
+        var expectedSelectedExp = "'" + "Company > Type" + "'" + "LIKE" + '"%' + "Operating Organization" + '%"'
         expect(selectedExpx).toEqual(expectedSelectedExp);
         await slmExpressionBuilder.clickOnSaveExpressionButton();
         await serviceTargetConfig.selectGoal("3");
@@ -185,8 +185,8 @@ describe('Service Target - Second Level Association Tests', () => {
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
-        caseId = viewCasePage.getCaseID();
         await browser.sleep(31000);
+        caseId = viewCasePage.getCaseID();
         expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
         expect(await viewCasePage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
         await browser.sleep(130000);

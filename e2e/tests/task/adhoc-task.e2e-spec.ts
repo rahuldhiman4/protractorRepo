@@ -45,21 +45,21 @@ describe('Create Adhoc task', () => {
         //Adhoc task validation
         await viewCasePage.clickAddTaskButton();
         await manageTask.clickAddAdhocTaskButton();
-        expect(await adhoctaskTemplate.isTaskSummaryRequiredTextPresent()).toBeTruthy();
-        expect(await adhoctaskTemplate.isPriorityRequiredTextPresent()).toBeTruthy();
-        expect(await adhoctaskTemplate.isAssignedCompanyRequiredTextPresent()).toBeTruthy();
-        expect(await adhoctaskTemplate.isAssignedGroupRequiredTextPresent()).toBeTruthy();
+        expect(await adhoctaskTemplate.isTaskSummaryRequiredTextPresent()).toBeTruthy("Summary");
+        expect(await adhoctaskTemplate.isPriorityRequiredTextPresent()).toBeTruthy("priority");
+        expect(await adhoctaskTemplate.isAssignedCompanyRequiredTextPresent()).toBeTruthy("company");
+        expect(await adhoctaskTemplate.isAssignedGroupRequiredTextPresent()).toBeTruthy("assigned group");
 
         expect(await adhoctaskTemplate.getSaveButtonAttribute('disabled')).toBeFalsy();
-        expect(await adhoctaskTemplate.getStatusAttribute()).toBeTruthy();
-        expect(await adhoctaskTemplate.getAssignCompanyAttribute()).toBeTruthy();
-        expect(await adhoctaskTemplate.getBuisnessUnitAttribute()).toBeTruthy();
-        expect(await adhoctaskTemplate.getAssigneeAttribute()).toBeTruthy();
-        expect(await adhoctaskTemplate.getDepartmentAttribute()).toBeTruthy();
-        expect(await adhoctaskTemplate.getAssignedGroupAttribute()).toBeTruthy();
-        expect(await adhoctaskTemplate.getchangeAssignmentButtonText()).toBeTruthy();
-        expect(await adhoctaskTemplate.isAssignToMeButtonDisplayd()).toBeTruthy();
-        expect(await adhoctaskTemplate.ischangeAssignmentButtonDisplayed()).toBeTruthy();
+        expect(await adhoctaskTemplate.getStatusAttribute()).toBeTruthy("status");
+        expect(await adhoctaskTemplate.getAssignCompanyAttribute()).toContain("disabled");
+        expect(await adhoctaskTemplate.getBuisnessUnitAttribute()).toContain("disabled");
+        expect(await adhoctaskTemplate.getAssigneeAttribute()).toBeTruthy("AssigneeAttr");
+        expect(await adhoctaskTemplate.getDepartmentAttribute()).toContain("disabled");
+        expect(await adhoctaskTemplate.getAssignedGroupAttribute()).toContain("disabled");
+        expect(await adhoctaskTemplate.getchangeAssignmentButtonText()).toBeTruthy("changeAssignmentBu");
+        expect(await adhoctaskTemplate.isAssignToMeButtonDisplayd()).toBeTruthy("isAssignToMeButto");
+        expect(await adhoctaskTemplate.ischangeAssignmentButtonDisplayed()).toBeTruthy("ischangeAssignmentButt");
         await adhoctaskTemplate.setSummary(summary);
         await adhoctaskTemplate.setDescription("Description");
         await adhoctaskTemplate.selectPriority('High');

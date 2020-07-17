@@ -290,7 +290,7 @@ describe('Case Data Store', () => {
             //entered field validation
             expect(await viewCasePo.getValueOfDynamicFields(field1InGroup)).toBe('New values for field 1 group');
             expect(await viewCasePo.getValueOfDynamicFields(field2InGroup)).toBe('8888899');
-            expect(await viewCasePo.getValueOfDynamicFields(field4OutSideGroup)).toBe('True');
+            expect(await viewCasePo.getValueOfDynamicFields(field4OutSideGroup)).toBe('Yes');
             expect(await viewCasePo.getValueOfDynamicFields(field1OutSideGroup)).toBe('field1 outside group');
             expect(await viewCasePo.getValueOfDynamicFields(field2OutSideGroup)).toBe('809888');
         });
@@ -370,14 +370,17 @@ describe('Case Data Store', () => {
                 expect(await viewTaskTemplate.isDynamicFieldPresent(arr[i])).toBeTruthy('field is not present');
             }
             expect(await viewTaskTemplate.isManageDynamicFieldLinkDisplayed()).toBeTruthy('Link is not present');
-        });
-        it('[DRDMV-13140]: [Dynamic Data] [UI] -Dynamic Fields display on Task Template Edit view UI', async () => {
             //edit
             await viewTaskTemplate.clickOnEditLink();
+        });
+        it('[DRDMV-13140]: [Dynamic Data] [UI] -Dynamic Fields display on Task Template Edit view UI', async () => {
+
             expect(await editTaskTemplate.isMangeDynamicFieldLinkDisplayed()).toBeTruthy('link is not present');
             for (let i = 0; i < arr.length; i++) {
                 expect(await editTaskTemplate.isDynamicFieldPresent(arr[i])).toBeTruthy('field is not present');
             }
+        });
+        it('[DRDMV-13140]: Dynamic Fields display on Task Template Edit view UI', async () => {
             await editTaskTemplate.clickOnCancelButton();
             await utilCommon.clickOnWarningOk();
             //Inactive
@@ -388,6 +391,8 @@ describe('Case Data Store', () => {
                 expect(await viewTaskTemplate.isDynamicFieldPresent(arr[i])).toBeTruthy('field is not present');
             }
             expect(await viewTaskTemplate.isManageDynamicFieldLinkDisplayed()).toBeTruthy('Link is not present');
+        });
+        it('[DRDMV-13140]: Dynamic Fields display on Task Template Edit view UI', async () => {
             //edit
             await viewTaskTemplate.clickOnEditLink();
             expect(await editTaskTemplate.isMangeDynamicFieldLinkDisplayed()).toBeTruthy('link not present');
@@ -504,7 +509,7 @@ describe('Case Data Store', () => {
             await quickCasePo.selectCaseTemplate(casetemplateData.templateName);
             await quickCasePo.createCaseButton();
             //case preview
-            // await utilityCommon.waitUntilSpinnerToHide();
+            await utilityCommon.closePopUpMessage();
             expect(await casePreviewPo.isGroupDisplayed(group1)).toBeTruthy('group is not present');
             expect(await casePreviewPo.isGroupDisplayed(group2)).toBeTruthy('group is not present');
             for (let i = 0; i < dynamicFields.length; i++) {

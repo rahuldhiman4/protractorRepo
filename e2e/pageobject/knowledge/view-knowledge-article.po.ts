@@ -6,7 +6,7 @@ class ViewKnowledgePage {
     selectors = {
         statusChange: '[rx-view-component-id="dc403f44-1bde-406f-a3bf-00128644a011"] span',
         editLinkKnowledgeMetadata: '[rx-view-component-id="56cc9627-6ef9-46f8-9b76-728349193ed2"] .btn-link',
-        editLinkOnKA: '[rx-view-component-id="ee521675-2407-4b2a-9470-013bfb328b30"] .float-right',
+        editLinkOnKA: '[rx-view-component-id="ee521675-2407-4b2a-9470-013bfb328b30"] [btn-type="tertiary"]',
         unflagButton: '[rx-view-component-id="b54365bf-0ead-4c54-8c8b-42aced61690e"] button',
         falgButton: '[rx-view-component-id="89dd2264-1895-4a7b-a0a4-01a4834a403b"] button',
         assigneeName: '[rx-view-component-id="5365589a-13ad-41f0-8831-b20175beb761"] .read-only-content',
@@ -19,6 +19,7 @@ class ViewKnowledgePage {
         KnwoledgeArticleReviewMessage: '[rx-view-component-id="d2dbea0a-503e-47d8-b4ed-b6dcc9dcf555"] span',
         regionValue: '[rx-view-component-id="d5c6cfef-2d53-48df-a03a-1a3e8381eef5"] .read-only-content',
         siteValue: '[rx-view-component-id="aa218b2b-4fa3-4525-82f3-3e0f9bfc4193"] .read-only-content',
+        siteValueAfterClear: '[rx-view-component-id="ff94cecf-1b32-46c2-a207-cd3e426d52f7"] .read-only-content',
         articleVersion: '[rx-view-component-id="c64b0ab4-1774-4687-a7d2-56a72eeb1c1b"] button',
         articleVersionDropDown: '[rx-view-component-id="c64b0ab4-1774-4687-a7d2-56a72eeb1c1b"] .dropdown-item',
         knowledgeSetValue: '[rx-view-component-id="091876ce-ba14-4461-82da-a929cff39fb5"] .read-only-content',
@@ -68,6 +69,10 @@ class ViewKnowledgePage {
         return await $(this.selectors.siteValue).getText();
     }
 
+    async getSiteValueAfterClear(): Promise<string> {
+        return await $(this.selectors.siteValueAfterClear).getText();
+    }
+    
     async isKAUsefulYesButtonDisplayed(): Promise<boolean> {
         return await $(this.selectors.kAUsefulYesButton).isDisplayed();
     }
@@ -108,9 +113,8 @@ class ViewKnowledgePage {
 
     async isEditLinkDisplayedOnKA(): Promise<boolean> {
         return await $(this.selectors.editLinkOnKA).isPresent().then(async (link) => {
-            if (link) {
-                return await $(this.selectors.editLinkOnKA).isDisplayed();
-            }
+            if (link) return await $(this.selectors.editLinkOnKA).isDisplayed();
+            else return false;
         });
     }
 
@@ -131,7 +135,10 @@ class ViewKnowledgePage {
 
 
     async isUnFlagButtonDisplayed(): Promise<boolean> {
-        return await $(this.selectors.unflagButton).isDisplayed();
+        return await $(this.selectors.unflagButton).isPresent().then(async (link) => {
+            if (link) return await $(this.selectors.unflagButton).isDisplayed();
+            else return false;
+        });
     }
 
     async clickOnActivityTab(): Promise<void> {
@@ -144,7 +151,7 @@ class ViewKnowledgePage {
     }
 
     async clickOnTab(tabName: string): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.tab)), 3000);
+        await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText(this.selectors.tab, tabName))), 7000);
         await element(by.cssContainingText(this.selectors.tab, tabName)).click();
     }
 
@@ -380,6 +387,7 @@ class ViewKnowledgePage {
     async isAttachedFileNamePresent(fileName: string): Promise<boolean> {
         return await element(by.cssContainingText(this.selectors.attachmentName, fileName)).isPresent().then(async (result) => {
             if (result) return await element(by.cssContainingText(this.selectors.attachmentName, fileName)).isDisplayed();
+            else return false;
         });
     }
 
@@ -408,6 +416,7 @@ class ViewKnowledgePage {
     async isApprovalButtonsPresent(buttonText: string): Promise<boolean> {
         return await element(by.cssContainingText(this.selectors.approvalButtons, buttonText)).isPresent().then(async (result) => {
             if (result) return await element(by.cssContainingText(this.selectors.approvalButtons, buttonText)).isDisplayed();
+            else return false;
         });
     }
 

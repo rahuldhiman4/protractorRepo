@@ -109,6 +109,7 @@ describe('Knowledge Article Set', () => {
                 "categoryTier3": "Incident",
                 "region": "Australia",
                 "site": "Canberra",
+                "company": "Petramco",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
                 "assigneeSupportGroup": "GB Support 1",

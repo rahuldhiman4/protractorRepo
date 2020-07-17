@@ -12,13 +12,13 @@ class ViewTask {
         allStatus: '.dropdown_select__menu .dropdown-item',
         updateStatusDropDown: '[rx-view-component-id="8b4cef48-0a4c-4ec1-bc4c-cce47179c964"] button',
         taskTypeValue: '[rx-view-component-id="057f2521-313b-40c9-be56-829827512abf"] .read-only-content',
-        editButton: '.float-right',
+        editButton: '[rx-view-component-id="14e8cc41-ae6a-41e1-8932-850fbeec57d0"] [btn-type="tertiary"]',
         categoryTier1Value: '[rx-view-component-id="909ad3ad-6706-4d46-bb5a-bc48fa6ca98e"] .read-only-content',
         categoryTier2Value: '[rx-view-component-id="49d231d9-ee81-4d7c-90af-d7ca785a32d4"] .read-only-content',
         categoryTier3Value: '[rx-view-component-id="c8858fb5-5b21-4e0d-a947-c0130a72b51a"] .read-only-content',
         categoryTier4Value: '[rx-view-component-id="ff1636f8-4efe-4447-9c04-f32799904f2b"] .read-only-content',
         labelValue: '[rx-view-component-id="4c2784af-c080-4630-8f16-d9e6b07e87a2"] .read-only-content',
-        descriptionValue: '[rx-view-component-id="6053a7e8-5194-420b-965a-1c3bfe3ad0a1"] .collapse-block div [style="position: relative;"] label + div',
+        descriptionValue: '[rx-view-component-id="6053a7e8-5194-420b-965a-1c3bfe3ad0a1"] .collapse-block div [style="position: relative;"]',
         processnameValue: '[rx-view-component-id="7260c238-9e41-4d31-90de-2d46443117b4"] .read-only-content',
         statusReason: '[rx-view-component-id="7cdf9e18-c230-4098-8872-ddce9f005373"] .read-only-content',
         taskIdText: '[rx-view-component-id="75371088-cfeb-4554-a939-2fe7b2aa098b"] .text-field',
@@ -27,7 +27,7 @@ class ViewTask {
         taskPriority: '[rx-view-component-id="75371088-cfeb-4554-a939-2fe7b2aa098b"] .selection-field',
         taskTimeDetails: '[rx-view-component-id="75371088-cfeb-4554-a939-2fe7b2aa098b"] .date-info',
         caseIdText: '.rx-record-preview-card__field .rx-record-preview-card__value',
-        caseSummary: '.rx-record-preview-card__field .rx-record-preview-card__value',
+        caseSummary: '.rx-card-fields .rx-card-field-value',
         taskSummary: '[rx-view-component-id="fa66e566-757c-4d10-a850-9ea3bd037707"] span',
         taskStatus: '[rx-view-component-id="1437179f-34be-4cb3-8f85-cf0ac6a83394"] span',
         requesterName: '[rx-view-component-id="3a7ac43c-0c25-4a46-abc6-9d59c2da09f7"] .person-name .person-link',
@@ -147,7 +147,7 @@ class ViewTask {
 
     async isCaseSummaryDisplayed(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.caseSummary)));
-        return await $$(this.selectors.caseSummary).get(1).isDisplayed();
+        return await $(this.selectors.caseSummary).isDisplayed();
     }
 
     async isCaseViewLinkDisplayed(): Promise<boolean> {

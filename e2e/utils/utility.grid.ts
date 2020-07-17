@@ -316,6 +316,14 @@ export class GridOperations {
     async clickRefreshIcon(guidId?: string): Promise<void> {
         if (guidId) await $(`[rx-view-component-id="${guidId}"] ` + this.selectors.refreshIcon).click();
         else await $(this.selectors.refreshIcon).click();
+        await browser.sleep(1000); // sometime refresh grid takes time
+    }
+
+    async isEntireColumnContainsSameValue(columnHeader: string, value: string, guid?: string): Promise<boolean> {
+        let allValues: string[] = undefined;
+        guid ? allValues = await this.getAllValuesFromColumn(columnHeader, guid) : allValues = await this.getAllValuesFromColumn(columnHeader);
+        const allEqual = arr => arr.every(v => v === arr[0])
+        return allEqual(allValues) && allValues[0] === value;
     }
 
 }

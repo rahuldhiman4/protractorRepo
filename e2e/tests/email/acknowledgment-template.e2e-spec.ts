@@ -116,7 +116,6 @@ describe('Acknowledgment Template', () => {
     it('[DRDMV-10900,DRDMV-10924,DRDMV-10923]: Acknowledgment Template : Edit Acknowledgment Template UI validation', async () => {
         let templateName = 'Private' + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateName2 = 'Public' + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let templateName3 = 'Private' + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let description = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let description2 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let subject = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -151,7 +150,6 @@ describe('Acknowledgment Template', () => {
         await utilGrid.clearFilter();
         await consoleAcknowledgmentTemplatePo.searchAndOpenAcknowledgmentTemplate(templateName);
         await utilCommon.waitUntilSpinnerToHide();
-        await editAcknowledgmentTemplatePo.updateTemplateName(templateName3);
         expect(await editAcknowledgmentTemplatePo.isModuleNameDisabled()).toBeTruthy('Module Name is enabled');
         expect(await editAcknowledgmentTemplatePo.isCompanyDropDownDisabled()).toBeTruthy('Company drop down is enabled');
         await editAcknowledgmentTemplatePo.updateDescription(description2);
@@ -183,8 +181,9 @@ describe('Acknowledgment Template', () => {
         await consoleAcknowledgmentTemplatePo.clearGridSearchBox();
         let arr2: string[] = ["Label"];
         await consoleAcknowledgmentTemplatePo.addColumnOnGrid(arr2);
-        await consoleAcknowledgmentTemplatePo.addFilter('Template Name', templateName3, 'text');
-        expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Template Name')).toBe(templateName3, 'Filter Template Name is missing in column');
+        await consoleAcknowledgmentTemplatePo.addFilter('Template Name', templateName2, 'text');
+        expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Template Name')).toBe(templateName2, 'Filter Template Name is missing in column');
+        await utilGrid.clearFilter();
         await consoleAcknowledgmentTemplatePo.addFilter('Label', label, 'text');
         expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Label')).toBe(label, ' Filter Label is missing in column');
         await consoleAcknowledgmentTemplatePo.addFilter('Status', 'Active', 'checkbox');
@@ -197,8 +196,8 @@ describe('Acknowledgment Template', () => {
         await consoleAcknowledgmentTemplatePo.clearGridFilter();
 
         // DRDMV-10923
-        await consoleAcknowledgmentTemplatePo.searchOnGridConsole(templateName3);
-        expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Template Name')).toBe(templateName3, 'Search Template Name is missing in column');
+        await consoleAcknowledgmentTemplatePo.searchOnGridConsole(templateName2);
+        expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Template Name')).toBe(templateName2, 'Search Template Name is missing in column');
         await consoleAcknowledgmentTemplatePo.searchOnGridConsole(subject);
         expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Subject')).toBe(subject, 'Search Subject is missing in column');
         await consoleAcknowledgmentTemplatePo.searchOnGridConsole('Petramco');

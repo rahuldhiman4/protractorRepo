@@ -744,12 +744,16 @@ describe('Case Template', () => {
             await editCasePo.clickOnChangeCaseTemplate();
             await selectCasetemplateBladePo.selectCaseTemplate(updatedCaseTemplateName);
             await editCasePo.clickSaveCase();
+            await utilityCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             expect(await viewCasePo.getPriorityValue()).toBe('Low');
             expect(await viewCasePo.getCaseStatusValue()).toContain('New');
             expect(await viewCasePo.getCategoryTier1Value()).toBe('Purchasing Card');
             expect(await viewCasePo.getCategoryTier2Value()).toBe('Policies');
             expect(await viewCasePo.getCategoryTier3Value()).toBe('Card Issuance');
             expect(await viewCasePo.getAssignedCompanyText()).toBe('Petramco');
+            await viewCasePo.clickOnTab('Activity');
+            await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog(updatedCaseTemplateName)).toBeTruthy('TemplateText is not available');
             expect(await activityTabPo.isTextPresentInActivityLog('applied the template')).toBeTruthy('Applied Template text is not present');
             await navigationPage.gotoPersonProfile();
@@ -835,6 +839,8 @@ describe('Case Template', () => {
             await editCasePo.clickOnChangeCaseTemplate();
             await selectCasetemplateBladePo.selectCaseTemplate(updatedCaseTemplateName);
             await editCasePo.clickSaveCase();
+            await utilityCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             expect(await viewCasePo.getPriorityValue()).toBe('Low');
             expect(await viewCasePo.getCaseStatusValue()).toContain('Assigned');
             expect(await viewCasePo.getCategoryTier1Value()).toBe('Purchasing Card');
@@ -843,6 +849,8 @@ describe('Case Template', () => {
             expect(await viewCasePo.getAssignedCompanyText()).toBe('Petramco');
             expect(await viewCasePo.getAssigneeText()).toBe('Fritz Schulz');
             expect(await viewCasePo.getAssignedGroupText()).toBe('Facilities');
+            await viewCasePo.clickOnTab('Activity');
+            await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog(updatedCaseTemplateName)).toBeTruthy('TemplateText is not available');
             expect(await activityTabPo.isTextPresentInActivityLog('applied the template')).toBeTruthy('Applied Template text is not present');
         });
@@ -1264,6 +1272,7 @@ describe('Case Template', () => {
             await editCasePo.clickOnSelectCaseTemplate();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName1);
             await editCasePo.clickSaveCase();
+            await utilityCommon.closePopUpMessage();
             // verify support Group w.r.t template1 should be applied any assignee, as round robin assignement method
             expect(await viewCasePo.isAssigneeNameDisplayed()).toBeTruthy();
             expect(await viewCasePo.getAssignedGroupText()).toBe('Facilities');
@@ -1284,6 +1293,7 @@ describe('Case Template', () => {
             await editCasePo.clickOnChangeCaseTemplate();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName2);
             await editCasePo.clickSaveCase();
+            await utilityCommon.closePopUpMessage();
             // verify support Group w.r.t template2 should be applied any assignee, as round robin assignement method
             expect(await viewCasePo.isAssigneeNameDisplayed()).toBeTruthy();
             expect(await viewCasePo.getAssignedGroupText()).toBe('Workforce Administration');
@@ -1304,6 +1314,7 @@ describe('Case Template', () => {
             await editCasePo.clickOnChangeCaseTemplate();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName3);
             await editCasePo.clickSaveCase();
+            await utilityCommon.closePopUpMessage();
             // verify support Group w.r.t template3 should be applied assignee, as none assignement method
             expect(await viewCasePo.getAssigneeText()).toBe('Fritz Schulz');
             expect(await viewCasePo.getAssignedGroupText()).toBe('Facilities');
@@ -1324,6 +1335,7 @@ describe('Case Template', () => {
             await editCasePo.clickOnChangeCaseTemplate();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName2);
             await editCasePo.clickSaveCase();
+            await utilityCommon.closePopUpMessage();
             // verify support Group w.r.t template2 should be applied any assignee, as round robin assignement method
             expect(await viewCasePo.isAssigneeNameDisplayed()).toBeTruthy();
             expect(await viewCasePo.getAssignedGroupText()).toBe('Workforce Administration');
@@ -1411,12 +1423,13 @@ describe('Case Template', () => {
             await editCasePo.clickOnChangeCaseTemplate();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateNameWithNoValue);
             await editCasePo.clickSaveCase();
-        });
-        it('[DRDMV-19741]: Case behavior when Case Template is changed', async () => {
             await utilCommon.closePopUpMessage();
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus('In Progress');
-            await viewCasePo.openTaskCard(1);
+            await utilCommon.closePopUpMessage();
+        });
+        it('[DRDMV-19741]: Case behavior when Case Template is changed', async () => {
+             await viewCasePo.openTaskCard(1);
             await manageTaskBladePo.clickTaskLink(ManualTaskTempSummary);
             await viewTaskPo.clickOnChangeStatus();
             await viewTaskPo.changeTaskStatus('Completed');
@@ -1440,6 +1453,7 @@ describe('Case Template', () => {
         it('[DRDMV-19741]: [RESOLVE_CASE_ON_LAST_TASK_COMPLETION] - Case behavior when Case Template is changed', async () => {
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus('In Progress');
+            await utilCommon.closePopUpMessage();
             await viewCasePo.openTaskCard(1);
             await manageTaskBladePo.clickTaskLink(taskTemplateSummaryYesValue);
             await viewTaskPo.clickOnChangeStatus();

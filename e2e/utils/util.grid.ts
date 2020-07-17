@@ -197,7 +197,7 @@ export class GridOperation {
             } else {
                 console.log("Filters are already cleared");
             }
-        })
+        });
     }
 
     async clickOnSelectedGridRecord(guid: string, columnHeader: string): Promise<void> {

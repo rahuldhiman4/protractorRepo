@@ -32,76 +32,6 @@ describe("Attachment", () => {
     });
 
     //kgaikwad
-    it('[DRDMV-11707,DRDMV-11703,DRDMV-11704]: Upload attachment while creating case via BWF & verify all attachments Grid	', async () => {
-        let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let filePath = '../../data/ui/attachment/bwfJpg.jpg';
-        await navigationPage.gotoCreateCase();
-        await createCasePo.selectRequester('Elizabeth Peters');
-        await createCasePo.setSummary(caseSummary);
-        await createCasePo.addDescriptionAttachment([filePath]);
-        await createCasePo.clickSaveCaseButton();
-        await previewCasePo.clickGoToCaseButton();
-        await viewCasePo.clickAttachmentsLink();
-        expect(await utilCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('File is delete sucessfully');
-        await attachmentBladePo.searchAndSelectCheckBox('bwfJpg');
-        expect(await attachmentBladePo.getTextOfColumnHeader('Attachments ')).toBe('Attachments', 'Attachment column header is missing');
-        expect(await attachmentBladePo.getTextOfColumnHeader('Attached to ')).toBe('Attached to', 'Attached to column header is missing');
-        expect(await attachmentBladePo.getTextOfColumnHeader('Media type ')).toBe('Media type', 'Media type  column header is missing');
-        expect(await attachmentBladePo.getTextOfColumnHeader('Created date ')).toBe('Created date', 'Created date column header is missing');
-        expect(await attachmentBladePo.getRecordValue('Attachments')).toBe('bwfJpg', 'Attachment file name is missing');
-        expect(await attachmentBladePo.getRecordValue('Attached to')).toBe('Case', 'Attach to column value is missing');
-        expect(await attachmentBladePo.getRecordValue('Media type')).toBe('image/jpeg', 'Media type column value is missing');
-
-        let year: string;
-        let month: string;
-        let date: string;
-        let finalDate;
-
-        let objDate: Date = new Date();
-        let numYear: number = objDate.getFullYear();
-        year = new Number(numYear).toString();
-
-        let numMonth: number = objDate.getUTCMonth() + 1;
-        let month1 = new Number(numMonth);
-        if (month1 <= 9) {
-            month = '0' + month1.toString();
-        } else {
-            month = month1.toString();
-        }
-        let numDate: number = objDate.getUTCDate();
-        let date1 = new Number(numDate);
-        if (date1 <= 9) {
-            date = '0' + date1.toString();
-        } else {
-            date = date1.toString();
-        }
-
-        finalDate = date + '/' + month + '/' + year;
-        expect(await attachmentBladePo.getRecordValue(finalDate)).toContain(finalDate);
-        expect(await attachmentBladePo.isDownloadButtonDisplayed()).toBeTruthy('Download button is missing');
-        expect(await attachmentBladePo.isCloseButtonDisplayed()).toBeTruthy('Close button is missing');
-        await attachmentBladePo.clickDownloadButton();
-        expect(await utilCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('File is not downloaded.');
-
-        await attachmentBladePo.clickFileName('bwfJpg');
-        expect(await attachmentInformationBladePo.isDownloadButtonDisplayed()).toBeTruthy('download button is missing');
-        expect(await attachmentInformationBladePo.isCloseButtonDisplayed()).toBeTruthy('close button is missing');
-        expect(await attachmentInformationBladePo.getValuesOfInformation('File Name')).toBe('File Name: bwfJpg', 'FileName is missing');
-        expect(await attachmentInformationBladePo.getValuesOfInformation(' Case')).toBe('Type: Case', 'Type is missing');
-        expect(await attachmentInformationBladePo.getValuesOfInformation(' image/jpeg')).toBe('Media type: image/jpeg', 'Media Type is missing');
-        expect(await attachmentInformationBladePo.getValuesOfInformation(' 49.9 KB')).toBe('Size: 49.9 KB', 'FileSize is missing');
-        expect(await attachmentInformationBladePo.getValuesOfInformation(finalDate)).toContain(finalDate, 'Created date is missing');
-        expect(await attachmentInformationBladePo.getValuesOfInformation(' Qianru Tao')).toBe('Created by: Qianru Tao', 'Created by is missing');
-        expect(await attachmentInformationBladePo.isTitleNameDisplayed()).toBeTruthy('Title is missing');
-        expect(await utilCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('File is delete sucessfully');
-        await attachmentInformationBladePo.clickDownloadButton();
-        expect(await utilCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('File is not downloaded.');
-        expect(await utilCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('File is delete sucessfully');
-        await attachmentInformationBladePo.clickCloseButton();
-        await attachmentBladePo.clickCloseButton();
-    });
-
-    //kgaikwad
     it('[DRDMV-11697]: All attachments grid verification', async () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoCreateCase();
@@ -121,7 +51,7 @@ describe("Attachment", () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-11713]: Upload attachment via compose email & verify all attachments grid', async () => {
+    describe('[DRDMV-11713, DRDMV-9028]: Upload attachment via compose email & verify all attachments grid', async () => {
         let caseData, newCase;
         beforeAll(async () => {
             caseData = {
@@ -135,17 +65,30 @@ describe("Attachment", () => {
             await apiHelper.apiLogin('qkatawazi');
             newCase = await apiHelper.createCase(caseData);
         });
-        it('[DRDMV-11713]: Upload attachment via compose email & verify all attachments grid', async () => {
+        it('[DRDMV-11713, DRDMV-9028]: Upload attachment via compose email & verify all attachments grid', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(newCase.displayId);
             await viewCasePo.clickOnEmailLink();
-            await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+
             await composeMail.addAttachment(['../../data/ui/attachment/demo.txt']);
+            expect(await composeMail.getFileDisplayedFileName()).toContain('demo.txt');
+
+            await composeMail.setToOrCCInputTetxbox('To', 'franz@bwflabs.localdomain');
+            expect(await composeMail.getToEmailPerson()).toContain('Franz Schwarz');
+            await composeMail.setToOrCCInputTetxbox('Cc', 'franz@bwflabs.localdomain');
+            expect(await composeMail.getToEmailPerson()).toContain('Franz Schwarz');
+            await composeMail.setEmailBody('This is email body');
             await composeMail.clickOnSendButton();
+
+            await activityTabPo.clickShowMoreForEmailActivity();
+            expect(await activityTabPo.getFirstPostContent()).toContain('This is email body');
+            expect(await activityTabPo.getFirstPostContent()).toContain('Qianru Tao sent an email');
+            expect(await activityTabPo.isAttachedFileNameDisplayed('demo.txt')).toBeTruthy('Attached file not Present');
+
             await viewCasePo.clickAttachmentsLink();
             expect(await utilCommon.deleteAlreadyDownloadedFile('demo.txt')).toBeTruthy('File is delete sucessfully');
             await attachmentBladePo.searchAndSelectCheckBox('demo');
-            expect(await attachmentBladePo.getRecordValue('Attachments')).toBe('demo', 'demo txt file name is missing');
+            expect(await (await attachmentBladePo.getGridColumnValues('Attachments')).includes('demo')).toBeTruthy('demo txt file name is missing');
             await attachmentBladePo.clickDownloadButton();
             expect(await utilCommon.isFileDownloaded('demo.txt')).toBeTruthy('File is not downloaded.');
         });
@@ -176,7 +119,7 @@ describe("Attachment", () => {
         expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('Attached file name is missing');
         await viewCasePo.clickAttachmentsLink();
         expect(await attachmentBladePo.getTextOfColumnHeader('Attached to ')).toBe('Attached to', 'Attached to column header is missing');
-        expect(await attachmentBladePo.getRecordValue('Attachments')).toBe('bwfPdf', 'Attachment file name is missing');
+        expect(await (await attachmentBladePo.getGridColumnValues('Attachments')).includes('bwfPdf')).toBeTruthy('Attachment file name is missing');
         expect(await utilCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('File is deleted sucessfully');
         // DRDMV-11698
         expect(await attachmentBladePo.isDownloadButtonEnabled()).toBeFalsy('Download button is enabled');
@@ -233,8 +176,8 @@ describe("Attachment", () => {
             await utilityCommon.closePopUpMessage();
             await manageTaskPo.clickCloseButton();
             await viewCasePo.clickAttachmentsLink();
-            expect(await attachmentBladePo.getRecordValue('Attachments')).toBe('bwfXlsx', 'Attachment file name is missing');
-            expect(await attachmentBladePo.getRecordValue('Attached to')).toBe('Task', 'Attach to column value is missing');
+            expect(await (await attachmentBladePo.getGridColumnValues('Attachments')).includes('bwfXlsx')).toBeTruthy('Attachment file name is missing');
+            expect(await (await attachmentBladePo.getGridColumnValues('Attached to')).includes('Task')).toBeTruthy('Attach to column value is missing');
             expect(await utilCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('File is delete sucessfully');
             await attachmentBladePo.searchAndSelectCheckBox('bwfXlsx');
             await attachmentBladePo.clickDownloadButton();
@@ -251,10 +194,8 @@ describe("Attachment", () => {
             expect(await activityTabPo.isAttachedFileNameDisplayed('bwfWord1.rtf')).toBeTruthy('Attached file name is missing');
             await viewTaskPo.clickOnViewCase();
             await viewCasePo.clickAttachmentsLink();
-            await attachmentBladePo.searchAttachmentOnGrid('bwfWord1'); //this method is used because first record needs to be bwfWord1
-            await attachmentBladePo.searchAttachment('bwfWord1'); //if searchAttachment() modified to search always then reindexing takes time
-            expect(await attachmentBladePo.getRecordValue('Attachments')).toBe('bwfWord1', 'Attachment file name is missing');
-            expect(await attachmentBladePo.getRecordValue('Attached to')).toBe('Social', 'Attach to column value is missing');
+            expect(await (await attachmentBladePo.getGridColumnValues('Attachments')).includes('bwfWord1')).toBeTruthy('Attachment file name is missing');
+            expect(await (await attachmentBladePo.getGridColumnValues('Attached to')).includes('Social')).toBeTruthy('Attach to column value is missing');
             expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfWord1.rtf')).toBeTruthy('File is delete sucessfully');
             await attachmentBladePo.searchAndSelectCheckBox('bwfWord1');
             await attachmentBladePo.clickDownloadButton();
@@ -475,5 +416,100 @@ describe("Attachment", () => {
         afterAll(async () => {
             await attachmentBladePo.clickCloseButton();
         });
+    });
+
+    describe('[DRDMV-9032]: Negative -Verify large number of attachments. Click on Send button in Compose Email', async () => {
+        let newCase;
+        beforeAll(async () => {
+            let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let caseData = {
+                "Requester": "qdu",
+                "Summary": "Test case for DRDMV-9028 RandVal" + randomString,
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
+                "Assignee": "qkatawazi"
+            }
+            await apiHelper.apiLogin('qtao');
+            newCase = await apiHelper.createCase(caseData);
+        });
+        it('[DRDMV-9032]: Negative -Verify large number of attachments. Click on Send button in Compose Email', async () => {
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
+            await caseConsole.searchAndOpenCase(newCase.displayId);
+            await viewCasePo.clickOnEmailLink();
+            await composeMail.setToOrCCInputTetxbox('To', 'franz@bwflabs.localdomain');
+            await composeMail.setEmailBody("With mutiple attachmnents");
+            let filesToUpload: string[] = [];
+            for (let i = 0; i <= 20; i++) {
+                filesToUpload.push('../../data/ui/attachment/demo.txt');
+            }
+            await composeMail.addAttachment(filesToUpload);
+            await composeMail.clickOnSendButton();
+            await utilityCommon.closePopUpMessage();
+            await activityTabPo.clickShowMoreForEmailActivity();
+            await activityTabPo.clickPlusIconOnMultipleAttachmentInActivity();
+            expect(await activityTabPo.getAttachmentCount()).toBe(21);
+        });
+        afterAll(async () => {
+            await composeMail.clickOnDiscardButton();
+        });
+    });
+
+    //kgaikwad
+    it('[DRDMV-11707,DRDMV-11703,DRDMV-11704]: Upload attachment while creating case via BWF & verify all attachments Grid	', async () => {
+        let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let filePath = '../../data/ui/attachment/bwfJpg.jpg';
+        await navigationPage.gotoCreateCase();
+        await createCasePo.selectRequester('Elizabeth Peters');
+        await createCasePo.setSummary(caseSummary);
+        await createCasePo.addDescriptionAttachment([filePath]);
+        await createCasePo.clickSaveCaseButton();
+        let year: string, month: string, date: string, finalDate;
+        let objDate: Date = new Date();
+        let numYear: number = objDate.getFullYear();
+        year = new Number(numYear).toString();
+        let numMonth: number = objDate.getUTCMonth() + 1;
+        let month1 = new Number(numMonth);
+        if (month1 <= 9) month = '0' + month1.toString();
+        else month = month1.toString();
+        let numDate: number = objDate.getDate();
+        let date1 = new Number(numDate);
+        if (date1 <= 9) date = '0' + date1.toString();
+        else date = date1.toString();
+        finalDate = date + '/' + month + '/' + year;
+        await previewCasePo.clickGoToCaseButton();
+        await viewCasePo.clickAttachmentsLink();
+        expect(await utilCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('File is delete sucessfully');
+        await attachmentBladePo.searchAndSelectCheckBox('bwfJpg');
+        expect(await attachmentBladePo.getTextOfColumnHeader('Attachments ')).toBe('Attachments', 'Attachment column header is missing');
+        expect(await attachmentBladePo.getTextOfColumnHeader('Attached to ')).toBe('Attached to', 'Attached to column header is missing');
+        expect(await attachmentBladePo.getTextOfColumnHeader('Media type ')).toBe('Media type', 'Media type  column header is missing');
+        expect(await attachmentBladePo.getTextOfColumnHeader('Created date ')).toBe('Created date', 'Created date column header is missing');
+        expect((await attachmentBladePo.getGridColumnValues('Attachments')).includes('bwfJpg')).toBeTruthy('Attachment file name is missing');
+        expect((await attachmentBladePo.getGridColumnValues('Attached to')).includes('Case')).toBeTruthy('Attach to column value is missing');
+        expect((await attachmentBladePo.getGridColumnValues('Media type')).includes('image/jpeg')).toBeTruthy('Media type column value is missing');
+        expect((await attachmentBladePo.getGridColumnValues('Created date'))[0].includes(finalDate)).toBeTruthy('CreateDate is not present');
+        expect(await attachmentBladePo.isDownloadButtonDisplayed()).toBeTruthy('Download button is missing');
+        expect(await attachmentBladePo.isCloseButtonDisplayed()).toBeTruthy('Close button is missing');
+        await attachmentBladePo.clickDownloadButton();
+        expect(await utilCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('File is not downloaded.');
+
+        await attachmentBladePo.clickFileName('bwfJpg');
+        expect(await attachmentInformationBladePo.isDownloadButtonDisplayed()).toBeTruthy('download button is missing');
+        expect(await attachmentInformationBladePo.isCloseButtonDisplayed()).toBeTruthy('close button is missing');
+        expect(await attachmentInformationBladePo.getValuesOfInformation('File Name')).toBe('File Name: bwfJpg', 'FileName is missing');
+        expect(await attachmentInformationBladePo.getValuesOfInformation(' Case')).toBe('Type: Case', 'Type is missing');
+        expect(await attachmentInformationBladePo.getValuesOfInformation(' image/jpeg')).toBe('Media type: image/jpeg', 'Media Type is missing');
+        expect(await attachmentInformationBladePo.getValuesOfInformation(' 49.9 KB')).toBe('Size: 49.9 KB', 'FileSize is missing');
+        expect(await attachmentInformationBladePo.getValuesOfInformation(finalDate)).toContain(finalDate, 'Created date is missing');
+        expect(await attachmentInformationBladePo.getValuesOfInformation(' Qianru Tao')).toBe('Created by: Qianru Tao', 'Created by is missing');
+        expect(await attachmentInformationBladePo.isTitleNameDisplayed()).toBeTruthy('Title is missing');
+        expect(await utilCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('File is delete sucessfully');
+        await attachmentInformationBladePo.clickDownloadButton();
+        expect(await utilCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('File is not downloaded.');
+        expect(await utilCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('File is delete sucessfully');
+        await attachmentInformationBladePo.clickCloseButton();
+        await attachmentBladePo.clickCloseButton();
     });
 });

@@ -23,21 +23,22 @@ describe('Case Status Configuration', () => {
         const personDataFile = require('../../data/ui/foundation/person.ui.json');
         let personData1 = personDataFile['PhytoCaseAdmin1'];
         await apiHelper.createNewUser(personData1);
-        await apiHelper.associatePersonToSupportGroup(personData1.userId, 'Phyto Support Group1');
         await apiHelper.associatePersonToCompany(personData1.userId, 'Phyto');
+        await apiHelper.associatePersonToSupportGroup(personData1.userId, 'Phyto Support Group1');
+        await browser.sleep(7000); //Wait to reflect the user created above
 
         let personData2 = personDataFile['PhytoCaseAdmin2'];
         await apiHelper.createNewUser(personData2);
-        await apiHelper.associatePersonToSupportGroup(personData2.userId, 'Phyto Support Group1');
         await apiHelper.associatePersonToCompany(personData2.userId, 'Phyto');
+        await apiHelper.associatePersonToSupportGroup(personData2.userId, 'Phyto Support Group1');
+        await browser.sleep(7000); //Wait to reflect the user created above
 
         let personData3 = personDataFile['PhytoKnowledgeUser'];
         await apiHelper.createNewUser(personData3);
-        await apiHelper.associatePersonToSupportGroup(personData3.userId, 'Phyto Support Group1');
         await apiHelper.associatePersonToCompany(personData3.userId, 'Phyto');
+        await apiHelper.associatePersonToSupportGroup(personData3.userId, 'Phyto Support Group1');
+        await browser.sleep(7000); //Wait to reflect the user created above
 
-        //Wait to reflect the user created above
-        await browser.sleep(12000);
         await loginPage.login('anehra@petramco.com', 'Password_1234');
     });
 
@@ -52,7 +53,8 @@ describe('Case Status Configuration', () => {
         flowsetData = require('../../data/ui/case/flowset.ui.json');
         flowsetName = await flowsetData['flowsetPhytoFields'].flowsetName + randomStr;
         flowsetData['flowsetPhytoFields'].flowsetName = flowsetName;
-        await apiHelper.apiLoginWithCredential('anehra@petramco.com', 'Password_1234');
+        await apiHelper.apiLoginWithCredential('tadmin@petramco.com', 'Password_1234');
+        let flowset = flowsetData['flowsetPhytoFields'];
         await apiHelper.createNewFlowset(flowsetData['flowsetPhytoFields']);
 
         await navigationPage.gotoSettingsPage();

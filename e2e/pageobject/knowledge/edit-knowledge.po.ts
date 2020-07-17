@@ -8,13 +8,14 @@ class EditKnowledgePage {
     selectors = {
         statusChange: 'ux-status-transition .status-transition',
         statusSaveBtn: '[rx-view-component-id="e45ca390-e752-4bd5-97c7-69618d609d59"] button',
+        statusCancelBtn: '[rx-view-component-id="cf381d41-6377-4ee2-9cbc-87b59207eb3d"] button',
         changeReviewerBtn: '[rx-view-component-id="f8c32272-6166-4001-a2dc-60762b5f6d69"] button',
         assigneToMeReviewerAssign: '[rx-view-component-id="7b202136-47a8-4234-b369-c300297055c6"] button',
-        reviewerCompanyfldStatusBlade: '[rx-view-component-id="b4f529dc-f3b8-476a-b25d-40f5e6b71b5f"] button',
-        reviewerBUfldStatusBlade: '[rx-view-component-id="bd3d17d2-074a-41e6-8d27-c5d47c6b6a63"] button',
-        reviewerDepfldStatusBlade: '[rx-view-component-id="a70e47b4-b9fb-4a34-86ac-b263178e39ed"] button',
-        reviewerGrpfldStatusBlade: '[rx-view-component-id="0605287c-c69c-45d9-b346-60a441174f8c"] button',
-        reviewerfldStatusBlade: '[rx-view-component-id="8c7814b7-de3d-4067-8ea6-cf4d15943bf6"] button',
+        reviewerCompanyfldStatusBlade: '[rx-view-component-id="b4f529dc-f3b8-476a-b25d-40f5e6b71b5f"] adapt-select',
+        reviewerBUfldStatusBlade: '[rx-view-component-id="bd3d17d2-074a-41e6-8d27-c5d47c6b6a63"] adapt-select',
+        reviewerDepfldStatusBlade: '[rx-view-component-id="a70e47b4-b9fb-4a34-86ac-b263178e39ed"] adapt-select',
+        reviewerGrpfldStatusBlade: '[rx-view-component-id="0605287c-c69c-45d9-b346-60a441174f8c"] adapt-select',
+        reviewerfldStatusBlade: '[rx-view-component-id="8c7814b7-de3d-4067-8ea6-cf4d15943bf6"] adapt-select',
         reviewPendingBtn: '[rx-view-component-id="f0cf7f67-da22-4149-a54d-ec3b95fe05e6"] button',
         editLinkKnowledgeMetadata: '[rx-view-component-id="56cc9627-6ef9-46f8-9b76-728349193ed2"] .float-right button',
         saveBtnEditMetadata: '[rx-view-component-id="15dcacfb-8cb2-49b7-a5db-fe0e16b311dc"] button',
@@ -31,7 +32,7 @@ class EditKnowledgePage {
         knowledgeReviewerValue: '[rx-view-component-id="387dfda7-4f77-4df0-9ac0-6f4fb83b6fe7"] button',
         siteValue: '[rx-view-component-id="ff94cecf-1b32-46c2-a207-cd3e426d52f7"] button',
         removeRegionValues: '[rx-view-component-id="d5c6cfef-2d53-48df-a03a-1a3e8381eef5"] .glyphicon-remove',
-        articleEditOption: '[rx-view-component-id="1592eebc-8777-48cc-ae6c-d2b82a60a972"] button',
+        articleEditOption: '[rx-view-component-id="1592eebc-8777-48cc-ae6c-d2b82a60a972"]',
         articleMinorEditOptionHelpText: '[rx-view-component-id="27c1d328-8b58-4f1f-9b78-61d99f18dcc6"] p',
         articleMajorEditOptionHelpText: '[rx-view-component-id="3ba9e93b-6d48-4e15-ab0a-ca19f12b5a41"] p',
         articleCancelButton: '[rx-view-component-id="b7af03ad-d6dd-4db5-86f6-b459ca1fed71"] button',
@@ -49,11 +50,19 @@ class EditKnowledgePage {
         siteGuid: '6c3548bc-bd52-4da6-b365-f546ca7bd744',
         uploadAttachmentField : '[rx-view-component-id="1f42f6d7-99cc-4c07-9249-94172d98d526"] input[type="file"]',
         closedTip: '.bwf-attachment-container__remove .d-icon-cross',
+        closedStatusChangeGuid: 'b71875a3-b23a-4fc4-8f0f-0e29f2e6eb74',
+        changeAssignment: '[rx-view-component-id="3da1754d-3c41-4b04-9e1c-f5f5a6b3226f"] button',
     }
 
     async setKnowledgeStatus(newStatus: string): Promise<void> {
         await $(this.selectors.statusChange).click();
         await utilityCommon.selectDropDown(this.selectors.statusChangeDrpDwnGuid, newStatus);
+        await $(this.selectors.statusSaveBtn).click();
+    }
+
+    async setClosedKnowledgeStatus(newStatus: string): Promise<void> {
+        await $(this.selectors.statusChange).click();
+        await utilityCommon.selectDropDown(this.selectors.closedStatusChangeGuid, newStatus);
         await $(this.selectors.statusSaveBtn).click();
     }
 
@@ -69,8 +78,7 @@ class EditKnowledgePage {
     async setKnowledgeStatusAndVerifyAssignmentNotAppear(newStatus: string): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChange)));
         await $(this.selectors.statusChange).click();
-        await utilityCommon.selectDropDown(this.selectors.statusChangeDrpDwnGuid, newStatus);
-        expect(await $(this.selectors.assigneToMeReviewerAssign).isDisplayed()).toBeFalsy();
+        await utilityCommon.selectDropDown(this.selectors.statusChangeDrpDwnGuid, newStatus);      
         await $(this.selectors.statusSaveBtn).click();
     }
 
@@ -79,13 +87,22 @@ class EditKnowledgePage {
         await utilityCommon.selectDropDown(this.selectors.statusChangeDrpDwnGuid, newStatus);
     }
 
+    async setClosedKnowledgeStatusWithoutSave(newStatus: string): Promise<void> {
+        await $(this.selectors.statusChange).click();
+        await utilityCommon.selectDropDown(this.selectors.closedStatusChangeGuid, newStatus);
+    }
+
     async clickSaveStatusBtn(): Promise<void> {
         await $(this.selectors.statusSaveBtn).click();
     }
 
+    async clickCancelStatusBtn(): Promise<void> {
+        await $(this.selectors.statusCancelBtn).click();
+    }
+
     async clickChangeAssignmentButton(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable(element(by.buttonText('Change Assignment'))));
-        await element(by.buttonText('Change Assignment')).click();
+        await $(this.selectors.changeAssignment).click();
     }
 
     async saveKnowledgeMedataDataChanges(): Promise<void> {
@@ -131,8 +148,11 @@ class EditKnowledgePage {
     }
 
     async isAssignToMeReviewerBladePresent(): Promise<Boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.assigneToMeReviewerAssign)));
-        return await $(this.selectors.assigneToMeReviewerAssign).isDisplayed();
+        return $(this.selectors.assigneToMeReviewerAssign).isPresent().then(async (link) => {
+            if (link) {
+                return $(this.selectors.assigneToMeReviewerAssign).isDisplayed();
+            } else return false;
+        });
     }
 
     async clickAssignToMeReviewerBlade(): Promise<void> {
@@ -141,27 +161,27 @@ class EditKnowledgePage {
     }
 
     async isReviewerCompanyFieldDisbaledOnStatusChangeBlade(): Promise<Boolean> {
-        return await $(this.selectors.reviewerCompanyfldStatusBlade).getAttribute("disabled") == "true";
+        return await $(this.selectors.reviewerCompanyfldStatusBlade).getAttribute("aria-readonly") == "true";
     }
 
     async isReviewerBusinessUnitFieldDisbaledOnStatusChangeBlade(): Promise<Boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.reviewerBUfldStatusBlade)));
-        return await $(this.selectors.reviewerBUfldStatusBlade).getAttribute("disabled") == "true";
+        return await $(this.selectors.reviewerBUfldStatusBlade).getAttribute("aria-readonly") == "true";
     }
 
     async isReviewerDepartmentfieldDisbaledOnStatusChangeBlade(): Promise<Boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.reviewerDepfldStatusBlade)));
-        return await $(this.selectors.reviewerDepfldStatusBlade).getAttribute("disabled") == "true";
+        return await $(this.selectors.reviewerDepfldStatusBlade).getAttribute("aria-readonly") == "true";
     }
 
     async isReviewerGrpFieldDisbaledOnStatusChangeBlade(): Promise<Boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.reviewerGrpfldStatusBlade)));
-        return await $(this.selectors.reviewerGrpfldStatusBlade).getAttribute("disabled") == "true";
+        return await $(this.selectors.reviewerGrpfldStatusBlade).getAttribute("aria-readonly") == "true";
     }
 
     async isReviewerFieldDisbaledOnStatusChangeBlade(): Promise<Boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.reviewerfldStatusBlade)));
-        return await $(this.selectors.reviewerfldStatusBlade).getAttribute("disabled") == "true";
+        return await $(this.selectors.reviewerfldStatusBlade).getAttribute("aria-disabled") == "true";
     }
 
     async isReviewerFieldDisabledInEdit(): Promise<boolean> {
@@ -177,8 +197,8 @@ class EditKnowledgePage {
         return await $(this.selectors.reviewPendingBtn).isDisplayed();
     }
 
-    async getCategoryTier1SelectedValue(fieldName: string): Promise<string> {
-        return await utilCommon.getSelectedFieldValue(fieldName);
+    async getCategoryTier1SelectedValue(): Promise<string> {
+        return await utilityCommon.getSelectedFieldValue('2e629e99-f2fa-48a2-910b-0652a6bf032f');
     }
 
     async getRegionSelectedValue(fieldName: string): Promise<string> {
@@ -187,6 +207,17 @@ class EditKnowledgePage {
 
     async getSiteSelectedValue(fieldName: string): Promise<string> {
         return await utilCommon.getSelectedFieldValue(fieldName);
+    }
+
+    async getSelectedFieldValue(fieldName: string): Promise<string> {
+        let fieldLocator = await $$('adapt-select');
+        let fieldValue: string = undefined;
+        for(let i:number =0; i< fieldLocator.length; i++) {
+            if(await fieldLocator[i].$('.form-control-label span').getText()==fieldName) {
+                fieldValue = await fieldLocator[i].$('button').getText();
+            }
+        }
+        return fieldValue;
     }
 
     async clickOnSaveButtonOfKA(): Promise<void> {
@@ -207,10 +238,6 @@ class EditKnowledgePage {
 
     async getReviewerValue(): Promise<string> {
         return await $(this.selectors.knowledgeReviewerValue).getText()
-    }
-
-    async removeRegionValue(): Promise<void> {
-        await utilityCommon.clearDropDown('6c3548bc-bd52-4da6-b365-f546ca7bd744');
     }
 
     async isArticleEditOptionDisplayed(editOption: string): Promise<boolean> {
@@ -326,15 +353,23 @@ class EditKnowledgePage {
     }
 
     async removeCategoryTier1(): Promise<void> {
-        await utilityCommon.clearDropDown(this.selectors.categoryTier1Guid);
+        await utilityCommon.clearDropDown(this.selectors.categoryTier1Guid,'None');
     }
     
     async removeCategoryTier2(): Promise<void> {
-        await utilityCommon.clearDropDown(this.selectors.categoryTier2Guid);
+        await utilityCommon.clearDropDown(this.selectors.categoryTier2Guid,'None');
     }
     
     async removeCategoryTier3(): Promise<void> {
-        await utilityCommon.clearDropDown(this.selectors.categoryTier3Guid);
+        await utilityCommon.clearDropDown(this.selectors.categoryTier3Guid,'None');
+    }
+
+    async removeSiteValue(): Promise<void> {
+        await utilityCommon.clearDropDown('ff94cecf-1b32-46c2-a207-cd3e426d52f7','Clear');
+    }
+
+    async removeRegionValue(): Promise<void> {
+        await utilityCommon.clearDropDown('6c3548bc-bd52-4da6-b365-f546ca7bd744','Clear');
     }
 }
 

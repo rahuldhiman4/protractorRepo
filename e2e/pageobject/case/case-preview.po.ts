@@ -30,7 +30,12 @@ class CasePreview {
         label: '[rx-view-component-id="ab146574-d991-43bd-8a7b-0be34019164c"] div[title]',
         caseSite: '[rx-view-component-id="974e5fdd-5992-4f87-a640-267c4cc3daae"] div[title]',
         dynamicFieldsName: '[rx-view-component-id="40c6dac1-3d7a-402d-9d78-6ba29bb1c1f1"] label',
-        backButton: '[rx-view-component-id="1483f92a-0736-4316-b2e5-084927069d38"] button'
+        backButton: '[rx-view-component-id="1483f92a-0736-4316-b2e5-084927069d38"] button',
+        showMoreDescription:'.bwf-description-read-state button',
+    }
+
+    async clickOnShowMoreDescription():Promise<void>{
+        await $(this.selectors.showMoreDescription).click();
     }
 
     async clickOncreateNewCaseButton(): Promise<void> {

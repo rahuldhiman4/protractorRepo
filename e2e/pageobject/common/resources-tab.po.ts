@@ -9,7 +9,7 @@ export class Resources {
         advancedSearchSettingsBtnClose: 'button.opened-advance-search-option',
         advancedSearchResult: 'div.sr-search-result-components .bwf-search-fields__title-text',
         headingName: '.km-group__header span',
-        smartSearchResult: 'bwf-smart-recorder-results h1',
+        smartSearchResult: '.sr-search-result-components h2',
         advancedSearchButton: 'span.d-icon-search',
         backButton: 'span.d-icon-angle_left',
         knowledgeTitle: '[rx-view-component-id="aacf8477-f930-4983-820d-1b9fa12441c0"] div.bwf-search-fields__title-text',
@@ -96,9 +96,13 @@ export class Resources {
     }
 
     async getAdvancedSearchResultForParticularSection(headingType: string): Promise<string> {
-        //await browser.wait(this.EC.elementToBeClickable($(this.selectors.advancedSearchResult)));
-        const searchResult = await element(by.xpath(`//*[contains(@title,"${headingType}")]/..//*[contains(@class,"bwf-search-fields__title-text")]`));
-        return await searchResult.getText();
+        return await element(by.cssContainingText('div.bwf-search-fields__title-text span', headingType)).isPresent().then(async (result) => {
+            if (result) {
+                return await browser.wait(this.EC.visibilityOf(element(by.cssContainingText('div.bwf-search-fields__title-text span', headingType))), 5000).then(async () => {
+                    return await await element(by.cssContainingText('div.bwf-search-fields__title-text span', headingType)).getText();
+                });
+            }
+        });
     }
 
     async getCountOfHeading(headerName: string): Promise<string> {
@@ -113,31 +117,29 @@ export class Resources {
     }
 
     async isRecommendedKnowledgePresent(knowledgeTitle: string): Promise<boolean> {
-        return this.isResourcePresent(knowledgeTitle);
+        return await this.isResourcePresent(knowledgeTitle);
     }
 
     async isRecommendedTemplatePresent(caseTemplateName: string): Promise<boolean> {
-        return this.isResourcePresent(caseTemplateName);
+        return await this.isResourcePresent(caseTemplateName);
     }
 
     async isRecommendedCasePresent(caseSummary: string): Promise<boolean> {
-        return this.isResourcePresent(caseSummary);
+        return await this.isResourcePresent(caseSummary);
     }
 
     async isResourcePresent(resourceName: string): Promise<boolean> {
         // need to wait until spinner to hide (three dots)
         return await $(`[title="${resourceName}"]`).isPresent().then(async (link) => {
-            if (link) {
-                return await $(`[title="${resourceName}"]`).isDisplayed();
-            } else return false;
+            if (link) return await $(`[title="${resourceName}"]`).isDisplayed();
+            else return false;
         });
     }
 
     async isFilterAvailable(filterText: string): Promise<boolean> {
         return await element(by.cssContainingText(this.selectors.advancedSearchFields, filterText)).isPresent().then(async (link) => {
-            if (link) {
-                return await element(by.cssContainingText(this.selectors.advancedSearchFields, filterText)).isDisplayed();
-            } else return false;
+            if (link) return await element(by.cssContainingText(this.selectors.advancedSearchFields, filterText)).isDisplayed();
+            else return false;
         });
     }
 
@@ -169,9 +171,8 @@ export class Resources {
 
     async isFirstPinnedArticleDisplayed(): Promise<boolean> {
         return await $('adapt-icon[class="search-item__pin-icon"]').isPresent().then(async (link) => {
-            if (link) {
-                return await $('adapt-icon[class="search-item__pin-icon"]').isDisplayed();
-            }
+            if (link) return await $('adapt-icon[class="search-item__pin-icon"]').isDisplayed();
+            else return false;
         });
     }
 

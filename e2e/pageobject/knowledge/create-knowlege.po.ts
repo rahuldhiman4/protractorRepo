@@ -21,7 +21,7 @@ class CreateKnowledgePage {
         categoryTier2Guid: '6f480482-c224-4742-b941-bce655d40fde',
         categoryTier3Guid: '2774b518-00ab-4e02-bb23-95bdb0285840',
         categoryTier4Guid: 'd0bd4f0d-a53e-4c67-8419-016a926a7651',
-        reference: '.cke_editable p',
+        referenceGuid: '7591fcfd-3d96-4155-a450-33c6e591dc2c',
         discardButton: '[rx-view-component-id="0b2d73c8-de57-460b-909c-17e2ae50ea5b"] button',
         knowledgeSetValue: '[rx-view-component-id="80a2cd78-e9a5-4997-b7bb-6fadf918bd3e"] button',
         knowledgeTemplateStyle: '[rx-view-component-id="8569cbb0-91e3-4a14-a71a-133e49bb798e"] .create-ka-template__style-label',
@@ -97,13 +97,7 @@ class CreateKnowledgePage {
     }
 
     async setReferenceValue(value: string): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.reference)));
-        await browser.waitForAngularEnabled(false);
-        await browser.sleep(4000);
-        await browser.switchTo().frame(element(by.css("iframe.cke_wysiwyg_frame")).getWebElement());
-        await $(this.selectors.reference).sendKeys(value);
-        await browser.switchTo().defaultContent();
-        await browser.waitForAngularEnabled(true);
+        await utilityCommon.setCKEditor(value, this.selectors.referenceGuid);
     }
 
     async selectKnowledgeSet(knowledgeSet: string): Promise<void> {
@@ -122,6 +116,17 @@ class CreateKnowledgePage {
     }
 
     async isAssignmentFieldDisabled(fldName: String): Promise<boolean> {
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.knowledgeMetadataSection)));
+        let fldsCount = await $$(this.selectors.knowledgeMetadataSection).count();
+        for (let i = 0; i < fldsCount; i++) {
+            let elem = await $$(this.selectors.knowledgeMetadataSection).get(i);
+            if (await elem.$('.adapt-select-label-wrapper').getText() == fldName) {
+                return await elem.getAttribute("aria-readonly") == "true" ? true : false;
+            }
+        }
+    }
+
+    async isAssignedToFieldDisabled(fldName: String): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.knowledgeMetadataSection)));
         let fldsCount = await $$(this.selectors.knowledgeMetadataSection).count();
         for (let i = 0; i < fldsCount; i++) {

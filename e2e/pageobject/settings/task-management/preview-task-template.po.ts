@@ -1,4 +1,4 @@
-import { $, protractor, ProtractorExpectedConditions, $$ } from "protractor";
+import { $, protractor, ProtractorExpectedConditions, $$, browser } from "protractor";
 import utilityCommon from '../../../utils/utility.common';
 
 class PreviewTaskTemplateBlade {
@@ -25,6 +25,11 @@ class PreviewTaskTemplateBlade {
         getTaskCategoryTier4: '[rx-view-component-id="9df7b305-6be0-4f50-8c2f-88a61ed85cb4"] p',
         dynamicFieldName: '[rx-view-component-id="92456067-e396-441c-b1c5-b452bc473991"] span',
         assigneeText: '[rx-view-component-id="67c57532-6ca8-4e44-b6b1-244e872c2b70"] .person-link',
+        showMoreDescriptionLink:'.bwf-description-read-state button'
+    }
+
+    async clickShowMoreDescriptionLink():Promise<void>{
+        await $(this.selectors.showMoreDescriptionLink).click();
     }
 
     async clickOnBackButton(): Promise<void> {

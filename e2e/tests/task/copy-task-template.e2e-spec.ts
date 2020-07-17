@@ -233,10 +233,8 @@ describe('Copy Task Template', () => {
     it('[DRDMV-14217,DRDMV-13737]: Copy of Automated task template created across company and no new Process is created', async () => {
         try {
             const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            await apiHelper.apiLogin('tadmin');
             //let automationTaskTemplate = 'DRDMV14217Automationtask' + randomStr;
             let newAutomationTaskTemplate = 'NewAutomationtaskDRDMV14217' + randomStr;
-            let newAutomationTaskProcess = 'NewProcessDRDMV14217' + randomStr;
             let templateData = {
                 "templateName": 'DRDMV14217Automationtask' + randomStr,
                 "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
@@ -266,7 +264,7 @@ describe('Copy Task Template', () => {
             await utilCommon.clickOnWarningOk();
             await utilCommon.clickOnBackArrow();
             await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
-            expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.bmc.dsm.case-lib:' + newAutomationTaskProcess);
+            expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.bmc.dsm.case-lib:' + templateData.processName);
         } catch (e) {
             throw e;
         } finally {
@@ -417,41 +415,45 @@ describe('Copy Task Template', () => {
         });
     });
 
-    it('[DRDMV-13574,DRDMV-13553]: Fields copied while creating copy of External Task template', async () => {
-        const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let updatedTaskTemplate = 'DRDMV13574UpdatedTask' + randomStr;
-        await apiHelper.apiLogin('fritz');
-        let templateData = {
-            "templateName": 'DRDMV13574ExternalTask' + randomStr,
-            "templateSummary": 'DRDMV13574Summary' + randomStr,
-            "templateStatus": "Active",
-            "description": randomStr,
-            "category1": "Applications",
-            "category2": "Social",
-            "category3": "Chatter",
-            "taskCompany": "Petramco",
-            "ownerCompany": "Petramco",
-            "ownerBusinessUnit": "Facilities Support",
-            "ownerGroup": "Facilities"
-        }
-        await apiHelper.createExternalTaskTemplate(templateData);
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-        await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
-        await viewTaskTemplate.clickOnCopyTemplate();
-        await copyTemplatePage.setTemplateName(updatedTaskTemplate);
-        await copyTemplatePage.clickSaveCopytemplate();
-        await utilCommon.closePopUpMessage();
-        expect(await viewTaskTemplate.getTemplateStatus()).toBe('Draft');
-        expect(await viewTaskTemplate.getSummaryValue()).toBe(templateData.templateSummary);
-        expect(await viewTaskTemplate.getTaskTypeValue()).toBe('External');
-        expect(await viewTaskTemplate.getTaskCompanyNameValue()).toBe('Petramco');
-        expect(await viewTaskTemplate.getTaskDescriptionNameValue()).toBe(templateData.description);
-        expect(await viewTaskTemplate.getCategoryTier1Value()).toBe('Applications');
-        expect(await viewTaskTemplate.getCategoryTier2Value()).toBe('Social');
-        expect(await viewTaskTemplate.getCategoryTier3Value()).toBe('Chatter');
-        expect(await viewTaskTemplate.getOwnerCompanyValue()).toBe("Petramco");
-        expect(await viewTaskTemplate.getOwnerGroupValue()).toBe("Facilities");
+    describe('[DRDMV-13574,DRDMV-13553]: Fields copied while creating copy of External Task template', async () => {
+        let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let templateData, updatedTaskTemplate = 'DRDMV13574UpdatedTask' + randomStr;
+        beforeAll(async () => {
+            templateData = {
+                "templateName": 'DRDMV13574ExternalTask' + randomStr,
+                "templateSummary": 'DRDMV13574Summary' + randomStr,
+                "templateStatus": "Active",
+                "description": randomStr,
+                "category1": "Applications",
+                "category2": "Social",
+                "category3": "Chatter",
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
+            }
+            await apiHelper.apiLogin('fritz');
+            await apiHelper.createExternalTaskTemplate(templateData);
+        });
+        it('[DRDMV-13574,DRDMV-13553]: Fields copied while creating copy of External Task template', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
+            await viewTaskTemplate.clickOnCopyTemplate();
+            await copyTemplatePage.setTemplateName(updatedTaskTemplate);
+            await copyTemplatePage.clickSaveCopytemplate();
+            await utilCommon.closePopUpMessage();
+            expect(await viewTaskTemplate.getTemplateStatus()).toBe('Draft');
+            expect(await viewTaskTemplate.getSummaryValue()).toBe(templateData.templateSummary);
+            expect(await viewTaskTemplate.getTaskTypeValue()).toBe('External');
+            expect(await viewTaskTemplate.getTaskCompanyNameValue()).toBe('Petramco');
+            expect(await viewTaskTemplate.getTaskDescriptionNameValue()).toBe(templateData.description);
+            expect(await viewTaskTemplate.getCategoryTier1Value()).toBe('Applications');
+            expect(await viewTaskTemplate.getCategoryTier2Value()).toBe('Social');
+            expect(await viewTaskTemplate.getCategoryTier3Value()).toBe('Chatter');
+            expect(await viewTaskTemplate.getOwnerCompanyValue()).toBe("Petramco");
+            expect(await viewTaskTemplate.getOwnerGroupValue()).toBe("Facilities");
+        });
     });
 
     it('[DRDMV-13547,DRDMV-13572]: Create a Copy of Task template by Case Business Analyst that belongs to Support Group', async () => {

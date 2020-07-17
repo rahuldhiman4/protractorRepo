@@ -43,6 +43,10 @@ class CreateAdhocTaskTemplatePage {
         await utilityCommon.setCKEditor(description, this.selectors.descriptionGuid);
     }
 
+    async updateTaskDescription(description:string):Promise<void>{
+        await utilityCommon.updateCKEditor(description, this.selectors.descriptionGuid);
+    }
+
     async setSummary(summary: string): Promise<void> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.taskSummary)));
         await $(this.selectors.taskSummary).sendKeys(summary);
@@ -117,12 +121,12 @@ class CreateAdhocTaskTemplatePage {
 
     async getAssignCompanyAttribute(): Promise<string> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignCompany)));
-        return await $(this.selectors.assignCompany).getAttribute('disabled');
+        return await $(this.selectors.assignCompany).getAttribute('class');
     }
 
     async getBuisnessUnitAttribute(): Promise<string> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.buisnessUnit)));
-        return await $(this.selectors.buisnessUnit).getAttribute('disabled');
+        return await $(this.selectors.buisnessUnit).getAttribute('class');
     }
 
     async getAssigneeAttribute(): Promise<string> {
@@ -132,12 +136,12 @@ class CreateAdhocTaskTemplatePage {
 
     async getDepartmentAttribute(): Promise<string> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.department)));
-        return await $(this.selectors.department).getAttribute('disabled');
+        return await $(this.selectors.department).getAttribute('class');
     }
 
     async getAssignedGroupAttribute(): Promise<string> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignedGroup)));
-        return await $(this.selectors.assignedGroup).getAttribute('disabled');
+        return await $(this.selectors.assignedGroup).getAttribute('class');
     }
 
     async getSaveButtonAttribute(attribute: string): Promise<string> {

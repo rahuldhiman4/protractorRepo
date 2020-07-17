@@ -153,6 +153,7 @@ class QuickCasePage {
     async selectCaseTemplate(templateName: string): Promise<boolean> {
         let success: boolean = false;
         for (let i: number = 0; i <= 3; i++) {
+            console.log(templateName, "search case template count: ", i);
             browser.sleep(1000);
             let template: string = "!" + templateName;
             await $(this.selectors.smartSearchTextBox).sendKeys(template);

@@ -9,7 +9,7 @@ class ShowApproversBlade {
         approvalsHelpText: 'fieldset.dp-size-rx-sm .alert-info',
         approvers: 'fieldset.dp-size-rx-sm .active .bwf-approver-list-group-list-item',
         approverName: 'fieldset.dp-size-rx-sm .active .bwf-approver-list-group-list-item .bwf-approver-list-group-list-item-description',
-        approverPersonIcon: 'fieldset.dp-size-rx-sm .active .bwf-approver-list-group-list-item .d-icon-user_circle',
+        approverPersonIcon: '.bwf-approver-list-group-list-item .bwf-approver-list-group-list-item-info',
         approverCompany: 'fieldset.dp-size-rx-sm .active .bwf-approver-list-group-list-item [class="pt-1"]',
         awaitingApproverIcon: 'fieldset.dp-size-rx-sm .active .bwf-approver-list-group-list-item-icon-container .d-icon-clock_o',
         awaitingApproverLabel: 'fieldset.dp-size-rx-sm .active .bwf-approver-list-group-list-item-icon-container .d-icon-clock_o + span',
@@ -39,9 +39,8 @@ class ShowApproversBlade {
 
     async isShowApproversBladeDisplayed(): Promise<boolean> {
         return await $(this.selectors.showApproversBlade).isPresent().then(async (link) => {
-            if (link) {
-                return await $(this.selectors.showApproversBlade).isDisplayed();
-            } else return false;
+            if (link) return await $(this.selectors.showApproversBlade).isDisplayed();
+            else return false;
         });
     }
 
@@ -77,7 +76,14 @@ class ShowApproversBlade {
         return await $(this.selectors.awaitingApproverLabel).getText();
     }
 
-    async isApproverPersonIconDisplayed(): Promise<boolean> {
+    async isApproverPersonIconDisplayed(approverName: string): Promise<boolean> {
+        let approverList = await $$('.bwf-approver-list-group-list-item-description');
+        for (let i: number = 0; i < approverList.length; i++) {
+            let name = await $$('.bwf-approver-list-group-list-item-description').get(i).getText();
+            if (approverName == name) {
+                return await $$('.bwf-approver-list-group-list-item-info').get(i).isDisplayed();
+            }
+        }
         return await $(this.selectors.approverPersonIcon).isDisplayed();
     }
 
@@ -153,8 +159,8 @@ class ShowApproversBlade {
         return await $(this.selectors.awaitingApproverIconActivity).isDisplayed();
     }
 
-    async getClosedApprovalStatusLabelFromActivity(approvalStatus:string): Promise<string> {
-        return await element(by.cssContainingText(this.selectors.closedApproverLabelActivity,approvalStatus)).getText();
+    async getClosedApprovalStatusLabelFromActivity(approvalStatus: string): Promise<string> {
+        return await element(by.cssContainingText(this.selectors.closedApproverLabelActivity, approvalStatus)).getText();
     }
 
     async isClosedApproverIconDisplayedFromActivity(): Promise<boolean> {

@@ -294,7 +294,7 @@ describe('Person Profile test', () => {
             await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Relationships--Person to Person', 'Person To Person Relationship console - Business Workflows');
-            await relationshipsConfigsPage.setRelationshipName('Former Manager', 'Former Manager updated');
+            await relationshipsConfigsPage.setRelationshipName('Former Manager', 'relation updated');
             await relationshipsConfigsPage.saveConfig();
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
 
@@ -406,7 +406,7 @@ describe('Person Profile test', () => {
     it('[DRDMV-17019]: Check agent cannot view notes to own Person profile in agent work history tab', async () => {
         await navigationPage.gotoPersonProfile();
         await relatedTabPage.addRelatedPerson();
-        await addRelatedPopupPage.addPerson('Qiang Du', 'Former Manager');
+        await addRelatedPopupPage.addPerson('Qiang Du', 'Parent');
         await relatedTabPage.clickRelatedPersonName('Qiang Du');
         await utilityCommon.switchToNewTab(1);
         await activityTabPage.addActivityNote("DRDMV-17019");

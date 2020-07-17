@@ -23,6 +23,7 @@ class AttachDocumentBlade {
     async isDocumentInfoDisplayed(documentInfo: string): Promise<boolean> {
         return await $(this.selectors.documentSearchResults + ` [title="${documentInfo}"]`).isPresent().then(async (present) => {
             if (present) return await $(this.selectors.documentSearchResults + ` [title="${documentInfo}"]`).isDisplayed();
+            else return false;
         });
     }
 
@@ -66,6 +67,7 @@ class AttachDocumentBlade {
         await $(this.selectors.searchBox).sendKeys(documentName + protractor.Key.ENTER);
         let i: number;
         for (i = 0; i <= 5; i++) {
+            console.log(documentName, "search doc lib count: ", i);
             let bolnVal: boolean = await this.isDocumentInfoDisplayed(documentName);
             if (bolnVal == false) {
                 await browser.sleep(3000);

@@ -12,10 +12,10 @@ class CreateCasePage {
         attachmentLink: '[rx-view-component-id="e494b462-7749-44aa-922e-fc5d9b3dd5cb"] button',
         autoCategorization: '[rx-view-component-id="cfb3cc65-210c-4530-b529-3bc414b6d8dc"] button',
         changeAssignment: '[rx-view-component-id="6041cce1-05bd-458d-b097-eb310507cae3"] button',
-        assignedCompany: '[rx-view-component-id="8ac19557-eebc-4c14-9304-efc60d01e09f"] .dropdown-toggle',
-        buisnessUnit: '[rx-view-component-id="3c0986c0-c2b1-44e3-bd29-ac4757e55a66"] .dropdown-toggle',
-        department: '[rx-view-component-id="a2a501d1-ac3c-460f-8422-2a559be7445e"] .dropdown-toggle',
-        assignedGroup: '[rx-view-component-id="79750d81-d8e5-447e-b923-94c54f2d3310"] .dropdown-toggle',
+        assignedCompany: '[rx-view-component-id="8ac19557-eebc-4c14-9304-efc60d01e09f"] .adapt-select',
+        buisnessUnit: '[rx-view-component-id="3c0986c0-c2b1-44e3-bd29-ac4757e55a66"] .adapt-select',
+        department: '[rx-view-component-id="a2a501d1-ac3c-460f-8422-2a559be7445e"] .adapt-select',
+        assignedGroup: '[rx-view-component-id="79750d81-d8e5-447e-b923-94c54f2d3310"] .adapt-select',
         assignee: '[rx-view-component-id="43c3e9ee-dde2-4e10-94e9-c6ee68217cda"] .dropdown-toggle',
         sourceGuid: 'e658258a-bc01-4325-a5be-2dfad7aaefdd',
         requesterInput: '[rx-view-component-id="be946309-c359-40fe-a579-1a0e0d04bb01"] input.form-control',
@@ -125,22 +125,26 @@ class CreateCasePage {
 
     async isAssignedCompanyReadOnly(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.assignedCompany)));
-        return await $(this.selectors.assignedCompany).isEnabled() == false ? true : false;
+        //return await $(this.selectors.assignedCompany).isEnabled() == false ? true : false;
+        return await $(this.selectors.assignedCompany).getAttribute('aria-readonly') == 'true';
     }
 
     async isBuisnessUnitReadOnly(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.buisnessUnit)));
-        return await $(this.selectors.buisnessUnit).isEnabled() == false ? true : false;
+        //return await $(this.selectors.buisnessUnit).isEnabled() == false ? true : false;
+        return await $(this.selectors.buisnessUnit).getAttribute('aria-readonly') == 'true';
     }
 
     async isDepartmentReadOnly(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.department)));
-        return await $(this.selectors.department).isEnabled() == false ? true : false;
+        //return await $(this.selectors.department).isEnabled() == false ? true : false;
+        return await $(this.selectors.assignedCompany).getAttribute('aria-readonly') == 'true';
     }
 
     async isAssignedGroupReadOnly(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.assignedGroup)));
-        return await $(this.selectors.assignedGroup).isEnabled() == false ? true : false;
+        //return await $(this.selectors.assignedGroup).isEnabled() == false ? true : false;
+        return await $(this.selectors.assignedCompany).getAttribute('aria-readonly') == 'true';
     }
 
     async isAssigneeReadOnly(): Promise<boolean> {

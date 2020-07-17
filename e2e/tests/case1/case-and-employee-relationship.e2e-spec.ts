@@ -25,8 +25,6 @@ describe('Case And Employee Relationship', () => {
     });
 
     afterAll(async () => {
-        await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteAllEmailConfiguration();
         await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
@@ -349,34 +347,38 @@ describe('Case And Employee Relationship', () => {
     });
 
     //asahitya
-    it('[DRDMV-16247]: Send Email to Related Person from Related Persons tab', async () => {
-        await apiHelper.apiLogin('tadmin');
-        await apiHelper.createEmailConfiguration();
-
-        let caseData1 = {
-            "Description": "My Description",
-            "Requester": "apavlik",
-            "Summary": "Email check",
-            "Assigned Company": "Petramco",
-            "Business Unit": "United States Support",
-            "Support Group": "US Support 1",
-            "Assignee": "qfeng",
-        }
-
-        await apiHelper.apiLogin('qfeng');
-        let response1 = await apiHelper.createCase(caseData1);
-
-        await navigationPage.gotoCaseConsole();
-        await utilityGrid.searchAndOpenHyperlink(response1.displayId);
-        await viewCasePo.clickOnTab('Related Persons');
-        await relatedTabPage.addRelatedPerson();
-        await addRelatedPopupPage.addPerson('Qadim Katawazi', 'Inspector');
-        await relatedTabPage.clickRelatedPersonEmail('Qadim Katawazi');
-        await composeEmailPage.setSubject('Email Subject');
-        let subject = response1.displayId + ':Email Subject';
-        await composeEmailPage.setEmailBody('DRDMV-16247');
-        await composeEmailPage.clickOnSendButton();
-        expect((await apiHelper.getHTMLBodyOfEmail(subject)).includes('<br>DRDMV-16247')).toBeTruthy('Email does not match');
+    describe('[DRDMV-16247]: Send Email to Related Person from Related Persons tab', async () => {
+        let caseInfo, randomStr = [...Array(15)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        beforeAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.createEmailConfiguration();
+            let caseData = {
+                "Requester": "apavlik",
+                "Summary": "Email check " + randomStr,
+            }
+            await apiHelper.apiLogin('qtao');
+            caseInfo = await apiHelper.createCase(caseData);
+        });
+        it('[DRDMV-16247]: Send Email to Related Person from Related Persons tab', async () => {
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(caseInfo.displayId);
+            let subject = 'Email Subject ' + randomStr;
+            await viewCasePo.clickOnTab('Related Persons');
+            await relatedTabPage.addRelatedPerson();
+            await addRelatedPopupPage.addPerson('Qadim Katawazi', 'Inspector');
+            await relatedTabPage.clickRelatedPersonEmail('Qadim Katawazi');
+            await composeEmailPage.setSubject(subject);
+            //            CASE-0000000239:CASE-0000000239:Email Subject w7t05kmfmby2pi0
+            await composeEmailPage.setEmailBody('DRDMV-16247 ' + randomStr);
+            await composeEmailPage.clickOnSendButton();
+            let subjectInArSys = `${caseInfo.displayId}:${subject}`;
+            console.log(`Subject of the email = ${subjectInArSys}`);
+            await browser.sleep(8000); // hardwait to appear email message in "AR System Email Messages"
+            await apiHelper.apiLogin('tadmin');
+            let body = await apiHelper.getHTMLBodyOfEmail(subjectInArSys);
+            console.log('body:', body);
+            expect(body.includes('<br>DRDMV-16247')).toBeTruthy('Email does not match');
+        });
     });
 
     //asahitya

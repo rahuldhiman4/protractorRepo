@@ -47,9 +47,9 @@ class ViewTaskTemplate {
         assigneeBusinessUnitValue: '[rx-view-component-id="e4548927-a25e-439e-8e9c-d495c7c87378"] p',
         assigneeDepartmentValue: '[rx-view-component-id="ea7695f8-ebd3-41e6-b85f-ebd800e9c913"] p',     
         editMetaData:'[rx-view-component-id="8b8bfec6-0ee2-42a3-be4b-ac4f37d060f1"] .edit-link',
-        priorityValue:'.selection-field'   
+        priorityValue:'.selection-field',
+        showMoreDescriptionLink:'[rx-view-component-id="d8841534-3cc3-464c-b05e-5200d668d859"] .rx-description-textarea-read button.more', 
     }
-
 
     async getDynamicFieldTitle(): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.dynamicFieldTitle)));
@@ -258,7 +258,14 @@ class ViewTaskTemplate {
 
     async isEditButtonPresent(): Promise<boolean> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editLink)));
-        return await $(this.selectors.editLink).isDisplayed();
+        return await $(this.selectors.editLink).isPresent().then(async (result) => {
+            if (result) {
+                return await $(this.selectors.editLink).isDisplayed();
+            } else {
+                console.log("editLink not present");
+                return false;
+            }
+        });;
     }
 
     async getAssigneeText(): Promise<string> {
@@ -281,6 +288,10 @@ class ViewTaskTemplate {
 
     async getPriorityValue(): Promise<string> {
         return await $(this.selectors.priorityValue).getText();
+    }
+
+    async clickShowMoreDescriptionLink():Promise<void>{
+        return await $(this.selectors.showMoreDescriptionLink).click();
     }
 }
 

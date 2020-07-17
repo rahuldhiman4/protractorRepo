@@ -96,8 +96,8 @@ class CreateKnowledgeSet {
 
     async isApplicationAvaialableForAssociation(applicationName: string): Promise<boolean> {
         return await element(by.cssContainingText(this.selectors.applicationNames, applicationName)).isPresent().then(async (result) => {
-            if (result)
-                return await element(by.cssContainingText(this.selectors.applicationNames, applicationName)).isDisplayed();
+            if (result) return await element(by.cssContainingText(this.selectors.applicationNames, applicationName)).isDisplayed();
+            else return false;
         });
     }
 
