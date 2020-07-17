@@ -1461,6 +1461,7 @@ class ApiHelper {
         }
 
         let knowledgeArticleResponse: AxiosResponse = await coreApi.updateRecordInstance("com.bmc.dsm.knowledge:Knowledge Article Template", articleGuid, knowledgeArticleData);
+        await browser.sleep(1000); // hardwait to reflect updated status
         console.log("Update Knowledge Article Status ========>", knowledgeArticleResponse.status);
         return knowledgeArticleResponse.status == 204;
     }

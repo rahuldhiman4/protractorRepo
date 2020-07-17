@@ -324,6 +324,7 @@ describe('Document Library Consume Permission', () => {
         } catch (e) {
             throw e;
         } finally {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }

@@ -45,7 +45,6 @@ describe("Case Level Up Approval Tests", () => {
                 "templateName": 'caseTemplateForSelfApprovalWithoutProcessWithCriticalPriority' + randomStr,
                 "templateSummary": 'Automated Level Up Approval without process',
                 "categoryTier1": 'Purchasing Card',
-                "casePriority": "Critical",
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "businessUnit": "United States Support",

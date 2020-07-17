@@ -332,11 +332,10 @@ describe("Create Case", () => {
     //ankagraw
     it('[DRDMV-1193,DRDMV-1190]: [Case Creation] Case Create view (UI verification) ', async () => {
         try {
-            await navigationPage.signOut();
-            await loginPage.login('qtao');
             const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let caseSummary = 'Summary ' + randomStr;
-
+            await navigationPage.signOut();
+            await loginPage.login('qtao');
             await navigationPage.gotoCreateCase();
             expect(await createCasePage.isRequesterRequiredTextPresent()).toBeTruthy("required text absent in Request");
             expect(await createCasePage.isSummaryRequiredTextPresent()).toBeTruthy("required text absent in Summary");
