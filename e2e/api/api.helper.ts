@@ -5,8 +5,8 @@ import * as uuid from 'uuid';
 import { default as apiCoreUtil, default as coreApi } from "../api/api.core.util";
 import * as constants from "../api/constant.api";
 import { APPROVAL_ACTION, MORE_INFO_RETURN_ACTION } from "../data/api/approval/approval.action.api";
-import { CASE_APPROVAL_FLOW } from '../data/api/approval/case.approval.flow.api';
-import { CASE_APPROVAL_MAPPING } from '../data/api/approval/case.approval.mapping.api';
+import { CASE_APPROVAL_FLOW, INVALID_CASE_APPROVAL_FLOW, INVALID_KM_APPROVAL_FLOW } from '../data/api/approval/approval.flow.api';
+import { CASE_APPROVAL_MAPPING } from '../data/api/approval/approval.mapping.api';
 import { CASE_READ_ACCESS } from '../data/api/case/case.read.access.api';
 import { CASE_REOPEN } from '../data/api/case/case.reopen.api';
 import { CASE_TEMPLATE_PAYLOAD, CASE_TEMPLATE_STATUS_UPDATE_PAYLOAD } from '../data/api/case/case.template.data.api';
@@ -1737,6 +1737,49 @@ class ApiHelper {
                 return !result.includes(false);
             });
         }
+    }
+
+    async deleteAllApprovalFlow(recordDefinition: string, flowGroupName?: string): Promise<boolean> {
+        let uri: string;
+        let remoteApprovalFlow: any;
+        switch (recordDefinition) {
+            case "Case": {
+                remoteApprovalFlow = cloneDeep(INVALID_CASE_APPROVAL_FLOW);
+                if (flowGroupName) {
+                    uri = "api/com.bmc.arsys.rx.approval/rx/application/approval/flowconfiguration/com.bmc.dsm.case-lib:Case/flowGroupName/" + flowGroupName;
+                    remoteApprovalFlow.flowGroup = flowGroupName;
+                }
+                else uri = "api/com.bmc.arsys.rx.approval/rx/application/approval/flowconfiguration/com.bmc.dsm.case-lib:Case/flowGroupName/BWFA Group";
+                break;
+            }
+            case "Knowledge": {
+                remoteApprovalFlow = cloneDeep(INVALID_KM_APPROVAL_FLOW);
+                if (flowGroupName) {
+                    uri = "api/com.bmc.arsys.rx.approval/rx/application/approval/flowconfiguration/com.bmc.dsm.knowledge:Knowledge Article Template/flowGroupName/" + flowGroupName;
+                    remoteApprovalFlow.flowGroup = flowGroupName;
+                }
+                else uri = "api/com.bmc.arsys.rx.approval/rx/application/approval/flowconfiguration/com.bmc.dsm.knowledge:Knowledge Article Template/flowGroupName/Default Article Approval Flow Group";
+                break;
+            }
+            default: {
+                console.log('Put valid Record Definition for approval flow deletion');
+                break;
+            }
+        }
+
+        if (!flowGroupName) {
+
+        } else {
+
+
+        }
+
+        const putOnlyRemoteApprovalFlow = await axios.put(
+            uri,
+            remoteApprovalFlow
+        );
+        console.log("Delete Approval Flow Status ===== " + putOnlyRemoteApprovalFlow.status);
+        return putOnlyRemoteApprovalFlow.status == 204;
     }
 
     async runAutomatedCaseTransitionProcess(): Promise<number> {
