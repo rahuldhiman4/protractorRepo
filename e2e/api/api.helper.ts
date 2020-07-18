@@ -6,7 +6,7 @@ import { default as apiCoreUtil, default as coreApi } from "../api/api.core.util
 import * as constants from "../api/constant.api";
 import { APPROVAL_ACTION, MORE_INFO_RETURN_ACTION } from "../data/api/approval/approval.action.api";
 import { CASE_APPROVAL_FLOW, INVALID_CASE_APPROVAL_FLOW, INVALID_KM_APPROVAL_FLOW } from '../data/api/approval/approval.flow.api';
-import { CASE_APPROVAL_MAPPING } from '../data/api/approval/case.approval.mapping.api';
+import { CASE_APPROVAL_MAPPING } from '../data/api/approval/approval.mapping.api';
 import { CASE_READ_ACCESS } from '../data/api/case/case.read.access.api';
 import { CASE_REOPEN } from '../data/api/case/case.reopen.api';
 import { CASE_TEMPLATE_PAYLOAD, CASE_TEMPLATE_STATUS_UPDATE_PAYLOAD } from '../data/api/case/case.template.data.api';
