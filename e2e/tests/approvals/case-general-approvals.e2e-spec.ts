@@ -22,7 +22,6 @@ describe("Case General Approval Tests", () => {
         await loginPage.login('qkatawazi');
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteApprovalMapping();
-        await apiHelper.deleteAllApprovalFlow("Case");
         await apiHelper.apiLogin('tadmin');
         userData1 = {
             "firstName": "Petramco",
@@ -140,7 +139,6 @@ describe("Case General Approval Tests", () => {
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteApprovalMapping();
-            await apiHelper.deleteAllApprovalFlow("Case");
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -342,7 +340,6 @@ describe("Case General Approval Tests", () => {
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteApprovalMapping();
-            await apiHelper.deleteAllApprovalFlow("Case");
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -466,7 +463,6 @@ describe("Case General Approval Tests", () => {
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteApprovalMapping();
-            await apiHelper.deleteAllApprovalFlow("Case");
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -708,7 +704,6 @@ describe("Case General Approval Tests", () => {
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteApprovalMapping();
-            await apiHelper.deleteAllApprovalFlow("Case");
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -945,7 +940,6 @@ describe("Case General Approval Tests", () => {
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteApprovalMapping();
-            await apiHelper.deleteAllApprovalFlow("Case");
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -1111,7 +1105,6 @@ describe("Case General Approval Tests", () => {
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteApprovalMapping();
-            await apiHelper.deleteAllApprovalFlow("Case");
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -1292,7 +1285,6 @@ describe("Case General Approval Tests", () => {
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteApprovalMapping();
-            await apiHelper.deleteAllApprovalFlow("Case");
         });
     });
 });

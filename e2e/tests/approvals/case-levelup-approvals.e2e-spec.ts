@@ -21,7 +21,6 @@ describe("Case Level Up Approval Tests", () => {
         await loginPage.login('qkatawazi');
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteApprovalMapping();
-        await apiHelper.deleteAllApprovalFlow("Case");
         await apiHelper.apiLogin('tadmin');
     });
 
@@ -265,7 +264,6 @@ describe("Case Level Up Approval Tests", () => {
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteApprovalMapping();
-            await apiHelper.deleteAllApprovalFlow("Case");
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -510,7 +508,6 @@ describe("Case Level Up Approval Tests", () => {
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteApprovalMapping();
-            await apiHelper.deleteAllApprovalFlow("Case");
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -709,7 +706,6 @@ describe("Case Level Up Approval Tests", () => {
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteApprovalMapping();
-            await apiHelper.deleteAllApprovalFlow("Case");
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -889,7 +885,6 @@ describe("Case Level Up Approval Tests", () => {
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteApprovalMapping();
-            await apiHelper.deleteAllApprovalFlow("Case");
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -1056,7 +1051,6 @@ describe("Case Level Up Approval Tests", () => {
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteApprovalMapping();
-            await apiHelper.deleteAllApprovalFlow("Case");
         });
     });
 });
