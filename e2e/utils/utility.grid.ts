@@ -57,8 +57,7 @@ export class GridOperations {
 
         for (let i: number = 0; i < await rowLocator.length; i++) {
             let tempRowLocator = await $$(gridGuid + this.selectors.gridRows).get(i);
-            let tempHyperLinkLocator = await tempRowLocator.$(this.selectors.gridRowHyperLinks);
-            let linkText: string = await tempHyperLinkLocator.getText();
+            let linkText: string = await tempRowLocator.$(this.selectors.gridRowHyperLinks).getText();
             if (linkText.trim() == value) {
                 await tempRowLocator.$(this.selectors.gridCheckbox).click();
                 break;

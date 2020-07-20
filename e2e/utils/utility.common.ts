@@ -47,7 +47,7 @@ export class Utility {
         });
     }
 
-    async clearDropDown(guid: string,optionValue:string): Promise<void> {
+    async clearDropDown(guid: string, optionValue: string): Promise<void> {
         const dropDown = await $(`[rx-view-component-id="${guid}"]`);
         const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
         const dropDownSelectNoneItem = await dropDown.element(by.cssContainingText(this.selectors.dropDownNoneOpt, `${optionValue}`));
@@ -181,7 +181,7 @@ export class Utility {
         let isRequired: boolean = await $(`[rx-view-component-id="${guid}"] .form-control-required`).isPresent();
         if (!isRequired) {
             let nameElement = await $(`[rx-view-component-id="${guid}"] .form-control-label`);
-        let value: string = await browser.executeScript('return window.getComputedStyle(arguments[0], ":after").content;', nameElement);
+            let value: string = await browser.executeScript('return window.getComputedStyle(arguments[0], ":after").content;', nameElement);
             isRequired = value.trim().substring(3, value.length - 2) === 'required';
         }
         return isRequired;
@@ -334,6 +334,7 @@ export class Utility {
         if (actualNumberOfPopups) {
             let count = 0;
             let i = 0;
+            await browser.wait(this.EC.visibilityOf($(this.selectors.popUpMsgLocator)), 5000);
             arr[i] = await $$(this.selectors.popUpMsgLocator).first().getText();
             let prevVal = arr[0];
             if (await browser.wait(this.EC.or(async () => {
