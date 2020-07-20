@@ -381,6 +381,7 @@ class ViewTask {
     }
 
     async getAssignedGroupText(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.assignedGroupValue)), 6000);
         return await $(this.selectors.assignedGroupValue).getText();
     }
 
