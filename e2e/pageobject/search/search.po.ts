@@ -1,7 +1,7 @@
 import { $, $$, by, element, protractor, ProtractorExpectedConditions, browser, ElementFinder } from "protractor";
 import utilityCommon from '../../utils/utility.common';
 
-class Search {
+class GlobalSearch {
 
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
@@ -71,13 +71,13 @@ class Search {
     }
 
     async isCategoryAllDropDownValuesMatches(data: string[]): Promise<boolean> {
-        let elemeent = await $(this.selectors.categoryDropDown);
-        return await utilityCommon.isAllDropDownValuesMatchesWithElement(elemeent, data);
+        let element = await $(this.selectors.categoryDropDown);
+        return await utilityCommon.isAllDropDownValuesMatches('8d5a0a18-39ae-4305-bf38-c13e53cb957e', data, element);
     }
 
     async selectCategoryDropDownValue(categoryText: string): Promise<void> {
         let elemeent = await $(this.selectors.categoryDropDown);
-        await utilityCommon.selectDropDown2(elemeent, categoryText);
+        await utilityCommon.selectDropDown('8d5a0a18-39ae-4305-bf38-c13e53cb957e', categoryText, elemeent);
     }
 
     async isLeftGlobalSearchPannelDisplayed(): Promise<boolean> {
@@ -174,7 +174,6 @@ class Search {
             } else {
                 booleanVal = false;
                 await this.searchRecord(record);
-                await browser.sleep(5000);
             }
         }
         return booleanVal;
@@ -392,7 +391,6 @@ class Search {
         for (let i: number = 0; i < 10; i++) {
             let isFilePresent: boolean = await $$(`[rx-view-component-id="${guid}"] .bwf-search-fields[title="${record}"]`).get(0).isPresent();
             if (isFilePresent == false) {
-                await browser.sleep(5000);
                 await this.searchRecord(record);
             } else {
                 break;
@@ -400,4 +398,4 @@ class Search {
         }
     }
 }
-export default new Search();
+export default new GlobalSearch();

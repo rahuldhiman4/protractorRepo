@@ -1,9 +1,10 @@
-import { $, protractor, ProtractorExpectedConditions, $$ } from "protractor";
+import {element, by, $, protractor, ProtractorExpectedConditions, $$ } from "protractor";
 
 class CasePreview {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
+        fieldLabels: '.clearfix label',
         header: '.dp-header span',
         caseSummary: '[rx-view-component-id="2b082dbf-495a-4a0c-aadb-cf78555bbfb0"] span',
         gotoCaseButton: '[rx-view-component-id="529287cb-4d9d-4729-aa6c-5676980df72e"] button',
@@ -11,6 +12,7 @@ class CasePreview {
         priority: '[rx-view-component-id="6934b23e-3403-4b21-b4aa-a7a10283c8eb"] .selection-field',
         caseStatus: '[rx-view-component-id="6bbd4072-3626-49a4-8813-b1a456674fc7"] .status-transition',
         requesterName: '[rx-view-component-id="a108323b-b110-41ed-9ad8-9dc7b0258c77"] a.person-link',
+        requesterCompany: '.person-organization .text-secondary',
         contactName: '[rx-view-component-id="2b74f7f4-7a02-4662-a3be-80b246568c7b"] a.person-link',
         requestPhoneNumber: '[rx-view-component-id="a108323b-b110-41ed-9ad8-9dc7b0258c77"] .person-phone-link',
         requesterEmailId: '[rx-view-component-id="a108323b-b110-41ed-9ad8-9dc7b0258c77"] .bwf-person-email button',
@@ -32,6 +34,14 @@ class CasePreview {
         dynamicFieldsName: '[rx-view-component-id="40c6dac1-3d7a-402d-9d78-6ba29bb1c1f1"] label',
         backButton: '[rx-view-component-id="1483f92a-0736-4316-b2e5-084927069d38"] button',
         showMoreDescription:'.bwf-description-read-state button',
+    }
+
+    async isFieldLabeltDisplayed(labelName: string): Promise<boolean> {
+        return await element(by.cssContainingText(this.selectors.fieldLabels, labelName)).isPresent().then(async (link) => {
+            if (link) {
+                return await element(by.cssContainingText(this.selectors.fieldLabels, labelName)).isDisplayed();
+            } else return false;
+        });
     }
 
     async clickOnShowMoreDescription():Promise<void>{
@@ -66,6 +76,14 @@ class CasePreview {
         return await $(this.selectors.caseId).isDisplayed();
     }
 
+    async isGlobalSearchCaseIdDisplayed(caseId: string): Promise<boolean> {
+        return await element(by.cssContainingText(this.selectors.caseId, caseId)).isPresent().then(async (link) => {
+            if (link) {
+                return await element(by.cssContainingText(this.selectors.caseId, caseId)).isDisplayed();
+            } else return false;
+        });
+    }
+
     async isPriorityDisplayed(priority: string): Promise<boolean> {
         return await $(this.selectors.priority).getText() == priority ? true : false;
 
@@ -77,6 +95,14 @@ class CasePreview {
 
     async isRequesterNameDisplayed(requesterName: string): Promise<boolean> {
         return await $(this.selectors.requesterName).getText() == requesterName ? true : false;
+    }
+
+    async isRequesterCompanyDisplayed(requesterCompany: string): Promise<boolean> {
+        return await element(by.cssContainingText(this.selectors.requesterCompany, requesterCompany)).isPresent().then(async (link) => {
+        if (link) {
+            return await element(by.cssContainingText(this.selectors.requesterCompany, requesterCompany)).isDisplayed();
+        } else return false;
+    });
     }
 
     async isContactNameDisplayed(contactName: string): Promise<boolean> {
@@ -136,10 +162,15 @@ class CasePreview {
     }
 
     async clickGoToCaseButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.gotoCaseButton__preview)));
         await $(this.selectors.gotoCaseButton).click();
-        //        await browser.wait(this.EC.elementToBeClickable($(viewCasePo.selectors.addTaskButton)));
-        //        await utilCommon.waitUntilSpinnerToHide();
+    }
+
+    async isGotoCaseButtonDisplayed(): Promise<boolean> {
+        return await $(this.selectors.gotoCaseButton).isPresent().then(async (link) => {
+            if (link) {
+                return await $(this.selectors.gotoCaseButton).isDisplayed();
+            } else return false;
+        });
     }
 
     async isAssignedGroupDisplayed(assignedGroup: string): Promise<boolean> {

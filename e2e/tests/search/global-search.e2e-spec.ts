@@ -5,8 +5,9 @@ import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
-import searchCasePreviewPo from "../../pageobject/search/case-preview.po";
+// import searchCasePreviewPo from "../../pageobject/search/case-preview.po";
 import viewCasetemplatePo from '../../pageobject/settings/case-management/view-casetemplate.po';
+import casePreviewPo from '../../pageobject/case/case-preview.po';
 
 export interface IIDs {
     id: string;
@@ -14,10 +15,33 @@ export interface IIDs {
 }
 describe('Case Data Store', () => {
     let caseModule = "Case";
+    let updatedDate;
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qtao');
+           // Create Date
+           let year: string;
+           let month: string;
+           let date: string;
+
+
+           let objDate: Date = new Date();
+           let numYear: number = objDate.getFullYear();
+           year = new Number(numYear).toString();
+
+           let numMonth: number = objDate.getUTCMonth() + 1;
+           let monthArr: string[] = ["Null", "Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Spet", "Oct", "Nov", "Dec"];
+           month = monthArr[numMonth];
+
+           let numDate: number = objDate.getUTCDate();
+           let date1 = new Number(numDate);
+           if (date1 <= 9) {
+               date = '0' + date1.toString();
+           } else {
+               date = date1.toString();
+           }
+           updatedDate = month + " " + date + ", " + year;
     });
 
     afterAll(async () => {
@@ -58,43 +82,45 @@ describe('Case Data Store', () => {
         });
 
         it('[DRDMV-16065]: Verify UI Fields', async () => {
-            expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg: Default value from catergory drop down is missing');
-            expect(await searchPo.isSearchBoxLabelDisplayed()).toBeTruthy('FailureMsg: Search Box Label is missing');
+            expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
+            expect(await searchPo.isSearchBoxLabelDisplayed()).toBeTruthy('FailureMsg2: Search Box Label is missing');
             await searchPo.searchRecordOnLeftPannel(caseSummary, caseModule);
-            expect(await searchPo.isClearSearchButtonDisplayed()).toBeTruthy('FailureMsg: Clear Search button is missing');
+            expect(await searchPo.isClearSearchButtonDisplayed()).toBeTruthy('FailureMsg3: Clear Search button is missing');
             await searchPo.clickOnLeftPannelRecord(caseId, caseModule);
-            expect(await searchPo.isRecentSearchesButtonDisplayed()).toBeTruthy('FailureMsg: Recent Searches button is missing');
-            expect(await searchPo.isAdvanceFilterButtonDisplayed()).toBeTruthy('FailureMsg: Advance Filter button is missing');
-            expect(await searchPo.isLeftGlobalSearchPannelDisplayed()).toBeTruthy('FailureMsg: Left Global Search is missing');
+            expect(await searchPo.isRecentSearchesButtonDisplayed()).toBeTruthy('FailureMsg4: Recent Searches button is missing');
+            expect(await searchPo.isAdvanceFilterButtonDisplayed()).toBeTruthy('FailureMsg5: Advance Filter button is missing');
+            expect(await searchPo.isLeftGlobalSearchPannelDisplayed()).toBeTruthy('FailureMsg6: Left Global Search is missing');
         });
         it('[DRDMV-16065]: Verify Case Preview Field Label', async () => {
-            expect(await searchCasePreviewPo.isFieldLabeltDisplayed('Requester')).toBeTruthy('FailureMsg: Requester label is missing');
-            expect(await searchCasePreviewPo.isFieldLabeltDisplayed('Site')).toBeTruthy('FailureMsg8: Site label is missing');
-            expect(await searchCasePreviewPo.isFieldLabeltDisplayed('Source')).toBeTruthy('FailureMsg9: Source label is missing');
-            expect(await searchCasePreviewPo.isFieldLabeltDisplayed('Case Site')).toBeTruthy('FailureMsg10: Case Site label is missing');
-            expect(await searchCasePreviewPo.isFieldLabeltDisplayed('Description')).toBeTruthy('FailureMsg11: Description label is missing');
-            expect(await searchCasePreviewPo.isFieldLabeltDisplayed('Category Tier 1')).toBeTruthy('FailureMsg12: Category Tier 1 label is missing');
-            expect(await searchCasePreviewPo.isFieldLabeltDisplayed('Category Tier 2')).toBeTruthy('FailureMsg13: Category Tier 2 label is missing');
-            expect(await searchCasePreviewPo.isFieldLabeltDisplayed('Category Tier 3')).toBeTruthy('FailureMsg14: Category Tier 3 label is missing');
-            expect(await searchCasePreviewPo.isFieldLabeltDisplayed('Category Tier 4')).toBeTruthy('FailureMsg15: Category Tier 4 label is missing');
-            expect(await searchCasePreviewPo.isFieldLabeltDisplayed('Assignee')).toBeTruthy('FailureMsg16: Assignee label is missing');
-            expect(await searchCasePreviewPo.isFieldLabeltDisplayed('Assigned Group')).toBeTruthy('FailureMsg17: Assigned Group label is missing');
-            expect(await searchCasePreviewPo.isFieldLabeltDisplayed('Assigned Company')).toBeTruthy('FailureMsg18: Assigned Company label is missing');
+            expect(await casePreviewPo.isFieldLabeltDisplayed('Requester')).toBeTruthy('FailureMsg7: Requester label is missing');
+            expect(await casePreviewPo.isFieldLabeltDisplayed('Site')).toBeTruthy('FailureMsg8: Site label is missing');
+            expect(await casePreviewPo.isFieldLabeltDisplayed('Source')).toBeTruthy('FailureMsg9: Source label is missing');
+            expect(await casePreviewPo.isFieldLabeltDisplayed('Case Site')).toBeTruthy('FailureMsg10: Case Site label is missing');
+            expect(await casePreviewPo.isFieldLabeltDisplayed('Description')).toBeTruthy('FailureMsg11: Description label is missing');
+            expect(await casePreviewPo.isFieldLabeltDisplayed('Category Tier 1')).toBeTruthy('FailureMsg12: Category Tier 1 label is missing');
+            expect(await casePreviewPo.isFieldLabeltDisplayed('Category Tier 2')).toBeTruthy('FailureMsg13: Category Tier 2 label is missing');
+            expect(await casePreviewPo.isFieldLabeltDisplayed('Category Tier 3')).toBeTruthy('FailureMsg14: Category Tier 3 label is missing');
+            expect(await casePreviewPo.isFieldLabeltDisplayed('Category Tier 4')).toBeTruthy('FailureMsg15: Category Tier 4 label is missing');
+            expect(await casePreviewPo.isFieldLabeltDisplayed('Assignee')).toBeTruthy('FailureMsg16: Assignee label is missing');
+            expect(await casePreviewPo.isFieldLabeltDisplayed('Assigned Group')).toBeTruthy('FailureMsg17: Assigned Group label is missing');
+            expect(await casePreviewPo.isFieldLabeltDisplayed('Assigned Company')).toBeTruthy('FailureMsg18: Assigned Company label is missing');
         });
         it('[DRDMV-16065]: Verify Case Preview Field Values', async () => {
-            expect(await searchCasePreviewPo.isCaseSummarytDisplayed(caseSummary)).toBeTruthy('FailureMsg: Case Summary is missing');
-            expect(await searchCasePreviewPo.isCaseIdDisplayed(caseId)).toBeTruthy('FailureMsg: Case id is missing');
-            expect(await searchCasePreviewPo.isCaseStatusDisplayed('Assigned')).toBeTruthy('FailureMsg: Case Status is missing');
-            expect(await searchCasePreviewPo.isCasePriorityDisplayed('Medium')).toBeTruthy('FailureMsg: Case Priority is missing');
-            expect(await searchCasePreviewPo.isRequesterNameDisplayed('Qadim Katawazi')).toBeTruthy('FailureMsg: Reqester Name missing');
-            expect(await searchCasePreviewPo.isRequesterCompanyDisplayed('Petramco')).toBeTruthy('FailureMsg: Reqester Company is missing');
-            expect(await searchCasePreviewPo.isRequesterPhoneDisplayed(' +15123431923 ')).toBeTruthy('FailureMsg: Reqester Phone is missing');
-            expect(await searchCasePreviewPo.isRequesterEmailDisplayed('qkatawazi@petramco.com')).toBeTruthy('FailureMsg: Reqester Company is missing');
-            expect(await searchCasePreviewPo.isRequesterSiteValueDisplayed('Austin\n' + '10431 Morado Circle\n' + 'Avalon Building 5, Austin, Texas, 78759, United States ')).toBeTruthy('FailureMsg: Reqester Site Value is missing');
-            expect(await searchCasePreviewPo.isAssigneeNameDisplayed('Qiang Du')).toBeTruthy('FailureMsg: Assignee Name is missing');
-            expect(await searchCasePreviewPo.isAassignedGroupValueDisplayed('CA Support 1')).toBeTruthy('FailureMsg: Assigned Support Group Value is missing');
-            expect(await searchCasePreviewPo.isAssignedCompanyValueDisplayed('Petramco')).toBeTruthy('FailureMsg: Assigned Company Value is missing');
-            expect(await searchCasePreviewPo.isGotoCaseButtonDisplayed()).toBeTruthy('FailureMsg: Goto Case button is missing');
+            expect(await casePreviewPo.isCaseSummaryDisplayed(caseSummary)).toBeTruthy('FailureMsg20: Case Summary label is missing');
+            expect(await casePreviewPo.isGlobalSearchCaseIdDisplayed(caseId)).toBeTruthy('FailureMsg33: Case id is missing');
+            expect(await casePreviewPo.isCaseStatusDisplayed('Assigned')).toBeTruthy('FailureMsg34: Case Status is missing');
+            expect(await casePreviewPo.isPriorityDisplayed('Medium')).toBeTruthy('FailureMsg35: Case Priority is missing');
+            expect(await casePreviewPo.isRequesterNameDisplayed('Qadim Katawazi')).toBeTruthy('FailureMsg36: Reqester Name missing');
+            expect(await casePreviewPo.isRequesterCompanyDisplayed('Petramco')).toBeTruthy('FailureMsg37: Reqester Company is missing');
+            expect(await casePreviewPo.isRequesterPhoneDisplayed('+15123431923')).toBeTruthy('FailureMsg38: Reqester Phone is missing');
+            expect(await casePreviewPo.isRequesterEmailIdDisplayed('qkatawazi@petramco.com')).toBeTruthy('FailureMsg39: Reqester Company is missing');
+            expect(await casePreviewPo.isCaseSiteDisplayed('Austin')).toBeTruthy('FailureMsg40: Case Site Value is missing');
+            expect(await casePreviewPo.isSourceDisplayed('External')).toBeTruthy('FailureMsg41: Source Value is missing');
+            expect(await casePreviewPo.isRequesterSiteDisplayed('Austin\n' + '10431 Morado Circle\n' + 'Avalon Building 5, Austin, Texas, 78759, United States ')).toBeTruthy('FailureMsg42: Reqester Site Value is missing');
+            expect(await casePreviewPo.isAssigneeDisplayed('Qiang Du')).toBeTruthy('FailureMsg43: Assignee Name is missing');
+            expect(await casePreviewPo.isAssignedGroupDisplayed('CA Support 1')).toBeTruthy('FailureMsg44: Assigned Support Group Value is missing');
+            expect(await casePreviewPo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy('FailureMsg45: Assigned Company Value is missing');
+            expect(await casePreviewPo.isGotoCaseButtonDisplayed()).toBeTruthy('FailureMsg46: Goto Case button is missing');
         });
         it('[DRDMV-16065]: Verify Modules Catergoy drop down ', async () => {
             let category: string[] = ['All', 'Case', 'Task', 'People', 'Knowledge', 'Document', 'Case Template', 'Task Template'];
@@ -110,7 +136,6 @@ describe('Case Data Store', () => {
         let nonMatchingSummary = 'NonMatchingSummaryDRDMV16102' + randomStr;
         let nonMatchingDescription = 'NonMatchingDescriptionDRDMV16102' + randomStr;
         let dummyDescription = 'DummayDRDMV16102' + randomStr;
-        let updatedDate;
 
         let caseDisplayId1 = [];
         let caseDisplayId2 = [];
@@ -142,29 +167,6 @@ describe('Case Data Store', () => {
                 let caseDetails3 = await createCase(nonMatchingSummary, nonMatchingSummary);
                 caseDisplayId3[c] = caseDetails3.displayId;
             }
-
-            // Create Date
-            let year: string;
-            let month: string;
-            let date: string;
-
-
-            let objDate: Date = new Date();
-            let numYear: number = objDate.getFullYear();
-            year = new Number(numYear).toString();
-
-            let numMonth: number = objDate.getUTCMonth() + 1;
-            let monthArr: string[] = ["Null", "Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Spet", "Oct", "Nov", "Dec"];
-            month = monthArr[numMonth];
-
-            let numDate: number = objDate.getUTCDate();
-            let date1 = new Number(numDate);
-            if (date1 <= 9) {
-                date = '0' + date1.toString();
-            } else {
-                date = date1.toString();
-            }
-            updatedDate = month + " " + date + ", " + year;
         });
 
         it('[DRDMV-16102]: Verify Module Title & Pagination', async () => {
@@ -199,38 +201,38 @@ describe('Case Data Store', () => {
         });
 
         it('[DRDMV-16102]: Verify Case Preview Fields', async () => {
-            expect(await searchCasePreviewPo.isFieldLabeltDisplayed('Requester')).toBeTruthy('FailureMsg20: Requester label is missing');
-            expect(await searchCasePreviewPo.isFieldLabeltDisplayed('Site')).toBeTruthy('FailureMsg21: Site label is missing');
-            expect(await searchCasePreviewPo.isFieldLabeltDisplayed('Source')).toBeTruthy('FailureMsg22: Source label is missing');
-            expect(await searchCasePreviewPo.isFieldLabeltDisplayed('Case Site')).toBeTruthy('FailureMsg23: Case Site label is missing');
-            expect(await searchCasePreviewPo.isFieldLabeltDisplayed('Description')).toBeTruthy('FailureMsg24: Description label is missing');
-            expect(await searchCasePreviewPo.isFieldLabeltDisplayed('Category Tier 1')).toBeTruthy('FailureMsg25: Category Tier 1 label is missing');
-            expect(await searchCasePreviewPo.isFieldLabeltDisplayed('Category Tier 2')).toBeTruthy('FailureMsg26: Category Tier 2 label is missing');
-            expect(await searchCasePreviewPo.isFieldLabeltDisplayed('Category Tier 3')).toBeTruthy('FailureMsg27: Category Tier 3 label is missing');
-            expect(await searchCasePreviewPo.isFieldLabeltDisplayed('Category Tier 4')).toBeTruthy('FailureMsg28: Category Tier 4 label is missing');
-            expect(await searchCasePreviewPo.isFieldLabeltDisplayed('Assignee')).toBeTruthy('FailureMsg29: Assignee label is missing');
-            expect(await searchCasePreviewPo.isFieldLabeltDisplayed('Assigned Group')).toBeTruthy('FailureMsg30: Assigned Group label is missing');
-            expect(await searchCasePreviewPo.isFieldLabeltDisplayed('Assigned Company')).toBeTruthy('FailureMsg31: Assigned Company label is missing');
+            expect(await casePreviewPo.isFieldLabeltDisplayed('Requester')).toBeTruthy('FailureMsg20: Requester label is missing');
+            expect(await casePreviewPo.isFieldLabeltDisplayed('Site')).toBeTruthy('FailureMsg21: Site label is missing');
+            expect(await casePreviewPo.isFieldLabeltDisplayed('Source')).toBeTruthy('FailureMsg22: Source label is missing');
+            expect(await casePreviewPo.isFieldLabeltDisplayed('Case Site')).toBeTruthy('FailureMsg23: Case Site label is missing');
+            expect(await casePreviewPo.isFieldLabeltDisplayed('Description')).toBeTruthy('FailureMsg24: Description label is missing');
+            expect(await casePreviewPo.isFieldLabeltDisplayed('Category Tier 1')).toBeTruthy('FailureMsg25: Category Tier 1 label is missing');
+            expect(await casePreviewPo.isFieldLabeltDisplayed('Category Tier 2')).toBeTruthy('FailureMsg26: Category Tier 2 label is missing');
+            expect(await casePreviewPo.isFieldLabeltDisplayed('Category Tier 3')).toBeTruthy('FailureMsg27: Category Tier 3 label is missing');
+            expect(await casePreviewPo.isFieldLabeltDisplayed('Category Tier 4')).toBeTruthy('FailureMsg28: Category Tier 4 label is missing');
+            expect(await casePreviewPo.isFieldLabeltDisplayed('Assignee')).toBeTruthy('FailureMsg29: Assignee label is missing');
+            expect(await casePreviewPo.isFieldLabeltDisplayed('Assigned Group')).toBeTruthy('FailureMsg30: Assigned Group label is missing');
+            expect(await casePreviewPo.isFieldLabeltDisplayed('Assigned Company')).toBeTruthy('FailureMsg31: Assigned Company label is missing');
 
-            expect(await searchCasePreviewPo.isCaseSummarytDisplayed(summary)).toBeTruthy('FailureMsg32: Case Summary is missing');
-            expect(await searchCasePreviewPo.isCaseIdDisplayed(caseDisplayId1[0])).toBeTruthy('FailureMsg33: Case id is missing');
-            expect(await searchCasePreviewPo.isCaseStatusDisplayed('Assigned')).toBeTruthy('FailureMsg34: Case Status is missing');
-            expect(await searchCasePreviewPo.isCasePriorityDisplayed('Medium')).toBeTruthy('FailureMsg35: Case Priority is missing');
-            expect(await searchCasePreviewPo.isRequesterNameDisplayed('Qadim Katawazi')).toBeTruthy('FailureMsg36: Reqester Name missing');
-            expect(await searchCasePreviewPo.isRequesterCompanyDisplayed('Petramco')).toBeTruthy('FailureMsg37: Reqester Company is missing');
-            expect(await searchCasePreviewPo.isRequesterPhoneDisplayed(' +15123431923 ')).toBeTruthy('FailureMsg38: Reqester Phone is missing');
-            expect(await searchCasePreviewPo.isRequesterEmailDisplayed('qkatawazi@petramco.com')).toBeTruthy('FailureMsg39: Reqester Company is missing');
-            expect(await searchCasePreviewPo.isCaseSiteValueDisplayed('Austin')).toBeTruthy('FailureMsg40: Case Site Value is missing');
-            expect(await searchCasePreviewPo.isSourceValueDisplayed('External')).toBeTruthy('FailureMsg41: Source Value is missing');
-            expect(await searchCasePreviewPo.isRequesterSiteValueDisplayed('Austin\n' + '10431 Morado Circle\n' + 'Avalon Building 5, Austin, Texas, 78759, United States ')).toBeTruthy('FailureMsg42: Reqester Site Value is missing');
-            expect(await searchCasePreviewPo.isAssigneeNameDisplayed('Qiang Du')).toBeTruthy('FailureMsg43: Assignee Name is missing');
-            expect(await searchCasePreviewPo.isAassignedGroupValueDisplayed('CA Support 1')).toBeTruthy('FailureMsg44: Assigned Support Group Value is missing');
-            expect(await searchCasePreviewPo.isAssignedCompanyValueDisplayed('Petramco')).toBeTruthy('FailureMsg45: Assigned Company Value is missing');
-            expect(await searchCasePreviewPo.isGotoCaseButtonDisplayed()).toBeTruthy('FailureMsg46: Goto Case button is missing');
+            expect(await casePreviewPo.isCaseSummaryDisplayed(summary)).toBeTruthy('FailureMsg20: Case Summary is missing');
+            expect(await casePreviewPo.isGlobalSearchCaseIdDisplayed(caseDisplayId1[0])).toBeTruthy('FailureMsg33: Case id is missing');
+            expect(await casePreviewPo.isCaseStatusDisplayed('Assigned')).toBeTruthy('FailureMsg34: Case Status is missing');
+            expect(await casePreviewPo.isPriorityDisplayed('Medium')).toBeTruthy('FailureMsg35: Case Priority is missing');
+            expect(await casePreviewPo.isRequesterNameDisplayed('Qadim Katawazi')).toBeTruthy('FailureMsg36: Reqester Name missing');
+            expect(await casePreviewPo.isRequesterCompanyDisplayed('Petramco')).toBeTruthy('FailureMsg37: Reqester Company is missing');
+            expect(await casePreviewPo.isRequesterPhoneDisplayed('+15123431923')).toBeTruthy('FailureMsg38: Reqester Phone is missing');
+            expect(await casePreviewPo.isRequesterEmailIdDisplayed('qkatawazi@petramco.com')).toBeTruthy('FailureMsg39: Reqester Company is missing');
+            expect(await casePreviewPo.isCaseSiteDisplayed('Austin')).toBeTruthy('FailureMsg40: Case Site Value is missing');
+            expect(await casePreviewPo.isSourceDisplayed('External')).toBeTruthy('FailureMsg41: Source Value is missing');
+            expect(await casePreviewPo.isRequesterSiteDisplayed('Austin\n' + '10431 Morado Circle\n' + 'Avalon Building 5, Austin, Texas, 78759, United States ')).toBeTruthy('FailureMsg42: Reqester Site Value is missing');
+            expect(await casePreviewPo.isAssigneeDisplayed('Qiang Du')).toBeTruthy('FailureMsg43: Assignee Name is missing');
+            expect(await casePreviewPo.isAssignedGroupDisplayed('CA Support 1')).toBeTruthy('FailureMsg44: Assigned Support Group Value is missing');
+            expect(await casePreviewPo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy('FailureMsg45: Assigned Company Value is missing');
+            expect(await casePreviewPo.isGotoCaseButtonDisplayed()).toBeTruthy('FailureMsg46: Goto Case button is missing');
         });
 
         it('[DRDMV-16102]: Click On Goto Case button and verify ', async () => {
-            await searchCasePreviewPo.clickOnGotoCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             expect(await viewCasetemplatePo.getCaseTemplateId()).toBe(caseDisplayId1[0], 'FailureMsg47: Case id is missing on view case page');
         });
 
@@ -267,6 +269,11 @@ describe('Case Data Store', () => {
 
         });
     });
+
+
+
+
+  
 });
 
 
