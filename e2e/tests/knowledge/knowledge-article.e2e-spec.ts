@@ -1217,10 +1217,10 @@ describe('Knowledge Article', () => {
         expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe('Knowledge' + randomStr);
         expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe('HR');
         await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
+        await editKnowledgePage.selectRegionDropDownOption('EMEA');
         await editKnowledgePage.setCategoryTier1('Employee Relations');
         await editKnowledgePage.setCategoryTier2('Compensation');
         await editKnowledgePage.setCategoryTier3('Bonus');
-        await editKnowledgePage.selectRegionDropDownOption('EMEA');
         await editKnowledgePage.selectSiteDropDownOption('Barcelona 1');
         await editKnowledgePage.clickChangeAssignmentButton();
         await changeAssignmentBladePo.selectCompany('Petramco');

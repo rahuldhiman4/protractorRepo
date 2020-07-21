@@ -268,7 +268,7 @@ describe('Knowledge Article', () => {
             expect(await createKnowledgePage.isAssignmentFieldDisabled('Business Unit')).toBeTruthy('Assign Field is enabled');
             expect(await createKnowledgePage.isAssignmentFieldDisabled('Department')).toBeTruthy('Assign Field is enabled');
             expect(await createKnowledgePage.isAssignmentFieldDisabled('Assigned Group')).toBeTruthy('Assign Field is enabled');
-            expect(await createKnowledgePage.isAssignmentFieldDisabled('Assigned To')).toBeTruthy('Assign Field is enabled');
+            expect(await createKnowledgePage.isAssignedToFieldDisabled('Assigned To')).toBeTruthy('Assign Field is enabled');
             await createKnowledgePage.clickAssignToMeButton();
             expect(await changeAssignmentBlade.getCountOfSupportGroup()).toBeGreaterThanOrEqual(2);
             await changeAssignmentBlade.clickOnSupportGroup('UI-SupportGroup-19501');
@@ -483,10 +483,10 @@ describe('Knowledge Article', () => {
         await createKnowledgePage.clickOnUseSelectedTemplateButton();
         await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeTitle);
         await createKnowledgePage.selectRegionDropDownOption('Australia');
-        await createKnowledgePage.selectSiteDropDownOption('Melbourne');
         await createKnowledgePage.selectCategoryTier1Option('Applications');
         await createKnowledgePage.selectCategoryTier2Option('Help Desk');
         await createKnowledgePage.selectCategoryTier3Option('Incident');
+        await createKnowledgePage.selectSiteDropDownOption('Melbourne');    
         await createKnowledgePage.setReferenceValue('reference values are as follows');
         expect(await createKnowledgePage.getKnowledgeArticleTitleValue()).toContain(knowledgeTitle, 'expected Value not present');
         expect(await createKnowledgePage.getValueOfCategoryTier1()).toContain('Applications', 'value not matched with expected');
