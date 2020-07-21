@@ -46,6 +46,12 @@ export class Utility {
         });
     }
 
+    async selectDropDown2(dropDownElementFinder: ElementFinder, value: string): Promise<void> {
+        await dropDownElementFinder.click();
+        let option = await element(by.cssContainingText(this.selectors.dropDownChoice, value));
+        await option.click();
+    }
+
     async clearDropDown(guid: string,optionValue:string): Promise<void> {
         const dropDown = await $(`[rx-view-component-id="${guid}"]`);
         const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
@@ -70,6 +76,21 @@ export class Utility {
         const dropDown = await $(`[rx-view-component-id="${guid}"]`);
         const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
         await dropDownBoxElement.click();
+        let drpDwnvalue: number = await $$(this.selectors.dropDownOption).count();
+        for (let i = 0; i < drpDwnvalue; i++) {
+            let ab: string = await $$(this.selectors.dropDownOption).get(i).getText();
+            arr[i] = ab;
+        }
+        arr = arr.sort();
+        data = data.sort();
+        return arr.length === data.length && arr.every(
+            (value, index) => (value === data[index])
+        );
+    }
+
+    async isAllDropDownValuesMatchesWithElement(element: ElementFinder, data: string[]): Promise<boolean> {
+        let arr: string[] = [];
+        await element.click();
         let drpDwnvalue: number = await $$(this.selectors.dropDownOption).count();
         for (let i = 0; i < drpDwnvalue; i++) {
             let ab: string = await $$(this.selectors.dropDownOption).get(i).getText();

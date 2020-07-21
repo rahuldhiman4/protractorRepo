@@ -181,6 +181,20 @@ class NavigationPage {
         await browser.wait(this.EC.titleContains('Case Create - Quick Case - Business Workflows'), 10000);
     }
 
+    async gotoSearch(): Promise<void> {
+        if ((await browser.getCurrentUrl()).includes("isettings")) await this.switchToAngularTab();
+        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+        if (await this.isHambergerIconPresent()) {
+            await $(this.selectors.hamburgerIcon).click();
+            await element(by.buttonText('Search')).click().then(async () => {
+                await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+            });
+        } else await element(by.cssContainingText('button.a-menu__link', 'Search')).click().then(async () => {
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+        });
+        await browser.wait(this.EC.titleContains('Global Search View - Business Workflows'), 10000);
+    }
+
     async gotoCreateKnowledge(): Promise<void> {
         if ((await browser.getCurrentUrl()).includes("isettings")) await this.switchToAngularTab();
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
