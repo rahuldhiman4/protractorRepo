@@ -48,7 +48,8 @@ export enum CaseStatus {
     Resolved = 5000,
     Closed = 7000,
     Canceled = 6000,
-    AfterResolved = 5500
+    AfterResolved = 5500,
+    ApprovalRejected = 1900
 };
 
 export enum TaskStatus {

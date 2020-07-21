@@ -5,8 +5,8 @@ import * as uuid from 'uuid';
 import { default as apiCoreUtil, default as coreApi } from "../api/api.core.util";
 import * as constants from "../api/constant.api";
 import { APPROVAL_ACTION, MORE_INFO_RETURN_ACTION } from "../data/api/approval/approval.action.api";
-import { CASE_APPROVAL_FLOW } from '../data/api/approval/case.approval.flow.api';
-import { CASE_APPROVAL_MAPPING } from '../data/api/approval/case.approval.mapping.api';
+import { CASE_APPROVAL_FLOW, INVALID_CASE_APPROVAL_FLOW, INVALID_KM_APPROVAL_FLOW } from '../data/api/approval/approval.flow.api';
+import { CASE_APPROVAL_MAPPING } from '../data/api/approval/approval.mapping.api';
 import { CASE_READ_ACCESS } from '../data/api/case/case.read.access.api';
 import { CASE_REOPEN } from '../data/api/case/case.reopen.api';
 import { CASE_TEMPLATE_PAYLOAD, CASE_TEMPLATE_STATUS_UPDATE_PAYLOAD } from '../data/api/case/case.template.data.api';
@@ -1021,7 +1021,7 @@ class ApiHelper {
         return domainTagResponse.status == 204;
     }
 
-    async associateCaseTemplateWithOneTaskTemplate(caseTemplateId: string, taskTemplateId: string): Promise<void> {
+    async associateCaseTemplateWithOneTaskTemplate(caseTemplateId: string, taskTemplateId: string): Promise<boolean> {
         let oneTaskFlowProcess = cloneDeep(ONE_TASKFLOW);
         let taskTemplateGuid = await coreApi.getTaskTemplateGuid(taskTemplateId);
         let randomString: string = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -1049,10 +1049,12 @@ class ApiHelper {
         let caseTemplateGuid = await coreApi.getCaseTemplateGuid(caseTemplateId);
         let caseTemplateJsonData = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid);
         caseTemplateJsonData.fieldInstances[450000165].value = oneTaskFlowProcess.name;
-        await apiCoreUtil.updateRecordInstance("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid, caseTemplateJsonData);
+        let associateCaseTemplateWithOneTaskTemplateResponse: AxiosResponse = await apiCoreUtil.updateRecordInstance("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid, caseTemplateJsonData);
+        console.log('AssociateCaseTemplateWithOneTaskTemplateResponse API Status =============>', associateCaseTemplateWithOneTaskTemplateResponse.status);
+        return associateCaseTemplateWithOneTaskTemplateResponse.status == 204;
     }
 
-    async associateCaseTemplateWithTwoTaskTemplate(caseTemplateId: string, taskTemplateId1: string, taskTemplateId2: string, order: string): Promise<void> {
+    async associateCaseTemplateWithTwoTaskTemplate(caseTemplateId: string, taskTemplateId1: string, taskTemplateId2: string, order: string): Promise<boolean> {
         let twoTaskFlowProcess: any;
         if (order.toLocaleLowerCase() === 'sequential')
             twoTaskFlowProcess = cloneDeep(TWO_TASKFLOW_SEQUENTIAL);
@@ -1093,10 +1095,12 @@ class ApiHelper {
         let caseTemplateGuid = await coreApi.getCaseTemplateGuid(caseTemplateId);
         let caseTemplateJsonData = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid);
         caseTemplateJsonData.fieldInstances[450000165].value = twoTaskFlowProcess.name;
-        await apiCoreUtil.updateRecordInstance("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid, caseTemplateJsonData);
+        let associateCaseTemplateWithTwoTaskTemplateResponse: AxiosResponse = await apiCoreUtil.updateRecordInstance("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid, caseTemplateJsonData);
+        console.log('AssociateCaseTemplateWithOneTaskTemplateResponse API Status =============>', associateCaseTemplateWithTwoTaskTemplateResponse.status);
+        return associateCaseTemplateWithTwoTaskTemplateResponse.status == 204;
     }
 
-    async associateCaseTemplateWithThreeTaskTemplate(caseTemplateId: string, taskTemplateId1: string, taskTemplateId2: string, taskTemplateId3: string, structure?: any): Promise<void> {
+    async associateCaseTemplateWithThreeTaskTemplate(caseTemplateId: string, taskTemplateId1: string, taskTemplateId2: string, taskTemplateId3: string, structure?: any): Promise<boolean> {
         let threeTaskFlowProcess: any = cloneDeep(THREE_TASKFLOW_SEQUENTIAL);
         if (structure) threeTaskFlowProcess = threeTaskFlowProcess;
 
@@ -1140,7 +1144,9 @@ class ApiHelper {
         let caseTemplateGuid = await coreApi.getCaseTemplateGuid(caseTemplateId);
         let caseTemplateJsonData = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid);
         caseTemplateJsonData.fieldInstances[450000165].value = threeTaskFlowProcess.name;
-        await apiCoreUtil.updateRecordInstance("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid, caseTemplateJsonData);
+        let associateCaseTemplateWithThreeTaskTemplateResponse: AxiosResponse = await apiCoreUtil.updateRecordInstance("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid, caseTemplateJsonData);
+        console.log('AssociateCaseTemplateWithOneTaskTemplateResponse API Status =============>', associateCaseTemplateWithThreeTaskTemplateResponse.status);
+        return associateCaseTemplateWithThreeTaskTemplateResponse.status == 204;
     }
 
     async createEmailTemplate(data: IEmailTemplate): Promise<boolean> {
@@ -1461,6 +1467,7 @@ class ApiHelper {
         }
 
         let knowledgeArticleResponse: AxiosResponse = await coreApi.updateRecordInstance("com.bmc.dsm.knowledge:Knowledge Article Template", articleGuid, knowledgeArticleData);
+        await browser.sleep(1000); // hardwait to reflect updated status
         console.log("Update Knowledge Article Status ========>", knowledgeArticleResponse.status);
         return knowledgeArticleResponse.status == 204;
     }
@@ -1736,6 +1743,49 @@ class ApiHelper {
                 return !result.includes(false);
             });
         }
+    }
+
+    async deleteAllApprovalFlow(recordDefinition: string, flowGroupName?: string): Promise<boolean> {
+        let uri: string;
+        let remoteApprovalFlow: any;
+        switch (recordDefinition) {
+            case "Case": {
+                remoteApprovalFlow = cloneDeep(INVALID_CASE_APPROVAL_FLOW);
+                if (flowGroupName) {
+                    uri = "api/com.bmc.arsys.rx.approval/rx/application/approval/flowconfiguration/com.bmc.dsm.case-lib:Case/flowGroupName/" + flowGroupName;
+                    remoteApprovalFlow.flowGroup = flowGroupName;
+                }
+                else uri = "api/com.bmc.arsys.rx.approval/rx/application/approval/flowconfiguration/com.bmc.dsm.case-lib:Case/flowGroupName/BWFA Group";
+                break;
+            }
+            case "Knowledge": {
+                remoteApprovalFlow = cloneDeep(INVALID_KM_APPROVAL_FLOW);
+                if (flowGroupName) {
+                    uri = "api/com.bmc.arsys.rx.approval/rx/application/approval/flowconfiguration/com.bmc.dsm.knowledge:Knowledge Article Template/flowGroupName/" + flowGroupName;
+                    remoteApprovalFlow.flowGroup = flowGroupName;
+                }
+                else uri = "api/com.bmc.arsys.rx.approval/rx/application/approval/flowconfiguration/com.bmc.dsm.knowledge:Knowledge Article Template/flowGroupName/Default Article Approval Flow Group";
+                break;
+            }
+            default: {
+                console.log('Put valid Record Definition for approval flow deletion');
+                break;
+            }
+        }
+
+        if (!flowGroupName) {
+
+        } else {
+
+
+        }
+
+        const putOnlyRemoteApprovalFlow = await axios.put(
+            uri,
+            remoteApprovalFlow
+        );
+        console.log("Delete Approval Flow Status ===== " + putOnlyRemoteApprovalFlow.status);
+        return putOnlyRemoteApprovalFlow.status == 204;
     }
 
     async runAutomatedCaseTransitionProcess(): Promise<number> {

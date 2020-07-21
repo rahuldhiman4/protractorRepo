@@ -108,7 +108,6 @@ describe('Email Template', () => {
     describe('[DRDMV-10801,DRDMV-10805,DRDMV-10786,DRDMV-11092,DRDMV-11093,DRDMV-11091,DRDMV-10798]: Email Template : User Is able to delete Email Template', async () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateName1 = 'TemplateName1' + randomStr;
-        let templateName2 = 'TemplateName2' + randomStr;
         let description1 = 'Description1' + randomStr;
         let description2 = 'Description2' + randomStr;
         let subject1 = 'Subject1' + randomStr;
@@ -167,7 +166,6 @@ describe('Email Template', () => {
             await consoleEmailTemplatePo.searchAndOpenEmailTemplate(templateName1);
             // DRDMV-10798
             expect(await editEmailTemplatePo.isSaveButtonEnabled()).toBeFalsy('Save button is enabled');
-            await editEmailTemplatePo.updateTemplateName(templateName2);
             expect(await editEmailTemplatePo.isModuleNameDisabled()).toBeTruthy('Module Name is enabled');
             expect(await editEmailTemplatePo.isCompanyDropDownDisabled()).toBeTruthy('Company drop down is enabled');
             await editEmailTemplatePo.updateDescription(description2);
@@ -206,17 +204,17 @@ describe('Email Template', () => {
             await editEmailTemplatePo.clickOnSaveButton();
             await utilCommon.closePopUpMessage();
             // DRDMV-11091
-            await consoleEmailTemplatePo.searchOnGridConsole(templateName2);
-            expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Template Name')).toBe(templateName2, 'Search Template Name is missing in column');
+            await consoleEmailTemplatePo.searchOnGridConsole(templateName1);
+            expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Template Name')).toBe(templateName1, 'Search Template Name is missing in column');
             expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Subject')).toBe(subject2, 'Search Subject is missing in column');
             expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Status')).toBe('Active', 'Search Active2 is missing in column');
             expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Label')).toBe(label, 'Label is missing in column');
             await consoleEmailTemplatePo.removeColumnOnGrid(arr1);
             //DRDMV-10801
-            await consoleEmailTemplatePo.searchAndSelectGridRecord(templateName2);
+            await consoleEmailTemplatePo.searchAndSelectGridRecord(templateName1);
             await consoleEmailTemplatePo.clickOnDeleteButton();
             await utilCommon.waitUntilSpinnerToHide();
-            expect(await consoleEmailTemplatePo.isGridRecordPresent(templateName2)).toBeFalsy('Public template name is preset on grid')
+            expect(await consoleEmailTemplatePo.isGridRecordPresent(templateName1)).toBeFalsy('Public template name is preset on grid')
         });
     });
 

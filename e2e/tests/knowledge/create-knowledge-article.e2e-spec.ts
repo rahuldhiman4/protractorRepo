@@ -684,6 +684,7 @@ describe('Knowledge Article', () => {
             await reviewCommentsPo.setTextInTellUsMore(KADetails.displayId);
             await reviewCommentsPo.clickApprovedButton();
             await utilityCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             await viewKnowledgeArticlePo.clickOnKAUsefulYesButton();
             expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Status not Set');
             await editKnowledgePage.setKnowledgeStatus('Retire Approval');
@@ -725,6 +726,7 @@ describe('Knowledge Article', () => {
             await viewKnowledgeArticlePo.clickReviewPendingLink();
             await reviewCommentsPo.setTextInTellUsMore(KACoachDetails.displayId);
             await reviewCommentsPo.clickApprovedButton();
+            await utilityCommon.closePopUpMessage();
             await utilityCommon.closePopUpMessage();
             await viewKnowledgeArticlePo.clickOnKAUsefulYesButton();
             expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Status not Set');

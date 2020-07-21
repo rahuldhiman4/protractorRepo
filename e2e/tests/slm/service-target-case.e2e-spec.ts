@@ -685,7 +685,7 @@ describe('Service Target Tests for Cases', () => {
             browser.sleep(100000);
         });
         it('[DRDMV-8368]: Verify SVT missed goal pending status', async () => {
-            browser.sleep(120000);
+            browser.sleep(130000);
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green

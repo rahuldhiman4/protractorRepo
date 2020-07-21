@@ -137,7 +137,7 @@ class ApprovalsConsole {
 
     async selectExpressionValuesOptions(expressionOption: string, expressionValueOption: string): Promise<void> {
         await element(by.cssContainingText(this.selectors.expressionValueOptions, expressionOption)).click();
-
+        await browser.sleep(1000); // sometimes expression option is not expanded
         await element(by.cssContainingText(this.selectors.expressionValueOptions, expressionOption)).getAttribute('aria-expanded').then(async (result) => {
             if (result) await element(by.cssContainingText(this.selectors.expressionValueOptionSelector, expressionValueOption)).click();
         });
@@ -267,22 +267,6 @@ class ApprovalsConsole {
             }
         }
     }
-
-    async deleteApprovalConfiguration(approvalConfigTab: string): Promise<void> {
-        if (approvalConfigTab == 'Self Approval') {
-            await $(this.selectors.selectSelfApprovals).click();
-            await $(this.selectors.selfApprovalDeleteIcon).click();
-            await utilCommon.clickOnWarningOk();
-        } else {
-            let approvalsNum = await $$(this.selectors.GeneralApprovalDeleteIcon);
-            for (let i = 0; i < approvalsNum.length - 1; i++) {
-                await $(this.selectors.GeneralApprovalDeleteIcon).get(i).click();
-            }
-            await this.clickApprovalFlowSaveButton();
-        }
-    }
-
-
 }
 
 export default new ApprovalsConsole();

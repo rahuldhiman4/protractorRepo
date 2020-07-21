@@ -52,8 +52,10 @@ describe("Create Case Assignment Mapping", () => {
         businessData.relatedOrgId = orgId;
         let businessUnitId = await apiHelper.createBusinessUnit(businessData);
         departmentData.relatedOrgId = businessUnitId;
+        await browser.sleep(3000); // timeout requried to reflect data on UI
         let depId = await apiHelper.createDepartment(departmentData);
         suppGrpData.relatedOrgId = depId;
+        await browser.sleep(3000); // timeout requried to reflect data on UI
         await apiHelper.createSupportGroup(suppGrpData);
         await apiHelper.createNewUser(personData);
         await apiHelper.associatePersonToSupportGroup(personData.userId, suppGrpData.orgName);

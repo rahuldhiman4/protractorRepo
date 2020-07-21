@@ -128,9 +128,7 @@ class ChangeAssignmentBlade {
         //            let count = await businessUnitDropDown.$$(this.selectors.selectOptions).count();
         //            return count >= 1;
         //        }));
-        let option = await element(by.cssContainingText(this.selectors.selectOptions, businessUnit));
-        //        await browser.wait(this.EC.elementToBeClickable(option));
-        await option.click();
+        await element(by.cssContainingText(this.selectors.selectOptions, businessUnit)).click();
     }
 
     async selectDepartment(department: string): Promise<void> {

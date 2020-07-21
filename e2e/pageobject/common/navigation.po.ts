@@ -218,7 +218,7 @@ class NavigationPage {
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
-            await element(by.buttonText('My Profile ')).click().then(async () => {
+            await element(by.buttonText('My Profile')).click().then(async () => {
                 await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             });
         } else {
@@ -304,7 +304,7 @@ class NavigationPage {
             let bwfLogin = this.EC.titleContains('Login - Business Workflows');
             await browser.wait(this.EC.or(noAccess, bwfLogin), 10000);
         } catch (ex) {
-            console.log('Already Signout');
+            console.log('Already Signout because --> ', ex);
         }
     }
 

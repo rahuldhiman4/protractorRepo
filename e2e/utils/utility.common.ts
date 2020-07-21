@@ -36,6 +36,7 @@ export class Utility {
         const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
         const dropDownInputElement: ElementFinder = await dropDown.$(this.selectors.dropDownInput);
         await dropDownBoxElement.click();
+        console.log(`Selecting dropdown value: ${value}`);
         let isSearchPresent: boolean = await dropDownInputElement.isPresent();
         if (isSearchPresent) await dropDownInputElement.sendKeys(value);
 
@@ -201,7 +202,7 @@ export class Utility {
         let isRequired: boolean = await $(`[rx-view-component-id="${guid}"] .form-control-required`).isPresent();
         if (!isRequired) {
             let nameElement = await $(`[rx-view-component-id="${guid}"] .form-control-label`);
-        let value: string = await browser.executeScript('return window.getComputedStyle(arguments[0], ":after").content;', nameElement);
+            let value: string = await browser.executeScript('return window.getComputedStyle(arguments[0], ":after").content;', nameElement);
             isRequired = value.trim().substring(3, value.length - 2) === 'required';
         }
         return isRequired;
@@ -354,6 +355,7 @@ export class Utility {
         if (actualNumberOfPopups) {
             let count = 0;
             let i = 0;
+            await browser.wait(this.EC.visibilityOf($(this.selectors.popUpMsgLocator)), 5000);
             arr[i] = await $$(this.selectors.popUpMsgLocator).first().getText();
             let prevVal = arr[0];
             if (await browser.wait(this.EC.or(async () => {

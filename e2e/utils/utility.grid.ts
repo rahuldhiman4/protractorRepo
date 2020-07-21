@@ -57,8 +57,7 @@ export class GridOperations {
 
         for (let i: number = 0; i < await rowLocator.length; i++) {
             let tempRowLocator = await $$(gridGuid + this.selectors.gridRows).get(i);
-            let tempHyperLinkLocator = await tempRowLocator.$(this.selectors.gridRowHyperLinks);
-            let linkText: string = await tempHyperLinkLocator.getText();
+            let linkText: string = await tempRowLocator.$(this.selectors.gridRowHyperLinks).getText();
             if (linkText.trim() == value) {
                 await tempRowLocator.$(this.selectors.gridCheckbox).click();
                 break;
@@ -316,6 +315,7 @@ export class GridOperations {
     async clickRefreshIcon(guidId?: string): Promise<void> {
         if (guidId) await $(`[rx-view-component-id="${guidId}"] ` + this.selectors.refreshIcon).click();
         else await $(this.selectors.refreshIcon).click();
+        await browser.sleep(1000); // sometime refresh grid takes time
     }
 
     async isEntireColumnContainsSameValue(columnHeader: string, value: string, guid?: string): Promise<boolean> {

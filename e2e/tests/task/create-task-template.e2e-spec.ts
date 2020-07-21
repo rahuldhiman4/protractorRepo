@@ -289,7 +289,7 @@ describe('Create Task Template', () => {
             await updateStatusBladePo.setStatusReason('Auto Resolved');
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
-            expect(await viewTaskTemplate.isEditButtonPresent()).toBeTruthy();
+            expect(await viewCasePage.isEditLinkDisplay()).toBeTruthy();
         });
         afterAll(async () => {
             await navigationPage.signOut();
@@ -324,7 +324,7 @@ describe('Create Task Template', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(taskTemplateName);
-            let taskTemplateId = await viewTaskTemplate.getTaskTemplateId();
+            taskTemplateId = await viewTaskTemplate.getTaskTemplateId();
             await editTaskTemplate.clickOnEditMetadataLink();
             await editTaskTemplate.selectTemplateStatus('Draft');
             await editTaskTemplate.clickOnSaveMetadata();
@@ -335,12 +335,12 @@ describe('Create Task Template', () => {
             await editTaskTemplate.selectTemplateStatus('Inactive');
             await editTaskTemplate.clickOnSaveMetadata();
         });
-        let modifiedDate = new Date();
-        let monthValue: string = month[modifiedDate.getMonth()];
-        let modifiedMonthValue = monthValue.substring(0, 3);
-        let modifiedDateFormate = modifiedMonthValue + " " + modifiedDate.getDate() + ", " + modifiedDate.getFullYear() + " " + modifiedDate.toLocaleTimeString();
         let addColoumn: string[] = ['Display ID'];
         it('[DRDMV-3768]: Apply Filter Options', async () => {
+            let modifiedDate = new Date();
+            let monthValue: string = month[modifiedDate.getMonth()];
+            let modifiedMonthValue = monthValue.substring(0, 3);
+            let modifiedDateFormate = modifiedMonthValue + " " + modifiedDate.getDate() + ", " + modifiedDate.getFullYear() + " " + modifiedDate.toLocaleTimeString();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await utilGrid.clearFilter();
@@ -746,6 +746,8 @@ describe('Create Task Template', () => {
             await updateStatusBladePo.changeStatus("Completed");
             await updateStatusBladePo.setStatusReason("Successful")
             await updateStatusBladePo.clickSaveStatus();
+            await utilityCommon.closePopUpMessage();
+            await browser.sleep(1000); // required to udpated case stauts after completing all tasks
             await viewTask.clickOnViewCase();
             expect(await viewCasePage.getCaseStatusValue()).toBe("Resolved");
             expect(await viewCasePage.isAddtaskButtonDisplayed()).toBeFalsy();
