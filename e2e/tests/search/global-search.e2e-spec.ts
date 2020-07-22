@@ -70,7 +70,7 @@ describe('Case Data Store', () => {
     }
 
     //kgaikwad
-    fdescribe('[DRDMV-16065]: Global search UI and availability of fields - cross verify with mockup', async () => {
+    describe('[DRDMV-16065]: Global search UI and availability of fields - cross verify with mockup', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseSummary = 'caseSummaryDRDMV16065' + randomStr;
         let caseId;
