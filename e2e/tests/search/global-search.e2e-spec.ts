@@ -245,15 +245,12 @@ describe('Case Data Store', () => {
             await searchPo.searchRecord(summary);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(nonMatchingSummary, caseModule)).toBeFalsy(`FailureMsg51: ${nonMatchingSummary} case Summary is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(nonMatchingDescription, caseModule)).toBeFalsy(`FailureMsg52: ${nonMatchingDescription} case Description is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId3[0], caseModule)).toBeFalsy(`FailureMsg55: ${caseDisplayId3[0]} case id  is displayed`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId3[1], caseModule)).toBeFalsy(`FailureMsg56: ${caseDisplayId3[1]} case id  is displayed`);
+
             await searchPo.clickOnPaginationPageNo(caseModule, "2");
             expect(await searchPo.isRecordDisplayedOnLeftPannel(nonMatchingSummary, caseModule)).toBeFalsy(`FailureMsg53: ${nonMatchingSummary} case Summary is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(nonMatchingDescription, caseModule)).toBeFalsy(`FailureMsg54: ${nonMatchingDescription} case Description is missing`);
-            // Verify case summary and description who have not access of the case
-            await searchPo.clickOnPaginationPageNo(caseModule, "1");
-            await searchPo.searchRecord(summary);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId3[0], caseModule)).toBeFalsy(`FailureMsg55: ${caseDisplayId3[0]} case id  is displayed`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId3[1], caseModule)).toBeFalsy(`FailureMsg56: ${caseDisplayId3[1]} case id  is displayed`);
-            await searchPo.clickOnPaginationPageNo(caseModule, "2");
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId3[0], caseModule)).toBeFalsy(`FailureMsg57: ${caseDisplayId3[0]} case id  is displayed`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId3[1], caseModule)).toBeFalsy(`FailureMsg58: ${caseDisplayId3[1]} case id  is displayed`);
         });
