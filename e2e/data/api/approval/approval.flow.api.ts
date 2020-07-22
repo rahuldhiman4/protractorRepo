@@ -13,50 +13,15 @@ export const CASE_APPROVAL_FLOW = {
   ]
 };
 
-export const INVALID_CASE_APPROVAL_FLOW = {
+export const MULTI_APPROVAL_FLOW = {
   "flowGroup": "BWFA Group",
   "approvalFlowConfigurationList": [
-    {
-      "guid": "AGGA49C8ECIOIAPVD4I2PUFXIOK5TO",
-      "approvalProcessId": "AGGA49C8ECIOIAPVD4I2PUFXIOK5T7",
-      "flowName": "Invalid Approve Flow",
-      "processType": "0",
-      "qualification": "1 = 2",
-      "formattedQualification": "1 = 2",
-      "precedence": 0,
-      "signingCriteria": 1,
-      "approvalOverridePercentage": 0,
-      "isLevelUp": false,
-      "levels": null,
-      "approvers": "FR:AGGAA5V0GE9Z4AOR0BXUOQ3ZT04EJA:com.bmc.dsm.case-lib:Case Agent",
-      "approverQualification": null,
-      "approvalFlowOutcomeMappingList": [
 
-      ]
-    }
   ]
 };
 
-export const INVALID_KM_APPROVAL_FLOW = {
-  "flowGroup": "Default Article Approval Flow Group",
-  "approvalFlowConfigurationList": [
-    {
-      "guid": "AGGADGG8ECDC0AQG3SUZQF5WYAHTZJ",
-      "approvalProcessId": "AGGADGG8ECDC0AQG3SUZQF5WYAHTZC",
-      "flowName": "Invalid Approval Flow",
-      "processType": "0",
-      "qualification": "1 = 2",
-      "formattedQualification": "1 = 2",
-      "precedence": 0,
-      "signingCriteria": 0,
-      "approvalOverridePercentage": 0,
-      "isLevelUp": false,
-      "levels": null,
-      "approvers": "FR:AGGAA5V0H3XY6AOTLL9ROSP8NW7YD9:com.bmc.dsm.knowledge:Knowledge Publisher;",
-      "approverQualification": null,
-      "approvalFlowOutcomeMappingList": [
-
-      ]
-    }
-  ]
-}
+export const INVALID_APPROVAL_FLOW = {
+  "flowName": "Invalid Approve Flow",
+  "approver": "qkatawazi",
+  "qualification": "1 = 2",
+};
