@@ -194,8 +194,8 @@ describe('Case Bulk Operation', () => {
             }
             await utilityGrid.clickRefreshIcon();
         });
-        await utilityGrid.searchRecord(caseDataForTest.Summary);
         it('[DRDMV-15980]: Verify that Assignment change information is visible in Actvity section', async () => {
+            await utilityGrid.searchRecord(caseDataForTest.Summary);
             for (let i: number = 0; i < 1; i++) {
                 await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
             }

@@ -41,6 +41,9 @@ import utilityGrid from '../../utils/utility.grid';
 import editReadAccess from "../../pageobject/settings/case-management/edit-read-access-config.po";
 import apiCoreUtil from '../../api/api.core.util';
 import caseAccessTabPo from '../../pageobject/common/case-access-tab.po';
+import navigationPo from '../../pageobject/common/navigation.po';
+import quickCasePo from '../../pageobject/case/quick-case.po';
+import casePreviewPo from '../../pageobject/case/case-preview.po';
 
 describe("Create Case", () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -50,7 +53,7 @@ describe("Create Case", () => {
     const departmentDataFile = require('../../data/ui/foundation/department.ui.json');
     const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
     const personDataFile = require('../../data/ui/foundation/person.ui.json');
-    let businessData, departmentData, suppGrpData, personData;
+    let businessData, departmentData, suppGrpData, personData,suppGrpData1, personData1;
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
@@ -66,6 +69,34 @@ describe("Create Case", () => {
     afterEach(async () => {
         await utilityCommon.refresh();
     });
+
+    async function foundationData(company: string) {
+        await apiHelper.apiLogin('tadmin');
+        businessData = businessDataFile['BusinessUnitData'];
+        departmentData = departmentDataFile['DepartmentData'];
+        suppGrpData = supportGrpDataFile['SuppGrpData'];
+        suppGrpData1 = supportGrpDataFile['SuppGrpData19501'];
+        personData = personDataFile['PersonData'];
+        personData1 = personDataFile['PersonData19501'];   //Associate the existing person to new orgs
+        let orgId = await apiCoreUtil.getOrganizationGuid(company);
+        businessData.relatedOrgId = orgId;
+        let businessUnitId = await apiHelper.createBusinessUnit(businessData);
+        await browser.sleep(3000); // timeout requried to reflect data on UI
+        departmentData.relatedOrgId = businessUnitId;
+        let depId = await apiHelper.createDepartment(departmentData);
+        await browser.sleep(3000); // timeout requried to reflect data on UI
+        suppGrpData.relatedOrgId = depId;
+        await apiHelper.createSupportGroup(suppGrpData);
+        await browser.sleep(3000); // timeout requried to reflect data on UI
+        await apiHelper.createNewUser(personData);
+        await apiHelper.associatePersonToSupportGroup(personData.userId, suppGrpData.orgName);
+        await apiHelper.associatePersonToCompany(personData.userId, company)
+        await apiHelper.createSupportGroup(suppGrpData1);
+        await browser.sleep(3000); // timeout requried to reflect data on UI
+        await apiHelper.createNewUser(personData1);
+        await apiHelper.associatePersonToSupportGroup(personData1.userId, suppGrpData1.orgName);
+        await apiHelper.associatePersonToCompany(personData1.userId, company)
+    }
 
     //kgaikwad
     it('[DRDMV-15253]: Verify Category Tier 4 Can be Populated After Tier 3 selection', async () => {
@@ -1107,23 +1138,6 @@ describe("Create Case", () => {
         expect(await utilCommon.isPopUpMessagePresent('Record(s) deleted successfully.')).toBeTruthy('Successfull message is not appeared');
     });
 
-    async function foundationData(company: string) {
-        await apiHelper.apiLogin('tadmin');
-        businessData = businessDataFile['BusinessUnitData'];
-        departmentData = departmentDataFile['DepartmentData'];
-        suppGrpData = supportGrpDataFile['SuppGrpData'];
-        personData = personDataFile['PersonData'];
-        let orgId = await apiCoreUtil.getOrganizationGuid(company);
-        businessData.relatedOrgId = orgId;
-        let businessUnitId = await apiHelper.createBusinessUnit(businessData);
-        departmentData.relatedOrgId = businessUnitId;
-        let depId = await apiHelper.createDepartment(departmentData);
-        suppGrpData.relatedOrgId = depId;
-        await apiHelper.createSupportGroup(suppGrpData);
-        await apiHelper.createNewUser(personData);
-        await apiHelper.associatePersonToSupportGroup(personData.userId, suppGrpData.orgName);
-        await apiHelper.associatePersonToCompany(personData.userId, company)
-    }
 
     it('[DRDMV-11985]:[Read Access] Verify Global read acess configuration applied to case if read acess configuration qualification matches', async () => {
         let randVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -1159,5 +1173,85 @@ describe("Create Case", () => {
         expect(await caseAccessTabPo.isCaseAccessEntityAdded('Qadim Katawazi')).toBeTruthy('FailuerMsg1: Agent Name is missing');
         expect(await caseAccessTabPo.isSupportGroupWriteAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have write access');
         expect(await caseAccessTabPo.isSupportGroupReadAccessDisplayed(suppGrpData.orgName)).toBeTruthy('Support Group does not have read access');
+    });
+
+    describe('[DRDMV-7061,DRDMV-6998]: [Read Access] Configuring non-default Read Access', async () => {
+        const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let businessData1 = businessDataFile['BusinessUnitData19501'];
+        let departmentData1 = departmentDataFile['DepartmentData19501'];       
+        let caseTemplateData;
+        beforeAll(async () => {
+            await apiHelper.apiLogin('qkatawazi');
+            caseTemplateData = {
+                "templateName": `${randomStr}Case template`,
+                "templateStatus": "Draft",
+                "templateSummary": `${randomStr}Summary`,
+                "caseStatus": "New",
+                "casePriority": "Critical",
+                "categoryTier1": 'Purchasing Card',
+                "company": "Petramco",
+            }
+            await apiHelper.createCaseTemplate(caseTemplateData);
+        });
+        it('[DRDMV-7061,DRDMV-6998]: [Read Access] Configuring non-default Read Access', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            await consoleReadAcess.clickOnReadAccessConfiguration();
+            await addReadAccess.setReadAccessConfigurationName("ReadAccess" + randomStr);
+            await addReadAccess.selectCompany('Petramco');
+            await addReadAccess.selectPriority('Critical');
+            await addReadAccess.selectCategoryTier1('Purchasing Card');
+            await addReadAccess.selectSupportCompany('Petramco');
+            await addReadAccess.selectBusinessUnit(businessData.orgName);
+            await addReadAccess.selectDepartment(departmentData.orgName);
+            await addReadAccess.selectSupportGroup(suppGrpData.orgName);
+            expect(await addReadAccess.isAccessMappingNameFieldMandatory()).toBeTruthy("Mapping Name Field is not present");
+            expect(await addReadAccess.isBusinessUnitDisplayed()).toBeTruthy("Business Unit Field is not present");
+            expect(await addReadAccess.isCancelButtonDisplayed()).toBeTruthy("Cancel Button is not present");
+            expect(await addReadAccess.isDepartmentDisplayed()).toBeTruthy("Department Unit Field is not present");
+            expect(await addReadAccess.isFlowsetDisplayed()).toBeTruthy("Flowset Field is not present");
+            expect(await addReadAccess.isPriorityDisplayed()).toBeTruthy("Priority Field is not present");
+            expect(await addReadAccess.isSupportCompanyFieldMandatory()).toBeTruthy("Support Company Field is not present");
+            expect(await addReadAccess.isSaveButtonDisplayed()).toBeTruthy("Save Button is not present");
+            expect(await addReadAccess.isSupportGroupFieldMandatory()).toBeTruthy("Support Group Field is not present");
+            expect(await addReadAccess.isUseAsDefaultFieldMandatory()).toBeTruthy("Use As Default Field is not present");
+            await addReadAccess.clickOnSave();
+            await utilCommon.closePopUpMessage();
+        });
+        it('[DRDMV-7061,DRDMV-6998]: [Read Access] Configuring non-default Read Access', async () => {
+            await navigationPo.gotoSettingsPage();
+            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await utilGrid.searchAndOpenHyperlink(caseTemplateData.templateName);
+            await editCaseTemplate.clickEditCaseTemplate();
+            await editCaseTemplate.clickOnChangeAssignmentButton();
+            await changAssignmentOldPage.selectCompany('Petramco');
+            await changAssignmentOldPage.selectBusinessUnit(businessData1.orgName);
+            await changAssignmentOldPage.selectDepartment(departmentData1.orgName);
+            await changAssignmentOldPage.selectSupportGroup(suppGrpData1.orgName);
+            await changAssignmentOldPage.selectAssignee('fnPerson19501 lnPerson19501');
+            await changAssignmentOldPage.clickOnAssignButton();
+            await editCaseTemplate.clickSaveCaseTemplate();
+            await editCaseTemplate.clickOnEditCaseTemplateMetadata();
+            await editCaseTemplate.changeTemplateStatusDropdownValue('Active');
+            await editCaseTemplate.clickOnSaveCaseTemplateMetadata();
+            await utilCommon.closePopUpMessage();
+        });
+        it('[DRDMV-7061,DRDMV-6998]: [Read Access] Configuring non-default Read Access', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qtao')
+            await navigationPage.gotoQuickCase();
+            await quickCasePo.selectRequesterName('qkatawazi');
+            await quickCasePo.selectCaseTemplate(caseTemplateData.templateName);
+            await quickCasePo.saveCase();
+            await casePreviewPo.clickGoToCaseButton();
+            await viewCasePage.clickOnTab('Case Access');
+            expect(await caseAccessTabPo.isCaseAccessEntityAdded(suppGrpData.orgName)).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+            expect(await caseAccessTabPo.isCaseAccessEntityAdded('fnPerson19501 lnPerson19501')).toBeTruthy('FailuerMsg1: Agent Name is missing');
+            expect(await caseAccessTabPo.isSupportGroupReadAccessDisplayed(suppGrpData.orgName)).toBeTruthy('Support Group does not have read access');
+        });
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('peter');
+        });
     });
 });
