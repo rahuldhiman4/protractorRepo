@@ -2,7 +2,6 @@ import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions, 
 
 const fs = require('fs');
 
-
 export class Utility {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
@@ -31,20 +30,25 @@ export class Utility {
         ckEditorTextArea: '.cke_enable_context_menu',
     }
 
-    async selectDropDown(guid: string, value: string): Promise<void> {
-        const dropDown = await $(`[rx-view-component-id="${guid}"]`);
-        const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
-        const dropDownInputElement: ElementFinder = await dropDown.$(this.selectors.dropDownInput);
-        await dropDownBoxElement.click();
-        console.log(`Selecting dropdown value: ${value}`);
-        let isSearchPresent: boolean = await dropDownInputElement.isPresent();
-        if (isSearchPresent) await dropDownInputElement.sendKeys(value);
+    async selectDropDown(guid: string | ElementFinder, value: string): Promise<void> {
+        if (typeof guid === 'string') {
+            const dropDown = await $(`[rx-view-component-id="${guid}"]`);
+            const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
+            const dropDownInputElement: ElementFinder = await dropDown.$(this.selectors.dropDownInput);
+            await dropDownBoxElement.click();
+            console.log(`Selecting dropdown value: ${value}`);
+            let isSearchPresent: boolean = await dropDownInputElement.isPresent();
+            if (isSearchPresent) await dropDownInputElement.sendKeys(value);
 
-        let optionCss: string = `[rx-view-component-id="${guid}"] .dropdown_select__menu-content button`;
-        let option = await element(by.cssContainingText(optionCss, value));
-        await browser.wait(this.EC.elementToBeClickable(option), 3000).then(async function () {
-            await option.click();
-        });
+            let optionCss: string = `[rx-view-component-id="${guid}"] .dropdown_select__menu-content button`;
+            let option = await element(by.cssContainingText(optionCss, value));
+            await browser.wait(this.EC.elementToBeClickable(option), 3000).then(async function () {
+                await option.click();
+            });
+        }
+        else {
+
+        }
     }
 
     async clearDropDown(guid: string, optionValue: string): Promise<void> {
@@ -452,6 +456,10 @@ export class Utility {
         for (let i: number = 0; i < 2; i++) {
             await $('body').sendKeys(protractor.Key.ESCAPE);
         }
+    }
+
+    async scrollToElement(element: ElementFinder): Promise<void> {
+        await browser.executeScript("arguments[0].scrollIntoView();", element.getWebElement());
     }
 }
 

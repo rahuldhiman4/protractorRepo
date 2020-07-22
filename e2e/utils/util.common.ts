@@ -117,10 +117,6 @@ export class Util {
         );
     }
 
-    async scrollUpOrDownTillElement(element: string): Promise<void> {
-        await browser.executeScript("arguments[0].scrollIntoView();", $(`${element}`).getWebElement());
-    }
-
     async isErrorMsgPresent(): Promise<boolean> {
         return await $(this.selectors.errorMsg).isDisplayed();
     }
