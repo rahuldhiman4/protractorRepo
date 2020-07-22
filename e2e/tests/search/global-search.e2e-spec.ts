@@ -106,24 +106,24 @@ describe('Case Data Store', () => {
             expect(await casePreviewPo.isFieldLabelDisplayed('Assigned Company')).toBeTruthy('FailureMsg18: Assigned Company label is missing');
         });
         it('[DRDMV-16065]: Verify Case Preview Field Values', async () => {
-            expect(await casePreviewPo.isCaseSummaryDisplayed(caseSummary)).toBeTruthy('FailureMsg20: Case Summary label is missing');
-            expect(await casePreviewPo.isGlobalSearchCaseIdDisplayed(caseId)).toBeTruthy('FailureMsg33: Case id is missing');
-            expect(await casePreviewPo.isCaseStatusDisplayed('Assigned')).toBeTruthy('FailureMsg34: Case Status is missing');
-            expect(await casePreviewPo.isPriorityDisplayed('Medium')).toBeTruthy('FailureMsg35: Case Priority is missing');
-            expect(await casePreviewPo.isRequesterNameDisplayed('Qadim Katawazi')).toBeTruthy('FailureMsg36: Reqester Name missing');
-            expect(await casePreviewPo.isRequesterCompanyDisplayed('Petramco')).toBeTruthy('FailureMsg37: Reqester Company is missing');
-            expect(await casePreviewPo.isRequesterPhoneDisplayed('+15123431923')).toBeTruthy('FailureMsg38: Reqester Phone is missing');
-            expect(await casePreviewPo.isRequesterEmailIdDisplayed('qkatawazi@petramco.com')).toBeTruthy('FailureMsg39: Reqester Company is missing');
-            expect(await casePreviewPo.isCaseSiteDisplayed('Austin')).toBeTruthy('FailureMsg40: Case Site Value is missing');
-            expect(await casePreviewPo.isSourceDisplayed('External')).toBeTruthy('FailureMsg41: Source Value is missing');
-            expect(await casePreviewPo.isRequesterSiteDisplayed('Austin\n' + '10431 Morado Circle\n' + 'Avalon Building 5, Austin, Texas, 78759, United States ')).toBeTruthy('FailureMsg42: Reqester Site Value is missing');
-            expect(await casePreviewPo.isAssigneeDisplayed('Qiang Du')).toBeTruthy('FailureMsg43: Assignee Name is missing');
-            expect(await casePreviewPo.isAssignedGroupDisplayed('CA Support 1')).toBeTruthy('FailureMsg44: Assigned Support Group Value is missing');
-            expect(await casePreviewPo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy('FailureMsg45: Assigned Company Value is missing');
+            expect(await casePreviewPo.isCaseSummaryDisplayed(caseSummary)).toBeTruthy('FailureMsg19: Case Summary label is missing');
+            expect(await casePreviewPo.isGlobalSearchCaseIdDisplayed(caseId)).toBeTruthy('FailureMsg20: Case id is missing');
+            expect(await casePreviewPo.isCaseStatusDisplayed('Assigned')).toBeTruthy('FailureMsg21: Case Status is missing');
+            expect(await casePreviewPo.isPriorityDisplayed('Medium')).toBeTruthy('FailureMsg22: Case Priority is missing');
+            expect(await casePreviewPo.isRequesterNameDisplayed('Qadim Katawazi')).toBeTruthy('FailureMsg23: Reqester Name missing');
+            expect(await casePreviewPo.isRequesterCompanyDisplayed('Petramco')).toBeTruthy('FailureMsg24: Reqester Company is missing');
+            expect(await casePreviewPo.isRequesterPhoneDisplayed('+15123431923')).toBeTruthy('FailureMsg25: Reqester Phone is missing');
+            expect(await casePreviewPo.isRequesterEmailIdDisplayed('qkatawazi@petramco.com')).toBeTruthy('FailureMsg26: Reqester Company is missing');
+            expect(await casePreviewPo.isCaseSiteDisplayed('Austin')).toBeTruthy('FailureMsg27: Case Site Value is missing');
+            expect(await casePreviewPo.isSourceDisplayed('External')).toBeTruthy('FailureMsg28: Source Value is missing');
+            expect(await casePreviewPo.isRequesterSiteDisplayed('Austin\n' + '10431 Morado Circle\n' + 'Avalon Building 5, Austin, Texas, 78759, United States ')).toBeTruthy('FailureMsg29: Reqester Site Value is missing');
+            expect(await casePreviewPo.isAssigneeDisplayed('Qiang Du')).toBeTruthy('FailureMsg30: Assignee Name is missing');
+            expect(await casePreviewPo.isAssignedGroupDisplayed('CA Support 1')).toBeTruthy('FailureMsg31: Assigned Support Group Value is missing');
+            expect(await casePreviewPo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy('FailureMsg32: Assigned Company Value is missing');
         });
         it('[DRDMV-16065]: Verify Modules Catergoy drop down ', async () => {
             let category: string[] = ['All', 'Case', 'Task', 'People', 'Knowledge', 'Document', 'Case Template', 'Task Template'];
-            expect(await searchPo.isCategoryAllDropDownValuesMatches(category)).toBeTruthy('FailureMsg: Category options mismatch');
+            expect(await searchPo.isCategoryAllDropDownValuesMatches(category)).toBeTruthy('FailureMsg33: Category options mismatch');
         });
     });
 
@@ -143,6 +143,7 @@ describe('Case Data Store', () => {
 
         beforeAll(async () => {
             await apiHelper.apiLogin('qtao');
+            // Create Case with summary
             for (let a = 0; a < 5; a++) {
                 let caseDetails = await createCase(summary);
                 caseDisplayId1[a] = caseDetails.displayId;
@@ -154,7 +155,7 @@ describe('Case Data Store', () => {
                 let caseDetails = await createCase(summary, description);
                 caseDisplayId2[b] = caseDetails.displayId;
             }
-
+          
             // Non maching case
             await createCase(nonMatchingSummary, nonMatchingDescription);
 
@@ -225,51 +226,51 @@ describe('Case Data Store', () => {
             expect(await casePreviewPo.isAssigneeDisplayed('Qiang Du')).toBeTruthy('FailureMsg43: Assignee Name is missing');
             expect(await casePreviewPo.isAssignedGroupDisplayed('CA Support 1')).toBeTruthy('FailureMsg44: Assigned Support Group Value is missing');
             expect(await casePreviewPo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy('FailureMsg45: Assigned Company Value is missing');
-            expect(await casePreviewPo.isDescriptionDisplayed(description)).toBeFalsy('FailureMsg62: case Description displayed');
+            expect(await casePreviewPo.isDescriptionDisplayed(description)).toBeFalsy('FailureMsg46: case Description displayed');
             // Search Case with case description
             await searchPo.searchRecord(description);
-            expect(await searchPo.isModuleTitleDisplayed(description, 'Cases (5)', caseModule)).toBeTruthy('FailureMsg63: Case module title is missing');
+            expect(await searchPo.isModuleTitleDisplayed(description, 'Cases (5)', caseModule)).toBeTruthy('FailureMsg47: Case module title is missing');
             await searchPo.clickOnLeftPannelRecord(caseDisplayId2[0], caseModule);
-            expect(await casePreviewPo.isGlobalSearchCaseIdDisplayed(caseDisplayId2[0])).toBeTruthy('FailureMsg61: Case id is missing');
-            expect(await casePreviewPo.isDescriptionDisplayed(description)).toBeTruthy('FailureMsg62: case Description is missing');
+            expect(await casePreviewPo.isGlobalSearchCaseIdDisplayed(caseDisplayId2[0])).toBeTruthy('FailureMsg48: Case id is missing');
+            expect(await casePreviewPo.isDescriptionDisplayed(description)).toBeTruthy('FailureMsg49: Case Description is missing');
         });
 
         it('[DRDMV-16102]: Click On Goto Case button and verify ', async () => {
             await casePreviewPo.clickGoToCaseButton();
-            expect(await viewCasetemplatePo.getCaseTemplateId()).toBe(caseDisplayId2[0], 'FailureMsg47: Case id is missing on view case page');
+            expect(await viewCasetemplatePo.getCaseTemplateId()).toBe(caseDisplayId2[0], 'FailureMsg50: Case id is missing on view case page');
         });
 
         it('[DRDMV-16065]: Verify Case with non matching Case summary and description Also Verify case summary and description who have not access of the case', async () => {
             await navigationPage.gotoSearch();
             await searchPo.searchRecord(summary);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(nonMatchingSummary, caseModule)).toBeFalsy(`FailureMsg48: ${nonMatchingSummary} case Summary is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(nonMatchingDescription, caseModule)).toBeFalsy(`FailureMsg49: ${nonMatchingDescription} case Description is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(nonMatchingSummary, caseModule)).toBeFalsy(`FailureMsg51: ${nonMatchingSummary} case Summary is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(nonMatchingDescription, caseModule)).toBeFalsy(`FailureMsg52: ${nonMatchingDescription} case Description is missing`);
             await searchPo.clickOnPaginationPageNo(caseModule, "2");
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(nonMatchingSummary, caseModule)).toBeFalsy(`FailureMsg50: ${nonMatchingSummary} case Summary is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(nonMatchingDescription, caseModule)).toBeFalsy(`FailureMsg51: ${nonMatchingDescription} case Description is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(nonMatchingSummary, caseModule)).toBeFalsy(`FailureMsg53: ${nonMatchingSummary} case Summary is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(nonMatchingDescription, caseModule)).toBeFalsy(`FailureMsg54: ${nonMatchingDescription} case Description is missing`);
             // Verify case summary and description who have not access of the case
             await searchPo.clickOnPaginationPageNo(caseModule, "1");
             await searchPo.searchRecord(summary);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId3[0], caseModule)).toBeFalsy(`FailureMsg52: ${caseDisplayId3[0]} case id  is displayed`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId3[1], caseModule)).toBeFalsy(`FailureMsg53: ${caseDisplayId3[1]} case id  is displayed`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId3[0], caseModule)).toBeFalsy(`FailureMsg55: ${caseDisplayId3[0]} case id  is displayed`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId3[1], caseModule)).toBeFalsy(`FailureMsg56: ${caseDisplayId3[1]} case id  is displayed`);
             await searchPo.clickOnPaginationPageNo(caseModule, "2");
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId3[0], caseModule)).toBeFalsy(`FailureMsg54: ${caseDisplayId3[0]} case id  is displayed`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId3[1], caseModule)).toBeFalsy(`FailureMsg55: ${caseDisplayId3[1]} case id  is displayed`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId3[0], caseModule)).toBeFalsy(`FailureMsg57: ${caseDisplayId3[0]} case id  is displayed`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId3[1], caseModule)).toBeFalsy(`FailureMsg58: ${caseDisplayId3[1]} case id  is displayed`);
         });
 
          it('[DRDMV-16102]: Clear search and verify record displayed on left pannel ', async () => {
             await searchPo.searchRecord(summary);
-            expect(await searchPo.isModuleTitleDisplayed(summary, 'Cases (10)', caseModule)).toBeTruthy('FailureMsg2: Case module title is missing');
+            expect(await searchPo.isModuleTitleDisplayed(summary, 'Cases (10)', caseModule)).toBeTruthy('FailureMsg59: Case module title is missing');
             await searchPo.clickClearSearchButton();
-            expect(await searchPo.isClearSearchButtonDisplayed()).toBeFalsy('FailureMsg56: Search box is cleared and cross button gets hide');
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[0], caseModule)).toBeTruthy(`FailureMsg57: ${caseDisplayId3[0]} case id  is missing`);
+            expect(await searchPo.isClearSearchButtonDisplayed()).toBeFalsy('FailureMsg60: Search box is cleared and cross button gets hide');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[0], caseModule)).toBeTruthy(`FailureMsg61: ${caseDisplayId3[0]} case id  is missing`);
         });
 
         it('[DRDMV-16102]: Verify search functionality with dummy text ', async () => {
             await searchPo.searchRecord(dummyDescription);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(dummyDescription, caseModule)).toBeFalsy(`FailureMsg58: ${dummyDescription} dummyText  is displayed`);
-            expect(await searchPo.isModuleTitleDisplayed(dummyDescription, 'Cases (0)', caseModule)).toBeTruthy('FailureMsg59: Case module title is missing');
-            expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(caseModule)).toBeTruthy(`FailureMsg60: No result found validation is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(dummyDescription, caseModule)).toBeFalsy(`FailureMsg62: ${dummyDescription} dummyText  is displayed`);
+            expect(await searchPo.isModuleTitleDisplayed(dummyDescription, 'Cases (0)', caseModule)).toBeTruthy('FailureMsg63: Case module title is missing');
+            expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(caseModule)).toBeTruthy(`FailureMsg64: No result found validation is missing`);
         });
     });
 });
