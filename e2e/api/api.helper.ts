@@ -1839,6 +1839,13 @@ class ApiHelper {
         } else console.log('Doc Lib GUID not found =============>', documentLibTitle);
     }
 
+    async deleteCaseReadAccess(readAccessName: string): Promise<boolean> {
+        let readAccessGuid = await coreApi.getReadAccessGuid(readAccessName);
+        if (readAccessGuid) {
+            return await coreApi.deleteRecordInstance('com.bmc.dsm.case-lib:Case Assignment Mapping', readAccessGuid);
+        } else console.log('Read Access not found =============>', readAccessName);
+    }
+
     async createKnowledgeSet(knowledgeSetDetails: IKnowledgeSet): Promise<IIDs> {
         let knowledgeSetData = cloneDeep(KNOWLEDGE_SET);
         knowledgeSetData.fieldInstances[8].value = knowledgeSetDetails.knowledgeSetDesc;
