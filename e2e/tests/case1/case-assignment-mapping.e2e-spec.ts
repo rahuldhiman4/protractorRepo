@@ -371,16 +371,15 @@ describe("Create Case Assignment Mapping", () => {
             await utilityCommon.closePopUpMessage();
             await manageTaskPo.clickTaskLink(summary);
             await viewTask.clickOnEditTask();
+            await editTaskPo.updateTaskSummary(summary + "new");
             await editTaskPo.clickOnChangeAssignementButton();
             await changeAssignmentPage.selectBusinessUnit(businessData.orgName);
             await changeAssignmentPage.selectDepartment(departmentData.orgName);
             await changeAssignmentPage.selectSupportGroup(suppGrpData.orgName);
             await changeAssignmentPage.selectAssignee('fnPerson11825 lnPerson11825');
             await changeAssignmentPage.clickOnAssignButton();
-            await editTaskPo.updateTaskSummary(summary);
             await editTaskPo.clickOnSaveButton();
             await utilCommon.closePopUpMessage();
-            await utilCommon.scrollUpOrDownTillElement(viewTask.selectors.assignedGroupValue);
             expect(await viewTask.getAssignedGroupText()).toBe(suppGrpData.orgName, "Support Group Not Populated");
             expect(await viewTask.getAssigneeText()).toContain('fnPerson11825 lnPerson11825', "assignee is not available");
             expect(await viewTask.getBusinessUnitText()).toBe(businessData.orgName, "Buisness Unit is not available");

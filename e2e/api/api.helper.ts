@@ -5,7 +5,7 @@ import * as uuid from 'uuid';
 import { default as apiCoreUtil, default as coreApi } from "../api/api.core.util";
 import * as constants from "../api/constant.api";
 import { APPROVAL_ACTION, MORE_INFO_RETURN_ACTION } from "../data/api/approval/approval.action.api";
-import { CASE_APPROVAL_FLOW, INVALID_CASE_APPROVAL_FLOW, INVALID_KM_APPROVAL_FLOW } from '../data/api/approval/approval.flow.api';
+import { CASE_APPROVAL_FLOW, INVALID_APPROVAL_FLOW, MULTI_APPROVAL_FLOW } from '../data/api/approval/approval.flow.api';
 import { CASE_APPROVAL_MAPPING } from '../data/api/approval/approval.mapping.api';
 import { CASE_READ_ACCESS } from '../data/api/case/case.read.access.api';
 import { CASE_REOPEN } from '../data/api/case/case.reopen.api';
@@ -1749,47 +1749,20 @@ class ApiHelper {
         }
     }
 
-    async deleteAllApprovalFlow(recordDefinition: string, flowGroupName?: string): Promise<boolean> {
-        let uri: string;
-        let remoteApprovalFlow: any;
+    async deleteAllApprovalFlow(recordDefinition: string): Promise<boolean> {
+        let remoteApprovalFlow = cloneDeep(INVALID_APPROVAL_FLOW);
         switch (recordDefinition) {
             case "Case": {
-                remoteApprovalFlow = cloneDeep(INVALID_CASE_APPROVAL_FLOW);
-                if (flowGroupName) {
-                    uri = "api/com.bmc.arsys.rx.approval/rx/application/approval/flowconfiguration/com.bmc.dsm.case-lib:Case/flowGroupName/" + flowGroupName;
-                    remoteApprovalFlow.flowGroup = flowGroupName;
-                }
-                else uri = "api/com.bmc.arsys.rx.approval/rx/application/approval/flowconfiguration/com.bmc.dsm.case-lib:Case/flowGroupName/BWFA Group";
-                break;
+                return await this.createCaseApprovalFlow(remoteApprovalFlow);
             }
             case "Knowledge": {
-                remoteApprovalFlow = cloneDeep(INVALID_KM_APPROVAL_FLOW);
-                if (flowGroupName) {
-                    uri = "api/com.bmc.arsys.rx.approval/rx/application/approval/flowconfiguration/com.bmc.dsm.knowledge:Knowledge Article Template/flowGroupName/" + flowGroupName;
-                    remoteApprovalFlow.flowGroup = flowGroupName;
-                }
-                else uri = "api/com.bmc.arsys.rx.approval/rx/application/approval/flowconfiguration/com.bmc.dsm.knowledge:Knowledge Article Template/flowGroupName/Default Article Approval Flow Group";
-                break;
+                return await this.createKnowledgeApprovalFlow(remoteApprovalFlow);
             }
             default: {
                 console.log('Put valid Record Definition for approval flow deletion');
                 break;
             }
         }
-
-        if (!flowGroupName) {
-
-        } else {
-
-
-        }
-
-        const putOnlyRemoteApprovalFlow = await axios.put(
-            uri,
-            remoteApprovalFlow
-        );
-        console.log("Delete Approval Flow Status ===== " + putOnlyRemoteApprovalFlow.status);
-        return putOnlyRemoteApprovalFlow.status == 204;
     }
 
     async runAutomatedCaseTransitionProcess(): Promise<number> {
@@ -2102,12 +2075,17 @@ class ApiHelper {
         return knowledgeApproval.status == 201;
     }
 
-    async createKnowledgeApprovalFlow(data: any): Promise<boolean> {
-        let knowledgeApprovalFlowConfig = cloneDeep(KNOWLEDGE_APPROVAL_FLOW_CONFIG);
-        knowledgeApprovalFlowConfig.approvalFlowConfigurationList[0].flowName = data.flowName;
-        knowledgeApprovalFlowConfig.approvalFlowConfigurationList[0].approvers = 'U:' + data.approver;
-        knowledgeApprovalFlowConfig.approvalFlowConfigurationList[0].qualification = data.qualification;
-
+    async createKnowledgeApprovalFlow(data: any, multipleApproval?: boolean): Promise<boolean> {
+        let knowledgeApprovalFlowConfig: any;
+        if (!multipleApproval) {
+            knowledgeApprovalFlowConfig = cloneDeep(KNOWLEDGE_APPROVAL_FLOW_CONFIG);
+            knowledgeApprovalFlowConfig.approvalFlowConfigurationList[0].flowName = data.flowName;
+            knowledgeApprovalFlowConfig.approvalFlowConfigurationList[0].approvers = 'U:' + data.approver;
+            knowledgeApprovalFlowConfig.approvalFlowConfigurationList[0].qualification = data.qualification;
+        } else {
+            knowledgeApprovalFlowConfig = cloneDeep(MULTI_APPROVAL_FLOW);
+            knowledgeApprovalFlowConfig.approvalFlowConfigurationList = data;
+        }
         let response = await axios.put(
             "api/com.bmc.arsys.rx.approval/rx/application/approval/flowconfiguration/com.bmc.dsm.knowledge:Knowledge Article Template/flowGroupName/Default Article Approval Flow Group",
             knowledgeApprovalFlowConfig,
@@ -2202,11 +2180,17 @@ class ApiHelper {
         return response.status == 200;
     }
 
-    async createCaseApprovalFlow(data: any): Promise<boolean> {
-        let caseApprovalFlow = cloneDeep(CASE_APPROVAL_FLOW);
-        caseApprovalFlow.approvalFlowConfigurationList[0].flowName = data.flowName;
-        caseApprovalFlow.approvalFlowConfigurationList[0].approvers = 'U:' + data.approver;
-        caseApprovalFlow.approvalFlowConfigurationList[0].qualification = data.qualification;
+    async createCaseApprovalFlow(data: any, multipleApproval?: boolean): Promise<boolean> {
+        let caseApprovalFlow: any;
+        if (!multipleApproval) {
+            caseApprovalFlow = cloneDeep(CASE_APPROVAL_FLOW);
+            caseApprovalFlow.approvalFlowConfigurationList[0].flowName = data.flowName;
+            caseApprovalFlow.approvalFlowConfigurationList[0].approvers = 'U:' + data.approver;
+            caseApprovalFlow.approvalFlowConfigurationList[0].qualification = data.qualification;
+        } else {
+            caseApprovalFlow = cloneDeep(MULTI_APPROVAL_FLOW);
+            caseApprovalFlow.approvalFlowConfigurationList = data;
+        }
         let response = await axios.put(
             "api/com.bmc.arsys.rx.approval/rx/application/approval/flowconfiguration/com.bmc.dsm.case-lib:Case/flowGroupName/BWFA Group",
             caseApprovalFlow,

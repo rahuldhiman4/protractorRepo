@@ -2,7 +2,6 @@ import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions, 
 
 const fs = require('fs');
 
-
 export class Utility {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
@@ -463,6 +462,10 @@ export class Utility {
         for (let i: number = 0; i < 2; i++) {
             await $('body').sendKeys(protractor.Key.ESCAPE);
         }
+    }
+
+    async scrollToElement(element: ElementFinder): Promise<void> {
+        await browser.executeScript("arguments[0].scrollIntoView();", element.getWebElement());
     }
 }
 
