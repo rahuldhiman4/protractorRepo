@@ -36,7 +36,7 @@ class CasePreview {
         showMoreDescription:'.bwf-description-read-state button',
     }
 
-    async isFieldLabeltDisplayed(labelName: string): Promise<boolean> {
+    async isFieldLabelDisplayed(labelName: string): Promise<boolean> {
         return await element(by.cssContainingText(this.selectors.fieldLabels, labelName)).isPresent().then(async (link) => {
             if (link) {
                 return await element(by.cssContainingText(this.selectors.fieldLabels, labelName)).isDisplayed();
@@ -163,14 +163,6 @@ class CasePreview {
 
     async clickGoToCaseButton(): Promise<void> {
         await $(this.selectors.gotoCaseButton).click();
-    }
-
-    async isGotoCaseButtonDisplayed(): Promise<boolean> {
-        return await $(this.selectors.gotoCaseButton).isPresent().then(async (link) => {
-            if (link) {
-                return await $(this.selectors.gotoCaseButton).isDisplayed();
-            } else return false;
-        });
     }
 
     async isAssignedGroupDisplayed(assignedGroup: string): Promise<boolean> {

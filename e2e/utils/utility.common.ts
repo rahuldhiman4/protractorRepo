@@ -31,12 +31,8 @@ export class Utility {
         ckEditorTextArea: '.cke_enable_context_menu',
     }
 
-    async selectDropDown(guid: string, value: string, dropDownElementFinder?: ElementFinder): Promise<void> {
-        if(dropDownElementFinder){
-            await dropDownElementFinder.click();
-            let option = await element(by.cssContainingText(this.selectors.dropDownChoice, value));
-            await option.click();
-        }else{
+    async selectDropDown(guid: string|ElementFinder, value: string): Promise<void> {
+        if (typeof guid === 'string') {
             const dropDown = await $(`[rx-view-component-id="${guid}"]`);
             const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
             const dropDownInputElement: ElementFinder = await dropDown.$(this.selectors.dropDownInput);
@@ -48,9 +44,14 @@ export class Utility {
             let optionCss: string = `[rx-view-component-id="${guid}"] .dropdown_select__menu-content button`;
             let option = await element(by.cssContainingText(optionCss, value));
             await browser.wait(this.EC.elementToBeClickable(option), 3000).then(async function () {
-                await option.click();
+            await option.click();
             });
+        }else {
+            await guid.click();
+            let option = await element(by.cssContainingText(this.selectors.dropDownChoice, value));
+            await option.click();
         }
+   
     }
 
     async clearDropDown(guid: string,optionValue:string): Promise<void> {
@@ -72,16 +73,15 @@ export class Utility {
         if (count >= 1) { return true; } else { return false; }
     }
 
-    async isAllDropDownValuesMatches(guid: string, data: string[] ,element?: ElementFinder): Promise<boolean> {
+    async isAllDropDownValuesMatches(guid: string|ElementFinder, data: string[]): Promise<boolean> {
         let arr: string[] = [];
-        if(element){
-            await element.click();
-        }else{
+        if (typeof guid === 'string') {
             const dropDown = await $(`[rx-view-component-id="${guid}"]`);
             const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
             await dropDownBoxElement.click();
+        }else {
+            await guid.click();
         }
-        
         let drpDwnvalue: number = await $$(this.selectors.dropDownOption).count();
         for (let i = 0; i < drpDwnvalue; i++) {
             let ab: string = await $$(this.selectors.dropDownOption).get(i).getText();

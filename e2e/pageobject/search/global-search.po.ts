@@ -72,12 +72,12 @@ class GlobalSearch {
 
     async isCategoryAllDropDownValuesMatches(data: string[]): Promise<boolean> {
         let element = await $(this.selectors.categoryDropDown);
-        return await utilityCommon.isAllDropDownValuesMatches('8d5a0a18-39ae-4305-bf38-c13e53cb957e', data, element);
+        return await utilityCommon.isAllDropDownValuesMatches(element, data);
     }
 
-    async selectCategoryDropDownValue(categoryText: string): Promise<void> {
+    async selectCategoryDropDownValue(categoryDropdownValue: string): Promise<void> {
         let elemeent = await $(this.selectors.categoryDropDown);
-        await utilityCommon.selectDropDown('8d5a0a18-39ae-4305-bf38-c13e53cb957e', categoryText, elemeent);
+        await utilityCommon.selectDropDown(elemeent, categoryDropdownValue);
     }
 
     async isLeftGlobalSearchPannelDisplayed(): Promise<boolean> {
@@ -396,6 +396,50 @@ class GlobalSearch {
                 break;
             }
         }
+    }
+
+    async isBlankRecordValidationDisplayedOnLeftPanel(moduleName: string): Promise<boolean> {
+        let guid;
+        switch (moduleName) {
+            case "Case": {
+                guid = this.selectors.caseGuid;
+                break;
+            }
+            case "Task": {
+                guid = this.selectors.taskGuid;
+                break;
+            }
+            case "Knowledge Article": {
+                guid = this.selectors.knowledgeArticleGuid;
+                break;
+            }
+            case "Documents": {
+                guid = this.selectors.documentsGuid;
+                break;
+            }
+            case "People": {
+                guid = this.selectors.peopleGuid;
+                break;
+            }
+            case "Case Templates": {
+                guid = this.selectors.caseTemplatesGuid;
+                break;
+            }
+            case "Task Template": {
+                guid = this.selectors.taskTemplateGuid;
+                break;
+            }
+            default: {
+                console.log('Module name does not match');
+                break;
+            }
+        }
+
+        return await element(by.cssContainingText(`[rx-view-component-id="${guid}"] p`, 'No results found.')).isPresent().then(async (link) => {
+            if (link) {
+                return await element(by.cssContainingText(`[rx-view-component-id="${guid}"] p`, 'No results found.')).isDisplayed();
+            } else return false;
+        });
     }
 }
 export default new GlobalSearch();
