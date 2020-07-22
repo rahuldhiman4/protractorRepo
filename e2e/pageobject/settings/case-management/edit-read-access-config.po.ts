@@ -12,6 +12,7 @@ class ReadAccessConfigEditPage {
         companyField: '[rx-view-component-id="2d60a97e-67aa-41fe-94f9-72e83556789b"] span.form-control',
         companyGuid: '2d60a97e-67aa-41fe-94f9-72e83556789b',
         cancelButton: '[rx-view-component-id="4161aa6c-2565-4f6e-85af-088df3db222e"] button',
+        defaultToggleGuid: 'fa6bad05-195e-4df6-a7f1-daf55b2e0571'
     }
 
     async isAccessMappingNameDisabled(): Promise<boolean> {
@@ -45,6 +46,10 @@ class ReadAccessConfigEditPage {
 
     async clickOnCancel(): Promise<void> {
         await $(this.selectors.cancelButton).click();
+    }
+
+    async setDefaultToggleButton(value: boolean): Promise<void> {
+        await utilCommon.selectToggleButton(this.selectors.defaultToggleGuid, value);
     }
 }
 
