@@ -277,12 +277,25 @@ class ApiCoreUtil {
         return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
     }
 
-    async associateFoundationElements(associationName: string, entity1: string, entity2: string): Promise<void> {
-        const associateEntities = await axios.post(
+    async associateFoundationElements(associationName: string, entity1: string, entity2: string): Promise<AxiosResponse> {
+        return await axios.post(
             "api/rx/application/command",
             {
                 "resourceType": "com.bmc.arsys.rx.application.association.command.AssociateMultipleCommand",
                 "associationDefinitionName": `com.bmc.arsys.rx.foundation:${associationName}`,
+                "nodeARecordInstanceIds": [entity1],
+                "nodeBRecordInstanceIds": [entity2]
+            }
+        );
+
+    }
+
+    async disassociateFoundationElements(disassociationName: string, entity1: string, entity2: string): Promise<AxiosResponse> {
+        return await axios.post(
+            "api/rx/application/command",
+            {
+                "resourceType": "com.bmc.arsys.rx.application.association.command.DisassociateMultipleCommand",
+                "associationDefinitionName": disassociationName,
                 "nodeARecordInstanceIds": [entity1],
                 "nodeBRecordInstanceIds": [entity2]
             }
