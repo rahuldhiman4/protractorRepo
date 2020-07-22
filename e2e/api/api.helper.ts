@@ -952,22 +952,25 @@ class ApiHelper {
         }
     }
 
-    async associatePersonToCompany(userId: string, company: string): Promise<void> {
+    async associatePersonToCompany(userId: string, company: string): Promise<boolean> {
         let userGuid = await coreApi.getPersonGuid(userId);
         let companyGuid = await coreApi.getOrganizationGuid(company);
-        await coreApi.associateFoundationElements("Agent Supports Primary Organization", userGuid, companyGuid);
+        let response = await coreApi.associateFoundationElements("Agent Supports Primary Organization", userGuid, companyGuid);
+        return response.status == 204;
     }
 
-    async associatePersonToSupportGroup(userId: string, supportGroup: string): Promise<void> {
+    async associatePersonToSupportGroup(userId: string, supportGroup: string): Promise<boolean> {
         let userGuid = await coreApi.getPersonGuid(userId);
         let supportGroupGuid = await coreApi.getSupportGroupGuid(supportGroup);
-        await coreApi.associateFoundationElements("Person to Support Secondary Organization", userGuid, supportGroupGuid);
+        let response = await coreApi.associateFoundationElements("Person to Support Secondary Organization", userGuid, supportGroupGuid);
+        return response.status == 204;
     }
 
-    async associateCategoryToOrganization(category: string, organization: string): Promise<void> {
+    async associateCategoryToOrganization(category: string, organization: string): Promise<boolean> {
         let organizationGuid = await coreApi.getOrganizationGuid(organization);
         let categoryGuid = await coreApi.getCategoryGuid(category);
-        await coreApi.associateFoundationElements("Organization Uses Categorization", organizationGuid, categoryGuid);
+        let response = await coreApi.associateFoundationElements("Organization Uses Categorization", organizationGuid, categoryGuid);
+        return response.status == 204;
     }
 
     async createOperationalCategory(category: string, isGlobal?: boolean): Promise<IIDs> {
@@ -1003,10 +1006,11 @@ class ApiHelper {
         };
     }
 
-    async associateCategoryToCategory(category1: string, category2: string): Promise<void> {
+    async associateCategoryToCategory(category1: string, category2: string): Promise<boolean> {
         let category1Guid = await coreApi.getCategoryGuid(category1);
         let category2Guid = await coreApi.getCategoryGuid(category2);
-        await coreApi.associateFoundationElements("Categorization to Categorization", category1Guid, category2Guid);
+        let response = await coreApi.associateFoundationElements("Categorization to Categorization", category1Guid, category2Guid);
+        return response.status == 204;
     }
 
     async associateCategoryUnderDomainTag(categoryTier: string, domainTagGuid: string): Promise<boolean> {
@@ -2312,6 +2316,11 @@ class ApiHelper {
             {}
         )
         console.log('Association API Status =============>', response.status);
+        return response.status == 204;
+    }
+
+    async disassociateCaseTemplateFromApprovalMapping(templatedId: string, approvalMappingId: string): Promise<boolean> {
+        let response = await coreApi.disassociateFoundationElements("com.bmc.dsm.case-lib:Case Approval Mapping to Case Template", approvalMappingId, templatedId);
         return response.status == 204;
     }
 
