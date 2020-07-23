@@ -7,7 +7,7 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import viewCasetemplatePo from '../../pageobject/settings/case-management/view-casetemplate.po';
 import casePreviewPo from '../../pageobject/case/case-preview.po';
-import taskPreviewPo from '../../pageobject/search/task-preview.po';
+import taskPreviewPo from '../../pageobject/task/task-preview.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
 
 export interface IIDs {
@@ -359,20 +359,20 @@ describe('Global Search', () => {
         });
 
         it('[DRDMV-16115]: Verify Case Preview Field Label', async () => {
-            expect(await taskPreviewPo.isFieldLabeltDisplayed('Requester')).toBeTruthy('FailureMsg20: Requester label is missing');
-            expect(await taskPreviewPo.isFieldLabeltDisplayed('Site')).toBeTruthy('FailureMsg21: Site label is missing');
-            expect(await taskPreviewPo.isFieldLabeltDisplayed('Task Summary')).toBeTruthy('FailureMsg22: Task Summary is missing');
-            expect(await taskPreviewPo.isFieldLabeltDisplayed('Priority')).toBeTruthy('FailureMsg23: Priority is missing');
-            expect(await taskPreviewPo.isFieldLabeltDisplayed('Task Type')).toBeTruthy('FailureMsg24: Task Type label is missing');
-            expect(await taskPreviewPo.isFieldLabeltDisplayed('Category Tier 1')).toBeTruthy('FailureMsg25: Category Tier 1 label is missing');
-            expect(await taskPreviewPo.isFieldLabeltDisplayed('Category Tier 2')).toBeTruthy('FailureMsg26: Category Tier 2 label is missing');
-            expect(await taskPreviewPo.isFieldLabeltDisplayed('Category Tier 3')).toBeTruthy('FailureMsg27: Category Tier 3 label is missing');
-            expect(await taskPreviewPo.isFieldLabeltDisplayed('Category Tier 4')).toBeTruthy('FailureMsg28: Category Tier 4 label is missing');
-            expect(await taskPreviewPo.isFieldLabeltDisplayed('Assignee')).toBeTruthy('FailureMsg29: Assignee label is missing');
-            expect(await taskPreviewPo.isFieldLabeltDisplayed('Assigned Group')).toBeTruthy('FailureMsg30: Assigned Group label is missing');
-            expect(await taskPreviewPo.isFieldLabeltDisplayed('Assigned Company')).toBeTruthy('FailureMsg31: Assigned Company label is missing');
-            expect(await taskPreviewPo.isFieldLabeltDisplayed('Label')).toBeTruthy('FailureMsg32: Label is missing');
-            expect(await taskPreviewPo.isFieldLabeltDisplayed('Description')).toBeTruthy('FailureMsg33: Description label is missing');
+            expect(await taskPreviewPo.isFieldLabelDisplayed('Requester')).toBeTruthy('FailureMsg20: Requester label is missing');
+            expect(await taskPreviewPo.isFieldLabelDisplayed('Site')).toBeTruthy('FailureMsg21: Site label is missing');
+            expect(await taskPreviewPo.isFieldLabelDisplayed('Task Summary')).toBeTruthy('FailureMsg22: Task Summary is missing');
+            expect(await taskPreviewPo.isFieldLabelDisplayed('Priority')).toBeTruthy('FailureMsg23: Priority is missing');
+            expect(await taskPreviewPo.isFieldLabelDisplayed('Task Type')).toBeTruthy('FailureMsg24: Task Type label is missing');
+            expect(await taskPreviewPo.isFieldLabelDisplayed('Category Tier 1')).toBeTruthy('FailureMsg25: Category Tier 1 label is missing');
+            expect(await taskPreviewPo.isFieldLabelDisplayed('Category Tier 2')).toBeTruthy('FailureMsg26: Category Tier 2 label is missing');
+            expect(await taskPreviewPo.isFieldLabelDisplayed('Category Tier 3')).toBeTruthy('FailureMsg27: Category Tier 3 label is missing');
+            expect(await taskPreviewPo.isFieldLabelDisplayed('Category Tier 4')).toBeTruthy('FailureMsg28: Category Tier 4 label is missing');
+            expect(await taskPreviewPo.isFieldLabelDisplayed('Assignee')).toBeTruthy('FailureMsg29: Assignee label is missing');
+            expect(await taskPreviewPo.isFieldLabelDisplayed('Assigned Group')).toBeTruthy('FailureMsg30: Assigned Group label is missing');
+            expect(await taskPreviewPo.isFieldLabelDisplayed('Assigned Company')).toBeTruthy('FailureMsg31: Assigned Company label is missing');
+            expect(await taskPreviewPo.isFieldLabelDisplayed('Label')).toBeTruthy('FailureMsg32: Label is missing');
+            expect(await taskPreviewPo.isFieldLabelDisplayed('Description')).toBeTruthy('FailureMsg33: Description label is missing');
 
             expect(await taskPreviewPo.isTaskTitleDisplayed(summary)).toBeTruthy('FailureMsg34: Task Title Displayed is missing');
             expect(await taskPreviewPo.isTaskIdDisplayed(taskDisplayId[0])).toBeTruthy('FailureMsg35: Task id is missing');
