@@ -23,10 +23,23 @@ describe("Approval Mapping Tests", () => {
     const approvalTriggerMsg = "Approval process starts when the case has above status.";
     const approvalMappingMsg = "Mapping the result of the approval process to the case status.";
     const approvalStatusMappingLabel = "Status mapping:";
+    let twoCompanyUser;
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
+        // Petramco and Psilon user
+        twoCompanyUser = {
+            "firstName": "CopyTask",
+            "lastName": "Psilon",
+            "userId": "copytask",
+            "emailId": "copytask@petramco.com",
+        }
+        await apiHelper.apiLogin("tadmin");
+        await apiHelper.createNewUser(twoCompanyUser);
+        await apiHelper.associatePersonToCompany(twoCompanyUser.userId, "Petramco");
+        await apiHelper.associatePersonToCompany(twoCompanyUser.userId, "Psilon");
+        await apiHelper.associatePersonToSupportGroup(twoCompanyUser.userId, "Facilities");
     });
 
     afterAll(async () => {
@@ -175,11 +188,39 @@ describe("Approval Mapping Tests", () => {
     });
 
     //skhobrag
-    describe('[DRDMV-10703]:[Approval Mapping] - Create/Update another mapping record with Same Name / Mappings and same trigger status', async () => {
+    describe('[DRDMV-10703,DRDMV-1303]:[Approval Mapping] - Create/Update another mapping record with Same Name / Mappings and same trigger status, Approval Mapping access', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let approvalMappingName = 'Approval Mapping' + randomStr;
+        let globalCaseTemplateStr = 'GlobalTemplate_' + randomStr;
+        let petramcoCaseTemplateStr = 'PetramcoTemplate_' + randomStr;
 
-        it('[DRDMV-10703]: Create Apporval Mapping', async () => {
+        beforeAll(async () => {
+            let caseTemplate = {
+                "templateName": 'CaseTemplateName',
+                "templateSummary": 'Case Template Summary',
+                "categoryTier1": 'Purchasing Card',
+                "casePriority": "Critical",
+                "templateStatus": "Active",
+                "company": "Petramco",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3"
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            // create global case template
+            caseTemplate.templateName = globalCaseTemplateStr;
+            caseTemplate.templateSummary = 'Case Summary for global case template';
+            caseTemplate.company = '- Global -';
+            await apiHelper.createCaseTemplate(caseTemplate);
+
+            // create Petramco Active case template
+            caseTemplate.templateName = petramcoCaseTemplateStr;
+            caseTemplate.templateSummary = 'Case Summary for petramco case template';
+            await apiHelper.createCaseTemplate(caseTemplate);
+        });
+
+        it('[DRDMV-10703,DRDMV-1303]: Create Apporval Mapping', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', 'Configure Case Approvals - Business Workflows');
             await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
@@ -195,9 +236,12 @@ describe("Approval Mapping Tests", () => {
             await createApprovalMappingPage.clickSaveApprovalMappingBtn();
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
             expect(await editApprovalMappingPage.getApprovalMappingName()).toBe(approvalMappingName);
+            await editApprovalMappingPage.searchCaseTemplate(globalCaseTemplateStr);
+            await editApprovalMappingPage.selectCaseTemplateCheckbox();
+            await editApprovalMappingPage.clickCaseTemplateforApprovalRightArrawBtn();
             await editApprovalMappingPage.clickCancelApprovalMappingBtn();
         });
-        it('[DRDMV-10703]: Verify Duplicate Approval Mapping', async () => {
+        it('[DRDMV-10703,DRDMV-1303]: Verify Duplicate Approval Mapping', async () => {
             await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
             expect(await createApprovalMappingPage.getCreateApprovalMappingHeaderText()).toBe('Add Approval Mapping');
             await createApprovalMappingPage.setApprovalMappingName(approvalMappingName);
@@ -211,7 +255,7 @@ describe("Approval Mapping Tests", () => {
             await createApprovalMappingPage.clickSaveApprovalMappingBtn();
             expect(await utilCommon.isPopUpMessagePresent('ERROR (222099): The combination of Company, Flowset and Status to trigger already exists for this record definition. Please enter unique values for these fields.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
-        it('[DRDMV-10703]: [Approval Mapping] - Create/Update another mapping record with Same Name / Mappings and same trigger status', async () => {
+        it('[DRDMV-10703,DRDMV-1303]: [Approval Mapping] - Create/Update another mapping record with Same Name / Mappings and same trigger status', async () => {
             expect(await createApprovalMappingPage.getCreateApprovalMappingHeaderText()).toBe('Add Approval Mapping');
             await createApprovalMappingPage.setApprovalMappingName("Test " + approvalMappingName);
             await createApprovalMappingPage.selectCompany('Petramco');
@@ -237,10 +281,53 @@ describe("Approval Mapping Tests", () => {
             await editApprovalMappingPage.clickCancelApprovalMappingBtn();
             await utilCommon.clickOnWarningOk();
         });
+        it('[DRDMV-10703,DRDMV-1303]: Case approval mapping access for Psilon user, Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login("gwixillian");
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', 'Configure Case Approvals - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(approvalMappingName)).toBeFalsy('Petramco approval mapping is visible in Psilon');
+            await navigationPage.signOut();
+            await loginPage.login("qdu");
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', 'Configure Case Approvals - Business Workflows');
+            await utilGrid.searchAndOpenHyperlink(approvalMappingName);
+            expect(await editApprovalMappingPage.isApprovalMappingNameDisabled()).toBeTruthy('Approval Mapping Name is editable');
+            expect(await editApprovalMappingPage.isDropdownDisabled('Company')).toBeTruthy('Company dropdown is editable');
+            expect(await editApprovalMappingPage.isDropdownDisabled('Flowset')).toBeTruthy('Flowset dropdown is editable');
+            expect(await editApprovalMappingPage.isDropdownDisabled('StatusTrigger')).toBeTruthy('StatusTrigger dropdown is editable');
+            expect(await editApprovalMappingPage.isDropdownDisabled('StatusApproved')).toBeTruthy('StatusApproved dropdown is editable');
+            expect(await editApprovalMappingPage.isCasesCreatedWithoutTemplateToggleDisabled()).toBeTruthy('CasesCreatedWithoutTemplateToggleButton is editable');
+            await editApprovalMappingPage.searchCaseTemplate(petramcoCaseTemplateStr);
+            await editApprovalMappingPage.selectCaseTemplateCheckbox();
+            expect(await editApprovalMappingPage.isSelectCaseTemplateforApprovalRightArrawBtnEnabled()).toBeFalsy('Case template can be associated');
+            await editApprovalMappingPage.searchAssociatedCaseTemplate(globalCaseTemplateStr);
+            await editApprovalMappingPage.selectAssociatedCaseTemplateCheckbox();
+            expect(await editApprovalMappingPage.isSelectCaseTemplateforApprovalLeftArrawBtnEnabled()).toBeFalsy('Case template can be dissociated');
+            // case agent access already verified in different JiraIDs DRDMV-10479
+        });
+        it('[DRDMV-10703,DRDMV-1303]: Case approval mapping access Case BA', async () => {
+            let newApprovalName = "Test2 " + approvalMappingName;
+            await navigationPage.signOut();
+            await loginPage.login(twoCompanyUser.emailId, 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', 'Configure Case Approvals - Business Workflows');
+            await utilGrid.searchAndOpenHyperlink(approvalMappingName);
+            await editApprovalMappingPage.setApprovalMappingName(newApprovalName);
+            await editApprovalMappingPage.clickSaveApprovalMappingBtn();
+            await utilCommon.closePopUpMessage();
+            await utilGrid.searchAndSelectGridRecord(newApprovalName);
+            await approvalMappingConsolePage.clickDeleteApprovalMapping();
+            await utilCommon.clickOnWarningOk();
+            await utilGrid.searchRecord(newApprovalName);
+            await expect(utilGrid.isGridRecordPresent(newApprovalName)).toBeFalsy('Grid record displayed on grid console after deletion.');
+        });
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteApprovalMapping();
-        })
+            await navigationPage.signOut();
+            await loginPage.login("qkatawazi");
+        });
     });
 
     //skhobrag
@@ -342,7 +429,6 @@ describe("Approval Mapping Tests", () => {
             await apiHelper.deleteApprovalMapping();
         });
     });
-
 
     //skhobrag
     describe('[DRDMV-22195]:Case Global Approval Mapping behavior', async () => {
