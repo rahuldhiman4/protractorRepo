@@ -276,4 +276,20 @@ describe('Email Template', () => {
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Attachment is not deleted from Email Template');
         });
     });
+
+    //ankagraw
+    it('[DRDMV-10799]: Email Template : If user goes away from both edit and create view warning should be appeared	', async () => {
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
+        await consoleEmailTemplatePo.clickOnAddEmailTemplateButton();
+        await createEmailTemplatePo.setTemplateName("templateName1");
+        await createEmailTemplatePo.clickOnCancelButton();
+        expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue without saving?');
+        await utilCommon.clickOnWarningOk();
+        await consoleEmailTemplatePo.searchAndOpenEmailTemplate("Request Marriage Certificate for Name Change");
+        await editEmailTemplatePo.updateDescription("test");
+        await editEmailTemplatePo.clickOnCancelButton();
+        expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue without saving?');
+        await utilCommon.clickOnWarningOk();
+});
 });
