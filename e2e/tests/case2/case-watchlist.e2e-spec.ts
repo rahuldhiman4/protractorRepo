@@ -1100,7 +1100,7 @@ describe('Case Watchlist', () => {
         });
     });
 
-    fdescribe('[DRDMV-16052]: Verify that user can edit the access from watchlist and it reflects(Status only to Assignment and Status', async () => {
+    describe('[DRDMV-16052]: Verify that user can edit the access from watchlist and it reflects(Status only to Assignment and Status', async () => {
         let caseId: string[] = [];
         let caseGuid: string[] = [];
         let caseDataForTest = caseData['caseWatchlist'];
