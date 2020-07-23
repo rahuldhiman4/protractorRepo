@@ -286,7 +286,6 @@ describe("Attachment", () => {
                 await editTaskPo.clickOnAssignToMe();
                 await editTaskPo.clickOnSaveButton();
                 taskId[i] = await viewTaskPo.getTaskID();
-                await utilCommon.scrollUpOrDownTillElement(viewTaskPo.selectors.viewCaseLink);
                 await viewTaskPo.clickOnViewCase();
             }
         });

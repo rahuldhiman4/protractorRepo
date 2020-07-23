@@ -40,7 +40,10 @@ class CaseAccessTab {
     }
 
     async isCaseAccessEntityAdded(agentNameOrSupportGroupName: string): Promise<boolean> {
-        return await $(`.bfw-badge .badge-text[aria-label="${agentNameOrSupportGroupName}"]`).isDisplayed();
+        return await $(`.bfw-badge .badge-text[aria-label="${agentNameOrSupportGroupName}"]`).isPresent().then(async (result) => {
+            if (result) return await $(`.bfw-badge .badge-text[aria-label="${agentNameOrSupportGroupName}"]`).isDisplayed();
+            else return false;
+        });
     }
 
     async selectCompany(companyValue: string, dropDownList: string): Promise<void> {

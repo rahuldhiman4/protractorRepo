@@ -1,5 +1,6 @@
 import { $, protractor, ProtractorExpectedConditions } from "protractor";
 import utilGrid from '../../../utils/util.grid';
+import utilCommon from '../../../utils/util.common';
 
 class ReadAccessConsolePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -41,6 +42,27 @@ class ReadAccessConsolePage {
         await $(this.selectors.deleteButton).click();
     }
 
+    async addFilter(fieldName: string, textValue: string, type: string): Promise<void> {
+        await utilGrid.addFilter(fieldName, textValue, type);
+    }
+
+    async deleteDefaultReadAccess(): Promise<void> {
+        await utilGrid.clearFilter();
+        await this.addFilter('Default Mapping', 'True', 'checkbox');
+        await $('div.ui-grid-row').isPresent().then(async (result) => {
+            if (result) {
+                await utilGrid.selectAllCheckBox();
+                await this.clickDeleteButton();
+                await utilCommon.clickOnWarningOk();
+                await utilCommon.closePopUpMessage();
+                await utilGrid.clearFilter();
+                console.log("Record is Deleted");                
+            } else {
+                await utilGrid.clearFilter();
+                console.log("Record is Not Present");
+            }
+        });
+    }
 }
 
 export default new ReadAccessConsolePage();

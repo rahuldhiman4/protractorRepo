@@ -53,12 +53,13 @@ describe("Create Case", () => {
     const departmentDataFile = require('../../data/ui/foundation/department.ui.json');
     const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
     const personDataFile = require('../../data/ui/foundation/person.ui.json');
-    let businessData, departmentData, suppGrpData, personData,suppGrpData1, personData1;
+    let businessData, departmentData, suppGrpData, personData, businessData1, departmentData1, suppGrpData1, personData1;
+    let categName1, categName2, categName3, categName4;
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
-        await foundationData("Petramco");
+        await foundationData1("Petramco");
     });
 
     afterAll(async () => {
@@ -70,40 +71,11 @@ describe("Create Case", () => {
         await utilityCommon.refresh();
     });
 
-    async function foundationData(company: string) {
-        await apiHelper.apiLogin('tadmin');
-        businessData = businessDataFile['BusinessUnitData'];
-        departmentData = departmentDataFile['DepartmentData'];
-        suppGrpData = supportGrpDataFile['SuppGrpData'];
-        suppGrpData1 = supportGrpDataFile['SuppGrpData19501'];
-        personData = personDataFile['PersonData'];
-        personData1 = personDataFile['PersonData19501'];   //Associate the existing person to new orgs
-        let orgId = await apiCoreUtil.getOrganizationGuid(company);
-        businessData.relatedOrgId = orgId;
-        let businessUnitId = await apiHelper.createBusinessUnit(businessData);
-        await browser.sleep(3000); // timeout requried to reflect data on UI
-        departmentData.relatedOrgId = businessUnitId;
-        let depId = await apiHelper.createDepartment(departmentData);
-        await browser.sleep(3000); // timeout requried to reflect data on UI
-        suppGrpData.relatedOrgId = depId;
-        await apiHelper.createSupportGroup(suppGrpData);
-        await browser.sleep(3000); // timeout requried to reflect data on UI
-        await apiHelper.createNewUser(personData);
-        await apiHelper.associatePersonToSupportGroup(personData.userId, suppGrpData.orgName);
-        await apiHelper.associatePersonToCompany(personData.userId, company)
-        await apiHelper.createSupportGroup(suppGrpData1);
-        await browser.sleep(3000); // timeout requried to reflect data on UI
-        await apiHelper.createNewUser(personData1);
-        await apiHelper.associatePersonToSupportGroup(personData1.userId, suppGrpData1.orgName);
-        await apiHelper.associatePersonToCompany(personData1.userId, company)
-    }
-
-    //kgaikwad
-    it('[DRDMV-15253]: Verify Category Tier 4 Can be Populated After Tier 3 selection', async () => {
-        let categName1 = 'DemoCateg1';
-        let categName2 = 'DemoCateg2';
-        let categName3 = 'DemoCateg3';
-        let categName4 = 'DemoCateg4';
+    async function createCategoryAssociation() {
+        categName1 = 'DemoCateg1';
+        categName2 = 'DemoCateg2';
+        categName3 = 'DemoCateg3';
+        categName4 = 'DemoCateg4';
         await apiHelper.apiLogin('tadmin');
         await apiHelper.createOperationalCategory(categName1);
         await apiHelper.createOperationalCategory(categName2);
@@ -113,7 +85,52 @@ describe("Create Case", () => {
         await apiHelper.associateCategoryToCategory(categName1, categName2);
         await apiHelper.associateCategoryToCategory(categName2, categName3);
         await apiHelper.associateCategoryToCategory(categName3, categName4);
+        await apiHelper.associateCategoryToOrganization(categName1, '- Global -');
+    }
+
+    async function foundationData1(company: string) {
+        await apiHelper.apiLogin('tadmin');
+        businessData = businessDataFile['BusinessUnitData'];
+        departmentData = departmentDataFile['DepartmentData'];
+        suppGrpData = supportGrpDataFile['SuppGrpData'];
+        personData = personDataFile['PersonData'];
+        await apiHelper.createNewUser(personData);
+        let orgId = await apiCoreUtil.getOrganizationGuid(company);
+        businessData.relatedOrgId = orgId;
+        let businessUnitId = await apiHelper.createBusinessUnit(businessData);
+        departmentData.relatedOrgId = businessUnitId;
+        let depId = await apiHelper.createDepartment(departmentData);
+        suppGrpData.relatedOrgId = depId;
+        await apiHelper.createSupportGroup(suppGrpData);
+        await apiHelper.associatePersonToSupportGroup(personData.userId, suppGrpData.orgName);
+        await apiHelper.associatePersonToCompany(personData.userId, company);
+    }
+
+    async function foundationData2(company: string){
+        await apiHelper.apiLogin('tadmin');
+        businessData1 = businessDataFile['BusinessUnitData19501'];
+        departmentData1 = departmentDataFile['DepartmentData19501'];
+        suppGrpData1 = supportGrpDataFile['SuppGrpData19501'];
+        personData1 = personDataFile['PersonData19501'];
+        await apiHelper.createNewUser(personData1);
+        let orgId1 = await apiCoreUtil.getOrganizationGuid(company);
+        businessData1.relatedOrgId = orgId1;
+        let businessUnitId1 = await apiHelper.createBusinessUnit(businessData1);
+        await browser.sleep(3000); // timeout requried to reflect data on UI
+        departmentData1.relatedOrgId = businessUnitId1;
+        let depId1 = await apiHelper.createDepartment(departmentData1);
+        await browser.sleep(3000); // timeout requried to reflect data on UI
+        suppGrpData1.relatedOrgId = depId1;
+        await apiHelper.createSupportGroup(suppGrpData1);
+        await browser.sleep(3000); // timeout requried to reflect data on UI
+        await apiHelper.associatePersonToSupportGroup(personData1.userId, suppGrpData1.orgName);
+        await apiHelper.associatePersonToCompany(personData1.userId, company);
+    }
+
+    //kgaikwad
+    it('[DRDMV-15253]: Verify Category Tier 4 Can be Populated After Tier 3 selection', async () => {
         try {
+            await createCategoryAssociation();
             await navigationPage.signOut();
             await loginPage.login('qtao')
             await navigationPage.gotoCreateCase();
@@ -1177,8 +1194,6 @@ describe("Create Case", () => {
 
     describe('[DRDMV-7061,DRDMV-6998]: [Read Access] Configuring non-default Read Access', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let businessData1 = businessDataFile['BusinessUnitData19501'];
-        let departmentData1 = departmentDataFile['DepartmentData19501'];       
         let caseTemplateData;
         beforeAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
@@ -1192,6 +1207,7 @@ describe("Create Case", () => {
                 "company": "Petramco",
             }
             await apiHelper.createCaseTemplate(caseTemplateData);
+            await foundationData1("Petramco");
         });
         it('[DRDMV-7061,DRDMV-6998]: [Read Access] Configuring non-default Read Access', async () => {
             await navigationPage.gotoSettingsPage();
@@ -1251,7 +1267,114 @@ describe("Create Case", () => {
         });
         afterAll(async () => {
             await navigationPage.signOut();
-            await loginPage.login('peter');
+            await loginPage.login('qkatawazi');
+        });
+    });
+
+    describe('[DRDMV-7026,DRDMV-7033]: [Read Access] Configuring a Default Read Access', async () => {
+        const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let newCase1, caseTemplateData, readAccessMappingData1, readAccessMappingData2;
+        beforeAll(async () => {
+            await apiHelper.apiLogin('qkatawazi');
+            caseTemplateData = {
+                "templateName": `${randomStr}Case template`,
+                "templateStatus": "Active",
+                "templateSummary": `${randomStr}Summary`,
+                "caseStatus": "New",
+                "casePriority": "Critical",
+                "categoryTier1": categName1,
+                "categoryTier2": categName2,
+                "categoryTier3": categName3,
+                "categoryTier4": categName4,
+                "company": "Petramco",
+            }
+            readAccessMappingData1 = {
+                "configName": randomStr + '1ReadAccessMappingName',
+                "assignedCompany": 'Petramco',
+                "businessUnit": 'HR Support',
+                "supportGroup": 'Compensation and Benefits',
+                "company": 'Petramco',
+                "category1": categName1,
+                "category2": categName2,
+                "category3": categName3,
+                "category4": categName4,
+            }
+            readAccessMappingData2 = {
+                "configName": randomStr + '2ReadAccessMappingName',
+                "assignedCompany": 'Petramco',
+                "businessUnit": 'Facilities Support',
+                "supportGroup": 'Facilities',
+                "company": 'Petramco',
+                "category1": 'Workforce Administration',
+            }
+            let caseData = {
+                "Requester": "apavlik",
+                "Summary": "Test case for Read Access",
+                "Assigned Company": "Petramco",
+                "Business Unit": "Facilities Support",
+                "Support Group": "Facilities",
+                "Assignee": "Fritz"
+            }
+            newCase1 = await apiHelper.createCase(caseData);
+            await apiHelper.createCaseTemplate(caseTemplateData);
+            await apiHelper.createReadAccessMapping(readAccessMappingData1);
+            await apiHelper.createReadAccessMapping(readAccessMappingData2);
+            readAccessMappingData2.configName = randomStr + '3ReadAccessMappingName';
+            await apiHelper.createReadAccessMapping(readAccessMappingData2);
+            await createCategoryAssociation();
+        });
+        it('[DRDMV-7026,DRDMV-7033]: [Read Access] Configuring a Default Read Access', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            await consoleReadAcess.deleteDefaultReadAccess();
+            await utilGrid.searchAndOpenHyperlink(readAccessMappingData1.configName);
+            await editReadAccess.selectCompany('Global');
+            await editReadAccess.setDefaultToggleButton(true);
+            await editReadAccess.clickOnSave();
+            await utilCommon.closePopUpMessage();
+            await utilGrid.searchAndOpenHyperlink(readAccessMappingData2.configName);
+            await editReadAccess.selectCompany('Global');
+            await editReadAccess.clickOnSave();
+            await utilGrid.searchAndOpenHyperlink(readAccessMappingData2.configName);
+            await editReadAccess.setDefaultToggleButton(true);
+            await editReadAccess.clickOnSave();
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (10000): Only one default record is allowed for a company. Please change the default flag and save the record.')).toBeTruthy('Message Not Present');
+            await editReadAccess.clickOnCancel();
+            await utilCommon.clickOnWarningOk();
+        });
+        it('[DRDMV-7026,DRDMV-7033]: [Read Access] Configuring a Default Read Access', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qtao');
+            await navigationPage.gotoQuickCase();
+            await quickCasePo.selectRequesterName('qkatawazi');
+            await quickCasePo.selectCaseTemplate(caseTemplateData.templateName);
+            await quickCasePo.saveCase();
+            await casePreviewPo.clickGoToCaseButton();
+            await viewCasePage.clickOnTab('Case Access');
+            expect(await caseAccessTabPo.isCaseAccessEntityAdded('Compensation and Benefits')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+            expect(await caseAccessTabPo.isSupportGroupReadAccessDisplayed('Compensation and Benefits')).toBeTruthy('Support Group does not have read access');
+            await navigationPage.gotoQuickCase();
+            await quickCasePo.selectRequesterName('qkatawazi');
+            await quickCasePo.setCaseSummary('Read Access');
+            await quickCasePo.saveCase();
+            await casePreviewPo.clickGoToCaseButton();
+            await viewCasePage.clickOnTab('Case Access');
+            expect(await caseAccessTabPo.isCaseAccessEntityAdded('Compensation and Benefits')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+            expect(await caseAccessTabPo.isSupportGroupReadAccessDisplayed('Compensation and Benefits')).toBeTruthy('Support Group does not have read access');
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await utilityGrid.searchAndOpenHyperlink(newCase1.displayId);
+            await viewCasePage.clickOnTab('Case Access');
+            expect(await caseAccessTabPo.isCaseAccessEntityAdded('Compensation and Benefits')).toBeFalsy('FailuerMsg1: Support Group Name is missing');
+            expect(await caseAccessTabPo.isSupportGroupReadAccessDisplayed('Compensation and Benefits')).toBeFalsy('Support Group does not have read access');
+        });
+        afterAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteCaseReadAccess(readAccessMappingData1.configName);
+            await apiHelper.deleteCaseReadAccess(randomStr + '2ReadAccessMappingName');
+            await apiHelper.deleteCaseReadAccess(randomStr + '3ReadAccessMappingName');
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
         });
     });
 });
