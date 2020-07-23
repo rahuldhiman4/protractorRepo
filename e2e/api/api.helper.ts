@@ -1971,6 +1971,13 @@ class ApiHelper {
         adhocTaskPayload.fieldInstances[450000381].value = await coreApi.getBusinessUnitGuid(taskData.businessUnit);
         adhocTaskPayload.fieldInstances[1000000217].value = await coreApi.getSupportGroupGuid(taskData.supportGroup);
         taskData.priority ? adhocTaskPayload.fieldInstances[1000000164].value = constants.CasePriority[taskData.priority] : adhocTaskPayload.fieldInstances[1000000164].value;
+        if (taskData.description) {
+            let taskDescription = {
+                "id": "1000000000",
+                "value": `${taskData.description}`
+            }
+            adhocTaskPayload.fieldInstances["1000000000"] = taskDescription;
+        }
 
         let createTaskResponse = await coreApi.createRecordInstance(adhocTaskPayload);
         console.log('Create Task API Status =============>', createTaskResponse.status);

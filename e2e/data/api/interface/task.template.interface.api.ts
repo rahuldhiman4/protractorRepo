@@ -24,6 +24,7 @@ export interface ITaskTemplate {
 export interface IAdhocTask {
     taskName: string;
     company: string;
+    description?:string;
     businessUnit: string;
     supportGroup: string;
     assignee?: string;
