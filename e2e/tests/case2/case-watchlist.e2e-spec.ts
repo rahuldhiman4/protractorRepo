@@ -308,6 +308,7 @@ describe('Case Watchlist', () => {
             await notificationAlerts.clickOnNotificationIcon();
             //Remove the case from watchlist
             await caseConsole.clickOnWatchlistIcon();
+            await caseWatchlist.clearWatchlistFilter();
             await caseWatchlist.selectCase(caseId);
             await caseWatchlist.clickOnRemoveBtn();
             await caseWatchlist.clickOnBackBtn();
@@ -427,6 +428,7 @@ describe('Case Watchlist', () => {
 
             await navigationPage.gotoCaseConsole();
             await caseConsole.clickOnWatchlistIcon();
+            await caseWatchlist.clearWatchlistFilter();
             await caseWatchlist.selectCase(caseId[1]);
             await caseWatchlist.clickOnRemoveBtn();
             await caseWatchlist.clickOnBackBtn();
@@ -1035,6 +1037,7 @@ describe('Case Watchlist', () => {
             await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
             await caseWatchlist.saveEvents();
             expect(await utilityCommon.getAllPopupMsg()).toContain("Added 2 selected case(s) to the watchlist.");
+            await utilityCommon.closePopUpMessage();
             //Update the events of first case from Console
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId[0]);
             await caseConsole.clickOnAddToWatchlist();
@@ -1130,7 +1133,7 @@ describe('Case Watchlist', () => {
             await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
             await caseWatchlist.saveEvents();
             expect(await utilityCommon.getAllPopupMsg()).toContain("Added 2 selected case(s) to the watchlist.");
-
+            await utilityCommon.closePopUpMessage();
             //Update the events of first case from Console
             await utilityGrid.searchRecord(caseDataForTest.Summary);
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId[0]);
@@ -1139,6 +1142,7 @@ describe('Case Watchlist', () => {
             await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
             await caseWatchlist.saveEvents();
             expect(await utilityCommon.getAllPopupMsg()).toContain("Added 1 selected case(s) to the watchlist.");
+            await utilityCommon.closePopUpMessage();
         });
         it('[DRDMV-16052]: Verify that user can edit the access from watchlist and it reflects(Status only to Assignment and Status', async () => {
             //Change the case status and case assignment for first case
