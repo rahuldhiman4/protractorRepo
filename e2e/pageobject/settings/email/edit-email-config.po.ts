@@ -34,6 +34,7 @@ export class EditEmailConfig {
         associatedSupportGroupSearchResult: '.km-group-list-item__info span',
         saveEditEmailConfig: '[rx-view-component-id="e36471c2-f950-4df7-bc42-ed2bbf59898b"] button',
         acknowledgementTemplateGridGuid: '2266a74e-eee9-4936-a22b-37c1d2d4e205',
+        defaultCaseTemplateGuid: '085b8e93-0e68-41a7-a1ed-77b6ab2c9522',
     }
 
     async clickDefaultMailIdCheckbox(value: string): Promise<void> {
@@ -84,6 +85,10 @@ export class EditEmailConfig {
 
     async selectTab(tabValue: string): Promise<void> {
         await element(by.cssContainingText(this.selectors.selectTab, tabValue)).click();
+    }
+
+    async selectDefaultCaseTemplate(tabValue: string): Promise<void> {
+        await utilCommon.selectDropDown(this.selectors.defaultCaseTemplateGuid,tabValue);
     }
 
     async clickSaveAcknowledgementTemplate(): Promise<void> {
@@ -176,7 +181,7 @@ export class EditEmailConfig {
         await $(this.selectors.editExclusiveSubject).click();
     }
 
-    async cancelEditEmailConfigConfig(): Promise<void> {
+    async cancelEditEmailConfig(): Promise<void> {
         await $(this.selectors.cancelEditEmailConfig).click();
     }
 
