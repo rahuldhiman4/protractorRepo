@@ -136,7 +136,7 @@ class CaseWatchlistBlade {
         let clearFilterLocator =  await $$(this.selectors.clearFilterButton).first();
         try {
             await $(this.selectors.filterPreset).click();
-            if (await clearFilterLocator.isEnabled()) {
+            if (await clearFilterLocator.isPresent()) {
                 await clearFilterLocator.click();
             }
             await $('[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] .d-icon-refresh').click();

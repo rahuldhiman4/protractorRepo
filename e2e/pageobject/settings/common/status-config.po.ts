@@ -1,5 +1,6 @@
-import { $, $$, protractor,ElementFinder, browser, ProtractorExpectedConditions, element, by } from "protractor";
+import { $, $$, browser, by, element, ElementFinder, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from "../../../utils/util.common";
+import utilityCommon from 'e2e/utils/utility.common';
 
 class StatusConfigPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -10,7 +11,7 @@ class StatusConfigPage {
         newStatusInput: '.default-locale-title input',
         statusAddModalBtns: '.modal-content .status-settings_button-bar button',
         settingPanelButtons: '.status-settings_button-bar .action-button',
-        localizedBtn : '.rx-template-editor-text-fields .d-icon-field_text_mapmarker',
+        localizedBtn: '.rx-template-editor-text-fields .d-icon-field_text_mapmarker',
         localizeMenuButtons: '.status-settings_button-bar button',
         status: '.v-line',
         deleteButton: '.d-button_action-clear',
@@ -24,7 +25,6 @@ class StatusConfigPage {
         manageLink: '[class="d-button d-button_link d-icon-left-pencil d-button_small"]',
         addStatusReason: '.d-icon-left-plus_circle',
         localizeStatusReasonButton: '.d-icon-field_text_mapmarker',
-
     }
 
     async clickOnMandatoryCheckbox(): Promise<void> {
@@ -38,7 +38,7 @@ class StatusConfigPage {
         await $(this.selectors.newStatusInput).clear();
         await $(this.selectors.newStatusInput).sendKeys(newStatus);
         await $$(this.selectors.localizeMenuButtons).first().click();
-        await browser.wait(this.EC.elementToBeClickable($$(this.selectors.statusAddModalBtns).first()),5000);
+        await browser.wait(this.EC.elementToBeClickable($$(this.selectors.statusAddModalBtns).first()), 5000);
         await $$(this.selectors.statusAddModalBtns).first().click();
         await this.saveSetting();
     }
@@ -46,7 +46,7 @@ class StatusConfigPage {
 
     async saveSetting(): Promise<void> {
         await browser.sleep(2000);
-        await browser.executeScript("arguments[0].scrollIntoView();", $$(this.selectors.settingPanelButtons).first().getWebElement());
+        await utilityCommon.scrollToElement(await $$(this.selectors.settingPanelButtons).first());
         await $$(this.selectors.settingPanelButtons).first().click();
     }
 
@@ -181,14 +181,14 @@ class StatusConfigPage {
         await this.saveSetting();
     }
 
-    async updateExistingStatusName(name:string): Promise<void>{
+    async updateExistingStatusName(name: string): Promise<void> {
         await $(this.selectors.localizeButton).click();
         await $(this.selectors.newStatusInput).clear();
         await $(this.selectors.newStatusInput).sendKeys(name);
         await $$(this.selectors.localizeMenuButtons).first().click();
     }
 
-    async cancelSettingChange():Promise<void>{
+    async cancelSettingChange(): Promise<void> {
         await $$(this.selectors.settingPanelButtons).last().click();
     }
 
@@ -208,8 +208,8 @@ class StatusConfigPage {
             let statusesLineLocator = $$('.joint-type-standard');
             for (let i: number = 0; i < await statusesLineLocator.count(); i++) {
                 let lineElement = await statusesLineLocator.get(i);
-                try{ label = await lineElement.$('path[joint-selector="line"]').getAttribute('data-label'); }
-                catch(ex){console.log('Searching for the Status Locator');}
+                try { label = await lineElement.$('path[joint-selector="line"]').getAttribute('data-label'); }
+                catch (ex) { console.log('Searching for the Status Locator'); }
                 if (label == `${status1}--${status2}`) {
                     modelId = await lineElement.getAttribute('model-id');
                     break;
