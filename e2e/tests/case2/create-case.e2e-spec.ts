@@ -1,11 +1,11 @@
-import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, browser } from "protractor";
 import apiHelper from '../../api/api.helper';
 import attachmentBladePage from "../../pageobject/attachment/attachment-blade.po";
 import caseConsolePage from '../../pageobject/case/case-console.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePage from "../../pageobject/case/create-case.po";
 import editCasePage from '../../pageobject/case/edit-case.po';
-import { default as selectCaseTemplateBlade } from '../../pageobject/case/select-casetemplate-blade.po';
+import selectCaseTemplateBlade from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
 import changeAssignmentPage from '../../pageobject/common/change-assignment-blade.po';
 import changAssignmentOldPage from '../../pageobject/common/change-assignment-old-blade.po';
@@ -25,7 +25,7 @@ import selectTaskTemplate from "../../pageobject/settings/task-management/consol
 import createTaskTemplate from '../../pageobject/settings/task-management/create-tasktemplate.po';
 import taskTemplatePreview from '../../pageobject/settings/task-management/preview-task-template.po';
 import viewTasktemplatePage from '../../pageobject/settings/task-management/view-tasktemplate.po';
-import { default as activityPo, default as activityTabPo } from '../../pageobject/social/activity-tab.po';
+import activityTabPo from '../../pageobject/social/activity-tab.po';
 import taskConsolepage from "../../pageobject/task/console-task.po";
 import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
 import manageTask from "../../pageobject/task/manage-task-blade.po";
@@ -34,10 +34,9 @@ import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-import apiCoreUtil from '../../api/api.core.util';
 
 describe("Create Case", () => {
-     let categName1, categName2, categName3, categName4;
+    let categName1, categName2, categName3, categName4;
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
@@ -908,12 +907,12 @@ describe("Create Case", () => {
             await editCasePage.clickChangeAssignmentButton();
             await changeAssignmentPage.setAssignee(petramcoStr, 'Australia Support', aUsupportStr, kasiaOstlunsStr);
             await editCasePage.clickSaveCase();
-            expect(await activityPo.isTextPresentInActivityLog("Kasia Ostlun")).toBeTruthy("Text is not present in activiy tab1");
-            await activityPo.clickShowMoreLinkInActivity(1);
-            expect(await activityPo.isTextPresentInActivityLog("changed the following case fields")).toBeTruthy("Text is not present in activiy tab2");
-            expect(await activityPo.isTextPresentInActivityLog("Assignee")).toBeTruthy("Text is not present in activiy tab3");
-            expect(await activityPo.isTextPresentInActivityLog("Assigned Group")).toBeTruthy("Text is not present in activiy tab4");
-            expect(await activityPo.isTextPresentInActivityLog("AU Support 1")).toBeTruthy("Text is not present in activiy tab5");
+            expect(await activityTabPo.isTextPresentInActivityLog("Kasia Ostlun")).toBeTruthy("Text is not present in activiy tab1");
+            await activityTabPo.clickShowMoreLinkInActivity(1);
+            expect(await activityTabPo.isTextPresentInActivityLog("changed the following case fields")).toBeTruthy("Text is not present in activiy tab2");
+            expect(await activityTabPo.isTextPresentInActivityLog("Assignee")).toBeTruthy("Text is not present in activiy tab3");
+            expect(await activityTabPo.isTextPresentInActivityLog("Assigned Group")).toBeTruthy("Text is not present in activiy tab4");
+            expect(await activityTabPo.isTextPresentInActivityLog("AU Support 1")).toBeTruthy("Text is not present in activiy tab5");
             await activityTabPo.addActivityNote(activityNoteText);
             await activityTabPo.addAttachment([filePath]);
             await activityTabPo.clickOnPostButton();
