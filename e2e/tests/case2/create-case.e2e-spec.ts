@@ -37,17 +37,11 @@ import utilityGrid from '../../utils/utility.grid';
 import apiCoreUtil from '../../api/api.core.util';
 
 describe("Create Case", () => {
-    const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
-    const departmentDataFile = require('../../data/ui/foundation/department.ui.json');
-    const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
-    const personDataFile = require('../../data/ui/foundation/person.ui.json');
-    let businessData, departmentData, suppGrpData, personData, businessData1, departmentData1, suppGrpData1, personData1;
-    let categName1, categName2, categName3, categName4;
+     let categName1, categName2, categName3, categName4;
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
-        await foundationData1("Petramco");
     });
 
     afterAll(async () => {
@@ -74,45 +68,6 @@ describe("Create Case", () => {
         await apiHelper.associateCategoryToCategory(categName2, categName3);
         await apiHelper.associateCategoryToCategory(categName3, categName4);
         await apiHelper.associateCategoryToOrganization(categName1, '- Global -');
-    }
-
-    async function foundationData1(company: string) {
-        await apiHelper.apiLogin('tadmin');
-        businessData = businessDataFile['BusinessUnitData'];
-        departmentData = departmentDataFile['DepartmentData'];
-        suppGrpData = supportGrpDataFile['SuppGrpData'];
-        personData = personDataFile['PersonData'];
-        await apiHelper.createNewUser(personData);
-        let orgId = await apiCoreUtil.getOrganizationGuid(company);
-        businessData.relatedOrgId = orgId;
-        let businessUnitId = await apiHelper.createBusinessUnit(businessData);
-        departmentData.relatedOrgId = businessUnitId;
-        let depId = await apiHelper.createDepartment(departmentData);
-        suppGrpData.relatedOrgId = depId;
-        await apiHelper.createSupportGroup(suppGrpData);
-        await apiHelper.associatePersonToSupportGroup(personData.userId, suppGrpData.orgName);
-        await apiHelper.associatePersonToCompany(personData.userId, company);
-    }
-
-    async function foundationData2(company: string){
-        await apiHelper.apiLogin('tadmin');
-        businessData1 = businessDataFile['BusinessUnitData19501'];
-        departmentData1 = departmentDataFile['DepartmentData19501'];
-        suppGrpData1 = supportGrpDataFile['SuppGrpData19501'];
-        personData1 = personDataFile['PersonData19501'];
-        await apiHelper.createNewUser(personData1);
-        let orgId1 = await apiCoreUtil.getOrganizationGuid(company);
-        businessData1.relatedOrgId = orgId1;
-        let businessUnitId1 = await apiHelper.createBusinessUnit(businessData1);
-        await browser.sleep(3000); // timeout requried to reflect data on UI
-        departmentData1.relatedOrgId = businessUnitId1;
-        let depId1 = await apiHelper.createDepartment(departmentData1);
-        await browser.sleep(3000); // timeout requried to reflect data on UI
-        suppGrpData1.relatedOrgId = depId1;
-        await apiHelper.createSupportGroup(suppGrpData1);
-        await browser.sleep(3000); // timeout requried to reflect data on UI
-        await apiHelper.associatePersonToSupportGroup(personData1.userId, suppGrpData1.orgName);
-        await apiHelper.associatePersonToCompany(personData1.userId, company);
     }
 
     //kgaikwad
