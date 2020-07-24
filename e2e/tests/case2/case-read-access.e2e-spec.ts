@@ -1,38 +1,19 @@
 import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
 import apiHelper from '../../api/api.helper';
-import attachmentBladePage from "../../pageobject/attachment/attachment-blade.po";
-import caseConsolePage from '../../pageobject/case/case-console.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePage from "../../pageobject/case/create-case.po";
 import editCasePage from '../../pageobject/case/edit-case.po';
-import { default as selectCaseTemplateBlade } from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
 import changeAssignmentPage from '../../pageobject/common/change-assignment-blade.po';
 import changAssignmentOldPage from '../../pageobject/common/change-assignment-old-blade.po';
-import localizeValuePopPo from '../../pageobject/common/localize-value-pop.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
-import createKnowledgePage from "../../pageobject/knowledge/create-knowlege.po";
-import KnowledgeConsolePage from "../../pageobject/knowledge/knowledge-articles-console.po";
-import createMenuItems from '../../pageobject/settings/application-config/create-menu-items-blade.po';
-import editMenuItemsConfigPo from '../../pageobject/settings/application-config/edit-menu-items-config.po';
-import menuItemConsole from '../../pageobject/settings/application-config/menu-items-config-console.po';
 import addReadAccess from '../../pageobject/settings/case-management/add-read-access-configuration.po';
 import consoleCasetemplatePo from '../../pageobject/settings/case-management/console-casetemplate.po';
 import createCaseTemplate from '../../pageobject/settings/case-management/create-casetemplate.po';
 import editCaseTemplate from '../../pageobject/settings/case-management/edit-casetemplate.po';
-import caseTemplatePreview from '../../pageobject/settings/case-management/preview-case-template.po';
 import consoleReadAcess from '../../pageobject/settings/case-management/read-access-console.po';
 import viewCaseTemplate from '../../pageobject/settings/case-management/view-casetemplate.po';
-import selectTaskTemplate from "../../pageobject/settings/task-management/console-tasktemplate.po";
-import createTaskTemplate from '../../pageobject/settings/task-management/create-tasktemplate.po';
-import taskTemplatePreview from '../../pageobject/settings/task-management/preview-task-template.po';
-import viewTasktemplatePage from '../../pageobject/settings/task-management/view-tasktemplate.po';
-import { default as activityPo, default as activityTabPo } from '../../pageobject/social/activity-tab.po';
-import taskConsolepage from "../../pageobject/task/console-task.po";
-import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
-import manageTask from "../../pageobject/task/manage-task-blade.po";
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
@@ -44,8 +25,11 @@ import caseAccessTabPo from '../../pageobject/common/case-access-tab.po';
 import navigationPo from '../../pageobject/common/navigation.po';
 import quickCasePo from '../../pageobject/case/quick-case.po';
 import casePreviewPo from '../../pageobject/case/case-preview.po';
+import editCasetemplatePo from "../../pageobject/settings/case-management/edit-casetemplate.po";
+import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
+import activityTabPo from '../../pageobject/social/activity-tab.po';
 
-describe("Create Case", () => {
+describe("Case Read Access", () => {
     const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
     const departmentDataFile = require('../../data/ui/foundation/department.ui.json');
     const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
@@ -61,10 +45,6 @@ describe("Create Case", () => {
     afterAll(async () => {
         await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
-    });
-
-    afterEach(async () => {
-        await utilityCommon.refresh();
     });
 
     async function createCategoryAssociation() {
@@ -94,10 +74,13 @@ describe("Create Case", () => {
         let orgId = await apiCoreUtil.getOrganizationGuid(company);
         businessData.relatedOrgId = orgId;
         let businessUnitId = await apiHelper.createBusinessUnit(businessData);
+        await browser.sleep(3000); // timeout requried to reflect data on UI
         departmentData.relatedOrgId = businessUnitId;
         let depId = await apiHelper.createDepartment(departmentData);
+        await browser.sleep(3000); // timeout requried to reflect data on UI
         suppGrpData.relatedOrgId = depId;
         await apiHelper.createSupportGroup(suppGrpData);
+        await browser.sleep(3000); // timeout requried to reflect data on UI
         await apiHelper.associatePersonToSupportGroup(personData.userId, suppGrpData.orgName);
         await apiHelper.associatePersonToCompany(personData.userId, company);
     }
@@ -122,57 +105,6 @@ describe("Create Case", () => {
         await apiHelper.associatePersonToSupportGroup(personData1.userId, suppGrpData1.orgName);
         await apiHelper.associatePersonToCompany(personData1.userId, company);
     }
-    //ankagraw
-    it('[DRDMV-11818,DRDMV-11821]: [Global Case Template] Create/Update Case template with company and flowset as Global', async () => {
-        try {
-            let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            let caseTemplate1 = 'Case Template 1' + randomStr;
-            let caseTemplateSummary1 = 'Summary 1' + randomStr;
-            let flowsetData = require('../../data/ui/case/flowset.ui.json');
-            let flowsetName: string = await flowsetData['flowsetGlobalFields'].flowsetName + randomStr;
-            flowsetData['flowsetGlobalFields'].flowsetName = flowsetName;
-            await apiHelper.apiLogin('qkatawazi');
-            await apiHelper.createNewFlowset(flowsetData['flowsetGlobalFields']);
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
-            await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
-            await createCaseTemplate.setTemplateName(caseTemplate1);
-            await createCaseTemplate.setCompanyName('- Global -');
-            await createCaseTemplate.setCaseSummary(caseTemplateSummary1);
-            await createCaseTemplate.setFlowsetValue(flowsetName);
-            await createCaseTemplate.setTemplateStatusDropdownValue('Active');
-            await createCaseTemplate.clickSaveCaseTemplate();
-            //expect(await utilCommon.isErrorMsgPresent()).toBeTruthy(); //no error message
-            //await utilCommon.closePopUpMessage();
-            expect(await viewCaseTemplate.getCaseCompanyValue()).toBe('- Global -');
-            expect(await viewCaseTemplate.getFlowsetValue()).toBe(flowsetName);
-            await viewCaseTemplate.clickOnEditCaseTemplateButton();
-            expect(await editCaseTemplate.isCaseCompanyDisabled()).toBeTruthy();
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
-            await consoleReadAcess.clickOnReadAccessConfiguration();
-            await addReadAccess.setReadAccessConfigurationName("test");
-            await addReadAccess.selectCompany('Global');
-            await addReadAccess.selectFlowset(flowsetName);
-            await addReadAccess.selectSupportCompany('Petramco');
-            await addReadAccess.selectBusinessUnit('Australia Support');
-            await addReadAccess.selectSupportGroup('AU Support 2');
-            await addReadAccess.clickOnSave();
-            await navigationPage.signOut();
-            await loginPage.login('gwixillian');
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
-            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(caseTemplate1);
-            expect(await viewCaseTemplate.getCaseCompanyValue()).toBe('- Global -');
-            await viewCaseTemplate.clickOnEditCaseTemplateButton();
-            expect(await editCaseTemplate.isCaseSummaryReadOnly()).toBeTruthy();
-        } catch (e) {
-            throw e;
-        } finally {
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
-        }
-    }, 600 * 1000);
 
     it('[DRDMV-12060]:[Read Access] Editing Read Access Mappings Company to Global', async () => {
         let randVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -232,6 +164,59 @@ describe("Create Case", () => {
         expect(await caseAccessTabPo.isCaseAccessEntityAdded('Qadim Katawazi')).toBeTruthy('FailuerMsg1: Agent Name is missing');
         expect(await caseAccessTabPo.isSupportGroupWriteAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have write access');
         expect(await caseAccessTabPo.isSupportGroupReadAccessDisplayed(suppGrpData.orgName)).toBeTruthy('Support Group does not have read access');
+    });
+
+    describe('[DRDMV-11818,DRDMV-11821]: [Global Case Template] Create/Update Case template with company and flowset as Global', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseTemplate1 = 'Case Template 1' + randomStr;
+        let caseTemplateSummary1 = 'Summary 1' + randomStr;
+        let flowsetData = require('../../data/ui/case/flowset.ui.json');
+        let flowsetName: string;
+        beforeAll(async () => {
+            await apiHelper.apiLogin('qkatawazi');
+            flowsetName = await flowsetData['flowsetGlobalFields'].flowsetName + randomStr;
+            flowsetData['flowsetGlobalFields'].flowsetName = flowsetName;
+            await apiHelper.createNewFlowset(flowsetData['flowsetGlobalFields']);
+        });
+        it('[DRDMV-11818,DRDMV-11821]: [Global Case Template] Create/Update Case template with company and flowset as Global', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
+            await createCaseTemplate.setTemplateName(caseTemplate1);
+            await createCaseTemplate.setCompanyName('- Global -');
+            await createCaseTemplate.setCaseSummary(caseTemplateSummary1);
+            await createCaseTemplate.setFlowsetValue(flowsetName);
+            await createCaseTemplate.setTemplateStatusDropdownValue('Active');
+            await createCaseTemplate.clickSaveCaseTemplate();
+            expect(await viewCaseTemplate.getCaseCompanyValue()).toBe('- Global -');
+            expect(await viewCaseTemplate.getFlowsetValue()).toBe(flowsetName);
+            await viewCaseTemplate.clickOnEditCaseTemplateButton();
+            expect(await editCaseTemplate.isCaseCompanyDisabled()).toBeTruthy();
+        });
+        it('[DRDMV-11818,DRDMV-11821]: [Global Case Template] Create/Update Case template with company and flowset as Global', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            await consoleReadAcess.clickOnReadAccessConfiguration();
+            await addReadAccess.setReadAccessConfigurationName("test");
+            await addReadAccess.selectCompany('Global');
+            await addReadAccess.selectFlowset(flowsetName);
+            await addReadAccess.selectSupportCompany('Petramco');
+            await addReadAccess.selectBusinessUnit('Australia Support');
+            await addReadAccess.selectSupportGroup('AU Support 2');
+            await addReadAccess.clickOnSave();
+            await navigationPage.signOut();
+            await loginPage.login('gwixillian');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(caseTemplate1);
+            expect(await viewCaseTemplate.getCaseCompanyValue()).toBe('- Global -');
+            await viewCaseTemplate.clickOnEditCaseTemplateButton();
+            expect(await editCaseTemplate.isCaseSummaryReadOnly()).toBeTruthy();
+        });
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
     });
 
     describe('[DRDMV-7061,DRDMV-6998]: [Read Access] Configuring non-default Read Access', async () => {
@@ -317,7 +302,7 @@ describe("Create Case", () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase1, caseTemplateData, readAccessMappingData1, readAccessMappingData2;
         beforeAll(async () => {
-            await apiHelper.apiLogin('qkatawazi');
+            await createCategoryAssociation();
             caseTemplateData = {
                 "templateName": `${randomStr}Case template`,
                 "templateStatus": "Active",
@@ -357,13 +342,13 @@ describe("Create Case", () => {
                 "Support Group": "Facilities",
                 "Assignee": "Fritz"
             }
+            await apiHelper.apiLogin('qkatawazi');
             newCase1 = await apiHelper.createCase(caseData);
             await apiHelper.createCaseTemplate(caseTemplateData);
             await apiHelper.createReadAccessMapping(readAccessMappingData1);
             await apiHelper.createReadAccessMapping(readAccessMappingData2);
             readAccessMappingData2.configName = randomStr + '3ReadAccessMappingName';
             await apiHelper.createReadAccessMapping(readAccessMappingData2);
-            await createCategoryAssociation();
         });
         it('[DRDMV-7026,DRDMV-7033]: [Read Access] Configuring a Default Read Access', async () => {
             await navigationPage.gotoSettingsPage();
@@ -418,5 +403,5 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
-    });
+    }); 
 });
