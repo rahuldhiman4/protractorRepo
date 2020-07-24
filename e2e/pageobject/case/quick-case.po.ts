@@ -227,7 +227,7 @@ class QuickCasePage {
     }
 
     async clickOnCaseTemplate(templateName: string): Promise<void> {
-        await $('bwf-search-result-fields').isPresent().then(async (present) => {
+        await $(`bwf-search-result-fields div[title=${templateName}] span`).isPresent().then(async (present) => {
             if (present) {
                 await $(`bwf-search-result-fields div[title=${templateName}] span`).isDisplayed().then(async (displayed) => {
                     if (displayed)

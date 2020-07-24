@@ -535,7 +535,7 @@ describe("Case Read Access", () => {
         });
     });
 
-    fdescribe('[DRDMV-22479]: Bulk Case Access update clicking Reset to default.', async () => {
+    describe('[DRDMV-22479]: Bulk Case Access update clicking Reset to default.', async () => {
         let newCase1;
         beforeAll(async () => {
             await apiHelper.apiLogin('franz');
