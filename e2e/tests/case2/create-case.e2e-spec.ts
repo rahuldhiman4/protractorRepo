@@ -762,7 +762,7 @@ describe("Create Case", () => {
             await loginPage.login('qfeng');
             await navigationPage.gotoCreateCase();
             expect(await createCasePage.isAssigneToMeEnabled()).toBeFalsy();
-            expect(createCasePage.isChangeAssignmentButtonEnabled()).toBeFalsy();
+            expect(await createCasePage.isChangeAssignmentButtonEnabled()).toBeFalsy();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Summary');
             expect(await createCasePage.getCompany()).toBe('Petramco');
@@ -839,7 +839,7 @@ describe("Create Case", () => {
     it('[DRDMV-1620]: [Case] Fields validation for case in Closed status ', async () => {
         try {
             const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            var caseWithClosedStatus = {
+            let caseWithClosedStatus = {
                 "Status": "7000",
                 "Assigned Company": "Petramco",
                 "Description": "This case was created by java integration tests",
@@ -850,8 +850,8 @@ describe("Create Case", () => {
                 "Assignee": "Elizabeth"
             }
             await apiHelper.apiLogin('qtao');
-            var closedCase = await apiHelper.createCase(caseWithClosedStatus);
-            var closed: string = closedCase.displayId;
+            let closedCase = await apiHelper.createCase(caseWithClosedStatus);
+            let closed: string = closedCase.displayId;
             await navigationPage.signOut();
             await loginPage.login('qtao');
             await navigationPage.gotoCaseConsole();

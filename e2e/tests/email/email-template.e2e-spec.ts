@@ -136,7 +136,7 @@ describe('Email Template', () => {
             // DRDMV-10786
             await consoleEmailTemplatePo.addColumnOnGrid(arr1);
             expect(await consoleEmailTemplatePo.areGridColumnHeaderMatches(arr2)).toBeTruthy('Column header not matches');
-            expect(consoleEmailTemplatePo.isGridColumnSorted('Label', 'descending')).toBeTruthy('Label column is not sorted correctly with descending order')
+            expect(await consoleEmailTemplatePo.isGridColumnSorted('Label', 'descending')).toBeTruthy('Label column is not sorted correctly with descending order')
             // DRDMV-11092
             await consoleEmailTemplatePo.addFilter('Template Name', templateName1, 'text');
             expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Template Name')).toBe(templateName1, 'Filter Template Name is missing in column');

@@ -144,7 +144,7 @@ class CreateTaskTemplatePage {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.setInputdataInProcess)));
         await $(this.selectors.setInputdataInProcess).sendKeys(processName);
         //        await browser.sleep(1000);
-        var option = await element(by.cssContainingText(this.selectors.selectNameInProcess, processName));
+        let option = await element(by.cssContainingText(this.selectors.selectNameInProcess, processName));
         //        await browser.wait(this.EC.elementToBeClickable(option));
         await option.click();
     }

@@ -89,8 +89,8 @@ class SlmProgressBar {
 
     async isMultipleSVTAttached(): Promise<boolean> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.slaProgressBarInProceess)));
-        var svtRecords: number = await $$(this.selectors.slaProgressBarInProceess).count();
-        var isMultiple: boolean = false;
+        let svtRecords: number = await $$(this.selectors.slaProgressBarInProceess).count();
+        let isMultiple: boolean = false;
         if (svtRecords > 1) {
             isMultiple = true;
         } else {

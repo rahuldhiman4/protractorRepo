@@ -43,7 +43,7 @@ class AutomatedStatusTransitionConfigConsolePage {
     }
 
     async isGridColumnSorted(columnName: string): Promise<boolean>{
-        return utilGrid.isGridColumnSorted(columnName, 'descending', this.selectors.guid);
+        return await utilGrid.isGridColumnSorted(columnName, 'descending', this.selectors.guid);
     }
 
     async getEnabledColumnValueOfRule(configName: string): Promise<string>{

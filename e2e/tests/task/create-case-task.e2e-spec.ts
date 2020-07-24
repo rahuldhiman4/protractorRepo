@@ -1070,7 +1070,7 @@ describe('Create Case Task', () => {
             }
             await apiHelper.apiLogin('fritz');
             await apiHelper.createAutomatedTaskTemplate(templateData);
-            var caseWithInprogressStatus = {
+            let caseWithInprogressStatus = {
                 "Status": "3000",
                 "Company": "Petramco",
                 "Description": "This case was created by java integration tests",
@@ -1082,7 +1082,7 @@ describe('Create Case Task', () => {
                 "Assignee": "qkatawazi"
             }
 
-            var caseWithPendingStatus = {
+            let caseWithPendingStatus = {
                 "Status": "4000",
                 "Company": "Petramco",
                 "Description": "This case was created by java integration tests",
@@ -1094,7 +1094,7 @@ describe('Create Case Task', () => {
                 "Assignee": "qkatawazi"
             }
 
-            var caseWithResolvedStatus = {
+            let caseWithResolvedStatus = {
                 "Status": "5000",
                 "Company": "Petramco",
                 "Description": "This case was created by java integration tests",
@@ -1106,7 +1106,7 @@ describe('Create Case Task', () => {
                 "Assignee": "qkatawazi"
             }
 
-            var caseWithClosedStatus = {
+            let caseWithClosedStatus = {
                 "Status": "7000",
                 "Company": "Petramco",
                 "Description": "This case was created by java integration tests",
@@ -1118,7 +1118,7 @@ describe('Create Case Task', () => {
                 "Assignee": "qkatawazi"
             }
 
-            var caseWithCanceledStatus = {
+            let caseWithCanceledStatus = {
                 "Status": "6000",
                 "Company": "Petramco",
                 "Description": "This case was created by java integration tests",

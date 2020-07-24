@@ -184,7 +184,7 @@ class QuickCasePage {
     }
 
     async getDescriptionDetails(): Promise<string> {
-        return browser.element(by.css(this.selectors.descriptionText)).getText();
+        return await browser.element(by.css(this.selectors.descriptionText)).getText();
     }
 
     async getResourcesText(): Promise<string> {

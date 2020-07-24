@@ -24,12 +24,12 @@ describe('Knowledge Article', () => {
     const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
     const personDataFile = require('../../data/ui/foundation/person.ui.json');
     const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-    var knowledgeCandidateUser = 'kayo';
-    var knowledgeContributorUser = 'kkohri';
-    var knowledgePublisherUser = 'kmills';
-    var knowledgeCoachUser = 'kWilliamson';
-    var knowledgeManagementApp = "Knowledge Management";
-    var knowledgeArticlesTitleStr = "Knowledge Articles";
+    let knowledgeCandidateUser = 'kayo';
+    let knowledgeContributorUser = 'kkohri';
+    let knowledgePublisherUser = 'kmills';
+    let knowledgeCoachUser = 'kWilliamson';
+    let knowledgeManagementApp = "Knowledge Management";
+    let knowledgeArticlesTitleStr = "Knowledge Articles";
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
@@ -300,7 +300,7 @@ describe('Knowledge Article', () => {
             await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeTitle);
             await createKnowledgePage.selectKnowledgeSet('HR');
             await createKnowledgePage.clickOnSaveKnowledgeButton();
-            var knowledgeIdValue: string = await previewKnowledgePo.getKnowledgeArticleID();
+            let knowledgeIdValue: string = await previewKnowledgePo.getKnowledgeArticleID();
             await utilityCommon.refresh();
             await navigationPage.gotoKnowledgeConsole();
             await utilityGrid.clearFilter();

@@ -72,8 +72,8 @@ class TaskGridPage {
     }
 
     async searchAndOpenTask(taskId:string):Promise<void>{
-        this.clearFilter();
-        utilityGrid.searchAndOpenHyperlink(taskId);
+        await this.clearFilter();
+        await utilityGrid.searchAndOpenHyperlink(taskId);
     }
 
 }

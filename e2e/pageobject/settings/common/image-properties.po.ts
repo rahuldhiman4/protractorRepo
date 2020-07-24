@@ -54,7 +54,7 @@ class ImagePropertiesPopUp {
         await this.clickOnSendItToServerButton();
         await $$(this.selectors.inputBox).get(2).sendKeys(200);
         let source = await $$(this.selectors.inputBox).first().getAttribute('value')
-        this.clickOnOkButton();
+        await this.clickOnOkButton();
         return source;
     }
 

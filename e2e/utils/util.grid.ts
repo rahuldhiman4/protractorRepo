@@ -70,7 +70,7 @@ export class GridOperation {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addColumnIcon)));
         await ($(this.selectors.addColumnIcon)).click();
         for (let i: number = 0; i < columnName.length; i++) {
-            var customxpath = `(//*[@rx-view-component-id="${guid}"]//li[contains(@class,"d-dropdown__menu-options-item")]//a[text()="${columnName[i]}"])[1]`;
+            let customxpath = `(//*[@rx-view-component-id="${guid}"]//li[contains(@class,"d-dropdown__menu-options-item")]//a[text()="${columnName[i]}"])[1]`;
             //            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(customxpath))));
             let attrbuteVal = await element(by.xpath(customxpath)).getAttribute('aria-checked');
             if (attrbuteVal == 'false') {
@@ -86,7 +86,7 @@ export class GridOperation {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addColumnIcon)));
         await ($(this.selectors.addColumnIcon)).click();
         for (let i: number = 0; i < columnName.length; i++) {
-            var customxpath = `(//*[@rx-view-component-id="${guid}"]//li[contains(@class,"d-dropdown__menu-options-item")]//a[text()="${columnName[i]}"])[1]`;
+            let customxpath = `(//*[@rx-view-component-id="${guid}"]//li[contains(@class,"d-dropdown__menu-options-item")]//a[text()="${columnName[i]}"])[1]`;
             //            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(customxpath))));
             let attrbuteVal = await element(by.xpath(customxpath)).getAttribute('aria-checked');
             if (attrbuteVal == 'true') {
@@ -201,15 +201,16 @@ export class GridOperation {
     }
 
     async clickOnSelectedGridRecord(guid: string, columnHeader: string): Promise<void> {
-        var gridColumnHeaderPosition = `//*[@rx-view-component-id='${guid}']//span[@class="ui-grid-header-cell-label"][text()='${columnHeader}']/parent::div/parent::div[@role='columnheader']/parent::div/preceding-sibling::*`;
-        var gridRecords = '//div[@class="ui-grid-canvas"]/div';
+        let gridColumnHeaderPosition = `//*[@rx-view-component-id='${guid}']//span[@class="ui-grid-header-cell-label"][text()='${columnHeader}']/parent::div/parent::div[@role='columnheader']/parent::div/preceding-sibling::*`;
+        let gridRecords = '//div[@class="ui-grid-canvas"]/div';
+        let columnPosition: number;
         try {
-            var columnPosition: number = await element.all(by.xpath(gridColumnHeaderPosition)).count();
+            columnPosition = await element.all(by.xpath(gridColumnHeaderPosition)).count();
         } catch (Ex) {
             columnPosition = 0;
         }
         columnPosition = columnPosition + 1;
-        var gridRows: number = await element.all(by.xpath(gridRecords)).count();
+        let gridRows: number = await element.all(by.xpath(gridRecords)).count();
         if (gridRows > 0) {
             let gridRecordCellValue = `(//*[@rx-view-component-id=${guid}]//div[@class="ui-grid-cell-contents"]/parent::div/parent::div)[1]/div[${columnPosition}]/div`;
             //            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(gridRecordCellValue))));
@@ -340,7 +341,7 @@ export class GridOperation {
         let gridRecords = '//div[@class="ui-grid-canvas"]/div';
         let columnPosition: number = await element.all(by.xpath(gridColumnHeaderPosition)).count();
         columnPosition = columnPosition + 1;
-        var gridRows: number = await element.all(by.xpath(gridRecords)).count();
+        let gridRows: number = await element.all(by.xpath(gridRecords)).count();
         let gridRecordCellValue;
         for (let i: number = 1; i <= gridRows; i++) {
             try {
