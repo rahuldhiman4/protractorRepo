@@ -2296,8 +2296,6 @@ describe('Knowledge Article', () => {
             await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr, 'title not correct');
             await utilityGrid.clearFilter();
-            await knowledgeArticlesConsolePo.removeColumnOnGrid(arr2);
-            await knowledgeArticlesConsolePo.removeColumnOnGrid(arr3);
             await knowledgeArticlesConsolePo.addColumnOnGrid(arr1);
             await knowledgeArticlesConsolePo.applyFilter('Assignee', "Kyle Mills", 'text');
             await utilityGrid.searchRecord(knowledgeArticleData.displayId);

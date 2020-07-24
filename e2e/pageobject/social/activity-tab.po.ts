@@ -956,6 +956,10 @@ class ActivityTabPage {
     async clickShowApproversLink(showApproversLinkLabel: string): Promise<void> {
         await $(this.selectors.showApproversLink).click();
     }
+
+    async getReadAccessActivityCount(accessName: string): Promise<number> {
+        return await element.all(by.cssContainingText(this.selectors.activityLog, accessName)).count();
+    }
 }
 
 

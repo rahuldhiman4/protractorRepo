@@ -12,7 +12,9 @@ class ReadAccessConfigEditPage {
         companyField: '[rx-view-component-id="2d60a97e-67aa-41fe-94f9-72e83556789b"] span.form-control',
         companyGuid: '2d60a97e-67aa-41fe-94f9-72e83556789b',
         cancelButton: '[rx-view-component-id="4161aa6c-2565-4f6e-85af-088df3db222e"] button',
-        defaultToggleGuid: 'fa6bad05-195e-4df6-a7f1-daf55b2e0571'
+        defaultToggleGuid: 'fa6bad05-195e-4df6-a7f1-daf55b2e0571',
+        flowsetGuid: '15430b06-186f-4dde-985c-2308d8a21a5d',
+        priorityGuid: '732d1377-9873-476d-a5ee-bee0eb9ee5f3',
     }
 
     async isAccessMappingNameDisabled(): Promise<boolean> {
@@ -50,6 +52,14 @@ class ReadAccessConfigEditPage {
 
     async setDefaultToggleButton(value: boolean): Promise<void> {
         await utilCommon.selectToggleButton(this.selectors.defaultToggleGuid, value);
+    }
+
+    async selectFlowset(flowsetName: string): Promise<void> {
+        await utilCommon.selectDropDown(this.selectors.flowsetGuid, flowsetName);
+    }
+
+    async selectPriority(priority: string): Promise<void> {
+        await utilCommon.selectDropDown(this.selectors.priorityGuid, priority);
     }
 }
 
