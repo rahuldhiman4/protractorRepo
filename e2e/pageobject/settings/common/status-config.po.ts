@@ -46,6 +46,7 @@ class StatusConfigPage {
 
     async saveSetting(): Promise<void> {
         await browser.sleep(2000);
+        await browser.executeScript("arguments[0].scrollIntoView();", $$(this.selectors.settingPanelButtons).first().getWebElement());
         await $$(this.selectors.settingPanelButtons).first().click();
     }
 

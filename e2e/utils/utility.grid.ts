@@ -1,7 +1,8 @@
-import { $, $$, Key, element, by, ElementFinder, browser, protractor } from 'protractor';
+import { $, $$, Key, element, by, ElementFinder, browser, protractor, ProtractorExpectedConditions } from 'protractor';
 import utilityCommon from '../utils/utility.common';
 
 export class GridOperations {
+    EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         searchTextBox: '.adapt-search-triggerable input',
         clearSearchBoxButton: '.adapt-search-triggerable .adapt-search-clear',
@@ -22,6 +23,7 @@ export class GridOperations {
         visibleColumnButton: '.d-icon-left-lines_vertical',
         refreshIcon: 'button[rx-id="refresh-button"]',
         filterSearchValueBox: '.adapt-mt-input-container input',
+        filterCounterInput: 'input.adapt-counter-input'
     }
 
     async searchRecord(searchValue: string, guid?: string): Promise<void> {
@@ -264,6 +266,16 @@ export class GridOperations {
             }
             case "date": {
                 await utilityCommon.setDateField(guid, textValue);
+                break;
+            }
+            case "counter": {
+                if (textValue.includes('-')) {
+                    let counterValues = (textValue.split('-'));
+                    await $$(this.selectors.filterCounterInput).first().sendKeys(counterValues[0]);
+                    await browser.wait(this.EC.elementToBeClickable($$(this.selectors.filterCounterInput).last()), 5000);
+                    await $$(this.selectors.filterCounterInput).last().sendKeys(counterValues[1]);
+                }
+                else await $$(this.selectors.filterCounterInput).first().sendKeys(textValue);
                 break;
             }
             default: {
