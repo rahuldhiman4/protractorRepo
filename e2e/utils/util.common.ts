@@ -338,6 +338,7 @@ export class Util {
         if (actualNumberOfPopups) {
             let count = 0;
             let i = 0;
+            await browser.wait(this.EC.visibilityOf($(this.selectors.popUpMsgLocator)), 5000);
             arr[i] = await $$(this.selectors.popUpMsgLocator).first().getText();
             let prevVal = arr[0];
             if (await browser.wait(this.EC.or(async () => {
