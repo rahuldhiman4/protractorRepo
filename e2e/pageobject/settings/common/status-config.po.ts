@@ -1,6 +1,6 @@
 import { $, $$, browser, by, element, ElementFinder, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from "../../../utils/util.common";
-import utilityCommon from 'e2e/utils/utility.common';
+import utilityCommon from '../../../utils/utility.common';
 
 class StatusConfigPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
