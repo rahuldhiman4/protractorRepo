@@ -44,7 +44,7 @@ class ViewKnowledgePage {
         articleLastReviewDate: '[rx-view-component-id="bccc3ffb-8be9-4332-8f7f-fef96b43c3b9"] .read-only-content',
         articleNextReviewDate: '[rx-view-component-id="7529ddbb-6ef2-46ab-9f66-c85639c3b490"] .read-only-content',
         articleTitle: '[rx-view-component-id="4a5abb06-d6fb-4aa3-81a8-2d5e80c78acf"] p',
-        articleDescription: '[rx-view-component-id="52856b97-e17e-444d-a556-fa0ad35eb3c8"] .doc-editor__section-content p',
+        articleDescription: '[rx-view-component-id="52856b97-e17e-444d-a556-fa0ad35eb3c8"] .doc-editor__section-content',
         articleIsExternal: '[rx-view-component-id="660f2cd8-9439-4954-9638-0064fbcb0e28"] .read-only-content',
         flaggedOption: '[rx-view-component-id="89dd2264-1895-4a7b-a0a4-01a4834a403b"]',
         unflagOption: '[rx-view-component-id="b54365bf-0ead-4c54-8c8b-42aced61690e"] span',

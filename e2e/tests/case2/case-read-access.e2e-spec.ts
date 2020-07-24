@@ -22,6 +22,9 @@ import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import editCasetemplatePo from "../../pageobject/settings/case-management/edit-casetemplate.po";
+import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
+import activityTabPo from '../../pageobject/social/activity-tab.po';
 
 describe("Case Read Access", () => {
     const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
@@ -292,7 +295,7 @@ describe("Case Read Access", () => {
         });
     });
 
-    describe('[DRDMV-7026,DRDMV-7033]: [Read Access] Configuring a Default Read Access', async () => {
+    describe('[DRDMV-7026,DRDMV-7033,DRDMV-11986]: [Read Access] Configuring a Default Read Access', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase1, caseTemplateData, readAccessMappingData1, readAccessMappingData2;
         beforeAll(async () => {
@@ -344,7 +347,7 @@ describe("Case Read Access", () => {
             readAccessMappingData2.configName = randomStr + '3ReadAccessMappingName';
             await apiHelper.createReadAccessMapping(readAccessMappingData2);
         });
-        it('[DRDMV-7026,DRDMV-7033]: [Read Access] Configuring a Default Read Access', async () => {
+        it('[DRDMV-7026,DRDMV-7033,DRDMV-11986]: [Read Access] Configuring a Default Read Access', async () => {
             await navigationPo.gotoSettingsPage();
             await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
             await consoleReadAcess.deleteDefaultReadAccess();
@@ -363,7 +366,7 @@ describe("Case Read Access", () => {
             await editReadAccess.clickOnCancel();
             await utilCommon.clickOnWarningOk();
         });
-        it('[DRDMV-7026,DRDMV-7033]: [Read Access] Configuring a Default Read Access', async () => {
+        it('[DRDMV-7026,DRDMV-7033,DRDMV-11986]: [Read Access] Configuring a Default Read Access', async () => {
             await navigationPo.signOut();
             await loginPage.login('qtao');
             await navigationPo.gotoQuickCase();
@@ -394,6 +397,213 @@ describe("Case Read Access", () => {
             await apiHelper.deleteCaseReadAccess(readAccessMappingData1.configName);
             await apiHelper.deleteCaseReadAccess(randomStr + '2ReadAccessMappingName');
             await apiHelper.deleteCaseReadAccess(randomStr + '3ReadAccessMappingName');
+            await navigationPo.signOut();
+            await loginPage.login('qkatawazi');
+        });
+    }); 
+
+    describe('[DRDMV-2004]: [Read Access] Applying mapping with flowset in case of best match', async () => {
+        const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let readAccessMappingData1, readAccessMappingData2, readAccessMappingData3, caseTemplateData, caseTemplateData1;
+        beforeAll(async () => {
+            await apiHelper.apiLogin('qkatawazi');
+            readAccessMappingData1 = {
+                "configName": randomStr + '1ReadAccessMappingName',
+                "assignedCompany": 'Petramco',
+                "businessUnit": 'HR Support',
+                "supportGroup": 'Compensation and Benefits',
+                "company": 'Petramco',
+                "category1": 'Facilities',
+                "category2": 'Conference Room',
+                "category3": 'Furniture',
+            }
+            readAccessMappingData2 = {
+                "configName": randomStr + '2ReadAccessMappingName',
+                "assignedCompany": 'Petramco',
+                "businessUnit": 'Canada Support',
+                "supportGroup": 'CA Support 2',
+                "company": 'Petramco',
+                "category1": 'Facilities',
+                "category2": 'Conference Room',
+            }
+            readAccessMappingData3 = {
+                "configName": randomStr + '3ReadAccessMappingName',
+                "assignedCompany": 'Petramco',
+                "businessUnit": 'Latin America Support',
+                "supportGroup": 'LA Support 1',
+                "company": 'Petramco',
+            }
+            caseTemplateData = {
+                "templateName": `${randomStr}1Case template`,
+                "templateStatus": "Draft",
+                "templateSummary": `${randomStr}Summary`,
+                "caseStatus": "New",
+                "casePriority": "Low",
+                "categoryTier1": 'Facilities',
+                "categoryTier2": 'Conference Room',
+                "categoryTier3": 'Furniture',
+                "company": "Petramco",
+                "businessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
+                "assignee": "Fritz",
+                "ownerBU": 'Facilities Support',
+                "ownerGroup": "Facilities",
+            }
+            caseTemplateData1 = {
+                "templateName": `${randomStr}2CaseTemplate`,
+                "templateStatus": "Draft",
+                "templateSummary": `${randomStr}Summary`,
+                "caseStatus": "New",
+                "categoryTier1": 'Facilities',
+                "company": "Petramco",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qfeng",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3"
+            }
+            await apiHelper.createCaseTemplate(caseTemplateData);
+            await apiHelper.createCaseTemplate(caseTemplateData1);
+            await apiHelper.createReadAccessMapping(readAccessMappingData1);
+            await apiHelper.createReadAccessMapping(readAccessMappingData2);
+            await apiHelper.createReadAccessMapping(readAccessMappingData3);
+        });
+        it('[DRDMV-2004]: [Read Access] Applying mapping with flowset in case of best match', async () => {
+            await navigationPo.gotoSettingsPage();
+            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            await utilGrid.searchAndOpenHyperlink(readAccessMappingData1.configName);
+            await editReadAccess.selectFlowset('Facilities Management');
+            await editReadAccess.selectPriority('Low');
+            await editReadAccess.clickOnSave();
+            await utilCommon.closePopUpMessage();
+            await utilGrid.searchAndOpenHyperlink(readAccessMappingData2.configName);
+            await editReadAccess.selectFlowset('Facilities Management');
+            await editReadAccess.clickOnSave();
+            await navigationPo.gotoSettingsPage();
+            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await utilGrid.searchAndOpenHyperlink(caseTemplateData.templateName);
+            await viewCaseTemplate.clickOnEditCaseTemplateButton();
+            await editCasetemplatePo.changeFlowsetValue('Facilities Management');
+            await editCasetemplatePo.clickSaveCaseTemplate();
+            await utilCommon.closePopUpMessage();
+            await editCaseTemplate.clickOnEditCaseTemplateMetadata();
+            await editCaseTemplate.changeTemplateStatusDropdownValue('Active');
+            await editCaseTemplate.clickOnSaveCaseTemplateMetadata();
+            await utilCommon.closePopUpMessage();
+            await utilCommon.clickOnBackArrow();
+            await utilGrid.searchAndOpenHyperlink(caseTemplateData1.templateName);
+            await viewCaseTemplate.clickOnEditCaseTemplateButton();
+            await editCasetemplatePo.changeFlowsetValue('Facilities Management');
+            await editCasetemplatePo.clickSaveCaseTemplate();
+            await utilCommon.closePopUpMessage();
+            await editCaseTemplate.clickOnEditCaseTemplateMetadata();
+            await editCaseTemplate.changeTemplateStatusDropdownValue('Active');
+            await editCaseTemplate.clickOnSaveCaseTemplateMetadata();
+            await utilCommon.closePopUpMessage();
+        });
+        it('[DRDMV-2004]: [Read Access] Applying mapping with flowset in case of best match', async () => {
+            await navigationPo.signOut();
+            await loginPage.login('qtao');
+            await navigationPo.gotoCreateCase();
+            await createCasePage.selectRequester('adam');
+            await createCasePage.setSummary('set summary');
+            await createCasePage.clickSelectCaseTemplateButton();
+            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateData.templateName);
+            await createCasePage.clickSaveCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
+            await viewCasePage.clickOnTab('Case Access');
+            expect(await caseAccessTabPo.isCaseAccessEntityAdded('Compensation and Benefits')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+            expect(await caseAccessTabPo.isSupportGroupReadAccessDisplayed('Compensation and Benefits')).toBeTruthy('Support Group does not have read access');
+            await navigationPo.gotoCreateCase();
+            await createCasePage.selectRequester('adam');
+            await createCasePage.setSummary('set summary');
+            await createCasePage.clickSelectCaseTemplateButton();
+            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateData1.templateName);
+            await createCasePage.clickSaveCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
+            await viewCasePage.clickOnTab('Case Access');
+            expect(await caseAccessTabPo.isCaseAccessEntityAdded('LA Support 1')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+            expect(await caseAccessTabPo.isSupportGroupReadAccessDisplayed('LA Support 1')).toBeTruthy('Support Group does not have read access');
+        });
+        afterAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteCaseReadAccess(readAccessMappingData1.configName);
+            await apiHelper.deleteCaseReadAccess(readAccessMappingData2.configName);
+            await apiHelper.deleteCaseReadAccess(readAccessMappingData3.configName);
+            await navigationPo.signOut();
+            await loginPage.login('qkatawazi');
+        });
+    });
+
+    fdescribe('[DRDMV-22479]: Bulk Case Access update clicking Reset to default.', async () => {
+        let newCase1;
+        beforeAll(async () => {
+            await apiHelper.apiLogin('franz');
+            let caseData = {
+                "Requester": "apavlik",
+                "Summary": "Test case for Read Access",
+                "Assigned Company": "Petramco",
+                "Business Unit": "Facilities Support",
+                "Support Group": "Facilities",
+                "Assignee": "Fritz"
+            }
+            newCase1 = await apiHelper.createCase(caseData);
+            await foundationData2("Petramco");
+        });
+        it('[DRDMV-22479]: Bulk Case Access update clicking Reset to default.', async () => {
+            await navigationPo.signOut();
+            await loginPage.login('fritz');
+            await utilityGrid.searchAndOpenHyperlink(newCase1.displayId);
+            await viewCasePage.clickOnTab('Case Access');
+            //Bulk Read Access
+            await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
+            await caseAccessTabPo.selectCompany('Petramco', 'Select Company');
+            await caseAccessTabPo.selectBusinessUnit(businessData.orgName, 'Select Business Unit');
+            await caseAccessTabPo.clickOnReadAccessAddButton('Add Business Unit');
+            await caseAccessTabPo.selectCompany('Petramco', 'Select Company');
+            await caseAccessTabPo.selectBusinessUnit(businessData.orgName, 'Select Business Unit');
+            await caseAccessTabPo.selectDepartment(departmentData.orgName, 'Select Department');
+            await caseAccessTabPo.clickOnReadAccessAddButton('Add Support Department');
+            await caseAccessTabPo.selectCompany('Petramco', 'Select Company');
+            await caseAccessTabPo.selectBusinessUnit(businessData.orgName, 'Select Business Unit');
+            await caseAccessTabPo.selectDepartment(departmentData.orgName, 'Select Department');
+            await caseAccessTabPo.selectSupportGroup(suppGrpData.orgName, 'Select Support Group');
+            await caseAccessTabPo.clickOnReadAccessAddButton('Add Support Group');
+            await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Agent Access');
+            await caseAccessTabPo.selectAndAddAgent('fnPerson lnPerson');
+            expect(await activityTabPo.getReadAccessActivityCount('granted read access')).toBe(4);
+        });
+        it('[DRDMV-22479]: Bulk Case Access update clicking Reset to default.', async () => {
+            //Bulk Write Access
+            await caseAccessTabPo.selectCompany('Petramco', 'Select Company');
+            await caseAccessTabPo.selectBusinessUnit(businessData1.orgName, 'Select Business Unit');
+            await caseAccessTabPo.clickOnWriteAccessAddButton('Add Business Unit');
+            await caseAccessTabPo.selectCompany('Petramco', 'Select Company');
+            await caseAccessTabPo.selectBusinessUnit(businessData1.orgName, 'Select Business Unit');
+            await caseAccessTabPo.selectDepartment(departmentData1.orgName, 'Select Department');
+            await caseAccessTabPo.clickOnWriteAccessAddButton('Add Support Department');
+            await caseAccessTabPo.selectCompany('Petramco', 'Select Company');
+            await caseAccessTabPo.selectBusinessUnit(businessData1.orgName, 'Select Business Unit');
+            await caseAccessTabPo.selectDepartment(departmentData1.orgName, 'Select Department');
+            await caseAccessTabPo.selectSupportGroup(suppGrpData1.orgName, 'Select Support Group');
+            await caseAccessTabPo.clickOnWriteAccessAddButton('Add Support Group');
+            await caseAccessTabPo.selectAgentWithWriteAccess('fnPerson19501 lnPerson19501');
+            await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
+            expect(await activityTabPo.getReadAccessActivityCount('granted write access')).toBe(4);
+        });
+        it('[DRDMV-22479]: Bulk Case Access update clicking Reset to default.', async () => {
+            await caseAccessTabPo.deleteAccess('UI-BusinessUnit');
+            await caseAccessTabPo.deleteAccess('UI-Department');
+            await caseAccessTabPo.deleteAccess('UI-SupportGroup');
+            await caseAccessTabPo.deleteAccess('fnPerson lnPerson');
+            await caseAccessTabPo.deleteAccess('UI-BusinessUnit-19501');
+            await caseAccessTabPo.deleteAccess('UI-Department-19501');
+            await caseAccessTabPo.deleteAccess('UI-SupportGroup-19501');
+            await caseAccessTabPo.deleteAccess('fnPerson19501 lnPerson19501');
+            expect(await activityTabPo.getReadAccessActivityCount('revoked read access of')).toBe(4);
+            expect(await activityTabPo.getReadAccessActivityCount('revoked write access of')).toBe(4);
+        });
+        afterAll(async () => {
             await navigationPo.signOut();
             await loginPage.login('qkatawazi');
         });

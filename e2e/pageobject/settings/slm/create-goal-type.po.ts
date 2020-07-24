@@ -33,8 +33,7 @@ class GoalTypeCreateConfigPage {
     }
 
     async clickSaveGoalTypeButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)),2000);
-        await $(this.selectors.saveButton).click();
+               await $(this.selectors.saveButton).click();
     }
 
     async clickCloseGoalTypeButton(): Promise<void> {

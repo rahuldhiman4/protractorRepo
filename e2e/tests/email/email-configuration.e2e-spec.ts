@@ -432,13 +432,9 @@ describe('Email Configuration', () => {
     //ankagraw
     describe('[DRDMV-10454]: Support Group: Delete default email id for multiple email configurations', async () => {
         beforeAll(async () => {
-            await browser.get(BWF_BASE_URL);
-            await loginPage.login("qkatawazi");
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteAllEmailConfiguration();
             await apiHelper.createEmailConfiguration();
-            await foundationData("Petramco", "BusinessUnitData10410", "SuppGrpData10410");
-            await foundationData("Psilon", "BusinessUnitDataPsilon", "SuppGrpDataPsilon");
             await apiHelper.createEmailConfiguration(INCOMINGMAIL_COMPANY_ONE, OUTGOINGEMAIL_COMPANY_ONE, EMAILCONFIG_COMPANY_ONE);
             await apiHelper.createEmailConfiguration(INCOMINGMAIL_COMPANY_TWO, OUTGOINGEMAIL_COMPANY_TWO, EMAILCONFIG_COMPANY_TWO);
         });
@@ -457,8 +453,6 @@ describe('Email Configuration', () => {
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
             await utilGrid.clickCheckBoxOfValueInGrid("bwfqa2019@gmail.com");
             await consoleEmailConfig.deleteConfigurationEmail();
-            expect(await utilCommon.getWarningDialogMsg()).toBe('Are you sure you want to delete the selected record?');
-            await utilCommon.clickOnWarningOk();
             expect(await utilCommon.isPopUpMessagePresent("ERROR (10005): There are 2 other email-id configurations with Default email as false. Please set one of them set to true before de-activiating or deleting this record")).toBeTruthy();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');

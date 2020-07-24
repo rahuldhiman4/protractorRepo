@@ -369,7 +369,10 @@ export class Utility {
         }
         else {
             await browser.wait(this.EC.visibilityOf($(this.selectors.popUpMsgLocator)), 10000);
-            arr[0] = await $$(this.selectors.popUpMsgLocator).first().getText();
+            let msgLocator = await $$(this.selectors.popUpMsgLocator);
+            for (let i: number = 0; i < msgLocator.length; i++) {
+                arr[i] = await msgLocator[i].getText();
+            }
         }
         await browser.waitForAngularEnabled(true);
         return arr;
