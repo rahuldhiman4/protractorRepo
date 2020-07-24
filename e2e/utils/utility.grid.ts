@@ -253,7 +253,7 @@ export class GridOperations {
         await $(guidId + this.selectors.filterPresetBtn).click();
         let filterCount = await $$(this.selectors.filterItems);
         for (let i = 0; i < await filterCount.length; i++) {
-            let tempLocator = $$(this.selectors.filterItems).get(i);
+            let tempLocator = await $$(this.selectors.filterItems).get(i);
             if (await tempLocator.getText() == fieldName) {
                 await tempLocator.click();
                 break;

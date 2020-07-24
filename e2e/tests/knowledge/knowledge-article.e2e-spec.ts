@@ -31,12 +31,12 @@ import notificationPo from '../../pageobject/notification/notification.po';
 
 describe('Knowledge Article', () => {
     const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-    var knowledgeCandidateUser = 'kayo';
-    var knowledgeContributorUser = 'kkohri';
-    var knowledgePublisherUser = 'kmills';
-    var knowledgeCoachUser = 'kWilliamson';
-    var knowledgeManagementApp = "Knowledge Management";
-    var knowledgeArticlesTitleStr = "Knowledge Articles";
+    let knowledgeCandidateUser = 'kayo';
+    let knowledgeContributorUser = 'kkohri';
+    let knowledgePublisherUser = 'kmills';
+    let knowledgeCoachUser = 'kWilliamson';
+    let knowledgeManagementApp = "Knowledge Management";
+    let knowledgeArticlesTitleStr = "Knowledge Articles";
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('peter');

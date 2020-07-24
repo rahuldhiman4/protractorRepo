@@ -37,12 +37,12 @@ describe('Case Console Preset Filter', () => {
         await apiHelper.associatePersonToCompany(personData3.userId, 'Phylum');
 
         //Takes time to reflect created user data. So, hard wait is required here
-        browser.sleep(5000);
+        await browser.sleep(5000);
         await loginPage.login(userId1, 'Password_1234');
 
         // Create the new status Configurations
         // Hard wait to reflect the Phylum Company in Case status config's Company Dropdown
-        browser.sleep(6000);
+        await browser.sleep(6000);
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
         await statusConfig.setCompanyDropdown('Phylum', 'case');
@@ -452,7 +452,7 @@ describe('Case Console Preset Filter', () => {
             caseId.push(response6.displayId);
 
             //Waiting for SVT to reach 50% SLA Time
-            browser.sleep(130000);
+            await browser.sleep(130000);
         });
 
         it('[DRDMV-20881]: Validate the All Open Breached Cases filter after applying and removing the filter', async () => {
@@ -461,7 +461,7 @@ describe('Case Console Preset Filter', () => {
             expect(await utilityGrid.isGridRecordPresent(caseId[5])).toBeFalsy(caseId[5] + ' :Record is available');
 
             //Waiting for SVT to Breached
-            browser.sleep(150000);
+            await browser.sleep(150000);
             for (let i: number = 0; i < 3; i++) {
                 expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeFalsy(caseId[i] + ' :Record is available');
             }
@@ -514,7 +514,7 @@ describe('Case Console Preset Filter', () => {
 
             let response9 = await apiHelper.createCase(caseData.NEW_CRITICAL_ASSIGNEDTOLOGGEDINUSER);
             caseId.push(response9.displayId);
-            browser.sleep(130000);
+            await browser.sleep(130000);
 
         });
 
@@ -523,7 +523,7 @@ describe('Case Console Preset Filter', () => {
             expect(await utilityGrid.getAppliedFilterName()).toBe('My Open Breached Cases');
 
             //Waiting for SVT to Breached
-            browser.sleep(160000);
+            await browser.sleep(160000);
             for (let i: number = 0; i < 4; i++) {
                 expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeTruthy(caseId[i] + ' :Record is not available');
             }

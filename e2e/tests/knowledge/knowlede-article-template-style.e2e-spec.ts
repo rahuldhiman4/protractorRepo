@@ -10,7 +10,7 @@ import utilityCommon from '../../utils/utility.common';
 
 describe('KnowledgeArticlestyle', () => {
     const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-    var knowledgeCoachUser = 'kWilliamson';
+    let knowledgeCoachUser = 'kWilliamson';
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('peter');

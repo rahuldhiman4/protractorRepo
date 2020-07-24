@@ -74,8 +74,8 @@ export class Resources {
         let arr: string[] = [];
         await $$('.advance-search button.dropdown-toggle').get(dropDownNumber).click();
         let drpDwnvalue: number = await $$(this.selectors.dropDownOption).count();
-        for (var i = 0; i < drpDwnvalue; i++) {
-            var ab: string = await $$(this.selectors.dropDownOption).get(i).getText();
+        for (let i = 0; i < drpDwnvalue; i++) {
+            let ab: string = await $$(this.selectors.dropDownOption).get(i).getText();
             arr[i] = ab;
         }
         arr = arr.sort();

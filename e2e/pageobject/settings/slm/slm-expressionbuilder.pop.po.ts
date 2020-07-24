@@ -24,19 +24,19 @@ class SlmExpressionBuilder {
     }
 
     async getExpressionFieldAvailable(expressionField: string): Promise<string> {
-        var expressionFields: string = `//div[@class="record_field"][text()="${expressionField}"]`;
+        let expressionFields: string = `//div[@class="record_field"][text()="${expressionField}"]`;
         //        await browser.wait(this.EC.elementToBeClickable(element(by.xpath(expressionFields))));
         return await element(by.xpath(expressionFields)).getText();
     }
 
     async getExpressionFieldAvailableAll(data: string[]): Promise<boolean> {
-        // var expressionFields: string = `//div[@class="record_field"][text()="${expressionField}"]`;
+        // let expressionFields: string = `//div[@class="record_field"][text()="${expressionField}"]`;
         let arr: string[] = [];
         //        await browser.wait(this.EC.visibilityOf($(this.expressionBuilderSelectors.saveSVTExpressionButton)));
         let expressionFields: string = `div.record_field`;
         let drpDwnvalue: number = await $$(expressionFields).count();
-        for (var i = 0; i < drpDwnvalue; i++) {
-            var ab: string = await $$(expressionFields).get(i).getText();
+        for (let i = 0; i < drpDwnvalue; i++) {
+            let ab: string = await $$(expressionFields).get(i).getText();
             arr[i] = ab;
         }
         arr = arr.sort();
@@ -61,8 +61,8 @@ class SlmExpressionBuilder {
         //        await browser.wait(this.EC.visibilityOf($(this.expressionBuilderSelectors.saveSVTExpressionButton)));
         let expressionFields: string = `div.expanded_field`;
         let drpDwnvalue: number = await $$(expressionFields).count();
-        for (var i = 0; i < drpDwnvalue; i++) {
-            var ab: string = await $$(expressionFields).get(i).getText();
+        for (let i = 0; i < drpDwnvalue; i++) {
+            let ab: string = await $$(expressionFields).get(i).getText();
             arr[i] = ab;
         }
         arr = arr.sort();
@@ -158,8 +158,8 @@ class SlmExpressionBuilder {
         //        await browser.wait(this.EC.visibilityOf($(this.expressionBuilderSelectors.saveSVTExpressionButton)));
         let expressionOperator: string = `div[ng-repeat='operator in operatorRow'] button`;
         let drpDwnvalue: number = await $$(expressionOperator).count();
-        for (var i = 0; i < drpDwnvalue; i++) {
-            var ab: string = await $$(expressionOperator).get(i).getText();
+        for (let i = 0; i < drpDwnvalue; i++) {
+            let ab: string = await $$(expressionOperator).get(i).getText();
             arr[i] = ab;
         }
         arr = arr.sort();
@@ -229,7 +229,7 @@ class SlmExpressionBuilder {
 
         switch (fieldAttribute) {
             case "NAMED_LIST":
-                var attr = `"showField =='${fieldAttribute}'"`;
+                let attr = `"showField =='${fieldAttribute}'"`;
                 const attributeName = await $(`div[ng-if=${attr}]`);
                 //                await browser.wait(this.EC.elementToBeClickable(attributeName.$(selectDropDown)));
                 await attributeName.$(selectDropDown).click();
@@ -296,8 +296,8 @@ class SlmExpressionBuilder {
     }
 
     async clickOnAddExpressionButton(fieldAttribute: string) {
-        var ref1: string = '"' + "showField ==" + "'" + fieldAttribute + "'" + '"';
-        var addButtonVal = `div[ng-show=${ref1}] button`;
+        let ref1: string = '"' + "showField ==" + "'" + fieldAttribute + "'" + '"';
+        let addButtonVal = `div[ng-show=${ref1}] button`;
 
         if (fieldAttribute == "STATUS") {
             let ref1: string = '"' + "showField==" + "'" + fieldAttribute + "'" + '"';

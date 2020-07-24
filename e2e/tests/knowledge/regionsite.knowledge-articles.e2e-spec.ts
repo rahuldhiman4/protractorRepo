@@ -61,7 +61,7 @@ let publishedApprovalStatus = "PublishApproval";
 let retiredApprovalStatus = "RetireApproval";
 let closedStatus = "Closed";
 let canceledApprovalStatus = "CancelApproval";
-var title = "DRDMV-19572 KnowledgeArticle";
+let title = "DRDMV-19572 KnowledgeArticle";
 
 describe('Knowledge Articles - Location (Region / Site) Tests', () => {
     const filePath = '../../../data/ui/attachment/articleStatus.png';
@@ -71,7 +71,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteKnowledgeApprovalMapping();
         await apiHelper.apiLogin(knowledgePublisherUser);
-        var articleData = {
+        let articleData = {
             "knowledgeSet": "HR",
             "title": "KnowledgeArticle",
             "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",

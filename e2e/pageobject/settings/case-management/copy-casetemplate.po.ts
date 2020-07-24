@@ -46,12 +46,12 @@ class CopyCaseTemplate {
     }
 
     async getCopyCaseTemplateInstruction(): Promise<string> {
-        var textInstruction;
+        let textInstruction;
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.copyInstruction)));
-        var alltext: number = await $$(this.selectors.copyInstruction).count();
-        for (var i = 0; i < alltext; i++) {
-            var textInst = await $$(this.selectors.copyInstruction).get(i);
-            var nm: string = await textInst.getText();
+        let alltext: number = await $$(this.selectors.copyInstruction).count();
+        for (let i = 0; i < alltext; i++) {
+            let textInst = await $$(this.selectors.copyInstruction).get(i);
+            let nm: string = await textInst.getText();
             textInstruction = textInstruction + nm;
         }
         return textInstruction;

@@ -19,7 +19,7 @@ import utilityGrid from '../../utils/utility.grid';
 describe('Email Task', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
-        loginPage.login("fritz");
+        await loginPage.login("fritz");
     });
 
     afterAll(async () => {

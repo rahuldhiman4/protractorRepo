@@ -347,9 +347,9 @@ class ActivityTabPage {
     }
 
     async getActivityNotesText(textToMatch: string): Promise<boolean> {
-        var elem = element(by.xpath("//div[contains(@class,'d-icon-note_pencil')]/following-sibling::div"));
+        let elem = element(by.xpath("//div[contains(@class,'d-icon-note_pencil')]/following-sibling::div"));
         //        browser.wait(this.EC.elementToBeClickable(elem));
-        var value = await elem.getText();
+        let value = await elem.getText();
         //        await utilCommon.waitUntilSpinnerToHide();
         return value.includes(textToMatch) ? true : false;
 
