@@ -39,7 +39,7 @@ class CopyCaseTemplate {
     }
 
     async setTemplateName(templateNameValue: string): Promise<void> {
-        let element = $(this.selectors.templateName);
+        let element = await $(this.selectors.templateName);
         //        await browser.wait(this.EC.visibilityOf(element));
         await element.clear();
         await element.sendKeys(templateNameValue);

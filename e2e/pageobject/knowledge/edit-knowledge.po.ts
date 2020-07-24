@@ -148,9 +148,9 @@ class EditKnowledgePage {
     }
 
     async isAssignToMeReviewerBladePresent(): Promise<Boolean> {
-        return $(this.selectors.assigneToMeReviewerAssign).isPresent().then(async (link) => {
+        return await $(this.selectors.assigneToMeReviewerAssign).isPresent().then(async (link) => {
             if (link) {
-                return $(this.selectors.assigneToMeReviewerAssign).isDisplayed();
+                return await $(this.selectors.assigneToMeReviewerAssign).isDisplayed();
             } else return false;
         });
     }

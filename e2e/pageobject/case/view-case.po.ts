@@ -367,11 +367,11 @@ class ViewCasePage {
             for (let i = 0; i < dynamicAttachment; i++) {
                 let fieldName = await $$('[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .form-group label').get(i).getText();
                 if (fieldName == label) {
-                    return $$('[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .form-group').get(i).$(this.selectors.showMore).getText();
+                    return await $$('[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .form-group').get(i).$(this.selectors.showMore).getText();
                 }
             }
         } else {
-            return $$(this.selectors.showMore).first().getText();
+            return await $$(this.selectors.showMore).first().getText();
         }
     }
 

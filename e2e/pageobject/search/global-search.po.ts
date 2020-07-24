@@ -31,7 +31,7 @@ class GlobalSearch {
     async isSearchBoxLabelDisplayed(): Promise<boolean> {
         return await $(this.selectors.searchBoxLabel).isPresent().then(async (link) => {
             if (link) {
-                return element(by.cssContainingText(this.selectors.searchBoxLabel, 'Type search text and press enter.')).isDisplayed();
+                return await element(by.cssContainingText(this.selectors.searchBoxLabel, 'Type search text and press enter.')).isDisplayed();
             } else return false;
         });
     }

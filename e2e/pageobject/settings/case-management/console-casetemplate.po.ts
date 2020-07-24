@@ -36,7 +36,7 @@ class CaseTemplateConsole {
 
     async getCaseTemplateNamePresentOnGrid(templateName: string): Promise<string> {
 //        await browser.wait(this.EC.visibilityOf(element(by.cssContainingText((this.selectors.gridLink), templateName))));
-        return element(by.cssContainingText((this.selectors.gridLink), templateName)).getText();
+        return await element(by.cssContainingText((this.selectors.gridLink), templateName)).getText();
     }
 
     async addColumnOnGrid(columnName: string[]): Promise<void> {

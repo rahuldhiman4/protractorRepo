@@ -463,7 +463,7 @@ class ActivityTabPage {
 
     async isAuthorSearchBoxVisible(): Promise<boolean> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterAuthor)));
-        return $(this.selectors.filterAuthor).isDisplayed();
+        return await $(this.selectors.filterAuthor).isDisplayed();
     }
 
     async getTextOfFilterTaskOptions(filterCheckBoxText: string): Promise<string> {
@@ -645,13 +645,13 @@ class ActivityTabPage {
 
 
     async getSurveyQuestionTextOnSurveyInfo(index: number): Promise<string> {
-        let question = $$(this.selectors.dwpQuestions).get(index - 1);
+        let question = await $$(this.selectors.dwpQuestions).get(index - 1);
         //        await browser.wait(this.EC.visibilityOf(question));
         return await question.getText();
     }
 
     async getSurveyAnswerTextOnSurveyInfo(index: number): Promise<string> {
-        let answer = $$(this.selectors.dwpAnswers).get(index - 1);
+        let answer = await $$(this.selectors.dwpAnswers).get(index - 1);
         //        await browser.wait(this.EC.visibilityOf(answer));
         return await answer.getText();
     }
@@ -790,79 +790,79 @@ class ActivityTabPage {
     }
 
     async isBoldTextDisplayedInCkEditorTextArea(bodyText: string): Promise<boolean> {
-        return element(by.cssContainingText(this.selectors.boldTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
-            if (link) return element(by.cssContainingText(this.selectors.boldTextCkEditorTextArea, bodyText)).isDisplayed();
+        return await element(by.cssContainingText(this.selectors.boldTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
+            if (link) return await element(by.cssContainingText(this.selectors.boldTextCkEditorTextArea, bodyText)).isDisplayed();
             else return false;
         });
     }
 
     async isItalicTextDisplayedInCkEditorTextArea(bodyText: string): Promise<boolean> {
-        return element(by.cssContainingText(this.selectors.italicTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
-            if (link) return element(by.cssContainingText(this.selectors.italicTextCkEditorTextArea, bodyText)).isDisplayed();
+        return await element(by.cssContainingText(this.selectors.italicTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
+            if (link) return await element(by.cssContainingText(this.selectors.italicTextCkEditorTextArea, bodyText)).isDisplayed();
             else return false;
         });
     }
 
     async isUnderlineTextDisplayedInCkEditorTextArea(bodyText: string): Promise<boolean> {
-        return element.all(by.cssContainingText(this.selectors.underlineTextCkEditorTextArea, bodyText)).get(0).isPresent().then(async (link) => {
-            if (link) return element.all(by.cssContainingText(this.selectors.underlineTextCkEditorTextArea, bodyText)).get(0).isDisplayed();
+        return await element.all(by.cssContainingText(this.selectors.underlineTextCkEditorTextArea, bodyText)).get(0).isPresent().then(async (link) => {
+            if (link) return await element.all(by.cssContainingText(this.selectors.underlineTextCkEditorTextArea, bodyText)).get(0).isDisplayed();
             else return false;
         });
     }
 
     async isColorTextDisplayedInCkEditorTextArea(colorCode: string, bodyText: string): Promise<boolean> {
         return await $(`.cke_enable_context_menu span[style="${colorCode}"]`).isPresent().then(async (link) => {
-            if (link) return element(by.cssContainingText(this.selectors.colorTextCkEditorTextArea, bodyText)).isDisplayed();
+            if (link) return await element(by.cssContainingText(this.selectors.colorTextCkEditorTextArea, bodyText)).isDisplayed();
             else return false;
         });
     }
 
     async isTextLeftAlignInCkEditorTextArea(bodyText: string): Promise<boolean> {
-        return element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
-            if (link) return element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, bodyText)).isDisplayed();
+        return await element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
+            if (link) return await element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, bodyText)).isDisplayed();
             else return false;
         });
     }
 
     async isTextRightAlignInCkEditorTextArea(bodyText: string): Promise<boolean> {
-        return element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
+        return await element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
             if (link) {
                 let colorcodeAttribute = await $(this.selectors.alignmentTextCkEditorTextArea).getAttribute('style') == 'text-align: right;' ? true : false;
                 if (colorcodeAttribute == true) {
-                    return element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, bodyText)).isDisplayed();
+                    return await element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, bodyText)).isDisplayed();
                 }
             } else return false;
         });
     }
 
     async isTextCenterAlignInCkEditorTextArea(bodyText: string): Promise<boolean> {
-        return element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
+        return await element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
             if (link) {
                 let colorcodeAttribute = await $(this.selectors.alignmentTextCkEditorTextArea).getAttribute('style') == 'text-align: center;' ? true : false;
                 if (colorcodeAttribute == true) {
-                    return element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, bodyText)).isDisplayed();
+                    return await element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, bodyText)).isDisplayed();
                 }
             } else return false;
         });
     }
 
     async isNumberListDisplayedInCkEditorTextArea(bodyText: string): Promise<boolean> {
-        return element(by.cssContainingText(this.selectors.numberListCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
-            if (link) return element(by.cssContainingText(this.selectors.numberListCkEditorTextArea, bodyText)).isDisplayed();
+        return await element(by.cssContainingText(this.selectors.numberListCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
+            if (link) return await element(by.cssContainingText(this.selectors.numberListCkEditorTextArea, bodyText)).isDisplayed();
             else return false;
         });
     }
 
     async isBulletListDisplayedInCkEditorTextArea(bodyText: string): Promise<boolean> {
-        return element(by.cssContainingText(this.selectors.bulletListTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
-            if (link) return element(by.cssContainingText(this.selectors.bulletListTextCkEditorTextArea, bodyText)).isDisplayed();
+        return await element(by.cssContainingText(this.selectors.bulletListTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
+            if (link) return await element(by.cssContainingText(this.selectors.bulletListTextCkEditorTextArea, bodyText)).isDisplayed();
             else return false;
         });
     }
 
     async isLinkDisplayedInCkEditorTextArea(bodyText: string): Promise<boolean> {
-        return element(by.cssContainingText(this.selectors.linkTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
-            if (link) return element(by.cssContainingText(this.selectors.linkTextCkEditorTextArea, bodyText)).isDisplayed();
+        return await element(by.cssContainingText(this.selectors.linkTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
+            if (link) return await element(by.cssContainingText(this.selectors.linkTextCkEditorTextArea, bodyText)).isDisplayed();
             else return false;
         });
     }

@@ -244,7 +244,7 @@ class CaseEditPage {
 
     async isAttachmentLinkClickable(): Promise<boolean> {
         try {
-            return $(this.selectors.attachLink).isEnabled();
+            return await $(this.selectors.attachLink).isEnabled();
         } catch (error) {
             return false;
         }

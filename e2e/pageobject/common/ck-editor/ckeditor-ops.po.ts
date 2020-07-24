@@ -268,7 +268,7 @@ class CKEditor {
         if (framePresent == true) {
             await browser.waitForAngularEnabled(false);
             await browser.switchTo().frame($(this.selectors.frame).getWebElement());
-            return boldTextElement.isPresent().then(async (result) => {
+            return await boldTextElement.isPresent().then(async (result) => {
                 if (result) {
                     let boldTextCke = await boldTextElement.getText();
                     if (boldTextCke.includes(bodyText)) {
@@ -299,7 +299,7 @@ class CKEditor {
         if (framePresent == true) {
             await browser.waitForAngularEnabled(false);
             await browser.switchTo().frame($(this.selectors.frame).getWebElement());
-            return italicTextElement.isPresent().then(async (result) => {
+            return await italicTextElement.isPresent().then(async (result) => {
                 if (result) {
                     let italicTextCke = await italicTextElement.getText();
                     if (italicTextCke.includes(bodyText)) {
@@ -312,7 +312,7 @@ class CKEditor {
             });
         }
         else {
-            return italicTextElement.isPresent().then(async (result) => {
+            return await italicTextElement.isPresent().then(async (result) => {
                 if (result) {
                     let italicTextCke = await italicTextElement.getText();
                     if (italicTextCke.includes(bodyText)) {
@@ -330,7 +330,7 @@ class CKEditor {
         if (framePresent == true) {
             await browser.waitForAngularEnabled(false);
             await browser.switchTo().frame($(this.selectors.frame).getWebElement());
-            return underlineTextElement.isPresent().then(async (result) => {
+            return await underlineTextElement.isPresent().then(async (result) => {
                 if (result) {
                     let italicTextCke = await underlineTextElement.getText();
                     if (italicTextCke.includes(bodyText)) {
@@ -343,7 +343,7 @@ class CKEditor {
             });
         }
         else {
-            return underlineTextElement.isPresent().then(async (result) => {
+            return await underlineTextElement.isPresent().then(async (result) => {
                 if (result) {
                     let italicTextCke = await underlineTextElement.getText();
                     if (italicTextCke.includes(bodyText)) {
@@ -361,7 +361,7 @@ class CKEditor {
         if (framePresent == true) {
             await browser.waitForAngularEnabled(false);
             await browser.switchTo().frame($(this.selectors.frame).getWebElement());
-            return colorTextElement.isPresent().then(async (result) => {
+            return await colorTextElement.isPresent().then(async (result) => {
                 if (result) {
                     let colorTextCke = await colorTextElement.getText();
                     if (colorTextCke.includes(bodyText)) {
@@ -374,7 +374,7 @@ class CKEditor {
             });
         }
         else {
-            return colorTextElement.isPresent().then(async (result) => {
+            return await colorTextElement.isPresent().then(async (result) => {
                 if (result) {
                     let colorTextCke = await colorTextElement.getText();
                     if (colorTextCke.includes(bodyText)) {
@@ -392,7 +392,7 @@ class CKEditor {
         if (framePresent == true) {
             await browser.waitForAngularEnabled(false);
             await browser.switchTo().frame($(this.selectors.frame).getWebElement());
-            return leftAlignTextElement.isPresent().then(async (result) => {
+            return await leftAlignTextElement.isPresent().then(async (result) => {
                 if (result) {
                     let leftAlignTextCke = await leftAlignTextElement.getText();
                     if (leftAlignTextCke.includes(bodyText)) {
@@ -405,7 +405,7 @@ class CKEditor {
             });
         }
         else {
-            return leftAlignTextElement.isPresent().then(async (result) => {
+            return await leftAlignTextElement.isPresent().then(async (result) => {
                 if (result) {
                     let leftAlignTextCke = await leftAlignTextElement.getText();
                     if (leftAlignTextCke.includes(bodyText)) {
@@ -423,7 +423,7 @@ class CKEditor {
         if (framePresent == true) {
             await browser.waitForAngularEnabled(false);
             await browser.switchTo().frame($(this.selectors.frame).getWebElement());
-            return rightAlignTextElement.isPresent().then(async (result) => {
+            return await rightAlignTextElement.isPresent().then(async (result) => {
                 if (result) {
                     let rightAlignTextCke = await rightAlignTextElement.getText();
                     if (rightAlignTextCke.includes(bodyText)) {
@@ -436,7 +436,7 @@ class CKEditor {
             });
         }
         else {
-            return rightAlignTextElement.isPresent().then(async (result) => {
+            return await rightAlignTextElement.isPresent().then(async (result) => {
                 if (result) {
                     let rightAlignTextCke = await rightAlignTextElement.getText();
                     if (rightAlignTextCke.includes(bodyText)) {
@@ -454,7 +454,7 @@ class CKEditor {
         if (framePresent == true) {
             await browser.waitForAngularEnabled(false);
             await browser.switchTo().frame($(this.selectors.frame).getWebElement());
-            return centerAlignTextElement.isPresent().then(async (result) => {
+            return await centerAlignTextElement.isPresent().then(async (result) => {
                 if (result) {
                     let centerAlignTextCke = await centerAlignTextElement.getText();
                     if (centerAlignTextCke.includes(bodyText)) {
@@ -467,7 +467,7 @@ class CKEditor {
             });
         }
         else {
-            return centerAlignTextElement.isPresent().then(async (result) => {
+            return await centerAlignTextElement.isPresent().then(async (result) => {
                 if (result) {
                     let centerAlignTextCke = await centerAlignTextElement.getText();
                     if (centerAlignTextCke.includes(bodyText)) {
@@ -485,7 +485,7 @@ class CKEditor {
         if (framePresent == true) {
             await browser.waitForAngularEnabled(false);
             await browser.switchTo().frame($(this.selectors.frame).getWebElement());
-            return numberListTextElement.isPresent().then(async (result) => {
+            return await numberListTextElement.isPresent().then(async (result) => {
                 if (result) {
                     let numberListTextCke = await numberListTextElement.getText();
                     if (numberListTextCke.includes(bodyText)) {
@@ -498,7 +498,7 @@ class CKEditor {
             });
         }
         else {
-            return numberListTextElement.isPresent().then(async (result) => {
+            return await numberListTextElement.isPresent().then(async (result) => {
                 if (result) {
                     let numberListTextCke = await numberListTextElement.getText();
                     if (numberListTextCke.includes(bodyText)) {
@@ -516,7 +516,7 @@ class CKEditor {
         if (framePresent == true) {
             await browser.waitForAngularEnabled(false);
             await browser.switchTo().frame($(this.selectors.frame).getWebElement());
-            return bulletListTextElement.isPresent().then(async (result) => {
+            return await bulletListTextElement.isPresent().then(async (result) => {
                 if (result) {
                     let bulletListTextCke = await bulletListTextElement.getText();
                     if (bulletListTextCke.includes(bodyText)) {
@@ -529,7 +529,7 @@ class CKEditor {
             });
         }
         else {
-            return bulletListTextElement.isPresent().then(async (result) => {
+            return await bulletListTextElement.isPresent().then(async (result) => {
                 if (result) {
                     let bulletListTextCke = await bulletListTextElement.getText();
                     if (bulletListTextCke.includes(bodyText)) {
@@ -554,7 +554,7 @@ class CKEditor {
         if (framePresent == true) {
             await browser.waitForAngularEnabled(false);
             await browser.switchTo().frame($(this.selectors.frame).getWebElement());
-            return linkTextElement.isPresent().then(async (result) => {
+            return await linkTextElement.isPresent().then(async (result) => {
                 if (result) {
                     let linkTextCke = await linkTextElement.getText();
                     if (linkTextCke.includes(bodyText)) {
@@ -567,7 +567,7 @@ class CKEditor {
             });
         }
         else {
-            return linkTextElement.isPresent().then(async (result) => {
+            return await linkTextElement.isPresent().then(async (result) => {
                 if (result) {
                     let linkTextCke = await linkTextElement.getText();
                     if (linkTextCke.includes(bodyText)) {
