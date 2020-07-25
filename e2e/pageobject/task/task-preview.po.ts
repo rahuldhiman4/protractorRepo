@@ -1,4 +1,4 @@
-import { $, by, element } from "protractor";
+import { $, by, element, ElementFinder } from "protractor";
 
 class TaskPreview {
 
@@ -16,84 +16,73 @@ class TaskPreview {
         taskDescription: '[rx-view-component-id="ddbcb40a-5a36-4936-a627-51833b951d59"] .collapse-block div'
     }
 
-    async isFieldLabelDisplayed(labelName: string): Promise<boolean> {
-        return await element(by.cssContainingText(this.selectors.fieldLabels, labelName)).isPresent().then(async (link) => {
+
+    async isElementDisplayed(element: ElementFinder): Promise<boolean> {
+        return await element.isPresent().then(async (link) => {
             if (link) {
-                return await element(by.cssContainingText(this.selectors.fieldLabels, labelName)).isDisplayed();
+                return element.isDisplayed();
             } else return false;
         });
+    }
+
+    async isFieldLabelDisplayed(labelName: string): Promise<boolean> {
+        let option = await element(by.cssContainingText(this.selectors.fieldLabels, labelName));
+        let booleanVal =this.isElementDisplayed(option);
+        return booleanVal;
     }
 
     async isTaskTitleDisplayed(taskSummary: string): Promise<boolean> {
-        return await element(by.cssContainingText(this.selectors.taskTitle, taskSummary)).isPresent().then(async (link) => {
-            if (link) {
-                return await element(by.cssContainingText(this.selectors.taskTitle, taskSummary)).isDisplayed();
-            } else return false;
-        });
+        let option = await element(by.cssContainingText(this.selectors.taskTitle, taskSummary));
+        let booleanVal =this.isElementDisplayed(option);
+        return booleanVal;
     }
 
     async isTaskSummaryDisplayed(taskSummary: string): Promise<boolean> {
-        return await element(by.cssContainingText(this.selectors.taskTitle, taskSummary)).isPresent().then(async (link) => {
-            if (link) {
-                return await element(by.cssContainingText(this.selectors.taskTitle, taskSummary)).isDisplayed();
-            } else return false;
-        });
+        let option = await element(by.cssContainingText(this.selectors.taskSummary, taskSummary));
+        let booleanVal =this.isElementDisplayed(option);
+        return booleanVal;
     }
 
     async isTaskIdDisplayed(taskId: string): Promise<boolean> {
-        return await element.all(by.cssContainingText(this.selectors.taskIdOrPriorityLabel, taskId)).get(0).isPresent().then(async (link) => {
-            if (link) {
-                return await element.all(by.cssContainingText(this.selectors.taskIdOrPriorityLabel, taskId)).get(0).isDisplayed();
-            } else return false;
-        });
+        let option = await element(by.cssContainingText(this.selectors.taskIdOrPriorityLabel, taskId));
+        let booleanVal =this.isElementDisplayed(option);
+        return booleanVal;
     }
 
     async isTaskPriorityLabelDisplayed(taskPriority: string): Promise<boolean> {
-        return await element(by.cssContainingText(this.selectors.taskIdOrPriorityLabel, taskPriority)).isPresent().then(async (link) => {
-            if (link) {
-                return await element(by.cssContainingText(this.selectors.taskIdOrPriorityLabel, taskPriority)).isDisplayed();
-            } else return false;
-        });
+        let option = await element(by.cssContainingText(this.selectors.taskIdOrPriorityLabel, taskPriority));
+        let booleanVal =this.isElementDisplayed(option);
+        return booleanVal;
     }
 
     async isPriorityValueDisplayed(taskPriority: string): Promise<boolean> {
-        return await element(by.cssContainingText(this.selectors.priority, taskPriority)).isPresent().then(async (link) => {
-            if (link) {
-                return await element(by.cssContainingText(this.selectors.priority, taskPriority)).isDisplayed();
-            } else return false;
-        });
+        let option = await element(by.cssContainingText(this.selectors.priority, taskPriority));
+        let booleanVal =this.isElementDisplayed(option);
+        return booleanVal;
     }
 
     async isTaskStatusDisplayed(taskStatus: string): Promise<boolean> {
-        return await element(by.cssContainingText(this.selectors.taskStatus, taskStatus)).isPresent().then(async (link) => {
-            if (link) {
-                return await element(by.cssContainingText(this.selectors.taskStatus, taskStatus)).isDisplayed();
-            } else return false;
-        });
+        let option = await element(by.cssContainingText(this.selectors.taskStatus, taskStatus));
+        let booleanVal =this.isElementDisplayed(option);
+        return booleanVal;
     }
 
     async isAssigneeNameDisplayed(assigneeName: string): Promise<boolean> {
-        return await element(by.cssContainingText(this.selectors.assigneeName, assigneeName)).isPresent().then(async (link) => {
-            if (link) {
-                return await element(by.cssContainingText(this.selectors.assigneeName, assigneeName)).isDisplayed();
-            } else return false;
-        });
+        let option = await element(by.cssContainingText(this.selectors.assigneeName, assigneeName));
+        let booleanVal =this.isElementDisplayed(option);
+        return booleanVal;
     }
 
     async isAassignedGroupValueDisplayed(assignedGroupVal: string): Promise<boolean> {
-        return await element(by.cssContainingText(this.selectors.assignedGroup, assignedGroupVal)).isPresent().then(async (link) => {
-            if (link) {
-                return await element(by.cssContainingText(this.selectors.assignedGroup, assignedGroupVal)).isDisplayed();
-            } else return false;
-        });
+        let option = await element(by.cssContainingText(this.selectors.assignedGroup, assignedGroupVal));
+        let booleanVal =this.isElementDisplayed(option);
+        return booleanVal;
     }
 
     async isAssignedCompanyValueDisplayed(assignedCompanyVal: string): Promise<boolean> {
-        return await element(by.cssContainingText(this.selectors.assignedCompany, assignedCompanyVal)).isPresent().then(async (link) => {
-            if (link) {
-                return await element(by.cssContainingText(this.selectors.assignedCompany, assignedCompanyVal)).isDisplayed();
-            } else return false;
-        });
+        let option = await element(by.cssContainingText(this.selectors.assignedCompany, assignedCompanyVal));
+        let booleanVal =this.isElementDisplayed(option);
+        return booleanVal;
     }
 
     async clickGotoTaskButton(): Promise<void> {
@@ -101,11 +90,9 @@ class TaskPreview {
     }
 
     async isTaskDescriptionDisplayed(taskDescription: string): Promise<boolean> {
-        return await element(by.cssContainingText(this.selectors.taskDescription, taskDescription)).isPresent().then(async (link) => {
-            if (link) {
-                return await element(by.cssContainingText(this.selectors.taskDescription, taskDescription)).isDisplayed();
-            } else return false;
-        });
+        let option = await element(by.cssContainingText(this.selectors.taskDescription, taskDescription));
+        let booleanVal =this.isElementDisplayed(option);
+        return booleanVal;
     }
 
 }
