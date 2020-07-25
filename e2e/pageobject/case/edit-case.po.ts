@@ -145,14 +145,14 @@ class CaseEditPage {
     }
 
     async updateSiteChangeReason(siteChangeReasonVal: string): Promise<void> {
-        var siteChangeReasonSelector = await this.selectors.siteChangeReason;
+        let siteChangeReasonSelector = await this.selectors.siteChangeReason;
         //        await browser.wait(this.EC.elementToBeClickable($(siteChangeReasonSelector)));
         await $((siteChangeReasonSelector)).clear;
         await $((siteChangeReasonSelector)).sendKeys(siteChangeReasonVal);
     }
 
     async updateContact(contactFullName: string): Promise<void> {
-        var contactSelector = await this.selectors.contact;
+        let contactSelector = await this.selectors.contact;
         //        await browser.wait(this.EC.elementToBeClickable($(contactSelector)));
         await $((contactSelector)).clear;
         await $((contactSelector)).sendKeys(contactFullName);
@@ -160,7 +160,7 @@ class CaseEditPage {
     }
 
     async updateTargetDate(date: string, hours: string, minutes: string, meredian: string) {
-        var targerDateDateSelector = await this.selectors.targetDateDate;
+        let targerDateDateSelector = await this.selectors.targetDateDate;
         //        await browser.wait(this.EC.elementToBeClickable($(targerDateDateSelector)));
         await $((targerDateDateSelector)).clear;
         await $((targerDateDateSelector)).sendKeys(date);
@@ -244,7 +244,7 @@ class CaseEditPage {
 
     async isAttachmentLinkClickable(): Promise<boolean> {
         try {
-            return $(this.selectors.attachLink).isEnabled();
+            return await $(this.selectors.attachLink).isEnabled();
         } catch (error) {
             return false;
         }

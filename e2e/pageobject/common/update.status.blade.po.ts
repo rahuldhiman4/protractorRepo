@@ -76,7 +76,7 @@ class UpdateStatus {
 
     async isChangeStatusFieldPresent(): Promise<boolean> {
         return await $(`[rx-view-component-id="${this.selectors.caseStatusDropDownGuid}"] button`).isPresent().then(async (present) => {
-            if (present) return $(`[rx-view-component-id="${this.selectors.caseStatusDropDownGuid}"] button`).isDisplayed();
+            if (present) return await $(`[rx-view-component-id="${this.selectors.caseStatusDropDownGuid}"] button`).isDisplayed();
             else return false;
         });
     }

@@ -17,6 +17,10 @@ export class ConsoleEmailConfig {
         await $(this.selectors.deleteButton).click();
     }
 
+    async getColumnHeaderValue(header:string): Promise<string> {
+     return await utilGrid.getSelectedGridRecordValue(this.selectors.emailConfigGuid,header);
+    }
+
     async searchAndSelectCheckbox(value:string): Promise<void> {
         await utilGrid.clickCheckBoxOfValueInGrid(value);
     }

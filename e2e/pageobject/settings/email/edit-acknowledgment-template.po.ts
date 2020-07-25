@@ -31,7 +31,7 @@ class EditAcknowledgementTemplate {
 
     async getTemplateName(): Promise<string> {
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.templateName)));
-        var newInput = $(this.selectors.templateName);
+        let newInput = $(this.selectors.templateName);
         await $(this.selectors.templateName).click();
         let templateName = await newInput.getAttribute('value');
         return templateName;
@@ -39,7 +39,7 @@ class EditAcknowledgementTemplate {
 
     async getDescription(): Promise<string> {
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.description)));
-        var newInput = $(this.selectors.description);
+        let newInput = $(this.selectors.description);
         await $(this.selectors.description).click();
         let templateName = await newInput.getAttribute('value');
         return templateName;

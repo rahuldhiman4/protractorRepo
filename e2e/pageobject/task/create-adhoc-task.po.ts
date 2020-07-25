@@ -189,11 +189,11 @@ class CreateAdhocTaskTemplatePage {
     }
 
     async isAttachmentButtonEnabled(): Promise<boolean> {
-        return $(this.selectors.attachmentLink).isEnabled();
+        return await $(this.selectors.attachmentLink).isEnabled();
     }
 
     async getAttachmentLimitWarningText(): Promise<string> {
-        return $(this.selectors.attachmentLimitWarning).getText();
+        return await $(this.selectors.attachmentLimitWarning).getText();
     }
 
     async addAttachmentInDescription(fileToUpload: string[]): Promise<void> {

@@ -1,6 +1,5 @@
-import { $, protractor, ProtractorExpectedConditions, $$, browser, element, by } from 'protractor';
+import { $, $$, protractor, ProtractorExpectedConditions } from 'protractor';
 import utilCommon from "../../../utils/util.common";
-import utilityCommon, { Utility } from '../../../utils/utility.common';
 
 class EditApprovalMapping {
 
@@ -36,8 +35,9 @@ class EditApprovalMapping {
         deselectCaseTemplateBtn: 'button.d-icon-arrow_left',
         searchedCaseTemplateText: '.km-group-list-item__info .title span',
         selectCaseTemplate: 'div .d-icon-square_o',
-        caseTemplateSelectionArea : '.list-container',
+        caseTemplateSelectionArea: '.list-container',
         searchedCaseTemplatesRecords: '.record-list-item',
+        casesCreatedWithoutTemplateToggleBtnGuid: '3e737bb6-57aa-48e3-8a0c-993d9d2f6643'
     }
 
     async getEditApprovalMappingHeaderText(): Promise<string> {
@@ -55,6 +55,43 @@ class EditApprovalMapping {
 
     async selectCompany(company: string): Promise<void> {
         await utilCommon.selectDropDown(this.selectors.companyGuid, company);
+    }
+
+    async isApprovalMappingNameDisabled(): Promise<boolean> {
+        return await $(this.selectors.approvalMappingNameField).getAttribute("readonly") == "true" ? true : false;
+    }
+
+    async isDropdownDisabled(dropdownName: string): Promise<boolean> {
+        let dropDownGuid: string;
+        switch (dropdownName) {
+            case "Company": {
+                dropDownGuid = this.selectors.companyGuid;
+                break;
+            }
+            case "Flowset": {
+                dropDownGuid = this.selectors.flowsetGuid;
+                break;
+            }
+            case "StatusTrigger": {
+                dropDownGuid = this.selectors.statusTriggerDropDownGuid;
+                break;
+            }
+            case "StatusApproved": {
+                dropDownGuid = this.selectors.statusMappingApproved;
+                break;
+            }
+            default: {
+                console.log('Drop down values does not match');
+                break;
+            }
+        }
+        let locator = `[rx-view-component-id="${dropDownGuid}"] .ui-select-toggle`;
+        return await $(locator).getAttribute("disabled") == "true" ? true : false;
+    }
+
+    async isCasesCreatedWithoutTemplateToggleDisabled(): Promise<boolean> {
+        let locator: string = `[rx-view-component-id="${this.selectors.casesCreatedWithoutTemplateToggleBtnGuid}"] rx-boolean`;
+        return await $(locator).getAttribute("disabled") == "true" ? true : false;
     }
 
     async selectFlowset(flowset: string): Promise<void> {
@@ -160,12 +197,12 @@ class EditApprovalMapping {
         return await $$(this.selectors.caseTemplateLabel).last().getText();
     }
 
-    async searchCaseTemplate(caseTemplateTitle:string): Promise<void> {
+    async searchCaseTemplate(caseTemplateTitle: string): Promise<void> {
         await $$(this.selectors.selectCaseTemplateInputField).first().clear();
         await $$(this.selectors.selectCaseTemplateInputField).first().sendKeys(caseTemplateTitle);
     }
 
-    async searchAssociatedCaseTemplate(caseTemplateTitle:string): Promise<void> {
+    async searchAssociatedCaseTemplate(caseTemplateTitle: string): Promise<void> {
         await $$(this.selectors.selectCaseTemplateInputField).last().clear();
         await $$(this.selectors.selectCaseTemplateInputField).last().sendKeys(caseTemplateTitle);
     }
@@ -193,45 +230,41 @@ class EditApprovalMapping {
     }
 
     async getSearchedCaseTemplate(): Promise<string> {
-      return await $$(this.selectors.caseTemplateSelectionArea).first().$(this.selectors.searchedCaseTemplateText).getText();
+        return await $$(this.selectors.caseTemplateSelectionArea).first().$(this.selectors.searchedCaseTemplateText).getText();
     }
 
     async getAssociatedCaseTemplate(): Promise<string> {
-       return await $$(this.selectors.caseTemplateSelectionArea).last().$(this.selectors.searchedCaseTemplateText).getText();
+        return await $$(this.selectors.caseTemplateSelectionArea).last().$(this.selectors.searchedCaseTemplateText).getText();
     }
 
-    async isSearchedCaseTemplateDisplayed():Promise<boolean>{
+    async isSearchedCaseTemplateDisplayed(): Promise<boolean> {
         return await $$(this.selectors.caseTemplateSelectionArea).first().$(this.selectors.searchedCaseTemplateText).isPresent().then(async (result) => {
             if (result) return await $$(this.selectors.caseTemplateSelectionArea).first().$(this.selectors.searchedCaseTemplateText).isDisplayed();
             else return false;
         });
     }
 
-    async isSearchedAssociatedCaseTemplateDisplayed():Promise<boolean>{
+    async isSearchedAssociatedCaseTemplateDisplayed(): Promise<boolean> {
         return await $$(this.selectors.caseTemplateSelectionArea).last().$(this.selectors.searchedCaseTemplateText).isPresent().then(async (result) => {
             if (result) return await $$(this.selectors.caseTemplateSelectionArea).last().$(this.selectors.searchedCaseTemplateText).isDisplayed();
             else return false;
         });
     }
 
-
-    async selectCaseTemplateCheckbox():Promise<void>{
+    async selectCaseTemplateCheckbox(): Promise<void> {
         await $$(this.selectors.caseTemplateSelectionArea).first().$(this.selectors.selectCaseTemplate).click();
     }
 
-    async selectMultipleCaseTemplateCheckbox():Promise<void>{
-      let  noOfRecords = await $$(this.selectors.caseTemplateSelectionArea).first().$$(this.selectors.searchedCaseTemplatesRecords).count();
-        for(let i=0;i<noOfRecords;i++){
+    async selectMultipleCaseTemplateCheckbox(): Promise<void> {
+        let noOfRecords = await $$(this.selectors.caseTemplateSelectionArea).first().$$(this.selectors.searchedCaseTemplatesRecords).count();
+        for (let i = 0; i < noOfRecords; i++) {
             await $$(this.selectors.caseTemplateSelectionArea).first().$$(this.selectors.searchedCaseTemplatesRecords).get(i).$(this.selectors.selectCaseTemplate).click();
         }
-
     }
 
-
-    async selectAssociatedCaseTemplateCheckbox():Promise<void>{
+    async selectAssociatedCaseTemplateCheckbox(): Promise<void> {
         await $$(this.selectors.caseTemplateSelectionArea).last().$(this.selectors.selectCaseTemplate).click();
     }
-
 }
 
 export default new EditApprovalMapping();

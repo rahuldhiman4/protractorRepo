@@ -38,7 +38,7 @@ class CaseWatchlistBlade {
     async isCasePresent(caseId: string): Promise<boolean> {
         await utilityGrid.searchRecord(caseId, this.selectors.guid);
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.backButton)));
-        let status = element(by.cssContainingText(this.selectors.caseLinks, caseId)).isPresent();
+        let status = await element(by.cssContainingText(this.selectors.caseLinks, caseId)).isPresent();
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.clearSearchicon)));
         await $(this.selectors.clearSearchicon).click();
 //        await utilCommon.waitUntilSpinnerToHide();
@@ -136,7 +136,7 @@ class CaseWatchlistBlade {
         let clearFilterLocator =  await $$(this.selectors.clearFilterButton).first();
         try {
             await $(this.selectors.filterPreset).click();
-            if (await clearFilterLocator.isEnabled()) {
+            if (await clearFilterLocator.isPresent()) {
                 await clearFilterLocator.click();
             }
             await $('[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] .d-icon-refresh').click();
@@ -199,7 +199,7 @@ class CaseWatchlistBlade {
 
     async isSaveEventsButtonEnabled(): Promise<boolean>{
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.closeButton)));
-        return $(this.selectors.saveButton).isEnabled();
+        return await $(this.selectors.saveButton).isEnabled();
     }
 
     async clickOnCloseButton(): Promise<void>{

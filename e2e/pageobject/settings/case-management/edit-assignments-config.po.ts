@@ -42,7 +42,7 @@ class AssignmentConfigEditPage {
         let arr: string[] = [];
         let fieldsCount: number  = await $$(this.selectors.editAssignmentMappingFields).count();
         for (let i = 0; i < fieldsCount; i++) {
-            var labelTxt: string = await $$(this.selectors.editAssignmentMappingFields).get(i).getText();
+            let labelTxt: string = await $$(this.selectors.editAssignmentMappingFields).get(i).getText();
             arr[i] = labelTxt;
         }
         arr = arr.sort();

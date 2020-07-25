@@ -133,7 +133,7 @@ describe('Case Manager Read-only Config', () => {
         await utilGrid.searchAndOpenHyperlink("Case Resolution Time");
         expect(await goalTypeEditPage.isStatusFieldDisabled()).toBeTruthy("Status field is enabled");
         expect(await goalTypeEditPage.isSaveButtonDisabled()).toBeTruthy("Save button is enabled");
-        browser.refresh();
+        await utilityCommon.refresh();
     });
 
     // asahitya

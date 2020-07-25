@@ -9,7 +9,7 @@ import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 
-var caseBAUser = 'qkatawazi';
+let caseBAUser = 'qkatawazi';
 
 describe('Service Target Tests', () => {
     beforeAll(async () => {

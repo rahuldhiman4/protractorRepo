@@ -112,7 +112,7 @@ class AttachmentBlade {
 
     async clickFileName(attachment: string): Promise<void> {
         await element(by.cssContainingText(this.selectors.attachmentName, attachment)).isPresent().then(async (result) => {
-            if (result) element(by.cssContainingText(this.selectors.attachmentName, attachment)).click();
+            if (result) await element(by.cssContainingText(this.selectors.attachmentName, attachment)).click();
             else {
                 await this.searchAttachment(attachment);
                 await element(by.cssContainingText(this.selectors.attachmentName, attachment)).click();

@@ -237,7 +237,7 @@ describe("Compose Email", () => {
             await composeMail.addAttachment(['../../data/ui/attachment/demo.txt']);
             expect(await composeMail.getFileDisplayedFileName()).toContain('demo.txt');
             await composeMail.clickOnSelectEmailTemplateLink();
-            expect(selectEmailTemplateBladePo.isApplyButtonEnabled()).toBeFalsy('Apply button is clickable');
+            expect(await selectEmailTemplateBladePo.isApplyButtonEnabled()).toBeFalsy('Apply button is clickable');
             await selectEmailTemplateBladePo.clickOnCancelButton();
             await composeMail.clickOnDiscardButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");

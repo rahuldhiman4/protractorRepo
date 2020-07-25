@@ -523,7 +523,7 @@ describe('Case Status Change', () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId1);
             await viewCasePage.clickEditCaseButton();
-            await editCasePage.setCaseSummary(summary1);
+            await editCasePage.setCaseSummary(summary1 + " new");
             expect(await editCasePage.isSummaryRequiredText()).toBeTruthy("Summary Required text not present");
             expect(await editCasePage.isPriorityRequiredText()).toBeTruthy("Priority Required text not present");
             expect(await editCasePage.isAssignedCompanyRequiredText()).toBeTruthy("Assigned Company Required text not present");
@@ -538,7 +538,7 @@ describe('Case Status Change', () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId2);
             await viewCasePage.clickEditCaseButton();
-            await editCasePage.setCaseSummary(summary2);
+            await editCasePage.setCaseSummary(summary2 + " new");
             expect(await editCasePage.isSummaryRequiredText()).toBeTruthy("Summary Required text not present");
             expect(await editCasePage.isPriorityRequiredText()).toBeTruthy("Priority Required text not present");
             expect(await editCasePage.isAssignedCompanyRequiredText()).toBeTruthy("Assigned Company Required text not present");
@@ -553,7 +553,7 @@ describe('Case Status Change', () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId3);
             await viewCasePage.clickEditCaseButton();
-            await editCasePage.setCaseSummary(summary3);
+            await editCasePage.setCaseSummary(summary3 + " new");
             expect(await editCasePage.isSummaryRequiredText()).toBeTruthy("Summary Required text not present");
             expect(await editCasePage.isPriorityRequiredText()).toBeTruthy("Priority Required text not present");
             expect(await editCasePage.isAssignedCompanyRequiredText()).toBeTruthy("Assigned Company Required text not present");
@@ -569,7 +569,7 @@ describe('Case Status Change', () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId4);
             await viewCasePage.clickEditCaseButton();
-            await editCasePage.setCaseSummary(summary4);
+            await editCasePage.setCaseSummary(summary4 + " new");
             expect(await editCasePage.isSummaryRequiredText()).toBeTruthy("Summary Required text not present");
             expect(await editCasePage.isPriorityRequiredText()).toBeTruthy("Priority Required text not present");
             expect(await editCasePage.isAssignedCompanyRequiredText()).toBeTruthy("Assigned Company Required text not present");

@@ -93,6 +93,10 @@ describe('Service Target Tests for Cases', () => {
             expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
             expect(await viewCasePage.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
         });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
+
     });
 
     //skhobrag
@@ -147,6 +151,9 @@ describe('Service Target Tests for Cases', () => {
             expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
             expect(await viewCasePage.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
         });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
     });
 
     //skhobrag
@@ -192,12 +199,12 @@ describe('Service Target Tests for Cases', () => {
             await browser.sleep(90000);
         });
         it('[DRDMV-2027]: Verify SVT warning and missed goal status', async () => {
-            // await browser.sleep(30000);
+            await browser.sleep(30000);
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
             expect(await viewCasePage.getSlaBarColor()).toBe('rgba(241, 181, 33, 1)'); //orange
-            await browser.sleep(60000);
+            await browser.sleep(50000);
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
@@ -235,6 +242,10 @@ describe('Service Target Tests for Cases', () => {
             expect(await slmProgressBar.isSLAProgressBarDualSVTIconDisplayed()).toBe(true); //green
             expect(await viewCasePage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
         });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
+
     });
 
     //skhobrag   
@@ -311,6 +322,7 @@ describe('Service Target Tests for Cases', () => {
             expect(await viewCasePage.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });
@@ -372,7 +384,7 @@ describe('Service Target Tests for Cases', () => {
             await browser.sleep(80000);
         });
         it('[DRDMV-8365]: Verify SVT when its in Warning Pending status', async () => {
-            await browser.sleep(50000);
+            await browser.sleep(40000);
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
@@ -385,7 +397,7 @@ describe('Service Target Tests for Cases', () => {
             expect(await slmProgressBar.isSLAProgressBarPausedIconDisplayed()).toBe(true); //green
         });
         it('[DRDMV-8365]: Verify SVT in Missed goal status', async () => {
-            browser.sleep(50000);
+            browser.sleep(40000);
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             await browser.sleep(40000);
@@ -406,6 +418,9 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true);
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
         });
     });
 
@@ -467,6 +482,11 @@ describe('Service Target Tests for Cases', () => {
             expect(await slmProgressBar.isDueInTimeDisplayed()).toBe(true); //green
             expect(await slmProgressBar.getDueInTime()).toBe("Due in 2 min"); //green            
         });
+
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
+
     });
 
     //skhobrag
@@ -505,6 +525,7 @@ describe('Service Target Tests for Cases', () => {
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBeFalsy('SVT is attached to case created by different company user.');
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });
@@ -620,6 +641,7 @@ describe('Service Target Tests for Cases', () => {
             await serviceTargetInfoPage.clickOnCloseButton();
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });
@@ -717,6 +739,7 @@ describe('Service Target Tests for Cases', () => {
             await serviceTargetInfoPage.clickOnCloseButton();
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });
@@ -795,6 +818,7 @@ describe('Service Target Tests for Cases', () => {
             await serviceTargetInfoPage.clickOnCloseButton();
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });
@@ -923,6 +947,7 @@ describe('Service Target Tests for Cases', () => {
             expect(await viewCasePage.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });
@@ -984,6 +1009,7 @@ describe('Service Target Tests for Cases', () => {
             expect(await viewCasePage.getSlaBarColor()).toBe('rgba(149, 152, 153, 1)');
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });
@@ -1045,6 +1071,7 @@ describe('Service Target Tests for Cases', () => {
             expect(await viewCasePage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });
@@ -1112,6 +1139,7 @@ describe('Service Target Tests for Cases', () => {
             expect(await viewCasePage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });
@@ -1165,6 +1193,7 @@ describe('Service Target Tests for Cases', () => {
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBeFalsy('SVT is not attached to case.');
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });
@@ -1224,6 +1253,7 @@ describe('Service Target Tests for Cases', () => {
             expect(await viewCasePage.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });
@@ -1337,6 +1367,9 @@ describe('Service Target Tests for Cases', () => {
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('SVT from Protractor');
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('Status : Missed Goal');
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('due on');
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
         });
     });
 });

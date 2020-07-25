@@ -11,8 +11,11 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
-import { INCOMINGMAIL_COMPANY_ONE, OUTGOINGEMAIL_COMPANY_ONE, EMAILCONFIG_COMPANY_ONE, INCOMINGMAIL_COMPANY_PSILON, OUTGOINGEMAIL_COMPANY_PSILON, EMAILCONFIG_COMPANY_PSILON } from '../../data/api/email/email.configuration.data.api';
+import { INCOMINGMAIL_COMPANY_ONE, OUTGOINGEMAIL_COMPANY_ONE, EMAILCONFIG_COMPANY_ONE, INCOMINGMAIL_COMPANY_TWO, OUTGOINGEMAIL_COMPANY_TWO, EMAILCONFIG_COMPANY_TWO, INCOMINGMAIL_COMPANY_PSILON, OUTGOINGEMAIL_COMPANY_PSILON, EMAILCONFIG_COMPANY_PSILON } from '../../data/api/email/email.configuration.data.api';
 import apiCoreUtil from '../../api/api.core.util';
+import consoleAcknowledgmentTemplatePo from '../../pageobject/settings/email/console-acknowledgment-template.po';
+import createAcknowledgmentTemplatesPo from '../../pageobject/settings/email/create-acknowledgment-template.po';
+import editAcknowledgmentTemplatePo from '../../pageobject/settings/email/edit-acknowledgment-template.po';
 
 describe('Email Configuration', () => {
     let offlineSupportGroup, emailID = "bmctemptestemail@gmail.com";
@@ -27,6 +30,7 @@ describe('Email Configuration', () => {
         await apiHelper.createEmailConfiguration();
         await foundationData("Petramco", "BusinessUnitData10410", "SuppGrpData10410");
         await foundationData("Psilon", "BusinessUnitDataPsilon", "SuppGrpDataPsilon");
+        
         offlineSupportGroup = {
             "orgName": "OfflineSupportGroup",
             "relatedOrgId": null,
@@ -72,6 +76,7 @@ describe('Email Configuration', () => {
 
         });
         it('[DRDMV-8528,DRDMV-8527]: Verify Email configuration header', async () => {
+            let msg:string="ERROR (10000): One Email Id for the company needs to be marked as default. If another email configurations for the company exist, please mark one of them as default instead";
             await consoleEmailConfig.searchAndSelectCheckbox(emailID);
             await consoleEmailConfig.deleteConfigurationEmail();
             await utilCommon.clickOnWarningOk();
@@ -80,6 +85,10 @@ describe('Email Configuration', () => {
             await createEmailConfigPo.selectCompany("Petramco");
             await createEmailConfigPo.setDescription("test ");
             await createEmailConfigPo.selectStatus("Active");
+            await createEmailConfigPo.selectDefaultEmail("False");
+            await createEmailConfigPo.clickSave();
+            await expect(utilCommon.isPopUpMessagePresent(msg)).toBeTruthy();
+            await createEmailConfigPo.selectDefaultEmail("True");
             await createEmailConfigPo.clickSave();
         });
         afterAll(async () => {
@@ -209,7 +218,7 @@ describe('Email Configuration', () => {
             await editEmailConfigPo.clickAssociatedSupportGroupRightArrow();
             await editEmailConfigPo.searchAssociatedEntitiesToBeRemoveAssociation("UI-SupportGroup-10410");
             expect(await editEmailConfigPo.getAssociatedSupportGroupFromAssociatedSupportGroupListInAssociatedSupportGroupTab()).toBe("UI-SupportGroup-10410");
-            await editEmailConfigPo.cancelEditEmailConfigConfig();
+            await editEmailConfigPo.cancelEditEmailConfig();
         });
         it('[DRDMV-10410,DRDMV-10418,DRDMV-10428,DRDMV-10433,DRDMV-10434,DRDMV-10435,DRDMV-10415]: Support Group: Associate Support group tab in Email Configuration.', async () => {
             await navigationPage.gotoSettingsPage();
@@ -241,7 +250,7 @@ describe('Email Configuration', () => {
             await editEmailConfigPo.clickSupportGroup();
             await editEmailConfigPo.clickAssociatedSupportGroupRightArrow();
             expect(await editEmailConfigPo.getAssociatedSupportGroupFromAssociatedSupportGroupListInAssociatedSupportGroupTab()).toBe("UI-SupportGroup-Psilon");
-            await editEmailConfigPo.cancelEditEmailConfigConfig();
+            await editEmailConfigPo.cancelEditEmailConfig();
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
@@ -419,4 +428,55 @@ describe('Email Configuration', () => {
             await utilityCommon.closeAllBlades(); // escape is working on these settings pages
         });
     });
+
+    //ankagraw
+    describe('[DRDMV-10454]: Support Group: Delete default email id for multiple email configurations', async () => {
+        beforeAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteAllEmailConfiguration();
+            await apiHelper.createEmailConfiguration();
+            await apiHelper.createEmailConfiguration(INCOMINGMAIL_COMPANY_ONE, OUTGOINGEMAIL_COMPANY_ONE, EMAILCONFIG_COMPANY_ONE);
+            await apiHelper.createEmailConfiguration(INCOMINGMAIL_COMPANY_TWO, OUTGOINGEMAIL_COMPANY_TWO, EMAILCONFIG_COMPANY_TWO);
+        });
+        it('[DRDMV-10454]: change the default mail to false', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
+            await utilGrid.searchAndOpenHyperlink(emailID);
+            await editEmailConfigPo.clickDefaultMailIdCheckbox("False");
+            await editEmailConfigPo.clickSaveButton();
+            await utilGrid.searchAndOpenHyperlink("bwfqa2018@gmail.com");
+            await editEmailConfigPo.clickDefaultMailIdCheckbox("False");
+            await editEmailConfigPo.clickSaveButton();
+        });
+        it('[DRDMV-10454]: Delete default email id', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
+            await utilGrid.clickCheckBoxOfValueInGrid("bwfqa2019@gmail.com");
+            await consoleEmailConfig.deleteConfigurationEmail();
+            expect(await utilCommon.isPopUpMessagePresent("ERROR (10005): There are 2 other email-id configurations with Default email as false. Please set one of them set to true before de-activiating or deleting this record")).toBeTruthy();
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
+            await utilGrid.searchAndOpenHyperlink("bwfqa2018@gmail.com");
+            await editEmailConfigPo.clickDefaultMailIdCheckbox("True");
+            await editEmailConfigPo.clickSaveButton();
+        });
+        it('[DRDMV-10454]: Support Group: Delete default email id for multiple email configurations', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
+            await utilGrid.clickCheckBoxOfValueInGrid("bwfqa2019@gmail.com");
+            await consoleEmailConfig.deleteConfigurationEmail();
+            expect(await utilCommon.getWarningDialogMsg()).toBe('Are you sure you want to delete the selected record?');
+            await utilCommon.clickOnWarningOk();
+            expect(await utilGrid.isGridRecordPresent("bwfqa2019@gmail.com")).toBeFalsy();
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
+            await utilGrid.clickCheckBoxOfValueInGrid("bwfqa2018@gmail.com");
+            await consoleEmailConfig.deleteConfigurationEmail();
+            await utilCommon.clickOnWarningOk();
+            expect(await utilGrid.isGridRecordPresent("bwfqa2018@gmail.com")).toBeFalsy();
+            await utilGrid.searchRecord(emailID);
+            expect(await consoleEmailConfig.getColumnHeaderValue("Default Email")).toBe("True");
+        });
+    });
+
 });

@@ -136,7 +136,7 @@ describe('Email Template', () => {
             // DRDMV-10786
             await consoleEmailTemplatePo.addColumnOnGrid(arr1);
             expect(await consoleEmailTemplatePo.areGridColumnHeaderMatches(arr2)).toBeTruthy('Column header not matches');
-            expect(consoleEmailTemplatePo.isGridColumnSorted('Label', 'descending')).toBeTruthy('Label column is not sorted correctly with descending order')
+            expect(await consoleEmailTemplatePo.isGridColumnSorted('Label', 'descending')).toBeTruthy('Label column is not sorted correctly with descending order')
             // DRDMV-11092
             await consoleEmailTemplatePo.addFilter('Template Name', templateName1, 'text');
             expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Template Name')).toBe(templateName1, 'Filter Template Name is missing in column');
@@ -276,4 +276,20 @@ describe('Email Template', () => {
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Attachment is not deleted from Email Template');
         });
     });
+
+    //ankagraw
+    it('[DRDMV-10799]: Email Template : If user goes away from both edit and create view warning should be appeared	', async () => {
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
+        await consoleEmailTemplatePo.clickOnAddEmailTemplateButton();
+        await createEmailTemplatePo.setTemplateName("templateName1");
+        await createEmailTemplatePo.clickOnCancelButton();
+        expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue without saving?');
+        await utilCommon.clickOnWarningOk();
+        await consoleEmailTemplatePo.searchAndOpenEmailTemplate("Request Marriage Certificate for Name Change");
+        await editEmailTemplatePo.updateDescription("test");
+        await editEmailTemplatePo.clickOnCancelButton();
+        expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue without saving?');
+        await utilCommon.clickOnWarningOk();
+});
 });
