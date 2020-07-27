@@ -83,15 +83,20 @@ class CKEditor {
         await imagePropertiesPo.clickOnOkButton();
     }
 
-    async isImageDisplayedInCKE(value: string): Promise<boolean> {
-        return await $$(`img[src="${value}"]`).last().isDisplayed();
-    }
-    async uploadImageFromLocal(menuName: string, fileToUpload: string, width: number, getInputValue: number, widthSize: string): Promise<string> {
+    async isImageDisplayedInCKE(value: string,guidId?:string): Promise<boolean> {
+        if(guidId){
+          return await $(`[rx-view-component-id="${guidId}"] img[src="${value}"]`).isDisplayed();
+        }   
+       return await $$(`img[src="${value}"]`).last().isDisplayed();
+   }
+
+   async uploadImageFromLocal(menuName: string, fileToUpload: string, width: number, getInputValue: number, widthSize: string): Promise<string> {
         await imagePropertiesPo.clickOnTab(menuName);
         await imagePropertiesPo.addAttachment(fileToUpload);
         await imagePropertiesPo.clickOnSendItToServerButton();
         await imagePropertiesPo.setInputBoxValue(widthSize, width);
         let source = await imagePropertiesPo.getInputBoxValue(getInputValue);
+        await browser.sleep(1000);
         await imagePropertiesPo.clickOnOkButton();
         return source;
     }
@@ -579,6 +584,10 @@ class CKEditor {
         }
     }
 
-
+    async getTableCellAlignText(alignValue: string,guid?:string): Promise<string> {
+        let locator = `table td[style="${alignValue}"]`;
+         if (guid) locator = `[rx-view-component-id="${guid}"] table td[style="${alignValue}"]`;
+        return await $(locator).getText();
+    }
 }
 export default new CKEditor();
