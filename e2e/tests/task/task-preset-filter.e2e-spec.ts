@@ -11,6 +11,7 @@ import utilityGrid from "../../utils/utility.grid";
 
 describe('Task Console Preset Filter', () => {
     let randomString: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+    let personData1, personData2, personData3;
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
@@ -18,23 +19,23 @@ describe('Task Console Preset Filter', () => {
         await apiHelper.deleteServiceTargets();
         await apiHelper.deleteApprovalMapping();
         const personDataFile = require('../../data/ui/foundation/person.ui.json');
-        let personData1 = personDataFile['PhylumCaseAgent1'];
+        personData1 = personDataFile['PhylumCaseAgent1'];
         await apiHelper.createNewUser(personData1);
         await apiHelper.associatePersonToSupportGroup(personData1.userId, 'Phylum Support Group1');
         await apiHelper.associatePersonToCompany(personData1.userId, 'Phylum');
 
-        let personData2 = personDataFile['PhylumCaseAgent2'];
+        personData2 = personDataFile['PhylumCaseAgent2'];
         await apiHelper.createNewUser(personData2);
         await apiHelper.associatePersonToSupportGroup(personData2.userId, 'Phylum Support Group1');
         await apiHelper.associatePersonToCompany(personData2.userId, 'Phylum');
 
-        let personData3 = personDataFile['PhylumCaseAgent3'];
+        personData3 = personDataFile['PhylumCaseAgent3'];
         await apiHelper.createNewUser(personData3);
         await apiHelper.associatePersonToSupportGroup(personData3.userId, 'Phylum Support Group1');
         await apiHelper.associatePersonToCompany(personData3.userId, 'Phylum');
 
-        await loginPage.login('idphylum1@petramco.com', 'Password_1234');
-        await apiHelper.apiLoginWithCredential('idphylum1@petramco.com', 'Password_1234');
+        await loginPage.login(personData1.userId + '@petramco.com', 'Password_1234');
+        await apiHelper.apiLoginWithCredential(personData1.userId + '@petramco.com', 'Password_1234');
 
         //Create the new status Configurations
         browser.sleep(6000); //New user is created above, waiting for its backend access preperation
@@ -60,7 +61,7 @@ describe('Task Console Preset Filter', () => {
     describe('[DRDMV-20883]: Validate the My Open Tasks filter after applying and removing the filter', () => {
         let taskId: string[] = [];
         it('[DRDMV-20883]: Task Data creation with different status', async () => {
-            await apiHelper.apiLoginWithCredential('idphylum1@petramco.com', 'Password_1234');
+            await apiHelper.apiLoginWithCredential(personData1.userId + '@petramco.com', 'Password_1234');
             taskData.FAILED_TASK_TEMPLATE.templateName = taskData.FAILED_TASK_TEMPLATE.templateName + randomString;
             await apiHelper.createAutomatedTaskTemplate(taskData.FAILED_TASK_TEMPLATE).catch(() => {
                 console.log('Issue while creating the Failed Task Template');
@@ -128,7 +129,7 @@ describe('Task Console Preset Filter', () => {
             let response16 = await apiHelper.addTaskToCase(create_task_from_task_template, response15.id);
             await apiHelper.apiLogin('tadmin');
             taskId.push(await (await apiHelper.getCreatedTaskIds(response16)).displayId);
-            await apiHelper.apiLoginWithCredential('idphylum1@petramco.com', 'Password_1234');
+            await apiHelper.apiLoginWithCredential(personData1.userId + '@petramco.com', 'Password_1234');
             await apiHelper.updateCaseStatus(response15.id, 'InProgress');
 
             //Creating the task 10 and updating it to After Completed state
@@ -174,7 +175,7 @@ describe('Task Console Preset Filter', () => {
     describe('[DRDMV-20884]: Validate the All Open Tasks filter after applying and removing the filter', () => {
         let taskId: string[] = [];
         it('[DRDMV-20884]: Task Data creation with different status', async () => {
-            await apiHelper.apiLoginWithCredential('idphylum1@petramco.com', 'Password_1234');
+            await apiHelper.apiLoginWithCredential(personData1.userId + '@petramco.com', 'Password_1234');
 
             //Creating the task 1 and updating it to In Progress state
             let response1 = await apiHelper.createCase(taskData.ASSIGNED_CRITICAL);
@@ -239,7 +240,7 @@ describe('Task Console Preset Filter', () => {
             let response16 = await apiHelper.addTaskToCase(create_task_from_task_template, response15.id);
             await apiHelper.apiLogin('tadmin');
             taskId.push((await apiHelper.getCreatedTaskIds(response16)).displayId);
-            await apiHelper.apiLoginWithCredential('idphylum1@petramco.com', 'Password_1234');
+            await apiHelper.apiLoginWithCredential(personData1.userId + '@petramco.com', 'Password_1234');
             await apiHelper.updateCaseStatus(response15.id, 'InProgress');
 
             //Creating the task 10 and updating it to After Completed state
@@ -273,7 +274,7 @@ describe('Task Console Preset Filter', () => {
     describe('[DRDMV-20885]: Validate the High Priority Open Tasks filter after applying and removing the filter', () => {
         let taskId: string[] = [];
         it('[DRDMV-20885]: Task data creation with different status 1', async () => {
-            await apiHelper.apiLoginWithCredential('idphylum1@petramco.com', 'Password_1234');
+            await apiHelper.apiLoginWithCredential(personData1.userId + '@petramco.com', 'Password_1234');
 
             //Create Low Priority and Assigned status Task
             let response1 = await apiHelper.createCase(taskData.ASSIGNED_CRITICAL);
@@ -326,7 +327,7 @@ describe('Task Console Preset Filter', () => {
             let response14 = await apiHelper.addTaskToCase(create_task_from_task_template, response13.id);
             await apiHelper.apiLogin('tadmin');
             taskId.push((await apiHelper.getCreatedTaskIds(response14)).displayId);
-            await apiHelper.apiLoginWithCredential('idphylum1@petramco.com', 'Password_1234');
+            await apiHelper.apiLoginWithCredential(personData1.userId + '@petramco.com', 'Password_1234');
             await apiHelper.updateCaseStatus(response13.id, 'InProgress');
         });
         it('[DRDMV-20885]: Task data creation with different status 2', async () => {
@@ -394,7 +395,7 @@ describe('Task Console Preset Filter', () => {
     describe('[DRDMV-20886]: Validate the Critical Priority Open Tasks filter after applying and removing the filter', () => {
         let taskId: string[] = [];
         it('[DRDMV-20886]: Task data creation with different status 1', async () => {
-            await apiHelper.apiLoginWithCredential('idphylum1@petramco.com', 'Password_1234');
+            await apiHelper.apiLoginWithCredential(personData1.userId + '@petramco.com', 'Password_1234');
 
             //Create Low Priority and Assigned status Task
             let response1 = await apiHelper.createCase(taskData.ASSIGNED_CRITICAL);
@@ -449,7 +450,7 @@ describe('Task Console Preset Filter', () => {
             let response14 = await apiHelper.addTaskToCase(create_task_from_task_template, response13.id);
             await apiHelper.apiLogin('tadmin');
             taskId.push((await apiHelper.getCreatedTaskIds(response14)).displayId);
-            await apiHelper.apiLoginWithCredential('idphylum1@petramco.com', 'Password_1234');
+            await apiHelper.apiLoginWithCredential(personData1.userId + '@petramco.com', 'Password_1234');
             await apiHelper.updateCaseStatus(response13.id, 'InProgress');
         });
         it('[DRDMV-20886]: Task data creation with different status 1', async () => {
@@ -515,7 +516,7 @@ describe('Task Console Preset Filter', () => {
     });
 
     it('[DRDMV-20887]: Validate the All Unassigned Tasks filter after applying and removing the filter', async () => {
-        await apiHelper.apiLoginWithCredential('idphylum1@petramco.com', 'Password_1234');
+        await apiHelper.apiLoginWithCredential(personData1.userId + '@petramco.com', 'Password_1234');
         let taskId: string[] = [];
 
         //Creating the task 1 with assignee as logged in user
@@ -557,7 +558,7 @@ describe('Task Console Preset Filter', () => {
     describe('[DRDMV-20889]: Validate the All Open Breached Tasks filter after applying and removing the filter', () => {
         let taskId: string[] = [];
         it('[DRDMV-20889]: Create SVT data and task data', async () => {
-            await apiHelper.apiLoginWithCredential('idphylum1@petramco.com', 'Password_1234');
+            await apiHelper.apiLoginWithCredential(personData1.userId + '@petramco.com', 'Password_1234');
             await apiHelper.createSVT(taskData.SERVICE_TARGET_ASSIGNED_TASK);
             await apiHelper.createSVT(taskData.SERVICE_TARGET_INPROGRESS_TASK);
             await apiHelper.createSVT(taskData.SERVICE_TARGET_PENDING_TASK);
@@ -598,7 +599,7 @@ describe('Task Console Preset Filter', () => {
             let response14 = await apiHelper.addTaskToCase(create_task_from_task_template, response13.id);
             await apiHelper.apiLogin('tadmin');
             taskId.push(await (await apiHelper.getCreatedTaskIds(response14)).displayId);
-            await apiHelper.apiLoginWithCredential('idphylum1@petramco.com', 'Password_1234');
+            await apiHelper.apiLoginWithCredential(personData1.userId + '@petramco.com', 'Password_1234');
             await apiHelper.updateCaseStatus(response13.id, 'InProgress');
 
             let response1 = await apiHelper.createCase(taskData.ASSIGNED_CRITICAL);
@@ -653,7 +654,7 @@ describe('Task Console Preset Filter', () => {
     describe('[DRDMV-22433]: Validate the My Open Breached Tasks filter after applying and removing the filter', () => {
         let taskId: string[] = [];
         it('[DRDMV-22433]: Create SVT data and task data', async () => {
-            await apiHelper.apiLoginWithCredential('idphylum1@petramco.com', 'Password_1234');
+            await apiHelper.apiLoginWithCredential(personData1.userId + '@petramco.com', 'Password_1234');
             await apiHelper.createSVT(taskData.SERVICE_TARGET_NEW_TASK);
             await apiHelper.createSVT(taskData.SERVICE_TARGET_ASSIGNED_TASK);
             await apiHelper.createSVT(taskData.SERVICE_TARGET_INPROGRESS_TASK);
@@ -699,7 +700,7 @@ describe('Task Console Preset Filter', () => {
             let response14 = await apiHelper.addTaskToCase(create_task_from_task_template, response13.id);
             await apiHelper.apiLogin('tadmin');
             taskId.push(await (await apiHelper.getCreatedTaskIds(response14)).displayId);
-            await apiHelper.apiLoginWithCredential('idphylum1@petramco.com', 'Password_1234');
+            await apiHelper.apiLoginWithCredential(personData1.userId + '@petramco.com', 'Password_1234');
             await apiHelper.updateCaseStatus(response13.id, 'InProgress');
 
             let response1 = await apiHelper.createCase(taskData.ASSIGNED_CRITICAL);
@@ -751,7 +752,7 @@ describe('Task Console Preset Filter', () => {
 
     it('[DRDMV-20901]: Validate the All Tasks In Last 1 month filter after applying and removing the filter', async () => {
         let dbConnectVar = await dbConnectObj.dbConnect();
-        await apiHelper.apiLoginWithCredential('idphylum1@petramco.com', 'Password_1234');
+        await apiHelper.apiLoginWithCredential(personData1.userId + '@petramco.com', 'Password_1234');
         let taskId: string[] = [];
 
         //Creating the task with Staged status and update the creation date below 1 month
@@ -817,7 +818,7 @@ describe('Task Console Preset Filter', () => {
 
     it('[DRDMV-20888]: Validate the All Tasks In Last 3 months filter after applying and removing the filter', async () => {
         let dbConnectVar = await dbConnectObj.dbConnect();
-        await apiHelper.apiLoginWithCredential('idphylum1@petramco.com', 'Password_1234');
+        await apiHelper.apiLoginWithCredential(personData1.userId + '@petramco.com', 'Password_1234');
         let taskId: string[] = [];
 
         //Creating the task with the creation date below 1 month
@@ -867,7 +868,7 @@ describe('Task Console Preset Filter', () => {
 
     it('[DRDMV-22061]: Validate the All Tasks In Last 6 months filter after applying and removing the filter', async () => {
         let dbConnectVar = await dbConnectObj.dbConnect();
-        await apiHelper.apiLoginWithCredential('idphylum1@petramco.com', 'Password_1234');
+        await apiHelper.apiLoginWithCredential(personData1.userId + '@petramco.com', 'Password_1234');
         let taskId: string[] = [];
 
         //Creating the task with the creation date below 1 month

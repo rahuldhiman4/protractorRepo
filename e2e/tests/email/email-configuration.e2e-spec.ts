@@ -30,7 +30,7 @@ describe('Email Configuration', () => {
         await apiHelper.createEmailConfiguration();
         await foundationData("Petramco", "BusinessUnitData10410", "SuppGrpData10410");
         await foundationData("Psilon", "BusinessUnitDataPsilon", "SuppGrpDataPsilon");
-        
+
         offlineSupportGroup = {
             "orgName": "OfflineSupportGroup",
             "relatedOrgId": null,
@@ -76,7 +76,7 @@ describe('Email Configuration', () => {
 
         });
         it('[DRDMV-8528,DRDMV-8527]: Verify Email configuration header', async () => {
-            let msg:string="ERROR (10000): One Email Id for the company needs to be marked as default. If another email configurations for the company exist, please mark one of them as default instead";
+            let msg: string = "ERROR (10000): One Email Id for the company needs to be marked as default. If another email configurations for the company exist, please mark one of them as default instead";
             await consoleEmailConfig.searchAndSelectCheckbox(emailID);
             await consoleEmailConfig.deleteConfigurationEmail();
             await utilCommon.clickOnWarningOk();
@@ -437,6 +437,8 @@ describe('Email Configuration', () => {
             await apiHelper.createEmailConfiguration();
             await apiHelper.createEmailConfiguration(INCOMINGMAIL_COMPANY_ONE, OUTGOINGEMAIL_COMPANY_ONE, EMAILCONFIG_COMPANY_ONE);
             await apiHelper.createEmailConfiguration(INCOMINGMAIL_COMPANY_TWO, OUTGOINGEMAIL_COMPANY_TWO, EMAILCONFIG_COMPANY_TWO);
+            await navigationPage.signOut();
+            await loginPage.login("qkatawazi");
         });
         it('[DRDMV-10454]: change the default mail to false', async () => {
             await navigationPage.gotoSettingsPage();
