@@ -16,73 +16,62 @@ class TaskPreview {
         taskDescription: '[rx-view-component-id="ddbcb40a-5a36-4936-a627-51833b951d59"] .collapse-block div'
     }
 
-
     async isElementDisplayed(element: ElementFinder): Promise<boolean> {
         return await element.isPresent().then(async (link) => {
             if (link) {
-                return element.isDisplayed();
+                return await element.isDisplayed();
             } else return false;
         });
     }
 
     async isFieldLabelDisplayed(labelName: string): Promise<boolean> {
-        let option = await element(by.cssContainingText(this.selectors.fieldLabels, labelName));
-        let booleanVal =this.isElementDisplayed(option);
-        return booleanVal;
+        let labelElement = await element(by.cssContainingText(this.selectors.fieldLabels, labelName));
+        return await this.isElementDisplayed(labelElement);
     }
 
     async isTaskTitleDisplayed(taskSummary: string): Promise<boolean> {
-        let option = await element(by.cssContainingText(this.selectors.taskTitle, taskSummary));
-        let booleanVal =this.isElementDisplayed(option);
-        return booleanVal;
+        let taskTitleElement = await element(by.cssContainingText(this.selectors.taskTitle, taskSummary));
+        return await this.isElementDisplayed(taskTitleElement);
     }
 
     async isTaskSummaryDisplayed(taskSummary: string): Promise<boolean> {
-        let option = await element(by.cssContainingText(this.selectors.taskSummary, taskSummary));
-        let booleanVal =this.isElementDisplayed(option);
-        return booleanVal;
+        let taskSummaryElement = await element(by.cssContainingText(this.selectors.taskSummary, taskSummary));
+        return await this.isElementDisplayed(taskSummaryElement);
     }
 
     async isTaskIdDisplayed(taskId: string): Promise<boolean> {
-        let option = await element(by.cssContainingText(this.selectors.taskIdOrPriorityLabel, taskId));
-        let booleanVal =this.isElementDisplayed(option);
-        return booleanVal;
+        let taskDisplayIdElement = await element(by.cssContainingText(this.selectors.taskIdOrPriorityLabel, taskId));
+        return await this.isElementDisplayed(taskDisplayIdElement);
     }
 
     async isTaskPriorityLabelDisplayed(taskPriority: string): Promise<boolean> {
-        let option = await element(by.cssContainingText(this.selectors.taskIdOrPriorityLabel, taskPriority));
-        let booleanVal =this.isElementDisplayed(option);
-        return booleanVal;
+        let taskPriorityElement = await element(by.cssContainingText(this.selectors.taskIdOrPriorityLabel, taskPriority));
+        return await this.isElementDisplayed(taskPriorityElement);
     }
 
     async isPriorityValueDisplayed(taskPriority: string): Promise<boolean> {
-        let option = await element(by.cssContainingText(this.selectors.priority, taskPriority));
-        let booleanVal =this.isElementDisplayed(option);
-        return booleanVal;
+        let priorityValueElement = await element(by.cssContainingText(this.selectors.priority, taskPriority));
+        return await this.isElementDisplayed(priorityValueElement);
     }
 
     async isTaskStatusDisplayed(taskStatus: string): Promise<boolean> {
-        let option = await element(by.cssContainingText(this.selectors.taskStatus, taskStatus));
-        let booleanVal =this.isElementDisplayed(option);
-        return booleanVal;
+        let taskStatusDisplayed = await element(by.cssContainingText(this.selectors.taskStatus, taskStatus));
+        return await this.isElementDisplayed(taskStatusDisplayed);
     }
 
     async isAssigneeNameDisplayed(assigneeName: string): Promise<boolean> {
-        let option = await element(by.cssContainingText(this.selectors.assigneeName, assigneeName));
-        let booleanVal =this.isElementDisplayed(option);
-        return booleanVal;
+        let assigneeNameElement = await element(by.cssContainingText(this.selectors.assigneeName, assigneeName));
+        return await this.isElementDisplayed(assigneeNameElement);
     }
 
     async isAassignedGroupValueDisplayed(assignedGroupVal: string): Promise<boolean> {
-        let option = await element(by.cssContainingText(this.selectors.assignedGroup, assignedGroupVal));
-        let booleanVal =this.isElementDisplayed(option);
-        return booleanVal;
+        let assignedGroupValueElement = await element(by.cssContainingText(this.selectors.assignedGroup, assignedGroupVal));
+        return await this.isElementDisplayed(assignedGroupValueElement);
     }
 
     async isAssignedCompanyValueDisplayed(assignedCompanyVal: string): Promise<boolean> {
-        let option = await element(by.cssContainingText(this.selectors.assignedCompany, assignedCompanyVal));
-        let booleanVal =this.isElementDisplayed(option);
-        return booleanVal;
+        let assignedCompany = await element(by.cssContainingText(this.selectors.assignedCompany, assignedCompanyVal));
+        return await this.isElementDisplayed(assignedCompany);
     }
 
     async clickGotoTaskButton(): Promise<void> {
@@ -90,10 +79,8 @@ class TaskPreview {
     }
 
     async isTaskDescriptionDisplayed(taskDescription: string): Promise<boolean> {
-        let option = await element(by.cssContainingText(this.selectors.taskDescription, taskDescription));
-        let booleanVal =this.isElementDisplayed(option);
-        return booleanVal;
+        let taskDescriptionElement = await element(by.cssContainingText(this.selectors.taskDescription, taskDescription));
+        return await this.isElementDisplayed(taskDescriptionElement);
     }
-
 }
 export default new TaskPreview();

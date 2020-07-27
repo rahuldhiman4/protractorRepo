@@ -1974,7 +1974,7 @@ class ApiHelper {
         if (taskData.description) {
             let taskDescription = {
                 "id": "1000000000",
-                "value": `${taskData.description}`
+                "value": taskData.description
             }
             adhocTaskPayload.fieldInstances["1000000000"] = taskDescription;
         }

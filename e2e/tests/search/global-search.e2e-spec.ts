@@ -72,7 +72,6 @@ describe('Global Search', () => {
     }
 
     async function createTask(taskName: string, caseIdTask: string, description?: string): Promise<string> {
-        let taskId;
         let taskData = {
             "taskName": "taskName",
             "description": "taskdescription",
@@ -84,8 +83,7 @@ describe('Global Search', () => {
         taskData.taskName = taskName;
         taskData.description = description;
         let getTaskId = await apiHelper.createAdhocTask(caseIdTask, taskData);
-        taskId = getTaskId.displayId;
-        return taskId;
+        return getTaskId.displayId;
     }
 
     //kgaikwad
@@ -388,7 +386,6 @@ describe('Global Search', () => {
         });
     });
 
-
     //kgaikwad
     describe('[DRDMV-16115]:Global search with only Task Category', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -408,8 +405,7 @@ describe('Global Search', () => {
 
             // Create Task
             for (let a = 0; a < 10; a++) {
-                let taskId = await createTask(summary, caseGuid1, description);
-                taskDisplayId[a] = taskId;
+                taskDisplayId[a] = await createTask(summary, caseGuid1, description);
             }
 
             // Non maching Task
@@ -421,8 +417,7 @@ describe('Global Search', () => {
             let caseGuid2 = caseDetails2.id;
 
             for (let c = 0; c < 2; c++) {
-                let taskDetails2 = await createTask(summary, caseGuid2, description);
-                taskDisplayId3[c] = taskDetails2;
+                taskDisplayId3[c]  = await createTask(summary, caseGuid2, description);
             }
         });
 
@@ -601,6 +596,12 @@ describe('Global Search', () => {
         });
 
     });
+
+    
+
+
+
+
 });
 
 
