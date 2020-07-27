@@ -298,9 +298,9 @@ describe('Service Target - Second Level Association Tests', () => {
         await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
 
         //Verify second level association for Requester
-        await slmExpressionBuilder.selectSecondLevelExpressionQualification('Requester', 'Email', "=", 'TEXT', "qdu@petramco1.com");
+        await slmExpressionBuilder.selectSecondLevelExpressionQualification('Requester', 'Email', "=", 'TEXT', "qdu@petramco.com1");
         let selectedExpx = await slmExpressionBuilder.getSelectedExpression();
-        let expectedSelectedExp = "'" + "Requester > Email" + "'" + "=" + '"' + "qdu@petramco.com1" + '"'
+        let expectedSelectedExp = "'" + "Requester > Email" + "'" + "=" + '"' + "qdu@petramco.com1" + '"';
         expect(selectedExpx).toEqual(expectedSelectedExp);
         await slmExpressionBuilder.clickOnSaveExpressionButton();
         await serviceTargetConfig.selectGoal("3");

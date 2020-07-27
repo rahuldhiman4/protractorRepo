@@ -925,7 +925,7 @@ describe('Case Template', () => {
         let caseTemplateName: string = "TemplateName" + Math.floor(Math.random() * 100000);
         it('[DRDMV-12581,DRDMV-12554]: Checking change case template button for In Progress', async () => {
             await navigationPage.signOut();
-            await loginPage.login(userData.emailId, 'Password_1234');
+            await loginPage.login(userData.userId + '@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
@@ -1105,7 +1105,7 @@ describe('Case Template', () => {
     it('[DRDMV-12556]:Case Template submitter from different company than owner group company can edit the template', async () => {
         try {
             await navigationPage.signOut();
-            await loginPage.login(userData.emailId, 'Password_1234');
+            await loginPage.login(userData.userId + '@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             let caseTemplateName: string = "TemplateName" + Math.floor(Math.random() * 100000);
