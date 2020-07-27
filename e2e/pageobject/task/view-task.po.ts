@@ -53,6 +53,11 @@ class ViewTask {
         manageDynamicField: '[rx-view-component-id="7ac78e56-c471-4e50-bca8-53568ad6e4af"] button',
         emailLink: '[rx-view-component-id="b721ed87-8e6b-4279-9e21-d4348c6a4599"] button',
         tab: 'button[role="tab"] span.nav-link-wrapper',
+        showMoreTaskDescription:'.bwf-description-read-state button',
+    }
+
+    async clickShowMoreTaskDescription():Promise<void>{
+        await $(this.selectors.showMoreTaskDescription).click();
     }
 
     async clickEmailLink(): Promise<void> {

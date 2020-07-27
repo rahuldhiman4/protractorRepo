@@ -1,5 +1,6 @@
 import { $, browser, protractor, ProtractorExpectedConditions, element, by, $$ } from "protractor";
 import utilCommon from '../../../utils/util.common';
+import ckeditorOpsPo from '../../../pageobject/common/ck-editor/ckeditor-ops.po';
 
 class EditTaskTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -29,6 +30,7 @@ class EditTaskTemplate {
         dynamicField: '[rx-view-component-id="7ac78e56-c471-4e50-bca8-53568ad6e4af"] .d-textfield__item',
         taskTypeValueDisabled: '[rx-view-component-id="cee6d303-5db9-4b3a-98e1-3096ffebf363"] span.btn-default',
         processNameValue: '[rx-view-component-id="534ab8af-7e9d-49a9-8cab-c3ab1aa38c91"] input',
+        taskDescription: 'b9b752cf-8cef-4598-9a8d-85748b13f0d7',
     }
 
     async selectPriorityValue(priority: string): Promise<void> {
@@ -166,6 +168,10 @@ class EditTaskTemplate {
     async isCaseSummaryReadOnly(): Promise<boolean> {
         return await $(this.selectors.summary).getAttribute('readonly') == 'true' ? true : false;
     }
+
+    async isImageDisplayedInCKE(value:string):Promise<boolean>{
+        return await ckeditorOpsPo.isImageDisplayedInCKE(value,this.selectors.taskDescription);
+}
 }
 
 export default new EditTaskTemplate();
