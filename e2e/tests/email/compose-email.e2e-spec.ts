@@ -734,7 +734,7 @@ describe("Compose Email", () => {
             await utilityCommon.closePopUpMessage();
             let subject = `Fritz Schulz changed the status of ${newCase.displayId} to In Progress`;
             console.log("Subject of the email: ", subject);
-            await browser.sleep(15000); // hardwait to appear email message in "AR System Email Messages"
+            await browser.sleep(5000); // hardwait to appear email message in "AR System Email Messages"
             await apiHelper.apiLogin('tadmin');
             let body = await apiHelper.getHTMLBodyOfEmail(subject);
             console.log('body:', body);
