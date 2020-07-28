@@ -1,5 +1,6 @@
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
+import caseConsolePage from '../../pageobject/case/case-console.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePage from '../../pageobject/case/create-case.po';
 import viewCasePage from '../../pageobject/case/view-case.po';
@@ -10,7 +11,6 @@ import slmExpressionBuilder from '../../pageobject/settings/slm/slm-expressionbu
 import slmProgressBar from '../../pageobject/slm/slm-progressbar.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
-import caseConsolePage from '../../pageobject/case/case-console.po';
 
 let caseBAUser = 'qkatawazi';
 
@@ -298,7 +298,7 @@ describe('Service Target - Second Level Association Tests', () => {
         await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
 
         //Verify second level association for Requester
-        await slmExpressionBuilder.selectSecondLevelExpressionQualification('Requester', 'Email', "=", 'TEXT', "qdu@petramco1.com");
+        await slmExpressionBuilder.selectSecondLevelExpressionQualification('Requester', 'Email', "=", 'TEXT', "qdu@petramco.com1");
         let selectedExpx = await slmExpressionBuilder.getSelectedExpression();
         let expectedSelectedExp = "'" + "Requester > Email" + "'" + "=" + '"' + "qdu@petramco.com1" + '"'
         expect(selectedExpx).toEqual(expectedSelectedExp);

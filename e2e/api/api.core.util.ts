@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
-import * as uuid from 'uuid';
 import { browser } from 'protractor';
+import * as uuid from 'uuid';
 
 const recordInstanceUri = "api/rx/application/record/recordinstance";
 const dynamicDataUri = "api/com.bmc.dsm.ticketing-lib/dynamicdata/definition";
@@ -51,6 +51,7 @@ class ApiCoreUtil {
         let allRecords = await axios.get(
             dataPageUri
         );
+        console.log('Get GUID Status =============>', allRecords.status);
         return allRecords;
     }
 

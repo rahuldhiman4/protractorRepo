@@ -1,5 +1,7 @@
 import { browser } from "protractor";
+import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from '../../api/api.helper';
+import { EMAILCONFIG_COMPANY_ONE, EMAILCONFIG_COMPANY_PSILON, EMAILCONFIG_COMPANY_TWO, INCOMINGMAIL_COMPANY_ONE, INCOMINGMAIL_COMPANY_PSILON, INCOMINGMAIL_COMPANY_TWO, OUTGOINGEMAIL_COMPANY_ONE, OUTGOINGEMAIL_COMPANY_PSILON, OUTGOINGEMAIL_COMPANY_TWO } from '../../data/api/email/email.configuration.data.api';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import consoleEmailConfig from '../../pageobject/settings/email/console-email-configuration.po';
@@ -11,11 +13,6 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
-import { INCOMINGMAIL_COMPANY_ONE, OUTGOINGEMAIL_COMPANY_ONE, EMAILCONFIG_COMPANY_ONE, INCOMINGMAIL_COMPANY_TWO, OUTGOINGEMAIL_COMPANY_TWO, EMAILCONFIG_COMPANY_TWO, INCOMINGMAIL_COMPANY_PSILON, OUTGOINGEMAIL_COMPANY_PSILON, EMAILCONFIG_COMPANY_PSILON } from '../../data/api/email/email.configuration.data.api';
-import apiCoreUtil from '../../api/api.core.util';
-import consoleAcknowledgmentTemplatePo from '../../pageobject/settings/email/console-acknowledgment-template.po';
-import createAcknowledgmentTemplatesPo from '../../pageobject/settings/email/create-acknowledgment-template.po';
-import editAcknowledgmentTemplatePo from '../../pageobject/settings/email/edit-acknowledgment-template.po';
 
 describe('Email Configuration', () => {
     let offlineSupportGroup, emailID = "bmctemptestemail@gmail.com";
@@ -30,7 +27,7 @@ describe('Email Configuration', () => {
         await apiHelper.createEmailConfiguration();
         await foundationData("Petramco", "BusinessUnitData10410", "SuppGrpData10410");
         await foundationData("Psilon", "BusinessUnitDataPsilon", "SuppGrpDataPsilon");
-        
+
         offlineSupportGroup = {
             "orgName": "OfflineSupportGroup",
             "relatedOrgId": null,
@@ -76,7 +73,7 @@ describe('Email Configuration', () => {
 
         });
         it('[DRDMV-8528,DRDMV-8527]: Verify Email configuration header', async () => {
-            let msg:string="ERROR (10000): One Email Id for the company needs to be marked as default. If another email configurations for the company exist, please mark one of them as default instead";
+            let msg: string = "ERROR (10000): One Email Id for the company needs to be marked as default. If another email configurations for the company exist, please mark one of them as default instead";
             await consoleEmailConfig.searchAndSelectCheckbox(emailID);
             await consoleEmailConfig.deleteConfigurationEmail();
             await utilCommon.clickOnWarningOk();
@@ -437,6 +434,8 @@ describe('Email Configuration', () => {
             await apiHelper.createEmailConfiguration();
             await apiHelper.createEmailConfiguration(INCOMINGMAIL_COMPANY_ONE, OUTGOINGEMAIL_COMPANY_ONE, EMAILCONFIG_COMPANY_ONE);
             await apiHelper.createEmailConfiguration(INCOMINGMAIL_COMPANY_TWO, OUTGOINGEMAIL_COMPANY_TWO, EMAILCONFIG_COMPANY_TWO);
+            await navigationPage.signOut();
+            await loginPage.login("qkatawazi");
         });
         it('[DRDMV-10454]: change the default mail to false', async () => {
             await navigationPage.gotoSettingsPage();
