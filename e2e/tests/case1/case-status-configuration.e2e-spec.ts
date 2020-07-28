@@ -16,30 +16,30 @@ import utilityGrid from '../../utils/utility.grid';
 describe('Case Status Configuration', () => {
     let flowsetData;
     let flowsetName: string;
-    let personData1, personData2, personData3;
+
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await apiHelper.apiLogin('tadmin');
         const personDataFile = require('../../data/ui/foundation/person.ui.json');
-        personData1 = personDataFile['PhytoCaseAdmin1'];
+        let personData1 = personDataFile['PhytoCaseAdmin1'];
         await apiHelper.createNewUser(personData1);
         await apiHelper.associatePersonToCompany(personData1.userId, 'Phyto');
         await apiHelper.associatePersonToSupportGroup(personData1.userId, 'Phyto Support Group1');
         await browser.sleep(7000); //Wait to reflect the user created above
 
-        personData2 = personDataFile['PhytoCaseAdmin2'];
+        let personData2 = personDataFile['PhytoCaseAdmin2'];
         await apiHelper.createNewUser(personData2);
         await apiHelper.associatePersonToCompany(personData2.userId, 'Phyto');
         await apiHelper.associatePersonToSupportGroup(personData2.userId, 'Phyto Support Group1');
         await browser.sleep(7000); //Wait to reflect the user created above
 
-        personData3 = personDataFile['PhytoKnowledgeUser'];
+        let personData3 = personDataFile['PhytoKnowledgeUser'];
         await apiHelper.createNewUser(personData3);
         await apiHelper.associatePersonToCompany(personData3.userId, 'Phyto');
         await apiHelper.associatePersonToSupportGroup(personData3.userId, 'Phyto Support Group1');
         await browser.sleep(7000); //Wait to reflect the user created above
 
-        await loginPage.login(personData1.userId + '@petramco.com', 'Password_1234');
+        await loginPage.login('anehra@petramco.com', 'Password_1234');
     });
 
     afterAll(async () => {
@@ -53,7 +53,7 @@ describe('Case Status Configuration', () => {
         flowsetData = require('../../data/ui/case/flowset.ui.json');
         flowsetName = await flowsetData['flowsetPhytoFields'].flowsetName + randomStr;
         flowsetData['flowsetPhytoFields'].flowsetName = flowsetName;
-        await apiHelper.apiLogin('tadmin');
+        await apiHelper.apiLoginWithCredential('tadmin@petramco.com', 'Password_1234');
         let flowset = flowsetData['flowsetPhytoFields'];
         await apiHelper.createNewFlowset(flowsetData['flowsetPhytoFields']);
 
@@ -145,7 +145,7 @@ describe('Case Status Configuration', () => {
     //asahitya
     it('[DRDMV-13899]:Verify case created prior to label change will reflect new status label changes', async () => {
         await navigationPage.gotoCreateCase();
-        await createCasePo.selectRequester(personData2.userId);
+        await createCasePo.selectRequester('zkhan');
         await createCasePo.setSummary("DRDMV-13899 before configuration");
         await createCasePo.clickChangeAssignmentButton();
         await assignmentBladePO.selectCompany('Phyto');
@@ -166,7 +166,7 @@ describe('Case Status Configuration', () => {
         await utilityCommon.switchToDefaultWindowClosingOtherTabs();
 
         await navigationPage.gotoCreateCase();
-        await createCasePo.selectRequester(personData2.userId);
+        await createCasePo.selectRequester('zkhan');
         await createCasePo.setSummary("DRDMV-13899 after configuration");
         await createCasePo.clickAssignToMeButton();
         await createCasePo.clickSaveCaseButton();
@@ -238,7 +238,7 @@ describe('Case Status Configuration', () => {
     //asahitya
     it('[DRDMV-13632]: Verify User not able to delete mandatory status for Knowledge', async () => {
         await navigationPage.signOut()
-        await loginPage.login(personData3.userId + '@petramco.com', 'Password_1234');
+        await loginPage.login('stendulkar@petramco.com', 'Password_1234');
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Knowledge Management--Status Configuration', 'Configure Knowledge Status Transition - Business Workflows');
         await statusConfigPo.setCompanyDropdown('Phyto', 'knowledge');
@@ -289,7 +289,7 @@ describe('Case Status Configuration', () => {
     it('[DRDMV-13635]:Verify UI for Knowledge status configuration', async () => {
         try {
             await navigationPage.signOut()
-            await loginPage.login(personData3.userId + '@petramco.com', 'Password_1234');
+            await loginPage.login('stendulkar@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Status Configuration', 'Configure Knowledge Status Transition - Business Workflows');
             expect(await statusConfigPo.getTitleValue('knowledge')).toBe('Knowledge Status Configuration');
@@ -307,7 +307,7 @@ describe('Case Status Configuration', () => {
         }
         finally {
             await navigationPage.signOut();
-            await loginPage.login(personData1.userId + '@petramco.com', 'Password_1234');
+            await loginPage.login('anehra@petramco.com', 'Password_1234');
         }
     });
 

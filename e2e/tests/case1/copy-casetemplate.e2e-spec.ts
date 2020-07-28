@@ -554,7 +554,7 @@ describe('Copy Case Template', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let casetemplatePetramco, newCaseTemplate, templateData, externaltemplateData, automatedtemplateData, copyCaseTemplateName: string = "copycaseTemplateName" + randomStr;
         beforeAll(async () => {
-            await apiHelper.apiLoginWithCredential(userData1.userId + '@petramco.com', 'Password_1234');
+            await apiHelper.apiLoginWithCredential('13550User1@petramco.com', 'Password_1234');
             casetemplatePetramco = {
                 "templateName": 'caseTemplateName' + randomStr,
                 "templateSummary": 'caseTemplateName' + randomStr,
@@ -677,7 +677,7 @@ describe('Copy Case Template', () => {
         let caseTemplatePetramco, manualTemplateData, automatedTemplateData, externalTemplateData;
         let copyCaseTemplateName: string = "copycaseTemplateName" + randomStr;
         beforeAll(async () => {
-            await apiHelper.apiLoginWithCredential(userData1.userId + '@petramco.com', 'Password_1234');
+            await apiHelper.apiLoginWithCredential('13550User1@petramco.com', 'Password_1234');
             caseTemplatePetramco = {
                 "templateName": 'caseTemplateName' + randomStr,
                 "templateSummary": 'caseTemplateName' + randomStr,
@@ -787,7 +787,7 @@ describe('Copy Case Template', () => {
         let casetemplatePetramco, templateData, externaltemplateData, automatedtemplateData;
         let copyCaseTemplateName: string = "copycasetemplate" + Math.floor(Math.random() * 10000000);
         beforeAll(async () => {
-            await apiHelper.apiLoginWithCredential(userData1.userId + '@petramco.com', 'Password_1234');
+            await apiHelper.apiLoginWithCredential('13550User1@petramco.com', 'Password_1234');
             casetemplatePetramco = {
                 "templateName": 'caseTemplateName' + randomStr,
                 "templateSummary": 'caseTemplateName' + randomStr,
@@ -923,7 +923,7 @@ describe('Copy Case Template', () => {
                 "ownerBusinessUnit": "Facilities Support",
                 "ownerGroup": "Facilities"
             }
-            await apiHelper.apiLoginWithCredential(userData1.userId + '@petramco.com', 'Password_1234');
+            await apiHelper.apiLoginWithCredential('13550User1@petramco.com', 'Password_1234');
             let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplatePetramco);
             let automatedTaskTemplate = await apiHelper.createAutomatedTaskTemplate(automatedtemplateData);
             await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, automatedTaskTemplate.displayId);
