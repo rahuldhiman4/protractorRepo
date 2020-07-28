@@ -419,28 +419,25 @@ describe('Create Case Task', () => {
 
     //ankagraw
     describe('[DRDMV-12558]: Task Template submitter from different company of owner group can edit the template', async () => {
-        let userData, randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let TaskTemplate = 'Manual task' + randomStr;
         let TaskSummary = 'Summary' + randomStr;
         let description = 'description' + randomStr;
         beforeAll(async () => {
-            userData = {
+            await apiHelper.apiLogin('tadmin');
+            let userData = {
                 "firstName": "Petramco",
                 "lastName": "Psilon",
                 "userId": "DRDMV-12558",
-                "company": "Petramco",
-                "emailId": "DRDMV-12558@petramco.com",
             }
-            await apiHelper.apiLogin('tadmin');
             await apiHelper.createNewUser(userData);
             await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
             await apiHelper.associatePersonToCompany(userData.userId, "Psilon");
             await apiHelper.associatePersonToSupportGroup(userData.userId, "Psilon Support Group2");
-            await browser.sleep(5000); // hard wait to reflect API changes on UI
         });
         it('[DRDMV-12558]: Login with Psilon user', async () => {
             await navigationPage.signOut();
-            await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
+            await loginPage.login("DRDMV-12558" + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.clickOnManualTaskTemplateButton();
@@ -481,10 +478,9 @@ describe('Create Case Task', () => {
         let TaskTemplate = 'Manual task' + randomStr;
         let TaskSummary = 'Summary' + randomStr;
         let description = 'description' + randomStr;
-        let userData;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
-            userData = {
+            let userData = {
                 "firstName": "Petramco",
                 "lastName": "Psilon",
                 "userId": "DRDMV-12582",
@@ -510,7 +506,7 @@ describe('Create Case Task', () => {
         //search above template
         it('[DRDMV-12582]: Login with psilon user and update the task template', async () => {
             await navigationPage.signOut();
-            await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
+            await loginPage.login("DRDMV-12582" + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(TaskTemplate);

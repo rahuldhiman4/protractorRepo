@@ -132,7 +132,7 @@ describe('Copy Task Template', () => {
         });
         it('[DRDMV-13548]: Create a Copy of Task template where Submitter do not belong to any Support Groups', async () => {
             await navigationPage.signOut();
-            await loginPage.login(userData13548.userId + '@petramco.com', 'Password_1234');
+            await loginPage.login(userData13548.emailId, 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
@@ -195,7 +195,7 @@ describe('Copy Task Template', () => {
         });
         it('[DRDMV-14218,DRDMV-13573]: User having Petramco and Psilon access', async () => {
             await navigationPage.signOut();
-            await loginPage.login(twoCompanyUser.userId + '@petramco.com', 'Password_1234');
+            await loginPage.login(twoCompanyUser.emailId, 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
@@ -250,7 +250,7 @@ describe('Copy Task Template', () => {
             await apiHelper.createAutomatedTaskTemplate(templateData);
 
             await navigationPage.signOut();
-            await loginPage.login(twoCompanyUser.userId + '@petramco.com', 'Password_1234');
+            await loginPage.login(twoCompanyUser.emailId, 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
