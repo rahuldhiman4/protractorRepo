@@ -353,7 +353,7 @@ describe('Knowledge Article', () => {
             await navigationPage.gotoKnoweldgeConsoleFromKM();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
-            expect(await viewKnowledgeArticlePo.getStatusValue()).toContain('Published', 'value is not matched with status')
+            expect(await viewKnowledgeArticlePo.getStatusValue()).toContain('Published', 'value is not matched with status');
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             expect(await activityTabPo.getFirstPostContent()).toContain('Kyle Mills reviewed this article and provided this comment');
             expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitile)
