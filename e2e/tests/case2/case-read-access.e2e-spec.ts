@@ -70,6 +70,7 @@ describe("Case Read Access", () => {
         let orgId = await apiCoreUtil.getOrganizationGuid(company);
         businessData1.relatedOrgId = orgId;
         let businessUnitId = await apiHelper.createBusinessUnit(businessData1);
+        await browser.sleep(3000); // timeout requried to reflect data on UI
         departmentData1.relatedOrgId = businessUnitId;
         let depId = await apiHelper.createDepartment(departmentData1);
         suppGrpData1.relatedOrgId = depId;
