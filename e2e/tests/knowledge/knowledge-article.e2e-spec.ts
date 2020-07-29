@@ -1683,6 +1683,7 @@ describe('Knowledge Article', () => {
             await utilityGrid.clearFilter(); 
             await utilityGrid.searchAndOpenHyperlink(response.displayId);
             await viewCasePage.clickOnTab('Resources');
+            await browser.sleep(2000); // hardwait to populate resource tab data
             expect(await resources.getAdvancedSearchResultForParticularSection(caseData.Summary)).toEqual(caseData.Summary);
             await resources.pinRecommendedKnowledgeArticles(1);
             expect(await resources.isFirstPinnedArticleDisplayed()).toBeTruthy();
