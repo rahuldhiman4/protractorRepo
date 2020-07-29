@@ -67,19 +67,19 @@ describe("Case Read Access", () => {
         departmentData1 = departmentDataFile['DepartmentData'];
         suppGrpData1 = supportGrpDataFile['SuppGrpData'];
         let personData1 = personDataFile['PersonData'];
+        await apiHelper.createNewUser(personData1);
+        await apiHelper.associatePersonToCompany(personData1.userId, company);
         let orgId = await apiCoreUtil.getOrganizationGuid(company);
         businessData1.relatedOrgId = orgId;
         let businessUnitId = await apiHelper.createBusinessUnit(businessData1);
+        await browser.sleep(3000); // timeout requried to reflect data on UI
         departmentData1.relatedOrgId = businessUnitId;
         let depId = await apiHelper.createDepartment(departmentData1);
         await browser.sleep(3000); // timeout requried to reflect data on UI
         suppGrpData1.relatedOrgId = depId;
         await apiHelper.createSupportGroup(suppGrpData1);
-        await apiHelper.createNewUser(personData1);
         await browser.sleep(3000); // timeout requried to reflect data on UI
-        await apiHelper.associatePersonToCompany(personData1.userId, company);
         await apiHelper.associatePersonToSupportGroup(personData1.userId, suppGrpData1.orgName);
-        await browser.sleep(5000); // timeout requried to reflect data on UI
     }
 
     async function foundationData2(company: string) {
@@ -88,18 +88,19 @@ describe("Case Read Access", () => {
         departmentData2 = departmentDataFile['DepartmentData19501'];
         suppGrpData2 = supportGrpDataFile['SuppGrpData19501'];
         let personData2 = personDataFile['PersonData19501'];
-        let orgId1 = await apiCoreUtil.getOrganizationGuid(company);
-        businessData2.relatedOrgId = orgId1;
-        let businessUnitId1 = await apiHelper.createBusinessUnit(businessData2);
-        departmentData2.relatedOrgId = businessUnitId1;
-        let depId1 = await apiHelper.createDepartment(departmentData2);
-        suppGrpData2.relatedOrgId = depId1;
-        await apiHelper.createSupportGroup(suppGrpData2);
         await apiHelper.createNewUser(personData2);
+        await apiHelper.associatePersonToCompany(personData2.userId, company);
+        let orgId = await apiCoreUtil.getOrganizationGuid(company);
+        businessData2.relatedOrgId = orgId;
+        let businessUnitId = await apiHelper.createBusinessUnit(businessData2);
+        await browser.sleep(3000); // timeout requried to reflect data on UI
+        departmentData2.relatedOrgId = businessUnitId;
+        let depId = await apiHelper.createDepartment(departmentData2);
+        await browser.sleep(3000); // timeout requried to reflect data on UI
+        suppGrpData2.relatedOrgId = depId;
+        await apiHelper.createSupportGroup(suppGrpData2);
         await browser.sleep(3000); // timeout requried to reflect data on UI
         await apiHelper.associatePersonToSupportGroup(personData2.userId, suppGrpData2.orgName);
-        await apiHelper.associatePersonToCompany(personData2.userId, company);
-        await browser.sleep(5000); // timeout requried to reflect data on UI
     }
 
     it('[DRDMV-12060]:[Read Access] Editing Read Access Mappings Company to Global', async () => {
@@ -399,7 +400,7 @@ describe("Case Read Access", () => {
             await navigationPo.signOut();
             await loginPage.login('qkatawazi');
         });
-    }); 
+    });
 
     describe('[DRDMV-2004]: [Read Access] Applying mapping with flowset in case of best match', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
