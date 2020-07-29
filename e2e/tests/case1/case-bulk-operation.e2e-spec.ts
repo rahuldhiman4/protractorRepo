@@ -13,7 +13,11 @@ import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
 describe('Case Bulk Operation', () => {
-    let caseData = require('../../data/ui/case/case.ui.json');
+    const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
+    const departmentDataFile = require('../../data/ui/foundation/department.ui.json');
+    const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
+    const personDataFile = require('../../data/ui/foundation/person.ui.json');
+    const caseData = require('../../data/ui/case/case.ui.json');
     let qfengStr = 'qfeng';
     let petramcoStr = 'Petramco';
     let usSupportGroup3Str = 'US Support 3';
@@ -25,7 +29,7 @@ describe('Case Bulk Operation', () => {
         await loginPage.login(qfengStr);
         await utilityGrid.clearFilter();
         await utilityGrid.sortGridColumn('Case ID', 'desc');
-        await testData();
+        await foundationData();
     });
 
     afterAll(async () => {
@@ -35,13 +39,8 @@ describe('Case Bulk Operation', () => {
         await navigationPage.signOut();
     });
 
-    async function testData() {
+    async function foundationData() {
         //Create Foundation data
-        const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
-        const departmentDataFile = require('../../data/ui/foundation/department.ui.json');
-        const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
-        const personDataFile = require('../../data/ui/foundation/person.ui.json');
-
         businessData = businessDataFile['BusinessUnitData_BulkOperation'];
         departmentData = departmentDataFile['DepartmentData_BulkOperation'];
         suppGrpData = supportGrpDataFile['SuppGrpData_BulkOperation'];
@@ -54,12 +53,13 @@ describe('Case Bulk Operation', () => {
         let businessUnitId = await apiHelper.createBusinessUnit(businessData);
         departmentData.relatedOrgId = businessUnitId;
         let depId = await apiHelper.createDepartment(departmentData);
+        await browser.sleep(3000); //sleep to reflect data on UI
         suppGrpData.relatedOrgId = depId;
         await apiHelper.createSupportGroup(suppGrpData);
         await apiHelper.createNewUser(personData);
         await apiHelper.associatePersonToSupportGroup(personData.userId, suppGrpData.orgName);
         await apiHelper.associatePersonToCompany(personData.userId, petramcoStr);
-        await browser.sleep(5000); //sleep to reflect data on UI
+        await browser.sleep(3000); //sleep to reflect data on UI
     }
 
     it('[DRDMV-15953]: Verify if Case Agent can select and change the assignee of multiple cases', async () => {
@@ -285,21 +285,21 @@ describe('Case Bulk Operation', () => {
             }
             await caseConsolePage.clickOnChangeAssignmentButton();
             await changeAssignmentBladePo.selectCompany(petramcoStr);
-            await changeAssignmentBladePo.selectBusinessUnit("BulkOperationBusinessUnit");
-            await changeAssignmentBladePo.selectDepartment("BulkOperationDepartment");
-            await changeAssignmentBladePo.selectSupportGroup("BulkOperationSupportGroup");
-            await changeAssignmentBladePo.selectAssignee("BOPerson lnPerson");
+            await changeAssignmentBladePo.selectBusinessUnit(businessData.orgName);
+            await changeAssignmentBladePo.selectDepartment(departmentData.orgName);
+            await changeAssignmentBladePo.selectSupportGroup(suppGrpData.orgName);
+            await changeAssignmentBladePo.selectAssignee(`${personData.firstName} ${personData.lastName}`);
             await changeAssignmentBladePo.clickOnAssignButton();
             expect(await utilityCommon.isPopUpMessagePresent('The selected case(s) have been successfully assigned.', 3)).toBeTruthy();
             await utilityCommon.closePopUpMessage();
             await utilityCommon.closePopUpMessage();
             for (let i: number = 0; i < 3; i++) {
                 await utilityGrid.searchAndOpenHyperlink(caseId[i]);
-                expect(await viewCasePage.getBusinessUnitText()).toBe("BulkOperationBusinessUnit", `Business unit details are not matching for ${caseId[i]}`);
-                expect(await viewCasePage.getDepartmentText()).toBe("BulkOperationDepartment", `Department details are not matching for ${caseId[i]}`);
-                expect(await viewCasePage.getAssignedCompanyText()).toBe("Petramco");
-                expect(await viewCasePage.getAssignedGroupText()).toBe("BulkOperationSupportGroup", `Assigned Group details are not matching for ${caseId[i]}`);
-                expect(await viewCasePage.getAssigneeText()).toBe("BOPerson lnPerson", `Assignee details are not matching for ${caseId[i]}`);
+                expect(await viewCasePage.getBusinessUnitText()).toBe(businessData.orgName, `Business unit details are not matching for ${caseId[i]}`);
+                expect(await viewCasePage.getDepartmentText()).toBe(departmentData.orgName, `Department details are not matching for ${caseId[i]}`);
+                expect(await viewCasePage.getAssignedCompanyText()).toBe(petramcoStr);
+                expect(await viewCasePage.getAssignedGroupText()).toBe(suppGrpData.orgName, `Assigned Group details are not matching for ${caseId[i]}`);
+                expect(await viewCasePage.getAssigneeText()).toBe(`${personData.firstName} ${personData.lastName}`, `Assignee details are not matching for ${caseId[i]}`);
                 await navigationPage.gotoCaseConsole();
             }
         });

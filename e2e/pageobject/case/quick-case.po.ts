@@ -140,7 +140,7 @@ class QuickCasePage {
     }
 
     async clickArrowFirstRecommendedCaseTemplate(): Promise<void> {
-        //await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.arrowFirstRecommendedCase))),3000);
+        await browser.sleep(2000); // hardwait to build case template hyperlink 
         await $(this.selectors.recommendedCaseTemplateGuid).$$('.flex-column bwf-search-result-fields div span').first().click();
     }
 
