@@ -46,20 +46,21 @@ describe('Case Bulk Operation', () => {
         suppGrpData = supportGrpDataFile['SuppGrpData_BulkOperation'];
         personData = personDataFile['PersonData_BulkOperation'];
         await apiHelper.apiLogin('tadmin');
+        await apiHelper.createNewUser(personData);
         await apiHelper.deleteApprovalMapping('Bulk Operation Mapping');
+        await apiHelper.associatePersonToCompany(personData.userId, petramcoStr);
         orgId = await apiCoreUtil.getOrganizationGuid(petramcoStr);
         businessData.relatedOrgId = orgId;
         await apiHelper.setDefaultNotificationForUser("qtao", "Alert");
         let businessUnitId = await apiHelper.createBusinessUnit(businessData);
+        await browser.sleep(3000); // timeout requried to reflect data on UI
         departmentData.relatedOrgId = businessUnitId;
         let depId = await apiHelper.createDepartment(departmentData);
         await browser.sleep(3000); //sleep to reflect data on UI
         suppGrpData.relatedOrgId = depId;
         await apiHelper.createSupportGroup(suppGrpData);
-        await apiHelper.createNewUser(personData);
+        await browser.sleep(3000); // timeout requried to reflect data on UI
         await apiHelper.associatePersonToSupportGroup(personData.userId, suppGrpData.orgName);
-        await apiHelper.associatePersonToCompany(personData.userId, petramcoStr);
-        await browser.sleep(3000); //sleep to reflect data on UI
     }
 
     it('[DRDMV-15953]: Verify if Case Agent can select and change the assignee of multiple cases', async () => {

@@ -29,7 +29,7 @@ describe('Email Template', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-10813,DRDMV-10796,DRDMV-10787,DRDMV-10804,DRDMV-10789]: Email Template : User Is Not able to Create Duplicate Email Template', async () => {
+    fdescribe('[DRDMV-10813,DRDMV-10796,DRDMV-10787,DRDMV-10804,DRDMV-10789]: Email Template : User Is Not able to Create Duplicate Email Template', async () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateName1 = 'TemplateName1' + randomStr;
         let templateName2 = 'TemplateName2' + randomStr;
