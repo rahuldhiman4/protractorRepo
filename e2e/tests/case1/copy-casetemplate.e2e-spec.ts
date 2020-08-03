@@ -360,7 +360,7 @@ describe('Copy Case Template', () => {
             await apiHelper.apiLogin('fritz');
             let newCaseTemplate1 = await apiHelper.createCaseTemplate(casetemplatePetramco);
             let manualTaskTemplate = await apiHelper.createManualTaskTemplate(taskTemplateDataSet);
-            await browser.sleep(2000); // hardwait to reflect manual task template
+            await browser.sleep(3000); // hardwait to reflect manual task template
             await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate1.displayId, manualTaskTemplate.displayId);
         });
         it('[DRDMV-13571]: Fields copied while creating copy of Case template which has linked task templates', async () => {

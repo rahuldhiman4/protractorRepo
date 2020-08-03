@@ -12,7 +12,6 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
-let userData1 = undefined;
 describe("Case Self Approval Tests", () => {
     const caseApprovalRecordDefinition = 'com.bmc.dsm.case-lib:Case';
 
@@ -22,15 +21,6 @@ describe("Case Self Approval Tests", () => {
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteApprovalMapping();
         await apiHelper.apiLogin('tadmin');
-        userData1 = {
-            "firstName": "Petramco",
-            "lastName": "SGUser1",
-            "userId": "10843User1",
-            "userPermission": "AGGAA5V0GE9Z4AOR7DBBOQLAW74PH7",
-        }
-        await apiHelper.createNewUser(userData1);
-        await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
-        await apiHelper.associatePersonToSupportGroup(userData1.userId, "US Support 3");
     });
 
     afterAll(async () => {
@@ -126,6 +116,7 @@ describe("Case Self Approval Tests", () => {
             let response = await apiHelper.createCase(caseData);
             caseId = response.displayId;
             await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("In Progress");
             await activityTabPage.clickOnFilterButton();
@@ -262,6 +253,7 @@ describe("Case Self Approval Tests", () => {
             let response = await apiHelper.createCase(caseData);
             caseId = response.displayId;
             await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("In Progress");
             await activityTabPage.clickOnFilterButton();

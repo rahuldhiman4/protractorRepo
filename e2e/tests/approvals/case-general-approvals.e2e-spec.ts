@@ -13,14 +13,24 @@ import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
-describe("Case General Approval Tests", () => {
-    const caseApprovalRecordDefinition = 'com.bmc.dsm.case-lib:Case';
+let userData1 = undefined;
+const caseApprovalRecordDefinition = 'com.bmc.dsm.case-lib:Case';
 
+describe("Case General Approval Tests", () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteApprovalMapping();
+        userData1 = {
+            "firstName": "Petramco",
+            "lastName": "SGUser1",
+            "userId": "10843User1",
+            "userPermission": "AGGAA5V0GE9Z4AOR7DBBOQLAW74PH7",
+        }
+        await apiHelper.createNewUser(userData1);
+        await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
+        await apiHelper.associatePersonToSupportGroup(userData1.userId, "US Support 3");
     });
 
     afterAll(async () => {
@@ -70,7 +80,7 @@ describe("Case General Approval Tests", () => {
             await apiHelper.associateCaseTemplateWithApprovalMapping(caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
 
             caseData = {
-                "Requester": "10843User1",
+                "Requester": userData1.userId,
                 "Summary": "Automated Self Approval with process",
                 "Origin": "Agent",
                 "Case Template ID": caseTemplateDisplayId
@@ -117,6 +127,7 @@ describe("Case General Approval Tests", () => {
             let response = await apiHelper.createCase(caseData);
             caseId = response.displayId;
             await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("New");
             await activityTabPage.clickOnFilterButton();
