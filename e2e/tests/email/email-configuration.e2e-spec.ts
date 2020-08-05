@@ -13,6 +13,8 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
+import consoleAcknowledgmentTemplatePo from '../../pageobject/settings/email/console-acknowledgment-template.po';
+import editAcknowledgmentTemplatePo from '../../pageobject/settings/email/edit-acknowledgment-template.po';
 
 describe('Email Configuration', () => {
     let offlineSupportGroup, emailID = "bmctemptestemail@gmail.com";
@@ -478,4 +480,32 @@ describe('Email Configuration', () => {
         });
     });
 
+    describe('[DRDMV-10930,DRDMV-10457]: Acknowledgment Template: Deletion & status update shouldnt allow when Acknowledgment Template associated with email id', async () => {
+        it('[DRDMV-10930,DRDMV-10457]: Exclusion Subject : Default associated public exclusion subject list', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
+            await utilGrid.searchAndOpenHyperlink(emailID);
+            await editEmailConfigPo.clickNewAvailableGlobalSubjects();
+            expect(await editEmailConfigPo.isValueAvailableExclusionsSubjectInAssociatePublicExclusionSubjectsPresent()).toBeFalsy("AvailableExclusionsSubject");
+            expect(await editEmailConfigPo.isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent()).toBeTruthy("AssociatedExclusionsSubject");
+            await editEmailConfigPo.closedAssociatePublicExclusionSubjects();
+            await editEmailConfigPo.selectTab("Acknowledgment Templates");
+            expect(await editEmailConfigPo.isRecordPresentInAcknowledgementTemplateGrid('Case Closed Ack Template')).toBeTruthy("Coloumn");
+        });
+        it('[DRDMV-10930,DRDMV-10457]: Acknowledgment Template: Deletion & status update shouldnt allow when Acknowledgment Template associated with email id', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
+            await consoleAcknowledgmentTemplatePo.searchAndSelectGridRecord('Case Closed Ack Template');
+            await consoleAcknowledgmentTemplatePo.clickOnDeleteButton();
+            expect(await utilCommon.isPopUpMessagePresent("ERROR (10014): Out of box acknowledgment templates cannot be deleted")).toBeTruthy("ERROR (10014)");
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
+            await consoleAcknowledgmentTemplatePo.searchAndOpenAcknowledgmentTemplate('Case Closed Ack Template');
+            await editAcknowledgmentTemplatePo.selectStatusDropDown('Inactive');
+            await editAcknowledgmentTemplatePo.clickOnSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent("ERROR (10006): The Acknowledgement template is in use, so status cannot be changed")).toBeTruthy("ERROR (10006)");
+            await editAcknowledgmentTemplatePo.clickOnCancelButton();
+            await utilCommon.clickOnWarningOk();
+        });
+    }); 
 });
