@@ -109,6 +109,7 @@ describe("Case Self Approval Tests", () => {
             await approvalConfigurationPage.setAuditInformationValue('test self approval');
             await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
             await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
+            await browser.sleep(2000); //sleep added to remove flackyness, can be removed if still test fails
         });
 
         it('[DRDMV-10822]:Create case and verify self approval without process', async () => {
