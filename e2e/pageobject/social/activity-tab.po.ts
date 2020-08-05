@@ -958,7 +958,7 @@ class ActivityTabPage {
     }
 
     async getReadAccessActivityCount(accessName: string): Promise<number> {
-        return await element.all(by.cssContainingText(this.selectors.activityLog, accessName)).count();
+        return await element.all(by.cssContainingText('.activity__body .fields span', accessName)).count();
     }
 }
 

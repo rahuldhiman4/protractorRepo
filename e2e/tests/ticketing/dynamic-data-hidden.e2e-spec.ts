@@ -685,6 +685,7 @@ describe('Dynamic Hidden Data', () => {
             }
             await apiHelper.apiLogin('fritz');
             let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
+            await browser.sleep(2000); // hardwait to reflect case template
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_EACH_15_FIELD');
         });
         it('[DRDMV-13136]: Create a case and add cae template on it', async () => {

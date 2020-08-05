@@ -55,14 +55,14 @@ describe('Acknowledgment Template', () => {
         let description = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let subject = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let body = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        await apiHelper.apiLogin('qkatawazi');
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
+        await apiHelper.apiLogin('qkatawazi');
         let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
         let label: string = await menuItemDataFile['sampleMenuItem'].menuItemName + randomStr;
         menuItemDataFile['sampleMenuItem'].menuItemName = label;
         await apiHelper.createNewMenuItem(menuItemDataFile['sampleMenuItem']);
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
         await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
         await createAcknowledgmentTemplatesPo.setTemplateName(templateName);
         await createAcknowledgmentTemplatesPo.selectCompanyDropDown('Petramco');

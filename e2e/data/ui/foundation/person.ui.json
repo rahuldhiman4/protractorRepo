@@ -2,7 +2,8 @@
     "PersonData": {
         "firstName": "fnPerson",
         "lastName": "lnPerson",
-        "userId": "idPerson"
+        "userId": "idPerson",
+        "company": "Petramco"
     },
     "PersonData19501": {
         "firstName": "fnPerson19501",
@@ -16,7 +17,7 @@
     },
     "PersonData_BulkOperation": {
         "firstName": "BOPerson",
-        "lastName": "lnPerson",
+        "lastName": "BOlnPerson",
         "userId": "idPersonBO"
     },
     "PersonData12111": {

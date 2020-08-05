@@ -1,6 +1,6 @@
-import { $, by, element } from 'protractor';
-import utilGrid from '../../../utils/util.grid';
+import { $, $$, by, element } from 'protractor';
 import utilCommon from '../../../utils/util.common';
+import utilGrid from '../../../utils/util.grid';
 
 export class EditEmailConfig {
     selectors = {
@@ -88,7 +88,7 @@ export class EditEmailConfig {
     }
 
     async selectDefaultCaseTemplate(tabValue: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.defaultCaseTemplateGuid,tabValue);
+        await utilCommon.selectDropDown(this.selectors.defaultCaseTemplateGuid, tabValue);
     }
 
     async clickSaveAcknowledgementTemplate(): Promise<void> {
@@ -108,8 +108,11 @@ export class EditEmailConfig {
         await $(this.selectors.searchAvailableEntitiesTextBox).sendKeys(searchvalue);
     }
 
-    async isValueAvailableExclusionsSubjectInAssociatePublicExclusionSubjectsPresent(searchvalue: string): Promise<boolean> {
-        return await element(by.cssContainingText(this.selectors.listAvailableExclusionsSubjectInAssociatePublicExclusionSubjects, searchvalue)).isPresent();
+    async isValueAvailableExclusionsSubjectInAssociatePublicExclusionSubjectsPresent(searchvalue?: string): Promise<boolean> {
+        if (searchvalue)
+            return await element(by.cssContainingText(this.selectors.listAvailableExclusionsSubjectInAssociatePublicExclusionSubjects, searchvalue)).isDisplayed();
+        else
+            return await $$(this.selectors.listAvailableExclusionsSubjectInAssociatePublicExclusionSubjects).count() < 1 ? false : true;
     }
 
     async searchAssociatedEntitiesToBeRemoveAssociation(searchvalue: string): Promise<void> {
@@ -117,8 +120,11 @@ export class EditEmailConfig {
         await $(this.selectors.searchAssociatedEntitiesToBeRemoveTextBox).sendKeys(searchvalue);
     }
 
-    async isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent(searchvalue: string): Promise<boolean> {
-        return await element(by.cssContainingText(this.selectors.listAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects, searchvalue)).isPresent();
+    async isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent(searchvalue?: string): Promise<boolean> {
+        if (searchvalue)
+            return await element(by.cssContainingText(this.selectors.listAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects, searchvalue)).isDisplayed();
+        else
+            return await $$(this.selectors.listAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects).count() < 1 ? false : true;
     }
 
     async clickSupportGroup(): Promise<void> {

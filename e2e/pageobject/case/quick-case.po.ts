@@ -1,5 +1,4 @@
-import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions, Key } from "protractor";
-import utilityCommon from '../../utils/utility.common';
+import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 
 
 class QuickCasePage {
@@ -141,7 +140,7 @@ class QuickCasePage {
     }
 
     async clickArrowFirstRecommendedCaseTemplate(): Promise<void> {
-        //await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.arrowFirstRecommendedCase))),3000);
+        await browser.sleep(2000); // hardwait to build case template hyperlink 
         await $(this.selectors.recommendedCaseTemplateGuid).$$('.flex-column bwf-search-result-fields div span').first().click();
     }
 
@@ -227,6 +226,7 @@ class QuickCasePage {
     }
 
     async clickOnCaseTemplate(templateName: string): Promise<void> {
+        await browser.sleep(2000); // hardwait to build case template hyperlink
         await $(`bwf-search-result-fields div[title=${templateName}] span`).isPresent().then(async (present) => {
             if (present) {
                 await $(`bwf-search-result-fields div[title=${templateName}] span`).isDisplayed().then(async (displayed) => {

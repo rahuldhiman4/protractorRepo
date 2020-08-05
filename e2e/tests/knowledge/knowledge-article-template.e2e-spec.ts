@@ -50,12 +50,12 @@ describe('Knowledge Article Template', () => {
             title: "articleSection"
         }
         await apiHelper.apiLogin('kWilliamson');
-        await apiHelper.createKnowledgeArticleTemplate('IT', 'AGGAA5V0GENSZAOO2YJBON6YXXU1R6', knowledgeArticleTemplateData);
+        await apiHelper.createKnowledgeArticleTemplate('Policy', 'AGGAA5V0GENSZAOO2YJBON6YXXU1R6', knowledgeArticleTemplateData);
 
         //Creating the Article Template with same name and set from UI
         await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
         await createKnowledgeArticleTemplatePo.setTemplateName(templateName);
-        await createKnowledgeArticleTemplatePo.setKnowledgeSetValue('IT');
+        await createKnowledgeArticleTemplatePo.setKnowledgeSetValue('Policy');
         await createKnowledgeArticleTemplatePo.clickOnAddSection();
         await createKnowledgeArticleTemplatePo.setSectionTitle('Section Title');
         await createKnowledgeArticleTemplatePo.clickOnSaveButton();
@@ -178,7 +178,7 @@ describe('Knowledge Article Template', () => {
             await createKnowledgePage.clickOnTemplate('DRDMV-619');
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
             await createKnowledgePage.addTextInKnowlegeTitleField('Article Title 619');
-            await createKnowledgePage.selectKnowledgeSet('IT');
+            await createKnowledgePage.selectKnowledgeSet('Policy');
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await createKnowledgePage.clickBackBtn();
 

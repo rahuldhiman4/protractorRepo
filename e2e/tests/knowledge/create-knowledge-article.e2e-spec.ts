@@ -314,7 +314,7 @@ describe('Knowledge Article', () => {
             await loginPage.login('peter');
         }
     });//, 170 * 1000);
-   
+
     it('[DRDMV-5058]: Review article in SME Review status & Approve article', async () => {
         try {
             let knowledgeTitile = 'knowledge5058' + randomStr;
@@ -353,7 +353,7 @@ describe('Knowledge Article', () => {
             await navigationPage.gotoKnoweldgeConsoleFromKM();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
-            expect(await viewKnowledgeArticlePo.getStatusValue()).toContain('Published', 'value is not matched with status')            
+            expect(await viewKnowledgeArticlePo.getStatusValue()).toContain('Published', 'value is not matched with status');
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             expect(await activityTabPo.getFirstPostContent()).toContain('Kyle Mills reviewed this article and provided this comment');
             expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitile)
@@ -486,7 +486,7 @@ describe('Knowledge Article', () => {
         await createKnowledgePage.selectCategoryTier1Option('Applications');
         await createKnowledgePage.selectCategoryTier2Option('Help Desk');
         await createKnowledgePage.selectCategoryTier3Option('Incident');
-        await createKnowledgePage.selectSiteDropDownOption('Melbourne');    
+        await createKnowledgePage.selectSiteDropDownOption('Melbourne');
         await createKnowledgePage.setReferenceValue('reference values are as follows');
         expect(await createKnowledgePage.getKnowledgeArticleTitleValue()).toContain(knowledgeTitle, 'expected Value not present');
         expect(await createKnowledgePage.getValueOfCategoryTier1()).toContain('Applications', 'value not matched with expected');
@@ -618,7 +618,7 @@ describe('Knowledge Article', () => {
     });
 
     describe('[DRDMV-2985]: Article creation and possible status changes - Knowledge Publisher & Coach', async () => {
-        let KADetails, KACoachDetails,articleDataCoach;
+        let KADetails, KACoachDetails, articleDataCoach;
         beforeAll(async () => {
             await apiHelper.apiLogin("tadmin");
             await apiHelper.deleteKnowledgeApprovalMapping();
@@ -675,7 +675,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilityCommon.switchToNewTab(1);            
+            await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
@@ -694,7 +694,7 @@ describe('Knowledge Article', () => {
             await editKnowledgePage.setClosedKnowledgeStatus('Closed');
             await utilityCommon.closePopUpMessage();
             expect(await editKnowledgePage.getStatusValue()).toContain('Closed', 'Status not Set');
-        }); 
+        });
         it('[DRDMV-2985]: Article creation and possible status changes - Knowledge Publisher & Coach', async () => {
             await navigationPage.signOut();
             await loginPage.login('peter');
@@ -733,6 +733,8 @@ describe('Knowledge Article', () => {
             await editKnowledgePage.setKnowledgeStatus('Retire Approval');
             await utilityCommon.closePopUpMessage();
             await utilityCommon.closePopUpMessage();
+            await navigationPage.gotoKnoweldgeConsoleFromKM();
+            await utilityGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
             expect(await editKnowledgePage.getStatusValue()).toContain('Retired', 'Status not Set');
             await editKnowledgePage.setClosedKnowledgeStatus('Closed');
             await utilityCommon.closePopUpMessage();
@@ -745,7 +747,7 @@ describe('Knowledge Article', () => {
     });
 
     describe('[DRDMV-3542]: [Post Comments] Post Feedback on knowledge article', async () => {
-        let displayID,knowledgeTitile;
+        let displayID, knowledgeTitile;
         beforeAll(async () => {
             knowledgeTitile = 'knowledge3542' + randomStr;
             await apiHelper.apiLogin(knowledgeCandidateUser);
@@ -809,7 +811,7 @@ describe('Knowledge Article', () => {
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitile, 'content not displaying on Activity');
-        }); 
+        });
         it('[DRDMV-3542]: [Post Comments] Post Feedback on knowledge article', async () => {
             await navigationPage.signOut();
             //login with publisher

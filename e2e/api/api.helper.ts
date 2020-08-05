@@ -153,8 +153,7 @@ class ApiHelper {
     async createDynamicDataOnTemplate(templateGuid: string, payloadName: string): Promise<void> {
         let templateData = DYNAMIC[payloadName];
         templateData['templateId'] = templateGuid;
-        let newCaseTemplate: AxiosResponse = await
-            coreApi.createDyanmicData(templateData);
+        let newCaseTemplate: AxiosResponse = await coreApi.createDyanmicData(templateData);
         console.log('Create Dynamic on Template API Status =============>', newCaseTemplate.status);
     }
 

@@ -2,6 +2,7 @@ import { resolve } from "path";
 import { $, protractor, ProtractorExpectedConditions } from "protractor";
 import utilityCommon from '../../utils/utility.common';
 import CreateTaskTemplatePage from "../settings/task-management/create-tasktemplate.po";
+import ckeditorOpsPo from '../common/ck-editor/ckeditor-ops.po';
 
 class CreateAdhocTaskTemplatePage {
 
@@ -45,6 +46,38 @@ class CreateAdhocTaskTemplatePage {
 
     async updateTaskDescription(description:string):Promise<void>{
         await utilityCommon.updateCKEditor(description, this.selectors.descriptionGuid);
+    }
+
+    async clickOnLeftAlignIcon():Promise<void>{
+        await ckeditorOpsPo.clickOnLeftAlignIcon(this.selectors.descriptionGuid);
+    }
+
+    async clickOnRightAlignIcon():Promise<void>{
+        await ckeditorOpsPo.clickOnRightAlignIcon(this.selectors.descriptionGuid);
+    }
+
+    async clickOnCenterAlignIcon():Promise<void>{
+        await ckeditorOpsPo.clickOnCenterAlignIcon(this.selectors.descriptionGuid);
+    }
+
+    async selectColor(value:string):Promise<void>{
+        await ckeditorOpsPo.selectColor(value,this.selectors.descriptionGuid);
+    }
+
+    async enterNewLineInCKE():Promise<void>{
+        await ckeditorOpsPo.enterNewLineInCKE(this.selectors.descriptionGuid);
+    }
+
+    async clickOnBoldIcon():Promise<void>{
+        await ckeditorOpsPo.clickOnBoldIcon(this.selectors.descriptionGuid);
+    }
+
+    async clickOnItalicIcon():Promise<void>{
+        await ckeditorOpsPo.clickOnItalicIcon(this.selectors.descriptionGuid);
+    }
+
+    async clickOnUnderLineIcon():Promise<void>{
+        await ckeditorOpsPo.clickOnUnderLineIcon(this.selectors.descriptionGuid);
     }
 
     async setSummary(summary: string): Promise<void> {

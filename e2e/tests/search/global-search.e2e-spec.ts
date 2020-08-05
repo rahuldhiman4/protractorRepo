@@ -838,11 +838,6 @@ describe('Global Search', () => {
             await loginPage.login('qtao');
         });
     });
-
-
-
-
-
 });
 
 

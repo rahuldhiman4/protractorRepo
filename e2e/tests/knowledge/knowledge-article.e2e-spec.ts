@@ -1683,6 +1683,7 @@ describe('Knowledge Article', () => {
             await utilityGrid.clearFilter(); 
             await utilityGrid.searchAndOpenHyperlink(response.displayId);
             await viewCasePage.clickOnTab('Resources');
+            await browser.sleep(2000); // hardwait to populate resource tab data
             expect(await resources.getAdvancedSearchResultForParticularSection(caseData.Summary)).toEqual(caseData.Summary);
             await resources.pinRecommendedKnowledgeArticles(1);
             expect(await resources.isFirstPinnedArticleDisplayed()).toBeTruthy();
@@ -2138,8 +2139,7 @@ describe('Knowledge Article', () => {
         let currentDate = new Date();
         let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         let dateFormateValue: string = months[currentDate.getMonth()];
-        let dateFormateNew: string = dateFormateValue.substring(0, 4);
-        let dateFormate = dateFormateNew + " " + currentDate.getDate() + ", " + currentDate.getFullYear();
+        let dateFormate = dateFormateValue + " " + currentDate.getDate() + ", " + currentDate.getFullYear();
         beforeAll(async () => {
             articleData = {
                 "knowledgeSet": "HR",

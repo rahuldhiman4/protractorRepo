@@ -204,7 +204,7 @@ class RelatedPersonPage {
             let nm: string = await person.$(this.selectors.relatedPersonNames).getText();
             if (nm == personName) {
                 await person.$(this.selectors.removePersonCrossIcon).click();
-                status = await $('.modal-footer adapt-button').isPresent();
+                status = await $('button.close-button').isPresent();
                 break;
             }
         }

@@ -182,6 +182,10 @@ class CreateCasePage {
         await $(this.selectors.priorityDropDown).click();
     }
 
+    async updateCaseDescription(value:string):Promise<void>{
+        await utilityCommon.updateCKEditor(value,this.selectors.descriptionGuid);
+    }
+
     async setSummary(summary: string): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.summary)));
         await $(this.selectors.summary).sendKeys(summary);

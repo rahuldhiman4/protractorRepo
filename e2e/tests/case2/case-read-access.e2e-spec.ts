@@ -31,8 +31,9 @@ describe("Case Read Access", () => {
     const departmentDataFile = require('../../data/ui/foundation/department.ui.json');
     const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
     const personDataFile = require('../../data/ui/foundation/person.ui.json');
-    let businessData, departmentData, suppGrpData, personData, businessData1, departmentData1, suppGrpData1, personData1;
+    let businessData1, departmentData1, suppGrpData1, businessData2, departmentData2, suppGrpData2;
     let categName1, categName2, categName3, categName4;
+    let userData1 = undefined, userData2 = undefined;
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
@@ -63,44 +64,68 @@ describe("Case Read Access", () => {
 
     async function foundationData1(company: string) {
         await apiHelper.apiLogin('tadmin');
-        businessData = businessDataFile['BusinessUnitData'];
-        departmentData = departmentDataFile['DepartmentData'];
-        suppGrpData = supportGrpDataFile['SuppGrpData'];
-        personData = personDataFile['PersonData'];
-        await apiHelper.createNewUser(personData);
+        businessData1 = businessDataFile['BusinessUnitData'];
+        departmentData1 = departmentDataFile['DepartmentData'];
+        suppGrpData1 = supportGrpDataFile['SuppGrpData'];
+        let personData1 = personDataFile['PersonData'];
+        await apiHelper.createNewUser(personData1);
+        await apiHelper.associatePersonToCompany(personData1.userId, company);
         let orgId = await apiCoreUtil.getOrganizationGuid(company);
-        businessData.relatedOrgId = orgId;
-        let businessUnitId = await apiHelper.createBusinessUnit(businessData);
+        businessData1.relatedOrgId = orgId;
+        let businessUnitId = await apiHelper.createBusinessUnit(businessData1);
         await browser.sleep(3000); // timeout requried to reflect data on UI
-        departmentData.relatedOrgId = businessUnitId;
-        let depId = await apiHelper.createDepartment(departmentData);
+        departmentData1.relatedOrgId = businessUnitId;
+        let depId = await apiHelper.createDepartment(departmentData1);
         await browser.sleep(3000); // timeout requried to reflect data on UI
-        suppGrpData.relatedOrgId = depId;
-        await apiHelper.createSupportGroup(suppGrpData);
+        suppGrpData1.relatedOrgId = depId;
+        await apiHelper.createSupportGroup(suppGrpData1);
         await browser.sleep(3000); // timeout requried to reflect data on UI
-        await apiHelper.associatePersonToSupportGroup(personData.userId, suppGrpData.orgName);
-        await apiHelper.associatePersonToCompany(personData.userId, company);
+        await apiHelper.associatePersonToSupportGroup(personData1.userId, suppGrpData1.orgName);
     }
 
     async function foundationData2(company: string) {
         await apiHelper.apiLogin('tadmin');
-        businessData1 = businessDataFile['BusinessUnitData19501'];
-        departmentData1 = departmentDataFile['DepartmentData19501'];
-        suppGrpData1 = supportGrpDataFile['SuppGrpData19501'];
-        personData1 = personDataFile['PersonData19501'];
-        await apiHelper.createNewUser(personData1);
-        let orgId1 = await apiCoreUtil.getOrganizationGuid(company);
-        businessData1.relatedOrgId = orgId1;
-        let businessUnitId1 = await apiHelper.createBusinessUnit(businessData1);
+        businessData2 = businessDataFile['BusinessUnitData19501'];
+        departmentData2 = departmentDataFile['DepartmentData19501'];
+        suppGrpData2 = supportGrpDataFile['SuppGrpData19501'];
+        let personData2 = personDataFile['PersonData19501'];
+        await apiHelper.createNewUser(personData2);
+        await apiHelper.associatePersonToCompany(personData2.userId, company);
+        let orgId = await apiCoreUtil.getOrganizationGuid(company);
+        businessData2.relatedOrgId = orgId;
+        let businessUnitId = await apiHelper.createBusinessUnit(businessData2);
         await browser.sleep(3000); // timeout requried to reflect data on UI
-        departmentData1.relatedOrgId = businessUnitId1;
-        let depId1 = await apiHelper.createDepartment(departmentData1);
+        departmentData2.relatedOrgId = businessUnitId;
+        let depId = await apiHelper.createDepartment(departmentData2);
         await browser.sleep(3000); // timeout requried to reflect data on UI
-        suppGrpData1.relatedOrgId = depId1;
-        await apiHelper.createSupportGroup(suppGrpData1);
+        suppGrpData2.relatedOrgId = depId;
+        await apiHelper.createSupportGroup(suppGrpData2);
         await browser.sleep(3000); // timeout requried to reflect data on UI
-        await apiHelper.associatePersonToSupportGroup(personData1.userId, suppGrpData1.orgName);
-        await apiHelper.associatePersonToCompany(personData1.userId, company);
+        await apiHelper.associatePersonToSupportGroup(personData2.userId, suppGrpData2.orgName);
+    }
+
+    async function createNewUsers() {
+        await apiHelper.apiLogin('tadmin');
+        userData1 = {
+            "firstName": "7605",
+            "lastName": "User1",
+            "userId": "manager",
+            "emailId": "manager@petramco.com",
+            "userPermission": "AGGAA5V0GE9Z4AOR7CWOOQLASE4PHJ"
+        }
+        await apiHelper.createNewUser(userData1);
+        userData2 = {
+            "firstName": "7605",
+            "lastName": "User2",
+            "userId": "analyst",
+            "emailId": "analyst@petramco.com",
+            "userPermission": "AGGAA5V0GE9Z4AOR7DBBOQLAW74PH7"
+        }
+        await apiHelper.createNewUser(userData2);
+        await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
+        await apiHelper.associatePersonToCompany(userData1.userId, "Psilon");
+        await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
+        await apiHelper.associatePersonToCompany(userData2.userId, "Psilon");
     }
 
     it('[DRDMV-12060]:[Read Access] Editing Read Access Mappings Company to Global', async () => {
@@ -137,9 +162,9 @@ describe("Case Read Access", () => {
         await addReadAccess.selectPriority('Critical');
         await addReadAccess.selectCategoryTier1('Purchasing Card');
         await addReadAccess.selectSupportCompany('Petramco');
-        await addReadAccess.selectBusinessUnit(businessData.orgName);
-        await addReadAccess.selectDepartment(departmentData.orgName);
-        await addReadAccess.selectSupportGroup(suppGrpData.orgName);
+        await addReadAccess.selectBusinessUnit(businessData1.orgName);
+        await addReadAccess.selectDepartment(departmentData1.orgName);
+        await addReadAccess.selectSupportGroup(suppGrpData1.orgName);
         await addReadAccess.clickOnSave();
         await utilCommon.closePopUpMessage();
 
@@ -157,10 +182,10 @@ describe("Case Read Access", () => {
         await createCasePage.clickSaveCaseButton();
         await casePreviewPo.clickGoToCaseButton();
         await viewCasePage.clickOnTab('Case Access');
-        expect(await caseAccessTabPo.isCaseAccessEntityAdded(suppGrpData.orgName)).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+        expect(await caseAccessTabPo.isCaseAccessEntityAdded(suppGrpData1.orgName)).toBeTruthy('FailuerMsg1: Support Group Name is missing');
         expect(await caseAccessTabPo.isCaseAccessEntityAdded('Qadim Katawazi')).toBeTruthy('FailuerMsg1: Agent Name is missing');
         expect(await caseAccessTabPo.isSupportGroupWriteAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have write access');
-        expect(await caseAccessTabPo.isSupportGroupReadAccessDisplayed(suppGrpData.orgName)).toBeTruthy('Support Group does not have read access');
+        expect(await caseAccessTabPo.isSupportGroupReadAccessDisplayed(suppGrpData1.orgName)).toBeTruthy('Support Group does not have read access');
     });
 
     describe('[DRDMV-11818,DRDMV-11821]: [Global Case Template] Create/Update Case template with company and flowset as Global', async () => {
@@ -220,6 +245,7 @@ describe("Case Read Access", () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateData;
         beforeAll(async () => {
+            await foundationData2("Petramco");
             await apiHelper.apiLogin('qkatawazi');
             caseTemplateData = {
                 "templateName": `${randomStr}Case template`,
@@ -231,7 +257,6 @@ describe("Case Read Access", () => {
                 "company": "Petramco",
             }
             await apiHelper.createCaseTemplate(caseTemplateData);
-            await foundationData2("Petramco");
         });
         it('[DRDMV-7061,DRDMV-6998]: [Read Access] Configuring non-default Read Access', async () => {
             await navigationPo.gotoSettingsPage();
@@ -242,9 +267,9 @@ describe("Case Read Access", () => {
             await addReadAccess.selectPriority('Critical');
             await addReadAccess.selectCategoryTier1('Purchasing Card');
             await addReadAccess.selectSupportCompany('Petramco');
-            await addReadAccess.selectBusinessUnit(businessData.orgName);
-            await addReadAccess.selectDepartment(departmentData.orgName);
-            await addReadAccess.selectSupportGroup(suppGrpData.orgName);
+            await addReadAccess.selectBusinessUnit(businessData1.orgName);
+            await addReadAccess.selectDepartment(departmentData1.orgName);
+            await addReadAccess.selectSupportGroup(suppGrpData1.orgName);
             expect(await addReadAccess.isAccessMappingNameFieldMandatory()).toBeTruthy("Mapping Name Field is not present");
             expect(await addReadAccess.isBusinessUnitDisplayed()).toBeTruthy("Business Unit Field is not present");
             expect(await addReadAccess.isCancelButtonDisplayed()).toBeTruthy("Cancel Button is not present");
@@ -265,9 +290,9 @@ describe("Case Read Access", () => {
             await editCaseTemplate.clickEditCaseTemplate();
             await editCaseTemplate.clickOnChangeAssignmentButton();
             await changAssignmentOldPage.selectCompany('Petramco');
-            await changAssignmentOldPage.selectBusinessUnit(businessData1.orgName);
-            await changAssignmentOldPage.selectDepartment(departmentData1.orgName);
-            await changAssignmentOldPage.selectSupportGroup(suppGrpData1.orgName);
+            await changAssignmentOldPage.selectBusinessUnit(businessData2.orgName);
+            await changAssignmentOldPage.selectDepartment(departmentData2.orgName);
+            await changAssignmentOldPage.selectSupportGroup(suppGrpData2.orgName);
             await changAssignmentOldPage.selectAssignee('fnPerson19501 lnPerson19501');
             await changAssignmentOldPage.clickOnAssignButton();
             await editCaseTemplate.clickSaveCaseTemplate();
@@ -285,9 +310,9 @@ describe("Case Read Access", () => {
             await quickCasePo.saveCase();
             await casePreviewPo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Case Access');
-            expect(await caseAccessTabPo.isCaseAccessEntityAdded(suppGrpData.orgName)).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+            expect(await caseAccessTabPo.isCaseAccessEntityAdded(suppGrpData1.orgName)).toBeTruthy('FailuerMsg1: Support Group Name is missing');
             expect(await caseAccessTabPo.isCaseAccessEntityAdded('fnPerson19501 lnPerson19501')).toBeTruthy('FailuerMsg1: Agent Name is missing');
-            expect(await caseAccessTabPo.isSupportGroupReadAccessDisplayed(suppGrpData.orgName)).toBeTruthy('Support Group does not have read access');
+            expect(await caseAccessTabPo.isSupportGroupReadAccessDisplayed(suppGrpData1.orgName)).toBeTruthy('Support Group does not have read access');
         });
         afterAll(async () => {
             await navigationPo.signOut();
@@ -295,7 +320,7 @@ describe("Case Read Access", () => {
         });
     });
 
-    describe('[DRDMV-7026,DRDMV-7033,DRDMV-11986]: [Read Access] Configuring a Default Read Access', async () => {
+    describe('[DRDMV-7026,DRDMV-7033,DRDMV-11986,DRDMV-11857]: [Read Access] Configuring a Default Read Access', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase1, caseTemplateData, readAccessMappingData1, readAccessMappingData2;
         beforeAll(async () => {
@@ -347,7 +372,7 @@ describe("Case Read Access", () => {
             readAccessMappingData2.configName = randomStr + '3ReadAccessMappingName';
             await apiHelper.createReadAccessMapping(readAccessMappingData2);
         });
-        it('[DRDMV-7026,DRDMV-7033,DRDMV-11986]: [Read Access] Configuring a Default Read Access', async () => {
+        it('[DRDMV-7026,DRDMV-7033,DRDMV-11986,DRDMV-11857]: [Read Access] Configuring a Default Read Access', async () => {
             await navigationPo.gotoSettingsPage();
             await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
             await consoleReadAcess.deleteDefaultReadAccess();
@@ -366,7 +391,7 @@ describe("Case Read Access", () => {
             await editReadAccess.clickOnCancel();
             await utilCommon.clickOnWarningOk();
         });
-        it('[DRDMV-7026,DRDMV-7033,DRDMV-11986]: [Read Access] Configuring a Default Read Access', async () => {
+        it('[DRDMV-7026,DRDMV-7033,DRDMV-11986,DRDMV-11857]: [Read Access] Configuring a Default Read Access', async () => {
             await navigationPo.signOut();
             await loginPage.login('qtao');
             await navigationPo.gotoQuickCase();
@@ -392,6 +417,20 @@ describe("Case Read Access", () => {
             expect(await caseAccessTabPo.isCaseAccessEntityAdded('Compensation and Benefits')).toBeFalsy('FailuerMsg1: Support Group Name is missing');
             expect(await caseAccessTabPo.isSupportGroupReadAccessDisplayed('Compensation and Benefits')).toBeFalsy('Support Group does not have read access');
         });
+        it('[DRDMV-7026,DRDMV-7033,DRDMV-11986,DRDMV-11857]: [Read Access] Configuring a Default Read Access', async () => {
+            await navigationPo.signOut();
+            await loginPage.login('gderuno');
+            await navigationPo.gotoSettingsPage();
+            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            await utilGrid.searchOnGridConsole(readAccessMappingData1.configName);
+            expect(await consoleReadAcess.getValueOnReadAccessConfigGrid('Access Mapping Name')).toContain(readAccessMappingData1.configName);
+            await utilGrid.searchOnGridConsole(readAccessMappingData2.configName);
+            expect(await consoleReadAcess.getValueOnReadAccessConfigGrid('Access Mapping Name')).toContain(readAccessMappingData2.configName);
+            await utilGrid.searchAndOpenHyperlink(readAccessMappingData1.configName);
+            expect(await editReadAccess.isCompanyFieldDisabled()).toBeTruthy('Company is not disabled');
+            await editReadAccess.clickOnCancel();
+            await utilCommon.clickOnWarningOk();
+        });
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteCaseReadAccess(readAccessMappingData1.configName);
@@ -400,7 +439,7 @@ describe("Case Read Access", () => {
             await navigationPo.signOut();
             await loginPage.login('qkatawazi');
         });
-    }); 
+    });
 
     describe('[DRDMV-2004]: [Read Access] Applying mapping with flowset in case of best match', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -558,16 +597,16 @@ describe("Case Read Access", () => {
             //Bulk Read Access
             await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
             await caseAccessTabPo.selectCompany('Petramco', 'Select Company');
-            await caseAccessTabPo.selectBusinessUnit(businessData.orgName, 'Select Business Unit');
+            await caseAccessTabPo.selectBusinessUnit(businessData1.orgName, 'Select Business Unit');
             await caseAccessTabPo.clickOnReadAccessAddButton('Add Business Unit');
             await caseAccessTabPo.selectCompany('Petramco', 'Select Company');
-            await caseAccessTabPo.selectBusinessUnit(businessData.orgName, 'Select Business Unit');
-            await caseAccessTabPo.selectDepartment(departmentData.orgName, 'Select Department');
+            await caseAccessTabPo.selectBusinessUnit(businessData1.orgName, 'Select Business Unit');
+            await caseAccessTabPo.selectDepartment(departmentData1.orgName, 'Select Department');
             await caseAccessTabPo.clickOnReadAccessAddButton('Add Support Department');
             await caseAccessTabPo.selectCompany('Petramco', 'Select Company');
-            await caseAccessTabPo.selectBusinessUnit(businessData.orgName, 'Select Business Unit');
-            await caseAccessTabPo.selectDepartment(departmentData.orgName, 'Select Department');
-            await caseAccessTabPo.selectSupportGroup(suppGrpData.orgName, 'Select Support Group');
+            await caseAccessTabPo.selectBusinessUnit(businessData1.orgName, 'Select Business Unit');
+            await caseAccessTabPo.selectDepartment(departmentData1.orgName, 'Select Department');
+            await caseAccessTabPo.selectSupportGroup(suppGrpData1.orgName, 'Select Support Group');
             await caseAccessTabPo.clickOnReadAccessAddButton('Add Support Group');
             await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Agent Access');
             await caseAccessTabPo.selectAndAddAgent('fnPerson lnPerson');
@@ -576,32 +615,96 @@ describe("Case Read Access", () => {
         it('[DRDMV-22479]: Bulk Case Access update clicking Reset to default.', async () => {
             //Bulk Write Access
             await caseAccessTabPo.selectCompany('Petramco', 'Select Company');
-            await caseAccessTabPo.selectBusinessUnit(businessData1.orgName, 'Select Business Unit');
+            await caseAccessTabPo.selectBusinessUnit(businessData2.orgName, 'Select Business Unit');
             await caseAccessTabPo.clickOnWriteAccessAddButton('Add Business Unit');
             await caseAccessTabPo.selectCompany('Petramco', 'Select Company');
-            await caseAccessTabPo.selectBusinessUnit(businessData1.orgName, 'Select Business Unit');
-            await caseAccessTabPo.selectDepartment(departmentData1.orgName, 'Select Department');
+            await caseAccessTabPo.selectBusinessUnit(businessData2.orgName, 'Select Business Unit');
+            await caseAccessTabPo.selectDepartment(departmentData2.orgName, 'Select Department');
             await caseAccessTabPo.clickOnWriteAccessAddButton('Add Support Department');
             await caseAccessTabPo.selectCompany('Petramco', 'Select Company');
-            await caseAccessTabPo.selectBusinessUnit(businessData1.orgName, 'Select Business Unit');
-            await caseAccessTabPo.selectDepartment(departmentData1.orgName, 'Select Department');
-            await caseAccessTabPo.selectSupportGroup(suppGrpData1.orgName, 'Select Support Group');
+            await caseAccessTabPo.selectBusinessUnit(businessData2.orgName, 'Select Business Unit');
+            await caseAccessTabPo.selectDepartment(departmentData2.orgName, 'Select Department');
+            await caseAccessTabPo.selectSupportGroup(suppGrpData2.orgName, 'Select Support Group');
             await caseAccessTabPo.clickOnWriteAccessAddButton('Add Support Group');
             await caseAccessTabPo.selectAgentWithWriteAccess('fnPerson19501 lnPerson19501');
             await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
             expect(await activityTabPo.getReadAccessActivityCount('granted write access')).toBe(4);
-        });
-        it('[DRDMV-22479]: Bulk Case Access update clicking Reset to default.', async () => {
-            await caseAccessTabPo.deleteAccess('UI-BusinessUnit');
-            await caseAccessTabPo.deleteAccess('UI-Department');
-            await caseAccessTabPo.deleteAccess('UI-SupportGroup');
-            await caseAccessTabPo.deleteAccess('fnPerson lnPerson');
-            await caseAccessTabPo.deleteAccess('UI-BusinessUnit-19501');
-            await caseAccessTabPo.deleteAccess('UI-Department-19501');
-            await caseAccessTabPo.deleteAccess('UI-SupportGroup-19501');
-            await caseAccessTabPo.deleteAccess('fnPerson19501 lnPerson19501');
+            await caseAccessTabPo.clickOnResetToDefault();
+            await activityTabPo.clickShowMoreLinkInActivity(1);
             expect(await activityTabPo.getReadAccessActivityCount('revoked read access of')).toBe(4);
+            await activityTabPo.clickShowMoreLinkInActivity(1);
             expect(await activityTabPo.getReadAccessActivityCount('revoked write access of')).toBe(4);
+        });
+        afterAll(async () => {
+            await navigationPo.signOut();
+            await loginPage.login('qkatawazi');
+        });
+    });
+
+    describe('[DRDMV-7605]: [Permissions] Case Read Access visibility', async () => {
+        const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let readAccessMappingData,readAccessMappingDataWithDiffrentCompany;
+        beforeAll(async () => {
+            await createNewUsers();
+            readAccessMappingData = {
+                "configName": randomStr + '1ReadAccessMappingName',
+                "assignedCompany": 'Petramco',
+                "businessUnit": 'HR Support',
+                "supportGroup": 'Compensation and Benefits',
+                "company": 'Petramco',
+                "category1": categName1,
+                "category2": categName2,
+                "category3": categName3,
+                "category4": categName4,
+            }
+            readAccessMappingDataWithDiffrentCompany = {
+                "configName": randomStr + '2ReadAccessMappingName',
+                "assignedCompany": 'Psilon',
+                "businessUnit": 'Psilon Support Org1',
+                "supportGroup": 'Psilon Support Group1',
+                "company": 'Psilon',
+            }
+            await apiHelper.apiLoginWithCredential('analyst@petramco.com', 'Password_1234');
+            await apiHelper.createReadAccessMapping(readAccessMappingData);
+            await apiHelper.apiLogin('gderuno');
+            await apiHelper.createReadAccessMapping(readAccessMappingDataWithDiffrentCompany);
+        });
+        it('[DRDMV-7605]: [Permissions] Case Read Access visibility', async () => {
+            await navigationPo.signOut();
+            await loginPage.login(userData2.emailId, 'Password_1234');
+            await navigationPo.gotoSettingsPage();
+            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            await utilGrid.searchOnGridConsole(readAccessMappingData.configName);
+            expect(await consoleReadAcess.getValueOnReadAccessConfigGrid('Access Mapping Name')).toContain(readAccessMappingData.configName);
+            await navigationPo.signOut();
+            await loginPage.login('qdu');
+            await navigationPo.gotoSettingsPage();
+            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            await utilGrid.searchAndSelectGridRecord(readAccessMappingData.configName);
+            expect(await consoleReadAcess.isDeleteButtonDisplayed()).toBeFalsy();
+        });
+        it('[DRDMV-7605]: [Permissions] Case Read Access visibility', async () => {
+            await navigationPo.signOut();
+            await loginPage.login(userData2.emailId, 'Password_1234');
+            await navigationPo.gotoSettingsPage();
+            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            await utilGrid.searchAndSelectGridRecord(readAccessMappingData.configName);
+            await consoleReadAcess.clickDeleteButton();
+            await utilCommon.clickOnWarningOk();
+            await utilCommon.closePopUpMessage();
+            expect(await consoleReadAcess.searchReadAccessMappingName(readAccessMappingData.configName)).toBeFalsy("Record is not Present");
+            await navigationPo.signOut();
+            await loginPage.login('gderuno');
+            await navigationPo.gotoSettingsPage();
+            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            await utilGrid.searchAndSelectGridRecord(readAccessMappingDataWithDiffrentCompany.configName);
+            await consoleReadAcess.clickDeleteButton();
+            await utilCommon.clickOnWarningOk();
+            await utilCommon.closePopUpMessage();
+            expect(await consoleReadAcess.searchReadAccessMappingName(readAccessMappingDataWithDiffrentCompany.configName)).toBeFalsy("Record is not Present");
+            await navigationPo.gotoSettingsPage();
+            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            expect(await consoleReadAcess.searchReadAccessMappingName(readAccessMappingData.configName)).toBeFalsy("Record is not Present");
         });
         afterAll(async () => {
             await navigationPo.signOut();
