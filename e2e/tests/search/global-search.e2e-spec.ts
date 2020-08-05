@@ -9,6 +9,8 @@ import viewCasetemplatePo from '../../pageobject/settings/case-management/view-c
 import casePreviewPo from '../../pageobject/case/case-preview.po';
 import taskPreviewPo from '../../pageobject/task/task-preview.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
+import knowledgeArticlePreview from '../../pageobject/knowledge/preview-knowledge.po'
+import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
 
 export interface IIDs {
     id: string;
@@ -17,6 +19,7 @@ export interface IIDs {
 describe('Global Search', () => {
     let caseModule = "Case";
     let taskModule = "Task";
+    let KAModule= "Knowledge Article";
     let updatedDate;
 
     beforeAll(async () => {
@@ -33,16 +36,13 @@ describe('Global Search', () => {
         year = new Number(numYear).toString();
 
         let numMonth: number = objDate.getUTCMonth() + 1;
-        let monthArr: string[] = ["Null", "Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Spet", "Oct", "Nov", "Dec"];
+        let monthArr: string[] = ["Null", "Jan", "Feb", "Mar", "Apr", "May", "June", "July", "August", "September", "October", "November", "December"];
         month = monthArr[numMonth];
 
         let numDate: number = objDate.getUTCDate();
         let date1 = new Number(numDate);
-        if (date1 <= 9) {
-            date = '0' + date1.toString();
-        } else {
-            date = date1.toString();
-        }
+        date = date1.toString();
+        
         updatedDate = month + " " + date + ", " + year;
     });
 
@@ -84,6 +84,52 @@ describe('Global Search', () => {
         taskData.description = description;
         let getTaskId = await apiHelper.createAdhocTask(caseIdTask, taskData);
         return getTaskId.displayId;
+    }
+
+    async function createKnowledgeArticle(knowledgeTitle: string, keyword?: string): Promise<string> {
+        let knowledgeArticleId;
+        let articleData = {
+            "knowledgeSet": "HR",
+            "title": "KATitle",
+            "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+            "assignedCompany": "Petramco",
+            "keyword": "",
+            "assigneeBusinessUnit": "Canada Support",
+            "assigneeSupportGroup": "CA Support 1",
+            "assignee": "qdu"
+        }
+
+        articleData.title = knowledgeTitle;
+        if (keyword) {
+            articleData.keyword = keyword;
+            let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData.id, 'Draft')).toBeTruthy('FailureMsg Status Not Set');
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData.id, 'PublishApproval', 'qdu', 'CA Support 1', 'Petramco')).toBeTruthy('FailureMsg Status Not Set');
+            return knowledgeArticleId = knowledgeArticleData.displayId;
+        } else {
+            let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData.id, 'Draft')).toBeTruthy('FailureMsg Status Not Set');
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData.id, 'PublishApproval', 'qdu', 'CA Support 1', 'Petramco')).toBeTruthy('FailureMsg Status Not Set');
+            return knowledgeArticleId = knowledgeArticleData.displayId;
+        }
+    }
+
+    async function createKnowledgeArticleWtihAttachment(knowledgeTitle: string, attachment: string): Promise<string> {
+        let knowledgeArticleId;
+        let articleData = {
+            "knowledgeSet": "HR",
+            "title": "KATitle",
+            "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "Canada Support",
+            "assigneeSupportGroup": "CA Support 1",
+            "assignee": "qdu"
+        }
+        articleData.title = knowledgeTitle;
+        let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData, attachment);
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData.id, 'Draft')).toBeTruthy('FailureMsg Status Not Set');
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData.id, 'PublishApproval', 'qdu', 'CA Support 1', 'Petramco')).toBeTruthy('FailureMsg Status Not Set');
+        return knowledgeArticleId = knowledgeArticleData.displayId;
     }
 
     //kgaikwad
@@ -594,10 +640,205 @@ describe('Global Search', () => {
             await navigationPage.signOut();
             await loginPage.login('qtao');
         });
-
     });
 
-    
+    //kgaikwad
+    describe('[DRDMV-16114]: Global search with only Knowledge Articles Category', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let attachmentFilePath = 'e2e/data/ui/attachment/globalsearch3333.pdf';
+        let summary1 = '1summaryDRDMV16114' + randomStr;
+        let summary2 = '2summaryDRDMV16114' + randomStr;
+        let summary3 = '3summaryDRDMV16114' + randomStr;
+        let keywordStr = 'keywordDRDMV16114' + randomStr;
+        let dummyText = 'DummayDRDMV16114' + randomStr;
+        let nonMatchingSummary = 'NonMatchingSummaryDRDMV16114' + randomStr;
+
+        let kaDisplayId1 = [];
+        let kaDisplayId2 = [];
+        let kaDisplayId3;
+        let kaDisplayId4;
+        let kaDisplayId5 = [];
+
+        beforeAll(async () => {
+
+            await apiHelper.apiLogin('qtao');
+            // Create KA 
+            for (let a = 0; a < 5; a++) {
+                kaDisplayId1[a] = await createKnowledgeArticle(summary1);
+            }
+
+            // Create KA with Keyword
+            for (let b = 0; b < 5; b++) {
+                kaDisplayId2[b] = await createKnowledgeArticle(summary2, keywordStr);
+            }
+
+            // Create KA with attachment
+            kaDisplayId3 = await createKnowledgeArticleWtihAttachment(summary3, attachmentFilePath);
+
+            // Non maching Knowledge Article
+            kaDisplayId4 = await createKnowledgeArticle(nonMatchingSummary);
+            
+            // Non access to Knowledge Article
+            await apiHelper.apiLogin('qstrong');
+            for (let d = 0; d < 2; d++) {
+                kaDisplayId5[d] = await createKnowledgeArticle(nonMatchingSummary);
+            }
+        });
+
+        it('[DRDMV-16114]: Verify Module Title & Pagination', async () => {
+            await navigationPage.gotoSearch();
+            expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
+            await searchPo.selectCategoryDropDownValue('Knowledge');
+            expect(await searchPo.isModuleTitleDisplayed(summary1, 'Knowledge Articles (5)', KAModule)).toBeTruthy('FailureMsg2: KA module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId1[0], KAModule)).toBeTruthy(`FailureMsg4: ${kaDisplayId1[0]} Knowledge Article id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(summary1, KAModule)).toBeTruthy(`FailureMsg5: ${summary1} Knowledge Article summary is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, KAModule,)).toBeTruthy(`${updatedDate} updatedDate is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId1[1], KAModule)).toBeTruthy(`FailureMsg6: ${kaDisplayId1[1]} Knowledge Article id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId1[2], KAModule)).toBeTruthy(`FailureMsg7: ${kaDisplayId1[2]} Knowledge Article id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId1[3], KAModule)).toBeTruthy(`FailureMsg8: ${kaDisplayId1[3]} Knowledge Article id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId1[4], KAModule)).toBeTruthy(`FailureMsg9: ${kaDisplayId1[4]} Knowledge Article id  is missing`);
+
+            await searchPo.searchRecord(summary2);
+            expect(await searchPo.isModuleTitleDisplayed(summary2, 'Knowledge Articles (5)', KAModule)).toBeTruthy('FailureMsg2: KA module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId2[0], KAModule)).toBeTruthy(`FailureMsg10: ${kaDisplayId2[0]} Knowledge Article id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId2[1], KAModule)).toBeTruthy(`FailureMsg11: ${kaDisplayId2[1]} Knowledge Article id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId2[2], KAModule)).toBeTruthy(`FailureMsg12: ${kaDisplayId2[2]} Knowledge Article id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId2[3], KAModule)).toBeTruthy(`FailureMsg13: ${kaDisplayId2[3]} Knowledge Article id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId2[4], KAModule)).toBeTruthy(`FailureMsg14: ${kaDisplayId2[4]} Knowledge Article id  is missing`);
+
+            expect(await searchPo.isModuleTitleDisplayed(summary3, 'Knowledge Articles (1)', KAModule)).toBeTruthy('FailureMsg2: KA module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId3, KAModule)).toBeTruthy(`FailureMsg101: ${kaDisplayId3[0]} Knowledge Article id  is missing`);
+
+            await searchPo.searchRecord(summary1);
+            await searchPo.clickOnLeftPannelRecord(kaDisplayId1[0], KAModule);
+        });
+
+        it('[DRDMV-16114]: Verify KA Preview Fields', async () => {
+            expect(await knowledgeArticlePreview.isFieldLabelDisplayed('Question')).toBeTruthy('FailureMsg22: field label displayed');
+            expect(await knowledgeArticlePreview.isFieldLabelDisplayed('Answer')).toBeTruthy('FailureMsg22: field label displayed');
+            expect(await knowledgeArticlePreview.isFieldLabelDisplayed('Technical Notes')).toBeTruthy('FailureMsg22: field label displayed');
+
+            expect(await knowledgeArticlePreview.getKnowledgeArticleTitle()).toBe(summary1,'FailureMsg20: knowledge article title');
+            expect(await knowledgeArticlePreview.getKnowledgeArticleID()).toContain(kaDisplayId1[0],'FailureMsg21: get knowledge Article id');
+            expect(await knowledgeArticlePreview.isStatusOfKADisplay()).toBeTruthy('FailureMsg22: Status KA Displayed');
+            expect(await knowledgeArticlePreview.getKnowledgeArticleSection()).toBe('article versioning test description','FailureMsg23: description is missing');
+            
+            // Verify Search KA keyword
+            await searchPo.searchRecord(keywordStr);
+            expect(await searchPo.isModuleTitleDisplayed(keywordStr, 'Knowledge Articles (5)', KAModule)).toBeTruthy('FailureMsg47: KA module title is missing');
+            await searchPo.clickOnLeftPannelRecord(kaDisplayId2[0], KAModule);
+            expect(await knowledgeArticlePreview.isKnowledgeArticleID()).toBeTruthy('FailureMsg48: KA id is missing');
+
+            //Verify  Search KA attachment
+            await searchPo.searchRecord('globalsearch3333.pdf');
+            expect(await searchPo.isModuleTitleDisplayed('globalsearch3333.pdf', 'Knowledge Articles (1)', KAModule)).toBeTruthy('FailureMsg47: Knowledge Articles module title is missing');
+            await searchPo.clickOnLeftPannelRecord(kaDisplayId3, KAModule);
+            expect(await knowledgeArticlePreview.isKnowledgeArticleID()).toBeTruthy('FailureMsg48: KA id is missing');     
+           });
+
+        it('[DRDMV-16114]: Click On Goto KA button and verify ', async () => {
+            await knowledgeArticlePreview.clickGoToArticleButton();
+            expect(await viewKnowledgeArticlePo.isKnowledgeArticleIdDisplayed(kaDisplayId3)).toBeTruthy('FailureMsg50: KA id is missing on view case page');
+        });
+
+        it('[DRDMV-16114]: Verify KA with non matching KA summary Also Verify case summary  who have not access of the case', async () => {
+            await navigationPage.gotoSearch();
+            await searchPo.searchRecord(summary1);
+            expect(await searchPo.isModuleTitleDisplayed(summary1, 'Knowledge Articles (5)', KAModule)).toBeTruthy('FailureMsg47: KA module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(nonMatchingSummary, KAModule)).toBeFalsy(`FailureMsg51: ${nonMatchingSummary} KA non matching is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId4, KAModule)).toBeFalsy(`FailureMsg55: ${kaDisplayId4} KA id  is displayed`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId5[0], KAModule)).toBeFalsy(`FailureMsg56: ${kaDisplayId5[0]} KA id  is displayed`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId5[1], KAModule)).toBeFalsy(`FailureMsg57: ${kaDisplayId5[1]} KA id  is displayed`);
+        });
+
+        it('[DRDMV-16114]: Clear search and verify record displayed on left pannel ', async () => {
+            await searchPo.searchRecord(summary1);
+            expect(await searchPo.isModuleTitleDisplayed(summary1, 'Knowledge Articles (5)', KAModule)).toBeTruthy('FailureMsg59: Case module title is missing');
+            await searchPo.clickClearSearchButton();
+            expect(await searchPo.isClearSearchButtonDisplayed()).toBeFalsy('FailureMsg60: Search box is cleared and cross button gets hide');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId1[0], KAModule)).toBeTruthy(`FailureMsg61: ${kaDisplayId1[0]} case id  is missing`);
+        });
+
+        it('[DRDMV-16114]: Verify search functionality with dummy text ', async () => {
+            await searchPo.searchRecord(dummyText);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(dummyText, KAModule)).toBeFalsy(`FailureMsg62: ${dummyText} dummyText  is displayed`);
+            expect(await searchPo.isModuleTitleDisplayed(dummyText, 'Knowledge Articles (0)', KAModule)).toBeTruthy('FailureMsg63: Case module title is missing');
+            expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(KAModule)).toBeTruthy(`FailureMsg64: No result found validation is missing`);
+        });
+
+
+        it('[DRDMV-16114]: Verify search KA with assignee user ', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qdu');
+            await navigationPage.gotoSearch();
+
+            await searchPo.searchRecord(summary1);
+            expect(await searchPo.isModuleTitleDisplayed(summary1, 'Knowledge Articles (5)', KAModule)).toBeTruthy('FailureMsg42: Task module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId1[0], KAModule)).toBeTruthy(`FailureMsg6: ${kaDisplayId1[0]} task id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId1[1], KAModule)).toBeTruthy(`FailureMsg6: ${kaDisplayId1[1]} task id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId1[2], KAModule)).toBeTruthy(`FailureMsg7: ${kaDisplayId1[2]} task id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId1[3], KAModule)).toBeTruthy(`FailureMsg8: ${kaDisplayId1[3]} task id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId1[4], KAModule)).toBeTruthy(`FailureMsg9: ${kaDisplayId1[4]} task id  is missing`);
+
+            await searchPo.searchRecord(nonMatchingSummary);
+            expect(await searchPo.isModuleTitleDisplayed(nonMatchingSummary, 'Knowledge Articles (3)', KAModule)).toBeTruthy('FailureMsg42: Task module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId4, KAModule)).toBeTruthy(`FailureMsg55: ${kaDisplayId4} KA id  is displayed`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId5[0], KAModule)).toBeTruthy(`FailureMsg49: ${kaDisplayId5[0]} task id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId5[1], KAModule)).toBeTruthy(`FailureMsg50: ${kaDisplayId5[1]} task id  is missing`);
+        });
+
+        it('[DRDMV-16114]: Verify saerch KA with other group user', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz')
+            await navigationPage.gotoSearch();
+            await searchPo.searchRecord(summary1);
+            expect(await searchPo.isModuleTitleDisplayed(summary1, 'Knowledge Articles (5)', KAModule)).toBeTruthy('FailureMsg58: Task module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId1[0], KAModule)).toBeTruthy(`FailureMsg48: ${kaDisplayId1[0]} task id  is displayed`);
+
+            await searchPo.searchRecord(keywordStr);
+            expect(await searchPo.isModuleTitleDisplayed(keywordStr, 'Knowledge Articles (5)', KAModule)).toBeTruthy('FailureMsg58: Task module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId2[0], KAModule)).toBeTruthy(`FailureMsg48: ${kaDisplayId2} task id  is displayed`);
+
+            await searchPo.searchRecord('globalsearch3333.pdf');
+            expect(await searchPo.isModuleTitleDisplayed(nonMatchingSummary, 'Knowledge Articles (1)', KAModule)).toBeTruthy('FailureMsg58: Task module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId3, KAModule)).toBeTruthy(`FailureMsg48: ${kaDisplayId3} task id  is displayed`);
+
+            await searchPo.searchRecord(nonMatchingSummary);
+            expect(await searchPo.isModuleTitleDisplayed(nonMatchingSummary, 'Knowledge Articles (3)', KAModule)).toBeTruthy('FailureMsg58: Task module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId4, KAModule)).toBeTruthy(`FailureMsg48: ${kaDisplayId4} task id  is displayed`);
+        });
+
+        it('[DRDMV-16114]: Verify saerch KA with other company user', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('gderuno')
+            await navigationPage.gotoSearch();
+            await searchPo.searchRecord(summary1);
+            expect(await searchPo.isModuleTitleDisplayed(summary1, 'Knowledge Articles (0)', KAModule)).toBeTruthy('FailureMsg58: Task module title is missing');
+            expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(KAModule)).toBeTruthy(`FailureMsg59: No result found validation is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId1[0], KAModule)).toBeFalsy(`FailureMsg48: ${kaDisplayId1[0]} KA id  is displayed`);
+
+            await searchPo.searchRecord(keywordStr);
+            expect(await searchPo.isModuleTitleDisplayed(nonMatchingSummary, 'Knowledge Articles (0)', KAModule)).toBeTruthy('FailureMsg58: Task module title is missing');
+            expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(KAModule)).toBeTruthy(`FailureMsg59: No result found validation is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId2[0], KAModule)).toBeFalsy(`FailureMsg48: ${kaDisplayId2} KA id  is displayed`);
+
+            await searchPo.searchRecord('globalsearch3333.pdf');
+            expect(await searchPo.isModuleTitleDisplayed(nonMatchingSummary, 'Knowledge Articles (0)', KAModule)).toBeTruthy('FailureMsg58: Task module title is missing');
+            expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(KAModule)).toBeTruthy(`FailureMsg59: No result found validation is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId3[0], KAModule)).toBeFalsy(`FailureMsg48: ${kaDisplayId3} KA id  is displayed`);
+
+            await searchPo.searchRecord(nonMatchingSummary);
+            expect(await searchPo.isModuleTitleDisplayed(nonMatchingSummary, 'Knowledge Articles (0)', KAModule)).toBeTruthy('FailureMsg58: Task module title is missing');
+            expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(KAModule)).toBeTruthy(`FailureMsg59: No result found validation missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId4, KAModule)).toBeFalsy(`FailureMsg48: ${kaDisplayId4} KA id  is displayed`);
+        });
+
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qtao');
+        });
+    });
+
 
 
 

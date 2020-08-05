@@ -1,4 +1,4 @@
-import { $, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, protractor, ProtractorExpectedConditions, element, by } from "protractor";
 import utilityCommon from '../../utils/utility.common';
 
 class PreviewKnowledge {
@@ -10,7 +10,8 @@ class PreviewKnowledge {
         knowledgeArticleID: '.d-icon-lightbulb_o',
         backButton: '[rx-view-component-id="75d55491-37d4-40f2-83ef-35019670e355"] button',
         goToArticleButton: '[rx-view-component-id="5c11d82c-8269-41fc-a93f-374252adc4c2"] button',
-        statusOfKA: '[rx-view-component-id="09044fe7-3bcd-48e9-98f3-96c482b37b77"] .status-transition'
+        statusOfKA: '[rx-view-component-id="09044fe7-3bcd-48e9-98f3-96c482b37b77"] .status-transition',
+        fieldLabels: '.clearfix label'
     }
     async getKnowledgeArticleTitle(): Promise<string> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.knowledgeTitle)));
@@ -29,7 +30,6 @@ class PreviewKnowledge {
 
     async clickGoToArticleButton(): Promise<void> {
         await $(this.selectors.goToArticleButton).click();
-        await utilityCommon.clickOnApplicationWarningYesNoButton('Yes'); // please remove this after defect fix DRDMV-22182
     }
 
     async clickOnBackButton(): Promise<void> {
@@ -50,6 +50,14 @@ class PreviewKnowledge {
     async isKnowledgeArticleID(): Promise<boolean> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.knowledgeArticleID)));
         return await $(this.selectors.knowledgeArticleID).isDisplayed();
+    }
+
+    async isFieldLabelDisplayed(labelName: string): Promise<boolean> {
+        return await element(by.cssContainingText(this.selectors.fieldLabels, labelName)).isPresent().then(async (link) => {
+            if (link) {
+                return await element(by.cssContainingText(this.selectors.fieldLabels, labelName)).isDisplayed();
+            } else return false;
+        });
     }
 }
 export default new PreviewKnowledge();

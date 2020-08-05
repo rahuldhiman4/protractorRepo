@@ -55,6 +55,16 @@ class ViewKnowledgePage {
         approvalButtons: '.approval-buttons span',
         approveButton: '.d-icon-left-check_shield',
         rejectButton: '.d-icon-left-cross_circle',
+        knowledgeArticleId: '[rx-view-component-id="5d80f2cf-00e9-4c55-ac08-01beacdd19e1"]  span',
+    }
+
+    async isKnowledgeArticleIdDisplayed(knowledgeArticleId: string): Promise<boolean> {
+        
+        return await element(by.cssContainingText(this.selectors.knowledgeArticleId, knowledgeArticleId)).isPresent().then(async (link) => {
+            if (link) {
+                return await element(by.cssContainingText(this.selectors.knowledgeArticleId, knowledgeArticleId)).isDisplayed();
+            } else return false;
+        });
     }
 
     async clickOnKAUsefulYesButton(): Promise<void> {

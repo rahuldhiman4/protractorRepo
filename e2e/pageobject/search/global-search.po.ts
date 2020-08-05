@@ -179,7 +179,7 @@ class GlobalSearch {
         return booleanVal;
     }
 
-    async isRecordDisplayedOnLeftPannel(record: string, moduleName: string, recordNumber?: number): Promise<boolean> {
+    async isRecordDisplayedOnLeftPannel(record: string, moduleName: string): Promise<boolean> {
         let guid;
         switch (moduleName) {
             case "Case": {
@@ -218,11 +218,7 @@ class GlobalSearch {
 
         return await $$(`[rx-view-component-id="${guid}"] .bwf-search-fields[title="${record}"]`).isPresent().then(async (link) => {
             if (link) {
-                if (recordNumber) {
-                    return await $$(`[rx-view-component-id="${guid}"] .bwf-search-fields[title="${record}"]`).get(recordNumber - 1).isDisplayed();
-                } else {
                     return await $$(`[rx-view-component-id="${guid}"] .bwf-search-fields[title="${record}"]`).isDisplayed();
-                }
             } else return false;
         });
     }
