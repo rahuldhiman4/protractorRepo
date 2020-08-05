@@ -35,6 +35,7 @@ import createAdhocTaskPo from '../../pageobject/task/create-adhoc-task.po';
 import composeMailPo from '../../pageobject/email/compose-mail.po';
 import editCasetemplatePo from '../../pageobject/settings/case-management/edit-casetemplate.po';
 import editTasktemplatePo from '../../pageobject/settings/task-management/edit-tasktemplate.po';
+import createCasePo from '../../pageobject/case/create-case.po';
 let uploadURL = "https://www.google.com/homepage/images/hero-dhp-chrome-win.jpg?mmfb=90bec8294f441f5c41987596ca1b8cff";
 let caseTemplateAllFields = ALL_FIELD;
 let caseTemplateRequiredFields = MANDATORY_FIELD;
@@ -74,7 +75,7 @@ describe('CKE Description', () => {
     describe('[DRDMV-22089,DRDMV-22090,DRDMV-22094,DRDMV-22102,DRDMV-22097,DRDMV-22101 ]: Verify case description field after Copy case template', async () => {
         let randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateName;
-        let copyCasetemplate='copyCaseTemplate'+randomString;
+        let copyCasetemplate = 'copyCaseTemplate' + randomString;
         it('[DRDMV-22089,DRDMV-22090,DRDMV-22094,DRDMV-22102,DRDMV-22097,DRDMV-22101] Create case template bold , italic and underline with CKE', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
@@ -194,11 +195,11 @@ describe('CKE Description', () => {
             expect(await ckeditorValidationPo.isItalicTextDisplayed(italicText)).toBeTruthy();
             expect(await ckeditorValidationPo.isColorTextDisplayed('color:#c0392b;')).toBeTruthy();
             expect(await ckeditorValidationPo.isImageDisplayed(uploadURL)).toBeTruthy();
-            expect(await ckeditorValidationPo.isImageDisplayed(imageSource)).toBeTruthy();   
+            expect(await ckeditorValidationPo.isImageDisplayed(imageSource)).toBeTruthy();
             expect(await ckeditorValidationPo.getColorFontStyleOfText("text-align: right;")).toContain(rightAlignText);
             expect(await ckeditorValidationPo.getColorFontStyleOfText("text-align: center;")).toContain(centerAlignText);
             expect(await ckeditorValidationPo.getTableCellAlignText("text-align: center;")).toContain(randomString);
-            expect(await ckeditorValidationPo.isFormatedTextDisplayed(formatText,"h2")).toBeTruthy();
+            expect(await ckeditorValidationPo.isFormatedTextDisplayed(formatText, "h2")).toBeTruthy();
             await ckeditorValidationPo.clickLinkInCKE('www.google.com');
             await browser.waitForAngularEnabled(false);
             await utilityCommon.switchToNewTab(2);
@@ -242,7 +243,6 @@ describe('CKE Description', () => {
         it('[DRDMV-22089,DRDMV-22090,DRDMV-22094,DRDMV-22102,DRDMV-22097,DRDMV-22101] Verify case description on case if we change case template from template1 to template2', async () => {
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('qdu');
-            await console.log('case template name'+caseTemplateName);
             await quickCasePo.selectCaseTemplate(caseTemplateName);
             await quickCasePo.createCaseButton();
             //Case Preview
@@ -336,11 +336,11 @@ describe('CKE Description', () => {
             await loginPage.login('qkatawazi');
         });
     });
-    
-      //ptidke
-      describe('[DRDMV-22091,DRDMV-22092,DRDMV-22093,DRDMV-22103]: Verify task description field with CK editor functionality on Manual task template', async () => {
-          let randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-          it('[DRDMV-22091,DRDMV-22092,DRDMV-22093,DRDMV-22103] Create task template bold , italic and underline with CKE', async () => {
+
+    //ptidke
+    describe('[DRDMV-22091,DRDMV-22092,DRDMV-22093,DRDMV-22103]: Verify task description field with CK editor functionality on Manual task template', async () => {
+        let randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        it('[DRDMV-22091,DRDMV-22092,DRDMV-22093,DRDMV-22103] Create task template bold , italic and underline with CKE', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await consoleTasktemplatePo.clickOnManualTaskTemplateButton();
@@ -466,7 +466,7 @@ describe('CKE Description', () => {
             expect(await ckeditorValidationPo.isTitleDisplayed('Google')).toBeTruthy();
             await browser.waitForAngularEnabled(true);
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
-         });
+        });
 
         it('[DRDMV-22091,DRDMV-22092,DRDMV-22093,DRDMV-22103] Verify detail on COPY task template', async () => {
             await navigationPage.gotoSettingsPage();
@@ -523,9 +523,9 @@ describe('CKE Description', () => {
             await browser.waitForAngularEnabled(true);
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await previewTaskTemplatePo.clickOnBackButton();
-            await utilityGrid.searchAndSelectGridRecord('taskTemplateNameDRDMV-22091'+randomString);
+            await utilityGrid.searchAndSelectGridRecord('taskTemplateNameDRDMV-22091' + randomString);
             await manageTaskBladePo.clickTaskGridSaveButton();
-            await manageTaskBladePo.clickTaskLink('taskTemplateSummaryDRDMV-22091'+randomString);
+            await manageTaskBladePo.clickTaskLink('taskTemplateSummaryDRDMV-22091' + randomString);
         });
 
         it('[[DRDMV-22091,DRDMV-22092,DRDMV-22093,DRDMV-22103] Verify task description field on Task', async () => {
@@ -572,7 +572,7 @@ describe('CKE Description', () => {
             expect(await ckeditorValidationPo.isTitleDisplayed('Google')).toBeTruthy();
             await browser.waitForAngularEnabled(true);
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
-         });
+        });
 
         afterAll(async () => {
             await navigationPage.signOut();
@@ -580,4 +580,282 @@ describe('CKE Description', () => {
         });
     });
 
-  })
+    describe('[DRDMV-22095]:Verify case description field with CK editor functionality on Case', async () => {
+        let randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        it('[DRDMV-22095] Create case bold , italic and underline with CKE', async () => {
+            await navigationPage.gotoCreateCase();
+            await createCasePo.selectRequester('qdu');
+            await createCasePo.setSummary('new case summary1');
+            //   await createCasePo.clickSaveCaseButton();
+            //   await casePreviewPo.clickGoToCaseButton();
+            // bold
+            await createCasePo.updateCaseDescription("this is text");
+            await ckeditorOpsPo.clickOnBoldIcon();
+            await createCasePo.updateCaseDescription(boldText);
+            expect(await ckeditorOpsPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
+            await ckeditorOpsPo.clickOnBoldIcon();
+            //italic
+            await ckeditorOpsPo.clickOnItalicIcon();
+            await createCasePo.updateCaseDescription(italicText);
+            expect(await ckeditorOpsPo.isItalicTextDisplayedInCkEditorTextArea(italicText)).toBeTruthy('Text is not Italic In Ck Editor');
+            await ckeditorOpsPo.clickOnItalicIcon();
+            //underline
+            await ckeditorOpsPo.clickOnUnderLineIcon();
+            await createCasePo.updateCaseDescription(underLineText);
+            expect(await ckeditorOpsPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
+            await ckeditorOpsPo.enterNewLineInCKE();
+        });
+        it('[DRDMV-22096] Alignment,Bullet Point and Maximum / Minimum with CKE', async () => {
+            //left Align
+            await ckeditorOpsPo.clickOnUnderLineIcon();
+            await ckeditorOpsPo.clickOnLeftAlignIcon();
+            await createCasePo.updateCaseDescription(lefAlignText);
+            expect(await ckeditorOpsPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await ckeditorOpsPo.clickOnLeftAlignIcon();
+            //Right Align
+            await ckeditorOpsPo.clickOnRightAlignIcon();
+            await createCasePo.updateCaseDescription(rightAlignText);
+            expect(await ckeditorOpsPo.isTextRightAlignInCkEditorTextArea(rightAlignText)).toBeTruthy('Text is not right Align In Ck Editor');
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await ckeditorOpsPo.clickOnRightAlignIcon();
+            //Center Align
+            await ckeditorOpsPo.clickOnCenterAlignIcon();
+            await createCasePo.updateCaseDescription(centerAlignText);
+            expect(await ckeditorOpsPo.isTextCenterAlignInCkEditorTextArea(centerAlignText)).toBeTruthy('Text is not center Align In Ck Editor');
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await ckeditorOpsPo.clickOnCenterAlignIcon();
+            //set color
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await ckeditorOpsPo.selectColor('Strong Red');
+            await createCasePo.updateCaseDescription(redColorText);
+            expect(await ckeditorOpsPo.isColorTextDisplayedInCkEditorTextArea(redColorText, 'color:#c0392b;')).toBeTruthy('Color is not set In Ck Editor');
+            //checking number list
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await activityTabPo.setInsertRemoveNumberList('PlusOne');
+            expect(await ckeditorOpsPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Text is not center Align In Ck Editor');
+            await ckeditorOpsPo.enterNewLineInCKE();
+            // checking bullot points
+            await activityTabPo.setInsertRemoveBulletedList('BulletOne');
+            expect(await activityTabPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Text is not center Align In Ck Editor');
+            expect(await ckeditorOpsPo.getTextCkEditorMinimizeOrMiximize()).toBe('Maximize');
+            await ckeditorOpsPo.clickMaximizeMinimizeIcon();
+            expect(await ckeditorOpsPo.getTextCkEditorMinimizeOrMiximize()).toBe('Minimize');
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await ckeditorOpsPo.clickMaximizeMinimizeIcon();
+        });
+
+        it('[DRDMV-22095] Upload image with URL and local , Style text, Insert Link and Table', async () => {
+            //add style
+            await createCasePo.updateCaseDescription(formatText);
+            await ckeditorOpsPo.selectStyles('Heading 2');
+            expect(await ckeditorOpsPo.isStyleApplied(formatText, 'h2')).toBeTruthy('heading not set');
+            await ckeditorOpsPo.enterNewLineInCKE();
+            //upload image with URL
+            await ckeditorOpsPo.clickOnImageIcon();
+            await ckeditorOpsPo.imageUploadWithURL(uploadURL, imageUrlFieldIndex, imageWidthFieldIndex, '200');
+            expect(await ckeditorOpsPo.isImageDisplayedInCKE(uploadURL)).toBeTruthy('Image not uploaded');
+            //upload image with Local
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await ckeditorOpsPo.clickOnImageIcon();
+            imageSource = await ckeditorOpsPo.uploadImageFromLocal('Upload', '../../../data/ui/attachment/articleStatus.png', imageWidthFieldIndex, imageUrlFieldIndex, '200');
+            expect(await ckeditorOpsPo.isImageDisplayedInCKE(imageSource)).toBeTruthy('Image not uploaded from local');
+            // Link added
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await ckeditorOpsPo.clickOnLinkIcon();
+            await linkPropertiesPo.setValueOfLinkProperties('Google', linkDisplayTextFieldIndex);
+            await linkPropertiesPo.setValueOfLinkProperties('www.google.com', linkUrlFieldIndex);
+            await linkPropertiesPo.clickOnTargetTab();
+            await linkPropertiesPo.selectDropDown('_blank', linkTargetDropDownIndex);
+            await linkPropertiesPo.clickOnOkBtn();
+            expect(await ckeditorOpsPo.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('Text is not center Align In Ck Editor');
+            await ckeditorOpsPo.enterNewLineInCKE();
+            //add table
+            await ckeditorOpsPo.clickOnTableIcon();
+            await tablePropertiesPo.setValueOfTableProperties('4', tableRowFieldIndex);
+            await tablePropertiesPo.setValueOfTableProperties('10', tableColumnFieldIndex);
+            await tablePropertiesPo.setValueOfTableProperties('500', tableWidthFieldIndex);
+            await tablePropertiesPo.setValueOfTableProperties('200', tableHeightFieldIndex);
+            await tablePropertiesPo.setValueOfTableProperties('new' + randomString, cellCaption);
+            await tablePropertiesPo.setValueOfTableProperties('tableSummary', cellSummary);
+            await tablePropertiesPo.clickOnOkButton();
+            await ckeditorOpsPo.clickInTableCell(2, 2, 'tableSummary');
+            await ckeditorOpsPo.clickOnCenterAlignIcon();
+            await ckeditorOpsPo.setDataInTable(2, 2, randomString, 'tableSummary');
+            await ckeditorOpsPo.clickInTableCell(1, 2, 'tableSummary');
+            await ckeditorOpsPo.clickOnRightAlignIcon();
+            await ckeditorOpsPo.setDataInTable(1, 2, randomString, 'tableSummary');
+            await createCasePo.clickSaveCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
+        });
+
+        it('[DRDMV-22095] Verify case description field on case', async () => {
+            await viewCasePo.clickDescriptionShowMore();
+            expect(await ckeditorValidationPo.isLinkDisplayedInCKE('Google')).toBeTruthy();
+            expect(await ckeditorValidationPo.isBoldTextDisplayed(boldText)).toBeTruthy();
+            expect(await ckeditorValidationPo.isUnderLineTextDisplayed(underLineText)).toBeTruthy();
+            expect(await ckeditorValidationPo.isItalicTextDisplayed(italicText)).toBeTruthy();
+            expect(await ckeditorValidationPo.isColorTextDisplayed('color:#c0392b;')).toBeTruthy();
+            expect(await ckeditorValidationPo.isImageDisplayed(uploadURL)).toBeTruthy();
+            expect(await ckeditorValidationPo.getColorFontStyleOfText("text-align: right;")).toContain(rightAlignText);
+            expect(await ckeditorValidationPo.getColorFontStyleOfText("text-align: center;")).toContain(centerAlignText);
+            expect(await ckeditorValidationPo.getTableCellAlignText("text-align: center;")).toContain(randomString);
+            await viewCasePo.clickEditCaseButton();
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await ckeditorOpsPo.clickOnLinkIcon();
+            await linkPropertiesPo.setValueOfLinkProperties('youtube', linkDisplayTextFieldIndex);
+            await linkPropertiesPo.setValueOfLinkProperties('www.youtube.com', linkUrlFieldIndex);
+            await linkPropertiesPo.clickOnOkBtn();
+            expect(await ckeditorOpsPo.isLinkDisplayedInCkEditorTextArea('youtube')).toBeTruthy('Link Text not ipresent');
+            await editCasePo.clickOnAssignToMe();
+            await editCasePo.clickSaveCase();
+        });
+
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+    });
+
+    //ptidke
+    describe('[DRDMV-22096]:Verify Task description fields with CK editor functionality on Adhoc task	', async () => {
+        let randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        it('[DRDMV-22096] Create task template bold , italic and underline with CKE', async () => {
+            await navigationPage.gotoQuickCase();
+            await quickCasePo.selectRequesterName('qdu');
+            await quickCasePo.setCaseSummary('new case summary1');
+            await quickCasePo.createCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
+            await viewCasePo.clickAddTaskButton();
+            await manageTaskBladePo.clickAddAdhocTaskButton();
+            await createAdhocTaskPo.setSummary(randomString)
+            // bold
+            await createAdhocTaskPo.updateTaskDescription("this is text");
+            await createAdhocTaskPo.clickOnBoldIcon();
+            await createAdhocTaskPo.updateTaskDescription(boldText);
+            expect(await ckeditorOpsPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
+            await createAdhocTaskPo.clickOnBoldIcon();
+            //italic
+            await createAdhocTaskPo.clickOnItalicIcon();
+            await createAdhocTaskPo.updateTaskDescription(italicText);
+            expect(await ckeditorOpsPo.isItalicTextDisplayedInCkEditorTextArea(italicText)).toBeTruthy('Text is not Italic In Ck Editor');
+            await createAdhocTaskPo.clickOnItalicIcon();
+            //underlinef
+            await createAdhocTaskPo.clickOnUnderLineIcon();
+            await createAdhocTaskPo.updateTaskDescription(underLineText);
+            expect(await ckeditorOpsPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
+            await createAdhocTaskPo.enterNewLineInCKE();
+        });
+        it('[DRDMV-22096] Alignment,Bullet Point and Maximum / Minimum with CKE', async () => {
+            await createAdhocTaskPo.enterNewLineInCKE();
+            await createAdhocTaskPo.clickOnUnderLineIcon();
+            //left Align
+            await createAdhocTaskPo.clickOnLeftAlignIcon();
+            await createAdhocTaskPo.updateTaskDescription(lefAlignText);
+            expect(await ckeditorOpsPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
+            await createAdhocTaskPo.enterNewLineInCKE();
+            await createAdhocTaskPo.clickOnLeftAlignIcon();
+            //Right Align
+            await createAdhocTaskPo.clickOnRightAlignIcon();
+            await createAdhocTaskPo.updateTaskDescription(rightAlignText);
+            expect(await ckeditorOpsPo.isTextRightAlignInCkEditorTextArea(rightAlignText)).toBeTruthy('Text is not right Align In Ck Editor');
+            await createAdhocTaskPo.enterNewLineInCKE();
+            await createAdhocTaskPo.clickOnRightAlignIcon();
+            //Center Align
+            await createAdhocTaskPo.clickOnCenterAlignIcon();
+            await createAdhocTaskPo.updateTaskDescription(centerAlignText);
+            expect(await ckeditorOpsPo.isTextCenterAlignInCkEditorTextArea(centerAlignText)).toBeTruthy('Text is not center Align In Ck Editor');
+            await createAdhocTaskPo.enterNewLineInCKE();
+            await createAdhocTaskPo.clickOnCenterAlignIcon();
+            //set color
+            await createAdhocTaskPo.enterNewLineInCKE();
+            await createAdhocTaskPo.selectColor('Strong Red');
+            await createAdhocTaskPo.updateTaskDescription(redColorText);
+            expect(await ckeditorOpsPo.isColorTextDisplayedInCkEditorTextArea(redColorText, 'color:#c0392b;')).toBeTruthy('Color is not set In Ck Editor');
+            //checking number list
+            await createAdhocTaskPo.enterNewLineInCKE();
+            await activityTabPo.setInsertRemoveNumberList('PlusOne');
+            expect(await ckeditorOpsPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Text is not center Align In Ck Editor');
+            await createAdhocTaskPo.enterNewLineInCKE();
+            // checking bullot points
+            await activityTabPo.setInsertRemoveBulletedList('BulletOne');
+            expect(await activityTabPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Text is not center Align In Ck Editor');
+            expect(await ckeditorOpsPo.getTextCkEditorMinimizeOrMiximize()).toBe('Maximize');
+            await ckeditorOpsPo.clickMaximizeMinimizeIcon();
+            expect(await ckeditorOpsPo.getTextCkEditorMinimizeOrMiximize()).toBe('Minimize');
+            await createAdhocTaskPo.enterNewLineInCKE();
+            await ckeditorOpsPo.clickMaximizeMinimizeIcon();
+        });
+
+        it('[DRDMV-22096] Upload image with URL and local , Style text, Insert Link and Table', async () => {
+            //upload image with URL
+            await ckeditorOpsPo.clickOnImageIcon();
+            await ckeditorOpsPo.imageUploadWithURL(uploadURL, imageUrlFieldIndex, imageWidthFieldIndex, '200');
+            expect(await ckeditorOpsPo.isImageDisplayedInCKE(uploadURL)).toBeTruthy();
+            //add style
+            await createAdhocTaskPo.enterNewLineInCKE();
+            await createAdhocTaskPo.updateTaskDescription(formatText);
+            await ckeditorOpsPo.selectStyles('Heading 2');
+            expect(await ckeditorOpsPo.isStyleApplied(formatText, 'h2')).toBeTruthy();
+            //upload image with Local
+            await createAdhocTaskPo.enterNewLineInCKE();
+            await ckeditorOpsPo.clickOnImageIcon();
+            imageSource = await ckeditorOpsPo.uploadImageFromLocal('Upload', '../../../data/ui/attachment/articleStatus.png', imageWidthFieldIndex, imageUrlFieldIndex, '200');
+            expect(await ckeditorOpsPo.isImageDisplayedInCKE(imageSource)).toBeTruthy();
+            // Link added
+            await createAdhocTaskPo.enterNewLineInCKE();
+            await ckeditorOpsPo.clickOnLinkIcon();
+            await linkPropertiesPo.setValueOfLinkProperties('Google', linkDisplayTextFieldIndex);
+            await linkPropertiesPo.setValueOfLinkProperties('www.google.com', linkUrlFieldIndex);
+            await linkPropertiesPo.clickOnTargetTab();
+            await linkPropertiesPo.selectDropDown('_blank', linkTargetDropDownIndex);
+            await linkPropertiesPo.clickOnOkBtn();
+            expect(await ckeditorOpsPo.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('Text is not center Align In Ck Editor');
+            await createAdhocTaskPo.enterNewLineInCKE();
+            //add table
+            await ckeditorOpsPo.clickOnTableIcon();
+            await tablePropertiesPo.setValueOfTableProperties('4', tableRowFieldIndex);
+            await tablePropertiesPo.setValueOfTableProperties('10', tableColumnFieldIndex);
+            await tablePropertiesPo.setValueOfTableProperties('500', tableWidthFieldIndex);
+            await tablePropertiesPo.setValueOfTableProperties('200', tableHeightFieldIndex);
+            await tablePropertiesPo.setValueOfTableProperties('new' + randomString, cellCaption);
+            await tablePropertiesPo.setValueOfTableProperties('tableSummary', cellSummary);
+            await tablePropertiesPo.clickOnOkButton();
+            await ckeditorOpsPo.clickInTableCell(2, 2, 'tableSummary');
+            await ckeditorOpsPo.clickOnCenterAlignIcon();
+            await ckeditorOpsPo.setDataInTable(2, 2, randomString, 'tableSummary');
+            await ckeditorOpsPo.clickInTableCell(1, 2, 'tableSummary');
+            await ckeditorOpsPo.clickOnRightAlignIcon();
+            await ckeditorOpsPo.setDataInTable(1, 2, randomString, 'tableSummary');
+            await createAdhocTaskPo.clickSaveAdhoctask()
+            await manageTaskBladePo.clickTaskLink(randomString);
+        });
+
+        it('[DRDMV-22096] Verify task description field on Task', async () => {
+            await viewTaskPo.clickShowMoreTaskDescription();
+            expect(await ckeditorValidationPo.isLinkDisplayedInCKE('Google')).toBeTruthy();
+            expect(await ckeditorValidationPo.isBoldTextDisplayed(boldText)).toBeTruthy();
+            expect(await ckeditorValidationPo.isUnderLineTextDisplayed(underLineText)).toBeTruthy();
+            expect(await ckeditorValidationPo.isItalicTextDisplayed(italicText)).toBeTruthy();
+            expect(await ckeditorValidationPo.isColorTextDisplayed('color:#c0392b;')).toBeTruthy();
+            expect(await ckeditorValidationPo.isImageDisplayed(uploadURL)).toBeTruthy();
+            expect(await ckeditorValidationPo.getColorFontStyleOfText("text-align: right;")).toContain(rightAlignText);
+            expect(await ckeditorValidationPo.getColorFontStyleOfText("text-align: center;")).toContain(centerAlignText);
+            expect(await ckeditorValidationPo.getTableCellAlignText("text-align: center;")).toContain(randomString);
+            await viewTaskPo.clickOnEditTask();
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await ckeditorOpsPo.clickOnLinkIcon();
+            await linkPropertiesPo.setValueOfLinkProperties('youtube', linkDisplayTextFieldIndex);
+            await linkPropertiesPo.setValueOfLinkProperties('www.youtube.com', linkUrlFieldIndex);
+            await linkPropertiesPo.clickOnOkBtn();
+            expect(await ckeditorOpsPo.isLinkDisplayedInCkEditorTextArea('youtube')).toBeTruthy('Link Text not ipresent');
+            await editTaskPo.clickOnAssignToMe();
+            await editTaskPo.clickOnSaveButton();
+        });
+
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+    });
+})

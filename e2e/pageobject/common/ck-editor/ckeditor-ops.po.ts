@@ -96,7 +96,7 @@ class CKEditor {
         await imagePropertiesPo.clickOnSendItToServerButton();
         await imagePropertiesPo.setInputBoxValue(widthSize, width);
         let source = await imagePropertiesPo.getInputBoxValue(getInputValue);
-        await browser.sleep(1000);
+        await browser.sleep(2000);
         await imagePropertiesPo.clickOnOkButton();
         return source;
     }

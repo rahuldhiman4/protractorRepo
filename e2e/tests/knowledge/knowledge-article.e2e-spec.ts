@@ -2139,8 +2139,7 @@ describe('Knowledge Article', () => {
         let currentDate = new Date();
         let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         let dateFormateValue: string = months[currentDate.getMonth()];
-        let dateFormateNew: string = dateFormateValue.substring(0, 4);
-        let dateFormate = dateFormateNew + " " + currentDate.getDate() + ", " + currentDate.getFullYear();
+        let dateFormate = dateFormateValue + " " + currentDate.getDate() + ", " + currentDate.getFullYear();
         beforeAll(async () => {
             articleData = {
                 "knowledgeSet": "HR",

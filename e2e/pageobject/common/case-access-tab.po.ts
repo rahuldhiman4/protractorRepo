@@ -13,6 +13,7 @@ class CaseAccessTab {
         searchInputField: '[placeholder="Filter options"]',
         assignWriteAccess: '.access-group-checkbox .checkbox__input',
         addButton: '.input-group-btn button',
+        resetToDefault: 'button[aria-label="Reset to Default"]',
     }
 
     async clickOnSupportGroupAccessORAgentAccessButton(agentName: string): Promise<void> {
@@ -133,10 +134,8 @@ class CaseAccessTab {
         });
     }
 
-    async deleteAccess(accessValue: string): Promise<void> {
-        await element(by.css('span.badge-content')).click();
-        await element(by.css(`span[aria-label="Remove,${accessValue}"]`)).click();
-        await $('.alert-warning button.btn-primary').click();
+    async clickOnResetToDefault(): Promise<void> {
+        await $(this.selectors.resetToDefault).click();
     }
 }
 export default new CaseAccessTab();
