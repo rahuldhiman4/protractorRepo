@@ -483,7 +483,7 @@ class ApiHelper {
         assignmentMappingData.fieldInstances[1000000217].value = await apiCoreUtil.getSupportGroupGuid(data.supportGroup);
         if (data.flowset) {
             let flowsetGuid = await coreApi.getFlowsetGuid(data.flowset);
-            assignmentMappingData.fieldInstances.push = flowsetGuid;
+            assignmentMappingData.fieldInstances[450000121].value = flowsetGuid;
         }
         if (data.categoryTier1) {
             let category1Guid = await coreApi.getCategoryGuid(data.categoryTier1);
@@ -1839,11 +1839,11 @@ class ApiHelper {
         } else console.log('Doc Lib GUID not found =============>', documentLibTitle);
     }
 
-    async deleteCaseReadAccess(readAccessName: string): Promise<boolean> {
-        let readAccessGuid = await coreApi.getReadAccessGuid(readAccessName);
-        if (readAccessGuid) {
-            return await coreApi.deleteRecordInstance('com.bmc.dsm.case-lib:Case Assignment Mapping', readAccessGuid);
-        } else console.log('Read Access not found =============>', readAccessName);
+    async deleteReadAccessOrAssignmentMapping(recordName: string): Promise<boolean> {
+        let recordGuid = await coreApi.getReadAccessOrAssignmentMappingGuid(recordName);
+        if (recordGuid) {
+            return await coreApi.deleteRecordInstance('com.bmc.dsm.case-lib:Case Assignment Mapping', recordGuid);
+        } else console.log('Read Access not found =============>', recordName);
     }
 
     async createKnowledgeSet(knowledgeSetDetails: IKnowledgeSet): Promise<IIDs> {
@@ -2411,6 +2411,14 @@ class ApiHelper {
             caseReadAccess.fieldInstances["450000159"] = labelData;
         }
 
+        if (data.priority) {
+            let priorityValue = constants.CasePriority[data.priority];
+            let priorityData = {
+                "id": 1000000164,
+                "value": `${priorityValue}`
+            }
+            caseReadAccess.fieldInstances["1000000164"] = priorityData;
+        }
         let readAccessMapping: AxiosResponse = await coreApi.createRecordInstance(caseReadAccess);
         console.log('Read Access Mapping Status =============>', readAccessMapping.status);
         return readAccessMapping.status == 201;
