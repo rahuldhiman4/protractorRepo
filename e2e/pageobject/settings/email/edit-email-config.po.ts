@@ -1,5 +1,3 @@
-
-
 import { $, $$, by, element } from 'protractor';
 import utilCommon from '../../../utils/util.common';
 import utilGrid from '../../../utils/util.grid';
