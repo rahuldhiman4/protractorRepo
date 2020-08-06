@@ -70,25 +70,20 @@ class QuickCasePage {
     }
 
     async selectRequesterName(name: string): Promise<void> {
-        //await $(this.selectors.inputBox).clear();
-        //await browser.wait(this.EC.visibilityOf($(this.selectors.inputBox)));
         await $(this.selectors.smartSearchTextBox).sendKeys(`@${name}`);
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.requesters)), 3000);
         await $$(this.selectors.requesters).first().click();
     }
 
     async setCaseSummary(summary: string): Promise<void> {
-        //await browser.wait(this.EC.visibilityOf($(this.selectors.smartSearchTextBox)));
         await $(this.selectors.smartSearchTextBox).sendKeys(summary);
     }
 
     async clearInputBox(): Promise<void> {
-        //await browser.wait(this.EC.visibilityOf($(this.selectors.smartSearchTextBox)));
         await $(this.selectors.smartSearchTextBox).clear();
     }
 
     async getRequester(): Promise<string> {
-        //await browser.wait(this.EC.visibilityOf($$(this.selectors.smartSearchText).first()));
         return await $$(this.selectors.smartSearchText).first().getText();
     }
 
@@ -107,35 +102,28 @@ class QuickCasePage {
     }
 
     async isSummOrDescPopulatedAtSmartTextArea(text: string): Promise<number> {
-        // await browser.wait(this.EC.visibilityOf($(this.selectors.smartSearchTextBox)));
         let flag: number = (await $(this.selectors.smartSearchTextBox).getText()).search(text);
         //-1 is returned as a flag, if text fetched through the locator doesn't consist of the 'text' passed
         return flag;
     }
 
     async getTextOfSummaryTextBox(): Promise<string> {
-        //await browser.wait(this.EC.visibilityOf($(this.selectors.smartSearchTextBox)));
         return await $(this.selectors.smartSearchTextBox).getText();
     }
 
     async isCreateButtonDisabled(): Promise<boolean> {
-        //await browser.wait(this.EC.visibilityOf($(this.selectors.createCaseButton)));
         return await $(this.selectors.createCaseButton).getAttribute("disabled") == "true";
     }
 
     async createCaseButton(): Promise<void> {
-        //await browser.wait(this.EC.visibilityOf($(this.selectors.createCaseButton)));
         await $(this.selectors.createCaseButton).click();
     }
 
     async gotoCaseButton(): Promise<void> {
-        // await browser.wait(this.EC.visibilityOf($(this.selectors.gotoCaseButton)));
         await $(this.selectors.gotoCaseButton).click();
-        // await utilCommon.waitUntilSpinnerToHide();
     }
 
     async pinFirstRecommendedCase(): Promise<void> {
-        //await browser.wait(this.EC.elementToBeClickable(element(by.xpath(this.selectors.pinFirstRecommendedCase))));
         await $$(this.selectors.pinFirstRecommendedCase).first().click();
     }
 
@@ -146,7 +134,6 @@ class QuickCasePage {
 
     async saveCase(): Promise<void> {
         await $(this.selectors.createCaseButton).click();
-        // await browser.wait(this.EC.visibilityOf($(this.selectors.gotoCaseButton__preview)));
     }
 
     async selectCaseTemplate(templateName: string): Promise<boolean> {
@@ -174,9 +161,7 @@ class QuickCasePage {
     }
 
     async validatePin(): Promise<void> {
-        // await browser.wait(this.EC.visibilityOf($(this.selectors.validateButton)));
         await $(this.selectors.validateButton).click();
-        // await browser.wait(this.EC.visibilityOf($(this.selectors.pinValidateInput)));
         await $(this.selectors.pinValidateInput).sendKeys("1234");
         await $(this.selectors.pinOk).click();
 

@@ -11,12 +11,10 @@ class AcknowledgmentTemplateConsolePage {
     }
 
     async clickOnAddAcknowlegeTemplateButton(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addAckTemplates)));
         await element(by.cssContainingText(this.selectors.addAckTemplates, 'Acknowledgment Template')).click();
     }
 
     async clickOnDeleteButton(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.delete)));
         await $(this.selectors.delete).click();
     }
 
@@ -34,22 +32,18 @@ class AcknowledgmentTemplateConsolePage {
 
     async searchOnGridConsole(value: string): Promise<void> {
         await utilGrid.searchOnGridConsole(value);
-//        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async addColumnOnGrid(columnHeader: string[]): Promise<void> {
         await utilGrid.addGridColumn(this.selectors.gridGuid, columnHeader);
-//        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async clearGridSearchBox(): Promise<void> {
         await utilGrid.clearGridSearchBox();
-//        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async removeColumnOnGrid(columnHeader: string[]): Promise<void> {
         await utilGrid.removeGridColumn(this.selectors.gridGuid, columnHeader);
-//        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async isGridColumnSorted(columnHeader: string, sortType: string): Promise<boolean> {
@@ -66,12 +60,10 @@ class AcknowledgmentTemplateConsolePage {
 
     async searchAndOpenAcknowledgmentTemplate(value: string): Promise<void> {
         await utilGrid.searchAndOpenHyperlink(value);
-//        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async addFilter(fieldName: string, textValue: string,type:string): Promise<void> {
         await utilGrid.addFilter(fieldName,textValue,type);
-//        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async clearGridFilter(): Promise<void> {

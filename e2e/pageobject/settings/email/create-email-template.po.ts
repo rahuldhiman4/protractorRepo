@@ -35,7 +35,6 @@ class CreateEmailTemplate {
     }
 
     async setTemplateName(value: string): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.templateName)));
         await $(this.selectors.templateName).sendKeys(value);
     }
 
@@ -76,12 +75,10 @@ class CreateEmailTemplate {
     }
 
     async setDescription(value: string): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.description)));
         await $(this.selectors.description).sendKeys(value);
     }
 
     async setSubject(value: string): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.subject)));
         await $(this.selectors.subject).sendKeys(value);
     }
 
@@ -99,12 +96,10 @@ class CreateEmailTemplate {
     }
 
     async clickOnSaveButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
     }
 
     async clickOnCancelButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         await $(this.selectors.cancelButton).click();
     }
 

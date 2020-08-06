@@ -73,17 +73,14 @@ class CaseEditPage {
     }
 
     async waitForEditCasePageToBeDisplayed(): Promise<void> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.cancelBtn)));
         await $(this.selectors.cancelBtn).isEnabled();
     }
 
     async clickOnAssignToMe(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignToMe)));
         await $(this.selectors.assignToMe).click();
     }
 
     async clickChangeAssignmentButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.changeAssignment)));
         await $(this.selectors.changeAssignment).click();
     }
 
@@ -94,24 +91,20 @@ class CaseEditPage {
     }
 
     async isSaveCaseEnable(): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveCaseButton)));
         return await $(this.selectors.saveCaseButton).isEnabled();
     }
 
 
     async clickOnCancelCaseButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelBtn)));
         await $(this.selectors.cancelBtn).click();
     }
 
     async clearCaseSummary(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.summary)));
         await $(this.selectors.summary).clear();
         await $(this.selectors.summary).sendKeys('m' + Key.BACK_SPACE);
     }
 
     async setCaseSummary(summary: string): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.summary)));
         await $(this.selectors.summary).clear();
         await $(this.selectors.summary).sendKeys(summary);
     }
@@ -146,14 +139,12 @@ class CaseEditPage {
 
     async updateSiteChangeReason(siteChangeReasonVal: string): Promise<void> {
         let siteChangeReasonSelector = await this.selectors.siteChangeReason;
-        //        await browser.wait(this.EC.elementToBeClickable($(siteChangeReasonSelector)));
         await $((siteChangeReasonSelector)).clear;
         await $((siteChangeReasonSelector)).sendKeys(siteChangeReasonVal);
     }
 
     async updateContact(contactFullName: string): Promise<void> {
         let contactSelector = await this.selectors.contact;
-        //        await browser.wait(this.EC.elementToBeClickable($(contactSelector)));
         await $((contactSelector)).clear;
         await $((contactSelector)).sendKeys(contactFullName);
         await $(this.selectors.contactNameLink).click();
@@ -161,7 +152,6 @@ class CaseEditPage {
 
     async updateTargetDate(date: string, hours: string, minutes: string, meredian: string) {
         let targerDateDateSelector = await this.selectors.targetDateDate;
-        //        await browser.wait(this.EC.elementToBeClickable($(targerDateDateSelector)));
         await $((targerDateDateSelector)).clear;
         await $((targerDateDateSelector)).sendKeys(date);
         await $((this.selectors.targetDateHours)).clear;
@@ -190,47 +180,38 @@ class CaseEditPage {
     }
 
     async clickOnAttachLink(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.attachLink)));
         await $((this.selectors.attachLink)).click();
     }
 
     async getRequesterName(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.requesterPersonNameLink)));
         return await $(this.selectors.requesterPersonNameLink).getText();
     }
 
     async getRequesterPhoneNo(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.personPhoneLink)));
         return await (await $(this.selectors.personPhoneLink).getText()).trim();
     }
 
     async getRequesterEmail(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.personEmailLink)));
         return await (await $(this.selectors.personEmailLink).getText()).trim();
     }
 
     async isSummaryRequiredText(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.summary)));
         return await utilityCommon.isRequiredTagToField(this.selectors.summaryGuid);
     }
 
     async isPriorityRequiredText(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.priorityRequiredText)));
         return await utilityCommon.isRequiredTagToField(this.selectors.priorityGuid);
     }
 
     async isAssignedCompanyRequiredText(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.assigneeCompany)));
         return await utilityCommon.isRequiredTagToField(this.selectors.assigneeCompanyGuid);
     }
 
     async isAssignedGroupRequiredText(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.assignedGroup)));
         return await utilityCommon.isRequiredTagToField(this.selectors.assignedGroupGuid);
     }
 
     async isClearContactButtonEnable(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.clearContactButton)));
         return await $(this.selectors.clearContactButton).isEnabled();
     }
 
@@ -252,27 +233,22 @@ class CaseEditPage {
     }
 
     async isCategoryTier1Disabled(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier1Drpbox)));
         return await $(this.selectors.categoryTier1Drpbox).getAttribute("aria-disabled") == 'true';
     }
 
     async isCategoryTier2Disabled(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier2Drpbox)));
         return await $(this.selectors.categoryTier2Drpbox).getAttribute("aria-disabled") == 'true';
     }
 
     async isCategoryTier3Disabled(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier3Drpbox)));
         return await $(this.selectors.categoryTier3Drpbox).getAttribute("aria-disabled") == 'true';
     }
 
     async isChangeAssignmentButtonPresent(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.changeAssignment)));
         return await $(this.selectors.changeAssignment).isDisplayed();
     }
 
     async isAssignToMePresent(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier3Drpbox)));
         return await $(this.selectors.categoryTier3Drpbox).isDisplayed();
     }
 
@@ -281,82 +257,66 @@ class CaseEditPage {
     }
 
     async isResourcePresent(): Promise<boolean> {
-        // Resources tab is linked text, hence this type of validation
         return await element(by.cssContainingText(this.selectors.tabText, 'Resources'));
     }
 
     async getAssignedCompanyReadable(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.assigneeCompany)));
         return await $(this.selectors.assigneeCompany).getAttribute('aria-disabled');
     }
 
     async getDepartmentCompanyReadable(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.department)));
         return await $(this.selectors.department).getAttribute('aria-disabled');
     }
 
     async getAssigneeReadable(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.assigneee)));
         return await $(this.selectors.assigneee).getAttribute('aria-disabled');
     }
 
     async getBuisnessUnitReadable(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.buisnessUnit)));
         return await $(this.selectors.buisnessUnit).getAttribute('aria-disabled');
     }
 
     async getAssignedGroupReadable(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.assignedGroup)));
         return await $(this.selectors.assignedGroup).getAttribute('aria-disabled');
     }
 
     async isActivityFeedPresent(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.activityFeed)));
         return await $(this.selectors.activityFeed).isDisplayed();
     }
 
     async isActivityChangeFilePresent(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.activityChangeFile)));
         return await $(this.selectors.activityChangeFile).isDisplayed();
     }
 
     async isRequesterTextDisplayed(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.requesterText)));
         return await $(this.selectors.requesterText).isDisplayed();
     }
 
     async isRequesterImageDisplayed(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.requesterPersonImage)));
         return await $(this.selectors.requesterPersonImage).isDisplayed();
     }
 
     async isSiteTextPresent(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.siteText)));
         return await $(this.selectors.siteText).isDisplayed();
     }
 
     async clickOnRequesterName(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.requesterPersonNameLink)));
         return await $(this.selectors.requesterPersonNameLink).click();
     }
 
     async getSelectCaseTemplate(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.selectCaseTemplate)));
         return await $(this.selectors.selectCaseTemplate).getText();
     }
 
     async clickOnSelectCaseTemplate(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.selectCaseTemplate)));
         return await $(this.selectors.selectCaseTemplate).click();
     }
 
     async getChangeCaseTemplate(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.changeCaseTemplate)));
         return await $(this.selectors.changeCaseTemplate).getText();
     }
 
     async clickOnChangeCaseTemplate(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.changeCaseTemplate)));
         await $(this.selectors.changeCaseTemplate).click();
     }
 

@@ -14,12 +14,10 @@ class ConsoleFlowset {
     }
 
     async isAddFlowsetButtonDisplayed(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.addFlowsetButton)));
         return await $(this.selectors.addFlowsetButton).isPresent();
     }
 
     async clickOnAddFlowset(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addFlowsetButton)));
         await $(this.selectors.addFlowsetButton).click();
     }
 

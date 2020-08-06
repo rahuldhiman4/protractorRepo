@@ -19,30 +19,24 @@ class CreateKATemplate {
     }
 
     async setTemplateName(value:string): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.templateName)));
         await $(this.selectors.templateName).sendKeys(value);
     }
 
     async setDescription(value:string): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.templateDescription)));
         await $(this.selectors.templateDescription).sendKeys(value);
     }
 
     async setKnowledgeSetValue(value:string): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.knowledgeSet)));
         await $(this.selectors.knowledgeSet).click();
         let customXpath=`[title='${value}']`;
-//        await browser.wait(this.EC.elementToBeClickable($(customXpath)));
         await $(customXpath).click();
     }
 
     async clickOnDisableEnableCheckBox(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.disabledEnabledCheck)));
         await $(this.selectors.disabledEnabledCheck).click();
     }
 
     async clickOnAddSection(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addsection)));
         await $(this.selectors.addsection).click();
     }
 
@@ -52,13 +46,10 @@ class CreateKATemplate {
     }
 
     async clickOnSaveButton(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
-//        await utilCommon.closePopUpMessage();
     }
 
     async clickRemoveSection(): Promise<void> {
-     //   await browser.wait(this.EC.elementToBeClickable($(this.selectors.removeSection)));
         await $(this.selectors.removeSection).click();
     }
 

@@ -86,18 +86,14 @@ class EditTaskTemplate {
     }
 
     async clickOnSaveButton() {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
-        //        await utilCommon.closePopUpMessage();
     }
 
     async clickOnSaveMetadata() {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveMetadata)));
         await $(this.selectors.saveMetadata).click();
     }
 
     async clickOnEditMetadataLink() {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editMetadataLink)));
         await $(this.selectors.editMetadataLink).click();
     }
 
@@ -106,44 +102,35 @@ class EditTaskTemplate {
     }
 
     async setSummary(input: string) {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.summary)));
         await $(this.selectors.summary).clear();
         await $(this.selectors.summary).sendKeys(input);
     }
 
     async getTaskTypeValueAttribute(attribute: string): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.taskTypeValue)));
         return await $(this.selectors.taskTypeValue).getAttribute(attribute);
     }
 
     async clickOnCancelButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         await $(this.selectors.cancelButton).click();
     }
 
     async getTaskTypeValue(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.taskTypeValue)));
         return await $(this.selectors.taskTypeValue).getText();
     }
 
     async isProcessNamePresentInTask(): Promise<boolean> {
-        //        await browser.wait(this.EC.presenceOf($(this.selectors.processNameValue)));
         return await $(this.selectors.processNameValue).isDisplayed();
     }
 
     async isManageProcessLinkDisplayed(): Promise<boolean> {
-        //        await browser.wait(this.EC.presenceOf($(this.selectors.manageProcessLink)));
         return await $(this.selectors.manageProcessLink).isDisplayed();
     }
 
     async isTemplateStatusDisabled(): Promise<boolean> {
-        //        await browser.wait(this.EC.presenceOf($(this.selectors.templateStatusAttribute)));
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelMetadata)));
         return (await $(this.selectors.templateStatusAttribute).getAttribute("disabled")) == 'true';
     }
 
     async clickOnCancelMetadataButton() {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelMetadata)));
         await $(this.selectors.cancelMetadata).click();
     }
 

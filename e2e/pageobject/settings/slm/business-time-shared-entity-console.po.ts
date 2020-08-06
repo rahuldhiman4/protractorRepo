@@ -8,7 +8,6 @@ class BusinessTimeSharedEntityConfigConsolePage {
     }
 
     async isAddBtnDisplayed(): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.addBusinessTimeSharedEntity)));
         return await $(this.selectors.addBusinessTimeSharedEntity).isPresent();
     }
 
