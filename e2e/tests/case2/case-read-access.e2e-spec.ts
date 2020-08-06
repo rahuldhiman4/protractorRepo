@@ -76,7 +76,7 @@ describe("Case Read Access", () => {
         await browser.sleep(3000); // timeout requried to reflect data on UI
         departmentData1.relatedOrgId = businessUnitId;
         let depId = await apiHelper.createDepartment(departmentData1);
-        await browser.sleep(3000); // timeout requried to reflect data on UI
+        await browser.sleep(5000); // timeout requried to reflect data on UI
         suppGrpData1.relatedOrgId = depId;
         await apiHelper.createSupportGroup(suppGrpData1);
         await browser.sleep(3000); // timeout requried to reflect data on UI
@@ -97,7 +97,7 @@ describe("Case Read Access", () => {
         await browser.sleep(3000); // timeout requried to reflect data on UI
         departmentData2.relatedOrgId = businessUnitId;
         let depId = await apiHelper.createDepartment(departmentData2);
-        await browser.sleep(3000); // timeout requried to reflect data on UI
+        await browser.sleep(5000); // timeout requried to reflect data on UI
         suppGrpData2.relatedOrgId = depId;
         await apiHelper.createSupportGroup(suppGrpData2);
         await browser.sleep(3000); // timeout requried to reflect data on UI
