@@ -16,7 +16,6 @@ class GoalTypeCreateConfigPage {
     }
 
     async isGoalTypeDisabled(): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.closeButton)));
         return await $(this.selectors.goalType).getAttribute("disabled") == "true";
     }
 

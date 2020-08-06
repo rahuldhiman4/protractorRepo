@@ -14,22 +14,18 @@ class GoalTypeConfigEditPage {
     }
 
     async isStatusFieldDisabled(): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.closeButton)));
         return await $(this.selectors.status).getAttribute("disabled") == "true";
     }
 
     async isSaveButtonDisabled(): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.closeButton)));
         return await $(this.selectors.saveButton).getAttribute("disabled") == "true";
     }
 
     async isGoalTypeFieldDisabled(): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.closeButton)));
         return await $(this.selectors.goalType).getAttribute("disabled") == "true";
     }
 
     async isGoalTypeNameFieldDisabled(): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.closeButton))); 
         return await $(this.selectors.goalTypeName).getAttribute("readonly") == "true";
     }
 

@@ -17,7 +17,6 @@ class CaseAccessTab {
     }
 
     async clickOnSupportGroupAccessORAgentAccessButton(agentName: string): Promise<void> {
-        // await $(this.selectors.agentAccess).click();
         await element(by.cssContainingText(this.selectors.agentAccess, agentName)).click();
     }
 

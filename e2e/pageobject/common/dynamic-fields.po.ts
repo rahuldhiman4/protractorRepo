@@ -27,48 +27,39 @@ class DynamicField {
     }
 
     async clickOnDynamicField(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.dynamicField)));
         await $(this.selectors.dynamicField).click();
     }
 
     async clickOnAddDynamicGroup(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.dynamicField)));
         await $(this.selectors.dynamicGroup).click();
     }
 
     async clickOnDownArrow(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.dynamicField)));
         await $(this.selectors.downArrow).click();
     }
 
     async setFieldName(name: string): Promise<void> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.fieldName)));
         await $$(this.selectors.fieldName).last().clear();
         await $$(this.selectors.fieldName).last().sendKeys(name);
     }
 
     async setGroupName(name: string): Promise<void> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.fieldName)));
         await $(this.selectors.groupName).clear();
         await $(this.selectors.groupName).sendKeys(name);
     }
 
     async setGroupDescription(name: string): Promise<void> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.fieldName)));
         await $(this.selectors.groupDescription).clear();
         await $(this.selectors.groupDescription).sendKeys(name);
     }
 
     async setDescriptionName(name: string): Promise<void> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.fieldDescription)));
         await $$(this.selectors.fieldDescription).last().clear();
         await $$(this.selectors.fieldDescription).last().sendKeys(name);
     }
 
     async clickSaveButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
-        //        await utilCommon.closePopUpMessage();
     }
 
     async clickCancelButton(): Promise<void> {

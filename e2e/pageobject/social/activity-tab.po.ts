@@ -275,8 +275,6 @@ class ActivityTabPage {
     }
 
     async clickOnReply(): Promise<void> {
-        //        await utilCommon.waitUntilSpinnerToHide();
-        // await element(by.xpath("(//div[contains(@class,'d-icon-reply')])[1]")).click();
         await $$(this.selectors.emailReply).first().click();
     }
 
@@ -285,12 +283,10 @@ class ActivityTabPage {
     }
 
     async getFirstPostContent(): Promise<string> {
-        //        await utilCommon.waitUntilSpinnerToHide();
         return await $$(this.selectors.logItems).first().getText();
     }
 
     async isActivityBlank(): Promise<boolean> {
-        //        await utilCommon.waitUntilSpinnerToHide();
         return !await $(this.selectors.logItems).isPresent();
     }
 
@@ -341,22 +337,17 @@ class ActivityTabPage {
     }
 
     async getemailAttachmentFileName(): Promise<string> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailAttachmentFileName)), 5000);
         let fileName = await $(this.selectors.AttachedfileName).getText();
         return fileName;
     }
 
     async getActivityNotesText(textToMatch: string): Promise<boolean> {
         let elem = element(by.xpath("//div[contains(@class,'d-icon-note_pencil')]/following-sibling::div"));
-        //        browser.wait(this.EC.elementToBeClickable(elem));
         let value = await elem.getText();
-        //        await utilCommon.waitUntilSpinnerToHide();
         return value.includes(textToMatch) ? true : false;
-
     }
 
     async removeFilterList(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.removeIconFilterList)));
         await $$(this.selectors.removeIconFilterList).first().click();
     }
 
@@ -365,29 +356,22 @@ class ActivityTabPage {
     }
 
     async isfilterListDisplayed(filterList: string): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterLists)));
         return await element(by.cssContainingText(this.selectors.filterLists, filterList)).isPresent();
     }
 
     async getTextFromFilterList(filterList: string): Promise<string> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterLists)));
         return await element(by.cssContainingText(this.selectors.filterLists, filterList)).getText();
     }
 
     async clickOnNmoreLink(): Promise<void> {
-        //        await browser.sleep(1000);
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.nMoreButton)));
         await $(this.selectors.nMoreButton).click();
     }
 
     async closeNmoreLink(): Promise<void> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.activityTab)));
         await element(by.cssContainingText(this.selectors.activityTab, 'Activity')).click();
-        //        utilCommon.waitUntilSpinnerToHide();
     }
 
     async getTextOfNmoreLink(): Promise<string> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.nMoreButton)));
         return await $(this.selectors.nMoreButton).getText();
     }
 
@@ -427,24 +411,19 @@ class ActivityTabPage {
     }
 
     async clickOnPostButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNotePostButton)));
         await $(this.selectors.addNotePostButton).click();
         await utilCommon.waitUntilSpinnerToHide();
     }
 
     async clickOnCancelButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNoteCancelButton)));
         await $(this.selectors.addNoteCancelButton).click();
     }
 
     async clickOnNotesTemplate(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNoteNotesTemplate)));
         await $(this.selectors.addNoteNotesTemplate).click();
     }
 
     async clickOnFilterButton(): Promise<void> {
-        //        await browser.sleep(5000);
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterButton)));
         await $(this.selectors.filterButton).click();
     }
 
@@ -457,22 +436,18 @@ class ActivityTabPage {
     }
 
     async getTextTaskFilterOption(filterCheckBox: string): Promise<string> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterCheckbox)));
         return await element(by.cssContainingText(`${this.selectors.filterCheckbox}[class*='ng']`, filterCheckBox)).getText();
     }
 
     async isAuthorSearchBoxVisible(): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterAuthor)));
         return await $(this.selectors.filterAuthor).isDisplayed();
     }
 
     async getTextOfFilterTaskOptions(filterCheckBoxText: string): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.filterCheckbox)));
         return await element(by.cssContainingText(`${this.selectors.filterCheckbox}[class*='ng']`, filterCheckBoxText)).getText();
     }
 
     async selectFilterCheckBox(filterCheckBoxText: string): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterCheckbox)));
         await element(by.cssContainingText(this.selectors.filterCheckbox, filterCheckBoxText)).click();
     }
 
@@ -483,7 +458,6 @@ class ActivityTabPage {
     }
 
     async addAuthorOnFilter(AuthorName: string): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterAuthor)));
         await $(this.selectors.filterAuthor).click();
         await $(this.selectors.filterAuthor).sendKeys(AuthorName);
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.personPopup)), 8000);
@@ -491,72 +465,54 @@ class ActivityTabPage {
     }
 
     async clearAuthorSearchBoxOnFilter(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterAuthor)));
         await $(this.selectors.filterAuthor).clear();
     }
 
     async removeAuthorFromFilter(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.authorCloseButton)));
         await $(this.selectors.authorCloseButton).click();
     }
 
     async isAuthorBoxEmpty(): Promise<boolean> {
         return await $(this.selectors.filterAuthor).getAttribute('value') == "" ? true : false;
-
     }
 
     async searchAuthorOnFilter(AuthorName: string): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterAuthor)));
         await $(this.selectors.filterAuthor).click();
         await $(this.selectors.filterAuthor).sendKeys(AuthorName);
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.personPopup)));
     }
 
     async isImgPresentOnUserPopUp(): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.imgPersonProfilePopUp)));
         return await $(this.selectors.imgPersonProfilePopUp).isPresent();
     }
     async isPersonNamePresentOnUserPopUp(personName: string): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.namePersonProfilePopUp)));
         return await element(by.cssContainingText(this.selectors.namePersonProfilePopUp, personName)).isPresent();
     }
 
     async isEmailPresentOnUserPopUp(email: string): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailPersonProfilePopUp)));
         return await element(by.cssContainingText(this.selectors.emailPersonProfilePopUp, email)).isPresent();
     }
 
     async isCompanyPresentOnUserPopUp(company: string): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.companyPersonProfilePopUp)));
         return await element(by.cssContainingText(this.selectors.companyPersonProfilePopUp, company)).isPresent();
     }
 
     async isPhoneNumberPresentOnUserPopUp(phoneNumber: string): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.phoneNumberPersonProfilePopUp)));
         return await element(by.cssContainingText(this.selectors.phoneNumberPersonProfilePopUp, phoneNumber)).isPresent();
     }
 
     async clickOnFilterApplyButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterPopupApplyOrClearButton)));
         await element(by.cssContainingText(this.selectors.filterPopupApplyOrClearButton, 'Apply')).click();
-        //        utilCommon.waitUntilSpinnerToHide();
     }
 
     async clickOnFilterClearButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterPopupApplyOrClearButton)));
         await element(by.cssContainingText(this.selectors.filterPopupApplyOrClearButton, 'Clear')).click();
-        //        await browser.wait(this.EC.or(async () => {
-        //            await $$(this.selectors.appliedActivityFilter).count() == 0;
-        //        }));
     }
 
     async getTextOfFilterTask(): Promise<string> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.FilterTask)));
         return await $(this.selectors.filterAuthor).getText();
     }
 
     async isTextPresentInActivityLog(caseActivityLogText: string): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterButton)));
         let activityValue: string = "";
         let countVal = await $$(this.selectors.activityLog).count();
         for (let i: number = 0; i < countVal; i++) {
@@ -604,7 +560,6 @@ class ActivityTabPage {
     }
 
     async clickOnAttachLink(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.attachmentLink)));
         await $(this.selectors.attachmentLink).click();
     }
 
@@ -620,7 +575,6 @@ class ActivityTabPage {
     }
 
     async openSurveyReport(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.viewSurveyBtn)));
         await $(this.selectors.viewSurveyBtn).click();
     }
 
@@ -629,7 +583,6 @@ class ActivityTabPage {
     }
 
     async getAllSurveyTextOnActivityTab(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.dwpSurveyText)));
         let allText: number = await $$(this.selectors.dwpSurveyText).count();
         let dwpActivityText = "";
         for (let i: number = 0; i < allText; i++) {
@@ -646,50 +599,39 @@ class ActivityTabPage {
 
     async getSurveyQuestionTextOnSurveyInfo(index: number): Promise<string> {
         let question = await $$(this.selectors.dwpQuestions).get(index - 1);
-        //        await browser.wait(this.EC.visibilityOf(question));
         return await question.getText();
     }
 
     async getSurveyAnswerTextOnSurveyInfo(index: number): Promise<string> {
         let answer = await $$(this.selectors.dwpAnswers).get(index - 1);
-        //        await browser.wait(this.EC.visibilityOf(answer));
         return await answer.getText();
     }
 
     async closeSurveyInformation(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.closeButton)));
         await $(this.selectors.closeButton).click();
-        //        await browser.wait(this.EC.invisibilityOf($('.modal-dialog')));
     }
 
     async getComplexSurveyModalTitle(): Promise<string> {
-        //        await browser.wait(this.EC.elementToBeClickable($('.modal-title')));
         return await $('.dp-title').getText();
     }
 
     async getRatingText(): Promise<string> {
-        //        await browser.wait(this.EC.elementToBeClickable($('.rating')));
         return await $('.dwp-survey-details .activity-title').getText();
     }
 
     async getDWPIconClassAttribute(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.dwpIcon)));
         return await $(this.selectors.dwpIcon).getAttribute("class");
     }
 
     async getDWPFeedback(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.dwpFeedback)));
         return await $(this.selectors.dwpFeedback).getText();
     }
 
     async isOnlySurveyRecordFiltered(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.logItems)));
         return await $$(this.selectors.logItems).count() === 1;
     }
 
     async isComplexSurveyOrderIsThird(): Promise<boolean> {
-        //        await utilCommon.waitUntilSpinnerToHide();
-        //        await browser.wait(this.EC.visibilityOf(element(by.xpath("(//div[@class='log-item__content'])[3]//div[text()='View Survey Information']"))));
         let activityLog = await $$('[rx-view-component-id="76b9d8a2-54ef-4b24-a086-fc6ff745449d"] .activity__body').get(2);
         let textValue = await activityLog.getText();
         return textValue.includes('View Survey Information');
@@ -957,10 +899,13 @@ class ActivityTabPage {
         await $(this.selectors.showApproversLink).click();
     }
 
-    async getReadAccessActivityCount(accessName: string): Promise<number> {
+    async getGrantedReadAccessCount(accessName: string): Promise<number> {
+        return await element.all(by.cssContainingText(this.selectors.activityLog, accessName)).count();
+    }
+
+    async getRevokedReadAccessCount(accessName: string): Promise<number> {
         return await element.all(by.cssContainingText('.activity__body .fields span', accessName)).count();
     }
 }
-
 
 export default new ActivityTabPage();

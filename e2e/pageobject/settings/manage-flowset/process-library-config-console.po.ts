@@ -8,7 +8,6 @@ class ProcessLibraryConsolePage {
     }
 
     async isRegisterProcessBtnDisplayed(): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.addRegisterProcessBtn)));
         return await $(this.selectors.addRegisterProcessBtn).isPresent();
     }
 }

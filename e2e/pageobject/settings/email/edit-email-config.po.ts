@@ -35,6 +35,7 @@ export class EditEmailConfig {
         saveEditEmailConfig: '[rx-view-component-id="e36471c2-f950-4df7-bc42-ed2bbf59898b"] button',
         acknowledgementTemplateGridGuid: '2266a74e-eee9-4936-a22b-37c1d2d4e205',
         defaultCaseTemplateGuid: '085b8e93-0e68-41a7-a1ed-77b6ab2c9522',
+        createEmailTemplateLink: '[rx-view-component-id="010a2bf3-5b2d-4c72-9c33-fa26d3be6b78"] button',
     }
 
     async clickDefaultMailIdCheckbox(value: string): Promise<void> {
@@ -109,9 +110,13 @@ export class EditEmailConfig {
     }
 
     async isValueAvailableExclusionsSubjectInAssociatePublicExclusionSubjectsPresent(searchvalue?: string): Promise<boolean> {
-        if (searchvalue)
-            return await element(by.cssContainingText(this.selectors.listAvailableExclusionsSubjectInAssociatePublicExclusionSubjects, searchvalue)).isDisplayed();
-        else
+        if (searchvalue) {
+            return await element(by.cssContainingText(this.selectors.listAvailableExclusionsSubjectInAssociatePublicExclusionSubjects, searchvalue)).isPresent().then(async (link) => {
+                if (link) {
+                    return await element(by.cssContainingText(this.selectors.listAvailableExclusionsSubjectInAssociatePublicExclusionSubjects, searchvalue)).isDisplayed();
+                } else return false;
+            });
+        } else
             return await $$(this.selectors.listAvailableExclusionsSubjectInAssociatePublicExclusionSubjects).count() < 1 ? false : true;
     }
 
@@ -121,10 +126,14 @@ export class EditEmailConfig {
     }
 
     async isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent(searchvalue?: string): Promise<boolean> {
-        if (searchvalue)
-            return await element(by.cssContainingText(this.selectors.listAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects, searchvalue)).isDisplayed();
-        else
-            return await $$(this.selectors.listAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects).count() < 1 ? false : true;
+        if (searchvalue) {
+            return await element(by.cssContainingText(this.selectors.listAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects, searchvalue)).isPresent().then(async (link) => {
+                if (link) {
+                    return await element(by.cssContainingText(this.selectors.listAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects, searchvalue)).isDisplayed();
+                } else return false;
+            });
+        }
+        return await $$(this.selectors.listAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects).count() < 1 ? false : true;
     }
 
     async clickSupportGroup(): Promise<void> {
@@ -151,8 +160,16 @@ export class EditEmailConfig {
         await $(this.selectors.newExclusiveSubjects).click();
     }
 
+    async isCreateEmailTemplpateLinkDisplayed(): Promise<boolean> {
+        return await $(this.selectors.createEmailTemplateLink).isDisplayed();
+    }
+
     async clickNewAvailableGlobalSubjects(): Promise<void> {
         await $(this.selectors.newAvailableGlobalSubjects).click();
+    }
+
+    async isNewAvailableGlobalSubjectsDisplayed(): Promise<boolean> {
+        return await $(this.selectors.newAvailableGlobalSubjects).isDisplayed();
     }
 
     async clickAcknowledgementTemplateEditButton(): Promise<void> {

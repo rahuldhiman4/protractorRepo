@@ -51,6 +51,7 @@ import { AUTO_TASK_TEMPLATE_PAYLOAD, DOC_FOR_AUTO_TASK_TEMPLATE, EXTERNAL_TASK_T
 import { ONE_TASKFLOW, PROCESS_DOCUMENT, THREE_TASKFLOW_SEQUENTIAL, TWO_TASKFLOW_PARALLEL, TWO_TASKFLOW_SEQUENTIAL } from '../data/api/task/taskflow.process.data.api';
 import { DOC_LIB_DRAFT, DOC_LIB_PUBLISH, DOC_LIB_READ_ACCESS } from '../data/api/ticketing/document-library.data.api';
 import * as DYNAMIC from '../data/api/ticketing/dynamic.data.api';
+import { SERVICE_TARGET_Group_PAYLOAD } from '../data/api/slm/service.target.group.api'
 
 let fs = require('fs');
 
@@ -482,7 +483,7 @@ class ApiHelper {
         assignmentMappingData.fieldInstances[1000000217].value = await apiCoreUtil.getSupportGroupGuid(data.supportGroup);
         if (data.flowset) {
             let flowsetGuid = await coreApi.getFlowsetGuid(data.flowset);
-            assignmentMappingData.fieldInstances.push = flowsetGuid;
+            assignmentMappingData.fieldInstances[450000121].value = flowsetGuid;
         }
         if (data.categoryTier1) {
             let category1Guid = await coreApi.getCategoryGuid(data.categoryTier1);
@@ -1838,11 +1839,11 @@ class ApiHelper {
         } else console.log('Doc Lib GUID not found =============>', documentLibTitle);
     }
 
-    async deleteCaseReadAccess(readAccessName: string): Promise<boolean> {
-        let readAccessGuid = await coreApi.getReadAccessGuid(readAccessName);
-        if (readAccessGuid) {
-            return await coreApi.deleteRecordInstance('com.bmc.dsm.case-lib:Case Assignment Mapping', readAccessGuid);
-        } else console.log('Read Access not found =============>', readAccessName);
+    async deleteReadAccessOrAssignmentMapping(recordName: string): Promise<boolean> {
+        let recordGuid = await coreApi.getReadAccessOrAssignmentMappingGuid(recordName);
+        if (recordGuid) {
+            return await coreApi.deleteRecordInstance('com.bmc.dsm.case-lib:Case Assignment Mapping', recordGuid);
+        } else console.log('Read Access not found =============>', recordName);
     }
 
     async createKnowledgeSet(knowledgeSetDetails: IKnowledgeSet): Promise<IIDs> {
@@ -2410,6 +2411,14 @@ class ApiHelper {
             caseReadAccess.fieldInstances["450000159"] = labelData;
         }
 
+        if (data.priority) {
+            let priorityValue = constants.CasePriority[data.priority];
+            let priorityData = {
+                "id": 1000000164,
+                "value": `${priorityValue}`
+            }
+            caseReadAccess.fieldInstances["1000000164"] = priorityData;
+        }
         let readAccessMapping: AxiosResponse = await coreApi.createRecordInstance(caseReadAccess);
         console.log('Read Access Mapping Status =============>', readAccessMapping.status);
         return readAccessMapping.status == 201;
@@ -2474,6 +2483,17 @@ class ApiHelper {
         }
     }
 
+    async createServiceTargetGroup(svtGroupName: string, dataSource: string, company?: string): Promise<boolean> {
+        let svtGroup = cloneDeep(SERVICE_TARGET_Group_PAYLOAD);
+        svtGroup.fieldInstances[8].value = svtGroupName;
+        svtGroup.fieldInstances[300523400].value = await apiCoreUtil.getDataSourceGuid(dataSource);
+        svtGroup.fieldInstances[1000000001].value = company ? await apiCoreUtil.getOrganizationGuid(company) : svtGroup.fieldInstances[1000000001].value;
+        let svtGroupCreateResponse: AxiosResponse = await coreApi.createRecordInstance(svtGroup);
+        console.log('Create SVT Group Status =============>', svtGroupCreateResponse.status);
+        return svtGroupCreateResponse.status == 201;
+    }
 }
+
+
 
 export default new ApiHelper();

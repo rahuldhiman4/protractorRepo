@@ -11,25 +11,22 @@ class AddRelationshipPage {
 
     async searchAndSelectPerson(personName: string): Promise<void> {
         await utilityGrid.searchAndSelectGridRecord(personName, 'c1c0bd18-b86f-4fff-b29b-f519393d0c8d').catch(async (error) => {
-            if(error) await utilityGrid.searchAndSelectGridRecord(personName, 'a23405b6-d85c-4581-a35f-c8da5aefcf0e');
+            if (error) await utilityGrid.searchAndSelectGridRecord(personName, 'a23405b6-d85c-4581-a35f-c8da5aefcf0e');
         });
-};
+    };
 
     async clickNextButton() {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.nextButton)));
         await $(this.selectors.nextButton).click();
     }
 
     async selectRelationshipType(relationshipType: string) {
         await utilityCommon.selectDropDown('e2dc9466-aa5d-41d9-9515-8a047c7b9737', relationshipType).catch(async (error) => {
-                if(error) await utilityCommon.selectDropDown('8ecbe002-6180-403e-b019-acde4dff5f90', relationshipType);
-            });
+            if (error) await utilityCommon.selectDropDown('8ecbe002-6180-403e-b019-acde4dff5f90', relationshipType);
+        });
     }
 
     async clickSaveButton() {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
-        //        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async addPerson(name: string, relation: string) {
