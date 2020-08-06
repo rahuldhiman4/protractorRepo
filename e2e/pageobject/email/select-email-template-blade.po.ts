@@ -16,13 +16,11 @@ class SelectEmailTemplateBlad {
     }
 
     async clickOnApplyButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.applyButton)));
         await $(this.selectors.applyButton).click();
         await utilCommon.waitUntilSpinnerToHide(); // wait required to populate email template text in compose email
     }
 
     async clickOnCancelButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         await $(this.selectors.cancelButton).click();
     }
 

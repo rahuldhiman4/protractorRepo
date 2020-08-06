@@ -31,7 +31,6 @@ class TaskGridPage {
     }
 
     async clickonColumnHeader(value: string): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.columnHeaders)));
         await element(by.cssContainingText(this.selectors.columnHeaders, value)).click();
     }
 
@@ -44,30 +43,22 @@ class TaskGridPage {
     }
 
     async setTaskSearchBoxValue(input: string): Promise<void> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.searchTemplate)));
         await $(this.selectors.searchTemplate).clear();
         await $(this.selectors.searchTemplate).sendKeys(input, Key.ENTER);
     }
 
     async getTaskTitle(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.taskTitle)));
         return await $(this.selectors.taskTitle).getText();
     }
 
     async clickFirstCheckBoxInTaskTemplateSearchGrid(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.recommendedTemplateCheckBox)));
-        //        await browser.sleep(3000);
         await $(this.selectors.recommendedTemplateCheckBox).click();
     }
     async getFilteredValue(filterName: string): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.tableValue)));
-        //        await browser.sleep(3000);
         return await element(by.cssContainingText(this.selectors.tableValue, filterName)).getText();
     }
 
     async clearFilter(): Promise<void> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.tableValue)));
-        //        await browser.sleep(3000);
         await utilGrid.clearFilter()
     }
 

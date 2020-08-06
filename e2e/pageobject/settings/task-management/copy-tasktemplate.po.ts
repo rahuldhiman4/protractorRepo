@@ -24,15 +24,11 @@ class Copytaskpage {
     }
 
     async unSelectCopyExistingProcess(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.sourceProcessNameValue)));
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.toggleBox)));
         await $(this.selectors.toggleBox).click();
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.processName)));
         return await $(this.selectors.processName).getAttribute('disabled');
     }
 
     async setTemplateName(input: string): Promise<void> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.templateName)));
         await $(this.selectors.templateName).clear();
         await $(this.selectors.templateName).sendKeys(input);
     }
@@ -46,34 +42,28 @@ class Copytaskpage {
     }
 
     async setTaskSummary(input: string): Promise<void> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.taskSummary)));
         await $(this.selectors.taskSummary).clear();
         await $(this.selectors.taskSummary).sendKeys(input);
     }
 
     async setNewProcessName(input: string): Promise<void> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.newProcessName)));
         await $(this.selectors.newProcessName).clear();
         await $(this.selectors.newProcessName).sendKeys(input);
     }
 
     async getProcessName(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.processName)));
         return await $(this.selectors.processName).getText();
     }
 
     async getSourceProcessName(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.sourceProcessname)));
         return await $(this.selectors.sourceProcessname).getAttribute('value');
     }
 
     async clickSaveCopytemplate(): Promise<void> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.saveCopyTemplate)));
         await $(this.selectors.saveCopyTemplate).click();
     }
 
     async clickCancelCopytemplate(): Promise<void> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.saveCopyTemplate)));
         await $(this.selectors.cancelCopyTemplate).click();
     }
 
