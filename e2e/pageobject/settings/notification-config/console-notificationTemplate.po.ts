@@ -16,7 +16,8 @@ class NotificationTemplateGridPage {
         tempNameCopyTempWindow: ".modal-content [class*='d-textfield__input field']",
         saveButton: "[rx-view-component-id='50e25982-5452-4f20-ac79-5682de7cb467'] button",
         createNotificationTemplate: "[rx-view-component-id='48d1ab7c-3e17-458c-9d57-4acb72f49595'] button",
-        searchBox: "[rx-view-component-id='7d5c5beb-d652-4bf9-9fc7-ccc7100d3b77'] [rx-id='search-text-input']"
+        searchBox: "[rx-view-component-id='7d5c5beb-d652-4bf9-9fc7-ccc7100d3b77'] [rx-id='search-text-input']",
+        deleteButton: '.d-icon-left-cross'
     }
 
     async isCopyTemplateButtonDisabled(): Promise<boolean> {
@@ -99,6 +100,14 @@ class NotificationTemplateGridPage {
 
     async getValueOnAssignmentConfigGrid(columnName: string): Promise<string> {
         return await utilGrid.getSelectedGridRecordValue(this.selectors.guid, columnName);
+    }
+
+    async isAddNotificationTemplateBtnDisplayed(): Promise<boolean> {
+        return await $(this.selectors.createNotificationTemplate).isPresent();
+    }
+
+    async isDeleteNotificationTemplateBtnDisplayed(): Promise<boolean> {
+        return await $(this.selectors.deleteButton).isPresent();
     }
 }
 

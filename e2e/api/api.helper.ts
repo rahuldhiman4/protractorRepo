@@ -51,6 +51,7 @@ import { AUTO_TASK_TEMPLATE_PAYLOAD, DOC_FOR_AUTO_TASK_TEMPLATE, EXTERNAL_TASK_T
 import { ONE_TASKFLOW, PROCESS_DOCUMENT, THREE_TASKFLOW_SEQUENTIAL, TWO_TASKFLOW_PARALLEL, TWO_TASKFLOW_SEQUENTIAL } from '../data/api/task/taskflow.process.data.api';
 import { DOC_LIB_DRAFT, DOC_LIB_PUBLISH, DOC_LIB_READ_ACCESS } from '../data/api/ticketing/document-library.data.api';
 import * as DYNAMIC from '../data/api/ticketing/dynamic.data.api';
+import { SERVICE_TARGET_Group_PAYLOAD } from '../data/api/slm/service.target.group.api'
 
 let fs = require('fs');
 
@@ -2474,6 +2475,17 @@ class ApiHelper {
         }
     }
 
+    async createServiceTargetGroup(svtGroupName: string, dataSource: string, company?: string): Promise<boolean> {
+        let svtGroup = cloneDeep(SERVICE_TARGET_Group_PAYLOAD);
+        svtGroup.fieldInstances[8].value = svtGroupName;
+        svtGroup.fieldInstances[300523400].value = await apiCoreUtil.getDataSourceGuid(dataSource);
+        svtGroup.fieldInstances[1000000001].value = company ? await apiCoreUtil.getOrganizationGuid(company) : svtGroup.fieldInstances[1000000001].value;
+        let svtGroupCreateResponse: AxiosResponse = await coreApi.createRecordInstance(svtGroup);
+        console.log('Create SVT Group Status =============>', svtGroupCreateResponse.status);
+        return svtGroupCreateResponse.status == 201;
+    }
 }
+
+
 
 export default new ApiHelper();
