@@ -22,6 +22,7 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from "../../utils/utility.grid";
+import attachDocumentBladePO from '../../pageobject/common/attach-document-blade.po';
 
 let caseBAUser = 'qkatawazi';
 let caseAgentUser = 'qtao';
@@ -800,6 +801,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await viewCasePage.clickEditCaseButton();
             await editCasePage.clickOnAttachLink();
             await resources.clickOnAdvancedSearchOptions();
+            await attachDocumentBladePO.searchRecord(title);
             await resources.enterAdvancedSearchText(title);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(advancedSearchOptionCategoryTier1ForDocumentLibrary, categoryTier1FieldVal);
