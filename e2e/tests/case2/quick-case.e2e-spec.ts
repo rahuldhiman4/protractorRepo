@@ -698,12 +698,13 @@ describe("Quick Case", () => {
             expect(await previewCaseTemplateCasesPo.getCaseTemplateName()).toBe(caseTemplateData.templateName);
             expect(await previewCaseTemplateCasesPo.getCasePriority()).toBe("Low");
             await previewCaseTemplateCasesPo.clickOnBackButton();
-            await resourcesPo.clickOnAdvancedSearchOptions();
-            await browser.sleep(5000) //Hard wait to reflect the created article changes
-            await resourcesPo.searchTextAndEnter(caseTemplateData.templateName);
-            await resourcesPo.clickArrowFirstRecommendedKnowledge();
         });
         it('[DRDMV-796]: [Quick Case] Resources preview', async () => {
+            await resourcesPo.clickOnAdvancedSearchOptions();
+            await resourcesPo.enterAdvancedSearchText(caseTemplateData.templateName);
+            await resourcesPo.clickOnAdvancedSearchSettingsIconToOpen();
+            await resourcesPo.clickOnAdvancedSearchFiltersButton('Apply');           
+            await resourcesPo.clickArrowFirstRecommendedKnowledge();
             expect(await previewKnowledgePo.isStatusOfKADisplay()).toBeTruthy('Knowledge status not present');
             expect(await previewKnowledgePo.isBackButtonDisplay()).toBeTruthy('back button not present');
             await previewKnowledgePo.clickOnBackButton();

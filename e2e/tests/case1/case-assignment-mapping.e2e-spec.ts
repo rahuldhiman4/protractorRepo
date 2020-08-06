@@ -28,6 +28,7 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
+import editCasetemplatePo from '../../pageobject/settings/case-management/edit-casetemplate.po';
 
 describe("Create Case Assignment Mapping", () => {
     const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
@@ -330,8 +331,8 @@ describe("Create Case Assignment Mapping", () => {
             await QuickCasePage.selectCaseTemplate(templateData.templateName);
             await QuickCasePage.saveCase();
             await QuickCasePage.gotoCaseButton();
-            await expect(await viewCasePo.getAssignedGroupText()).toBe("Facilities");
-            await expect(await viewCasePo.getAssigneeText()).toBe("Fritz Schulz");
+            expect(await viewCasePo.getAssignedGroupText()).toBe("Facilities");
+            expect(await viewCasePo.getAssigneeText()).toBe("Fritz Schulz");
         });
     });
 
@@ -431,10 +432,10 @@ describe("Create Case Assignment Mapping", () => {
             await changeAssignmentOldPage.clickOnAssignButton();
             await taskTemplate.clickOnSaveTaskTemplate();
             expect(await viewTaskTemplate.getAssigneeText()).toBe('fnPerson11825 lnPerson11825', "assignee is not available");
-            await expect(viewTaskTemplate.getAssigneeBusinessUnitValue()).toBe(businessData.orgName);
-            await expect(viewTaskTemplate.getAssigneeDepartmentValue()).toBe(departmentData.orgName);
-            await expect(viewTaskTemplate.getBuisnessunitValue()).toBe(businessData.orgName);
-            await expect(viewTaskTemplate.getDepartmentValue()).toBe(departmentData.orgName);
+            expect(viewTaskTemplate.getAssigneeBusinessUnitValue()).toBe(businessData.orgName);
+            expect(viewTaskTemplate.getAssigneeDepartmentValue()).toBe(departmentData.orgName);
+            expect(viewTaskTemplate.getBuisnessunitValue()).toBe(businessData.orgName);
+            expect(viewTaskTemplate.getDepartmentValue()).toBe(departmentData.orgName);
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
         });
     });
@@ -470,7 +471,7 @@ describe("Create Case Assignment Mapping", () => {
             await caseAccessTabPo.clickOnReadAccessAddButton('Add Support Group');
             await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Agent Access');
             await caseAccessTabPo.selectAndAddAgent('fnPerson11825 lnPerson11825');
-            await expect(await caseAccessTabPo.isCaseAccessEntityAdded('fnPerson11825 lnPerson11825')).toBeTruthy('Failuer: Agent Name is missing');
+            expect(await caseAccessTabPo.isCaseAccessEntityAdded('fnPerson11825 lnPerson11825')).toBeTruthy('Failuer: Agent Name is missing');
         });
     });
 
@@ -540,6 +541,253 @@ describe("Create Case Assignment Mapping", () => {
             expect(await utilGrid.isGridRecordPresent("DRDMV-1495" + randomStr)).toBeFalsy('Record is available');
         });
 
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+    });
+
+    describe('[DRDMV-8968]:[Assignment Mapping] Categories partial match', () => {
+        let assignmentData1, assignmentData2, assignmentData3, randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        beforeAll(async () => {
+            assignmentData1 = {
+                "assignmentMappingName": randomStr + "1DRDMV8968",
+                "company": "Petramco",
+                "supportCompany": "Petramco",
+                "businessUnit": "HR Support",
+                "supportGroup": "Employee Relations",
+                "assignee": "Elizabeth",
+                "categoryTier1": "Purchasing Card",
+                "priority": "Low",
+            }
+            assignmentData2 = {
+                "assignmentMappingName": randomStr + "2DRDMV8968",
+                "company": "Petramco",
+                "supportCompany": "Petramco",
+                "businessUnit": "HR Support",
+                "supportGroup": "Staffing",
+                "assignee": "Peter",
+                "categoryTier1": "Purchasing Card",
+                "categoryTier2": "Policies",
+                "priority": "Low",
+            }
+            assignmentData3 = {
+                "assignmentMappingName": randomStr + "3DRDMV8968",
+                "company": "Petramco",
+                "supportCompany": "Petramco",
+                "businessUnit": "HR Support",
+                "supportGroup": "Training and Development",
+                "assignee": "Elizabeth",
+                "categoryTier1": "Purchasing Card",
+                "categoryTier2": "Policies",
+                "categoryTier3": "Card Issuance",
+                "priority": "Low",
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createCaseAssignmentMapping(assignmentData1);
+            await apiHelper.createCaseAssignmentMapping(assignmentData2);
+            await apiHelper.createCaseAssignmentMapping(assignmentData3);
+        });
+        it('[DRDMV-8968]:[Assignment Mapping] Categories partial match', async () => {
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester("adam");
+            await createCasePage.setSummary("DRDMV-8968 Case Summary1");
+            await createCasePage.setPriority(assignmentData1.priority);
+            await createCasePage.selectCategoryTier1("Purchasing Card");
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            expect(await viewCasePo.getAssignedGroupText()).toBe(assignmentData1.supportGroup);
+            expect(await viewCasePo.getAssigneeText()).toBe('Elizabeth Peters');
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester("adam");
+            await createCasePage.setSummary("DRDMV-8968 Case Summary2");
+            await createCasePage.setPriority(assignmentData2.priority);
+            await createCasePage.selectCategoryTier1("Purchasing Card");
+            await createCasePage.selectCategoryTier2("Policies");
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            expect(await viewCasePo.getAssignedGroupText()).toBe(assignmentData2.supportGroup);
+            expect(await viewCasePo.getAssigneeText()).toBe('Peter Kahn');
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester("adam");
+            await createCasePage.setSummary("DRDMV-8968 Case Summary3");
+            await createCasePage.setPriority(assignmentData3.priority);
+            await createCasePage.selectCategoryTier1("Purchasing Card");
+            await createCasePage.selectCategoryTier2("Policies");
+            await createCasePage.selectCategoryTier3("Card Issuance");
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            expect(await viewCasePo.getAssignedGroupText()).toBe(assignmentData3.supportGroup);
+            expect(await viewCasePo.getAssigneeText()).toBe('Elizabeth Peters');
+        });
+        afterAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteReadAccessOrAssignmentMapping(assignmentData1.assignmentMappingName);
+            await apiHelper.deleteReadAccessOrAssignmentMapping(assignmentData2.assignmentMappingName);
+            await apiHelper.deleteReadAccessOrAssignmentMapping(assignmentData3.assignmentMappingName);
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+    });
+
+    describe('[DRDMV-9103]:[Assignment Mapping] Partially matching Assignment mapping with Flowset', () => {
+        let assignmentData, caseTemplateData, randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        beforeAll(async () => {
+            assignmentData = {
+                "assignmentMappingName": randomStr + "1DRDMV8968",
+                "company": "Petramco",
+                "supportCompany": "Petramco",
+                "businessUnit": "HR Support",
+                "supportGroup": "Employee Relations",
+                "assignee": "Elizabeth",
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "priority": "Low",
+                "flowset": "Human Resources",
+            }
+            caseTemplateData = {
+                "templateName": `${randomStr}Casetemplate`,
+                "templateStatus": "Draft",
+                "templateSummary": `${randomStr}Summary`,
+                "caseStatus": "New",
+                "casePriority": "Low",
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
+                "company": "Petramco",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3"
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createCaseAssignmentMapping(assignmentData);
+            await apiHelper.createCaseTemplate(caseTemplateData);
+        });
+        it('[DRDMV-9103]:[Assignment Mapping] Partially matching Assignment mapping with Flowset', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await utilGrid.searchAndOpenHyperlink(caseTemplateData.templateName);
+            await viewCaseTemplate.clickOnEditCaseTemplateButton();
+            await editCasetemplatePo.changeFlowsetValue('Human Resources');
+            await editCasetemplatePo.clickSaveCaseTemplate();
+            await utilCommon.closePopUpMessage();
+            await editCasetemplatePo.clickOnEditCaseTemplateMetadata();
+            await editCasetemplatePo.changeTemplateStatusDropdownValue('Active');
+            await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
+            await utilCommon.closePopUpMessage();
+            await navigationPage.gotoQuickCase();
+            await QuickCasePage.selectRequesterName("adam");
+            await QuickCasePage.selectCaseTemplate(caseTemplateData.templateName);
+            await QuickCasePage.saveCase();
+            await QuickCasePage.gotoCaseButton();
+            expect(await viewCasePo.getAssignedGroupText()).toBe(assignmentData.supportGroup);
+            expect(await viewCasePo.getAssigneeText()).toBe('Elizabeth Peters');
+        });
+        afterAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteReadAccessOrAssignmentMapping(assignmentData.assignmentMappingName);
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+    });
+
+    describe('[DRDMV-15170]: Assignment mapping search using filters', async () => {
+        let assignmentData, randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let arr1: string[] = ["Department", "Flowset", "Business Unit"];
+        let defaultCaseAssignmentColumns: string[] = ["Case Priority", "Company", "Category Tier 1", "Category Tier 2", "Category Tier 3", "Region", "Site", "Support Company", "Support Group", "Default Mapping"];
+        let businessData = businessDataFile['BusinessUnitData11825'];
+        let departmentData = departmentDataFile['DepartmentData11825'];
+        let suppGrpData = supportGrpDataFile['SuppGrpData11825'];       
+        beforeAll(async () => {
+            assignmentData = {
+                "assignmentMappingName": randomStr + "1DRDMV8968",
+                "company": "Petramco",
+                "supportCompany": "Petramco",
+                "businessUnit": businessData.orgName,
+                "department": departmentData.orgName,
+                "supportGroup": suppGrpData.orgName ,
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
+                "priority": "Low",
+                "flowset": "Human Resources",
+                "region": "Australia",
+                "site": "Canberra",
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createCaseAssignmentMapping(assignmentData);
+        });
+        it('[DRDMV-15170]: Assignment mapping search using filters', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
+            await assignmentConfigConsolePage.deleteDefaultAssignmentConfig();
+            await assignmentConfigConsolePage.searchAndClickOnAssignmentConfig(assignmentData.assignmentMappingName);
+            await assignmentConfigEditPage.setDefaultToggleButton(true);
+            await assignmentConfigEditPage.clickonSaveButton();
+            await utilCommon.closePopUpMessage();
+            await assignmentConfigConsolePage.clearFilter();
+            await assignmentConfigConsolePage.addFilter('Company', 'Petramco', 'text');
+            await utilGrid.searchRecord(assignmentData.assignmentMappingName);
+            expect(await assignmentConfigConsolePage.getSelectedGridRecordValue('Company')).toBe("Petramco", 'Filter Company is missing in column');
+            await assignmentConfigConsolePage.clearFilter();
+            await assignmentConfigConsolePage.addFilter('Support Company', 'Petramco', 'text');
+            await utilGrid.searchRecord(assignmentData.assignmentMappingName);
+            expect(await assignmentConfigConsolePage.getSelectedGridRecordValue('Support Company')).toBe("Petramco", 'Filter Support Company is missing in column');
+            await assignmentConfigConsolePage.clearFilter();
+            await assignmentConfigConsolePage.addFilter('Region', 'Australia', 'text');
+            await utilGrid.searchRecord(assignmentData.assignmentMappingName);
+            expect(await assignmentConfigConsolePage.getSelectedGridRecordValue('Region')).toBe("Australia", 'Filter Region is missing in column');
+            await assignmentConfigConsolePage.clearFilter();
+            await assignmentConfigConsolePage.addFilter('Site', 'Canberra', 'text');
+            await utilGrid.searchRecord(assignmentData.assignmentMappingName);
+            expect(await assignmentConfigConsolePage.getSelectedGridRecordValue('Site')).toBe("Canberra", 'Filter Site is missing in column');
+            await assignmentConfigConsolePage.clearFilter();
+            await assignmentConfigConsolePage.addFilter('Case Priority', 'Low', 'checkbox');
+            await utilGrid.searchRecord(assignmentData.assignmentMappingName);
+            expect(await assignmentConfigConsolePage.getSelectedGridRecordValue('Case Priority')).toBe("Low", 'Filter Case Priority is missing in column');
+            await assignmentConfigConsolePage.clearFilter();
+            await assignmentConfigConsolePage.addFilter('Default Mapping', 'True', 'checkbox');
+            await utilGrid.searchRecord(assignmentData.assignmentMappingName);
+            expect(await assignmentConfigConsolePage.getSelectedGridRecordValue('Default Mapping')).toBe("True", 'Filter Default Mapping is missing in column');
+        });
+        it('[DRDMV-15170]: Assignment mapping search using filters', async () => {
+            await assignmentConfigConsolePage.clearFilter();
+            await assignmentConfigConsolePage.addFilter('Assignment Name', assignmentData.assignmentMappingName, 'text');
+            await utilGrid.searchRecord(assignmentData.assignmentMappingName);
+            expect(await assignmentConfigConsolePage.getSelectedGridRecordValue('Assignment Name')).toBe(assignmentData.assignmentMappingName, 'Filter Assignment Name is missing in column');
+            await assignmentConfigConsolePage.clearFilter();
+            await assignmentConfigConsolePage.addFilter('Category Tier 1', 'Employee Relations', 'text');
+            await utilGrid.searchRecord(assignmentData.assignmentMappingName);
+            expect(await assignmentConfigConsolePage.getSelectedGridRecordValue('Category Tier 1')).toBe('Employee Relations', 'Filter Category Tier 1 is missing in column');
+            await assignmentConfigConsolePage.clearFilter();
+            await assignmentConfigConsolePage.addFilter('Category Tier 2', 'Compensation', 'text');
+            await utilGrid.searchRecord(assignmentData.assignmentMappingName);
+            expect(await assignmentConfigConsolePage.getSelectedGridRecordValue('Category Tier 2')).toBe('Compensation', 'Filter Category Tier 2 is missing in column');
+            await assignmentConfigConsolePage.clearFilter();
+            await assignmentConfigConsolePage.addFilter('Category Tier 3', 'Bonus', 'text');
+            await utilGrid.searchRecord(assignmentData.assignmentMappingName);
+            expect(await assignmentConfigConsolePage.getSelectedGridRecordValue('Category Tier 3')).toBe('Bonus', 'Filter Category Tier 3 is missing in column');
+            await assignmentConfigConsolePage.clearFilter();
+            await assignmentConfigConsolePage.addFilter('Support Group', suppGrpData.orgName, 'text');
+            await utilGrid.searchRecord(assignmentData.assignmentMappingName);
+            expect(await assignmentConfigConsolePage.getSelectedGridRecordValue('Support Group')).toBe(suppGrpData.orgName, 'Filter Support Group is missing in column');
+        });
+        it('[DRDMV-15170]: Assignment mapping search using filters', async () => {
+            await assignmentConfigConsolePage.removeColumns(defaultCaseAssignmentColumns);
+            await assignmentConfigConsolePage.addColumns(arr1);
+            await assignmentConfigConsolePage.clearFilter();
+            await assignmentConfigConsolePage.addFilter('Department',departmentData.orgName, 'text');
+            await utilGrid.searchRecord(assignmentData.assignmentMappingName);
+            expect(await assignmentConfigConsolePage.getSelectedGridRecordValue('Department')).toBe(departmentData.orgName, 'Filter Department is missing in column');
+            await assignmentConfigConsolePage.clearFilter();
+            await assignmentConfigConsolePage.addFilter('Business Unit',businessData.orgName, 'text');
+            await utilGrid.searchRecord(assignmentData.assignmentMappingName);
+            expect(await assignmentConfigConsolePage.getSelectedGridRecordValue('Business Unit')).toBe(businessData.orgName, 'Filter Business Unit is missing in column');
+            await assignmentConfigConsolePage.clearFilter();
+            await assignmentConfigConsolePage.addFilter('Flowset', 'Human Resources', 'text');
+            await utilGrid.searchRecord(assignmentData.assignmentMappingName);
+            expect(await assignmentConfigConsolePage.getSelectedGridRecordValue('Flowset')).toBe("Human Resources", 'Filter Flowset is missing in column');
+            await assignmentConfigConsolePage.addColumns(defaultCaseAssignmentColumns);
+        });
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');

@@ -345,10 +345,10 @@ class ApiCoreUtil {
         return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
     }
 
-    async getReadAccessGuid(readAccessName: string): Promise<string> {
+    async getReadAccessOrAssignmentMappingGuid(recordName: string): Promise<string> {
         let allRecords = await this.getGuid("com.bmc.dsm.case-lib:Case Assignment Mapping");
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
-            return obj[1000001437] === readAccessName;
+            return obj[1000001437] === recordName;
         });
         return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
     }

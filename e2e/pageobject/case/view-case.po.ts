@@ -487,6 +487,14 @@ class ViewCasePage {
     async clickOnRejectLink(): Promise<void> {
         await $(this.selectors.rejectButton).click();
     }
+
+    async isAddTaskButtonDisabled(): Promise<boolean> {
+        return await $(this.selectors.addTaskButton).isPresent().then(async (result) => {
+            if (result){
+                return await $(this.selectors.addTaskButton).getAttribute("disabled") == "true";
+            }else return false;
+        });
+    }
 }
 
 export default new ViewCasePage();

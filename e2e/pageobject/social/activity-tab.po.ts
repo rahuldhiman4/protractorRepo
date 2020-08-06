@@ -957,7 +957,11 @@ class ActivityTabPage {
         await $(this.selectors.showApproversLink).click();
     }
 
-    async getReadAccessActivityCount(accessName: string): Promise<number> {
+    async getGrantedReadAccessCount(accessName: string): Promise<number> {
+        return await element.all(by.cssContainingText(this.selectors.activityLog, accessName)).count();
+    }
+
+    async getRevokedReadAccessCount(accessName: string): Promise<number> {
         return await element.all(by.cssContainingText('.activity__body .fields span', accessName)).count();
     }
 }
