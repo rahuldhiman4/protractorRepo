@@ -605,7 +605,7 @@ describe('CKE Description', () => {
             expect(await ckeditorOpsPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
         });
-        it('[DRDMV-22096] Alignment,Bullet Point and Maximum / Minimum with CKE', async () => {
+        it('[DRDMV-22095] Alignment,Bullet Point and Maximum / Minimum with CKE', async () => {
             //left Align
             await ckeditorOpsPo.clickOnUnderLineIcon();
             await ckeditorOpsPo.clickOnLeftAlignIcon();

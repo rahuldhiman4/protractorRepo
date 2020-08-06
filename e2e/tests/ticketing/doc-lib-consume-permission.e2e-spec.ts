@@ -479,7 +479,7 @@ describe('Document Library Consume Permission', () => {
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
             let objDate: Date = new Date();
             let allMonths = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-            let day = "" + objDate.getDate(); if (day.length == 1) { day = "0" + day; }
+            let day = "" + objDate.getDate(); //if (day.length == 1) { day = "0" + day; }
             let month = allMonths[objDate.getMonth()];
             let year = objDate.getFullYear();
             // Create Case
