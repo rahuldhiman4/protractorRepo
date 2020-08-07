@@ -439,7 +439,12 @@ describe('Email Configuration', () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteAllEmailConfiguration();
             await apiHelper.createEmailConfiguration();
+        });
+        it('[DRDMV-10454]: create email configurations', async () => {
+            await apiHelper.apiLogin('tadmin');
+            await browser.sleep(2000); // required to remove flackyness
             await apiHelper.createEmailConfiguration(INCOMINGMAIL_COMPANY_ONE, OUTGOINGEMAIL_COMPANY_ONE, EMAILCONFIG_COMPANY_ONE);
+            await browser.sleep(2000); // required to remove flackyness
             await apiHelper.createEmailConfiguration(INCOMINGMAIL_COMPANY_TWO, OUTGOINGEMAIL_COMPANY_TWO, EMAILCONFIG_COMPANY_TWO);
         });
         it('[DRDMV-10454]: change the default mail to false', async () => {
