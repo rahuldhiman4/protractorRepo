@@ -51,7 +51,7 @@ class LoginPage {
         // }
         await browser.wait(this.EC.elementToBeClickable($(userLocator)), 30000).then(async () => {
             await $(userLocator).clear();
-            await $(userLocator).sendKeys(user + '@petramco.com');
+            await $(userLocator).sendKeys(user);
         })
         console.log(`Login to BWF with ${user}`);
         await $(passwordLocator).clear();
@@ -64,6 +64,7 @@ class LoginPage {
         let noAccess = this.EC.titleContains('No Access');
         await browser.wait(this.EC.or(caseConsole, knowledgeConsole, tasksConsole, innovationStudio, noAccess), 30000);
     }
+
 }
 
 export default new LoginPage();
