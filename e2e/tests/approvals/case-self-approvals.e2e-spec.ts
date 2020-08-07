@@ -1,8 +1,5 @@
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
-import casePreviewPo from '../../pageobject/case/case-preview.po';
-import createCasePo from '../../pageobject/case/create-case.po';
-import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
@@ -109,7 +106,6 @@ describe("Case Self Approval Tests", () => {
             await approvalConfigurationPage.setAuditInformationValue('test self approval');
             await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
             await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
-            await browser.sleep(2000); //sleep added to remove flackyness, can be removed if still test fails
         });
 
         it('[DRDMV-10822]:Create case and verify self approval without process', async () => {
@@ -247,7 +243,6 @@ describe("Case Self Approval Tests", () => {
             await approvalConfigurationPage.selectSelfApprovalProcess();
             await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
             await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
-            await browser.sleep(2000); //sleep added to remove flackyness, can be removed if still test fails
         });
 
         it('[DRDMV-10821]:Create case and verify self approval without process', async () => {
