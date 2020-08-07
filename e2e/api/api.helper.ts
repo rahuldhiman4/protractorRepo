@@ -80,7 +80,7 @@ class ApiHelper {
         let password: string = await loginJson[user].userPassword;
         let response = await axios.post(
             "api/rx/authentication/loginrequest",
-            { "userName": username + '@petramco.com', "password": password },
+            { "userName": username, "password": password },
         )
         console.log('Login API Status of ' + user + ' =============>', response.status);
         axios.defaults.headers.common['Cookie'] = `AR-JWT=${response.data}`;
@@ -89,17 +89,13 @@ class ApiHelper {
     async apiLoginWithCredential(user: string, password: string): Promise<void> {
         let response = await axios.post(
             "api/rx/authentication/loginrequest",
-            { "userName": user + '@petramco.com', "password": password },
+            { "userName": user, "password": password },
         )
         console.log('Login API Status =============>', response.status);
         axios.defaults.headers.common['Cookie'] = `AR-JWT=${response.data}`;
     }
 
     async createCase(data: any): Promise<IIDs> {
-        if(data.Requester) data.Requester + '@petramco.com';
-        if(data.Contact) data.Contact + '@petramco.com';
-        if(data.Assignee) data.Assignee + '@petramco.com';
-
         const newCase = await axios.post(
             "api/com.bmc.dsm.case-lib/cases",
             data
@@ -927,7 +923,7 @@ class ApiHelper {
             let userData = await userDataFile.NewUser;
             userData.fieldInstances[1000000019].value = data.firstName;
             userData.fieldInstances[1000000018].value = data.lastName;
-            userData.fieldInstances[4].value = data.userId + '@petramco.com';
+            userData.fieldInstances[4].value = data.userId;
             userData.fieldInstances[430000002].value = data.userPermission ? data.userPermission : userData.fieldInstances[430000002].value;
             userData.fieldInstances[1000000048].value = data.emailId ? data.emailId : userData.fieldInstances[1000000048].value;
             const newUser = await coreApi.createRecordInstance(userData);
@@ -1660,7 +1656,7 @@ class ApiHelper {
         caseAccessData.processInputValues['Type'] = data.type;
         caseAccessData.processInputValues['Operation'] = data.operation;
         caseAccessData.processInputValues['Security Type'] = data.security;
-        caseAccessData.processInputValues['Value'] = data.username + '@petramco.com';
+        caseAccessData.processInputValues['Value'] = data.username;
         const updateCaseAccess = await axios.post(
             commandUri,
             caseAccessData
@@ -2091,7 +2087,7 @@ class ApiHelper {
         if (!multipleApproval) {
             knowledgeApprovalFlowConfig = cloneDeep(KNOWLEDGE_APPROVAL_FLOW_CONFIG);
             knowledgeApprovalFlowConfig.approvalFlowConfigurationList[0].flowName = data.flowName;
-            knowledgeApprovalFlowConfig.approvalFlowConfigurationList[0].approvers = 'U:' + data.approver + '@petramco.com';
+            knowledgeApprovalFlowConfig.approvalFlowConfigurationList[0].approvers = 'U:' + data.approver;
             knowledgeApprovalFlowConfig.approvalFlowConfigurationList[0].qualification = data.qualification;
         } else {
             knowledgeApprovalFlowConfig = cloneDeep(MULTI_APPROVAL_FLOW);
@@ -2131,7 +2127,7 @@ class ApiHelper {
         approvalAction.commands[0].command = action;
         approvalAction.commands[0].requestID = await coreApi.getSignatureInstanceId(recordGuid);
         if (assignee) {
-            approvalAction.commands[0]["assignToApprovers"] = assignee + '@petramco.com';
+            approvalAction.commands[0]["assignToApprovers"] = assignee;
         }
 
         await browser.sleep(20000);
@@ -2196,7 +2192,7 @@ class ApiHelper {
         if (!multipleApproval) {
             caseApprovalFlow = cloneDeep(CASE_APPROVAL_FLOW);
             caseApprovalFlow.approvalFlowConfigurationList[0].flowName = data.flowName;
-            caseApprovalFlow.approvalFlowConfigurationList[0].approvers = 'U:' + data.approver + '@petramco.com';
+            caseApprovalFlow.approvalFlowConfigurationList[0].approvers = 'U:' + data.approver;
             caseApprovalFlow.approvalFlowConfigurationList[0].qualification = data.qualification;
         } else {
             caseApprovalFlow = cloneDeep(MULTI_APPROVAL_FLOW);
@@ -2303,8 +2299,8 @@ class ApiHelper {
 
     async addFunctionalRole(person: string, functionalRoleGuid: string): Promise<boolean> {
         let addFunctionalRolePayload = cloneDeep(ADD_FUNCTIONAL_ROLE);
-        let userRoles = await coreApi.getPersonFunctionalRoles(person + '@petramco.com');
-        let personGuid = await coreApi.getPersonGuid(person);
+        let userRoles = await coreApi.getPersonFunctionalRoles(person);
+        let personGuid = await coreApi.getPersonGuid(person)
         addFunctionalRolePayload.fieldInstances[430000002].value = userRoles + ';' + functionalRoleGuid;
         let response = await coreApi.updateRecordInstance('com.bmc.arsys.rx.foundation:Person', personGuid, addFunctionalRolePayload);
         console.log(`Functional role of ${person} is successfully updated  =============>`, response.status);
@@ -2353,7 +2349,7 @@ class ApiHelper {
     async sendApprovalQuestions(recordGuid: string, user: string, questions: string, caseId: string): Promise<boolean> {
         let signatureId = await coreApi.getSignatureId(recordGuid);
         let formData = {
-            to: user + '@petramco.com',
+            to: user,
             question: questions,
             application: 'com.bmc.dsm.case-lib:Case',
             applicationRequestId: caseId,
