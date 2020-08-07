@@ -96,9 +96,9 @@ class ApiHelper {
     }
 
     async createCase(data: any): Promise<IIDs> {
-        if(data.Requester) data.Requester + '@petramco.com';
-        if(data.Contact) data.Contact + '@petramco.com';
-        if(data.Assignee) data.Assignee + '@petramco.com';
+        if (data.Requester) data.Requester = data.Requester + '@petramco.com';
+        if (data.Contact) data.Contact = data.Contact + '@petramco.com';
+        if (data.Assignee) data.Assignee = data.Assignee + '@petramco.com';
 
         const newCase = await axios.post(
             "api/com.bmc.dsm.case-lib/cases",

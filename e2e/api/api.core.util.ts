@@ -406,5 +406,4 @@ class ApiCoreUtil {
         return newRecord;
     }
 }
-
 export default new ApiCoreUtil();
