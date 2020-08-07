@@ -10,8 +10,8 @@ export const ONE_TASKFLOW = {
         {
             "resourceType": "com.bmc.arsys.rx.services.process.domain.EndEventDefinition",
             "lastUpdateTime": "2020-06-15T18:09:23.598+0000",
-            "lastChangedBy": "tadmin",
-            "owner": "tadmin",
+            "lastChangedBy": "tadmin@petramco.com",
+            "owner": "tadmin@petramco.com",
             "name": "End",
             "tags": null,
             "description": null,
@@ -24,8 +24,8 @@ export const ONE_TASKFLOW = {
         {
             "resourceType": "com.bmc.arsys.rx.services.process.domain.StartEventDefinition",
             "lastUpdateTime": "2020-06-15T18:09:23.598+0000",
-            "lastChangedBy": "tadmin",
-            "owner": "tadmin",
+            "lastChangedBy": "tadmin@petramco.com",
+            "owner": "tadmin@petramco.com",
             "name": "Start",
             "tags": null,
             "description": null,
@@ -87,7 +87,7 @@ export const ONE_TASKFLOW = {
         {
             "resourceType": "com.bmc.arsys.rx.services.process.domain.record.ObjectFieldDefinition",
             "lastUpdateTime": "2020-06-15T18:09:23.598+0000",
-            "lastChangedBy": "tadmin",
+            "lastChangedBy": "tadmin@petramco.com",
             "owner": "dev_girish",
             "name": "DynamicData",
             "tags": null,
@@ -112,7 +112,7 @@ export const ONE_TASKFLOW = {
         {
             "resourceType": "com.bmc.arsys.rx.services.process.domain.record.RecordInstanceFieldDefinition",
             "lastUpdateTime": "2020-06-15T18:09:23.598+0000",
-            "lastChangedBy": "tadmin",
+            "lastChangedBy": "tadmin@petramco.com",
             "owner": "dev_girish",
             "name": "CaseRecord",
             "tags": null,
@@ -138,7 +138,7 @@ export const ONE_TASKFLOW = {
         {
             "resourceType": "com.bmc.arsys.rx.standardlib.record.CharacterFieldDefinition",
             "lastUpdateTime": "2020-06-15T18:09:23.598+0000",
-            "lastChangedBy": "tadmin",
+            "lastChangedBy": "tadmin@petramco.com",
             "owner": "dev_girish",
             "name": "CaseId",
             "tags": null,
@@ -210,8 +210,8 @@ export const TWO_TASKFLOW_SEQUENTIAL = {
         {
             "resourceType": "com.bmc.arsys.rx.services.process.domain.EndEventDefinition",
             "lastUpdateTime": "2020-06-15T18:10:39.107+0000",
-            "lastChangedBy": "tadmin",
-            "owner": "tadmin",
+            "lastChangedBy": "tadmin@petramco.com",
+            "owner": "tadmin@petramco.com",
             "name": "End",
             "tags": null,
             "description": null,
@@ -224,8 +224,8 @@ export const TWO_TASKFLOW_SEQUENTIAL = {
         {
             "resourceType": "com.bmc.arsys.rx.services.process.domain.StartEventDefinition",
             "lastUpdateTime": "2020-06-15T18:10:39.107+0000",
-            "lastChangedBy": "tadmin",
-            "owner": "tadmin",
+            "lastChangedBy": "tadmin@petramco.com",
+            "owner": "tadmin@petramco.com",
             "name": "Start",
             "tags": null,
             "description": null,
@@ -237,8 +237,8 @@ export const TWO_TASKFLOW_SEQUENTIAL = {
         {
             "resourceType": "com.bmc.arsys.rx.services.process.domain.CallActivityDefinition",
             "lastUpdateTime": "2020-06-15T18:10:39.107+0000",
-            "lastChangedBy": "tadmin",
-            "owner": "tadmin",
+            "lastChangedBy": "tadmin@petramco.com",
+            "owner": "tadmin@petramco.com",
             "name": "New Task 1",
             "tags": null,
             "description": null,
@@ -309,8 +309,8 @@ export const TWO_TASKFLOW_SEQUENTIAL = {
         {
             "resourceType": "com.bmc.arsys.rx.services.process.domain.SequenceFlowDefinition",
             "lastUpdateTime": "2020-06-15T18:10:39.107+0000",
-            "lastChangedBy": "tadmin",
-            "owner": "tadmin",
+            "lastChangedBy": "tadmin@petramco.com",
+            "owner": "tadmin@petramco.com",
             "name": "Sequence Flow",
             "tags": null,
             "description": "",
@@ -343,7 +343,7 @@ export const TWO_TASKFLOW_SEQUENTIAL = {
         {
             "resourceType": "com.bmc.arsys.rx.services.process.domain.record.ObjectFieldDefinition",
             "lastUpdateTime": "2020-06-15T18:10:39.107+0000",
-            "lastChangedBy": "tadmin",
+            "lastChangedBy": "tadmin@petramco.com",
             "owner": "dev_girish",
             "name": "DynamicData",
             "tags": null,
@@ -368,7 +368,7 @@ export const TWO_TASKFLOW_SEQUENTIAL = {
         {
             "resourceType": "com.bmc.arsys.rx.services.process.domain.record.RecordInstanceFieldDefinition",
             "lastUpdateTime": "2020-06-15T18:10:39.107+0000",
-            "lastChangedBy": "tadmin",
+            "lastChangedBy": "tadmin@petramco.com",
             "owner": "dev_girish",
             "name": "CaseRecord",
             "tags": null,
@@ -394,7 +394,7 @@ export const TWO_TASKFLOW_SEQUENTIAL = {
         {
             "resourceType": "com.bmc.arsys.rx.standardlib.record.CharacterFieldDefinition",
             "lastUpdateTime": "2020-06-15T18:10:39.107+0000",
-            "lastChangedBy": "tadmin",
+            "lastChangedBy": "tadmin@petramco.com",
             "owner": "dev_girish",
             "name": "CaseId",
             "tags": null,
@@ -466,8 +466,8 @@ export const TWO_TASKFLOW_PARALLEL = {
         {
             "resourceType": "com.bmc.arsys.rx.services.process.domain.EndEventDefinition",
             "lastUpdateTime": "2020-06-15T18:15:23.819+0000",
-            "lastChangedBy": "tadmin",
-            "owner": "tadmin",
+            "lastChangedBy": "tadmin@petramco.com",
+            "owner": "tadmin@petramco.com",
             "name": "End",
             "tags": null,
             "description": null,
@@ -480,8 +480,8 @@ export const TWO_TASKFLOW_PARALLEL = {
         {
             "resourceType": "com.bmc.arsys.rx.services.process.domain.StartEventDefinition",
             "lastUpdateTime": "2020-06-15T18:15:23.819+0000",
-            "lastChangedBy": "tadmin",
-            "owner": "tadmin",
+            "lastChangedBy": "tadmin@petramco.com",
+            "owner": "tadmin@petramco.com",
             "name": "Start",
             "tags": null,
             "description": null,
@@ -493,8 +493,8 @@ export const TWO_TASKFLOW_PARALLEL = {
         {
             "resourceType": "com.bmc.arsys.rx.services.process.domain.CallActivityDefinition",
             "lastUpdateTime": "2020-06-15T18:15:23.819+0000",
-            "lastChangedBy": "tadmin",
-            "owner": "tadmin",
+            "lastChangedBy": "tadmin@petramco.com",
+            "owner": "tadmin@petramco.com",
             "name": "New Task 1",
             "tags": null,
             "description": null,
@@ -533,8 +533,8 @@ export const TWO_TASKFLOW_PARALLEL = {
         {
             "resourceType": "com.bmc.arsys.rx.services.process.domain.CallActivityDefinition",
             "lastUpdateTime": "2020-06-15T18:15:23.819+0000",
-            "lastChangedBy": "tadmin",
-            "owner": "tadmin",
+            "lastChangedBy": "tadmin@petramco.com",
+            "owner": "tadmin@petramco.com",
             "name": "New Task 2",
             "tags": null,
             "description": null,
@@ -573,8 +573,8 @@ export const TWO_TASKFLOW_PARALLEL = {
         {
             "resourceType": "com.bmc.arsys.rx.services.process.domain.SequenceFlowDefinition",
             "lastUpdateTime": "2020-06-15T18:15:23.819+0000",
-            "lastChangedBy": "tadmin",
-            "owner": "tadmin",
+            "lastChangedBy": "tadmin@petramco.com",
+            "owner": "tadmin@petramco.com",
             "name": "Sequence Flow",
             "tags": null,
             "description": "",
@@ -588,8 +588,8 @@ export const TWO_TASKFLOW_PARALLEL = {
         {
             "resourceType": "com.bmc.arsys.rx.services.process.domain.SequenceFlowDefinition",
             "lastUpdateTime": "2020-06-15T18:15:23.819+0000",
-            "lastChangedBy": "tadmin",
-            "owner": "tadmin",
+            "lastChangedBy": "tadmin@petramco.com",
+            "owner": "tadmin@petramco.com",
             "name": "Sequence Flow",
             "tags": null,
             "description": "",
@@ -636,7 +636,7 @@ export const TWO_TASKFLOW_PARALLEL = {
         {
             "resourceType": "com.bmc.arsys.rx.services.process.domain.record.ObjectFieldDefinition",
             "lastUpdateTime": "2020-06-15T18:15:23.819+0000",
-            "lastChangedBy": "tadmin",
+            "lastChangedBy": "tadmin@petramco.com",
             "owner": "dev_girish",
             "name": "DynamicData",
             "tags": null,
@@ -661,7 +661,7 @@ export const TWO_TASKFLOW_PARALLEL = {
         {
             "resourceType": "com.bmc.arsys.rx.services.process.domain.record.RecordInstanceFieldDefinition",
             "lastUpdateTime": "2020-06-15T18:15:23.819+0000",
-            "lastChangedBy": "tadmin",
+            "lastChangedBy": "tadmin@petramco.com",
             "owner": "dev_girish",
             "name": "CaseRecord",
             "tags": null,
@@ -687,7 +687,7 @@ export const TWO_TASKFLOW_PARALLEL = {
         {
             "resourceType": "com.bmc.arsys.rx.standardlib.record.CharacterFieldDefinition",
             "lastUpdateTime": "2020-06-15T18:15:23.819+0000",
-            "lastChangedBy": "tadmin",
+            "lastChangedBy": "tadmin@petramco.com",
             "owner": "dev_girish",
             "name": "CaseId",
             "tags": null,
@@ -759,8 +759,8 @@ export const THREE_TASKFLOW_SEQUENTIAL = {
         {
             "resourceType": "com.bmc.arsys.rx.services.process.domain.EndEventDefinition",
             "lastUpdateTime": "2020-06-15T18:22:23.329+0000",
-            "lastChangedBy": "tadmin",
-            "owner": "tadmin",
+            "lastChangedBy": "tadmin@petramco.com",
+            "owner": "tadmin@petramco.com",
             "name": "End",
             "tags": null,
             "description": null,
@@ -773,8 +773,8 @@ export const THREE_TASKFLOW_SEQUENTIAL = {
         {
             "resourceType": "com.bmc.arsys.rx.services.process.domain.StartEventDefinition",
             "lastUpdateTime": "2020-06-15T18:22:23.329+0000",
-            "lastChangedBy": "tadmin",
-            "owner": "tadmin",
+            "lastChangedBy": "tadmin@petramco.com",
+            "owner": "tadmin@petramco.com",
             "name": "Start",
             "tags": null,
             "description": null,
@@ -916,7 +916,7 @@ export const THREE_TASKFLOW_SEQUENTIAL = {
         {
             "resourceType": "com.bmc.arsys.rx.services.process.domain.record.ObjectFieldDefinition",
             "lastUpdateTime": "2020-06-15T18:22:23.329+0000",
-            "lastChangedBy": "tadmin",
+            "lastChangedBy": "tadmin@petramco.com",
             "owner": "dev_girish",
             "name": "DynamicData",
             "tags": null,
@@ -941,7 +941,7 @@ export const THREE_TASKFLOW_SEQUENTIAL = {
         {
             "resourceType": "com.bmc.arsys.rx.services.process.domain.record.RecordInstanceFieldDefinition",
             "lastUpdateTime": "2020-06-15T18:22:23.329+0000",
-            "lastChangedBy": "tadmin",
+            "lastChangedBy": "tadmin@petramco.com",
             "owner": "dev_girish",
             "name": "CaseRecord",
             "tags": null,
@@ -967,7 +967,7 @@ export const THREE_TASKFLOW_SEQUENTIAL = {
         {
             "resourceType": "com.bmc.arsys.rx.standardlib.record.CharacterFieldDefinition",
             "lastUpdateTime": "2020-06-15T18:22:23.329+0000",
-            "lastChangedBy": "tadmin",
+            "lastChangedBy": "tadmin@petramco.com",
             "owner": "dev_girish",
             "name": "CaseId",
             "tags": null,
