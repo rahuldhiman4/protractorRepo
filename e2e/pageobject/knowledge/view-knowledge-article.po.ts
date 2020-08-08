@@ -217,9 +217,7 @@ class ViewKnowledgePage {
         let month: string = new Number(numMonth).toString();
         let numDate: number = objDate.getDate();
         let date: string = new Number(numDate).toString();
-        if (numDate > 0 && numDate < 10) {
-            date = "0" + date;
-        }
+    
         let formatted_date: string = months[month] + " " + date + ", " + year;
         return formatted_date;
     }
