@@ -476,15 +476,16 @@ describe("Create Case Assignment Mapping", () => {
     });
 
     describe('[DRDMV-1495]: [Permissions] Case Assignment Mapping access', () => {
-        let randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let assignmentData,randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
 
         beforeAll(async () => {
-            let assignmentData = {
+            assignmentData = {
                 "assignmentMappingName": "DRDMV-1495" + randomStr,
                 "company": "Petramco",
                 "supportCompany": "Petramco",
+                "businessUnit": "HR Support",
                 "supportGroup": "Employee Relations",
-                "assignee": "qliu",
+                "assignee": "Elizabeth",
                 "categoryTier1": "Purchasing Card",
                 "categoryTier2": "Policies",
                 "categoryTier3": "Card Issuance",
@@ -542,6 +543,8 @@ describe("Create Case Assignment Mapping", () => {
         });
 
         afterAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteReadAccessOrAssignmentMapping(assignmentData.assignmentMappingName);
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -557,8 +560,8 @@ describe("Create Case Assignment Mapping", () => {
                 "businessUnit": "HR Support",
                 "supportGroup": "Employee Relations",
                 "assignee": "Elizabeth",
-                "categoryTier1": "Purchasing Card",
-                "priority": "Low",
+                "categoryTier1": "Talent Management",
+                "priority": "Critical",
             }
             assignmentData2 = {
                 "assignmentMappingName": randomStr + "2DRDMV8968",
@@ -567,9 +570,9 @@ describe("Create Case Assignment Mapping", () => {
                 "businessUnit": "HR Support",
                 "supportGroup": "Staffing",
                 "assignee": "Peter",
-                "categoryTier1": "Purchasing Card",
-                "categoryTier2": "Policies",
-                "priority": "Low",
+                "categoryTier1": "Talent Management",
+                "categoryTier2": "Learning and Development",
+                "priority": "Critical",
             }
             assignmentData3 = {
                 "assignmentMappingName": randomStr + "3DRDMV8968",
@@ -578,10 +581,10 @@ describe("Create Case Assignment Mapping", () => {
                 "businessUnit": "HR Support",
                 "supportGroup": "Training and Development",
                 "assignee": "Elizabeth",
-                "categoryTier1": "Purchasing Card",
-                "categoryTier2": "Policies",
-                "categoryTier3": "Card Issuance",
-                "priority": "Low",
+                "categoryTier1": "Talent Management",
+                "categoryTier2": "Learning and Development",
+                "categoryTier3": "Certifications",
+                "priority": "Critical",
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createCaseAssignmentMapping(assignmentData1);
@@ -593,7 +596,7 @@ describe("Create Case Assignment Mapping", () => {
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary("DRDMV-8968 Case Summary1");
             await createCasePage.setPriority(assignmentData1.priority);
-            await createCasePage.selectCategoryTier1("Purchasing Card");
+            await createCasePage.selectCategoryTier1("Talent Management");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePo.getAssignedGroupText()).toBe(assignmentData1.supportGroup);
@@ -602,8 +605,8 @@ describe("Create Case Assignment Mapping", () => {
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary("DRDMV-8968 Case Summary2");
             await createCasePage.setPriority(assignmentData2.priority);
-            await createCasePage.selectCategoryTier1("Purchasing Card");
-            await createCasePage.selectCategoryTier2("Policies");
+            await createCasePage.selectCategoryTier1("Talent Management");
+            await createCasePage.selectCategoryTier2("Learning and Development");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePo.getAssignedGroupText()).toBe(assignmentData2.supportGroup);
@@ -612,9 +615,9 @@ describe("Create Case Assignment Mapping", () => {
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary("DRDMV-8968 Case Summary3");
             await createCasePage.setPriority(assignmentData3.priority);
-            await createCasePage.selectCategoryTier1("Purchasing Card");
-            await createCasePage.selectCategoryTier2("Policies");
-            await createCasePage.selectCategoryTier3("Card Issuance");
+            await createCasePage.selectCategoryTier1("Talent Management");
+            await createCasePage.selectCategoryTier2("Learning and Development");
+            await createCasePage.selectCategoryTier3("Certifications");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePo.getAssignedGroupText()).toBe(assignmentData3.supportGroup);

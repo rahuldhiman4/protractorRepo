@@ -606,12 +606,14 @@ describe('Task Console Preset Filter', () => {
             taskId.push(response2.displayId);
             await apiHelper.updateCaseStatus(response1.id, 'InProgress');
             await apiHelper.updateTaskStatus(response2.id, 'InProgress');
+            await browser.sleep(3000); // required to breach SLA
 
             let response3 = await apiHelper.createCase(taskData.ASSIGNED_CRITICAL);
             let response4 = await apiHelper.createAdhocTask(response3.id, taskData.TASK_DATA_CRITICAL_PRIORITY);
             taskId.push(response4.displayId);
             await apiHelper.updateCaseStatus(response3.id, 'InProgress');
             await apiHelper.updateTaskStatus(response4.id, 'Pending');
+            await browser.sleep(3000); // required to breach SLA
 
             let response7 = await apiHelper.createCase(taskData.ASSIGNED_CRITICAL);
             let response8 = await apiHelper.createAdhocTask(response7.id, taskData.TASK_DATA_CRITICAL_PRIORITY);
@@ -629,11 +631,11 @@ describe('Task Console Preset Filter', () => {
             await utilityGrid.applyPresetFilter('All Open Breached Tasks');
             expect(await utilityGrid.getAppliedFilterName()).toBe('All Open Breached Tasks');
 
-            await browser.sleep(150000);
+            await browser.sleep(150000); // required to breach SLA
             expect(await utilityGrid.isGridRecordPresent(taskId[7])).toBeFalsy(taskId[7] + ' :Record is available');
         });
         it('[DRDMV-20889]: Validate the All Open Breached Tasks filter after applying and removing the filter', async () => {
-            browser.sleep(140000);
+            browser.sleep(140000); // required to breach SLA
             for (let i: number = 4; i < 7; i++) {
                 expect(await utilityGrid.isGridRecordPresent(taskId[i])).toBeTruthy(taskId[i] + ' :Record is not available');
             }
@@ -707,12 +709,14 @@ describe('Task Console Preset Filter', () => {
             taskId.push(response2.displayId);
             await apiHelper.updateCaseStatus(response1.id, 'InProgress');
             await apiHelper.updateTaskStatus(response2.id, 'InProgress');
+            await browser.sleep(3000); // required to breach SLA
 
             let response3 = await apiHelper.createCase(taskData.ASSIGNED_CRITICAL);
             let response4 = await apiHelper.createAdhocTask(response3.id, taskData.TASK_DATA_CRITICAL_PRIORITY);
             taskId.push(response4.displayId);
             await apiHelper.updateCaseStatus(response3.id, 'InProgress');
             await apiHelper.updateTaskStatus(response4.id, 'Pending');
+            await browser.sleep(3000); // required to breach SLA
 
             let response7 = await apiHelper.createCase(taskData.ASSIGNED_CRITICAL);
             let response8 = await apiHelper.createAdhocTask(response7.id, taskData.TASK_DATA_CRITICAL_PRIORITY);
