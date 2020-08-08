@@ -18,7 +18,7 @@ class NotificationAlerts {
         let status = false;
         for (let i = 0; i < cnt; i++) {
             let notification: string = await $$(this.selectors.alerts).get(i).$('.item-content-text p').getText();
-            if (await notification.includes(msg)) {
+            if (notification.replace(/\s/g, "").includes(msg.replace(/\s/g, ""))) {
                 status = true;
                 break;
             }

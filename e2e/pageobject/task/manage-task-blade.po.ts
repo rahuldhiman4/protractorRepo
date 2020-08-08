@@ -43,13 +43,10 @@ class ManageTaskBlade {
     }
 
     async clickAddAdhocTaskButton(): Promise<void> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.closeButton)));
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addAdhocTaskButton)));
         await $(this.selectors.addAdhocTaskButton).click();
     }
 
     async setTaskSearchBoxValue(input: string): Promise<void> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.searchTextbox)));
         await $(this.selectors.searchTextbox).clear();
         await $(this.selectors.searchTextbox).sendKeys(input, Key.ENTER);
     }
@@ -59,7 +56,6 @@ class ManageTaskBlade {
     }
 
     async clickTaskGridRefresh(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.refreshButton)));
         await $(this.selectors.refreshButton).click();
     }
 
@@ -72,27 +68,19 @@ class ManageTaskBlade {
     }
 
     async clickFirstCheckBoxInTaskTemplateSearchGrid(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.recommendedTemplateCheckbox)));
-        //        await browser.sleep(3000);
         await $$(this.selectors.recommendedTemplateCheckbox).first().click();
     }
 
     async clickTaskGridSaveButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
     }
 
     async clickTaskGridCancelButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.canceltaskTemplatbutton)));
         await $(this.selectors.canceltaskTemplatbutton).click();
     }
 
     async clickCloseButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.closeButton)));
         await $(this.selectors.closeButton).click();
-        //        await browser.wait(this.EC.invisibilityOf($('.modal-dialog')));
-        //        await browser.wait(this.EC.visibilityOf($(caseViewPage.selectors.editLink)));
-        //        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async isTaskLinkPresent(taskSummary: string): Promise<boolean> {

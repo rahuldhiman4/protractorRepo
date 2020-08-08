@@ -55,12 +55,10 @@ class ViewTaskTemplate {
     }
 
     async getDynamicFieldTitle(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.dynamicFieldTitle)));
         return await $(this.selectors.dynamicFieldTitle).getText();
     }
 
     async isDynamicFieldPresent(dynamic: string): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.dynamicField)));
         return await element(by.cssContainingText(this.selectors.dynamicField, dynamic)).isPresent().then(async (result) => {
             if (result) {
                 return await element(by.cssContainingText(this.selectors.dynamicField, dynamic)).getText() == dynamic ? true : false;
@@ -72,12 +70,10 @@ class ViewTaskTemplate {
     }
 
     async clickOnManageDynamicFieldLink(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.manageDynamicField)));
         await $(this.selectors.manageDynamicField).click();
     }
 
     async isManageDynamicFieldLinkDisplayed(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.manageDynamicField)));
         return await $(this.selectors.manageDynamicField).isPresent().then(async (result) => {
             if (result) {
                 return await $(this.selectors.manageDynamicField).getText() ? true : false;
@@ -89,52 +85,42 @@ class ViewTaskTemplate {
     }
 
     async getOwnerCompanyValue(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.ownerCompanyValue)));
         return await $(this.selectors.ownerCompanyValue).getText();
     }
 
     async getBuisnessunitValue(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.ownerCompanyValue)));
         return await $(this.selectors.buisnessunitValue).getText();
     }
 
     async getDepartmentValue(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.ownerCompanyValue)));
         return await $(this.selectors.departmentValue).getText();
     }
 
     async getLabelValue(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.ownerCompanyValue)));
         return await $(this.selectors.label).getText();
     }
 
     async getOwnerGroupValue(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.ownerGroupValue)));
         return await $(this.selectors.ownerGroupValue).getText();
     }
 
     async getProcessNameValue(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.processnameValue)));
         return await $(this.selectors.processnameValue).getText();
     }
 
     async getTemplateName(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.templateName)));
         return await $(this.selectors.templateName).getText();
     }
 
     async getTemplateStatus(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.templateStatus)));
         return await $(this.selectors.templateStatus).getText();
     }
 
     async clickOnCopyTemplate(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.copyTaskButton)));
         await $(this.selectors.copyTaskButton).click();
     }
 
     async clickOnEditProcessLink(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editProcessLink)));
         await $(this.selectors.editProcessLink).click();
     }
 
@@ -150,52 +136,42 @@ class ViewTaskTemplate {
     }
 
     async clickOnEditLink(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editLink)));
         await $(this.selectors.editLink).click();
     }
 
     async getSummaryValue(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.summaryValue)));
         return await $(this.selectors.summaryValue).getText();
     }
 
     async getTaskTypeValue(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.taskTypeValue)));
         return await $(this.selectors.taskTypeValue).getText();
     }
 
     async getTaskDescriptionNameValue(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.taskDescriptionValue)));
         return await $(this.selectors.taskDescriptionValue).getText();
     }
 
     async getTaskCompanyNameValue(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.taskCompanyValue)));
         return await $(this.selectors.taskCompanyValue).getText();
     }
 
     async getTaskTemplateId(): Promise<string> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.taskTemplateId)));
         return await $(this.selectors.taskTemplateId).getText();
     }
 
     async getCategoryTier1Value(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier1Value)));
         return await $(this.selectors.categoryTier1Value).getText();
     }
 
     async getCategoryTier2Value(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier2Value)));
         return await $(this.selectors.categoryTier2Value).getText();
     }
 
     async getCategoryTier3Value(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier3Value)));
         return await $(this.selectors.categoryTier3Value).getText();
     }
 
     async getCategoryTier4Value(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier4Value)));
         return await $(this.selectors.categoryTier4Value).getText();
     }
 
@@ -260,7 +236,6 @@ class ViewTaskTemplate {
     }
 
     async isEditButtonPresent(): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editLink)));
         return await $(this.selectors.editLink).isPresent().then(async (result) => {
             if (result) {
                 return await $(this.selectors.editLink).isDisplayed();
@@ -276,12 +251,10 @@ class ViewTaskTemplate {
     }
 
     async getAssigneeBusinessUnitValue(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.ownerCompanyValue)));
         return await $(this.selectors.assigneeBusinessUnitValue).getText();
     }
 
     async getAssigneeDepartmentValue(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.ownerCompanyValue)));
         return await $(this.selectors.assigneeDepartmentValue).getText();
     }
 

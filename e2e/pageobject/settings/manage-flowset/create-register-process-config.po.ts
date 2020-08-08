@@ -24,27 +24,22 @@ class CreateFlowset {
     }
 
     async isCompanyRequiredTextDisplayed(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.company)));
         return await utilCommon.isRequiredTagToField(this.selectors.companyGuid);
     }
 
     async isProcessRequiredTextDisplayed(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.ProcessNameGuid)));
         return await utilCommon.isRequiredTagToField(this.selectors.ProcessNameGuid);
     }
 
     async isStatusRequiredTextDisplayed(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.statusGuid)));
         return await utilCommon.isRequiredTagToField(this.selectors.statusGuid);
     }
 
     async isProcessAliasRequiredTextDisplayed(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.processAliasname)));
         return await utilCommon.isRequiredTagToField(this.selectors.processAliasGuid);
     }
 
     async isDescriptionRequiredTextDisplayed(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.description)));
         return await utilCommon.isRequiredTagToField(this.selectors.descriptionGuid);
     }
 
@@ -92,29 +87,21 @@ class CreateFlowset {
     }
 
     async clickOnStatus(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.status)));
         await ($(this.selectors.status)).click;
     }
     async clickSaveButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.savebutton)));
         await ($(this.selectors.savebutton)).click();
-        //        await utilCommon.closePopUpMessage();
     }
 
     async isSaveButtonEnabled(): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.savebutton)));
         return await $(this.selectors.savebutton).isEnabled();
-        //        await utilCommon.closePopUpMessage();
     }
 
     async isErrorMsgPresent(): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.savebutton)));
         return await utilCommon.isErrorMsgPresent();
-        //        await utilCommon.closePopUpMessage();
     }
 
     async clickCancelButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         await ($(this.selectors.cancelButton)).click();
     }
 
@@ -123,20 +110,14 @@ class CreateFlowset {
     }
 
     async setDescription(description: string): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.description)));
         await ($(this.selectors.description)).clear();
         await ($(this.selectors.description)).sendKeys(description);
     }
 
     async setAliasName(alias: string): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.processAliasname)));
         await ($(this.selectors.processAliasname)).clear();
         await ($(this.selectors.processAliasname)).sendKeys(alias);
     }
-
-
-
-
 }
 
 export default new CreateFlowset();

@@ -32,6 +32,12 @@ import goalTypeConfigConsole from "../../pageobject/settings/slm/goal-type-confi
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilGrid from "../../utils/util.grid";
 import utilityCommon from '../../utils/utility.common';
+import serviceTargetConsolePage from '../../pageobject/settings/slm/service-target-viewconsole.po';
+import editServiceTargetConfigPage from '../../pageobject/settings/slm/edit-service-target-config.po';
+import serviceTargetGroupConsole from '../../pageobject/settings/slm/service-target-group-console.po';
+import editServiceTargetGroupPage from '../../pageobject/settings/slm/edit-service-target-group-config.po';
+import notificationTemplateConsolePage from '../../pageobject/settings/notification-config/console-notificationTemplate.po';
+import editNotificationTemplatePage from '../../pageobject/settings/notification-config/edit-notification-template.po';
 
 describe('Case Manager Read-only Config', () => {
     beforeAll(async () => {
@@ -362,4 +368,86 @@ describe('Case Manager Read-only Config', () => {
         expect(await editAcknowledementTemplatePage.isEditButtonEnabled()).toBeFalsy('Edit Subject button is enabled');
         await utilityCommon.refresh();
     });
+
+    //asahitya
+    it('[DRDMV-18170]: Check Case manager is not able to perform Create Update operation on Service Target', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await apiHelper.apiLogin('qkatawazi');
+        const svtData = {
+            "terms": "'1000000063'=\"cb500f4763edeb302d4644e2d5cf22372543dedda74717135ffc927758066570c1a59648f541d5392790876c312fcf2a0501a76d13290562cce65a69c48e7356\"",
+            "readableTerms": "'Company'=\"Petramco\"",
+            "startWhen": "'450000021'=\"5000\"",
+            "readableStartWhen": "'Status'=\"Resolved\"",
+            "stopWhen": "'450000021'=\"7000\"",
+            "readableStopWhen": "'Status'=\"Closed\"",
+            "goalTimeMinutes": "4",
+            "dataSource": "Case Management",
+            "company": "Petramco",
+            "svtName": "DRDMV-18170"
+        }
+        svtData.svtName = "DRDMV-18170" + randomStr;
+        await apiHelper.createSVT(svtData);
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
+        expect(await serviceTargetConsolePage.isAddSVTButtonEnabled()).toBeFalsy('Add SVT button is enabled');
+        await utilGrid.searchAndOpenHyperlink("DRDMV-18170" + randomStr);
+        expect(await editServiceTargetConfigPage.isStatusFieldDisabled()).toBeTruthy('Status field is enabled');
+        expect(await editServiceTargetConfigPage.isBuildExpressionButtonEnabled()).toBeFalsy('Build Expression button is enabled');
+        expect(await editServiceTargetConfigPage.isDescriptionFieldEnabled()).toBeFalsy('Description field is enabled');
+        expect(await editServiceTargetConfigPage.isGoalDaysFieldEnabled()).toBeFalsy('Goal Days field is enabled');
+        expect(await editServiceTargetConfigPage.isGoalHoursFieldEnabled()).toBeFalsy('Goal Hours field is enabled');
+        expect(await editServiceTargetConfigPage.isGoalMinutesFieldEnabled()).toBeFalsy('Goal Minutes field is enabled');
+        await editServiceTargetConfigPage.expandSection('Measurement');
+        expect(await editServiceTargetConfigPage.isSetWarningstatusFieldEnabled()).toBeFalsy('Set Warning status field is enabled');
+        expect(await editServiceTargetConfigPage.isStartWhenBuildExpressionButtonEnabled()).toBeFalsy('Build Expression button on Start when is enabled');
+        await editServiceTargetConfigPage.expandSection('Milestones');
+        expect(await editServiceTargetConfigPage.isAddMilestoneButtonEnabled()).toBeFalsy('Add Milestone button is enabled');
+        expect(await editServiceTargetConfigPage.isEditMilestoneButtonEnabled()).toBeFalsy('Add Milestone button is enabled');
+        expect(await editServiceTargetConfigPage.isAddMilestoneButtonEnabled()).toBeFalsy('Edit Milestone button is enabled');
+        expect(await editServiceTargetConfigPage.isDeleteMilestoneButtonEnabled()).toBeFalsy('Delete Milestone button is enabled');
+        expect(await editServiceTargetConfigPage.isSaveButtonEnabled()).toBeFalsy('Save button is enabled');
+    });
+
+    it('[DRDMV-18171]: Check Case manager is not able to perform Create Update Delete operation on Service Target Group', async () => {
+        let svtGrpName = 'DRDMV-18171' + [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.createServiceTargetGroup(svtGrpName, 'Case Management');
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target Group', 'Service Target Group - Administration - Business Workflows');
+        expect(await serviceTargetGroupConsole.isAddServiceTargetGroupBtnEnabled()).toBeFalsy('Add Button is enabled');
+        await utilGrid.searchAndOpenHyperlink(svtGrpName);
+        expect(await editServiceTargetGroupPage.isSVTGroupNameEnabled()).toBeFalsy('SVT Group name is enabled');
+        expect(await editServiceTargetGroupPage.isSVTSelectRadioBtnDisabled()).toBeTruthy('SVT Selection is enabled');
+        expect(await editServiceTargetGroupPage.isSaveBtnEnabled()).toBeFalsy('Save button is enabled');
+        await editServiceTargetGroupPage.clickClose();
+        await utilGrid.searchAndSelectGridRecord(svtGrpName);
+        expect(await serviceTargetGroupConsole.isDeleteButtonEnabled()).toBeFalsy('Delete Button is enabled'); 
+    });
+
+    //asahitya
+    it('[DRDMV-18041]: Check Case manager is not able to perform Create Update Delete operation on Notification Configuration', async () => {
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Notification Template - Business Workflows');
+        expect(await notificationTemplateConsolePage.isAddNotificationTemplateBtnDisplayed()).toBeFalsy('Add Button is enabled');
+        await utilGrid.searchAndSelectGridRecord('Cancel Template');
+        expect(await notificationTemplateConsolePage.isDeleteNotificationTemplateBtnDisplayed()).toBeFalsy('Delete Button is enabled');
+        await utilGrid.clearGridSearchBox();
+        await utilGrid.searchAndOpenHyperlink('Cancel Template');
+        expect(await editNotificationTemplatePage.isDescriptionFieldDisabled()).toBeTruthy('Description field is enabled');
+        expect(await editNotificationTemplatePage.isEventDropdownDisabled()).toBeTruthy('Event dropdown is enabled');
+        expect(await editNotificationTemplatePage.isAddLocalizedButtonEnabled()).toBeFalsy('Add Localized button is enabled');
+        expect(await editNotificationTemplatePage.isAddRecipientButtonEnabled()).toBeFalsy('Add Recipents button is enabled');
+        expect(await editNotificationTemplatePage.isSaveButtonEnabled()).toBeFalsy('Save button is enabled');
+        await editNotificationTemplatePage.openAlertEditMessageText();
+        expect(await editNotificationTemplatePage.isAlertSubjectMessageDisabled()).toBeTruthy('Alert textbox is enabled');
+        await editNotificationTemplatePage.cancelAlertMessageText();
+        await editNotificationTemplatePage.clickOnEmailTab();
+        await editNotificationTemplatePage.openEmailBodyEditMessageText();
+        expect(await editNotificationTemplatePage.isEmailBodyMessageDisabled()).toBeTruthy('Email body textbox is enabled');
+        await editNotificationTemplatePage.cancelEmailBodyBlade();
+        await editNotificationTemplatePage.openEmailSubjectEditMessageText();
+        expect(await editNotificationTemplatePage.isEmailSubjectMessageDisabled()).toBeTruthy('Email subject textbox is enabled');
+        await editNotificationTemplatePage.cancelEmailSubjectBlade();
+    });
+
 });

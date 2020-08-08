@@ -33,7 +33,6 @@ class PreviewTaskTemplateBlade {
     }
 
     async clickOnBackButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.backButton)));
         await $(this.selectors.backButton).click();
     }
 
@@ -42,12 +41,10 @@ class PreviewTaskTemplateBlade {
     }
 
     async getTaskTemplateName(): Promise<string> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.taskTemplateName)));
         return await $(this.selectors.taskTemplateName).getText();
     }
 
     async getTaskSummary(): Promise<string> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.taskSummaryValue)));
         return await $(this.selectors.taskSummaryValue).getText();
     }
 
@@ -59,17 +56,14 @@ class PreviewTaskTemplateBlade {
     }
 
     async getTaskType(): Promise<string> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.taskTypeValue)));
         return await $(this.selectors.taskTypeValue).getText();
     }
 
     async getTaskPriority(): Promise<string> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.taskPriorityValue)));
         return await $(this.selectors.taskPriorityValue).getText();
     }
 
     async isTaskSummaryTitleDisplayed(taskSummary: string): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.taskummary)));
         return await utilityCommon.isFieldLabelDisplayed(this.selectors.taskSummary, taskSummary);
     }
 

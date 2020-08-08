@@ -83,6 +83,26 @@ class AssignmentsConfigConsolePage {
 //        await utilCommon.waitUntilSpinnerToHide();
     }
 
+    async deleteDefaultAssignmentConfig(): Promise<void> {
+        await utilGrid.clearFilter();
+        await this.addFilter('Default Mapping', 'True', 'checkbox');
+        await $('div.ui-grid-row').isPresent().then(async (result) => {
+            if (result) {
+                await utilGrid.selectAllCheckBox();
+                await this.clickDeleteButton();
+                await utilCommon.clickOnWarningOk();
+                await utilCommon.closePopUpMessage();
+                await utilGrid.clearFilter();
+            } else {
+                await utilGrid.clearFilter();
+            }
+        });
+    }
+
+    async getSelectedGridRecordValue(columnHeader: string): Promise<string> {
+        return await utilGrid.getSelectedGridRecordValue(this.selectors.guid, columnHeader);
+    }
+
 }
 
 export default new AssignmentsConfigConsolePage();

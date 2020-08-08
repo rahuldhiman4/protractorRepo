@@ -10,14 +10,11 @@ class AddRelatedCasesPopupPage {
     }
 
     async clickNextButton() {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.nextButton)));
         await $(this.selectors.nextButton).click();
     }
 
     async clickSaveButton() {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
-//        util.waitUntilSpinnerToHide();
     }
 
     async searchAndSelectEntity(caseId: string): Promise<void> {

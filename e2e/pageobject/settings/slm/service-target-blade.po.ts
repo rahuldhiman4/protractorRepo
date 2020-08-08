@@ -1,6 +1,5 @@
 import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import SlmExpressionBuilder from './slm-expressionbuilder.pop.po';
-import utilCommon from '../../../utils/util.common';
 
 class ServiceTargetConfig {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;

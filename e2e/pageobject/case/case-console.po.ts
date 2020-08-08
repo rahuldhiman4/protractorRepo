@@ -27,29 +27,24 @@ class CaseConsolePage {
     }
 
     async clickFirstLinkInCaseSearchGrid(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.recommendedCaseLink)));
         await $$(this.selectors.recommendedCaseLink).first().click();
     }
 
     async isCaseIdHyperlinked(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.recommendedCaseLink)));
         return await $$(this.selectors.recommendedCaseLink).first().isDisplayed();
     }
 
     async getCaseTitle(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.caseTitle)));
         return await $(this.selectors.caseTitle).getText();
     }
 
     async clickFirstCheckBoxInCaseSearchGrid(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.recommendedCaseCheckBox)));
         await $(this.selectors.recommendedCaseCheckBox).click();
     }
 
     async searchCase(caseId: string): Promise<void> {
         await utilityGrid.clearFilter();
         await utilityGrid.searchRecord(caseId);
-        //        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async searchAndOpenCase(caseId: string): Promise<void> {
@@ -82,62 +77,52 @@ class CaseConsolePage {
     }
 
     async clickOnAddToWatchlist(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addToWatchlist)));
         await $(this.selectors.addToWatchlist).click();
     }
 
     async clickOnWatchlistIcon(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.watchlistIcon)));
         await $(this.selectors.watchlistIcon).click();
-        //        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async getAddToWatchlistText(): Promise<string> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addToWatchlist)));
         return await $(this.selectors.addToWatchlist).getText();
     }
 
     async getWatchlistIconText(): Promise<string> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.watchlistIcon)));
         return await $(this.selectors.watchlistIcon).getText();
     }
 
     async clickOnChangeAssignmentButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.changeAssignment)));
         await $(this.selectors.changeAssignment).click();
     }
 
     async selectAllCases(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.selectAllrows)));
         await $(this.selectors.selectAllrows).click();
     }
 
     async isAllCasesSelected(): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addToWatchlist)));
         let allCheckboxCount: number = await $$(this.selectors.allCheckboxes).count();
         let selectedCheckboxCount: number = await $$(this.selectors.selectedCheckboxes).count();
         return selectedCheckboxCount == allCheckboxCount;
     }
 
     async isAllCasesUnSelected(): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addToWatchlist)));
         let allCheckboxCount: number = await $$(this.selectors.allCheckboxes).count();
         let unSelectedCheckboxCount: number = await $$(this.selectors.unselectedCheckboxes).count();
         return unSelectedCheckboxCount == allCheckboxCount;
     }
 
     async areCaseGridColumnMatches(columnNames: string[]): Promise<boolean> {
-        return await utilityGrid.areColumnHeaderMatches(columnNames,this.selectors.guid);
+        return await utilityGrid.areColumnHeaderMatches(columnNames, this.selectors.guid);
     }
 
     async addRequestedCaseGridColumn(columnNames: string[]): Promise<void> {
-        await utilityGrid.addGridColumn(columnNames,this.selectors.guid);
+        await utilityGrid.addGridColumn(columnNames, this.selectors.guid);
     }
 
     async removeRequestedCaseGridColumn(columnNames: string[]): Promise<void> {
-        await utilityGrid.removeGridColumn(columnNames,this.selectors.guid);
+        await utilityGrid.removeGridColumn(columnNames, this.selectors.guid);
     }
-
 }
 
 export default new CaseConsolePage();

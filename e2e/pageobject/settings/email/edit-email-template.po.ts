@@ -34,7 +34,6 @@ class CreateEmailTemplateBlade {
     }
 
     async clickOnLocalizeMessageButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.localizeMessage)));
         await $(this.selectors.localizeMessage).click();
     }
 
@@ -43,17 +42,14 @@ class CreateEmailTemplateBlade {
     }
 
     async setSubjectOfNewLocalizedEmailMessage(subject: string): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.newLocalizeMessageEmailMessageSubject)));
         await $(this.selectors.newLocalizeMessageEmailMessageSubject).sendKeys(subject);
     }
 
     async setBody(body: string): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.body)));
         await $(this.selectors.body).sendKeys(body);
     }
 
     async clickOnGridEditButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editButton)));
         await $(this.selectors.editButton).click();
     }
 
@@ -62,13 +58,11 @@ class CreateEmailTemplateBlade {
     }
 
     async clickOnGridSearchIcon(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.searchButtonClick)));
         await $(this.selectors.searchButtonClick).click();
     }
 
     async searchOnGridConsole(value: string): Promise<void> {
         await utilGrid.searchOnGridConsole(value);
-        //        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async searchAndSelectGridRecord(value: string): Promise<void> {
@@ -76,17 +70,14 @@ class CreateEmailTemplateBlade {
     }
 
     async isModuleNameDisabled(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.moduleName)));
         return await $(this.selectors.moduleName).getAttribute("disabled") == "true";
     }
 
     async isCompanyDropDownDisabled(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.company)));
         return await $(this.selectors.company).getAttribute("disabled") == "true";
     }
 
     async isLocalizedMessageButtonDisplayed(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.localizeMessage)));
         return await $(this.selectors.localizeMessage).isDisplayed();
     }
 
@@ -99,7 +90,6 @@ class CreateEmailTemplateBlade {
     }
 
     async updateDescription(descriptionText: string): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.description)));
         await $(this.selectors.description).clear();
         await $(this.selectors.description).sendKeys(descriptionText);
     }
@@ -109,19 +99,16 @@ class CreateEmailTemplateBlade {
     }
 
     async updateEditMessageTextBladeBody(body: string): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.body)));
         await $(this.selectors.body).clear();
         await $(this.selectors.body).sendKeys(body);
     }
 
     async updateEditMessageTextBladeSubject(subject: string): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editMessageTextBladeSubjectMessage)));
         await $(this.selectors.editMessageTextBladeSubjectMessage).clear();
         await $(this.selectors.editMessageTextBladeSubjectMessage).sendKeys(subject);
     }
 
     async clickOnEditMessageTextBladeCancelButtonForBody(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         await $(this.selectors.cancelButton).click();
     }
 
@@ -138,23 +125,19 @@ class CreateEmailTemplateBlade {
     }
 
     async clickOnSaveButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
     }
 
     async clickOnCancelButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         await $(this.selectors.cancelButton).click();
     }
 
     async isSaveButtonEnabled(): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         return await $(this.selectors.saveButton).isEnabled();
     }
 
     async clearGridSearchBox(): Promise<void> {
         await utilGrid.clearGridSearchBox();
-        //        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async isLocalizedMessageButtonEnabled(): Promise<boolean> {
@@ -182,12 +165,10 @@ class CreateEmailTemplateBlade {
     }
 
     async clickOnAttachLink(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.attachLink)));
         await $(this.selectors.attachLink).click();
     }
 
     async removeAttachedDocument(removeattachmentNumber: number): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.attachLink)));
         await $$(this.selectors.removeAttachment).get(removeattachmentNumber - 1).click();
     }
 

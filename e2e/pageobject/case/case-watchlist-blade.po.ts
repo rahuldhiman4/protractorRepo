@@ -30,53 +30,40 @@ class CaseWatchlistBlade {
     }
 
     async saveEvents(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
-//        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async isCasePresent(caseId: string): Promise<boolean> {
         await utilityGrid.searchRecord(caseId, this.selectors.guid);
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.backButton)));
         let status = await element(by.cssContainingText(this.selectors.caseLinks, caseId)).isPresent();
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.clearSearchicon)));
         await $(this.selectors.clearSearchicon).click();
-//        await utilCommon.waitUntilSpinnerToHide();
         return status;
     }
 
     async selectAllCases(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.selectAllrows)));
         await $(this.selectors.selectAllrows).click();
     }
 
     async isAllCasesSelected(): Promise<boolean> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.backButton)));
         let allCheckboxCount: number = await $$(this.selectors.allCheckboxes).count();
         let selectedCheckboxCount: number = await $$(this.selectors.selectedCheckboxes).count();
         return selectedCheckboxCount == allCheckboxCount;
     }
 
     async isAllCasesUnSelected(): Promise<boolean> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.backButton)));
         let allCheckboxCount: number = await $$(this.selectors.allCheckboxes).count();
         let unSelectedCheckboxCount: number = await $$(this.selectors.unselectedCheckboxes).count();
         return unSelectedCheckboxCount == allCheckboxCount;
     }
 
     async searchCase(searchValue: string): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.searchInput)));
         await $(this.selectors.searchInput).clear();
         await $(this.selectors.searchInput).sendKeys(searchValue);
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.searchIcon)));
         await $(this.selectors.searchIcon).click();
-//        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async isCaseSearchGiveCorrectResult(caseId: string): Promise<boolean> {
         await utilityGrid.searchRecord(caseId, this.selectors.guid);
-        //await this.searchCase(caseId);
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.caseLinks)));
         let count: number =  await $$(this.selectors.caseLinks).count();
         return count==1 && await $$(this.selectors.caseLinks).first().getText()==caseId;
     }
@@ -121,14 +108,10 @@ class CaseWatchlistBlade {
     }
 
     async clickOnRemoveBtn(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.removeBtn)));
         await $(this.selectors.removeBtn).click();
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.searchIcon)));
-//        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async clickOnUpdateWatchlistEventsBtn(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.updateWatchlistEventsButton)));
         await $(this.selectors.updateWatchlistEventsButton).click();
     }
 
@@ -147,63 +130,51 @@ class CaseWatchlistBlade {
     }
 
     async clickOnBackBtn(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.backButton)));
         await $(this.selectors.backButton).click();
-//        await browser.wait(this.EC.invisibilityOf($(this.selectors.watchListModal)));
     }
 
     async getCaseAssignmentChangesLabel(): Promise<string> {
         let locator = await $$(this.selectors.watchlistEvents).get(0);
-//        await browser.wait(this.EC.elementToBeClickable(locator));
         return await locator.getText();
     }
 
     async getCaseGroupAssignmentChangesLabel(): Promise<string> {
         let locator = await $$(this.selectors.watchlistEvents).get(1);
-//        await browser.wait(this.EC.elementToBeClickable(locator));
         return await locator.getText();
     }
 
     async getCaseStatusChangesLabel(): Promise<string> {
         let locator = await $$(this.selectors.watchlistEvents).get(2);
-//        await browser.wait(this.EC.elementToBeClickable(locator));
         return await locator.getText();
     }
 
     async getSaveButtonLabel(): Promise<string> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.saveButton)));
         return await $(this.selectors.saveButton).getText();
     }
 
     async getCloseButtonLabel(): Promise<string> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.closeButton)));
         return await $(this.selectors.closeButton).getText();
     }
 
     async getRemoveButtonLabel(): Promise<string> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.removeBtn)));
         return await $(this.selectors.removeBtn).getText();
     }
 
     async getUpdateWatchlistEventsButtonLabel(): Promise<string> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.updateWatchlistEventsButton)));
         return await $(this.selectors.updateWatchlistEventsButton).getText();
     }
 
     async openCase(caseId: string): Promise<void> {
         await this.sortDescendingByCaseId();
         let locator = await element(by.cssContainingText(this.selectors.caseLinks, caseId));
-//        await browser.wait(this.EC.elementToBeClickable(locator));
         await locator.click();
     }
 
     async isSaveEventsButtonEnabled(): Promise<boolean>{
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.closeButton)));
         return await $(this.selectors.saveButton).isEnabled();
     }
 
     async clickOnCloseButton(): Promise<void>{
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.closeButton)));
         await $(this.selectors.closeButton).click();
     }
 
@@ -220,7 +191,6 @@ async sortDescendingByCaseId(): Promise<void>{
     await descendingSign.click();
     await $$('.d-icon-refresh').last().click();
         }
-
 }
 
 export default new CaseWatchlistBlade();

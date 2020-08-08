@@ -17,79 +17,64 @@ class EditDocumentTemplatePage {
     }
 
     async isDocumentBodyImgDisplay(): Promise<boolean> {
-//        await browser.wait(this.EC.presenceOf($(this.selectors.documentBodyImg)));
         return await $(this.selectors.documentBodyImg).isDisplayed();
     }
 
     async updateDescription(descriptionText: string): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.description)));
         await $(this.selectors.description).clear();
         await $(this.selectors.description).sendKeys(descriptionText);
     }
 
     async updateDocumentBody(descriptionText: string): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.documentBody)));
         await $(this.selectors.documentBody).clear();
         await $(this.selectors.documentBody).sendKeys(descriptionText);
     }
 
     async selectLabelDropDown(value: string): Promise<void> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.cancelButton)));
         await utilCommon.selectDropDown(this.selectors.labelDropDownGuid, value);
     }
 
     async isHeaderDisplayed(headerName: string): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.pageHeader)));
         return await element(by.cssContainingText(this.selectors.pageHeader, headerName)).isDisplayed();
     }
 
     async clickOnSaveButton(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
     }
 
     async clickOnCancelButton(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         await $(this.selectors.cancelButton).click();
     }
 
     async isTemplateNameDisplayed(templateName: string): Promise<boolean> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.templateName)));
         let attribute = await $(this.selectors.templateName).getAttribute('value');
         return attribute == templateName ? true : false
     }
 
     async isCompanyDropDownDisabled(): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.company)));
         return await $(this.selectors.company).getAttribute('disabled') == 'true';
     }
 
     async isTemplateNameDisabled(): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.templateName)));
         return await $(this.selectors.templateName).getAttribute('readonly') == 'true';
     }
 
     async isCompanyNameDisplayed(companyName: string): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.company).$('.ui-select-match-text')));
         let getText = await $(this.selectors.company).$('.ui-select-match-text').getText();
-        console.log('This is company name: '+getText)
         return getText == companyName ? true : false
     }
 
     async isLabelValueDisplayed(companyName: string): Promise<boolean> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.labelDropDown)));
         let getText = await $(this.selectors.labelDropDown).getText();
         return getText == companyName ? true : false
     }
 
     async isDescriptionValueDisplayed(descriptionName: string): Promise<boolean> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.description)));
         let attribute = await $(this.selectors.description).getAttribute('value');
         return attribute == descriptionName ? true : false
     }
 
     async isDocumentBodyDisplayed(documentBody: string): Promise<boolean> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.documentBody)));
         let attribute = await $(this.selectors.documentBody).getText();
         return attribute == documentBody ? true : false
     }

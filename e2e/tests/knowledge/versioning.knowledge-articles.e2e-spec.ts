@@ -23,6 +23,7 @@ import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from "../../utils/utility.grid";
 import statusConfigPO from '../../pageobject/settings/common/status-config.po';
+import changeAssignmentBlade from "../../pageobject/common/change-assignment-blade.po";
 
 let caseBAUser = 'qkatawazi';
 let caseAgentUser = 'qtao';
@@ -1563,7 +1564,12 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await previewKnowledgePo.clickGoToArticleButton();
             await editKnowledgePage.setKnowledgeStatus('Draft');
             await editKnowledgePage.setKnowledgeStatusWithoutSave('SME Review');
-            await editKnowledgePage.clickAssignToMeReviewerBlade();
+            await statusBladeKnowledgeArticlePo.clickChangeReviewerBtn();
+            await changeAssignmentBlade.selectCompany('Psilon');
+            await changeAssignmentBlade.selectBusinessUnit('Psilon Support Org1');
+            await changeAssignmentBlade.selectSupportGroup('Psilon Support Group1');
+            await changeAssignmentBlade.selectAssignee('Doomi Bomei');
+            await changeAssignmentBlade.clickOnAssignButton();
             await editKnowledgePage.clickSaveStatusBtn();
             await viewKnowledgeArticlePo.clickReviewPendingLink();
             let knowledgeArticleDisplayId = await previewKnowledgePo.getKnowledgeArticleID();

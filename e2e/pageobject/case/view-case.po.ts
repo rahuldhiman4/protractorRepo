@@ -86,13 +86,10 @@ class ViewCasePage {
     }
 
     async clickOnEmailLink(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailLink)));
         await $(this.selectors.emailLink).click();
-        //await browser.wait(this.EC.visibilityOf($('.modal-content')), 2000); // wait until compose email appears (api is not involved hence EC wait)
     }
 
     async clickOnRequestersEmail(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.requesterEmail)));
         await $(this.selectors.requesterEmail).click();
     }
 
@@ -101,7 +98,6 @@ class ViewCasePage {
     }
 
     async isEmailLinkPresent(): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailLink)));
         return await $(this.selectors.emailLink).isPresent();
     }
 
@@ -114,19 +110,11 @@ class ViewCasePage {
     }
 
     async isCaseReopenLinkPresent(): Promise<boolean> {
-        //        await browser.wait(this.EC.presenceOf($('[rx-view-component-id="2d51cf41-f176-4e20-bc48-f2741bcbbcb0"]')));
         return await $(this.selectors.reOpenCase).isPresent();
-        // let presentInDom: boolean = await $(this.selectors.reOpenCase).isPresent();
-        // if (presentInDom) {
-        //     await browser.wait(this.EC.visibilityOf($(this.selectors.reOpenCase)), 5000);
-        // }
-        // return presentInDom;
     }
 
     async clickOnReopenCaseLink(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.reOpenCase)));
         await $(this.selectors.reOpenCase).click();
-        //        await utilCommon.closePopUpMessage();
     }
 
     async isCaseReopenLinkDisabled(): Promise<boolean> {
@@ -138,47 +126,38 @@ class ViewCasePage {
     }
 
     async getErrorMsgOfInprogressStatus(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.inprogressErrorMsg)));
         return await $(this.selectors.inprogressErrorMsg).getText();
     }
 
     async getlabel(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.inprogressErrorMsg)));
         return await $(this.selectors.label).getText();
     }
 
     async getPriorityValue(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.priority)));
         return await $(this.selectors.priority).getText();
     }
 
     async getCategoryTier1Value(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier1Value)));
         return await $(this.selectors.categoryTier1Value).getText();
     }
 
     async getCategoryTier2Value(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier2Value)));
         return await $(this.selectors.categoryTier2Value).getText();
     }
 
     async getCategoryTier3Value(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier3Value)));
         return await $(this.selectors.categoryTier3Value).getText();
     }
 
     async getCategoryTier4Value(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier4Value)));
         return await $(this.selectors.categoryTier4Value).getText();
     }
 
     async getTextOfStatus(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.editLink)));
         return await $(this.selectors.statusChange).getText();
     }
 
     async clickOnStatus(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChange)));
         await $(this.selectors.statusChange).click();
     }
 
@@ -188,7 +167,6 @@ class ViewCasePage {
     }
 
     async getAddToWatchlistLinkText(): Promise<string> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addToWatchlist)));
         return await $(this.selectors.addToWatchlist).getText();
     }
 
@@ -201,7 +179,6 @@ class ViewCasePage {
 
     async clickEditCaseButton(): Promise<void> {        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editLink)));
         await $(this.selectors.editLink).click();
-        //        await browser.wait(this.EC.visibilityOf($(editCasePage.selectors.cancelBtn)));
     }
 
     async clickAddTaskButton(): Promise<void> {
@@ -215,7 +192,6 @@ class ViewCasePage {
     }
 
     async isAddtaskButtonDisplayed(): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addTaskButton)),3000);
         return await $(this.selectors.addTaskButtonGuid).getAttribute("innerText") ? true : false;
     }
 
@@ -225,12 +201,10 @@ class ViewCasePage {
     }
 
     async getCaseID(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.caseIdText)));
         return await (await $(this.selectors.caseIdText).getText()).trim();
     }
 
     async getRequesterName(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.requesterName)));
         return await $(this.selectors.requesterName).getText();
     }
 
@@ -239,87 +213,70 @@ class ViewCasePage {
     }
 
     async getRequesterPhoneNo(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.requesterPhoneNo)));
         return (await $(this.selectors.requesterPhoneNo).getText()).trim();
     }
 
     async getRequesterEmail(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.requesterEmail)));
         return await (await $(this.selectors.requesterEmail).getText()).trim();
     }
 
     async getContactPersonName(): Promise<string> {
-        //       await browser.wait(this.EC.visibilityOf($(this.selectors.contactPersonName)));
         return await $(this.selectors.contactPersonName).getText();
     }
 
     async getCaseSummary(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.caseSummary)));
         return await $(this.selectors.caseSummary).getText();
     }
 
     async getCaseSite(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.caseSite)));
         return await $(this.selectors.caseSite).getText();
     }
 
     async getContactPersonerPhoneNo(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.contactPersonContact)));
         return await (await $(this.selectors.contactPersonContact).getText()).trim();
     }
 
     async getContactPersonalEmail(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.contactPersonEmail)));
         return await (await $(this.selectors.contactPersonEmail).getText()).trim();
     }
 
     async clickStopWatchingLink(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.stopWatching)));
         await $(this.selectors.stopWatching).click();
     }
 
     async getStopWatchingLinkText(): Promise<string> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.stopWatching)));
         return await $(this.selectors.stopWatching).getText();
     }
 
     async clickOnContactPersonerDrpDwn(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.contactPersonDrpDwn)));
         await $(this.selectors.contactPersonDrpDwn).click();
     }
 
     async clickAttachmentsLink(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.attachmentsLink)));
         await $(this.selectors.attachmentsLink).click();
     }
 
     async getCaseDescriptionText(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.descriptionText)));
         return await (await $(this.selectors.descriptionText).getText()).trim();
     }
 
     async getAssigneeText(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.assigneeText)));
         return await $(this.selectors.assigneeText).getText();
     }
 
     async getAssignedGroupText(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.assignedGroupText)));
         return await $(this.selectors.assignedGroupText).getText();
     }
 
     async getDepartmentText(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.departmentText)));
         return await $(this.selectors.departmentText).getText();
     }
 
     async getBusinessUnitText(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.businessUnitText)));
         return await $(this.selectors.businessUnitText).getText();
     }
 
     async getAssignedCompanyText(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.assignedCompanyText)));
         return await $(this.selectors.assignedCompanyText).getText();
     }
 
@@ -345,7 +302,6 @@ class ViewCasePage {
     }
 
     async getCaseStatusValue(): Promise<string> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChange)));
         return await $(this.selectors.statusChange).getText();
     }
 
@@ -401,7 +357,6 @@ class ViewCasePage {
     }
 
     async getSlaBarColor(): Promise<string> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.slaProgressBar)));
         return await $(this.selectors.slaProgressBar).getCssValue('background-color');
     }
 
@@ -486,6 +441,14 @@ class ViewCasePage {
 
     async clickOnRejectLink(): Promise<void> {
         await $(this.selectors.rejectButton).click();
+    }
+
+    async isAddTaskButtonDisabled(): Promise<boolean> {
+        return await $(this.selectors.addTaskButton).isPresent().then(async (result) => {
+            if (result){
+                return await $(this.selectors.addTaskButton).getAttribute("disabled") == "true";
+            }else return false;
+        });
     }
 }
 

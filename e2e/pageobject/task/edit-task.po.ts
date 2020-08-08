@@ -63,43 +63,34 @@ class EditTask {
     }
 
     async clickOnAssignToMe() {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignToMe)));
         await $(this.selectors.assignToMe).click();
     }
 
     async clickOnRefreshActivity() {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignToMe)));
         await $(this.selectors.refreshActivity).click();
     }
 
     async clickOnChangeAssignementButton() {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.changesAssignmentButton)));
         await $(this.selectors.changesAssignmentButton).click();
     }
 
     async clickOnSaveButton() {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.changesAssignmentButton)))
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
     }
 
     async getTaskTypeValueAttribute(attribute: string): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.taskTypeValue)));
         return await $(this.selectors.taskTypeValue).getAttribute(attribute);
     }
 
     async clickOnCancelButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         await $(this.selectors.cancelButton).click();
     }
 
     async getTaskTypeValue(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.taskTypeValue)));
         return await $(this.selectors.taskTypeValue).getText();
     }
 
     async processNamePresentInTask(): Promise<boolean> {
-        //        await browser.wait(this.EC.invisibilityOf($(this.selectors.processNameValue)));
         return await $(this.selectors.processNameValue).isPresent();
     }
 

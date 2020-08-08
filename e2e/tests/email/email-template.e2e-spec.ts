@@ -187,7 +187,7 @@ describe('Email Template', () => {
             await editEmailTemplatePo.clickEditSubjectSaveButton();
             await utilCommon.waitUntilSpinnerToHide();
             await consoleEmailTemplatePo.searchOnGridConsole('body');
-            expect(await editEmailTemplatePo.getSelectedGridRecordValue('Message')).toBe('<body><p>' + body2 + '</p></body>', 'body not updated correctly');
+            expect(await editEmailTemplatePo.getSelectedGridRecordValue('Message')).toContain(body2, 'body not updated correctly');
             await consoleEmailTemplatePo.searchOnGridConsole('subject');
             expect(await editEmailTemplatePo.getSelectedGridRecordValue('Message')).toBe(subject2, 'subject not updated correctly');
         });

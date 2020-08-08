@@ -9,7 +9,6 @@ class ConfigureDataSourceConfigConsolePage {
 
     async isConfigDataSourceBtnDisabled(): Promise<boolean> {
         let addBtnLocator = await $$(this.selectors.addConfigDataSource).get(0);
-//        await browser.wait(this.EC.visibilityOf(addBtnLocator));
         return await addBtnLocator.getAttribute("disabled") == "true";
     }
 

@@ -142,7 +142,6 @@ class ComposeMail {
     }
 
     async clickOnSelectEmailTemplateLink(): Promise<void> {
-        //await browser.wait(this.EC.elementToBeClickable($(this.selectors.selectEmailTemplateLink)), 4000);
         await $(this.selectors.selectEmailTemplateLink).click();
     }
 
@@ -160,7 +159,6 @@ class ComposeMail {
     }
 
     async isComposeEmailTitlePresent(title: string): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.title)));
         return await element(by.cssContainingText((this.selectors.title), title)).isPresent();
     }
 
@@ -262,7 +260,6 @@ class ComposeMail {
     }
 
     async clickOnSendButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.sendButton)),3000);
         await $(this.selectors.sendButton).click();
     }
 

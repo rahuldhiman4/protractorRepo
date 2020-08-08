@@ -8,7 +8,6 @@ class BusinessSegmentConsolePage {
     }
 
     async isAddBusinessSegmentBtnDisplayed(): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.addBusinessSegment)));
         return await $(this.selectors.addBusinessSegment).isPresent();
     }
 
