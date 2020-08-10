@@ -17,6 +17,7 @@ import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import consoleAcknowledgmentTemplatePo from '../../pageobject/settings/email/console-acknowledgment-template.po';
 import editAcknowledgmentTemplatePo from '../../pageobject/settings/email/edit-acknowledgment-template.po';
+import createAcknowledgmentTemplatesPo from '../../pageobject/settings/email/create-acknowledgment-template.po';
 
 describe('Email Configuration', () => {
     let offlineSupportGroup, emailID = "bmctemptestemail@gmail.com";
@@ -453,6 +454,8 @@ describe('Email Configuration', () => {
             await utilGrid.searchAndOpenHyperlink(emailID);
             await editEmailConfigPo.clickDefaultMailIdCheckbox("False");
             await editEmailConfigPo.clickSaveButton();
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
             await utilGrid.searchAndOpenHyperlink("bwfqa2018@gmail.com");
             await editEmailConfigPo.clickDefaultMailIdCheckbox("False");
             await editEmailConfigPo.clickSaveButton();
@@ -488,8 +491,8 @@ describe('Email Configuration', () => {
         });
     });
 
-    describe('[DRDMV-10930,DRDMV-10457,DRDMV-10802]: Acknowledgment Template: Deletion & status update shouldnt allow when Acknowledgment Template associated with email id', async () => {
-        it('[DRDMV-10930,DRDMV-10457,DRDMV-10802]: Exclusion Subject : Default associated public exclusion subject list', async () => {
+    describe('[DRDMV-10930,DRDMV-10457,DRDMV-10802,DRDMV-10997]: Acknowledgment Template: Deletion & status update shouldnt allow when Acknowledgment Template associated with email id', async () => {
+        it('[DRDMV-10930,DRDMV-10457,DRDMV-10802,DRDMV-10997]: Exclusion Subject : Default associated public exclusion subject list', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(emailID);
@@ -501,7 +504,7 @@ describe('Email Configuration', () => {
             await editEmailConfigPo.selectTab("Acknowledgment Templates");
             expect(await editEmailConfigPo.isRecordPresentInAcknowledgementTemplateGrid('Case Closed Ack Template')).toBeTruthy("Coloumn");
         });
-        it('[DRDMV-10930,DRDMV-10457,DRDMV-10802]: Acknowledgment Template: Deletion & status update shouldnt allow when Acknowledgment Template associated with email id', async () => {
+        it('[DRDMV-10930,DRDMV-10457,DRDMV-10802,DRDMV-10997]: Acknowledgment Template: Deletion & status update shouldnt allow when Acknowledgment Template associated with email id', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
             await consoleAcknowledgmentTemplatePo.searchAndSelectGridRecord('Case Closed Ack Template');

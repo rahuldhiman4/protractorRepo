@@ -278,10 +278,16 @@ describe('Email Template', () => {
     });
 
     //ankagraw
-    it('[DRDMV-10799]: Email Template : If user goes away from both edit and create view warning should be appeared	', async () => {
+    it('[DRDMV-10799,DRDMV-10800]: Email Template : If user goes away from both edit and create view warning should be appeared	', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
         await consoleEmailTemplatePo.clickOnAddEmailTemplateButton();
+        expect(await createEmailTemplatePo.isTemplateRequiredTextPresent()).toBeTruthy();
+        expect(await createEmailTemplatePo.isCompanyRequiredTextPresent()).toBeTruthy();
+        expect(await createEmailTemplatePo.isModuleRequiredTextPresent()).toBeTruthy();
+        expect(await createEmailTemplatePo.isStatusRequiredTextPresent()).toBeTruthy();
+        expect(await createEmailTemplatePo.isDescriptionRequiredTextPresent()).toBeTruthy();
+        expect(await createEmailTemplatePo.isSubjectRequiredTextPresent()).toBeTruthy();
         await createEmailTemplatePo.setTemplateName("templateName1");
         await createEmailTemplatePo.clickOnCancelButton();
         expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue without saving?');
