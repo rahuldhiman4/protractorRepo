@@ -55,6 +55,16 @@ class ViewKnowledgePage {
         approvalButtons: '.approval-buttons span',
         approveButton: '.d-icon-left-check_shield',
         rejectButton: '.d-icon-left-cross_circle',
+        knowledgeArticleId: '[rx-view-component-id="5d80f2cf-00e9-4c55-ac08-01beacdd19e1"]  span',
+    }
+
+    async isKnowledgeArticleIdDisplayed(knowledgeArticleId: string): Promise<boolean> {
+        
+        return await element(by.cssContainingText(this.selectors.knowledgeArticleId, knowledgeArticleId)).isPresent().then(async (link) => {
+            if (link) {
+                return await element(by.cssContainingText(this.selectors.knowledgeArticleId, knowledgeArticleId)).isDisplayed();
+            } else return false;
+        });
     }
 
     async clickOnKAUsefulYesButton(): Promise<void> {
@@ -207,9 +217,7 @@ class ViewKnowledgePage {
         let month: string = new Number(numMonth).toString();
         let numDate: number = objDate.getDate();
         let date: string = new Number(numDate).toString();
-        if (numDate > 0 && numDate < 10) {
-            date = "0" + date;
-        }
+    
         let formatted_date: string = months[month] + " " + date + ", " + year;
         return formatted_date;
     }
