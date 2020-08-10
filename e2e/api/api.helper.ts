@@ -116,12 +116,12 @@ class ApiHelper {
     async updateNotificationEventStatus(eventName:string,status:string,company?:string):Promise<boolean>{
         let notificationEventGuid;
         if (company) 
-            notificationEventGuid = await coreApi.getNotificationEventGuid(eventName, company);
-        else  notificationEventGuid = await coreApi.getNotificationEventGuid(eventName);
+            notificationEventGuid = await apiCoreUtil.getNotificationEventGuid(eventName, company);
+        else  notificationEventGuid = await apiCoreUtil.getNotificationEventGuid(eventName);
         let updateStatusPayload = cloneDeep(NOTIFICATIONS_EVENT_STATUS_CHANGE);
         updateStatusPayload.id = notificationEventGuid;
         updateStatusPayload.fieldInstances[7].value = constants.NotificationEventStatus[status];
-        let updateEventStatus = await coreApi.updateRecordInstance('com.bmc.dsm.notification-lib%3ANotificationEvent', notificationEventGuid, updateStatusPayload);
+        let updateEventStatus = await apiCoreUtil.updateRecordInstance('com.bmc.dsm.notification-lib%3ANotificationEvent', notificationEventGuid, updateStatusPayload);
          return updateEventStatus.status == 204;
     }
 
