@@ -51,6 +51,7 @@ import { AUTO_TASK_TEMPLATE_PAYLOAD, DOC_FOR_AUTO_TASK_TEMPLATE, EXTERNAL_TASK_T
 import { ONE_TASKFLOW, PROCESS_DOCUMENT, THREE_TASKFLOW_SEQUENTIAL, TWO_TASKFLOW_PARALLEL, TWO_TASKFLOW_SEQUENTIAL } from '../data/api/task/taskflow.process.data.api';
 import { DOC_LIB_DRAFT, DOC_LIB_PUBLISH, DOC_LIB_READ_ACCESS } from '../data/api/ticketing/document-library.data.api';
 import * as DYNAMIC from '../data/api/ticketing/dynamic.data.api';
+import { DOCUMENT_TEMPLATE } from '../data/api/ticketing/document-template.data.api';
 import { SERVICE_TARGET_Group_PAYLOAD } from '../data/api/slm/service.target.group.api'
 
 let fs = require('fs');
@@ -2491,6 +2492,19 @@ class ApiHelper {
         let svtGroupCreateResponse: AxiosResponse = await coreApi.createRecordInstance(svtGroup);
         console.log('Create SVT Group Status =============>', svtGroupCreateResponse.status);
         return svtGroupCreateResponse.status == 201;
+    }
+
+    async createDocumentTemplate(data: any): Promise<boolean> {
+        DOCUMENT_TEMPLATE.processInputValues.Company = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : DOCUMENT_TEMPLATE.processInputValues.Company;
+        DOCUMENT_TEMPLATE.processInputValues["Template Name"] = data.templateName;
+        DOCUMENT_TEMPLATE.processInputValues.Description = data.description;
+        DOCUMENT_TEMPLATE.processInputValues["Document Message Body"] = data.messageBody;
+        let response = await axios.post(
+            commandUri,
+            DOCUMENT_TEMPLATE
+        )
+        console.log('Document Template Create API Status  =============>', response.status);
+        return response.status == 200;        
     }
 }
 

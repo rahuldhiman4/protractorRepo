@@ -78,6 +78,15 @@ class EditDocumentTemplatePage {
         let attribute = await $(this.selectors.documentBody).getText();
         return attribute == documentBody ? true : false
     }
+
+    async isDescriptionFieldDisabled(): Promise<boolean> {
+        return await $(this.selectors.description).getAttribute('readonly') == 'true';
+    }
+
+    async isSaveButtonEnabled(): Promise<boolean> {
+        return await $(this.selectors.saveButton).isEnabled();
+    }
+    
 }
 
-export default new EditDocumentTemplatePage();
+export default new EditDocumentTemplatePage()

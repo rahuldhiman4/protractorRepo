@@ -9,7 +9,7 @@ class EditTaskTemplate {
         taskCompany: '3d1b6f6b-3dfa-4ff7-80f1-cef32c2c93e0',
         editMetadataLink: '[rx-view-component-id="8b8bfec6-0ee2-42a3-be4b-ac4f37d060f1"] .edit-link',
         ownerCompany: 'fa0f139c-5998-4544-9a3e-6dcac497611c',
-        templateStatus: '279fd957-576d-4428-b503-a1330cbd9498',
+        templateStatusGuid: '279fd957-576d-4428-b503-a1330cbd9498',
         ownerGroup: '908e526e-917a-4360-94e9-768362f6a573',
         businessGuid: '064e7a40-b086-48ec-b8f9-9d23c8c56038',
         taskTypeValue: '[rx-view-component-id="cee6d303-5db9-4b3a-98e1-3096ffebf363"] .ui-select-container',
@@ -31,6 +31,7 @@ class EditTaskTemplate {
         taskTypeValueDisabled: '[rx-view-component-id="cee6d303-5db9-4b3a-98e1-3096ffebf363"] span.btn-default',
         processNameValue: '[rx-view-component-id="534ab8af-7e9d-49a9-8cab-c3ab1aa38c91"] input',
         taskDescription: 'b9b752cf-8cef-4598-9a8d-85748b13f0d7',
+        templateStatus: '[rx-view-component-id="279fd957-576d-4428-b503-a1330cbd9498"] .dropdown'
     }
 
     async selectPriorityValue(priority: string): Promise<void> {
@@ -74,7 +75,7 @@ class EditTaskTemplate {
     }
 
     async selectTemplateStatus(company: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.templateStatus, company);
+        await utilCommon.selectDropDown(this.selectors.templateStatusGuid, company);
     }
 
     async selectOwnerGroup(group: string): Promise<void> {
@@ -156,9 +157,26 @@ class EditTaskTemplate {
         return await $(this.selectors.summary).getAttribute('readonly') == 'true' ? true : false;
     }
 
-    async isImageDisplayedInCKE(value:string):Promise<boolean>{
-        return await ckeditorOpsPo.isImageDisplayedInCKE(value,this.selectors.taskDescription);
-}
+    async isImageDisplayedInCKE(value: string): Promise<boolean> {
+        return await ckeditorOpsPo.isImageDisplayedInCKE(value, this.selectors.taskDescription);
+    }
+
+    async isTaskSummaryFieldDisabled(): Promise<boolean> {
+        return await $(this.selectors.summary).getAttribute('readonly') == 'true';
+    }
+
+    async isTemplateStatusFieldDisabled(): Promise<boolean> {
+        return await $(this.selectors.templateStatus).getAttribute('disabled') == 'true';
+    }
+
+    async isSaveTemplateBtnEnabled(): Promise<boolean> {
+        return await $(this.selectors.saveButton).isEnabled();
+    }
+
+    async isSaveTemplateMetadataBtnEnabled(): Promise<boolean> {
+        return await $(this.selectors.saveMetadata).isEnabled();
+    }
+
 }
 
 export default new EditTaskTemplate();
