@@ -20,3 +20,15 @@ export const ACTIONABLE_NOTIFICATIONS_ENABLEMENT_SETTING = {
         }
     }
 }
+export const NOTIFICATIONS_EVENT_STATUS_CHANGE = {
+    "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
+    "id": "AGGADGG8ECDC0AQ1PL1MQ0R74ZQIXO",
+    "displayId": "",
+    "recordDefinitionName": "com.bmc.dsm.notification-lib:NotificationEvent",
+    "fieldInstances": {
+        "7": {
+            "id": 7,
+            "value": 1,
+        }
+    }
+}

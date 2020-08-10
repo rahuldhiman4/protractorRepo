@@ -17,7 +17,21 @@ class ApprovalMappingConsole {
         await $(this.selectors.deleteButton).click();
     }
 
+    async isAddApprovalMappingBtnDisplayed(): Promise<boolean> {
+        return await $(this.selectors.createApprovalMapping).isPresent().then(async (result) => {
+            if (result) {
+                return await $(this.selectors.createApprovalMapping).isDisplayed();
+            } else return false;
+        });
+    }
 
+    async isDeleteApprovalMappingBtnDisplayed(): Promise<boolean> {
+        return await $(this.selectors.deleteButton).isPresent().then(async (result) => {
+            if (result) {
+                return await $(this.selectors.deleteButton).isDisplayed();
+            } else return false;
+        });
+    }
 }
 
 export default new ApprovalMappingConsole();

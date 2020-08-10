@@ -40,7 +40,7 @@ import { KNOWLEDGE_ARTICLE_EXTERNAL_FLAG } from "../data/api/knowledge/knowledge
 import { KNOWLEDGEARTICLE_HELPFULCOUNTER, KNOWLEDGEARTICLE_TEMPLATE } from '../data/api/knowledge/knowledge-article.template.api';
 import { KNOWLEDEGESET_ASSOCIATION, KNOWLEDGESET_PERMISSION, KNOWLEDGE_SET } from '../data/api/knowledge/knowledge-set.data.api';
 import { KNOWLEDGE_ARTICLE_PAYLOAD, UPDATE_KNOWLEDGE_ARTICLE_PAYLOAD } from '../data/api/knowledge/knowledge.article.api';
-import { ACTIONABLE_NOTIFICATIONS_ENABLEMENT_SETTING } from '../data/api/shared-services/enabling.actionable.notifications.api';
+import { ACTIONABLE_NOTIFICATIONS_ENABLEMENT_SETTING,NOTIFICATIONS_EVENT_STATUS_CHANGE } from '../data/api/shared-services/enabling.actionable.notifications.api';
 import { AUTOMATED_CASE_STATUS_TRANSITION } from '../data/api/shared-services/process.data.api';
 import { BUSINESS_TIME_SEGMENT } from '../data/api/slm/business.time.segment.api';
 import { BUSINESS_TIME_SHARED_ENTITY } from '../data/api/slm/business.time.shared.entity.api';
@@ -52,6 +52,7 @@ import { AUTO_TASK_TEMPLATE_PAYLOAD, DOC_FOR_AUTO_TASK_TEMPLATE, EXTERNAL_TASK_T
 import { ONE_TASKFLOW, PROCESS_DOCUMENT, THREE_TASKFLOW_SEQUENTIAL, TWO_TASKFLOW_PARALLEL, TWO_TASKFLOW_SEQUENTIAL } from '../data/api/task/taskflow.process.data.api';
 import { DOC_LIB_DRAFT, DOC_LIB_PUBLISH, DOC_LIB_READ_ACCESS } from '../data/api/ticketing/document-library.data.api';
 import * as DYNAMIC from '../data/api/ticketing/dynamic.data.api';
+import { DOCUMENT_TEMPLATE } from '../data/api/ticketing/document-template.data.api';
 
 let fs = require('fs');
 
@@ -110,6 +111,18 @@ class ApiHelper {
             id: caseDetails.data.id,
             displayId: caseDetails.data.displayId
         };
+    }
+
+    async updateNotificationEventStatus(eventName:string,status:string,company?:string):Promise<boolean>{
+        let notificationEventGuid;
+        if (company) 
+            notificationEventGuid = await coreApi.getNotificationEventGuid(eventName, company);
+        else  notificationEventGuid = await coreApi.getNotificationEventGuid(eventName);
+        let updateStatusPayload = cloneDeep(NOTIFICATIONS_EVENT_STATUS_CHANGE);
+        updateStatusPayload.id = notificationEventGuid;
+        updateStatusPayload.fieldInstances[7].value = constants.NotificationEventStatus[status];
+        let updateEventStatus = await coreApi.updateRecordInstance('com.bmc.dsm.notification-lib%3ANotificationEvent', notificationEventGuid, updateStatusPayload);
+         return updateEventStatus.status == 204;
     }
 
     async createDomainTag(data: IDomainTag): Promise<string> {
@@ -2491,6 +2504,19 @@ class ApiHelper {
         let svtGroupCreateResponse: AxiosResponse = await apiCoreUtil.createRecordInstance(svtGroup);
         console.log('Create SVT Group Status =============>', svtGroupCreateResponse.status);
         return svtGroupCreateResponse.status == 201;
+    }
+
+    async createDocumentTemplate(data: any): Promise<boolean> {
+        DOCUMENT_TEMPLATE.processInputValues.Company = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : DOCUMENT_TEMPLATE.processInputValues.Company;
+        DOCUMENT_TEMPLATE.processInputValues["Template Name"] = data.templateName;
+        DOCUMENT_TEMPLATE.processInputValues.Description = data.description;
+        DOCUMENT_TEMPLATE.processInputValues["Document Message Body"] = data.messageBody;
+        let response = await axios.post(
+            commandUri,
+            DOCUMENT_TEMPLATE
+        )
+        console.log('Document Template Create API Status  =============>', response.status);
+        return response.status == 200;        
     }
 }
 

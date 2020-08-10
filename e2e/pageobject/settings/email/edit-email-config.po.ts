@@ -35,6 +35,10 @@ export class EditEmailConfig {
         saveEditEmailConfig: '[rx-view-component-id="e36471c2-f950-4df7-bc42-ed2bbf59898b"] button',
         acknowledgementTemplateGridGuid: '2266a74e-eee9-4936-a22b-37c1d2d4e205',
         defaultCaseTemplateGuid: '085b8e93-0e68-41a7-a1ed-77b6ab2c9522',
+        defaultCaseTemplateToUse: '[rx-view-component-id="085b8e93-0e68-41a7-a1ed-77b6ab2c9522"] .dropdown',
+        supportGroupCheckbox: '.record__list i',
+        addTrustedEmailBtn: '[rx-view-component-id="0dfbc207-b03e-40ab-8e6b-c74f5609aa89"] button',
+        addBlockedEmail: '[rx-view-component-id="d7309e2b-06c2-46a6-85e0-8b8f83159f9a"] button',
         createEmailTemplateLink: '[rx-view-component-id="010a2bf3-5b2d-4c72-9c33-fa26d3be6b78"] button',
     }
 
@@ -210,6 +214,42 @@ export class EditEmailConfig {
 
     async closedAssociatePublicExclusionSubjects(): Promise<void> {
         await $(this.selectors.closedAssociatePublicExclusionSubjects).click();
+    }
+
+    async isDefaultCaseTemplateToUseBtnDisabled(): Promise<boolean> {
+        return await $(this.selectors.defaultCaseTemplateToUse).getAttribute('disabled') == 'true';
+    }
+
+    async isAddNewRuleBtnEnabled(): Promise<boolean> {
+        return await $(this.selectors.newExclusiveSubjects).isEnabled();
+    }
+
+    async isAddAvailableGlobalSubjectBtnEnabled(): Promise<boolean> {
+        return await $(this.selectors.newAvailableGlobalSubjects).isEnabled();
+    }
+
+    async isRemoveExlusionSubjectEnabled(): Promise<boolean> {
+        return await $(this.selectors.removeExclusiveSubject).isEnabled();
+    }
+
+    async isEditExlusiceSubjectEnabled(): Promise<boolean> {
+        return await $(this.selectors.editExclusiveSubject).isEnabled();
+    }
+
+    async isAcknowledgementTemplateEditBtnEnabled(): Promise<boolean> {
+        return await $(this.selectors.acknowledgementTemplateEditButton).isEnabled();
+    }
+
+    async isAssociatedGroupSGSelectCheckboxDisabled(): Promise<boolean> {
+        return await $(this.selectors.supportGroupCheckbox).getAttribute('disabled') == 'true';
+    }
+
+    async isAddTrustedEmailBtnEnabled(): Promise<boolean> {
+        return await $(this.selectors.addTrustedEmailBtn).isEnabled();
+    }
+
+    async isBlockedEmailBtnEnabled(): Promise<boolean> {
+        return await $(this.selectors.addBlockedEmail).isEnabled();
     }
 
 }

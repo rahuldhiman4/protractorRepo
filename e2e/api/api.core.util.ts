@@ -64,6 +64,15 @@ class ApiCoreUtil {
         );
         return allRecords.data.data.length >= 1 ? allRecords.data.data[0]['signatureInstanceID'] || null : null;
     }
+    
+    async getNotificationEventGuid(eventName:string,company?:string):Promise<string>{
+        let allRecords = await this.getGuid("com.bmc.dsm.notification-lib%3ANotificationEvent");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            if (company) return obj[301718200] === eventName && obj[301566300] === company;
+            else return obj[301718200] === eventName;
+        });
+        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+    }
 
     async getSignatureId(guid: string): Promise<string> {
         let dataPageUri = "api/rx/application/datapage?dataPageType=com.bmc.arsys.rx.approval.application.datapage.SignatureDetailDataPageQuery&pageSize=-1&startIndex=0&status=Pending&requestGUID="

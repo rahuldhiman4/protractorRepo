@@ -63,6 +63,23 @@ class CaseTemplateConsole {
     async getTemplateCountFromGrid(): Promise<number> {
         return await $$(this.selectors.gridLink).count();
     }
+
+    async isAddCaseTemplateBtnDisplayed(): Promise<boolean> {
+        return await $(this.selectors.createCaseTemplate).isPresent().then(async (result) => {
+            if (result) {
+                return await $(this.selectors.createCaseTemplate).isDisplayed();
+            } else return false;
+        });
+    }
+
+    async isCopyCaseTemplateBtnDisplayed(): Promise<boolean> {
+        return await $(this.selectors.copyCaseTemplate).isPresent().then(async (result) => {
+            if (result) {
+                return await $(this.selectors.copyCaseTemplate).isDisplayed();
+            } else return false;
+        });
+    }
+
 }
 
 export default new CaseTemplateConsole();

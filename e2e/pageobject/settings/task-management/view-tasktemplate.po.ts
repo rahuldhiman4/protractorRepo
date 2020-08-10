@@ -305,6 +305,10 @@ class ViewTaskTemplate {
     async getTableCellAlignText(value: string): Promise<string> {
         return await ckeditorValidationPo.getTableCellAlignText(value, this.selectors.taskDescription);
     }
+
+    async isCopyTaskButtonEnabled(): Promise<boolean> {
+        return await $(this.selectors.copyTaskButton).isEnabled();
+    }
   
 }
 

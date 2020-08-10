@@ -714,6 +714,7 @@ describe('Create Case Task', () => {
             expect(await navigationPage.isSettingSubMenusMatches("Manage Flowsets", manageFlowsetList)).toBeTruthy();
             expect(await navigationPage.isSettingSubMenusMatches("Service Level Management", serviceLevelManagementList)).toBeTruthy();
             expect(await navigationPage.isSettingSubMenusMatches("Task Management", taskManagementList)).toBeTruthy();
+            expect(await navigationPage.isSettingMenuPresent('Knowledge Management')).toBeFalsy();
 
             await navigationPage.signOut();
             await loginPage.login('qtao');
