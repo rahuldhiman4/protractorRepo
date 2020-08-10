@@ -40,7 +40,7 @@ import { KNOWLEDGE_ARTICLE_EXTERNAL_FLAG } from "../data/api/knowledge/knowledge
 import { KNOWLEDGEARTICLE_HELPFULCOUNTER, KNOWLEDGEARTICLE_TEMPLATE } from '../data/api/knowledge/knowledge-article.template.api';
 import { KNOWLEDEGESET_ASSOCIATION, KNOWLEDGESET_PERMISSION, KNOWLEDGE_SET } from '../data/api/knowledge/knowledge-set.data.api';
 import { KNOWLEDGE_ARTICLE_PAYLOAD, UPDATE_KNOWLEDGE_ARTICLE_PAYLOAD } from '../data/api/knowledge/knowledge.article.api';
-import { ACTIONABLE_NOTIFICATIONS_ENABLEMENT_SETTING } from '../data/api/shared-services/enabling.actionable.notifications.api';
+import { ACTIONABLE_NOTIFICATIONS_ENABLEMENT_SETTING,NOTIFICATIONS_EVENT_STATUS_CHANGE } from '../data/api/shared-services/enabling.actionable.notifications.api';
 import { AUTOMATED_CASE_STATUS_TRANSITION } from '../data/api/shared-services/process.data.api';
 import { BUSINESS_TIME_SEGMENT } from '../data/api/slm/business.time.segment.api';
 import { BUSINESS_TIME_SHARED_ENTITY } from '../data/api/slm/business.time.shared.entity.api';
@@ -111,6 +111,18 @@ class ApiHelper {
             id: caseDetails.data.id,
             displayId: caseDetails.data.displayId
         };
+    }
+
+    async updateNotificationEventStatus(eventName:string,status:string,company?:string):Promise<boolean>{
+        let notificationEventGuid;
+        if (company) 
+            notificationEventGuid = await coreApi.getNotificationEventGuid(eventName, company);
+        else  notificationEventGuid = await coreApi.getNotificationEventGuid(eventName);
+        let updateStatusPayload = cloneDeep(NOTIFICATIONS_EVENT_STATUS_CHANGE);
+        updateStatusPayload.id = notificationEventGuid;
+        updateStatusPayload.fieldInstances[7].value = constants.NotificationEventStatus[status];
+        let updateEventStatus = await coreApi.updateRecordInstance('com.bmc.dsm.notification-lib%3ANotificationEvent', notificationEventGuid, updateStatusPayload);
+         return updateEventStatus.status == 204;
     }
 
     async createDomainTag(data: IDomainTag): Promise<string> {

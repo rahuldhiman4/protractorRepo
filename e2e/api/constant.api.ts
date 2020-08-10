@@ -4,6 +4,15 @@ export enum CaseTemplate {
     Inactive = 3000,
 }
 
+export enum NotificationEventStatus{
+    Proposed = 0,
+    Enabled = 1,
+    Offline = 2,
+    Obsolete = 3,
+    Archive = 4,
+    Delete = 5,
+}
+
 export enum TaskTemplate {
     Active = 2000,
     Draft = 1000,

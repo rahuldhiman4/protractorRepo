@@ -567,5 +567,29 @@ describe("Actionable Notifications", () => {
             await loginPage.login('qkatawazi');
         }
     });
-    
+
+    //ptidke
+     it('[DRDMV-22377]: Verify Alert at Requester On case submit , Case Pending-Customer Response Notification, Case Resolution and Case Canceled Notification', async () => {
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.updateNotificationEventStatus('Case Pending - Customer Response - Requester Notification','Enabled');
+        await apiHelper.updateNotificationEventStatus('Case Canceled - Requester Notification','Enabled');
+        await apiHelper.updateNotificationEventStatus('Case Submitted - Requester Notification','Enabled');
+        await apiHelper.updateNotificationEventStatus('Case Resolved - Requester Notification','Enabled');
+        await apiHelper.apiLogin('qtao');
+        let response1 = await apiHelper.createCase(caseData['actionableNotificationWithAssignee']);
+        await apiHelper.updateCaseStatus(response1.id, 'InProgress');
+        await apiHelper.updateCaseStatus(response1.id, 'Pending','Customer Response');
+        await apiHelper.updateCaseStatus(response1.id, 'Resolved', 'Customer Follow-Up Required');
+        await apiHelper.updateCaseStatus(response1.id, 'InProgress');
+        await apiHelper.updateCaseStatus(response1.id, 'Canceled','Customer Canceled');
+        await navigationPage.signOut();
+        await loginPage.login('qkatawazi');
+        await notificationPo.clickOnNotificationIcon();
+        expect(await notificationPo.isAlertPresent("Your Request ID : "+response1.displayId+" is submitted.")).toBeTruthy();
+        expect(await notificationPo.isAlertPresent("Your Request ID : "+response1.displayId+" is Resolved.")).toBeTruthy();
+        expect(await notificationPo.isAlertPresent("Status of Request ID : "+response1.displayId+" is changed to Canceled.")).toBeTruthy();
+        expect(await notificationPo.isAlertPresent("Status of Request ID : "+response1.displayId+" is changed to Pending.")).toBeTruthy();
+        await utilCommon.closePopUpMessage();
+    });
+  
 })
