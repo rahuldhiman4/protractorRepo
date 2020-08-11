@@ -16,7 +16,7 @@ class AddField {
     }
 
     async navigateToDynamicFieldInCaseTemplate(caseTemplate: string) {
-        let option = await element.all(by.cssContainingText(this.selectors.parentFields,'Additional Fields from Case Template')).click();
+        let option = await element.all(by.cssContainingText(this.selectors.parentFields, 'Additional Fields from Case Template')).click();
         let templateName = await element.all(by.cssContainingText(this.selectors.parentFields, caseTemplate)).click();
     }
 
@@ -27,7 +27,7 @@ class AddField {
         await templateName.click();
     }
 
-    async clickOnCase():Promise<void>{
+    async clickOnCase(): Promise<void> {
         await $$(this.selectors.parentFields).first().click();
     }
 

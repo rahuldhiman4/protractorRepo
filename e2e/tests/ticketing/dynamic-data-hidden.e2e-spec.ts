@@ -7,6 +7,7 @@ import editCasePo from '../../pageobject/case/edit-case.po';
 import quickCasePo from '../../pageobject/case/quick-case.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePo from "../../pageobject/case/view-case.po";
+import addFieldsPopPo from '../../pageobject/common/add-fields-pop.po';
 import dynamicFieldsPage from '../../pageobject/common/dynamic-fields.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
@@ -15,9 +16,13 @@ import createDynamicFieldLibraryConfigPo from '../../pageobject/settings/applica
 import createDynamicGroupLibraryConfigPo from '../../pageobject/settings/application-config/create-dynamic-group-library-config.po';
 import dynamicFieldLibraryConfigConsolePo from '../../pageobject/settings/application-config/dynamic-field-library-config-console.po';
 import dynamicGroupLibraryConfigConsolePo from '../../pageobject/settings/application-config/dynamic-group-library-config-console.po';
+import consoleCasetemplatePo from '../../pageobject/settings/case-management/console-casetemplate.po';
+import copyCasetemplatePo from '../../pageobject/settings/case-management/copy-casetemplate.po';
 import editCasetemplatePo from '../../pageobject/settings/case-management/edit-casetemplate.po';
 import viewCasetemplatePo from '../../pageobject/settings/case-management/view-casetemplate.po';
+import createDocumentTemplatePo from '../../pageobject/settings/document-management/create-document-template.po';
 import selectTaskTemplate from "../../pageobject/settings/task-management/console-tasktemplate.po";
+import copyTasktemplatePo from '../../pageobject/settings/task-management/copy-tasktemplate.po';
 import createTaskTemplate from "../../pageobject/settings/task-management/create-tasktemplate.po";
 import editTaskTemplate from "../../pageobject/settings/task-management/edit-tasktemplate.po";
 import viewTaskTemplate from "../../pageobject/settings/task-management/view-tasktemplate.po";
@@ -28,6 +33,7 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
+import activityTabPo from '../../pageobject/social/activity-tab.po';
 
 describe('Dynamic Hidden Data', () => {
     beforeAll(async () => {
@@ -381,9 +387,9 @@ describe('Dynamic Hidden Data', () => {
                 "templateStatus": "Active",
                 "assignee": "qkatawazi",
                 "company": "Petramco",
-                "businessUnit":"United States Support",
+                "businessUnit": "United States Support",
                 "supportGroup": "US Support 3",
-                 "ownerBU": "United States Support",
+                "ownerBU": "United States Support",
                 "ownerGroup": "US Support 3"
             }
             await apiHelper.apiLogin('tadmin');
@@ -509,9 +515,9 @@ describe('Dynamic Hidden Data', () => {
                 "templateStatus": "Active",
                 "assignee": "qkatawazi",
                 "company": "Petramco",
-                "businessUnit":"United States Support",
+                "businessUnit": "United States Support",
                 "supportGroup": "US Support 3",
-                 "ownerBU": "United States Support",
+                "ownerBU": "United States Support",
                 "ownerGroup": "US Support 3"
             }
             await apiHelper.apiLogin('tadmin');
@@ -663,6 +669,98 @@ describe('Dynamic Hidden Data', () => {
             await viewTaskPo.clickOnViewCase();
             await viewCasePo.getCaseID();
             expect(await viewCasePo.isDynamicFieldDisplayed('Field1OutsideDRDMV21415')).toBeTruthy();
+        });
+    });
+
+    //ankagraw
+    describe('[DRDMV-18004,DRDMV-18058]: verify dynamic group fields on Copy case template', async () => {
+        let caseTemplateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        beforeAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteDynamicFieldAndGroup();
+            caseTemplateData = {
+                "templateName": randomStr + 'caseTemplateName',
+                "templateSummary": 'CaseSummaryName' + randomStr,
+                "caseStatus": "InProgress",
+                "templateStatus": "Active",
+                "assignee": "Fritz",
+                "company": "Petramco",
+                "supportGroup": "Facilities",
+                "ownerGroup": "Facilities"
+            }
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteDynamicFieldAndGroup();
+            await apiHelper.apiLogin('fritz');
+            let newCaseTemplate = await apiHelper.createCaseTemplate(caseTemplateData);
+            await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'DynamicGroupField');
+        });
+        it('[DRDMV-18004,DRDMV-18058]: verify dynamic group fields on Copy case template', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await consoleCasetemplatePo.searchAndselectCaseTemplate(randomStr + 'caseTemplateName');
+            await consoleCasetemplatePo.clickOnCopyCaseTemplate();
+            await copyCasetemplatePo.setTemplateName('copyCaseTemplateName' + randomStr);
+            await copyCasetemplatePo.clickSaveCaseTemplate();
+            expect(await viewCasetemplatePo.isGroupDisplayed("GroupOne")).toBeTruthy();
+            expect(await viewCasetemplatePo.isDynamicFieldDisplayed("FieldGroup1")).toBeTruthy();
+            expect(await viewCasetemplatePo.isDynamicFieldDisplayed("externalNumber")).toBeTruthy();
+            expect(await viewCasetemplatePo.isDynamicFieldDisplayed("externalDate")).toBeTruthy();
+            expect(await viewCasetemplatePo.isDynamicFieldDisplayed("externalBoolean")).toBeTruthy();
+            expect(await viewCasetemplatePo.isDynamicFieldDisplayed("externalDateTime")).toBeTruthy();
+            expect(await viewCasetemplatePo.isDynamicFieldDisplayed("externalTime")).toBeTruthy();
+            expect(await viewCasetemplatePo.isDynamicFieldDisplayed("externalAttachment1")).toBeTruthy();
+            expect(await viewCasetemplatePo.isDynamicFieldDisplayed("dynamicList")).toBeTruthy();
+        });
+        it('[DRDMV-18004,DRDMV-18058]: verify dynamic group fields on Copy case template', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Document Management--Templates', 'Document Templates - Business Workflows');
+            await createDocumentTemplatePo.clickOnAddTemplate();
+            await createDocumentTemplatePo.setTemplateName("Document" + randomStr);
+            await createDocumentTemplatePo.setCompany("Petramco");
+            await createDocumentTemplatePo.clickOnInsertFieldOfDocumentBody();
+            await addFieldsPopPo.navigateToDynamicFieldInCaseTemplate(randomStr + 'caseTemplateName');
+            expect(await addFieldsPopPo.isAssocitionDisplayed('GroupOne')).toBeTruthy("Group");
+            await addFieldsPopPo.clickOnGroupName('GroupOne');
+            expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('FieldGroup1')).toBeTruthy("Field");
+            await utilityCommon.closeAllBlades();
+        });// steps to save the document templates with dynamic group/field selected covered in another test DRDMV-19270
+    });
+
+    //ankagraw
+    describe('[DRDMV-18006]: verify dynamic fields group on Copy Task template', async () => {
+        let templateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        beforeAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteDynamicFieldAndGroup();
+            templateData = {
+                "templateName": `manualTaskTemplate1 ${randomStr}`,
+                "templateSummary": `manualTaskTemplateSummary1 ${randomStr}`,
+                "templateStatus": "Active",
+                "taskCompany": 'Petramco',
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
+            }
+            await apiHelper.apiLogin('fritz');
+            let newtaskTemplate = await apiHelper.createManualTaskTemplate(templateData);
+            await apiHelper.createDynamicDataOnTemplate(newtaskTemplate.id, 'DynamicGroupField');
+        });
+        it('[DRDMV-18006]: verify dynamic fields group on Copy Task template', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
+            await viewTaskTemplate.clickOnCopyTemplate();
+            await copyTasktemplatePo.setTemplateName("New One" + randomStr);
+            await copyTasktemplatePo.clickSaveCopytemplate();
+            expect(await viewTaskTemplate.isGroupDisplayed("GroupOne")).toBeTruthy();
+            expect(await viewTaskTemplate.isDynamicFieldPresent("FieldGroup1")).toBeTruthy();
+            expect(await viewTaskTemplate.isDynamicFieldPresent("externalNumber")).toBeTruthy();
+            expect(await viewTaskTemplate.isDynamicFieldPresent("externalDate")).toBeTruthy();
+            expect(await viewTaskTemplate.isDynamicFieldPresent("externalBoolean")).toBeTruthy();
+            expect(await viewTaskTemplate.isDynamicFieldPresent("externalDateTime")).toBeTruthy();
+            expect(await viewTaskTemplate.isDynamicFieldPresent("externalTime")).toBeTruthy();
+            expect(await viewTaskTemplate.isDynamicFieldPresent("externalAttachment1")).toBeTruthy();
+            expect(await viewTaskTemplate.isDynamicFieldPresent("dynamicList")).toBeTruthy();
         });
     });
 

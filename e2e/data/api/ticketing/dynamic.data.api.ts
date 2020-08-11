@@ -1916,4 +1916,81 @@ export const AllSourceAndTypeDRDMV21515 = {
        }
     ],
     "templateRecordDefinition":"com.bmc.dsm.task-lib:Task Template"
- }
+ };
+
+ export const DynamicGroupField = {
+    "name": null,
+    "processDocumentDefinitionId": null,
+    "processInputDocName": null,
+    "processName": null,
+    "templateId": "",
+    "id": null,
+    "attributeDefinitions": [
+        {
+            "name": "GroupOne",
+            "description": "GroupOne",
+            "externalId": "",
+            "type": "GROUP_FIELD",
+            "active": true,
+            "attributes": [
+                {
+                    "name": "FieldGroup1",
+                    "description": "FieldGroup1",
+                    "dataType": "TEXT",
+                    "dataProviderUserRole": "Agent",
+                },
+                {
+                    "name": "externalNumber",
+                    "description": "externalNumber",
+                    "dataType": "NUMBER",
+                    "dataProviderUserRole": "Agent",
+                },
+                {
+                    "name": "externalDate",
+                    "description": "externalDate",
+                    "dataType": "DATE",
+                    "dataProviderUserRole": "Agent",
+                },
+                {
+                    "name": "externalBoolean",
+                    "description": "externalBoolean",
+                    "dataType": "BOOLEAN",
+                    "dataProviderUserRole": "Agent",
+                },
+                {
+                    "name": "externalDateTime",
+                    "description": "externalDateTime",
+                    "dataType": "DATE_TIME",
+                    "dataProviderUserRole": "Agent",
+                },
+                {
+                    "name": "externalTime",
+                    "description": "externalTime",
+                    "dataType": "TIME",
+                    "dataProviderUserRole": "Agent",
+                },
+                {
+                    "name": "newfiles",
+                    "description": "dynamicList",
+                    "dataType": "LIST",
+                    "dataProviderUserRole": "Agent",
+                    "displayDataListDefinitions": [
+                        {
+                            "nameKey": "listvalues",
+                            "displayText": "listvalues"
+                        }
+                    ],
+                    "active": true,
+                    "type": "SIMPLE_FIELD"
+                },
+                {
+                    "name": "externalAttachment1",
+                    "description": "externalAttachment1",
+                    "dataType": "ATTACHMENT",
+                    "dataProviderUserRole": "Agent",
+                }
+            ]
+        }
+    ]
+};
+
