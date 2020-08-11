@@ -58,6 +58,10 @@ class ViewTaskTemplate {
         return await $(this.selectors.dynamicFieldTitle).getText();
     }
 
+    async isGroupDisplayed(groupName: string): Promise<boolean> {
+        return await $(`[rx-view-component-id="60aedaf2-92a3-433f-8024-34e26e71350c"] .group-container__name div[title=${groupName}]`).isDisplayed();
+    }
+
     async isDynamicFieldPresent(dynamic: string): Promise<boolean> {
         return await element(by.cssContainingText(this.selectors.dynamicField, dynamic)).isPresent().then(async (result) => {
             if (result) {
