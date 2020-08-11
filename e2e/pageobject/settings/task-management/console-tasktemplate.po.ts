@@ -107,7 +107,7 @@ class TaskTemplateGridPage {
     }
 
     async isAddManualTaskTemplateBtnDisplayed(): Promise<boolean> {
-        return await $(this.selectors.manualTaskTemplateButton).then(async (result) => {
+        return await $(this.selectors.manualTaskTemplateButton).isPresent().then(async (result) => {
             if (result) {
                 return await $(this.selectors.manualTaskTemplateButton).isDisplayed();
             } else return false;
@@ -115,7 +115,7 @@ class TaskTemplateGridPage {
     }
 
     async isAddAutomatedTaskTemplateBtnDisplayed(): Promise<boolean> {
-        return await $(this.selectors.automationtaskTemplateButton).then(async (result) => {
+        return await $(this.selectors.automationtaskTemplateButton).isPresent().then(async (result) => {
             if (result) {
                 return await $(this.selectors.automationtaskTemplateButton).isDisplayed();
             } else return false;
