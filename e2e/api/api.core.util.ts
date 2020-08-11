@@ -64,8 +64,8 @@ class ApiCoreUtil {
         );
         return allRecords.data.data.length >= 1 ? allRecords.data.data[0]['signatureInstanceID'] || null : null;
     }
-    
-    async getNotificationEventGuid(eventName:string,company?:string):Promise<string>{
+
+    async getNotificationEventGuid(eventName: string, company?: string): Promise<string> {
         let allRecords = await this.getGuid("com.bmc.dsm.notification-lib%3ANotificationEvent");
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
             if (company) return obj[301718200] === eventName && obj[301566300] === company;

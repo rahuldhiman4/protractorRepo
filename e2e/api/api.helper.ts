@@ -40,7 +40,7 @@ import { KNOWLEDGE_ARTICLE_EXTERNAL_FLAG } from "../data/api/knowledge/knowledge
 import { KNOWLEDGEARTICLE_HELPFULCOUNTER, KNOWLEDGEARTICLE_TEMPLATE } from '../data/api/knowledge/knowledge-article.template.api';
 import { KNOWLEDEGESET_ASSOCIATION, KNOWLEDGESET_PERMISSION, KNOWLEDGE_SET } from '../data/api/knowledge/knowledge-set.data.api';
 import { KNOWLEDGE_ARTICLE_PAYLOAD, UPDATE_KNOWLEDGE_ARTICLE_PAYLOAD } from '../data/api/knowledge/knowledge.article.api';
-import { ACTIONABLE_NOTIFICATIONS_ENABLEMENT_SETTING,NOTIFICATIONS_EVENT_STATUS_CHANGE } from '../data/api/shared-services/enabling.actionable.notifications.api';
+import { ACTIONABLE_NOTIFICATIONS_ENABLEMENT_SETTING, NOTIFICATIONS_EVENT_STATUS_CHANGE } from '../data/api/shared-services/enabling.actionable.notifications.api';
 import { AUTOMATED_CASE_STATUS_TRANSITION } from '../data/api/shared-services/process.data.api';
 import { BUSINESS_TIME_SEGMENT } from '../data/api/slm/business.time.segment.api';
 import { BUSINESS_TIME_SHARED_ENTITY } from '../data/api/slm/business.time.shared.entity.api';
@@ -53,6 +53,7 @@ import { ONE_TASKFLOW, PROCESS_DOCUMENT, THREE_TASKFLOW_SEQUENTIAL, TWO_TASKFLOW
 import { DOC_LIB_DRAFT, DOC_LIB_PUBLISH, DOC_LIB_READ_ACCESS } from '../data/api/ticketing/document-library.data.api';
 import * as DYNAMIC from '../data/api/ticketing/dynamic.data.api';
 import { DOCUMENT_TEMPLATE } from '../data/api/ticketing/document-template.data.api';
+import { ADD_DWP_SURVEY_ON_CASE, COMMON_CONFIG_PAYLOAD } from '../data/api/shared-services/common.configurations.api';
 
 let fs = require('fs');
 
@@ -61,6 +62,7 @@ axios.defaults.headers.common['X-Requested-By'] = 'XMLHttpRequest';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 const commandUri = 'api/rx/application/command';
 const articleTemplateUri = 'api/com.bmc.dsm.knowledge/rx/application/article/template';
+const appConfigUri = 'api/rx/application/admin-settings/local/component-settings/Configuration Values/';
 
 export interface IIDs {
     id: string;
@@ -113,16 +115,16 @@ class ApiHelper {
         };
     }
 
-    async updateNotificationEventStatus(eventName:string,status:string,company?:string):Promise<boolean>{
+    async updateNotificationEventStatus(eventName: string, status: string, company?: string): Promise<boolean> {
         let notificationEventGuid;
-        if (company) 
+        if (company)
             notificationEventGuid = await apiCoreUtil.getNotificationEventGuid(eventName, company);
-        else  notificationEventGuid = await apiCoreUtil.getNotificationEventGuid(eventName);
+        else notificationEventGuid = await apiCoreUtil.getNotificationEventGuid(eventName);
         let updateStatusPayload = cloneDeep(NOTIFICATIONS_EVENT_STATUS_CHANGE);
         updateStatusPayload.id = notificationEventGuid;
         updateStatusPayload.fieldInstances[7].value = constants.NotificationEventStatus[status];
         let updateEventStatus = await apiCoreUtil.updateRecordInstance('com.bmc.dsm.notification-lib%3ANotificationEvent', notificationEventGuid, updateStatusPayload);
-         return updateEventStatus.status == 204;
+        return updateEventStatus.status == 204;
     }
 
     async createDomainTag(data: IDomainTag): Promise<string> {
@@ -1589,7 +1591,7 @@ class ApiHelper {
             "api/com.bmc.dsm.catalog-lib/surveys",
             data
         );
-        console.log("Complex Survey status ==>>> " + complexSurvey.status);
+        console.log("Complex Survey status =============>", complexSurvey.status);
     }
 
     async setDefaultNotificationForUser(user: string, notificationType: string): Promise<void> {
@@ -1603,7 +1605,7 @@ class ApiHelper {
             uri,
             defaultNotificationData
         );
-        console.log("Alert status ==>>> " + notificationSetting.status);
+        console.log("Alert status =============>", notificationSetting.status);
     }
 
     async deleteDynamicFieldAndGroup(dynamicAttributeName?: string): Promise<boolean> {
@@ -1658,7 +1660,7 @@ class ApiHelper {
             uri,
             OrgData
         );
-        console.log("Updated Organization status ==>>> " + updatedOrgData.status);
+        console.log("Updated Organization status =============>", updatedOrgData.status);
         return updatedOrgData.status == 204;
     }
 
@@ -2516,7 +2518,81 @@ class ApiHelper {
             DOCUMENT_TEMPLATE
         )
         console.log('Document Template Create API Status  =============>', response.status);
-        return response.status == 200;        
+        return response.status == 200;
+    }
+
+    async deleteCommonConfig(configName: string, company: string, guidParamName?: string): Promise<boolean> {
+        let companyGuid = await apiCoreUtil.getOrganizationGuid(company);
+        const appConfigDataUri = "api/rx/application/admin-settings/local/component-griddata/Configuration Values/";
+        let headerConfig = {
+            headers: {
+                'default-bundle-scope': 'com.bmc.dsm.shared-services-lib'
+            }
+        };
+        let allAppConfig = await axios.get(
+            appConfigDataUri + constants.ApplicationConfigurationsGuid[configName],
+            headerConfig
+        );
+        console.log('Get ApplicationConfig API Details  =============>', allAppConfig.status);
+        let entityObj: any = allAppConfig.data.rows.filter(function (obj: string[]) {
+            return obj["Expression"] === companyGuid;
+        });
+        if (!guidParamName) guidParamName = 'ownerKeyValue1';
+        let appConfigRecordGuid = entityObj.length >= 1 ? entityObj[0][guidParamName] || null : null;
+        if (appConfigRecordGuid) {
+            const deleteCommonConfig = await axios.delete(
+                appConfigUri + appConfigRecordGuid,
+                headerConfig
+            );
+            console.log('Delete Common Config API Status  =============>', deleteCommonConfig.status);
+            return deleteCommonConfig.status == 200;
+        } else return true;
+    }
+
+    async addCommonConfig(configName: string, params: any[], company: string): Promise<boolean> {
+        let commonConfigPayload, commonConfigGuid;
+        let companyGuid = await apiCoreUtil.getOrganizationGuid(company);
+        let headerConfig = {
+            headers: {
+                'default-bundle-scope': 'com.bmc.dsm.shared-services-lib'
+            }
+        };
+        switch (configName) {
+            case "ADD_DWP_SURVEY_ON_CASE": {
+                commonConfigGuid = constants.ApplicationConfigurationsGuid[configName];
+                await this.deleteCommonConfig(configName, company); // delete existing config of company
+                commonConfigPayload = cloneDeep(COMMON_CONFIG_PAYLOAD);
+                for (let i: number = 0; i < commonConfigPayload.length; i++) {
+                    commonConfigPayload[i].ownerKeyValue2 = commonConfigGuid;
+                    if (commonConfigPayload[i].settingName == 'Expression') commonConfigPayload[i].settingValue = companyGuid;
+                }
+                commonConfigPayload[1].settingValue = String(params[0]);
+                break;
+            }
+            case "NEXT_REVIEW_PERIOD": {
+                commonConfigGuid = constants.ApplicationConfigurationsGuid[configName];
+                await this.deleteCommonConfig(configName, company); // delete existing config of company
+                commonConfigPayload = cloneDeep(COMMON_CONFIG_PAYLOAD);
+                for (let i: number = 0; i < commonConfigPayload.length; i++) {
+                    commonConfigPayload[i].ownerKeyValue2 = commonConfigGuid;
+                    if (commonConfigPayload[i].settingName == 'Expression') commonConfigPayload[i].settingValue = companyGuid;
+                }
+                commonConfigPayload[1].settingValue = String(constants.ApplicationConfigurationsValue[params[0]]);
+                break;
+            }
+            default: {
+                console.log("Invalid config name");
+                break;
+            }
+        }
+
+        let addCommonConfigResponse = await axios.post(
+            appConfigUri + commonConfigGuid,
+            commonConfigPayload,
+            headerConfig
+        );
+        console.log('Add Common Config API Status  =============>', addCommonConfigResponse.status);
+        return addCommonConfigResponse.status == 201;
     }
 }
 
