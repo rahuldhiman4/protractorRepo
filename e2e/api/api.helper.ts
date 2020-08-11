@@ -53,7 +53,7 @@ import { ONE_TASKFLOW, PROCESS_DOCUMENT, THREE_TASKFLOW_SEQUENTIAL, TWO_TASKFLOW
 import { DOC_LIB_DRAFT, DOC_LIB_PUBLISH, DOC_LIB_READ_ACCESS } from '../data/api/ticketing/document-library.data.api';
 import * as DYNAMIC from '../data/api/ticketing/dynamic.data.api';
 import { DOCUMENT_TEMPLATE } from '../data/api/ticketing/document-template.data.api';
-import { ADD_DWP_SURVEY_ON_CASE, COMMON_CONFIG_PAYLOAD } from '../data/api/shared-services/common.configurations.api';
+import { COMMON_CONFIG_PAYLOAD } from '../data/api/shared-services/common.configurations.api';
 
 let fs = require('fs');
 
