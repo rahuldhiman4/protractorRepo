@@ -20,7 +20,44 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import ckeditorOpsPo from '../../pageobject/common/ck-editor/ckeditor-ops.po';
+import tablePropertiesPo from '../../pageobject/common/ck-editor/table-properties.po';
+import linkPropertiesPo from '../../pageobject/common/ck-editor/link-properties.po';
+import ckeditorValidationPo from '../../pageobject/common/ck-editor/ckeditor-validation.po';
+import createCasePo from '../../pageobject/case/create-case.po';
+import casePreviewPo from '../../pageobject/case/case-preview.po';
+import caseAccessTabPo from '../../pageobject/common/case-access-tab.po';
+import editKnowledgeAccessPo from '../../pageobject/knowledge/edit-knowledge-access.po';
+import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
+import knowledgeArticlesConsolePo from '../../pageobject/knowledge/knowledge-articles-console.po';
+import quickCasePo from '../../pageobject/case/quick-case.po';
+import viewTaskPo from '../../pageobject/task/view-task.po';
+import personProfilePo from '../../pageobject/common/person-profile.po';
 
+let tableRowFieldIndex = 0;
+let tableColumnFieldIndex = 1;
+let tableWidthFieldIndex = 3;
+let tableHeightFieldIndex = 4;
+let cellCaption: number = 7;
+let cellSummary: number = 8;
+let imageUrlFieldIndex = 0;
+let imageWidthFieldIndex = 2;
+let linkDisplayTextFieldIndex = 0;
+let linkUrlFieldIndex = 1;
+let linkTargetDropDownIndex = 4;
+let boldText = "this is text bold";
+let lefAlignText = "this is text left align";
+let centerAlignText = "this is text center align";
+let rightAlignText = "this is text right align";
+let italicText = "this is text italic";
+let underLineText = "this is text underline";
+let redColorText = "this is text red";
+let formatText = "this is text Styles";
+let fontText = "this is text Font";
+let justifyAlignText = "this is text Justify align";
+let strikeThroughText = "this is text strikeThrough";
+let imageSource;
+let uploadURL = "https://www.google.com/homepage/images/hero-dhp-chrome-win.jpg?mmfb=90bec8294f441f5c41987596ca1b8cff";
 describe('Notes template', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
@@ -411,7 +448,7 @@ describe('Notes template', () => {
             await utilityGrid.searchAndOpenHyperlink(newCase.displayId);
             await viewCasePage.clickAddTaskButton();
             await manageTask.addTaskFromTaskTemplate(templateData.templateName);
-            await manageTask.clickTaskLink(templateData.templateSummary);
+            await viewCasePage.clickOnTaskLink(templateData.templateSummary);
             await viewTask.clickOnEditTask();
             await editTask.clickOnAssignToMe();
             await editTask.clickOnSaveButton();
@@ -450,5 +487,458 @@ describe('Notes template', () => {
         await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(NOTES_TEMPLATE_MANDATORY_FIELD.templateName);
         await activityTabPo.clickOnPostButton();
         expect(await activityTabPo.isTextPresentInActivityLog(NOTES_TEMPLATE_MANDATORY_FIELD.body)).toBeTruthy();
+    });
+
+    describe('[DRDMV-22642,DRDMV-22646,DRDMV-22657]: Verify CKE functionality on Create and Edit Case Notes template', async () => {
+        let templateName: string, newCase, readAccessMappingData, randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        beforeAll(async () => {
+            let caseData = {
+                "Requester": "qtao",
+                "Company": "Petramco",
+                "Summary": "Create case for me postman1" + randomString,
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
+                "Assignee": "Qadim Katawazi"
+            };
+            readAccessMappingData = {
+                "configName": randomString + '1ReadAccessMappingName',
+                "assignedCompany": 'Petramco',
+                "businessUnit": 'Facilities Support',
+                "supportGroup": 'Facilities',
+                "company": 'Petramco',
+                "priority": "Low",
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createReadAccessMapping(readAccessMappingData);
+            newCase = await apiHelper.createCase(caseData);
+        });
+        it('[DRDMV-22642,DRDMV-22646,DRDMV-22657]: Verify CKE functionality on Create and Edit Case Notes template', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
+            await consoleNotesTemplate.clickOnCreateNotesTemplate();
+            templateName = "caseNotesTemplate" + Math.floor(Math.random() * 100000);
+            await createNotesTemplate.setTemplateName(templateName);
+            await createNotesTemplate.setStatusValue('Active');
+            await createNotesTemplate.setCompanyValue('Petramco');
+            await createNotesTemplate.setBody("this is new actiivty notes template");
+            // bold
+            await ckeditorOpsPo.updateDescription("this is text ");
+            await ckeditorOpsPo.clickOnBoldIcon();
+            await ckeditorOpsPo.updateDescription(boldText);
+            expect(await ckeditorOpsPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
+            await ckeditorOpsPo.clickOnBoldIcon();
+            //italic
+            await ckeditorOpsPo.clickOnItalicIcon();
+            await ckeditorOpsPo.updateDescription(italicText);
+            expect(await ckeditorOpsPo.isItalicTextDisplayedInCkEditorTextArea(italicText)).toBeTruthy('Text is not Italic In Ck Editor');
+            await ckeditorOpsPo.clickOnItalicIcon();
+            //StrikeThrough
+            await ckeditorOpsPo.clickOnStrikeThroughIcon();
+            await ckeditorOpsPo.updateDescription(strikeThroughText);
+            expect(await ckeditorOpsPo.isStrikeThroughTextDisplayedInCkEditorTextArea(strikeThroughText)).toBeTruthy('Text is not Strike Through In Ck Editor');
+            await ckeditorOpsPo.clickOnStrikeThroughIcon();
+            //underline
+            await ckeditorOpsPo.clickOnUnderLineIcon();
+            await ckeditorOpsPo.updateDescription(underLineText);
+            expect(await ckeditorOpsPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await ckeditorOpsPo.clickOnUnderLineIcon();
+        });
+        it('[DRDMV-22642,DRDMV-22646,DRDMV-22657]: Verify CKE functionality on Create and Edit Case Notes template', async () => {
+            //left Align
+            await ckeditorOpsPo.clickOnLeftAlignIcon();
+            await ckeditorOpsPo.updateDescription(lefAlignText);
+            expect(await ckeditorOpsPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await ckeditorOpsPo.clickOnLeftAlignIcon();
+            //Right Align
+            await ckeditorOpsPo.clickOnRightAlignIcon();
+            await ckeditorOpsPo.updateDescription(rightAlignText);
+            expect(await ckeditorOpsPo.isTextRightAlignInCkEditorTextArea(rightAlignText)).toBeTruthy('Text is not right Align In Ck Editor');
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await ckeditorOpsPo.clickOnRightAlignIcon();
+            //Center Align
+            await ckeditorOpsPo.clickOnCenterAlignIcon();
+            await ckeditorOpsPo.updateDescription(centerAlignText);
+            expect(await ckeditorOpsPo.isTextCenterAlignInCkEditorTextArea(centerAlignText)).toBeTruthy('Text is not center Align In Ck Editor');
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await ckeditorOpsPo.clickOnCenterAlignIcon();
+            //Justify Align
+            await ckeditorOpsPo.clickOnJustifyAlignIcon();
+            await ckeditorOpsPo.updateDescription(justifyAlignText);
+            expect(await ckeditorOpsPo.isTextJustifyAlignInCkEditorTextArea(justifyAlignText)).toBeTruthy('Text is not justify Align In Ck Editor');
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await ckeditorOpsPo.clickOnJustifyAlignIcon();
+            //set color
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await ckeditorOpsPo.selectColor('Strong Red');
+            await ckeditorOpsPo.updateDescription(redColorText);
+            expect(await ckeditorOpsPo.isColorTextDisplayedInCkEditorTextArea(redColorText, 'color:#c0392b;')).toBeTruthy('Color is not set In Ck Editor');
+            //checking number list
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await activityTabPo.setInsertRemoveNumberList('PlusOne');
+            expect(await ckeditorOpsPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Number List is not In Ck Editor');
+            await ckeditorOpsPo.enterNewLineInCKE();
+            // checking bullot points
+            await activityTabPo.setInsertRemoveBulletedList('BulletOne');
+            expect(await activityTabPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Bulleted List is not In Ck Editor');
+            expect(await ckeditorOpsPo.getTextCkEditorMinimizeOrMiximize()).toBe('Maximize');
+            await ckeditorOpsPo.clickMaximizeMinimizeIcon();
+            expect(await ckeditorOpsPo.getTextCkEditorMinimizeOrMiximize()).toBe('Minimize');
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await ckeditorOpsPo.clickMaximizeMinimizeIcon();
+        });
+        it('[DRDMV-22642,DRDMV-22646,DRDMV-22657]: Verify CKE functionality on Create and Edit Case Notes template', async () => {
+            //add style
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await ckeditorOpsPo.updateDescription(formatText);
+            await ckeditorOpsPo.selectStyles('Heading 2');
+            expect(await ckeditorOpsPo.isStyleApplied(formatText, 'h2')).toBeTruthy('Heading not set');
+            //add Font Size 
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await ckeditorOpsPo.updateDescription(fontText);
+            await ckeditorOpsPo.selectFont('11');
+            expect(await ckeditorOpsPo.isFontApplied(11, 'span')).toBeTruthy('Font not set');
+            //upload image with URL
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await ckeditorOpsPo.clickOnImageIcon();
+            await ckeditorOpsPo.imageUploadWithURL(uploadURL, imageUrlFieldIndex, imageWidthFieldIndex, '200');
+            expect(await ckeditorOpsPo.isImageDisplayedInCKE(uploadURL)).toBeTruthy('Image with URL not uploaded');
+            //upload image with Local
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await ckeditorOpsPo.clickOnImageIcon();
+            imageSource = await ckeditorOpsPo.uploadImageFromLocal('Upload', '../../../data/ui/attachment/articleStatus.png', imageWidthFieldIndex, imageUrlFieldIndex, '200');
+            expect(await ckeditorOpsPo.isImageDisplayedInCKE(imageSource)).toBeTruthy();
+            // Link added
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await ckeditorOpsPo.clickOnLinkIcon();
+            await linkPropertiesPo.setValueOfLinkProperties('Google', linkDisplayTextFieldIndex);
+            await linkPropertiesPo.setValueOfLinkProperties('www.google.com', linkUrlFieldIndex);
+            await linkPropertiesPo.clickOnTargetTab();
+            await linkPropertiesPo.selectDropDown('_blank', linkTargetDropDownIndex);
+            await linkPropertiesPo.clickOnOkBtn();
+            expect(await ckeditorOpsPo.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('Link is not In Ck Editor');
+            await ckeditorOpsPo.enterNewLineInCKE();
+            //add table
+            await ckeditorOpsPo.clickOnTableIcon();
+            await tablePropertiesPo.setValueOfTableProperties('4', tableRowFieldIndex);
+            await tablePropertiesPo.setValueOfTableProperties('10', tableColumnFieldIndex);
+            await tablePropertiesPo.setValueOfTableProperties('500', tableWidthFieldIndex);
+            await tablePropertiesPo.setValueOfTableProperties('200', tableHeightFieldIndex);
+            await tablePropertiesPo.setValueOfTableProperties('new' + randomString, cellCaption);
+            await tablePropertiesPo.setValueOfTableProperties('tableSummary', cellSummary);
+            await tablePropertiesPo.clickOnOkButton();
+            await ckeditorOpsPo.clickInTableCell(2, 2, 'tableSummary');
+            await ckeditorOpsPo.clickOnCenterAlignIcon();
+            await ckeditorOpsPo.setDataInTable(2, 2, randomString, 'tableSummary');
+            await ckeditorOpsPo.clickInTableCell(1, 2, 'tableSummary');
+            await ckeditorOpsPo.clickOnRightAlignIcon();
+            await ckeditorOpsPo.setDataInTable(1, 2, randomString, 'tableSummary');
+            expect(await ckeditorOpsPo.getTableCellAlignText("text-align: center;")).toContain(randomString);
+            await createNotesTemplate.clickOnSaveButton();
+            await utilCommon.closePopUpMessage();
+        });
+        it('[DRDMV-22642,DRDMV-22646,DRDMV-22657]: Verify CKE functionality on Create and Edit Case Notes template', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(newCase.displayId);
+            await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(templateName);
+            await activityTabPo.addActivityNote(randomString);
+            expect(await activityTabPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
+            expect(await activityTabPo.isItalicTextDisplayedInCkEditorTextArea(italicText)).toBeTruthy('Text is not Italic In Ck Editor');
+            expect(await activityTabPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
+            expect(await activityTabPo.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('Text is not center Align In Ck Editor');
+            expect(await activityTabPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
+            expect(await activityTabPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Text is not center Align In Ck Editor');
+            expect(await activityTabPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Text is not center Align In Ck Editor');
+            await activityTabPo.clickOnPostButton();
+            await activityTabPo.clickShowMoreLinkInActivity(1);
+            expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
+            expect(await activityTabPo.isItalicTextDisplayedInActivity(italicText, 1)).toBeTruthy('FailureMsg Italic Text is missing In Activity');
+            expect(await activityTabPo.isUnderlineTextDisplayedInActivity(underLineText, 1)).toBeTruthy('FailureMsg Underline Text is missing In Activity');
+            expect(await activityTabPo.isRightAlignTextDisplayedInActivity(rightAlignText, 1)).toBeTruthy('FailureMsg Right Align Text is missing In Activity');
+            expect(await activityTabPo.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
+            expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
+            expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
+            expect(await activityTabPo.isTableCaptionDisplayedInCkEditorTextArea('tableSummary', 'new' + randomString)).toBeTruthy('Text is not Left Align In Ck Editor');
+            expect(await activityTabPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('Text is not Left Align In Ck Editor');
+            await navigationPage.gotoCreateCase();
+            await createCasePo.selectRequester('qtao');
+            await createCasePo.setSummary('NotesTemplateCase1' + randomString);
+            await createCasePo.setPriority('Low');
+            await createCasePo.clickAssignToMeButton();
+            await createCasePo.clickSaveCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
+            await viewCasePage.clickOnTab('Case Access');
+            expect(await caseAccessTabPo.isCaseAccessEntityAdded('Facilities')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+            await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(templateName);
+            await activityTabPo.addActivityNote(randomString);
+            await activityTabPo.clickOnPostButton();
+            await activityTabPo.clickShowMoreLinkInActivity(1);
+            expect(await caseAccessTabPo.isSupportGroupReadAccessDisplayed('Facilities')).toBeTruthy('Support Group does not have read access');
+            expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
+            expect(await activityTabPo.isItalicTextDisplayedInActivity(italicText, 1)).toBeTruthy('FailureMsg Italic Text is missing In Activity');
+            expect(await activityTabPo.isUnderlineTextDisplayedInActivity(underLineText, 1)).toBeTruthy('FailureMsg Underline Text is missing In Activity');
+            expect(await activityTabPo.isRightAlignTextDisplayedInActivity(rightAlignText, 1)).toBeTruthy('FailureMsg Right Align Text is missing In Activity');
+            expect(await activityTabPo.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
+            expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
+            expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
+            expect(await activityTabPo.isTableCaptionDisplayedInCkEditorTextArea('tableSummary', 'new' + randomString)).toBeTruthy('Text is not Left Align In Ck Editor');
+            expect(await activityTabPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('Text is not Left Align In Ck Editor');
+        });
+        it('[DRDMV-22642,DRDMV-22646,DRDMV-22657]: Verify CKE functionality on Create and Edit Case Notes template', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qfeng');
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink('NotesTemplateCase1' + randomString);
+            await activityTabPo.clickShowMoreLinkInActivity(1);
+            expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
+            expect(await activityTabPo.isItalicTextDisplayedInActivity(italicText, 1)).toBeTruthy('FailureMsg Italic Text is missing In Activity');
+            expect(await activityTabPo.isUnderlineTextDisplayedInActivity(underLineText, 1)).toBeTruthy('FailureMsg Underline Text is missing In Activity');
+            expect(await activityTabPo.isRightAlignTextDisplayedInActivity(rightAlignText, 1)).toBeTruthy('FailureMsg Right Align Text is missing In Activity');
+            expect(await activityTabPo.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
+            expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
+            expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
+            expect(await activityTabPo.isTableCaptionDisplayedInCkEditorTextArea('tableSummary', 'new' + randomString)).toBeTruthy('Text is not Left Align In Ck Editor');
+            expect(await activityTabPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('Text is not Left Align In Ck Editor');
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink('NotesTemplateCase1' + randomString);
+            await activityTabPo.clickOnShowMore();
+            expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
+            expect(await activityTabPo.isItalicTextDisplayedInActivity(italicText, 1)).toBeTruthy('FailureMsg Italic Text is missing In Activity');
+            expect(await activityTabPo.isUnderlineTextDisplayedInActivity(underLineText, 1)).toBeTruthy('FailureMsg Underline Text is missing In Activity');
+            expect(await activityTabPo.isRightAlignTextDisplayedInActivity(rightAlignText, 1)).toBeTruthy('FailureMsg Right Align Text is missing In Activity');
+            expect(await activityTabPo.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
+            expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
+            expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
+            expect(await activityTabPo.isTableCaptionDisplayedInCkEditorTextArea('tableSummary', 'new' + randomString)).toBeTruthy('Text is not Left Align In Ck Editor');
+            expect(await activityTabPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('Text is not Left Align In Ck Editor');
+        });
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+    });
+
+    describe('[DRDMV-22638,DRDMV-22644,DRDMV-22654]: Verify CKE functionality on Create and Edit Knowledge Notes template', async () => {
+        let templateName: string, randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        it('[DRDMV-22638,DRDMV-22644,DRDMV-22654]: Verify CKE functionality on Create and Edit Knowledge Notes template', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('peter');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Notes Template', 'Activity Notes Template Console - Knowledge - Business Workflows');
+            await consoleNotesTemplate.clickOnCreateNotesTemplate();
+            templateName = "knowledgeNotesTemplate" + Math.floor(Math.random() * 100000);
+            await createNotesTemplate.setTemplateName(templateName);
+            await createNotesTemplate.setStatusValue('Active');
+            await createNotesTemplate.setCompanyValue('Petramco');
+            await createNotesTemplate.setBody("this is new actiivty notes template");
+            // bold
+            await ckeditorOpsPo.updateDescription("this is text ");
+            await ckeditorOpsPo.clickOnBoldIcon();
+            await ckeditorOpsPo.updateDescription(boldText);
+            expect(await ckeditorOpsPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
+            await ckeditorOpsPo.clickOnBoldIcon();
+            //italic
+            await ckeditorOpsPo.clickOnItalicIcon();
+            await ckeditorOpsPo.updateDescription(italicText);
+            expect(await ckeditorOpsPo.isItalicTextDisplayedInCkEditorTextArea(italicText)).toBeTruthy('Text is not Italic In Ck Editor');
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await ckeditorOpsPo.clickOnItalicIcon();
+            //strikethrough
+            await ckeditorOpsPo.clickOnStrikeThroughIcon();
+            await ckeditorOpsPo.updateDescription(strikeThroughText);
+            expect(await ckeditorOpsPo.isStrikeThroughTextDisplayedInCkEditorTextArea(strikeThroughText)).toBeTruthy('Text is not Strike Through In Ck Editor');
+            await ckeditorOpsPo.clickOnStrikeThroughIcon();
+            //underline
+            await ckeditorOpsPo.clickOnUnderLineIcon();
+            await ckeditorOpsPo.updateDescription(underLineText);
+            expect(await ckeditorOpsPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await ckeditorOpsPo.clickOnUnderLineIcon();
+        });
+        it('[DRDMV-22638,DRDMV-22644,DRDMV-22654]: Verify CKE functionality on Create and Edit Knowledge Notes template', async () => {
+            //left Align
+            await ckeditorOpsPo.clickOnLeftAlignIcon();
+            await ckeditorOpsPo.updateDescription(lefAlignText);
+            expect(await ckeditorOpsPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await ckeditorOpsPo.clickOnLeftAlignIcon();
+            //Right Align
+            await ckeditorOpsPo.clickOnRightAlignIcon();
+            await ckeditorOpsPo.updateDescription(rightAlignText);
+            expect(await ckeditorOpsPo.isTextRightAlignInCkEditorTextArea(rightAlignText)).toBeTruthy('Text is not right Align In Ck Editor');
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await ckeditorOpsPo.clickOnRightAlignIcon();
+            //Center Align
+            await ckeditorOpsPo.clickOnCenterAlignIcon();
+            await ckeditorOpsPo.updateDescription(centerAlignText);
+            expect(await ckeditorOpsPo.isTextCenterAlignInCkEditorTextArea(centerAlignText)).toBeTruthy('Text is not center Align In Ck Editor');
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await ckeditorOpsPo.clickOnCenterAlignIcon();
+            //Justify Align
+            await ckeditorOpsPo.clickOnJustifyAlignIcon();
+            await ckeditorOpsPo.updateDescription(justifyAlignText);
+            expect(await ckeditorOpsPo.isTextJustifyAlignInCkEditorTextArea(justifyAlignText)).toBeTruthy('Text is not justify Align In Ck Editor');
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await ckeditorOpsPo.clickOnJustifyAlignIcon();
+            //set color
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await ckeditorOpsPo.selectColor('Strong Red');
+            await ckeditorOpsPo.updateDescription(redColorText);
+            expect(await ckeditorOpsPo.isColorTextDisplayedInCkEditorTextArea(redColorText, 'color:#c0392b;')).toBeTruthy('Color is not set In Ck Editor');
+            //checking number list
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await activityTabPo.setInsertRemoveNumberList('PlusOne');
+            expect(await ckeditorOpsPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Number List is not In Ck Editor');
+            await ckeditorOpsPo.enterNewLineInCKE();
+            // checking bullot points
+            await activityTabPo.setInsertRemoveBulletedList('BulletOne');
+            expect(await activityTabPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Bulleted List is not In Ck Editor');
+            expect(await ckeditorOpsPo.getTextCkEditorMinimizeOrMiximize()).toBe('Maximize');
+            await ckeditorOpsPo.clickMaximizeMinimizeIcon();
+            expect(await ckeditorOpsPo.getTextCkEditorMinimizeOrMiximize()).toBe('Minimize');
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await ckeditorOpsPo.clickMaximizeMinimizeIcon();
+        });
+        it('[DRDMV-22638,DRDMV-22644,DRDMV-22654]: Verify CKE functionality on Create and Edit Knowledge Notes template', async () => {
+            //add style
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await ckeditorOpsPo.updateDescription(formatText);
+            await ckeditorOpsPo.selectStyles('Heading 2');
+            expect(await ckeditorOpsPo.isStyleApplied(formatText, 'h2')).toBeTruthy('Heading not set');
+            //add Font Size 
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await ckeditorOpsPo.selectFont("11");
+            await ckeditorOpsPo.updateDescription(fontText);
+            expect(await ckeditorOpsPo.isFontApplied(11, 'span')).toBeTruthy('Font not set');
+            //upload image with URL
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await ckeditorOpsPo.clickOnImageIcon();
+            await ckeditorOpsPo.imageUploadWithURL(uploadURL, imageUrlFieldIndex, imageWidthFieldIndex, '200');
+            expect(await ckeditorOpsPo.isImageDisplayedInCKE(uploadURL)).toBeTruthy('Image with URL not uploaded');
+            //upload image with Local
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await ckeditorOpsPo.clickOnImageIcon();
+            imageSource = await ckeditorOpsPo.uploadImageFromLocal('Upload', '../../../data/ui/attachment/articleStatus.png', imageWidthFieldIndex, imageUrlFieldIndex, '200');
+            expect(await ckeditorOpsPo.isImageDisplayedInCKE(imageSource)).toBeTruthy();
+            // Link added
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await ckeditorOpsPo.clickOnLinkIcon();
+            await linkPropertiesPo.setValueOfLinkProperties('Google', linkDisplayTextFieldIndex);
+            await linkPropertiesPo.setValueOfLinkProperties('www.google.com', linkUrlFieldIndex);
+            await linkPropertiesPo.clickOnTargetTab();
+            await linkPropertiesPo.selectDropDown('_blank', linkTargetDropDownIndex);
+            await linkPropertiesPo.clickOnOkBtn();
+            expect(await ckeditorOpsPo.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('Link is not In Ck Editor');
+            await ckeditorOpsPo.enterNewLineInCKE();
+            //add table
+            await ckeditorOpsPo.clickOnTableIcon();
+            await tablePropertiesPo.setValueOfTableProperties('4', tableRowFieldIndex);
+            await tablePropertiesPo.setValueOfTableProperties('10', tableColumnFieldIndex);
+            await tablePropertiesPo.setValueOfTableProperties('500', tableWidthFieldIndex);
+            await tablePropertiesPo.setValueOfTableProperties('200', tableHeightFieldIndex);
+            await tablePropertiesPo.setValueOfTableProperties('new' + randomString, cellCaption);
+            await tablePropertiesPo.setValueOfTableProperties('tableSummary', cellSummary);
+            await tablePropertiesPo.clickOnOkButton();
+            await ckeditorOpsPo.clickInTableCell(2, 2, 'tableSummary');
+            await ckeditorOpsPo.clickOnCenterAlignIcon();
+            await ckeditorOpsPo.setDataInTable(2, 2, randomString, 'tableSummary');
+            await ckeditorOpsPo.clickInTableCell(1, 2, 'tableSummary');
+            await ckeditorOpsPo.clickOnRightAlignIcon();
+            await ckeditorOpsPo.setDataInTable(1, 2, randomString, 'tableSummary');
+            await createNotesTemplate.clickOnSaveButton();
+            await utilCommon.closePopUpMessage();
+        });
+        it('[DRDMV-22638,DRDMV-22644,DRDMV-22654]: Verify CKE functionality on Create and Edit Knowledge Notes template', async () => {
+            await navigationPage.gotoCreateKnowledge();
+            await createKnowlegePo.clickOnTemplate("Reference");
+            await createKnowlegePo.clickOnUseSelectedTemplateButton();
+            await createKnowlegePo.addTextInKnowlegeTitleField("KnowledgeTitle_" + randomString);
+            await createKnowlegePo.selectKnowledgeSet("HR");
+            await createKnowlegePo.clickChangeAssignmentButton();
+            await changeAssignmentBladePo.selectCompany('Petramco');
+            await changeAssignmentBladePo.selectBusinessUnit('HR Support');
+            await changeAssignmentBladePo.selectSupportGroup('Employee Relations');
+            await changeAssignmentBladePo.selectAssignee('Elizabeth');
+            await changeAssignmentBladePo.clickOnAssignButton();
+            await createKnowlegePo.clickOnSaveKnowledgeButton();
+            await previewKnowledgePo.clickGoToArticleButton();
+            await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
+            await changeAssignmentBladePo.clickOnSupportGroupAccessORAgentAccessButtonKM('Support Group Access');
+            await changeAssignmentBladePo.selectCompanyKM('Petramco');
+            await changeAssignmentBladePo.selectBusinessUnitKM('Facilities Support');
+            await changeAssignmentBladePo.selectSupportGroupKM('Facilities');
+            await changeAssignmentBladePo.clickAddSupportGroupAccessButtonKM();
+            await editKnowledgeAccessPo.clickCloseKnowledgeAccessBlade();
+            await viewKnowledgeArticlePo.clickOnTab('Activity');
+            await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(templateName);
+            expect(await activityTabPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
+            expect(await activityTabPo.isItalicTextDisplayedInCkEditorTextArea(italicText)).toBeTruthy('Text is not Italic In Ck Editor');
+            expect(await activityTabPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
+            expect(await activityTabPo.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('Text is not center Align In Ck Editor');
+            expect(await activityTabPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
+            expect(await activityTabPo.isTableCaptionDisplayedInCkEditorTextArea('tableSummary', 'new' + randomString)).toBeTruthy('Text is not Left Align In Ck Editor');
+            expect(await activityTabPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('Text is not Left Align In Ck Editor');
+            await activityTabPo.clickOnPostButton();
+            await navigationPage.gotoKnowledgeConsole();
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink("KnowledgeTitle_" + randomString);
+            await viewKnowledgeArticlePo.clickOnTab('Activity');
+            await activityTabPo.clickOnShowMore();
+            expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
+            expect(await activityTabPo.isItalicTextDisplayedInActivity(italicText, 1)).toBeTruthy('FailureMsg Italic Text is missing In Activity');
+            expect(await activityTabPo.isUnderlineTextDisplayedInActivity(underLineText, 1)).toBeTruthy('FailureMsg Underline Text is missing In Activity');
+            expect(await activityTabPo.isRightAlignTextDisplayedInActivity(rightAlignText, 1)).toBeTruthy('FailureMsg Right Align Text is missing In Activity');
+            expect(await activityTabPo.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
+            expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
+            expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
+            expect(await activityTabPo.isTableCaptionDisplayedInCkEditorTextArea('tableSummary', 'new' + randomString)).toBeTruthy('Text is not Left Align In Ck Editor');
+            expect(await activityTabPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('Text is not Left Align In Ck Editor');
+        });
+        it('[DRDMV-22638,DRDMV-22644,DRDMV-22654]: Verify CKE functionality on Create and Edit Knowledge Notes template', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('kWilliamson');
+            await navigationPage.switchToApplication("Knowledge Management");
+            await utilityCommon.switchToNewTab(1);
+            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual("Knowledge Articles", 'title not correct');
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink("KnowledgeTitle_" + randomString);
+            await viewKnowledgeArticlePo.clickOnTab('Activity');
+            await activityTabPo.clickOnShowMore();
+            expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
+            expect(await activityTabPo.isItalicTextDisplayedInActivity(italicText, 1)).toBeTruthy('FailureMsg Italic Text is missing In Activity');
+            expect(await activityTabPo.isUnderlineTextDisplayedInActivity(underLineText, 1)).toBeTruthy('FailureMsg Underline Text is missing In Activity');
+            expect(await activityTabPo.isRightAlignTextDisplayedInActivity(rightAlignText, 1)).toBeTruthy('FailureMsg Right Align Text is missing In Activity');
+            expect(await activityTabPo.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
+            expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
+            expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
+            expect(await activityTabPo.isTableCaptionDisplayedInCkEditorTextArea('tableSummary', 'new' + randomString)).toBeTruthy('Text is not Left Align In Ck Editor');
+            expect(await activityTabPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('Text is not Left Align In Ck Editor');
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await navigationPage.gotoKnowledgeConsole();
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink("KnowledgeTitle_" + randomString);
+            await viewKnowledgeArticlePo.clickOnTab('Activity');
+            await activityTabPo.clickOnShowMore();
+            expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
+            expect(await activityTabPo.isItalicTextDisplayedInActivity(italicText, 1)).toBeTruthy('FailureMsg Italic Text is missing In Activity');
+            expect(await activityTabPo.isUnderlineTextDisplayedInActivity(underLineText, 1)).toBeTruthy('FailureMsg Underline Text is missing In Activity');
+            expect(await activityTabPo.isRightAlignTextDisplayedInActivity(rightAlignText, 1)).toBeTruthy('FailureMsg Right Align Text is missing In Activity');
+            expect(await activityTabPo.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
+            expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
+            expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
+            expect(await activityTabPo.isTableCaptionDisplayedInCkEditorTextArea('tableSummary', 'new' + randomString)).toBeTruthy('Text is not Left Align In Ck Editor');
+            expect(await activityTabPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('Text is not Left Align In Ck Editor');
+        });
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
     });
 });

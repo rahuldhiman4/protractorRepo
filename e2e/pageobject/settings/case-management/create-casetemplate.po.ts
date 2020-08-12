@@ -175,17 +175,6 @@ class CreateCaseTemplate {
         await $(this.selectors.caseSummary).sendKeys(caseSummaryValue);
     }
 
-
-    async updateDescription(caseDescription: string): Promise<void> {
-        await $(this.selectors.ckEditor).isPresent().then(async (result) => {
-            if (result) {
-                await browser.wait(this.EC.elementToBeClickable($(this.selectors.ckEditorTextArea)), 3000).then(async () => {
-                    await $(this.selectors.ckEditorTextArea).sendKeys(caseDescription);
-                });
-            }
-        });
-    }
-
     async setCaseDescription(caseDescription: string): Promise<void> {
         await utilCommon.setCKEditor(caseDescription, this.selectors.caseDescriptionGuid);
     }

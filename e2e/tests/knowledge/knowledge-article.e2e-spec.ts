@@ -1448,8 +1448,8 @@ describe('Knowledge Article', () => {
             expect(await viewKnowledgeArticlePo.isApprovalButtonsPresent("Approve")).toBeFalsy();
             expect(await viewKnowledgeArticlePo.isApprovalButtonsPresent("Reject")).toBeFalsy();
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-            await editKnowledgeAccessPage.clickOnSupportGroupAccessORAgentAccessButton('Agent Access');
-            await editKnowledgeAccessPage.selectAgent('kayo');
+            await changeAssignmentBladePo.clickOnSupportGroupAccessORAgentAccessButtonKM('Agent Access');
+            await changeAssignmentBladePo.selectAgentKM('kayo');
             await editKnowledgeAccessPage.clickCloseKnowledgeAccessBlade();
         });
         it('[DRDMV-21679,DRDMV-21681]:Tiggered the Approval on Article and check KA screen by Approver should show Approval component', async () => {

@@ -5,7 +5,7 @@ class ChangeAssignmentBlade {
     selectors = {
         changeAssignmentButton: '[rx-view-component-id="6041cce1-05bd-458d-b097-eb310507cae3"] button',
         assignButton: '.modal-footer .btn-primary',
-        assignmentDropDownList: '.flex-wrap bwf-select-with-pagination',
+        assignmentDropDownList: '.flex-wrap bwf-select-with-pagination,.flex-column bwf-select-with-pagination',
         selectOptions: '.dropdown-item span',
         cancelButton: '.modal-footer .btn-secondary',
         multipleSuppGrpMsg: '.manual-select-sg-msg',
@@ -17,6 +17,13 @@ class ChangeAssignmentBlade {
         supportGroupName: '.person__info',
         department: 'selectedDepartmentId',
         supportGroup: 'selectedSupportGroupId',
+        addSupportGroupAccess: 'button.add-btn-center',
+        isWriteAccessCheckbox: 'input.ac-assign-support-group-write-group + span',
+        agentAccess: '[rx-view-component-id="a99704e0-5441-4ddc-8357-bd4fc7d078d4"] .bwf-access-manager .access-group .btn-title',
+        agents: '.dropdown-item .popup-template',
+        searchInput: '[rx-view-component-id="a99704e0-5441-4ddc-8357-bd4fc7d078d4"] .bwf-flexi-type-ahead input.rx-form-control',
+        agentAddButton: '[rx-view-component-id="a99704e0-5441-4ddc-8357-bd4fc7d078d4"] .bwf-access-manager .add-btn-center-type-ahead',
+        agentNameOrSupportGroupName: '.rx-case-access-name',
     }
 
     async isAssignToMeCheckBoxSelected(): Promise<boolean> {
@@ -136,6 +143,55 @@ class ChangeAssignmentBlade {
         await $('.d-icon-users_circle').isPresent().then(async (result) => {
             if (result) await element(by.cssContainingText(this.selectors.assignee, 'Assign to Support Group')).click();
         });
+    }
+
+    async selectCompanyKM(companyValue: string): Promise<void> {
+        const companyDropDown = await $$(this.selectors.assignmentDropDownList).get(4);
+        await companyDropDown.$('button').click();
+        await companyDropDown.$('input').sendKeys(companyValue);
+        let option = await element(by.cssContainingText(this.selectors.selectOptions, companyValue));
+        await option.click();
+    }
+
+    async selectBusinessUnitKM(businessUnit: string): Promise<void> {
+        const businessUnitDropDown = await $$(this.selectors.assignmentDropDownList).get(5);
+        await businessUnitDropDown.$('button').click();
+        await businessUnitDropDown.$('input').sendKeys(businessUnit);
+        await element(by.cssContainingText(this.selectors.selectOptions, businessUnit)).click();
+    }
+
+    async selectSupportGroupKM(supportGroup: string): Promise<void> {
+        const supportGroupDropDown = await $$(this.selectors.assignmentDropDownList).get(7);
+        await supportGroupDropDown.$('button').click();
+        await supportGroupDropDown.$('input').sendKeys(supportGroup);
+        let option = await element(by.cssContainingText(this.selectors.selectOptions, supportGroup));
+        await option.click();
+    }
+
+    async clickAddSupportGroupAccessButtonKM():Promise<void>{
+        // await browser.wait(this.EC.elementToBeClickable($(this.selectors.addSupportGroupAccess)), 3000);
+        await $$(this.selectors.addSupportGroupAccess).get(7).click();
+    }
+
+    async selectSupportGroupWriteAccessKM():Promise<void>{
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.isWriteAccessCheckbox)), 3000);
+        await $(this.selectors.isWriteAccessCheckbox).click();
+    }
+
+    async clickOnSupportGroupAccessORAgentAccessButtonKM(agentName: string): Promise<void> {
+        // await $(this.selectors.agentAccess).click();
+        await element(by.cssContainingText(this.selectors.agentAccess, agentName)).click();
+    }
+
+    async selectAgentKM(agentName: string): Promise<void> {
+        await $$(this.selectors.searchInput).first().clear();
+        await $$(this.selectors.searchInput).first().sendKeys(agentName);
+        await $$(this.selectors.agents).first().click();
+        await $$(this.selectors.agentAddButton).first().click();
+    }
+
+    async isAgentNameOrSupportGroupNameDisplayedKM(agentNameOrSupportGroupName: string): Promise<boolean> {
+        return await element(by.cssContainingText(this.selectors.agentNameOrSupportGroupName, agentNameOrSupportGroupName)).isDisplayed();
     }
 }
 
