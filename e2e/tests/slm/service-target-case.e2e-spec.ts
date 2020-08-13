@@ -20,11 +20,13 @@ let caseAgentUser = 'qtao';
 let caseAgentUserPsilon = 'werusha';
 
 describe('Service Target Tests for Cases', () => {
+    const caseApprovalMappingRecordDefinition = 'com.bmc.dsm.case-lib:Case Approval Mapping';
+
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login(caseBAUser);
         await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteApprovalMapping();
+        await apiHelper.deleteApprovalMapping(caseApprovalMappingRecordDefinition);
     });
 
     afterAll(async () => {

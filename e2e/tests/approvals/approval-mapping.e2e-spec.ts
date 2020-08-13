@@ -23,6 +23,8 @@ describe("Approval Mapping Tests", () => {
     const approvalTriggerMsg = "Approval process starts when the case has above status.";
     const approvalMappingMsg = "Mapping the result of the approval process to the case status.";
     const approvalStatusMappingLabel = "Status mapping:";
+    const caseApprovalMappingRecordDefinition = 'com.bmc.dsm.case-lib:Case Approval Mapping';
+
     let twoCompanyUser;
 
     beforeAll(async () => {
@@ -75,7 +77,7 @@ describe("Approval Mapping Tests", () => {
 
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteApprovalMapping();
+            await apiHelper.deleteApprovalMapping(caseApprovalMappingRecordDefinition);
         });
         it('[DRDMV-10698,DRDMV-10710,DRDMV-10700,DRDMV-10701]: Create Approval Mapping UI Validation', async () => {
             await navigationPage.gotoSettingsPage();
@@ -183,7 +185,7 @@ describe("Approval Mapping Tests", () => {
         });
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteApprovalMapping();
+            await apiHelper.deleteApprovalMapping(caseApprovalMappingRecordDefinition);
         });
     });
 
@@ -324,7 +326,7 @@ describe("Approval Mapping Tests", () => {
         });
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteApprovalMapping();
+            await apiHelper.deleteApprovalMapping(caseApprovalMappingRecordDefinition);
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         });
@@ -366,7 +368,7 @@ describe("Approval Mapping Tests", () => {
         });
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteApprovalMapping();
+            await apiHelper.deleteApprovalMapping(caseApprovalMappingRecordDefinition);
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         });
@@ -426,7 +428,7 @@ describe("Approval Mapping Tests", () => {
 
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteApprovalMapping();
+            await apiHelper.deleteApprovalMapping(caseApprovalMappingRecordDefinition);
         });
     });
 
@@ -443,7 +445,7 @@ describe("Approval Mapping Tests", () => {
         beforeAll(async () => {
 
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteApprovalMapping();
+            await apiHelper.deleteApprovalMapping(caseApprovalMappingRecordDefinition);
 
             let caseTemplate = {
                 "templateName": 'CaseTemplateName',
@@ -637,7 +639,7 @@ describe("Approval Mapping Tests", () => {
 
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteApprovalMapping();
+            await apiHelper.deleteApprovalMapping(caseApprovalMappingRecordDefinition);
         });
     });
 

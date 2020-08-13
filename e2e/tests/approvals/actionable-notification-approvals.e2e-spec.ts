@@ -16,10 +16,11 @@ let requestSecondaryStr: string = 'Request Secondary';
 
 describe("Actionable Notification Approval", () => {
     let caseData;
+    const caseApprovalMappingRecordDefinition = 'com.bmc.dsm.case-lib:Case Approval Mapping';
 
     beforeAll(async () => {
         await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteApprovalMapping();
+        await apiHelper.deleteApprovalMapping(caseApprovalMappingRecordDefinition);
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
         await navigationPage.gotoSettingsPage();
@@ -86,7 +87,7 @@ describe("Actionable Notification Approval", () => {
     afterAll(async () => {
         await utilityCommon.closeAllBlades();
         await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteApprovalMapping();
+        await apiHelper.deleteApprovalMapping(caseApprovalMappingRecordDefinition);
         await navigationPage.signOut();
     });
 

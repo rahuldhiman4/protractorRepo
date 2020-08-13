@@ -23,6 +23,7 @@ describe('Case Bulk Operation', () => {
     let usSupportGroup3Str = 'US Support 3';
     let unitedStateSupportStr = 'United States Support'
     let businessData, departmentData, suppGrpData, personData, orgId;
+    const caseApprovalMappingRecordDefinition = 'com.bmc.dsm.case-lib:Case Approval Mapping';
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
@@ -34,7 +35,7 @@ describe('Case Bulk Operation', () => {
 
     afterAll(async () => {
         await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteApprovalMapping();
+        await apiHelper.deleteApprovalMapping(caseApprovalMappingRecordDefinition);
         await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
