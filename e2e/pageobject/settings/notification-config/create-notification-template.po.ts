@@ -1,4 +1,4 @@
-import { $, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../../utils/util.common';
 
 class createNotificationTemplate {
@@ -16,7 +16,12 @@ class createNotificationTemplate {
         clickOnEmailTab: '[rx-view-component-id="3f855256-dd6c-45dd-a970-2414b4d01388"] li a[title="Email"]',
         subject: '[rx-view-component-id="502114ff-23fe-4508-a5ca-04373a04d56e"] input',
         saveButton: '[rx-view-component-id="a07cb7fc-3b1a-41ca-8eee-e99e2058e161"] button',
-        cancelButton: '[rx-view-component-id="86d6f515-fcd3-484a-a18f-1ff30c137a1d"] button'
+        cancelButton: '[rx-view-component-id="86d6f515-fcd3-484a-a18f-1ff30c137a1d"] button',
+        recipientsList: 'div[ng-repeat*="recipient"] .text-wrapper span',
+        alertMessage: '[rx-view-component-id="b77c0581-b76e-4c92-a5e1-5c3026b379fa"] .cke_wysiwyg_div',
+        emailBasedApprovalFlag: '[rx-view-component-id="be4360ec-c852-457f-87c0-c1bf1abf8952"] .d-textfield',
+        emailBasedApprovalToggleGuid: '4c32ae80-d3de-4cca-88b9-0714972d15c1',
+        notificationMethodGuid: '0788e5c4-93ca-4d92-b61a-cd024f523a3e'
     }
     async selectModuleName(value: string): Promise<void> {
         await utilCommon.selectDropDown('bbaf88e2-7db2-4be4-858c-950d53ace33c', value);
@@ -50,7 +55,7 @@ class createNotificationTemplate {
         await $(this.selectors.clickOnEmailTab).click();
     }
 
-    async clickOnCancelButton():Promise<void>{
+    async clickOnCancelButton(): Promise<void> {
         await $(this.selectors.cancelButton).click();
     }
 
@@ -62,9 +67,49 @@ class createNotificationTemplate {
         return await element(by.cssContainingText(this.selectors.fieldValueInEmailBody, value)).isDisplayed();
     }
 
-    async clickOnSaveButton():Promise<void>{
+    async clickOnSaveButton(): Promise<void> {
         await $(this.selectors.saveButton).click();
     }
 
+    async areRecipientsMatches(expectedRecipients: string[]): Promise<boolean> {
+        if (expectedRecipients.length > 0) {
+            let actualRecipients = await element.all(by.css(this.selectors.recipientsList))
+                .map(async function (recipients) {
+                    return await recipients.getAttribute('innerText');
+                });
+            actualRecipients.sort();
+            expectedRecipients.sort();
+            return actualRecipients.length === expectedRecipients.length && actualRecipients.every(
+                (value, index) => (value === expectedRecipients[index])
+            );
+        }
+        else return !(await $(this.selectors.recipientsList).isPresent());
+    }
+
+    async setAlertMessage(msg: string): Promise<void> {
+        await $(this.selectors.alertMessage).sendKeys(msg);
+    }
+
+    async isEmailBasedApprovalFlagDisplayed(): Promise<boolean> {
+        return await $(this.selectors.emailBasedApprovalFlag).isPresent().then(async (result) => {
+            if (result)
+                return await $(this.selectors.emailBasedApprovalFlag).isDisplayed();
+            else return false;
+        })
+    }
+
+    async selectSecondEvent(event: string): Promise<void> {
+        await $('[rx-view-component-id="a0554358-c226-4dae-9bef-0792a0e32c5f"] i').click();
+        await $('[rx-view-component-id="a0554358-c226-4dae-9bef-0792a0e32c5f"] input').sendKeys(event);
+        await $$('.ui-select-choices-row-inner').last().click();
+    }
+
+    async selectEmailBasedApprovalToggle(value: boolean): Promise<void> {
+        await utilCommon.selectToggleButton(this.selectors.emailBasedApprovalToggleGuid, value);
+    }
+
+    async selectDefaultNotificationMethod(methodName: string) {
+        await utilCommon.selectDropDown(this.selectors.notificationMethodGuid, methodName);
+    }
 }
 export default new createNotificationTemplate(); 

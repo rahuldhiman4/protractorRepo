@@ -9,7 +9,7 @@ import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import resources from '../../pageobject/common/resources-tab.po';
 import createKnowledgePage from "../../pageobject/knowledge/create-knowlege.po";
-import editKnowledgeAccessPage from '../../pageobject/knowledge/edit-knowledge-access.po';
+import knowledgeAccessPage from '../../pageobject/knowledge/knowledge-access-tab.po';
 import editKnowledgePage from '../../pageobject/knowledge/edit-knowledge.po';
 import flagUnflagKnowledgePo from '../../pageobject/knowledge/flag-unflag-knowledge.po';
 import knowledgeConsole from '../../pageobject/knowledge/knowledge-articles-console.po';
@@ -964,13 +964,13 @@ describe('Knowledge Articles - Versioning Tests', () => {
 
         it('[DRDMV-20752]: Verify the behavior when the user who does not have access to view current article version and he tries to create or update existing version', async () => {
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-            await editKnowledgeAccessPage.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
-            await editKnowledgeAccessPage.selectCompany('Petramco');
-            await editKnowledgeAccessPage.selectBusinessUnit('HR Support');
-            await editKnowledgeAccessPage.selectSupportGroup('Employee Relations');
-            await editKnowledgeAccessPage.selectSupportGroupWriteAccess();
-            await editKnowledgeAccessPage.clickAddSupportGroupAccessButton();
-            await editKnowledgeAccessPage.clickCloseKnowledgeAccessBlade();
+            await knowledgeAccessPage.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
+            await knowledgeAccessPage.selectCompany('Petramco');
+            await knowledgeAccessPage.selectBusinessUnit('HR Support');
+            await knowledgeAccessPage.selectSupportGroup('Employee Relations');
+            await knowledgeAccessPage.selectSupportGroupWriteAccess();
+            await knowledgeAccessPage.clickAddSupportGroupAccessButton();
+            await knowledgeAccessPage.clickCloseKnowledgeAccessBlade();
             await viewKnowledgeArticlePo.clickOnEditLink();
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(minorEditOption)).toBeTruthy('Minor Edit Option is displayed for Published Knowledge Article.');
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(majorEditOption)).toBeTruthy('Major Edit Option is displayed for Published Knowledge Article.');
@@ -985,11 +985,11 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(updatedArticleTitle);
 
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-            await editKnowledgeAccessPage.clickRemoveKnowledgeAccess('Petramco');
-            await editKnowledgeAccessPage.clickKnowledgeAccessYesOption();
-            await editKnowledgeAccessPage.clickRemoveKnowledgeAccess('Employee Relations');
-            await editKnowledgeAccessPage.clickKnowledgeAccessYesOption();
-            await editKnowledgeAccessPage.clickCloseKnowledgeAccessBlade();
+            await knowledgeAccessPage.clickRemoveKnowledgeAccess('Petramco');
+            await knowledgeAccessPage.clickKnowledgeAccessYesOption();
+            await knowledgeAccessPage.clickRemoveKnowledgeAccess('Employee Relations');
+            await knowledgeAccessPage.clickKnowledgeAccessYesOption();
+            await knowledgeAccessPage.clickCloseKnowledgeAccessBlade();
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
 
@@ -1284,13 +1284,13 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await viewKnowledgeArticlePo.getArticleVersion()).toBe(updatedVersion);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(updatedArticleTitle);
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-            await editKnowledgeAccessPage.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
-            await editKnowledgeAccessPage.selectCompany('Petramco');
-            await editKnowledgeAccessPage.selectBusinessUnit('HR Support');
-            await editKnowledgeAccessPage.selectSupportGroup('Employee Relations');
-            await editKnowledgeAccessPage.selectSupportGroupWriteAccess();
-            await editKnowledgeAccessPage.clickAddSupportGroupAccessButton();
-            await editKnowledgeAccessPage.clickCloseKnowledgeAccessBlade();
+            await knowledgeAccessPage.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
+            await knowledgeAccessPage.selectCompany('Petramco');
+            await knowledgeAccessPage.selectBusinessUnit('HR Support');
+            await knowledgeAccessPage.selectSupportGroup('Employee Relations');
+            await knowledgeAccessPage.selectSupportGroupWriteAccess();
+            await knowledgeAccessPage.clickAddSupportGroupAccessButton();
+            await knowledgeAccessPage.clickCloseKnowledgeAccessBlade();
             await utilityCommon.refresh();
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(updatedArticleDesc);
             expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStr);
@@ -1436,36 +1436,36 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Article is updated with Draft status.');
 
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-            await editKnowledgeAccessPage.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
-            await editKnowledgeAccessPage.selectCompany('Petramco');
-            await editKnowledgeAccessPage.selectBusinessUnit('Australia Support');
-            await editKnowledgeAccessPage.selectSupportGroup('AU Support 1');
-            await editKnowledgeAccessPage.selectSupportGroupWriteAccess();
-            await editKnowledgeAccessPage.clickAddSupportGroupAccessButton();
-            await editKnowledgeAccessPage.clickCloseKnowledgeAccessBlade();
+            await knowledgeAccessPage.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
+            await knowledgeAccessPage.selectCompany('Petramco');
+            await knowledgeAccessPage.selectBusinessUnit('Australia Support');
+            await knowledgeAccessPage.selectSupportGroup('AU Support 1');
+            await knowledgeAccessPage.selectSupportGroupWriteAccess();
+            await knowledgeAccessPage.clickAddSupportGroupAccessButton();
+            await knowledgeAccessPage.clickCloseKnowledgeAccessBlade();
 
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-            await editKnowledgeAccessPage.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
-            await editKnowledgeAccessPage.selectCompany('Petramco');
-            await editKnowledgeAccessPage.selectBusinessUnit('India Support');
-            await editKnowledgeAccessPage.selectSupportGroup('IN Support 2');
-            await editKnowledgeAccessPage.clickAddSupportGroupAccessButton();
-            await editKnowledgeAccessPage.clickCloseKnowledgeAccessBlade();
+            await knowledgeAccessPage.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
+            await knowledgeAccessPage.selectCompany('Petramco');
+            await knowledgeAccessPage.selectBusinessUnit('India Support');
+            await knowledgeAccessPage.selectSupportGroup('IN Support 2');
+            await knowledgeAccessPage.clickAddSupportGroupAccessButton();
+            await knowledgeAccessPage.clickCloseKnowledgeAccessBlade();
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-            await editKnowledgeAccessPage.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
-            await editKnowledgeAccessPage.selectCompany('Petramco');
-            await editKnowledgeAccessPage.selectBusinessUnit('India Support');
-            await editKnowledgeAccessPage.selectSupportGroup('IN Support 3');
-            await editKnowledgeAccessPage.clickAddSupportGroupAccessButton();
-            await editKnowledgeAccessPage.clickCloseKnowledgeAccessBlade();
+            await knowledgeAccessPage.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
+            await knowledgeAccessPage.selectCompany('Petramco');
+            await knowledgeAccessPage.selectBusinessUnit('India Support');
+            await knowledgeAccessPage.selectSupportGroup('IN Support 3');
+            await knowledgeAccessPage.clickAddSupportGroupAccessButton();
+            await knowledgeAccessPage.clickCloseKnowledgeAccessBlade();
 
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-            await editKnowledgeAccessPage.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
-            await editKnowledgeAccessPage.selectCompany('Petramco');
-            await editKnowledgeAccessPage.selectBusinessUnit('United States Support');
-            await editKnowledgeAccessPage.selectSupportGroup('US Support 1');
-            await editKnowledgeAccessPage.clickAddSupportGroupAccessButton();
-            await editKnowledgeAccessPage.clickCloseKnowledgeAccessBlade();
+            await knowledgeAccessPage.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
+            await knowledgeAccessPage.selectCompany('Petramco');
+            await knowledgeAccessPage.selectBusinessUnit('United States Support');
+            await knowledgeAccessPage.selectSupportGroup('US Support 1');
+            await knowledgeAccessPage.clickAddSupportGroupAccessButton();
+            await knowledgeAccessPage.clickCloseKnowledgeAccessBlade();
 
             await utilityCommon.refresh();
 

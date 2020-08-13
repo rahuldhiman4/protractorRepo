@@ -1,4 +1,6 @@
 import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import utilGrid from '../../../utils/util.grid';
+import utilCommon from '../../../utils/util.common';
 
 class NotificationTemplateGridPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -70,6 +72,27 @@ class NotificationTemplateGridPage {
     async clickCopyTemplateButtonInCopyTempWindow() {
         element(by.buttonText('Create Copy')).click();
         await $(this.selectors.saveButton).click();
+    }
+
+    async addGridColumns(columns: string[]): Promise<void> {
+        await utilGrid.addGridColumn(this.selectors.guid, columns);
+    }
+
+    async removeGridColumns(columns: string[]): Promise<void> {
+        await utilGrid.removeGridColumn(this.selectors.guid, columns);
+    }
+
+    async areColumnHeaderMatches(columns: string[]): Promise<boolean> {
+        return await utilGrid.areColumnHeaderMatches(this.selectors.guid, columns);
+    }
+
+    async deleteTemplate(): Promise<void> {
+        await $(this.selectors.deleteButton).click();
+        await utilCommon.clickOnWarningOk();
+    }
+
+    async isGridColumnSorted(columnName: string ): Promise<boolean> {
+        return await utilGrid.isGridColumnSorted(columnName, 'ascending', this.selectors.guid);
     }
 }
 

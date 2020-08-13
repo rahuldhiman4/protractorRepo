@@ -30,6 +30,7 @@ import { IknowledgeSetPermissions } from '../data/api/interface/knowledge-set.pe
 import { IKnowledgeArticles } from '../data/api/interface/knowledge.articles.interface.api';
 import { IMenuItem } from '../data/api/interface/menu.Items.interface.api';
 import { INotesTemplate } from '../data/api/interface/notes.template.interface.api';
+import { INOTIFICATIONEVENT, INOTIFICATIONTEMPLATE } from '../data/api/interface/notification.config.interface.api';
 import { IPerson } from '../data/api/interface/person.interface.api';
 import { ICase, ITask } from '../data/api/interface/record-update.interface.api';
 import { ISupportGroup } from '../data/api/interface/support.group.interface.api';
@@ -53,6 +54,7 @@ import { ONE_TASKFLOW, PROCESS_DOCUMENT, THREE_TASKFLOW_SEQUENTIAL, TWO_TASKFLOW
 import { DOC_LIB_DRAFT, DOC_LIB_PUBLISH, DOC_LIB_READ_ACCESS } from '../data/api/ticketing/document-library.data.api';
 import * as DYNAMIC from '../data/api/ticketing/dynamic.data.api';
 import { DOCUMENT_TEMPLATE } from '../data/api/ticketing/document-template.data.api';
+import { NOTIFICATION_TEMPLATE, EMAIL_ALERT_SUBJECT_BODY, NOTIFICATION_EVENT_ACTIVE } from '../data/api/notification/notification-config.api';
 import { COMMON_CONFIG_PAYLOAD } from '../data/api/shared-services/common.configurations.api';
 
 let fs = require('fs');
@@ -1254,7 +1256,7 @@ class ApiHelper {
             templateData
         );
 
-        console.log('Create Email Template API Status =============>', notesTemplateResponse.status);
+        console.log('Create Notes Template API Status =============>', notesTemplateResponse.status);
         return notesTemplateResponse.status == 201;
     }
 
@@ -2593,6 +2595,50 @@ class ApiHelper {
         );
         console.log('Add Common Config API Status  =============>', addCommonConfigResponse.status);
         return addCommonConfigResponse.status == 201;
+    }
+
+    async createNotificationEvent(data: INOTIFICATIONEVENT): Promise<IIDs> {
+        let notificationEventPayload = cloneDeep(NOTIFICATION_EVENT_ACTIVE);
+        notificationEventPayload.fieldInstances[450000152].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : notificationEventPayload.fieldInstances[450000152].value;
+        notificationEventPayload.fieldInstances[301718200].value = data.eventName;
+        notificationEventPayload.fieldInstances[7].value = data.status ? data.status : notificationEventPayload.fieldInstances[7].value;
+        notificationEventPayload.fieldInstances[8].value = data.eventDescription ? data.eventDescription : notificationEventPayload.fieldInstances[8].value;
+        let notificationEventCreateResponse: AxiosResponse = await apiCoreUtil.createRecordInstance(notificationEventPayload);
+        console.log('Create Notification event Status =============>', notificationEventCreateResponse.status);
+        const notificationEvent = await axios.get(
+            notificationEventCreateResponse.headers.location
+        );
+        return {
+            id: notificationEvent.data.id,
+            displayId: notificationEvent.data.displayId
+        };
+    }
+
+    async createNotificationTemplate(data: INOTIFICATIONTEMPLATE): Promise<boolean> {
+        let notificationTemplatePayload = cloneDeep(NOTIFICATION_TEMPLATE);
+        let subjectBodyPayload = cloneDeep(EMAIL_ALERT_SUBJECT_BODY);
+        notificationTemplatePayload.fieldInstances[8].value = data.description;
+        notificationTemplatePayload.fieldInstances[301233800].value = data.module;
+        notificationTemplatePayload.fieldInstances[301718200].value = await apiCoreUtil.getNotificationEventGuid(data.eventName);
+        notificationTemplatePayload.fieldInstances[304412071].value = data.templateName;
+        notificationTemplatePayload.fieldInstances[450000153].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : notificationTemplatePayload.fieldInstances[450000153].value;
+        let notificationTemplateResponse: AxiosResponse = await apiCoreUtil.createRecordInstance(notificationTemplatePayload);
+        console.log('Create Notification Template Status =============>', notificationTemplateResponse.status);
+        const notificationTemplate = await axios.get(
+            notificationTemplateResponse.headers.location
+        );
+        let id = notificationTemplate.data.id;
+
+        subjectBodyPayload.processInputValues.AlertMessageSubject = data.alertMessage;
+        subjectBodyPayload.processInputValues.EmailMessageBody = data.emailBody;
+        subjectBodyPayload.processInputValues.EmailMessageSubject = data.emailSubject;
+        subjectBodyPayload.processInputValues.TemplateID = id;
+        let response = await axios.post(
+            commandUri,
+            subjectBodyPayload
+        )
+        console.log('Set Message and Body API Status  =============>', response.status);
+        return response.status == 200;
     }
 }
 

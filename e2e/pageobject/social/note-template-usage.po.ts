@@ -1,4 +1,4 @@
-import { $, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, protractor, ProtractorExpectedConditions, browser } from "protractor";
 import utilityGrid from '../../utils/utility.grid';
 import activityTab from './activity-tab.po';
 import utilityCommon from 'e2e/utils/utility.common';
@@ -12,6 +12,7 @@ class notesTemplateUsage {
 
     async clickAddNoteAndAddNoteTemplate(notesTemplate: string) {
         await activityTab.clickActivityNoteTextBox();
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.notesTemplateButton)),7000);
         await $(this.selectors.notesTemplateButton).click();
         await utilityGrid.searchAndSelectGridRecord(notesTemplate);
         await $(this.selectors.applyButton).click();

@@ -79,7 +79,7 @@ class ActivityTabPage {
         italicTextCkEditorTextArea: '.cke_enable_context_menu em',
         underlineTextCkEditorTextArea: '.cke_enable_context_menu u',
         colorTextCkEditorTextArea: '.cke_enable_context_menu span',
-        alignmentTextCkEditorTextArea: '.cke_enable_context_menu div',
+        alignmentTextCkEditorTextArea: '.cke_enable_context_menu',
         numberListCkEditorTextArea: '.cke_enable_context_menu ol li',
         bulletListTextCkEditorTextArea: '.cke_enable_context_menu ul li',
         linkTextCkEditorTextArea: '.cke_enable_context_menu a',
@@ -850,7 +850,7 @@ class ActivityTabPage {
     }
 
     async isRightAlignTextDisplayedInActivity(bodyText: string, activityNumber: number): Promise<boolean> {
-        let getTextmsg = await $$(this.selectors.activityLogBody).get(activityNumber - 1).$('div[style="text-align: right;"]').getText();
+        let getTextmsg = await $$(this.selectors.activityLogBody).get(activityNumber - 1).$('[style="text-align: right;"]').getText();
         if (getTextmsg.trim().includes(bodyText)) {
             return true;
         } else return false;
@@ -905,6 +905,32 @@ class ActivityTabPage {
 
     async getRevokedReadAccessCount(accessName: string): Promise<number> {
         return await element.all(by.cssContainingText('.activity__body .fields span', accessName)).count();
+    }
+
+    async isTableSummaryDisplayedInCkEditorTextArea(tableSummary: string): Promise<boolean> {
+        let locator = `table[summary='${tableSummary}']`;       
+        return await element(by.css(locator)).isPresent().then(async (link) => {
+            if (link) {
+                return await element(by.css(locator)).isDisplayed();
+            } else return false;
+        });
+    }
+
+    async isTableCaptionDisplayedInCkEditorTextArea(tableSummary: string,tableCaption: string): Promise<boolean> {
+        let locator = `table[summary='${tableSummary}'] caption`;       
+        return await element(by.css(locator)).isPresent().then(async (result) => {
+            if (result) {
+                let tableCaptionText = await element(by.css(locator)).getText();
+                return tableCaptionText.includes(tableCaption);
+            }
+            else return false;
+        });
+    }
+
+    async isCKImageDisplayedInActivity(value: string): Promise<boolean> {
+        let locator = `.activity img[src='${value}']`;
+        let imageIsDisplayed: boolean = await $(locator).isDisplayed();
+        return imageIsDisplayed;
     }
 }
 

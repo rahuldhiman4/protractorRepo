@@ -358,7 +358,8 @@ class CaseEditPage {
         for (let i = 0; i < dynamicTextFields; i++) {
             let labelvalue = await $$('bwf-text-field').get(i).$('label').getText();
             if (labelvalue == fieldName) {
-                $$('bwf-text-field').get(i).$('input').sendKeys(fieldValue);
+                await $$('bwf-text-field').get(i).$('input').clear();
+                await $$('bwf-text-field').get(i).$('input').sendKeys(fieldValue);
             }
         }
     }

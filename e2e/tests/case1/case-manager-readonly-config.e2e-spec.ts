@@ -448,7 +448,7 @@ describe('Case Manager Read-only Config', () => {
         expect(await editNotificationTemplatePage.isDescriptionFieldDisabled()).toBeTruthy('Description field is enabled');
         expect(await editNotificationTemplatePage.isEventDropdownDisabled()).toBeTruthy('Event dropdown is enabled');
         expect(await editNotificationTemplatePage.isAddLocalizedButtonEnabled()).toBeFalsy('Add Localized button is enabled');
-        expect(await editNotificationTemplatePage.isAddRecipientButtonEnabled()).toBeFalsy('Add Recipents button is enabled');
+        expect(await editNotificationTemplatePage.isAddRecipientButtonEnabled()).toBeFalsy('Add Recipients button is enabled');
         expect(await editNotificationTemplatePage.isSaveButtonEnabled()).toBeFalsy('Save button is enabled');
         await editNotificationTemplatePage.openAlertEditMessageText();
         expect(await editNotificationTemplatePage.isAlertSubjectMessageDisabled()).toBeTruthy('Alert textbox is enabled');

@@ -433,7 +433,7 @@ describe('Email Configuration', () => {
     });
 
     //ankagraw
-    describe('[DRDMV-10454]: Support Group: Delete default email id for multiple email configurations', async () => {
+    describe('[DRDMV-10454, DRDMV-10424]: Support Group: Delete default email id for multiple email configurations', async () => {
         beforeAll(async () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
@@ -441,14 +441,14 @@ describe('Email Configuration', () => {
             await apiHelper.deleteAllEmailConfiguration();
             await apiHelper.createEmailConfiguration();
         });
-        it('[DRDMV-10454]: create email configurations', async () => {
+        it('[DRDMV-10454, DRDMV-10424]: create email configurations', async () => {
             await apiHelper.apiLogin('tadmin');
             await browser.sleep(2000); // required to remove flackyness
             await apiHelper.createEmailConfiguration(INCOMINGMAIL_COMPANY_ONE, OUTGOINGEMAIL_COMPANY_ONE, EMAILCONFIG_COMPANY_ONE);
             await browser.sleep(2000); // required to remove flackyness
             await apiHelper.createEmailConfiguration(INCOMINGMAIL_COMPANY_TWO, OUTGOINGEMAIL_COMPANY_TWO, EMAILCONFIG_COMPANY_TWO);
         });
-        it('[DRDMV-10454]: change the default mail to false', async () => {
+        it('[DRDMV-10454, DRDMV-10424]: change the default mail to false', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(emailID);
@@ -460,7 +460,7 @@ describe('Email Configuration', () => {
             await editEmailConfigPo.clickDefaultMailIdCheckbox("False");
             await editEmailConfigPo.clickSaveButton();
         });
-        it('[DRDMV-10454]: Delete default email id', async () => {
+        it('[DRDMV-10454, DRDMV-10424]: Delete default email id', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
             await utilGrid.clickCheckBoxOfValueInGrid("bwfqa2019@gmail.com");
@@ -472,7 +472,7 @@ describe('Email Configuration', () => {
             await editEmailConfigPo.clickDefaultMailIdCheckbox("True");
             await editEmailConfigPo.clickSaveButton();
         });
-        it('[DRDMV-10454]: Support Group: Delete default email id for multiple email configurations', async () => {
+        it('[DRDMV-10454, DRDMV-10424]: Support Group: Delete default email id for multiple email configurations', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
             await utilGrid.clickCheckBoxOfValueInGrid("bwfqa2019@gmail.com");
@@ -491,12 +491,38 @@ describe('Email Configuration', () => {
         });
     });
 
-    describe('[DRDMV-10930,DRDMV-10457,DRDMV-10802,DRDMV-10997]: Acknowledgment Template: Deletion & status update shouldnt allow when Acknowledgment Template associated with email id', async () => {
-        it('[DRDMV-10930,DRDMV-10457,DRDMV-10802,DRDMV-10997]: Exclusion Subject : Default associated public exclusion subject list', async () => {
+    describe('[DRDMV-10930,DRDMV-10457,DRDMV-10802,DRDMV-10997,,DRDMV-9037]: Acknowledgment Template: Deletion & status update shouldnt allow when Acknowledgment Template associated with email id', async () => {
+        let caseTemplateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        beforeAll(async () => {
+            caseTemplateData = {
+                "templateName": randomStr + 'caseTemplateName',
+                "templateSummary": 'CaseSummaryName' + randomStr,
+                "caseStatus": "InProgress",
+                "templateStatus": "Active",
+                "assignee": "Fritz",
+                "company": "Petramco",
+                "supportGroup": "Facilities",
+                "ownerGroup": "Facilities"
+            }
+            await apiHelper.apiLogin('fritz');
+            await apiHelper.createCaseTemplate(caseTemplateData);
+            caseTemplateData.templateStatus = "Draft";
+            caseTemplateData.templateName = randomStr + 'caseTemplateNameDraft'
+            await apiHelper.createCaseTemplate(caseTemplateData);
+            caseTemplateData.templateStatus = "Inactive";
+            caseTemplateData.templateName = randomStr + 'caseTemplateNameInactive'
+            await apiHelper.createCaseTemplate(caseTemplateData);
+        });
+        it('[DRDMV-10930,DRDMV-10457,DRDMV-10802,DRDMV-10997,DRDMV-9037]: Exclusion Subject : Default associated public exclusion subject list', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(emailID);
             expect(await editEmailConfigPo.isCreateEmailTemplpateLinkDisplayed()).toBeTruthy();
+            expect(await editEmailConfigPo.isDefaultCaseTemplatetoUsePresent(randomStr + 'caseTemplateNameDraft')).toBeFalsy();
+            await editEmailConfigPo.clearDefaultCaseTemplateToUseField();
+            expect(await editEmailConfigPo.isDefaultCaseTemplatePresentinDropDown(randomStr + 'caseTemplateNameInactive')).toBeFalsy();
+            await editEmailConfigPo.clearDefaultCaseTemplateToUseField();
+            expect(await editEmailConfigPo.isDefaultCaseTemplatePresentinDropDown(randomStr + 'caseTemplateName')).toBeTruthy();
             await editEmailConfigPo.clickNewAvailableGlobalSubjects();
             expect(await editEmailConfigPo.isValueAvailableExclusionsSubjectInAssociatePublicExclusionSubjectsPresent()).toBeFalsy("AvailableExclusionsSubject");
             expect(await editEmailConfigPo.isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent()).toBeTruthy("AssociatedExclusionsSubject");
@@ -504,7 +530,7 @@ describe('Email Configuration', () => {
             await editEmailConfigPo.selectTab("Acknowledgment Templates");
             expect(await editEmailConfigPo.isRecordPresentInAcknowledgementTemplateGrid('Case Closed Ack Template')).toBeTruthy("Coloumn");
         });
-        it('[DRDMV-10930,DRDMV-10457,DRDMV-10802,DRDMV-10997]: Acknowledgment Template: Deletion & status update shouldnt allow when Acknowledgment Template associated with email id', async () => {
+        it('[DRDMV-10930,DRDMV-10457,DRDMV-10802,DRDMV-10997,DRDMV-9037]: Acknowledgment Template: Deletion & status update shouldnt allow when Acknowledgment Template associated with email id', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
             await consoleAcknowledgmentTemplatePo.searchAndSelectGridRecord('Case Closed Ack Template');
