@@ -21,7 +21,7 @@ import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-import editKnowledgeAccessPage from '../../pageobject/knowledge/edit-knowledge-access.po';
+import knowledgeAccessPage from '../../pageobject/knowledge/knowledge-access-tab.po';
 import viewCasePage from '../../pageobject/case/view-case.po';
 import editCasePo from '../../pageobject/case/edit-case.po';
 import quickCasePo from '../../pageobject/case/quick-case.po';
@@ -1448,9 +1448,9 @@ describe('Knowledge Article', () => {
             expect(await viewKnowledgeArticlePo.isApprovalButtonsPresent("Approve")).toBeFalsy();
             expect(await viewKnowledgeArticlePo.isApprovalButtonsPresent("Reject")).toBeFalsy();
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-            await changeAssignmentBladePo.clickOnSupportGroupAccessORAgentAccessButtonKM('Agent Access');
-            await changeAssignmentBladePo.selectAgentKM('kayo');
-            await editKnowledgeAccessPage.clickCloseKnowledgeAccessBlade();
+            await knowledgeAccessPage.clickOnSupportGroupAccessORAgentAccessButton('Agent Access');
+            await knowledgeAccessPage.selectAgent('kayo');
+            await knowledgeAccessPage.clickCloseKnowledgeAccessBlade();
         });
         it('[DRDMV-21679,DRDMV-21681]:Tiggered the Approval on Article and check KA screen by Approver should show Approval component', async () => {
             await apiHelper.apiLogin('elizabeth');

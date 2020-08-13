@@ -926,6 +926,12 @@ class ActivityTabPage {
             else return false;
         });
     }
+
+    async isCKImageDisplayedInActivity(value: string): Promise<boolean> {
+        let locator = `.activity img[src='${value}']`;
+        let imageIsDisplayed: boolean = await $(locator).isDisplayed();
+        return imageIsDisplayed;
+    }
 }
 
 export default new ActivityTabPage();
