@@ -52,6 +52,8 @@ import documentTemplateConsolePo from '../../pageobject/settings/document-manage
 import editDocumentTemplatePage from '../../pageobject/settings/document-management/edit-document-template.po';
 
 describe('Case Manager Read-only Config', () => {
+    const caseApprovalMappingRecordDefinition = 'com.bmc.dsm.case-lib:Case Approval Mapping';
+
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qdu');
@@ -477,7 +479,7 @@ describe('Case Manager Read-only Config', () => {
             "company": "Petramco",
             "mappingName": "Approval Mapping Name" + randomStr
         }
-        await apiHelper.deleteApprovalMapping();
+        await apiHelper.deleteApprovalMapping(caseApprovalMappingRecordDefinition);
         await apiHelper.createCaseApprovalMapping(approvalMappingData);
 
         await navigationPage.gotoSettingsPage();

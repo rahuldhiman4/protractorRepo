@@ -11,12 +11,13 @@ import utilityGrid from '../../utils/utility.grid';
 
 describe("Case Self Approval Tests", () => {
     const caseApprovalRecordDefinition = 'com.bmc.dsm.case-lib:Case';
+    const caseApprovalMappingRecordDefinition = 'com.bmc.dsm.case-lib:Case Approval Mapping';
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
         await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteApprovalMapping();
+        await apiHelper.deleteApprovalMapping(caseApprovalMappingRecordDefinition);
         await apiHelper.apiLogin('tadmin');
     });
 
@@ -137,7 +138,7 @@ describe("Case Self Approval Tests", () => {
 
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteApprovalMapping();
+            await apiHelper.deleteApprovalMapping(caseApprovalMappingRecordDefinition);
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -273,7 +274,7 @@ describe("Case Self Approval Tests", () => {
         });
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteApprovalMapping();
+            await apiHelper.deleteApprovalMapping(caseApprovalMappingRecordDefinition);
         });
     });
 }); 

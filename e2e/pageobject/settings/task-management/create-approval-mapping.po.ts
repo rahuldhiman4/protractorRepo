@@ -8,27 +8,27 @@ class CreateApprovalMapping {
 
     selectors = {
         addApprovalMappingHeading: '.modal-header h3',
-        approvalMappingName: '[rx-view-component-id="a518014f-011a-4baa-ad95-6c5a3ac14f61"] input',
-        approvalMappingNameGuid: 'a518014f-011a-4baa-ad95-6c5a3ac14f61',
-        companyGuid: '926e74ae-fa14-4571-b823-bc2b55c22827',
+        approvalMappingName: '[rx-view-component-id="86933daf-d87a-48cf-8982-5690071e9520"] input',
+        approvalMappingNameGuid: '86933daf-d87a-48cf-8982-5690071e9520',
+        companyGuid: '2e61e83b-6c0d-4fc4-a1e3-0033e3b6b3f8',
         flowsetGuid: '4aa6b6a8-265a-4878-991e-17ddb5eb988d',
-        statusTriggerDropDownGuid: '9f9c4984-390f-4102-80a4-2eed61be6dd4',
-        statusMappingApproved: 'ddb86311-7b72-4a20-bd3c-847eaf89f8d3',
-        statusMappingNoApprovalFound: '241dd4a2-76fd-420e-a7c9-ecfa300a33af',
-        statusMappingRejected: '932b8c5d-1799-4745-ba31-dc617d55469c',
-        statusMappingError: 'a6b301f9-1363-4243-b2d1-6fea650dfe83',
-        statusTriggerDropDownField: '[rx-view-component-id="9f9c4984-390f-4102-80a4-2eed61be6dd4"] .ui-select-match',
-        statusMappingApprovedDropDownField: '[rx-view-component-id="ddb86311-7b72-4a20-bd3c-847eaf89f8d3"] .ui-select-match',
-        statusMappingNoApprovalFoundDropDownField: '[rx-view-component-id="241dd4a2-76fd-420e-a7c9-ecfa300a33af"] .ui-select-match',
-        statusMappingRejectedDropDownField: '[rx-view-component-id="932b8c5d-1799-4745-ba31-dc617d55469c"] .ui-select-match',
-        statusMappingErrorDropDownField: '[rx-view-component-id="a6b301f9-1363-4243-b2d1-6fea650dfe83"] .ui-select-match',
+        statusTriggerDropDownGuid: 'ab9cc9a1-5378-4b87-9528-2ac335d96c5d',
+        statusMappingApproved: '73b32621-443a-4a5d-85f8-24ddbb7b04cd',
+        statusMappingNoApprovalFound: 'ef7ac4b8-4390-4592-a339-101589159723',
+        statusMappingRejected: 'cb4738c5-5cd6-4c79-8e28-a218d99d5b3b',
+        statusMappingError: '143bcfe5-e944-4f10-a8db-1963f1d6f33e',
+        statusTriggerDropDownField: '[rx-view-component-id="ab9cc9a1-5378-4b87-9528-2ac335d96c5d"] .ui-select-match',
+        statusMappingApprovedDropDownField: '[rx-view-component-id="73b32621-443a-4a5d-85f8-24ddbb7b04cd"] .ui-select-match',
+        statusMappingNoApprovalFoundDropDownField: '[rx-view-component-id="ef7ac4b8-4390-4592-a339-101589159723"] .ui-select-match',
+        statusMappingRejectedDropDownField: '[rx-view-component-id="cb4738c5-5cd6-4c79-8e28-a218d99d5b3b"] .ui-select-match',
+        statusMappingErrorDropDownField: '[rx-view-component-id="143bcfe5-e944-4f10-a8db-1963f1d6f33e"] .ui-select-match',
         statusTriggerDefaultOption: '[rx-view-component-id="-2f9c4984-390f-4102-80a4-2eed61be6dd4"] .ui-select-match-text',
         approvalTriggerProcessHelptext: '[rx-view-component-id="4d837936-df13-4d15-8c7f-d2b7f6991249"] span',
-        statusMappingHelptext: '[rx-view-component-id="77e22859-d059-4940-bd97-775b50362b56"] p',
+        statusMappingHelptext: '[rx-view-component-id="7d88665e-4d2a-44b3-8e2c-f9444a57207a"] p',
         statusMappingLabel: '[rx-view-component-id="df2b908d-1a52-456b-81bb-ec47d0446994"] span',
         approvalMappingFields: '1e161c6a-3b3d-42c3-8119-83207d9fbbc0',
-        saveButton: '[rx-view-component-id="c86fc373-e406-4e48-9001-5571ffc1772e"] button',
-        cancelButton: '[rx-view-component-id="937e9d73-4012-4b1f-bab7-a9e49e63a520"] button'
+        saveButton: '[rx-view-component-id="dcb1482a-6422-4987-b6d6-94f8db2e27b3"] button',
+        cancelButton: '[rx-view-component-id="cd150abf-af19-4f16-9ad2-f28fc580a29e"] button'
     }
 
     async getCreateApprovalMappingHeaderText(): Promise<string> {
@@ -121,11 +121,6 @@ class CreateApprovalMapping {
         await $(this.selectors.statusMappingErrorDropDownField).click();
     }
 
-
-
-
-
-
     async selectStatusTrigger(approvalStatusTrigger: string): Promise<void> {
         await utilCommon.selectDropDown(this.selectors.statusTriggerDropDownGuid, approvalStatusTrigger);
     }
@@ -184,9 +179,6 @@ class CreateApprovalMapping {
     async clickCancelApprovalMappingBtn(): Promise<void> {
         await $(this.selectors.cancelButton).click();
     }
-
-
-
 
 }
 

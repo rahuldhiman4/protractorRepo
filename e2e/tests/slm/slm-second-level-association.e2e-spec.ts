@@ -155,7 +155,7 @@ describe('Service Target - Second Level Association Tests', () => {
         await caseConsolePage.searchAndOpenCase(caseId);
         expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
         expect(await viewCasePage.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
-    }, 820 * 1000);
+    }, 1000 * 1000);
 
     //Application issue...
     it('[DRDMV-19660]:SVT created for Company associations and SVT get links to a Case', async () => {
@@ -374,5 +374,5 @@ describe('Service Target - Second Level Association Tests', () => {
         await caseConsolePage.searchAndOpenCase(caseId);
         expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
         expect(await viewCasePage.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
-    }, 750 * 1000);
+    }, 1000 * 1000);
 });

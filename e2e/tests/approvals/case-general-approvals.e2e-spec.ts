@@ -15,13 +15,14 @@ import utilityGrid from '../../utils/utility.grid';
 
 let userData1 = undefined;
 const caseApprovalRecordDefinition = 'com.bmc.dsm.case-lib:Case';
+const caseApprovalMappingRecordDefinition = 'com.bmc.dsm.case-lib:Case Approval Mapping';
 
 describe("Case General Approval Tests", () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
         await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteApprovalMapping();
+        await apiHelper.deleteApprovalMapping(caseApprovalMappingRecordDefinition);
         userData1 = {
             "firstName": "Petramco",
             "lastName": "SGUser1",
@@ -138,7 +139,7 @@ describe("Case General Approval Tests", () => {
 
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteApprovalMapping();
+            await apiHelper.deleteApprovalMapping(caseApprovalMappingRecordDefinition);
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -261,7 +262,7 @@ describe("Case General Approval Tests", () => {
 
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteApprovalMapping();
+            await apiHelper.deleteApprovalMapping(caseApprovalMappingRecordDefinition);
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -498,7 +499,7 @@ describe("Case General Approval Tests", () => {
 
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteApprovalMapping();
+            await apiHelper.deleteApprovalMapping(caseApprovalMappingRecordDefinition);
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -647,7 +648,7 @@ describe("Case General Approval Tests", () => {
         });
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteApprovalMapping();
+            await apiHelper.deleteApprovalMapping(caseApprovalMappingRecordDefinition);
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });

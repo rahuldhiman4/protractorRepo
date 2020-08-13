@@ -1745,27 +1745,27 @@ class ApiHelper {
         }
     }
 
-    async deleteApprovalMapping(approvalMappingName?: string): Promise<boolean> {
+    async deleteApprovalMapping(approvalMappingLib: string, approvalMappingName?: string): Promise<boolean> {
         if (approvalMappingName) {
-            let allRecords = await apiCoreUtil.getGuid("com.bmc.dsm.case-lib:Case Approval Mapping");
+            let allRecords = await apiCoreUtil.getGuid(approvalMappingLib);
             let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
                 return obj[1000001437] === approvalMappingName;
             });
             let approvalMapGuid = entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
             if (approvalMapGuid) {
-                return await apiCoreUtil.deleteRecordInstance('com.bmc.dsm.case-lib:Case Approval Mapping', approvalMapGuid);
+                return await apiCoreUtil.deleteRecordInstance(approvalMappingLib, approvalMapGuid);
             }
         } else {
-            let allApprovalMapRecords = await apiCoreUtil.getGuid("com.bmc.dsm.case-lib:Case Approval Mapping");
+            let allApprovalMapRecords = await apiCoreUtil.getGuid(approvalMappingLib);
             let allApprovalMapArrayMap = allApprovalMapRecords.data.data.map(async (obj: string) => {
-                return await apiCoreUtil.deleteRecordInstance('com.bmc.dsm.case-lib:Case Approval Mapping', obj[379]);
+                return await apiCoreUtil.deleteRecordInstance(approvalMappingLib, obj[379]);
             });
             return await Promise.all(allApprovalMapArrayMap).then(async (result) => {
                 return !result.includes(false);
             });
         }
     }
-
+    
     async deleteAllApprovalFlow(recordDefinition: string): Promise<boolean> {
         let remoteApprovalFlow = cloneDeep(INVALID_APPROVAL_FLOW);
         switch (recordDefinition) {
