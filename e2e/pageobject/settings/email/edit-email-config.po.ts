@@ -35,7 +35,9 @@ export class EditEmailConfig {
         saveEditEmailConfig: '[rx-view-component-id="e36471c2-f950-4df7-bc42-ed2bbf59898b"] button',
         acknowledgementTemplateGridGuid: '2266a74e-eee9-4936-a22b-37c1d2d4e205',
         defaultCaseTemplateGuid: '085b8e93-0e68-41a7-a1ed-77b6ab2c9522',
+        defaultCaseTemplatelist: '[rx-view-component-id="085b8e93-0e68-41a7-a1ed-77b6ab2c9522"] .ui-select-choices-row-inner *',
         defaultCaseTemplateToUse: '[rx-view-component-id="085b8e93-0e68-41a7-a1ed-77b6ab2c9522"] .dropdown',
+        clearDefaultCaseTemplateToUse:'[rx-view-component-id="085b8e93-0e68-41a7-a1ed-77b6ab2c9522"] input[type="search"]',
         supportGroupCheckbox: '.record__list i',
         addTrustedEmailBtn: '[rx-view-component-id="0dfbc207-b03e-40ab-8e6b-c74f5609aa89"] button',
         addBlockedEmail: '[rx-view-component-id="d7309e2b-06c2-46a6-85e0-8b8f83159f9a"] button',
@@ -220,6 +222,18 @@ export class EditEmailConfig {
         return await $(this.selectors.defaultCaseTemplateToUse).getAttribute('disabled') == 'true';
     }
 
+    async clearDefaultCaseTemplateToUseField(): Promise<void> {
+         await $(this.selectors.clearDefaultCaseTemplateToUse).clear();
+    }
+
+    async isDefaultCaseTemplatetoUsePresent(template:string): Promise<boolean> {
+       return utilCommon.isValuePresentInDropDown(this.selectors.defaultCaseTemplateGuid,template);
+    }
+    async isDefaultCaseTemplatePresentinDropDown(template:string): Promise<boolean> {
+    await $(this.selectors.clearDefaultCaseTemplateToUse).sendKeys(template);
+    let count = await $$(this.selectors.defaultCaseTemplatelist).count();
+    if (count >= 1) { return true; } else { return false; }
+    }
     async isAddNewRuleBtnEnabled(): Promise<boolean> {
         return await $(this.selectors.newExclusiveSubjects).isEnabled();
     }

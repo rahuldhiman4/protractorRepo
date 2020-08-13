@@ -15,29 +15,33 @@ class CreateDocumentTemplate {
         pageHeader: '.modal-title',
         insertFieldLinkOnDocumentBody: '[rx-view-component-id="4c08281f-b2ce-4aeb-a0f5-13a4a4d98a7c"] .cke_button__expressioneditor_icon',
         clickImageButton: '[rx-view-component-id="4c08281f-b2ce-4aeb-a0f5-13a4a4d98a7c"] .cke_button__image',
+        dynamicField: '[class="cke_contents cke_reset"] span',
     }
     async clickOnDocumentBodyImageButton(): Promise<void> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.clickImageButton)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.clickImageButton)));
         await $(this.selectors.clickImageButton).click();
     }
 
     async isHeaderDisplayed(headerName: string): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.pageHeader)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.pageHeader)));
         return await element(by.cssContainingText(this.selectors.pageHeader, headerName)).isDisplayed();
     }
 
     async clickOnAddTemplate(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addTemplate)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addTemplate)));
         await $(this.selectors.addTemplate).click();
     }
 
+    async getDynamicFieldOnBody(): Promise<string> {
+        return (await $(this.selectors.dynamicField).getText()).trim();
+    }
     async isSaveButtonEnabled(): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.saveButton)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.saveButton)));
         return await $(this.selectors.saveButton).isEnabled();
     }
 
     async setTemplateName(value: string): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.templateName)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.templateName)));
         await $(this.selectors.templateName).sendKeys(value);
     }
 
@@ -50,27 +54,27 @@ class CreateDocumentTemplate {
     }
 
     async setDescription(value: string): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.description)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.description)));
         await $(this.selectors.description).sendKeys(value);
     }
 
     async clickOnInsertFieldOfDocumentBody(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.insertFieldLinkOnDocumentBody)), 2000);
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.insertFieldLinkOnDocumentBody)), 2000);
         await $(this.selectors.insertFieldLinkOnDocumentBody).click();
     }
 
     async setDocumentBody(documentBodyText: string): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.documentBody)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.documentBody)));
         await $(this.selectors.documentBody).sendKeys(documentBodyText);
     }
 
     async clickOnSaveButton(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
     }
 
     async clickOnCancelButton(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         await $(this.selectors.cancelButton).click();
     }
 
