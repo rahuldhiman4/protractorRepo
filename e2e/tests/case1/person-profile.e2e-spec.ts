@@ -15,7 +15,7 @@ import utilityGrid from '../../utils/utility.grid';
 describe('Person Profile test', () => {
     beforeAll(async () => {
         await apiHelper.apiLogin('tadmin');
-        await apiHelper.updatePersonAsVIP('Elizabeth', 'Yes');
+        await apiHelper.updateFoundationEntity('Person', 'Elizabeth', { vipStatus: 'Yes' });
         await browser.get(BWF_BASE_URL);
         await loginPage.login('elizabeth');
         await navigationPage.gotoPersonProfile();
@@ -109,7 +109,7 @@ describe('Person Profile test', () => {
     //asahitya
     it('[DRDMV-16803]: Person profile display for case assignee', async () => {
         await apiHelper.apiLogin('tadmin');
-        await apiHelper.updatePersonAsVIP('Fritz', 'Yes');
+        await apiHelper.updateFoundationEntity('Person', 'Fritz', { vipStatus: 'Yes' });
         await apiHelper.apiLogin('elizabeth');
 
         let caseData = {
@@ -172,7 +172,7 @@ describe('Person Profile test', () => {
     //asahitya
     it('[DRDMV-16806]: Person profile display for person from activity/history tab', async () => {
         await apiHelper.apiLogin('tadmin');
-        await apiHelper.updatePersonAsVIP('Harry', 'Yes');
+        await apiHelper.updateFoundationEntity('Person', 'Harry', { vipStatus: 'Yes' });
         await apiHelper.apiLogin('elizabeth');
 
         let caseData = {
@@ -241,7 +241,7 @@ describe('Person Profile test', () => {
 
         it('[DRDMV-16802]: Person profile display for non Agent Contact', async () => {
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.updatePersonAsVIP('apavlik', 'Yes');
+            await apiHelper.updateFoundationEntity('Person', 'apavlik', { vipStatus: 'Yes' });
             await apiHelper.apiLogin('elizabeth');
 
             let caseData = {
@@ -319,7 +319,7 @@ describe('Person Profile test', () => {
 
         it('[DRDMV-16802]: Person profile display for Contact', async () => {
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.updatePersonAsVIP('qfeng', 'Yes');
+            await apiHelper.updateFoundationEntity('Person', 'qfeng', { vipStatus: 'Yes' });
             await apiHelper.apiLogin('elizabeth');
 
             let caseData = {

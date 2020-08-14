@@ -15,7 +15,7 @@ import { CASE_STATUS_CHANGE, UPDATE_CASE, UPDATE_CASE_ASSIGNMENT } from '../data
 import { EMAILCONFIG_DEFAULT, INCOMINGMAIL_DEFAULT, OUTGOINGEMAIL_DEFAULT } from '../data/api/email/email.configuration.data.api';
 import { EMAIL_WHITELIST } from '../data/api/email/email.whitelist.data.api';
 import { NEW_PROCESS_LIB } from '../data/api/flowset/create-process-lib';
-import { ADD_FUNCTIONAL_ROLE, UPDATE_PERSON_AS_VIP } from '../data/api/foundation/update.person.data.api';
+import { ADD_FUNCTIONAL_ROLE, UPDATE_SUPPORT_GROUP, UPDATE_PERSON } from '../data/api/foundation/update-foundation-entity.data.api';
 import { IBusinessUnit } from '../data/api/interface/business.unit.interface.api';
 import { ICaseAssignmentMapping } from "../data/api/interface/case.assignment.mapping.interface.api";
 import { ICaseTemplate } from "../data/api/interface/case.template.interface.api";
@@ -30,7 +30,7 @@ import { IKnowledgeArticles } from '../data/api/interface/knowledge.articles.int
 import { IMenuItem } from '../data/api/interface/menu.Items.interface.api';
 import { INotesTemplate } from '../data/api/interface/notes.template.interface.api';
 import { INOTIFICATIONEVENT, INOTIFICATIONTEMPLATE } from '../data/api/interface/notification.config.interface.api';
-import { IPerson } from '../data/api/interface/person.interface.api';
+import { IPerson, IFoundationEntity } from '../data/api/interface/foundation-entity-attributes.api';
 import { ICase, ITask } from '../data/api/interface/record-update.interface.api';
 import { ISupportGroup } from '../data/api/interface/support.group.interface.api';
 import { IAdhocTask, ITaskTemplate } from '../data/api/interface/task.template.interface.api';
@@ -1246,7 +1246,7 @@ class ApiHelper {
                 break;
             }
             default: {
-                console.log("Invalid module name");
+                console.log("ERROR: Invalid module name");
                 break;
             }
         }
@@ -1816,7 +1816,7 @@ class ApiHelper {
                 break;
             }
             default: {
-                console.log('Put valid Record Definition for approval flow deletion');
+                console.log('ERROR: Put valid Record Definition for approval flow deletion');
                 break;
             }
         }
@@ -1980,17 +1980,53 @@ class ApiHelper {
             uri,
             knowledgeArticleHelpfulCounterData
         );
-        console.log("Alert status ===== " + updateArticleHelpfulCounterResponse.status);
+        console.log('Alert API Status =============>', updateArticleHelpfulCounterResponse.status);
         return updateArticleHelpfulCounterResponse.status == 204;
     }
 
-    async updatePersonAsVIP(personName: string, vipStatus: string): Promise<boolean> {
-        let updatePersonAsVip = cloneDeep(UPDATE_PERSON_AS_VIP);
-        let personGuid = await apiCoreUtil.getPersonGuid(personName);
-        updatePersonAsVip.id = personGuid;
-        vipStatus == 'Yes' ? updatePersonAsVip.fieldInstances[1000000026].value = 100 : 200;
-        let updatePersonAsVIPResponse = await apiCoreUtil.updateRecordInstance('com.bmc.arsys.rx.foundation:Person', personGuid, updatePersonAsVip);
-        return updatePersonAsVIPResponse.status == 204;
+    async updateFoundationEntity(entityType: string, entityName: string, data: IFoundationEntity): Promise<boolean> {
+        let recordName: string, recordGUID: string, jsonBody: any;
+        switch (entityType) {
+            case "Person": {
+                recordName = 'com.bmc.arsys.rx.foundation:Person';
+                recordGUID = await apiCoreUtil.getPersonGuid(entityName);
+                if (data.vipStatus) {
+                    jsonBody = cloneDeep(UPDATE_PERSON);
+                    jsonBody.id = recordGUID;
+                    let vipStatusValue: number;
+                    data.vipStatus == 'Yes' ? vipStatusValue = 100 : vipStatusValue = 200;
+                    let updateVIPPayload = {
+                        "id": "1000000026",
+                        "value": vipStatusValue
+                    }
+                    jsonBody.fieldInstances[1000000026] = updateVIPPayload;
+                }
+                break;
+            }
+            case "SupportGroup": {
+                recordName = 'com.bmc.arsys.rx.foundation:Support Group';
+                recordGUID = await apiCoreUtil.getSupportGroupGuid(entityName);
+                if (data.confidential) {
+                    jsonBody = cloneDeep(UPDATE_SUPPORT_GROUP);
+                    jsonBody.id = recordGUID;
+                    let confidentialFlag: string;
+                    data.confidential == 'true' ? confidentialFlag = '1' : confidentialFlag = '1';
+                    let updateConfidentialPayload = {
+                        "id": "300000000",
+                        "value": confidentialFlag
+                    }
+                    jsonBody.fieldInstances[300000000] = updateConfidentialPayload;
+                }
+                break;
+            }
+            default: {
+                console.log('ERROR: Invalid Entity Type.');
+                break;
+            }
+        }
+        let updateFoundationEntityResponse = await apiCoreUtil.updateRecordInstance(recordName, recordGUID, jsonBody);
+        console.log('Update Foundation Entity API Status =============>', updateFoundationEntityResponse.status);
+        return updateFoundationEntityResponse.status == 204;
     }
 
     async createSVT(svtData: any): Promise<IIDs> {
@@ -2221,7 +2257,7 @@ class ApiHelper {
                     break;
                 }
                 default: {
-                    console.log('Put valid Record Definition for approval flow creation');
+                    console.log('ERROR: Put valid Record Definition for approval flow creation');
                     break;
                 }
             }
@@ -2577,7 +2613,7 @@ class ApiHelper {
                 break;
             }
             default: {
-                console.log("Invalid config name");
+                console.log("ERROR: Invalid config name");
                 break;
             }
         }
@@ -2697,7 +2733,7 @@ class ApiHelper {
 
             };
             default: {
-                console.log("Approval Mapping Module Not Found.");
+                console.log("ERROR: Approval Mapping Module Not Found.");
                 break;
 
             }

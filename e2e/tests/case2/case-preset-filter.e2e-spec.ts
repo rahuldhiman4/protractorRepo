@@ -52,13 +52,13 @@ describe('Case Console Preset Filter', () => {
         await statusConfig.addCustomStatus('In Progress', 'Resolved', 'BeforeResolved');
 
         //Set the user2 to VIP Requester
-        await apiHelper.updatePersonAsVIP('idphylum2', 'Yes');
+        await apiHelper.updateFoundationEntity('Person', 'idphylum2', { vipStatus: 'Yes' });
         await navigationPage.gotoCaseConsole();
     });
 
     afterAll(async () => {
         await apiHelper.apiLogin('tadmin');
-        await apiHelper.updatePersonAsVIP('idphylum2', 'No');
+        await apiHelper.updateFoundationEntity('Person', 'idphylum2', { vipStatus: 'No' });
         await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
