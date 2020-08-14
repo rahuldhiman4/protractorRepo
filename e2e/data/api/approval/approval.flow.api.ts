@@ -20,8 +20,18 @@ export const MULTI_APPROVAL_FLOW = {
   ]
 };
 
-export const INVALID_APPROVAL_FLOW = {
-  "flowName": "Invalid Approve Flow",
-  "approver": "qkatawazi",
-  "qualification": "1 = 2",
+export const TASK_APPROVAL_FLOW = {
+  "flowGroup": "Task Group",
+  "approvalFlowConfigurationList": [
+    {
+      "flowName": "New General",
+      "precedence": 1,
+      "approvers": "U:qliu;U:qkatawazi",
+      "signingCriteria": 0,
+      "qualification": "1=2",
+      "approvalFlowOutcomeMappingList": [
+        
+      ]  
+    }
+  ]
 };

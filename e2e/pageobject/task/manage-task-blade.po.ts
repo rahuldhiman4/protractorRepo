@@ -15,7 +15,7 @@ class ManageTaskBlade {
         columnHeaders: '.c-header-container .c-header-name',
         taskTemplateGuid: '0f3712cc-95da-49c3-b2b0-6b7409c8349b',
         taskSummaryLink: '[rx-view-component-id="8334a05d-06ba-4d9b-8c35-e40e90637e85"] .task-summary__name',
-        taskGuid: '[rx-view-component-id="ab0b52da-6511-4202-b1c4-f1d3eb65aada"] .bwf-task-card .task-meta-data__display-id'
+        taskDisplayId: '[rx-view-component-id="ab0b52da-6511-4202-b1c4-f1d3eb65aada"] .bwf-task-card .task-meta-data__display-id'
     }
 
     async clickAddTaskFromTemplateButton(): Promise<void> {
@@ -43,8 +43,8 @@ class ManageTaskBlade {
         await browser.sleep(1500); // wait until sorting
     }
 
-    async getTaskGuidFromManageTaskBlade():Promise<string>{
-     return await $(this.selectors.taskGuid).getText();  
+    async getTaskDisplayIdFromManageTaskBlade():Promise<string>{
+     return await $(this.selectors.taskDisplayId).getText();  
     }
 
     async clickAddAdhocTaskButton(): Promise<void> {

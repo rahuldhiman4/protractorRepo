@@ -23,7 +23,7 @@ describe('Case Status Change', () => {
     let statusCanceled: string = "Canceled";
     let statusResolved: string = "Resolved";
     let statusClosed: string = "Closed";
-    const caseApprovalMappingRecordDefinition = 'com.bmc.dsm.case-lib:Case Approval Mapping';
+    const caseModule = 'Case';
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
@@ -779,7 +779,7 @@ describe('Case Status Change', () => {
     //kgaikwad
     it('[DRDMV-1618]: [Case] Fields validation for case in Resolved status', async () => {
         await apiHelper.apiLogin('qkatawazi');
-        await apiHelper.deleteApprovalMapping(caseApprovalMappingRecordDefinition);
+        await apiHelper.deleteApprovalMapping(caseModule);
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester("adam");

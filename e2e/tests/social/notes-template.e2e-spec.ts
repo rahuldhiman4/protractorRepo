@@ -61,11 +61,11 @@ let uploadURL = "https://www.google.com/homepage/images/hero-dhp-chrome-win.jpg?
 let userData = undefined;
 describe('Notes template', () => {
     beforeAll(async () => {
-        const caseApprovalMappingRecordDefinition = 'com.bmc.dsm.case-lib:Case Approval Mapping';
+        const caseModule = 'Case';
         await browser.get(BWF_BASE_URL);
         await loginPage.login("elizabeth");
         await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteApprovalMapping(caseApprovalMappingRecordDefinition);
+        await apiHelper.deleteApprovalMapping(caseModule);
         userData = {
             "firstName": "Petramco",
             "lastName": "SGUser1",

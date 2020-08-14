@@ -12,7 +12,7 @@ import utilityGrid from "../../utils/utility.grid";
 describe('Case Console Preset Filter', () => {
 
     const userId1 = "idphylum1@petramco.com";
-    const caseApprovalMappingRecordDefinition = 'com.bmc.dsm.case-lib:Case Approval Mapping';
+    const caseModule = 'Case';
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
@@ -20,7 +20,7 @@ describe('Case Console Preset Filter', () => {
         //Create the Phylum users
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteServiceTargets();
-        await apiHelper.deleteApprovalMapping(caseApprovalMappingRecordDefinition);
+        await apiHelper.deleteApprovalMapping(caseModule);
         const personDataFile = require('../../data/ui/foundation/person.ui.json');
         let personData1 = personDataFile['PhylumCaseAgent1'];
         await apiHelper.createNewUser(personData1);

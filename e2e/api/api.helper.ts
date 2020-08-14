@@ -5,8 +5,8 @@ import * as uuid from 'uuid';
 import apiCoreUtil from "../api/api.core.util";
 import * as constants from "../api/constant.api";
 import { APPROVAL_ACTION, MORE_INFO_RETURN_ACTION } from "../data/api/approval/approval.action.api";
-import { CASE_APPROVAL_FLOW, INVALID_APPROVAL_FLOW, MULTI_APPROVAL_FLOW } from '../data/api/approval/approval.flow.api';
-import { CASE_APPROVAL_MAPPING } from '../data/api/approval/approval.mapping.api';
+import { CASE_APPROVAL_FLOW, MULTI_APPROVAL_FLOW, TASK_APPROVAL_FLOW } from '../data/api/approval/approval.flow.api';
+import { CASE_APPROVAL_MAPPING, TASK_APPROVAL_MAPPING } from '../data/api/approval/approval.mapping.api';
 import { CASE_READ_ACCESS } from '../data/api/case/case.read.access.api';
 import { CASE_REOPEN } from '../data/api/case/case.reopen.api';
 import { CASE_TEMPLATE_PAYLOAD, CASE_TEMPLATE_STATUS_UPDATE_PAYLOAD } from '../data/api/case/case.template.data.api';
@@ -17,7 +17,6 @@ import { EMAIL_WHITELIST } from '../data/api/email/email.whitelist.data.api';
 import { NEW_PROCESS_LIB } from '../data/api/flowset/create-process-lib';
 import { ADD_FUNCTIONAL_ROLE, UPDATE_PERSON_AS_VIP } from '../data/api/foundation/update.person.data.api';
 import { IBusinessUnit } from '../data/api/interface/business.unit.interface.api';
-import { ICaseApprovalMapping } from '../data/api/interface/case.approval.mapping.interface.api';
 import { ICaseAssignmentMapping } from "../data/api/interface/case.assignment.mapping.interface.api";
 import { ICaseTemplate } from "../data/api/interface/case.template.interface.api";
 import { IDepartment } from '../data/api/interface/department.interface.api';
@@ -41,6 +40,8 @@ import { KNOWLEDGE_ARTICLE_EXTERNAL_FLAG } from "../data/api/knowledge/knowledge
 import { KNOWLEDGEARTICLE_HELPFULCOUNTER, KNOWLEDGEARTICLE_TEMPLATE } from '../data/api/knowledge/knowledge-article.template.api';
 import { KNOWLEDEGESET_ASSOCIATION, KNOWLEDGESET_PERMISSION, KNOWLEDGE_SET } from '../data/api/knowledge/knowledge-set.data.api';
 import { KNOWLEDGE_ARTICLE_PAYLOAD, UPDATE_KNOWLEDGE_ARTICLE_PAYLOAD } from '../data/api/knowledge/knowledge.article.api';
+import { EMAIL_ALERT_SUBJECT_BODY, NOTIFICATION_EVENT_ACTIVE, NOTIFICATION_TEMPLATE } from '../data/api/notification/notification-config.api';
+import { COMMON_CONFIG_PAYLOAD } from '../data/api/shared-services/common.configurations.api';
 import { ACTIONABLE_NOTIFICATIONS_ENABLEMENT_SETTING, NOTIFICATIONS_EVENT_STATUS_CHANGE } from '../data/api/shared-services/enabling.actionable.notifications.api';
 import { AUTOMATED_CASE_STATUS_TRANSITION } from '../data/api/shared-services/process.data.api';
 import { BUSINESS_TIME_SEGMENT } from '../data/api/slm/business.time.segment.api';
@@ -52,10 +53,8 @@ import { ADHOC_TASK_PAYLOAD, REGISTER_ADHOC_TASK, TASK_CREATION_FROM_TEMPLATE, U
 import { AUTO_TASK_TEMPLATE_PAYLOAD, DOC_FOR_AUTO_TASK_TEMPLATE, EXTERNAL_TASK_TEMPLATE_PAYLOAD, MANUAL_TASK_TEMPLATE_PAYLOAD, PROCESS_FOR_AUTO_TASK_TEMPLATE } from '../data/api/task/task.template.api';
 import { ONE_TASKFLOW, PROCESS_DOCUMENT, THREE_TASKFLOW_SEQUENTIAL, TWO_TASKFLOW_PARALLEL, TWO_TASKFLOW_SEQUENTIAL } from '../data/api/task/taskflow.process.data.api';
 import { DOC_LIB_DRAFT, DOC_LIB_PUBLISH, DOC_LIB_READ_ACCESS } from '../data/api/ticketing/document-library.data.api';
-import * as DYNAMIC from '../data/api/ticketing/dynamic.data.api';
 import { DOCUMENT_TEMPLATE } from '../data/api/ticketing/document-template.data.api';
-import { NOTIFICATION_TEMPLATE, EMAIL_ALERT_SUBJECT_BODY, NOTIFICATION_EVENT_ACTIVE } from '../data/api/notification/notification-config.api';
-import { COMMON_CONFIG_PAYLOAD } from '../data/api/shared-services/common.configurations.api';
+import * as DYNAMIC from '../data/api/ticketing/dynamic.data.api';
 
 let fs = require('fs');
 
@@ -1745,35 +1744,76 @@ class ApiHelper {
         }
     }
 
-    async deleteApprovalMapping(approvalMappingLib: string, approvalMappingName?: string): Promise<boolean> {
-        if (approvalMappingName) {
-            let allRecords = await apiCoreUtil.getGuid(approvalMappingLib);
-            let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
-                return obj[1000001437] === approvalMappingName;
-            });
-            let approvalMapGuid = entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
-            if (approvalMapGuid) {
-                return await apiCoreUtil.deleteRecordInstance(approvalMappingLib, approvalMapGuid);
-            }
-        } else {
-            let allApprovalMapRecords = await apiCoreUtil.getGuid(approvalMappingLib);
-            let allApprovalMapArrayMap = allApprovalMapRecords.data.data.map(async (obj: string) => {
-                return await apiCoreUtil.deleteRecordInstance(approvalMappingLib, obj[379]);
-            });
-            return await Promise.all(allApprovalMapArrayMap).then(async (result) => {
-                return !result.includes(false);
-            });
-        }
-    }
-    
-    async deleteAllApprovalFlow(recordDefinition: string): Promise<boolean> {
-        let remoteApprovalFlow = cloneDeep(INVALID_APPROVAL_FLOW);
-        switch (recordDefinition) {
+    async deleteApprovalMapping(approvalModule: string, approvalMappingName?: string): Promise<boolean> {
+        let approvalMappingRecordDefinition: string;
+        switch (approvalModule) {
             case "Case": {
-                return await this.createCaseApprovalFlow(remoteApprovalFlow);
+                approvalMappingRecordDefinition = "com.bmc.dsm.case-lib:Case Approval Mapping";
+                if (approvalMappingName) {
+                    let allRecords = await apiCoreUtil.getGuid(approvalMappingRecordDefinition);
+                    let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+                        return obj[1000001437] === approvalMappingName;
+                    });
+                    let approvalMapGuid = entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
+                    if (approvalMapGuid) {
+                        return await apiCoreUtil.deleteRecordInstance(approvalMappingRecordDefinition, approvalMapGuid);
+                    }
+                } else {
+                    let allApprovalMapRecords = await apiCoreUtil.getGuid(approvalMappingRecordDefinition);
+                    let allApprovalMapArrayMap = allApprovalMapRecords.data.data.map(async (obj: string) => {
+                        return await apiCoreUtil.deleteRecordInstance(approvalMappingRecordDefinition, obj[379]);
+                    });
+                    return await Promise.all(allApprovalMapArrayMap).then(async (result) => {
+                        return !result.includes(false);
+                    });
+                }
+                break;
             }
             case "Knowledge": {
-                return await this.createKnowledgeApprovalFlow(remoteApprovalFlow);
+                approvalMappingRecordDefinition = "com.bmc.dsm.knowledge:Knowledge Approval Mapping";
+                if (approvalMappingName) {
+                    let allRecords = await apiCoreUtil.getGuid(approvalMappingRecordDefinition);
+                    let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+                        return obj[1000001437] === approvalMappingName;
+                    });
+                    let approvalMapGuid = entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
+                    if (approvalMapGuid) {
+                        return await apiCoreUtil.deleteRecordInstance(approvalMappingRecordDefinition, approvalMapGuid);
+                    }
+                } else {
+                    let allApprovalMapRecords = await apiCoreUtil.getGuid(approvalMappingRecordDefinition);
+                    let allApprovalMapArrayMap = allApprovalMapRecords.data.data.map(async (obj: string) => {
+                        return await apiCoreUtil.deleteRecordInstance(approvalMappingRecordDefinition, obj[379]);
+                    });
+                    return await Promise.all(allApprovalMapArrayMap).then(async (result) => {
+                        return !result.includes(false);
+                    });
+                }
+
+                break;
+            }
+            case "Task": {
+                if (approvalMappingName) {
+                    approvalMappingRecordDefinition = "com.bmc.dsm.task-lib:Task Approval Mapping";
+                    let allRecords = await apiCoreUtil.getGuid(approvalMappingRecordDefinition);
+                    let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+                        return obj[1000001437] === approvalMappingName;
+                    });
+                    let approvalMapGuid = entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
+                    if (approvalMapGuid) {
+                        return await apiCoreUtil.deleteRecordInstance(approvalMappingRecordDefinition, approvalMapGuid);
+                    }
+                } else {
+                    let allApprovalMapRecords = await apiCoreUtil.getGuid(approvalMappingRecordDefinition);
+                    let allApprovalMapArrayMap = allApprovalMapRecords.data.data.map(async (obj: string) => {
+                        return await apiCoreUtil.deleteRecordInstance(approvalMappingRecordDefinition, obj[379]);
+                    });
+                    return await Promise.all(allApprovalMapArrayMap).then(async (result) => {
+                        return !result.includes(false);
+                    });
+                }
+
+                break;
             }
             default: {
                 console.log('Put valid Record Definition for approval flow deletion');
@@ -1781,6 +1821,7 @@ class ApiHelper {
             }
         }
     }
+
 
     async runAutomatedCaseTransitionProcess(): Promise<number> {
         let automatedCaseTransition = cloneDeep(AUTOMATED_CASE_STATUS_TRANSITION);
@@ -2082,62 +2123,6 @@ class ApiHelper {
         };
     }
 
-    async createKnowledgeApprovalMapping(data: any): Promise<boolean> {
-        let knowledgeApprovalConfig = cloneDeep(KNOWLEDGE_APPROVAL_CONFIG);
-        knowledgeApprovalConfig.fieldInstances[1000000001].value = await apiCoreUtil.getOrganizationGuid(data.company);
-        knowledgeApprovalConfig.fieldInstances[1000001437].value = data.configName;
-        knowledgeApprovalConfig.fieldInstances[302300500].value = constants.Knowledge[data.status1];
-        if (data.status2) {
-            knowledgeApprovalConfig.fieldInstances[302300500].value = knowledgeApprovalConfig.fieldInstances[302300500].value + ';' + constants.Knowledge[data.status2];
-        }
-        if (data.status3) {
-            knowledgeApprovalConfig.fieldInstances[302300500].value = knowledgeApprovalConfig.fieldInstances[302300500].value + ';' + constants.Knowledge[data.status3];
-        }
-
-        let knowledgeApproval: AxiosResponse = await apiCoreUtil.createRecordInstance(knowledgeApprovalConfig);
-        console.log('Knowledge Approvals Status =============>', knowledgeApproval.status);
-        return knowledgeApproval.status == 201;
-    }
-
-    async createKnowledgeApprovalFlow(data: any, multipleApproval?: boolean): Promise<boolean> {
-        let knowledgeApprovalFlowConfig: any;
-        if (!multipleApproval) {
-            knowledgeApprovalFlowConfig = cloneDeep(KNOWLEDGE_APPROVAL_FLOW_CONFIG);
-            knowledgeApprovalFlowConfig.approvalFlowConfigurationList[0].flowName = data.flowName;
-            knowledgeApprovalFlowConfig.approvalFlowConfigurationList[0].approvers = 'U:' + data.approver;
-            knowledgeApprovalFlowConfig.approvalFlowConfigurationList[0].qualification = data.qualification;
-        } else {
-            knowledgeApprovalFlowConfig = cloneDeep(MULTI_APPROVAL_FLOW);
-            knowledgeApprovalFlowConfig.approvalFlowConfigurationList = data;
-        }
-        let response = await axios.put(
-            "api/com.bmc.arsys.rx.approval/rx/application/approval/flowconfiguration/com.bmc.dsm.knowledge:Knowledge Article Template/flowGroupName/Default Article Approval Flow Group",
-            knowledgeApprovalFlowConfig,
-        )
-        console.log('Knowledge Approval Flow Status =============>', response.status);
-        return response.status == 204;
-    }
-
-    async deleteKnowledgeApprovalMapping(approvalMappingName?: string): Promise<boolean> {
-        if (approvalMappingName) {
-            let allRecords = await apiCoreUtil.getGuid("com.bmc.dsm.knowledge:Knowledge Approval Mapping");
-            let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
-                return obj[1000001437] === approvalMappingName;
-            });
-            let approvalMapGuid = entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
-            if (approvalMapGuid) {
-                return await apiCoreUtil.deleteRecordInstance('com.bmc.dsm.knowledge:Knowledge Approval Mapping', approvalMapGuid);
-            }
-        } else {
-            let allApprovalMapRecords = await apiCoreUtil.getGuid("com.bmc.dsm.knowledge:Knowledge Approval Mapping");
-            let allApprovalMapArrayMap = allApprovalMapRecords.data.data.map(async (obj: string) => {
-                return await apiCoreUtil.deleteRecordInstance('com.bmc.dsm.knowledge:Knowledge Approval Mapping', obj[379]);
-            });
-            return await Promise.all(allApprovalMapArrayMap).then(async (result) => {
-                return !result.includes(false);
-            });
-        }
-    }
 
     async approverAction(recordGuid: string, action: string, assignee?: string): Promise<boolean> {
         let approvalAction = cloneDeep(APPROVAL_ACTION);
@@ -2204,45 +2189,54 @@ class ApiHelper {
         return response.status == 200;
     }
 
-    async createCaseApprovalFlow(data: any, multipleApproval?: boolean): Promise<boolean> {
-        let caseApprovalFlow: any;
+    async createApprovalFlow(data: any, approvalFlowModule: string, multipleApproval?: boolean, approvalFlowGroup?: string): Promise<boolean> {
+        let approvalFlow: any, approvalFlowRecordDefinition: string;
         if (!multipleApproval) {
-            caseApprovalFlow = cloneDeep(CASE_APPROVAL_FLOW);
-            caseApprovalFlow.approvalFlowConfigurationList[0].flowName = data.flowName;
-            caseApprovalFlow.approvalFlowConfigurationList[0].approvers = 'U:' + data.approver;
-            caseApprovalFlow.approvalFlowConfigurationList[0].qualification = data.qualification;
+            switch (approvalFlowModule) {
+                case "Case": {
+                    if (!approvalFlowGroup) approvalFlowGroup = "BWFA Group";
+                    approvalFlowRecordDefinition = "com.bmc.dsm.case-lib:Case";
+                    approvalFlow = cloneDeep(CASE_APPROVAL_FLOW);
+                    approvalFlow.approvalFlowConfigurationList[0].flowName = data.flowName;
+                    approvalFlow.approvalFlowConfigurationList[0].approvers = 'U:' + data.approver;
+                    approvalFlow.approvalFlowConfigurationList[0].qualification = data.qualification;
+                    break;
+                }
+                case "Knowledge": {
+                    if (!approvalFlowGroup) approvalFlowGroup = "Default Article Approval Flow Group";
+                    approvalFlowRecordDefinition = "com.bmc.dsm.knowledge:Knowledge Article Template";
+                    approvalFlow = cloneDeep(KNOWLEDGE_APPROVAL_FLOW_CONFIG);
+                    approvalFlow.approvalFlowConfigurationList[0].flowName = data.flowName;
+                    approvalFlow.approvalFlowConfigurationList[0].approvers = 'U:' + data.approver;
+                    approvalFlow.approvalFlowConfigurationList[0].qualification = data.qualification;
+                    break;
+                }
+                case "Task": {
+                    if (!approvalFlowGroup) approvalFlowGroup = "Task Group";
+                    approvalFlowRecordDefinition = "com.bmc.dsm.task-lib:Task";
+                    approvalFlow = cloneDeep(TASK_APPROVAL_FLOW);
+                    approvalFlow.approvalFlowConfigurationList[0].flowName = data.flowName;
+                    approvalFlow.approvalFlowConfigurationList[0].approvers = 'U:' + data.approver;
+                    approvalFlow.approvalFlowConfigurationList[0].qualification = data.qualification;
+                    break;
+                }
+                default: {
+                    console.log('Put valid Record Definition for approval flow creation');
+                    break;
+                }
+            }
         } else {
-            caseApprovalFlow = cloneDeep(MULTI_APPROVAL_FLOW);
-            caseApprovalFlow.approvalFlowConfigurationList = data;
+            approvalFlow = cloneDeep(MULTI_APPROVAL_FLOW);
+            approvalFlow.approvalFlowConfigurationList = data;
         }
+
         let response = await axios.put(
-            "api/com.bmc.arsys.rx.approval/rx/application/approval/flowconfiguration/com.bmc.dsm.case-lib:Case/flowGroupName/BWFA Group",
-            caseApprovalFlow,
-        )
-        console.log('Case Approval Flow API Status =============>', response.status);
-        return response.status == 204;
-    }
-
-    async createCaseApprovalMapping(data: ICaseApprovalMapping): Promise<IIDs> {
-        let caseApprovalMapping = cloneDeep(CASE_APPROVAL_MAPPING);
-        caseApprovalMapping.fieldInstances[303715900].value = await apiCoreUtil.getStatusGuid('com.bmc.dsm.case-lib', constants.CaseStatus[data.triggerStatus]);
-        caseApprovalMapping.fieldInstances[450000152].value = constants.CaseStatus[data.triggerStatus];
-        caseApprovalMapping.fieldInstances[450000153].value = constants.CaseStatus[data.approvedStatus];
-        caseApprovalMapping.fieldInstances[450000154].value = constants.CaseStatus[data.rejectStatus];
-        caseApprovalMapping.fieldInstances[450000155].value = constants.CaseStatus[data.errorStatus];
-        caseApprovalMapping.fieldInstances[450000158].value = constants.CaseStatus[data.noApprovalFoundStatus];
-        caseApprovalMapping.fieldInstances[1000001437].value = data.mappingName;
-        if (data.company) caseApprovalMapping.fieldInstances[1000000001].value = await apiCoreUtil.getOrganizationGuid(data.company);
-        let response = await apiCoreUtil.createRecordInstance(caseApprovalMapping);
-        console.log('Case Approval Mapping API Status =============>', response.status);
-
-        const approvalMapping = await axios.get(
-            response.headers.location
+            `api/com.bmc.arsys.rx.approval/rx/application/approval/flowconfiguration/${approvalFlowRecordDefinition}/flowGroupName/${approvalFlowGroup}`,
+            approvalFlow,
         );
-        return {
-            id: approvalMapping.data.id,
-            displayId: approvalMapping.data.displayId
-        };
+
+        console.log('Approval Flow API Status =============>', response.status);
+        return response.status == 204;
     }
 
     async createBusinessTimeSharedEntity(name: string, status?: number): Promise<boolean> {
@@ -2640,6 +2634,83 @@ class ApiHelper {
         console.log('Set Message and Body API Status  =============>', response.status);
         return response.status == 200;
     }
+
+    async createApprovalMapping(approvalModule: string, data: any): Promise<IIDs> {
+        let approvalMapping;
+        switch (approvalModule) {
+            case "Case": {
+                let caseApprovalMapping = cloneDeep(CASE_APPROVAL_MAPPING);
+                caseApprovalMapping.fieldInstances[303715900].value = await apiCoreUtil.getStatusGuid('com.bmc.dsm.case-lib', constants.CaseStatus[data.triggerStatus]);
+                caseApprovalMapping.fieldInstances[450000152].value = constants.CaseStatus[data.triggerStatus];
+                caseApprovalMapping.fieldInstances[450000153].value = constants.CaseStatus[data.approvedStatus];
+                caseApprovalMapping.fieldInstances[450000154].value = constants.CaseStatus[data.rejectStatus];
+                caseApprovalMapping.fieldInstances[450000155].value = constants.CaseStatus[data.errorStatus];
+                caseApprovalMapping.fieldInstances[450000158].value = constants.CaseStatus[data.noApprovalFoundStatus];
+                caseApprovalMapping.fieldInstances[1000001437].value = data.mappingName;
+                if (data.company) caseApprovalMapping.fieldInstances[1000000001].value = await apiCoreUtil.getOrganizationGuid(data.company);
+                let response = await apiCoreUtil.createRecordInstance(caseApprovalMapping);
+                console.log('Case Approval Mapping API Status =============>', response.status);
+
+                approvalMapping = await axios.get(
+                    response.headers.location
+                );
+                break;
+            };
+
+            case "Knowledge": {
+                let knowledgeApprovalConfig = cloneDeep(KNOWLEDGE_APPROVAL_CONFIG);
+                knowledgeApprovalConfig.fieldInstances[1000000001].value = await apiCoreUtil.getOrganizationGuid(data.company);
+                knowledgeApprovalConfig.fieldInstances[1000001437].value = data.mappingName;
+                knowledgeApprovalConfig.fieldInstances[302300500].value = constants.Knowledge[data.publishApproval];
+                if (data.requestCancelation) {
+                    knowledgeApprovalConfig.fieldInstances[302300500].value = knowledgeApprovalConfig.fieldInstances[302300500].value + ';' + constants.Knowledge[data.requestCancelation];
+                }
+                if (data.retireApproval) {
+                    knowledgeApprovalConfig.fieldInstances[302300500].value = knowledgeApprovalConfig.fieldInstances[302300500].value + ';' + constants.Knowledge[data.retireApproval];
+                }
+
+                let knowledgeApproval: AxiosResponse = await apiCoreUtil.createRecordInstance(knowledgeApprovalConfig);
+                console.log('Knowledge Approvals Status =============>', knowledgeApproval.status);
+                approvalMapping = await axios.get(
+                    knowledgeApproval.headers.location
+                );
+
+                break;
+
+            };
+            case "Task": {
+                let taskApprovalMapping = cloneDeep(TASK_APPROVAL_MAPPING);
+                taskApprovalMapping.fieldInstances[450000154].value = constants.TaskStatus[data.triggerStatus];
+                taskApprovalMapping.fieldInstances[450000160].value = constants.TaskStatus[data.approvedStatus];
+                taskApprovalMapping.fieldInstances[450000158].value = constants.TaskStatus[data.rejectStatus];
+                taskApprovalMapping.fieldInstances[450000162].value = constants.TaskStatus[data.errorStatus];
+                taskApprovalMapping.fieldInstances[450000156].value = constants.TaskStatus[data.noApprovalFoundStatus];
+                taskApprovalMapping.fieldInstances[450000152].value = data.mappingName;
+                if (data.company) taskApprovalMapping.fieldInstances[450000153].value = await apiCoreUtil.getOrganizationGuid(data.company);
+                let response = await apiCoreUtil.createRecordInstance(taskApprovalMapping);
+                console.log('Task Approval Mapping API Status =============>', response.status);
+
+                approvalMapping = await axios.get(
+                    response.headers.location
+                );
+                break;
+
+            };
+            default: {
+                console.log("Approval Mapping Module Not Found.");
+                break;
+
+            }
+        }
+        return {
+            id: approvalMapping.data.id,
+            displayId: approvalMapping.data.displayId
+        };
+
+    }
+
+
+
 }
 
 export default new ApiHelper();

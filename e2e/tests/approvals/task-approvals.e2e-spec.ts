@@ -22,16 +22,13 @@ import editApprovalMappingPage from "../../pageobject/settings/task-management/e
 import approvalConsolePage from "../../pageobject/approval/approvals-console.po";
 
 
-let userData1 = undefined;
 describe("Case Self Approval Tests", () => {
-    const taskApprovalRecordDefinition = 'com.bmc.dsm.task-lib:Task';
-    const taskMappingGuid = '59ccc726-2512-43ae-9806-c838be2665c3';
-    let taskModule = 'Task';
+    const taskModule = 'Task';
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
-        await apiHelper.apiLogin('tadmin');
+        await apiHelper.apiLogin('qkatawazi');
         await apiHelper.deleteApprovalMapping(taskModule);
     });
 
@@ -42,6 +39,7 @@ describe("Case Self Approval Tests", () => {
 
     describe('[DRDMV-21583]:[Task Approval] - Case General Approval - One Must Sign', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let summary = '"' + "Automated Approval without process for task" + '"';
         let approvalFlowName = 'Task One Must Approval Flow' + randomStr;
         let caseData = undefined;
         let manualTaskTemplateData, autoTaskTemplateData, caseId, caseId2, manualTaskId, automatedTaskId = "";
@@ -94,44 +92,18 @@ describe("Case Self Approval Tests", () => {
         })
 
         it('[DRDMV-21583]:Create Self Approval Flow Without Process', async () => {
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Approvals--Approval Configuration', 'Approval Configuration - Administration - Business Workflows');
-            await approvalConfigurationPage.searchAndOpenApprovalConfiguration(taskApprovalRecordDefinition);
-            expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
-            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Edit Approval Flow');
-            await approvalConfigurationPage.clickApprovalConfigurationTab('Approval Flows');
-            await approvalConfigurationPage.clickApprovalGroup('Task Group');
-            await approvalConfigurationPage.clickAddNewFlowLinkButton();
-            await approvalConfigurationPage.selectApprovalFlowOption('General Approval Flow');
-            expect(await approvalConfigurationPage.getNewApprovalFlowDefaultTitle()).toBe('Flow:New General Flow');
-            await approvalConfigurationPage.editNewApprovalFlowDefaultTitle(approvalFlowName);
-            await approvalConfigurationPage.selectMultipleApproversDropDownOption('One Must Approve');
-            await approvalConfigurationPage.clickExpressionLink();
-            await browser.sleep(5000); // sleep added for expression builder loading time
-            expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
-            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Create New Approval Flow');
-            await browser.sleep(3000); // sleep added for expression builder loading time
-            await approvalConfigurationPage.searchExpressionFieldOption('Category Tier 1');
-            await approvalConfigurationPage.clickRecordOption('Record Definition');
-            await approvalConfigurationPage.clickRecordOption('Task');
-            await browser.sleep(2000); // sleep added for expression builder loading time
-            await approvalConfigurationPage.selectExpressionFieldOption();
-            await browser.sleep(2000); // sleep added for expression builder loading time
-            await approvalConfigurationPage.selectExpressionOperator('=');
-            await browser.sleep(1000); // sleep added for expression builder loading time
-            await approvalConfigurationPage.clickExpressionOperatorLinkToSelectExpressionValue();
-            await approvalConfigurationPage.selectExpressionValuesOptions('Categorization', 'Operational');
-            await approvalConfigurationPage.searchFoundationDataToApprovalExpression('Phones');
-            await approvalConfigurationPage.clickSelectLink();
-            await approvalConfigurationPage.clickFoundationDataSaveButton();
-            await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
-            await approvalConfigurationPage.clickSelectApproversLink();
-            await approvalConfigurationPage.selectApproversForApproverFlow('Person', 'Katawazi');
-            await approvalConfigurationPage.selectApproverSectionForGeneralApprovalFlow('Person');
-            await approvalConfigurationPage.selectApproversForApproverFlow('Person', 'qliu');
-            await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
-            await approvalConfigurationPage.clickApprovalFlowSaveButton();
-            await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
+            let approvalFlows = 
+                {
+                    "flowName": 'Approval FlowABC' + randomStr,
+                    "approvers": "qkatawazi;qliu",
+                    "qualification": "'Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.bccb0487dc2fab9e5052c16c67f647df8ce68a989fd53a4999763c5a336e5b79c83b8ba8108907851a28e035b87c73ae2f086df65912d77eff8e21299d90c32c.304405421} AND 'Category Tier 2' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.8c700e7edba91d3091aed763ab1c3c0bcf1c44c8c8776d53fa6bc76b6ff78bb48f106c210f41c330a2c42af0daab956847e9712a4a8822b8c571e5b97eec1bf5.304405421}",
+                    "precedence": 1,
+                    "signingCriteria": 0,
+                    "approvalFlowOutcomeMappingList": [
+
+                    ]
+                }
+            await apiHelper.createApprovalFlow(approvalFlows,'Task');
         });
 
         it('[DRDMV-21583]:Create task approval mapping', async () => {
@@ -250,8 +222,5 @@ describe("Case Self Approval Tests", () => {
             await loginPage.login('qkatawazi');
         });
     });
-
-
-
 
 }); 

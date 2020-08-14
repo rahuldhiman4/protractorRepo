@@ -19,14 +19,14 @@ import editApprovalMappingPage from "../../pageobject/settings/task-management/e
 
 describe("Case Self Approval Tests", () => {
     const taskApprovalRecordDefinition = 'com.bmc.dsm.task-lib:Task';
-    const taskApprovalMappingRecordDefinition = 'com.bmc.dsm.task-lib:Task Approval Mapping';
     const taskMappingGuid = '59ccc726-2512-43ae-9806-c838be2665c3';
+    let taskModule = 'Task';
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
         await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteApprovalMapping(taskApprovalMappingRecordDefinition);
+        await apiHelper.deleteApprovalMapping(taskModule);
     });
 
     afterAll(async () => {
@@ -176,8 +176,8 @@ describe("Case Self Approval Tests", () => {
         });
 
         afterAll(async () => {
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteApprovalMapping(taskApprovalMappingRecordDefinition);
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.deleteApprovalMapping(taskModule);
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -326,8 +326,8 @@ describe("Case Self Approval Tests", () => {
         });
 
         afterAll(async () => {
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteApprovalMapping(taskApprovalMappingRecordDefinition);
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.deleteApprovalMapping(taskModule);
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
