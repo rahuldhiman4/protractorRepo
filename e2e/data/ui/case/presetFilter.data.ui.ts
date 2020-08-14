@@ -949,11 +949,11 @@ export const KNOWLEDGE_SET_DATA = {
 };
 
 export const KNOWLEDGE_APPROVAL_MAPPING_DATA = {
-    "configName": "Approval Config Name",
+    "mappingName": "Approval Config Name",
     "company": "Phylum",
-    "status1": "CancelApproval",
-    "status2": "PublishApproval",
-    "status3": "RetireApproval"
+    "publishApproval": "PublishApproval",
+    "requestCancelation": "CancelApproval",
+    "retireApproval": "RetireApproval"
 };
 
 export const KNOWLEDGE_APPROVAL_FLOW_DATA = {

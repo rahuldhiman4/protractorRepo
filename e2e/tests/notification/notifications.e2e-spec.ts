@@ -9,13 +9,13 @@ import statusConfig from '../../pageobject/settings/common/status-config.po';
 import utilityGrid from '../../utils/utility.grid';
 
 describe("Notifications", () => {
-    const caseApprovalMappingRecordDefinition = 'com.bmc.dsm.case-lib:Case Approval Mapping';
+    const caseModule = 'Case';
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
         await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteApprovalMapping(caseApprovalMappingRecordDefinition);
+        await apiHelper.deleteApprovalMapping(caseModule);
 
         const personDataFile = require('../../data/ui/foundation/person.ui.json');
         let personData1 = personDataFile['PhylumCaseAgent1'];

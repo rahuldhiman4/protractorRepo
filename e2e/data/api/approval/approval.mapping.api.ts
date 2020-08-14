@@ -36,4 +36,39 @@ export const CASE_APPROVAL_MAPPING = {
         "value": "aaa"
       }
     }
+  };
+
+  export const TASK_APPROVAL_MAPPING = {
+    "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
+    "recordDefinitionName": "com.bmc.dsm.task-lib:Task Approval Mapping",
+    "fieldInstances": {
+      "450000152": {
+        "id": 450000152,
+        "value": "mm"
+      },
+      "450000153": {
+        "id": 450000153,
+        "value": "5a30545b15c828bf11139ffa453419200d69684e9d423ab2f3e869e6bb386507ee9ee24b1252f990cf587177918283e34694939025cd17154380ba49ce43f330"
+      },
+      "450000154": {
+        "id": 450000154,
+        "value": "2000"
+      },
+      "450000156": {
+        "id": 450000156,
+        "value": "3000"
+      },
+      "450000158": {
+        "id": 450000158,
+        "value": "1900"
+      },
+      "450000160": {
+        "id": 450000160,
+        "value": "3000"
+      },
+      "450000162": {
+        "id": 450000162,
+        "value": "6000"
+      }
+    }
   }

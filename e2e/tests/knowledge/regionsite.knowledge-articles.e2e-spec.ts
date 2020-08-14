@@ -65,11 +65,12 @@ let title = "DRDMV-19572 KnowledgeArticle";
 
 describe('Knowledge Articles - Location (Region / Site) Tests', () => {
     const filePath = '../../../data/ui/attachment/articleStatus.png';
+    let knowledgeModule = 'Knowledge';
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login(caseBAUser);
         await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteKnowledgeApprovalMapping();
+        await apiHelper.deleteApprovalMapping(knowledgeModule);
         await apiHelper.apiLogin(knowledgePublisherUser);
         let articleData = {
             "knowledgeSet": "HR",
