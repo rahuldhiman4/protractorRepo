@@ -2024,8 +2024,6 @@ class ApiHelper {
                 break;
             }
         }
-        console.log(jsonBody);
-
         let updateFoundationEntityResponse = await apiCoreUtil.updateRecordInstance(recordName, recordGUID, jsonBody);
         console.log('Update Foundation Entity API Status =============>', updateFoundationEntityResponse.status);
         return updateFoundationEntityResponse.status == 204;
