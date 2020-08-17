@@ -727,10 +727,10 @@ describe('Dynamic Hidden Data', () => {
             await addFieldsPopPo.selectDynamicField('FieldGroup1');
             await addFieldsPopPo.clickOnOkButtonOfEditor();
             await createDocumentTemplatePo.setDescription("Description");
-            expect(await createDocumentTemplatePo.getDynamicFieldOnBody()).toBe(' FieldGroup1');
+            expect(await createDocumentTemplatePo.getDynamicFieldOnBody()).toContain('FieldGroup1');
             await createDocumentTemplatePo.clickOnSaveButton();
             await utilGrid.searchAndOpenHyperlink('Document' + randomStr);
-            expect(await editDocumentTemplatePo.getDynamicFieldOnBody()).toBe('FieldGroup1');
+            expect(await editDocumentTemplatePo.getDynamicFieldOnBody()).toContain('FieldGroup1');
         });
         it('[DRDMV-18004,DRDMV-18058,DRDMV-13133]: verify dynamic group fields on Copy case template', async () => {
             await navigationPage.gotoCreateCase();
@@ -853,7 +853,7 @@ describe('Dynamic Hidden Data', () => {
             expect(await viewCasePo.isDynamicFieldDisplayed('externalDateTime')).toBeTruthy();
             expect(await viewCasePo.isDynamicFieldDisplayed('FieldGroupOutside')).toBeTruthy();
             await viewCasePo.clickEditCaseButton();
-            await editCasePo.setDynamicFieldValue('FieldGroup1','test');
+            await editCasePo.setDynamicFieldValue('FieldGroup1', 'test');
             await editCasePo.clickSaveCase();
 
         });
@@ -873,7 +873,113 @@ describe('Dynamic Hidden Data', () => {
         });
     });
 
-   
+
+    //ankagraw
+    describe('[DRDMV-17916]: [Dynamic Data] [UI] - Update Dynamic Fields UI from Case Template', async () => {
+        let casetemplateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        beforeAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteDynamicFieldAndGroup();
+            casetemplateData = {
+                "templateName": randomStr + 'caseTemplateDRDMV-17916',
+                "templateSummary": randomStr + 'caseTemplateSummaryDRDMV-17916',
+                "templateStatus": "Draft",
+                "caseStatus": "Assigned",
+                "assignee": "Fritz",
+                "company": "Petramco",
+                "supportGroup": "Facilities",
+                "ownerGroup": "Facilities"
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
+            await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_WITH_REQUESTER');
+            casetemplateData.templateName = randomStr + 'caseTemplateActiveDRDMV-17962';
+            casetemplateData.templateStatus = "Active";
+            await apiHelper.createCaseTemplate(casetemplateData.templateName);
+        });
+        it('[DRDMV-17916]: [Dynamic Data] [UI] - Update Dynamic Fields UI from Case Template', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await utilGrid.searchAndOpenHyperlink(casetemplateData.templateName);
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await utilGrid.searchAndOpenHyperlink(randomStr + 'caseTemplateDRDMV-17916');
+            expect(await viewCasetemplatePo.isDynamicFieldDisplayed('FieldGroup1')).toBeTruthy();
+            expect(await viewCasetemplatePo.isDynamicFieldDisplayed('Field2Group1')).toBeTruthy();
+            expect(await viewCasetemplatePo.isDynamicFieldDisplayed('Field2Group2')).toBeTruthy();
+            expect(await viewCasetemplatePo.isDynamicFieldDisplayed('FieldGroup2')).toBeTruthy();
+            await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
+            expect(await dynamicFieldsPage.isDynamicFieldDisplayed()).toBeTruthy();
+            expect(await dynamicFieldsPage.isAddDynamicGroupDisplayed()).toBeTruthy();
+        });
+        it('[DRDMV-17916]: [Dynamic Data] [UI] - Update Dynamic Fields UI from Case Template', async () => {
+            await dynamicFieldsPage.clickOnAddDynamicGroup();
+            expect(await dynamicFieldsPage.isGroupNameDisplayed()).toBeTruthy();
+            expect(await dynamicFieldsPage.isGroupDescriptionDisplay()).toBeTruthy();
+            expect(await dynamicFieldsPage.isEnabledPublishInLibraryButtonDisplayed()).toBeTruthy();
+            await dynamicFieldsPage.clickCancelButton();
+            await dynamicFieldsPage.clickOnDeleteField();
+            await dynamicFieldsPage.clickSaveButton();
+            expect(await viewCasetemplatePo.isDynamicFieldDisplayed('FieldGroup1')).toBeFalsy();
+            expect(await viewCasetemplatePo.isDynamicFieldDisplayed('Field2Group1')).toBeFalsy();
+            expect(await viewCasetemplatePo.isDynamicFieldDisplayed('Field2Group2')).toBeTruthy();
+            expect(await viewCasetemplatePo.isDynamicFieldDisplayed('FieldGroup2')).toBeTruthy();
+        });
+    });
+
+    //ankagraw
+    describe('[DRDMV-13139]: [Dynamic Data]- Add Dynamic Fields and Groups to Task Template', async () => {
+        let templateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        beforeAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteDynamicFieldAndGroup();
+            templateData = {
+                "templateName": `manualTaskTemplate1 ${randomStr}`,
+                "templateSummary": `manualTaskTemplateSummary1 ${randomStr}`,
+                "templateStatus": "Draft",
+                "taskCompany": 'Petramco',
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            let newTaskTemplate = await apiHelper.createManualTaskTemplate(templateData);
+            await apiHelper.createDynamicDataOnTemplate(newTaskTemplate.id, 'CASE_TEMPLATE_WITH_REQUESTER');
+            templateData.templateName = `manualTaskTemplateActive ${randomStr}`;
+            templateData.templateStatus = "Active";
+            await apiHelper.createManualTaskTemplate(templateData);
+        });
+        it('[DRDMV-13139]: [Dynamic Data]- Add Dynamic Fields and Groups to Task Template', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
+            expect(await viewTaskTemplate.isManageDynamicFieldLinkDisplayed()).toBeFalsy();
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
+            expect(await viewTaskTemplate.isDynamicFieldPresent('FieldGroup1')).toBeTruthy();
+            expect(await viewTaskTemplate.isDynamicFieldPresent('Field2Group1')).toBeTruthy();
+            expect(await viewTaskTemplate.isDynamicFieldPresent('Field2Group2')).toBeTruthy();
+            expect(await viewTaskTemplate.isDynamicFieldPresent('FieldGroup2')).toBeTruthy();
+            await viewTaskTemplate.clickOnManageDynamicFieldLink();
+            expect(await dynamicFieldsPage.isDynamicFieldDisplayed()).toBeTruthy();
+            expect(await dynamicFieldsPage.isAddDynamicGroupDisplayed()).toBeTruthy();
+        });
+        it('[DRDMV-13139]: [Dynamic Data]- Add Dynamic Fields and Groups to Task Template', async () => {
+            await dynamicFieldsPage.clickOnAddDynamicGroup();
+            expect(await dynamicFieldsPage.isGroupNameDisplayed()).toBeTruthy();
+            expect(await dynamicFieldsPage.isGroupDescriptionDisplay()).toBeTruthy();
+            expect(await dynamicFieldsPage.isEnabledPublishInLibraryButtonDisplayed()).toBeTruthy();
+            await dynamicFieldsPage.clickCancelButton();
+            await dynamicFieldsPage.clickOnDeleteField();
+            await dynamicFieldsPage.clickSaveButton();
+            expect(await viewTaskTemplate.isDynamicFieldPresent('FieldGroup1')).toBeFalsy();
+            expect(await viewTaskTemplate.isDynamicFieldPresent('Field2Group1')).toBeFalsy();
+            expect(await viewTaskTemplate.isDynamicFieldPresent('Field2Group2')).toBeTruthy();
+            expect(await viewTaskTemplate.isDynamicFieldPresent('FieldGroup2')).toBeTruthy();
+        });
+    });
+
     //ptidke
     describe('[DRDMV-13136]: [-ve] [Dynamic Data] - Case with large no. of Dynamic fields', async () => {
         let casetemplateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -942,4 +1048,7 @@ describe('Dynamic Hidden Data', () => {
             }
         });
     });
+
+
+
 });

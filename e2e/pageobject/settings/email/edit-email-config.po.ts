@@ -21,7 +21,7 @@ export class EditEmailConfig {
         acknowledgementTemplateEditButton: '[rx-view-component-id="dd7a7212-432d-4c79-a33b-b7cc8abf787e"] button',
         saveAcknowledgementTemplate: '[rx-view-component-id="3c7ff456-1517-42d4-a770-bf4e641c7303"] button',
         cancelAcknowledgementTemplate: '[rx-view-component-id="e163832a-f819-43f0-af68-87aa1d5c671a"] button',
-        selectAcknowledgementTemplate: 'a5437a3a-3a11-4e07-8829-9cee403dca61',
+        acknowledgementTemplateGuid: 'a5437a3a-3a11-4e07-8829-9cee403dca61',
         ticketTypeAcknowledgementTemplate: '[rx-view-component-id="5f00dfc8-9dc0-4521-befd-30f4d6d51ac5"] input',
         operationTypeAcknowledgementTemplate: '[rx-view-component-id="2353e82d-57fd-428b-acc6-7080c1561914"] input',
         ticketStatusAcknowledgementTemplate: '[rx-view-component-id="2db28354-0558-454d-b4d7-f781263a72e7"] input',
@@ -37,11 +37,13 @@ export class EditEmailConfig {
         defaultCaseTemplateGuid: '085b8e93-0e68-41a7-a1ed-77b6ab2c9522',
         defaultCaseTemplatelist: '[rx-view-component-id="085b8e93-0e68-41a7-a1ed-77b6ab2c9522"] .ui-select-choices-row-inner *',
         defaultCaseTemplateToUse: '[rx-view-component-id="085b8e93-0e68-41a7-a1ed-77b6ab2c9522"] .dropdown',
-        clearDefaultCaseTemplateToUse:'[rx-view-component-id="085b8e93-0e68-41a7-a1ed-77b6ab2c9522"] input[type="search"]',
+        clearDefaultCaseTemplateToUse: '[rx-view-component-id="085b8e93-0e68-41a7-a1ed-77b6ab2c9522"] input[type="search"]',
         supportGroupCheckbox: '.record__list i',
         addTrustedEmailBtn: '[rx-view-component-id="0dfbc207-b03e-40ab-8e6b-c74f5609aa89"] button',
         addBlockedEmail: '[rx-view-component-id="d7309e2b-06c2-46a6-85e0-8b8f83159f9a"] button',
         createEmailTemplateLink: '[rx-view-component-id="010a2bf3-5b2d-4c72-9c33-fa26d3be6b78"] button',
+        inputFieldAcknowledgementTemplate: '[rx-view-component-id="a5437a3a-3a11-4e07-8829-9cee403dca61"] input[type="search"]',
+        acknowledgementTemplateList: '[rx-view-component-id="a5437a3a-3a11-4e07-8829-9cee403dca61"] .ui-select-choices-row-inner *',
     }
 
     async clickDefaultMailIdCheckbox(value: string): Promise<void> {
@@ -147,7 +149,7 @@ export class EditEmailConfig {
     }
 
     async selectAcknowledgementTemplate(template: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.selectAcknowledgementTemplate, template);
+        await utilCommon.selectDropDown(this.selectors.acknowledgementTemplateGuid, template);
     }
 
     async selectBusinessUnitInAssociatedSupportGroupTab(template: string): Promise<void> {
@@ -223,16 +225,28 @@ export class EditEmailConfig {
     }
 
     async clearDefaultCaseTemplateToUseField(): Promise<void> {
-         await $(this.selectors.clearDefaultCaseTemplateToUse).clear();
+        await $(this.selectors.clearDefaultCaseTemplateToUse).clear();
     }
 
-    async isDefaultCaseTemplatetoUsePresent(template:string): Promise<boolean> {
-       return utilCommon.isValuePresentInDropDown(this.selectors.defaultCaseTemplateGuid,template);
+    async isDefaultCaseTemplatetoUsePresent(template: string): Promise<boolean> {
+        return utilCommon.isValuePresentInDropDown(this.selectors.defaultCaseTemplateGuid, template);
     }
-    async isDefaultCaseTemplatePresentinDropDown(template:string): Promise<boolean> {
-    await $(this.selectors.clearDefaultCaseTemplateToUse).sendKeys(template);
-    let count = await $$(this.selectors.defaultCaseTemplatelist).count();
-    if (count >= 1) { return true; } else { return false; }
+
+    async isAcknowledgementDropDownPresent(template: string): Promise<boolean> {
+        return utilCommon.isValuePresentInDropDown(this.selectors.acknowledgementTemplateGuid, template);
+    }
+
+    async isDefaultCaseTemplatePresentinDropDown(template: string): Promise<boolean> {
+        await $(this.selectors.clearDefaultCaseTemplateToUse).sendKeys(template);
+        let count = await $$(this.selectors.defaultCaseTemplatelist).count();
+        if (count >= 1) { return true; } else { return false; }
+    }
+
+    async isAcknowledgementPresentnDropDown(template: string): Promise<boolean> {
+        await $(this.selectors.inputFieldAcknowledgementTemplate).clear();
+        await $(this.selectors.inputFieldAcknowledgementTemplate).sendKeys(template);
+        let count = await $$(this.selectors.acknowledgementTemplateList).count();
+        if (count >= 1) { return true; } else { return false; }
     }
     async isAddNewRuleBtnEnabled(): Promise<boolean> {
         return await $(this.selectors.newExclusiveSubjects).isEnabled();
