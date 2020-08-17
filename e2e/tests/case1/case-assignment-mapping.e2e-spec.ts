@@ -29,6 +29,7 @@ import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import editCasetemplatePo from '../../pageobject/settings/case-management/edit-casetemplate.po';
+import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 
 describe("Create Case Assignment Mapping", () => {
     const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
@@ -556,89 +557,6 @@ describe("Create Case Assignment Mapping", () => {
         });
     });
 
-    describe('[DRDMV-8968]:[Assignment Mapping] Categories partial match', () => {
-        let assignmentData1, assignmentData2, assignmentData3, randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        beforeAll(async () => {
-            assignmentData1 = {
-                "assignmentMappingName": randomStr + "1DRDMV8968",
-                "company": "Petramco",
-                "supportCompany": "Petramco",
-                "businessUnit": "HR Support",
-                "supportGroup": "Employee Relations",
-                "assignee": "Elizabeth",
-                "categoryTier1": "Talent Management",
-                "priority": "Critical",
-            }
-            assignmentData2 = {
-                "assignmentMappingName": randomStr + "2DRDMV8968",
-                "company": "Petramco",
-                "supportCompany": "Petramco",
-                "businessUnit": "HR Support",
-                "supportGroup": "Staffing",
-                "assignee": "Peter",
-                "categoryTier1": "Talent Management",
-                "categoryTier2": "Learning and Development",
-                "priority": "Critical",
-            }
-            assignmentData3 = {
-                "assignmentMappingName": randomStr + "3DRDMV8968",
-                "company": "Petramco",
-                "supportCompany": "Petramco",
-                "businessUnit": "HR Support",
-                "supportGroup": "Training and Development",
-                "assignee": "Elizabeth",
-                "categoryTier1": "Talent Management",
-                "categoryTier2": "Learning and Development",
-                "categoryTier3": "Certifications",
-                "priority": "Critical",
-            }
-            await apiHelper.apiLogin('qkatawazi');
-            await apiHelper.createCaseAssignmentMapping(assignmentData1);
-            await apiHelper.createCaseAssignmentMapping(assignmentData2);
-            await apiHelper.createCaseAssignmentMapping(assignmentData3);
-        });
-        it('[DRDMV-8968]:[Assignment Mapping] Categories partial match', async () => {
-            await navigationPage.gotoCreateCase();
-            await createCasePage.selectRequester("adam");
-            await createCasePage.setSummary("DRDMV-8968 Case Summary1");
-            await createCasePage.setPriority(assignmentData1.priority);
-            await createCasePage.selectCategoryTier1("Talent Management");
-            await createCasePage.clickSaveCaseButton();
-            await previewCasePo.clickGoToCaseButton();
-            expect(await viewCasePo.getAssignedGroupText()).toBe(assignmentData1.supportGroup);
-            expect(await viewCasePo.getAssigneeText()).toBe('Elizabeth Peters');
-            await navigationPage.gotoCreateCase();
-            await createCasePage.selectRequester("adam");
-            await createCasePage.setSummary("DRDMV-8968 Case Summary2");
-            await createCasePage.setPriority(assignmentData2.priority);
-            await createCasePage.selectCategoryTier1("Talent Management");
-            await createCasePage.selectCategoryTier2("Learning and Development");
-            await createCasePage.clickSaveCaseButton();
-            await previewCasePo.clickGoToCaseButton();
-            expect(await viewCasePo.getAssignedGroupText()).toBe(assignmentData2.supportGroup);
-            expect(await viewCasePo.getAssigneeText()).toBe('Peter Kahn');
-            await navigationPage.gotoCreateCase();
-            await createCasePage.selectRequester("adam");
-            await createCasePage.setSummary("DRDMV-8968 Case Summary3");
-            await createCasePage.setPriority(assignmentData3.priority);
-            await createCasePage.selectCategoryTier1("Talent Management");
-            await createCasePage.selectCategoryTier2("Learning and Development");
-            await createCasePage.selectCategoryTier3("Certifications");
-            await createCasePage.clickSaveCaseButton();
-            await previewCasePo.clickGoToCaseButton();
-            expect(await viewCasePo.getAssignedGroupText()).toBe(assignmentData3.supportGroup);
-            expect(await viewCasePo.getAssigneeText()).toBe('Elizabeth Peters');
-        });
-        afterAll(async () => {
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteReadAccessOrAssignmentMapping(assignmentData1.assignmentMappingName);
-            await apiHelper.deleteReadAccessOrAssignmentMapping(assignmentData2.assignmentMappingName);
-            await apiHelper.deleteReadAccessOrAssignmentMapping(assignmentData3.assignmentMappingName);
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
-        });
-    });
-
     describe('[DRDMV-9103]:[Assignment Mapping] Partially matching Assignment mapping with Flowset', () => {
         let assignmentData, caseTemplateData, randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
@@ -683,18 +601,105 @@ describe("Create Case Assignment Mapping", () => {
             await editCasetemplatePo.changeTemplateStatusDropdownValue('Active');
             await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
             await utilCommon.closePopUpMessage();
-            await navigationPage.gotoQuickCase();
-            await QuickCasePage.selectRequesterName("adam");
-            await QuickCasePage.setCaseSummary(caseTemplateData.templateName);
-            await QuickCasePage.selectCaseTemplate(caseTemplateData.templateName);
-            await QuickCasePage.saveCase();
-            await QuickCasePage.gotoCaseButton();
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester('adam');
+            await createCasePage.setSummary('Summary');
+            await createCasePage.clickSelectCaseTemplateButton();
+            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateData.templateName);
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePo.getAssignedGroupText()).toBe(assignmentData.supportGroup);
             expect(await viewCasePo.getAssigneeText()).toBe('Elizabeth Peters');
         });
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteReadAccessOrAssignmentMapping(assignmentData.assignmentMappingName);
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+    });
+    
+    describe('[DRDMV-8968]:[Assignment Mapping] Categories partial match', () => {
+        let assignmentData1, assignmentData2, assignmentData3, randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        beforeAll(async () => {
+            assignmentData1 = {
+                "assignmentMappingName": randomStr + "1DRDMV8968",
+                "company": "Petramco",
+                "supportCompany": "Petramco",
+                "businessUnit": "HR Support",
+                "supportGroup": "Employee Relations",
+                "assignee": "Elizabeth",
+                "categoryTier1": "Talent Management",
+                "priority": "Critical",
+            }
+            assignmentData2 = {
+                "assignmentMappingName": randomStr + "2DRDMV8968",
+                "company": "Petramco",
+                "supportCompany": "Petramco",
+                "businessUnit": "HR Support",
+                "supportGroup": "Staffing",
+                "assignee": "Peter",
+                "categoryTier1": "Talent Management",
+                "categoryTier2": "Learning and Development",
+                "priority": "Critical",
+            }
+            assignmentData3 = {
+                "assignmentMappingName": randomStr + "3DRDMV8968",
+                "company": "Petramco",
+                "supportCompany": "Petramco",
+                "businessUnit": "HR Support",
+                "supportGroup": "Training and Development",
+                "assignee": "Elizabeth",
+                "categoryTier1": "Talent Management",
+                "categoryTier2": "Learning and Development",
+                "categoryTier3": "Certifications",
+                "priority": "Critical",
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createCaseAssignmentMapping(assignmentData1);
+            await apiHelper.createCaseAssignmentMapping(assignmentData2);
+            await apiHelper.createCaseAssignmentMapping(assignmentData3);
+        });
+        it('[DRDMV-8968]:[Assignment Mapping] Categories partial match', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
+            await assignmentConfigConsolePage.deleteDefaultAssignmentConfig();
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester("adam");
+            await createCasePage.setSummary("DRDMV-8968 Case Summary1");
+            await createCasePage.setPriority(assignmentData1.priority);
+            await createCasePage.selectCategoryTier1("Talent Management");
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            expect(await viewCasePo.getAssignedGroupText()).toBe(assignmentData1.supportGroup);
+            expect(await viewCasePo.getAssigneeText()).toBe('Elizabeth Peters');
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester("adam");
+            await createCasePage.setSummary("DRDMV-8968 Case Summary2");
+            await createCasePage.setPriority(assignmentData2.priority);
+            await createCasePage.selectCategoryTier1("Talent Management");
+            await createCasePage.selectCategoryTier2("Learning and Development");
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            expect(await viewCasePo.getAssignedGroupText()).toBe(assignmentData2.supportGroup);
+            expect(await viewCasePo.getAssigneeText()).toBe('Peter Kahn');
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester("adam");
+            await createCasePage.setSummary("DRDMV-8968 Case Summary3");
+            await createCasePage.setPriority(assignmentData3.priority);
+            await createCasePage.selectCategoryTier1("Talent Management");
+            await createCasePage.selectCategoryTier2("Learning and Development");
+            await createCasePage.selectCategoryTier3("Certifications");
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            expect(await viewCasePo.getAssignedGroupText()).toBe(assignmentData3.supportGroup);
+            expect(await viewCasePo.getAssigneeText()).toBe('Elizabeth Peters');
+        });
+        afterAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteReadAccessOrAssignmentMapping(assignmentData1.assignmentMappingName);
+            await apiHelper.deleteReadAccessOrAssignmentMapping(assignmentData2.assignmentMappingName);
+            await apiHelper.deleteReadAccessOrAssignmentMapping(assignmentData3.assignmentMappingName);
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });

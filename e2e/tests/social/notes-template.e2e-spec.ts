@@ -1102,6 +1102,8 @@ describe('Notes template', () => {
             await utilCommon.closePopUpMessage();
         });
         it('[DRDMV-22637,DRDMV-22643,DRDMV-22653]: Verify CKE functionality on Create and Edit People Notes template', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('elizabeth');
             await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(newCase.displayId);
