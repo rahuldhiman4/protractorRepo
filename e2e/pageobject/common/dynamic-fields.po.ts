@@ -17,21 +17,35 @@ class DynamicField {
         disabledRequiredField: '[ng-model="field.required"] button[aria-label="False"]',
         enabledConfidentialsField: '[ng-model="field.confidential"] button[aria-label="True"]',
         disabledConfidentialsField: '[ng-model="field.confidential"] button[aria-label="False"]',
+        enabledPublishInLibrary: '[ng-if="!group.published"] button[aria-label="True"]',
         allHeaders: '.rx-search-option-container .d-textfield__item',
         groupName: '[name="groupName"]',
         groupDescription: '[name="groupDescription"]',
         target: '[class="group-fields-area flex"]',
         src: '.column-pill-icon',
         downArrow: '.d-icon-right-angle_down',
-        searchField:'.ac-input-search-fields'
+        searchField:'.ac-input-search-fields',
+        deleteButton: '[class="d-icon-left-cross header-icon"]',
     }
 
     async clickOnDynamicField(): Promise<void> {
         await $(this.selectors.dynamicField).click();
     }
 
+    async clickOnDeleteField(): Promise<void> {
+        await $(this.selectors.deleteButton).click();
+    }
+
+    async isDynamicFieldDisplayed(): Promise<boolean> {
+       return await $(this.selectors.dynamicField).isDisplayed();
+    }
+
     async clickOnAddDynamicGroup(): Promise<void> {
         await $(this.selectors.dynamicGroup).click();
+    }
+
+    async isAddDynamicGroupDisplayed(): Promise<boolean> {
+      return  await $(this.selectors.dynamicGroup).isDisplayed();
     }
 
     async clickOnDownArrow(): Promise<void> {
@@ -48,9 +62,17 @@ class DynamicField {
         await $(this.selectors.groupName).sendKeys(name);
     }
 
+    async isGroupNameDisplayed(): Promise<boolean> {
+     return   await $(this.selectors.groupName).isDisplayed();
+    }
+
     async setGroupDescription(name: string): Promise<void> {
         await $(this.selectors.groupDescription).clear();
         await $(this.selectors.groupDescription).sendKeys(name);
+    }
+
+    async isGroupDescriptionDisplay(): Promise<boolean> {
+      return  await $(this.selectors.groupDescription).isDisplayed();
     }
 
     async setDescriptionName(name: string): Promise<void> {
@@ -95,6 +117,14 @@ class DynamicField {
 
     async clickEnabledConfidentialsRadioButton(): Promise<void> {
         await $(this.selectors.enabledConfidentialsField).click();
+    }
+
+    async clickEnabledPublishInLibraryButton(): Promise<void> {
+        await $(this.selectors.enabledPublishInLibrary).click();
+    }
+
+    async isEnabledPublishInLibraryButtonDisplayed(): Promise<boolean> {
+      return await $(this.selectors.enabledPublishInLibrary).isDisplayed();
     }
 
     async clickDisabledConfidentialsRadioButton(): Promise<void> {

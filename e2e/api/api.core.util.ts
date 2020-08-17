@@ -101,6 +101,14 @@ class ApiCoreUtil {
         return entityObj.length >= 1 ? entityObj[0]['18290'] || null : null;
     }
 
+    async getSenderMailId(emailSubject: string): Promise<string> {
+        let allRecords = await this.getGuid("AR System Email Messages");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj[18090] === emailSubject;
+        });
+        return entityObj.length >= 1 ? entityObj[0]['18086'] || null : null;
+    }
+
     async getDynamicFieldGuid(dynamicFieldName: string): Promise<string> {
         let allRecords = await this.getGuid("com.bmc.dsm.ticketing-lib:AttributeDefinition");
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
