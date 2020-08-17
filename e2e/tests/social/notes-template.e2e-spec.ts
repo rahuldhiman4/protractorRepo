@@ -349,7 +349,10 @@ describe('Notes template', () => {
         await apiHelper.createNotesTemplate("Case", NOTES_TEMPLATE_MANDATORY_FIELD);
         let caseData = {
             "Requester": "qkatawazi",
-            "Summary": "Testing case creation with minimal input data"
+            "Summary": "DRDMV-16040 Summary",
+            "Assigned Company": "Petramco",
+            "Business Unit": "HR Support",
+            "Support Group": "Compensation and Benefits"
         };
         await apiHelper.apiLogin('qtao');
         let newCase = await apiHelper.createCase(caseData);

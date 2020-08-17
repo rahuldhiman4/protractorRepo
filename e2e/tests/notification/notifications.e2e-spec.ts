@@ -160,6 +160,7 @@ describe("Notifications", () => {
             await apiHelper.addCaseToWatchlistAllEvents(response.id);
             await apiHelper.apiLoginWithCredential('idphylum2@petramco.com', "Password_1234");
             await apiHelper.updateCaseStatus(response.id, 'InProgress');
+            await apiHelper.updateCaseStatus(response.id, 'Pending', 'Customer Response');
             await apiHelper.updateCaseStatus(response.id, 'Resolved', 'Auto Resolved');
             await apiHelper.updateCaseStatus(response.id, 'AfterResolved');
             await utilityCommon.refresh(); //Refreshing the page to reflect the notification
