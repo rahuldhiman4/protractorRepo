@@ -2,7 +2,6 @@ import { resolve } from "path";
 import { $, $$, browser, by, element, ElementFinder, Key, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../utils/util.common';
 import ckEditorOpsPo from '../common/ck-editor/ckeditor-ops.po';
-import ckeditorOpsPo from '../common/ck-editor/ckeditor-ops.po';
 
 class ActivityTabPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -781,12 +780,12 @@ class ActivityTabPage {
 
     async isTextRightAlignInCkEditorTextArea(bodyText: string): Promise<boolean> {
         let rightAlignmentElement= await $(this.selectors.alignmentTextCkEditorTextArea).$('div[style="text-align: right;"]');
-        return await ckeditorOpsPo.isTextRightAlignInCkEditorTextArea(bodyText,rightAlignmentElement);
+        return await ckEditorOpsPo.isTextRightAlignInCkEditorTextArea(bodyText,rightAlignmentElement);
     }
 
     async isTextCenterAlignInCkEditorTextArea(bodyText: string): Promise<boolean> {
         let centerAlignmentElement= await $(this.selectors.alignmentTextCkEditorTextArea).$('div[style="text-align: center;"]');
-        return await ckeditorOpsPo.isTextCenterAlignInCkEditorTextArea(bodyText,centerAlignmentElement);
+        return await ckEditorOpsPo.isTextCenterAlignInCkEditorTextArea(bodyText,centerAlignmentElement);
     }
 
     async isNumberListDisplayedInCkEditorTextArea(bodyText: string): Promise<boolean> {
