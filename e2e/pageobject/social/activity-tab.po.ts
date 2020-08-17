@@ -779,25 +779,13 @@ class ActivityTabPage {
     }
 
     async isTextRightAlignInCkEditorTextArea(bodyText: string): Promise<boolean> {
-        return await element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
-            if (link) {
-                let colorcodeAttribute = await $(this.selectors.alignmentTextCkEditorTextArea).getAttribute('style') == 'text-align: right;' ? true : false;
-                if (colorcodeAttribute == true) {
-                    return await element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, bodyText)).isDisplayed();
-                }
-            } else return false;
-        });
+        let rightAlignmentElement= await $(this.selectors.alignmentTextCkEditorTextArea).$('div[style="text-align: right;"]');
+        return await ckEditorOpsPo.isTextRightAlignInCkEditorTextArea(bodyText,rightAlignmentElement);
     }
 
     async isTextCenterAlignInCkEditorTextArea(bodyText: string): Promise<boolean> {
-        return await element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
-            if (link) {
-                let colorcodeAttribute = await $(this.selectors.alignmentTextCkEditorTextArea).getAttribute('style') == 'text-align: center;' ? true : false;
-                if (colorcodeAttribute == true) {
-                    return await element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, bodyText)).isDisplayed();
-                }
-            } else return false;
-        });
+        let centerAlignmentElement= await $(this.selectors.alignmentTextCkEditorTextArea).$('div[style="text-align: center;"]');
+        return await ckEditorOpsPo.isTextCenterAlignInCkEditorTextArea(bodyText,centerAlignmentElement);
     }
 
     async isNumberListDisplayedInCkEditorTextArea(bodyText: string): Promise<boolean> {
