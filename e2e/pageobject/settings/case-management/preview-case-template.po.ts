@@ -1,5 +1,5 @@
 import utilityCommon from '../../../utils/utility.common';
-import { $, protractor, element, by, ProtractorExpectedConditions, $$ } from "protractor";
+import { $, protractor, element, by, ProtractorExpectedConditions, $$, ElementFinder } from "protractor";
 
 class PreviewCaseTemplateBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -23,9 +23,20 @@ class PreviewCaseTemplateBlade {
         supportGroup: '665d77b9-5446-4318-add1-65e3bc8157eb',
         supportCompany: 'a6a721e0-4a98-4d1f-85a8-27c7075a5a2a',
         assignee: '.person-main label',
+        assigneeName: '[rx-view-component-id="37853e50-3f62-4139-8dfb-1643b92519d7"] .person-name',
+        supportGroupName: '[rx-view-component-id="665d77b9-5446-4318-add1-65e3bc8157eb"] .read-only-content',
+        supportCompanyName: '[rx-view-component-id="a6a721e0-4a98-4d1f-85a8-27c7075a5a2a"] .read-only-content',
         backButton: '[rx-view-component-id="83c4c73b-86b4-4894-b4c2-4d0525bed20d"] button',
         dynamicFieldName: '[rx-view-component-id="3cacaba4-7a3b-411f-85c1-cb76bb7bc789"] span',
         showMoreDescriptionLink: '[rx-view-component-id="169adf6c-7674-448b-9732-0eecbebae380"] button',
+    }
+
+    async isElementDisplayed(element: ElementFinder): Promise<boolean> {
+        return await element.isPresent().then(async (link) => {
+            if (link) {
+                return await element.isDisplayed();
+            } else return false;
+        });
     }
 
     async clickShowMoreDescriptionLink(): Promise<void> {
@@ -142,6 +153,43 @@ class PreviewCaseTemplateBlade {
         }
         return false;
     }
+
+    async isCaseCategoryTier1ValueDisplayed(caseCategoryTier1: string): Promise<boolean> {
+        
+        let categoryTier1Element = await element(by.cssContainingText(`[rx-view-component-id="${this.selectors.caseCategoryTier1}"] .read-only-content`, caseCategoryTier1));
+        return await this.isElementDisplayed(categoryTier1Element);
+    }
+
+    async isCaseCategoryTier2ValueDisplayed(caseCategoryTier2: string): Promise<boolean> {
+        let categoryTier2Element = await element(by.cssContainingText(`[rx-view-component-id="${this.selectors.caseCategoryTier2}"] .read-only-content`, caseCategoryTier2));
+        return await this.isElementDisplayed(categoryTier2Element);
+    }
+
+    async isCaseCategoryTier3ValueDisplayed(caseCategoryTier3: string): Promise<boolean> {
+        let categoryTier3Element = await element(by.cssContainingText(`[rx-view-component-id="${this.selectors.caseCategoryTier3}"] .read-only-content`, caseCategoryTier3));
+        return await this.isElementDisplayed(categoryTier3Element);
+    }
+
+    async isCaseDescriptionValueDisplayed(caseDescription: string): Promise<boolean> {
+        let caseDescriptionElement = await element(by.cssContainingText(`[rx-view-component-id="${this.selectors.caseDescription}"] .collapse-block div`, caseDescription));
+        return await this.isElementDisplayed(caseDescriptionElement);
+    }
+
+    async isAssigneeNameDisplayed(assignee: string): Promise<boolean> {
+        let assigneeElement = await element(by.cssContainingText(this.selectors.assigneeName, assignee));
+        return await this.isElementDisplayed(assigneeElement);
+    }
+
+    async isSupportGroupNameDisplayed(supportGroup: string): Promise<boolean> {
+        let supportGroupElement = await element(by.cssContainingText(this.selectors.supportGroupName, supportGroup));
+        return await this.isElementDisplayed(supportGroupElement);
+    }
+
+    async isSupportCompanyNameDisplayed(supportCompany: string): Promise<boolean> {
+        let supportCompanyElement = await element(by.cssContainingText(this.selectors.supportCompanyName, supportCompany));
+        return await this.isElementDisplayed(supportCompanyElement);
+    }
+
 }
 
 export default new PreviewCaseTemplateBlade();

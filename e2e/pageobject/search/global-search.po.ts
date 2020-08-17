@@ -115,7 +115,7 @@ class GlobalSearch {
                 guid = this.selectors.caseTemplatesGuid;
                 break;
             }
-            case "Task Template": {
+            case "Task Templates": {
                 guid = this.selectors.taskTemplateGuid;
                 break;
             }
@@ -155,7 +155,7 @@ class GlobalSearch {
                 guid = this.selectors.caseTemplatesGuid;
                 break;
             }
-            case "Task Template": {
+            case "Task Templates": {
                 guid = this.selectors.taskTemplateGuid;
                 break;
             }
@@ -206,7 +206,7 @@ class GlobalSearch {
                 guid = this.selectors.caseTemplatesGuid;
                 break;
             }
-            case "Task Template": {
+            case "Task Templates": {
                 guid = this.selectors.taskTemplateGuid;
                 break;
             }
@@ -250,7 +250,7 @@ class GlobalSearch {
                 guid = this.selectors.caseTemplatesGuid;
                 break;
             }
-            case "Task Template": {
+            case "Task Templates": {
                 guid = this.selectors.taskTemplateGuid;
                 break;
             }
@@ -289,7 +289,7 @@ class GlobalSearch {
                 guid = this.selectors.caseTemplatesGuid;
                 break;
             }
-            case "Task Template": {
+            case "Task Templates": {
                 guid = this.selectors.taskTemplateGuid;
                 break;
             }
@@ -330,7 +330,7 @@ class GlobalSearch {
                 guid = this.selectors.caseTemplatesGuid;
                 break;
             }
-            case "Task Template": {
+            case "Task Templates": {
                 guid = this.selectors.taskTemplateGuid;
                 break;
             }
@@ -374,7 +374,7 @@ class GlobalSearch {
                 guid = this.selectors.caseTemplatesGuid;
                 break;
             }
-            case "Task Template": {
+            case "Task Templates": {
                 guid = this.selectors.taskTemplateGuid;
                 break;
             }
@@ -421,7 +421,7 @@ class GlobalSearch {
                 guid = this.selectors.caseTemplatesGuid;
                 break;
             }
-            case "Task Template": {
+            case "Task Templates": {
                 guid = this.selectors.taskTemplateGuid;
                 break;
             }

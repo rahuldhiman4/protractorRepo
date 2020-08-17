@@ -11,8 +11,9 @@ import taskPreviewPo from '../../pageobject/task/task-preview.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import knowledgeArticlePreview from '../../pageobject/knowledge/preview-knowledge.po'
 import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
-import knowledgeArticlesConsolePo from '../../pageobject/knowledge/knowledge-articles-console.po';
 import editKnowledgePo from '../../pageobject/knowledge/edit-knowledge.po';
+import caseTemplatePreviewPo from '../../pageobject/settings/case-management/preview-case-template.po';
+import taskTemplatePreviewPo from '../../pageobject/task/task-template-preview.po';
 
 export interface IIDs {
     id: string;
@@ -22,6 +23,8 @@ describe('Global Search', () => {
     let caseModule = "Case";
     let taskModule = "Task";
     let KAModule= "Knowledge Article";
+    let caseTemplateModule= "Case Templates";
+    let taskTemplateModule= "Task Templates";
     let updatedDate;
 
     beforeAll(async () => {
@@ -148,6 +151,77 @@ describe('Global Search', () => {
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData.id, 'Draft')).toBeTruthy('FailureMsg Status Not Set');
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData.id, 'PublishApproval', 'qdu', 'CA Support 1', 'Petramco')).toBeTruthy('FailureMsg Status Not Set');
         return knowledgeArticleData.displayId;
+    }
+
+    async function createCaseTemplate(templateName: string, templateSummary: string, templateStatus:string, company:string, description?:string): Promise<string> {
+        let caseTemplateDisplayId
+        let caseTemplateData = {
+            "templateName": "caseTemplateName",
+            "templateSummary": "caseTemplateSummary",
+            "categoryTier1": 'Applications',
+            "categoryTier2": 'Social',
+            "categoryTier3": 'Chatter',
+            "casePriority": "Low",
+            "templateStatus": "",
+            "company": "",
+            "description": "",
+            "businessUnit": "Canada Support",
+            "supportGroup": "CA Support 1",
+            "assignee": "qdu",
+            "ownerBU": "United States Support",
+            "ownerGroup": "US Support 1"
+        }
+
+        if(description){
+            caseTemplateData.templateName = templateName;
+            caseTemplateData.templateSummary = templateSummary;
+            caseTemplateData.templateStatus=templateStatus;
+            caseTemplateData.description=description;
+            caseTemplateData.company=company;
+            let caseTemplateResponse = await apiHelper.createCaseTemplate(caseTemplateData);
+            return caseTemplateDisplayId = caseTemplateResponse.displayId;
+    
+        }else{
+            caseTemplateData.templateName = templateName;
+            caseTemplateData.templateSummary = templateSummary;
+            caseTemplateData.templateStatus=templateStatus;
+            caseTemplateData.company=company;
+            let caseTemplateResponse = await apiHelper.createCaseTemplate(caseTemplateData);
+            return caseTemplateDisplayId = caseTemplateResponse.displayId;
+        }
+    }
+
+    async function createTaskTemplate(templateName: string, templateStatus:string, taskCompany:string, description?: string): Promise<string> {
+        let taskDetails;
+        let taskDisplayId;
+        let  manualTaskTemplateData = {
+            "templateName": "manualTemplateName",
+            "templateSummary": "TemplateSummary",
+            "templateStatus": "",
+            "taskCompany": "",
+            "description": "",
+            "businessUnit": "Canada Support",
+            "supportGroup": "CA Support 1",
+            "assignee": "qdu",
+            "ownerCompany": "Petramco",
+            "ownerBusinessUnit": "United States Support",
+            "ownerGroup": "US Support 3"
+        }
+
+        if(description){
+        manualTaskTemplateData.templateName = templateName;
+        manualTaskTemplateData.templateStatus = templateStatus;
+        manualTaskTemplateData.description=description;
+        manualTaskTemplateData.taskCompany=taskCompany;
+        taskDetails = await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
+        return taskDisplayId=taskDetails.displayId;
+        }else{
+        manualTaskTemplateData.templateName = templateName;
+        manualTaskTemplateData.templateStatus = templateStatus;
+        manualTaskTemplateData.taskCompany=taskCompany;
+        taskDetails = await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
+        return taskDisplayId=taskDetails.displayId;
+        }
     }
 
     //kgaikwad
@@ -905,7 +979,512 @@ describe('Global Search', () => {
             await loginPage.login('qtao');
         });
     });
-    
+
+     //kgaikwad
+    describe('[DRDMV-16116]: Global search with only Case Template Category', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let templateName = 'summaryDRDMV16116' + randomStr;
+        let description = 'descriptionDRDMV16116' + randomStr;
+        let summary1 = '1summaryDRDMV16114' + randomStr;
+        let summary2 = '2summaryDRDMV16114' + randomStr;
+        let summary3 = '3summaryDRDMV16114' + randomStr;
+        let summary4 = '4summaryDRDMV16114' + randomStr;
+        let activeStatus = 'Active';
+        let inactiveStatus = 'Inactive'
+        let nonMatchingSummary = 'NonMatchingSummaryDRDMV16116' + randomStr;
+        let dummyDescription = 'DummayDRDMV16116' + randomStr;
+
+        let caseTemplateDisplayId1 = [];
+        let caseTemplateDisplayId2 = [];
+        let caseTemplateDisplayId3;
+        let caseTemplateDisplayId4;
+        let caseTemplateDisplayId5;
+
+        beforeAll(async () => {
+            await apiHelper.apiLogin('qkatawazi');
+            // Global Template
+            caseTemplateDisplayId5 = await createCaseTemplate(templateName+9, summary4, activeStatus, '- Global -');
+
+            // Create Case template with name & summary 
+            for (let a = 1; a < 4; a++) {
+                 caseTemplateDisplayId1[a] = await createCaseTemplate(templateName+a, summary1, activeStatus, 'Petramco');
+            }
+
+            // Create Case template For Description
+            for (let b = 4; b < 7; b++) {
+                caseTemplateDisplayId2[b] = await createCaseTemplate(templateName+b, summary2, activeStatus, 'Petramco', description);
+            }
+
+            // Create Case template For Inactive
+                caseTemplateDisplayId3 = await createCaseTemplate(templateName+7, summary3, inactiveStatus, 'Petramco');
+
+            // Non maching Case template
+             caseTemplateDisplayId4 = await createCaseTemplate(templateName+8, nonMatchingSummary, activeStatus, 'Petramco');
+        });
+
+        it('[DRDMV-16116]: Verify Module Title, Summary & Description', async () => {
+            // Got Serch and select Case Template Module.
+            await navigationPage.gotoSearch();
+            expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
+            await searchPo.selectCategoryDropDownValue('Case Template');
+            
+            // Verify Global Template
+            await searchPo.searchRecord(summary4);
+            expect(await searchPo.isModuleTitleDisplayed(summary4, 'Case Templates (1)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId5, caseTemplateModule)).toBeTruthy(`FailureMsg4: ${caseTemplateDisplayId5} case id  is missing`);
+
+            // Verify with case template title
+            await searchPo.searchRecord(templateName+'1');
+            expect(await searchPo.isModuleTitleDisplayed(templateName+'1', 'Case Templates (1)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId1[1], caseTemplateModule)).toBeTruthy(`FailureMsg4: ${caseTemplateDisplayId1[0]} case id  is missing`);
+            
+            await searchPo.searchRecord(templateName+'2');
+            expect(await searchPo.isModuleTitleDisplayed(templateName+'2', 'Case Templates (1)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId1[2], caseTemplateModule)).toBeTruthy(`FailureMsg4: ${caseTemplateDisplayId1[0]} case id  is missing`);
+
+            await searchPo.searchRecord(templateName+'3');
+            expect(await searchPo.isModuleTitleDisplayed(templateName+'3', 'Case Templates (1)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId1[3], caseTemplateModule)).toBeTruthy(`FailureMsg4: ${caseTemplateDisplayId1[0]} case id  is missing`);
+
+            // Verify with case template Summary
+            await searchPo.searchRecord(summary1);
+            expect(await searchPo.isModuleTitleDisplayed(summary1, 'Case Templates (3)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId1[1], caseTemplateModule)).toBeTruthy(`FailureMsg4: ${caseTemplateDisplayId1[0]} case id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName+'1', caseTemplateModule)).toBeTruthy(`FailureMsg5: ${templateName+'1'} case title summary is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, caseTemplateModule,)).toBeTruthy(`${updatedDate} updatedDate is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId1[2], caseTemplateModule)).toBeTruthy(`FailureMsg6: ${caseTemplateDisplayId1[1]} case id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId1[3], caseTemplateModule)).toBeTruthy(`FailureMsg7: ${caseTemplateDisplayId1[2]} case id  is missing`);
+            
+            // // Verify with case template desscription
+            await searchPo.searchRecord(description);
+            expect(await searchPo.isModuleTitleDisplayed(description, 'Case Templates (3)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId2[4], caseTemplateModule)).toBeTruthy(`FailureMsg4: ${caseTemplateDisplayId1[0]} case id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName+4, caseTemplateModule)).toBeTruthy(`FailureMsg5: ${summary2} case Template2 summary is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName+5 , caseTemplateModule)).toBeTruthy(`FailureMsg5: ${summary2} case Template2 summary is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName+6, caseTemplateModule)).toBeTruthy(`FailureMsg5: ${summary2} case Template2 summary is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, caseTemplateModule,)).toBeTruthy(`${updatedDate} updatedDate is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId2[5], caseTemplateModule)).toBeTruthy(`FailureMsg6: ${caseTemplateDisplayId1[1]} case id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId2[6], caseTemplateModule)).toBeTruthy(`FailureMsg7: ${caseTemplateDisplayId1[2]} case id  is missing`);
+
+            await searchPo.clickOnLeftPannelRecord(caseTemplateDisplayId2[4], caseTemplateModule);
+        });
+
+        it('[DRDMV-16116]: Verify Case Preview Fields', async () => {
+            expect(await caseTemplatePreviewPo.isCaseSummaryHeaderDisplayed('Case Summary')).toBeTruthy('FailureMsg20: Case Summary label is missing');
+            expect(await caseTemplatePreviewPo.isCaseStatusTitleDisplayed('Case Status')).toBeTruthy('FailureMsg21: Case Status label is missing');
+            expect(await caseTemplatePreviewPo.isCasePriorityTitleDisplayed('Case Priority')).toBeTruthy('FailureMsg22: Case Priority label is missing');
+            expect(await caseTemplatePreviewPo.isFlowsetTitleDisplayed('Flowset')).toBeTruthy('FailureMsg23: Flowset label is missing');
+            expect(await caseTemplatePreviewPo.isLabelTitleDisplayed('Label')).toBeTruthy('FailureMsg24: Label field label is missing');
+            expect(await caseTemplatePreviewPo.isCaseCompanyTitleDisplayed('Case Company')).toBeTruthy('FailureMsg25: Case Company label is missing');
+            expect(await caseTemplatePreviewPo.isCaseCategoryTier1TitleDisplayed('Case Category Tier 1')).toBeTruthy('Case Category Tier 1 is not getting displayed');
+            expect(await caseTemplatePreviewPo.isCaseCategoryTier2TitleDisplayed('Case Category Tier 2')).toBeTruthy('Case Category Tier 2 is not getting displayed');
+            expect(await caseTemplatePreviewPo.isCaseCategoryTier3TitleDisplayed('Case Category Tier 3')).toBeTruthy('Case Category Tier 3 is not getting displayed');
+            expect(await caseTemplatePreviewPo.isCaseCategoryTier4TitleDisplayed('Case Category Tier 4')).toBeTruthy('Case Category Tier 4 is not getting displayed');
+            expect(await caseTemplatePreviewPo.isCaseDescriptionTitleDisplayed('Case Description')).toBeTruthy('FailureMsg29: Case Description label is missing');
+            expect(await caseTemplatePreviewPo.isAssigneeTitleDisplayed()).toBeTruthy('FailureMsg29: Assignee label is missing');
+            expect(await caseTemplatePreviewPo.isSupportGroupTitleDisplayed('Support Group')).toBeTruthy('FailureMsg30: Support Group label is missing');
+            expect(await caseTemplatePreviewPo.isSupportCompanyTitleDisplayed('Support Company')).toBeTruthy('FailureMsg31: Support Company label is missing');
+            expect(await caseTemplatePreviewPo.getCaseTemplateName()).toBe(templateName+4,'FailureMsg20: Case template title is missing');
+            expect(await caseTemplatePreviewPo.getCaseSummary()).toBe(summary2,'FailureMsg20: Case Summary is missing');
+            expect(await caseTemplatePreviewPo.getCasePriority()).toBe('Low','FailureMsg33: Case priority is missing');
+            expect(await caseTemplatePreviewPo.getCaseCompanyValue()).toBe('Petramco','FailureMsg34: Case company is missing');
+            expect(await caseTemplatePreviewPo.isCaseCategoryTier1ValueDisplayed('Applications')).toBeTruthy('FailureMsg35: catergoy tier 1 is missing');
+            expect(await caseTemplatePreviewPo.isCaseCategoryTier2ValueDisplayed('Social')).toBeTruthy('FailureMsg36: catergoy tier 2 missing');
+            expect(await caseTemplatePreviewPo.isCaseCategoryTier3ValueDisplayed('Chatter')).toBeTruthy('FailureMsg37: catergoy tier 3 is missing');
+            expect(await caseTemplatePreviewPo.isCaseDescriptionValueDisplayed(description)).toBeTruthy('FailureMsg38: description is missing');
+            expect(await caseTemplatePreviewPo.isAssigneeNameDisplayed('Qiang Du')).toBeTruthy('FailureMsg39: Assignee is missing');
+            expect(await caseTemplatePreviewPo.isSupportGroupNameDisplayed('CA Support 1')).toBeTruthy('FailureMsg40: support group is missing');
+            expect(await caseTemplatePreviewPo.isSupportCompanyNameDisplayed('Petramco')).toBeTruthy('FailureMsg41: Source Value is missing');
+        });
+
+        it('[DRDMV-16116]: Verify Template with Inactive Case Template ', async () => {
+            await searchPo.searchRecord(summary3);
+            expect(await searchPo.isModuleTitleDisplayed(summary3, 'Case Templates (0)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId3, caseTemplateModule)).toBeFalsy(`FailureMsg4: ${caseTemplateDisplayId3} case template id  is display`);
+        });
+
+        it('[DRDMV-16116]: Verify Case with non matching Case summary and description Also Verify case summary and description who have not access of the case', async () => {
+            await searchPo.searchRecord(summary1);
+            expect(await searchPo.isModuleTitleDisplayed(summary1, 'Case Templates (3)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId4, caseTemplateModule)).toBeFalsy(`FailureMsg51: ${nonMatchingSummary} non mathing template id is missing`);
+            
+            // Verify Case Template With Non Matching Summary
+            await searchPo.searchRecord(summary1);
+            expect(await searchPo.isModuleTitleDisplayed(summary1, 'Case Templates (3)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId4, caseTemplateModule)).toBeFalsy(`FailureMsg51: ${nonMatchingSummary} non mathing template id is missing`);
+        });
+
+        it('[DRDMV-16116]: Clear search and verify record displayed on left pannel ', async () => {
+            await searchPo.searchRecord(summary1);
+            expect(await searchPo.isModuleTitleDisplayed(summary1, 'Case Templates (3)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
+            await searchPo.clickClearSearchButton();
+            expect(await searchPo.isClearSearchButtonDisplayed()).toBeFalsy('FailureMsg62: Search box is cleared and cross button gets hide');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId1[1], caseTemplateModule)).toBeTruthy(`FailureMsg4: ${caseTemplateDisplayId1[1]} case template id  is missing`);
+        });
+
+        it('[DRDMV-16116]: Verify search functionality with dummy text ', async () => {
+            await searchPo.searchRecord(dummyDescription);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(dummyDescription, caseTemplateModule)).toBeFalsy(`FailureMsg64: ${dummyDescription} dummyText  is displayed`);
+            expect(await searchPo.isModuleTitleDisplayed(summary1, 'Case Templates (0)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
+            expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(caseTemplateModule)).toBeTruthy(`FailureMsg66: No result found validation is missing`);
+        });
+
+      
+        it('[DRDMV-16116]: Verify search case with assignee user', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qdu');
+            await navigationPage.gotoSearch();
+            // Verify with case template title
+            await searchPo.searchRecord(templateName+'1');
+            expect(await searchPo.isModuleTitleDisplayed(templateName+'1', 'Case Templates (1)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId1[1], caseTemplateModule)).toBeTruthy(`FailureMsg4: ${caseTemplateDisplayId1[0]} case id  is missing`);
+            
+            await searchPo.searchRecord(templateName+'2');
+            expect(await searchPo.isModuleTitleDisplayed(templateName+'2', 'Case Templates (1)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId1[2], caseTemplateModule)).toBeTruthy(`FailureMsg4: ${caseTemplateDisplayId1[0]} case id  is missing`);
+
+            await searchPo.searchRecord(templateName+'3');
+            expect(await searchPo.isModuleTitleDisplayed(templateName+'3', 'Case Templates (1)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId1[3], caseTemplateModule)).toBeTruthy(`FailureMsg4: ${caseTemplateDisplayId1[0]} case id  is missing`);
+
+            // Verify with case template Summary
+            await searchPo.searchRecord(summary1);
+            expect(await searchPo.isModuleTitleDisplayed(summary1, 'Case Templates (3)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId1[1], caseTemplateModule)).toBeTruthy(`FailureMsg4: ${caseTemplateDisplayId1[0]} case id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName+'1', caseTemplateModule)).toBeTruthy(`FailureMsg5: ${templateName+'1'} case title summary is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, caseTemplateModule,)).toBeTruthy(`${updatedDate} updatedDate is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId1[2], caseTemplateModule)).toBeTruthy(`FailureMsg6: ${caseTemplateDisplayId1[1]} case id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId1[3], caseTemplateModule)).toBeTruthy(`FailureMsg7: ${caseTemplateDisplayId1[2]} case id  is missing`);
+            
+            // Verify Case Template With Non Matching Summary
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId4, caseTemplateModule)).toBeFalsy(`FailureMsg51: ${nonMatchingSummary} non mathing template id is missing`);
+            
+            // Verify with case template desscription
+            await searchPo.searchRecord(description);
+            expect(await searchPo.isModuleTitleDisplayed(description, 'Case Templates (3)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId2[4], caseTemplateModule)).toBeTruthy(`FailureMsg4: ${caseTemplateDisplayId1[0]} case id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName+4, caseTemplateModule)).toBeTruthy(`FailureMsg5: ${summary2} case Template2 summary is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName+5 , caseTemplateModule)).toBeTruthy(`FailureMsg5: ${summary2} case Template2 summary is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName+6, caseTemplateModule)).toBeTruthy(`FailureMsg5: ${summary2} case Template2 summary is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, caseTemplateModule,)).toBeTruthy(`${updatedDate} updatedDate is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId2[5], caseTemplateModule)).toBeTruthy(`FailureMsg6: ${caseTemplateDisplayId1[1]} case id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId2[6], caseTemplateModule)).toBeTruthy(`FailureMsg7: ${caseTemplateDisplayId1[2]} case id  is missing`);
+        
+            // Verify Inactive Case Template
+            await searchPo.searchRecord(summary3);
+            expect(await searchPo.isModuleTitleDisplayed(summary3, 'Case Templates (0)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId3, caseTemplateModule)).toBeFalsy(`FailureMsg4: ${caseTemplateDisplayId3} case template id  is display`);
+        
+            // Verify Global Template
+            await searchPo.searchRecord(summary4);
+            expect(await searchPo.isModuleTitleDisplayed(summary4, 'Case Templates (1)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId5, caseTemplateModule)).toBeTruthy(`FailureMsg4: ${caseTemplateDisplayId5} case id  is missing`);
+        });
+
+        it('[DRDMV-16116]: Verify search case by other group user  ', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz')
+            await navigationPage.gotoSearch();
+            // Verify with case template title
+            await searchPo.searchRecord(templateName+'1');
+            expect(await searchPo.isModuleTitleDisplayed(templateName+'1', 'Case Templates (1)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId1[1], caseTemplateModule)).toBeTruthy(`FailureMsg4: ${caseTemplateDisplayId1[0]} case id  is missing`);
+            
+            await searchPo.searchRecord(templateName+'2');
+            expect(await searchPo.isModuleTitleDisplayed(templateName+'2', 'Case Templates (1)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId1[2], caseTemplateModule)).toBeTruthy(`FailureMsg4: ${caseTemplateDisplayId1[0]} case id  is missing`);
+
+            await searchPo.searchRecord(templateName+'3');
+            expect(await searchPo.isModuleTitleDisplayed(templateName+'3', 'Case Templates (1)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId1[3], caseTemplateModule)).toBeTruthy(`FailureMsg4: ${caseTemplateDisplayId1[0]} case id  is missing`);
+
+            // Verify with case template Summary
+            await searchPo.searchRecord(summary1);
+            expect(await searchPo.isModuleTitleDisplayed(summary1, 'Case Templates (3)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId1[1], caseTemplateModule)).toBeTruthy(`FailureMsg4: ${caseTemplateDisplayId1[0]} case id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName+'1', caseTemplateModule)).toBeTruthy(`FailtoBeTruthyureMsg5: ${templateName+'1'} case title summary is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, caseTemplateModule,)).toBeTruthy(`${updatedDate} updatedDate is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId1[2], caseTemplateModule)).toBeTruthy(`FailureMsg6: ${caseTemplateDisplayId1[1]} case id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId1[3], caseTemplateModule)).toBeTruthy(`FailureMsg7: ${caseTemplateDisplayId1[2]} case id  is missing`);
+            
+            // Verify Case Template With Non Matching Summary
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId4, caseTemplateModule)).toBeFalsy(`FailureMsg51: ${nonMatchingSummary} non mathing template id is missing`);
+            
+            // Verify with case template desscription
+            await searchPo.searchRecord(description);
+            expect(await searchPo.isModuleTitleDisplayed(description, 'Case Templates (3)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId2[4], caseTemplateModule)).toBeTruthy(`FailureMsg4: ${caseTemplateDisplayId1[0]} case id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName+4, caseTemplateModule)).toBeTruthy(`FailureMsg5: ${summary2} case Template2 summary is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName+5 , caseTemplateModule)).toBeTruthy(`FailureMsg5: ${summary2} case Template2 summary is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName+6, caseTemplateModule)).toBeTruthy(`FailureMsg5: ${summary2} case Template2 summary is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, caseTemplateModule,)).toBeTruthy(`${updatedDate} updatedDate is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId2[5], caseTemplateModule)).toBeTruthy(`FailureMsg6: ${caseTemplateDisplayId1[1]} case id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId2[6], caseTemplateModule)).toBeTruthy(`FailureMsg7: ${caseTemplateDisplayId1[2]} case id  is missing`);
+        
+            // Verify Inactive Case Template
+            await searchPo.searchRecord(summary3);
+            expect(await searchPo.isModuleTitleDisplayed(summary3, 'Case Templates (0)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId3, caseTemplateModule)).toBeFalsy(`FailureMsg4: ${caseTemplateDisplayId3} case template id  is display`);
+        
+            // Verify Global Template
+            await searchPo.searchRecord(summary4);
+            expect(await searchPo.isModuleTitleDisplayed(summary4, 'Case Templates (1)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId5, caseTemplateModule)).toBeTruthy(`FailureMsg4: ${caseTemplateDisplayId5} case id  is missing`);
+        });
+
+        it('[DRDMV-16116]: Verify non acess case Template with petramco and global company', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('gwixillian');
+
+            await navigationPage.gotoSearch();
+            await searchPo.searchRecord(summary1);
+            expect(await searchPo.isModuleTitleDisplayed(summary1, 'Case Templates (0)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is displayed');
+            expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(caseTemplateModule)).toBeTruthy(`FailureMsg66: No result found validation is missing`);
+        
+            // Verify Global Template
+            await searchPo.searchRecord(summary4);
+            expect(await searchPo.isModuleTitleDisplayed(summary4, 'Case Templates (1)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId5, caseTemplateModule)).toBeTruthy(`FailureMsg4: ${caseTemplateDisplayId5} case id  is missing`);
+        });
+
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qtao')
+        });
+    });
+
+    //kgaikwad
+    describe('[DRDMV-16118]:Global search with only Task Template Category', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let templateName = 'templatenameDRDMV16118' + randomStr;
+        let description = 'descriptionDRDMV16118' + randomStr;
+        let activeStatus = 'Active';
+        let inactiveStatus = 'Inactive'
+        let nonMatchingTemplate = 'NonMatchingSummaryDRDMV16118' + randomStr;
+        let dummyDescription = 'DummayDRDMV16118' + randomStr;
+
+        let taskTemplateDisplayId1 = [];
+        let taskTemplateDisplayId2 = [];
+        let taskTemplateDisplayId3;
+        let taskTemplateDisplayId4;
+        let taskTemplateDisplayId5;
+        
+
+        beforeAll(async () => {
+            await apiHelper.apiLogin('qkatawazi');
+            // Global Template
+            taskTemplateDisplayId5 = await createTaskTemplate(templateName+9, activeStatus,'- Global -');
+            console.log('taskTemplateDisplayId5>>>>>>>>>>',taskTemplateDisplayId5);
+            
+            // Create Task template with name 
+            for (let a = 1; a < 4; a++) {
+                 taskTemplateDisplayId1[a] = await createTaskTemplate(templateName+a, activeStatus,'Petramco');
+                 console.log('taskTemplateDisplayId1[a]>>>>>>>>',taskTemplateDisplayId1[a]);
+            }
+
+            // Create Task template For Description
+            for (let b = 4; b < 7; b++) {
+                taskTemplateDisplayId2[b] = await createTaskTemplate(templateName+b, activeStatus,'Petramco', description);
+                console.log('taskTemplateDisplayId2[b]>>>>>>>>>>>>',taskTemplateDisplayId2[b]);
+            }
+
+            // Create Task template For Inactive
+                taskTemplateDisplayId3 = await createTaskTemplate(templateName+7, inactiveStatus,'Petramco');
+                console.log('taskTemplateDisplayId3>>>>>>>>>>>>',taskTemplateDisplayId3);
+                
+            // Non maching Task template
+             taskTemplateDisplayId4 = await createTaskTemplate(nonMatchingTemplate, activeStatus,'Petramco');
+             console.log('taskTemplateDisplayId4>>>>>>>>>>',taskTemplateDisplayId4);
+        });
+        
+        it('[DRDMV-16118]: Verify Module Title, Description', async () => {
+            // Got Serch and select Task Template Module.
+            await navigationPage.gotoSearch();
+            expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
+            await searchPo.selectCategoryDropDownValue('Task Template');
+            
+            // Verify Global Template
+            await searchPo.searchRecord(templateName+9);
+            expect(await searchPo.isModuleTitleDisplayed(templateName+9, 'Task Templates (1)', taskTemplateModule)).toBeTruthy('FailureMsg2: Task Template module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId5, taskTemplateModule)).toBeTruthy(`FailureMsg4: ${taskTemplateDisplayId5} task id  is missing`);
+
+            // Verify with task template title
+            await searchPo.searchRecord(templateName+'1');
+            expect(await searchPo.isModuleTitleDisplayed(templateName+'1', 'Task Templates (1)', taskTemplateModule)).toBeTruthy('FailureMsg2: Task module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId1[1], taskTemplateModule)).toBeTruthy(`FailureMsg4: ${taskTemplateDisplayId1[0]} task id  is missing`);
+            
+            await searchPo.searchRecord(templateName+'2');
+            expect(await searchPo.isModuleTitleDisplayed(templateName+'2', 'Task Templates (1)', taskTemplateModule)).toBeTruthy('FailureMsg2: Task module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId1[2], taskTemplateModule)).toBeTruthy(`FailureMsg4: ${taskTemplateDisplayId1[0]} task id  is missing`);
+
+            await searchPo.searchRecord(templateName+'3');
+            expect(await searchPo.isModuleTitleDisplayed(templateName+'3', 'Task Templates (1)', taskTemplateModule)).toBeTruthy('FailureMsg2: Task module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId1[3], taskTemplateModule)).toBeTruthy(`FailureMsg4: ${taskTemplateDisplayId1[0]} task id  is missing`);
+
+            // Verify with task template desscription
+            await searchPo.searchRecord(description);
+            expect(await searchPo.isModuleTitleDisplayed(description, 'Task Templates (3)', taskTemplateModule)).toBeTruthy('FailureMsg2: Task module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId2[4], taskTemplateModule)).toBeTruthy(`FailureMsg4: ${taskTemplateDisplayId1[0]} task id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName+4, taskTemplateModule)).toBeTruthy(`FailureMsg5: ${templateName+4} task Template2 summary is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName+5 , taskTemplateModule)).toBeTruthy(`FailureMsg5: ${templateName+5} task Template2 summary is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName+6, taskTemplateModule)).toBeTruthy(`FailureMsg5: ${templateName+6} task Template2 summary is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, taskTemplateModule,)).toBeTruthy(`${updatedDate} updatedDate is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId2[5], taskTemplateModule)).toBeTruthy(`FailureMsg6: ${taskTemplateDisplayId1[1]} task id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId2[6], taskTemplateModule)).toBeTruthy(`FailureMsg7: ${taskTemplateDisplayId1[2]} task id  is missing`);
+
+            await searchPo.clickOnLeftPannelRecord(taskTemplateDisplayId2[4], taskTemplateModule);
+        });
+
+        it('[DRDMV-16118]: Verify Task Preview Fields', async () => {
+            expect(await taskTemplatePreviewPo.isFieldLabelDisplayed('Task Summary')).toBeTruthy('FailureMsg20: Task Summary label is missing');
+            expect(await taskTemplatePreviewPo.isFieldLabelDisplayed('Task Type')).toBeTruthy('FailureMsg21: Task Type label is missing');
+            expect(await taskTemplatePreviewPo.isFieldLabelDisplayed('Task Priority')).toBeTruthy('FailureMsg22: Task Priority label is missing');
+            expect(await taskTemplatePreviewPo.isFieldLabelDisplayed('Label')).toBeTruthy('FailureMsg24: Label field label is missing');
+            expect(await taskTemplatePreviewPo.isFieldLabelDisplayed('Task Company')).toBeTruthy('FailureMsg25: Task Company label is missing');
+            expect(await taskTemplatePreviewPo.isFieldLabelDisplayed('Category Tier 1')).toBeTruthy('FailureMsg28: Category Tier 1 label is missing');
+            expect(await taskTemplatePreviewPo.isFieldLabelDisplayed('Category Tier 2')).toBeTruthy('FailureMsg26: Category Tier 2 label is missing');
+            expect(await taskTemplatePreviewPo.isFieldLabelDisplayed('Category Tier 3')).toBeTruthy('FailureMsg27: Category Tier 3 label is missing');
+            expect(await taskTemplatePreviewPo.isFieldLabelDisplayed('Task Description')).toBeTruthy('FailureMsg29: Task Description label is missing');
+            expect(await taskTemplatePreviewPo.isFieldLabelDisplayed('Assignee')).toBeTruthy('FailureMsg29: Assignee label is missing');
+            expect(await taskTemplatePreviewPo.isFieldLabelDisplayed('Support Group')).toBeTruthy('FailureMsg30: Support Group label is missing');
+            expect(await taskTemplatePreviewPo.isFieldLabelDisplayed('Support Company')).toBeTruthy('FailureMsg31: Support Company label is missing');
+
+            expect(await taskTemplatePreviewPo.istTaskTemplateTitleDisplayed(templateName+4)).toBeTruthy('FailureMsg20: Task template title is missing');
+            expect(await taskTemplatePreviewPo.isTaskTemplateSummaryDisplayed('TemplateSummary')).toBeTruthy('FailureMsg20: Task Summary is missing');
+            expect(await taskTemplatePreviewPo.isPriorityValueDisplayed('Medium')).toBeTruthy('FailureMsg33: Task priority is missing');
+            expect(await taskTemplatePreviewPo.isTaskCompanyValueDisplayed('Petramco')).toBeTruthy('FailureMsg34: Task company is missing');
+            expect(await taskTemplatePreviewPo.isTaskTemplateDescriptionDisplayed(description)).toBeTruthy('FailureMsg38: description is missing');
+            expect(await taskTemplatePreviewPo.isAssigneeNameDisplayed('Qiang Du')).toBeTruthy('FailureMsg39: Assignee is missing');
+            expect(await taskTemplatePreviewPo.isAassignedGroupValueDisplayed('CA Support 1')).toBeTruthy('FailureMsg40: support group is missing');
+            expect(await taskTemplatePreviewPo.isAssignedCompanyValueDisplayed('Petramco')).toBeTruthy('FailureMsg41: Company Value is missing');
+        });
+
+        it('[DRDMV-16118]: Verify Template with Inactive Task Template ', async () => {
+            await searchPo.searchRecord(templateName+7);
+            expect(await searchPo.isModuleTitleDisplayed(templateName+7, 'Task Templates (0)', taskTemplateModule)).toBeTruthy('FailureMsg2: Task module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId3, taskTemplateModule)).toBeFalsy(`FailureMsg4: ${taskTemplateDisplayId3} task template id  is display`);
+        });
+
+        it('[DRDMV-16118]: Verify Task Template With Non Matching template description', async () => {
+            await searchPo.searchRecord(description);
+            expect(await searchPo.isModuleTitleDisplayed(description, 'Task Templates (3)', taskTemplateModule)).toBeTruthy('FailureMsg2: Task module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId4, taskTemplateModule)).toBeFalsy(`FailureMsg51: ${taskTemplateDisplayId4} non mathing template id is displayed`);
+        });
+
+        it('[DRDMV-16118]: Clear search and verify record displayed on left pannel ', async () => {
+            await searchPo.searchRecord(description);
+            expect(await searchPo.isModuleTitleDisplayed(description, 'Task Templates (3)', taskTemplateModule)).toBeTruthy('FailureMsg2: Task module title is missing');
+            await searchPo.clickClearSearchButton();
+            expect(await searchPo.isClearSearchButtonDisplayed()).toBeFalsy('FailureMsg62: Search box is cleared and cross button gets hide');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId2[4], taskTemplateModule)).toBeTruthy(`FailureMsg4: ${taskTemplateDisplayId1[1]} task template id  is missing`);
+        });
+
+        it('[DRDMV-16118]: Verify search functionality with dummy text ', async () => {
+            await searchPo.searchRecord(dummyDescription);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(dummyDescription, taskTemplateModule)).toBeFalsy(`FailureMsg64: ${dummyDescription} dummyText  is displayed`);
+            expect(await searchPo.isModuleTitleDisplayed(dummyDescription, 'Task Templates (0)', taskTemplateModule)).toBeTruthy('FailureMsg2: Task module title is missing');
+            expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(taskTemplateModule)).toBeTruthy(`FailureMsg66: No result found validation is missing`);
+        });
+
+      
+        it('[DRDMV-16118]: Verify search task with assignee user', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qdu');
+            await navigationPage.gotoSearch();
+            // Verify with task template title
+            await searchPo.searchRecord(templateName+'1');
+            expect(await searchPo.isModuleTitleDisplayed(templateName+'1', 'Task Templates (1)', taskTemplateModule)).toBeTruthy('FailureMsg2: Task module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId1[1], taskTemplateModule)).toBeTruthy(`FailureMsg4: ${taskTemplateDisplayId1[0]} task id  is missing`);
+            
+            await searchPo.searchRecord(templateName+'2');
+            expect(await searchPo.isModuleTitleDisplayed(templateName+'2', 'Task Templates (1)', taskTemplateModule)).toBeTruthy('FailureMsg2: Task module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId1[2], taskTemplateModule)).toBeTruthy(`FailureMsg4: ${taskTemplateDisplayId1[0]} task id  is missing`);
+
+            await searchPo.searchRecord(templateName+'3');
+            expect(await searchPo.isModuleTitleDisplayed(templateName+'3', 'Task Templates (1)', taskTemplateModule)).toBeTruthy('FailureMsg2: Task module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId1[3], taskTemplateModule)).toBeTruthy(`FailureMsg4: ${taskTemplateDisplayId1[0]} task id  is missing`);
+
+            // Verify with task template desscription
+            await searchPo.searchRecord(description);
+            expect(await searchPo.isModuleTitleDisplayed(description, 'Task Templates (3)', taskTemplateModule)).toBeTruthy('FailureMsg2: Task module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId2[4], taskTemplateModule)).toBeTruthy(`FailureMsg4: ${taskTemplateDisplayId1[0]} task id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName+4, taskTemplateModule)).toBeTruthy(`FailureMsg5: ${templateName+4} task Template2 summary is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName+5 , taskTemplateModule)).toBeTruthy(`FailureMsg5: ${templateName+5} task Template2 summary is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName+6, taskTemplateModule)).toBeTruthy(`FailureMsg5: ${templateName+6} task Template2 summary is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, taskTemplateModule,)).toBeTruthy(`${updatedDate} updatedDate is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId2[5], taskTemplateModule)).toBeTruthy(`FailureMsg6: ${taskTemplateDisplayId1[1]} task id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId2[6], taskTemplateModule)).toBeTruthy(`FailureMsg7: ${taskTemplateDisplayId1[2]} task id  is missing`);
+        
+            // Verify Inactive Task Template
+            await searchPo.searchRecord(templateName+7);
+            expect(await searchPo.isModuleTitleDisplayed(templateName+7, 'Task Templates (0)', taskTemplateModule)).toBeTruthy('FailureMsg2: Task module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId3, taskTemplateModule)).toBeFalsy(`FailureMsg4: ${taskTemplateDisplayId3} task template id  is display`);
+        
+            // Verify Global Template
+            await searchPo.searchRecord(templateName+9);
+            expect(await searchPo.isModuleTitleDisplayed(templateName+9, 'Task Templates (1)', taskTemplateModule)).toBeTruthy('FailureMsg2: Task module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId5, taskTemplateModule)).toBeTruthy(`FailureMsg4: ${taskTemplateDisplayId5} task id  is missing`);
+        });
+
+        it('[DRDMV-16118]: Verify search task by other group user  ', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz')
+            await navigationPage.gotoSearch();
+            // Verify with task template title
+            await searchPo.searchRecord(templateName+'1');
+            expect(await searchPo.isModuleTitleDisplayed(templateName+'1', 'Task Templates (1)', taskTemplateModule)).toBeTruthy('FailureMsg2: Task module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId1[1], taskTemplateModule)).toBeTruthy(`FailureMsg4: ${taskTemplateDisplayId1[0]} task id  is missing`);
+            
+            await searchPo.searchRecord(templateName+'2');
+            expect(await searchPo.isModuleTitleDisplayed(templateName+'2', 'Task Templates (1)', taskTemplateModule)).toBeTruthy('FailureMsg2: Task module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId1[2], taskTemplateModule)).toBeTruthy(`FailureMsg4: ${taskTemplateDisplayId1[0]} task id  is missing`);
+
+            await searchPo.searchRecord(templateName+'3');
+            expect(await searchPo.isModuleTitleDisplayed(templateName+'3', 'Task Templates (1)', taskTemplateModule)).toBeTruthy('FailureMsg2: Task module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId1[3], taskTemplateModule)).toBeTruthy(`FailureMsg4: ${taskTemplateDisplayId1[0]} task id  is missing`);
+
+            // Verify with task template desscription
+            await searchPo.searchRecord(description);
+            expect(await searchPo.isModuleTitleDisplayed(description, 'Task Templates (3)', taskTemplateModule)).toBeTruthy('FailureMsg2: Task module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId2[4], taskTemplateModule)).toBeTruthy(`FailureMsg4: ${taskTemplateDisplayId1[0]} task id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName+4, taskTemplateModule)).toBeTruthy(`FailureMsg5: ${templateName+4} task Template2 summary is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName+5 , taskTemplateModule)).toBeTruthy(`FailureMsg5: ${templateName+5} task Template2 summary is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName+6, taskTemplateModule)).toBeTruthy(`FailureMsg5: ${templateName+6} task Template2 summary is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, taskTemplateModule,)).toBeTruthy(`${updatedDate} updatedDate is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId2[5], taskTemplateModule)).toBeTruthy(`FailureMsg6: ${taskTemplateDisplayId1[1]} task id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId2[6], taskTemplateModule)).toBeTruthy(`FailureMsg7: ${taskTemplateDisplayId1[2]} task id  is missing`);
+        
+            // Verify Inactive Task Template
+            await searchPo.searchRecord(templateName+7);
+            expect(await searchPo.isModuleTitleDisplayed(templateName+7, 'Task Templates (0)', taskTemplateModule)).toBeTruthy('FailureMsg2: Task module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId3, taskTemplateModule)).toBeFalsy(`FailureMsg4: ${taskTemplateDisplayId3} task template id  is display`);
+        
+            // Verify Global Template
+            await searchPo.searchRecord(templateName+9);
+            expect(await searchPo.isModuleTitleDisplayed(templateName+9, 'Task Templates (1)', taskTemplateModule)).toBeTruthy('FailureMsg2: Task module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId5, taskTemplateModule)).toBeTruthy(`FailureMsg4: ${taskTemplateDisplayId5} task id  is missing`);
+        });
+
+        it('[DRDMV-16118]: Verify non acess task Template with petramco and global company', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('gwixillian');
+
+            await navigationPage.gotoSearch();
+            await searchPo.searchRecord(templateName+1);
+            expect(await searchPo.isModuleTitleDisplayed(templateName+1, 'Task Templates (0)', taskTemplateModule)).toBeTruthy('FailureMsg2: Task module title is displayed');
+            expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(taskTemplateModule)).toBeTruthy(`FailureMsg66: No result found validation is missing`);
+        
+            // Verify Global Template
+            await searchPo.searchRecord(templateName+9);
+            expect(await searchPo.isModuleTitleDisplayed(templateName+9, 'Task Templates (1)', taskTemplateModule)).toBeTruthy('FailureMsg2: Task module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId5, taskTemplateModule)).toBeTruthy(`FailureMsg4: ${taskTemplateDisplayId5} task id  is missing`);
+        });
+
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qtao')
+        });
+    });
 });
 
 
