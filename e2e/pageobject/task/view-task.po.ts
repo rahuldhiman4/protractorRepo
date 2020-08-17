@@ -54,6 +54,13 @@ class ViewTask {
         emailLink: '[rx-view-component-id="b721ed87-8e6b-4279-9e21-d4348c6a4599"] button',
         tab: 'button[role="tab"] span.nav-link-wrapper',
         showMoreTaskDescription:'.bwf-description-read-state button',
+        showApproversBanner: '.rx-runtime-view-canvas-item-margin [rx-view-component-id="f9c9f21d-b80d-42d5-af13-131965888afc"]',
+        pendingApprovalsInfo: '[rx-view-component-id="c64c5d07-86a0-46bb-a085-181a760a756c"] span[aria-label="Status of case approvals"] span',
+        showApproversLink: '.show-approvers-button-container',
+        approvalButtons: '.approval-buttons span',
+        approveButton: '.d-icon-left-check_shield',
+        rejectButton: '.d-icon-left-cross_circle',
+
     }
 
     async clickShowMoreTaskDescription():Promise<void>{
@@ -386,6 +393,42 @@ class ViewTask {
     async isAssignmentSectionDisplayed(): Promise<boolean> {
         return await $(this.selectors.assignmentSection).isDisplayed();
     }
+
+    async isShowApproversBannerDisplayed(): Promise<boolean> {
+        return await $(this.selectors.showApproversBanner).isPresent().then(async (link) => {
+            if (link) {
+                return await $(this.selectors.showApproversBanner).isDisplayed();
+            } else return false;
+        });
+    }
+
+    async clickShowApproversLink(): Promise<void> {
+        await $(this.selectors.showApproversBanner).$(this.selectors.showApproversLink).click();
+    }
+
+    async getShowPendingApproversInfo(): Promise<string> {
+        return await $(this.selectors.pendingApprovalsInfo).getAttribute('aria-label');
+    }
+
+    async getApprovedApproversInfo(): Promise<string> {
+        return await $$(this.selectors.pendingApprovalsInfo).last().getAttribute('aria-label');
+    }
+
+    async isApprovalButtonsPresent(buttonText: string): Promise<boolean> {
+        return await element(by.cssContainingText(this.selectors.approvalButtons, buttonText)).isPresent().then(async (result) => {
+            if (result) return await element(by.cssContainingText(this.selectors.approvalButtons, buttonText)).isDisplayed();
+            else return false;
+        });
+    }
+
+    async clickOnApproveLink(): Promise<void> {
+        await $(this.selectors.approveButton).click();
+    }
+
+    async clickOnRejectLink(): Promise<void> {
+        await $(this.selectors.rejectButton).click();
+    }
+
 }
 
 export default new ViewTask();

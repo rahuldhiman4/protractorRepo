@@ -61,7 +61,7 @@ class CaseEditPage {
         dynamicFieldDate: 'bwf-date-field input.form-control.i-date',
         dynamicBooleanValue: 'button.d-icon-check_adapt',
         dynamicFieldDateTime: 'input[ng-model="datetime"]',
-        dynamicFieldTime: '.dynamic-time-field input[ng-model="hours"]',
+        dynamicFieldTime: '.i-time',
         dynamicFieldsName: '[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .form-group label',
         dynamicFieldInput: '[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] input',
         dynamicAttachmentField: '[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .bwf-attachment-button input',
@@ -358,7 +358,8 @@ class CaseEditPage {
         for (let i = 0; i < dynamicTextFields; i++) {
             let labelvalue = await $$('bwf-text-field').get(i).$('label').getText();
             if (labelvalue == fieldName) {
-                $$('bwf-text-field').get(i).$('input').sendKeys(fieldValue);
+                await $$('bwf-text-field').get(i).$('input').clear();
+                await $$('bwf-text-field').get(i).$('input').sendKeys(fieldValue);
             }
         }
     }

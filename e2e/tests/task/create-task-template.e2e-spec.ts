@@ -240,63 +240,6 @@ describe('Create Task Template', () => {
         expect(await viewTaskTemplate.getCategoryTier2Value()).toBe("Social");
     });//, 220 * 1000);
 
-    describe('[DRDMV-7151]: [Automatic Task] - Automatic Task: Social: System Comments', async () => {
-        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let templateData = {
-            "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
-            "templateSummary": `SummaryAutomatedTaskTemplate ${randomStr}`,
-            "templateStatus": "Active",
-            "processBundle": "com.bmc.dsm.case-lib",
-            "processName": `Case Process 1 ${randomStr}`,
-            "taskCompany": "Petramco",
-            "ownerCompany": "Petramco",
-            "ownerBusinessUnit": "Facilities Support",
-            "ownerGroup": "Facilities"
-        }
-        beforeAll(async () => {
-            await apiHelper.apiLogin('qkatawazi');
-            await apiHelper.createAutomatedTaskTemplate(templateData);
-        });
-        //Create a Case
-        it('[DRDMV-7151]: Assign task on case', async () => {
-            await navigationPage.signOut();
-            await loginPage.login('qtao');
-            await navigationPage.gotoCreateCase();
-            await createCasePage.selectRequester("adam");
-            await createCasePage.setSummary('Summary ' + randomStr);
-            await createCasePage.clickAssignToMeButton();
-            await createCasePage.clickSaveCaseButton();
-            await previewCasePo.clickGoToCaseButton();
-            await viewCasePage.clickAddTaskButton();
-            //Add Automation Task templates in Case
-            await manageTask.addTaskFromTaskTemplate(templateData.templateSummary);
-            await manageTask.clickTaskLink(templateData.templateSummary);
-            expect(await viewTask.isTaskIdTextDisplayed()).toBeTruthy("Task Id Not Displayed");
-            await viewTask.clickOnViewCase();
-        });
-        it('[DRDMV-7151]: Assign task on case', async () => {
-            await updateStatusBladePo.changeCaseStatus('In Progress');
-            await updateStatusBladePo.clickSaveStatus();
-            await utilityCommon.closePopUpMessage();
-            await viewCasePage.clickAddTaskButton();
-            await manageTask.clickTaskLink(templateData.templateSummary);
-            expect(await viewTask.getTaskStatusValue()).toContain('Completed');
-            expect(await activityTabPo.getAllTaskActivity('Completed')).toContain('Completed');
-            expect(await activityTabPo.getTaskActivity('Assigned')).toContain('Assigned');
-            expect(await activityTabPo.getTaskActivity('In Progress')).toContain('In Progress');
-            await viewTask.clickOnViewCase();
-            await updateStatusBladePo.changeCaseStatus('Resolved');
-            await updateStatusBladePo.setStatusReason('Auto Resolved');
-            await updateStatusBladePo.clickSaveStatus();
-            await utilityCommon.closePopUpMessage();
-            expect(await viewCasePage.isEditLinkDisplay()).toBeTruthy();
-        });
-        afterAll(async () => {
-            await navigationPage.signOut();
-            await loginPage.login("qkatawazi");
-        });
-    });
-
     //ankagraw
     describe('[DRDMV-3768]: [Task Template Console] Filter menu verification', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');

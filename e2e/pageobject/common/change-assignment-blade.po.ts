@@ -5,7 +5,7 @@ class ChangeAssignmentBlade {
     selectors = {
         changeAssignmentButton: '[rx-view-component-id="6041cce1-05bd-458d-b097-eb310507cae3"] button',
         assignButton: '.modal-footer .btn-primary',
-        assignmentDropDownList: '.flex-wrap bwf-select-with-pagination',
+        assignmentDropDownList: '.flex-wrap bwf-select-with-pagination,.flex-column bwf-select-with-pagination',
         selectOptions: '.dropdown-item span',
         cancelButton: '.modal-footer .btn-secondary',
         multipleSuppGrpMsg: '.manual-select-sg-msg',

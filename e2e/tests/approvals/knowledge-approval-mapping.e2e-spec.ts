@@ -9,6 +9,7 @@ import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 
 describe("Knowledge Approval Mapping Tests", () => {
+    let knowledgeModule = 'Knowledge';
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
@@ -41,8 +42,8 @@ describe("Knowledge Approval Mapping Tests", () => {
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
         afterAll(async () => {
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteKnowledgeApprovalMapping();
+            await apiHelper.apiLogin('elizabeth');
+            await apiHelper.deleteApprovalMapping(knowledgeModule);
         });
     });
 });

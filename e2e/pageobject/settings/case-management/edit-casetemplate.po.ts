@@ -17,7 +17,7 @@ class EditCaseTemplate {
         flowset: '2fe19a48-630b-4380-8b17-cbff70023a89',
         resolveCaseOnLastTaskCompletion:'e4956197-0230-4272-8fc4-87358bd084bf',
         casePriority: '98327bc1-9ada-48f9-ab88-9787ddecd409',
-        caseStatus: '5289a531-7138-4e4f-afdc-ee3f67a2aa64',
+        caseStatusGuid: '5289a531-7138-4e4f-afdc-ee3f67a2aa64',
         statusReason: 'cfde7589-436d-4835-aab8-f5d71e04f91a',
         label: '7ea99756-16a7-4aae-a8a0-8e5e11acfb77',
         caseCategoryTier1: '241f0e58-3106-4f8a-a1cc-43554414bb7c',
@@ -54,7 +54,8 @@ class EditCaseTemplate {
         saveTemplateData: '[rx-view-component-id="16f6e232-26f8-4c72-a30a-b4e765fd09b6"] button',
         caseStatusValue: '[rx-view-component-id="5289a531-7138-4e4f-afdc-ee3f67a2aa64"] .ui-select-toggle', 
         manageDynamicField: '[rx-view-component-id="3cd9b535-36f6-4718-bede-9154ca02ae22"] button',
-        dynamicFieldsName:'[rx-view-component-id="3cd9b535-36f6-4718-bede-9154ca02ae22"] span'
+        dynamicFieldsName:'[rx-view-component-id="3cd9b535-36f6-4718-bede-9154ca02ae22"] span',
+        caseStatus: '[rx-view-component-id="5289a531-7138-4e4f-afdc-ee3f67a2aa64"] .dropdown'
     }
 
     async clickOnCopyCaseTemplate(): Promise<void> {
@@ -171,7 +172,7 @@ class EditCaseTemplate {
     }
 
     async changeCaseStatusValue(caseStatusValue: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.caseStatus, caseStatusValue);
+        await utilCommon.selectDropDown(this.selectors.caseStatusGuid, caseStatusValue);
     }
 
     async changeAllowCaseReopenValue(allowCaseReopenValue: string): Promise<void> {
@@ -285,7 +286,7 @@ class EditCaseTemplate {
     }
 
     async allStatusOptionsPresent(list: string[]): Promise<boolean> {
-        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.caseStatus, list);
+        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.caseStatusGuid, list);
     }
 
     async allTemplateStatusOptionsPresent(list: string[]): Promise<boolean> {
@@ -316,6 +317,30 @@ class EditCaseTemplate {
                 return false;
             }
         });
+    }
+
+    async isCaseStatusFieldDisabled(): Promise<boolean> {
+        return await $(this.selectors.caseStatus).getAttribute('disabled') == 'true';
+    }
+
+    async isCopyTemplateBtnDisplayed(): Promise<boolean> {
+        return await $(this.selectors.copyTemplate).isDisplayed();
+    }
+
+    async isCaseSummaryFieldDisabled(): Promise<boolean> {
+        return await $(this.selectors.caseSummary).getAttribute('readonly') == 'true';
+    }
+
+    async isTemplateStatusDisabled(): Promise<boolean> {
+        return await $(this.selectors.templateStatusReadOnly).getAttribute('readonly') == 'true';
+    }
+
+    async isSaveTemplateBtnEnabled(): Promise<boolean> {
+        return await $(this.selectors.saveButton).isEnabled();
+    }
+
+    async isSaveMetadataBtnEnabled(): Promise<boolean> {
+        return await $(this.selectors.saveTemplateMetaData).isEnabled();
     }
 }
 

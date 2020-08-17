@@ -30,6 +30,7 @@ describe('Knowledge Article', () => {
     let knowledgeCoachUser = 'kWilliamson';
     let knowledgeManagementApp = "Knowledge Management";
     let knowledgeArticlesTitleStr = "Knowledge Articles";
+    let knowledgeModule = 'Knowledge';
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
@@ -620,8 +621,8 @@ describe('Knowledge Article', () => {
     describe('[DRDMV-2985]: Article creation and possible status changes - Knowledge Publisher & Coach', async () => {
         let KADetails, KACoachDetails, articleDataCoach;
         beforeAll(async () => {
-            await apiHelper.apiLogin("tadmin");
-            await apiHelper.deleteKnowledgeApprovalMapping();
+            await apiHelper.apiLogin("elizabeth");
+            apiHelper.deleteApprovalMapping(knowledgeModule);
             let knowledgeTitile = 'knowledge2985' + randomStr;
             let articleData = {
                 "knowledgeSet": "HR",

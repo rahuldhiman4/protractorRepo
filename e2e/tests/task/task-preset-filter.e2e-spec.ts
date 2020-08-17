@@ -11,12 +11,13 @@ import utilityGrid from "../../utils/utility.grid";
 
 describe('Task Console Preset Filter', () => {
     let randomString: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+    const caseModule = 'Case';
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteServiceTargets();
-        await apiHelper.deleteApprovalMapping();
+        await apiHelper.deleteApprovalMapping(caseModule);
         const personDataFile = require('../../data/ui/foundation/person.ui.json');
         let personData1 = personDataFile['PhylumCaseAgent1'];
         await apiHelper.createNewUser(personData1);

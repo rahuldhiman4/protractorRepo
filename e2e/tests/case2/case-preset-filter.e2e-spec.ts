@@ -12,6 +12,7 @@ import utilityGrid from "../../utils/utility.grid";
 describe('Case Console Preset Filter', () => {
 
     const userId1 = "idphylum1@petramco.com";
+    const caseModule = 'Case';
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
@@ -19,7 +20,7 @@ describe('Case Console Preset Filter', () => {
         //Create the Phylum users
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteServiceTargets();
-        await apiHelper.deleteApprovalMapping();
+        await apiHelper.deleteApprovalMapping(caseModule);
         const personDataFile = require('../../data/ui/foundation/person.ui.json');
         let personData1 = personDataFile['PhylumCaseAgent1'];
         await apiHelper.createNewUser(personData1);
@@ -51,13 +52,13 @@ describe('Case Console Preset Filter', () => {
         await statusConfig.addCustomStatus('In Progress', 'Resolved', 'BeforeResolved');
 
         //Set the user2 to VIP Requester
-        await apiHelper.updatePersonAsVIP('idphylum2', 'Yes');
+        await apiHelper.updateFoundationEntity('Person', 'idphylum2', { vipStatus: 'Yes' });
         await navigationPage.gotoCaseConsole();
     });
 
     afterAll(async () => {
         await apiHelper.apiLogin('tadmin');
-        await apiHelper.updatePersonAsVIP('idphylum2', 'No');
+        await apiHelper.updateFoundationEntity('Person', 'idphylum2', { vipStatus: 'No' });
         await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });

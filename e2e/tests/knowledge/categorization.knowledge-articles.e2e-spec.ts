@@ -68,6 +68,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
     const departmentDataFile = require('../../data/ui/foundation/department.ui.json');
     const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
     const domainTagDataFile = require('../../data/ui/foundation/domainTag.ui.json');
+    let knowledgeModule = 'Knowledge';
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
@@ -88,8 +89,8 @@ describe('Knowledge Articles - Categorization Tests', () => {
             "assigneeSupportGroup": "GB Support 1",
             "assignee": "KMills"
         }
-        await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteKnowledgeApprovalMapping();
+        await apiHelper.apiLogin('elizabeth');
+        apiHelper.deleteApprovalMapping(knowledgeModule);
 
         await apiHelper.apiLogin(knowledgePublisherUser);
         // Create article in in progress status

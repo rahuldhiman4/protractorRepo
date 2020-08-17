@@ -15,12 +15,14 @@ import utilityGrid from '../../utils/utility.grid';
 
 describe("Case Level Up Approval Tests", () => {
     const caseApprovalRecordDefinition = 'com.bmc.dsm.case-lib:Case';
+    const caseApprovalMappingRecordDefinition = 'com.bmc.dsm.case-lib:Case Approval Mapping';
+    let caseModule = 'Case';
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
         await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteApprovalMapping();
+        await apiHelper.deleteApprovalMapping(caseModule);
         await apiHelper.apiLogin('tadmin');
     });
 
@@ -67,7 +69,7 @@ describe("Case Level Up Approval Tests", () => {
                 "company": "Petramco",
                 "mappingName": "Approval Mapping for Manager Level Approval"
             }
-            let approvalMappingId = await apiHelper.createCaseApprovalMapping(approvalMappingData);
+            let approvalMappingId = await apiHelper.createApprovalMapping(caseModule,approvalMappingData);
             await apiHelper.associateCaseTemplateWithApprovalMapping(caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
 
             caseData = {
@@ -262,8 +264,8 @@ describe("Case Level Up Approval Tests", () => {
         });
 
         afterAll(async () => {
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteApprovalMapping();
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.deleteApprovalMapping(caseModule);
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -308,7 +310,7 @@ describe("Case Level Up Approval Tests", () => {
                 "company": "Petramco",
                 "mappingName": "Approval Mapping for General Level Approval"
             }
-            let approvalMappingId = await apiHelper.createCaseApprovalMapping(approvalMappingData);
+            let approvalMappingId = await apiHelper.createApprovalMapping(caseModule,approvalMappingData);
             await apiHelper.associateCaseTemplateWithApprovalMapping(caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
 
             caseData = {
@@ -506,8 +508,8 @@ describe("Case Level Up Approval Tests", () => {
         });
 
         afterAll(async () => {
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteApprovalMapping();
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.deleteApprovalMapping(caseModule);
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -553,7 +555,7 @@ describe("Case Level Up Approval Tests", () => {
                 "company": "Petramco",
                 "mappingName": "Approval Mapping for Level Up Approval"
             }
-            let approvalMappingId = await apiHelper.createCaseApprovalMapping(approvalMappingData);
+            let approvalMappingId = await apiHelper.createApprovalMapping(caseModule,approvalMappingData);
             await apiHelper.associateCaseTemplateWithApprovalMapping(caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
 
             //Create Approval Mapping through API
@@ -566,7 +568,7 @@ describe("Case Level Up Approval Tests", () => {
                 "company": "Petramco",
                 "mappingName": "Approval Mapping for Level Up Approval Another"
             }
-            let approvalMappingId1 = await apiHelper.createCaseApprovalMapping(approvalMappingData1);
+            let approvalMappingId1 = await apiHelper.createApprovalMapping(caseModule,approvalMappingData1);
             await apiHelper.associateCaseTemplateWithApprovalMapping(caseTemplateWithMatchingSummaryResponse.id, approvalMappingId1.id);
 
             caseData = {
@@ -704,8 +706,8 @@ describe("Case Level Up Approval Tests", () => {
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         });
         afterAll(async () => {
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteApprovalMapping();
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.deleteApprovalMapping(caseModule);
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -751,7 +753,7 @@ describe("Case Level Up Approval Tests", () => {
                 "company": "- Global -",
                 "mappingName": "Approval Mapping for Self Approval"
             }
-            let approvalMappingId = await apiHelper.createCaseApprovalMapping(approvalMappingData);
+            let approvalMappingId = await apiHelper.createApprovalMapping(caseModule,approvalMappingData);
             await apiHelper.associateCaseTemplateWithApprovalMapping(caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
 
             //Create Approval Mapping through API
@@ -764,7 +766,7 @@ describe("Case Level Up Approval Tests", () => {
                 "company": "Petramco",
                 "mappingName": "Approval Mapping for One Must Approval"
             }
-            let approvalMappingId1 = await apiHelper.createCaseApprovalMapping(approvalMappingData1);
+            let approvalMappingId1 = await apiHelper.createApprovalMapping(caseModule,approvalMappingData1);
             await apiHelper.associateCaseTemplateWithApprovalMapping(caseTemplateWithMatchingSummaryResponse.id, approvalMappingId1.id);
 
             caseData = {
@@ -883,8 +885,8 @@ describe("Case Level Up Approval Tests", () => {
         });
 
         afterAll(async () => {
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteApprovalMapping();
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.deleteApprovalMapping(caseModule);
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -930,7 +932,7 @@ describe("Case Level Up Approval Tests", () => {
                 "company": "- Global -",
                 "mappingName": "Approval Mapping for Self Approval"
             }
-            let approvalMappingId = await apiHelper.createCaseApprovalMapping(approvalMappingData);
+            let approvalMappingId = await apiHelper.createApprovalMapping(caseModule,approvalMappingData);
             await apiHelper.associateCaseTemplateWithApprovalMapping(caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
 
             caseData = {
@@ -1049,8 +1051,8 @@ describe("Case Level Up Approval Tests", () => {
         });
 
         afterAll(async () => {
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteApprovalMapping();
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.deleteApprovalMapping(caseModule);
         });
     });
 });

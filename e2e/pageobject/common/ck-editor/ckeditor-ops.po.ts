@@ -27,9 +27,9 @@ class CKEditor {
         italicTextCkEditorTextArea: '.cke_enable_context_menu em',
         underlineTextCkEditorTextArea: '.cke_enable_context_menu u',
         colorTextCkEditorTextArea: '.cke_enable_context_menu span',
-        alignmentTextCkEditorTextArea: '.cke_enable_context_menu div',
-        rightAlignText: '.cke_enable_context_menu div[style="text-align: right;"]',
-        centerAlignText: '.cke_enable_context_menu div[style="text-align: center;"]',
+        alignmentTextCkEditorTextArea: 'div.cke_enable_context_menu , div.cke_enable_context_menu div',
+        rightAlignText: '.cke_enable_context_menu [style="text-align: right;"]',
+        centerAlignText: '.cke_enable_context_menu [style="text-align: center;"]',
         numberListCkEditorTextArea: '.cke_enable_context_menu ol li',
         bulletListTextCkEditorTextArea: '.cke_enable_context_menu ul li',
         linkTextCkEditorTextArea: '.cke_enable_context_menu a',
@@ -38,6 +38,11 @@ class CKEditor {
         ckEditor: '.cke_inner',
         ckEditorTextArea: '.cke_editable_themed',
         deletedTextInCKE: '.cke_editable_themed del',
+        fontDropDown:'a[title="Font Size"]',
+        justifyAlignIcon: '.cke_button__justifyblock_icon',
+        justifyAlignText: '.cke_enable_context_menu [style="text-align: justify;"]',
+        strikeThroughIcon: '.cke_button__strike_icon',
+        strikeThroughTextCkEditorTextArea: '.cke_enable_context_menu s',
     }
 
     async enterNewLineInCKE(guidId?: string): Promise<void> {
@@ -50,6 +55,7 @@ class CKEditor {
         await $(cke_editor).isPresent().then(async (result) => {
             if (result) {
                 await browser.wait(this.EC.elementToBeClickable($(ckeTextArea)), 3000).then(async () => {
+                    await utilityCommon.scrollUpOrDownTillElement(ckeTextArea);
                     await $(ckeTextArea).click();
                     await $(ckeTextArea).sendKeys(Key.HOME + Key.END + Key.ENTER + Key.ENTER);
                 });
@@ -269,7 +275,7 @@ class CKEditor {
 
     async isBoldTextDisplayedInCkEditorTextArea(bodyText: string, boldTextElement?: ElementFinder): Promise<boolean> {
         let framePresent = await $(this.selectors.frame).isPresent();
-        if (!boldTextElement) boldTextElement = await $(this.selectors.bodyTextArea);
+        if (!boldTextElement) boldTextElement = await $(this.selectors.boldTextCkEditorTextArea);
         if (framePresent == true) {
             await browser.waitForAngularEnabled(false);
             await browser.switchTo().frame($(this.selectors.frame).getWebElement());
@@ -588,6 +594,116 @@ class CKEditor {
         let locator = `table td[style="${alignValue}"]`;
          if (guid) locator = `[rx-view-component-id="${guid}"] table td[style="${alignValue}"]`;
         return await $(locator).getText();
+    }
+
+    async updateDescription(caseDescription: string): Promise<void> {
+        await $(this.selectors.ckEditor).isPresent().then(async (result) => {
+            if (result) {
+                await browser.wait(this.EC.elementToBeClickable($(this.selectors.ckEditorTextArea)), 3000).then(async () => {
+                    await $(this.selectors.ckEditorTextArea).sendKeys(caseDescription);
+                });
+            }
+        });
+    }
+
+    async selectFont(fontValue, guidId?: string): Promise<void> {
+        if (guidId) { await $(`[rx-view-component-id="${guidId}"] ` + this.selectors.fontDropDown).click(); }
+        else { await $(this.selectors.fontDropDown).click(); }
+        await browser.sleep(1000);
+        await browser.waitForAngularEnabled(false);
+        await browser.switchTo().frame(await $$('iframe.cke_panel_frame').last().getWebElement());
+        let locator: string = `a[title="${fontValue}"]`;
+        await browser.wait(this.EC.elementToBeClickable($(locator)), 2000).then(async () => {
+            await $(locator).click();
+        });
+        await browser.switchTo().defaultContent();
+        await browser.waitForAngularEnabled(true);
+    }
+
+    async isFontApplied(value, tagName: string, guid?: string): Promise<boolean> {
+        let locator = `.cke_wysiwyg_div ${tagName}[style="font-size:${value}px;"]`;
+        if (guid) {
+            locator = `[rx-view-component-id="${guid}"] .cke_wysiwyg_div ${tagName}[style="font-size:${value}px;"]`;
+        }
+        console.log(locator);       
+        return await $(locator).isPresent().then(async (link) => {
+            if (link) {
+                return await $(locator).isDisplayed();
+            } else return false;
+        });
+    }
+
+    async clickOnJustifyAlignIcon(guidId?: string): Promise<void> {
+        if (guidId) await $(`[rx-view-component-id="${guidId}"] ` + this.selectors.justifyAlignIcon).click();
+        else await $(this.selectors.justifyAlignIcon).click();
+        await browser.sleep(1000);
+    }
+
+    async isTextJustifyAlignInCkEditorTextArea(bodyText: string, justifyAlignTextElement?: ElementFinder): Promise<boolean> {
+        let framePresent = await $(this.selectors.frame).isPresent();
+        if (!justifyAlignTextElement) justifyAlignTextElement = await $(this.selectors.justifyAlignText);
+        if (framePresent == true) {
+            await browser.waitForAngularEnabled(false);
+            await browser.switchTo().frame($(this.selectors.frame).getWebElement());
+            return await justifyAlignTextElement.isPresent().then(async (result) => {
+                if (result) {
+                    let centerAlignTextCke = await justifyAlignTextElement.getText();
+                    if (centerAlignTextCke.includes(bodyText)) {
+                        await browser.switchTo().defaultContent();
+                        await browser.waitForAngularEnabled(true);
+                        return true;
+                    }
+                }
+                else return false;
+            });
+        }
+        else {
+            return await justifyAlignTextElement.isPresent().then(async (result) => {
+                if (result) {
+                    let centerAlignTextCke = await justifyAlignTextElement.getText();
+                    if (centerAlignTextCke.includes(bodyText)) {
+                        return true;
+                    }
+                }
+                else return false;
+            });
+        }
+    }
+
+    async clickOnStrikeThroughIcon(guidId?: string): Promise<void> {
+        if (guidId) await $(`[rx-view-component-id="${guidId}"] ` + this.selectors.strikeThroughIcon).click();
+        else await $(this.selectors.strikeThroughIcon).click();
+    }
+
+    async isStrikeThroughTextDisplayedInCkEditorTextArea(bodyText: string, strikeThroughTextElement?: ElementFinder): Promise<boolean> {
+        let framePresent = await $(this.selectors.frame).isPresent();
+        if (!strikeThroughTextElement) strikeThroughTextElement = await $(this.selectors.strikeThroughTextCkEditorTextArea);
+        if (framePresent == true) {
+            await browser.waitForAngularEnabled(false);
+            await browser.switchTo().frame($(this.selectors.frame).getWebElement());
+            return await strikeThroughTextElement.isPresent().then(async (result) => {
+                if (result) {
+                    let strikeTextCke = await strikeThroughTextElement.getText();
+                    if (strikeTextCke.includes(bodyText)) {
+                        await browser.switchTo().defaultContent();
+                        await browser.waitForAngularEnabled(true);
+                        return true;
+                    }
+                }
+                else return false;
+            });
+        }
+        else {
+            return await strikeThroughTextElement.isPresent().then(async (result) => {
+                if (result) {
+                    let strikeTextCke = await strikeThroughTextElement.getText();
+                    if (strikeTextCke.includes(bodyText)) {
+                        return true;
+                    }
+                }
+                else return false;
+            });
+        }
     }
 }
 export default new CKEditor();

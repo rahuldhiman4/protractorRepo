@@ -15,13 +15,16 @@ import utilityGrid from '../../utils/utility.grid';
 
 let userData1 = undefined;
 const caseApprovalRecordDefinition = 'com.bmc.dsm.case-lib:Case';
+let caseModule = 'Case';
+
 
 describe("Case General Approval Tests", () => {
+
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
         await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteApprovalMapping();
+        await apiHelper.deleteApprovalMapping(caseModule);
         userData1 = {
             "firstName": "Petramco",
             "lastName": "SGUser1",
@@ -76,7 +79,7 @@ describe("Case General Approval Tests", () => {
                 "company": "Petramco",
                 "mappingName": "Approval Mapping for Self Approval"
             }
-            let approvalMappingId = await apiHelper.createCaseApprovalMapping(approvalMappingData);
+            let approvalMappingId = await apiHelper.createApprovalMapping(caseModule,approvalMappingData);
             await apiHelper.associateCaseTemplateWithApprovalMapping(caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
 
             caseData = {
@@ -137,8 +140,8 @@ describe("Case General Approval Tests", () => {
         });
 
         afterAll(async () => {
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteApprovalMapping();
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.deleteApprovalMapping(caseModule);
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -183,7 +186,7 @@ describe("Case General Approval Tests", () => {
                 "company": "Petramco",
                 "mappingName": "Approval Mapping for One Must Approval"
             }
-            let approvalMappingId = await apiHelper.createCaseApprovalMapping(approvalMappingData);
+            let approvalMappingId = await apiHelper.createApprovalMapping(caseModule,approvalMappingData);
             await apiHelper.associateCaseTemplateWithApprovalMapping(caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
 
             caseData = {
@@ -260,8 +263,8 @@ describe("Case General Approval Tests", () => {
         });
 
         afterAll(async () => {
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteApprovalMapping();
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.deleteApprovalMapping(caseModule);
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -308,7 +311,7 @@ describe("Case General Approval Tests", () => {
                 "company": "Petramco",
                 "mappingName": "Approval Mapping for One Must Approval"
             }
-            let approvalMappingId = await apiHelper.createCaseApprovalMapping(approvalMappingData);
+            let approvalMappingId = await apiHelper.createApprovalMapping(caseModule,approvalMappingData);
             await apiHelper.associateCaseTemplateWithApprovalMapping(caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
 
             caseData = {
@@ -497,8 +500,8 @@ describe("Case General Approval Tests", () => {
         });
 
         afterAll(async () => {
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteApprovalMapping();
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.deleteApprovalMapping(caseModule);
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -565,7 +568,7 @@ describe("Case General Approval Tests", () => {
                     ]
                 }
             ]
-            await apiHelper.createCaseApprovalFlow(approvalFlows, true);
+            await apiHelper.createApprovalFlow(approvalFlows,caseModule, true);
 
             //Create Approval Mapping through API
             approvalMappingData = {
@@ -577,7 +580,7 @@ describe("Case General Approval Tests", () => {
                 "company": "Petramco",
                 "mappingName": "Approval Mapping for One Must Approval"
             }
-            approvalMappingResponse = await apiHelper.createCaseApprovalMapping(approvalMappingData);
+            approvalMappingResponse = await apiHelper.createApprovalMapping(caseModule,approvalMappingData);
             await apiHelper.associateCaseTemplateWithApprovalMapping(activeToInactiveTemplate.id, approvalMappingResponse.id);
             await apiHelper.associateCaseTemplateWithApprovalMapping(removeAssociationTemplate.id, approvalMappingResponse.id);
             caseData1 = {
@@ -646,8 +649,8 @@ describe("Case General Approval Tests", () => {
             expect(await viewCasePo.getTextOfStatus()).toBe("Canceled");
         });
         afterAll(async () => {
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteApprovalMapping();
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.deleteApprovalMapping(caseModule);
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });

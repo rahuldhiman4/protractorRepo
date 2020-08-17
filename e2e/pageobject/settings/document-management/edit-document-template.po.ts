@@ -14,10 +14,15 @@ class EditDocumentTemplatePage {
         labelDropDownGuid: '72d4bfbf-ec5c-437e-b0f1-f216babb58f8',
         pageHeader: '.modal-title',
         documentBodyImg: '[rx-view-component-id="f6baa44c-1e91-49be-9164-1c56077900d8"] .cke_contents_ltr img',
+        dynamicField: '[class="cke_contents cke_reset"] span',
     }
 
     async isDocumentBodyImgDisplay(): Promise<boolean> {
         return await $(this.selectors.documentBodyImg).isDisplayed();
+    }
+
+    async getDynamicFieldOnBody(): Promise<string> {
+        return await $(this.selectors.dynamicField).getText();
     }
 
     async updateDescription(descriptionText: string): Promise<void> {
@@ -78,6 +83,15 @@ class EditDocumentTemplatePage {
         let attribute = await $(this.selectors.documentBody).getText();
         return attribute == documentBody ? true : false
     }
+
+    async isDescriptionFieldDisabled(): Promise<boolean> {
+        return await $(this.selectors.description).getAttribute('readonly') == 'true';
+    }
+
+    async isSaveButtonEnabled(): Promise<boolean> {
+        return await $(this.selectors.saveButton).isEnabled();
+    }
+    
 }
 
-export default new EditDocumentTemplatePage();
+export default new EditDocumentTemplatePage()

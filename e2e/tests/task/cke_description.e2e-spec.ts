@@ -86,19 +86,19 @@ describe('CKE Description', () => {
             await createCaseTemplate.setCompanyName(caseTemplateAllFields.company);
             await createCaseTemplate.setCaseSummary(caseTemplateAllFields.templateSummary);
             // bold
-            await createCaseTemplate.updateDescription("this is text ");
+            await ckeditorOpsPo.updateDescription("this is text ");
             await ckeditorOpsPo.clickOnBoldIcon();
-            await createCaseTemplate.updateDescription(boldText);
+            await ckeditorOpsPo.updateDescription(boldText);
             expect(await ckeditorOpsPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
             await ckeditorOpsPo.clickOnBoldIcon();
             //italic
             await ckeditorOpsPo.clickOnItalicIcon();
-            await createCaseTemplate.updateDescription(italicText);
+            await ckeditorOpsPo.updateDescription(italicText);
             expect(await ckeditorOpsPo.isItalicTextDisplayedInCkEditorTextArea(italicText)).toBeTruthy('Text is not Italic In Ck Editor');
             await ckeditorOpsPo.clickOnItalicIcon();
             //underline
             await ckeditorOpsPo.clickOnUnderLineIcon();
-            await createCaseTemplate.updateDescription(underLineText);
+            await ckeditorOpsPo.updateDescription(underLineText);
             expect(await ckeditorOpsPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
         });
@@ -106,26 +106,26 @@ describe('CKE Description', () => {
             //left Align
             await ckeditorOpsPo.clickOnUnderLineIcon();
             await ckeditorOpsPo.clickOnLeftAlignIcon();
-            await createCaseTemplate.updateDescription(lefAlignText);
+            await ckeditorOpsPo.updateDescription(lefAlignText);
             expect(await ckeditorOpsPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnLeftAlignIcon();
             //Right Align
             await ckeditorOpsPo.clickOnRightAlignIcon();
-            await createCaseTemplate.updateDescription(rightAlignText);
+            await ckeditorOpsPo.updateDescription(rightAlignText);
             expect(await ckeditorOpsPo.isTextRightAlignInCkEditorTextArea(rightAlignText)).toBeTruthy('Text is not right Align In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnRightAlignIcon();
             //Center Align
             await ckeditorOpsPo.clickOnCenterAlignIcon();
-            await createCaseTemplate.updateDescription(centerAlignText);
+            await ckeditorOpsPo.updateDescription(centerAlignText);
             expect(await ckeditorOpsPo.isTextCenterAlignInCkEditorTextArea(centerAlignText)).toBeTruthy('Text is not center Align In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnCenterAlignIcon();
             //set color
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.selectColor('Strong Red');
-            await createCaseTemplate.updateDescription(redColorText);
+            await ckeditorOpsPo.updateDescription(redColorText);
             expect(await ckeditorOpsPo.isColorTextDisplayedInCkEditorTextArea(redColorText, 'color:#c0392b;')).toBeTruthy('Color is not set In Ck Editor');
             //checking number list
             await ckeditorOpsPo.enterNewLineInCKE();
@@ -144,7 +144,7 @@ describe('CKE Description', () => {
         it('[DRDMV-22089,DRDMV-22090,DRDMV-22094,DRDMV-22102,DRDMV-22097,DRDMV-22101] Upload image with URL and local , Style text, Insert Link and Table', async () => {
             //add style
             await ckeditorOpsPo.enterNewLineInCKE();
-            await createCaseTemplate.updateDescription(formatText);
+            await ckeditorOpsPo.updateDescription(formatText);
             await ckeditorOpsPo.selectStyles('Heading 2');
             expect(await ckeditorOpsPo.isStyleApplied(formatText, 'h2')).toBeTruthy('Heading not set');
             //upload image with URL

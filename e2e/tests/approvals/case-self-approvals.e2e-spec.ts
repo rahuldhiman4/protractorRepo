@@ -11,12 +11,14 @@ import utilityGrid from '../../utils/utility.grid';
 
 describe("Case Self Approval Tests", () => {
     const caseApprovalRecordDefinition = 'com.bmc.dsm.case-lib:Case';
+    const caseApprovalMappingRecordDefinition = 'com.bmc.dsm.case-lib:Case Approval Mapping';
+    let caseModule = 'Case';
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
         await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteApprovalMapping();
+        await apiHelper.deleteApprovalMapping(caseModule);
         await apiHelper.apiLogin('tadmin');
     });
 
@@ -64,7 +66,7 @@ describe("Case Self Approval Tests", () => {
                 "company": "Petramco",
                 "mappingName": "Approval Mapping for Self Approval"
             }
-            let approvalMappingId = await apiHelper.createCaseApprovalMapping(approvalMappingData);
+            let approvalMappingId = await apiHelper.createApprovalMapping(caseModule,approvalMappingData);
             await apiHelper.associateCaseTemplateWithApprovalMapping(caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
 
             caseData = {
@@ -136,8 +138,8 @@ describe("Case Self Approval Tests", () => {
         });
 
         afterAll(async () => {
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteApprovalMapping();
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.deleteApprovalMapping(caseModule);
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -182,7 +184,7 @@ describe("Case Self Approval Tests", () => {
                 "company": "Petramco",
                 "mappingName": "Approval Mapping for Self Approval"
             }
-            let approvalMappingId = await apiHelper.createCaseApprovalMapping(approvalMappingData);
+            let approvalMappingId = await apiHelper.createApprovalMapping(caseModule,approvalMappingData);
             await apiHelper.associateCaseTemplateWithApprovalMapping(caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
 
             caseData = {
@@ -272,8 +274,8 @@ describe("Case Self Approval Tests", () => {
             expect(await activityTabPage.isActivityBlank()).toBeTruthy('Case Approvals Activity is displayed.');
         });
         afterAll(async () => {
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteApprovalMapping();
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.deleteApprovalMapping(caseModule);
         });
     });
 }); 

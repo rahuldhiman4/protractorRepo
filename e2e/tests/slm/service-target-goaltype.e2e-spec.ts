@@ -12,11 +12,13 @@ import utilityCommon from '../../utils/utility.common';
 let caseBAUser = 'qkatawazi';
 
 describe('Service Level Management - Goal Type Tests', () => {
+    const caseModule = 'Case';
+
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login(caseBAUser);
-        await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteApprovalMapping();
+        await apiHelper.apiLogin(caseBAUser);
+        await apiHelper.deleteApprovalMapping(caseModule);
     });
 
     afterAll(async () => {

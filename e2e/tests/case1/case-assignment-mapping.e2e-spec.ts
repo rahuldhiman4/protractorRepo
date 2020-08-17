@@ -52,12 +52,13 @@ describe("Create Case Assignment Mapping", () => {
         let orgId = await apiCoreUtil.getOrganizationGuid(company);
         businessData.relatedOrgId = orgId;
         let businessUnitId = await apiHelper.createBusinessUnit(businessData);
+        await browser.sleep(5000); // timeout requried to reflect data on UI
         departmentData.relatedOrgId = businessUnitId;
-        await browser.sleep(3000); // timeout requried to reflect data on UI
         let depId = await apiHelper.createDepartment(departmentData);
+        await browser.sleep(7000); // timeout requried to reflect data on UI
         suppGrpData.relatedOrgId = depId;
-        await browser.sleep(3000); // timeout requried to reflect data on UI
         await apiHelper.createSupportGroup(suppGrpData);
+        await browser.sleep(5000); // timeout requried to reflect data on UI
         await apiHelper.createNewUser(personData);
         await apiHelper.associatePersonToSupportGroup(personData.userId, suppGrpData.orgName);
         await apiHelper.associatePersonToCompany(personData.userId, company);
@@ -438,6 +439,11 @@ describe("Create Case Assignment Mapping", () => {
             expect(viewTaskTemplate.getDepartmentValue()).toBe(departmentData.orgName);
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
         });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
     });
 
     describe('[DRDMV-12080]: Verify Company and Support Group selection hierarchy.', async () => {
@@ -679,6 +685,7 @@ describe("Create Case Assignment Mapping", () => {
             await utilCommon.closePopUpMessage();
             await navigationPage.gotoQuickCase();
             await QuickCasePage.selectRequesterName("adam");
+            await QuickCasePage.setCaseSummary(caseTemplateData.templateName);
             await QuickCasePage.selectCaseTemplate(caseTemplateData.templateName);
             await QuickCasePage.saveCase();
             await QuickCasePage.gotoCaseButton();

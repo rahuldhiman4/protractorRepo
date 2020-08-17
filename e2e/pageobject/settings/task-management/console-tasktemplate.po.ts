@@ -1,5 +1,4 @@
 import { $, $$, browser, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../../utils/util.common';
 import utilGrid from '../../../utils/util.grid';
 
 class TaskTemplateGridPage {
@@ -105,6 +104,38 @@ class TaskTemplateGridPage {
 
     async getFirstRecordValue(columnName: string) : Promise<string> {
         return await utilGrid.getSelectedGridRecordValue(this.selectors.taskTemplateGuid, columnName);
+    }
+
+    async isAddManualTaskTemplateBtnDisplayed(): Promise<boolean> {
+        return await $(this.selectors.manualTaskTemplateButton).isPresent().then(async (result) => {
+            if (result) {
+                return await $(this.selectors.manualTaskTemplateButton).isDisplayed();
+            } else return false;
+        });
+    }
+
+    async isAddAutomatedTaskTemplateBtnDisplayed(): Promise<boolean> {
+        return await $(this.selectors.automationtaskTemplateButton).isPresent().then(async (result) => {
+            if (result) {
+                return await $(this.selectors.automationtaskTemplateButton).isDisplayed();
+            } else return false;
+        });
+    }
+
+    async isAddExternalTaskTemplateBtnDisplayed(): Promise<boolean> {
+        return await $(this.selectors.externalTaskTemplateButton).isPresent().then(async (result) => {
+            if (result) {
+                return await $(this.selectors.externalTaskTemplateButton).isDisplayed();
+            } else return false;
+        });
+    }
+
+    async isCopyTaskTemplateBtnDisplayed(): Promise<boolean> {
+        return await $(this.selectors.copyTaskTemplate).isPresent().then(async (result) => {
+            if (result) {
+                return await $(this.selectors.copyTaskTemplate).isDisplayed();
+            } else return false;
+        });
     }
 
 }
