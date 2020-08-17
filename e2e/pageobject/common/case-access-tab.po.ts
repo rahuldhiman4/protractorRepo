@@ -1,4 +1,5 @@
 import { $, $$, by, element, protractor, ProtractorExpectedConditions, browser } from "protractor";
+import utilCommon from '../../utils/util.common';
 class CaseAccessTab {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
@@ -14,10 +15,25 @@ class CaseAccessTab {
         assignWriteAccess: '.access-group-checkbox .checkbox__input',
         addButton: '.input-group-btn button',
         resetToDefault: 'button[aria-label="Reset to Default"]',
+        confidentialSupportGroupAccess: '[rx-view-component-id="b1606736-7480-4368-aac6-a8273f0ff0d5"] .bwf-collapse .btn-title',
+        confidentialSupportGroupGuid: 'b1606736-7480-4368-aac6-a8273f0ff0d5',
+        confidentialSupportGroupAdd: '[rx-view-component-id="b1606736-7480-4368-aac6-a8273f0ff0d5"] .input-group-btn button',
     }
 
     async clickOnSupportGroupAccessORAgentAccessButton(agentName: string): Promise<void> {
         await element(by.cssContainingText(this.selectors.agentAccess, agentName)).click();
+    }
+
+    async clickOnConfidentialSupportGroupAccess(): Promise<void> {
+        await $(this.selectors.confidentialSupportGroupAccess).click();
+    }
+
+    async clickOnConfidentialSupportGroupAdd(): Promise<void> {
+        await $(this.selectors.confidentialSupportGroupAdd).click();
+    }
+
+    async selectConfidentialSupportGroup(supportGroup: string): Promise<void> {
+        await utilCommon.selectDropDown(this.selectors.confidentialSupportGroupGuid,supportGroup);
     }
 
     async selectAndAddAgent(agentName: string): Promise<void> {

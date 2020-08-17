@@ -241,6 +241,10 @@ class ApiHelper {
     async getHTMLBodyOfEmail(emailSubject: string): Promise<string> {
         return await apiCoreUtil.getEmailHTMLBody(emailSubject);
     }
+    
+    async getSenderMailId(emailSubject: string): Promise<string> {
+        return await apiCoreUtil.getSenderMailId(emailSubject);
+    }
 
     async deleteIncomingOrOutgoingEmailConfiguration(emailGUID: string): Promise<boolean> {
         return await apiCoreUtil.deleteRecordInstance('AR System Email Mailbox Configuration', emailGUID);

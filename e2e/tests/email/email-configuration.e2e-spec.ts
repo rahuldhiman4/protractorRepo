@@ -18,6 +18,9 @@ import utilityCommon from '../../utils/utility.common';
 import consoleAcknowledgmentTemplatePo from '../../pageobject/settings/email/console-acknowledgment-template.po';
 import editAcknowledgmentTemplatePo from '../../pageobject/settings/email/edit-acknowledgment-template.po';
 import createAcknowledgmentTemplatesPo from '../../pageobject/settings/email/create-acknowledgment-template.po';
+import viewCasePo from '../../pageobject/case/view-case.po';
+import composeMailPo from '../../pageobject/email/compose-mail.po';
+import utilityGrid from '../../utils/utility.grid';
 
 describe('Email Configuration', () => {
     let offlineSupportGroup, emailID = "bmctemptestemail@gmail.com";
@@ -544,6 +547,66 @@ describe('Email Configuration', () => {
             expect(await utilCommon.isPopUpMessagePresent("ERROR (10006): The Acknowledgement template is in use, so status cannot be changed")).toBeTruthy("ERROR (10006)");
             await editAcknowledgmentTemplatePo.clickOnCancelButton();
             await utilCommon.clickOnWarningOk();
+        });
+    });
+
+    describe('[DRDMV-9403,DRDMV-9402]: Add new acknowledgment template & Verify its getting pulled in email configuration acknowledgement template list', async () => {
+        let randomStr = Math.floor(Math.random() * 1000000);
+        it('[DRDMV-9403,DRDMV-9402]: Add new acknowledgment template & Verify its getting pulled in email configuration acknowledgement template list', async () => {
+
+            let templateData = {
+                "templateName": 'GlobalCaseTemplateName' + randomStr,
+                "templateSummary": 'GlobalCaseTemplateSummary' + randomStr,
+                "resolveCaseonLastTaskCompletion": "1",
+                "templateStatus": "Active",
+                "company": "- Global -",
+                "businessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
+                "assignee": "Fritz",
+                "ownerBU": 'Facilities Support',
+                "ownerGroup": "Facilities",
+                "caseStatus": "Assigned",
+                "description": 'description' + randomStr,
+            }
+            await apiHelper.apiLogin('fritz');
+            await apiHelper.createCaseTemplate(templateData);
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
+            await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
+            await createAcknowledgmentTemplatesPo.setTemplateName('GlobaltemplateName' + randomStr);
+            await createAcknowledgmentTemplatesPo.selectCompanyDropDown('- Global -');
+            await createAcknowledgmentTemplatesPo.selectStatusDropDown('Active');
+            await createAcknowledgmentTemplatesPo.setDescription('description');
+            await createAcknowledgmentTemplatesPo.setSubject('subject');
+            await createAcknowledgmentTemplatesPo.clickOnSaveButton();
+            await utilCommon.closePopUpMessage();
+        });
+
+        it('[DRDMV-9403,DRDMV-9402]: Add new acknowledgment template & Verify its getting pulled in email configuration acknowledgement template list', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
+            await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
+            await createAcknowledgmentTemplatesPo.setTemplateName('templateName' + randomStr);
+            await createAcknowledgmentTemplatesPo.selectCompanyDropDown('Petramco');
+            await createAcknowledgmentTemplatesPo.selectStatusDropDown('Active');
+            await createAcknowledgmentTemplatesPo.setDescription('description');
+            await createAcknowledgmentTemplatesPo.setSubject('subject');
+            await createAcknowledgmentTemplatesPo.clickOnSaveButton();
+            await utilCommon.closePopUpMessage();
+        });
+
+        it('[DRDMV-9403,DRDMV-9402]: Add new acknowledgment template & Verify its getting pulled in email configuration acknowledgement template list', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
+            await utilGrid.searchAndOpenHyperlink(emailID);
+            expect(await editEmailConfigPo.isDefaultCaseTemplatetoUsePresent("GlobalCaseTemplateName" + randomStr)).toBeTruthy();
+            await editEmailConfigPo.clickSaveButton();
+            await utilGrid.searchAndOpenHyperlink(emailID);
+            await editEmailConfigPo.selectTab("Acknowledgment Templates");
+            await editEmailConfigPo.searchAndClickCheckboxOnAcknowledgementTemplateGrid("Closed");
+            await editEmailConfigPo.clickAcknowledgementTemplateEditButton();
+            expect(await editEmailConfigPo.isAcknowledgementDropDownPresent('templateName' + randomStr)).toBeTruthy();
+            expect(await editEmailConfigPo.isAcknowledgementPresentnDropDown('GlobaltemplateName' + randomStr)).toBeTruthy();
         });
     });
 });
