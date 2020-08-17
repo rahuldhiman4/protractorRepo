@@ -349,7 +349,10 @@ describe('Notes template', () => {
         await apiHelper.createNotesTemplate("Case", NOTES_TEMPLATE_MANDATORY_FIELD);
         let caseData = {
             "Requester": "qkatawazi",
-            "Summary": "Testing case creation with minimal input data"
+            "Summary": "DRDMV-16040 Summary",
+            "Assigned Company": "Petramco",
+            "Business Unit": "HR Support",
+            "Support Group": "Compensation and Benefits"
         };
         await apiHelper.apiLogin('qtao');
         let newCase = await apiHelper.createCase(caseData);
@@ -1102,6 +1105,8 @@ describe('Notes template', () => {
             await utilCommon.closePopUpMessage();
         });
         it('[DRDMV-22637,DRDMV-22643,DRDMV-22653]: Verify CKE functionality on Create and Edit People Notes template', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('elizabeth');
             await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(newCase.displayId);

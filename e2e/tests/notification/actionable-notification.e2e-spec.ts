@@ -413,6 +413,7 @@ describe("Actionable Notifications", () => {
         let response1 = await apiHelper.createCase(caseData['actionableNotificationWithAssignee']);
         let response2 = await apiHelper.createAdhocTask(response1.id, taskData);
         await apiHelper.updateCaseStatus(response1.id, 'InProgress');
+        await browser.sleep(1000); //Hard wait to refelct the status change
         await apiHelper.postActivityCommentsWithoutAttachments('Actionable Notifications', 'Task', response2.id);
 
         await navigationPage.gotoSettingsPage();
