@@ -15,6 +15,7 @@ class ManageTaskBlade {
         columnHeaders: '.c-header-container .c-header-name',
         taskTemplateGuid: '0f3712cc-95da-49c3-b2b0-6b7409c8349b',
         taskSummaryLink: '[rx-view-component-id="8334a05d-06ba-4d9b-8c35-e40e90637e85"] .task-summary__name',
+        taskDisplayId: '[rx-view-component-id="ab0b52da-6511-4202-b1c4-f1d3eb65aada"] .bwf-task-card .task-meta-data__display-id'
     }
 
     async clickAddTaskFromTemplateButton(): Promise<void> {
@@ -42,14 +43,15 @@ class ManageTaskBlade {
         await browser.sleep(1500); // wait until sorting
     }
 
+    async getTaskDisplayIdFromManageTaskBlade():Promise<string>{
+     return await $(this.selectors.taskDisplayId).getText();  
+    }
+
     async clickAddAdhocTaskButton(): Promise<void> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.closeButton)));
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addAdhocTaskButton)));
         await $(this.selectors.addAdhocTaskButton).click();
     }
 
     async setTaskSearchBoxValue(input: string): Promise<void> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.searchTextbox)));
         await $(this.selectors.searchTextbox).clear();
         await $(this.selectors.searchTextbox).sendKeys(input, Key.ENTER);
     }
@@ -59,7 +61,6 @@ class ManageTaskBlade {
     }
 
     async clickTaskGridRefresh(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.refreshButton)));
         await $(this.selectors.refreshButton).click();
     }
 
@@ -72,27 +73,19 @@ class ManageTaskBlade {
     }
 
     async clickFirstCheckBoxInTaskTemplateSearchGrid(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.recommendedTemplateCheckbox)));
-        //        await browser.sleep(3000);
         await $$(this.selectors.recommendedTemplateCheckbox).first().click();
     }
 
     async clickTaskGridSaveButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
     }
 
     async clickTaskGridCancelButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.canceltaskTemplatbutton)));
         await $(this.selectors.canceltaskTemplatbutton).click();
     }
 
     async clickCloseButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.closeButton)));
         await $(this.selectors.closeButton).click();
-        //        await browser.wait(this.EC.invisibilityOf($('.modal-dialog')));
-        //        await browser.wait(this.EC.visibilityOf($(caseViewPage.selectors.editLink)));
-        //        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async isTaskLinkPresent(taskSummary: string): Promise<boolean> {

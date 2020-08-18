@@ -24,12 +24,10 @@ export class Resources {
 
     async clickOnAdvancedSearchOptions(): Promise<void> {
         let advancedSearchButton = await $('span.d-icon-search');
-        //        await browser.wait(this.EC.elementToBeClickable(advancedSearchButton));
         await advancedSearchButton.click();
     }
 
     async enterAdvancedSearchText(searchText: string): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.advancedSearchInput)));
         await $(this.selectors.advancedSearchInput).clear();
         await $(this.selectors.advancedSearchInput).sendKeys(searchText);
     }
@@ -40,14 +38,11 @@ export class Resources {
     }
 
     async clickOnAdvancedSearchSettingsIconToOpen(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.advancedSearchSettingsBtn)));
         await $(this.selectors.advancedSearchSettingsBtn).click();
     }
 
     async clickOnAdvancedSearchSettingsIconToClose(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.advancedSearchSettingsBtnClose)));
         await $(this.selectors.advancedSearchSettingsBtnClose).click();
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.advancedSearchResult)));
     }
 
     async selectAdvancedSearchFilterOption(dropDownLabel: string, dropDownValue: string): Promise<void> {
@@ -74,8 +69,8 @@ export class Resources {
         let arr: string[] = [];
         await $$('.advance-search button.dropdown-toggle').get(dropDownNumber).click();
         let drpDwnvalue: number = await $$(this.selectors.dropDownOption).count();
-        for (var i = 0; i < drpDwnvalue; i++) {
-            var ab: string = await $$(this.selectors.dropDownOption).get(i).getText();
+        for (let i = 0; i < drpDwnvalue; i++) {
+            let ab: string = await $$(this.selectors.dropDownOption).get(i).getText();
             arr[i] = ab;
         }
         arr = arr.sort();
@@ -87,7 +82,6 @@ export class Resources {
 
     async clickOnAdvancedSearchFiltersButton(buttonText: string): Promise<void> {
         const advancedSearchFilterBtn = await element(by.xpath(`//*[contains(@class,'justify-content-end')]//button[contains(text(),"${buttonText}")]`));
-        //        await browser.wait(this.EC.elementToBeClickable(advancedSearchFilterBtn));
         await advancedSearchFilterBtn.click();
     }
 
@@ -106,7 +100,6 @@ export class Resources {
     }
 
     async getCountOfHeading(headerName: string): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.headingName)));
         let smartRecorderResults: ElementFinder[] = await $$(this.selectors.smartSearchResult);
         for (let i: number = 0; i < smartRecorderResults.length; i++) {
             if ((await smartRecorderResults[i].getText()).includes(headerName)) {

@@ -53,6 +53,18 @@ class ViewTask {
         manageDynamicField: '[rx-view-component-id="7ac78e56-c471-4e50-bca8-53568ad6e4af"] button',
         emailLink: '[rx-view-component-id="b721ed87-8e6b-4279-9e21-d4348c6a4599"] button',
         tab: 'button[role="tab"] span.nav-link-wrapper',
+        showMoreTaskDescription:'.bwf-description-read-state button',
+        showApproversBanner: '.rx-runtime-view-canvas-item-margin [rx-view-component-id="f9c9f21d-b80d-42d5-af13-131965888afc"]',
+        pendingApprovalsInfo: '[rx-view-component-id="c64c5d07-86a0-46bb-a085-181a760a756c"] span[aria-label="Status of case approvals"] span',
+        showApproversLink: '.show-approvers-button-container',
+        approvalButtons: '.approval-buttons span',
+        approveButton: '.d-icon-left-check_shield',
+        rejectButton: '.d-icon-left-cross_circle',
+
+    }
+
+    async clickShowMoreTaskDescription():Promise<void>{
+        await $(this.selectors.showMoreTaskDescription).click();
     }
 
     async clickEmailLink(): Promise<void> {
@@ -76,7 +88,6 @@ class ViewTask {
     }
 
     async clickOnRequesterEmail(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.requesterEmailLink)));
         await $(this.selectors.requesterMail).click();
     }
 
@@ -95,58 +106,47 @@ class ViewTask {
     }
 
     async clickOnChangeStatus(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.changeStatusButton)));
         await $(this.selectors.taskStatus).click();
     }
 
     async changeTaskStatus(statusValue: string): Promise<void> {
-        // await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusDropDown)), 2000);
         await utilityCommon.selectDropDown(this.selectors.statusDropDown, statusValue);
     }
 
     async getUpdateTaskStatusDrpdownValue(no: number): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.allStatus)));
         return await $$(this.selectors.allStatus).get(no).getText();
     }
 
 
     async clickOnUpdateStatusDrpdown(): Promise<void> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.updateStatusDropDown)));
         await $(this.selectors.updateStatusDropDown).click();
     }
 
     async clickOnEditTask(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editButton)),3000);
         await $(this.selectors.editButton).click();
     }
 
     async isTaskIdTextDisplayed(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.taskIdText)));
         return await $(this.selectors.taskIdText).isDisplayed();
     }
 
     async isTaskIconDisplayed(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.taskIcon)));
         return await $(this.selectors.taskIcon).isDisplayed();
     }
 
     async isTaskPriorityDisplayed(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.taskPriority)));
         return await $(this.selectors.taskPriority).isDisplayed();
     }
 
     async isTaskTimeDetailsDisplayed(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.taskTimeDetails)));
         return await $(this.selectors.taskTimeDetails).isDisplayed();
     }
 
     async isTaskSummaryDisplayed(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.taskSummary)));
         return await $(this.selectors.taskSummary).isDisplayed();
     }
 
     async isCaseSummaryDisplayed(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.caseSummary)));
         return await $(this.selectors.caseSummary).isDisplayed();
     }
 
@@ -159,68 +159,55 @@ class ViewTask {
     }
 
     async istaskStatusDisplayed(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.taskStatus)));
         return await $(this.selectors.taskStatus).isDisplayed();
     }
 
     async getTaskStatusValue(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.taskStatus)));
         await browser.wait(this.EC.visibilityOf($(this.selectors.taskStatus)), 4000);
         return await (await $(this.selectors.taskStatus).getText()).trim();
     }
 
     async isEditLinkDisplayed(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.editButton)));
         return await $(this.selectors.editButton).isDisplayed();
     }
 
     async isViewCaseLinkDisplayed(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.viewCaseLink)));
         return await $(this.selectors.viewCaseLink).isDisplayed();
     }
 
     async isRequesterNameDisplayed(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.requesterName)));
         return await $(this.selectors.requesterName).isDisplayed();
     }
 
     async isRequesterContactDisplayed(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.requesterContact)));
         return await $(this.selectors.requesterContact).isDisplayed();
     }
 
     async isRequesterMailDisplayed(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.requesterMail)));
         return await $(this.selectors.requesterMail).isDisplayed();
     }
 
     async isCategoryTier1ValueDisplayed(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier1Value)));
         return await $(this.selectors.categoryTier1Value).isDisplayed();
     }
 
     async isCategoryTier2ValueDisplayed(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier2Value)));
         return await $(this.selectors.categoryTier2Value).isDisplayed();
     }
 
     async isCategoryTier3ValueDisplayed(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier3Value)));
         return await $(this.selectors.categoryTier3Value).isDisplayed();
     }
 
     async isAssigneeNameDisplayed(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.assigneeName)));
         return await $(this.selectors.assigneeName).isDisplayed();
     }
 
     async isAssignCompanyDisplayed(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.assignCompany)));
         return await $(this.selectors.assignCompany).isDisplayed();
     }
 
     async isAssignGroupTextDisplayed(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.assignGroupText)));
         return await $(this.selectors.assignGroupText).isDisplayed();
     }
 
@@ -229,53 +216,42 @@ class ViewTask {
     }
 
     async clickOnViewCase(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.viewCaseLink)),2000);
         await $(this.selectors.viewCaseLink).click();
-        //        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async getCategoryTier1Value(): Promise<string> {
-        //        await browser.wait(this.EC.presenceOf($(this.selectors.categoryTier1Value)));
         return await $(this.selectors.categoryTier1Value).getText();
     }
 
     async getCategoryTier2Value(): Promise<string> {
-        //        await browser.wait(this.EC.presenceOf($(this.selectors.categoryTier2Value)));
         return await $(this.selectors.categoryTier2Value).getText();
     }
 
     async getCategoryTier3Value(): Promise<string> {
-        //        await browser.wait(this.EC.presenceOf($(this.selectors.categoryTier3Value)));
         return await $(this.selectors.categoryTier3Value).getText();
     }
 
     async getCategoryTier4Value(): Promise<string> {
-        //        await browser.wait(this.EC.presenceOf($(this.selectors.categoryTier4Value)));
         return await $(this.selectors.categoryTier4Value).getText();
     }
 
     async getLabelValue(): Promise<string> {
-        //        await browser.wait(this.EC.presenceOf($(this.selectors.labelValue)));
         return await $(this.selectors.labelValue).getText();
     }
 
     async getDescriptionValue(): Promise<string> {
-        //        await browser.wait(this.EC.presenceOf($(this.selectors.descriptionValue)));
         return await $(this.selectors.descriptionValue).getText();
     }
 
     async getTaskTypeValue(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.taskTypeValue)));
         return await $(this.selectors.taskTypeValue).getText();
     }
 
     async getProcessNameValue(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.processnameValue)));
         return await $(this.selectors.processnameValue).getText();
     }
 
     async getStatusReason(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.processnameValue)));
         return await $(this.selectors.statusReason).getText();
     }
 
@@ -291,7 +267,6 @@ class ViewTask {
     }
 
     async getTaskID(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.taskIdText)),2000);
         return await $(this.selectors.taskIdText).getText();
 
     }
@@ -381,6 +356,7 @@ class ViewTask {
     }
 
     async getAssignedGroupText(): Promise<string> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.assignedGroupValue)), 6000);
         return await $(this.selectors.assignedGroupValue).getText();
     }
 
@@ -417,6 +393,42 @@ class ViewTask {
     async isAssignmentSectionDisplayed(): Promise<boolean> {
         return await $(this.selectors.assignmentSection).isDisplayed();
     }
+
+    async isShowApproversBannerDisplayed(): Promise<boolean> {
+        return await $(this.selectors.showApproversBanner).isPresent().then(async (link) => {
+            if (link) {
+                return await $(this.selectors.showApproversBanner).isDisplayed();
+            } else return false;
+        });
+    }
+
+    async clickShowApproversLink(): Promise<void> {
+        await $(this.selectors.showApproversBanner).$(this.selectors.showApproversLink).click();
+    }
+
+    async getShowPendingApproversInfo(): Promise<string> {
+        return await $(this.selectors.pendingApprovalsInfo).getAttribute('aria-label');
+    }
+
+    async getApprovedApproversInfo(): Promise<string> {
+        return await $$(this.selectors.pendingApprovalsInfo).last().getAttribute('aria-label');
+    }
+
+    async isApprovalButtonsPresent(buttonText: string): Promise<boolean> {
+        return await element(by.cssContainingText(this.selectors.approvalButtons, buttonText)).isPresent().then(async (result) => {
+            if (result) return await element(by.cssContainingText(this.selectors.approvalButtons, buttonText)).isDisplayed();
+            else return false;
+        });
+    }
+
+    async clickOnApproveLink(): Promise<void> {
+        await $(this.selectors.approveButton).click();
+    }
+
+    async clickOnRejectLink(): Promise<void> {
+        await $(this.selectors.rejectButton).click();
+    }
+
 }
 
 export default new ViewTask();

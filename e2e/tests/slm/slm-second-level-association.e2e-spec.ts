@@ -1,5 +1,6 @@
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
+import caseConsolePage from '../../pageobject/case/case-console.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePage from '../../pageobject/case/create-case.po';
 import viewCasePage from '../../pageobject/case/view-case.po';
@@ -10,7 +11,6 @@ import slmExpressionBuilder from '../../pageobject/settings/slm/slm-expressionbu
 import slmProgressBar from '../../pageobject/slm/slm-progressbar.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
-import caseConsolePage from '../../pageobject/case/case-console.po';
 
 let caseBAUser = 'qkatawazi';
 
@@ -81,7 +81,7 @@ describe('Service Target - Second Level Association Tests', () => {
         //Verify second level association for Assigned Company
         await slmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', "=", 'PERSON', "Qiang Du");
         let selectedExpx = await slmExpressionBuilder.getSelectedExpression();
-        var expectedSelectedExp = "'" + "Requester" + "'" + "=" + '"' + "Qiang Du" + '"'
+        let expectedSelectedExp = "'" + "Requester" + "'" + "=" + '"' + "Qiang Du" + '"'
         console.log(selectedExpx);
         expect(selectedExpx).toEqual(expectedSelectedExp);
         await slmExpressionBuilder.clickOnSaveExpressionButton();
@@ -155,7 +155,7 @@ describe('Service Target - Second Level Association Tests', () => {
         await caseConsolePage.searchAndOpenCase(caseId);
         expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
         expect(await viewCasePage.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
-    }, 820 * 1000);
+    }, 1000 * 1000);
 
     //Application issue...
     it('[DRDMV-19660]:SVT created for Company associations and SVT get links to a Case', async () => {
@@ -168,7 +168,7 @@ describe('Service Target - Second Level Association Tests', () => {
         //Verify second level association for Company
         await slmExpressionBuilder.selectSecondLevelExpressionQualification('Company', 'Type', "like", 'NAMED_LIST', "Operating Organization");
         let selectedExpx = await slmExpressionBuilder.getSelectedExpression();
-        var expectedSelectedExp = "'" + "Company > Type" + "'" + "LIKE" + '"%' + "Operating Organization" + '%"'
+        let expectedSelectedExp = "'" + "Company > Type" + "'" + "LIKE" + '"%' + "Operating Organization" + '%"'
         expect(selectedExpx).toEqual(expectedSelectedExp);
         await slmExpressionBuilder.clickOnSaveExpressionButton();
         await serviceTargetConfig.selectGoal("3");
@@ -211,7 +211,7 @@ describe('Service Target - Second Level Association Tests', () => {
         //Verify second level association for Case Site
         await slmExpressionBuilder.selectSecondLevelExpressionQualification('Case Site', 'Country', "=", 'NAMED_LIST', "Canada");
         let selectedExpx = await slmExpressionBuilder.getSelectedExpression();
-        var expectedSelectedExp = "'" + "Case Site > Country" + "'" + "=" + '"' + "Canada" + '"'
+        let expectedSelectedExp = "'" + "Case Site > Country" + "'" + "=" + '"' + "Canada" + '"'
         console.log(selectedExpx);
         expect(selectedExpx).toEqual(expectedSelectedExp);
         await slmExpressionBuilder.clickOnSaveExpressionButton();
@@ -256,7 +256,7 @@ describe('Service Target - Second Level Association Tests', () => {
         //Verify second level association for Assigned Company
         await slmExpressionBuilder.selectSecondLevelExpressionQualification('Assigned Company', 'Abbreviation', "=", 'TEXT', "ptramco");
         let selectedExpx = await slmExpressionBuilder.getSelectedExpression();
-        var expectedSelectedExp = "'" + "Assigned Company > Abbreviation" + "'" + "=" + '"' + "ptramco" + '"'
+        let expectedSelectedExp = "'" + "Assigned Company > Abbreviation" + "'" + "=" + '"' + "ptramco" + '"'
         expect(selectedExpx).toEqual(expectedSelectedExp);
         await slmExpressionBuilder.clickOnSaveExpressionButton();
         await serviceTargetConfig.selectGoal("3");
@@ -298,9 +298,9 @@ describe('Service Target - Second Level Association Tests', () => {
         await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
 
         //Verify second level association for Requester
-        await slmExpressionBuilder.selectSecondLevelExpressionQualification('Requester', 'Email', "=", 'TEXT', "qdu@petramco1.com");
+        await slmExpressionBuilder.selectSecondLevelExpressionQualification('Requester', 'Email', "=", 'TEXT', "qdu@petramco.com1");
         let selectedExpx = await slmExpressionBuilder.getSelectedExpression();
-        var expectedSelectedExp = "'" + "Requester > Email" + "'" + "=" + '"' + "qdu@petramco.com1" + '"'
+        let expectedSelectedExp = "'" + "Requester > Email" + "'" + "=" + '"' + "qdu@petramco.com1" + '"';
         expect(selectedExpx).toEqual(expectedSelectedExp);
         await slmExpressionBuilder.clickOnSaveExpressionButton();
         await serviceTargetConfig.selectGoal("3");
@@ -343,7 +343,7 @@ describe('Service Target - Second Level Association Tests', () => {
         //Verify second level association for Requester
         await slmExpressionBuilder.selectSecondLevelExpressionQualification('Requester', 'Email', "=", 'TEXT', "qdu@petramco1.com");
         let selectedExpx = await slmExpressionBuilder.getSelectedExpression();
-        var expectedSelectedExp = "'" + "Requester > Email" + "'" + "=" + '"' + "qdu@petramco1.com" + '"'
+        let expectedSelectedExp = "'" + "Requester > Email" + "'" + "=" + '"' + "qdu@petramco1.com" + '"'
         expect(selectedExpx).toEqual(expectedSelectedExp);
         await slmExpressionBuilder.clickOnSaveExpressionButton();
         await serviceTargetConfig.selectGoal("3");
@@ -374,5 +374,5 @@ describe('Service Target - Second Level Association Tests', () => {
         await caseConsolePage.searchAndOpenCase(caseId);
         expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
         expect(await viewCasePage.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
-    }, 750 * 1000);
+    }, 1000 * 1000);
 });

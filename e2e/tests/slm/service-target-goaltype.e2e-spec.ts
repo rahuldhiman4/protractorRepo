@@ -12,11 +12,13 @@ import utilityCommon from '../../utils/utility.common';
 let caseBAUser = 'qkatawazi';
 
 describe('Service Level Management - Goal Type Tests', () => {
+    const caseModule = 'Case';
+
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login(caseBAUser);
-        await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteApprovalMapping();
+        await apiHelper.apiLogin(caseBAUser);
+        await apiHelper.deleteApprovalMapping(caseModule);
     });
 
     afterAll(async () => {
@@ -34,8 +36,8 @@ describe('Service Level Management - Goal Type Tests', () => {
             await createGoalType.clickCreateGoalTypeConfigButton();
             await createGoalType.enterGoalTypeName(goalTypeTitle);
             expect(await createGoalType.isGoalTypeDisabled()).toBeTruthy('Goal Type field is enabled.');
-            createGoalType.selectGoalTypeStatus('Active');
-            createGoalType.clickSaveGoalTypeButton();
+            await createGoalType.selectGoalTypeStatus('Active');
+            await createGoalType.clickSaveGoalTypeButton();
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
         it('[DRDMV-2247,DRDMV-2248]: Update Goal Type and Verify the details', async () => {
@@ -63,8 +65,8 @@ describe('Service Level Management - Goal Type Tests', () => {
             await createGoalType.clickCreateGoalTypeConfigButton();
             await createGoalType.enterGoalTypeName(goalTypeTitle);
             expect(await createGoalType.isGoalTypeDisabled()).toBeTruthy('Goal Type field is enabled.');
-            createGoalType.selectGoalTypeStatus('Active');
-            createGoalType.clickSaveGoalTypeButton();
+            await createGoalType.selectGoalTypeStatus('Active');
+            await createGoalType.clickSaveGoalTypeButton();
             await browser.sleep(2000); // sleep added for pop up message display since it takes some time to get pop up there
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
@@ -79,7 +81,7 @@ describe('Service Level Management - Goal Type Tests', () => {
             await editGoalType.clickCloseGoalTypeButton();
             expect(await utilCommon.isWarningDialogBoxDisplayed()).toBeTruthy('Warning Dialog Box is not displayed.');
             expect(await utilCommon.getWarningDialogTitle()).toBe('Warning!');
-            expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue?');
+            expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue without saving?');
             await utilCommon.clickOnWarningOk();
             await browser.sleep(2000); // sleep added for pop up message display since it takes some time to get pop up there
         });
@@ -87,8 +89,8 @@ describe('Service Level Management - Goal Type Tests', () => {
             await createGoalType.clickCreateGoalTypeConfigButton();
             await createGoalType.enterGoalTypeName(goalTypeTitle);
             expect(await createGoalType.isGoalTypeDisabled()).toBeTruthy('Goal Type field is enabled.');
-            createGoalType.selectGoalTypeStatus('Active');
-            createGoalType.clickSaveGoalTypeButton();
+            await createGoalType.selectGoalTypeStatus('Active');
+            await createGoalType.clickSaveGoalTypeButton();
             await browser.sleep(2000); // sleep added for pop up message display since it takes some time to get pop up there
             expect(await utilCommon.isPopUpMessagePresent('ERROR (382): The value(s) for this entry violate a unique index that has been defined for this record definition.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });

@@ -13,6 +13,7 @@ describe('Knowledge Console Preset Filter', () => {
     let userIdKnowledgeCoach = "idphylumkuser@petramco.com";
     let passwordKnowledgeCoach = "Password_1234";
     let knowledgeSetTitle = undefined;
+    let knowledgeModule = 'Knowledge';
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
@@ -39,9 +40,9 @@ describe('Knowledge Console Preset Filter', () => {
 
         let approvalConfigGlobalTitle = KNOWLEDGE_APPROVAL_FLOW_DATA.flowName + randomStr;
         KNOWLEDGE_APPROVAL_FLOW_DATA.flowName = approvalConfigGlobalTitle;
-        await apiHelper.createKnowledgeApprovalFlow(KNOWLEDGE_APPROVAL_FLOW_DATA);
-        await apiHelper.deleteKnowledgeApprovalMapping();
-        await apiHelper.createKnowledgeApprovalMapping(KNOWLEDGE_APPROVAL_MAPPING_DATA);
+        await apiHelper.createApprovalFlow(KNOWLEDGE_APPROVAL_FLOW_DATA,knowledgeModule);
+        await apiHelper.deleteApprovalMapping(knowledgeModule);
+        await apiHelper.createApprovalMapping(knowledgeModule,KNOWLEDGE_APPROVAL_MAPPING_DATA);
         //Update the sleep time to 9000 later
         await browser.sleep(20000); //New user is created above, waiting for its backend access preperation
         await loginPage.login(userIdKnowledgeCoach, passwordKnowledgeCoach);

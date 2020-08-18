@@ -310,8 +310,9 @@ export class CreateJiraCycle {
             if (issueIdApiResponse) {
                 // Is new execution status
                 let lastExecution = "passed";
-                if (issueIdApiResponse.data.executions[0]) {
-                    lastExecution = issueIdApiResponse.data.executions[0].executionStatus;
+                const sameCycleExecutions = filter(await issueIdApiResponse.data.executions, { cycleName: this.testCycleName });
+                if (sameCycleExecutions[0]) {
+                    lastExecution = await sameCycleExecutions[0].executionStatus;
                     lastExecution == "1" ? (lastExecutionStatus = "passed")
                         : ((lastExecution == "2") ? (lastExecutionStatus = "failed")
                             : (lastExecutionStatus = "skipped"));

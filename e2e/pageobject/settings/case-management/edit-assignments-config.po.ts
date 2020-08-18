@@ -10,7 +10,9 @@ class AssignmentConfigEditPage {
         defaultToggle: '[rx-view-component-id="7ca691fd-c299-411f-90fa-9639cbe083c1"] button',
         saveButton: '[rx-view-component-id="0661b9a6-3c08-455c-9972-a2b6f9ca2c0e"] button',
         assignee: '[rx-view-component-id="50f4da8f-6473-4356-994f-67ebe94b100e"] .ui-select-toggle',
-        companyDrpDwn: '7caa75fa-dfd6-4eca-8dec-2ef096eb6722'
+        companyDrpDwn: '7caa75fa-dfd6-4eca-8dec-2ef096eb6722',
+        assigneeGuid: '50f4da8f-6473-4356-994f-67ebe94b100e',
+        defaultToggleGuid: '7ca691fd-c299-411f-90fa-9639cbe083c1',
     }
 
     async isEditAssignmentNameDisabled(): Promise<boolean> {
@@ -42,7 +44,7 @@ class AssignmentConfigEditPage {
         let arr: string[] = [];
         let fieldsCount: number  = await $$(this.selectors.editAssignmentMappingFields).count();
         for (let i = 0; i < fieldsCount; i++) {
-            var labelTxt: string = await $$(this.selectors.editAssignmentMappingFields).get(i).getText();
+            let labelTxt: string = await $$(this.selectors.editAssignmentMappingFields).get(i).getText();
             arr[i] = labelTxt;
         }
         arr = arr.sort();
@@ -58,6 +60,13 @@ class AssignmentConfigEditPage {
         await $(this.selectors.editName).sendKeys(templateName);
     }
 
+    async setAssignee(assignee: string): Promise<void> {
+        await utilCommon.selectDropDown(assignee,this.selectors.assigneeGuid);
+    }
+    
+    async setDefaultToggleButton(value: boolean): Promise<void> {
+        await utilCommon.selectToggleButton(this.selectors.defaultToggleGuid, value);
+    }
 }
 
 export default new AssignmentConfigEditPage();

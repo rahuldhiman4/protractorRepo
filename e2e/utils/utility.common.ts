@@ -2,7 +2,6 @@ import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions, 
 
 const fs = require('fs');
 
-
 export class Utility {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
@@ -31,20 +30,27 @@ export class Utility {
         ckEditorTextArea: '.cke_enable_context_menu',
     }
 
-    async selectDropDown(guid: string, value: string): Promise<void> {
-        const dropDown = await $(`[rx-view-component-id="${guid}"]`);
-        const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
-        const dropDownInputElement: ElementFinder = await dropDown.$(this.selectors.dropDownInput);
-        await dropDownBoxElement.click();
-        console.log(`Selecting dropdown value: ${value}`);
-        let isSearchPresent: boolean = await dropDownInputElement.isPresent();
-        if (isSearchPresent) await dropDownInputElement.sendKeys(value);
-
-        let optionCss: string = `[rx-view-component-id="${guid}"] .dropdown_select__menu-content button`;
-        let option = await element(by.cssContainingText(optionCss, value));
-        await browser.wait(this.EC.elementToBeClickable(option), 3000).then(async function () {
+    async selectDropDown(guid: string|ElementFinder, value: string): Promise<void> {
+        if (typeof guid === 'string') {
+            const dropDown = await $(`[rx-view-component-id="${guid}"]`);
+            const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
+            const dropDownInputElement: ElementFinder = await dropDown.$(this.selectors.dropDownInput);
+            await dropDownBoxElement.click();
+            console.log(`Selecting dropdown value: ${value}`);
+            let isSearchPresent: boolean = await dropDownInputElement.isPresent();
+            if (isSearchPresent) await dropDownInputElement.sendKeys(value);
+    
+            let optionCss: string = `[rx-view-component-id="${guid}"] .dropdown_select__menu-content button`;
+            let option = await element(by.cssContainingText(optionCss, value));
+            await browser.wait(this.EC.elementToBeClickable(option), 3000).then(async function () {
             await option.click();
-        });
+            });
+        }else {
+            await guid.click();
+            let option = await element(by.cssContainingText(this.selectors.dropDownChoice, value));
+            await option.click();
+        }
+   
     }
 
     async clearDropDown(guid: string,optionValue:string): Promise<void> {
@@ -66,11 +72,15 @@ export class Utility {
         if (count >= 1) { return true; } else { return false; }
     }
 
-    async isAllDropDownValuesMatches(guid: string, data: string[]): Promise<boolean> {
+    async isAllDropDownValuesMatches(guid: string|ElementFinder, data: string[]): Promise<boolean> {
         let arr: string[] = [];
-        const dropDown = await $(`[rx-view-component-id="${guid}"]`);
-        const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
-        await dropDownBoxElement.click();
+        if (typeof guid === 'string') {
+            const dropDown = await $(`[rx-view-component-id="${guid}"]`);
+            const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
+            await dropDownBoxElement.click();
+        }else {
+            await guid.click();
+        }
         let drpDwnvalue: number = await $$(this.selectors.dropDownOption).count();
         for (let i = 0; i < drpDwnvalue; i++) {
             let ab: string = await $$(this.selectors.dropDownOption).get(i).getText();
@@ -181,7 +191,7 @@ export class Utility {
         let isRequired: boolean = await $(`[rx-view-component-id="${guid}"] .form-control-required`).isPresent();
         if (!isRequired) {
             let nameElement = await $(`[rx-view-component-id="${guid}"] .form-control-label`);
-        let value: string = await browser.executeScript('return window.getComputedStyle(arguments[0], ":after").content;', nameElement);
+            let value: string = await browser.executeScript('return window.getComputedStyle(arguments[0], ":after").content;', nameElement);
             isRequired = value.trim().substring(3, value.length - 2) === 'required';
         }
         return isRequired;
@@ -334,6 +344,7 @@ export class Utility {
         if (actualNumberOfPopups) {
             let count = 0;
             let i = 0;
+            await browser.wait(this.EC.visibilityOf($(this.selectors.popUpMsgLocator)), 5000);
             arr[i] = await $$(this.selectors.popUpMsgLocator).first().getText();
             let prevVal = arr[0];
             if (await browser.wait(this.EC.or(async () => {
@@ -358,7 +369,10 @@ export class Utility {
         }
         else {
             await browser.wait(this.EC.visibilityOf($(this.selectors.popUpMsgLocator)), 10000);
-            arr[0] = await $$(this.selectors.popUpMsgLocator).first().getText();
+            let msgLocator = await $$(this.selectors.popUpMsgLocator);
+            for (let i: number = 0; i < msgLocator.length; i++) {
+                arr[i] = await msgLocator[i].getText();
+            }
         }
         await browser.waitForAngularEnabled(true);
         return arr;
@@ -384,7 +398,7 @@ export class Utility {
 
     async clickOnApplicationWarningYesNoButton(buttonName: string): Promise<void> {
         await $('rx-modal').isPresent().then(async (result) => {
-            if (result) await element(by.cssContainingText('.modal-footer adapt-button', buttonName)).click();
+            if (result) await element(by.cssContainingText('.modal-footer button', buttonName)).click();
         });
     }
 
@@ -451,6 +465,10 @@ export class Utility {
         for (let i: number = 0; i < 2; i++) {
             await $('body').sendKeys(protractor.Key.ESCAPE);
         }
+    }
+
+    async scrollToElement(element: ElementFinder): Promise<void> {
+        await browser.executeScript("arguments[0].scrollIntoView();", element.getWebElement());
     }
 }
 

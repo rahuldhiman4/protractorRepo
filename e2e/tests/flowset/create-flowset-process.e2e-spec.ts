@@ -29,6 +29,8 @@ describe('Create Process in Flowset', () => {
     it('[DRDMV-6216]: [Flowsets] Create new Register Process', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let drpDownStatus: string[] = ['Draft', 'Active', 'Inactive'];
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
 
         await apiHelper.apiLogin('tadmin');
         let case_management = CASE_MANAGEMENT_LIB_PROCESS;
@@ -38,8 +40,6 @@ describe('Create Process in Flowset', () => {
 
         let processName = case_Management_Process.split(':')[1];
 
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
         await expect(consoleFlowsetProcessLibrary.isRegisterProcessEnable()).toBeTruthy("Add flowset register Process is disabled");
         await consoleFlowsetProcessLibrary.clickOnRegisterProcess();
 

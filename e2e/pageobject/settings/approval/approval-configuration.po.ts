@@ -267,22 +267,6 @@ class ApprovalsConsole {
             }
         }
     }
-
-    async deleteApprovalConfiguration(approvalConfigTab: string): Promise<void> {
-        if (approvalConfigTab == 'Self Approval') {
-            await $(this.selectors.selectSelfApprovals).click();
-            await $(this.selectors.selfApprovalDeleteIcon).click();
-            await utilCommon.clickOnWarningOk();
-        } else {
-            let approvalsNum = await $$(this.selectors.GeneralApprovalDeleteIcon);
-            for (let i = 0; i < approvalsNum.length - 1; i++) {
-                await $(this.selectors.GeneralApprovalDeleteIcon).get(i).click();
-            }
-            await this.clickApprovalFlowSaveButton();
-        }
-    }
-
-
 }
 
 export default new ApprovalsConsole();

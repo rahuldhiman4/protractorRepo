@@ -12,45 +12,35 @@ class AddField {
     }
 
     async getHeaderOfAddfield(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.addField)));
         return await $(this.selectors.addField).getText();
     }
 
     async navigateToDynamicFieldInCaseTemplate(caseTemplate: string) {
-        let option = await element.all(by.cssContainingText(this.selectors.parentFields,'Additional Fields from Case Template')).click();
-        //        await browser.wait(this.EC.elementToBeClickable(option));
-      //  await option.click();
+        let option = await element.all(by.cssContainingText(this.selectors.parentFields, 'Additional Fields from Case Template')).click();
         let templateName = await element.all(by.cssContainingText(this.selectors.parentFields, caseTemplate)).click();
-        //        await browser.wait(this.EC.elementToBeClickable(templateName));
-       // await templateName.click();
     }
 
     async navigateToDynamicFieldInTaskTemplate(fromTemplate: string) {
         let option = await element(by.cssContainingText(this.selectors.parentFields, 'Additional Fields from Task Template'));
-        //        await browser.wait(this.EC.elementToBeClickable(option));
         await option.click();
         let templateName = await element(by.cssContainingText(this.selectors.parentFields, fromTemplate));
-        //        await browser.wait(this.EC.elementToBeClickable(templateName));
         await templateName.click();
     }
 
-    async clickOnCase():Promise<void>{
+    async clickOnCase(): Promise<void> {
         await $$(this.selectors.parentFields).first().click();
     }
 
     async navigateToAssociationsInCase() {
         await $$(this.selectors.parentFields).first().click();
         let associations = await element(by.cssContainingText(this.selectors.parentFields, 'Associations'));
-        //        await browser.wait(this.EC.elementToBeClickable(associations));
         await associations.click();
     }
 
     async navigateToAssociationsInTask() {
         let option = await element(by.cssContainingText(this.selectors.parentFields, 'Task'));
-        //        await browser.wait(this.EC.elementToBeClickable(option));
         await option.click();
         let associations = await element(by.cssContainingText(this.selectors.parentFields, 'Associations'));
-        //        await browser.wait(this.EC.elementToBeClickable(associations));
         await associations.click();
     }
 
@@ -60,7 +50,6 @@ class AddField {
 
     async clickOnAssocitionAndSelectField(association: string, fieldValue: string): Promise<void> {
         let option = await element(by.cssContainingText(this.selectors.parentFields, association));
-        //        await browser.wait(this.EC.elementToBeClickable(option));
         await option.click();
         await this.selectDynamicField(fieldValue);
     }
@@ -71,14 +60,12 @@ class AddField {
 
     async selectDynamicField(value: string): Promise<void> {
         let fieldValue = await element(by.cssContainingText(this.selectors.fieldVariable, value));
-        //        await browser.wait(this.EC.elementToBeClickable(fieldValue));
         await browser.actions().mouseMove(fieldValue).doubleClick().perform();
 
     }
 
     async clickOnGroupName(groupvalue: string): Promise<void> {
         await element(by.cssContainingText(this.selectors.groupName, groupvalue)).click();
-        //        await browser.wait(this.EC.elementToBeClickable(groupName));
     }
 
     async isCaseTemplatePresent(caseTemplateValue: string): Promise<boolean> {
@@ -86,16 +73,11 @@ class AddField {
     }
     async setValueOfField(fromTree: string, value: string): Promise<void> {
         await element(by.cssContainingText(this.selectors.parentFields, fromTree)).click();
-        //        await browser.wait(this.EC.visibilityOf(option));
-        //        await browser.wait(this.EC.elementToBeClickable(option));
         let fieldValue = await element(by.cssContainingText(this.selectors.fieldVariable, value));
-        //        await browser.wait(this.EC.visibilityOf(fieldValue));
-        //        await browser.wait(this.EC.elementToBeClickable(fieldValue));
         await browser.actions().mouseMove(fieldValue).doubleClick().perform();
     }
 
     async clickOnOkButtonOfEditor(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.okButtonOnEditor)));
         await $(this.selectors.okButtonOnEditor).click();
     }
 }

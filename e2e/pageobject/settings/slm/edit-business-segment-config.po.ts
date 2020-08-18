@@ -12,17 +12,14 @@ class BusinessTimeSegmentConfigEditPage {
     }
 
     async updateStatus(status: string): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.nextButton)));
         await utilCommon.selectDropDown(this.selectors.statusGuid, status);
     }
 
     async clickNextButton(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.nextButton)));
         await $(this.selectors.nextButton).click();
     }
 
     async isFinishButtonDisabled(): Promise<boolean> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.previousButton)));
         return await $(this.selectors.finishButton).getAttribute("disabled") == "true";
     }
 }

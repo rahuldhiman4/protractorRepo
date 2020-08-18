@@ -1,5 +1,4 @@
 import { element, by, $, protractor, ProtractorExpectedConditions, browser } from "protractor";
-import utilCommon from '../../../utils/util.common';
 import utilGrid from '../../../utils/util.grid';
 
 class DocumentTemplateConsolePage {
@@ -8,6 +7,7 @@ class DocumentTemplateConsolePage {
             gridGuid: '9a22b025-c87e-4ddb-b8ce-472ccbf39a63',
             pageHeader: '.rx-theme-main-text-color h2',
             deleteButton: '[rx-view-component-id="93f7643a-ab88-41be-9ff4-7a9130dbbff0"] .d-button_small span',
+            addDocumentTemplateBtn: '[rx-view-component-id="3acdcc85-9981-433a-84dd-6891fedcc243"] button'
     }
 
     async selectCheckBox(record:string): Promise<void> {
@@ -70,6 +70,21 @@ class DocumentTemplateConsolePage {
 //        await utilCommon.waitUntilSpinnerToHide();
     }
 
+    async isAddDocumentTemplateBtnDisplayed(): Promise<boolean> {
+        return await $(this.selectors.addDocumentTemplateBtn).isPresent().then(async (result) => {
+            if (result) {
+                return await $(this.selectors.addDocumentTemplateBtn).isDisplayed();
+            } else return false;
+        });
+    }
+
+    async isDeleteDocumentTemplateBtnDisplayed(): Promise<boolean> {
+        return await $(this.selectors.deleteButton).isPresent().then(async (result) => {
+            if (result) {
+                return await $(this.selectors.deleteButton).isDisplayed();
+            } else return false;
+        });
+    }
 
 }
 

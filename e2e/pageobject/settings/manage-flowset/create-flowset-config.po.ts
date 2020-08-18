@@ -21,22 +21,18 @@ class CreateFlowset {
     }
 
     async isCompanyRequiredTextDisplayed(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.company)));
         return await utilCommon.isRequiredTagToField(this.selectors.companyGuid);
     }
 
     async isFlowsetRequiredTextDisplayed(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.flowset)));
         return await utilCommon.isRequiredTagToField(this.selectors.flowsetNameGuid);
     }
 
     async isDescriptionRequiredTextDisplayed(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.description)));
         return await utilCommon.isRequiredTagToField(this.selectors.descriptionGuid);
     }
 
     async isStatusRequiredTextDisplayed(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.statusGuid)));
         return await utilCommon.isRequiredTagToField(this.selectors.statusGuid);
     }
 
@@ -57,12 +53,10 @@ class CreateFlowset {
     }
 
     async setFlowsetname(flowset: string): Promise<void> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.flowset)));
         await ($(this.selectors.flowset)).sendKeys(flowset);
     }
 
     async setDescription(description: string): Promise<void> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.description)));
         await ($(this.selectors.description)).sendKeys(description);
     }
 
@@ -71,17 +65,13 @@ class CreateFlowset {
     }
 
     async clickOnStatus(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.status)));
         await ($(this.selectors.status)).click;
     }
     async clickSaveButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.savebutton)));
         await ($(this.selectors.savebutton)).click();
-        //        await utilCommon.closePopUpMessage();
     }
 
     async clickCancelButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         await ($(this.selectors.cancelButton)).click();
     }
 

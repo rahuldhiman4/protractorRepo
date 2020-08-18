@@ -58,7 +58,7 @@ export class Util {
         //            let count = await dropDown.$$(this.selectors.dropDownOption).count();
         //            return count >= 1;
         //        }));
-        var optionCss: string = `[rx-view-component-id="${guid}"] .ui-select-choices-row-inner *`;
+        let optionCss: string = `[rx-view-component-id="${guid}"] .ui-select-choices-row-inner *`;
         //        await browser.sleep(1000);
         let option = await element(by.cssContainingText(optionCss, value));
         await browser.wait(this.EC.elementToBeClickable(option), 3000).then(async function () {
@@ -106,8 +106,8 @@ export class Util {
         //            return count >= 1;
         //        }),3000);
         let drpDwnvalue: number = await $$(this.selectors.dropDownOption).count();
-        for (var i = 0; i < drpDwnvalue; i++) {
-            var ab: string = await $$(this.selectors.dropDownOption).get(i).getText();
+        for (let i = 0; i < drpDwnvalue; i++) {
+            let ab: string = await $$(this.selectors.dropDownOption).get(i).getText();
             arr[i] = ab;
         }
         arr = arr.sort();
@@ -115,10 +115,6 @@ export class Util {
         return arr.length === data.length && arr.every(
             (value, index) => (value === data[index])
         );
-    }
-
-    async scrollUpOrDownTillElement(element: string): Promise<void> {
-        await browser.executeScript("arguments[0].scrollIntoView();", $(`${element}`).getWebElement());
     }
 
     async isErrorMsgPresent(): Promise<boolean> {
@@ -142,9 +138,9 @@ export class Util {
         //            let count = await dropDown.$$(this.selectors.dropDownOption).count();
         //            return count >= 1;
         //        }));
-        var optionCss: string = `[title="${name}"] .ui-select-choices-row-inner *`;
+        let optionCss: string = `[title="${name}"] .ui-select-choices-row-inner *`;
         //        await browser.sleep(1000);
-        var option = await element(by.cssContainingText(optionCss, value));
+        let option = await element(by.cssContainingText(optionCss, value));
         //        await browser.wait(this.EC.visibilityOf(option));
         await option.click();
     }
@@ -342,6 +338,7 @@ export class Util {
         if (actualNumberOfPopups) {
             let count = 0;
             let i = 0;
+            await browser.wait(this.EC.visibilityOf($(this.selectors.popUpMsgLocator)), 5000);
             arr[i] = await $$(this.selectors.popUpMsgLocator).first().getText();
             let prevVal = arr[0];
             if (await browser.wait(this.EC.or(async () => {

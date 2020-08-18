@@ -16,24 +16,19 @@ class SelectCaseTemplateBlade {
     }
 
     async clickOnRecommendedTemplateTab(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.recommendedTemplate)));
-        await element(by.cssContainingText(this.selectors.allTemplates,'Recommended Templates')).click();    
+        await element(by.cssContainingText(this.selectors.allTemplates, 'Recommended Templates')).click();
     }
 
     async clickOnCaseTemplateCheckbox(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.caseTemplateCheckBox)));
         await $(this.selectors.caseTemplateCheckBox).click();
     }
 
     async clickOnCaseTemplateLink(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.caseTemplateLink)));
         await $(this.selectors.caseTemplateLink).click();
     }
 
     async clickOnAllTemplateTab(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.allTemplates)));
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.allTemplates)));
-        await element(by.cssContainingText(this.selectors.allTemplates,'All Templates')).click(); 
+        await element(by.cssContainingText(this.selectors.allTemplates, 'All Templates')).click();
     }
 
     async searchAndOpenCaseTemplate(input: string): Promise<void> {
@@ -42,30 +37,30 @@ class SelectCaseTemplateBlade {
     }
 
     async clickOnRefreshButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.refreshbutton)));
         await $(this.selectors.refreshbutton).click();
     }
 
     async selectCaseTemplate(templateName: string): Promise<void> {
         await this.clickOnAllTemplateTab();
-        await utilityGrid.clearFilter(); 
+        await utilityGrid.clearFilter();
         await utilityGrid.searchAndSelectGridRecord(templateName);
         await this.clickOnApplyButton();
-        //        await browser.wait(this.EC.invisibilityOf($('.modal-content')));
     }
 
     async clickOnApplyButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.applyButton)));
         await $(this.selectors.applyButton).click();
     }
 
     async clickOnCancelButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         await $(this.selectors.cancelButton).click();
     }
 
     async clickOnCaseTemplate(templateName: string): Promise<void> {
-        await $(`div[title=${templateName}]`).click();
+        await $(`div[title=${templateName}]`).isPresent().then(async (present) => {
+            if (present) await $(`div[title=${templateName}]`).isDisplayed().then(async (displayed) => {
+                if (displayed) await $(`div[title=${templateName}]`).click();
+            });
+        });
     }
 }
 

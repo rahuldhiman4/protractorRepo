@@ -47,9 +47,6 @@ class CreateApprovalMapping {
         return await $(this.selectors.statusMappingHelptext).getText();
     }
 
-
-
-
     async setApprovalMappingName(approvalMappingName: string): Promise<void> {
         await $(this.selectors.approvalMappingName).clear();
         await $(this.selectors.approvalMappingName).sendKeys(approvalMappingName);

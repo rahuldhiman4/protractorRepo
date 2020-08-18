@@ -1,5 +1,6 @@
 import { $, browser, protractor, ProtractorExpectedConditions, element, by, $$ } from "protractor";
 import utilCommon from '../../../utils/util.common';
+import ckeditorOpsPo from '../../../pageobject/common/ck-editor/ckeditor-ops.po';
 
 class EditTaskTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -8,7 +9,7 @@ class EditTaskTemplate {
         taskCompany: '3d1b6f6b-3dfa-4ff7-80f1-cef32c2c93e0',
         editMetadataLink: '[rx-view-component-id="8b8bfec6-0ee2-42a3-be4b-ac4f37d060f1"] .edit-link',
         ownerCompany: 'fa0f139c-5998-4544-9a3e-6dcac497611c',
-        templateStatus: '279fd957-576d-4428-b503-a1330cbd9498',
+        templateStatusGuid: '279fd957-576d-4428-b503-a1330cbd9498',
         ownerGroup: '908e526e-917a-4360-94e9-768362f6a573',
         businessGuid: '064e7a40-b086-48ec-b8f9-9d23c8c56038',
         taskTypeValue: '[rx-view-component-id="cee6d303-5db9-4b3a-98e1-3096ffebf363"] .ui-select-container',
@@ -29,6 +30,8 @@ class EditTaskTemplate {
         dynamicField: '[rx-view-component-id="7ac78e56-c471-4e50-bca8-53568ad6e4af"] .d-textfield__item',
         taskTypeValueDisabled: '[rx-view-component-id="cee6d303-5db9-4b3a-98e1-3096ffebf363"] span.btn-default',
         processNameValue: '[rx-view-component-id="534ab8af-7e9d-49a9-8cab-c3ab1aa38c91"] input',
+        taskDescription: 'b9b752cf-8cef-4598-9a8d-85748b13f0d7',
+        templateStatus: '[rx-view-component-id="279fd957-576d-4428-b503-a1330cbd9498"] .dropdown'
     }
 
     async selectPriorityValue(priority: string): Promise<void> {
@@ -72,7 +75,7 @@ class EditTaskTemplate {
     }
 
     async selectTemplateStatus(company: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.templateStatus, company);
+        await utilCommon.selectDropDown(this.selectors.templateStatusGuid, company);
     }
 
     async selectOwnerGroup(group: string): Promise<void> {
@@ -84,18 +87,14 @@ class EditTaskTemplate {
     }
 
     async clickOnSaveButton() {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
-        //        await utilCommon.closePopUpMessage();
     }
 
     async clickOnSaveMetadata() {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveMetadata)));
         await $(this.selectors.saveMetadata).click();
     }
 
     async clickOnEditMetadataLink() {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editMetadataLink)));
         await $(this.selectors.editMetadataLink).click();
     }
 
@@ -104,44 +103,35 @@ class EditTaskTemplate {
     }
 
     async setSummary(input: string) {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.summary)));
         await $(this.selectors.summary).clear();
         await $(this.selectors.summary).sendKeys(input);
     }
 
     async getTaskTypeValueAttribute(attribute: string): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.taskTypeValue)));
         return await $(this.selectors.taskTypeValue).getAttribute(attribute);
     }
 
     async clickOnCancelButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         await $(this.selectors.cancelButton).click();
     }
 
     async getTaskTypeValue(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.taskTypeValue)));
         return await $(this.selectors.taskTypeValue).getText();
     }
 
     async isProcessNamePresentInTask(): Promise<boolean> {
-        //        await browser.wait(this.EC.presenceOf($(this.selectors.processNameValue)));
         return await $(this.selectors.processNameValue).isDisplayed();
     }
 
     async isManageProcessLinkDisplayed(): Promise<boolean> {
-        //        await browser.wait(this.EC.presenceOf($(this.selectors.manageProcessLink)));
         return await $(this.selectors.manageProcessLink).isDisplayed();
     }
 
     async isTemplateStatusDisabled(): Promise<boolean> {
-        //        await browser.wait(this.EC.presenceOf($(this.selectors.templateStatusAttribute)));
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelMetadata)));
         return (await $(this.selectors.templateStatusAttribute).getAttribute("disabled")) == 'true';
     }
 
     async clickOnCancelMetadataButton() {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelMetadata)));
         await $(this.selectors.cancelMetadata).click();
     }
 
@@ -166,6 +156,27 @@ class EditTaskTemplate {
     async isCaseSummaryReadOnly(): Promise<boolean> {
         return await $(this.selectors.summary).getAttribute('readonly') == 'true' ? true : false;
     }
+
+    async isImageDisplayedInCKE(value: string): Promise<boolean> {
+        return await ckeditorOpsPo.isImageDisplayedInCKE(value, this.selectors.taskDescription);
+    }
+
+    async isTaskSummaryFieldDisabled(): Promise<boolean> {
+        return await $(this.selectors.summary).getAttribute('readonly') == 'true';
+    }
+
+    async isTemplateStatusFieldDisabled(): Promise<boolean> {
+        return await $(this.selectors.templateStatus).getAttribute('disabled') == 'true';
+    }
+
+    async isSaveTemplateBtnEnabled(): Promise<boolean> {
+        return await $(this.selectors.saveButton).isEnabled();
+    }
+
+    async isSaveTemplateMetadataBtnEnabled(): Promise<boolean> {
+        return await $(this.selectors.saveMetadata).isEnabled();
+    }
+
 }
 
 export default new EditTaskTemplate();

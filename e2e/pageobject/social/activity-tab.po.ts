@@ -79,7 +79,7 @@ class ActivityTabPage {
         italicTextCkEditorTextArea: '.cke_enable_context_menu em',
         underlineTextCkEditorTextArea: '.cke_enable_context_menu u',
         colorTextCkEditorTextArea: '.cke_enable_context_menu span',
-        alignmentTextCkEditorTextArea: '.cke_enable_context_menu div',
+        alignmentTextCkEditorTextArea: '.cke_enable_context_menu',
         numberListCkEditorTextArea: '.cke_enable_context_menu ol li',
         bulletListTextCkEditorTextArea: '.cke_enable_context_menu ul li',
         linkTextCkEditorTextArea: '.cke_enable_context_menu a',
@@ -275,8 +275,6 @@ class ActivityTabPage {
     }
 
     async clickOnReply(): Promise<void> {
-        //        await utilCommon.waitUntilSpinnerToHide();
-        // await element(by.xpath("(//div[contains(@class,'d-icon-reply')])[1]")).click();
         await $$(this.selectors.emailReply).first().click();
     }
 
@@ -285,12 +283,10 @@ class ActivityTabPage {
     }
 
     async getFirstPostContent(): Promise<string> {
-        //        await utilCommon.waitUntilSpinnerToHide();
         return await $$(this.selectors.logItems).first().getText();
     }
 
     async isActivityBlank(): Promise<boolean> {
-        //        await utilCommon.waitUntilSpinnerToHide();
         return !await $(this.selectors.logItems).isPresent();
     }
 
@@ -341,22 +337,29 @@ class ActivityTabPage {
     }
 
     async getemailAttachmentFileName(): Promise<string> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailAttachmentFileName)), 5000);
         let fileName = await $(this.selectors.AttachedfileName).getText();
         return fileName;
     }
 
     async getActivityNotesText(textToMatch: string): Promise<boolean> {
-        var elem = element(by.xpath("//div[contains(@class,'d-icon-note_pencil')]/following-sibling::div"));
-        //        browser.wait(this.EC.elementToBeClickable(elem));
-        var value = await elem.getText();
-        //        await utilCommon.waitUntilSpinnerToHide();
+        let elem = element(by.xpath("//div[contains(@class,'d-icon-note_pencil')]/following-sibling::div"));
+        let value = await elem.getText();
         return value.includes(textToMatch) ? true : false;
+    }
 
+    async getApprovalActivityText(textToMatch: string): Promise<boolean> {
+        let elem = $('div.d-icon-check_circle + div');
+        let value = await elem.getText();
+        return value.includes(textToMatch) ? true : false;
+    }
+
+    async isApprovalActivityDisplayed(textToMatch: string): Promise<boolean> {
+        return await element(by.cssContainingText('div.d-icon-check_circle + div', textToMatch)).isPresent().then( async (result) => {
+            if(result) return await element(by.cssContainingText('div.d-icon-check_circle + div', textToMatch)).isDisplayed();
+        })
     }
 
     async removeFilterList(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.removeIconFilterList)));
         await $$(this.selectors.removeIconFilterList).first().click();
     }
 
@@ -365,29 +368,22 @@ class ActivityTabPage {
     }
 
     async isfilterListDisplayed(filterList: string): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterLists)));
         return await element(by.cssContainingText(this.selectors.filterLists, filterList)).isPresent();
     }
 
     async getTextFromFilterList(filterList: string): Promise<string> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterLists)));
         return await element(by.cssContainingText(this.selectors.filterLists, filterList)).getText();
     }
 
     async clickOnNmoreLink(): Promise<void> {
-        //        await browser.sleep(1000);
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.nMoreButton)));
         await $(this.selectors.nMoreButton).click();
     }
 
     async closeNmoreLink(): Promise<void> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.activityTab)));
         await element(by.cssContainingText(this.selectors.activityTab, 'Activity')).click();
-        //        utilCommon.waitUntilSpinnerToHide();
     }
 
     async getTextOfNmoreLink(): Promise<string> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.nMoreButton)));
         return await $(this.selectors.nMoreButton).getText();
     }
 
@@ -427,24 +423,19 @@ class ActivityTabPage {
     }
 
     async clickOnPostButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNotePostButton)));
         await $(this.selectors.addNotePostButton).click();
         await utilCommon.waitUntilSpinnerToHide();
     }
 
     async clickOnCancelButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNoteCancelButton)));
         await $(this.selectors.addNoteCancelButton).click();
     }
 
     async clickOnNotesTemplate(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNoteNotesTemplate)));
         await $(this.selectors.addNoteNotesTemplate).click();
     }
 
     async clickOnFilterButton(): Promise<void> {
-        //        await browser.sleep(5000);
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterButton)));
         await $(this.selectors.filterButton).click();
     }
 
@@ -457,22 +448,18 @@ class ActivityTabPage {
     }
 
     async getTextTaskFilterOption(filterCheckBox: string): Promise<string> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterCheckbox)));
         return await element(by.cssContainingText(`${this.selectors.filterCheckbox}[class*='ng']`, filterCheckBox)).getText();
     }
 
     async isAuthorSearchBoxVisible(): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterAuthor)));
-        return $(this.selectors.filterAuthor).isDisplayed();
+        return await $(this.selectors.filterAuthor).isDisplayed();
     }
 
     async getTextOfFilterTaskOptions(filterCheckBoxText: string): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.filterCheckbox)));
         return await element(by.cssContainingText(`${this.selectors.filterCheckbox}[class*='ng']`, filterCheckBoxText)).getText();
     }
 
     async selectFilterCheckBox(filterCheckBoxText: string): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterCheckbox)));
         await element(by.cssContainingText(this.selectors.filterCheckbox, filterCheckBoxText)).click();
     }
 
@@ -483,7 +470,6 @@ class ActivityTabPage {
     }
 
     async addAuthorOnFilter(AuthorName: string): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterAuthor)));
         await $(this.selectors.filterAuthor).click();
         await $(this.selectors.filterAuthor).sendKeys(AuthorName);
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.personPopup)), 8000);
@@ -491,72 +477,54 @@ class ActivityTabPage {
     }
 
     async clearAuthorSearchBoxOnFilter(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterAuthor)));
         await $(this.selectors.filterAuthor).clear();
     }
 
     async removeAuthorFromFilter(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.authorCloseButton)));
         await $(this.selectors.authorCloseButton).click();
     }
 
     async isAuthorBoxEmpty(): Promise<boolean> {
         return await $(this.selectors.filterAuthor).getAttribute('value') == "" ? true : false;
-
     }
 
     async searchAuthorOnFilter(AuthorName: string): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterAuthor)));
         await $(this.selectors.filterAuthor).click();
         await $(this.selectors.filterAuthor).sendKeys(AuthorName);
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.personPopup)));
     }
 
     async isImgPresentOnUserPopUp(): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.imgPersonProfilePopUp)));
         return await $(this.selectors.imgPersonProfilePopUp).isPresent();
     }
     async isPersonNamePresentOnUserPopUp(personName: string): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.namePersonProfilePopUp)));
         return await element(by.cssContainingText(this.selectors.namePersonProfilePopUp, personName)).isPresent();
     }
 
     async isEmailPresentOnUserPopUp(email: string): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailPersonProfilePopUp)));
         return await element(by.cssContainingText(this.selectors.emailPersonProfilePopUp, email)).isPresent();
     }
 
     async isCompanyPresentOnUserPopUp(company: string): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.companyPersonProfilePopUp)));
         return await element(by.cssContainingText(this.selectors.companyPersonProfilePopUp, company)).isPresent();
     }
 
     async isPhoneNumberPresentOnUserPopUp(phoneNumber: string): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.phoneNumberPersonProfilePopUp)));
         return await element(by.cssContainingText(this.selectors.phoneNumberPersonProfilePopUp, phoneNumber)).isPresent();
     }
 
     async clickOnFilterApplyButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterPopupApplyOrClearButton)));
         await element(by.cssContainingText(this.selectors.filterPopupApplyOrClearButton, 'Apply')).click();
-        //        utilCommon.waitUntilSpinnerToHide();
     }
 
     async clickOnFilterClearButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterPopupApplyOrClearButton)));
         await element(by.cssContainingText(this.selectors.filterPopupApplyOrClearButton, 'Clear')).click();
-        //        await browser.wait(this.EC.or(async () => {
-        //            await $$(this.selectors.appliedActivityFilter).count() == 0;
-        //        }));
     }
 
     async getTextOfFilterTask(): Promise<string> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.FilterTask)));
         return await $(this.selectors.filterAuthor).getText();
     }
 
     async isTextPresentInActivityLog(caseActivityLogText: string): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterButton)));
         let activityValue: string = "";
         let countVal = await $$(this.selectors.activityLog).count();
         for (let i: number = 0; i < countVal; i++) {
@@ -604,7 +572,6 @@ class ActivityTabPage {
     }
 
     async clickOnAttachLink(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.attachmentLink)));
         await $(this.selectors.attachmentLink).click();
     }
 
@@ -620,7 +587,6 @@ class ActivityTabPage {
     }
 
     async openSurveyReport(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.viewSurveyBtn)));
         await $(this.selectors.viewSurveyBtn).click();
     }
 
@@ -629,7 +595,6 @@ class ActivityTabPage {
     }
 
     async getAllSurveyTextOnActivityTab(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.dwpSurveyText)));
         let allText: number = await $$(this.selectors.dwpSurveyText).count();
         let dwpActivityText = "";
         for (let i: number = 0; i < allText; i++) {
@@ -645,51 +610,40 @@ class ActivityTabPage {
 
 
     async getSurveyQuestionTextOnSurveyInfo(index: number): Promise<string> {
-        let question = $$(this.selectors.dwpQuestions).get(index - 1);
-        //        await browser.wait(this.EC.visibilityOf(question));
+        let question = await $$(this.selectors.dwpQuestions).get(index - 1);
         return await question.getText();
     }
 
     async getSurveyAnswerTextOnSurveyInfo(index: number): Promise<string> {
-        let answer = $$(this.selectors.dwpAnswers).get(index - 1);
-        //        await browser.wait(this.EC.visibilityOf(answer));
+        let answer = await $$(this.selectors.dwpAnswers).get(index - 1);
         return await answer.getText();
     }
 
     async closeSurveyInformation(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.closeButton)));
         await $(this.selectors.closeButton).click();
-        //        await browser.wait(this.EC.invisibilityOf($('.modal-dialog')));
     }
 
     async getComplexSurveyModalTitle(): Promise<string> {
-        //        await browser.wait(this.EC.elementToBeClickable($('.modal-title')));
         return await $('.dp-title').getText();
     }
 
     async getRatingText(): Promise<string> {
-        //        await browser.wait(this.EC.elementToBeClickable($('.rating')));
         return await $('.dwp-survey-details .activity-title').getText();
     }
 
     async getDWPIconClassAttribute(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.dwpIcon)));
         return await $(this.selectors.dwpIcon).getAttribute("class");
     }
 
     async getDWPFeedback(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.dwpFeedback)));
         return await $(this.selectors.dwpFeedback).getText();
     }
 
     async isOnlySurveyRecordFiltered(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.logItems)));
         return await $$(this.selectors.logItems).count() === 1;
     }
 
     async isComplexSurveyOrderIsThird(): Promise<boolean> {
-        //        await utilCommon.waitUntilSpinnerToHide();
-        //        await browser.wait(this.EC.visibilityOf(element(by.xpath("(//div[@class='log-item__content'])[3]//div[text()='View Survey Information']"))));
         let activityLog = await $$('[rx-view-component-id="76b9d8a2-54ef-4b24-a086-fc6ff745449d"] .activity__body').get(2);
         let textValue = await activityLog.getText();
         return textValue.includes('View Survey Information');
@@ -790,79 +744,67 @@ class ActivityTabPage {
     }
 
     async isBoldTextDisplayedInCkEditorTextArea(bodyText: string): Promise<boolean> {
-        return element(by.cssContainingText(this.selectors.boldTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
-            if (link) return element(by.cssContainingText(this.selectors.boldTextCkEditorTextArea, bodyText)).isDisplayed();
+        return await element(by.cssContainingText(this.selectors.boldTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
+            if (link) return await element(by.cssContainingText(this.selectors.boldTextCkEditorTextArea, bodyText)).isDisplayed();
             else return false;
         });
     }
 
     async isItalicTextDisplayedInCkEditorTextArea(bodyText: string): Promise<boolean> {
-        return element(by.cssContainingText(this.selectors.italicTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
-            if (link) return element(by.cssContainingText(this.selectors.italicTextCkEditorTextArea, bodyText)).isDisplayed();
+        return await element(by.cssContainingText(this.selectors.italicTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
+            if (link) return await element(by.cssContainingText(this.selectors.italicTextCkEditorTextArea, bodyText)).isDisplayed();
             else return false;
         });
     }
 
     async isUnderlineTextDisplayedInCkEditorTextArea(bodyText: string): Promise<boolean> {
-        return element.all(by.cssContainingText(this.selectors.underlineTextCkEditorTextArea, bodyText)).get(0).isPresent().then(async (link) => {
-            if (link) return element.all(by.cssContainingText(this.selectors.underlineTextCkEditorTextArea, bodyText)).get(0).isDisplayed();
+        return await element.all(by.cssContainingText(this.selectors.underlineTextCkEditorTextArea, bodyText)).get(0).isPresent().then(async (link) => {
+            if (link) return await element.all(by.cssContainingText(this.selectors.underlineTextCkEditorTextArea, bodyText)).get(0).isDisplayed();
             else return false;
         });
     }
 
     async isColorTextDisplayedInCkEditorTextArea(colorCode: string, bodyText: string): Promise<boolean> {
         return await $(`.cke_enable_context_menu span[style="${colorCode}"]`).isPresent().then(async (link) => {
-            if (link) return element(by.cssContainingText(this.selectors.colorTextCkEditorTextArea, bodyText)).isDisplayed();
+            if (link) return await element(by.cssContainingText(this.selectors.colorTextCkEditorTextArea, bodyText)).isDisplayed();
             else return false;
         });
     }
 
     async isTextLeftAlignInCkEditorTextArea(bodyText: string): Promise<boolean> {
-        return element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
-            if (link) return element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, bodyText)).isDisplayed();
+        return await element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
+            if (link) return await element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, bodyText)).isDisplayed();
             else return false;
         });
     }
 
     async isTextRightAlignInCkEditorTextArea(bodyText: string): Promise<boolean> {
-        return element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
-            if (link) {
-                let colorcodeAttribute = await $(this.selectors.alignmentTextCkEditorTextArea).getAttribute('style') == 'text-align: right;' ? true : false;
-                if (colorcodeAttribute == true) {
-                    return element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, bodyText)).isDisplayed();
-                }
-            } else return false;
-        });
+        let rightAlignmentElement= await $(this.selectors.alignmentTextCkEditorTextArea).$('div[style="text-align: right;"]');
+        return await ckEditorOpsPo.isTextRightAlignInCkEditorTextArea(bodyText,rightAlignmentElement);
     }
 
     async isTextCenterAlignInCkEditorTextArea(bodyText: string): Promise<boolean> {
-        return element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
-            if (link) {
-                let colorcodeAttribute = await $(this.selectors.alignmentTextCkEditorTextArea).getAttribute('style') == 'text-align: center;' ? true : false;
-                if (colorcodeAttribute == true) {
-                    return element(by.cssContainingText(this.selectors.alignmentTextCkEditorTextArea, bodyText)).isDisplayed();
-                }
-            } else return false;
-        });
+        let centerAlignmentElement= await $(this.selectors.alignmentTextCkEditorTextArea).$('div[style="text-align: center;"]');
+        return await ckEditorOpsPo.isTextCenterAlignInCkEditorTextArea(bodyText,centerAlignmentElement);
     }
 
     async isNumberListDisplayedInCkEditorTextArea(bodyText: string): Promise<boolean> {
-        return element(by.cssContainingText(this.selectors.numberListCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
-            if (link) return element(by.cssContainingText(this.selectors.numberListCkEditorTextArea, bodyText)).isDisplayed();
+        return await element(by.cssContainingText(this.selectors.numberListCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
+            if (link) return await element(by.cssContainingText(this.selectors.numberListCkEditorTextArea, bodyText)).isDisplayed();
             else return false;
         });
     }
 
     async isBulletListDisplayedInCkEditorTextArea(bodyText: string): Promise<boolean> {
-        return element(by.cssContainingText(this.selectors.bulletListTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
-            if (link) return element(by.cssContainingText(this.selectors.bulletListTextCkEditorTextArea, bodyText)).isDisplayed();
+        return await element(by.cssContainingText(this.selectors.bulletListTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
+            if (link) return await element(by.cssContainingText(this.selectors.bulletListTextCkEditorTextArea, bodyText)).isDisplayed();
             else return false;
         });
     }
 
     async isLinkDisplayedInCkEditorTextArea(bodyText: string): Promise<boolean> {
-        return element(by.cssContainingText(this.selectors.linkTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
-            if (link) return element(by.cssContainingText(this.selectors.linkTextCkEditorTextArea, bodyText)).isDisplayed();
+        return await element(by.cssContainingText(this.selectors.linkTextCkEditorTextArea, bodyText)).isPresent().then(async (link) => {
+            if (link) return await element(by.cssContainingText(this.selectors.linkTextCkEditorTextArea, bodyText)).isDisplayed();
             else return false;
         });
     }
@@ -908,7 +850,7 @@ class ActivityTabPage {
     }
 
     async isRightAlignTextDisplayedInActivity(bodyText: string, activityNumber: number): Promise<boolean> {
-        let getTextmsg = await $$(this.selectors.activityLogBody).get(activityNumber - 1).$('div[style="text-align: right;"]').getText();
+        let getTextmsg = await $$(this.selectors.activityLogBody).get(activityNumber - 1).$('[style="text-align: right;"]').getText();
         if (getTextmsg.trim().includes(bodyText)) {
             return true;
         } else return false;
@@ -956,7 +898,40 @@ class ActivityTabPage {
     async clickShowApproversLink(showApproversLinkLabel: string): Promise<void> {
         await $(this.selectors.showApproversLink).click();
     }
-}
 
+    async getGrantedReadAccessCount(accessName: string): Promise<number> {
+        return await element.all(by.cssContainingText(this.selectors.activityLog, accessName)).count();
+    }
+
+    async getRevokedReadAccessCount(accessName: string): Promise<number> {
+        return await element.all(by.cssContainingText('.activity__body .fields span', accessName)).count();
+    }
+
+    async isTableSummaryDisplayedInCkEditorTextArea(tableSummary: string): Promise<boolean> {
+        let locator = `table[summary='${tableSummary}']`;       
+        return await element(by.css(locator)).isPresent().then(async (link) => {
+            if (link) {
+                return await element(by.css(locator)).isDisplayed();
+            } else return false;
+        });
+    }
+
+    async isTableCaptionDisplayedInCkEditorTextArea(tableSummary: string,tableCaption: string): Promise<boolean> {
+        let locator = `table[summary='${tableSummary}'] caption`;       
+        return await element(by.css(locator)).isPresent().then(async (result) => {
+            if (result) {
+                let tableCaptionText = await element(by.css(locator)).getText();
+                return tableCaptionText.includes(tableCaption);
+            }
+            else return false;
+        });
+    }
+
+    async isCKImageDisplayedInActivity(value: string): Promise<boolean> {
+        let locator = `.activity img[src='${value}']`;
+        let imageIsDisplayed: boolean = await $(locator).isDisplayed();
+        return imageIsDisplayed;
+    }
+}
 
 export default new ActivityTabPage();

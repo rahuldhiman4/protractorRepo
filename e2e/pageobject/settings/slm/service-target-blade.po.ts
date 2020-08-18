@@ -1,6 +1,5 @@
 import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import SlmExpressionBuilder from './slm-expressionbuilder.pop.po';
-import utilCommon from '../../../utils/util.common';
 
 class ServiceTargetConfig {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -33,7 +32,13 @@ class ServiceTargetConfig {
     }
 
     async isServiceTargetBladeDisplayed(): Promise<boolean> {
-        return await $(this.selectors.serviceTargetBlade).isPresent();
+        return await $(this.selectors.serviceTargetBlade).isPresent().then(async (result) => {
+            if (result) {
+                return await $(this.selectors.serviceTargetBlade).isDisplayed();
+            } else {
+                return false;
+            }
+        });
     }
 
     async clickCreateSVTButton(): Promise<void> {

@@ -185,7 +185,7 @@ describe('Create Case Task', () => {
             expect(await manageTask.isTaskLinkPresent(automationTaskSummaryWithallField)).toBeTruthy(automationTaskTemplateWithallField + ' Task is not added to case');
         });
         it('[DRDMV-7148,DRDMV-7140,DRDMV-745,DRDMV-793]: Validate manual task', async () => {
-            //validate Automation Template With Required Field
+ 
             await manageTask.clickTaskLink(automationTaskSummaryWithallField);
             expect(await viewTask.getTaskTypeValue()).toBe('Automated');
             expect(await viewTask.getProcessNameValue()).toBe(`com.bmc.dsm.bwfa:Get Request Status Data2 ${randomStr}`);
@@ -714,6 +714,7 @@ describe('Create Case Task', () => {
             expect(await navigationPage.isSettingSubMenusMatches("Manage Flowsets", manageFlowsetList)).toBeTruthy();
             expect(await navigationPage.isSettingSubMenusMatches("Service Level Management", serviceLevelManagementList)).toBeTruthy();
             expect(await navigationPage.isSettingSubMenusMatches("Task Management", taskManagementList)).toBeTruthy();
+            expect(await navigationPage.isSettingMenuPresent('Knowledge Management')).toBeFalsy();
 
             await navigationPage.signOut();
             await loginPage.login('qtao');
@@ -1070,7 +1071,7 @@ describe('Create Case Task', () => {
             }
             await apiHelper.apiLogin('fritz');
             await apiHelper.createAutomatedTaskTemplate(templateData);
-            var caseWithInprogressStatus = {
+            let caseWithInprogressStatus = {
                 "Status": "3000",
                 "Company": "Petramco",
                 "Description": "This case was created by java integration tests",
@@ -1082,7 +1083,7 @@ describe('Create Case Task', () => {
                 "Assignee": "qkatawazi"
             }
 
-            var caseWithPendingStatus = {
+            let caseWithPendingStatus = {
                 "Status": "4000",
                 "Company": "Petramco",
                 "Description": "This case was created by java integration tests",
@@ -1094,7 +1095,7 @@ describe('Create Case Task', () => {
                 "Assignee": "qkatawazi"
             }
 
-            var caseWithResolvedStatus = {
+            let caseWithResolvedStatus = {
                 "Status": "5000",
                 "Company": "Petramco",
                 "Description": "This case was created by java integration tests",
@@ -1106,7 +1107,7 @@ describe('Create Case Task', () => {
                 "Assignee": "qkatawazi"
             }
 
-            var caseWithClosedStatus = {
+            let caseWithClosedStatus = {
                 "Status": "7000",
                 "Company": "Petramco",
                 "Description": "This case was created by java integration tests",
@@ -1118,7 +1119,7 @@ describe('Create Case Task', () => {
                 "Assignee": "qkatawazi"
             }
 
-            var caseWithCanceledStatus = {
+            let caseWithCanceledStatus = {
                 "Status": "6000",
                 "Company": "Petramco",
                 "Description": "This case was created by java integration tests",

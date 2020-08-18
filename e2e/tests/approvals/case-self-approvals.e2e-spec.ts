@@ -1,8 +1,5 @@
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
-import casePreviewPo from '../../pageobject/case/case-preview.po';
-import createCasePo from '../../pageobject/case/create-case.po';
-import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
@@ -12,25 +9,17 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
-let userData1 = undefined;
 describe("Case Self Approval Tests", () => {
     const caseApprovalRecordDefinition = 'com.bmc.dsm.case-lib:Case';
+    const caseApprovalMappingRecordDefinition = 'com.bmc.dsm.case-lib:Case Approval Mapping';
+    let caseModule = 'Case';
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
         await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteApprovalMapping();
+        await apiHelper.deleteApprovalMapping(caseModule);
         await apiHelper.apiLogin('tadmin');
-        userData1 = {
-            "firstName": "Petramco",
-            "lastName": "SGUser1",
-            "userId": "10843User1",
-            "userPermission": "AGGAA5V0GE9Z4AOR7DBBOQLAW74PH7",
-        }
-        await apiHelper.createNewUser(userData1);
-        await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
-        await apiHelper.associatePersonToSupportGroup(userData1.userId, "US Support 3");
     });
 
     afterAll(async () => {
@@ -77,7 +66,7 @@ describe("Case Self Approval Tests", () => {
                 "company": "Petramco",
                 "mappingName": "Approval Mapping for Self Approval"
             }
-            let approvalMappingId = await apiHelper.createCaseApprovalMapping(approvalMappingData);
+            let approvalMappingId = await apiHelper.createApprovalMapping(caseModule,approvalMappingData);
             await apiHelper.associateCaseTemplateWithApprovalMapping(caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
 
             caseData = {
@@ -126,6 +115,7 @@ describe("Case Self Approval Tests", () => {
             let response = await apiHelper.createCase(caseData);
             caseId = response.displayId;
             await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("In Progress");
             await activityTabPage.clickOnFilterButton();
@@ -148,8 +138,8 @@ describe("Case Self Approval Tests", () => {
         });
 
         afterAll(async () => {
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteApprovalMapping();
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.deleteApprovalMapping(caseModule);
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -194,7 +184,7 @@ describe("Case Self Approval Tests", () => {
                 "company": "Petramco",
                 "mappingName": "Approval Mapping for Self Approval"
             }
-            let approvalMappingId = await apiHelper.createCaseApprovalMapping(approvalMappingData);
+            let approvalMappingId = await apiHelper.createApprovalMapping(caseModule,approvalMappingData);
             await apiHelper.associateCaseTemplateWithApprovalMapping(caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
 
             caseData = {
@@ -262,6 +252,7 @@ describe("Case Self Approval Tests", () => {
             let response = await apiHelper.createCase(caseData);
             caseId = response.displayId;
             await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("In Progress");
             await activityTabPage.clickOnFilterButton();
@@ -283,8 +274,8 @@ describe("Case Self Approval Tests", () => {
             expect(await activityTabPage.isActivityBlank()).toBeTruthy('Case Approvals Activity is displayed.');
         });
         afterAll(async () => {
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteApprovalMapping();
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.deleteApprovalMapping(caseModule);
         });
     });
 }); 

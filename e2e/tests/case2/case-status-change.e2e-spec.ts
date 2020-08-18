@@ -23,6 +23,7 @@ describe('Case Status Change', () => {
     let statusCanceled: string = "Canceled";
     let statusResolved: string = "Resolved";
     let statusClosed: string = "Closed";
+    const caseModule = 'Case';
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
@@ -515,7 +516,7 @@ describe('Case Status Change', () => {
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickEditCaseButton();
             await editCasePage.setCaseSummary(summary1);
-            await expect(editCasePage.isSaveCaseEnable()).toBeFalsy("Save button Visible");
+            await expect(editCasePage.isSaveCaseEnable()).toBeFalsy("Save button enabled");
             await editCasePage.clickOnCancelCaseButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
@@ -523,11 +524,11 @@ describe('Case Status Change', () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId1);
             await viewCasePage.clickEditCaseButton();
+            await editCasePage.setCaseSummary(summary1 + " new");
             expect(await editCasePage.isSummaryRequiredText()).toBeTruthy("Summary Required text not present");
             expect(await editCasePage.isPriorityRequiredText()).toBeTruthy("Priority Required text not present");
             expect(await editCasePage.isAssignedCompanyRequiredText()).toBeTruthy("Assigned Company Required text not present");
             expect(await editCasePage.isAssignedGroupRequiredText()).toBeTruthy("Assigned Group Required text not present");
-            await editCasePage.setCaseSummary(summary1);
             await editCasePage.clickSaveCase();
             await updateStatusBladePo.changeCaseStatus('Canceled');
             await updateStatusBladePo.setStatusReason('Approval Rejected');
@@ -538,11 +539,11 @@ describe('Case Status Change', () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId2);
             await viewCasePage.clickEditCaseButton();
+            await editCasePage.setCaseSummary(summary2 + " new");
             expect(await editCasePage.isSummaryRequiredText()).toBeTruthy("Summary Required text not present");
             expect(await editCasePage.isPriorityRequiredText()).toBeTruthy("Priority Required text not present");
             expect(await editCasePage.isAssignedCompanyRequiredText()).toBeTruthy("Assigned Company Required text not present");
             expect(await editCasePage.isAssignedGroupRequiredText()).toBeTruthy("Assigned Group Required text not present");
-            await editCasePage.setCaseSummary(summary2);
             await editCasePage.clickSaveCase();
             await updateStatusBladePo.changeCaseStatus('Canceled');
             await updateStatusBladePo.setStatusReason('Approval Rejected');
@@ -553,12 +554,12 @@ describe('Case Status Change', () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId3);
             await viewCasePage.clickEditCaseButton();
+            await editCasePage.setCaseSummary(summary3 + " new");
             expect(await editCasePage.isSummaryRequiredText()).toBeTruthy("Summary Required text not present");
             expect(await editCasePage.isPriorityRequiredText()).toBeTruthy("Priority Required text not present");
             expect(await editCasePage.isAssignedCompanyRequiredText()).toBeTruthy("Assigned Company Required text not present");
             expect(await editCasePage.isAssignedGroupRequiredText()).toBeTruthy("Assigned Group Required text not present");
             await editCasePage.clickOnAssignToMe();
-            await editCasePage.setCaseSummary(summary3);
             await editCasePage.clickSaveCase();
             await updateStatusBladePo.changeCaseStatus('Canceled');
             await updateStatusBladePo.setStatusReason('Approval Rejected');
@@ -569,12 +570,12 @@ describe('Case Status Change', () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId4);
             await viewCasePage.clickEditCaseButton();
+            await editCasePage.setCaseSummary(summary4 + " new");
             expect(await editCasePage.isSummaryRequiredText()).toBeTruthy("Summary Required text not present");
             expect(await editCasePage.isPriorityRequiredText()).toBeTruthy("Priority Required text not present");
             expect(await editCasePage.isAssignedCompanyRequiredText()).toBeTruthy("Assigned Company Required text not present");
             expect(await editCasePage.isAssignedGroupRequiredText()).toBeTruthy("Assigned Group Required text not present");
             await editCasePage.clickOnAssignToMe();
-            await editCasePage.setCaseSummary(summary4);
             await editCasePage.clickSaveCase();
             await updateStatusBladePo.changeCaseStatus('Canceled');
             await updateStatusBladePo.setStatusReason('Approval Rejected');
@@ -778,7 +779,7 @@ describe('Case Status Change', () => {
     //kgaikwad
     it('[DRDMV-1618]: [Case] Fields validation for case in Resolved status', async () => {
         await apiHelper.apiLogin('qkatawazi');
-        await apiHelper.deleteApprovalMapping();
+        await apiHelper.deleteApprovalMapping(caseModule);
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester("adam");

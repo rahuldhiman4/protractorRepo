@@ -8,7 +8,6 @@ class GoalTypeConfigConsolePage {
     }
 
     async isAddGoalTypeBtnDisplayed(): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.addGoalType)));
         return await $(this.selectors.addGoalType).isPresent();
     }
 }

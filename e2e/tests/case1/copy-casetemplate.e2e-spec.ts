@@ -327,7 +327,7 @@ describe('Copy Case Template', () => {
 
     describe('[DRDMV-13571]: Fields copied while creating copy of Case template which has linked task templates', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let taskTemplateDataSet, casetemplatePetramco;
+        let taskTemplateDataSet, casetemplatePetramco, newCaseTemplate1, manualTaskTemplate;
         beforeAll(async () => {
             taskTemplateDataSet = {
                 "templateName": 'taskTemplateName' + randomStr,
@@ -358,13 +358,14 @@ describe('Copy Case Template', () => {
                 "ownerGroup": "Facilities",
             }
             await apiHelper.apiLogin('fritz');
-            let newCaseTemplate1 = await apiHelper.createCaseTemplate(casetemplatePetramco);
-            let manualTaskTemplate = await apiHelper.createManualTaskTemplate(taskTemplateDataSet);
-            await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate1.displayId, manualTaskTemplate.displayId);
+            newCaseTemplate1 = await apiHelper.createCaseTemplate(casetemplatePetramco);
+            manualTaskTemplate = await apiHelper.createManualTaskTemplate(taskTemplateDataSet);
+            await browser.sleep(3000); // hardwait to reflect manual task template
         });
         it('[DRDMV-13571]: Fields copied while creating copy of Case template which has linked task templates', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate1.displayId, manualTaskTemplate.displayId);
             await utilGrid.searchAndOpenHyperlink(casetemplatePetramco.templateName);
             await editCaseTemplate.clickOnEditCaseTemplateMetadata();
             await editCaseTemplate.changeTemplateStatusDropdownValue('Draft');

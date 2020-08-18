@@ -81,7 +81,7 @@ class AssignmentConfigCreatePage {
             let arr: string[] = [];
             let fieldsCount: number  = await $$(this.selectors.addAssignmentMappingFields).count();
             for (let i = 0; i < fieldsCount; i++) {
-                var labelTxt: string = await $$(this.selectors.addAssignmentMappingFields).get(i).getText();
+                let labelTxt: string = await $$(this.selectors.addAssignmentMappingFields).get(i).getText();
                 arr[i] = labelTxt;
             }
             arr = arr.sort();

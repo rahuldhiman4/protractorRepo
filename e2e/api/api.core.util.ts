@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
-import * as uuid from 'uuid';
 import { browser } from 'protractor';
+import * as uuid from 'uuid';
 
 const recordInstanceUri = "api/rx/application/record/recordinstance";
 const dynamicDataUri = "api/com.bmc.dsm.ticketing-lib/dynamicdata/definition";
@@ -51,6 +51,7 @@ class ApiCoreUtil {
         let allRecords = await axios.get(
             dataPageUri
         );
+        console.log('Get GUID Status =============>', allRecords.status);
         return allRecords;
     }
 
@@ -62,6 +63,15 @@ class ApiCoreUtil {
             dataPageUri
         );
         return allRecords.data.data.length >= 1 ? allRecords.data.data[0]['signatureInstanceID'] || null : null;
+    }
+
+    async getNotificationEventGuid(eventName: string, company?: string): Promise<string> {
+        let allRecords = await this.getGuid("com.bmc.dsm.notification-lib%3ANotificationEvent");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            if (company) return obj[301718200] === eventName && obj[301566300] === company;
+            else return obj[301718200] === eventName;
+        });
+        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
     }
 
     async getSignatureId(guid: string): Promise<string> {
@@ -89,6 +99,14 @@ class ApiCoreUtil {
             return obj[18090] === emailSubject;
         });
         return entityObj.length >= 1 ? entityObj[0]['18290'] || null : null;
+    }
+
+    async getSenderMailId(emailSubject: string): Promise<string> {
+        let allRecords = await this.getGuid("AR System Email Messages");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj[18090] === emailSubject;
+        });
+        return entityObj.length >= 1 ? entityObj[0]['18086'] || null : null;
     }
 
     async getDynamicFieldGuid(dynamicFieldName: string): Promise<string> {
@@ -277,12 +295,25 @@ class ApiCoreUtil {
         return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
     }
 
-    async associateFoundationElements(associationName: string, entity1: string, entity2: string): Promise<void> {
-        const associateEntities = await axios.post(
+    async associateFoundationElements(associationName: string, entity1: string, entity2: string): Promise<AxiosResponse> {
+        return await axios.post(
             "api/rx/application/command",
             {
                 "resourceType": "com.bmc.arsys.rx.application.association.command.AssociateMultipleCommand",
                 "associationDefinitionName": `com.bmc.arsys.rx.foundation:${associationName}`,
+                "nodeARecordInstanceIds": [entity1],
+                "nodeBRecordInstanceIds": [entity2]
+            }
+        );
+
+    }
+
+    async disassociateFoundationElements(disassociationName: string, entity1: string, entity2: string): Promise<AxiosResponse> {
+        return await axios.post(
+            "api/rx/application/command",
+            {
+                "resourceType": "com.bmc.arsys.rx.application.association.command.DisassociateMultipleCommand",
+                "associationDefinitionName": disassociationName,
                 "nodeARecordInstanceIds": [entity1],
                 "nodeBRecordInstanceIds": [entity2]
             }
@@ -327,6 +358,14 @@ class ApiCoreUtil {
         let allRecords = await this.getGuid("com.bmc.dsm.knowledge:Knowledge Article");
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
             return obj[302300502] === docLibName;
+        });
+        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+    }
+
+    async getReadAccessOrAssignmentMappingGuid(recordName: string): Promise<string> {
+        let allRecords = await this.getGuid("com.bmc.dsm.case-lib:Case Assignment Mapping");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj[1000001437] === recordName;
         });
         return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
     }

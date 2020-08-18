@@ -61,17 +61,18 @@ let publishedApprovalStatus = "PublishApproval";
 let retiredApprovalStatus = "RetireApproval";
 let closedStatus = "Closed";
 let canceledApprovalStatus = "CancelApproval";
-var title = "DRDMV-19572 KnowledgeArticle";
+let title = "DRDMV-19572 KnowledgeArticle";
 
 describe('Knowledge Articles - Location (Region / Site) Tests', () => {
     const filePath = '../../../data/ui/attachment/articleStatus.png';
+    let knowledgeModule = 'Knowledge';
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login(caseBAUser);
         await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteKnowledgeApprovalMapping();
+        await apiHelper.deleteApprovalMapping(knowledgeModule);
         await apiHelper.apiLogin(knowledgePublisherUser);
-        var articleData = {
+        let articleData = {
             "knowledgeSet": "HR",
             "title": "KnowledgeArticle",
             "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
@@ -802,6 +803,8 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         });
 
         afterAll(async () => {
+            await composeMailPo.clickOnDiscardButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });

@@ -11,9 +11,13 @@ describe('Complex Surveys', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qfeng');
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.addCommonConfig('ADD_DWP_SURVEY_ON_CASE', [true], 'Petramco');
     });
 
     afterAll(async () => {
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.deleteCommonConfig('ADD_DWP_SURVEY_ON_CASE', 'Petramco');
         await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });

@@ -28,23 +28,19 @@ class EditFlowsetPage {
     }
 
     async isFlowsetNameDisabled(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.flowsetName)));
         return await $(this.selectors.flowsetName).getAttribute("readonly") == "true";
     }
 
     async selectProcessName(process: string): Promise<void> {
         await utilCommon.selectDropDown(this.selectors.processnameGuid, process);
-
     }
 
     async setFlowset(flowset: string): Promise<void> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.flowsetName)));
         await $(this.selectors.flowsetName).clear();
         await $(this.selectors.flowsetName).sendKeys(flowset);
     }
 
     async setDescription(description: string): Promise<void> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.descriptionField)));
         await $(this.selectors.descriptionField).clear();
         await $(this.selectors.descriptionField).sendKeys(description);
     }
@@ -62,29 +58,23 @@ class EditFlowsetPage {
     }
 
     async getStatusvalue(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.status)));
         return await $(this.selectors.status).getText();
     }
 
     async isStatusFieldDisabled(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.status)));
         return await $(this.selectors.status).getAttribute("disabled") == "true";
     }
 
     async isAddAssociationBtnDisabled(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.addAssociateCategoryBtn)));
         return await $(this.selectors.addAssociateCategoryBtn).getAttribute("disabled") == "true";
     }
 
     async isSaveBtnDisabled(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.saveButton)));
         return await $(this.selectors.saveButton).getAttribute("disabled") == "true";
     }
 
     async clickSaveBtn(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
-        //        await utilCommon.closePopUpMessage();
     }
 
     async clickSaveBtnOnProcessMapping(): Promise<void> {
@@ -113,12 +103,10 @@ class EditFlowsetPage {
     
     async navigateToProcessTab(): Promise<void> {
         let locator = $$(this.selectors.tab).get(1);
-        //        await browser.wait(this.EC.elementToBeClickable(locator));
         await locator.click();
     }
 
     async isAddNewMappingBtnDisabled(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.addNewMapping)));
         return await $(this.selectors.addNewMapping).getAttribute("disabled") == "true";
     }
 
@@ -139,38 +127,31 @@ class EditFlowsetPage {
 
     async navigateToCaseAccessTab(): Promise<void> {
         let locator = $$(this.selectors.tab).get(2);
-        //        await browser.wait(this.EC.elementToBeClickable(locator));
         await locator.click();
     }
 
     async isSelectCompanyFldDisabled(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.selectCompanyField)));
         return await $(this.selectors.selectCompanyField).getAttribute("disabled") == "true";
     }
 
     async isSelectAgentFldDisabled(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.selectAgentField)));
         return await $(this.selectors.selectAgentField).getAttribute("disabled") == "true";
     }
 
     async navigateToResolutionCodesTab(): Promise<void> {
         let locator = $$(this.selectors.tab).get(3);
-        //        await browser.wait(this.EC.elementToBeClickable(locator));
         await locator.click();
     }
 
     async isAssociateResolutionCodeBtnDisabled(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.associateResolutionCode)));
         return await $(this.selectors.associateResolutionCode).getAttribute("disabled") == "true";
     }
 
     async isAddResolutionCodeBtnDisabled(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.addResolutionCode)));
         return await $(this.selectors.addResolutionCode).getAttribute("disabled") == "true";
     }
 
     async getComapanyValue(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.companyValue)));
         return await $(this.selectors.companyValue).getText();
     }
 

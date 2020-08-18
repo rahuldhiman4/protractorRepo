@@ -16,10 +16,11 @@ let requestSecondaryStr: string = 'Request Secondary';
 
 describe("Actionable Notification Approval", () => {
     let caseData;
+    let caseModule = 'Case';
 
     beforeAll(async () => {
         await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteApprovalMapping();
+        await apiHelper.deleteApprovalMapping(caseModule);
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
         await navigationPage.gotoSettingsPage();
@@ -61,7 +62,7 @@ describe("Actionable Notification Approval", () => {
             "company": "Petramco",
             "mappingName": "Bulk Operation Mapping"
         }
-        let approvalMappingId = await apiHelper.createCaseApprovalMapping(approvalMappingData);
+        let approvalMappingId = await apiHelper.createApprovalMapping(caseModule,approvalMappingData);
         await apiHelper.associateCaseTemplateWithApprovalMapping(caseTemplateResponse.id, approvalMappingId.id);
 
         //Create Approval Flow. Category 1 = Applications, Category 2 = Social and Category 3 = Chatter
@@ -70,7 +71,7 @@ describe("Actionable Notification Approval", () => {
             "approver": "qkatawazi",
             "qualification": "'Category Tier 3' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.3191c35b400e44f4d4713ae358a43839d9bc9871fcabf0457ea0e73b477a86ab9f90c3f495aa7868bf1bb98b3077c6af56e114c89234f179071b03d05665ec32.304405421}"
         }
-        await apiHelper.createCaseApprovalFlow(approvalFlowData);
+        await apiHelper.createApprovalFlow(approvalFlowData,caseModule);
 
         caseData = {
             "Requester": "qkatawazi",
@@ -86,7 +87,7 @@ describe("Actionable Notification Approval", () => {
     afterAll(async () => {
         await utilityCommon.closeAllBlades();
         await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteApprovalMapping();
+        await apiHelper.deleteApprovalMapping(caseModule);
         await navigationPage.signOut();
     });
 
@@ -108,7 +109,7 @@ describe("Actionable Notification Approval", () => {
             await notificationTemplateEditPage.openEmailBodyEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
-            await browser.refresh(); //After Refresh notifications are getting displayed
+            await utilityCommon.refresh(); //After Refresh notifications are getting displayed
             await notificationPo.clickOnNotificationIcon();
             await notificationPo.clickActionableLink(response.displayId + ' has been sent for approval.');
             await utilityCommon.switchToNewTab(1);
@@ -140,7 +141,7 @@ describe("Actionable Notification Approval", () => {
             expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
 
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
-            await browser.refresh(); //After Refresh notifications are getting displayed
+            await utilityCommon.refresh(); //After Refresh notifications are getting displayed
             await notificationPo.clickOnNotificationIcon();
             await notificationPo.clickActionableLink(response.displayId + ' has been approved');
             await utilityCommon.switchToNewTab(1);
@@ -171,7 +172,7 @@ describe("Actionable Notification Approval", () => {
             expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
 
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
-            await browser.refresh(); //After Refresh notifications are getting displayed
+            await utilityCommon.refresh(); //After Refresh notifications are getting displayed
             await notificationPo.clickOnNotificationIcon();
             await notificationPo.clickActionableLink(`Approval for Case ${response.displayId} has been canceled.`)
             await utilityCommon.switchToNewTab(1);
@@ -202,7 +203,7 @@ describe("Actionable Notification Approval", () => {
             expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
 
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
-            await browser.refresh(); //After Refresh notifications are getting displayed
+            await utilityCommon.refresh(); //After Refresh notifications are getting displayed
             await notificationPo.clickOnNotificationIcon();
             await notificationPo.clickActionableLink(response.displayId + ' has been rejected.');
             await utilityCommon.switchToNewTab(1);
@@ -269,7 +270,7 @@ describe("Actionable Notification Approval", () => {
             expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
 
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
-            await browser.refresh(); //After Refresh notifications are getting displayed
+            await utilityCommon.refresh(); //After Refresh notifications are getting displayed
             await notificationPo.clickOnNotificationIcon();
             await notificationPo.clickActionableLink(`Approval for Case ${response.displayId} has been put on hold.`);
             await utilityCommon.switchToNewTab(1);
@@ -299,7 +300,7 @@ describe("Actionable Notification Approval", () => {
             await notificationTemplateEditPage.openEmailBodyEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
-            await browser.refresh(); //After Refresh notifications are getting displayed
+            await utilityCommon.refresh(); //After Refresh notifications are getting displayed
             await notificationPo.clickOnNotificationIcon();
             await notificationPo.clickActionableLink(`An approver has requested for additional information about Case ${response.displayId}.`);
             await utilityCommon.switchToNewTab(1);
@@ -331,7 +332,7 @@ describe("Actionable Notification Approval", () => {
             await notificationTemplateEditPage.openEmailBodyEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
-            await browser.refresh(); //After Refresh notifications are getting displayed
+            await utilityCommon.refresh(); //After Refresh notifications are getting displayed
             await notificationPo.clickOnNotificationIcon();
             await notificationPo.clickActionableLink(`Additional information about Case ${response.displayId} has been provided.`);
             await utilityCommon.switchToNewTab(1);

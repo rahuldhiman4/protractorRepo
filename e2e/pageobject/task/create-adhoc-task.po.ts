@@ -2,6 +2,7 @@ import { resolve } from "path";
 import { $, protractor, ProtractorExpectedConditions } from "protractor";
 import utilityCommon from '../../utils/utility.common';
 import CreateTaskTemplatePage from "../settings/task-management/create-tasktemplate.po";
+import ckeditorOpsPo from '../common/ck-editor/ckeditor-ops.po';
 
 class CreateAdhocTaskTemplatePage {
 
@@ -47,18 +48,47 @@ class CreateAdhocTaskTemplatePage {
         await utilityCommon.updateCKEditor(description, this.selectors.descriptionGuid);
     }
 
+    async clickOnLeftAlignIcon():Promise<void>{
+        await ckeditorOpsPo.clickOnLeftAlignIcon(this.selectors.descriptionGuid);
+    }
+
+    async clickOnRightAlignIcon():Promise<void>{
+        await ckeditorOpsPo.clickOnRightAlignIcon(this.selectors.descriptionGuid);
+    }
+
+    async clickOnCenterAlignIcon():Promise<void>{
+        await ckeditorOpsPo.clickOnCenterAlignIcon(this.selectors.descriptionGuid);
+    }
+
+    async selectColor(value:string):Promise<void>{
+        await ckeditorOpsPo.selectColor(value,this.selectors.descriptionGuid);
+    }
+
+    async enterNewLineInCKE():Promise<void>{
+        await ckeditorOpsPo.enterNewLineInCKE(this.selectors.descriptionGuid);
+    }
+
+    async clickOnBoldIcon():Promise<void>{
+        await ckeditorOpsPo.clickOnBoldIcon(this.selectors.descriptionGuid);
+    }
+
+    async clickOnItalicIcon():Promise<void>{
+        await ckeditorOpsPo.clickOnItalicIcon(this.selectors.descriptionGuid);
+    }
+
+    async clickOnUnderLineIcon():Promise<void>{
+        await ckeditorOpsPo.clickOnUnderLineIcon(this.selectors.descriptionGuid);
+    }
+
     async setSummary(summary: string): Promise<void> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.taskSummary)));
         await $(this.selectors.taskSummary).sendKeys(summary);
     }
 
     async clickSaveAdhoctask(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveAdhocTask)));
         await $(this.selectors.saveAdhocTask).click();
     }
 
     async clickChangeAssignmentButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.changeAssignmentButton)));
         await $(this.selectors.changeAssignmentButton).click();
     }
 
@@ -67,7 +97,6 @@ class CreateAdhocTaskTemplatePage {
     }
 
     async isAttachmentButtonDisplayed(): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.attachmentLink)));
         return await $(this.selectors.attachmentLink).isDisplayed();
     }
 
@@ -76,17 +105,14 @@ class CreateAdhocTaskTemplatePage {
     }
 
     async ischangeAssignmentButtonDisplayed(): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.changeAssignmentButton)));
         return await $(this.selectors.changeAssignmentButton).isDisplayed();
     }
 
     async clickAssignButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignButton)));
         await $(this.selectors.assignToMeButton).click();
     }
 
     async clickCancelAdhoctask(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.canceladhocTask)));
         await $(this.selectors.canceladhocTask).click();
     }
 
@@ -115,68 +141,54 @@ class CreateAdhocTaskTemplatePage {
     }
 
     async getStatusAttribute(): Promise<string> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.status)));
         return await $(this.selectors.status).getAttribute('disabled');
     }
 
     async getAssignCompanyAttribute(): Promise<string> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignCompany)));
         return await $(this.selectors.assignCompany).getAttribute('class');
     }
 
     async getBuisnessUnitAttribute(): Promise<string> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.buisnessUnit)));
         return await $(this.selectors.buisnessUnit).getAttribute('class');
     }
 
     async getAssigneeAttribute(): Promise<string> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignee)));
         return await $(this.selectors.assignee).getAttribute('disabled');
     }
 
     async getDepartmentAttribute(): Promise<string> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.department)));
         return await $(this.selectors.department).getAttribute('class');
     }
 
     async getAssignedGroupAttribute(): Promise<string> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignedGroup)));
         return await $(this.selectors.assignedGroup).getAttribute('class');
     }
 
     async getSaveButtonAttribute(attribute: string): Promise<string> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveAdhocTask)));
         return await $(this.selectors.saveAdhocTask).getAttribute(attribute);
     }
 
     async isTaskSummaryRequiredTextPresent(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.taskSummaryRequiredText)));
         return await utilityCommon.isRequiredTagToField(this.selectors.taskSummaryRequiredText);
     }
 
     async isPriorityRequiredTextPresent(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.piorityRequiredText)));
         return await utilityCommon.isRequiredTagToField(this.selectors.priority);
     }
 
     async isAssignedCompanyRequiredTextPresent(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.assignedCompanyRequiredText)));
         return await utilityCommon.isRequiredTagToField(this.selectors.assignedCompanyRequiredText);
-
     }
 
     async isAssignedGroupRequiredTextPresent(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.assignedGroupRequiredText)));
         return await utilityCommon.isRequiredTagToField(this.selectors.assignedGroupRequiredText);
     }
 
     async isAssignToMeButtonDisplayd(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.assignButton)));
         return await $(this.selectors.assignToMeButton).isDisplayed();
     }
 
     async getchangeAssignmentButtonText(): Promise<string> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.changeAssignmentButton)));
         return await $(this.selectors.changeAssignmentButton).getText();
     }
 
@@ -189,11 +201,11 @@ class CreateAdhocTaskTemplatePage {
     }
 
     async isAttachmentButtonEnabled(): Promise<boolean> {
-        return $(this.selectors.attachmentLink).isEnabled();
+        return await $(this.selectors.attachmentLink).isEnabled();
     }
 
     async getAttachmentLimitWarningText(): Promise<string> {
-        return $(this.selectors.attachmentLimitWarning).getText();
+        return await $(this.selectors.attachmentLimitWarning).getText();
     }
 
     async addAttachmentInDescription(fileToUpload: string[]): Promise<void> {

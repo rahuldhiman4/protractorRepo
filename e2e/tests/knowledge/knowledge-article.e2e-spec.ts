@@ -21,7 +21,7 @@ import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-import editKnowledgeAccessPage from '../../pageobject/knowledge/edit-knowledge-access.po';
+import knowledgeAccessPage from '../../pageobject/knowledge/knowledge-access-tab.po';
 import viewCasePage from '../../pageobject/case/view-case.po';
 import editCasePo from '../../pageobject/case/edit-case.po';
 import quickCasePo from '../../pageobject/case/quick-case.po';
@@ -31,12 +31,13 @@ import notificationPo from '../../pageobject/notification/notification.po';
 
 describe('Knowledge Article', () => {
     const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-    var knowledgeCandidateUser = 'kayo';
-    var knowledgeContributorUser = 'kkohri';
-    var knowledgePublisherUser = 'kmills';
-    var knowledgeCoachUser = 'kWilliamson';
-    var knowledgeManagementApp = "Knowledge Management";
-    var knowledgeArticlesTitleStr = "Knowledge Articles";
+    let knowledgeCandidateUser = 'kayo';
+    let knowledgeContributorUser = 'kkohri';
+    let knowledgePublisherUser = 'kmills';
+    let knowledgeCoachUser = 'kWilliamson';
+    let knowledgeManagementApp = "Knowledge Management";
+    let knowledgeArticlesTitleStr = "Knowledge Articles";
+    let knowledgeModule = 'Knowledge';
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('peter');
@@ -201,7 +202,7 @@ describe('Knowledge Article', () => {
     it('[DRDMV-3095]: Submitter can cancel the article from Draft status_Submitter is assignee', async () => {
         try {
             await apiHelper.apiLogin("tadmin");
-            apiHelper.deleteKnowledgeApprovalMapping();
+            apiHelper.deleteApprovalMapping(knowledgeModule);
             let knowledgeTitile = 'knowledge3095' + randomStr;
             await apiHelper.apiLogin(knowledgeCandidateUser);
             let articleData = {
@@ -354,8 +355,8 @@ describe('Knowledge Article', () => {
     //ptidke
     it('[DRDMV-3093]: Submitter can cancel the article from In Progress status_Submitter is assignee', async () => {
         try {
-            await apiHelper.apiLogin("tadmin");
-            apiHelper.deleteKnowledgeApprovalMapping();
+            await apiHelper.apiLogin("elizabeth");
+            apiHelper.deleteApprovalMapping(knowledgeModule);
             let knowledgeTitile = 'knowledge3093' + randomStr;
             await apiHelper.apiLogin(knowledgeCandidateUser);
             let articleData = {
@@ -903,8 +904,8 @@ describe('Knowledge Article', () => {
     describe('[DRDMV-2746]: Article status transition - In Progress->Draft->Published->Closed', async () => {
         let KADetails,KACoachDetails;
         beforeAll(async () => {
-            await apiHelper.apiLogin("tadmin");
-            apiHelper.deleteKnowledgeApprovalMapping();
+            await apiHelper.apiLogin("elizabeth");
+            apiHelper.deleteApprovalMapping(knowledgeModule);
             let knowledgeTitile = 'knowledge2746' + randomStr;
             await apiHelper.apiLogin(knowledgePublisherUser);
             let articleData = {
@@ -1400,11 +1401,11 @@ describe('Knowledge Article', () => {
                 "qualification": "'Operational Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.cddc9f6098ac421a1aa40ec9be503abb0fda61530bc9dbb22e7049cba9c5839018ba7205a392cd9f37141091bbe33e28405caff795929e4d805fa787dfea2c0c.304405421}"
             }
             let knowledgeApprovalMappingData = {
-                "configName": "Approval Config Name",
+                "mappingName": "Approval Config Name",
                 "company": "Petramco",
-                "status1": "CancelApproval",
-                "status2": "PublishApproval",
-                "status3": "RetireApproval"
+                "publishApproval": "PublishApproval",
+                "requestCancelation": "CancelApproval",
+                "retireApproval": "RetireApproval"
             }
             //Create Knowledge Configuraton
             const randomStr = [...Array(2)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -1413,8 +1414,8 @@ describe('Knowledge Article', () => {
             await apiHelper.createKnowledgeSet(knowledgeSetData);
             let approvalConfigGlobalTitle = knowledgeApprovalFlowData.flowName + randomStr;
             knowledgeApprovalFlowData.flowName = approvalConfigGlobalTitle;
-            await apiHelper.createKnowledgeApprovalFlow(knowledgeApprovalFlowData);
-            await apiHelper.createKnowledgeApprovalMapping(knowledgeApprovalMappingData);
+            await apiHelper.createApprovalFlow(knowledgeApprovalFlowData,knowledgeModule);
+            await apiHelper.createApprovalMapping(knowledgeModule,knowledgeApprovalMappingData);
             let articleData = {
                 "knowledgeSet": "HR",
                 "title": "KnowledgeArticle",
@@ -1448,9 +1449,9 @@ describe('Knowledge Article', () => {
             expect(await viewKnowledgeArticlePo.isApprovalButtonsPresent("Approve")).toBeFalsy();
             expect(await viewKnowledgeArticlePo.isApprovalButtonsPresent("Reject")).toBeFalsy();
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-            await editKnowledgeAccessPage.clickOnSupportGroupAccessORAgentAccessButton('Agent Access');
-            await editKnowledgeAccessPage.selectAgent('kayo');
-            await editKnowledgeAccessPage.clickCloseKnowledgeAccessBlade();
+            await knowledgeAccessPage.clickOnSupportGroupAccessORAgentAccessButton('Agent Access');
+            await knowledgeAccessPage.selectAgent('kayo');
+            await knowledgeAccessPage.clickCloseKnowledgeAccessBlade();
         });
         it('[DRDMV-21679,DRDMV-21681]:Tiggered the Approval on Article and check KA screen by Approver should show Approval component', async () => {
             await apiHelper.apiLogin('elizabeth');
@@ -1478,8 +1479,8 @@ describe('Knowledge Article', () => {
             expect(await viewKnowledgeArticlePo.isApprovalButtonsPresent("Reject")).toBeFalsy();
         });
         afterAll(async () => {
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteKnowledgeApprovalMapping();
+            await apiHelper.apiLogin('elizabeth');
+            apiHelper.deleteApprovalMapping(knowledgeModule);
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -1500,11 +1501,11 @@ describe('Knowledge Article', () => {
                 "qualification": "'Operational Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.cddc9f6098ac421a1aa40ec9be503abb0fda61530bc9dbb22e7049cba9c5839018ba7205a392cd9f37141091bbe33e28405caff795929e4d805fa787dfea2c0c.304405421}"
             }
             let knowledgeApprovalMappingData = {
-                "configName": "Approval Config Name",
+                "mappingName": "Approval Config Name",
                 "company": "Petramco",
-                "status1": "CancelApproval",
-                "status2": "PublishApproval",
-                "status3": "RetireApproval"
+                "publishApproval": "PublishApproval",
+                "requestCancelation": "CancelApproval",
+                "retireApproval": "RetireApproval"
             }
             //Create Knowledge Configuraton
             const randomStr = [...Array(2)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -1513,8 +1514,8 @@ describe('Knowledge Article', () => {
             await apiHelper.createKnowledgeSet(knowledgeSetData);
             let approvalConfigGlobalTitle = knowledgeApprovalFlowData.flowName + randomStr;
             knowledgeApprovalFlowData.flowName = approvalConfigGlobalTitle;
-            await apiHelper.createKnowledgeApprovalFlow(knowledgeApprovalFlowData);
-            await apiHelper.createKnowledgeApprovalMapping(knowledgeApprovalMappingData);
+            await apiHelper.createApprovalFlow(knowledgeApprovalFlowData,knowledgeModule);
+            await apiHelper.createApprovalMapping(knowledgeModule,knowledgeApprovalMappingData);
             articleData = {
                 "knowledgeSet": "HR",
                 "title": "KnowledgeArticle",
@@ -1620,8 +1621,8 @@ describe('Knowledge Article', () => {
             expect(await viewKnowledgeArticlePo.getStatusValue()).toBe("Retired", 'Status is not updated');
         });
         afterAll(async () => {
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteKnowledgeApprovalMapping();
+            await apiHelper.apiLogin('elizabeth');
+            apiHelper.deleteApprovalMapping(knowledgeModule);
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -1683,6 +1684,7 @@ describe('Knowledge Article', () => {
             await utilityGrid.clearFilter(); 
             await utilityGrid.searchAndOpenHyperlink(response.displayId);
             await viewCasePage.clickOnTab('Resources');
+            await browser.sleep(2000); // hardwait to populate resource tab data
             expect(await resources.getAdvancedSearchResultForParticularSection(caseData.Summary)).toEqual(caseData.Summary);
             await resources.pinRecommendedKnowledgeArticles(1);
             expect(await resources.isFirstPinnedArticleDisplayed()).toBeTruthy();
@@ -2138,8 +2140,7 @@ describe('Knowledge Article', () => {
         let currentDate = new Date();
         let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         let dateFormateValue: string = months[currentDate.getMonth()];
-        let dateFormateNew: string = dateFormateValue.substring(0, 4);
-        let dateFormate = dateFormateNew + " " + currentDate.getDate() + ", " + currentDate.getFullYear();
+        let dateFormate = dateFormateValue + " " + currentDate.getDate() + ", " + currentDate.getFullYear();
         beforeAll(async () => {
             articleData = {
                 "knowledgeSet": "HR",
@@ -2296,8 +2297,6 @@ describe('Knowledge Article', () => {
             await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr, 'title not correct');
             await utilityGrid.clearFilter();
-            await knowledgeArticlesConsolePo.removeColumnOnGrid(arr2);
-            await knowledgeArticlesConsolePo.removeColumnOnGrid(arr3);
             await knowledgeArticlesConsolePo.addColumnOnGrid(arr1);
             await knowledgeArticlesConsolePo.applyFilter('Assignee', "Kyle Mills", 'text');
             await utilityGrid.searchRecord(knowledgeArticleData.displayId);

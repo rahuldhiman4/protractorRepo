@@ -17,6 +17,10 @@ export class ConsoleEmailConfig {
         await $(this.selectors.deleteButton).click();
     }
 
+    async getColumnHeaderValue(header:string): Promise<string> {
+     return await utilGrid.getSelectedGridRecordValue(this.selectors.emailConfigGuid,header);
+    }
+
     async searchAndSelectCheckbox(value:string): Promise<void> {
         await utilGrid.clickCheckBoxOfValueInGrid(value);
     }
@@ -36,6 +40,15 @@ export class ConsoleEmailConfig {
     async removeHeader(header: string[]): Promise<void> {
         await utilGrid.removeGridColumn(this.selectors.emailConfigGuid,header);
     }
+
+    async isDeleteBtnDisplayed(): Promise<boolean> {
+        return await $(this.selectors.deleteButton).isPresent().then(async (result) => {
+            if (result) {
+                return await $(this.selectors.deleteButton).isDisplayed();
+            } else return false;
+        });
+    }
+
 }
 
 export default new ConsoleEmailConfig();

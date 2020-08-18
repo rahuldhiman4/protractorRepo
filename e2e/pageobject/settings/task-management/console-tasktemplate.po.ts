@@ -1,5 +1,4 @@
 import { $, $$, browser, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../../utils/util.common';
 import utilGrid from '../../../utils/util.grid';
 
 class TaskTemplateGridPage {
@@ -23,10 +22,8 @@ class TaskTemplateGridPage {
     }
 
     async setTaskSearchBoxValue(input: string): Promise<void> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.searchTemplate)));
         await $(this.selectors.searchTemplate).clear();
         await $(this.selectors.searchTemplate).sendKeys(input, Key.ENTER);
-        //        await utilCommon.closePopUpMessage();
     }
 
     async searchAndOpenTaskTemplate(taskName: string): Promise<void> {
@@ -48,42 +45,32 @@ class TaskTemplateGridPage {
     }
 
     async clickOnManualTaskTemplateButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.manualTaskTemplateButton)));
         await $(this.selectors.manualTaskTemplateButton).click();
     }
 
     async clickOnAutomationTaskTemplateButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.automationtaskTemplateButton)));
-        //        await browser.sleep(2000);
         await $(this.selectors.automationtaskTemplateButton).click();
     }
 
     async clickOnExtrnalTaskTemplateButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.externalTaskTemplateButton)));
         await $(this.selectors.externalTaskTemplateButton).click();
     }
 
     async clickOnCopyTaskTemplateButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.copyTaskTemplate)));
         await $(this.selectors.copyTaskTemplate).click();
     }
 
     async clickOnApplyFilter(filterName: string, filtervalue: string): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filter)));
         await $(this.selectors.filter).click();
-        //        await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText(this.selectors.availableFilterDrpDown, filterName))));
         await element(by.cssContainingText(this.selectors.availableFilterDrpDown, filterName)).click();
         if (filterName.localeCompare('Task Type') || filterName.localeCompare('Template Status')) {
             let dropDown = await $(`[title="${filtervalue}"]`);
-            //            await browser.wait(this.EC.elementToBeClickable(dropDown));
             await dropDown.click();
         } else {
             const dropDown = await $(`[title="${filterName}"]`);
             await dropDown.sendKeys(filtervalue, Key.ENTER);
         }
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.applyFilter)));
         await $(this.selectors.applyFilter).click();
-        //        await utilCommon.waitUntilSpinnerToHide();
     };
 
     async isTaskTypeFilterValue(taskTypeValue: string): Promise<boolean> {
@@ -95,14 +82,11 @@ class TaskTemplateGridPage {
     }
 
     async isFilterNamePresent(filterName: string): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filter)));
         await $(this.selectors.filter).click();
-        //        await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText(this.selectors.availableFilterDrpDown, filterName))));
         await element(by.cssContainingText(this.selectors.availableFilterDrpDown, filterName)).isDisplayed();
     }
 
     async isFilteredTemplateDisplayed(filterName: string): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText(this.selectors.recommendedTemplateLink, filterName))));
         await element(by.cssContainingText(this.selectors.recommendedTemplateLink, filterName)).click();
     }
 
@@ -120,6 +104,38 @@ class TaskTemplateGridPage {
 
     async getFirstRecordValue(columnName: string) : Promise<string> {
         return await utilGrid.getSelectedGridRecordValue(this.selectors.taskTemplateGuid, columnName);
+    }
+
+    async isAddManualTaskTemplateBtnDisplayed(): Promise<boolean> {
+        return await $(this.selectors.manualTaskTemplateButton).isPresent().then(async (result) => {
+            if (result) {
+                return await $(this.selectors.manualTaskTemplateButton).isDisplayed();
+            } else return false;
+        });
+    }
+
+    async isAddAutomatedTaskTemplateBtnDisplayed(): Promise<boolean> {
+        return await $(this.selectors.automationtaskTemplateButton).isPresent().then(async (result) => {
+            if (result) {
+                return await $(this.selectors.automationtaskTemplateButton).isDisplayed();
+            } else return false;
+        });
+    }
+
+    async isAddExternalTaskTemplateBtnDisplayed(): Promise<boolean> {
+        return await $(this.selectors.externalTaskTemplateButton).isPresent().then(async (result) => {
+            if (result) {
+                return await $(this.selectors.externalTaskTemplateButton).isDisplayed();
+            } else return false;
+        });
+    }
+
+    async isCopyTaskTemplateBtnDisplayed(): Promise<boolean> {
+        return await $(this.selectors.copyTaskTemplate).isPresent().then(async (result) => {
+            if (result) {
+                return await $(this.selectors.copyTaskTemplate).isDisplayed();
+            } else return false;
+        });
     }
 
 }

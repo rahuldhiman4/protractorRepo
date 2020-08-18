@@ -40,13 +40,11 @@ class CreateTaskTemplatePage {
     }
 
     async setTemplateName(inputValue: string): Promise<void> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.templateName)));
         await $(this.selectors.templateName).clear();
         await $(this.selectors.templateName).sendKeys(inputValue);
     }
 
     async setTaskSummary(inputValue: string): Promise<void> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.taskSummary)));
         await $(this.selectors.taskSummary).clear();
         await $(this.selectors.taskSummary).sendKeys(inputValue);
     }
@@ -60,18 +58,14 @@ class CreateTaskTemplatePage {
     }
 
     async clickOnAssignment(): Promise<void> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.changeAssignmentButton)));
         await $(this.selectors.changeAssignmentButton).click();
     }
 
     async clickOnSaveTaskTemplate(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
-        //  await utilCommon.closePopUpMessage();
     }
 
     async clickOnCancelTaskTemplate(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         await $(this.selectors.cancelButton).click();
     }
 
@@ -130,22 +124,16 @@ class CreateTaskTemplatePage {
     async setNewProcessName(bundle: string, inputValue: string): Promise<void> {
         await utilCommon.selectToggleButton(this.selectors.toggleBox, true);
         await utilCommon.selectDropDown(this.selectors.processBundleIdDrpDownForNewProcess, bundle);
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.newProcessName)));
         await $(this.selectors.newProcessName).clear();
         await $(this.selectors.newProcessName).sendKeys(inputValue);
     }
 
     async setExistingProcessName(processName: string): Promise<void> {
         await utilCommon.selectToggleButton(this.selectors.toggleBox, false);
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.processBundleIdDrpDownForExistingProcess)));
         await $(this.selectors.processBundleIdDrpDownForExistingProcess).click();
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.searchProcess)));
         await $(this.selectors.searchProcess).click();
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.setInputdataInProcess)));
         await $(this.selectors.setInputdataInProcess).sendKeys(processName);
-        //        await browser.sleep(1000);
-        var option = await element(by.cssContainingText(this.selectors.selectNameInProcess, processName));
-        //        await browser.wait(this.EC.elementToBeClickable(option));
+        let option = await element(by.cssContainingText(this.selectors.selectNameInProcess, processName));
         await option.click();
     }
 
@@ -210,12 +198,10 @@ class CreateTaskTemplatePage {
     }
 
     async isAddTaskTemplateTitleDisplayed(value: string): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.addTaskTemplateTitle)));
         return await $(this.selectors.addTaskTemplateTitle).getText() == value;
     }
 
     async isTemplateMetadataTitleDisplayed(value: string): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.templateMetadataTitle)));
         return await $(this.selectors.templateMetadataTitle).getText() == value;
     }
 }

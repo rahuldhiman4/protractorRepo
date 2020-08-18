@@ -2,18 +2,27 @@ export enum CaseTemplate {
     Active = 2000,
     Draft = 1000,
     Inactive = 3000,
-}
+};
+
+export enum NotificationEventStatus {
+    Proposed = 0,
+    Enabled = 1,
+    Offline = 2,
+    Obsolete = 3,
+    Archive = 4,
+    Delete = 5,
+};
 
 export enum TaskTemplate {
     Active = 2000,
     Draft = 1000,
     Inactive = 3000,
-}
+};
 
 export enum Case {
     Assigned = 2000,
     New = 1000,
-}
+};
 
 export enum Knowledge {
     Draft = 2000,
@@ -27,18 +36,19 @@ export enum Knowledge {
     CancelApproval = 6500,
     BeforePublished = 3500,
     AfterPublished = 5250
-}   
+};
+
 export enum MenuItemStatus {
     Active = 0,
     Inactive = 5,
-    Deprecated = 10 
-}
+    Deprecated = 10
+};
 
 export enum NotificationType {
     Alert = 1,
     Email = 2,
     AlertAndEmail = 3,
-}
+};
 
 export enum CaseStatus {
     New = 1000,
@@ -48,7 +58,8 @@ export enum CaseStatus {
     Resolved = 5000,
     Closed = 7000,
     Canceled = 6000,
-    AfterResolved = 5500
+    AfterResolved = 5500,
+    ApprovalRejected = 1900
 };
 
 export enum TaskStatus {
@@ -77,4 +88,13 @@ export enum ProcessLibConf {
 
 export enum SupportGroup {
     Offline = 2
-}
+};
+
+export enum ApplicationConfigurationsGuid {
+    ADD_DWP_SURVEY_ON_CASE = 'AGGADGG8ECDC0AQBWONEQAYYYH1NA0',
+    NEXT_REVIEW_PERIOD = 'AGGAA5V0H3XY6AOTOXQROSSUUV80EW'
+};
+
+export enum ApplicationConfigurationsValue {
+    '1_MONTH' = '2629743',
+};

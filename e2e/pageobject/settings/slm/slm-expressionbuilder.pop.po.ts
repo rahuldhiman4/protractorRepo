@@ -24,19 +24,16 @@ class SlmExpressionBuilder {
     }
 
     async getExpressionFieldAvailable(expressionField: string): Promise<string> {
-        var expressionFields: string = `//div[@class="record_field"][text()="${expressionField}"]`;
-        //        await browser.wait(this.EC.elementToBeClickable(element(by.xpath(expressionFields))));
+        let expressionFields: string = `//div[@class="record_field"][text()="${expressionField}"]`;
         return await element(by.xpath(expressionFields)).getText();
     }
 
     async getExpressionFieldAvailableAll(data: string[]): Promise<boolean> {
-        // var expressionFields: string = `//div[@class="record_field"][text()="${expressionField}"]`;
         let arr: string[] = [];
-        //        await browser.wait(this.EC.visibilityOf($(this.expressionBuilderSelectors.saveSVTExpressionButton)));
         let expressionFields: string = `div.record_field`;
         let drpDwnvalue: number = await $$(expressionFields).count();
-        for (var i = 0; i < drpDwnvalue; i++) {
-            var ab: string = await $$(expressionFields).get(i).getText();
+        for (let i = 0; i < drpDwnvalue; i++) {
+            let ab: string = await $$(expressionFields).get(i).getText();
             arr[i] = ab;
         }
         arr = arr.sort();
@@ -48,21 +45,18 @@ class SlmExpressionBuilder {
 
     async getFirstLevelExpressionField(firstLevelExpression: string): Promise<string> {
         let expressionFields: string = `div.expanded_field`;
-        //        await browser.wait(this.EC.visibilityOf($(this.expressionBuilderSelectors.saveSVTExpressionButton)));
         let qBuilder = await $(this.expressionBuilderSelectors.qualificationBuilder);
         await qBuilder.element(by.model(this.expressionBuilderSelectors.searchField)).clear();
         await qBuilder.element(by.model(this.expressionBuilderSelectors.searchField)).sendKeys(firstLevelExpression);
-        //        await browser.wait(this.EC.elementToBeClickable(element(by.xpath(expressionFields))));
         return await $(expressionFields).getText();
     }
 
     async getFirstLevelExpressionFieldAll(data: string[]): Promise<boolean> {
         let arr: string[] = [];
-        //        await browser.wait(this.EC.visibilityOf($(this.expressionBuilderSelectors.saveSVTExpressionButton)));
         let expressionFields: string = `div.expanded_field`;
         let drpDwnvalue: number = await $$(expressionFields).count();
-        for (var i = 0; i < drpDwnvalue; i++) {
-            var ab: string = await $$(expressionFields).get(i).getText();
+        for (let i = 0; i < drpDwnvalue; i++) {
+            let ab: string = await $$(expressionFields).get(i).getText();
             arr[i] = ab;
         }
         arr = arr.sort();
@@ -104,14 +98,10 @@ class SlmExpressionBuilder {
     }
 
     async selectFirstLevelExpressionField(firstLevelExpression: string): Promise<void> {
-        //        await browser.wait(this.EC.visibilityOf($(this.expressionBuilderSelectors.saveSVTExpressionButton)));
         let qBuilder = await $(this.expressionBuilderSelectors.qualificationBuilder);
         let firstLevelExpressionField = `//div[@class='expanded_field'][text()='${firstLevelExpression}']/preceding-sibling::*[contains(@class,'d-icon-plus_circle')]`;
         await qBuilder.element(by.model(this.expressionBuilderSelectors.searchField)).clear();
         await qBuilder.element(by.model(this.expressionBuilderSelectors.searchField)).sendKeys(firstLevelExpression);
-        //        await browser.wait(this.EC.elementToBeClickable(element(by.xpath(firstLevelExpressionField))));
-        // browser.sleep(2000);
-        // await element(by.xpath(firstLevelExpressionField)).click();
         let checkboxRows: ElementFinder[];
         let checkboxRows1: ElementFinder[];
         checkboxRows = await $$('.add_child_icon.icon.d-icon-plus_circle+.expanded_field');
@@ -148,18 +138,15 @@ class SlmExpressionBuilder {
 
     async getExpressionFieldOperatorAvailable(operator: string): Promise<string> {
         let expressionOperatorVal = `operator ux-expression-editor-button-${operator}`;
-        //        await browser.wait(this.EC.elementToBeClickable($(expressionOperatorVal)));
         return await element(by.class(expressionOperatorVal)).getText();
     }
 
     async getExpressionFieldOperatorAvailableAll(data: string[]): Promise<boolean> {
-        // let expressionOperator = `operator ux-expression-editor-button-`;
         let arr: string[] = [];
-        //        await browser.wait(this.EC.visibilityOf($(this.expressionBuilderSelectors.saveSVTExpressionButton)));
         let expressionOperator: string = `div[ng-repeat='operator in operatorRow'] button`;
         let drpDwnvalue: number = await $$(expressionOperator).count();
-        for (var i = 0; i < drpDwnvalue; i++) {
-            var ab: string = await $$(expressionOperator).get(i).getText();
+        for (let i = 0; i < drpDwnvalue; i++) {
+            let ab: string = await $$(expressionOperator).get(i).getText();
             arr[i] = ab;
         }
         arr = arr.sort();
@@ -169,9 +156,7 @@ class SlmExpressionBuilder {
         );
     }
 
-
     async selectFields(field: string): Promise<void> {
-        //        await browser.wait(this.EC.visibilityOf($(this.expressionBuilderSelectors.saveSVTExpressionButton)));
         let qBuilder = await $(this.expressionBuilderSelectors.qualificationBuilder);
         await qBuilder.element(by.model(this.expressionBuilderSelectors.searchField)).sendKeys(field);
         await browser.sleep(3000);
@@ -180,14 +165,12 @@ class SlmExpressionBuilder {
     }
 
     async selectOperator(operator: string): Promise<void> {
-        //    await browser.wait(this.EC.elementToBeClickable(element(by.className(expressionOperatorVal))));
         let expressionOperatorVal = `operator ux-expression-editor-button-${operator}`;
         await browser.wait(this.EC.elementToBeClickable(element(by.className(expressionOperatorVal))), 4000);
         await element(by.className(expressionOperatorVal)).click();
     }
 
     async selectFieldValue(fieldvalue: string): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.expressionBuilderSelectors.selectFieldOption)));
         await $(this.expressionBuilderSelectors.selectFieldOption).sendKeys(fieldvalue);
         await browser.wait(this.EC.elementToBeClickable($(this.expressionBuilderSelectors.selectFieldOption)), 2000);
         await $(this.expressionBuilderSelectors.selectFieldOption).click();
@@ -229,59 +212,42 @@ class SlmExpressionBuilder {
 
         switch (fieldAttribute) {
             case "NAMED_LIST":
-                var attr = `"showField =='${fieldAttribute}'"`;
+                let attr = `"showField =='${fieldAttribute}'"`;
                 const attributeName = await $(`div[ng-if=${attr}]`);
-                //                await browser.wait(this.EC.elementToBeClickable(attributeName.$(selectDropDown)));
                 await attributeName.$(selectDropDown).click();
                 let option = await element(by.cssContainingText('.ui-select-choices-row-inner div', fieldOptionValue));
                 await browser.wait(this.EC.elementToBeClickable(option), 2000);
                 await option.click();
                 break;
             case "STATUS":
-                //                await browser.wait(this.EC.elementToBeClickable($('[aria-hidden="false"] select[ng-model="selectedValue"]')));
                 await $('[aria-hidden="false"] select[ng-model="selectedValue"]').click();
                 await element(by.cssContainingText('option', fieldOptionValue)).click();
                 break;
             case "SELECTION":
-                //                await browser.wait(this.EC.elementToBeClickable($('[aria-hidden="false"] select[ng-model="selectedValue"]')));
                 await $('[aria-hidden="false"] select[ng-model="selectedValue"]').click();
                 await element(by.cssContainingText('option', fieldOptionValue)).click(); break;
             case "DATE_TIME":
-                //                await browser.wait(this.EC.elementToBeClickable($("input[ng-model='date']")));
                 await element(by.css("input[ng-model='date']")).sendKeys(fieldOptionValue);
                 break;
             case "ASSOCIATION":
-                //                await browser.wait(this.EC.elementToBeClickable(clickOnOptionFieldDropDown));
                 await browser.sleep(2000);
                 await clickOnOptionFieldDropDown.click();
                 option = await element(by.cssContainingText(selectFieldOptionFromDropDown, fieldOptionValue));
-                //                await browser.wait(this.EC.elementToBeClickable(option));
                 await option.click();
                 break;
             case "PERSON":
-                //                await browser.wait(this.EC.elementToBeClickable(element(by.model('personGroupListCtrl.ngModel'))));
                 await element(by.model('personGroupListCtrl.ngModel')).sendKeys(fieldOptionValue);
-                //                browser.sleep(2000);
-                //                await browser.wait(this.EC.elementToBeClickable(element(by.className('uib-typeahead-match active'))));
                 await element(by.className('uib-typeahead-match active')).click();
-                // addButton = `${attributeRef} button`;
-                // //                await browser.wait(this.EC.elementToBeClickable(element(by.css(addButton))));
-                // await element(by.cssContainingText(addButton, addBtn)).click();
                 break;
             default:
-                //                await browser.wait(this.EC.elementToBeClickable(attributeReference.$(textField)));
                 await attributeReference.$(textField).click();
                 await attributeReference.$(textField).clear();
                 await attributeReference.$(textField).sendKeys(fieldOptionValue);
-            //         addButton = `${attributeRef} button`;
-            //         //                await browser.wait(this.EC.elementToBeClickable(element(by.css(addButton))));
-            //         await element(by.cssContainingText(addButton, addBtn)).click();
         }
     }
 
     async getSelectedExpression(): Promise<string> {
         let actualFieldName, actualOperator, actualFieldValue;
-        //        await browser.wait(this.EC.visibilityOf($(this.expressionBuilderSelectors.getExpressionFieldName)));
         actualFieldName = await $(this.expressionBuilderSelectors.getExpressionFieldName).getText();
         actualOperator = await $(this.expressionBuilderSelectors.getExpressionOperator).getText();
         actualFieldValue = await $(this.expressionBuilderSelectors.getExpressionFieldValue).getText();
@@ -291,28 +257,23 @@ class SlmExpressionBuilder {
     }
 
     async isSaveExpressionButtonDisabled(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf(element(this.expressionBuilderSelectors.saveSVTExpressionButton)));
         return await $(this.expressionBuilderSelectors.saveSVTExpressionButton).isDisplayed();
     }
 
     async clickOnAddExpressionButton(fieldAttribute: string) {
-        var ref1: string = '"' + "showField ==" + "'" + fieldAttribute + "'" + '"';
-        var addButtonVal = `div[ng-show=${ref1}] button`;
+        let ref1: string = '"' + "showField ==" + "'" + fieldAttribute + "'" + '"';
+        let addButtonVal = `div[ng-show=${ref1}] button`;
 
         if (fieldAttribute == "STATUS") {
             let ref1: string = '"' + "showField==" + "'" + fieldAttribute + "'" + '"';
             let addButtonVal = `div[ng-show=${ref1}] button`;
-            //            await browser.wait(this.EC.elementToBeClickable(option));
             await $(addButtonVal).click();
         } else if (fieldAttribute == "NAMED_LIST") {
             let ref1: string = '"' + "showField ==" + "'" + fieldAttribute + "'" + '"';
             let addButtonVal = `div[ng-if=${ref1}] button`;
-            //            await browser.wait(this.EC.elementToBeClickable(option));
             await $(addButtonVal).click();
         } else {
-            //            await browser.wait(this.EC.elementToBeClickable(option));
             await element(by.cssContainingText(addButtonVal, 'Add')).click();
-            // await $(addButtonVal).click();
         }
     }
 
@@ -322,18 +283,15 @@ class SlmExpressionBuilder {
     }
 
     async clickOnSaveExpressionButtonForTask() {
-        //        await browser.wait(this.EC.visibilityOf($(this.expressionBuilderSelectors.saveTaskSVTExpressionButton)));
         await $(this.expressionBuilderSelectors.saveTaskSVTExpressionButton).click();
     }
 
 
     async isInvalidExpression(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf(element(this.expressionBuilderSelectors.isPartialExpression)));
         return await $(this.expressionBuilderSelectors.isPartialExpression).isDisplayed();
     }
 
     async clearSelectedExpression() {
-        // await browser.wait(this.EC.visibilityOf($(this.expressionBuilderSelectors.clearExpression)));
         await $(this.expressionBuilderSelectors.clearExpression).click();
         await $(this.expressionBuilderSelectors.clearExpression).clear();
     }
@@ -341,4 +299,3 @@ class SlmExpressionBuilder {
 }
 
 export default new SlmExpressionBuilder();
-

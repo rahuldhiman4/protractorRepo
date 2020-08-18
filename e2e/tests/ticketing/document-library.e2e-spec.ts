@@ -493,22 +493,6 @@ describe('Document Library', () => {
     });
 
     //apdeshmu
-    it('[DRDMV-13019]: Verify document creation with large size attachment', async () => {
-        let filePath = '../../../data/ui/attachment/50MB.zip';
-        let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
-        await utilCommon.waitUntilSpinnerToHide();
-        await createDocumentLibraryPo.openAddNewDocumentBlade();
-        await createDocumentLibraryPo.setTitle(titleRandVal);
-        await createDocumentLibraryPo.selectCompany('Petramco');
-        await createDocumentLibraryPo.selectBusinessUnit('HR Support');
-        await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
-        await createDocumentLibraryPo.addAttachment(filePath);
-        expect(await utilCommon.isPopUpMessagePresent('The file 50MB.zip is too large and cannot be added. File size limit is: 20 MB')).toBeTruthy('Info msg not present');
-    });
-
-    //apdeshmu
     it('[DRDMV-13018]: Verify document creation with Nonsupported and Supported attachment types', async () => {
         let filePath = '../../../data/ui/attachment/Test.exe';
         let fileName1: string[] = ['articleStatus.png', 'bwfJpg.jpg', 'bwfJson1.json', 'bwfPdf.pdf', 'bwfWord1.rtf', 'bwfXlsx.xlsx', 'demo.txt'];

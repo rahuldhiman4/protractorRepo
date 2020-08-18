@@ -24,11 +24,13 @@ let psilonCaseBAUser = 'gderuno';
 let psilonCaseAgentUser = 'werusha';
 
 describe('Service Target Tests for Tasks', () => {
+    const caseModule = 'Case';
+
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login(caseBAUser);
-        await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteApprovalMapping();
+        await apiHelper.apiLogin(caseBAUser);
+        await apiHelper.deleteApprovalMapping(caseModule);
     });
 
     afterAll(async () => {

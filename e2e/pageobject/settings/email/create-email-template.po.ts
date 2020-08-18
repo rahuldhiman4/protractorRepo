@@ -6,14 +6,17 @@ class CreateEmailTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         templateName: '[rx-view-component-id="310bbc87-54ee-4994-9a1e-93b1982155f2"] input',
+        templateGuid: '310bbc87-54ee-4994-9a1e-93b1982155f2',
         companyGuid: 'd240380a-1de2-4b28-9082-81e96fc21415',
         statusGuid: '3cfbfd34-19ff-4ddb-818b-23b19c859dbe',
         labelGuid: 'a0774e28-42c2-4132-9da4-0063545e791f',
+        descriptionGuid: '0fab6085-678b-442a-851d-25085b0bde8c',
         description: '[rx-view-component-id="0fab6085-678b-442a-851d-25085b0bde8c"] input',
+        subjectGuid: '187510cc-9804-46e2-bbda-0cdba1d6c83c',
         subject: '[rx-view-component-id="187510cc-9804-46e2-bbda-0cdba1d6c83c"] textarea',
         body: '[rx-view-component-id="d898362f-92bb-495f-8d98-03f480c4864b"] .cke_editable',
-        insertField:'[rx-view-component-id="d898362f-92bb-495f-8d98-03f480c4864b"] .cke_button__expressioneditor_icon',
-        fieldValueInBody:'[rx-view-component-id="d898362f-92bb-495f-8d98-03f480c4864b"] .cke_wysiwyg_div span',
+        insertField: '[rx-view-component-id="d898362f-92bb-495f-8d98-03f480c4864b"] .cke_button__expressioneditor_icon',
+        fieldValueInBody: '[rx-view-component-id="d898362f-92bb-495f-8d98-03f480c4864b"] .cke_wysiwyg_div span',
         tableIcon: '[rx-view-component-id="d898362f-92bb-495f-8d98-03f480c4864b"] .cke_toolbar .cke_button__table_icon',
         imageIcon: '[rx-view-component-id="d898362f-92bb-495f-8d98-03f480c4864b"] .cke_toolbar .cke_button__image_icon',
         linkIcon: '[rx-view-component-id="d898362f-92bb-495f-8d98-03f480c4864b"] .cke_toolbar .cke_button__link_icon',
@@ -26,17 +29,41 @@ class CreateEmailTemplate {
         colorIcon: '[rx-view-component-id="d898362f-92bb-495f-8d98-03f480c4864b"] .cke_button__textcolor',
         fontType: '[rx-view-component-id="d898362f-92bb-495f-8d98-03f480c4864b"] .cke_combo__font',
         fontSize: '[rx-view-component-id="d898362f-92bb-495f-8d98-03f480c4864b"] .cke_combo__fontsize',
-        saveButton:'[rx-view-component-id="093a0eeb-c1e0-4ed8-945f-da46d9bbde88"] button',
+        saveButton: '[rx-view-component-id="093a0eeb-c1e0-4ed8-945f-da46d9bbde88"] button',
         cancelButton: '[rx-view-component-id="9aeef4d7-1a10-4ffd-aa3a-22665c32883c"] button',
+        moduleGuid: '4514a92a-336f-47f7-9b17-02831428d9a8',
     }
 
     async setTemplateName(value: string): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.templateName)));
         await $(this.selectors.templateName).sendKeys(value);
     }
 
     async selectCompany(value: string): Promise<void> {
         await utilCommon.selectDropDown(this.selectors.companyGuid, value);
+    }
+
+    async isCompanyRequiredTextPresent(): Promise<boolean> {
+        return await utilCommon.isRequiredTagToField(this.selectors.companyGuid);
+    }
+
+    async isTemplateRequiredTextPresent(): Promise<boolean> {
+        return await utilCommon.isRequiredTagToField(this.selectors.templateGuid);
+    }
+
+    async isModuleRequiredTextPresent(): Promise<boolean> {
+        return await utilCommon.isRequiredTagToField(this.selectors.moduleGuid);
+    }
+
+    async isStatusRequiredTextPresent(): Promise<boolean> {
+        return await utilCommon.isRequiredTagToField(this.selectors.statusGuid);
+    }
+
+    async isDescriptionRequiredTextPresent(): Promise<boolean> {
+        return await utilCommon.isRequiredTagToField(this.selectors.descriptionGuid);
+    }
+
+    async isSubjectRequiredTextPresent(): Promise<boolean> {
+        return await utilCommon.isRequiredTagToField(this.selectors.subjectGuid);
     }
 
     async selectStatusDropDown(value: string): Promise<void> {
@@ -48,16 +75,14 @@ class CreateEmailTemplate {
     }
 
     async setDescription(value: string): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.description)));
         await $(this.selectors.description).sendKeys(value);
     }
 
     async setSubject(value: string): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.subject)));
         await $(this.selectors.subject).sendKeys(value);
     }
 
-    async setFontBody(value: string):Promise<void>{
+    async setFontBody(value: string): Promise<void> {
         await $(this.selectors.body).sendKeys(value);
     }
     async setBody(value: string): Promise<void> {
@@ -71,29 +96,27 @@ class CreateEmailTemplate {
     }
 
     async clickOnSaveButton(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
     }
-    
+
     async clickOnCancelButton(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         await $(this.selectors.cancelButton).click();
     }
 
-    async isDynamicFieldDisplayedInBody(value:string):Promise<boolean>{
+    async isDynamicFieldDisplayedInBody(value: string): Promise<boolean> {
         return await element(by.cssContainingText(this.selectors.fieldValueInBody, value)).isDisplayed();
     }
 
-    async clickInTableRowOfEmailTemplate(row: number, column:number, summary:string):Promise<void>{
-        let locator=`table[summary='${summary}'] tr`;
-        let rowLocator = await $$(locator).get(row-1);
-        await rowLocator.$$('td').get(column-1).click();
+    async clickInTableRowOfEmailTemplate(row: number, column: number, summary: string): Promise<void> {
+        let locator = `table[summary='${summary}'] tr`;
+        let rowLocator = await $$(locator).get(row - 1);
+        await rowLocator.$$('td').get(column - 1).click();
     }
 
     async setDataInEmailTemplateTable(row: number, column: number, value: string, summary: string): Promise<void> {
-        let locator=`table[summary='${summary}'] tr`;
-        let rowLocator = await $$(locator).get(row-1);
-        await rowLocator.$$('td').get(column-1).sendKeys(value);
+        let locator = `table[summary='${summary}'] tr`;
+        let rowLocator = await $$(locator).get(row - 1);
+        await rowLocator.$$('td').get(column - 1).sendKeys(value);
     }
 
     async clickOnTableIcon(): Promise<void> {
