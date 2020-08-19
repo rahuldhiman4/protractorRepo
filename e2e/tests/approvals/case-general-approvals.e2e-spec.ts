@@ -1,6 +1,9 @@
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
+import { ICaseTemplate } from '../../data/api/interface/case.template.interface.api';
 import approvalConsolePage from "../../pageobject/approval/approvals-console.po";
+import editCasePo from '../../pageobject/case/edit-case.po';
+import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
@@ -16,7 +19,6 @@ import utilityGrid from '../../utils/utility.grid';
 let userData1 = undefined;
 const caseApprovalRecordDefinition = 'com.bmc.dsm.case-lib:Case';
 let caseModule = 'Case';
-
 
 describe("Case General Approval Tests", () => {
 
@@ -79,7 +81,7 @@ describe("Case General Approval Tests", () => {
                 "company": "Petramco",
                 "mappingName": "Approval Mapping for Self Approval"
             }
-            let approvalMappingId = await apiHelper.createApprovalMapping(caseModule,approvalMappingData);
+            let approvalMappingId = await apiHelper.createApprovalMapping(caseModule, approvalMappingData);
             await apiHelper.associateCaseTemplateWithApprovalMapping(caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
 
             caseData = {
@@ -149,20 +151,18 @@ describe("Case General Approval Tests", () => {
     });
 
     //skhobrag
-    describe('[DRDMV-1371]:[Approval] Approval details when case canceled not being approved', async () => {
+    describe('[DRDMV-1371,DRDMV-22257]:[Approval] Approval details when case canceled not being approved', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let approvalFlowName = 'Approval Flow' + randomStr;
-        let caseData = undefined;
-        let caseId: string;
-        let approvalMappingData = undefined;
+        let approvalMappingData = undefined, caseData = undefined, caseId: string, caseTemplateDataWithMatchingCriteria: ICaseTemplate;
 
         beforeAll(async () => {
             // Create Case Template through API
-            let caseTemplateDataWithMatchingCriteria = {
-                "templateName": 'caseTemplateForSelfApprovalWithoutProcessWithCriticalPriority' + randomStr,
-                "templateSummary": 'Automated One must Approval Case',
-                "categoryTier1": 'Applications',
-                "casePriority": "Critical",
+            caseTemplateDataWithMatchingCriteria = {
+                "templateName": 'caseTemplateName' + randomStr,
+                "templateSummary": 'Case Template Summary',
+                "categoryTier1": 'Phones',
+                "categoryTier2": 'Infrastructure',
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "businessUnit": "United States Support",
@@ -174,7 +174,14 @@ describe("Case General Approval Tests", () => {
 
             await apiHelper.apiLogin('qkatawazi');
             let caseTemplateWithMatchingSummaryResponse = await apiHelper.createCaseTemplate(caseTemplateDataWithMatchingCriteria);
-            let caseTemplateDisplayId = caseTemplateWithMatchingSummaryResponse.displayId;
+
+            let approvalFlowData = {
+                "flowName": `Approval FLow ${randomStr}`,
+                "approver": "qliu;qkatawazi",
+                "qualification": "'Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.d05a0ef4c11d0ecd132117631142e79341b678f18b3dc1b569544d6f09b085960cd750cef35ce6b4393d6900184a519f9233807bb6187d3961f0fff43adc553f.304405421} AND 'Category Tier 2' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.a98e71fb172dbf594abbfae7cfe2114dded55c95efbfe6e2594137d94af12686911bed8da886fadca5c821fea4f942efa89f3aa072ee088232336bad5f4f8f06.304405421}"
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createApprovalFlow(approvalFlowData, caseModule);
 
             //Create Approval Mapping through API
             approvalMappingData = {
@@ -186,72 +193,37 @@ describe("Case General Approval Tests", () => {
                 "company": "Petramco",
                 "mappingName": "Approval Mapping for One Must Approval"
             }
-            let approvalMappingId = await apiHelper.createApprovalMapping(caseModule,approvalMappingData);
+            let approvalMappingId = await apiHelper.createApprovalMapping(caseModule, approvalMappingData);
             await apiHelper.associateCaseTemplateWithApprovalMapping(caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
 
             caseData = {
                 "Requester": "qdu",
                 "Summary": "Automated One must Approval Case",
-                "Origin": "Agent",
-                "Case Template ID": caseTemplateDisplayId
             }
         });
 
-        it('[DRDMV-1371]:Create One must approval configuration', async () => {
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Approvals--Approval Configuration', 'Approval Configuration - Administration - Business Workflows');
-            await approvalConfigurationPage.searchAndOpenApprovalConfiguration(caseApprovalRecordDefinition);
-            expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
-            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Edit Approval Flow');
-            await approvalConfigurationPage.clickApprovalConfigurationTab('Approval Flows');
-            await approvalConfigurationPage.clickApprovalGroup('BWFA Group');
-            // await approvalConfigurationPage.deleteApprovalConfiguration('Approval Flows');
-            await approvalConfigurationPage.clickAddNewFlowLinkButton();
-            await approvalConfigurationPage.selectApprovalFlowOption('General Approval Flow');
-            expect(await approvalConfigurationPage.getNewApprovalFlowDefaultTitle()).toBe('Flow:New General Flow');
-            await approvalConfigurationPage.editNewApprovalFlowDefaultTitle(approvalFlowName);
-            await approvalConfigurationPage.selectMultipleApproversDropDownOption('One Must Approve');
-            await approvalConfigurationPage.clickExpressionLink();
-            await browser.sleep(5000); // sleep added for expression builder loading time
-            expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
-            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Create New Approval Flow');
-            await browser.sleep(3000); // sleep added for expression builder loading time
-            await approvalConfigurationPage.searchExpressionFieldOption('Category Tier 1');
-            await approvalConfigurationPage.clickRecordOption('Record Definition');
-            await approvalConfigurationPage.clickRecordOption('Case');
-            await browser.sleep(2000); // sleep added for expression builder loading time
-            await approvalConfigurationPage.selectExpressionFieldOption();
-            await browser.sleep(2000); // sleep added for expression builder loading time
-            await approvalConfigurationPage.selectExpressionOperator('=');
-            await browser.sleep(1000); // sleep added for expression builder loading time
-            await approvalConfigurationPage.clickExpressionOperatorLinkToSelectExpressionValue();
-            await approvalConfigurationPage.selectExpressionValuesOptions('Categorization', 'Operational');
-            await approvalConfigurationPage.searchFoundationDataToApprovalExpression('Applications');
-            await approvalConfigurationPage.clickSelectLink();
-            await approvalConfigurationPage.clickFoundationDataSaveButton();
-            await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
-            await approvalConfigurationPage.clickSelectApproversLink();
-            await approvalConfigurationPage.selectApproversForApproverFlow('Person', 'Katawazi');
-            await approvalConfigurationPage.selectApproverSectionForGeneralApprovalFlow('Person');
-            await approvalConfigurationPage.selectApproversForApproverFlow('Person', 'qliu');
-            await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
-            await approvalConfigurationPage.clickApprovalFlowSaveButton();
-            await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
-        });
-
-        it('[DRDMV-1371]:Create a case and verify Show Approvers Blade information', async () => {
+        it('[DRDMV-1371,DRDMV-22257]:Create a case and verify Show Approvers Blade information', async () => {
             await apiHelper.apiLogin('qfeng');
             let response = await apiHelper.createCase(caseData);
             caseId = response.displayId;
             await navigationPage.signOut();
             await loginPage.login('qfeng');
+            // Edit case and select case template for DRDMV-22257
+            await utilityGrid.searchAndOpenHyperlink(caseId);
+            expect(await viewCasePo.getTextOfStatus()).toBe("New");
+            expect(await viewCasePo.isShowApproversBannerDisplayed()).toBeFalsy('Approval is triggerd');
+            await viewCasePo.clickEditCaseButton();
+            await editCasePo.clickOnSelectCaseTemplate();
+            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateDataWithMatchingCriteria.templateName);
+            await editCasePo.clickSaveCase();
+            await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
             expect(await viewCasePo.isShowApproversBannerDisplayed()).toBeTruthy('Show Approvers Banner is not displayed');
             expect(await viewCasePo.getShowPendingApproversInfo()).toContain('Pending Approval :1');
         });
 
-        it('[DRDMV-1371]:Cancel the case and verify the case details', async () => {
+        it('[DRDMV-1371,DRDMV-22257]:Cancel the case and verify the case details', async () => {
             await updateStatusBladePo.changeCaseStatus('Canceled');
             await updateStatusBladePo.setStatusReason('Approval Rejected');
             await updateStatusBladePo.clickSaveStatus('Canceled');
@@ -311,7 +283,7 @@ describe("Case General Approval Tests", () => {
                 "company": "Petramco",
                 "mappingName": "Approval Mapping for One Must Approval"
             }
-            let approvalMappingId = await apiHelper.createApprovalMapping(caseModule,approvalMappingData);
+            let approvalMappingId = await apiHelper.createApprovalMapping(caseModule, approvalMappingData);
             await apiHelper.associateCaseTemplateWithApprovalMapping(caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
 
             caseData = {
@@ -568,7 +540,7 @@ describe("Case General Approval Tests", () => {
                     ]
                 }
             ]
-            await apiHelper.createApprovalFlow(approvalFlows,caseModule, true);
+            await apiHelper.createApprovalFlow(approvalFlows, caseModule, true);
 
             //Create Approval Mapping through API
             approvalMappingData = {
@@ -580,7 +552,7 @@ describe("Case General Approval Tests", () => {
                 "company": "Petramco",
                 "mappingName": "Approval Mapping for One Must Approval"
             }
-            approvalMappingResponse = await apiHelper.createApprovalMapping(caseModule,approvalMappingData);
+            approvalMappingResponse = await apiHelper.createApprovalMapping(caseModule, approvalMappingData);
             await apiHelper.associateCaseTemplateWithApprovalMapping(activeToInactiveTemplate.id, approvalMappingResponse.id);
             await apiHelper.associateCaseTemplateWithApprovalMapping(removeAssociationTemplate.id, approvalMappingResponse.id);
             caseData1 = {
