@@ -265,6 +265,24 @@ class EditApprovalMapping {
     async selectAssociatedCaseTemplateCheckbox(): Promise<void> {
         await $$(this.selectors.caseTemplateSelectionArea).last().$(this.selectors.selectCaseTemplate).click();
     }
+
+    async isCaseCreatedUsingTemplateGoInApprovalToggleFalse(): Promise<boolean> {
+        const togglebutton = await $(`[rx-view-component-id="${this.selectors.casesCreatedWithoutTemplateToggleBtnGuid}"]`);
+        let enableButton = await togglebutton.$('.d-icon-check').getAttribute('aria-pressed');
+        let disableButton = await togglebutton.$('.d-icon-circle_slash_o').getAttribute('aria-pressed');
+        return enableButton == 'false' && disableButton == 'true';
+    }
+
+    async isCaseCreatedUsingTemplateGoInApprovalToggleDisplayed(): Promise<boolean> {
+        return await $(`[rx-view-component-id="${this.selectors.casesCreatedWithoutTemplateToggleBtnGuid}"]`).isPresent().then(async (present) => {
+            if (present) return await $(`[rx-view-component-id="${this.selectors.casesCreatedWithoutTemplateToggleBtnGuid}"]`).isDisplayed();
+            else return false;
+        });
+    }
+
+    async setCaseCreatedUsingTemplateGoInApprovalToggle(enable: boolean): Promise<void> {
+        await utilCommon.selectToggleButton(this.selectors.casesCreatedWithoutTemplateToggleBtnGuid, enable);
+    }
 }
 
 export default new EditApprovalMapping();

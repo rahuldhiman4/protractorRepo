@@ -9,7 +9,8 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
-
+import utilityGrid from '../../utils/utility.grid';
+import viewCasePo from '../../pageobject/case/view-case.po';
 
 describe("Approval Mapping Tests", () => {
     const approvalMappingNameStr = "Approval Mapping Name";
@@ -23,7 +24,6 @@ describe("Approval Mapping Tests", () => {
     const approvalTriggerMsg = "Approval process starts when the case has above status.";
     const approvalMappingMsg = "Mapping the result of the approval process to the case status.";
     const approvalStatusMappingLabel = "Status mapping:";
-    const caseApprovalMappingRecordDefinition = 'com.bmc.dsm.case-lib:Case Approval Mapping';
     let caseModule = 'Case';
 
     let twoCompanyUser;
@@ -334,12 +334,12 @@ describe("Approval Mapping Tests", () => {
     });
 
     //skhobrag
-    describe('[DRDMV-11881]:[Approval Mapping] - Create Global Approval Mapping with all fields', async () => {
+    describe('[DRDMV-11881,DRDMV-22947]:[Approval Mapping] - Create Global Approval Mapping with all fields, Toggle button status', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let approvalMappingName = 'Approval Mapping' + randomStr;
         let flowsetValues: string[] = ["Facilities Management"];
 
-        it('[DRDMV-11881]: Create Global Approval Mapping with all fields', async () => {
+        it('[DRDMV-11881,DRDMV-22947]: Create Global Approval Mapping with all fields', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', 'Configure Case Approvals - Business Workflows');
             await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
@@ -353,12 +353,13 @@ describe("Approval Mapping Tests", () => {
             await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Pending');
             await createApprovalMappingPage.selectStatusMappingRejected('Canceled');
             await createApprovalMappingPage.selectStatusMappingError('New');
+            expect(await editApprovalMappingPage.isCaseCreatedUsingTemplateGoInApprovalToggleDisplayed()).toBeFalsy('Cases created without using any template should go through approval displayed.');
             expect(await createApprovalMappingPage.isSaveApprovalMappingBtnEnabled()).toBeFalsy();
             await createApprovalMappingPage.clickSaveApprovalMappingBtn();
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
             expect(await editApprovalMappingPage.getSelectedCompany()).toBe('- Global -');
         });
-        it('[DRDMV-11881]: Verify global approval mapping with different company user', async () => {
+        it('[DRDMV-11881,DRDMV-22947]: Verify global approval mapping with different company user', async () => {
             await navigationPage.signOut();
             await loginPage.login('gderuno');
             await navigationPage.gotoSettingsPage();
@@ -366,6 +367,7 @@ describe("Approval Mapping Tests", () => {
             await utilGrid.searchAndOpenHyperlink(approvalMappingName);
             expect(await editApprovalMappingPage.getSelectedCompany()).toBe('- Global -');
             expect(await editApprovalMappingPage.getApprovalMappingName()).toBe(approvalMappingName);
+            expect(await editApprovalMappingPage.isCaseCreatedUsingTemplateGoInApprovalToggleFalse()).toBeTruthy('Cases created without using any template is toggle values is true.');
         });
         afterAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
@@ -644,4 +646,159 @@ describe("Approval Mapping Tests", () => {
         });
     });
 
+    describe('[DRDMV-22949]:Different Approval Mapping Configurations for Case and the way it processes', async () => {
+        const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseTemplateName1 = 'CaseTemplate1_' + randomStr;
+        let caseTemplateName2 = 'CaseTemplate2_' + randomStr;
+        let caseTemplate1, caseTemplate2, approvalMappingData;
+        beforeAll(async () => {
+            //Create Approval Flow. Category 1 = Phones, Category 2 = Infrastructure
+            let approvalFlowData = {
+                "flowName": `Approval FLow ${randomStr}`,
+                "approver": "qliu;qkatawazi",
+                "qualification": "'Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.d05a0ef4c11d0ecd132117631142e79341b678f18b3dc1b569544d6f09b085960cd750cef35ce6b4393d6900184a519f9233807bb6187d3961f0fff43adc553f.304405421} AND 'Category Tier 2' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.a98e71fb172dbf594abbfae7cfe2114dded55c95efbfe6e2594137d94af12686911bed8da886fadca5c821fea4f942efa89f3aa072ee088232336bad5f4f8f06.304405421}"
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createApprovalFlow(approvalFlowData, caseModule);
+
+            // Create Case Templates through API
+            let caseTemplateData = {
+                "templateName": caseTemplateName1,
+                "templateSummary": 'Case Template Summary',
+                "categoryTier1": 'Phones',
+                "categoryTier2": 'Infrastructure',
+                "templateStatus": "Active",
+                "company": "Petramco",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qfeng",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3"
+            };
+            // Create case template which will be changed to Inactive status
+            caseTemplate1 = await apiHelper.createCaseTemplate(caseTemplateData);
+            caseTemplateData.templateName = caseTemplateName2;
+            caseTemplate2 = await apiHelper.createCaseTemplate(caseTemplateData);
+
+            //Create Approval Mapping through API
+            approvalMappingData = {
+                "triggerStatus": "Assigned",
+                "errorStatus": "New",
+                "approvedStatus": "InProgress",
+                "noApprovalFoundStatus": "Assigned",
+                "rejectStatus": "Canceled",
+                "company": "Petramco",
+                "mappingName": "Approval Mapping for One Must Approval"
+            }
+            let approvalMappingResponse = await apiHelper.createApprovalMapping(caseModule, approvalMappingData);
+            await apiHelper.associateCaseTemplateWithApprovalMapping(caseTemplate1.id, approvalMappingResponse.id);
+        });
+        it('[DRDMV-22949]:Toggle False, case created using template which added in approval mapping, case should go in Approval', async () => {
+            await apiHelper.apiLogin('qkatawazi');
+            let caseData = {
+                "Requester": "qdu",
+                "Summary": "Toggle False, case template added in approval mapping" + "_" + randomStr,
+                "Case Template ID": caseTemplate1.id
+            }
+            let caseInfo = await apiHelper.createCase(caseData);
+            await navigationPage.signOut();
+            await loginPage.login('qfeng');
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(caseInfo.displayId);
+            expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
+            expect(await viewCasePo.isShowApproversBannerDisplayed()).toBeTruthy('Approval is not triggered');
+        });
+        it('[DRDMV-22949]:Toggle False, case created without template, case should NOT go in Approval', async () => {
+            await apiHelper.apiLogin('qkatawazi');
+            let caseData = {
+                "Requester": "qdu",
+                "Summary": "Toggle False, case without template" + "_" + randomStr,
+                "Category Tier 1": "Phones",
+                "Category Tier 2": "Infrastructure",
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
+                "Assignee": "qfeng",
+            }
+            let caseInfo = await apiHelper.createCase(caseData);
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(caseInfo.displayId);
+            expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
+            expect(await viewCasePo.isShowApproversBannerDisplayed()).toBeFalsy('Approval is triggered');
+        });
+        it('[DRDMV-22949]:Toggle False, case created using template which NOT added in approval mapping, case should NOT go in Approval', async () => {
+            await apiHelper.apiLogin('qkatawazi');
+            let caseData = {
+                "Requester": "qdu",
+                "Summary": "Toggle False, case created using template which NOT added in approval mapping, case should NOT go in Approval" + "_" + randomStr,
+                "Case Template ID": caseTemplate2.id
+            }
+            let caseInfo = await apiHelper.createCase(caseData);
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(caseInfo.displayId);
+            expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
+            expect(await viewCasePo.isShowApproversBannerDisplayed()).toBeFalsy('Approval is triggered');
+        });
+        it('[DRDMV-22949]:Set toggle in approval mapping as True', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', 'Configure Case Approvals - Business Workflows');
+            await utilGrid.searchAndOpenHyperlink(approvalMappingData.mappingName);
+            await editApprovalMappingPage.setCaseCreatedUsingTemplateGoInApprovalToggle(true);
+            await editApprovalMappingPage.clickSaveApprovalMappingBtn();
+        });
+        it('[DRDMV-22949]:Toggle True, case created using template which added in approval mapping, case should go in Approval', async () => {
+            await apiHelper.apiLogin('qkatawazi');
+            let caseData = {
+                "Requester": "qdu",
+                "Summary": "Toggle True, case template added in approval mapping" + "_" + randomStr,
+                "Case Template ID": caseTemplate1.id
+            }
+            let caseInfo = await apiHelper.createCase(caseData);
+            await navigationPage.signOut();
+            await loginPage.login('qfeng');
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(caseInfo.displayId);
+            expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
+            expect(await viewCasePo.isShowApproversBannerDisplayed()).toBeTruthy('Approval is not triggered');
+        });
+        it('[DRDMV-22949]:Toggle True, case created without template, case should go in Approval', async () => {
+            await apiHelper.apiLogin('qkatawazi');
+            let caseData = {
+                "Requester": "qdu",
+                "Summary": "Toggle True, case without template" + "_" + randomStr,
+                "Category Tier 1": "Phones",
+                "Category Tier 2": "Infrastructure",
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
+                "Assignee": "qfeng",
+            }
+            let caseInfo = await apiHelper.createCase(caseData);
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(caseInfo.displayId);
+            expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
+            expect(await viewCasePo.isShowApproversBannerDisplayed()).toBeTruthy('Approval is not triggered');
+        });
+        it('[DRDMV-22949]:Toggle True, case created using template which NOT added in approval mapping, case should NOT go in Approval', async () => {
+            await apiHelper.apiLogin('qkatawazi');
+            let caseData = {
+                "Requester": "qdu",
+                "Summary": "Toggle True, case template NOT added in approval mapping" + "_" + randomStr,
+                "Case Template ID": caseTemplate2.id
+            }
+            let caseInfo = await apiHelper.createCase(caseData);
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(caseInfo.displayId);
+            expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
+            expect(await viewCasePo.isShowApproversBannerDisplayed()).toBeFalsy('Approval is triggered');
+        });
+        afterAll(async () => {
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.deleteApprovalMapping(caseModule);
+            await navigationPage.signOut();
+            await loginPage.login("qkatawazi");
+        });
+    });
 });
