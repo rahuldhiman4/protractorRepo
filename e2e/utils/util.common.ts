@@ -427,8 +427,8 @@ export class Util {
     }
 
     async isButtonVisible(buttonName: string): Promise<boolean> {
-        return await element(by.cssContainingText('button.d-button', buttonName)).isPresent().then( async (result) => {
-            if(result) return await element(by.cssContainingText('button.d-button', buttonName)).isDisplayed();
+        return await element(by.cssContainingText('button.d-button', buttonName)).isPresent().then(async (result) => {
+            if (result) return await element(by.cssContainingText('button.d-button', buttonName)).isDisplayed();
         })
     }
 }

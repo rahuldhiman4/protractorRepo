@@ -241,7 +241,7 @@ class ApiHelper {
     async getHTMLBodyOfEmail(emailSubject: string): Promise<string> {
         return await apiCoreUtil.getEmailHTMLBody(emailSubject);
     }
-    
+
     async getSenderMailId(emailSubject: string): Promise<string> {
         return await apiCoreUtil.getSenderMailId(emailSubject);
     }
@@ -2266,8 +2266,19 @@ class ApiHelper {
                 }
             }
         } else {
-            approvalFlow = cloneDeep(MULTI_APPROVAL_FLOW);
-            approvalFlow.approvalFlowConfigurationList = data;
+            switch (approvalFlowModule) {
+                case "Case": {
+                    if (!approvalFlowGroup) approvalFlowGroup = "BWFA Group";
+                    approvalFlowRecordDefinition = "com.bmc.dsm.case-lib:Case";
+                    approvalFlow = cloneDeep(MULTI_APPROVAL_FLOW);
+                    approvalFlow.approvalFlowConfigurationList = data;
+                    break;
+                }
+                default: {
+                    console.log('ERROR: Put valid Record Definition for approval flow creation');
+                    break;
+                }
+            }
         }
 
         let response = await axios.put(

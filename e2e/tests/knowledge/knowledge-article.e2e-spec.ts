@@ -809,7 +809,7 @@ describe('Knowledge Article', () => {
         let knowledgeTitile = 'knowledge5192' + randomStr;
         let knowledgeTitileSecond = 'knowledgeNewUnflag' + randomStr;
         beforeAll(async () => {
-           await apiHelper.apiLogin('peter');
+            await apiHelper.apiLogin('peter');
             let articleDataFirst = {
                 "knowledgeSet": "HR",
                 "title": `${knowledgeTitile}`,
@@ -902,7 +902,7 @@ describe('Knowledge Article', () => {
     });
 
     describe('[DRDMV-2746]: Article status transition - In Progress->Draft->Published->Closed', async () => {
-        let KADetails,KACoachDetails;
+        let KADetails, KACoachDetails;
         beforeAll(async () => {
             await apiHelper.apiLogin("elizabeth");
             apiHelper.deleteApprovalMapping(knowledgeModule);
@@ -952,7 +952,7 @@ describe('Knowledge Article', () => {
             await navigationPage.gotoKnoweldgeConsoleFromKM();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
-            expect(await editKnowledgePage.getStatusValue()).toContain('Retired', 'Status not Set');           
+            expect(await editKnowledgePage.getStatusValue()).toContain('Retired', 'Status not Set');
             await editKnowledgePage.setClosedKnowledgeStatus('Closed');
             expect(await editKnowledgePage.getStatusValue()).toContain('Closed', 'Status not Set');
             await navigationPage.gotoKnoweldgeConsoleFromKM();
@@ -1414,8 +1414,8 @@ describe('Knowledge Article', () => {
             await apiHelper.createKnowledgeSet(knowledgeSetData);
             let approvalConfigGlobalTitle = knowledgeApprovalFlowData.flowName + randomStr;
             knowledgeApprovalFlowData.flowName = approvalConfigGlobalTitle;
-            await apiHelper.createApprovalFlow(knowledgeApprovalFlowData,knowledgeModule);
-            await apiHelper.createApprovalMapping(knowledgeModule,knowledgeApprovalMappingData);
+            await apiHelper.createApprovalFlow(knowledgeApprovalFlowData, knowledgeModule);
+            await apiHelper.createApprovalMapping(knowledgeModule, knowledgeApprovalMappingData);
             let articleData = {
                 "knowledgeSet": "HR",
                 "title": "KnowledgeArticle",
@@ -1514,8 +1514,8 @@ describe('Knowledge Article', () => {
             await apiHelper.createKnowledgeSet(knowledgeSetData);
             let approvalConfigGlobalTitle = knowledgeApprovalFlowData.flowName + randomStr;
             knowledgeApprovalFlowData.flowName = approvalConfigGlobalTitle;
-            await apiHelper.createApprovalFlow(knowledgeApprovalFlowData,knowledgeModule);
-            await apiHelper.createApprovalMapping(knowledgeModule,knowledgeApprovalMappingData);
+            await apiHelper.createApprovalFlow(knowledgeApprovalFlowData, knowledgeModule);
+            await apiHelper.createApprovalMapping(knowledgeModule, knowledgeApprovalMappingData);
             articleData = {
                 "knowledgeSet": "HR",
                 "title": "KnowledgeArticle",
@@ -1630,7 +1630,7 @@ describe('Knowledge Article', () => {
 
     describe('[DRDMV-1249,DRDMV-1250,DRDMV-1225,DRDMV-2695]:[Knowledge Article Search] Knowledge Articles are searched based on Case Summary and  in the Resources tab', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let knowledgeArticleData1, knowledgeArticleData2, caseData, response;
+        let knowledgeArticleData1, knowledgeArticleData2, caseData, createCaseResponse;
         beforeAll(async () => {
             await apiHelper.apiLogin('elizabeth');
             let caseTemplateData = {
@@ -1662,12 +1662,6 @@ describe('Knowledge Article', () => {
             }
             let caseTemplateResponse = await apiHelper.createCaseTemplate(caseTemplateData);
             let caseTemplateDisplayId: string = caseTemplateResponse.displayId;
-            caseData = {
-                "Requester": "qdu",
-                "Summary": "bonus" + "_" + randomStr,
-                "Case Template ID": caseTemplateDisplayId
-            }
-            response = await apiHelper.createCase(caseData);
             articleData.title = "bonus" + "_" + randomStr;
             knowledgeArticleData1 = await apiHelper.createKnowledgeArticle(articleData);
             articleData.title = "compensation" + "_" + randomStr;
@@ -1676,13 +1670,20 @@ describe('Knowledge Article', () => {
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData1.id, 'PublishApproval', "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with Published status not updated.");
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData2.id, "Draft")).toBeTruthy("Article with Draft status not updated.");
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData2.id, 'PublishApproval', "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with Published status not updated.");
+            caseData = {
+                "Requester": "qdu",
+                "Summary": "bonus" + "_" + randomStr,
+                "Case Template ID": caseTemplateDisplayId
+            }
+            createCaseResponse = await apiHelper.createCase(caseData);
+            await browser.sleep(2000); // hardwait to populate resource tab data
         });
         it('[DRDMV-1249,DRDMV-1250,DRDMV-1225,DRDMV-2695]:[Knowledge Article Search] Knowledge Articles are searched based on Case Summary and  in the Resources tab', async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter(); 
-            await utilityGrid.searchAndOpenHyperlink(response.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(createCaseResponse.displayId);
             await viewCasePage.clickOnTab('Resources');
             await browser.sleep(2000); // hardwait to populate resource tab data
             expect(await resources.getAdvancedSearchResultForParticularSection(caseData.Summary)).toEqual(caseData.Summary);
@@ -1693,13 +1694,13 @@ describe('Knowledge Article', () => {
             await editCasePo.clickSaveCase();
             expect(await resources.isFirstPinnedArticleDisplayed()).toBeTruthy();
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.searchAndOpenHyperlink(response.displayId);
+            await utilityGrid.searchAndOpenHyperlink(createCaseResponse.displayId);
             await viewCasePage.clickOnTab('Resources');
             expect(await resources.isFirstPinnedArticleDisplayed()).toBeTruthy();
             await resources.unpinRecommendedKnowledgeArticles(1);
             expect(await resources.isFirstPinnedArticleDisplayed()).toBeFalsy();
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.searchAndOpenHyperlink(response.displayId);
+            await utilityGrid.searchAndOpenHyperlink(createCaseResponse.displayId);
             await viewCasePage.clickOnTab('Resources');
             expect(await resources.isFirstPinnedArticleDisplayed()).toBeFalsy();
         });
