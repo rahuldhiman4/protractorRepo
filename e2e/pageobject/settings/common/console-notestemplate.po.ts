@@ -77,6 +77,22 @@ class ConsoleNotesTemplate {
         return await utilGrid.getSelectedGridRecordValue(this.selectors.gridGuid, columnHeader);
     }
 
+    async isGridColumnSorted(columnName: string ): Promise<boolean> {
+        return await utilGrid.isGridColumnSorted(columnName, 'ascending', this.selectors.gridGuid);
+    }
+
+    async getGuidValue(): Promise<string> {
+        return await utilGrid.getSelectedGridRecordValue(this.selectors.gridGuid, 'ID');
+    }
+
+    async addColumns(columnNames: string[]): Promise<void> {
+        await utilGrid.addGridColumn(this.selectors.gridGuid, columnNames);
+    } 
+
+    async removeColumns(columnNames: string[]): Promise<void> {
+        await utilGrid.removeGridColumn(this.selectors.gridGuid, columnNames);
+    } 
+
 }
 
 export default new ConsoleNotesTemplate();

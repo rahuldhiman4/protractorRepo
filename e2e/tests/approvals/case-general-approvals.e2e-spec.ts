@@ -82,7 +82,7 @@ describe("Case General Approval Tests", () => {
                 "mappingName": "Approval Mapping for Self Approval"
             }
             let approvalMappingId = await apiHelper.createApprovalMapping(caseModule, approvalMappingData);
-            await apiHelper.associateCaseTemplateWithApprovalMapping(caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
+            await apiHelper.associateTemplateWithApprovalMapping(caseModule,caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
 
             caseData = {
                 "Requester": userData1.userId,
@@ -194,7 +194,7 @@ describe("Case General Approval Tests", () => {
                 "mappingName": "Approval Mapping for One Must Approval"
             }
             let approvalMappingId = await apiHelper.createApprovalMapping(caseModule, approvalMappingData);
-            await apiHelper.associateCaseTemplateWithApprovalMapping(caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
+            await apiHelper.associateTemplateWithApprovalMapping(caseModule,caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
 
             caseData = {
                 "Requester": "qdu",
@@ -284,7 +284,7 @@ describe("Case General Approval Tests", () => {
                 "mappingName": "Approval Mapping for One Must Approval"
             }
             let approvalMappingId = await apiHelper.createApprovalMapping(caseModule, approvalMappingData);
-            await apiHelper.associateCaseTemplateWithApprovalMapping(caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
+            await apiHelper.associateTemplateWithApprovalMapping(caseModule,caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
 
             caseData = {
                 "Requester": "qdu",
@@ -553,8 +553,13 @@ describe("Case General Approval Tests", () => {
                 "mappingName": "Approval Mapping for One Must Approval"
             }
             approvalMappingResponse = await apiHelper.createApprovalMapping(caseModule, approvalMappingData);
+<<<<<<< HEAD
             await apiHelper.associateCaseTemplateWithApprovalMapping(activeToInactiveTemplate.id, approvalMappingResponse.id);
             await apiHelper.associateCaseTemplateWithApprovalMapping(removeAssociationTemplate.id, approvalMappingResponse.id);
+=======
+            await apiHelper.associateTemplateWithApprovalMapping(caseModule,activeToInactiveTemplate.id, approvalMappingResponse.id);
+            await apiHelper.associateTemplateWithApprovalMapping(caseModule,removeAssociationTemplate.id, approvalMappingResponse.id);
+>>>>>>> 9bd04eb5ce65d4eb0d6ea1eb1659b5feef2ec3f6
             caseData1 = {
                 "Requester": "qdu",
                 "Summary": "Active to Inactive Case1 " + randomStr,

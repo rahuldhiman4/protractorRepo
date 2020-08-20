@@ -478,4 +478,299 @@ describe('Person Profile test', () => {
         //Verify sorting
         expect(await personProfile.isAssignedCasesColumnsSortedAscending("Case ID")).toBeTruthy("Columns are not sorted");
     });//, 160 * 1000);
+
+    describe('[DRDMV-17021]: Check one agent can view the notes added on other agent in agent work history tab for which he has "Person Profile read access"', () => {
+        it('[DRDMV-17021]: Check one agent can view the notes added on other agent in agent work history tab for which he has "Person Profile read access"', async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.updateFoundationEntity('Person', 'qheroux', { functionalRole: 'Person Activity Read' });
+            await navigationPage.gotoCaseConsole();
+            await navigationPage.gotoPersonProfile();
+            await relatedTabPage.addRelatedPerson();
+            await addRelatedPopupPage.addPerson('Quin Strong', 'Former Manager');
+            await relatedTabPage.clickRelatedPersonName('Quin Strong');
+            await utilityCommon.switchToNewTab(1);
+            await browser.sleep(3000); //Wait for new tab to load properly
+            await activityTabPage.addActivityNote("DRDMV-17021");
+            await activityTabPage.clickOnPostButton();
+            expect(await activityTabPage.isInfoTooltipIconDisplayed()).toBeTruthy('Tooltip icon is not displayed');
+            expect(await activityTabPage.getInfoTooltipMessage()).toBe('The notes related to a person are private and accessible ONLY to the note submitter and person with “Person Activity Read” role');
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+            await activityTabPage.clickOnRefreshButton();
+            expect(await activityTabPage.isTextPresentInActivityLog('DRDMV-17021')).toBeTruthy('DRDMV-17021 log activity is not present on elizabeth activity');
+            expect(await activityTabPage.isTextPresentInActivityLog('Quin Strong')).toBeTruthy('Quin Strong is not present on elizabeth activity');
+            expect(await activityTabPage.isTextPresentInActivityLog('Elizabeth Peters')).toBeTruthy('Elizabeth Peters is not present on elizabeth activity');
+            expect(await activityTabPage.isTextPresentInActivityLog('added a note for')).toBeTruthy('added a note for is not present on elizabeth activity');
+        });
+
+        it('[DRDMV-17021]: Check one agent can view the notes added on other agent in agent work history tab for which he has "Person Profile read access"', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qheroux');
+            await navigationPage.gotoPersonProfile();
+            await relatedTabPage.addRelatedPerson();
+            await addRelatedPopupPage.addPerson('Quin Strong', 'Former Manager');
+            await relatedTabPage.clickRelatedPersonName('Quin Strong');
+            await utilityCommon.switchToNewTab(1);
+            expect(await activityTabPage.isTextPresentInActivityLog('DRDMV-17021')).toBeTruthy('DRDMV-17021 log activity is not visible to qheroux');
+            expect(await activityTabPage.isTextPresentInActivityLog('Quin Strong')).toBeTruthy('Quin Strong is not visible to qheroux');
+            expect(await activityTabPage.isTextPresentInActivityLog('Elizabeth Peters')).toBeTruthy('Elizabeth Peters is not visible to qheroux');
+            expect(await activityTabPage.isTextPresentInActivityLog('added a note for')).toBeTruthy('added a note for is not visible to qheroux');
+            await navigationPage.signOut();
+        });
+
+        it('[DRDMV-17021]: Check one agent can view the notes added on other agent in agent work history tab for which he has "Person Profile read access"', async () => {
+            await loginPage.login('franz');
+            await navigationPage.gotoPersonProfile();
+            await relatedTabPage.addRelatedPerson();
+            await addRelatedPopupPage.addPerson('Quin Strong', 'Former Manager');
+            await relatedTabPage.clickRelatedPersonName('Quin Strong');
+            expect(await activityTabPage.isTextPresentInActivityLog('DRDMV-17021')).toBeFalsy('DRDMV-17021 log activity is present');
+            expect(await activityTabPage.isTextPresentInActivityLog('Elizabeth Peters')).toBeFalsy('Elizabeth Peters is present in activity');
+            expect(await activityTabPage.isTextPresentInActivityLog('added a note for')).toBeFalsy('added a note for is present in activity');
+        });
+
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('elizabeth');
+        });
+    });
+
+    describe('[DRDMV-14186]: Verify My Profile icon with different business roles', () => {
+        let userData = {
+            "firstName": "Person1",
+            "lastName": "Person1",
+            "userId": "userData1",
+            "company": "Petramco"
+        }
+        beforeAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.createNewUser(userData);
+        });
+
+        it('[DRDMV-14186]: Verify My Profile icon with different business roles', async () => {
+            //Check the Person Profile Menu of Case Agent
+            await navigationPage.signOut();
+            await loginPage.login('qtao');
+            await navigationPage.gotoPersonProfile();
+
+            //Check the Person Profile Menu of Case Business Analyst
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+            await navigationPage.gotoPersonProfile();
+        });
+
+        it('[DRDMV-14186]: Verify My Profile icon with different business roles', async () => {
+            //Check the Person Profile Menu of Knowledge Coach
+            await navigationPage.signOut();
+            await loginPage.login('kWilliamson');
+            expect(await navigationPage.isPersonProfileDisplayed()).toBeFalsy('Person Profile is displayed');
+            await utilityCommon.closeAllBlades();
+
+            //Check the Person Profile Menu of New User
+            await navigationPage.signOut();
+            await loginPage.login('userData1@petramco.com', 'Password_1234');
+            await navigationPage.gotoPersonProfile();
+        });
+
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('elizabeth');
+        });
+    });
+
+    describe('[DRDMV-16815]: Configuration - person-to-person relationship', () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        it('[DRDMV-16815]: Configuration - person-to-person relationship', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Relationships--Person to Person', 'Person To Person Relationship console - Business Workflows');
+
+            //Check all out of box relations are present
+            expect(await relationshipsConfigsPage.isRelationshipPresent('Manager')).toBeTruthy('Manager relationship is not present');
+            expect(await relationshipsConfigsPage.getReverseRelationShipName('Manager')).toBe('Reportee', 'Reverse Relationship name for Manager does not match');
+            expect(await relationshipsConfigsPage.isRelationshipPresent('Student')).toBeTruthy('Student relationship is not present');
+            expect(await relationshipsConfigsPage.getReverseRelationShipName('Student')).toBe('Parent', 'Reverse Relationship name for Student does not match');
+            expect(await relationshipsConfigsPage.isRelationshipPresent('Guardian')).toBeTruthy('Guardian relationship is not present');
+            expect(await relationshipsConfigsPage.getReverseRelationShipName('Guardian')).toBe('Student', 'Reverse Relationship name for Guardian does not match');
+            expect(await relationshipsConfigsPage.isRelationshipPresent('Parent')).toBeTruthy('Parent relationship is not present');
+            expect(await relationshipsConfigsPage.getReverseRelationShipName('Parent')).toBe('Child', 'Reverse Relationship name for Parent does not match');
+            expect(await relationshipsConfigsPage.isRelationshipPresent('Dependent of')).toBeTruthy('Dependent of relationship is not present');
+            expect(await relationshipsConfigsPage.getReverseRelationShipName('Dependent of')).toBe('Dependent on', 'Reverse Relationship name for Dependent of does not match');
+            expect(await relationshipsConfigsPage.isRelationshipPresent('Related to')).toBeTruthy('Related to relationship is not present');
+            expect(await relationshipsConfigsPage.getReverseRelationShipName('Related to')).toBe('Related to', 'Reverse Relationship name for Related to does not match');
+
+
+            //Create a active person to person relationship
+            await relationshipsConfigsPage.clickAddRelationshipButton();
+            await relationshipsConfigsPage.setNewRelationshipName(`DRDMV-14186 Rname ${randomStr}`);
+            await relationshipsConfigsPage.setNewReverseRelationshipName(`DRDMV-14186 RRname ${randomStr}`);
+            await relationshipsConfigsPage.saveConfig();
+
+            //Verify the Relationship type reflected to Add Relationships
+            await navigationPage.gotoPersonProfile();
+            await relatedTabPage.addRelatedPerson();
+            await addRelatedPopupPage.addPerson('Fabian Krause', `DRDMV-14186 Rname ${randomStr}`);
+            await utilityCommon.closePopUpMessage();
+
+            //Verify recently added Person relationship
+            expect(await relatedTabPage.getRelatedPersonRelationship('Fabian Krause')).toBe(`DRDMV-14186 Rname ${randomStr}`);
+            await relatedTabPage.clickRelatedPersonName('Fabian Krause');
+            await utilityCommon.switchToNewTab(1);
+            await browser.sleep(3000); //Hard Wait to load the new page
+            expect(await relatedTabPage.getRelatedPersonRelationship('Elizabeth Peters')).toBe(`DRDMV-14186 RRname ${randomStr}`);
+            await relatedTabPage.removeRelatedPerson('Elizabeth Peters');
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+        });
+
+        it('[DRDMV-16815]: Configuration - person-to-person relationship', async () => {
+            //Verify the Relationship Type with Inactive status
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Relationships--Person to Person', 'Person To Person Relationship console - Business Workflows');
+            await relationshipsConfigsPage.clickAddRelationshipButton();
+            await relationshipsConfigsPage.setNewRelationshipName(`DRDMV-14186 Rname Inactive ${randomStr}`);
+            await relationshipsConfigsPage.setNewReverseRelationshipName(`DRDMV-14186 RRname Inacitve ${randomStr}`);
+            await relationshipsConfigsPage.setNewRelationshipStatus('Inactive');
+            await relationshipsConfigsPage.saveConfig();
+            await navigationPage.gotoPersonProfile();
+            await relatedTabPage.addRelatedPerson();
+            await addRelatedPopupPage.searchAndSelectPerson('Qing Yuan');
+            await addRelatedPopupPage.clickNextButton();
+            expect(await addRelatedPopupPage.isRelationshipPresentInDropdown(`DRDMV-14186 Rname Inactive ${randomStr}`)).toBeFalsy();
+            await utilityCommon.closeAllBlades();
+
+            //Verify the Relationship Type with Deprecated status
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Relationships--Person to Person', 'Person To Person Relationship console - Business Workflows');
+            await relationshipsConfigsPage.clickAddRelationshipButton();
+            await relationshipsConfigsPage.setNewRelationshipName(`DRDMV-14186 Rname Deprecated ${randomStr}`);
+            await relationshipsConfigsPage.setNewReverseRelationshipName(`DRDMV-14186 RRname Deprecated ${randomStr}`);
+            await relationshipsConfigsPage.setNewRelationshipStatus('Deprecated');
+            await relationshipsConfigsPage.saveConfig();
+
+            await navigationPage.gotoPersonProfile();
+            await relatedTabPage.addRelatedPerson();
+            await addRelatedPopupPage.searchAndSelectPerson('Qing Yuan');
+            await addRelatedPopupPage.clickNextButton();
+            expect(await addRelatedPopupPage.isRelationshipPresentInDropdown(`DRDMV-14186 Rname Deprecated ${randomStr}`)).toBeFalsy();
+            await utilityCommon.closeAllBlades();
+        });
+    });
+
+    //asahitya
+    describe('[DRDMV-16799]: Person profile display for requester', () => {
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('elizabeth');
+        });
+
+        it('[DRDMV-16799]: Person profile display for requester', async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.updateFoundationEntity('Person', 'araisin', { vipStatus: 'Yes' });
+            await apiHelper.apiLogin('elizabeth');
+
+            let caseData = {
+                "Requester": "araisin",
+                "Summary": "Test case for DRDMV-16799_1",
+                "Assigned Company": "Petramco",
+                "Business Unit": "HR Support",
+                "Support Group": "Compensation and Benefits"
+            }
+
+            //Create the case with requester as Alex Raisin
+            let response = await apiHelper.createCase(caseData);
+
+            //Verify the Person Profile of Alex Raisin
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(response.displayId);
+            await viewCasePage.clickRequsterName();
+            await utilityCommon.switchToNewTab(1);
+            expect(await personProfile.getPersonType()).toBe('Employee', 'Person type does not match');
+            expect(await personProfile.getJobTitle()).toBe('CE2', 'Job tite does not match');
+            expect(await personProfile.getCorporateID()).toBe('PET00000252', 'Corporate Id does not match');
+            expect(await personProfile.getEmployeeTypeValue()).toBe('Full time', 'Employee Type value does not match');
+            expect(await personProfile.getLoginID()).toBe('araisin', 'Login Id does not match');
+            expect(await personProfile.getFunctionalRoles()).toContain('FoundationRead');
+            expect(await personProfile.isVIPTagPresent()).toBeTruthy('VIP tag is not present');
+            expect(await personProfile.getCompany()).toContain("Petramco", "Company name mismatch");
+            expect(await personProfile.getContactNumber()).toContain("+918030914008", "Phone number mismatch");
+            expect(await personProfile.getEmail()).toContain("araisin@petramco.com", "Email mismatch");
+            expect(await personProfile.getSite()).toBe("Bangalore\n1, Wood Street/Castle Street, Ashoknagar, Bangalore, Karnataka, 560 025, India ", "Site mismatch");
+            expect(await personProfile.getManagerName()).toBe("Arcturus Mengsk", "Manager name mismatch");
+            expect(await relatedTabPage.isRemoveRelatedPersonIconEnabled('Arcturus Mengsk')).toBeFalsy('Remove icon is displayed for default relationship');
+            await personProfile.clickOnTab("Requested Cases");
+            await personProfile.clickOnTab("Assigned Cases");
+            await personProfile.clickOnTab("Support Groups");
+            await personProfile.clickOnTab("Related Cases");
+            await personProfile.clickOnTab("Related Persons");
+
+            //Add Related Person qtao and verify the relationship is added
+            await relatedTabPage.addRelatedPerson();
+            await addRelatedPopupPage.addPerson('Qianru Tao', 'Parent');
+            await relatedTabPage.clickRelatedPersonName('Qianru Tao');
+            await utilityCommon.switchToNewTab(2);
+            expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Alex Raisin', 'Child')).toBeTruthy('Relation does not match');
+            await utilityCommon.switchToNewTab(1);
+
+            //Remove the relation and verify that Relation is actually removed
+            await relatedTabPage.removeRelatedPerson('Qianru Tao');
+            await navigationPage.signOut();
+            await loginPage.login('qtao');
+            await navigationPage.gotoPersonProfile();
+            expect(await relatedTabPage.isRelatedPersonPresent('Alex Raisin')).toBeFalsy('Alex Raisin is available in Related tab');
+        });
+
+        it('[DRDMV-16799]: Person profile display for requester', async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.updateFoundationEntity('Person', 'qnorton', { vipStatus: 'Yes' });
+            await apiHelper.apiLogin('elizabeth');
+
+            let caseData = {
+                "Requester": "qnorton",
+                "Summary": "Test case for DRDMV-16799_2",
+                "Assigned Company": "Petramco",
+                "Business Unit": "Facilities Support",
+                "Support Group": "Facilities",
+                "Assignee": "Fritz"
+            }
+
+            let response = await apiHelper.createCase(caseData);
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(response.displayId);
+            await viewCasePage.clickRequsterName();
+
+            await utilityCommon.switchToNewTab(1);
+            expect(await personProfile.getPersonType()).toBe('Employee', 'Person type does not match');
+            expect(await personProfile.getJobTitle()).toBe('RA1', 'Job tite does not match');
+            expect(await personProfile.getCorporateID()).toBe('PET00000498', 'Corporate Id does not match');
+            expect(await personProfile.getEmployeeTypeValue()).toBe('Full time', 'Employee Type value does not match');
+            expect(await personProfile.getLoginID()).toBe('qnorton', 'Login Id does not match');
+            expect(await personProfile.getFunctionalRoles()).toContain('FoundationRead, Case Agent');
+            expect(await personProfile.isVIPTagPresent()).toBeTruthy('VIP tag is not present');
+            expect(await personProfile.getCompany()).toContain("Petramco", "Company name mismatch");
+            expect(await personProfile.getContactNumber()).toContain("+61288992923", "Phone number mismatch");
+            expect(await personProfile.getEmail()).toContain("qnorton@petramco.com", "Email mismatch");
+            expect(await personProfile.getSite()).toBe("Macquarie Park\nLevel 5, Building C\n11 Talavera Road\nMacquarie Park NSW, Sydney, New South Wales, 2113, Australia ", "Site mismatch");
+            expect(await personProfile.getManagerName()).toBe("RA3 Liu", "Manager name mismatch");
+            expect(await relatedTabPage.isRemoveRelatedPersonIconEnabled('RA3 Liu')).toBeFalsy('Remove icon is displayed for default relationship');
+            await personProfile.clickOnTab("Requested Cases");
+            await personProfile.clickOnTab("Assigned Cases");
+            await personProfile.clickOnTab("Support Groups");
+            await personProfile.clickOnTab("Related Cases");
+            await personProfile.clickOnTab("Related Persons");
+
+            //Add Related Person qtao and verify the relationship is added
+            await relatedTabPage.addRelatedPerson();
+            await addRelatedPopupPage.addPerson('Qianru Tao', 'Parent');
+            await relatedTabPage.clickRelatedPersonName('Qianru Tao');
+            await utilityCommon.switchToNewTab(2);
+            expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Quinn Norton', 'Child')).toBeTruthy('Relation does not match');
+            await utilityCommon.switchToNewTab(1);
+
+            //Remove the relation and verify that Relation is actually removed
+            await relatedTabPage.removeRelatedPerson('Qianru Tao');
+            await navigationPage.signOut();
+            await loginPage.login('qtao');
+            await navigationPage.gotoPersonProfile();
+            expect(await relatedTabPage.isRelatedPersonPresent('Quinn Norton')).toBeFalsy('Quinn Norton is available in Related tab');
+        });
+    });
 });

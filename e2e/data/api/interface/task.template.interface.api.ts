@@ -29,4 +29,5 @@ export interface IAdhocTask {
     supportGroup: string;
     assignee?: string;
     priority?: string;
+    label?: string;
 }

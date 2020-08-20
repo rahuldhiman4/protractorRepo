@@ -1,8 +1,5 @@
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
-import casePreviewPo from '../../pageobject/case/case-preview.po';
-import createCasePo from '../../pageobject/case/create-case.po';
-import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
@@ -22,10 +19,8 @@ import editApprovalMappingPage from "../../pageobject/settings/task-management/e
 import approvalConsolePage from "../../pageobject/approval/approvals-console.po";
 
 
-let userData1 = undefined;
-describe("Case Self Approval Tests", () => {
+describe("Task Approval UI Validations", () => {
     const taskApprovalRecordDefinition = 'com.bmc.dsm.task-lib:Task';
-    const taskMappingGuid = '59ccc726-2512-43ae-9806-c838be2665c3';
     let taskModule = 'Task';
 
     beforeAll(async () => {
@@ -44,7 +39,7 @@ describe("Case Self Approval Tests", () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let approvalFlowName = 'Task One Must Approval Flow' + randomStr;
         let caseData = undefined;
-        let manualTaskTemplateData, autoTaskTemplateData, caseId, caseId2, manualTaskId, automatedTaskId = "";
+        let manualTaskTemplateData, autoTaskTemplateData, caseId, manualTaskId;
 
         beforeAll(async () => {
             manualTaskTemplateData = {
@@ -86,14 +81,12 @@ describe("Case Self Approval Tests", () => {
             await apiHelper.apiLogin('qtao');
             let newCase = await apiHelper.createCase(caseData);
             caseId = newCase.displayId;
-            let newCase1 = await apiHelper.createCase(caseData);
-            caseId2 = newCase1.displayId;
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createAutomatedTaskTemplate(autoTaskTemplateData);
             await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
         })
 
-        it('[DRDMV-21583]:Create Self Approval Flow Without Process', async () => {
+        it('[DRDMV-21583]:Create One Must Approval Flow For Task', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Approvals--Approval Configuration', 'Approval Configuration - Administration - Business Workflows');
             await approvalConfigurationPage.searchAndOpenApprovalConfiguration(taskApprovalRecordDefinition);
@@ -149,13 +142,13 @@ describe("Case Self Approval Tests", () => {
             expect(await createApprovalMappingPage.isSaveApprovalMappingBtnEnabled()).toBeFalsy();
             await createApprovalMappingPage.clickSaveApprovalMappingBtn();
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
-            await editApprovalMappingPage.searchCaseTemplate(autoTaskTemplateData.templateName);
-            await editApprovalMappingPage.selectCaseTemplateCheckbox();
-            expect(await editApprovalMappingPage.isSelectCaseTemplateforApprovalRightArrawBtnEnabled()).toBeFalsy('Case template can be associated');
-            await editApprovalMappingPage.clickCaseTemplateforApprovalRightArrawBtn();
-            await editApprovalMappingPage.searchCaseTemplate(manualTaskTemplateData.templateName);
-            await editApprovalMappingPage.selectCaseTemplateCheckbox();
-            await editApprovalMappingPage.clickCaseTemplateforApprovalRightArrawBtn();
+            await editApprovalMappingPage.searchTaskTemplate(autoTaskTemplateData.templateName);
+            await editApprovalMappingPage.selectTaskTemplateCheckbox();
+            expect(await editApprovalMappingPage.isSelectTaskTemplateforApprovalRightArrawBtnEnabled()).toBeFalsy('Case template can be associated');
+            await editApprovalMappingPage.clickTaskTemplateforApprovalRightArrawBtn();
+            await editApprovalMappingPage.searchTaskTemplate(manualTaskTemplateData.templateName);
+            await editApprovalMappingPage.selectTaskTemplateCheckbox();
+            await editApprovalMappingPage.clickTaskTemplateforApprovalRightArrawBtn();
             await editApprovalMappingPage.clickCancelApprovalMappingBtn();
         });
 
@@ -164,8 +157,6 @@ describe("Case Self Approval Tests", () => {
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
             await viewCasePo.clickAddTaskButton();
-
-            //Add Manual task and Automation Task in Case
             await manageTask.addTaskFromTaskTemplate(manualTaskTemplateData.templateName);
             await manageTask.waitUntilNumberOfTaskLinkAppear(1);
             expect(await manageTask.isTaskLinkPresent(manualTaskTemplateData.templateSummary)).toBeTruthy(manualTaskTemplateData.templateSummary + ' Task is not added to case');

@@ -70,7 +70,7 @@ describe("Case Level Up Approval Tests", () => {
                 "mappingName": "Approval Mapping for Manager Level Approval"
             }
             let approvalMappingId = await apiHelper.createApprovalMapping(caseModule,approvalMappingData);
-            await apiHelper.associateCaseTemplateWithApprovalMapping(caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
+            await apiHelper.associateTemplateWithApprovalMapping(caseModule,caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
 
             caseData = {
                 "Requester": "qdu",
@@ -311,7 +311,7 @@ describe("Case Level Up Approval Tests", () => {
                 "mappingName": "Approval Mapping for General Level Approval"
             }
             let approvalMappingId = await apiHelper.createApprovalMapping(caseModule,approvalMappingData);
-            await apiHelper.associateCaseTemplateWithApprovalMapping(caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
+            await apiHelper.associateTemplateWithApprovalMapping(caseModule,caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
 
             caseData = {
                 "Requester": "qdu",
@@ -556,7 +556,7 @@ describe("Case Level Up Approval Tests", () => {
                 "mappingName": "Approval Mapping for Level Up Approval"
             }
             let approvalMappingId = await apiHelper.createApprovalMapping(caseModule,approvalMappingData);
-            await apiHelper.associateCaseTemplateWithApprovalMapping(caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
+            await apiHelper.associateTemplateWithApprovalMapping(caseModule,caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
 
             //Create Approval Mapping through API
             approvalMappingData1 = {
@@ -569,7 +569,7 @@ describe("Case Level Up Approval Tests", () => {
                 "mappingName": "Approval Mapping for Level Up Approval Another"
             }
             let approvalMappingId1 = await apiHelper.createApprovalMapping(caseModule,approvalMappingData1);
-            await apiHelper.associateCaseTemplateWithApprovalMapping(caseTemplateWithMatchingSummaryResponse.id, approvalMappingId1.id);
+            await apiHelper.associateTemplateWithApprovalMapping(caseModule,caseTemplateWithMatchingSummaryResponse.id, approvalMappingId1.id);
 
             caseData = {
                 "Requester": "qdu",
@@ -754,7 +754,7 @@ describe("Case Level Up Approval Tests", () => {
                 "mappingName": "Approval Mapping for Self Approval"
             }
             let approvalMappingId = await apiHelper.createApprovalMapping(caseModule,approvalMappingData);
-            await apiHelper.associateCaseTemplateWithApprovalMapping(caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
+            await apiHelper.associateTemplateWithApprovalMapping(caseModule,caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
 
             //Create Approval Mapping through API
             approvalMappingData1 = {
@@ -767,7 +767,7 @@ describe("Case Level Up Approval Tests", () => {
                 "mappingName": "Approval Mapping for One Must Approval"
             }
             let approvalMappingId1 = await apiHelper.createApprovalMapping(caseModule,approvalMappingData1);
-            await apiHelper.associateCaseTemplateWithApprovalMapping(caseTemplateWithMatchingSummaryResponse.id, approvalMappingId1.id);
+            await apiHelper.associateTemplateWithApprovalMapping(caseModule,caseTemplateWithMatchingSummaryResponse.id, approvalMappingId1.id);
 
             caseData = {
                 "Requester": "qdu",
@@ -933,7 +933,7 @@ describe("Case Level Up Approval Tests", () => {
                 "mappingName": "Approval Mapping for Self Approval"
             }
             let approvalMappingId = await apiHelper.createApprovalMapping(caseModule,approvalMappingData);
-            await apiHelper.associateCaseTemplateWithApprovalMapping(caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
+            await apiHelper.associateTemplateWithApprovalMapping(caseModule,caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
 
             caseData = {
                 "Requester": "qdu",
