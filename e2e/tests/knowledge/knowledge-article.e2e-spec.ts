@@ -2385,4 +2385,56 @@ describe('Knowledge Article', () => {
             await loginPage.login('elizabeth');
         });
     });
+
+    describe('[DRDMV-766]: [Knowledge Article] Knowledge Article creation', async () => {
+        let knowledgeArticleData;
+        let articleData,randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        beforeAll(async () => {
+            articleData = {
+                "knowledgeSet": "HR",
+                "title": "KnowledgeArticle" + randomStr,
+                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "categoryTier1": "Applications",
+                "categoryTier2": "Help Desk",
+                "categoryTier3": "Incident",
+                "region": "Australia",
+                "site": "Canberra",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "United Kingdom Support",
+                "assigneeSupportGroup": "GB Support 1",
+                "assignee": "KMills"
+            }
+            await apiHelper.apiLogin('kWilliamson');
+            knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
+        });
+        it('[DRDMV-766]:[Knowledge Article] Knowledge Article creation', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('kWilliamson');
+            await navigationPage.switchToApplication(knowledgeManagementApp);
+            await utilityCommon.switchToNewTab(1);
+            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr, 'title not correct');
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
+            await viewKnowledgeArticlePo.clickOnEditLink();
+            await editKnowledgePage.changeKnowledgeTitle("UpdatedKnowledgeArticle" + randomStr);
+            await editKnowledgePage.clickOnSaveButtonOfKA();
+            await navigationPage.gotoKnoweldgeConsoleFromKM();
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink("UpdatedKnowledgeArticle" + randomStr);
+            expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toContain("UpdatedKnowledgeArticle" + randomStr, 'title not correct');
+            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe('HR');
+            expect(await viewKnowledgeArticlePo.getKnowledgeArticleAuthor()).toBe('Kane Williamson');
+            expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe('Petramco');
+            expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe(articleData.categoryTier1);
+            expect(await viewKnowledgeArticlePo.getCategoryTier2Value()).toBe(articleData.categoryTier2);
+            expect(await viewKnowledgeArticlePo.getCategoryTier3Value()).toBe(articleData.categoryTier3);
+            expect(await viewKnowledgeArticlePo.getRegionValue()).toBe(articleData.region);
+            expect(await viewKnowledgeArticlePo.getSiteValue()).toBe(articleData.site);
+            expect(await viewKnowledgeArticlePo.getArticleReviewerGroup()).toBe('AU Support 3');
+        });       
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('elizabeth');
+        });
+    });
 });
