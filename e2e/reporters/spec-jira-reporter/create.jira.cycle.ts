@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import { filter, find, forEach, get, isArray, remove, uniqBy } from 'lodash';
+import { filter, find, forEach, get, isArray, remove, uniqBy, chain, countBy } from 'lodash';
 import * as config from './jira.util.config';
 
 const minimist = require("minimist");
@@ -22,6 +22,7 @@ export interface ExecutionDetails {
 export interface IssueKeyDetails {
     issueKey: string;
     issueId: string;
+    component?: string;
     version: string;
     priority: string;
     lastExecutionStatus: string;
@@ -61,7 +62,9 @@ export class CreateJiraCycle {
     invalidJiraTest = [];
     jiraReport = [];
 
+    componentArray = [];
     async run() {
+        console.log("Start....", this.getTimeStamp());
         this.loadConfig();
         this.filterInputFile();
         let isCycleAndFolderCreated: boolean = await this.createCycleAndFolder();
@@ -72,6 +75,30 @@ export class CreateJiraCycle {
                 await this.addExecutionToCycle(this.passJiraTest);
             if (this.failJiraTest.length)
                 await this.addExecutionToCycle(this.failJiraTest);
+
+            let result: any = chain(this.componentArray).groupBy("component").map(function (v, i) {
+                return {
+                    [i]: countBy(v, 'status')
+                }
+            }).value();
+
+            result = Object.assign({}, ...result);
+            for (let key in result) {
+                [
+                    'skipped',
+                    'failed',
+                    'passed'
+                ].forEach(status => {
+                    if (!result[key][status]) {
+                        result[key][status] = 0;
+                    }
+                })
+            }
+
+//            result.Total = {};
+            console.log(this.componentArray);
+            console.log(result);
+
             this.generateOutputFile();
             this.writeExecutionSummary();
         } else {
@@ -79,6 +106,7 @@ export class CreateJiraCycle {
             console.log(`FAILURE::###### Test Cycle details ###### \nFAILURE::Test cycle Name >> ${this.testCycleName} \nFAILURE::Test cycle Id >> ${this.testCycleId}`);
             console.log(`FAILURE::Folder Name >> ${this.folderName} \nFAILURE::Folder Id >> ${this.folderId}`);
         }
+        console.log("End....", this.getTimeStamp());
     }
 
     loadConfig() {
@@ -233,8 +261,17 @@ export class CreateJiraCycle {
         let executionIdList = [];
         let apiStatus = -1;
         let isNewExecutionStatus = "NA";
+
         for (let i = 0; i < testInput.length; i++) {
             let issueDetails = await this.getIssueDetails(testInput[i].jiraId);
+
+            this.componentArray.push({ component: issueDetails.component, status: testInput[i].status });
+
+
+            console.log("<==================>", issueDetails.component);
+            console.log(testInput[i].status, "<==================>");
+
+
             testInput[i].status != issueDetails.lastExecutionStatus ? isNewExecutionStatus = "Yes" : isNewExecutionStatus = "No";
             let executionPayload = {
                 "cycleId": `${this.testCycleId}`,
@@ -305,6 +342,12 @@ export class CreateJiraCycle {
             let totalExe = 0;
             let lastExecutionStatus = undefined;
 
+            // read issue component
+            const issueComponentArray = await issueDetails.data.fields.components;
+            let issueComponent: string = "None";
+            if (issueComponentArray[0]) {
+                issueComponent = await issueComponentArray[0].name;
+            }
             // get issue id details
             let issueIdApiResponse = await this.getIssueIdDetails(issueId);
             if (issueIdApiResponse) {
@@ -329,6 +372,7 @@ export class CreateJiraCycle {
             return {
                 issueKey: issueKey,
                 issueId: issueId,
+                component: issueComponent,
                 version: fixVersions && isArray(fixVersions) ? get(fixVersions[0], 'name') : null,
                 priority: issueDetails.data.fields.priority.name ? issueDetails.data.fields.priority.name : 'NA',
                 lastExecutionStatus,
