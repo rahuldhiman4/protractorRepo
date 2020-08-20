@@ -654,6 +654,14 @@ class ApiHelper {
             }
             templateData.fieldInstances["450000061"] = descriptionData;
         }
+        if (data.priority) {
+            let priorityValue = constants.CasePriority[data.priority];
+            let priorityObj = {
+                "id": "1000000164",
+                "value": `${priorityValue}`
+            }
+            templateData.fieldInstances["1000000164"] = priorityObj;
+        }
         let newTaskTemplate: AxiosResponse = await apiCoreUtil.createRecordInstance(templateData);
         console.log('Create Manual Task Template API Status =============>', newTaskTemplate.status);
         const taskTemplateDetails = await axios.get(
@@ -1800,11 +1808,11 @@ class ApiHelper {
                 break;
             }
             case "Task": {
-                if (approvalMappingName) {
-                    approvalMappingRecordDefinition = "com.bmc.dsm.task-lib:Task Approval Mapping";
+                approvalMappingRecordDefinition = "com.bmc.dsm.task-lib:Task Approval Mapping";
+                if (approvalMappingName) {                    
                     let allRecords = await apiCoreUtil.getGuid(approvalMappingRecordDefinition);
                     let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
-                        return obj[1000001437] === approvalMappingName;
+                        return obj[450000152] === approvalMappingName;
                     });
                     let approvalMapGuid = entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
                     if (approvalMapGuid) {
@@ -2270,8 +2278,23 @@ class ApiHelper {
                     approvalFlowRecordDefinition = "com.bmc.dsm.task-lib:Task";
                     approvalFlow = cloneDeep(TASK_APPROVAL_FLOW);
                     approvalFlow.approvalFlowConfigurationList[0].flowName = data.flowName;
-                    approvalFlow.approvalFlowConfigurationList[0].approvers = 'U:' + data.approver;
+                    approvalFlow.approvalFlowConfigurationList[0].approvers = data.approver;
                     approvalFlow.approvalFlowConfigurationList[0].qualification = data.qualification;
+                    if (data.approver) {
+                        approvalFlow.approvalFlowConfigurationList[0].approvers = data.approver;
+                    }
+
+                    if (data.isLevelUp) {
+                        approvalFlow.approvalFlowConfigurationList[0].isLevelUp = data.isLevelUp;
+                        if (data.isLevelUp == true) {
+                            approvalFlow.approvalFlowConfigurationList[0].levels = data.levels;
+                        }
+                    }
+
+                    if (data.signingCriteria) {
+                        approvalFlow.approvalFlowConfigurationList[0].signingCriteria = data.signingCriteria;
+                    }
+
                     break;
                 }
                 default: {
@@ -2373,8 +2396,22 @@ class ApiHelper {
         }
     }
     
-    async associateCaseTemplateWithApprovalMapping(templatedId: string, approvalMapping: string): Promise<boolean> {
-        let url = "api/com.bmc.dsm.shared-services-lib/rx/application/association/com.bmc.dsm.case-lib:Case Approval Mapping to Case Template/" + approvalMapping + "/" + templatedId + "?allowDuplicates=true";
+    async associateTemplateWithApprovalMapping(approvalModule: string, templatedId: string, approvalMapping: string): Promise<boolean> {
+        let url;
+        switch (approvalModule) {
+            case "Case": {
+                url = "api/com.bmc.dsm.shared-services-lib/rx/application/association/com.bmc.dsm.case-lib:Case Approval Mapping to Case Template/" + approvalMapping + "/" + templatedId + "?allowDuplicates=true";
+                break;
+            }
+            case "Task": {
+                url = "api/com.bmc.dsm.shared-services-lib/rx/application/association/com.bmc.dsm.task-lib:Task Approval Mapping to Task Templates/" + approvalMapping + "/" + templatedId + "?allowDuplicates=true";
+                break;
+            }
+            default: {
+                console.log("ERROR: Invalid url - " + url);
+                break;
+            }
+        }
         let response = await axios.post(
             url,
             {}
@@ -2382,6 +2419,7 @@ class ApiHelper {
         console.log('Association API Status =============>', response.status);
         return response.status == 204;
     }
+
 
     async disassociateCaseTemplateFromApprovalMapping(templatedId: string, approvalMappingId: string): Promise<boolean> {
         let response = await apiCoreUtil.disassociateFoundationElements("com.bmc.dsm.case-lib:Case Approval Mapping to Case Template", approvalMappingId, templatedId);
@@ -2736,10 +2774,10 @@ class ApiHelper {
             case "Task": {
                 let taskApprovalMapping = cloneDeep(TASK_APPROVAL_MAPPING);
                 taskApprovalMapping.fieldInstances[450000154].value = constants.TaskStatus[data.triggerStatus];
-                taskApprovalMapping.fieldInstances[450000160].value = constants.TaskStatus[data.approvedStatus];
+                taskApprovalMapping.fieldInstances[450000156].value = constants.TaskStatus[data.approvedStatus];
                 taskApprovalMapping.fieldInstances[450000158].value = constants.TaskStatus[data.rejectStatus];
                 taskApprovalMapping.fieldInstances[450000162].value = constants.TaskStatus[data.errorStatus];
-                taskApprovalMapping.fieldInstances[450000156].value = constants.TaskStatus[data.noApprovalFoundStatus];
+                taskApprovalMapping.fieldInstances[450000160].value = constants.TaskStatus[data.noApprovalFoundStatus];
                 taskApprovalMapping.fieldInstances[450000152].value = data.mappingName;
                 if (data.company) taskApprovalMapping.fieldInstances[450000153].value = await apiCoreUtil.getOrganizationGuid(data.company);
                 let response = await apiCoreUtil.createRecordInstance(taskApprovalMapping);

@@ -1514,8 +1514,8 @@ describe('Knowledge Article', () => {
             await apiHelper.createKnowledgeSet(knowledgeSetData);
             let approvalConfigGlobalTitle = knowledgeApprovalFlowData.flowName + randomStr;
             knowledgeApprovalFlowData.flowName = approvalConfigGlobalTitle;
-            await apiHelper.createApprovalFlow(knowledgeApprovalFlowData, knowledgeModule);
-            await apiHelper.createApprovalMapping(knowledgeModule, knowledgeApprovalMappingData);
+            await apiHelper.createApprovalFlow(knowledgeApprovalFlowData,knowledgeModule);
+            await apiHelper.createApprovalMapping(knowledgeModule,knowledgeApprovalMappingData);
             articleData = {
                 "knowledgeSet": "HR",
                 "title": "KnowledgeArticle",

@@ -412,7 +412,7 @@ describe('Case Bulk Operation', () => {
             "mappingName": "Bulk Operation Mapping"
         }
         let approvalMappingId = await apiHelper.createApprovalMapping(caseModule,approvalMappingData);
-        await apiHelper.associateCaseTemplateWithApprovalMapping(caseTemplateResponse.id, approvalMappingId.id);
+        await apiHelper.associateTemplateWithApprovalMapping(caseModule,caseTemplateResponse.id, approvalMappingId.id);
 
         //Create Approval Flow. Category 1 = Applications, Category 2 = Social and Category 3 = Chatter
         let approvalFlowData = {

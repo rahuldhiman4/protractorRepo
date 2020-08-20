@@ -355,6 +355,19 @@ class ActivityTabPage {
         return value.includes(textToMatch) ? true : false;
     }
 
+    async getApprovalRejectionActivityText(textToMatch: string): Promise<boolean> {
+        let elem = $('div.d-icon-cross_circle + div');
+        let value = await elem.getText();
+        return value.includes(textToMatch) ? true : false;
+    }
+
+    async getApprovalErrorActivityText(textToMatch: string): Promise<boolean> {
+        let elem = $('.d-icon-exclamation_triangle + div');
+        let value = await elem.getText();
+        return value.includes(textToMatch) ? true : false;
+    }
+
+
     async isApprovalActivityDisplayed(textToMatch: string): Promise<boolean> {
         return await element(by.cssContainingText('div.d-icon-check_circle + div', textToMatch)).isPresent().then( async (result) => {
             if(result) return await element(by.cssContainingText('div.d-icon-check_circle + div', textToMatch)).isDisplayed();

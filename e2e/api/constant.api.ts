@@ -72,7 +72,8 @@ export enum TaskStatus {
     Closed = 7000,
     Failed = 5500,
     BeforeCompleted = 3500,
-    AfterCompleted = 5250
+    AfterCompleted = 5250,
+    ApprovalRejected = 1900
 };
 
 export enum CasePriority {
