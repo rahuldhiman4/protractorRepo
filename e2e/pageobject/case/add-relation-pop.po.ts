@@ -35,6 +35,10 @@ class AddRelationshipPage {
         await this.selectRelationshipType(relation);
         await this.clickSaveButton();
     }
+
+    async isRelationshipPresentInDropdown(relationshipName: string): Promise<boolean> {
+        return await utilityCommon.isValuePresentInDropDown('e2dc9466-aa5d-41d9-9515-8a047c7b9737', relationshipName);
+    }
 }
 
 export default new AddRelationshipPage();

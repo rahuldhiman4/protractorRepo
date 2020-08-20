@@ -15,7 +15,7 @@ import { CASE_STATUS_CHANGE, UPDATE_CASE, UPDATE_CASE_ASSIGNMENT } from '../data
 import { EMAILCONFIG_DEFAULT, INCOMINGMAIL_DEFAULT, OUTGOINGEMAIL_DEFAULT } from '../data/api/email/email.configuration.data.api';
 import { EMAIL_WHITELIST } from '../data/api/email/email.whitelist.data.api';
 import { NEW_PROCESS_LIB } from '../data/api/flowset/create-process-lib';
-import { ADD_FUNCTIONAL_ROLE, UPDATE_SUPPORT_GROUP, UPDATE_PERSON } from '../data/api/foundation/update-foundation-entity.data.api';
+import { UPDATE_SUPPORT_GROUP, UPDATE_PERSON } from '../data/api/foundation/update-foundation-entity.data.api';
 import { IBusinessUnit } from '../data/api/interface/business.unit.interface.api';
 import { ICaseAssignmentMapping } from "../data/api/interface/case.assignment.mapping.interface.api";
 import { ICaseTemplate } from "../data/api/interface/case.template.interface.api";
@@ -1223,6 +1223,9 @@ class ApiHelper {
         templateData.processInputValues["Template Name"] = data.templateName;
         templateData.processInputValues["Status"] = data.templateStatus;
         templateData.processInputValues["MessageBody"] = data.body;
+        if (data.label) {
+            templateData.processInputValues["Label"] = await apiCoreUtil.getLabelGuid(data.label);
+        }
 
         switch (module) {
             case "Case": {
@@ -1571,8 +1574,8 @@ class ApiHelper {
         menuItemData.fieldInstances[450000152].value = data.menuItemName;
         menuItemData.fieldInstances[7].value = constants.MenuItemStatus[data.menuItemStatus];
         menuItemData.fieldInstances[450000154].value = randomStr;
-        if (data.uiVisiable) {
-            let valueOfVisiable = data.uiVisiable;
+        if (data.uiVisible) {
+            let valueOfVisiable = data.uiVisible;
             let uiVisiablePayload = {
                 "id": "450000471",
                 "value": `${valueOfVisiable}`
@@ -2005,6 +2008,17 @@ class ApiHelper {
                     }
                     jsonBody.fieldInstances[1000000026] = updateVIPPayload;
                 }
+                if (data.functionalRole) {
+                    jsonBody = cloneDeep(UPDATE_PERSON);
+                    jsonBody.id = recordGUID;
+                    let currentUserRoles: string = await apiCoreUtil.getPersonFunctionalRoles(entityName);
+                    let newUserRoles: string = currentUserRoles + ';' + constants.FunctionalRoleGuid[data.functionalRole]
+                    let updateFunctionalRolePayload = {
+                        "id": "430000002",
+                        "value": newUserRoles
+                    }
+                    jsonBody.fieldInstances[430000002] = updateFunctionalRolePayload;
+                }
                 break;
             }
             case "SupportGroup": {
@@ -2358,17 +2372,7 @@ class ApiHelper {
             });
         }
     }
-
-    async addFunctionalRole(person: string, functionalRoleGuid: string): Promise<boolean> {
-        let addFunctionalRolePayload = cloneDeep(ADD_FUNCTIONAL_ROLE);
-        let userRoles = await apiCoreUtil.getPersonFunctionalRoles(person);
-        let personGuid = await apiCoreUtil.getPersonGuid(person)
-        addFunctionalRolePayload.fieldInstances[430000002].value = userRoles + ';' + functionalRoleGuid;
-        let response = await apiCoreUtil.updateRecordInstance('com.bmc.arsys.rx.foundation:Person', personGuid, addFunctionalRolePayload);
-        console.log(`Functional role of ${person} is successfully updated  =============>`, response.status);
-        return response.status == 204;
-    }
-
+    
     async associateCaseTemplateWithApprovalMapping(templatedId: string, approvalMapping: string): Promise<boolean> {
         let url = "api/com.bmc.dsm.shared-services-lib/rx/application/association/com.bmc.dsm.case-lib:Case Approval Mapping to Case Template/" + approvalMapping + "/" + templatedId + "?allowDuplicates=true";
         let response = await axios.post(

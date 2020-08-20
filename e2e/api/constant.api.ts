@@ -98,3 +98,13 @@ export enum ApplicationConfigurationsGuid {
 export enum ApplicationConfigurationsValue {
     '1_MONTH' = '2629743',
 };
+
+export enum FunctionalRoleGuid {
+    'Knowledge Coach' = 'AGGAA5V0H3XY6AOTLKINOSP72R7YAE',
+    'Knowledge Publisher' = 'AGGAA5V0H3XY6AOTLL9ROSP8NW7YD9',
+    'Case Agent' = 'AGGAA5V0GE9Z4AOR0BXUOQ3ZT04EJA',
+    'Case Manager' = 'AGGAA5V0GE9Z4AOR7CWOOQLASE4PHJ',
+    'Case Business Analyst' = 'AGGAA5V0GE9Z4AOR7DBBOQLAW74PH7',
+    'Document Manager' = 'AGGADG1AAO0VGAP8SXEGP7VU2U4ZS8',
+    'Person Activity Read' = 'AGGADG1AAO0VGAPSXWAEPSA6PDZAG6'
+};

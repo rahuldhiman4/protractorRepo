@@ -47,7 +47,7 @@ class ActivityTabPage {
         dwpFeedback: '.dp-content .dwp-comment',
         logItems: '.activity  .activity__body',
         AttachedfileName: '.activity__wrapper .bwf-attachment-container__file-name',
-        refreshButton: '.tab-content .bwf-button-link[aria-label="Refresh"]',
+        refreshButton: '.bwf-button-link[aria-label="Refresh"]',
         attachmentField: '.attachment-button input[type="file"]',
         showMoreEmailActivity: '.activity__wrapper button[aria-label="Show more"]',
         expandAllAttachmentActivity: '.activity__wrapper .d-icon-plus',
@@ -85,6 +85,8 @@ class ActivityTabPage {
         linkTextCkEditorTextArea: '.cke_enable_context_menu a',
         activityLogBody: '.activity__wrapper .collapse-block div div[style="position: relative;"]',
         showApproversLink: '.activity__wrapper button.btn-sm',
+        alertTooltipMessage: '.alert-content',
+        alertTooltipIcon: '.d-icon-info_circle'
     }
 
     async isLockIconDisplayedInActivity(activityNumber: number): Promise<boolean> {
@@ -432,6 +434,7 @@ class ActivityTabPage {
     }
 
     async clickOnNotesTemplate(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addNoteNotesTemplate)), 5000);
         await $(this.selectors.addNoteNotesTemplate).click();
     }
 
@@ -907,6 +910,7 @@ class ActivityTabPage {
         return await element.all(by.cssContainingText('.activity__body .fields span', accessName)).count();
     }
 
+  
     async isTableSummaryDisplayedInCkEditorTextArea(tableSummary: string): Promise<boolean> {
         let locator = `table[summary='${tableSummary}']`;       
         return await element(by.css(locator)).isPresent().then(async (link) => {
@@ -931,6 +935,17 @@ class ActivityTabPage {
         let locator = `.activity img[src='${value}']`;
         let imageIsDisplayed: boolean = await $(locator).isDisplayed();
         return imageIsDisplayed;
+    }
+
+    async getInfoTooltipMessage(): Promise<string> {
+        return await $(this.selectors.alertTooltipMessage).getText();
+    }
+
+    async isInfoTooltipIconDisplayed(): Promise<boolean> {
+        return await $(this.selectors.alertTooltipIcon).isPresent().then(async (result) => {
+            if(result) return await $(this.selectors.alertTooltipIcon).isDisplayed();
+            else return false;
+        })
     }
 }
 
