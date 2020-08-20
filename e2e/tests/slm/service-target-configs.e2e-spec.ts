@@ -8,6 +8,15 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
+import createCasePo from '../../pageobject/case/create-case.po';
+import serviceTargetInfoPage from '../../pageobject/slm/service-target-info.po';
+import slmProgressBar from '../../pageobject/slm/slm-progressbar.po';
+import caseConsolePo from '../../pageobject/case/case-console.po';
+import previewCasePo from '../../pageobject/case/case-preview.po';
+import viewCasePo, { default as viewCasePage } from '../../pageobject/case/view-case.po';
+import changeAssignmentPage from '../../pageobject/common/change-assignment-blade.po';
+import utilityGrid from '../../utils/utility.grid';
+import editCasePo from '../../pageobject/case/edit-case.po';
 
 let caseBAUser = 'qkatawazi';
 
@@ -281,4 +290,85 @@ describe('Service Target Tests', () => {
             expect(await utilCommon.isPopUpMessagePresent('Record has been updated successfully')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
     });
+
+    //skhobrag
+    describe('[DRDMV-21723]: SLAs attached even though current user loose access to the current record', async () => {
+        let caseId=undefined;
+        beforeAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteServiceTargets();
+        });
+        it('[DRDMV-21723]:Create a SVT', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
+            await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Global', 'Case Management');
+            await SlmExpressionBuilder.selectExpressionQualification('Category Tier 1', '=', 'ASSOCIATION', 'Applications');
+            await SlmExpressionBuilder.clickOnAddExpressionButton('ASSOCIATION');
+            let selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
+            let expectedSelectedExp = "'" + "Category Tier 1" + "'" + "=" + '"' + "Applications" + '"'
+            expect(selectedExp).toEqual(expectedSelectedExp);
+            await SlmExpressionBuilder.clickOnSaveExpressionButton();
+            await serviceTargetConfig.selectGoal("6");
+            await serviceTargetConfig.selectMileStone();
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Resolved");
+            await serviceTargetConfig.clickOnSaveSVTButton();
+            browser.sleep(1000);
+        });
+        it('[DRDMV-21723]:Create a case', async () => {
+            await navigationPage.gotoCreateCase();
+            await createCasePo.selectRequester('Mary');
+            await createCasePo.setSummary('Case for SVT creation');
+            await createCasePo.selectCategoryTier1('Applications');
+            await createCasePo.clickAssignToMeButton();
+            await createCasePo.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            caseId = await viewCasePage.getCaseID();
+        });
+        it('[DRDMV-21723]:Verify SVT attached to a Case', async () => {
+            expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
+            expect(await viewCasePage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
+            await slmProgressBar.clickOnSLAProgressBarInProcessIcon();
+            expect(await serviceTargetInfoPage.isServiceTargetInformationBladeDisplayed()).toBeTruthy('Service Target Information Blade is not displayed.');
+            expect(await serviceTargetInfoPage.getServiceTargetInformationBladeHeader()).toBe('Service Target Information');
+            expect(await serviceTargetInfoPage.isServiceTargetInformationDetails('Service Target: ')).toBeTruthy('Service Target Label on SVT Info Blade is not displayed.');
+            expect(await serviceTargetInfoPage.isServiceTargetInformationFieldValues('SVT from Protractor ')).toBeTruthy('Service Target on SVT Info Blade is not displayed.');
+            expect(await serviceTargetInfoPage.isServiceTargetInformationDetails('Due Date and Time: ')).toBeTruthy('Due Date Label on SVT Info Blade is not displayed.');
+            expect(await serviceTargetInfoPage.isServiceTargetDueDateDisplayed()).toBeTruthy('Due Date on SVT Info Blade is not displayed.');
+            expect(await serviceTargetInfoPage.isServiceTargetInformationInProcessIconDisplayed()).toBeTruthy('SVT In Process Icon on SVT Info Blade is not displayed.');
+            expect(await serviceTargetInfoPage.getServiceTargetStatus()).toBe('InProcess');
+            await serviceTargetInfoPage.clickOnCloseButton();
+            await viewCasePo.clickEditCaseButton();
+            await editCasePo.clickChangeAssignmentButton();
+            await changeAssignmentPage.selectBusinessUnit('Facilities Support');
+            await changeAssignmentPage.selectSupportGroup('Facilities');
+            await changeAssignmentPage.selectAssignee('Fritz Schulz');
+            await changeAssignmentPage.clickOnAssignButton();
+            await editCasePo.clickSaveCase();
+            expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
+        });
+        it('[DRDMV-21723]:Verify if SVT is still attached to a case when case assignment is changed', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(caseId);
+            expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
+            await slmProgressBar.clickOnSLAProgressBarInProcessIcon();
+            expect(await serviceTargetInfoPage.isServiceTargetInformationBladeDisplayed()).toBeTruthy('Service Target Information Blade is not displayed.');
+            expect(await serviceTargetInfoPage.getServiceTargetInformationBladeHeader()).toBe('Service Target Information');
+            expect(await serviceTargetInfoPage.isServiceTargetInformationDetails('Service Target: ')).toBeTruthy('Service Target Label on SVT Info Blade is not displayed.');
+            expect(await serviceTargetInfoPage.isServiceTargetInformationFieldValues('SVT from Protractor ')).toBeTruthy('Service Target on SVT Info Blade is not displayed.');
+            expect(await serviceTargetInfoPage.isServiceTargetInformationDetails('Due Date and Time: ')).toBeTruthy('Due Date Label on SVT Info Blade is not displayed.');
+            expect(await serviceTargetInfoPage.isServiceTargetDueDateDisplayed()).toBeTruthy('Due Date on SVT Info Blade is not displayed.');
+            expect(await serviceTargetInfoPage.isServiceTargetInformationInProcessIconDisplayed()).toBeTruthy('SVT In Process Icon on SVT Info Blade is not displayed.');
+            expect(await serviceTargetInfoPage.getServiceTargetStatus()).toBe('InProcess');
+            await serviceTargetInfoPage.clickOnCloseButton();
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
+
+    });
+    
 });
