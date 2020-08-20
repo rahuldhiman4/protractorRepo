@@ -2028,7 +2028,7 @@ class ApiHelper {
                     jsonBody = cloneDeep(UPDATE_SUPPORT_GROUP);
                     jsonBody.id = recordGUID;
                     let confidentialFlag: string;
-                    data.confidential == 'true' ? confidentialFlag = '1' : confidentialFlag = '1';
+                    data.confidential == 'true' ? confidentialFlag = '1' : confidentialFlag = '0';
                     let updateConfidentialPayload = {
                         "id": "300000000",
                         "value": confidentialFlag

@@ -1,4 +1,5 @@
 import { $, protractor, ProtractorExpectedConditions, $$, browser, element, by } from 'protractor';
+import utilCommon from '../../../utils/util.common';
 class ViewCaseTemplate {
 
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -31,9 +32,44 @@ class ViewCaseTemplate {
         oneTask: '[rx-view-component-id="36ca22f7-98f8-423a-bf39-28361ef29eeb"] .rotatable path',
         taskBoxname: 'div.content',
         showMoreDescriptionLink: '.rx-description-textarea-read button.more',
+        tab: '.rx-tab',
+        confidentialSupportGroupAccess: '.ac-label-manage-support',
+        confidentialSupportGroup: '.ac-confidential-group-field [id="btn-select"]',
+        confidentialSupportGroupAssignToMe: '[class="d-checkbox__item ac-label-assign-confidential-write"]',
+        addConfidentialSupportGroup: '[ng-if="enableAddSupportGroup"]',
+        dropdownElement: '.options li',
     }
 
-    async clickShowMoreDescriptionLink() {
+    async selectTab(tabValue: string): Promise<void> {
+        return await element(by.cssContainingText(this.selectors.tab, tabValue)).click()
+    }
+
+    async clickConfidentialSupportGroupAccess(): Promise<void> {
+        await $(this.selectors.confidentialSupportGroupAccess).click();
+    }
+
+    async clickConfidentialWriteSupportGroupAccess(): Promise<void> {
+        await $$(this.selectors.confidentialSupportGroupAccess).get(1).click();
+    }
+
+    async clickAddConfidentialSupportGroup(): Promise<void> {
+        await $$(this.selectors.addConfidentialSupportGroup).get(1).click();
+    }
+
+    async selectConfidentialSupportGroupDropDown(drop: string): Promise<void> {
+        await element(by.cssContainingText(this.selectors.dropdownElement, drop)).click();
+    }
+
+    async isConfidentialSupportGroupDropDownPresent(drop: string): Promise<boolean> {
+        await $(this.selectors.confidentialSupportGroup).click();
+        return await element(by.cssContainingText(this.selectors.dropdownElement, drop)).isPresent().then(async (link) => {
+            if (link) {
+                return await element(by.cssContainingText(this.selectors.dropdownElement, drop)).isDisplayed();
+            } else return false;
+        });
+    }
+
+    async clickShowMoreDescriptionLink(): Promise<void> {
         await $(this.selectors.showMoreDescriptionLink).click();
     }
 
