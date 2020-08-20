@@ -126,16 +126,11 @@ describe('Global Search', () => {
         articleData.title = knowledgeTitle;
         if (keyword) {
             articleData.keyword = keyword;
-            let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
-            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData.id, 'Draft')).toBeTruthy('FailureMsg Status Not Set');
-            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData.id, 'PublishApproval', 'qdu', 'CA Support 1', 'Petramco')).toBeTruthy('FailureMsg Status Not Set');
-            return knowledgeArticleData.displayId;
-        } else {
-            let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
-            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData.id, 'Draft')).toBeTruthy('FailureMsg Status Not Set');
-            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData.id, 'PublishApproval', 'qdu', 'CA Support 1', 'Petramco')).toBeTruthy('FailureMsg Status Not Set');
-            return knowledgeArticleData.displayId;
         }
+        let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData.id, 'Draft')).toBeTruthy('FailureMsg Status Not Set');
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData.id, 'PublishApproval', 'qdu', 'CA Support 1', 'Petramco')).toBeTruthy('FailureMsg Status Not Set');
+        return knowledgeArticleData.displayId;
     }
 
     async function createKnowledgeArticleWithAttachment(knowledgeTitle: string, attachment: string): Promise<string> {
@@ -175,22 +170,15 @@ describe('Global Search', () => {
         }
 
         if (description) {
-            caseTemplateData.templateName = templateName;
-            caseTemplateData.templateSummary = templateSummary;
-            caseTemplateData.templateStatus = templateStatus;
             caseTemplateData.description = description;
-            caseTemplateData.company = company;
-            let caseTemplateResponse = await apiHelper.createCaseTemplate(caseTemplateData);
-            return caseTemplateDisplayId = caseTemplateResponse.displayId;
-
-        } else {
-            caseTemplateData.templateName = templateName;
-            caseTemplateData.templateSummary = templateSummary;
-            caseTemplateData.templateStatus = templateStatus;
-            caseTemplateData.company = company;
-            let caseTemplateResponse = await apiHelper.createCaseTemplate(caseTemplateData);
-            return caseTemplateDisplayId = caseTemplateResponse.displayId;
         }
+        caseTemplateData.templateName = templateName;
+        caseTemplateData.templateSummary = templateSummary;
+        caseTemplateData.templateStatus = templateStatus;
+        caseTemplateData.company = company;
+        let caseTemplateResponse = await apiHelper.createCaseTemplate(caseTemplateData);
+        return caseTemplateDisplayId = caseTemplateResponse.displayId;
+
     }
 
     async function createTaskTemplate(templateName: string, templateStatus: string, taskCompany: string, description?: string): Promise<string> {
@@ -211,19 +199,13 @@ describe('Global Search', () => {
         }
 
         if (description) {
-            manualTaskTemplateData.templateName = templateName;
-            manualTaskTemplateData.templateStatus = templateStatus;
             manualTaskTemplateData.description = description;
-            manualTaskTemplateData.taskCompany = taskCompany;
-            taskDetails = await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
-            return taskDisplayId = taskDetails.displayId;
-        } else {
-            manualTaskTemplateData.templateName = templateName;
-            manualTaskTemplateData.templateStatus = templateStatus;
-            manualTaskTemplateData.taskCompany = taskCompany;
-            taskDetails = await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
-            return taskDisplayId = taskDetails.displayId;
         }
+        manualTaskTemplateData.templateName = templateName;
+        manualTaskTemplateData.templateStatus = templateStatus;
+        manualTaskTemplateData.taskCompany = taskCompany;
+        taskDetails = await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
+        return taskDisplayId = taskDetails.displayId;
     }
 
     async function createPublishDocumentLibrary(docLibTitle: string, attachment: string, keywordTag?: string): Promise<string> {
@@ -237,14 +219,11 @@ describe('Global Search', () => {
 
         if (keywordTag) {
             publishDocData.keywordTag = keywordTag;
-            let docLib = await apiHelper.createDocumentLibrary(publishDocData, attachment);
-            await apiHelper.publishDocumentLibrary(docLib);
-            return docLib.displayId;
-        } else {
-            let docLib = await apiHelper.createDocumentLibrary(publishDocData, attachment);
-            await apiHelper.publishDocumentLibrary(docLib);
-            return docLib.displayId;
         }
+        let docLib = await apiHelper.createDocumentLibrary(publishDocData, attachment);
+        await apiHelper.publishDocumentLibrary(docLib);
+        return docLib.displayId;
+
     }
 
     async function createDraftDocumentLibrary(docLibTitle: string, attachment: string): Promise<string> {
@@ -1370,9 +1349,10 @@ describe('Global Search', () => {
             expect(await taskTemplatePreviewPo.isFieldLabelDisplayed('Task Priority')).toBeTruthy('FailureMsg22: Task Priority label is missing');
             expect(await taskTemplatePreviewPo.isFieldLabelDisplayed('Label')).toBeTruthy('FailureMsg24: Label field label is missing');
             expect(await taskTemplatePreviewPo.isFieldLabelDisplayed('Task Company')).toBeTruthy('FailureMsg25: Task Company label is missing');
-            expect(await taskTemplatePreviewPo.isFieldLabelDisplayed('Category Tier 1')).toBeTruthy('FailureMsg28: Category Tier 1 label is missing');
-            expect(await taskTemplatePreviewPo.isFieldLabelDisplayed('Category Tier 2')).toBeTruthy('FailureMsg26: Category Tier 2 label is missing');
-            expect(await taskTemplatePreviewPo.isFieldLabelDisplayed('Category Tier 3')).toBeTruthy('FailureMsg27: Category Tier 3 label is missing');
+            expect(await taskTemplatePreviewPo.isFieldLabelDisplayed('Task Category Tier 1')).toBeTruthy('FailureMsg28: Category Tier 1 label is missing');
+            expect(await taskTemplatePreviewPo.isFieldLabelDisplayed('Task Category Tier 2')).toBeTruthy('FailureMsg26: Category Tier 2 label is missing');
+            expect(await taskTemplatePreviewPo.isFieldLabelDisplayed('Task Category Tier 3')).toBeTruthy('FailureMsg27: Category Tier 3 label is missing');
+            expect(await taskTemplatePreviewPo.isFieldLabelDisplayed('Task Category Tier 4')).toBeTruthy('FailureMsg27: Category Tier 3 label is missing');
             expect(await taskTemplatePreviewPo.isFieldLabelDisplayed('Task Description')).toBeTruthy('FailureMsg29: Task Description label is missing');
             expect(await taskTemplatePreviewPo.isFieldLabelDisplayed('Assignee')).toBeTruthy('FailureMsg29: Assignee label is missing');
             expect(await taskTemplatePreviewPo.isFieldLabelDisplayed('Support Group')).toBeTruthy('FailureMsg30: Support Group label is missing');
@@ -1587,7 +1567,7 @@ describe('Global Search', () => {
             await searchPo.clickOnLeftPannelRecord(docName1, documentModule);
         });
 
-        it('[DRDMV-16123]: Verify KA Preview Fields', async () => {
+        it('[DRDMV-16123]: Verify Document Preview Fields', async () => {
             expect(await previewDocumentLibraryPo.isFieldLabelDisplayed('Company')).toBeTruthy('FailureMsg22: field label displayed');
             expect(await previewDocumentLibraryPo.isFieldLabelDisplayed('Business Unit')).toBeTruthy('FailureMsg22: field label displayed');
             expect(await previewDocumentLibraryPo.isFieldLabelDisplayed('Department')).toBeTruthy('FailureMsg22: field label displayed');

@@ -1,6 +1,7 @@
 import { $, by, element, ElementFinder } from "protractor";
+import utilityCommon from '../../../utils/utility.common';
 
-class TaskTemplatePreview {
+class DocumentLibraryPreview {
 
     selectors = {
         fieldLabels: '.clearfix label',
@@ -26,8 +27,62 @@ class TaskTemplatePreview {
     }
 
     async isFieldLabelDisplayed(labelName: string): Promise<boolean> {
-        let labelElement = await element(by.cssContainingText(this.selectors.fieldLabels, labelName));
-        return await this.isElementDisplayed(labelElement);
+        let guid: string = undefined;
+        switch (labelName) {
+            case "Company": {
+                guid = 'be45ce22-9f2d-407b-b2a8-a694f9594a6a';
+                break;
+            }
+            case "Business Unit": {
+                guid = '99db67d8-24d4-4627-ae49-c5143a442917';
+                break;
+            }
+            case "Department": {
+                guid = '96137f86-1ffc-4c1c-a96c-0acc906232f7';
+                break;
+            }
+            case "Owner Group": {
+                guid = '245a88c2-bf08-49c3-8b7d-df1594a17fd1';
+                break;
+            }
+            case "Share Externally": {
+                guid = '4fbaab2c-551d-4768-85c6-597b0626fffb';
+                break;
+            }
+            case "Keywords": {
+                guid = '696edd09-c171-4913-993c-a43c00350ca0';
+                break;
+            }
+            case "Tier 1": {
+                guid = '31f430d9-4733-4d05-9f95-f764a6368e06';
+                break;
+            }
+            case "Tier 2": {
+                guid = '3adf47b7-6238-4193-a195-1639b8b56c3a';
+                break;
+            }
+            case "Tier 3": {
+                guid = '1ad4eaba-1e29-47a9-8ceb-4925e2d5e6ae';
+                break;
+            }
+            case "Tier 4": {
+                guid = 'a3605766-1656-4e91-8e67-2f39d10a0827';
+                break;
+            }
+            case "Region": {
+                guid = '3d98fdea-64d8-43f3-b9bd-c5ce30d6e88f';
+                break;
+            }
+            case "Site": {
+                guid = '59ee56d4-884d-4fc6-ab0b-a72da6910bd4';
+                break;
+            }
+            default: {
+                console.log(labelName, ' is not a valid parameter');
+                break;
+            }
+        }
+        return await utilityCommon.isFieldLabelDisplayed(guid,labelName);
     }
 
     async isOperationalCategoryDisplayed(operationalCategory: string): Promise<boolean> {
@@ -81,4 +136,4 @@ class TaskTemplatePreview {
         return await this.isElementDisplayed(keywordElement);
     }
 }
-export default new TaskTemplatePreview();
+export default new DocumentLibraryPreview();
