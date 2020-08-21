@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import { filter, find, forEach, get, isArray, remove, uniqBy, chain, countBy } from 'lodash';
+import { filter, find, forEach, get, isArray, remove, uniqBy } from 'lodash';
 import * as config from './jira.util.config';
 
 const minimist = require("minimist");
@@ -22,7 +22,6 @@ export interface ExecutionDetails {
 export interface IssueKeyDetails {
     issueKey: string;
     issueId: string;
-    component: string;
     version: string;
     priority: string;
     lastExecutionStatus: string;
@@ -62,8 +61,6 @@ export class CreateJiraCycle {
     invalidJiraTest = [];
     jiraReport = [];
 
-    componentArray = [];
-    result: any;
     async run() {
         this.loadConfig();
         this.filterInputFile();
@@ -75,17 +72,6 @@ export class CreateJiraCycle {
                 await this.addExecutionToCycle(this.passJiraTest);
             if (this.failJiraTest.length)
                 await this.addExecutionToCycle(this.failJiraTest);
-            this.result = chain(this.componentArray).groupBy("component").map(function (v, i) {
-                return {
-                    [i]: countBy(v, 'status')
-                }
-            }).value();
-            this.result = Object.assign({}, ...this.result);
-            for (let key in this.result) {
-                ['skipped', 'failed', 'passed'].forEach(status => {
-                    if (!this.result[key][status]) this.result[key][status] = 0;
-                })
-            }
             this.generateOutputFile();
             this.writeExecutionSummary();
         } else {
@@ -247,10 +233,8 @@ export class CreateJiraCycle {
         let executionIdList = [];
         let apiStatus = -1;
         let isNewExecutionStatus = "NA";
-
         for (let i = 0; i < testInput.length; i++) {
             let issueDetails = await this.getIssueDetails(testInput[i].jiraId);
-            this.componentArray.push({ component: issueDetails.component, status: testInput[i].status });
             testInput[i].status != issueDetails.lastExecutionStatus ? isNewExecutionStatus = "Yes" : isNewExecutionStatus = "No";
             let executionPayload = {
                 "cycleId": `${this.testCycleId}`,
@@ -281,7 +265,6 @@ export class CreateJiraCycle {
             this.jiraReport.push({
                 JiraId: testInput[i].jiraId,
                 Description: testInput[i].description,
-                Component: issueDetails.component,
                 ExecutionStatus: testInput[i].status,
                 IsNewExecutionStatus: isNewExecutionStatus,
                 TotalExecution: issueDetails.totalExecution,
@@ -322,12 +305,6 @@ export class CreateJiraCycle {
             let totalExe = 0;
             let lastExecutionStatus = undefined;
 
-            // read issue component
-            const issueComponentArray = await issueDetails.data.fields.components;
-            let issueComponent: string = "None";
-            if (issueComponentArray[0]) {
-                issueComponent = await issueComponentArray[0].name;
-            }
             // get issue id details
             let issueIdApiResponse = await this.getIssueIdDetails(issueId);
             if (issueIdApiResponse) {
@@ -352,7 +329,6 @@ export class CreateJiraCycle {
             return {
                 issueKey: issueKey,
                 issueId: issueId,
-                component: issueComponent,
                 version: fixVersions && isArray(fixVersions) ? get(fixVersions[0], 'name') : null,
                 priority: issueDetails.data.fields.priority.name ? issueDetails.data.fields.priority.name : 'NA',
                 lastExecutionStatus,
@@ -398,7 +374,7 @@ export class CreateJiraCycle {
         if (!fs.existsSync('e2e/reports/spec-jira-report')) {
             fs.mkdirSync('e2e/reports/spec-jira-report');
         }
-        const fields = ['JiraId', 'Description', 'Component', 'ExecutionStatus', 'IsNewExecutionStatus', 'TotalExecution', 'PassPercent', 'Version', 'Priority', 'JiraStatus'];
+        const fields = ['JiraId', 'Description', 'ExecutionStatus', 'IsNewExecutionStatus', 'TotalExecution', 'PassPercent', 'Version', 'Priority', 'JiraStatus'];
         const json2csvParser = new Parser({ fields });
         //fs.writeFileSync('e2e/reports/spec-jira-report/jira-report.csv', json2csvParser.parse(this.jiraReport.concat(this.invalidJiraTest))); write invalid entries in file
         fs.writeFileSync('e2e/reports/spec-jira-report/jira-report.csv', json2csvParser.parse(this.jiraReport)); // write only valid entries in CSV file
@@ -427,10 +403,6 @@ export class CreateJiraCycle {
 
             let failCount: number = totalExecution - passCount - skipCount;
             let cyclePassPercent: number = Math.round(passCount * 100 / totalExecution);
-
-            // write JSON file
-            this.result.Total = { 'passed': passCount, 'failed': failCount, 'skipped': skipCount };
-            fs.writeFileSync('e2e/reports/spec-jira-report/summary-report.json', JSON.stringify(this.result));
 
             console.log("Cycle name ==> " + this.testCycleName);
             console.log("Folder name ==> " + this.folderName);
