@@ -67,7 +67,7 @@ describe("Case Self Approval Tests", () => {
                 "mappingName": "Approval Mapping for Self Approval"
             }
             let approvalMappingId = await apiHelper.createApprovalMapping(caseModule,approvalMappingData);
-            await apiHelper.associateCaseTemplateWithApprovalMapping(caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
+            await apiHelper.associateTemplateWithApprovalMapping(caseModule,caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
 
             caseData = {
                 "Requester": "qdu",
@@ -185,7 +185,7 @@ describe("Case Self Approval Tests", () => {
                 "mappingName": "Approval Mapping for Self Approval"
             }
             let approvalMappingId = await apiHelper.createApprovalMapping(caseModule,approvalMappingData);
-            await apiHelper.associateCaseTemplateWithApprovalMapping(caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
+            await apiHelper.associateTemplateWithApprovalMapping(caseModule,caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
 
             caseData = {
                 "Requester": "qdu",

@@ -35,7 +35,7 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
-import caseAccessTabPo from '../../pageobject/common/case-access-tab.po';
+import applicationConfigPo from '../../pageobject/common/common-services/application-config.po';
 
 describe('Dynamic Hidden Data', () => {
     beforeAll(async () => {
@@ -1049,6 +1049,76 @@ describe('Dynamic Hidden Data', () => {
         });
     });
 
+    describe('[DRDMV-22354]: [PDF Config] - Date Time common config are available OOB and BA can add remove config', async () => {
+        it('[DRDMV-22354]: [PDF Config] - Date Time common config are available OOB and BA can add remove config', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Common Configurations', 'Common Configurations - Business Workflows');
+            await applicationConfigPo.clickApplicationConfiguration('DATE_TIME_FORMAT');
+            expect(await applicationConfigPo.getconfigurationHeaderValue()).toContain('DATE_TIME_FORMAT');
+            await applicationConfigPo.clickConfigurationDropDownArrow();
+            expect(await applicationConfigPo.getColoumnValue()).toContain('dd MMM yyyy hh:mm:ss a');
+            await applicationConfigPo.clickAddConfigurationValue();
+            await applicationConfigPo.setConfigurationValueText("test 1");
+            await applicationConfigPo.selectCompany('Petramco');
+            await applicationConfigPo.clickSaveButton();
+        });
+        it('[DRDMV-22354]: [PDF Config] - Date Time common config are available OOB and BA can add remove config', async () => {
+            expect(await applicationConfigPo.getColoumnValue()).toContain('test 1');
+            await applicationConfigPo.clickRemoveButton();
+            await utilCommon.clickOnWarningOk();
+            await applicationConfigPo.clickAddConfigurationValue();
+            await applicationConfigPo.setConfigurationValueText("test 2");
+            await applicationConfigPo.selectCompany('- Global -');
+            await applicationConfigPo.clickSaveButton();
+            expect(await applicationConfigPo.getColoumnValue()).toContain('test 2');
+            await applicationConfigPo.clickRemoveButton();
+            await utilCommon.clickOnWarningOk();
+        });
 
+        it('[DRDMV-22354]: [PDF Config] - Date Time common config are available OOB and BA can add remove config', async () => {
+            await applicationConfigPo.clickApplicationConfiguration('DATE_FORMAT');
+            expect(await applicationConfigPo.getconfigurationHeaderValue()).toContain('DATE_FORMAT');
+            await applicationConfigPo.clickConfigurationDropDownArrow();
+            expect(await applicationConfigPo.getColoumnValue()).toContain('dd MMM yyyy');
+            await applicationConfigPo.clickAddConfigurationValue();
+            await applicationConfigPo.setConfigurationValueText("test 1");
+            await applicationConfigPo.selectCompany('Petramco');
+            await applicationConfigPo.clickSaveButton();
+        });
+        it('[DRDMV-22354]: [PDF Config] - Date Time common config are available OOB and BA can add remove config', async () => {
+            expect(await applicationConfigPo.getColoumnValue()).toContain('test 1');
+            await applicationConfigPo.clickRemoveButton();
+            await utilCommon.clickOnWarningOk();
+            await applicationConfigPo.clickAddConfigurationValue();
+            await applicationConfigPo.setConfigurationValueText("test 2");
+            await applicationConfigPo.selectCompany('- Global -');
+            await applicationConfigPo.clickSaveButton();
+            expect(await applicationConfigPo.getColoumnValue()).toContain('test 2');
+            await applicationConfigPo.clickRemoveButton();
+            await utilCommon.clickOnWarningOk();
+        });
 
+        it('[DRDMV-22354]: [PDF Config] - Date Time common config are available OOB and BA can add remove config', async () => {
+            await applicationConfigPo.clickApplicationConfiguration('ZONE_ID');
+            expect(await applicationConfigPo.getconfigurationHeaderValue()).toContain('ZONE_ID');
+            await applicationConfigPo.clickConfigurationDropDownArrow();
+            expect(await applicationConfigPo.getColoumnValue()).toContain('UTC');
+            await applicationConfigPo.clickAddConfigurationValue();
+            await applicationConfigPo.setConfigurationValueText("test 1");
+            await applicationConfigPo.selectCompany('Petramco');
+            await applicationConfigPo.clickSaveButton();
+        });
+        it('[DRDMV-22354]: [PDF Config] - Date Time common config are available OOB and BA can add remove config', async () => {
+            expect(await applicationConfigPo.getColoumnValue()).toContain('test 1');
+            await applicationConfigPo.clickRemoveButton();
+            await utilCommon.clickOnWarningOk();
+            await applicationConfigPo.clickAddConfigurationValue();
+            await applicationConfigPo.setConfigurationValueText("test 2");
+            await applicationConfigPo.selectCompany('- Global -');
+            await applicationConfigPo.clickSaveButton();
+            expect(await applicationConfigPo.getColoumnValue()).toContain('test 2');
+            await applicationConfigPo.clickRemoveButton();
+            await utilCommon.clickOnWarningOk();
+        });
+    });
 });

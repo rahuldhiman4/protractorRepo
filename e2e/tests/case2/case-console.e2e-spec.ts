@@ -10,6 +10,10 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from "../../utils/utility.grid";
+import viewCasePo from '../../pageobject/case/view-case.po';
+import editCasePo from '../../pageobject/case/edit-case.po';
+import caseConsolePo from '../../pageobject/case/case-console.po';
+import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 
 describe('Case Console', () => {
     let categName1 = 'DemoCateg1';
@@ -187,6 +191,218 @@ describe('Case Console', () => {
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
+        });
+    });
+
+    describe('[DRDMV-8280]:[Case Workspace] Cases search using filters', async () => {
+        let id, label, modifiedDateFormate, month, caseData1, newCase1, caseTemplateData1, caseData2, newCase2, caseTemplateData2, randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let arr1: string[] = ["Assignee Login Name", "Company", "Case Site", "Modified By", "Label", "ID"];
+        let defaultCaseColumns: string[] = ["Assigned Group", "Assignee", "Category Tier 1", "Category Tier 2", "Category Tier 3", "Modified Date", "Priority", "Request ID", "Requester", "SLM Status", "Status", "Summary"];
+        beforeAll(async () => {
+            caseData1 = {
+                "Requester": "qdu",
+                "Summary": "CaseFilter1" + randomStr,
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
+                "Assignee": "qkatawazi",
+            }
+            caseTemplateData1 = {
+                "templateName": `${randomStr}1Casetemplate`,
+                "templateStatus": "Active",
+                "templateSummary": `${randomStr}Summary`,
+                "caseStatus": "New",
+                "casePriority": "Low",
+                "categoryTier1": "Facilities",
+                "categoryTier2": "Conference Room",
+                "categoryTier3": "Furniture",
+                "company": "Petramco",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
+            }
+            caseData2 = {
+                "Requester": "apavlik",
+                "Summary": "CaseFilter2" + randomStr,
+                "Assigned Company": "Petramco",
+                "Business Unit": "Facilities Support",
+                "Support Group": "Facilities",
+                "Assignee": "Fritz",
+            }
+            caseTemplateData2 = {
+                "templateName": `${randomStr}2Casetemplate`,
+                "templateStatus": "Active",
+                "templateSummary": `${randomStr}2Summary`,
+                "caseStatus": "New",
+                "casePriority": "High",
+                "categoryTier1": "Accounts Payable",
+                "categoryTier2": "Invoices",
+                "categoryTier3": "Payment",
+                "company": "Petramco",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3",
+                "businessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
+                "assignee": "Fritz",
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            newCase1 = await apiHelper.createCase(caseData1);
+            await apiHelper.createCaseTemplate(caseTemplateData1);
+            newCase2 = await apiHelper.createCase(caseData2);
+            await apiHelper.createCaseTemplate(caseTemplateData2);
+            month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
+            label = "CaseLabel" + randomStr;
+            menuItemDataFile['sampleMenuItem'].menuItemName = label;
+            await apiHelper.createNewMenuItem(menuItemDataFile['sampleMenuItem']);
+            id = newCase1.id;
+        });
+        it('[DRDMV-8280]:[Case Workspace] Cases search using filters', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(newCase1.displayId);
+            await viewCasePo.clickEditCaseButton();
+            await editCasePo.clickOnSelectCaseTemplate();
+            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateData1.templateName);
+            await editCasePo.setResolutionDescription('Case Resolution Description');
+            await editCasePo.updateCaseSite('Austin');
+            await editCasePo.updateSiteChangeReason('UpdatedSite' + randomStr);
+            await editCasePo.updateLabel(label);
+            await editCasePo.clickSaveCase();
+            let modifiedDate = new Date();
+            let monthValue: string = month[modifiedDate.getMonth()];
+            let modifiedMonthValue = monthValue.substring(0, 3);
+            let time = modifiedDate.toLocaleTimeString();
+            let diffTime = time.split(" ");
+            let newTime = diffTime[0].split(":");
+            let exactTime = newTime[0] + ":" + newTime[1] + " " + diffTime[1];
+            modifiedDateFormate = modifiedMonthValue + " " + modifiedDate.getDate() + ", " + modifiedDate.getFullYear() + " " + exactTime;
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(newCase2.displayId);
+            await viewCasePo.clickEditCaseButton();
+            await editCasePo.clickOnSelectCaseTemplate();
+            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateData2.templateName);
+            await editCasePo.setResolutionDescription('Case Resolution Description');
+            await editCasePo.updateCaseSite('Atlanta');
+            await editCasePo.updateSiteChangeReason('UpdatedSite2' + randomStr);
+            await editCasePo.clickSaveCase();
+        });
+        it('[DRDMV-8280]:[Case Workspace] Cases search using filters', async () => {
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.addColumns(defaultCaseColumns);
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter('SLM Status', 'Service Targets Not Attached', 'checkbox');
+            await utilityGrid.searchRecord(newCase1.displayId);
+            expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy(newCase1.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter('Priority', 'Low', 'checkbox');
+            await utilityGrid.searchRecord(newCase1.displayId);
+            expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy(newCase1.displayId);
+            expect(await utilityGrid.isGridRecordPresent(newCase2.displayId)).toBeFalsy(newCase2.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter('Status', 'Assigned', 'text');
+            await utilityGrid.searchRecord(newCase1.displayId);
+            expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy(newCase1.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter('Summary', caseData2.Summary, 'text');
+            await utilityGrid.searchRecord(newCase2.displayId);
+            expect(await utilityGrid.isGridRecordPresent(newCase2.displayId)).toBeTruthy(newCase2.displayId);
+            expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeFalsy(newCase1.displayId);
+        });
+        it('[DRDMV-8280]:[Case Workspace] Cases search using filters', async () => {
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter('Case ID', newCase1.displayId, 'text');
+            await utilityGrid.searchRecord(newCase1.displayId);
+            expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy(newCase1.displayId);
+            expect(await utilityGrid.isGridRecordPresent(newCase2.displayId)).toBeFalsy(newCase2.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter('Assigned Group', 'Facilities', 'text');
+            await utilityGrid.searchRecord(newCase2.displayId);
+            expect(await utilityGrid.isGridRecordPresent(newCase2.displayId)).toBeTruthy(newCase2.displayId);
+            expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeFalsy(newCase1.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter('Requester', 'Qiang Du', 'text');
+            await utilityGrid.searchRecord(newCase1.displayId);
+            expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy(newCase1.displayId);
+            expect(await utilityGrid.isGridRecordPresent(newCase2.displayId)).toBeFalsy(newCase2.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter('Assignee', 'Qadim Katawazi', 'text');
+            await utilityGrid.searchRecord(newCase1.displayId);
+            expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy(newCase1.displayId);
+            expect(await utilityGrid.isGridRecordPresent(newCase2.displayId)).toBeFalsy(newCase2.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.typeInFilterExperssion("Modified Date:" + modifiedDateFormate);
+            expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy(newCase1.displayId);
+        });
+        it('[DRDMV-8280]:[Case Workspace] Cases search using filters', async () => {
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter('Category Tier 1','Facilities', 'text');
+            await utilityGrid.searchRecord(newCase1.displayId);
+            expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy(newCase1.displayId);
+            expect(await utilityGrid.isGridRecordPresent(newCase2.displayId)).toBeFalsy(newCase2.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter('Category Tier 2', 'Conference Room', 'text');
+            await utilityGrid.searchRecord(newCase2.displayId);
+            expect(await utilityGrid.isGridRecordPresent(newCase2.displayId)).toBeTruthy(newCase2.displayId);
+            expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeFalsy(newCase1.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter('Category Tier 3', 'Furniture', 'text');
+            await utilityGrid.searchRecord(newCase1.displayId);
+            expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy(newCase1.displayId);
+            expect(await utilityGrid.isGridRecordPresent(newCase2.displayId)).toBeFalsy(newCase2.displayId);
+        });
+        it('[DRDMV-8280]:[Case Workspace] Cases search using filters', async () => {
+            await caseConsolePo.removeColumns(defaultCaseColumns);
+            await caseConsolePo.addColumns(arr1);
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter('Company', 'Petramco', 'text');
+            await utilityGrid.searchRecord(newCase1.displayId);
+            expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy(newCase1.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter('Region', 'North America', 'text');
+            await utilityGrid.searchRecord(newCase1.displayId);
+            expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy(newCase1.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter('Case Site', 'Austin', 'text');
+            await utilityGrid.searchRecord(newCase1.displayId);
+            expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy(newCase1.displayId);
+            expect(await utilityGrid.isGridRecordPresent(newCase2.displayId)).toBeFalsy(newCase2.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter('Modified By', 'qkatawazi', 'text');
+            await utilityGrid.searchRecord(newCase1.displayId);
+            expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy(newCase1.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter('Assignee Login Name', 'qkatawazi', 'text');
+            await utilityGrid.searchRecord(newCase1.displayId);
+            expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy(newCase1.displayId);
+            expect(await utilityGrid.isGridRecordPresent(newCase2.displayId)).toBeFalsy(newCase2.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter('Label', "CaseLabel" + randomStr, 'text');
+            await utilityGrid.searchRecord(newCase1.displayId);
+            expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy(newCase1.displayId);
+            expect(await utilityGrid.isGridRecordPresent(newCase2.displayId)).toBeFalsy(newCase2.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter("ID", id, "text");
+            await utilityGrid.searchRecord(newCase1.displayId);
+            expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy(newCase1.displayId);
+            expect(await utilityGrid.isGridRecordPresent(newCase2.displayId)).toBeFalsy(newCase2.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter('Source', "External", 'text');
+            await utilityGrid.searchRecord(newCase1.displayId);
+            expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy(newCase1.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter('Status Value', "2000", 'text');
+            await utilityGrid.searchRecord(newCase1.displayId);
+            expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy(newCase1.displayId);
+            await caseConsolePo.removeColumns(arr1);
+            await caseConsolePo.addColumns(defaultCaseColumns);
+        });
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
         });
     });
 });

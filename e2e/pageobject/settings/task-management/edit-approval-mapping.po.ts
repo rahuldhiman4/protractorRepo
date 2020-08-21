@@ -14,27 +14,28 @@ class EditApprovalMapping {
         statusTriggerDropDownGuid: 'a5f872e6-0382-46b9-bfb6-8c09dc584b80',
         statusMappingApproved: '5428d9e1-4fb8-475c-8139-1e604e3d3c8d',
         statusMappingNoApprovalFound: '13ca95fb-771f-43cd-8514-f2e2d6a4e236',
-        statusMappingRejected: 'd-2f2513d-919f-4a15-851e-b75ff53797f1',
+        statusMappingRejected: 'd8f2513d-919f-4a15-851e-b75ff53797f1',
         statusMappingError: '581eeeb0-2bbb-4a16-91fd-e1babce7b121',
         companyDropDown: '[rx-view-component-id="c890cbd8-561e-4299-afd4-6abc79bed924"] .ui-select-match-text',
         statusTriggerDropDownField: '[rx-view-component-id="a5f872e6-0382-46b9-bfb6-8c09dc584b80"] .ui-select-match-text',
         statusMappingApprovedDropDownField: '[rx-view-component-id="5428d9e1-4fb8-475c-8139-1e604e3d3c8d"] .ui-select-match-text',
         statusMappingNoApprovalFoundDropDownField: '[rx-view-component-id="13ca95fb-771f-43cd-8514-f2e2d6a4e236"] .ui-select-match-text',
-        statusMappingRejectedDropDownField: '[rx-view-component-id="d-2f2513d-919f-4a15-851e-b75ff53797f1"] .ui-select-match-text',
+        statusMappingRejectedDropDownField: '[rx-view-component-id="d8f2513d-919f-4a15-851e-b75ff53797f1"] .ui-select-match-text',
         statusMappingErrorDropDownField: '[rx-view-component-id="581eeeb0-2bbb-4a16-91fd-e1babce7b121"] .ui-select-match-text',
         approvalTriggerProcessHelptext: '[rx-view-component-id="b09113c8-aea8-4207-b5a9-20589fb7bf81"] span',
         saveButton: '[rx-view-component-id="e45457ac-b932-42f9-b44c-12c113234907"] button',
         cancelButton: '[rx-view-component-id="a18a6162-4769-4eba-b544-2cf7714193ec"] button',
-        caseTemplateSelectionHelpText: '[rx-view-component-id="737a879c-2e55-40b4-adf1-54f1fcaab444"] p',
-        caseTemplateLabel: '[rx-view-component-id="07719c40-1bd5-4bb3-bc0a-63df14893a90"] .bottom-margin',
-        selectCaseTemplateInputField: '[rx-view-component-id="07719c40-1bd5-4bb3-bc0a-63df14893a90"] input',
-        selectCaseTemplateBtn: 'button.d-icon-arrow_right',
-        deselectCaseTemplateBtn: 'button.d-icon-arrow_left',
-        searchedCaseTemplateText: '.km-group-list-item__info .title span',
-        selectCaseTemplate: 'div .d-icon-square_o',
-        caseTemplateSelectionArea: '.list-container',
-        searchedCaseTemplatesRecords: '.record-list-item',
-        casesCreatedWithoutTemplateToggleBtnGuid: '0a3df2cb-8645-4eac-8edf-4846c82c81e7'
+        taskTemplateSelectionHelpText: '[rx-view-component-id="737a879c-2e55-40b4-adf1-54f1fcaab444"] p',
+        taskTemplateLabel: '[rx-view-component-id="07719c40-1bd5-4bb3-bc0a-63df14893a90"] .bottom-margin',
+        selectTaskTemplateInputField: '[rx-view-component-id="07719c40-1bd5-4bb3-bc0a-63df14893a90"] input',
+        selectTaskTemplateBtn: 'button.d-icon-arrow_right',
+        deselectTaskTemplateBtn: 'button.d-icon-arrow_left',
+        searchedTaskTemplateText: '.km-group-list-item__info .title span',
+        selectTaskTemplate: 'div .d-icon-square_o',
+        taskTemplateSelectionArea: '.list-container',
+        searchedTaskTemplatesRecords: '.record-list-item',
+        tasksCreatedWithoutTemplateToggleBtnGuid: '0a3df2cb-8645-4eac-8edf-4846c82c81e7',
+        taskApprovalMappingToggleBtnHelpText: '[rx-view-component-id="7df649b3-ec1b-4a9d-af4e-4c8f426a036a"] p'
     }
 
     async getEditApprovalMappingHeaderText(): Promise<string> {
@@ -73,6 +74,18 @@ class EditApprovalMapping {
                 dropDownGuid = this.selectors.statusMappingApproved;
                 break;
             }
+            case "StatusReject": {
+                dropDownGuid = this.selectors.statusMappingRejected;
+                break;
+            }
+            case "StatusNoApproverFound": {
+                dropDownGuid = this.selectors.statusMappingNoApprovalFound;
+                break;
+            }
+            case "StatusError": {
+                dropDownGuid = this.selectors.statusMappingError;
+                break;
+            }
             default: {
                 console.log('Drop down values does not match');
                 break;
@@ -82,8 +95,8 @@ class EditApprovalMapping {
         return await $(locator).getAttribute("disabled") == "true" ? true : false;
     }
 
-    async isCasesCreatedWithoutTemplateToggleDisabled(): Promise<boolean> {
-        let locator: string = `[rx-view-component-id="${this.selectors.casesCreatedWithoutTemplateToggleBtnGuid}"] rx-boolean`;
+    async isTasksCreatedWithoutTemplateToggleDisabled(): Promise<boolean> {
+        let locator: string = `[rx-view-component-id="${this.selectors.tasksCreatedWithoutTemplateToggleBtnGuid}"] rx-boolean`;
         return await $(locator).getAttribute("disabled") == "true" ? true : false;
     }
 
@@ -166,86 +179,111 @@ class EditApprovalMapping {
         await $(this.selectors.cancelButton).click();
     }
 
-    async getCaseTemplateSelectionHelpText(): Promise<string> {
-        return await $(this.selectors.caseTemplateSelectionHelpText).getText();
+    async getTaskTemplateSelectionHelpText(): Promise<string> {
+        return await $(this.selectors.taskTemplateSelectionHelpText).getText();
     }
 
-    async getCaseTemplateLabel(): Promise<string> {
-        return await $$(this.selectors.caseTemplateLabel).first().getText();
+    async getTaskTemplateLabel(): Promise<string> {
+        return await $$(this.selectors.taskTemplateLabel).first().getText();
     }
 
-    async getSelectedCaseTemplateLabel(): Promise<string> {
-        return await $$(this.selectors.caseTemplateLabel).last().getText();
+    async getSelectedTaskTemplateLabel(): Promise<string> {
+        return await $$(this.selectors.taskTemplateLabel).last().getText();
     }
 
-    async searchCaseTemplate(caseTemplateTitle: string): Promise<void> {
-        await $$(this.selectors.selectCaseTemplateInputField).first().clear();
-        await $$(this.selectors.selectCaseTemplateInputField).first().sendKeys(caseTemplateTitle);
+    async searchTaskTemplate(taskTemplateTitle: string): Promise<void> {
+        await $$(this.selectors.selectTaskTemplateInputField).first().clear();
+        await $$(this.selectors.selectTaskTemplateInputField).first().sendKeys(taskTemplateTitle);
     }
 
-    async searchAssociatedCaseTemplate(caseTemplateTitle: string): Promise<void> {
-        await $$(this.selectors.selectCaseTemplateInputField).last().clear();
-        await $$(this.selectors.selectCaseTemplateInputField).last().sendKeys(caseTemplateTitle);
+    async searchAssociatedTaskTemplate(taskTemplateTitle: string): Promise<void> {
+        await $$(this.selectors.selectTaskTemplateInputField).last().clear();
+        await $$(this.selectors.selectTaskTemplateInputField).last().sendKeys(taskTemplateTitle);
     }
 
-    async isSelectCaseTemplateforApprovalRightArrawBtnEnabled(): Promise<boolean> {
-        return await $(this.selectors.selectCaseTemplateBtn).isPresent().then(async (result) => {
-            if (result) return await $(this.selectors.selectCaseTemplateBtn).getAttribute("disabled") == "disabled";
+    async isSelectTaskTemplateforApprovalRightArrawBtnEnabled(): Promise<boolean> {
+        return await $(this.selectors.selectTaskTemplateBtn).isPresent().then(async (result) => {
+            if (result) return await $(this.selectors.selectTaskTemplateBtn).getAttribute("disabled") == "disabled";
             else return false;
         });
     }
 
-    async isSelectCaseTemplateforApprovalLeftArrawBtnEnabled(): Promise<boolean> {
-        return await $(this.selectors.deselectCaseTemplateBtn).isPresent().then(async (result) => {
-            if (result) return await $(this.selectors.deselectCaseTemplateBtn).getAttribute("disabled") == "disabled";
+    async isSelectTaskTemplateforApprovalLeftArrawBtnEnabled(): Promise<boolean> {
+        return await $(this.selectors.deselectTaskTemplateBtn).isPresent().then(async (result) => {
+            if (result) return await $(this.selectors.deselectTaskTemplateBtn).getAttribute("disabled") == "disabled";
             else return false;
         });
     }
 
-    async clickCaseTemplateforApprovalRightArrawBtn(): Promise<void> {
-        await $(this.selectors.selectCaseTemplateBtn).click();
+    async clickTaskTemplateforApprovalRightArrawBtn(): Promise<void> {
+        await $(this.selectors.selectTaskTemplateBtn).click();
     }
 
-    async clickCaseTemplateforApprovalLeftArrawBtn(): Promise<void> {
-        await $(this.selectors.deselectCaseTemplateBtn).click();
+    async clickTaskTemplateforApprovalLeftArrawBtn(): Promise<void> {
+        await $(this.selectors.deselectTaskTemplateBtn).click();
     }
 
-    async getSearchedCaseTemplate(): Promise<string> {
-        return await $$(this.selectors.caseTemplateSelectionArea).first().$(this.selectors.searchedCaseTemplateText).getText();
+    async getSearchedTaskTemplate(): Promise<string> {
+        return await $$(this.selectors.taskTemplateSelectionArea).first().$(this.selectors.searchedTaskTemplateText).getText();
     }
 
-    async getAssociatedCaseTemplate(): Promise<string> {
-        return await $$(this.selectors.caseTemplateSelectionArea).last().$(this.selectors.searchedCaseTemplateText).getText();
+    async getAssociatedTaskTemplate(): Promise<string> {
+        return await $$(this.selectors.taskTemplateSelectionArea).last().$(this.selectors.searchedTaskTemplateText).getText();
     }
 
-    async isSearchedCaseTemplateDisplayed(): Promise<boolean> {
-        return await $$(this.selectors.caseTemplateSelectionArea).first().$(this.selectors.searchedCaseTemplateText).isPresent().then(async (result) => {
-            if (result) return await $$(this.selectors.caseTemplateSelectionArea).first().$(this.selectors.searchedCaseTemplateText).isDisplayed();
+    async isSearchedTaskTemplateDisplayed(): Promise<boolean> {
+        return await $$(this.selectors.taskTemplateSelectionArea).first().$(this.selectors.searchedTaskTemplateText).isPresent().then(async (result) => {
+            if (result) return await $$(this.selectors.taskTemplateSelectionArea).first().$(this.selectors.searchedTaskTemplateText).isDisplayed();
             else return false;
         });
     }
 
-    async isSearchedAssociatedCaseTemplateDisplayed(): Promise<boolean> {
-        return await $$(this.selectors.caseTemplateSelectionArea).last().$(this.selectors.searchedCaseTemplateText).isPresent().then(async (result) => {
-            if (result) return await $$(this.selectors.caseTemplateSelectionArea).last().$(this.selectors.searchedCaseTemplateText).isDisplayed();
+    async isSearchedAssociatedTaskTemplateDisplayed(): Promise<boolean> {
+        return await $$(this.selectors.taskTemplateSelectionArea).last().$(this.selectors.searchedTaskTemplateText).isPresent().then(async (result) => {
+            if (result) return await $$(this.selectors.taskTemplateSelectionArea).last().$(this.selectors.searchedTaskTemplateText).isDisplayed();
             else return false;
         });
     }
 
-    async selectCaseTemplateCheckbox(): Promise<void> {
-        await $$(this.selectors.caseTemplateSelectionArea).first().$(this.selectors.selectCaseTemplate).click();
+    async selectTaskTemplateCheckbox(): Promise<void> {
+        await $$(this.selectors.taskTemplateSelectionArea).first().$(this.selectors.selectTaskTemplate).click();
     }
 
-    async selectMultipleCaseTemplateCheckbox(): Promise<void> {
-        let noOfRecords = await $$(this.selectors.caseTemplateSelectionArea).first().$$(this.selectors.searchedCaseTemplatesRecords).count();
+    async selectMultipleTaskTemplateCheckbox(): Promise<void> {
+        let noOfRecords = await $$(this.selectors.taskTemplateSelectionArea).first().$$(this.selectors.searchedTaskTemplatesRecords).count();
         for (let i = 0; i < noOfRecords; i++) {
-            await $$(this.selectors.caseTemplateSelectionArea).first().$$(this.selectors.searchedCaseTemplatesRecords).get(i).$(this.selectors.selectCaseTemplate).click();
+            await $$(this.selectors.taskTemplateSelectionArea).first().$$(this.selectors.searchedTaskTemplatesRecords).get(i).$(this.selectors.selectTaskTemplate).click();
         }
     }
 
-    async selectAssociatedCaseTemplateCheckbox(): Promise<void> {
-        await $$(this.selectors.caseTemplateSelectionArea).last().$(this.selectors.selectCaseTemplate).click();
+    async selectAssociatedTaskTemplateCheckbox(): Promise<void> {
+        await $$(this.selectors.taskTemplateSelectionArea).last().$(this.selectors.selectTaskTemplate).click();
     }
+
+    async getTaskApprovalMappingToggleBtnHelpText(): Promise<string> {
+        return await $(this.selectors.taskApprovalMappingToggleBtnHelpText).getText();
+    }
+
+    async isTaskCreatedUsingTemplateGoInApprovalToggleFalse(): Promise<boolean> {
+        const togglebutton = await $(`[rx-view-component-id="${this.selectors.tasksCreatedWithoutTemplateToggleBtnGuid}"]`);
+        let enableButton = await togglebutton.$('.d-icon-check').getAttribute('aria-pressed');
+        let disableButton = await togglebutton.$('.d-icon-circle_slash_o').getAttribute('aria-pressed');
+        return enableButton == 'false' && disableButton == 'true';
+    }
+
+    async isTaskCreatedUsingTemplateGoInApprovalToggleDisplayed(): Promise<boolean> {
+        return await $(`[rx-view-component-id="${this.selectors.tasksCreatedWithoutTemplateToggleBtnGuid}"]`).isPresent().then(async (present) => {
+            if (present) return await $(`[rx-view-component-id="${this.selectors.tasksCreatedWithoutTemplateToggleBtnGuid}"]`).isDisplayed();
+            else return false;
+        });
+    }
+
+    async setTaskCreatedUsingTemplateGoInApprovalToggle(enable: boolean): Promise<void> {
+        await utilCommon.selectToggleButton(this.selectors.tasksCreatedWithoutTemplateToggleBtnGuid, enable);
+    }
+
+
+
 }
 
 export default new EditApprovalMapping();

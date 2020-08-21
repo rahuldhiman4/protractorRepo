@@ -973,4 +973,106 @@ describe("Create Case", () => {
         expect(await utilityGrid.isGridColumnSorted('Created date', 'desc')).toBeTruthy("Created date Not Sorted Desecnding");
         expect(await utilityGrid.isGridColumnSorted('Created date', 'asc')).toBeTruthy("Created date Not Sorted Asecnding");
     }, 400 * 1000);
+
+    it('[DRDMV-22772]:Assignment blade should list the agent names which are sorted alphabetically', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let CaseTemplateData = {
+            "templateName": "CaseTemplate" + randomStr,
+            "templateSummary": "CaseTemplate" + randomStr,
+            "templateStatus": "Active",
+            "company": "Petramco",
+            "categoryTier1": "Purchasing Card",
+            "categoryTier2": "Policies",
+            "categoryTier3": "Card Issuance",
+            "priority": "Low",
+            "businessUnit": "United States Support",
+            "supportGroup": "US Support 3",
+            "assignee": "qkatawazi",
+            "ownerBU": "United States Support",
+            "ownerGroup": "US Support 3"
+        }
+        await apiHelper.apiLogin('qtao');
+        await apiHelper.createCaseTemplate(CaseTemplateData);
+        await navigationPage.gotoCreateCase();
+        await createCasePage.selectRequester('adam');
+        await createCasePage.setSummary('Summary' + randomStr);
+        await createCasePage.clickSelectCaseTemplateButton();
+        await selectCaseTemplateBlade.selectCaseTemplate(CaseTemplateData.templateName);
+        await createCasePage.clickSaveCaseButton();
+        await previewCasePo.clickGoToCaseButton();
+        await viewCasePage.clickEditCaseButton();
+        await editCasePage.clickChangeAssignmentButton();
+        expect(await changeAssignmentPage.isAgentListSorted()).toBeTruthy("Agent List is Sorted");
+    });
+
+    describe('[DRDMV-22293,DRDMV-22292]: User Should not allow to remove assignee when case is in "In Progress" Status', async () => {
+        let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let templateData1, templateData2;
+        beforeAll(async () => {
+            templateData1 = {
+                "templateName": randomStr + "CaseTemplate1",
+                "templateSummary": randomStr + "Summary1",
+                "templateStatus": "Active",
+                "company": "Petramco",
+            }
+            templateData2 = {
+                "templateName": randomStr + "CaseTemplate2",
+                "templateSummary": randomStr + "Summary2",
+                "templateStatus": "Active",
+                "company": "Petramco",
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createCaseTemplate(templateData1);
+            await apiHelper.createCaseTemplate(templateData2);
+        });
+        it('[DRDMV-22293,DRDMV-22292]: User Should not allow to remove assignee when case is in "In Progress" Status', async () => {
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester('adam');
+            await createCasePage.setSummary('Summary' + randomStr);
+            await createCasePage.clickAssignToMeButton();
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.clickSaveStatus();
+            await utilityCommon.closePopUpMessage();
+            await viewCasePage.clickEditCaseButton();
+            await editCasePage.clickChangeAssignmentButton();
+            await changeAssignmentPage.selectBusinessUnit('United States Support')
+            await changeAssignmentPage.selectSupportGroup('US Support 3');
+            await changeAssignmentPage.selectAssignToSupportGroup();
+            await changeAssignmentPage.clickOnAssignButton();
+            await editCasePage.clickSaveCase();
+            expect(await viewCasePage.getAssignedGroupText()).toBe('US Support 3');
+            await viewCasePage.clickOnStatus();
+            expect(await viewCasePage.getErrorMsgOfInprogressStatus()).toBe('Assignee is required for this case status.  Please select an assignee. ');
+            await updateStatusBladePo.clickCancelButton();
+        });
+        it('[DRDMV-22293,DRDMV-22292]: User Should not allow to remove assignee when case is in "In Progress" Status', async () => {
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester('adam');
+            await createCasePage.setSummary('Summary2' + randomStr);
+            await createCasePage.clickSelectCaseTemplateButton();
+            await selectCaseTemplateBlade.selectCaseTemplate(templateData1.templateName);
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            await updateStatusBladePo.changeCaseStatus('In Progress');
+            expect(await viewCasePage.getErrorMsgOfInprogressStatus()).toBe('Assignee is required for this case status.  Please select an assignee. ');
+            await updateStatusBladePo.clickCancelButton();      
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");      
+            await viewCasePage.clickEditCaseButton();
+            await editCasePage.clickOnChangeCaseTemplate();
+            await selectCaseTemplateBlade.selectCaseTemplate(templateData2.templateName);
+            await editCasePage.clickSaveCase();
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink('Summary2' + randomStr);
+            await updateStatusBladePo.changeCaseStatus('In Progress');
+            expect(await viewCasePage.getErrorMsgOfInprogressStatus()).toBe('Assignee is required for this case status.  Please select an assignee. ');
+            await updateStatusBladePo.clickCancelButton();   
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");                           
+        });
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+    });
 }); 

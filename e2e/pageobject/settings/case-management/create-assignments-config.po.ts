@@ -17,7 +17,7 @@ class AssignmentConfigCreatePage {
         priorityDrpDwn: '790dfab1-2353-4b06-909d-741ebbc896d5',
         labelDrpDwn: '0274367e-248b-40cc-9f6b-7fed430e9829',
         regionDrpDwn: '917ab504-369d-49e9-8e4f-e3e9d87e6897',
-        siteDrpDwn: 'f9561103-49ac-4ad8-abb6-5972aca9e595',
+        siteDrpDwn: '01c1857c-046e-4f5a-b38c-10480098a36b',
         defaultToggle: '[rx-view-component-id="d52b16e7-3cd4-4ef1-a31b-922eac1007c1"] .d-icon-circle_slash_o',
         supportCompanyDrpDwn: 'e20294a1-3a95-4fbd-9640-15a325db82ab',
         businessUnitDrpDwn: '4906783f-e70a-4471-811b-eeb8e73d46e1',
@@ -94,6 +94,26 @@ class AssignmentConfigCreatePage {
 
     async isCompanyDropdownValueMatches(values: string[]): Promise<boolean> {
         return await utilCommon.isDrpDownvalueDisplayed('471bbeb3-3965-46b6-b74d-4f2a10fe3cce', values);
+    }
+
+    async setAssignee(assigneeName:string){
+        await utilCommon.selectDropDown(this.selectors.assigneeGrpDrpDwn, assigneeName);
+    }
+
+    async setRegion(Region:string){
+        await utilCommon.selectDropDown(this.selectors.regionDrpDwn, Region);
+    }
+
+    async setSite(Site:string){
+        await utilCommon.selectDropDown(this.selectors.siteDrpDwn, Site);
+    }
+
+    async isRegionAllDropDownValuesMatches(data: string[]): Promise<boolean> {
+        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.regionDrpDwn, data);
+    }
+
+    async isSiteAllDropDownValuesMatches(data: string[]): Promise<boolean> {
+        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.siteDrpDwn, data);
     }
 }
 

@@ -123,6 +123,14 @@ class CaseConsolePage {
     async removeRequestedCaseGridColumn(columnNames: string[]): Promise<void> {
         await utilityGrid.removeGridColumn(columnNames, this.selectors.guid);
     }
+
+    async removeColumns(columnNames: string[]): Promise<void> {
+        await utilityGrid.removeGridColumn(columnNames,this.selectors.guid);
+    }
+
+    async addColumns(columnNames: string[]): Promise<void> {
+        await utilityGrid.addGridColumn(columnNames,this.selectors.guid);
+    }
 }
 
 export default new CaseConsolePage();

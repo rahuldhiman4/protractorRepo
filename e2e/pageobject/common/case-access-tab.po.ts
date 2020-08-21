@@ -1,5 +1,6 @@
 import { $, $$, by, element, protractor, ProtractorExpectedConditions, browser } from "protractor";
 import utilCommon from '../../utils/util.common';
+import utilityCommon from '../../utils/utility.common';
 class CaseAccessTab {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
@@ -33,7 +34,7 @@ class CaseAccessTab {
     }
 
     async selectConfidentialSupportGroup(supportGroup: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.confidentialSupportGroupGuid,supportGroup);
+        await utilityCommon.selectDropDown(this.selectors.confidentialSupportGroupGuid,supportGroup);
     }
 
     async selectAndAddAgent(agentName: string): Promise<void> {
@@ -53,6 +54,10 @@ class CaseAccessTab {
 
     async selectSupportGroupWriteAccess(): Promise<void> {
         await $$(this.selectors.assignWriteAccess).get(2).click();
+    }
+
+    async selectConfidentialsSupportGroupWriteAccess(): Promise<void> {
+        await $(this.selectors.assignWriteAccess).click();
     }
 
     async isCaseAccessEntityAdded(agentNameOrSupportGroupName: string): Promise<boolean> {
