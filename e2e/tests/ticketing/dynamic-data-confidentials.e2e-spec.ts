@@ -52,7 +52,7 @@ describe('Dynamic Confidentials Data', () => {
 
     //ankagraw
     describe('[DRDMV-17962]: Validation of Confidential fields in Dynamic Field Group on Case', async () => {
-        let caseTemplateData, caseData, caseId, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseTemplateData, caseId, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             caseTemplateData = {
                 "templateName": randomStr + 'caseTemplateName',
@@ -62,7 +62,9 @@ describe('Dynamic Confidentials Data', () => {
                 "assignee": "Fritz",
                 "company": "Petramco",
                 "supportGroup": "Facilities",
-                "ownerGroup": "Facilities"
+                "ownerGroup": "Facilities",
+                "businessUnit": "Facilities Support",
+                "ownerBU": "Facilities Support",
             }
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
@@ -114,8 +116,8 @@ describe('Dynamic Confidentials Data', () => {
         });
     });
 
-    describe('[DRDMV-15006]: [DesignTime] Add confidential support group on case template', async () => {
-        let caseTemplateData, caseData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+    describe('[DRDMV-15006,DRDMV-15024,DRDMV-15025]: [DesignTime] Add confidential support group on case template', async () => {
+        let caseTemplateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             caseTemplateData = {
                 "templateName": randomStr + 'caseTemplateName',
@@ -125,15 +127,18 @@ describe('Dynamic Confidentials Data', () => {
                 "assignee": "Fritz",
                 "company": "Petramco",
                 "supportGroup": "Facilities",
-                "ownerGroup": "Facilities"
+                "ownerGroup": "Facilities",
+                "businessUnit": "Facilities Support",
+                "ownerBU": "Facilities Support",
             }
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
             await apiHelper.apiLogin('fritz');
             await apiHelper.createCaseTemplate(caseTemplateData);
-            
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
         });
-        it('[DRDMV-15006]: [DesignTime] Add confidential support group on case template', async () => {
+        it('[DRDMV-15006,DRDMV-15024,DRDMV-15025]: [DesignTime] Add confidential support group on case template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(caseTemplateData.templateName);
@@ -143,6 +148,31 @@ describe('Dynamic Confidentials Data', () => {
             await viewCasetemplatePo.selectConfidentialSupportGroupDropDown("Facilities");
             await viewCasetemplatePo.clickConfidentialWriteSupportGroupAccess();
             await viewCasetemplatePo.clickAddConfidentialSupportGroup();
+            await viewCasetemplatePo.clickConfidentialSupportGroupAccess();
+            expect(await viewCasetemplatePo.isConfidentialSupportGroupDropDownPresent("Sensitive Personal Data (HR)")).toBeTruthy();
+            await viewCasetemplatePo.selectConfidentialSupportGroupDropDown("Sensitive Personal Data (HR)");
+            await viewCasetemplatePo.clickAddConfidentialSupportGroup();
+        });
+        it('[DRDMV-15006,DRDMV-15024,DRDMV-15025]: [DesignTime] Add confidential support group on case template', async () => {
+            expect(await viewCasetemplatePo.isConfidentialSupportGroupValueTextDisplayed("Facilities")).toBeTruthy();
+            expect(await viewCasetemplatePo.isConfidentialSupportGroupValueTextDisplayed("Sensitive Personal Data (HR)")).toBeTruthy();
+            await viewCasetemplatePo.clickDeleteConfidentialSupportGroup();
+            await viewCasetemplatePo.clickDeleteConfidentialSupportGroup();
+            expect(await viewCasetemplatePo.isConfidentialSupportGroupValueTextDisplayed("Facilities")).toBeFalsy();
+            expect(await viewCasetemplatePo.isConfidentialSupportGroupValueTextDisplayed("Sensitive Personal Data (HR)")).toBeFalsy();
+            await viewCasetemplatePo.clickConfidentialSupportGroupAccess();
+            expect(await viewCasetemplatePo.isConfidentialSupportGroupDropDownPresent("Sensitive Personal Data (HR)")).toBeTruthy();
+            await viewCasetemplatePo.selectConfidentialSupportGroupDropDown("Sensitive Personal Data (HR)");
+            await viewCasetemplatePo.clickAddConfidentialSupportGroup();
+            expect(await viewCasetemplatePo.isConfidentialSupportGroupValueTextDisplayed("Sensitive Personal Data (HR)")).toBeTruthy();
+        });
+        it('[DRDMV-15006,DRDMV-15024,DRDMV-15025]: [DesignTime] Add confidential support group on case template', async () => {
+            await editCasetemplatePo.clickOnEditCaseTemplateMetadata();
+            await editCasetemplatePo.changeTemplateStatusDropdownValue('Active');
+            await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
+            await viewCasetemplatePo.selectTab('Case Access');
+
         });
     });
+
 });
