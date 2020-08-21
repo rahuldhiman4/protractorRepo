@@ -486,7 +486,7 @@ describe('Person Profile test', () => {
             await navigationPage.gotoCaseConsole();
             await navigationPage.gotoPersonProfile();
             await relatedTabPage.addRelatedPerson();
-            await addRelatedPopupPage.addPerson('Quin Strong', 'Former Manager');
+            await addRelatedPopupPage.addPerson('Quin Strong', 'Guardian');
             await relatedTabPage.clickRelatedPersonName('Quin Strong');
             await utilityCommon.switchToNewTab(1);
             await browser.sleep(3000); //Wait for new tab to load properly
@@ -507,7 +507,7 @@ describe('Person Profile test', () => {
             await loginPage.login('qheroux');
             await navigationPage.gotoPersonProfile();
             await relatedTabPage.addRelatedPerson();
-            await addRelatedPopupPage.addPerson('Quin Strong', 'Former Manager');
+            await addRelatedPopupPage.addPerson('Quin Strong', 'Guardian');
             await relatedTabPage.clickRelatedPersonName('Quin Strong');
             await utilityCommon.switchToNewTab(1);
             expect(await activityTabPage.isTextPresentInActivityLog('DRDMV-17021')).toBeTruthy('DRDMV-17021 log activity is not visible to qheroux');
@@ -521,7 +521,7 @@ describe('Person Profile test', () => {
             await loginPage.login('franz');
             await navigationPage.gotoPersonProfile();
             await relatedTabPage.addRelatedPerson();
-            await addRelatedPopupPage.addPerson('Quin Strong', 'Former Manager');
+            await addRelatedPopupPage.addPerson('Quin Strong', 'Guardian');
             await relatedTabPage.clickRelatedPersonName('Quin Strong');
             expect(await activityTabPage.isTextPresentInActivityLog('DRDMV-17021')).toBeFalsy('DRDMV-17021 log activity is present');
             expect(await activityTabPage.isTextPresentInActivityLog('Elizabeth Peters')).toBeFalsy('Elizabeth Peters is present in activity');
@@ -727,9 +727,8 @@ describe('Person Profile test', () => {
                 "Requester": "qnorton",
                 "Summary": "Test case for DRDMV-16799_2",
                 "Assigned Company": "Petramco",
-                "Business Unit": "Facilities Support",
-                "Support Group": "Facilities",
-                "Assignee": "Fritz"
+                "Business Unit": "HR Support",
+                "Support Group": "Compensation and Benefits"
             }
 
             let response = await apiHelper.createCase(caseData);
