@@ -40,7 +40,7 @@ class ViewKnowledgePage {
         articleHelpfulCounter: '[rx-view-component-id="5cc2757f-7a22-4827-82c0-1e7dee2e12a2"] p',
         articleKeywords: '[rx-view-component-id="51e52d59-3acd-49b3-8291-e10558985fa1"] div.tagsReadMode p',
         articleReviewer: '[rx-view-component-id="387dfda7-4f77-4df0-9ac0-6f4fb83b6fe7"] .read-only-content',
-        articleReviewerGroup: '[rx-view-component-id="0b622151-c917-4d1c-97e4-3a9b7f082e2d"] .read-only-content',
+        articleReviewerGroup: '[rx-view-component-id="51f0da81-fea9-4566-9eb0-0c706c60a445"] .read-only-content',
         articleLastReviewDate: '[rx-view-component-id="bccc3ffb-8be9-4332-8f7f-fef96b43c3b9"] .read-only-content',
         articleNextReviewDate: '[rx-view-component-id="7529ddbb-6ef2-46ab-9f66-c85639c3b490"] .read-only-content',
         articleTitle: '[rx-view-component-id="4a5abb06-d6fb-4aa3-81a8-2d5e80c78acf"] p',

@@ -40,5 +40,29 @@
     "SuppGrpDataPsilon":{
         "orgName": "UI-SupportGroup-Psilon",
         "relatedOrgId": "b0446b99d8bb186e231cd17800e6c779233e9c57cff6d4352ac7a10fdf898e54f6c33615a2858395985b7cb5e2b65d53c8b084f4c456afdcc6bb9250318ee4fc"
+    },
+    "SuppGrpDataPhylum1":{
+        "orgName": "UI-Phylum-SuppGrup1",
+        "relatedOrgId": null
+    },
+    "SuppGrpDataPhylum2":{
+        "orgName": "UI-Phylum-SuppGrup2",
+        "relatedOrgId": null
+    },
+    "SuppGrpDataPhylum3":{
+        "orgName": "UI-Phylum-SuppGrup3",
+        "relatedOrgId": null
+    },
+    "SuppGrpDataPhylum4":{
+        "orgName": "UI-Phylum-SuppGrup4",
+        "relatedOrgId": null
+    },
+    "SuppGrpDataPhylum5":{
+        "orgName": "UI-Phylum-SuppGrup5",
+        "relatedOrgId": null
+    },
+    "SuppGrpDataPhylum6":{
+        "orgName": "UI-Phylum-SuppGrup6",
+        "relatedOrgId": null
     }
 }

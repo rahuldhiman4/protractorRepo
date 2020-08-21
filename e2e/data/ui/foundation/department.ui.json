@@ -32,5 +32,29 @@
     "DepartmentData12080":{
         "orgName": "UI-Department-12080",
         "relatedOrgId": null
+    },
+    "DepartmentDataPhylum1":{
+        "orgName": "UI-Phylum-Deprt1",
+        "relatedOrgId": null
+    },
+    "DepartmentDataPhylum2":{
+        "orgName": "UI-Phylum-Deprt2",
+        "relatedOrgId": null
+    },
+    "DepartmentDataPhylum3":{
+        "orgName": "UI-Phylum-Deprt3",
+        "relatedOrgId": null
+    },
+    "DepartmentDataPhylum4":{
+        "orgName": "UI-Phylum-Deprt4",
+        "relatedOrgId": null
+    },
+    "DepartmentDataPhylum5":{
+        "orgName": "UI-Phylum-Deprt5",
+        "relatedOrgId": null
+    },
+    "DepartmentDataPhylum6":{
+        "orgName": "UI-Phylum-Deprt6",
+        "relatedOrgId": null
     }
 }
