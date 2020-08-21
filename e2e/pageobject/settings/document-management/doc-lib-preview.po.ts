@@ -13,9 +13,6 @@ class DocumentLibraryPreview {
         bussinessUnit: '[rx-view-component-id="99db67d8-24d4-4627-ae49-c5143a442917"] .read-only-content',
         ownerGroup: '[rx-view-component-id="245a88c2-bf08-49c3-8b7d-df1594a17fd1"] .read-only-content',
         keyword: '[rx-view-component-id="696edd09-c171-4913-993c-a43c00350ca0"] .bwf-item-text',
-        operationalCategory: '[rx-view-component-id="0c703f2c-73f7-432c-94fd-f464cf6a2c70"] p',
-        location: '[rx-view-component-id="54f83c0c-81cb-4997-b520-4d768e2d826c"] p'
-
     }
 
     async isElementDisplayed(element: ElementFinder): Promise<boolean> {
@@ -85,16 +82,25 @@ class DocumentLibraryPreview {
         return await utilityCommon.isFieldLabelDisplayed(guid,labelName);
     }
 
-    async isOperationalCategoryDisplayed(operationalCategory: string): Promise<boolean> {
-        let operationalCategoryElement = await element(by.cssContainingText(this.selectors.operationalCategory, operationalCategory));
-        return await this.isElementDisplayed(operationalCategoryElement);
+    async isOperationalCategoryOrLocationFieldHeaderDisplayed(fieldHeader: string): Promise<boolean> {
+        let guid: string = undefined;
+        switch (fieldHeader) {
+            case "Operational Category": {
+                guid = '0c703f2c-73f7-432c-94fd-f464cf6a2c70';
+                break;
+            }
+            case "Location": {
+                guid = '54f83c0c-81cb-4997-b520-4d768e2d826c';
+                break;
+            }
+             default: {
+                console.log(fieldHeader, ' is not a valid parameter');
+                break;
+            }
+        }
+        let fieldHeaderElement = await element(by.cssContainingText(`[rx-view-component-id="${guid}"] p`, fieldHeader));
+        return await this.isElementDisplayed(fieldHeaderElement);
     }
-
-    async isLocationDisplayed(location: string): Promise<boolean> {
-        let locationElement = await element(by.cssContainingText(this.selectors.location, location));
-        return await this.isElementDisplayed(locationElement);
-    }
-
 
     async istdocNameDisplayed(docName: string): Promise<boolean> {
         let docNameElement = await element(by.cssContainingText(this.selectors.docName, docName));

@@ -13,8 +13,8 @@ import knowledgeArticlePreview from '../../pageobject/knowledge/preview-knowledg
 import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
 import editKnowledgePo from '../../pageobject/knowledge/edit-knowledge.po';
 import caseTemplatePreviewPo from '../../pageobject/settings/case-management/preview-case-template.po';
-import taskTemplatePreviewPo from '../../pageobject/task/task-template-preview.po';
-import previewDocumentLibraryPo from '../../pageobject/settings/document-management/preview-document-library.po';
+import previewDocumentLibraryPo from '../../pageobject/settings/document-management/doc-lib-preview.po';
+import previewTaskTemplatePo from '../../pageobject/settings/task-management/preview-task-template.po';
 
 export interface IIDs {
     id: string;
@@ -1344,28 +1344,28 @@ describe('Global Search', () => {
         });
 
         it('[DRDMV-16118]: Verify Task Preview Fields', async () => {
-            expect(await taskTemplatePreviewPo.isFieldLabelDisplayed('Task Summary')).toBeTruthy('FailureMsg20: Task Summary label is missing');
-            expect(await taskTemplatePreviewPo.isFieldLabelDisplayed('Task Type')).toBeTruthy('FailureMsg21: Task Type label is missing');
-            expect(await taskTemplatePreviewPo.isFieldLabelDisplayed('Task Priority')).toBeTruthy('FailureMsg22: Task Priority label is missing');
-            expect(await taskTemplatePreviewPo.isFieldLabelDisplayed('Label')).toBeTruthy('FailureMsg24: Label field label is missing');
-            expect(await taskTemplatePreviewPo.isFieldLabelDisplayed('Task Company')).toBeTruthy('FailureMsg25: Task Company label is missing');
-            expect(await taskTemplatePreviewPo.isFieldLabelDisplayed('Task Category Tier 1')).toBeTruthy('FailureMsg28: Category Tier 1 label is missing');
-            expect(await taskTemplatePreviewPo.isFieldLabelDisplayed('Task Category Tier 2')).toBeTruthy('FailureMsg26: Category Tier 2 label is missing');
-            expect(await taskTemplatePreviewPo.isFieldLabelDisplayed('Task Category Tier 3')).toBeTruthy('FailureMsg27: Category Tier 3 label is missing');
-            expect(await taskTemplatePreviewPo.isFieldLabelDisplayed('Task Category Tier 4')).toBeTruthy('FailureMsg27: Category Tier 3 label is missing');
-            expect(await taskTemplatePreviewPo.isFieldLabelDisplayed('Task Description')).toBeTruthy('FailureMsg29: Task Description label is missing');
-            expect(await taskTemplatePreviewPo.isFieldLabelDisplayed('Assignee')).toBeTruthy('FailureMsg29: Assignee label is missing');
-            expect(await taskTemplatePreviewPo.isFieldLabelDisplayed('Support Group')).toBeTruthy('FailureMsg30: Support Group label is missing');
-            expect(await taskTemplatePreviewPo.isFieldLabelDisplayed('Support Company')).toBeTruthy('FailureMsg31: Support Company label is missing');
+            expect(await previewTaskTemplatePo.isTaskSummaryTitleDisplayed('Task Summary')).toBeTruthy('FailureMsg20: Task Summary label is missing');
+            expect(await previewTaskTemplatePo.isTaskTypeTitleDisplayed('Task Type')).toBeTruthy('FailureMsg21: Task Type label is missing');
+            expect(await previewTaskTemplatePo.isTaskPriorityTitleDisplayed('Task Priority')).toBeTruthy('FailureMsg22: Task Priority label is missing');
+            expect(await previewTaskTemplatePo.isLabelTitleDisplayed('Label')).toBeTruthy('FailureMsg24: Label field label is missing');
+            expect(await previewTaskTemplatePo.isTaskCompanyTitleDisplayed('Task Company')).toBeTruthy('FailureMsg25: Task Company label is missing');
+            expect(await previewTaskTemplatePo.isTaskCategoryTier1TitleDisplayed('Task Category Tier 1')).toBeTruthy('FailureMsg28: Category Tier 1 label is missing');
+            expect(await previewTaskTemplatePo.isTaskCategoryTier2TitleDisplayed('Task Category Tier 2')).toBeTruthy('FailureMsg26: Category Tier 2 label is missing');
+            expect(await previewTaskTemplatePo.isTaskCategoryTier3TitleDisplayed('Task Category Tier 3')).toBeTruthy('FailureMsg27: Category Tier 3 label is missing');
+            expect(await previewTaskTemplatePo.isTaskCategoryTier4TitleDisplayed('Task Category Tier 4')).toBeTruthy('FailureMsg27: Category Tier 3 label is missing');
+            expect(await previewTaskTemplatePo.isTaskDescriptionTitleDisplayed('Task Description')).toBeTruthy('FailureMsg29: Task Description label is missing');
+            expect(await previewTaskTemplatePo.isAssigneeTitleDisplayed('Assignee')).toBeTruthy('FailureMsg29: Assignee label is missing');
+            expect(await previewTaskTemplatePo.isSupportGroupTitleDisplayed('Support Group')).toBeTruthy('FailureMsg30: Support Group label is missing');
+            expect(await previewTaskTemplatePo.isTaskCompanyTitleDisplayed('Support Company')).toBeTruthy('FailureMsg31: Support Company label is missing');
 
-            expect(await taskTemplatePreviewPo.istTaskTemplateTitleDisplayed(templateName + 4)).toBeTruthy('FailureMsg20: Task template title is missing');
-            expect(await taskTemplatePreviewPo.isTaskTemplateSummaryDisplayed('TemplateSummary')).toBeTruthy('FailureMsg20: Task Summary is missing');
-            expect(await taskTemplatePreviewPo.isPriorityValueDisplayed('Medium')).toBeTruthy('FailureMsg33: Task priority is missing');
-            expect(await taskTemplatePreviewPo.isTaskCompanyValueDisplayed('Petramco')).toBeTruthy('FailureMsg34: Task company is missing');
-            expect(await taskTemplatePreviewPo.isTaskTemplateDescriptionDisplayed(description)).toBeTruthy('FailureMsg38: description is missing');
-            expect(await taskTemplatePreviewPo.isAssigneeNameDisplayed('Qiang Du')).toBeTruthy('FailureMsg39: Assignee is missing');
-            expect(await taskTemplatePreviewPo.isAassignedGroupValueDisplayed('CA Support 1')).toBeTruthy('FailureMsg40: support group is missing');
-            expect(await taskTemplatePreviewPo.isAssignedCompanyValueDisplayed('Petramco')).toBeTruthy('FailureMsg41: Company Value is missing');
+            expect(await previewTaskTemplatePo.getTaskTemplateName()).toBe(templateName + 4, 'FailureMsg20: Task template title is missing');
+            expect(await previewTaskTemplatePo.getTaskSummary()).toBe('TemplateSummary', 'FailureMsg20: Task Summary is missing');
+            expect(await previewTaskTemplatePo.getTaskPriority()).toBe('Medium', 'FailureMsg33: Task priority is missing');
+            expect(await previewTaskTemplatePo.getTaskCompany()).toBe('Petramco', 'FailureMsg34: Task company is missing');
+            expect(await previewTaskTemplatePo.getDescription()).toBe(description, 'FailureMsg38: description is missing');
+            expect(await previewTaskTemplatePo.getAssigneeText()).toBe('Qiang Du','FailureMsg39: Assignee is missing');
+            expect(await previewTaskTemplatePo.getSupportGroup()).toBe('CA Support 1', 'FailureMsg40: support group is missing');
+            expect(await previewTaskTemplatePo.getSupportCompany()).toBe('Petramco', 'FailureMsg41: Company Value is missing');
         });
 
         it('[DRDMV-16118]: Verify Template with Inactive Task Template ', async () => {
@@ -1580,8 +1580,8 @@ describe('Global Search', () => {
             expect(await previewDocumentLibraryPo.isFieldLabelDisplayed('Tier 4')).toBeTruthy('FailureMsg22: field label displayed');
             expect(await previewDocumentLibraryPo.isFieldLabelDisplayed('Region')).toBeTruthy('FailureMsg22: field label displayed');
             expect(await previewDocumentLibraryPo.isFieldLabelDisplayed('Site')).toBeTruthy('FailureMsg22: field label displayed');
-            expect(await previewDocumentLibraryPo.isOperationalCategoryDisplayed('Operational Category')).toBeTruthy('FailureMsg22: field label displayed');
-            expect(await previewDocumentLibraryPo.isLocationDisplayed('Location')).toBeTruthy('FailureMsg22: field label displayed');
+            expect(await previewDocumentLibraryPo.isOperationalCategoryOrLocationFieldHeaderDisplayed('Operational Category')).toBeTruthy('FailureMsg22: field label displayed');
+            expect(await previewDocumentLibraryPo.isOperationalCategoryOrLocationFieldHeaderDisplayed('Location')).toBeTruthy('FailureMsg22: field label displayed');
 
             expect(await previewDocumentLibraryPo.istdocNameDisplayed(docName1)).toBeTruthy('FailureMsg22: docName1 Displayed');
             expect(await previewDocumentLibraryPo.isattachmentDisplayed(attachmentFileName)).toBeTruthy('FailureMsg22: attachment file name missing');
