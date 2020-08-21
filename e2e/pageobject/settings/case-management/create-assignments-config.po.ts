@@ -107,6 +107,14 @@ class AssignmentConfigCreatePage {
     async setSite(Site:string){
         await utilCommon.selectDropDown(this.selectors.siteDrpDwn, Site);
     }
+
+    async isRegionAllDropDownValuesMatches(data: string[]): Promise<boolean> {
+        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.regionDrpDwn, data);
+    }
+
+    async isSiteAllDropDownValuesMatches(data: string[]): Promise<boolean> {
+        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.siteDrpDwn, data);
+    }
 }
 
 export default new AssignmentConfigCreatePage();
