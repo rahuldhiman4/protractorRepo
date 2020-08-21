@@ -139,7 +139,7 @@ describe('Case Status Change', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-1616]: [Case] Fields validation for case In Progress status', async () => {
+    describe('[DRDMV-1616,DRDMV-22285]: [Case] Fields validation for case In Progress status', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         it('[DRDMV-1616]: Checking change case template button for In Progress', async () => {
             await navigationPage.gotoCreateCase();
@@ -154,7 +154,7 @@ describe('Case Status Change', () => {
             expect(await viewCasePage.getTextOfStatus()).toBe(statusInProgress);
             await viewCasePage.clickEditCaseButton();
         });
-        it('[DRDMV-1616]: Checking change case template button for Resolved', async () => {
+        it('[DRDMV-1616,DRDMV-22285]: Checking change case template button for Resolved', async () => {
             expect(await editCasePage.isSummaryRequiredText()).toBeTruthy('Required Text not displayed');
             expect(await editCasePage.isPriorityRequiredText()).toBeTruthy('Required Text not displayed');
             expect(await $(editCasePage.selectors.contact).isPresent()).toBeTruthy('Contact not present');
@@ -171,7 +171,7 @@ describe('Case Status Change', () => {
             await editCasePage.clickSaveCase();
             expect(await utilityCommon.getAllPopupMsg()).toContain('Saved successfully.');
         });
-        it('[DRDMV-1616]: Checking change case template button for Closed', async () => {
+        it('[DRDMV-1616,DRDMV-22285]: Checking change case template button for Closed', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary('Summary ' + summary);
@@ -184,7 +184,7 @@ describe('Case Status Change', () => {
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             expect(await viewCasePage.getTextOfStatus()).toBe(statusNew);
         });
-        it('[DRDMV-1616]: Checking change case template button for Pending', async () => {
+        it('[DRDMV-1616,DRDMV-22285]: Checking change case template button for Pending', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary('Summary ' + summary);
@@ -200,7 +200,7 @@ describe('Case Status Change', () => {
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             expect(await viewCasePage.getTextOfStatus()).toBe(statusAssigned);
         });
-        it('[DRDMV-1616]: [Case] Fields validation for case In Progress status', async () => {
+        it('[DRDMV-1616,DRDMV-22285]: [Case] Fields validation for case In Progress status', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary('Summary ' + summary);

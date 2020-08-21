@@ -17,6 +17,7 @@ class ChangeAssignmentBlade {
         supportGroupName: '.person__info',
         department: 'selectedDepartmentId',
         supportGroup: 'selectedSupportGroupId',
+        agentName: 'div[aria-label*="name"]'
     }
 
     async isAssignToMeCheckBoxSelected(): Promise<boolean> {
@@ -136,6 +137,20 @@ class ChangeAssignmentBlade {
         await $('.d-icon-users_circle').isPresent().then(async (result) => {
             if (result) await element(by.cssContainingText(this.selectors.assignee, 'Assign to Support Group')).click();
         });
+    }
+
+    async isAgentListSorted(): Promise<boolean> {
+        let arr: string[] = [], copy: string[] = [];
+        let agentRecords: number = await $$(this.selectors.agentName).count();
+        for (let i = 0; i < agentRecords; i++) {
+            let ab: string = await $$(this.selectors.agentName).get(i).getText();
+            arr[i] = ab;
+        }
+        copy = Object.assign([], arr);
+        arr = arr.sort();
+        return arr.length === copy.length && arr.every(
+            (value, index) => (value === copy[index])
+        );
     }
 }
 

@@ -1288,4 +1288,50 @@ describe("Create Case Assignment Mapping", () => {
             await loginPage.login('qkatawazi');
         });
     });
+
+    describe('[DRDMV-14935]:Verify the values belonging to a perticular company for the fields Region and Site are according to logged in user permission', async () => {
+        let randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let region: string[] = ['AMER','APAC','Australia','Caribbean','Central America','Central Asia','China','Chūbu','Chūgoku','EMEA','East Asia','Hokkaidō','Japan','Kansai','Kantō','Kyūshū','North America','Shikoku','South America','South Asia','Southeast Asia','Tōhoku'];
+        let site: string[] = [' ','Canberra', 'Macquarie Park', 'Melbourne', 'Wellington'];
+        it('[DRDMV-14935]:Verify the values belonging to a perticular company for the fields Region and Site are according to logged in user permission', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
+            await assignmentConfigConsolePage.clickOnCreateAssignmentConfiguration();
+            await assignmentConfigCreatePage.setAssignmentMapName("1DRDMV14935 " + randomStr);
+            await assignmentConfigCreatePage.setCompany("Petramco");
+            expect(await assignmentConfigCreatePage.isRegionAllDropDownValuesMatches(region)).toBeTruthy('FailureMsg: Region options mismatch');
+            await assignmentConfigCreatePage.setSupportCompany("Petramco");
+            await assignmentConfigCreatePage.setRegion('Australia');
+            expect(await assignmentConfigCreatePage.isSiteAllDropDownValuesMatches(site)).toBeTruthy('FailureMsg: Site options mismatch');
+            await assignmentConfigCreatePage.setPriority('Critical');
+            await assignmentConfigCreatePage.setSite('Canberra');
+            await assignmentConfigCreatePage.setBusinessUnit('Australia Support');
+            await assignmentConfigCreatePage.setSupportGroup("AU Support 1");
+            await assignmentConfigCreatePage.clickonSaveButton();
+        });
+        it('[DRDMV-14935]:Verify the values belonging to a perticular company for the fields Region and Site are according to logged in user permission', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
+            await assignmentConfigConsolePage.clickOnCreateAssignmentConfiguration();
+            await assignmentConfigCreatePage.setAssignmentMapName("2DRDMV14935 " + randomStr);
+            await assignmentConfigCreatePage.setCompany("- Global -");
+            expect(await assignmentConfigCreatePage.isRegionAllDropDownValuesMatches(region)).toBeTruthy('FailureMsg: Region options mismatch');
+            await assignmentConfigCreatePage.setSupportCompany("Petramco");
+            await assignmentConfigCreatePage.setRegion('Australia');
+            expect(await assignmentConfigCreatePage.isSiteAllDropDownValuesMatches(site)).toBeTruthy('FailureMsg: Site options mismatch');
+            await assignmentConfigCreatePage.setPriority('Critical');
+            await assignmentConfigCreatePage.setSite('Canberra');
+            await assignmentConfigCreatePage.setBusinessUnit('Australia Support');
+            await assignmentConfigCreatePage.setSupportGroup("AU Support 1");
+            await assignmentConfigCreatePage.clickonSaveButton();
+        });
+        afterAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteReadAccessOrAssignmentMapping("1DRDMV14935 " + randomStr);
+            await apiHelper.deleteReadAccessOrAssignmentMapping("2DRDMV14935 " + randomStr);
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+    });
+	
 });
