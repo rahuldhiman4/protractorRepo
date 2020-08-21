@@ -421,7 +421,7 @@ describe("Task Self Approval Tests", () => {
             await apiHelper.associateTemplateWithApprovalMapping(taskModule, manualTaskTemplate.id, approvalMappingResponse.id);
         });
 
-        it('[DRDMV-21827]:Toggle False, task created using template which added in approval mapping, task should go in Approval', async () => {
+        it('[DRDMV-22951]:Toggle False, task created using template which added in approval mapping, task should go in Approval', async () => {
             await apiHelper.apiLogin('qtao');
             caseData = {
                 "Requester": "qdu",
@@ -448,7 +448,7 @@ describe("Task Self Approval Tests", () => {
             expect(await viewTask.isShowApproversBannerDisplayed()).toBeTruthy('Show Approvers Banner is not displayed');
         });
 
-        it('[DRDMV-21827]:Toggle False, task created without template, task should NOT go in Approval', async () => {
+        it('[DRDMV-22951]:Toggle False, task created without template, task should NOT go in Approval', async () => {
             await apiHelper.apiLogin('qtao');
             let caseData = {
                 "Requester": "qdu",
@@ -482,7 +482,7 @@ describe("Task Self Approval Tests", () => {
             expect(await viewTask.isShowApproversBannerDisplayed()).toBeFalsy('Show Approvers Banner is not displayed');
         });
 
-        it('[DRDMV-21827]:Toggle False, task created using template which NOT added in approval mapping, task should NOT go in Approval', async () => {
+        it('[DRDMV-22951]:Toggle False, task created using template which NOT added in approval mapping, task should NOT go in Approval', async () => {
             await apiHelper.apiLogin('qtao');
             caseData = {
                 "Requester": "qdu",
@@ -507,7 +507,7 @@ describe("Task Self Approval Tests", () => {
             expect(await viewTask.isShowApproversBannerDisplayed()).toBeFalsy('Show Approvers Banner is not displayed');
         });
 
-        it('[DRDMV-21827]:Set toggle in approval mapping as True', async () => {
+        it('[DRDMV-22951]:Set toggle in approval mapping as True', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
@@ -517,7 +517,7 @@ describe("Task Self Approval Tests", () => {
             await editApprovalMappingPage.clickSaveApprovalMappingBtn();
         });
 
-        it('[DRDMV-21827]:Toggle True, task created using template which added in approval mapping, task should go in Approval', async () => {
+        it('[DRDMV-22951]:Toggle True, task created using template which added in approval mapping, task should go in Approval', async () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await apiHelper.apiLogin('qtao');
@@ -544,7 +544,7 @@ describe("Task Self Approval Tests", () => {
             expect(await viewTask.isShowApproversBannerDisplayed()).toBeTruthy('Show Approvers Banner is not displayed');
         });
 
-        it('[DRDMV-21827]:Toggle True, task created without template, task should go in Approval', async () => {
+        it('[DRDMV-22951]:Toggle True, task created without template, task should go in Approval', async () => {
             await apiHelper.apiLogin('qtao');
             let caseData = {
                 "Requester": "qdu",
@@ -578,7 +578,7 @@ describe("Task Self Approval Tests", () => {
             expect(await viewTask.isShowApproversBannerDisplayed()).toBeTruthy('Show Approvers Banner is not displayed');
         });
 
-        it('[DRDMV-21827]:Toggle True, task created using template which NOT added in approval mapping, task should NOT go in Approval', async () => {
+        it('[DRDMV-22951]:Toggle True, task created using template which NOT added in approval mapping, task should NOT go in Approval', async () => {
             await apiHelper.apiLogin('qtao');
             caseData = {
                 "Requester": "qdu",
