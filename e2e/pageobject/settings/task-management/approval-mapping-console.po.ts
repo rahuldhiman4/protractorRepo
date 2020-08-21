@@ -17,6 +17,13 @@ class ApprovalMappingConsole {
         await $(this.selectors.deleteButton).click();
     }
 
+    async isCreateApprovalMappingButtonDisplayed(): Promise<boolean> {
+        return await $(this.selectors.createApprovalMapping).isPresent().then(async (result) => {
+            if (result) return await $(this.selectors.createApprovalMapping).isDisplayed();
+            else return false;
+        });
+    }
+
 }
 
 export default new ApprovalMappingConsole();

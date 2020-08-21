@@ -23,7 +23,7 @@
         "menuItemName": "deprecated741",
         "menuItemStatus": "Deprecated",
         "menuType": "Source",
-        "uiVisiable":"0"
+        "uiVisible":"0"
     },
     "resolutionCodeActiveOnUI": {
         "menuItemName": "resolutionCode",

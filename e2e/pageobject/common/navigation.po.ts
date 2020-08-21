@@ -330,7 +330,7 @@ class NavigationPage {
         await browser.sleep(3000);
     }
 
-    async isSettingPanelTextMatches(text: string): Promise<boolean> {
+    async isSettingPanelTextMatches(text: string): Promise<boolean> {
         let settingPaneltextLocator = await element(by.cssContainingText(this.selectors.panelHeadingOfSetting, text));
         return await $(this.selectors.panelHeadingOfSetting).isPresent().then(async (result) => {
             await browser.wait(this.EC.visibilityOf(settingPaneltextLocator), 6000);
@@ -355,6 +355,25 @@ class NavigationPage {
             }
             await browser.switchTo().window(handles[0]);
         });
+    }
+
+    async isPersonProfileDisplayed(): Promise<boolean> {
+        if ((await browser.getCurrentUrl()).includes("isettings")) await this.switchToAngularTab();
+        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+        if (await this.isHambergerIconPresent()) {
+            await $(this.selectors.hamburgerIcon).click();
+            return await element(by.buttonText('My Profile')).isPresent().then(async (result) => {
+                if (result) return await element(by.buttonText('My Profile')).isDisplayed();
+                else return false;
+            })
+        }
+        else {
+            await $(this.selectors.profileMenu).click();
+            await element(by.buttonText('My Profile')).isPresent().then(async (result) => {
+                if (result) return element(by.buttonText('My Profile')).isDisplayed();
+                else return false;
+            });
+        }
     }
 }
 

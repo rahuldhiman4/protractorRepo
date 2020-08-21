@@ -9,6 +9,8 @@ class RelationshipConfigsPage {
         header: '.column-name',
         relationshipFields: 'input',
         saveButton: '.relationships-footer button[ng-click="submit()"]',
+        relationshipName: '.ac-relationship-name',
+        reverseRelationshipName: '.ac-reverse-relationship-name'
     }
 
     async isAddRelationButtonEnabled(): Promise<boolean> {
@@ -80,6 +82,22 @@ class RelationshipConfigsPage {
         return status;
     }
 
+    async clickAddRelationshipButton(): Promise<void>{
+        await $(this.selectors.addRelationshipButton).click();
+    }
+
+    async setNewRelationshipName(relationshipName: string): Promise<void>{
+        await $$(this.selectors.relationshipName).last().sendKeys(relationshipName);
+    }
+
+    async setNewReverseRelationshipName(reverseRelationshipName: string): Promise<void>{
+        await $$(this.selectors.reverseRelationshipName).last().sendKeys(reverseRelationshipName);
+    }
+
+    async setNewRelationshipStatus(status: string): Promise<void> {
+        await $$('.caret.pull-right').last().click();
+        await $$(`.ui-select-choices-row-inner div[title="${status}"]`).last().click();
+    }
 }
 
 export default new RelationshipConfigsPage();

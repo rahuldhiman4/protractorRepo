@@ -99,6 +99,20 @@ class AssignmentsConfigConsolePage {
         });
     }
 
+    async deleteFilteredAssignmentConfig(): Promise<void> {
+        await $('div.ui-grid-row').isPresent().then(async (result) => {
+            if (result) {
+                await utilGrid.selectAllCheckBox();
+                await this.clickDeleteButton();
+                await utilCommon.clickOnWarningOk();
+                await utilCommon.closePopUpMessage();
+                await utilGrid.clearFilter();
+            } else {
+                await utilGrid.clearFilter();
+            }
+        });
+    }
+
     async getSelectedGridRecordValue(columnHeader: string): Promise<string> {
         return await utilGrid.getSelectedGridRecordValue(this.selectors.guid, columnHeader);
     }
