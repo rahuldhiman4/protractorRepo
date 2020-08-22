@@ -149,6 +149,11 @@ describe("Create Case Assignment Mapping", () => {
         await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
         await apiHelper.associatePersonToCompany(userData1.userId, "Psilon");
         await apiHelper.associatePersonToCompany(userData.userId, "Phylum");
+        let personData1 = personDataFile['PhylumCaseAgent1'];
+        await apiHelper.createNewUser(personData1);
+        await apiHelper.associatePersonToSupportGroup(personData1.userId, 'Phylum Support Group1');
+        await apiHelper.associatePersonToCompany(personData1.userId, 'Phylum');
+        await apiHelper.associatePersonToCompany('gderuno', 'Petramco');
     }
 
     afterAll(async () => {
@@ -669,12 +674,11 @@ describe("Create Case Assignment Mapping", () => {
             await assignmentConfigCreatePage.setSite('Canberra');
             await assignmentConfigCreatePage.setBusinessUnit('Psilon Support Org1');
             await assignmentConfigCreatePage.setSupportGroup("Psilon Support Group1");
-            await assignmentConfigCreatePage.setAssignee("Petramco SGUser1");
+            await assignmentConfigCreatePage.setAssignee("Glit Deruno");
             await assignmentConfigCreatePage.clickonSaveButton();
+            await utilityCommon.closePopUpMessage();
         });
         it('[DRDMV-15181]:[Permissions] Location based assignment with multiple companies', async () => {
-            await navigationPage.signOut();
-            await loginPage.login(userData.emailId, 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
             await assignmentConfigConsolePage.clickOnCreateAssignmentConfiguration();
@@ -687,8 +691,9 @@ describe("Create Case Assignment Mapping", () => {
             await assignmentConfigCreatePage.setSite('Canberra');
             await assignmentConfigCreatePage.setBusinessUnit('Psilon Support Org1');
             await assignmentConfigCreatePage.setSupportGroup("Psilon Support Group1");
-            await assignmentConfigCreatePage.setAssignee("Petramco SGUser1");
+            await assignmentConfigCreatePage.setAssignee("Glit Deruno");
             await assignmentConfigCreatePage.clickonSaveButton();
+            await utilityCommon.closePopUpMessage();
         });
         it('[DRDMV-15181]:[Permissions] Location based assignment with multiple companies', async () => {
             await navigationPage.gotoCreateCase();
@@ -700,7 +705,7 @@ describe("Create Case Assignment Mapping", () => {
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePo.getAssignedGroupText()).toBe('Psilon Support Group1');
-            expect(await viewCasePo.getAssigneeText()).toBe('Petramco SGUser1');
+            expect(await viewCasePo.getAssigneeText()).toBe('Glit Deruno');
             await apiHelper.apiLogin('tadmin');
             await apiHelper.associatePersonToCompany(userData1.userId, "Phylum");
         });
@@ -716,7 +721,7 @@ describe("Create Case Assignment Mapping", () => {
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePo.getAssignedGroupText()).toBe('Psilon Support Group1');
-            expect(await viewCasePo.getAssigneeText()).toBe('Petramco SGUser1');
+            expect(await viewCasePo.getAssigneeText()).toBe('Glit Deruno');
         });
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
@@ -766,160 +771,6 @@ describe("Create Case Assignment Mapping", () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteReadAccessOrAssignmentMapping("1DRDMV14935 " + randomStr);
             await apiHelper.deleteReadAccessOrAssignmentMapping("2DRDMV14935 " + randomStr);
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
-        });
-    });
-
-    describe('[DRDMV-9103]:[Assignment Mapping] Partially matching Assignment mapping with Flowset', () => {
-        let assignmentData, caseTemplateData, randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        beforeAll(async () => {
-            assignmentData = {
-                "assignmentMappingName": randomStr + "1DRDMV8968",
-                "company": "Phylum",
-                "supportCompany": "Phylum",
-                "businessUnit": "UI-Phylum-BUnit",
-                "department": "UI-Phylum-Deprt",
-                "supportGroup": "UI-Phylum-SuppGrup",
-                "assignee": "idphylum1",
-                "categoryTier1": "Facilities",
-                "categoryTier2": "Conference Room",
-                "priority": "Low",
-                "flowset": "Facilities Management",
-            }
-            caseTemplateData = {
-                "templateName": `${randomStr}Casetemplate`,
-                "templateStatus": "Draft",
-                "templateSummary": `${randomStr}Summary`,
-                "caseStatus": "New",
-                "casePriority": "Low",
-                "categoryTier1": "Facilities",
-                "categoryTier2": "Conference Room",
-                "categoryTier3": "Furniture",
-                "company": "Phylum",
-                "ownerBU": "Phylum Support Org1",
-                "ownerGroup": "Phylum Support Group1"
-            }
-            await apiHelper.apiLoginWithCredential(userId1, "Password_1234");
-            await apiHelper.createCaseAssignmentMapping(assignmentData);
-            await apiHelper.createCaseTemplate(caseTemplateData);
-        });
-        it('[DRDMV-9103]:[Assignment Mapping] Partially matching Assignment mapping with Flowset', async () => {
-            await navigationPage.signOut();
-            await loginPage.login(userId1, 'Password_1234');
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
-            await utilGrid.searchAndOpenHyperlink(caseTemplateData.templateName);
-            await viewCaseTemplate.clickOnEditCaseTemplateButton();
-            await editCasetemplatePo.changeFlowsetValue('Facilities Management');
-            await editCasetemplatePo.clickSaveCaseTemplate();
-            await utilCommon.closePopUpMessage();
-            await editCasetemplatePo.clickOnEditCaseTemplateMetadata();
-            await editCasetemplatePo.changeTemplateStatusDropdownValue('Active');
-            await editCasetemplatePo.changeOwnerCompanyValue('Phylum');
-            await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
-            await utilCommon.closePopUpMessage();
-            await navigationPage.gotoCreateCase();
-            await createCasePage.selectRequester('Anna');
-            await createCasePage.setSummary('Summary');
-            await createCasePage.clickSelectCaseTemplateButton();
-            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateData.templateName);
-            await createCasePage.clickSaveCaseButton();
-            await previewCasePo.clickGoToCaseButton();
-            expect(await viewCasePo.getAssignedGroupText()).toBe(assignmentData.supportGroup);
-            expect(await viewCasePo.getAssigneeText()).toBe('phylumfn1 phylumln1');
-        });
-        afterAll(async () => {
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteReadAccessOrAssignmentMapping(assignmentData.assignmentMappingName);
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
-        });
-    });
-
-    describe('[DRDMV-8968]:[Assignment Mapping] Categories partial match', () => {
-        let assignmentData1, assignmentData2, assignmentData3, randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        beforeAll(async () => {
-            assignmentData1 = {
-                "assignmentMappingName": randomStr + "1DRDMV8968",
-                "company": "Petramco",
-                "supportCompany": "Petramco",
-                "businessUnit": "HR Support",
-                "supportGroup": "Employee Relations",
-                "assignee": "Elizabeth",
-                "categoryTier1": "Facilities",
-                "priority": "Critical",
-            }
-            assignmentData2 = {
-                "assignmentMappingName": randomStr + "2DRDMV8968",
-                "company": "Petramco",
-                "supportCompany": "Petramco",
-                "businessUnit": "HR Support",
-                "supportGroup": "Staffing",
-                "assignee": "Peter",
-                "categoryTier1": "Facilities",
-                "categoryTier2": "Conference Room",
-                "priority": "Critical",
-            }
-            assignmentData3 = {
-                "assignmentMappingName": randomStr + "3DRDMV8968",
-                "company": "Petramco",
-                "supportCompany": "Petramco",
-                "businessUnit": "HR Support",
-                "supportGroup": "Training and Development",
-                "assignee": "Elizabeth",
-                "categoryTier1": "Facilities",
-                "categoryTier2": "Conference Room",
-                "categoryTier3": "Furniture",
-                "priority": "Critical",
-            }
-            await apiHelper.apiLoginWithCredential(userId1, "Password_1234");
-            await apiHelper.createCaseAssignmentMapping(assignmentData1);
-            await apiHelper.createCaseAssignmentMapping(assignmentData2);
-            await apiHelper.createCaseAssignmentMapping(assignmentData3);
-        });
-        it('[DRDMV-8968]:[Assignment Mapping] Categories partial match', async () => {
-            await navigationPage.signOut();
-            await loginPage.login(userId1, 'Password_1234');
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
-            await assignmentConfigConsolePage.deleteDefaultAssignmentConfig();
-            await navigationPage.gotoCreateCase();
-            await createCasePage.selectRequester("adam");
-            await createCasePage.setSummary("DRDMV-8968 Case Summary1");
-            await createCasePage.setPriority(assignmentData1.priority);
-            await createCasePage.selectCategoryTier1("Facilities");
-            await createCasePage.clickSaveCaseButton();
-            await previewCasePo.clickGoToCaseButton();
-            expect(await viewCasePo.getAssignedGroupText()).toBe(assignmentData1.supportGroup);
-            expect(await viewCasePo.getAssigneeText()).toBe('Elizabeth Peters');
-            await navigationPage.gotoCreateCase();
-            await createCasePage.selectRequester("adam");
-            await createCasePage.setSummary("DRDMV-8968 Case Summary2");
-            await createCasePage.setPriority(assignmentData2.priority);
-            await createCasePage.selectCategoryTier1("Facilities");
-            await createCasePage.selectCategoryTier2("Conference Room");
-            await createCasePage.clickSaveCaseButton();
-            await previewCasePo.clickGoToCaseButton();
-            expect(await viewCasePo.getAssignedGroupText()).toBe(assignmentData2.supportGroup);
-            expect(await viewCasePo.getAssigneeText()).toBe('Peter Kahn');
-            await navigationPage.gotoCreateCase();
-            await createCasePage.selectRequester("adam");
-            await createCasePage.setSummary("DRDMV-8968 Case Summary3");
-            await createCasePage.setPriority(assignmentData3.priority);
-            await createCasePage.selectCategoryTier1("Facilities");
-            await createCasePage.selectCategoryTier2("Conference Room");
-            await createCasePage.selectCategoryTier3("Furniture");
-            await createCasePage.clickSaveCaseButton();
-            await previewCasePo.clickGoToCaseButton();
-            expect(await viewCasePo.getAssignedGroupText()).toBe(assignmentData3.supportGroup);
-            expect(await viewCasePo.getAssigneeText()).toBe('Elizabeth Peters');
-        });
-        afterAll(async () => {
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteReadAccessOrAssignmentMapping(assignmentData1.assignmentMappingName);
-            await apiHelper.deleteReadAccessOrAssignmentMapping(assignmentData2.assignmentMappingName);
-            await apiHelper.deleteReadAccessOrAssignmentMapping(assignmentData3.assignmentMappingName);
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -1167,6 +1018,8 @@ describe("Create Case Assignment Mapping", () => {
             await assignmentConfigEditPage.setDefaultToggleButton(true);
             await assignmentConfigEditPage.clickonSaveButton();
             await utilCommon.closePopUpMessage();
+        });
+        it('[DRDMV-1206,DRDMV-1208]:[Assignment Mapping] Applying Assignment Mappings to cases with partial match', async () => {
             assignmentData.assignmentMappingName = randomStr + '4DRDMV1206';
             assignmentData.categoryTier1 = "IT";
             assignmentData.businessUnit = "Phylum Support Org1",
@@ -1207,6 +1060,8 @@ describe("Create Case Assignment Mapping", () => {
             assignmentData.assignee = "idphylum7";
             await apiHelper.createCaseAssignmentMapping(assignmentData);
             assignmentData.assignmentMappingName = randomStr + '9DRDMV1206';
+        });
+        it('[DRDMV-1206,DRDMV-1208]:[Assignment Mapping] Applying Assignment Mappings to cases with partial match', async () => {
             assignmentData.categoryTier1 = "Facilities";
             assignmentData.categoryTier2 = "Conference Room";
             assignmentData.categoryTier3 = "Furniture";
@@ -1386,6 +1241,7 @@ describe("Create Case Assignment Mapping", () => {
         });
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteReadAccessOrAssignmentMapping(randomStr + '1DRDMV1206');
             await apiHelper.deleteReadAccessOrAssignmentMapping(randomStr + '2DRDMV1206');
             await apiHelper.deleteReadAccessOrAssignmentMapping(randomStr + '3DRDMV1206');
             await apiHelper.deleteReadAccessOrAssignmentMapping(randomStr + '4DRDMV1206');
@@ -1394,6 +1250,186 @@ describe("Create Case Assignment Mapping", () => {
             await apiHelper.deleteReadAccessOrAssignmentMapping(randomStr + '7DRDMV1206');
             await apiHelper.deleteReadAccessOrAssignmentMapping(randomStr + '8DRDMV1206');
             await apiHelper.deleteReadAccessOrAssignmentMapping(randomStr + '9DRDMV1206');
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+    });
+
+    describe('[DRDMV-8968]:[Assignment Mapping] Categories partial match', () => {
+        let assignmentData1, assignmentData2, assignmentData3, randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let businessData1, businessData2,businessData3;
+        let departmentData1, departmentData2,departmentData3;
+        let suppGrpData1, suppGrpData2,suppGrpData3;
+        beforeAll(async () => {
+            businessData1 = businessDataFile['BusinessUnitDataPhylum1'];
+            departmentData1 = departmentDataFile['DepartmentDataPhylum1'];
+            suppGrpData1 = supportGrpDataFile['SuppGrpDataPhylum1'];
+            businessData2 = businessDataFile['BusinessUnitDataPhylum2'];
+            departmentData2 = departmentDataFile['DepartmentDataPhylum2'];
+            suppGrpData2 = supportGrpDataFile['SuppGrpDataPhylum2'];
+            businessData3 = businessDataFile['BusinessUnitDataPhylum3'];
+            departmentData3 = departmentDataFile['DepartmentDataPhylum3'];
+            suppGrpData3 = supportGrpDataFile['SuppGrpDataPhylum3'];
+            await foundationData2('Phylum', 'BusinessUnitDataPhylum1', 'DepartmentDataPhylum1', 'SuppGrpDataPhylum1', 'PhylumCaseAgent4');
+            await foundationData2('Phylum', 'BusinessUnitDataPhylum2', 'DepartmentDataPhylum2', 'SuppGrpDataPhylum2', 'PhylumCaseAgent5');
+            await foundationData2('Phylum', 'BusinessUnitDataPhylum3', 'DepartmentDataPhylum3', 'SuppGrpDataPhylum3', 'PhylumCaseAgent6');
+            assignmentData1 = {
+                "assignmentMappingName": randomStr + "1DRDMV8968",
+                "company": "Phylum",
+                "supportCompany": "Phylum",
+                "businessUnit": businessData1.orgName,
+                "department": departmentData1.orgName,
+                "supportGroup": suppGrpData1.orgName,
+                "assignee": "idphylum4",
+                "categoryTier1": "Facilities",
+                "priority": "Critical",
+            }
+            assignmentData2 = {
+                "assignmentMappingName": randomStr + "2DRDMV8968",
+                "company": "Phylum",
+                "supportCompany": "Phylum",
+                "businessUnit": businessData2.orgName,
+                "department": departmentData2.orgName,
+                "supportGroup": suppGrpData2.orgName,
+                "assignee": "idphylum5",
+                "categoryTier1": "Facilities",
+                "categoryTier2": "Conference Room",
+                "priority": "Critical",
+            }
+            assignmentData3 = {
+                "assignmentMappingName": randomStr + "3DRDMV8968",
+                "company": "Phylum",
+                "supportCompany": "Phylum",
+                "businessUnit": businessData3.orgName,
+                "department": departmentData3.orgName,
+                "supportGroup": suppGrpData3.orgName,
+                "assignee": "idphylum6",
+                "categoryTier1": "Facilities",
+                "categoryTier2": "Conference Room",
+                "categoryTier3": "Furniture",
+                "priority": "Critical",
+            }
+            await apiHelper.apiLoginWithCredential(userId1, "Password_1234");
+            await apiHelper.createCaseAssignmentMapping(assignmentData1);
+            await apiHelper.createCaseAssignmentMapping(assignmentData2);
+            await apiHelper.createCaseAssignmentMapping(assignmentData3);
+        });
+        it('[DRDMV-8968]:[Assignment Mapping] Categories partial match', async () => {
+            await navigationPage.signOut();
+            await loginPage.login(userId1, 'Password_1234');
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester("Anna");
+            await createCasePage.setSummary("DRDMV-8968 Case Summary1");
+            await createCasePage.setPriority(assignmentData1.priority);
+            await createCasePage.selectCategoryTier1("Facilities");
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            expect(await viewCasePo.getAssignedGroupText()).toBe(assignmentData1.supportGroup);
+            expect(await viewCasePo.getAssigneeText()).toBe('phylumfn4 phylumln4');
+        });
+        it('[DRDMV-8968]:[Assignment Mapping] Categories partial match', async () => {
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester("Anna");
+            await createCasePage.setSummary("DRDMV-8968 Case Summary2");
+            await createCasePage.setPriority(assignmentData2.priority);
+            await createCasePage.selectCategoryTier1("Facilities");
+            await createCasePage.selectCategoryTier2("Conference Room");
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            expect(await viewCasePo.getAssignedGroupText()).toBe(assignmentData2.supportGroup);
+            expect(await viewCasePo.getAssigneeText()).toBe('phylumfn5 phylumln5');
+        });
+        it('[DRDMV-8968]:[Assignment Mapping] Categories partial match', async () => {
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester("Anna");
+            await createCasePage.setSummary("DRDMV-8968 Case Summary3");
+            await createCasePage.setPriority(assignmentData3.priority);
+            await createCasePage.selectCategoryTier1("Facilities");
+            await createCasePage.selectCategoryTier2("Conference Room");
+            await createCasePage.selectCategoryTier3("Furniture");
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            expect(await viewCasePo.getAssignedGroupText()).toBe(assignmentData3.supportGroup);
+            expect(await viewCasePo.getAssigneeText()).toBe('phylumfn6 phylumln6');
+        });
+        afterAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteReadAccessOrAssignmentMapping(assignmentData1.assignmentMappingName);
+            await apiHelper.deleteReadAccessOrAssignmentMapping(assignmentData2.assignmentMappingName);
+            await apiHelper.deleteReadAccessOrAssignmentMapping(assignmentData3.assignmentMappingName);
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+    });
+
+    describe('[DRDMV-9103]:[Assignment Mapping] Partially matching Assignment mapping with Flowset', () => {
+        let assignmentData, caseTemplateData, randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        beforeAll(async () => {
+            await createNewUsers();
+            let businessData1 = businessDataFile['BusinessUnitDataPhylum1'];
+            let departmentData1 = departmentDataFile['DepartmentDataPhylum1'];
+            let suppGrpData1 = supportGrpDataFile['SuppGrpDataPhylum1'];
+            await foundationData2('Phylum', 'BusinessUnitDataPhylum1', 'DepartmentDataPhylum1', 'SuppGrpDataPhylum1', 'PhylumCaseAgent4');
+            assignmentData = {
+                "assignmentMappingName": randomStr + "1DRDMV8968",
+                "company": "Phylum",
+                "supportCompany": "Phylum",
+                "businessUnit": businessData1.orgName,
+                "department": departmentData1.orgName,
+                "supportGroup": suppGrpData1.orgName,
+                "assignee": "idphylum4",
+                "categoryTier1": "Facilities",
+                "categoryTier2": "Conference Room",
+                "priority": "Low",
+                "flowset": "Facilities Management",
+            }
+            caseTemplateData = {
+                "templateName": `${randomStr}Casetemplate`,
+                "templateStatus": "Draft",
+                "templateSummary": `${randomStr}Summary`,
+                "caseStatus": "New",
+                "casePriority": "Low",
+                "categoryTier1": "Facilities",
+                "categoryTier2": "Conference Room",
+                "categoryTier3": "Furniture",
+                "company": "Phylum",
+                "ownerBU": "Phylum Support Org1",
+                "ownerGroup": "Phylum Support Group1"
+            }
+            await apiHelper.apiLoginWithCredential(userId1, "Password_1234");
+            await apiHelper.createCaseAssignmentMapping(assignmentData);
+            await apiHelper.createCaseTemplate(caseTemplateData);
+        });
+        it('[DRDMV-9103]:[Assignment Mapping] Partially matching Assignment mapping with Flowset', async () => {
+            await navigationPage.signOut();
+            await loginPage.login(userId1, 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await utilGrid.searchAndOpenHyperlink(caseTemplateData.templateName);
+            await viewCaseTemplate.clickOnEditCaseTemplateButton();
+            await editCasetemplatePo.changeFlowsetValue('Facilities Management');
+            await editCasetemplatePo.clickSaveCaseTemplate();
+            await utilCommon.closePopUpMessage();
+            await editCasetemplatePo.clickOnEditCaseTemplateMetadata();
+            await editCasetemplatePo.changeTemplateStatusDropdownValue('Active');
+            await editCasetemplatePo.changeOwnerCompanyValue('Phylum');
+            await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
+            await utilCommon.closePopUpMessage();
+        });
+        it('[DRDMV-9103]:[Assignment Mapping] Partially matching Assignment mapping with Flowset', async () => {
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester('Anna');
+            await createCasePage.setSummary('Summary');
+            await createCasePage.clickSelectCaseTemplateButton();
+            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateData.templateName);
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            expect(await viewCasePo.getAssignedGroupText()).toBe(assignmentData.supportGroup);
+            expect(await viewCasePo.getAssigneeText()).toBe('phylumfn4 phylumln4');
+        });
+        afterAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteReadAccessOrAssignmentMapping(assignmentData.assignmentMappingName);
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
