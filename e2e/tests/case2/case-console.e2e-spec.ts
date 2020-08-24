@@ -314,6 +314,23 @@ describe('Case Console', () => {
         });
         it('[DRDMV-8280]:[Case Workspace] Cases search using filters', async () => {
             await utilityGrid.clearFilter();
+            await utilityGrid.addFilter('Category Tier 1','Facilities', 'text');
+            await utilityGrid.searchRecord(newCase1.displayId);
+            expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy(newCase1.displayId);
+            expect(await utilityGrid.isGridRecordPresent(newCase2.displayId)).toBeFalsy(newCase2.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter('Category Tier 2', 'Invoices', 'text');
+            await utilityGrid.searchRecord(newCase2.displayId);
+            expect(await utilityGrid.isGridRecordPresent(newCase2.displayId)).toBeTruthy(newCase2.displayId);
+            expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeFalsy(newCase1.displayId);
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter('Category Tier 3', 'Furniture', 'text');
+            await utilityGrid.searchRecord(newCase1.displayId);
+            expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy(newCase1.displayId);
+            expect(await utilityGrid.isGridRecordPresent(newCase2.displayId)).toBeFalsy(newCase2.displayId);
+        });
+        it('[DRDMV-8280]:[Case Workspace] Cases search using filters', async () => {
+            await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Case ID', newCase1.displayId, 'text');
             await utilityGrid.searchRecord(newCase1.displayId);
             expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy(newCase1.displayId);
@@ -336,23 +353,6 @@ describe('Case Console', () => {
             await utilityGrid.clearFilter();
             await utilityGrid.typeInFilterExperssion("Modified Date:" + modifiedDateFormate);
             expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy(newCase1.displayId);
-        });
-        it('[DRDMV-8280]:[Case Workspace] Cases search using filters', async () => {
-            await utilityGrid.clearFilter();
-            await utilityGrid.addFilter('Category Tier 1','Facilities', 'text');
-            await utilityGrid.searchRecord(newCase1.displayId);
-            expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy(newCase1.displayId);
-            expect(await utilityGrid.isGridRecordPresent(newCase2.displayId)).toBeFalsy(newCase2.displayId);
-            await utilityGrid.clearFilter();
-            await utilityGrid.addFilter('Category Tier 2', 'Conference Room', 'text');
-            await utilityGrid.searchRecord(newCase2.displayId);
-            expect(await utilityGrid.isGridRecordPresent(newCase2.displayId)).toBeTruthy(newCase2.displayId);
-            expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeFalsy(newCase1.displayId);
-            await utilityGrid.clearFilter();
-            await utilityGrid.addFilter('Category Tier 3', 'Furniture', 'text');
-            await utilityGrid.searchRecord(newCase1.displayId);
-            expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy(newCase1.displayId);
-            expect(await utilityGrid.isGridRecordPresent(newCase2.displayId)).toBeFalsy(newCase2.displayId);
         });
         it('[DRDMV-8280]:[Case Workspace] Cases search using filters', async () => {
             await caseConsolePo.removeColumns(defaultCaseColumns);
@@ -379,6 +379,8 @@ describe('Case Console', () => {
             await utilityGrid.searchRecord(newCase1.displayId);
             expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy(newCase1.displayId);
             expect(await utilityGrid.isGridRecordPresent(newCase2.displayId)).toBeFalsy(newCase2.displayId);
+        });
+        it('[DRDMV-8280]:[Case Workspace] Cases search using filters', async () => { 
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Label', "CaseLabel" + randomStr, 'text');
             await utilityGrid.searchRecord(newCase1.displayId);
