@@ -13,6 +13,8 @@ class DocumentLibraryPreview {
         bussinessUnit: '[rx-view-component-id="99db67d8-24d4-4627-ae49-c5143a442917"] .read-only-content',
         ownerGroup: '[rx-view-component-id="245a88c2-bf08-49c3-8b7d-df1594a17fd1"] .read-only-content',
         keyword: '[rx-view-component-id="696edd09-c171-4913-993c-a43c00350ca0"] .bwf-item-text',
+        operationalCategory: '[rx-view-component-id="0c703f2c-73f7-432c-94fd-f464cf6a2c70"] p',
+        location: '[rx-view-component-id="54f83c0c-81cb-4997-b520-4d768e2d826c"] p'
     }
 
     async isElementDisplayed(element: ElementFinder): Promise<boolean> {
@@ -74,72 +76,72 @@ class DocumentLibraryPreview {
                 guid = '59ee56d4-884d-4fc6-ab0b-a72da6910bd4';
                 break;
             }
+
             default: {
                 console.log(labelName, ' is not a valid parameter');
                 break;
             }
         }
-        return await utilityCommon.isFieldLabelDisplayed(guid,labelName);
+        return await utilityCommon.isFieldLabelDisplayed(guid, labelName);
     }
 
-    async isOperationalCategoryOrLocationFieldHeaderDisplayed(fieldHeader: string): Promise<boolean> {
-        let guid: string = undefined;
-        switch (fieldHeader) {
-            case "Operational Category": {
-                guid = '0c703f2c-73f7-432c-94fd-f464cf6a2c70';
+    async isDataDisplayed(fieldName: string, dataName: string): Promise<boolean> {
+        let getElements: string = undefined;
+        switch (fieldName) {
+            case "OperationalCategory": {
+                getElements = this.selectors.operationalCategory;
                 break;
             }
+
             case "Location": {
-                guid = '54f83c0c-81cb-4997-b520-4d768e2d826c';
+                getElements = this.selectors.location;
                 break;
             }
-             default: {
-                console.log(fieldHeader, ' is not a valid parameter');
+
+            case "DocumentName": {
+                getElements = this.selectors.docName;
+                break;
+            }
+
+            case "Attachment": {
+                getElements = this.selectors.attachment;
+                break;
+            }
+
+            case "DocumentStatus": {
+                getElements = this.selectors.docStatus;
+                break;
+            }
+
+            case "ShareExternally": {
+                getElements = this.selectors.shareExternally;
+                break;
+            }
+            case "Company": {
+                getElements = this.selectors.company;
+                break;
+            }
+            case "BussinessUnit": {
+                getElements = this.selectors.bussinessUnit;
+                break;
+            }
+            case "OwnerGroup": {
+                getElements = this.selectors.ownerGroup;
+                break;
+            }
+
+            case "Keyword": {
+                getElements = this.selectors.keyword;
+                break;
+            }
+
+            default: {
+                console.log(dataName, ' is not a valid parameter');
                 break;
             }
         }
-        let fieldHeaderElement = await element(by.cssContainingText(`[rx-view-component-id="${guid}"] p`, fieldHeader));
-        return await this.isElementDisplayed(fieldHeaderElement);
-    }
-
-    async istdocNameDisplayed(docName: string): Promise<boolean> {
-        let docNameElement = await element(by.cssContainingText(this.selectors.docName, docName));
-        return await this.isElementDisplayed(docNameElement);
-    }
-
-    async isattachmentDisplayed(attachmentName: string): Promise<boolean> {
-        let attachmentElement = await element(by.cssContainingText(this.selectors.attachment, attachmentName));
-        return await this.isElementDisplayed(attachmentElement);
-    }
-
-    async isdocStatusDisplayed(docStatus: string): Promise<boolean> {
-        let docStatusElement = await element(by.cssContainingText(this.selectors.docStatus, docStatus));
-        return await this.isElementDisplayed(docStatusElement);
-    }
-
-    async isShareExternallyDisplayed(shareExternally: string): Promise<boolean> {
-        let shareExternallyElement = await element(by.cssContainingText(this.selectors.shareExternally, shareExternally));
-        return await this.isElementDisplayed(shareExternallyElement);
-    }
-
-    async isCompanyValueDisplayed(company: string): Promise<boolean> {
-        let companyValueElement = await element(by.cssContainingText(this.selectors.company, company));
-        return await this.isElementDisplayed(companyValueElement);
-    }
-
-    async isBussinessUnitValueDisplayed(bussinessUnitValue: string): Promise<boolean> {
-        let bussinessUnitElement = await element(by.cssContainingText(this.selectors.bussinessUnit, bussinessUnitValue));
-        return await this.isElementDisplayed(bussinessUnitElement);
-    }
-
-    async isOwnerGroupValueDisplayed(ownerGroupVal: string): Promise<boolean> {
-        let ownerGroupElement = await element(by.cssContainingText(this.selectors.ownerGroup, ownerGroupVal));
-        return await this.isElementDisplayed(ownerGroupElement);
-    }
-
-    async isKeywordsDisplayed(keyword: string): Promise<boolean> {
-        let keywordElement = await element(by.cssContainingText(this.selectors.keyword, keyword));
-        return await this.isElementDisplayed(keywordElement);
+        let dataElement = await element(by.cssContainingText(getElements, dataName));
+        return await this.isElementDisplayed(dataElement);
     }
 }
 export default new DocumentLibraryPreview();

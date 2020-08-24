@@ -1363,7 +1363,7 @@ describe('Global Search', () => {
             expect(await previewTaskTemplatePo.getTaskPriority()).toBe('Medium', 'FailureMsg33: Task priority is missing');
             expect(await previewTaskTemplatePo.getTaskCompany()).toBe('Petramco', 'FailureMsg34: Task company is missing');
             expect(await previewTaskTemplatePo.getDescription()).toBe(description, 'FailureMsg38: description is missing');
-            expect(await previewTaskTemplatePo.getAssigneeText()).toBe('Qiang Du','FailureMsg39: Assignee is missing');
+            expect(await previewTaskTemplatePo.getAssigneeText()).toBe('Qiang Du', 'FailureMsg39: Assignee is missing');
             expect(await previewTaskTemplatePo.getSupportGroup()).toBe('CA Support 1', 'FailureMsg40: support group is missing');
             expect(await previewTaskTemplatePo.getSupportCompany()).toBe('Petramco', 'FailureMsg41: Company Value is missing');
         });
@@ -1580,16 +1580,17 @@ describe('Global Search', () => {
             expect(await previewDocumentLibraryPo.isFieldLabelDisplayed('Tier 4')).toBeTruthy('FailureMsg22: field label displayed');
             expect(await previewDocumentLibraryPo.isFieldLabelDisplayed('Region')).toBeTruthy('FailureMsg22: field label displayed');
             expect(await previewDocumentLibraryPo.isFieldLabelDisplayed('Site')).toBeTruthy('FailureMsg22: field label displayed');
-            expect(await previewDocumentLibraryPo.isOperationalCategoryOrLocationFieldHeaderDisplayed('Operational Category')).toBeTruthy('FailureMsg22: field label displayed');
-            expect(await previewDocumentLibraryPo.isOperationalCategoryOrLocationFieldHeaderDisplayed('Location')).toBeTruthy('FailureMsg22: field label displayed');
+            expect(await previewDocumentLibraryPo.isDataDisplayed('OperationalCategory','Operational Category')).toBeTruthy('FailureMsg22: field label displayed');
+            expect(await previewDocumentLibraryPo.isDataDisplayed('Location','Location')).toBeTruthy('FailureMsg22: field label displayed');
 
-            expect(await previewDocumentLibraryPo.istdocNameDisplayed(docName1)).toBeTruthy('FailureMsg22: docName1 Displayed');
-            expect(await previewDocumentLibraryPo.isattachmentDisplayed(attachmentFileName)).toBeTruthy('FailureMsg22: attachment file name missing');
-            expect(await previewDocumentLibraryPo.isdocStatusDisplayed('Published')).toBeTruthy('FailureMsg22: Doc status missing');
-            expect(await previewDocumentLibraryPo.isCompanyValueDisplayed('Petramco')).toBeTruthy('FailureMsg22: Company Value missing');
-            expect(await previewDocumentLibraryPo.isShareExternallyDisplayed('False')).toBeTruthy('FailureMsg22: Share External Value is missing');
-            expect(await previewDocumentLibraryPo.isBussinessUnitValueDisplayed('Canada Support')).toBeTruthy('FailureMsg22: Status KA Displayed');
-            expect(await previewDocumentLibraryPo.isKeywordsDisplayed(keywordStr)).toBeTruthy('FailureMsg22: Keywords is missing');
+            expect(await previewDocumentLibraryPo.isDataDisplayed('DocumentName', docName1)).toBeTruthy('FailureMsg23: docName1 Displayed');
+            expect(await previewDocumentLibraryPo.isDataDisplayed('Attachment', attachmentFileName)).toBeTruthy('FailureMsg24: attachment file name missing');
+            expect(await previewDocumentLibraryPo.isDataDisplayed('DocumentStatus', 'Published')).toBeTruthy('FailureMsg25: Doc status missing');
+            expect(await previewDocumentLibraryPo.isDataDisplayed('Company', 'Petramco')).toBeTruthy('FailureMsg26: Company Value missing');
+            expect(await previewDocumentLibraryPo.isDataDisplayed('ShareExternally', 'False')).toBeTruthy('FailureMsg27: Share External Value is missing');
+            expect(await previewDocumentLibraryPo.isDataDisplayed('BussinessUnit', 'Canada Support')).toBeTruthy('FailureMsg28: Status KA Displayed');
+            expect(await previewDocumentLibraryPo.isDataDisplayed('OwnerGroup', 'CA Support 1')).toBeTruthy('FailureMsg29: Status KA Displayed');
+            expect(await previewDocumentLibraryPo.isDataDisplayed('Keyword', 'keyword')).toBeTruthy('FailureMsg30: Keywords is missing');
         });
 
         it('[DRDMV-16123]: Verify Document with non matching Document summary Also Verify case summary  who have not access of the case', async () => {
