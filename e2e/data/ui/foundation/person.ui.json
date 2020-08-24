@@ -48,6 +48,42 @@
         "userId": "idphylum3",
         "company": "Phylum"
     },
+    "PhylumCaseAgent4": {
+        "firstName": "phylumfn4",
+        "lastName": "phylumln4",
+        "userId": "idphylum4",
+        "company": "Phylum"
+    },
+    "PhylumCaseAgent5": {
+        "firstName": "phylumfn5",
+        "lastName": "phylumln5",
+        "userId": "idphylum5",
+        "company": "Phylum"
+    },
+    "PhylumCaseAgent6": {
+        "firstName": "phylumfn6",
+        "lastName": "phylumln6",
+        "userId": "idphylum6",
+        "company": "Phylum"
+    },
+    "PhylumCaseAgent7": {
+        "firstName": "phylumfn7",
+        "lastName": "phylumln7",
+        "userId": "idphylum7",
+        "company": "Phylum"
+    },
+    "PhylumCaseAgent8": {
+        "firstName": "phylumfn8",
+        "lastName": "phylumln8",
+        "userId": "idphylum8",
+        "company": "Phylum"
+    },
+    "PhylumCaseAgent9": {
+        "firstName": "phylumfn9",
+        "lastName": "phylumln9",
+        "userId": "idphylum9",
+        "company": "Phylum"
+    },
     "PhylumKnowledgeUser1": {
         "firstName": "phylumfnk1",
         "lastName": "phylumlnk1",
