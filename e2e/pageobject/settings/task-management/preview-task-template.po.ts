@@ -25,7 +25,10 @@ class PreviewTaskTemplateBlade {
         getTaskCategoryTier4: '[rx-view-component-id="9df7b305-6be0-4f50-8c2f-88a61ed85cb4"] p',
         dynamicFieldName: '[rx-view-component-id="92456067-e396-441c-b1c5-b452bc473991"] span',
         assigneeText: '[rx-view-component-id="67c57532-6ca8-4e44-b6b1-244e872c2b70"] .person-link',
-        showMoreDescriptionLink:'.bwf-description-read-state button'
+        showMoreDescriptionLink:'.bwf-description-read-state button',
+        assigneeGuid: '67c57532-6ca8-4e44-b6b1-244e872c2b70',
+        supportGroupGuid: 'b3d6e7a4-e712-4947-9d9d-42e7bfdee7a7',
+        supportCompanyGuid: '0904d5b9-4e0f-4983-a658-3b8f96affb46'
     }
 
     async clickShowMoreDescriptionLink():Promise<void>{
@@ -61,6 +64,18 @@ class PreviewTaskTemplateBlade {
 
     async getTaskPriority(): Promise<string> {
         return await $(this.selectors.taskPriorityValue).getText();
+    }
+
+    async getSupportGroup(): Promise<string> {
+        return await $(`[rx-view-component-id="${this.selectors.supportGroupGuid}"] .read-only-content`).getText();
+    }
+
+    async getSupportCompany(): Promise<string> {
+        return await $(`[rx-view-component-id="${this.selectors.supportCompanyGuid}"] .read-only-content`).getText();
+    }
+
+    async getDescription(): Promise<string> {
+        return await $$(`[rx-view-component-id="${this.selectors.taskDescription}"] .collapse-block div`).get(2).getText();
     }
 
     async isTaskSummaryTitleDisplayed(taskSummary: string): Promise<boolean> {
@@ -101,6 +116,18 @@ class PreviewTaskTemplateBlade {
 
     async isTaskDescriptionTitleDisplayed(taskDescription: string): Promise<boolean> {
         return await $('[rx-view-component-id="f663f6d7-ef45-4170-9dda-6ca2459fad08"] bwf-description label').getText() == taskDescription;
+    }
+
+    async isAssigneeTitleDisplayed(assignee: string): Promise<boolean> {
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.assigneeGuid, assignee);
+    }
+
+    async isSupportGroupTitleDisplayed(supportGroup: string): Promise<boolean> {
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.supportGroupGuid, supportGroup);
+    }
+
+    async isSupportCompanyTitleDisplayed(supportCompany: string): Promise<boolean> {
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.supportCompanyGuid, supportCompany);
     }
 
     async isProcessNameTitleDisplayed(processName: string): Promise<boolean> {
