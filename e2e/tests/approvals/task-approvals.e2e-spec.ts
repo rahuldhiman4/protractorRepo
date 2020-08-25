@@ -838,7 +838,7 @@ describe("Task Approval Tests", () => {
 
         });
 
-        it('[DRDMV-21827]: rigger task based approval for external / manual task and verify error status', async () => {
+        it('[DRDMV-21827]: Trigger task based approval for external / manual task and verify error status', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId1);
