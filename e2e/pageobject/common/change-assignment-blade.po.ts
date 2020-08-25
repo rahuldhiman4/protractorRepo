@@ -147,6 +147,7 @@ class ChangeAssignmentBlade {
             arr[i] = ab;
         }
         copy = Object.assign([], arr);
+        copy = copy.sort();
         arr = arr.sort();
         return arr.length === copy.length && arr.every(
             (value, index) => (value === copy[index])
