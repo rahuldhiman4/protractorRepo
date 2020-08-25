@@ -319,4 +319,10 @@ describe('Login and create case from API', () => {
         let docLibPublished = await apiHelper.publishDocumentLibrary(docLib);
         console.log("doc lib created, published?.. ", docLibPublished);
     });
+
+    it('Add Watson Account', async () => {
+        let apiKey = "jE9dMMf2WMx-M4nNWk8KoJ8lF0AfBRw-8QQHagg4jk40";
+        let created = await apiHelper.addWatsonAccount(apiKey);
+        console.log("Watson Account Added? ", created);
+    });
 });
