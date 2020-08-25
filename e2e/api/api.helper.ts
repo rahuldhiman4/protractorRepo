@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import { cloneDeep } from 'lodash';
+import { cloneDeep, create } from 'lodash';
 import { browser } from 'protractor';
 import * as uuid from 'uuid';
 import apiCoreUtil from "../api/api.core.util";
@@ -12,10 +12,11 @@ import { CASE_REOPEN } from '../data/api/case/case.reopen.api';
 import { CASE_TEMPLATE_PAYLOAD, CASE_TEMPLATE_STATUS_UPDATE_PAYLOAD } from '../data/api/case/case.template.data.api';
 import { ADD_TO_WATCHLIST } from '../data/api/case/case.watchlist.api';
 import { CASE_STATUS_CHANGE, UPDATE_CASE, UPDATE_CASE_ASSIGNMENT } from '../data/api/case/update.case.api';
+import { COGNITIVE_LICENSE } from '../data/api/cognitive/cognitive.config.api';
 import { EMAILCONFIG_DEFAULT, INCOMINGMAIL_DEFAULT, OUTGOINGEMAIL_DEFAULT } from '../data/api/email/email.configuration.data.api';
 import { EMAIL_WHITELIST } from '../data/api/email/email.whitelist.data.api';
 import { NEW_PROCESS_LIB } from '../data/api/flowset/create-process-lib';
-import { UPDATE_SUPPORT_GROUP, UPDATE_PERSON } from '../data/api/foundation/update-foundation-entity.data.api';
+import { UPDATE_PERSON, UPDATE_SUPPORT_GROUP } from '../data/api/foundation/update-foundation-entity.data.api';
 import { IBusinessUnit } from '../data/api/interface/business.unit.interface.api';
 import { ICaseAssignmentMapping } from "../data/api/interface/case.assignment.mapping.interface.api";
 import { ICaseTemplate } from "../data/api/interface/case.template.interface.api";
@@ -24,13 +25,13 @@ import { IDocumentLib } from '../data/api/interface/doc.lib.interface.api';
 import { IDomainTag } from '../data/api/interface/domain.tag.interface.api';
 import { IEmailTemplate } from '../data/api/interface/email.template.interface.api';
 import { IFlowset, IProcessLibConfig } from '../data/api/interface/flowset.interface.api';
+import { IFoundationEntity, IPerson } from '../data/api/interface/foundation-entity-attributes.api';
 import { IKnowledgeSet } from '../data/api/interface/knowledge-set.interface.api';
 import { IknowledgeSetPermissions } from '../data/api/interface/knowledge-set.permissions.interface.api';
 import { IKnowledgeArticles } from '../data/api/interface/knowledge.articles.interface.api';
 import { IMenuItem } from '../data/api/interface/menu.Items.interface.api';
 import { INotesTemplate } from '../data/api/interface/notes.template.interface.api';
 import { INOTIFICATIONEVENT, INOTIFICATIONTEMPLATE } from '../data/api/interface/notification.config.interface.api';
-import { IPerson, IFoundationEntity } from '../data/api/interface/foundation-entity-attributes.api';
 import { ICase, ITask } from '../data/api/interface/record-update.interface.api';
 import { ISupportGroup } from '../data/api/interface/support.group.interface.api';
 import { IAdhocTask, ITaskTemplate } from '../data/api/interface/task.template.interface.api';
@@ -1809,7 +1810,7 @@ class ApiHelper {
             }
             case "Task": {
                 approvalMappingRecordDefinition = "com.bmc.dsm.task-lib:Task Approval Mapping";
-                if (approvalMappingName) {                    
+                if (approvalMappingName) {
                     let allRecords = await apiCoreUtil.getGuid(approvalMappingRecordDefinition);
                     let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
                         return obj[450000152] === approvalMappingName;
@@ -2395,7 +2396,7 @@ class ApiHelper {
             });
         }
     }
-    
+
     async associateTemplateWithApprovalMapping(approvalModule: string, templatedId: string, approvalMapping: string): Promise<boolean> {
         let url;
         switch (approvalModule) {
@@ -2802,8 +2803,39 @@ class ApiHelper {
 
     }
 
+    async addWatsonAccount(apiKey: String): Promise<boolean> {
+        // Pre-requisite: Enable Cognitive Licenses
+        await this.apiLogin('sasadmin');
+        let enableCognitiveLicPayload = cloneDeep(COGNITIVE_LICENSE);
+        const enableCognitiveLicResponse = await axios.put(
+            "api/rx/application/licensemanagement/Petramco/servicelicenses",
+            enableCognitiveLicPayload
+        );
+        console.log("Enable Cognitive License API Status =============>", enableCognitiveLicResponse.status);
 
+        // Pre-requisite: Add Cognitive Service Region
+        await this.apiLogin('tadmin');
+        let cognitiveServiceRegionResponse = await axios.post(
+            "api/rx/application/systemconfiguration/cognitiveServiceRegionTenantConfiguration",
+            {
+                "name": "cognitiveServiceRegionTenantConfiguration",
+                "value": "{\"WATSON\":{\"naturalLanguageClassifier\":\"US_SOUTH\",\"conversation\":\"\",\"search\":\"\",\"toneAnalyzer\":\"\"}}"
+            }
+        );
+        console.log("Add Cognitive Service Region API Status =============>", cognitiveServiceRegionResponse.status);
 
+        // Add Watson Account
+        let addWatsonAccountResponse = await axios.post(
+            "api/rx/application/systemconfiguration/cognitiveServiceCredential",
+            {
+                "name": "cognitiveServiceCredential",
+                "value": `{\"WATSON\":{\"naturalLanguageClassifierAPIKey\":\"${apiKey}\"}}`
+            }
+        );
+        console.log("Add Watson Account API Status =============>", addWatsonAccountResponse.status);
+        // verify watson account is valid.. that part is missing in this API
+        return enableCognitiveLicResponse.status == 200 && cognitiveServiceRegionResponse.status == 204 && addWatsonAccountResponse.status == 204;
+    }
 }
 
 export default new ApiHelper();
