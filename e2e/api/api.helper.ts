@@ -2670,12 +2670,35 @@ class ApiHelper {
                 commonConfigPayload[1].settingValue = String(constants.ApplicationConfigurationsValue[params[0]]);
                 break;
             }
+            case "RESOLUTION_CODE_MANDATORY": {
+                commonConfigGuid = constants.ApplicationConfigurationsGuid[configName];
+                await this.deleteCommonConfig(configName, company); // delete existing config of company
+                commonConfigPayload = cloneDeep(COMMON_CONFIG_PAYLOAD);
+                if(company == "- Global -") commonConfigPayload[0].settingValue = 900;
+                for (let i: number = 0; i < commonConfigPayload.length; i++) {
+                    commonConfigPayload[i].ownerKeyValue2 = commonConfigGuid;
+                    if (commonConfigPayload[i].settingName == 'Expression') commonConfigPayload[i].settingValue = companyGuid;
+                }
+                commonConfigPayload[1].settingValue = String(params[0]);
+                break;
+            }
+            case "RESOLUTION_DESCRIPTION_MANDATORY": {
+                commonConfigGuid = constants.ApplicationConfigurationsGuid[configName];
+                await this.deleteCommonConfig(configName, company); // delete existing config of company
+                commonConfigPayload = cloneDeep(COMMON_CONFIG_PAYLOAD);
+                if(company == "- Global -") commonConfigPayload[0].settingValue = 900;
+                for (let i: number = 0; i < commonConfigPayload.length; i++) {
+                    commonConfigPayload[i].ownerKeyValue2 = commonConfigGuid;
+                    if (commonConfigPayload[i].settingName == 'Expression') commonConfigPayload[i].settingValue = companyGuid;
+                }
+                commonConfigPayload[1].settingValue = String(params[0]);
+                break;
+            }
             default: {
                 console.log("ERROR: Invalid config name");
                 break;
             }
-        }
-
+        }       
         let addCommonConfigResponse = await axios.post(
             appConfigUri + commonConfigGuid,
             commonConfigPayload,

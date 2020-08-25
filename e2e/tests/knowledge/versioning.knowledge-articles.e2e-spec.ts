@@ -964,7 +964,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
 
         it('[DRDMV-20752]: Verify the behavior when the user who does not have access to view current article version and he tries to create or update existing version', async () => {
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-            await knowledgeAccessPage.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
+            await knowledgeAccessPage.clickOnAccessButton('Support Group Access');
             await knowledgeAccessPage.selectCompany('Petramco');
             await knowledgeAccessPage.selectBusinessUnit('HR Support');
             await knowledgeAccessPage.selectSupportGroup('Employee Relations');
@@ -1284,7 +1284,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await viewKnowledgeArticlePo.getArticleVersion()).toBe(updatedVersion);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(updatedArticleTitle);
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-            await knowledgeAccessPage.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
+            await knowledgeAccessPage.clickOnAccessButton('Support Group Access');
             await knowledgeAccessPage.selectCompany('Petramco');
             await knowledgeAccessPage.selectBusinessUnit('HR Support');
             await knowledgeAccessPage.selectSupportGroup('Employee Relations');
@@ -1436,7 +1436,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Article is updated with Draft status.');
 
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-            await knowledgeAccessPage.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
+            await knowledgeAccessPage.clickOnAccessButton('Support Group Access');
             await knowledgeAccessPage.selectCompany('Petramco');
             await knowledgeAccessPage.selectBusinessUnit('Australia Support');
             await knowledgeAccessPage.selectSupportGroup('AU Support 1');
@@ -1445,14 +1445,14 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await knowledgeAccessPage.clickCloseKnowledgeAccessBlade();
 
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-            await knowledgeAccessPage.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
+            await knowledgeAccessPage.clickOnAccessButton('Support Group Access');
             await knowledgeAccessPage.selectCompany('Petramco');
             await knowledgeAccessPage.selectBusinessUnit('India Support');
             await knowledgeAccessPage.selectSupportGroup('IN Support 2');
             await knowledgeAccessPage.clickAddSupportGroupAccessButton();
             await knowledgeAccessPage.clickCloseKnowledgeAccessBlade();
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-            await knowledgeAccessPage.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
+            await knowledgeAccessPage.clickOnAccessButton('Support Group Access');
             await knowledgeAccessPage.selectCompany('Petramco');
             await knowledgeAccessPage.selectBusinessUnit('India Support');
             await knowledgeAccessPage.selectSupportGroup('IN Support 3');
@@ -1460,7 +1460,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await knowledgeAccessPage.clickCloseKnowledgeAccessBlade();
 
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-            await knowledgeAccessPage.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
+            await knowledgeAccessPage.clickOnAccessButton('Support Group Access');
             await knowledgeAccessPage.selectCompany('Petramco');
             await knowledgeAccessPage.selectBusinessUnit('United States Support');
             await knowledgeAccessPage.selectSupportGroup('US Support 1');

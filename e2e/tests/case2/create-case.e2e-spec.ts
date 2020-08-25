@@ -34,6 +34,8 @@ import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import viewTaskPo from '../../pageobject/task/view-task.po';
+import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 
 describe("Create Case", () => {
     let categName1, categName2, categName3, categName4;
@@ -41,6 +43,11 @@ describe("Create Case", () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.addCommonConfig('RESOLUTION_CODE_MANDATORY', [true], 'Petramco');
+        await apiHelper.addCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY', [true], 'Petramco');
+        await apiHelper.addCommonConfig('RESOLUTION_CODE_MANDATORY', [true], '- Global -');
+        await apiHelper.addCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY', [true], '- Global -');
     });
 
     afterAll(async () => {
@@ -1005,9 +1012,9 @@ describe("Create Case", () => {
         expect(await changeAssignmentPage.isAgentListSorted()).toBeTruthy("Agent List is Sorted");
     });
 
-    describe('[DRDMV-22293,DRDMV-22292]: User Should not allow to remove assignee when case is in "In Progress" Status', async () => {
+    describe('[DRDMV-22293,DRDMV-22292,DRDMV-22294]: User Should not allow to remove assignee when case is in "In Progress" Status', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let templateData1, templateData2;
+        let templateData1, templateData2, newCaseTemplate,autoTaskTemplateData;
         beforeAll(async () => {
             templateData1 = {
                 "templateName": randomStr + "CaseTemplate1",
@@ -1023,9 +1030,22 @@ describe("Create Case", () => {
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createCaseTemplate(templateData1);
-            await apiHelper.createCaseTemplate(templateData2);
+            newCaseTemplate = await apiHelper.createCaseTemplate(templateData2);
+            autoTaskTemplateData = {
+                "templateName": "autoTask" + randomStr,
+                "templateSummary": "autoTask" + randomStr,
+                "templateStatus": "Active",
+                "processBundle": "com.bmc.dsm.case-lib",
+                "processName": "Case Process " + randomStr,
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
+            }
+            let autoTaskTemplate = await apiHelper.createAutomatedTaskTemplate(autoTaskTemplateData);
+            await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, autoTaskTemplate.displayId);
         });
-        it('[DRDMV-22293,DRDMV-22292]: User Should not allow to remove assignee when case is in "In Progress" Status', async () => {
+        it('[DRDMV-22293,DRDMV-22292,DRDMV-22294]: User Should not allow to remove assignee when case is in "In Progress" Status', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Summary' + randomStr);
@@ -1047,7 +1067,7 @@ describe("Create Case", () => {
             expect(await viewCasePage.getErrorMsgOfInprogressStatus()).toBe('Assignee is required for this case status.  Please select an assignee. ');
             await updateStatusBladePo.clickCancelButton();
         });
-        it('[DRDMV-22293,DRDMV-22292]: User Should not allow to remove assignee when case is in "In Progress" Status', async () => {
+        it('[DRDMV-22293,DRDMV-22292,DRDMV-22294]: User Should not allow to remove assignee when case is in "In Progress" Status', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Summary2' + randomStr);
@@ -1068,7 +1088,72 @@ describe("Create Case", () => {
             await updateStatusBladePo.changeCaseStatus('In Progress');
             expect(await viewCasePage.getErrorMsgOfInprogressStatus()).toBe('Assignee is required for this case status.  Please select an assignee. ');
             await updateStatusBladePo.clickCancelButton();   
-            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");                           
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes"); 
+            await viewCasePage.clickEditCaseButton();
+            await editCasePage.clickOnAssignToMe();
+            await editCasePage.clickSaveCase();  
+            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.clickSaveStatus();
+            await utilityCommon.closePopUpMessage();   
+            await viewCasePage.openTaskCard(1);
+            await manageTaskBladePo.clickTaskLink(autoTaskTemplateData.templateName);
+            expect(await viewTaskPo.getTaskStatusValue()).toBe('Completed');
+        });
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+    });
+
+    describe('[DRDMV-21688,DRDMV-21689]:Create a Company specific Configuration for Resolution Code/Description and Check on Case', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        it('[DRDMV-21688,DRDMV-21689]:Create a Company specific Configuration for Resolution Code/Description and Check on Case', async () => {
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester('adam');
+            await createCasePage.setSummary('Summary' + randomStr);
+            await createCasePage.clickAssignToMeButton();
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('Resolved');
+            expect(await updateStatusBladePo.isRequiredTagToResolutionCode()).toBeTruthy('FailureMsg: Required Tab for Resolution Code is missing');
+            expect(await updateStatusBladePo.isRequiredTagToResolutionDescription()).toBeTruthy('FailureMsg: Required Tab for Resolution Code is missing');
+            expect(await updateStatusBladePo.isSaveUpdateStatusButtonEnabled()).toBeFalsy('FailureMsg: Save button is not enabled');
+            await updateStatusBladePo.clickCancelButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");  
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.deleteCommonConfig('RESOLUTION_CODE_MANDATORY', 'Petramco');
+            await apiHelper.deleteCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY', 'Petramco');
+            await updateStatusBladePo.changeCaseStatus('Resolved');
+            expect(await updateStatusBladePo.isRequiredTagToResolutionCode()).toBeTruthy('FailureMsg: Required Tab for Resolution Code is missing');
+            expect(await updateStatusBladePo.isRequiredTagToResolutionDescription()).toBeTruthy('FailureMsg: Required Tab for Resolution Code is missing');
+            expect(await updateStatusBladePo.isSaveUpdateStatusButtonEnabled()).toBeFalsy('FailureMsg: Save button is not enabled');
+            await updateStatusBladePo.setStatusReason('Auto Resolved');
+            await updateStatusBladePo.selectResolutionCode('Report Delivered');
+            await updateStatusBladePo.setResolutionDescription("CaseResolved" + randomStr);
+            await updateStatusBladePo.clickSaveStatus();
+            await utilityCommon.closePopUpMessage();
+            expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
+            expect(await viewCasePage.getResolutionCodeValue()).toBe('Report Delivered');
+            expect(await viewCasePage.getResolutionDescription()).toBe("CaseResolved" + randomStr);
+        });
+        it('[DRDMV-21688,DRDMV-21689]:Create a Company specific Configuration for Resolution Code/Description and Check on Case', async () => {
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester('adam');
+            await createCasePage.setSummary('Summary2' + randomStr);
+            await createCasePage.clickAssignToMeButton();
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.clickSaveStatus();
+            await utilityCommon.closePopUpMessage();
+            await updateStatusBladePo.changeCaseStatus('Resolved');
+            await updateStatusBladePo.setStatusReason('Auto Resolved');
+            expect(await updateStatusBladePo.isSaveUpdateStatusButtonEnabled()).toBeTruthy('FailureMsg: Save button is not enabled');
+            await updateStatusBladePo.clickSaveStatus();
+            await utilityCommon.closePopUpMessage();
+            expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
         });
         afterAll(async () => {
             await navigationPage.signOut();

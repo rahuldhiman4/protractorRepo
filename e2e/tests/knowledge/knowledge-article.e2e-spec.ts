@@ -28,9 +28,14 @@ import quickCasePo from '../../pageobject/case/quick-case.po';
 import statusBladeKnowledgeArticlePo from '../../pageobject/knowledge/status-blade-knowledge-article.po';
 import reviewCommentsPo from '../../pageobject/knowledge/review-comments.po';
 import notificationPo from '../../pageobject/notification/notification.po';
+import apiCoreUtil from '../../api/api.core.util';
 
 describe('Knowledge Article', () => {
     const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+    const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
+    const departmentDataFile = require('../../data/ui/foundation/department.ui.json');
+    const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
+    const personDataFile = require('../../data/ui/foundation/person.ui.json');
     let knowledgeCandidateUser = 'kayo';
     let knowledgeContributorUser = 'kkohri';
     let knowledgePublisherUser = 'kmills';
@@ -43,6 +48,7 @@ describe('Knowledge Article', () => {
         await loginPage.login('peter');
         await apiHelper.apiLogin('tadmin');
         await apiHelper.setDefaultNotificationForUser("Peter", "Alert");
+        await foundationData('Petramco');
     });
 
     afterAll(async () => {
@@ -54,6 +60,23 @@ describe('Knowledge Article', () => {
         await utilityCommon.refresh();
     });
 
+    async function foundationData(company: string) {
+        await apiHelper.apiLogin('tadmin');
+        let businessData = businessDataFile['BusinessUnitData'];
+        let departmentData = departmentDataFile['DepartmentData'];
+        let suppGrpData = supportGrpDataFile['SuppGrpData'];
+        let personData = personDataFile['PersonData'];
+        let orgId = await apiCoreUtil.getOrganizationGuid(company);
+        businessData.relatedOrgId = orgId;
+        let businessUnitId = await apiHelper.createBusinessUnit(businessData);
+        departmentData.relatedOrgId = businessUnitId;
+        let depId = await apiHelper.createDepartment(departmentData);
+        suppGrpData.relatedOrgId = depId;
+        await apiHelper.createSupportGroup(suppGrpData);
+        await apiHelper.createNewUser(personData);
+        await apiHelper.associatePersonToSupportGroup(personData.userId, suppGrpData.orgName);
+        await apiHelper.associatePersonToCompany(personData.userId, company)
+    }
     //ptidke
     it('[DRDMV-2604]: [Flag an Article] Unflag a published artilcles by Asignee_Knowledge publisher', async () => {
         try {
@@ -1449,7 +1472,7 @@ describe('Knowledge Article', () => {
             expect(await viewKnowledgeArticlePo.isApprovalButtonsPresent("Approve")).toBeFalsy();
             expect(await viewKnowledgeArticlePo.isApprovalButtonsPresent("Reject")).toBeFalsy();
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-            await knowledgeAccessPage.clickOnSupportGroupAccessORAgentAccessButton('Agent Access');
+            await knowledgeAccessPage.clickOnAccessButton('Agent Access');
             await knowledgeAccessPage.selectAgent('kayo');
             await knowledgeAccessPage.clickCloseKnowledgeAccessBlade();
         });
@@ -2437,4 +2460,163 @@ describe('Knowledge Article', () => {
             await loginPage.login('elizabeth');
         });
     });
+
+    describe('[DRDMV-21674]:[UI] [KA Access] - UI behavior for adding/removing Access in knowledge article.', async () => {
+        let knowledgeArticleData;
+        let articleData,randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let businessData = businessDataFile['BusinessUnitData'];
+        let departmentData = departmentDataFile['DepartmentData'];
+        let suppGrpData = supportGrpDataFile['SuppGrpData'];
+        beforeAll(async () => {
+            articleData = {
+                "knowledgeSet": "HR",
+                "title": "KnowledgeArticle" + randomStr,
+                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "categoryTier1": "Applications",
+                "categoryTier2": "Help Desk",
+                "categoryTier3": "Incident",
+                "region": "Australia",
+                "site": "Canberra",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "United Kingdom Support",
+                "assigneeSupportGroup": "GB Support 2",
+                "assignee": "KMills"
+            }
+            await apiHelper.apiLogin('kWilliamson');
+            knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
+        });
+        it('[DRDMV-21674]:[UI] [KA Access] - UI behavior for adding/removing Access in knowledge article.', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('kWilliamson');
+            await navigationPage.switchToApplication(knowledgeManagementApp);
+            await utilityCommon.switchToNewTab(1);
+            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr, 'title not correct');
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
+            expect(await knowledgeAccessPage.isKnowledgeAccessEntityAdded("GB Support 2")).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+            expect(await knowledgeAccessPage.isSupportGroupWriteAccessDisplayed("GB Support 2")).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+            await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
+            await knowledgeAccessPage.clickOnAccessButton('Support Group Access');
+            await knowledgeAccessPage.selectCompany('Petramco');
+            await knowledgeAccessPage.selectBusinessUnit(businessData.orgName);
+            await knowledgeAccessPage.clickOnReadAccessAddButton("Add Business Unit");
+            await knowledgeAccessPage.clickCloseKnowledgeAccessBlade();
+            expect(await knowledgeAccessPage.isKnowledgeAccessEntityAdded(businessData.orgName)).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+            expect(await knowledgeAccessPage.isSupportGroupReadAccessDisplayed(businessData.orgName)).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+            await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
+            await knowledgeAccessPage.clickOnAccessButton('Support Group Access');
+            await knowledgeAccessPage.selectCompany('Petramco');
+            await knowledgeAccessPage.selectBusinessUnit(businessData.orgName);
+            await knowledgeAccessPage.selectDepartment(departmentData.orgName);
+            await knowledgeAccessPage.clickOnReadAccessAddButton("Add Support Department");    
+            await knowledgeAccessPage.clickCloseKnowledgeAccessBlade();
+            expect(await knowledgeAccessPage.isKnowledgeAccessEntityAdded(departmentData.orgName)).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+            expect(await knowledgeAccessPage.isSupportGroupReadAccessDisplayed(departmentData.orgName)).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+            await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
+            await knowledgeAccessPage.clickOnAccessButton('Support Group Access');
+            await knowledgeAccessPage.selectCompany('Petramco');
+            await knowledgeAccessPage.selectBusinessUnit(businessData.orgName);
+            await knowledgeAccessPage.selectDepartment(departmentData.orgName);
+            await knowledgeAccessPage.selectSupportGroup(suppGrpData.orgName);
+            await knowledgeAccessPage.clickAddSupportGroupAccessButton();
+            await knowledgeAccessPage.clickCloseKnowledgeAccessBlade();
+            expect(await knowledgeAccessPage.isKnowledgeAccessEntityAdded(suppGrpData.orgName)).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+            expect(await knowledgeAccessPage.isSupportGroupReadAccessDisplayed(suppGrpData.orgName)).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+            await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
+            await knowledgeAccessPage.clickOnAccessButton('Agent Access');
+            await knowledgeAccessPage.selectAgent('fnPerson lnPerson');
+            await knowledgeAccessPage.clickCloseKnowledgeAccessBlade();
+            expect(await knowledgeAccessPage.isKnowledgeAccessEntityAdded('fnPerson lnPerson')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+            expect(await knowledgeAccessPage.isSupportGroupReadAccessDisplayed('fnPerson lnPerson')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+        });
+        it('[DRDMV-21674]:[UI] [KA Access] - UI behavior for adding/removing Access in knowledge article.', async () => {
+            await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
+            await knowledgeAccessPage.clickRemoveKnowledgeAccess(businessData.orgName);
+            await knowledgeAccessPage.clickKnowledgeAccessYesOption();
+            await knowledgeAccessPage.clickRemoveKnowledgeAccess(departmentData.orgName);
+            await knowledgeAccessPage.clickKnowledgeAccessYesOption();
+            await knowledgeAccessPage.clickRemoveKnowledgeAccess(suppGrpData.orgName);
+            await knowledgeAccessPage.clickKnowledgeAccessYesOption();
+            await knowledgeAccessPage.clickCloseKnowledgeAccessBlade();
+            expect(await knowledgeAccessPage.isKnowledgeAccessEntityAdded(businessData.orgName)).toBeFalsy('FailuerMsg1: Support Group Name is missing');
+            expect(await knowledgeAccessPage.isKnowledgeAccessEntityAdded(departmentData.orgName)).toBeFalsy('FailuerMsg1: Support Group Name is missing');
+            expect(await knowledgeAccessPage.isKnowledgeAccessEntityAdded(suppGrpData.orgName)).toBeFalsy('FailuerMsg1: Support Group Name is missing');
+        });
+        it('[DRDMV-21674]:[UI] [KA Access] - UI behavior for adding/removing Access in knowledge article.', async () => {           
+            await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
+            await knowledgeAccessPage.clickOnAccessButton('Support Group Access');
+            await knowledgeAccessPage.selectCompany('Petramco');
+            await knowledgeAccessPage.selectBusinessUnit(businessData.orgName);
+            await knowledgeAccessPage.clickOnWriteAccessAddButton("Add Business Unit");
+            await knowledgeAccessPage.clickCloseKnowledgeAccessBlade();
+            expect(await knowledgeAccessPage.isKnowledgeAccessEntityAdded(businessData.orgName)).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+            expect(await knowledgeAccessPage.isSupportGroupWriteAccessDisplayed(businessData.orgName)).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+            await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
+            await knowledgeAccessPage.clickOnAccessButton('Support Group Access');
+            await knowledgeAccessPage.selectCompany('Petramco');
+            await knowledgeAccessPage.selectBusinessUnit(businessData.orgName);
+            await knowledgeAccessPage.selectDepartment(departmentData.orgName);
+            await knowledgeAccessPage.clickOnWriteAccessAddButton("Add Support Department");    
+            await knowledgeAccessPage.clickCloseKnowledgeAccessBlade();
+            expect(await knowledgeAccessPage.isKnowledgeAccessEntityAdded(departmentData.orgName)).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+            expect(await knowledgeAccessPage.isSupportGroupWriteAccessDisplayed(departmentData.orgName)).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+            await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
+            await knowledgeAccessPage.clickOnAccessButton('Support Group Access');
+            await knowledgeAccessPage.selectCompany('Petramco');
+            await knowledgeAccessPage.selectBusinessUnit(businessData.orgName);
+            await knowledgeAccessPage.selectDepartment(departmentData.orgName);
+            await knowledgeAccessPage.selectSupportGroup(suppGrpData.orgName);
+            await knowledgeAccessPage.clickOnWriteAccessAddButton("Add Support Group");
+            await knowledgeAccessPage.clickCloseKnowledgeAccessBlade();
+            expect(await knowledgeAccessPage.isKnowledgeAccessEntityAdded(suppGrpData.orgName)).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+            expect(await knowledgeAccessPage.isSupportGroupWriteAccessDisplayed(suppGrpData.orgName)).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+            await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
+            await knowledgeAccessPage.clickOnAccessButton('Agent Access');
+            await knowledgeAccessPage.selectAgent('fnPerson lnPerson');
+            await knowledgeAccessPage.clickCloseKnowledgeAccessBlade();
+            expect(await knowledgeAccessPage.isKnowledgeAccessEntityAdded('fnPerson lnPerson')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+            expect(await knowledgeAccessPage.isSupportGroupReadAccessDisplayed('fnPerson lnPerson')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+        });
+        it('[DRDMV-21674]:[UI] [KA Access] - UI behavior for adding/removing Access in knowledge article.', async () => {
+            await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
+            await knowledgeAccessPage.clickRemoveKnowledgeAccess(businessData.orgName);
+            await knowledgeAccessPage.clickKnowledgeAccessYesOption();
+            await knowledgeAccessPage.clickRemoveKnowledgeAccess(departmentData.orgName);
+            await knowledgeAccessPage.clickKnowledgeAccessYesOption();
+            await knowledgeAccessPage.clickRemoveKnowledgeAccess(suppGrpData.orgName);
+            await knowledgeAccessPage.clickKnowledgeAccessYesOption();
+            await knowledgeAccessPage.clickCloseKnowledgeAccessBlade();
+            expect(await knowledgeAccessPage.isKnowledgeAccessEntityAdded(businessData.orgName)).toBeFalsy('FailuerMsg1: Support Group Name is missing');
+            expect(await knowledgeAccessPage.isKnowledgeAccessEntityAdded(departmentData.orgName)).toBeFalsy('FailuerMsg1: Support Group Name is missing');
+            expect(await knowledgeAccessPage.isKnowledgeAccessEntityAdded(suppGrpData.orgName)).toBeFalsy('FailuerMsg1: Support Group Name is missing');
+        });
+        it('[DRDMV-21674]:[UI] [KA Access] - UI behavior for adding/removing Access in knowledge article.', async () => {
+            await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
+            await knowledgeAccessPage.clickOnAccessButton('Support Group Access');
+            await knowledgeAccessPage.selectCompany('Petramco');
+            await knowledgeAccessPage.selectBusinessUnit('HR Support');
+            await knowledgeAccessPage.selectSupportGroup('Employee Relations');
+            await knowledgeAccessPage.clickOnAccessButton('Agent Access');
+            await knowledgeAccessPage.selectAgent('Peter Kahn');
+            await knowledgeAccessPage.clickCloseKnowledgeAccessBlade();
+            expect(await knowledgeAccessPage.isKnowledgeAccessEntityAdded('Peter Kahn')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+            await navigationPage.signOut();
+            await loginPage.login('peter');
+            await navigationPage.switchToApplication(knowledgeManagementApp);
+            await utilityCommon.switchToNewTab(1);
+            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr, 'title not correct');
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
+            await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
+            expect(await knowledgeAccessPage.isAccessBtnDisplayed('Support Group Access')).toBeFalsy('FailuerMsg1: Support Group Access is missing');
+            expect(await knowledgeAccessPage.isAccessBtnDisplayed('Agent Access')).toBeFalsy('FailuerMsg1: Agent Access is missing');
+            await knowledgeAccessPage.clickCloseKnowledgeAccessBlade();
+        });
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('elizabeth');
+        });
+    });
 });
+
+          
