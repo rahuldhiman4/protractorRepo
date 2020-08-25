@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import { filter, find, forEach, get, isArray, remove, uniqBy, chain, countBy } from 'lodash';
+import { chain, countBy, filter, find, forEach, get, isArray, remove, uniqBy } from 'lodash';
 import * as config from './jira.util.config';
 
 const minimist = require("minimist");
@@ -65,7 +65,6 @@ export class CreateJiraCycle {
     componentArray = [];
     result: any;
     async run() {
-        let startTime = this.getTimeStamp();
         this.loadConfig();
         this.filterInputFile();
         let isCycleAndFolderCreated: boolean = await this.createCycleAndFolder();
@@ -94,8 +93,6 @@ export class CreateJiraCycle {
             console.log(`FAILURE::###### Test Cycle details ###### \nFAILURE::Test cycle Name >> ${this.testCycleName} \nFAILURE::Test cycle Id >> ${this.testCycleId}`);
             console.log(`FAILURE::Folder Name >> ${this.folderName} \nFAILURE::Folder Id >> ${this.folderId}`);
         }
-        console.log("Start time ==>", startTime);
-        console.log("End time ==>", this.getTimeStamp());
     }
 
     loadConfig() {
