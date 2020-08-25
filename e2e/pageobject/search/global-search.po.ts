@@ -21,6 +21,7 @@ class GlobalSearch {
         peopleGuid: '04d2b294-42c4-4d11-ac7a-4d17b5621f70',
         caseTemplatesGuid: 'e69a451f-fccb-488b-ab70-33018801f747',
         taskTemplateGuid: 'fe57b0e4-2546-407e-a2ea-c6f01868a835',
+        recentSearchDropDownValue: '.dropdown-item'
     }
 
     async searchRecord(record: string): Promise<void> {
@@ -79,6 +80,34 @@ class GlobalSearch {
         let elemeent = await $(this.selectors.categoryDropDown);
         await utilityCommon.selectDropDown(elemeent, categoryDropdownValue);
     }
+
+    async clickOnRecentSearchDropDownButton(): Promise<void> {
+        await $$(this.selectors.searchBox).get(1).click();
+        await $(this.selectors.recentSearch).click();
+    }
+
+    async selectRecentSearchDropDownValue(value: string): Promise<void> {
+        await $(this.selectors.recentSearch).click();
+        await element.all(by.cssContainingText(this.selectors.recentSearchDropDownValue, value)).click();
+    }
+
+    async getCountOfRecentDropDownValue(value: string): Promise<number> {
+        let recentSearchValue = await element.all(by.cssContainingText(this.selectors.recentSearchDropDownValue, value)).count();
+        // await $(this.selectors.recentSearch).click(); 
+        return recentSearchValue;
+    }
+
+    async isRecentSearchesDropDownValueDisplayed(value: string): Promise<boolean> {
+        return await element(by.cssContainingText(this.selectors.recentSearchDropDownValue, value)).isPresent().then(async (link) => {
+            if (link) {
+                let recentSearchValue = await element(by.cssContainingText(this.selectors.recentSearchDropDownValue, value)).isDisplayed();
+                // await $(this.selectors.recentSearch).click(); 
+                return recentSearchValue;
+            } else return false;
+        });
+    }
+
+
 
     async isLeftGlobalSearchPannelDisplayed(): Promise<boolean> {
         return await $(this.selectors.leftPannel).isPresent().then(async (link) => {
@@ -179,7 +208,7 @@ class GlobalSearch {
         return booleanVal;
     }
 
-    async isRecordDisplayedOnLeftPannel(record: string, moduleName: string, recordNumber?:number): Promise<boolean> {
+    async isRecordDisplayedOnLeftPannel(record: string, moduleName: string, recordNumber?: number): Promise<boolean> {
         let guid;
         switch (moduleName) {
             case "Case": {
@@ -215,16 +244,16 @@ class GlobalSearch {
                 break;
             }
         }
-        if(recordNumber){
-            return await $$(`[rx-view-component-id="${guid}"] .bwf-search-fields[title="${record}"]`).get(recordNumber-1).isPresent().then(async (link) => {
+        if (recordNumber) {
+            return await $$(`[rx-view-component-id="${guid}"] .bwf-search-fields[title="${record}"]`).get(recordNumber - 1).isPresent().then(async (link) => {
                 if (link) {
-                        return await $$(`[rx-view-component-id="${guid}"] .bwf-search-fields[title="${record}"]`).get(recordNumber-1).isDisplayed();
+                    return await $$(`[rx-view-component-id="${guid}"] .bwf-search-fields[title="${record}"]`).get(recordNumber - 1).isDisplayed();
                 } else return false;
             });
-        }else{
+        } else {
             return await $(`[rx-view-component-id="${guid}"] .bwf-search-fields[title="${record}"]`).isPresent().then(async (link) => {
                 if (link) {
-                        return await $(`[rx-view-component-id="${guid}"] .bwf-search-fields[title="${record}"]`).isDisplayed();
+                    return await $(`[rx-view-component-id="${guid}"] .bwf-search-fields[title="${record}"]`).isDisplayed();
                 } else return false;
             });
         }
