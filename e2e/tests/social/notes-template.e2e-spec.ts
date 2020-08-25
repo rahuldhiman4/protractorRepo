@@ -1226,7 +1226,7 @@ describe('Notes template', () => {
             await createKnowlegePo.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-            await editKnowledgeAccessPo.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
+            await editKnowledgeAccessPo.clickOnAccessButton('Support Group Access');
             await editKnowledgeAccessPo.selectCompany('Petramco');
             await editKnowledgeAccessPo.selectBusinessUnit('Facilities Support');
             await editKnowledgeAccessPo.selectSupportGroup('Facilities');

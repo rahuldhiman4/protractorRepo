@@ -16,6 +16,11 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
+import viewCasetemplatePo from '../../pageobject/settings/case-management/view-casetemplate.po';
+import createCasePo from '../../pageobject/case/create-case.po';
+import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
+import casePreviewPo from '../../pageobject/case/case-preview.po';
+import templateAccessTabPo from '../../pageobject/settings/case-management/template-access-tab.po';
 
 describe("Quick Case", () => {
     const requester = "The requester of the case";
@@ -953,5 +958,202 @@ describe("Quick Case", () => {
         await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Case Create - Quick Case?customer=qliu&desc=Change my Last Name&contact=test1');
         expect(await quickCasePo.validatePersonAndHisRelation(requester)).toBe(caseData[expectedJsonName].requester);
         expect(await quickCasePo.isSummOrDescPopulatedAtSmartTextArea(caseData[expectedJsonName].description)).not.toBe(-1);
+    });
+
+    describe('[DRDMV-22711,DRDMV-22703]: Verify Case Template access while Creating case for Global and Petramco Company', async () => {
+        let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let templateData1, templateData2;
+        beforeAll(async () => {
+            templateData1 = {
+                "templateName": randomStr + "CaseTemplate1",
+                "templateSummary": randomStr + "Summary1",
+                "templateStatus": "Draft",
+                "company": "- Global -",
+                "businessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
+                "assignee": "Fritz",
+            }
+            templateData2 = {
+                "templateName": randomStr + "CaseTemplate2",
+                "templateSummary": randomStr + "Summary2",
+                "templateStatus": "Draft",
+                "company": "Petramco",
+                "businessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
+                "assignee": "Fritz",
+            }
+            await apiHelper.apiLogin('fritz');
+            await apiHelper.createCaseTemplate(templateData1);
+            await apiHelper.createCaseTemplate(templateData2);
+        });
+        it('[DRDMV-22711,DRDMV-22703]: Verify Case Template access while Creating case for Global and Petramco Company', async () => {
+            await navigationPo.gotoSettingsPage();
+            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData1.templateName);
+            await viewCasetemplatePo.selectTab('Template Access');
+            await templateAccessTabPo.clickOnAccessButton('Support Group Access');
+            await templateAccessTabPo.selectCompany('Petramco', 'Select Company');
+            await templateAccessTabPo.selectBusinessUnit('HR Support', 'Select Business Unit');
+            await templateAccessTabPo.selectSupportGroup('Employee Relations', 'Select Support Group');
+            await templateAccessTabPo.clickOnReadAccessAddButton('Add Support Group');
+            expect(await templateAccessTabPo.isSupportGroupReadAccessDisplayed('Employee Relations')).toBeTruthy('Support Group does not have read access');
+            expect(await templateAccessTabPo.isSupportGroupWriteAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have read access');
+            await viewCasetemplatePo.clickEditTemplateMetaData();
+            await editCaseTemplatePo.changeTemplateStatusDropdownValue('Active');
+            await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
+            await utilCommon.closePopUpMessage();
+            await utilCommon.clickOnBackArrow();
+            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData2.templateName);
+            await viewCasetemplatePo.selectTab('Template Access');
+            await templateAccessTabPo.clickOnAccessButton('Support Group Access');
+            await templateAccessTabPo.selectCompany('Petramco', 'Select Company');
+            await templateAccessTabPo.selectBusinessUnit('HR Support', 'Select Business Unit');
+            await templateAccessTabPo.selectSupportGroup('Employee Relations', 'Select Support Group');
+            await templateAccessTabPo.clickOnReadAccessAddButton('Add Support Group');
+            expect(await templateAccessTabPo.isSupportGroupReadAccessDisplayed('Employee Relations')).toBeTruthy('Support Group does not have read access');
+            expect(await templateAccessTabPo.isSupportGroupWriteAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have read access');
+            await viewCasetemplatePo.clickEditTemplateMetaData();
+            await editCaseTemplatePo.changeTemplateStatusDropdownValue('Active');
+            await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
+            await utilCommon.closePopUpMessage();
+        });
+        it('[DRDMV-22711,DRDMV-22703]: Verify Case Template access while Creating case for Global and Petramco Company', async () => {
+            await navigationPo.signOut();
+            await loginPo.login('elizabeth');
+            await navigationPo.gotoCreateCase();
+            await createCasePo.selectRequester('adam');
+            await createCasePo.setSummary("CaseSummary1" + randomStr);
+            await createCasePo.clickSelectCaseTemplateButton();
+            expect(await createCasePo.isTemplateNamePresent(templateData1.templateName)).toBeTruthy('template is present1');
+            await selectCasetemplateBladePo.clickOnCancelButton();
+            await navigationPo.gotoCaseConsole();
+            await navigationPo.gotoCreateCase();
+            await createCasePo.selectRequester('adam');
+            await createCasePo.setSummary("CaseSummary1" + randomStr);
+            await createCasePo.clickSelectCaseTemplateButton();
+            await selectCasetemplateBladePo.selectCaseTemplate(templateData1.templateName);
+            await createCasePo.clickSaveCaseButton();
+            expect(await casePreviewPo.isCaseTemplateDisplayed(templateData1.templateName)).toBeTruthy('Case Template is missing');
+            await previewCasePo.clickGoToCaseButton();
+        });
+        it('[DRDMV-22711,DRDMV-22703]: Verify Case Template access while Creating case for Global and Petramco Company', async () => {
+            await navigationPo.gotoQuickCase();
+            await quickCasePo.selectRequesterName('adam');
+            expect(await quickCasePo.selectCaseTemplate(templateData2.templateName)).toBeTruthy('template is present1');
+            await navigationPo.gotoCreateCase();
+            await createCasePo.selectRequester('adam');
+            await createCasePo.setSummary("CaseSummary2" + randomStr);
+            await createCasePo.clickSelectCaseTemplateButton();
+            await selectCasetemplateBladePo.selectCaseTemplate(templateData2.templateName);
+            await createCasePo.clickSaveCaseButton();
+            expect(await casePreviewPo.isCaseTemplateDisplayed(templateData2.templateName)).toBeTruthy('Case Template is missing');
+            await previewCasePo.clickGoToCaseButton();
+        });
+        it('[DRDMV-22711,DRDMV-22703]: Verify Case Template access while Creating case for Global and Petramco Company', async () => {
+            await navigationPo.signOut();
+            await loginPo.login('qkatawazi');
+            await navigationPo.gotoSettingsPage();
+            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData1.templateName);
+            await viewCasetemplatePo.clickEditTemplateMetaData();
+            await editCaseTemplatePo.changeTemplateStatusDropdownValue('Draft');
+            await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
+            await utilCommon.closePopUpMessage();
+            await viewCasetemplatePo.selectTab('Template Access');
+            await templateAccessTabPo.deleteTemplateAccess('Petramco');
+            await templateAccessTabPo.deleteTemplateAccess('- Global -');
+            await templateAccessTabPo.deleteTemplateAccess('Employee Relations');
+            await utilCommon.clickOnBackArrow();
+            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData2.templateName);
+            await viewCasetemplatePo.clickEditTemplateMetaData();
+            await editCaseTemplatePo.changeTemplateStatusDropdownValue('Draft');
+            await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
+            await utilCommon.closePopUpMessage();
+            await viewCasetemplatePo.selectTab('Template Access');
+            await templateAccessTabPo.deleteTemplateAccess('Petramco');
+            await templateAccessTabPo.deleteTemplateAccess('Employee Relations');
+            await utilCommon.clickOnBackArrow();
+            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData1.templateName);
+            await viewCasetemplatePo.clickEditTemplateMetaData();
+            await editCaseTemplatePo.changeTemplateStatusDropdownValue('Active');
+            await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
+            await utilCommon.closePopUpMessage();
+            await utilCommon.clickOnBackArrow();
+            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData2.templateName);
+            await viewCasetemplatePo.clickEditTemplateMetaData();
+            await editCaseTemplatePo.changeTemplateStatusDropdownValue('Active');
+            await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
+            await utilCommon.closePopUpMessage();
+        });
+        it('[DRDMV-22711,DRDMV-22703]: Verify Case Template access while Creating case for Global and Petramco Company', async () => {
+            await navigationPo.signOut();
+            await loginPo.login('elizabeth');
+            await navigationPo.gotoQuickCase();
+            await quickCasePo.selectRequesterName("adam");
+            expect(await quickCasePo.selectCaseTemplate(templateData1.templateName)).toBeFalsy('template is present');
+        });
+        it('[DRDMV-22711,DRDMV-22703]: Verify Case Template access while Creating case for Global and Petramco Company', async () => {    
+            await navigationPo.gotoQuickCase();
+            await quickCasePo.selectRequesterName("adam");
+            expect(await quickCasePo.selectCaseTemplate(templateData2.templateName)).toBeFalsy('template is present');
+        });
+        it('[DRDMV-22711,DRDMV-22703]: Verify Case Template access while Creating case for Global and Petramco Company', async () => {
+            await navigationPo.signOut();
+            await loginPo.login('qkatawazi');
+            await navigationPo.gotoSettingsPage();
+            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData1.templateName);
+            await viewCasetemplatePo.clickEditTemplateMetaData();
+            await editCaseTemplatePo.changeTemplateStatusDropdownValue('Draft');
+            await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
+            await utilCommon.closePopUpMessage();
+            await viewCasetemplatePo.selectTab('Template Access');
+            await templateAccessTabPo.clickOnAccessButton('Support Group Access');
+            await templateAccessTabPo.selectCompany('Petramco', 'Select Company');
+            await templateAccessTabPo.selectBusinessUnit('HR Support', 'Select Business Unit');
+            await templateAccessTabPo.selectSupportGroup('Compensation and Benefits', 'Select Support Group');
+            await templateAccessTabPo.clickOnWriteAccessAddButton('Add Support Group');
+            expect(await templateAccessTabPo.isSupportGroupWriteAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have read access');
+            expect(await templateAccessTabPo.isSupportGroupWriteAccessDisplayed('Compensation and Benefits')).toBeTruthy('Support Group does not have write access');
+            await navigationPo.signOut();
+            await loginPo.login('elizabeth');
+            await navigationPo.gotoSettingsPage();
+            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData1.templateName);
+            await viewCasetemplatePo.selectTab('Template Access');
+            expect(await templateAccessTabPo.isSupportGroupWriteAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have read access');
+            expect(await templateAccessTabPo.isSupportGroupWriteAccessDisplayed('Compensation and Benefits')).toBeTruthy('Support Group does not have write access');
+        });
+        it('[DRDMV-22711,DRDMV-22703]: Verify Case Template access while Creating case for Global and Petramco Company', async () => {
+            await navigationPo.signOut();
+            await loginPo.login('qkatawazi');
+            await navigationPo.gotoSettingsPage();
+            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData2.templateName);
+            await viewCasetemplatePo.clickEditTemplateMetaData();
+            await editCaseTemplatePo.changeTemplateStatusDropdownValue('Draft');
+            await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
+            await utilCommon.closePopUpMessage();
+            await viewCasetemplatePo.selectTab('Template Access');
+            await templateAccessTabPo.clickOnAccessButton('Support Group Access');
+            await templateAccessTabPo.selectCompany('Petramco', 'Select Company');
+            await templateAccessTabPo.selectBusinessUnit('HR Support', 'Select Business Unit');
+            await templateAccessTabPo.selectSupportGroup('Compensation and Benefits', 'Select Support Group');
+            await templateAccessTabPo.clickOnWriteAccessAddButton('Add Support Group');
+            expect(await templateAccessTabPo.isSupportGroupWriteAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have read access');
+            expect(await templateAccessTabPo.isSupportGroupWriteAccessDisplayed('Compensation and Benefits')).toBeTruthy('Support Group does not have write access');
+            await navigationPo.signOut();
+            await loginPo.login('elizabeth');
+            await navigationPo.gotoSettingsPage();
+            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData2.templateName);
+            await viewCasetemplatePo.selectTab('Template Access');
+            expect(await templateAccessTabPo.isSupportGroupWriteAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have read access');
+            expect(await templateAccessTabPo.isSupportGroupWriteAccessDisplayed('Compensation and Benefits')).toBeTruthy('Support Group does not have write access');
+        });
+        afterAll(async () => {
+            await navigationPo.signOut();
+            await loginPo.login('qkatawazi');
+        });
     });
 });
