@@ -143,7 +143,7 @@ export const COGNITIVE_TEMPLATE_DATASET_MAPPING = {
         },
         "450000152": {
             "id": 450000152,
-            "value": "Data Set mapping Template"
+            "value": "Template DataSet Mapping"
         },
         "450000154": {
             "id": 450000154,
