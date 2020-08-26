@@ -38,10 +38,15 @@ class DynamicFieldLibraryConsole {
         await utilGrid.removeGridColumn(this.selectors.gridGuid,columnNames);
     }
 
-    async isRequestedColumnsSortedAscending(columnName: string): Promise<boolean> {
-        await utilGrid.clearFilter();
+    async isRequestedColumnSortedAscending(columnName: string): Promise<boolean> {
         return await utilGrid.isGridColumnSorted(columnName, "asc", this.selectors.gridGuid);
     }
+
+    async isRequestedColumnSortedDescending(columnName: string): Promise<boolean> {
+        return await utilGrid.isGridColumnSorted(columnName, "desc", this.selectors.gridGuid);
+    }
+
+
 }
 
 export default new DynamicFieldLibraryConsole();

@@ -2,21 +2,22 @@ import { $, $$, by, element, protractor, ProtractorExpectedConditions } from "pr
 import utilGrid from '../../../utils/util.grid';
 import utilCommon from '../../../utils/util.common';
 
-class CreateDynamicFieldLibrary {
+class EditDynamicFieldLibrary {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        title: '.rx-search-option-container .d-textfield__item',
-        cancelButton: '[rx-view-component-id="39134e3e-3a8c-40cd-8a20-b4c90ca7fce9"] button',
-        fieldName: '[rx-view-component-id="3f126998-430d-4d80-9061-e6bb90ddcef5"] .d-textfield__input',
-        fieldNameGuid: '3f126998-430d-4d80-9061-e6bb90ddcef5',
-        localizeButton: '[rx-view-component-id="827cea0b-82d6-4741-8051-1cc52b83b770"] button',
-        fieldDescriptionGuid: '827cea0b-82d6-4741-8051-1cc52b83b770',
-        status: '83773352-ff5c-4143-9b2d-116dc64c03cd',
-        fieldValueType: 'bfcc7610-2202-45aa-87b7-bc37af6e8954',
-        informationSource: 'b9b14785-4b48-4fde-83ac-dc012eb36858',
-        saveButton: '[rx-view-component-id="2f8db2c3-2352-4732-81b9-fdaf46ccbde7"] button',
-        activeConfidentialsCheckbox: '[rx-view-component-id="067cbf9a-a1db-4268-8f6b-3132270f6356"] button[uib-btn-radio="trueValue"]'
+        cancelButton: '[rx-view-component-id="c4189be2-69be-4138-8e04-1fddec50d12c"] button',
+        fieldName: '[rx-view-component-id="ae00a9fd-9963-44b4-80ed-ea3311a41eaa"] .d-textfield__input',
+        fieldNameGuid: 'ae00a9fd-9963-44b4-80ed-ea3311a41eaa',
+        localizeButton: '[rx-view-component-id="f502e31f-69c2-4b63-aeb7-e6ee0be7dfd0"] button',
+        fieldDescriptionGuid: 'f502e31f-69c2-4b63-aeb7-e6ee0be7dfd0',
+        status: 'ab5addeb-3b2c-4f40-91f1-fd8121031e6b',
+        fieldValueTypeGuid: '41cd2c04-a9ef-40ab-921b-3edde31e8c34',
+        fieldValueType: '[rx-view-component-id="41cd2c04-a9ef-40ab-921b-3edde31e8c34"] .ui-select-container',
+        informationSource: 'b4cc0f8f-36d8-4737-9cbf-845e417cfc23',
+        saveButton: '[rx-view-component-id="cca7e4ea-99f5-4d56-9b21-ecf1a45b7ff3"] button',
+        activeConfidentialsCheckbox: '[rx-view-component-id="cca7e4ea-99f5-4d56-9b21-ecf1a45b7ff3"] button[uib-btn-radio="trueValue"]',
+        enabledRequiredRadioButton: '[rx-view-component-id="635e3839-5821-4960-9551-0f4843f5a666"] [uib-btn-radio="trueValue"]',
     }
 
     async clickOnSaveButton(): Promise<void> {
@@ -35,9 +36,13 @@ class CreateDynamicFieldLibrary {
         });
     }
 
-    async setFieldName(value: string): Promise<void> {
-        await $(this.selectors.fieldName).sendKeys(value);
+    async isFieldNameAttribute(attribute:string): Promise<string> {
+     return await $(this.selectors.fieldName).getAttribute(attribute);
     }
+
+    async isFieldValueTypeAttribute(attribute:string): Promise<string> {
+        return await $(this.selectors.fieldValueType).getAttribute(attribute);
+       }
 
     async isFieldNameRequiredText(): Promise<boolean> {
         return await utilCommon.isRequiredTagToField(this.selectors.fieldNameGuid);
@@ -52,7 +57,7 @@ class CreateDynamicFieldLibrary {
     }
 
     async isFieldValueTypeRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.fieldValueType);
+        return await utilCommon.isRequiredTagToField(this.selectors.fieldValueTypeGuid);
     }
 
     async isInformationSoucreRequiredText(): Promise<boolean> {
@@ -63,12 +68,12 @@ class CreateDynamicFieldLibrary {
         await $(this.selectors.localizeButton).click();
     }
 
-    async setFieldValueType(value: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.fieldValueType, value)
+    async clickEnabledRequiredRadioButton(): Promise<void> {
+        await $(this.selectors.enabledRequiredRadioButton).click();
     }
 
     async isFieldValueTypeDropDownPresent(value: string[]): Promise<boolean> {
-        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.fieldValueType, value)
+        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.fieldValueTypeGuid, value)
     }
 
     async isStatusDropDownPresent(value: string[]): Promise<boolean> {
@@ -87,13 +92,9 @@ class CreateDynamicFieldLibrary {
         await utilCommon.selectDropDown(this.selectors.status, value)
     }
 
-    async isHiddenFieldPresent(value: string): Promise<boolean> {
-        return await element(by.cssContainingText(this.selectors.title, value)).isPresent();
-    }
-
     async cancelButton(): Promise<void> {
         await $(this.selectors.cancelButton).click();
     }
 }
 
-export default new CreateDynamicFieldLibrary();
+export default new EditDynamicFieldLibrary();
