@@ -1156,6 +1156,11 @@ describe("Create Case", () => {
             expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
         });
         afterAll(async () => {
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.deleteCommonConfig('RESOLUTION_CODE_MANDATORY', 'Petramco');
+            await apiHelper.deleteCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY', 'Petramco');
+            await apiHelper.deleteCommonConfig('RESOLUTION_CODE_MANDATORY', '- Global -');
+            await apiHelper.deleteCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY', '- Global -');
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
