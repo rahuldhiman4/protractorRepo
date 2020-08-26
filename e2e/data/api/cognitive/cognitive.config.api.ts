@@ -143,7 +143,7 @@ export const COGNITIVE_TEMPLATE_DATASET_MAPPING = {
         },
         "450000152": {
             "id": 450000152,
-            "value": "PetramcoTemplateDatasetMapping"
+            "value": "Data Set mapping Template"
         },
         "450000154": {
             "id": 450000154,
@@ -152,6 +152,10 @@ export const COGNITIVE_TEMPLATE_DATASET_MAPPING = {
         "450000155": {
             "id": 450000155,
             "value": 80
+        },
+        "450000156": {
+            "id": 450000156,
+            "value": "1"
         },
         "450000157": {
             "id": 450000157,
@@ -178,7 +182,7 @@ export const COGNITIVE_CATEGORY_DATASET_MAPPING = {
         },
         "450000152": {
             "id": 450000152,
-            "value": "PetramcoCategoryDatasetMapping"
+            "value": "Category DataSet Mapping"
         },
         "450000153": {
             "id": 450000153,
@@ -186,11 +190,15 @@ export const COGNITIVE_CATEGORY_DATASET_MAPPING = {
         },
         "450000154": {
             "id": 450000154,
-            "value": 90
+            "value": 88
         },
         "450000155": {
             "id": 450000155,
-            "value": 80
+            "value": 77
+        },
+        "450000156": {
+            "id": 450000156,
+            "value": "1"
         },
         "450000157": {
             "id": 450000157,
@@ -205,4 +213,4 @@ export const COGNITIVE_CATEGORY_DATASET_MAPPING = {
             "value": "com.bmc.dsm.bwfa"
         }
     }
-};
+}

@@ -12,7 +12,7 @@ import { CASE_REOPEN } from '../data/api/case/case.reopen.api';
 import { CASE_TEMPLATE_PAYLOAD, CASE_TEMPLATE_STATUS_UPDATE_PAYLOAD } from '../data/api/case/case.template.data.api';
 import { ADD_TO_WATCHLIST } from '../data/api/case/case.watchlist.api';
 import { CASE_STATUS_CHANGE, UPDATE_CASE, UPDATE_CASE_ASSIGNMENT } from '../data/api/case/update.case.api';
-import { COGNITIVE_CATEGORY_DATASET, COGNITIVE_LICENSE, COGNITIVE_TEMPLATE_DATASET } from '../data/api/cognitive/cognitive.config.api';
+import { COGNITIVE_CATEGORY_DATASET, COGNITIVE_LICENSE, COGNITIVE_TEMPLATE_DATASET, COGNITIVE_CATEGORY_DATASET_MAPPING, COGNITIVE_TEMPLATE_DATASET_MAPPING } from '../data/api/cognitive/cognitive.config.api';
 import { EMAILCONFIG_DEFAULT, INCOMINGMAIL_DEFAULT, OUTGOINGEMAIL_DEFAULT } from '../data/api/email/email.configuration.data.api';
 import { EMAIL_WHITELIST } from '../data/api/email/email.whitelist.data.api';
 import { NEW_PROCESS_LIB } from '../data/api/flowset/create-process-lib';
@@ -20,7 +20,7 @@ import { UPDATE_PERSON, UPDATE_SUPPORT_GROUP } from '../data/api/foundation/upda
 import { IBusinessUnit } from '../data/api/interface/business.unit.interface.api';
 import { ICaseAssignmentMapping } from "../data/api/interface/case.assignment.mapping.interface.api";
 import { ICaseTemplate } from "../data/api/interface/case.template.interface.api";
-import { ICognitiveDataSet } from '../data/api/interface/cognitive.interface.api';
+import { ICognitiveDataSet, ICognitiveDataSetMapping } from '../data/api/interface/cognitive.interface.api';
 import { IDepartment } from '../data/api/interface/department.interface.api';
 import { IDocumentLib } from '../data/api/interface/doc.lib.interface.api';
 import { IDomainTag } from '../data/api/interface/domain.tag.interface.api';
@@ -2827,7 +2827,7 @@ class ApiHelper {
 
     }
 
-    async addWatsonAccount(apiKey: String): Promise<boolean> {
+    async addWatsonAccount(apiKey: string): Promise<boolean> {
         // Pre-requisite: Enable Cognitive Licenses
         await this.apiLogin('sasadmin');
         let enableCognitiveLicPayload = cloneDeep(COGNITIVE_LICENSE);
@@ -2861,13 +2861,25 @@ class ApiHelper {
         return enableCognitiveLicResponse.status == 200 && cognitiveServiceRegionResponse.status == 204 && addWatsonAccountResponse.status == 204;
     }
 
-    async createCognitiveDataSet(type: String, data?: ICognitiveDataSet): Promise<boolean> {
+    async createCognitiveDataSet(type: string, cognitiveDataSet?: ICognitiveDataSet): Promise<boolean> {
         let dataSetPayload: any;
-        if (type == "template") dataSetPayload = cloneDeep(COGNITIVE_TEMPLATE_DATASET);
-        if (type == "category") dataSetPayload = cloneDeep(COGNITIVE_CATEGORY_DATASET);
-        if (data) {
-            dataSetPayload.fieldInstances[1731].value = data.name ? data.name : dataSetPayload.fieldInstances[1731].value;
-            dataSetPayload.fieldInstances[8].value = data.description ? data.description : dataSetPayload.fieldInstances[8].value;
+        switch (type) {
+            case "template": {
+                dataSetPayload = cloneDeep(COGNITIVE_TEMPLATE_DATASET);
+                break;
+            };
+            case "category": {
+                dataSetPayload = cloneDeep(COGNITIVE_CATEGORY_DATASET);
+                break;
+            };
+            default: {
+                console.log("ERROR: Invalid cognitive type");
+                break;
+            }
+        }
+        if (cognitiveDataSet) {
+            dataSetPayload.fieldInstances[1731].value = cognitiveDataSet.name ? cognitiveDataSet.name : dataSetPayload.fieldInstances[1731].value;
+            dataSetPayload.fieldInstances[8].value = cognitiveDataSet.description ? cognitiveDataSet.description : dataSetPayload.fieldInstances[8].value;
         }
 
         const createCognitiveDataSetResponse = await apiCoreUtil.createRecordInstance(dataSetPayload);
@@ -2922,6 +2934,34 @@ class ApiHelper {
             }
         }
         return dataSetTrainingStatus == 2;
+    }
+
+    async createCognitiveDataSetMapping(type: string, cognitiveDataSetMapping: ICognitiveDataSetMapping): Promise<boolean> {
+        let dataSetMappingPayload: any;
+        switch (type) {
+            case "template": {
+                dataSetMappingPayload = cloneDeep(COGNITIVE_TEMPLATE_DATASET_MAPPING);
+                break;
+            };
+            case "category": {
+                dataSetMappingPayload = cloneDeep(COGNITIVE_CATEGORY_DATASET_MAPPING);
+                break;
+            };
+            default: {
+                console.log("ERROR: Invalid cognitive type");
+                break;
+            }
+        }
+        dataSetMappingPayload.fieldInstances[450000152].value = cognitiveDataSetMapping.name;
+        dataSetMappingPayload.fieldInstances[450000154].value = cognitiveDataSetMapping.confidenceLevelAgent;
+        dataSetMappingPayload.fieldInstances[450000155].value = cognitiveDataSetMapping.confidenceLevelAutomatic;
+        dataSetMappingPayload.fieldInstances[450000156].value = cognitiveDataSetMapping.enable ? "1" : "0";
+        dataSetMappingPayload.fieldInstances[450000157].value = await apiCoreUtil.getOrganizationGuid(cognitiveDataSetMapping.company);
+        dataSetMappingPayload.fieldInstances[450000158].value = await apiCoreUtil.getCognitiveDataSetGuid(cognitiveDataSetMapping.dataset);
+
+        const createCognitiveDataSetMappingResponse = await apiCoreUtil.createRecordInstance(dataSetMappingPayload);
+        console.log('Create Cognitive Data Set Mapping API Status =============>', createCognitiveDataSetMappingResponse.status);
+        return createCognitiveDataSetMappingResponse.status == 201;
     }
 
     async deleteCognitiveDataSetMapping(dataSetMappingName?: string): Promise<boolean> {

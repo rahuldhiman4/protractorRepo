@@ -4,3 +4,12 @@ export interface ICognitiveDataSet {
     locale?: string;
     recordDefinition?: string;
 };
+
+export interface ICognitiveDataSetMapping {
+    name: string;
+    company: string;
+    dataset: string;
+    enable: boolean;
+    confidenceLevelAutomatic: number;
+    confidenceLevelAgent: number;
+}
