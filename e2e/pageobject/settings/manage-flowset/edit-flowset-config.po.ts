@@ -24,7 +24,14 @@ class EditFlowsetPage {
         associateResolutionCode: '[rx-view-component-id="3d0801f0-7f99-4967-a71a-6347f25c8427"] button',
         addResolutionCode: '[rx-view-component-id="80823193-b62b-425d-aae6-3a6191dea8bc"] button',
         companyValue: '[rx-view-component-id="2303bffc-b2c5-4cd2-a55a-bac22b61d516"] .ui-select-toggle',
-        processmappingConsoleGuid: '0e25a330-f284-4892-9777-84ae2a5583ff'
+        processMappingConsoleGuid: '0e25a330-f284-4892-9777-84ae2a5583ff',
+        confidentialSupportGroupAccess: '.ac-label-manage-support',
+        supportGroupDropDown: '.flex-item .ac-confidential-group-field button',
+        dropdownElement: '.ac-confidential-group-field .options li',
+        confidentialFieldSearchBox: '.field input[placeholder="Search for Support Groups"]',
+        addConfidentialSupportGroup: '[ng-if="enableAddSupportGroup"]',
+        confidentialSupportGroupAssignToMe: '[class="d-checkbox__item ac-label-assign-confidential-write"]',
+        supportGroupWarningText: '[class="rx-case-access-remove ac-group-not-unique"] .rx-case-access-remove-text',
     }
 
     async isFlowsetNameDisabled(): Promise<boolean> {
@@ -33,6 +40,35 @@ class EditFlowsetPage {
 
     async selectProcessName(process: string): Promise<void> {
         await utilCommon.selectDropDown(this.selectors.processnameGuid, process);
+    }
+
+    async selectConfidentialSupportGroup(supportGroup: string): Promise<void> {
+        await $$(this.selectors.supportGroupDropDown).get(1).click();
+        await $$(this.selectors.confidentialFieldSearchBox).get(3).sendKeys(supportGroup);
+        await element(by.cssContainingText(this.selectors.dropdownElement, supportGroup)).isPresent().then(async (result) => {
+            if (result) {
+                await element(by.cssContainingText(this.selectors.dropdownElement, supportGroup)).click();
+            } else {
+                console.log("element not present");
+            }
+
+        });
+}
+
+    async clickConfidentialWriteSupportGroupAccess(): Promise<void> {
+        await $$(this.selectors.confidentialSupportGroupAssignToMe).get(3).click();
+    }
+
+    async clickAddConfidentialSupportGroup(): Promise<void> {
+        await $$(this.selectors.addConfidentialSupportGroup).get(3).click();
+    }
+
+    async clickConfidentialSupportGroupAccess(): Promise<void> {
+        await $$(this.selectors.confidentialSupportGroupAccess).get(1).click();
+    }
+
+    async getSupportGroupWarningMessage(): Promise<string> {
+        return await $(this.selectors.supportGroupWarningText).getText();
     }
 
     async setFlowset(flowset: string): Promise<void> {
@@ -86,7 +122,7 @@ class EditFlowsetPage {
     }
 
     async searchProcessMappingName(processMappingName: string): Promise<boolean> {
-        await utilGrid.searchRecord(processMappingName, this.selectors.processmappingConsoleGuid);
+        await utilGrid.searchRecord(processMappingName, this.selectors.processMappingConsoleGuid);
         return await element(by.cssContainingText('[rx-view-component-id="0e25a330-f284-4892-9777-84ae2a5583ff"] .ui-grid__link', processMappingName)).isPresent().then(async (result) => {
             if (result) {
                 return await element(by.cssContainingText('[rx-view-component-id="0e25a330-f284-4892-9777-84ae2a5583ff"] .ui-grid__link', processMappingName)).getText() == processMappingName ? true : false;
@@ -98,7 +134,7 @@ class EditFlowsetPage {
     }
 
     async searchAndOpenProcessMapping(processMappingName: string): Promise<void> {
-        await utilGrid.searchAndOpenHyperlink(processMappingName, this.selectors.processmappingConsoleGuid);
+        await utilGrid.searchAndOpenHyperlink(processMappingName, this.selectors.processMappingConsoleGuid);
     }
     
     async navigateToProcessTab(): Promise<void> {

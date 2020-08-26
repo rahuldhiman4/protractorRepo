@@ -119,6 +119,14 @@ class DynamicField {
         await $(this.selectors.enabledConfidentialsField).click();
     }
 
+
+    async isConfidentialsRadioButtonDisplayed(): Promise<boolean> {
+      return  await $(this.selectors.enabledConfidentialsField).isPresent().then(async (result) => {
+            if (result) return await $(this.selectors.enabledConfidentialsField).isDisplayed();
+            else return false;
+        });
+    }
+
     async clickEnabledPublishInLibraryButton(): Promise<void> {
         await $(this.selectors.enabledPublishInLibrary).click();
     }

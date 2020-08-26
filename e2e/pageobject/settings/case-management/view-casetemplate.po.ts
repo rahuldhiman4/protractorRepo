@@ -62,6 +62,14 @@ class ViewCaseTemplate {
         await $(this.selectors.confidentialSupportGroupAccess).click();
     }
 
+    async isConfidentialSupportGroupAccess(): Promise<boolean> {
+      return await $(this.selectors.confidentialSupportGroupAccess).isPresent().then(async (link) => {
+        if (link) {
+            return await  $(this.selectors.confidentialSupportGroupAccess).isDisplayed();
+        } else return false;
+    });
+    }
+
     async clickCopycaseTemplate(): Promise<void> {
         await $(this.selectors.copyCaseTemplate).click();
     }
