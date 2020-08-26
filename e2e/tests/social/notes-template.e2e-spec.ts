@@ -1497,7 +1497,7 @@ describe('Notes template', () => {
         });
         afterAll(async () => {
             await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
+            await loginPage.login('elizabeth');
         });
     });
 

@@ -156,6 +156,7 @@ describe("Task Approval Tests", () => {
             await showApproversBladePo.clickApproversTab('Approval Decision');
             expect(await showApproversBladePo.getApproversCount()).toBe(0);
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
+            await utilityCommon.closeAllBlades();
         })
 
         it('[DRDMV-21584]: Approve the task with approver and verify the details', async () => {
@@ -192,6 +193,7 @@ describe("Task Approval Tests", () => {
             expect(await showApproversBladePo.getApproversCompany('Petramco')).toBeTruthy('Approver Company is not displayed');
             expect(await showApproversBladePo.getApprovedApprovalStatusLabel()).toContain('Approved');
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
+            await utilityCommon.closeAllBlades();
         });
 
         it('[DRDMV-21584]:Verify the approvals details on task activity', async () => {
@@ -222,6 +224,7 @@ describe("Task Approval Tests", () => {
             await showApproversBladePo.clickApproversTabFromActivity('Pending Approval');
             expect(await showApproversBladePo.getApproversCountFromActivity()).toBe(0);
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
+            await utilityCommon.closeAllBlades();
         });
 
         it('[DRDMV-21584]:Verify the approvals details on task activity after case rejection', async () => {
@@ -271,6 +274,7 @@ describe("Task Approval Tests", () => {
         });
 
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.deleteApprovalMapping(taskModule);
             await navigationPage.signOut();
@@ -389,6 +393,7 @@ describe("Task Approval Tests", () => {
             await showApproversBladePo.clickApproversTab('Approval Decision');
             expect(await showApproversBladePo.getApproversCount()).toBe(0);
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
+            await utilityCommon.closeAllBlades();
         })
 
         it('[DRDMV-21587]: Approve the task with approver', async () => {
@@ -418,7 +423,7 @@ describe("Task Approval Tests", () => {
             await showApproversBladePo.clickApproversTabFromActivity('Pending Approval');
             expect(await showApproversBladePo.getApproversCountFromActivity()).toBe(0);
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
-
+            await utilityCommon.closeAllBlades();
         });
 
         it('[DRDMV-21587]:Verify the approvals details on case activity after task rejection', async () => {
@@ -465,6 +470,7 @@ describe("Task Approval Tests", () => {
         });
 
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.deleteApprovalMapping(taskModule);
             await navigationPage.signOut();
@@ -521,6 +527,7 @@ describe("Task Approval Tests", () => {
                 "signingCriteria": 0,
             }
 
+            await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createApprovalFlow(approvalFlows, taskModule);
 
             //Create Approval Mapping through API
@@ -533,6 +540,7 @@ describe("Task Approval Tests", () => {
                 "company": "Petramco",
                 "mappingName": "Task Approval Mapping_" + randomStr
             }
+
             approvalMappingResponse = await apiHelper.createApprovalMapping(taskModule, approvalMappingData);
             await apiHelper.associateTemplateWithApprovalMapping(taskModule, automatedTask.id, approvalMappingResponse.id);
             caseData = {
@@ -549,20 +557,19 @@ describe("Task Approval Tests", () => {
         it('[DRDMV-22391]:Create case and assign tasks to it', async () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
+        });
+
+        it('[DRDMV-22391]: Verify the task approval details', async () => {
             await viewCasePo.openTaskCard(1);
             automatedTaskDisplayId = await manageTask.getTaskDisplayIdFromManageTaskBlade();
             await manageTask.clickTaskLink(manualTaskTemplateData.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
-        });
-
-        it('[DRDMV-22391]: Verify the task approval details', async () => {
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(automatedTaskDisplayId);
@@ -586,6 +593,7 @@ describe("Task Approval Tests", () => {
             await showApproversBladePo.clickApproversTab('Approval Decision');
             expect(await showApproversBladePo.getApproversCount()).toBe(0);
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
+            await utilityCommon.closeAllBlades();
         })
 
         it('[DRDMV-22391]: Verify the task approval details on task view and Approve the task with approver', async () => {
@@ -621,6 +629,7 @@ describe("Task Approval Tests", () => {
             await showApproversBladePo.clickApproversTabFromActivity('Pending Approval');
             expect(await showApproversBladePo.getApproversCountFromActivity()).toBe(0);
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
+            await utilityCommon.closeAllBlades();
         });
 
         it('[DRDMV-22391]:Create case and assign tasks to it', async () => {
@@ -680,11 +689,11 @@ describe("Task Approval Tests", () => {
             expect(await showApproversBladePo.getApproversNameFromActivity('RA3 Liu')).toBeTruthy('Approver not present');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompanyFromActivity('Petramco')).toBeTruthy('Approver Company is not displayed');
-            expect(await showApproversBladePo.getApprovedApprovalStatusLabelFromActivity()).toContain('Rejected');
-            expect(await showApproversBladePo.isApprovedApproverIconDisplayedFromActivity()).toBeTruthy('Approved button on Approver List blade is not displayed');
+            expect(await showApproversBladePo.getClosedApprovalStatusLabelFromActivity('Rejected')).toContain('Rejected');
             await showApproversBladePo.clickApproversTabFromActivity('Pending Approval');
             expect(await showApproversBladePo.getApproversCountFromActivity()).toBe(0);
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await navigationPage.gotoTaskConsole();
@@ -694,6 +703,7 @@ describe("Task Approval Tests", () => {
         });
 
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.deleteApprovalMapping(taskModule);
             await navigationPage.signOut();
@@ -781,7 +791,8 @@ describe("Task Approval Tests", () => {
                 "isLevelUp": true,
                 "levels": 1,          
             }
-        
+
+            await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createApprovalFlow(approvalFlows, taskModule);
 
             //Create Approval Mapping through API
@@ -838,7 +849,7 @@ describe("Task Approval Tests", () => {
 
         });
 
-        it('[DRDMV-21827]: Trigger task based approval for external / manual task and verify error status', async () => {
+        it('[DRDMV-21827]: trigger task based approval for external / manual task and verify error status', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId1);
@@ -855,6 +866,7 @@ describe("Task Approval Tests", () => {
         })
 
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.deleteApprovalMapping(taskModule);
             await navigationPage.signOut();
