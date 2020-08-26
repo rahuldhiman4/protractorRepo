@@ -12,7 +12,7 @@ import { CASE_REOPEN } from '../data/api/case/case.reopen.api';
 import { CASE_TEMPLATE_PAYLOAD, CASE_TEMPLATE_STATUS_UPDATE_PAYLOAD } from '../data/api/case/case.template.data.api';
 import { ADD_TO_WATCHLIST } from '../data/api/case/case.watchlist.api';
 import { CASE_STATUS_CHANGE, UPDATE_CASE, UPDATE_CASE_ASSIGNMENT } from '../data/api/case/update.case.api';
-import { COGNITIVE_LICENSE, COGNITIVE_TEMPLATE_DATASET, COGNITIVE_CATEGORY_DATASET } from '../data/api/cognitive/cognitive.config.api';
+import { COGNITIVE_CATEGORY_DATASET, COGNITIVE_LICENSE, COGNITIVE_TEMPLATE_DATASET } from '../data/api/cognitive/cognitive.config.api';
 import { EMAILCONFIG_DEFAULT, INCOMINGMAIL_DEFAULT, OUTGOINGEMAIL_DEFAULT } from '../data/api/email/email.configuration.data.api';
 import { EMAIL_WHITELIST } from '../data/api/email/email.whitelist.data.api';
 import { NEW_PROCESS_LIB } from '../data/api/flowset/create-process-lib';
@@ -20,6 +20,7 @@ import { UPDATE_PERSON, UPDATE_SUPPORT_GROUP } from '../data/api/foundation/upda
 import { IBusinessUnit } from '../data/api/interface/business.unit.interface.api';
 import { ICaseAssignmentMapping } from "../data/api/interface/case.assignment.mapping.interface.api";
 import { ICaseTemplate } from "../data/api/interface/case.template.interface.api";
+import { ICognitiveDataSet } from '../data/api/interface/cognitive.interface.api';
 import { IDepartment } from '../data/api/interface/department.interface.api';
 import { IDocumentLib } from '../data/api/interface/doc.lib.interface.api';
 import { IDomainTag } from '../data/api/interface/domain.tag.interface.api';
@@ -56,7 +57,6 @@ import { ONE_TASKFLOW, PROCESS_DOCUMENT, THREE_TASKFLOW_SEQUENTIAL, TWO_TASKFLOW
 import { DOC_LIB_DRAFT, DOC_LIB_PUBLISH, DOC_LIB_READ_ACCESS } from '../data/api/ticketing/document-library.data.api';
 import { DOCUMENT_TEMPLATE } from '../data/api/ticketing/document-template.data.api';
 import * as DYNAMIC from '../data/api/ticketing/dynamic.data.api';
-import { ICognitiveDataSet } from 'e2e/data/api/interface/cognitive.interface.api';
 
 let fs = require('fs');
 
