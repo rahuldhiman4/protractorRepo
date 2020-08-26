@@ -399,6 +399,22 @@ class ApiCoreUtil {
         return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
     }
 
+    async getCognitiveDataSetGuid(dataSetName: string): Promise<string> {
+        let allRecords = await this.getGuid("Cognitive Service Data Set Descriptor");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj[1731] === dataSetName;
+        });
+        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+    }
+
+    async getCognitiveDataSetMappingGuid(dataSetMappingName: string): Promise<string> {
+        let allRecords = await this.getGuid("com.bmc.dsm.cognitive-lib:Training Data Set Mapping");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj[1731] === dataSetMappingName;
+        });
+        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+    }
+
     async createDocumentForAutoTaskTemplate(jsonBody): Promise<AxiosResponse> {
         const newRecord = await axios.post(
             documentUri,
