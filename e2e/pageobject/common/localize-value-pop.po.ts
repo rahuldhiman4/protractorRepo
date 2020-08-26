@@ -20,5 +20,9 @@ class AddLocalizeValue {
     async setLocalizeValue(value:string): Promise<void> {
         await $(this.selectors.valueTextBox).sendKeys(value);
     }
+
+    async clearLocalizeValue(): Promise<void> {
+        await $(this.selectors.valueTextBox).clear();
+    }
 }
 export default new AddLocalizeValue();

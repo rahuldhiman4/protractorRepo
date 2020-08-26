@@ -16,13 +16,17 @@ class CreateDynamicFieldLibrary {
         fieldValueType: 'bfcc7610-2202-45aa-87b7-bc37af6e8954',
         informationSource: 'b9b14785-4b48-4fde-83ac-dc012eb36858',
         saveButton: '[rx-view-component-id="2f8db2c3-2352-4732-81b9-fdaf46ccbde7"] button',
-        activeConfidentialsCheckbox: '[rx-view-component-id="067cbf9a-a1db-4268-8f6b-3132270f6356"] button[uib-btn-radio="trueValue"]'
+        activeConfidentialsCheckbox: '[rx-view-component-id="067cbf9a-a1db-4268-8f6b-3132270f6356"] button[uib-btn-radio="trueValue"]',
+        requiredWarningmessage:'.localized-character-field-design div',
     }
 
     async clickOnSaveButton(): Promise<void> {
         await $(this.selectors.saveButton).click();
     }
 
+    async getRequiredWarningMessage(): Promise<string> {
+      return await $(this.selectors.requiredWarningmessage).getText();
+    }
 
     async clickOnActiveConfidentialsCheckbox(): Promise<void> {
         await $(this.selectors.activeConfidentialsCheckbox).click();
@@ -91,7 +95,7 @@ class CreateDynamicFieldLibrary {
         return await element(by.cssContainingText(this.selectors.title, value)).isPresent();
     }
 
-    async cancelButton(): Promise<void> {
+    async clickCancelButton(): Promise<void> {
         await $(this.selectors.cancelButton).click();
     }
 }

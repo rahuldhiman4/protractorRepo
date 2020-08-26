@@ -163,7 +163,7 @@ describe('Dynamic Hidden Data', () => {
         await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', 'Field Management Console - Business Workflows');
         await dynamicFieldLibraryConfigConsolePo.clickAddDynamicFieldButton();
         expect(await createDynamicFieldLibraryConfigPo.isHiddenFieldPresent("Hidden")).toBeFalsy();
-        await createDynamicFieldLibraryConfigPo.cancelButton();
+        await createDynamicFieldLibraryConfigPo.clickCancelButton();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Group Library', 'Group Management Console - Business Workflows');
         await dynamicGroupLibraryConfigConsolePo.clickAddDynamicGroupButton();
