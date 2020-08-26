@@ -17,6 +17,7 @@ import updateStatusBladePo from '../../pageobject/common/update.status.blade.po'
 import editApprovalMappingPage from "../../pageobject/settings/task-management/edit-approval-mapping.po";
 import showApproversBladePo from "../../pageobject/common/show-approvers-list-tab.po";
 import utilGrid from '../../utils/util.grid';
+import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
 
 
 describe("Task Self Approval Tests", () => {
@@ -448,8 +449,8 @@ describe("Task Self Approval Tests", () => {
             expect(await viewTask.isShowApproversBannerDisplayed()).toBeTruthy('Show Approvers Banner is not displayed');
         });
 
-        it('[DRDMV-22951]:Toggle False, task created without template, task should NOT go in Approval', async () => {
-            await apiHelper.apiLogin('qtao');
+        it('[DRDMV-21827]:Toggle False, task created without template, task should NOT go in Approval', async () => {
+            await apiHelper.apiLogin('fritz');
             let caseData = {
                 "Requester": "qdu",
                 "Summary": "Toggle False, case without template" + "_" + randomStr,
@@ -467,14 +468,17 @@ describe("Task Self Approval Tests", () => {
                 "supportGroup": "US Support 1",
                 "assignee": "qtao",
             }
-            let newCase = await apiHelper.createCase(caseData);
-            caseId = newCase.displayId;
-            await apiHelper.createAdhocTask(newCase.id, taskData);
+            let newCase1 = await apiHelper.createCase(caseData);
+            caseId = newCase1.displayId;
+            await apiHelper.createAdhocTask(newCase1.id, taskData);
 
             await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
-            expect(await viewCasePo.getTextOfStatus()).toBe("In Progress");
+            expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
+            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.clickSaveStatus();
+            expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
             await viewCasePo.openTaskCard(1);
             manualTaskDisplayId = await manageTask.getTaskDisplayIdFromManageTaskBlade();
             await manageTask.clickTaskLink(taskData.taskName);
@@ -548,7 +552,7 @@ describe("Task Self Approval Tests", () => {
             await apiHelper.apiLogin('qtao');
             let caseData = {
                 "Requester": "qdu",
-                "Summary": "Toggle False, case without template" + "_" + randomStr,
+                "Summary": "Toggle true, case without template" + "_" + randomStr,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
@@ -556,21 +560,34 @@ describe("Task Self Approval Tests", () => {
             }
 
             let taskData = {
-                "taskName": "Toggle False, task created without template" + "_" + randomStr,
+                "taskName": "Toggle true, task created without template" + "_" + randomStr,
                 "company": "Petramco",
                 "priority":"Low",
                 "businessUnit": "United States Support",
                 "supportGroup": "US Support 1",
                 "assignee": "qtao",
             }
-            let newCase = await apiHelper.createCase(caseData);
-            caseId = newCase.displayId;
-            await apiHelper.createAdhocTask(newCase.id, taskData);
+            let newCase2 = await apiHelper.createCase(caseData);
+            caseId = newCase2.displayId;
 
             await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
-            expect(await viewCasePo.getTextOfStatus()).toBe("In Progress");
+            expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
+            await viewCasePo.clickAddTaskButton();
+            await manageTask.clickAddAdhocTaskButton();
+            await adhoctaskTemplate.setSummary(taskData.taskName);
+            await adhoctaskTemplate.setDescription("Description");
+            await adhoctaskTemplate.selectPriority('Low');
+            await adhoctaskTemplate.clickSaveAdhoctask();
+            await utilityCommon.closePopUpMessage();
+            await utilityCommon.closeAllBlades();
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(caseId);
+            expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
+            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.clickSaveStatus();
+            expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
             await viewCasePo.openTaskCard(1);
             manualTaskDisplayId = await manageTask.getTaskDisplayIdFromManageTaskBlade();
             await manageTask.clickTaskLink(taskData.taskName);
@@ -582,7 +599,7 @@ describe("Task Self Approval Tests", () => {
             await apiHelper.apiLogin('qtao');
             caseData = {
                 "Requester": "qdu",
-                "Summary": "Toggle False, case template added in approval mapping" + "_" + randomStr,
+                "Summary": "Toggle True, task template added in approval mapping" + "_" + randomStr,
                 "Origin": "Agent",
                 "Case Template ID": caseTemplate1.displayId
             }
@@ -660,6 +677,7 @@ describe("Task Self Approval Tests", () => {
                 "signingCriteria": 0,
             }
 
+            await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createApprovalFlow(approvalFlows, taskModule);
 
             //Create Approval Mapping through API
@@ -698,13 +716,13 @@ describe("Task Self Approval Tests", () => {
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
+        });
+
+        it('[DRDMV-22396,DRDMV-22397]: Verify the task approval details', async () => {
             await viewCasePo.openTaskCard(1);
             automatedTaskDisplayId = await manageTask.getTaskDisplayIdFromManageTaskBlade();
             await manageTask.clickTaskLink(manualTaskTemplateData.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
-        });
-
-        it('[DRDMV-22396,DRDMV-22397]: Verify the task approval details', async () => {
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(automatedTaskDisplayId);
@@ -726,6 +744,7 @@ describe("Task Self Approval Tests", () => {
             expect(await viewTask.getShowPendingApproversInfo()).toContain('Pending Approval :1');
             expect(await viewTask.isApprovalButtonsPresent('Approve')).toBeTruthy('Show Approvers Banner is not displayed');
             expect(await viewTask.isApprovalButtonsPresent('Reject')).toBeTruthy('Show Approvers Banner is not displayed');
+            await viewTask.clickOnApproveLink();
         });
 
         it('[DRDMV-22396,DRDMV-22397]:Create case and assign tasks to it', async () => {
@@ -829,6 +848,7 @@ describe("Task Self Approval Tests", () => {
                 "signingCriteria": 0,
             }
 
+            await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createApprovalFlow(approvalFlows, taskModule);
 
             //Create Approval Mapping through API

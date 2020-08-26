@@ -110,15 +110,15 @@ class KnowledgeAccessTab {
     }
 
     async isSupportGroupWriteAccessDisplayed(supportGroupText: string): Promise<boolean> {
-        return await element(by.css(`span[@aria-label="${supportGroupText}"] ~ span.d-icon-pencil`)).isPresent().then(async (result) => {
-            if (result) return await element(by.css(`span[@aria-label="${supportGroupText}"] ~ span.d-icon-pencil`)).isDisplayed();
+        return await element(by.css(`span[aria-label="${supportGroupText}"] ~ span.d-icon-pencil`)).isPresent().then(async (result) => {
+            if (result) return await element(by.css(`span[aria-label="${supportGroupText}"] ~ span.d-icon-pencil`)).isDisplayed();
             else return false;
         });
     }
 
     async isSupportGroupReadAccessDisplayed(supportGroupText: string): Promise<boolean> {
-        return await element(by.css(`span[@aria-label="${supportGroupText}"] ~ span.d-icon-eye`)).isPresent().then(async (result) => {
-            if (result) return await element(by.css(`span[@aria-label="${supportGroupText}"] ~ span.d-icon-eye`)).isDisplayed();
+        return await element(by.css(`span[aria-label="${supportGroupText}"] ~ span.d-icon-eye`)).isPresent().then(async (result) => {
+            if (result) return await element(by.css(`span[aria-label="${supportGroupText}"] ~ span.d-icon-eye`)).isDisplayed();
             else return false;
         });
     }

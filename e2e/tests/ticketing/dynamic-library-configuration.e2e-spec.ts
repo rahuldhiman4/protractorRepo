@@ -48,7 +48,7 @@ describe('Dynamic Library Configuration', () => {
         await createDynamicFieldLibraryConfigPo.clickOnSaveButton();
         expect(await utilCommon.isPopUpMessagePresent('ERROR (382): The value(s) for this entry violate a unique index that has been defined for this record definition.')).toBeTruthy();
         await utilCommon.closePopUpMessage();
-        await createDynamicFieldLibraryConfigPo.cancelButton();
+        await createDynamicFieldLibraryConfigPo.clickCancelButton();
         await utilCommon.clickOnWarningOk();
     });
 });

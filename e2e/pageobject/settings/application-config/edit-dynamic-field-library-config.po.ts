@@ -92,7 +92,7 @@ class EditDynamicFieldLibrary {
         await utilCommon.selectDropDown(this.selectors.status, value)
     }
 
-    async cancelButton(): Promise<void> {
+    async clickCancelButton(): Promise<void> {
         await $(this.selectors.cancelButton).click();
     }
 }
