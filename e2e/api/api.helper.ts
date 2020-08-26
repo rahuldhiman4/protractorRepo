@@ -12,7 +12,7 @@ import { CASE_REOPEN } from '../data/api/case/case.reopen.api';
 import { CASE_TEMPLATE_PAYLOAD, CASE_TEMPLATE_STATUS_UPDATE_PAYLOAD } from '../data/api/case/case.template.data.api';
 import { ADD_TO_WATCHLIST } from '../data/api/case/case.watchlist.api';
 import { CASE_STATUS_CHANGE, UPDATE_CASE, UPDATE_CASE_ASSIGNMENT } from '../data/api/case/update.case.api';
-import { COGNITIVE_LICENSE } from '../data/api/cognitive/cognitive.config.api';
+import { COGNITIVE_CATEGORY_DATASET, COGNITIVE_LICENSE, COGNITIVE_TEMPLATE_DATASET } from '../data/api/cognitive/cognitive.config.api';
 import { EMAILCONFIG_DEFAULT, INCOMINGMAIL_DEFAULT, OUTGOINGEMAIL_DEFAULT } from '../data/api/email/email.configuration.data.api';
 import { EMAIL_WHITELIST } from '../data/api/email/email.whitelist.data.api';
 import { NEW_PROCESS_LIB } from '../data/api/flowset/create-process-lib';
@@ -20,6 +20,7 @@ import { UPDATE_PERSON, UPDATE_SUPPORT_GROUP } from '../data/api/foundation/upda
 import { IBusinessUnit } from '../data/api/interface/business.unit.interface.api';
 import { ICaseAssignmentMapping } from "../data/api/interface/case.assignment.mapping.interface.api";
 import { ICaseTemplate } from "../data/api/interface/case.template.interface.api";
+import { ICognitiveDataSet } from '../data/api/interface/cognitive.interface.api';
 import { IDepartment } from '../data/api/interface/department.interface.api';
 import { IDocumentLib } from '../data/api/interface/doc.lib.interface.api';
 import { IDomainTag } from '../data/api/interface/domain.tag.interface.api';
@@ -2858,6 +2859,88 @@ class ApiHelper {
         console.log("Add Watson Account API Status =============>", addWatsonAccountResponse.status);
         // verify watson account is valid.. that part is missing in this API
         return enableCognitiveLicResponse.status == 200 && cognitiveServiceRegionResponse.status == 204 && addWatsonAccountResponse.status == 204;
+    }
+
+    async createCognitiveDataSet(type: String, data?: ICognitiveDataSet): Promise<boolean> {
+        let dataSetPayload: any;
+        if (type == "template") dataSetPayload = cloneDeep(COGNITIVE_TEMPLATE_DATASET);
+        if (type == "category") dataSetPayload = cloneDeep(COGNITIVE_CATEGORY_DATASET);
+        if (data) {
+            dataSetPayload.fieldInstances[1731].value = data.name ? data.name : dataSetPayload.fieldInstances[1731].value;
+            dataSetPayload.fieldInstances[8].value = data.description ? data.description : dataSetPayload.fieldInstances[8].value;
+        }
+
+        const createCognitiveDataSetResponse = await apiCoreUtil.createRecordInstance(dataSetPayload);
+        console.log('Create Cognitive Data Set API Status =============>', createCognitiveDataSetResponse.status);
+        return createCognitiveDataSetResponse.status == 201;
+    }
+
+    async deleteCognitiveDataSet(dataSetName?: string): Promise<boolean> {
+        if (dataSetName) {
+            let dataSetGuid = await apiCoreUtil.getCognitiveDataSetGuid(dataSetName);
+            if (dataSetGuid) {
+                return await apiCoreUtil.deleteRecordInstance('Cognitive Service Data Set Descriptor', dataSetGuid);
+            }
+        }
+        else {
+            let allDataSetRecords = await apiCoreUtil.getGuid('Cognitive Service Data Set Descriptor');
+            let dataSetArrayMap = allDataSetRecords.data.data.map(async (obj: string) => {
+                return await apiCoreUtil.deleteRecordInstance('Cognitive Service Data Set Descriptor', obj[179]);
+            });
+            let isAllDataSetDeleted: boolean = await Promise.all(dataSetArrayMap).then(async (result) => {
+                return !result.includes(false);
+            });
+            return isAllDataSetDeleted === true;
+        }
+    }
+
+    async trainCognitiveDataSet(dataSetName: string): Promise<boolean> {
+        // start data set training
+        let startDataSetTrainingResponse = await axios.post(
+            "api/rx/application/command",
+            { "resourceType": "com.bmc.arsys.rx.application.cognitive.command.TrainCognitiveServiceCommand", "trainingDataSetName": `com.bmc.dsm.bwfa:${dataSetName}` }
+        );
+        console.log('Start Data Set Training API Status =============>', startDataSetTrainingResponse.status);
+
+        // verify data set is trained
+        let allDataSetRecords = await apiCoreUtil.getGuid('Cognitive Service Data Set Descriptor');
+        let entityObj: any = allDataSetRecords.data.data.filter(function (obj: string[]) {
+            return obj[1731] === dataSetName;
+        });
+        let dataSetTrainingStatus = entityObj.length >= 1 ? entityObj[0]['7'] || null : null;
+        let sleeptime: number = 0; // maxminum time while loop will run
+        while (dataSetTrainingStatus != 2) {
+            await browser.sleep(5000);
+            allDataSetRecords = await apiCoreUtil.getGuid('Cognitive Service Data Set Descriptor');
+            entityObj = allDataSetRecords.data.data.filter(function (obj: string[]) {
+                return obj[1731] === dataSetName;
+            });
+            dataSetTrainingStatus = entityObj.length >= 1 ? entityObj[0]['7'] || null : null;
+            sleeptime += 5000;
+            if (sleeptime > 500000) {
+                break;
+            }
+        }
+        return dataSetTrainingStatus == 2;
+    }
+
+    async deleteCognitiveDataSetMapping(dataSetMappingName?: string): Promise<boolean> {
+        if (dataSetMappingName) {
+            let dataSetMappingGuid = await apiCoreUtil.getCognitiveDataSetMappingGuid(dataSetMappingName);
+            if (dataSetMappingGuid) {
+                return await apiCoreUtil.deleteRecordInstance('com.bmc.dsm.cognitive-lib:Training Data Set Mapping', dataSetMappingGuid);
+            }
+        }
+        else {
+            let allDataSetMappingRecords = await apiCoreUtil.getGuid('com.bmc.dsm.cognitive-lib:Training Data Set Mapping');
+            let dataSetMappingArrayMap = allDataSetMappingRecords.data.data.map(async (obj: string) => {
+                return await apiCoreUtil.deleteRecordInstance('com.bmc.dsm.cognitive-lib:Training Data Set Mapping', obj[179]);
+            });
+            let isAllDataSetMappingDeleted: boolean = await Promise.all(dataSetMappingArrayMap).then(async (result) => {
+                return !result.includes(false);
+            });
+            return isAllDataSetMappingDeleted === true;
+        }
     }
 }
 

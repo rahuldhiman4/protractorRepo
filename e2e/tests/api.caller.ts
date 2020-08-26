@@ -320,9 +320,22 @@ describe('Login and create case from API', () => {
         console.log("doc lib created, published?.. ", docLibPublished);
     });
 
-    it('Add Watson Account', async () => {
+    it('Cognitive APIs', async () => {
         let apiKey = "jE9dMMf2WMx-M4nNWk8KoJ8lF0AfBRw-8QQHagg4jk40";
+        let templateDataSet = "My Template Data Set";
+        let categoryDataSet = "My Category Data Set";
         let created = await apiHelper.addWatsonAccount(apiKey);
-        console.log("Watson Account Added? ", created);
+        console.log("Watson Account Added ==> ", created);
+        let dataSetDeleted = await apiHelper.deleteCognitiveDataSet();
+        console.log("All DataSet Deleted ==> ", dataSetDeleted);
+        let templateDataSetCreated = await apiHelper.createCognitiveDataSet("template", { name: templateDataSet });
+        console.log("Template DataSet Created ==> ", templateDataSetCreated);
+        let categoryDataSetCreated = await apiHelper.createCognitiveDataSet("category", { name: categoryDataSet });
+        console.log("Category DataSet Created ==> ", categoryDataSetCreated);
+
+        let templateDataSetTrained = await apiHelper.trainCognitiveDataSet(templateDataSet);
+        console.log("Template DataSet Created ==> ", templateDataSetTrained);
+        let categoryDataSetTrained = await apiHelper.trainCognitiveDataSet(categoryDataSet);
+        console.log("Category DataSet Created ==> ", categoryDataSetTrained);
     });
 });

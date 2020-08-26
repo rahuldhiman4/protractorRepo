@@ -36,3 +36,173 @@ export const COGNITIVE_LICENSE = [
         "licensed": true
     }
 ];
+
+export const COGNITIVE_TEMPLATE_DATASET = {
+    "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
+    "recordDefinitionName": "Cognitive Service Data Set Descriptor",
+    "fieldInstances": {
+        "8": {
+            "id": 8,
+            "value": "BMC Template Data Set"
+        },
+        "1730": {
+            "id": 1730,
+            "value": ""
+        },
+        "1731": {
+            "id": 1731,
+            "value": "TemplateDataSet"
+        },
+        "1732": {
+            "id": 1732,
+            "value": 0
+        },
+        "1737": {
+            "id": 1737,
+            "value": "en"
+        },
+        "1738": {
+            "id": 1738,
+            "value": "{\"layout\":\"{\\\"queryExpressionBasic\\\":\\\"\\\",\\\"textFields\\\":[{\\\"fieldId\\\":\\\"8\\\",\\\"title\\\":\\\"Summary\\\",\\\"visible\\\":true,\\\"sortable\\\":true,\\\"filterable\\\":true,\\\"clickable\\\":false,\\\"alignment\\\":false,\\\"type\\\":\\\"Text\\\",\\\"isAssociatedRecordFieldColumn\\\":false,\\\"$$hashKey\\\":\\\"object:1535\\\"}],\\\"categoryFields\\\":[{\\\"fieldId\\\":\\\"300865500\\\",\\\"title\\\":\\\"Template Name\\\",\\\"visible\\\":true,\\\"sortable\\\":true,\\\"filterable\\\":true,\\\"clickable\\\":false,\\\"alignment\\\":false,\\\"type\\\":\\\"Text\\\",\\\"isAssociatedRecordFieldColumn\\\":false,\\\"$$hashKey\\\":\\\"object:1738\\\"}]}\",\"resourceType\":\"com.bmc.arsys.rx.services.cognitive.domain.InnovationSuiteDataSource\",\"recordDefinitionName\":\"com.bmc.dsm.case-lib:Case\",\"queryExpression\":\"'300865500' != $NULL$\",\"trainingDataMapper\":{\"resourceType\":\"com.bmc.arsys.rx.services.cognitive.domain.CategorizationTrainingDataMapper\",\"textFields\":[\"8\"],\"categoryFields\":[\"300865500\"]},\"timeCriteria\":null,\"isScheduleEnabled\":false}"
+        },
+        "1796": {
+            "id": 1796,
+            "value": 80
+        },
+        "1797": {
+            "id": 1797,
+            "value": 20
+        },
+        "1820": {
+            "id": 1820,
+            "value": 0
+        },
+        "61001": {
+            "id": 61001,
+            "value": "com.bmc.dsm.bwfa"
+        }
+    }
+};
+
+export const COGNITIVE_CATEGORY_DATASET = {
+    "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
+    "recordDefinitionName": "Cognitive Service Data Set Descriptor",
+    "fieldInstances": {
+        "8": {
+            "id": 8,
+            "value": "BMC Category Data Set"
+        },
+        "1730": {
+            "resourceType": "com.bmc.arsys.rx.services.record.domain.FieldInstance",
+            "id": 1730,
+            "value": "",
+            "permissionType": "CHANGE"
+        },
+        "1731": {
+            "id": 1731,
+            "value": "CategoryDataSet"
+        },
+        "1732": {
+            "id": 1732,
+            "value": 0
+        },
+        "1737": {
+            "id": 1737,
+            "value": "en"
+        },
+        "1738": {
+            "id": 1738,
+            "value": "{\"layout\":\"{\\\"queryExpressionBasic\\\":\\\"\\\",\\\"textFields\\\":[{\\\"fieldId\\\":\\\"8\\\",\\\"title\\\":\\\"Summary\\\",\\\"visible\\\":true,\\\"sortable\\\":true,\\\"filterable\\\":true,\\\"clickable\\\":false,\\\"alignment\\\":false,\\\"type\\\":\\\"Text\\\",\\\"isAssociatedRecordFieldColumn\\\":false,\\\"$$hashKey\\\":\\\"object:10251\\\"}],\\\"categoryFields\\\":[{\\\"fieldId\\\":\\\"1000000063\\\",\\\"title\\\":\\\"Category Tier 1\\\",\\\"visible\\\":true,\\\"sortable\\\":true,\\\"filterable\\\":true,\\\"clickable\\\":false,\\\"alignment\\\":false,\\\"type\\\":\\\"Text\\\",\\\"isAssociatedRecordFieldColumn\\\":false,\\\"$$hashKey\\\":\\\"object:10457\\\"},{\\\"fieldId\\\":\\\"1000000064\\\",\\\"title\\\":\\\"Category Tier 2\\\",\\\"visible\\\":true,\\\"sortable\\\":true,\\\"filterable\\\":true,\\\"clickable\\\":false,\\\"alignment\\\":false,\\\"type\\\":\\\"Text\\\",\\\"isAssociatedRecordFieldColumn\\\":false,\\\"$$hashKey\\\":\\\"object:10458\\\"},{\\\"fieldId\\\":\\\"1000000065\\\",\\\"title\\\":\\\"Category Tier 3\\\",\\\"visible\\\":true,\\\"sortable\\\":true,\\\"filterable\\\":true,\\\"clickable\\\":false,\\\"alignment\\\":false,\\\"type\\\":\\\"Text\\\",\\\"isAssociatedRecordFieldColumn\\\":false,\\\"$$hashKey\\\":\\\"object:10459\\\"},{\\\"fieldId\\\":\\\"450000167\\\",\\\"title\\\":\\\"Category Tier 4\\\",\\\"visible\\\":true,\\\"sortable\\\":true,\\\"filterable\\\":true,\\\"clickable\\\":false,\\\"alignment\\\":false,\\\"type\\\":\\\"Text\\\",\\\"isAssociatedRecordFieldColumn\\\":false,\\\"$$hashKey\\\":\\\"object:10460\\\"}]}\",\"resourceType\":\"com.bmc.arsys.rx.services.cognitive.domain.InnovationSuiteDataSource\",\"recordDefinitionName\":\"com.bmc.dsm.case-lib:Case\",\"queryExpression\":\"'1000000063' != $NULL$\",\"trainingDataMapper\":{\"resourceType\":\"com.bmc.arsys.rx.services.cognitive.domain.CategorizationTrainingDataMapper\",\"textFields\":[\"8\"],\"categoryFields\":[\"1000000063\",\"1000000064\",\"1000000065\",\"450000167\"]},\"timeCriteria\":null,\"isScheduleEnabled\":false}"
+        },
+        "1796": {
+            "id": 1796,
+            "value": 80
+        },
+        "1797": {
+            "id": 1797,
+            "value": 20
+        },
+        "1820": {
+            "id": 1820,
+            "value": 0
+        },
+        "61001": {
+            "id": 61001,
+            "value": "com.bmc.dsm.bwfa"
+        }
+    }
+};
+
+export const COGNITIVE_TEMPLATE_DATASET_MAPPING = {
+    "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
+    "recordDefinitionName": "com.bmc.dsm.cognitive-lib:Training Data Set Mapping",
+    "fieldInstances": {
+        "8": {
+            "id": 8,
+            "value": "Template Registration"
+        },
+        "450000152": {
+            "id": 450000152,
+            "value": "PetramcoTemplateDatasetMapping"
+        },
+        "450000154": {
+            "id": 450000154,
+            "value": 90
+        },
+        "450000155": {
+            "id": 450000155,
+            "value": 80
+        },
+        "450000157": {
+            "id": 450000157,
+            "value": "5a30545b15c828bf11139ffa453419200d69684e9d423ab2f3e869e6bb386507ee9ee24b1252f990cf587177918283e34694939025cd17154380ba49ce43f330"
+        },
+        "450000158": {
+            "id": 450000158,
+            "value": "IDGADGG8ECDC0AQ5OJCTQ4PZR9B94H"
+        },
+        "450000159": {
+            "id": 450000159,
+            "value": "com.bmc.dsm.bwfa"
+        }
+    }
+};
+
+export const COGNITIVE_CATEGORY_DATASET_MAPPING = {
+    "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
+    "recordDefinitionName": "com.bmc.dsm.cognitive-lib:Training Data Set Mapping",
+    "fieldInstances": {
+        "8": {
+            "id": 8,
+            "value": "Data Set mapping Categorization"
+        },
+        "450000152": {
+            "id": 450000152,
+            "value": "PetramcoCategoryDatasetMapping"
+        },
+        "450000153": {
+            "id": 450000153,
+            "value": 10
+        },
+        "450000154": {
+            "id": 450000154,
+            "value": 90
+        },
+        "450000155": {
+            "id": 450000155,
+            "value": 80
+        },
+        "450000157": {
+            "id": 450000157,
+            "value": "5a30545b15c828bf11139ffa453419200d69684e9d423ab2f3e869e6bb386507ee9ee24b1252f990cf587177918283e34694939025cd17154380ba49ce43f330"
+        },
+        "450000158": {
+            "id": 450000158,
+            "value": "IDGADGG8ECDC0AQ5OJCUQ4PZRKB941"
+        },
+        "450000159": {
+            "id": 450000159,
+            "value": "com.bmc.dsm.bwfa"
+        }
+    }
+};
