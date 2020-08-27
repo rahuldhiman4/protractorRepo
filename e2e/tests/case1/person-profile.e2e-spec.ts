@@ -719,6 +719,8 @@ describe('Person Profile test', () => {
         });
 
         it('[DRDMV-16799]: Person profile display for requester', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('elizabeth');
             await apiHelper.apiLogin('tadmin');
             await apiHelper.updateFoundationEntity('Person', 'qnorton', { vipStatus: 'Yes' });
             await apiHelper.apiLogin('elizabeth');

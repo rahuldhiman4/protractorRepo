@@ -29,6 +29,9 @@ class PreviewCaseTemplateBlade {
         backButton: '[rx-view-component-id="83c4c73b-86b4-4894-b4c2-4d0525bed20d"] button',
         dynamicFieldName: '[rx-view-component-id="3cacaba4-7a3b-411f-85c1-cb76bb7bc789"] span',
         showMoreDescriptionLink: '[rx-view-component-id="169adf6c-7674-448b-9732-0eecbebae380"] button',
+        readOnlyFields: '[rx-view-component-id="47d6310c-8a6d-4676-8722-052933f94bbb"] .read-only-content',
+        zoomInBtn: 'button.zoom-in',
+        zoomOutBtn: 'button.zoom-out'
     }
 
     async isElementDisplayed(element: ElementFinder): Promise<boolean> {
@@ -154,6 +157,21 @@ class PreviewCaseTemplateBlade {
         return false;
     }
 
+    async getReadOnlyFieldCount(): Promise<number> {
+        return (await $$(this.selectors.readOnlyFields)).length;
+    }
+
+    async zoomInTaskFlowSection(totalHits: number): Promise<void> {
+        for(let i: number =0; i<totalHits; i++) {
+            await $(this.selectors.zoomInBtn).click();
+        }
+    }
+
+    async zoomOutTaskFlowSection(totalHits: number): Promise<void> {
+        for(let i: number =0; i<totalHits; i++) {
+            await $(this.selectors.zoomOutBtn).click();
+        }
+    }
     async isCaseCategoryTier1ValueDisplayed(caseCategoryTier1: string): Promise<boolean> {
         
         let categoryTier1Element = await element(by.cssContainingText(`[rx-view-component-id="${this.selectors.caseCategoryTier1}"] .read-only-content`, caseCategoryTier1));

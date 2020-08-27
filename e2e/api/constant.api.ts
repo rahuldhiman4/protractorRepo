@@ -111,3 +111,8 @@ export enum FunctionalRoleGuid {
     'Document Manager' = 'AGGADG1AAO0VGAP8SXEGP7VU2U4ZS8',
     'Person Activity Read' = 'AGGADG1AAO0VGAPSXWAEPSA6PDZAG6'
 };
+
+export enum TaskFailConfiguration {
+    'Do Not Proceed' = 1000,
+    'Proceed With Next Task' = 2000
+};

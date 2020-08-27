@@ -212,11 +212,11 @@ class QuickCasePage {
 
     async clickOnCaseTemplate(templateName: string): Promise<void> {
         await browser.sleep(2000); // hardwait to build case template hyperlink
-        await $(`bwf-search-result-fields div[title=${templateName}] span`).isPresent().then(async (present) => {
+        await $(`bwf-search-result-fields div[title="${templateName}"] span`).isPresent().then(async (present) => {
             if (present) {
-                await $(`bwf-search-result-fields div[title=${templateName}] span`).isDisplayed().then(async (displayed) => {
+                await $(`bwf-search-result-fields div[title="${templateName}"] span`).isDisplayed().then(async (displayed) => {
                     if (displayed)
-                        await $(`bwf-search-result-fields div[title=${templateName}] span`).click();
+                        await $(`bwf-search-result-fields div[title="${templateName}"] span`).click();
                 });
             }
         });

@@ -151,8 +151,19 @@ class CreateCaseTemplate {
         await $(this.selectors.changeAssignmentButton).click();
     }
 
-    async clickOnClearButton(): Promise<void> {
-        await $(this.selectors.clearButton).click();
+    async clickOnClearAssignmentButton(): Promise<void> {
+        let toggleLocator = await $('[rx-view-component-id="bc681c89-5179-4256-bcd4-a506d1659121"] button.rx-button-bar-overflow-dropdown__toggle');
+        await toggleLocator.isPresent().then(async (result: boolean) => {
+            if (result)
+                await toggleLocator.isDisplayed().then(async (isDisplay: boolean) => {
+                    if (isDisplay) {
+                        await toggleLocator.click();
+                        await $('[rx-view-component-id="bc681c89-5179-4256-bcd4-a506d1659121"] a').click();
+                    }
+                    else await $(this.selectors.clearButton).click();
+                });
+        });
+        
     }
 
     async isResolutionCodeRequired(values: boolean): Promise<void> {

@@ -32,6 +32,12 @@ class ViewCaseTemplate {
         oneTask: '[rx-view-component-id="36ca22f7-98f8-423a-bf39-28361ef29eeb"] .rotatable path',
         taskBoxname: 'div.content',
         showMoreDescriptionLink: '.rx-description-textarea-read button.more',
+        taskFlowButton: '[rx-view-component-id="3b142f9f-078c-4a9f-9215-0cc3ec054244"] button',
+        backArrowButton: '[rx-view-component-id="8abb8018-cca7-49a2-b610-023c2bae63cc"] button',
+        taskBoxLocator: '.rotatable',
+        zoomInBtn: '.btn-zoom-in',
+        zoomOutBtn: '.btn-zoom-out',
+        taskFlowSectionSizeLocator: '.paper-scroller-background',
         tab: '.rx-tab',
         confidentialSupportGroupAccess: '.ac-label-manage-support',
         confidentialSupportGroup: '.ac-confidential-group-field [id="btn-select"]',
@@ -249,22 +255,65 @@ class ViewCaseTemplate {
     }
 
     async clickOnTaskBox(taskName: string): Promise<void> {
-        let taskBoxLocator = '.rotatable';
         await browser.wait(this.EC.or(async () => {
-            let count = await $$(taskBoxLocator).count();
+            let count = await $$(this.selectors.taskBoxLocator).count();
             return count >= 1;
         }), 3000);
-        const taskBoxesCount = await $$(taskBoxLocator).count();
+        const taskBoxesCount = await $$(this.selectors.taskBoxLocator).count();
         for (let i: number = 0; i < taskBoxesCount; i++) {
-            let taskBoxText: string = await $$(taskBoxLocator).get(i).$(this.selectors.taskBoxname).isPresent().then(async (present) => {
-                if (present) return await $$(taskBoxLocator).get(i).$(this.selectors.taskBoxname).getText();
+            let taskBoxText: string = await $$(this.selectors.taskBoxLocator).get(i).$(this.selectors.taskBoxname).isPresent().then(async (present) => {
+                if (present) return await $$(this.selectors.taskBoxLocator).get(i).$(this.selectors.taskBoxname).getText();
             });
             if (taskBoxText == taskName) {
-                await $$(taskBoxLocator).get(i).$('path').click();
+                await $$(this.selectors.taskBoxLocator).get(i).$('path').click();
                 break;
             }
         }
     }
+
+    async clickTaskFlowBtn(): Promise<void> {
+        await $(this.selectors.taskFlowButton).click();
+    }
+
+    async clickBackArrowBtn(): Promise<void> {
+        await $(this.selectors.backArrowButton).click();
+    }
+
+    async isTaskFlowBtnEnabled(): Promise<boolean> {
+        return await $(this.selectors.taskFlowButton).isEnabled();
+    }
+
+    async isTaskFlowPresentInTaskSection(): Promise<boolean> {
+        return await $(this.selectors.taskBoxLocator).isPresent().then(async (result) => {
+            if(result) return await $(this.selectors.taskBoxLocator).isDisplayed();
+            else return false;
+        })
+    }
+
+    async getTotalTaskBlocks(): Promise<number> {
+        return (await $$(this.selectors.taskBoxLocator)).length;
+    }
+
+    async zoomInTaskFlowSection(totalHits: number): Promise<void> {
+        for(let i: number =0; i<totalHits; i++) {
+            await $(this.selectors.zoomInBtn).click();
+        }
+    }
+
+    async zoomOutTaskFlowSection(totalHits: number): Promise<void> {
+        for(let i: number =0; i<totalHits; i++) {
+            await $(this.selectors.zoomOutBtn).click();
+        }
+    }
+
+    async isHeightWidthMatches(height: number, width: number): Promise<boolean> {
+        let styleAttributeValue = await $(this.selectors.taskFlowSectionSizeLocator).getAttribute('style');
+        let heightAtt = ((styleAttributeValue.split(':'))[2].split('px'))[0].trim();
+        let widthAtt = ((styleAttributeValue.split(':'))[1].split('px'))[0].trim();
+        console.log(heightAtt, '--AND--', widthAtt);
+        return heightAtt == height.toString() && widthAtt == width.toString();
+    }
+
 }
 
 export default new ViewCaseTemplate();
