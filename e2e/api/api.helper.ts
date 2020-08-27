@@ -53,7 +53,7 @@ import { SERVICE_TARGET_PAYLOAD } from '../data/api/slm/serviceTarget.api';
 import { POST_ACTIVITY, POST_ACTIVITY_WITH_ATTACHMENT } from '../data/api/social/post.activity.api';
 import { ADHOC_TASK_PAYLOAD, REGISTER_ADHOC_TASK, TASK_CREATION_FROM_TEMPLATE, UPDATE_TASK, UPDATE_TASK_STATUS } from '../data/api/task/task.creation.api';
 import { AUTO_TASK_TEMPLATE_PAYLOAD, DOC_FOR_AUTO_TASK_TEMPLATE, EXTERNAL_TASK_TEMPLATE_PAYLOAD, MANUAL_TASK_TEMPLATE_PAYLOAD, PROCESS_FOR_AUTO_TASK_TEMPLATE } from '../data/api/task/task.template.api';
-import { ONE_TASKFLOW, PROCESS_DOCUMENT, THREE_TASKFLOW_SEQUENTIAL, TWO_TASKFLOW_PARALLEL, TWO_TASKFLOW_SEQUENTIAL } from '../data/api/task/taskflow.process.data.api';
+import { ONE_TASKFLOW, PROCESS_DOCUMENT, THREE_TASKFLOW_SEQUENTIAL, TWO_TASKFLOW_PARALLEL, TWO_TASKFLOW_SEQUENTIAL, DRDMV_15000 } from '../data/api/task/taskflow.process.data.api';
 import { DOC_LIB_DRAFT, DOC_LIB_PUBLISH, DOC_LIB_READ_ACCESS } from '../data/api/ticketing/document-library.data.api';
 import { DOCUMENT_TEMPLATE } from '../data/api/ticketing/document-template.data.api';
 import * as DYNAMIC from '../data/api/ticketing/dynamic.data.api';
@@ -471,6 +471,15 @@ class ApiHelper {
                 "value": `${data.resolveCaseonLastTaskCompletion}`
             }
             templateData.fieldInstances["450000166"] = caseTemplateDataresolveCaseonLastTaskCompletion;
+        }
+
+        if (data.taskFailureConfiguration) {
+            let taskFailureConfigurationValue = await constants.TaskFailConfiguration[data.taskFailureConfiguration];
+            let caseTaskStatusConfiguration = {
+                "id": 450000291,
+                "value": taskFailureConfigurationValue
+            }
+            templateData.fieldInstances["450000291"] = caseTaskStatusConfiguration;
         }
 
         let newCaseTemplate: AxiosResponse = await apiCoreUtil.createRecordInstance(templateData);
@@ -1136,8 +1145,9 @@ class ApiHelper {
 
     async associateCaseTemplateWithThreeTaskTemplate(caseTemplateId: string, taskTemplateId1: string, taskTemplateId2: string, taskTemplateId3: string, structure?: any): Promise<boolean> {
         let threeTaskFlowProcess: any = cloneDeep(THREE_TASKFLOW_SEQUENTIAL);
-        if (structure) threeTaskFlowProcess = threeTaskFlowProcess;
-
+        if (structure == 'DRDMV_15000') {
+            threeTaskFlowProcess = cloneDeep(DRDMV_15000);
+        }
         let taskTemplateGuid1 = await apiCoreUtil.getTaskTemplateGuid(taskTemplateId1);
         let taskTemplateGuid2 = await apiCoreUtil.getTaskTemplateGuid(taskTemplateId2);
         let taskTemplateGuid3 = await apiCoreUtil.getTaskTemplateGuid(taskTemplateId3);
@@ -1179,7 +1189,7 @@ class ApiHelper {
         let caseTemplateJsonData = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid);
         caseTemplateJsonData.fieldInstances[450000165].value = threeTaskFlowProcess.name;
         let associateCaseTemplateWithThreeTaskTemplateResponse: AxiosResponse = await apiCoreUtil.updateRecordInstance("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid, caseTemplateJsonData);
-        console.log('AssociateCaseTemplateWithOneTaskTemplateResponse API Status =============>', associateCaseTemplateWithThreeTaskTemplateResponse.status);
+        console.log('AssociateCaseTemplateWithThreeTaskTemplateResponse API Status =============>', associateCaseTemplateWithThreeTaskTemplateResponse.status);
         return associateCaseTemplateWithThreeTaskTemplateResponse.status == 204;
     }
 
@@ -2397,7 +2407,7 @@ class ApiHelper {
             });
         }
     }
-
+    
     async associateTemplateWithApprovalMapping(approvalModule: string, templatedId: string, approvalMapping: string): Promise<boolean> {
         let url;
         switch (approvalModule) {

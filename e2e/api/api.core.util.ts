@@ -265,6 +265,14 @@ class ApiCoreUtil {
         return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
     }
 
+    async getTaskGuid(summaryName: string): Promise<string> {
+        let allRecords = await this.getGuid("com.bmc.dsm.task-lib:Task");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj[8] == summaryName;
+        });
+        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+    }
+
     async getDataSourceGuid(dataSourceName: string): Promise<string> {
         let allRecords = await this.getGuid("com.bmc.dsm.slm-lib:Config%20Data%20Source");
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {

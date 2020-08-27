@@ -5,7 +5,7 @@ class PreviewTaskTemplateBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         taskummary: '[rx-view-component-id="a790b9d4-46d5-408c-8f86-4e04a683bc3d"] span',
-        taskSummaryValue: '[rx-view-component-id="a790b9d4-46d5-408c-8f86-4e04a683bc3d"] div.read-only-content',
+        taskSummaryValue: '[rx-view-component-id="a790b9d4-46d5-408c-8f86-4e04a683bc3d"] div.read-only-content, [rx-view-component-id="a790b9d4-46d5-408c-8f86-4e04a683bc3d"] .d-textfield__rx-value',
         taskTemplateName: '[rx-view-component-id="227ba62e-b3ee-4f84-958c-7d2c7f2d2be3"] span',
         taskCompany: '44e56c5d-b8d5-4f23-b4b6-da4d8baa43e9',
         taskCompanyValue: '[rx-view-component-id="44e56c5d-b8d5-4f23-b4b6-da4d8baa43e9"] label ~ *',
@@ -28,7 +28,9 @@ class PreviewTaskTemplateBlade {
         showMoreDescriptionLink:'.bwf-description-read-state button',
         assigneeGuid: '67c57532-6ca8-4e44-b6b1-244e872c2b70',
         supportGroupGuid: 'b3d6e7a4-e712-4947-9d9d-42e7bfdee7a7',
-        supportCompanyGuid: '0904d5b9-4e0f-4983-a658-3b8f96affb46'
+        supportCompanyGuid: '0904d5b9-4e0f-4983-a658-3b8f96affb46',
+        previewBladeGuid: '5ac76d38-6032-4d80-a6bb-1630e59d8cda',
+        assigneeFieldValue: '.person-main a'
     }
 
     async clickShowMoreDescriptionLink():Promise<void>{
@@ -155,6 +157,14 @@ class PreviewTaskTemplateBlade {
 
     async getAssigneeText(): Promise<string> {
         return await $(this.selectors.assigneeText).getText();
+    }
+
+    async isFieldLabelDisplayed(fieldName: string): Promise<boolean> {
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.previewBladeGuid, fieldName);
+    }
+
+    async getAssigneeFieldValue(): Promise<string> {
+        return (await $$(this.selectors.assigneeFieldValue).first().getText()).trim();
     }
 }
 

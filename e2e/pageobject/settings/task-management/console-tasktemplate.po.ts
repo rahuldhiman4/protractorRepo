@@ -138,5 +138,18 @@ class TaskTemplateGridPage {
         });
     }
 
+    async isCompanyColumnValueMatches(expectedValues: string[]): Promise<boolean> {
+        let actualValues: string[] = await utilGrid.getAllValuesFromColoumn(this.selectors.taskTemplateGuid, 'Task Company');
+        actualValues.sort(function (a, b) {
+            return a.localeCompare(b);
+        });
+        expectedValues.sort(function (a, b) {
+            return a.localeCompare(b);
+        });
+        return actualValues.length === expectedValues.length && actualValues.every(
+            (value, index) => (value === expectedValues[index])
+        );
+    }
+
 }
 export default new TaskTemplateGridPage();
