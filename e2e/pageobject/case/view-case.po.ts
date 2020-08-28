@@ -60,6 +60,7 @@ class ViewCasePage {
         approvalButtons: '.approval-buttons span',
         approveButton: '.d-icon-left-check_shield',
         rejectButton: '.d-icon-left-cross_circle',
+        assignee: '[rx-view-component-id="dfe65f6f-7aea-476c-8042-f3aa34e3fb04"]',
         taskCardName: '.task-list__task-card .task-summary__name',
         taskCountOnTaskCard: '.task-list__task-card .task-summary__adhoc-task-count',
         taskTab: '[rx-view-component-id="4c82d32f-5efd-437d-b020-a57910532aa0"] adapt-button',
@@ -265,7 +266,12 @@ class ViewCasePage {
     }
 
     async getAssigneeText(): Promise<string> {
-        return await $(this.selectors.assigneeText).getText();
+        let valueassignee: boolean = await $(this.selectors.assignee + ' .person-link').isPresent();
+        if (valueassignee == true) {
+           return await $(this.selectors.assignee + ' .person-link').getText();
+        } else {
+           return await $(this.selectors.assignee + ' .ac-person-absent').getText();
+        }
     }
 
     async getAssignedGroupText(): Promise<string> {

@@ -148,7 +148,7 @@ describe('Dynamic Hidden Data', () => {
             expect(await viewTaskPo.isDynamicFieldPresent('Field Description')).toBeTruthy('Field Description');
             expect(await viewTaskPo.isAssignmentSectionDisplayed()).toBeFalsy('Assignment Section is present');
             await viewTaskPo.clickOnEditTask();
-            expect(await editTaskPo.isAssignmentSectionDisplayed()).toBeFalsy('Assignment Section is present');
+            expect(await editTaskPo.isFieldsDisplyed('Assignment Section')).toBeFalsy('Assignment Section is present');
             await editTaskPo.clickOnCancelButton();
         });
         afterAll(async () => {
