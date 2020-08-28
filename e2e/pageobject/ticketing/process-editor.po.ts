@@ -49,12 +49,14 @@ class ProcessEditor {
 
     async addAllTaskTypeFromProcessEditor(temp1: string, temp2: string, temp3: string): Promise<void> {
         //Drag and Drop first Create task
+        await browser.sleep(5000);
         let source = await $('[data-type="rx.CallActivity.com.bmc.dsm.task-lib.Create Task"] .body.inner');
-        await browser.actions().dragAndDrop(source, await $$('.marker-target').last()).perform();
-        await browser.sleep(2000);
-        await browser.actions().dragAndDrop(source, await $$('svg[id="v-2"] [joint-selector="layers"]').last()).perform();
-        await browser.sleep(3000);
-        await browser.actions().dragAndDrop(source, await $$('svg[id="v-23"] [joint-selector="layers"]').get((await $$('svg[id="v-23"] [joint-selector="layers"]')).length - 2)).perform();
+        let d1 = await $$('.marker-target').last();
+        let d2 = await $('svg[id="v-2"] [joint-selector="layers"]');
+        let d3 = await $('svg[id="v-23"] [joint-selector="layers"]');
+        await browser.actions().dragAndDrop(source, d1).perform();
+        await browser.actions().dragAndDrop(source, d2).perform();
+        await browser.actions().dragAndDrop(source, d3).perform();
 
         //Connect start event with first block
         await $$('.rotatable image[data-icon-type="transparent"]').get(2).click();
