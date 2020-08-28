@@ -22,6 +22,11 @@ import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
+import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
+import editCasePo from '../../pageobject/case/edit-case.po';
+import composeMailPo from '../../pageobject/email/compose-mail.po';
+import personProfilePo from '../../pageobject/common/person-profile.po';
 
 describe('Create Case Task', () => {
     let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
@@ -1221,6 +1226,491 @@ describe('Create Case Task', () => {
             await utilGrid.clearFilter();
             await caseConsolePage.searchAndOpenCase(canceled);
             expect(await viewCasePage.isAddtaskButtonDisplayed()).toBeFalsy("Add task button Visible");
+        });
+    });
+
+    describe('[DRDMV-3880,DRDMV-5320]: [Task Status] Task Status change from Completed', async () => {
+        let templateData3,casetemplatePetramco, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let statusDropdown1: string[] = ["Completed", "Canceled", "Closed"];
+        beforeAll(async () => {
+            let templateData1 = {
+                "templateName": `manualTaskTemplate1 ${randomStr}`,
+                "templateSummary": `manualTaskTemplateSummary1 ${randomStr}`,
+                "templateStatus": "Active",
+                "taskCompany": 'Petramco',
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
+            }
+            let templateData2 = {
+                "templateName": `manualTaskTemplate2 ${randomStr}`,
+                "templateSummary": `manualTaskTemplateSummary2 ${randomStr}`,
+                "templateStatus": "Active",
+                "taskCompany": 'Petramco',
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
+            }
+            templateData3 = {
+                "templateName": `manualTaskTemplate3 ${randomStr}`,
+                "templateSummary": `manualTaskTemplateSummary3 ${randomStr}`,
+                "templateStatus": "Active",
+                "taskCompany": 'Petramco',
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            let template1 = await apiHelper.createManualTaskTemplate(templateData1);
+            let template2 = await apiHelper.createManualTaskTemplate(templateData2);
+            await apiHelper.createManualTaskTemplate(templateData3);
+            casetemplatePetramco = {
+                "templateName": 'caseTemplateName' + randomStr,
+                "templateSummary": 'caseTemplateName' + randomStr,
+                "templateStatus": "Active",
+                "categoryTier1": "Purchasing Card",
+                "categoryTier2": "Policies",
+                "categoryTier3": "Card Issuance",
+                "casePriority": "Low",
+                "caseStatus": "New",
+                "company": "Petramco",
+                "businessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
+                "assignee": "Fritz",
+                "ownerBU": "Facilities Support",
+                "ownerGroup": "Facilities"
+            }
+            console.log('caseTemplateName' + randomStr);
+            
+            let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplatePetramco);
+            await apiHelper.associateCaseTemplateWithTwoTaskTemplate(newCaseTemplate.displayId, template1.displayId, template2.displayId, "parallel");
+        });
+        it('[DRDMV-3880,DRDMV-5320]: [Task Status] Task Status change from Completed', async () => {
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester('fritz');
+            await createCasePage.setSummary('DRDMV3880Summary' + randomStr);
+            await createCasePage.clickSelectCaseTemplateButton();
+            await selectCasetemplateBladePo.selectCaseTemplate(casetemplatePetramco.templateName);          
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+        });
+        it('[DRDMV-3880,DRDMV-5320]: [Task Status] Task Status change from Completed', async () => {
+            await viewCasePage.openTaskCard(1);
+            await manageTask.clickTaskLink(`manualTaskTemplateSummary1 ${randomStr}`);
+            expect(await viewTask.getTaskStatusValue()).toBe("Staged");
+            await viewTask.clickOnViewCase();
+            await viewCasePage.clickOnTaskLink(`manualTaskTemplateSummary2 ${randomStr}`);
+            expect(await viewTask.getTaskStatusValue()).toBe("Staged");
+            await viewTask.clickOnViewCase();
+        });
+        it('[DRDMV-3880,DRDMV-5320]: [Task Status] Task Status change from Completed', async () => {
+            await viewCasePage.clickAddTaskButton();
+            await manageTask.addTaskFromTaskTemplate(`manualTaskTemplate3 ${randomStr}`);
+            await manageTask.clickCloseButton();
+            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.clickSaveStatus();
+            await utilityCommon.closePopUpMessage();
+            await viewCasePage.openTaskCard(1);
+            await manageTask.clickTaskLink(`manualTaskTemplateSummary1 ${randomStr}`);
+            expect(await viewTask.getTaskStatusValue()).toBe("Assigned");
+            await viewTask.clickOnViewCase();
+            await viewCasePage.openTaskCard(2);
+            await manageTask.clickTaskLink(`manualTaskTemplateSummary2 ${randomStr}`);
+            expect(await viewTask.getTaskStatusValue()).toBe("Assigned");
+            await viewTask.clickOnViewCase();
+            await viewCasePage.openTaskCard(3);
+            await manageTask.clickTaskLink(`manualTaskTemplateSummary3 ${randomStr}`);
+            expect(await viewTask.getTaskStatusValue()).toBe("Staged");
+            await viewTask.clickOnViewCase();
+        });
+        it('[DRDMV-3880,DRDMV-5320]: [Task Status] Task Status change from Completed', async () => {  
+            await viewCasePage.openTaskCard(1);
+            await manageTask.clickTaskLink(`manualTaskTemplateSummary1 ${randomStr}`);
+            await viewTask.clickOnChangeStatus();
+            await updateStatusBladePo.allStatusOptionsPresent(statusDropdown1);
+            await updateStatusBladePo.clickCancelButton();
+            await viewTask.clickOnChangeStatus();
+            await viewTask.changeTaskStatus('Completed');
+            await updateStatusBladePo.setStatusReason('Successful');
+            await updateStatusBladePo.clickSaveStatus();
+            await utilityCommon.closePopUpMessage();
+            expect(await viewTask.getTaskStatusValue()).toBe("Completed");
+            await viewTask.clickOnChangeStatus();
+            await viewTask.changeTaskStatus('Canceled');
+            await updateStatusBladePo.clickSaveStatus();
+            expect(await viewTask.getTaskStatusValue()).toBe("Canceled");
+            expect(await viewTask.isChangeStatusButtonDisabled()).toBeTruthy("Button is Enabled");
+            await navigationPage.gotoTaskConsole();
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter("Status", 'Canceled', "text");
+            expect(await utilityGrid.isGridRecordPresent(`manualTaskTemplateSummary1 ${randomStr}`)).toBeTruthy(`manualTaskTemplateSummary1 ${randomStr}`);
+        });
+        it('[DRDMV-3880,DRDMV-5320]: [Task Status] Task Status change from Completed', async () => {
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePage.searchAndOpenCase('DRDMV3880Summary' + randomStr);
+            await viewCasePage.openTaskCard(1);
+            await manageTask.clickTaskLink(`manualTaskTemplateSummary2 ${randomStr}`);
+            await viewTask.clickOnChangeStatus();
+            await viewTask.changeTaskStatus('Completed');
+            await updateStatusBladePo.setStatusReason('Successful');
+            await updateStatusBladePo.clickSaveStatus();
+            await utilityCommon.closePopUpMessage();
+            await viewTask.clickOnChangeStatus();
+            await viewTask.changeTaskStatus('Closed');
+            await updateStatusBladePo.clickSaveStatus();
+            expect(await viewTask.getTaskStatusValue()).toBe("Closed");
+            expect(await viewTask.isChangeStatusButtonDisabled()).toBeTruthy("Button is Enabled");
+            await navigationPage.gotoTaskConsole();
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter("Status", 'Closed', "text");
+            expect(await utilityGrid.isGridRecordPresent(`manualTaskTemplateSummary2 ${randomStr}`)).toBeTruthy(`manualTaskTemplateSummary2 ${randomStr}`);
+        });
+    });
+
+    describe('[DRDMV-7066]:[Add Adhoc Task] [Assignment] Changing the Assignment on Add Adhoc Task by the member of one Support Group', async () => {
+        const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let casetemplatePetramco;
+        beforeAll(async () => {
+            await apiHelper.apiLogin('qkatawazi');
+            casetemplatePetramco = {
+                "templateName": 'caseTemplateName' + randomStr,
+                "templateSummary": 'caseTemplateName' + randomStr,
+                "templateStatus": "Active",
+                "categoryTier1": "Purchasing Card",
+                "categoryTier2": "Policies",
+                "categoryTier3": "Card Issuance",
+                "casePriority": "Low",
+                "caseStatus": "New",
+                "company": "Petramco",
+                "businessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
+                "assignee": "Fritz",
+                "ownerBU": "Facilities Support",
+                "ownerGroup": "Facilities"
+            }
+            await apiHelper.createCaseTemplate(casetemplatePetramco);
+        });
+        it('[DRDMV-7066]:[Add Adhoc Task] [Assignment] Changing the Assignment on Add Adhoc Task by the member of one Support Group', async () => {
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester('adam');
+            await createCasePage.setSummary('Summary' + randomStr);
+            await createCasePage.clickSelectCaseTemplateButton();
+            await selectCasetemplateBladePo.selectCaseTemplate(casetemplatePetramco.templateName);
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            //Adhoc task validation
+            await viewCasePage.clickAddTaskButton();
+            await manageTask.clickAddAdhocTaskButton();
+            await adhoctaskTemplate.setSummary("Summary1" + randomStr);
+            await adhoctaskTemplate.setDescription("Description");
+            await adhoctaskTemplate.selectPriority('High');
+            await adhoctaskTemplate.selectCategoryTier1('Applications');
+            await adhoctaskTemplate.selectCategoryTier2('Social');
+            await adhoctaskTemplate.selectCategoryTier3('Chatter');
+            await adhoctaskTemplate.clickAssignToMeButton();
+            await adhoctaskTemplate.clickSaveAdhoctask();
+            await utilityCommon.closePopUpMessage();
+            await manageTask.clickTaskLink("Summary1" + randomStr);
+            expect(await viewTask.getAssignedGroupText()).toBe('US Support 3');
+            expect(await viewTask.getAssigneeText()).toBe('Qadim Katawazi');
+        });
+        it('[DRDMV-7066]:[Add Adhoc Task] [Assignment] Changing the Assignment on Add Adhoc Task by the member of one Support Group', async () => {
+            await viewTask.clickOnEditTask();
+            await editTask.clickOnChangeAssignementButton();
+            await changeAssignmentBladePo.selectBusinessUnit('HR Support');
+            await changeAssignmentBladePo.selectSupportGroup('Workforce Administration');
+            await changeAssignmentBladePo.selectAssignee('Peter Kahn');
+            await changeAssignmentBladePo.clickOnAssignButton();
+            await editTask.clickOnSaveButton();
+            await utilityCommon.closePopUpMessage();
+            expect(await viewTask.getAssignedGroupText()).toBe('Workforce Administration');
+            expect(await viewTask.getAssigneeText()).toBe('Peter Kahn');
+            await viewTask.clickOnViewCase();
+        });
+        it('[DRDMV-7066]:[Add Adhoc Task] [Assignment] Changing the Assignment on Add Adhoc Task by the member of one Support Group', async () => {
+            await viewCasePage.clickEditCaseButton();
+            await editCasePo.clickChangeAssignmentButton();
+            await changeAssignmentBladePo.selectAssignToSupportGroup();
+            await changeAssignmentBladePo.clickOnAssignButton();
+            await editCasePo.clickSaveCase();
+            await utilityCommon.closePopUpMessage();
+            expect(await viewCasePage.getAssignedGroupText()).toBe('Facilities');
+            expect(await viewCasePage.getAssigneeText()).toBe('None','Assignee name is missing');
+            await viewCasePage.clickAddTaskButton();
+            await manageTask.clickAddAdhocTaskButton();
+            await adhoctaskTemplate.setSummary("Summary2" + randomStr);
+            await adhoctaskTemplate.setDescription("Description");
+            await adhoctaskTemplate.selectPriority('High');
+            await adhoctaskTemplate.selectCategoryTier1('Applications');
+            await adhoctaskTemplate.selectCategoryTier2('Social');
+            await adhoctaskTemplate.selectCategoryTier3('Chatter');
+            await adhoctaskTemplate.clickChangeAssignmentButton();
+            await changeAssignmentBladePo.selectAssignToSupportGroup();
+            await changeAssignmentBladePo.clickOnAssignButton();
+            await adhoctaskTemplate.clickSaveAdhoctask();
+            await utilityCommon.closePopUpMessage();
+            await manageTask.clickTaskLink("Summary2" + randomStr);
+            expect(await viewTask.getAssignedGroupText()).toBe('Facilities');
+            expect(await viewTask.isAssigneeDisplayed('None')).toBeTruthy('Assignee name is missing');
+        });
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+    });
+
+    describe('[DRDMV-1579]: [Edit Task] Update summary, status, description and assignment', async () => {
+        const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let casetemplatePetramco, templateData, externaltemplateData, automatedtemplateData;
+        let month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        beforeAll(async () => {
+            await apiHelper.apiLogin('qkatawazi');
+            casetemplatePetramco = {
+                "templateName": 'caseTemplateName' + randomStr,
+                "templateSummary": 'caseTemplateName' + randomStr,
+                "templateStatus": "Active",
+                "categoryTier1": "Purchasing Card",
+                "categoryTier2": "Policies",
+                "categoryTier3": "Card Issuance",
+                "casePriority": "Low",
+                "caseStatus": "New",
+                "company": "Petramco",
+                "businessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
+                "assignee": "Fritz",
+                "ownerBU": "Facilities Support",
+                "ownerGroup": "Facilities"
+            }
+            let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplatePetramco);
+            templateData = {
+                "templateName": 'Manual task19011' + randomStr,
+                "templateSummary": 'Manual task19011' + randomStr,
+                "templateStatus": "Active",
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities",
+                "businessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
+                "assignee": "Fritz",
+            }
+            let manualTaskTemplate = await apiHelper.createManualTaskTemplate(templateData);
+            externaltemplateData = {
+                "templateName": 'External task19011' + randomStr,
+                "templateSummary": 'External task19011' + randomStr,
+                "templateStatus": "Active",
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities",
+                "businessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
+                "assignee": "Fritz",
+            }
+            let externalTaskTemplate = await apiHelper.createExternalTaskTemplate(externaltemplateData);
+            automatedtemplateData = {
+                "templateName": 'Automated task19011' + randomStr,
+                "templateSummary": 'Automated task19011' + randomStr,
+                "templateStatus": "Active",
+                "processBundle": "com.bmc.dsm.case-lib",
+                "processName": 'Auto Proces' + randomStr,
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities",
+                "businessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
+                "assignee": "Fritz",
+            }
+            let automatedTaskTemplate = await apiHelper.createAutomatedTaskTemplate(automatedtemplateData);
+            await apiHelper.associateCaseTemplateWithThreeTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId, externalTaskTemplate.displayId, automatedTaskTemplate.displayId);
+        });
+        it('[DRDMV-1579]: [Edit Task] Update summary, status, description and assignment', async () => {
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester('fritz');
+            await createCasePage.setSummary('DRDMV1579Summary' + randomStr);
+            await createCasePage.clickSelectCaseTemplateButton();
+            await selectCasetemplateBladePo.selectCaseTemplate(casetemplatePetramco.templateName);
+            await createCasePage.setContactName('Elizabeth Peters');
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            //Adhoc task validation
+            await viewCasePage.clickAddTaskButton();
+            await manageTask.clickAddAdhocTaskButton();
+            expect(await adhoctaskTemplate.isAttachmentButtonDisplayed()).toBeTruthy();
+            expect(await adhoctaskTemplate.isTaskSummaryRequiredTextPresent()).toBeTruthy("Summary");
+            expect(await adhoctaskTemplate.isPriorityRequiredTextPresent()).toBeTruthy("priority");
+            expect(await adhoctaskTemplate.isAssignedCompanyRequiredTextPresent()).toBeTruthy("company");
+            expect(await adhoctaskTemplate.isAssignedGroupRequiredTextPresent()).toBeTruthy("assigned group");
+            await adhoctaskTemplate.setSummary("Summary" + randomStr);
+            await adhoctaskTemplate.setDescription("Description");
+            await adhoctaskTemplate.selectPriority('High');
+            await adhoctaskTemplate.selectCategoryTier1('Applications');
+            await adhoctaskTemplate.selectCategoryTier2('Social');
+            await adhoctaskTemplate.selectCategoryTier3('Chatter');
+            await adhoctaskTemplate.clickAssignToMeButton();
+            await adhoctaskTemplate.clickSaveAdhoctask();
+            await utilityCommon.closePopUpMessage();
+            await manageTask.clickCloseButton();
+        });
+        it('[DRDMV-1579]: [Edit Task] Update summary, status, description and assignment', async () => {
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePage.searchAndOpenCase('DRDMV1579Summary' + randomStr);
+            await viewCasePage.clickAddTaskButton();
+            await manageTask.clickTaskLink("Summary" + randomStr);
+            await viewTask.clickOnEditTask();
+            expect(await editTask.isFieldsDisplyed('Assignment Section')).toBeTruthy();
+            expect(await editTask.isRequesterNameDisplayed('Fritz Schulz')).toBeTruthy();
+            expect(await editTask.isFieldsDisplyed('Requester Mail')).toBeTruthy();
+            expect(await editTask.isFieldsDisplyed('CategoryTier1Value')).toBeTruthy();
+            expect(await editTask.isFieldsDisplyed('CategoryTier2Value')).toBeTruthy();
+            expect(await editTask.isFieldsDisplyed('CategoryTier3Value')).toBeTruthy();
+            expect(await editTask.isFieldsDisplyed('Assignee Name')).toBeTruthy();
+            expect(await editTask.isFieldsDisplyed('Assign Company')).toBeTruthy();
+            expect(await editTask.isRequiredTextPresent('Task Summary')).toBeTruthy();
+            expect(await editTask.isRequiredTextPresent('Priority')).toBeTruthy();
+            expect(await editTask.isRequiredTextPresent('Assigned Group')).toBeTruthy();
+            expect(await editTask.isRequiredTextPresent('Assigned Company')).toBeTruthy();
+            await editTask.clickOnCancelButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+        });
+        it('[DRDMV-1579]: [Edit Task] Update summary, status, description and assignment', async () => {
+            await viewTask.clickOnEditTask();
+            await editTask.selectTaskCategoryTier1('Accounts Payable');
+            await editTask.selectTaskCategoryTier2('Invoices');
+            await editTask.selectTaskCategoryTier3('Payment');
+            await editTask.selectPriorityValue('Low');
+            await editTask.updateTaskSummary('UpdatedSummary' + randomStr);
+            await editTask.setDescription('Description' + randomStr);
+            await editTask.clickOnChangeAssignementButton();
+            await changeAssignmentBladePo.selectBusinessUnit('HR Support');
+            await changeAssignmentBladePo.selectSupportGroup('Workforce Administration');
+            await changeAssignmentBladePo.selectAssignee('Peter Kahn');
+            await changeAssignmentBladePo.clickOnAssignButton();
+            await editTask.clickOnCancelButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePage.searchAndOpenCase('DRDMV1579Summary' + randomStr);
+            await viewCasePage.clickAddTaskButton();
+            await manageTask.clickTaskLink("Summary" + randomStr);            
+            expect((await viewTask.getDescriptionValue()).trim()).toBe("Description");
+            expect(await viewTask.getCategoryTier1Value()).toBe('Applications');
+            expect(await viewTask.getCategoryTier2Value()).toBe('Social');
+            expect(await viewTask.getCategoryTier3Value()).toBe('Chatter');
+            expect(await viewTask.getTaskSummaryValue()).toBe('Summary' + randomStr);
+            expect(await viewTask.getAssignedGroupText()).toBe('US Support 3');
+            expect(await viewTask.getAssigneeText()).toBe('Qadim Katawazi');
+        });
+        it('[DRDMV-1579]: [Edit Task] Update summary, status, description and assignment', async () => {
+            await viewTask.clickOnEditTask();
+            await editTask.selectTaskCategoryTier1('Facilities');
+            await editTask.selectTaskCategoryTier2('Conference Room');
+            await editTask.selectTaskCategoryTier3('Furniture');
+            await editTask.selectPriorityValue('Low');
+            await editTask.updateTaskSummary('UpdatedSummary' + randomStr);
+            await editTask.setDescription('UpdatedDescription' + randomStr);
+            await editTask.clickOnChangeAssignementButton();
+            await changeAssignmentBladePo.selectBusinessUnit('HR Support');
+            await changeAssignmentBladePo.selectSupportGroup('Workforce Administration');
+            await changeAssignmentBladePo.selectAssignee('Peter Kahn');
+            await changeAssignmentBladePo.clickOnAssignButton();
+            await editTask.clickOnSaveButton();
+            let modifiedDate = new Date();
+            let monthValue: string = month[modifiedDate.getMonth()];
+            let modifiedMonthValue = monthValue.substring(0, 3);
+            let time = modifiedDate.toLocaleTimeString();
+            let diffTime = time.split(" ");
+            let newTime = diffTime[0].split(":");
+            let exactTime = newTime[0] + ":" + newTime[1] + " " + diffTime[1];
+            let modifiedDateFormate = modifiedMonthValue + " " + modifiedDate.getDate() + ", " + modifiedDate.getFullYear() + " " + exactTime;
+            expect((await viewTask.getDescriptionValue()).trim()).toBe('UpdatedDescription' + randomStr);
+            expect(await viewTask.getCategoryTier1Value()).toBe('Facilities');
+            expect(await viewTask.getCategoryTier2Value()).toBe('Conference Room');
+            expect(await viewTask.getCategoryTier3Value()).toBe('Furniture');
+            expect(await viewTask.getTaskSummaryValue()).toBe('UpdatedSummary' + randomStr);
+            expect(await viewTask.getAssignedGroupText()).toBe('Workforce Administration');
+            expect(await viewTask.getAssigneeText()).toBe('Peter Kahn');
+            await viewTask.clickOnViewCase();
+            await navigationPage.gotoTaskConsole();
+            await utilityGrid.clearFilter();
+            await utilityGrid.typeInFilterExperssion("Modified Date:" + modifiedDateFormate);
+            expect(await utilityGrid.isGridRecordPresent('UpdatedSummary' + randomStr)).toBeTruthy('UpdatedSummary' + randomStr);
+        });
+        it('[DRDMV-1579]: [Edit Task] Update summary, status, description and assignment', async () => {
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePage.searchAndOpenCase('DRDMV1579Summary' + randomStr);
+            await expect(viewCasePage.getRequesterName()).toBe('Fritz Schulz');
+            await viewCasePage.clickOnContactPersonerDrpDwn();
+            await expect(viewCasePage.getContactPersonName()).toBe('Elizabeth Peters');
+            await viewCasePage.clickEditCaseButton();
+            await editCasePo.clickChangeAssignmentButton();
+            await changeAssignmentBladePo.selectBusinessUnit('United States Support');
+            await changeAssignmentBladePo.selectSupportGroup('US Support 2');
+            await changeAssignmentBladePo.selectAssignee('Qiao Feng');
+            await changeAssignmentBladePo.clickOnAssignButton();
+            await editCasePo.clickSaveCase();
+            await viewCasePage.clickAddTaskButton();
+            await manageTask.clickAddAdhocTaskButton();
+            await adhoctaskTemplate.setSummary("AdHocSummary" + randomStr);
+            await adhoctaskTemplate.clickSaveAdhoctask();
+            await manageTask.clickTaskLink("AdHocSummary" + randomStr);
+            await expect(viewTask.getRequesterName()).toBe('Fritz Schulz');
+            await expect(viewTask.getContactPersonName()).toBe('Elizabeth Peters');
+            expect(await viewTask.getAssignedGroupText()).toBe('US Support 2');
+            expect(await viewTask.getAssigneeText()).toBe('Qiao Feng');
+            await viewTask.clickOnEmailAddress('fritz.schulz@petramco.com');
+            await composeMailPo.clickOnDiscardButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+            await viewTask.clickOnRequesterName();
+            await utilityCommon.switchToNewTab(1);
+            await expect(personProfilePo.getPersonName()).toBe('Fritz Schulz');
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();      
+        });
+        it('[DRDMV-1579]: [Edit Task] Update summary, status, description and assignment', async () => {
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePage.searchAndOpenCase('DRDMV1579Summary' + randomStr);
+            await updateStatusBladePo.changeCaseStatus("In Progress");
+            await updateStatusBladePo.clickSaveStatus();
+            await utilCommon.closePopUpMessage(); 
+            await navigationPage.gotoTaskConsole();          
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(templateData.templateName);
+            await viewTask.clickOnContactName();
+            await utilityCommon.switchToNewTab(1);
+            await expect(personProfilePo.getPersonName()).toBe('Elizabeth Peters');
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+            await viewTask.clickOnEditTask();
+            await editTask.clickOnChangeAssignementButton();
+            await changeAssignmentBladePo.selectAssignToSupportGroup();
+            await changeAssignmentBladePo.clickOnAssignButton();
+            await editTask.clickOnSaveButton();
+            await utilityCommon.closePopUpMessage();
+            expect(await viewTask.getAssignedGroupText()).toBe('Facilities');
+            expect(await viewTask.isAssigneeDisplayed('None')).toBeTruthy('Assignee name is missing');
+            await viewTask.clickOnChangeStatus();
+            await viewTask.changeTaskStatus('In Progress');
+            expect(await viewTask.getErrorMsgOfInprogressStatus()).toBe('Assignee is required for this task status.  Please select an assignee. ');
+            await updateStatusBladePo.clickCancelButton();  
+        });
+        it('[DRDMV-1579]: [Edit Task] Update summary, status, description and assignment', async () => {    
+            await navigationPage.signOut();
+            await loginPage.login('franz');
+            await navigationPage.gotoTaskConsole();          
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(externaltemplateData.templateName);
+            await viewTask.clickOnEditTask();
+            expect(await editTask.isRequesterNameDisplayed('Fritz Schulz')).toBeTruthy();
+            await navigationPage.signOut();
+            await loginPage.login('qfeng');
+            await navigationPage.gotoTaskConsole();          
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink("AdHocSummary" + randomStr);
+            await viewTask.clickOnEditTask();
+            expect(await editTask.isRequesterNameDisplayed('Fritz Schulz')).toBeTruthy();
+        });
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
         });
     });
 });

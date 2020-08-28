@@ -60,7 +60,10 @@ class ViewTask {
         approvalButtons: '.approval-buttons span',
         approveButton: '.d-icon-left-check_shield',
         rejectButton: '.d-icon-left-cross_circle',
-
+        assignee: '[rx-view-component-id="1801d8c6-4997-4253-b716-809b39909598"]',
+        contactPersonName: '[rx-view-component-id="811367b2-5b83-402a-b44f-9c9ca668fee8"] .person-name .person-link',
+        inprogressErrorMsg: '[rx-view-component-id="a1072f99-4036-4e2e-8e62-e72b2ba22344"] p',
+        statusDropdown: '[rx-view-component-id="1437179f-34be-4cb3-8f85-cf0ac6a83394"] button',
     }
 
     async clickShowMoreTaskDescription():Promise<void>{
@@ -429,6 +432,40 @@ class ViewTask {
         await $(this.selectors.rejectButton).click();
     }
 
+    async isAssigneeDisplayed(assignee: string): Promise<boolean> {
+        let valueassignee: boolean = await $(this.selectors.assignee + ' .person-link').isPresent();
+        if (valueassignee == true) {
+            return await $(this.selectors.assignee + ' .person-link').getText() == assignee ? true : false;
+        } else { return await $(this.selectors.assignee + ' .ac-person-absent').getText() == assignee ? true : false; }
+    }
+
+    async getRequesterName(): Promise<string> {
+        return await $(this.selectors.requesterName).getText();
+    }
+
+    async getContactPersonName(): Promise<string> {
+        return await $(this.selectors.contactPersonName).getText();
+    }
+
+    async clickOnEmailAddress(emailAddress:string): Promise<void> {
+        await element(by.css(`button[aria-label*="${emailAddress}"]`)).click();
+    }
+
+    async clickOnRequesterName(): Promise<void> {
+        return await $(this.selectors.requesterName).click();
+    }
+
+    async clickOnContactName(): Promise<void> {
+        return await $(this.selectors.contactPersonName).click();
+    }
+
+    async getErrorMsgOfInprogressStatus(): Promise<string> {
+        return await $(this.selectors.inprogressErrorMsg).getText();
+    }
+
+    async isChangeStatusButtonDisabled(): Promise<boolean> {
+        return await $(this.selectors.statusDropdown).getAttribute("disabled") == "true";
+    }
 }
 
 export default new ViewTask();
