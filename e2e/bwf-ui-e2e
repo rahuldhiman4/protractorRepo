@@ -1,3 +1,6 @@
+import groovy.json.JsonSlurper;
+import groovy.json.JsonOutput;
+
 def NODE = "AutoUI"
 node("${NODE}"){
     def user = 'dsm-bot'
@@ -45,8 +48,9 @@ node("${NODE}"){
                 def suiteName = "${it}";
                 // Create Jira Cycle
                 bat """npm run jira-cycle -- --cycle=%CYCLENAME% --inputfile="${WORKSPACE}/artefact/${suiteName}_spec-json-report.json" --folder="%FOLDERNAME% ${dateNow}" --stats=%STATS%"""
-                //copy jira report file artefact folder
+                //copy jira report files to artefact folder
                 bat """xcopy /Y /F /I /Z /Q "e2e/reports/spec-jira-report/jira-report.csv" "artefact/jira-report/${suiteName}_jira-report.csv*" """
+                bat """xcopy /Y /F /I /Z /Q "e2e/reports/spec-jira-report/summary-report.json" "artefact/jira-report/${suiteName}_summary-report.json*" """
             }
             // merge all Jira output csv files
             def fileContent = readFile("artefact/jira-report/${suiteNameList[0]}_jira-report.csv");
@@ -55,6 +59,32 @@ node("${NODE}"){
                 fileContent = fileContent + "\n" + fileLines.tail().join('\n');
             }
             writeFile(file: "artefact/jira-report/jira-report.csv", text: fileContent);
+
+            // merge all summary-report output files
+            def finalMap = [:];
+            for (int k=0; j < suiteNameList.size(); k++){
+                def fileLines = readFile("artefact/jira-report/${suiteNameList[k]}_summary-report.json").readLines();                
+                def jsonSlurper = new JsonSlurper();
+                def componentObj = jsonSlurper.parseText(fileLines);
+                def components = componentObj.keySet();
+                components.each {
+                    def passAll = (componentObj.get(it).get("passed"));
+                    def failAll = (componentObj.get(it).get("failed"));
+                    def skipAll = (componentObj.get(it).get("skipped"));
+                    def totalAll = passAll + failAll + skipAll;
+                    if(finalMap.containsKey(it) == true && it != "Total") {
+                        passAll += finalMap.get(it).get('pass');
+                        failAll += finalMap.get(it).get('fail');
+                        skipAll += finalMap.get(it).get('skip');
+                        totalAll += finalMap.get(it).get('total');
+                    }
+                    finalMap.put(it, [pass: passAll, fail: failAll, skip: skipAll, total: totalAll]);
+                }
+            }
+            def jsonBuilObj = new groovy.json.JsonBuilder();
+            jsonBuilObj finalMap;
+            writeFile(file: "artefact/jira-report/summary-report.json", text: jsonBuilObj);
+
             //create zip of jira-report folder
             zip archive: false, dir: 'artefact/jira-report', zipFile: 'artefact/jira-report.zip'
         }
