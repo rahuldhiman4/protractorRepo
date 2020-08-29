@@ -6,8 +6,8 @@ node("${NODE}"){
     def user = 'dsm-bot'
     def suiteNameList = [];
     stage('Clone & Build'){
-        bat """if exist "./artefact" RMDIR /S /Q "./artefact" """
-        bat "IF EXIST e2e\\reports RMDIR /S /Q e2e\\reports"
+        //bat """if exist "./artefact" RMDIR /S /Q "./artefact" """
+        //bat "IF EXIST e2e\\reports RMDIR /S /Q e2e\\reports"
 
         git branch: 'master',
             credentialsId: user,
@@ -33,7 +33,7 @@ node("${NODE}"){
                     ]
                 }
             }
-            parallel (builds)
+            //parallel (builds)
         }
     } catch (Exception e) {
         echo "Test Execution Failed ==> " + e;
