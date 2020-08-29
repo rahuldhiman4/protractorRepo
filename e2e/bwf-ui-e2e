@@ -62,7 +62,7 @@ node("${NODE}"){
 
             // merge all summary-report output files
             def finalMap = [:];
-            for (int k=0; j < suiteNameList.size(); k++){
+            for (int k=0; k < suiteNameList.size(); k++){
                 def fileLines = readFile("artefact/jira-report/${suiteNameList[k]}_summary-report.json").readLines();                
                 def jsonSlurper = new JsonSlurper();
                 def componentObj = jsonSlurper.parseText(fileLines);
