@@ -17,7 +17,7 @@ export interface IIDs {
     id: string;
     displayId: string;
 }
-describe('Global Search', () => {
+describe('Global Search Categories', () => {
     let caseModule = "Case";
     let taskModule = "Task";
     let KAModule = "Knowledge Article";
@@ -351,7 +351,7 @@ describe('Global Search', () => {
 
         it('[DRDMV-16102]: Verify search case with Requester', async () => {
             await navigationPage.signOut();
-            await loginPage.login('qkatawazi')
+            await loginPage.login('qkatawazi');
             await navigationPage.gotoSearch();
 
             await searchPo.searchRecord(nonMatchingSummary);
@@ -415,7 +415,7 @@ describe('Global Search', () => {
 
         it('[DRDMV-16102]: Verify search case by other group user  ', async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz')
+            await loginPage.login('fritz');
             await navigationPage.gotoSearch();
             await searchPo.searchRecord(summary);
 
@@ -440,7 +440,7 @@ describe('Global Search', () => {
 
         afterAll(async () => {
             await navigationPage.signOut();
-            await loginPage.login('qtao')
+            await loginPage.login('qtao');
         });
     });
 
@@ -601,7 +601,7 @@ describe('Global Search', () => {
 
         it('[DRDMV-16115]: Verify search Task with assignee user ', async () => {
             await navigationPage.signOut();
-            await loginPage.login('qcolumbcille')
+            await loginPage.login('qcolumbcille');
             await navigationPage.gotoSearch();
 
             await searchPo.searchRecord(summary);
@@ -630,7 +630,7 @@ describe('Global Search', () => {
 
         it('[DRDMV-16115]: Verify saerch task with other group user', async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz')
+            await loginPage.login('fritz');
             await navigationPage.gotoSearch();
             await searchPo.searchRecord(nonMatchingSummary);
             expect(await searchPo.isModuleTitleDisplayed(nonMatchingSummary, 'Tasks (0)', taskModule)).toBeTruthy('FailureMsg58: Task module title is missing');
@@ -850,7 +850,7 @@ describe('Global Search', () => {
 
         it('[DRDMV-16114]: Verify saerch KA with other group user', async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz')
+            await loginPage.login('fritz');
             await navigationPage.gotoSearch();
             await searchPo.searchRecord(summary1);
             expect(await searchPo.isModuleTitleDisplayed(summary1, 'Knowledge Articles (5)', KAModule)).toBeTruthy('FailureMsg58: KA module title is missing');
@@ -871,7 +871,7 @@ describe('Global Search', () => {
 
         it('[DRDMV-16114]: Verify saerch KA with other company user', async () => {
             await navigationPage.signOut();
-            await loginPage.login('gderuno')
+            await loginPage.login('gderuno');
             await navigationPage.gotoSearch();
             await searchPo.searchRecord(summary1);
             expect(await searchPo.isModuleTitleDisplayed(summary1, 'Knowledge Articles (0)', KAModule)).toBeTruthy('FailureMsg58: KA module title is missing');

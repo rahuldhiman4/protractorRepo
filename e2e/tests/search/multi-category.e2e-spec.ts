@@ -11,7 +11,7 @@ export interface IIDs {
     id: string;
     displayId: string;
 }
-describe('Global Search', () => {
+describe('Global Search Multi Category', () => {
     let caseModule = "Case";
     let taskModule = "Task";
     let KAModule = "Knowledge Article";
@@ -189,13 +189,15 @@ describe('Global Search', () => {
             "lastName": lastName,
             "userId": loginId,
             "emailId": emailId,
-            "userPermission": "AGGAA5V0GE9Z4AOR0BXUOQ3ZT04EJA;AGGADG1AAO0VGAP8SXEGP7VU2U4ZS8"
+            "userPermission": "AGGAA5V0GE9Z4AOR0BXUOQ3ZT04EJA;AGGADG1AAO0VGAP8SXEGP7VU2U4ZS8",
+            // "company": ""
+
         }
         if (company) {
             await apiHelper.createNewUser(caseAgentuserData);
             await apiHelper.associatePersonToCompany(caseAgentuserData.userId, company);
         } else {
-            await apiHelper.createNewUser(caseAgentuserData);
+            await apiHelper.createNewUser(caseAgentuserData, 'Inactive');
         }
     }
   
@@ -291,7 +293,7 @@ describe('Global Search', () => {
             await searchPo.clickOnLeftPannelRecord(`${firstName} ${lastName}`, peopleModule);
         });
 
-        it('[DRDMV-16124]: Verify KA Preview Fields', async () => {
+        it('[DRDMV-16124]: Verify People Preview Fields', async () => {
             expect(await peoplePo.isFieldLabelDisplayed('Employee')).toBeTruthy('FailureMsg22: field label displayed');
             expect(await peoplePo.isFieldLabelDisplayed('Job Title')).toBeTruthy('FailureMsg22: field label displayed');
             expect(await peoplePo.isFieldLabelDisplayed('Corporate ID')).toBeTruthy('FailureMsg22: field label displayed');
@@ -319,6 +321,16 @@ describe('Global Search', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(`${nonMatchingFirstName} ${nonMatchingLastName}`, peopleModule)).toBeFalsy(`FailureMsg9: ${nonMatchingFirstName} ${nonMatchingLastName} 6 person is displayed`);
         });
 
+        it('[DRDMV-16124]: Verify Person With FirstName & LastName At a Same Time ', async () => {
+            await searchPo.searchRecord(`${firstName} ${lastName}`);
+            expect(await searchPo.isModuleTitleDisplayed(`${firstName} ${lastName}`, 'People (10)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule, 1)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName} 1 Person Name is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule, 2)).toBeTruthy(`FailureMsg5: ${firstName} ${lastName} 2 Person Name is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule, 3)).toBeTruthy(`FailureMsg6: ${firstName} ${lastName} 3 Person Name is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule, 4)).toBeTruthy(`FailureMsg7: ${firstName} ${lastName} 4 Person Name is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule, 5)).toBeTruthy(`FailureMsg8: ${firstName} ${lastName} 5 Person Name is missing`);
+        });
+
         it('[DRDMV-16124]: Clear search and verify record displayed on left pannel ', async () => {
             await searchPo.searchRecord(firstName);
             expect(await searchPo.isModuleTitleDisplayed(firstName, 'People (10)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
@@ -333,6 +345,15 @@ describe('Global Search', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(dummyText, peopleModule)).toBeFalsy(`FailureMsg62: ${dummyText} dummyText  is displayed`);
             expect(await searchPo.isModuleTitleDisplayed(dummyText, 'People (0)', peopleModule)).toBeTruthy('FailureMsg63: People module title is missing');
             expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(peopleModule)).toBeTruthy(`FailureMsg64: No result found validation is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule)).toBeFalsy(`FailureMsg4: ${firstName} ${lastName} 1 People is missing`);
+        });
+
+        it('[DRDMV-16124]: Verify search functionality with Inactive Person ', async () => {
+            await searchPo.searchRecord(inactiveFirstName);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(inactiveFirstName, peopleModule)).toBeFalsy(`FailureMsg62: ${inactiveFirstName} dummyText  is displayed`);
+            expect(await searchPo.isModuleTitleDisplayed(inactiveFirstName, 'People (0)', peopleModule)).toBeTruthy('FailureMsg63: People module title is missing');
+            expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(peopleModule)).toBeTruthy(`FailureMsg64: No result found validation is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${inactiveFirstName} ${nonMatchingLastName}`, peopleModule)).toBeFalsy(`FailureMsg4: ${firstName} ${lastName} 1 People is Displayed`);
         });
 
         it('[DRDMV-16124]: Verify saerch people with other company user', async () => {
@@ -437,7 +458,7 @@ describe('Global Search', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId[3], caseModule)).toBeTruthy(`FailureMsg6: ${caseDisplayId[3]} case id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId[4], caseModule)).toBeTruthy(`FailureMsg7: ${caseDisplayId[4]} case id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId[5], caseModule)).toBeTruthy(`FailureMsg8: ${caseDisplayId[5]} case id  is missing`);
-
+            
             // Verify Task with left pannel
             expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Tasks (5)', taskModule)).toBeTruthy('FailureMsg2: Task module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[1], taskModule)).toBeTruthy(`FailureMsg6: ${taskDisplayId[1]} task id  is missing`);
@@ -496,6 +517,12 @@ describe('Global Search', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId[3], caseModule)).toBeTruthy(`FailureMsg6: ${caseDisplayId[3]} case id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId[4], caseModule)).toBeTruthy(`FailureMsg7: ${caseDisplayId[4]} case id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId[5], caseModule)).toBeTruthy(`FailureMsg8: ${caseDisplayId[5]} case id  is missing`);
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Tasks (5)', taskModule)).toBeFalsy('FailureMsg2: Task module title is displayed');
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Knowledge Articles (5)', KAModule)).toBeFalsy('FailureMsg2: KA module title is displayed');
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Case Templates (5)', caseTemplateModule)).toBeFalsy('FailureMsg2: Case module title is displayed');
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Task Templates (5)', taskTemplateModule)).toBeFalsy('FailureMsg2: Task module title is displayed');
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Documents (5)', documentModule)).toBeFalsy('FailureMsg2: Document module title is displayed');
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'People (5)', peopleModule)).toBeFalsy('FailureMsg2: People module title is displayed');
 
             // Verify Task After Change Category To Task Category
             await searchPo.selectCategoryDropDownValue(taskModule);
@@ -505,6 +532,12 @@ describe('Global Search', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[3], taskModule)).toBeTruthy(`FailureMsg8: ${taskDisplayId[3]} task id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[4], taskModule)).toBeTruthy(`FailureMsg9: ${taskDisplayId[4]} task id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[5], taskModule)).toBeTruthy(`FailureMsg10: ${taskDisplayId[5]} task id  is missing`);
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Cases (5)', caseModule)).toBeFalsy('FailureMsg2: Case module title is displayed');
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Knowledge Articles (5)', KAModule)).toBeFalsy('FailureMsg2: KA module title is displayed');
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Case Templates (5)', caseTemplateModule)).toBeFalsy('FailureMsg2: Case module title is displayed');
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Task Templates (5)', taskTemplateModule)).toBeFalsy('FailureMsg2: Task module title is displayed');
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Documents (5)', documentModule)).toBeFalsy('FailureMsg2: Document module title is displayed');
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'People (5)', peopleModule)).toBeFalsy('FailureMsg2: People module title is displayed');
 
             // Verify Knowledge Article After Change Category To Knowledge Article Category
             await searchPo.selectCategoryDropDownValue('Knowledge');
@@ -514,6 +547,12 @@ describe('Global Search', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId[3], KAModule)).toBeTruthy(`FailureMsg13: ${kaDisplayId[3]} Knowledge Article id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId[4], KAModule)).toBeTruthy(`FailureMsg14: ${kaDisplayId[4]} Knowledge Article id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId[5], KAModule)).toBeTruthy(`FailureMsg15: ${kaDisplayId[5]} Knowledge Article id  is missing`);
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Cases (5)', caseModule)).toBeFalsy('FailureMsg2: Case module title is displayed');
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Tasks (5)', taskModule)).toBeFalsy('FailureMsg2: Task module title is displayed');
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Case Templates (5)', caseTemplateModule)).toBeFalsy('FailureMsg2: Case module title is displayed');
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Task Templates (5)', taskTemplateModule)).toBeFalsy('FailureMsg2: Task module title is displayed');
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Documents (5)', documentModule)).toBeFalsy('FailureMsg2: Document module title is displayed');
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'People (5)', peopleModule)).toBeFalsy('FailureMsg2: People module title is displayed');
 
             // Verify Case Template After Change Category To Case Template Category
             await searchPo.selectCategoryDropDownValue('Case Template');
@@ -523,6 +562,12 @@ describe('Global Search', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId[3], caseTemplateModule)).toBeTruthy(`FailureMsg7: ${caseTemplateDisplayId[3]} case id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId[4], caseTemplateModule)).toBeTruthy(`FailureMsg7: ${caseTemplateDisplayId[4]} case id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId[5], caseTemplateModule)).toBeTruthy(`FailureMsg7: ${caseTemplateDisplayId[5]} case id  is missing`);
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Cases (5)', caseModule)).toBeFalsy('FailureMsg2: Case module title is displayed');
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Tasks (5)', taskModule)).toBeFalsy('FailureMsg2: Task module title is displayed');
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Knowledge Articles (5)', KAModule)).toBeFalsy('FailureMsg2: KA module title is displayed');
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Task Templates (5)', taskTemplateModule)).toBeFalsy('FailureMsg2: Task module title is displayed');
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Documents (5)', documentModule)).toBeFalsy('FailureMsg2: Document module title is displayed');
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'People (5)', peopleModule)).toBeFalsy('FailureMsg2: People module title is displayed');
 
             // Verify Task Template After Change Category To Task Template Category
             await searchPo.selectCategoryDropDownValue('Task Template');
@@ -532,6 +577,12 @@ describe('Global Search', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId[3], taskTemplateModule)).toBeTruthy(`FailureMsg4: ${taskTemplateDisplayId[3]} task template id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId[4], taskTemplateModule)).toBeTruthy(`FailureMsg4: ${taskTemplateDisplayId[4]} task template id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId[5], taskTemplateModule)).toBeTruthy(`FailureMsg4: ${taskTemplateDisplayId[5]} task template id  is missing`);
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Cases (5)', caseModule)).toBeFalsy('FailureMsg2: Case module title is displayed');
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Tasks (5)', taskModule)).toBeFalsy('FailureMsg2: Task module title is displayed');
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Knowledge Articles (5)', KAModule)).toBeFalsy('FailureMsg2: KA module title is displayed');
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Case Templates (5)', caseTemplateModule)).toBeFalsy('FailureMsg2: Case module title is displayed');
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Documents (5)', documentModule)).toBeFalsy('FailureMsg2: Document module title is displayed');
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'People (5)', peopleModule)).toBeFalsy('FailureMsg2: People module title is displayed');
 
             // Verify Document After Change Category To Document Category
             await searchPo.selectCategoryDropDownValue('Document');
@@ -541,6 +592,12 @@ describe('Global Search', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(commonSearchAll, documentModule, 3)).toBeTruthy(`FailureMsg5: ${commonSearchAll} 3 Document is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(commonSearchAll, documentModule, 4)).toBeTruthy(`FailureMsg6: ${commonSearchAll} 4 Document is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(commonSearchAll, documentModule, 5)).toBeTruthy(`FailureMsg7: ${commonSearchAll} 5 Document is missing`);
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Cases (5)', caseModule)).toBeFalsy('FailureMsg2: Case module title is displayed');
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Tasks (5)', taskModule)).toBeFalsy('FailureMsg2: Task module title is displayed');
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Knowledge Articles (5)', KAModule)).toBeFalsy('FailureMsg2: KA module title is displayed');
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Case Templates (5)', caseTemplateModule)).toBeFalsy('FailureMsg2: Case module title is displayed');
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Task Templates (5)', taskTemplateModule)).toBeFalsy('FailureMsg2: Task module title is displayed');
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'People (5)', peopleModule)).toBeFalsy('FailureMsg2: People module title is displayed');
 
             // Verify People After Change Category To People Category
             await searchPo.selectCategoryDropDownValue(peopleModule);
@@ -550,6 +607,12 @@ describe('Global Search', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(`${commonSearchAll} ${lastName}`, peopleModule, 3)).toBeTruthy(`FailureMsg6: ${commonSearchAll} ${lastName} 3 Person Name is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(`${commonSearchAll} ${lastName}`, peopleModule, 4)).toBeTruthy(`FailureMsg7: ${commonSearchAll} ${lastName} 4 Person Name is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(`${commonSearchAll} ${lastName}`, peopleModule, 5)).toBeTruthy(`FailureMsg8: ${commonSearchAll} ${lastName} 5 Person Name is missing`);
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Cases (5)', caseModule)).toBeFalsy('FailureMsg2: Case module title is displayed');
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Tasks (5)', taskModule)).toBeFalsy('FailureMsg2: Task module title is displayed');
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Knowledge Articles (5)', KAModule)).toBeFalsy('FailureMsg2: KA module title is displayed');
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Case Templates (5)', caseTemplateModule)).toBeFalsy('FailureMsg2: Case module title is displayed');
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Task Templates (5)', taskTemplateModule)).toBeFalsy('FailureMsg2: Task module title is displayed');
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Documents (5)', documentModule)).toBeFalsy('FailureMsg2: Document module title is displayed');
         });
 
         afterAll(async () => {
@@ -783,6 +846,31 @@ describe('Global Search', () => {
             expect(await searchPo.isModuleTitleDisplayed(firstName, 'People (1)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName} 1 Person Name is missing`);
         });
+
+        it('[DRDMV-16825]: Verify Recent Search Is Displayed On Top  ', async () => {
+            await navigationPage.gotoSearch();
+            await searchPo.searchRecord('Record1');
+            await searchPo.clickOnRecentSearchDropDownButton();
+            expect(await searchPo.getRecentSerachDropDownValue(1)).toBe('Record1','FailureMsg64: Record1 is displayed on top');
+
+            await searchPo.searchRecord('Record2');
+            await searchPo.clickOnRecentSearchDropDownButton();
+            expect(await searchPo.getRecentSerachDropDownValue(1)).toBe('Record2','FailureMsg65: Record1 is displayed on top');
+            expect(await searchPo.getRecentSerachDropDownValue(2)).toBe('Record1','FailureMsg64: Record1 is displayed on 2 no');
+
+            await searchPo.searchRecord('Record3');
+            await searchPo.clickOnRecentSearchDropDownButton();
+            expect(await searchPo.getRecentSerachDropDownValue(1)).toBe('Record3','FailureMsg66: Record1 is displayed on top');
+            expect(await searchPo.getRecentSerachDropDownValue(2)).toBe('Record2','FailureMsg65: Record1 is displayed on 2 no');
+            expect(await searchPo.getRecentSerachDropDownValue(3)).toBe('Record1','FailureMsg64: Record1 is displayed on 3 no');
+            
+            await searchPo.searchRecord('Record1');
+            await searchPo.clickOnRecentSearchDropDownButton();
+            expect(await searchPo.getRecentSerachDropDownValue(1)).toBe('Record1','FailureMsg64: Record1 is displayed on top');
+            expect(await searchPo.getRecentSerachDropDownValue(2)).toBe('Record3','FailureMsg66: Record1 is displayed on 2 no');
+            expect(await searchPo.getRecentSerachDropDownValue(3)).toBe('Record2','FailureMsg65: Record1 is displayed on 3 no');
+        });
+
 
         afterAll(async () => {
             await navigationPage.signOut();

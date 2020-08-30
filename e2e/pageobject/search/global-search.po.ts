@@ -92,22 +92,20 @@ class GlobalSearch {
     }
 
     async getCountOfRecentDropDownValue(value: string): Promise<number> {
-        let recentSearchValue = await element.all(by.cssContainingText(this.selectors.recentSearchDropDownValue, value)).count();
-        // await $(this.selectors.recentSearch).click(); 
-        return recentSearchValue;
+        return await element.all(by.cssContainingText(this.selectors.recentSearchDropDownValue, value)).count();
     }
 
     async isRecentSearchesDropDownValueDisplayed(value: string): Promise<boolean> {
         return await element(by.cssContainingText(this.selectors.recentSearchDropDownValue, value)).isPresent().then(async (link) => {
             if (link) {
-                let recentSearchValue = await element(by.cssContainingText(this.selectors.recentSearchDropDownValue, value)).isDisplayed();
-                // await $(this.selectors.recentSearch).click(); 
-                return recentSearchValue;
+                return await element(by.cssContainingText(this.selectors.recentSearchDropDownValue, value)).isDisplayed();
             } else return false;
         });
     }
 
-
+    async getRecentSerachDropDownValue(recordNumber): Promise<string> {
+        return await $$(this.selectors.recentSearchDropDownValue).get(recordNumber - 1).getText();
+    }
 
     async isLeftGlobalSearchPannelDisplayed(): Promise<boolean> {
         return await $(this.selectors.leftPannel).isPresent().then(async (link) => {
@@ -195,6 +193,8 @@ class GlobalSearch {
         }
 
         let booleanVal: boolean;
+        booleanVal= await $(`[rx-view-component-id="${guid}"] h2`).isPresent();
+        if(booleanVal==true){
         for (let i: number = 0; i < 12; i++) {
             let moduleTitleText = await $(`[rx-view-component-id="${guid}"] h2`).getText();
             if (moduleTitleText.includes(moduleTitle)) {
@@ -205,6 +205,7 @@ class GlobalSearch {
                 await this.searchRecord(record);
             }
         }
+    }
         return booleanVal;
     }
 
