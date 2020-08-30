@@ -11,7 +11,7 @@ export interface IIDs {
     id: string;
     displayId: string;
 }
-describe('Global Search Multi Category', () => {
+describe('Multi Search Validation', () => {
     let caseModule = "Case";
     let taskModule = "Task";
     let KAModule = "Knowledge Article";
@@ -384,7 +384,7 @@ describe('Global Search Multi Category', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-16133]: Global search based on change in category by keeping the same search pattern', async () => {
+    fdescribe('[DRDMV-16133]: Global search based on change in category by keeping the same search pattern', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let attachmentFilePath = 'e2e/data/ui/attachment/globalsearch1.pdf';
         let caseSummary = '1caseSummaryDRDMV16133' + randomStr;
