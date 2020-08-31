@@ -1,6 +1,7 @@
 import { $, by, element, protractor, ProtractorExpectedConditions, browser, $$ } from "protractor";
 import utilGrid from '../../utils/utility.grid';
 import utilityGrid from '../../utils/utility.grid';
+import utilityCommon from '../../utils/utility.common';
 
 class SelectCaseTemplateBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -13,6 +14,14 @@ class SelectCaseTemplateBlade {
         caseTemplateCheckBox: '.ui-grid-icon-ok',
         caseTemplateLink: '[rx-view-component-id="c61478d4-1d46-4d0d-9450-c90885aab77e"] td button.btn-link',
         cancelButton: '[rx-view-component-id="161ed2e2-ea43-4db5-9f9c-149f82a74db2"] button',
+        paginationNextButton: '.content-outlet .page-next',
+        paginationPreviousButton: '.content-outlet .page-prev',
+        pagination: '.content-outlet .justify-content-center nav[aria-label="Page navigation"]',
+        pagesNo: '[rx-view-component-id="5015968d-5d4f-4630-8b31-a69e9fedb82a"] .page-link',
+        recommendedTitle: '.bwf-search-result .bwf-search-fields__title-text span',
+        searchResult: '[rx-view-component-id="5015968d-5d4f-4630-8b31-a69e9fedb82a"] [role="listitem"]',
+        recommendedApplyBtn: '[rx-view-component-id="39321025-7d92-4284-8498-a0c6fc44f6cd"] button',
+        recommendedCancelBtn: '[rx-view-component-id="befd164d-2508-4b8e-9445-3ace011022b7"] button',
     }
 
     async clickOnRecommendedTemplateTab(): Promise<void> {
@@ -61,6 +70,51 @@ class SelectCaseTemplateBlade {
                 if (displayed) await $(`div[title=${templateName}]`).click();
             });
         });
+    }
+
+    async clickPaginationNext(): Promise<void> {
+        await $(this.selectors.paginationNextButton).click();
+    }
+
+    async isPaginationPresent(): Promise<boolean> {
+        return await $(this.selectors.pagination).isPresent().then(async (present) => {
+            if (present) return await $(this.selectors.pagination).isDisplayed();
+            else return false;
+        });
+    }
+
+    async selectFirstRecommendedTemplate(): Promise<void> {
+        await utilityCommon.scrollUpOrDownTillElement('h2.bwf-search-result__title');
+        await $$('div[role="checkbox"]').get(0).click();
+    }
+
+    async isApplyButtonEnabled(): Promise<boolean> {
+        return await $(this.selectors.recommendedApplyBtn).isEnabled();
+    }
+
+    async getCountOfTemplates(): Promise<number> {
+        return await $$('div[role="checkbox"]').count();
+    }
+
+    async clickOnFirstRecommendedArrow(): Promise<void> {
+        await $$('adapt-icon.list__item__preview-icon').get(0).click();
+    }
+
+    async clickRecommendedCancelBtn(): Promise<void> {
+        await $(this.selectors.recommendedCancelBtn).click();
+    }
+
+    async clickRecommendedApplyBtn(): Promise<void> {
+        await $(this.selectors.recommendedApplyBtn).click();
+    }
+
+    async isCaseSummaryPresentInRecommendedTemplates(caseSummary: string): Promise<boolean> {
+        let numberOfTemplates = await $$('div[role="listitem"]').count();
+        for (let i: number = 0; i < numberOfTemplates; i++) {
+            return await $$('div[role="listitem"]').get(i).$(`[title="${caseSummary}"]`).isPresent().then(async (present) => {
+                if (present) return $$('div[role="listitem"]').get(i).$(`[title="${caseSummary}"]`).isDisplayed();
+            });
+        }
     }
 }
 

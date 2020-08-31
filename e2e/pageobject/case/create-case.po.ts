@@ -46,7 +46,9 @@ class CreateCasePage {
         attachmentField: '[rx-view-component-id="e494b462-7749-44aa-922e-fc5d9b3dd5cb"] input[type="file"]',
         clearRequesterButton: '[rx-view-component-id="be946309-c359-40fe-a579-1a0e0d04bb01"] .d-icon-cross',
         templateValue: 'td .btn-link',
-        cancelButton: '[rx-view-component-id="3e34f97b-e0f1-492e-bb7d-609b5ccc8d4f"] button'
+        cancelButton: '[rx-view-component-id="3e34f97b-e0f1-492e-bb7d-609b5ccc8d4f"] button',
+        autoCategorize: '[rx-view-component-id="cfb3cc65-210c-4530-b529-3bc414b6d8dc"] button',
+        recommendedTemplate: 'div.bwf-search-fields__title-text',
     }
 
     async addDescriptionAttachment(fileToUpload: string[]): Promise<void> {
@@ -164,6 +166,10 @@ class CreateCasePage {
         await $(this.selectors.summary).sendKeys(summary);
     }
 
+    async clearSummary(): Promise<void> {
+        await $(this.selectors.summary).clear();
+    }
+
     async allPriorityOptionsPresent(list: string[]): Promise<boolean> {
         return await utilityCommon.isAllDropDownValuesMatches(this.selectors.priorityGuid, list);
     }
@@ -257,6 +263,18 @@ class CreateCasePage {
 
     async clickCancelButton(): Promise<void> {
         await $(this.selectors.cancelButton).click();
+    }
+
+    async clickOnAutoCategorize(): Promise<void> {
+        await $(this.selectors.autoCategorize).click();   
+    }
+
+    async isRecommendedTemplatePresent(templateName: string): Promise<boolean> {
+        return await element(by.cssContainingText(this.selectors.recommendedTemplate, templateName)).isPresent();
+    }
+
+    async isAutoCategorizeButtonEnabled(): Promise<boolean> {
+        return await $(this.selectors.autoCategorize).isEnabled();
     }
 }
 
