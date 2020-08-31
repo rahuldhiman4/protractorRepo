@@ -18,7 +18,8 @@
     "PersonData_BulkOperation": {
         "firstName": "BOPerson",
         "lastName": "BOlnPerson",
-        "userId": "idPersonBO"
+        "userId": "idPersonBO",
+        "company": "Petramco"
     },
     "PersonData12111": {
         "firstName": "fnPerson12111",

@@ -2,14 +2,13 @@ import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import { BWF_BASE_URL } from '../../utils/constants';
-import utilityCommon from '../../utils/utility.common';
 import approvalMappingConsolePage from "../../pageobject/settings/task-management/approval-mapping-console.po";
 import createApprovalMappingPage from "../../pageobject/settings/task-management/create-approval-mapping.po";
-import utilCommon from '../../utils/util.common';
 import editApprovalMappingPage from "../../pageobject/settings/task-management/edit-approval-mapping.po";
+import { BWF_BASE_URL } from '../../utils/constants';
+import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
-
+import utilityCommon from '../../utils/utility.common';
 
 describe("Task Approval Mapping Tests", () => {
     const approvalMappingNameStr = "Approval Mapping Name";
@@ -39,7 +38,7 @@ describe("Task Approval Mapping Tests", () => {
     describe('[DRDMV-21582,DRDMV-22120]:[Task Approval] - Create/Update Approval Mapping', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let taskApprovalMappingStr = `Task Mapping ${randomStr}`;
-        let manualTaskTemplateData, autoTaskTemplateData,manualTaskGlobalTemplateData,manualTaskTemplateDraftData,manualTaskTemplateInactiveData,psilonManualTaskTemplateData, manualTaskId, automatedTaskId = "";
+        let manualTaskTemplateData, autoTaskTemplateData, manualTaskGlobalTemplateData, manualTaskTemplateDraftData, manualTaskTemplateInactiveData, psilonManualTaskTemplateData, manualTaskId, automatedTaskId = "";
         let statusTriggerDropDownOptions: string[] = ["Assigned", "In Progress", "Completed", "Canceled"];
         let statusMappingApprovedWhenStatusTriggerAssigned: string[] = ["Assigned", "In Progress", "Completed", "Canceled", "Closed"];
         let statusMappingNoApprovalFoundWhenStatusTriggerAssigned: string[] = ["Assigned", "In Progress", "Completed", "Canceled", "Closed"];
@@ -58,7 +57,7 @@ describe("Task Approval Mapping Tests", () => {
 
         let statusMappingApprovedWhenStatusTriggerCanceled: string[] = ["Canceled"];
         let statusMappingNoApprovalFoundWhenStatusTriggerCanceled: string[] = ["Canceled"];
-        let statusMappingRejectedWhenStatusTriggerCanceled: string[] = ["Assigned", "In Progress", "Pending", "Completed", "Canceled", "Failed","Approval Rejected"];
+        let statusMappingRejectedWhenStatusTriggerCanceled: string[] = ["Assigned", "In Progress", "Pending", "Completed", "Canceled", "Failed", "Approval Rejected"];
         let statusMappingErrorWhenStatusTriggerCanceled: string[] = ["Assigned", "In Progress", "Pending", "Completed", "Canceled", "Failed"];
 
         // let statusMappingApprovedWhenStatusTriggerApprovalRejected: string[] = ["Approval Rejected", "Assigned", "In Progress", "Canceled"];
@@ -161,8 +160,8 @@ describe("Task Approval Mapping Tests", () => {
             expect(await createApprovalMappingPage.isCompanyFieldMandatory()).toBeTruthy();
             expect(await createApprovalMappingPage.isStatusTriggerFieldMandatory()).toBeTruthy();
             expect(await createApprovalMappingPage.isStatusMappingApprovedFieldMandatory()).toBeFalsy();
-            expect(await createApprovalMappingPage.isStatusMappingNoApproverFoundFieldMandatory()).toBeFalsy();
             expect(await createApprovalMappingPage.isStatusMappingRejectedFieldMandatory()).toBeFalsy();
+            expect(await createApprovalMappingPage.isStatusMappingNoApproverFoundFieldMandatory()).toBeFalsy();
             expect(await createApprovalMappingPage.isStatusMappingErrorFieldMandatory()).toBeFalsy();
             expect(await createApprovalMappingPage.isSaveApprovalMappingBtnEnabled()).toBeFalsy();
             expect(await createApprovalMappingPage.getApprovalMappingStatusTriggerMessage()).toBe(approvalTriggerMsg);
@@ -172,29 +171,29 @@ describe("Task Approval Mapping Tests", () => {
             //Verify status Mapping drop down options when status trigger is Assigned
             await createApprovalMappingPage.isStatusTriggerDropDownOptionsMatches(statusTriggerDropDownOptions);
             await createApprovalMappingPage.isStatusMappingApprovedDropDownOptionsMatches(statusMappingApprovedWhenStatusTriggerAssigned);
-            await createApprovalMappingPage.isStatusMappingNoApprovalFoundDropDownOptionsMatches(statusMappingNoApprovalFoundWhenStatusTriggerAssigned);
             await createApprovalMappingPage.isStatusMappingRejectedDropDownOptionsMatches(statusMappingRejectedWhenStatusTriggerAssigned);
+            await createApprovalMappingPage.isStatusMappingNoApprovalFoundDropDownOptionsMatches(statusMappingNoApprovalFoundWhenStatusTriggerAssigned);
             await createApprovalMappingPage.isStatusMappingErrorDropDownOptionsMatches(statusMappingErrorWhenStatusTriggerAssigned);
 
             //Verify status Mapping drop down options when status trigger is In Progress
             await createApprovalMappingPage.selectStatusTrigger('In Progress');
             await createApprovalMappingPage.isStatusMappingApprovedDropDownOptionsMatches(statusMappingApprovedWhenStatusTriggerInProgress);
-            await createApprovalMappingPage.isStatusMappingNoApprovalFoundDropDownOptionsMatches(statusMappingNoApprovalFoundWhenStatusTriggerInProgress);
             await createApprovalMappingPage.isStatusMappingRejectedDropDownOptionsMatches(statusMappingRejectedWhenStatusTriggerInProgress);
+            await createApprovalMappingPage.isStatusMappingNoApprovalFoundDropDownOptionsMatches(statusMappingNoApprovalFoundWhenStatusTriggerInProgress);
             await createApprovalMappingPage.isStatusMappingErrorDropDownOptionsMatches(statusMappingErrorWhenStatusTriggerInProgress);
 
             //Verify status Mapping drop down options when status trigger is Resolved
             await createApprovalMappingPage.selectStatusTrigger('Completed');
             await createApprovalMappingPage.isStatusMappingApprovedDropDownOptionsMatches(statusMappingApprovedWhenStatusTriggerCompleted);
-            await createApprovalMappingPage.isStatusMappingNoApprovalFoundDropDownOptionsMatches(statusMappingNoApprovalFoundWhenStatusTriggerCompleted);
             await createApprovalMappingPage.isStatusMappingRejectedDropDownOptionsMatches(statusMappingRejectedWhenStatusTriggerCompleted);
+            await createApprovalMappingPage.isStatusMappingNoApprovalFoundDropDownOptionsMatches(statusMappingNoApprovalFoundWhenStatusTriggerCompleted);
             await createApprovalMappingPage.isStatusMappingErrorDropDownOptionsMatches(statusMappingErrorWhenStatusTriggerCompleted);
 
             //Verify status Mapping drop down options when status trigger is Canceled
             await createApprovalMappingPage.selectStatusTrigger('Canceled');
             await createApprovalMappingPage.isStatusMappingApprovedDropDownOptionsMatches(statusMappingApprovedWhenStatusTriggerCanceled);
-            await createApprovalMappingPage.isStatusMappingNoApprovalFoundDropDownOptionsMatches(statusMappingNoApprovalFoundWhenStatusTriggerCanceled);
             await createApprovalMappingPage.isStatusMappingRejectedDropDownOptionsMatches(statusMappingRejectedWhenStatusTriggerCanceled);
+            await createApprovalMappingPage.isStatusMappingNoApprovalFoundDropDownOptionsMatches(statusMappingNoApprovalFoundWhenStatusTriggerCanceled);
             await createApprovalMappingPage.isStatusMappingErrorDropDownOptionsMatches(statusMappingErrorWhenStatusTriggerCanceled);
 
             //Verify status Mapping drop down options when status trigger is Approval Rejected
@@ -210,8 +209,8 @@ describe("Task Approval Mapping Tests", () => {
             await createApprovalMappingPage.selectCompany('Petramco');
             await createApprovalMappingPage.selectStatusTrigger('Assigned');
             await createApprovalMappingPage.selectStatusMappingApproved('In Progress');
-            await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Assigned');
             await createApprovalMappingPage.selectStatusMappingRejected('Approval Rejected');
+            await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Assigned');
             await createApprovalMappingPage.selectStatusMappingError('Canceled');
             expect(await createApprovalMappingPage.isSaveApprovalMappingBtnEnabled()).toBeFalsy();
             await createApprovalMappingPage.clickSaveApprovalMappingBtn();
@@ -272,6 +271,7 @@ describe("Task Approval Mapping Tests", () => {
         });
 
         afterAll(async () => {
+            await utilCommon.closeBladeOnSettings();
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.deleteApprovalMapping(taskModule);
         });
@@ -308,7 +308,6 @@ describe("Task Approval Mapping Tests", () => {
             await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
         })
 
-
         it('[DRDMV-22950]: Task approval mapping creation with case Business analyst permission', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Approvals', 'Task Approval Mappings - Business Workflows');
@@ -316,12 +315,10 @@ describe("Task Approval Mapping Tests", () => {
             expect(await createApprovalMappingPage.getCreateApprovalMappingHeaderText()).toBe('Add Approval Mapping');
             await createApprovalMappingPage.setApprovalMappingName(taskApprovalMappingStr);
             await createApprovalMappingPage.selectCompany('Petramco');
-            await createApprovalMappingPage.setApprovalMappingName(taskApprovalMappingStr);
-            await createApprovalMappingPage.selectCompany('Petramco');
             await createApprovalMappingPage.selectStatusTrigger('Assigned');
             await createApprovalMappingPage.selectStatusMappingApproved('In Progress');
-            await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Assigned');
             await createApprovalMappingPage.selectStatusMappingRejected('Approval Rejected');
+            await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Assigned');
             await createApprovalMappingPage.selectStatusMappingError('Canceled');
             expect(await createApprovalMappingPage.isSaveApprovalMappingBtnEnabled()).toBeFalsy();
             expect(await editApprovalMappingPage.isTaskCreatedUsingTemplateGoInApprovalToggleDisplayed()).toBeFalsy('Approval Without Task Templates toggle btn displayed.');
@@ -374,7 +371,4 @@ describe("Task Approval Mapping Tests", () => {
             await loginPage.login('qkatawazi');
         });
     });
-
-
-
 }); 
