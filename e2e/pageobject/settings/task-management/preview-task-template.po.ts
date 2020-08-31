@@ -120,8 +120,12 @@ class PreviewTaskTemplateBlade {
         });
     }
 
-    async isTaskDescriptionTitleDisplayed(taskDescription: string): Promise<boolean> {
-        return await $('[rx-view-component-id="f663f6d7-ef45-4170-9dda-6ca2459fad08"] bwf-description label').getText() == taskDescription;
+    async isTaskDescriptionTitleDisplayed(): Promise<boolean> {
+        let taskDescriptionLocator = await element(by.cssContainingText('[rx-view-component-id="f663f6d7-ef45-4170-9dda-6ca2459fad08"] label', 'Task Description'));
+        return await taskDescriptionLocator.isPresent().then(async (result) => {
+            if(result) return await taskDescriptionLocator.isDisplayed();
+            else return false;
+        });
     }
 
     async isAssigneeTitleDisplayed(assignee: string): Promise<boolean> {

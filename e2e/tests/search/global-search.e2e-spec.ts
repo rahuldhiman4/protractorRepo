@@ -1353,7 +1353,7 @@ describe('Global Search', () => {
             expect(await previewTaskTemplatePo.isTaskCategoryTier2TitleDisplayed('Task Category Tier 2')).toBeTruthy('FailureMsg26: Category Tier 2 label is missing');
             expect(await previewTaskTemplatePo.isTaskCategoryTier3TitleDisplayed('Task Category Tier 3')).toBeTruthy('FailureMsg27: Category Tier 3 label is missing');
             expect(await previewTaskTemplatePo.isTaskCategoryTier4TitleDisplayed('Task Category Tier 4')).toBeTruthy('FailureMsg27: Category Tier 3 label is missing');
-            expect(await previewTaskTemplatePo.isTaskDescriptionTitleDisplayed('Task Description')).toBeTruthy('FailureMsg29: Task Description label is missing');
+            expect(await previewTaskTemplatePo.isTaskDescriptionTitleDisplayed()).toBeTruthy('FailureMsg29: Task Description label is missing');
             expect(await previewTaskTemplatePo.isAssigneeTitleDisplayed('Assignee')).toBeTruthy('FailureMsg29: Assignee label is missing');
             expect(await previewTaskTemplatePo.isSupportGroupTitleDisplayed('Support Group')).toBeTruthy('FailureMsg30: Support Group label is missing');
             expect(await previewTaskTemplatePo.isTaskCompanyTitleDisplayed('Support Company')).toBeTruthy('FailureMsg31: Support Company label is missing');

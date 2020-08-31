@@ -597,7 +597,7 @@ describe("Create Case", () => {
             expect(await taskTemplatePreview.isTaskCategoryTier4TitleDisplayed('Task Category Tier 4')).toBeTruthy('Task Category Tier 4 is not getting displayed');
             expect(await taskTemplatePreview.isTaskTypeTitleDisplayed('Task Type')).toBeTruthy('Task Type is not getting displayed');
             expect(await taskTemplatePreview.isLabelTitleDisplayed('Label')).toBeTruthy('Label is not getting displayed');
-            expect(await taskTemplatePreview.isTaskDescriptionTitleDisplayed('Task Description')).toBeTruthy('Task Description is not getting displayed');
+            expect(await taskTemplatePreview.isTaskDescriptionTitleDisplayed()).toBeTruthy('Task Description is not getting displayed');
             expect(await taskTemplatePreview.getTaskTemplateName()).toBe(templateData.templateName);
             expect(await taskTemplatePreview.getTaskSummary()).toBe(templateData.templateSummary);
             expect(await taskTemplatePreview.getTaskCompany()).toBe("Petramco");

@@ -147,7 +147,17 @@ describe('Conditional Task Life Cycle', () => {
             manualTaskNTResponse = await apiHelper.addTaskToCase(manualTaskData, responseCaseNT.id);
             manualTaskPWNTResponse = await apiHelper.addTaskToCase(manualTaskData, responseCasePWNT.id);
 
-            //Add Manual Task in all cases
+            //Add Automated Task(Will Fail)
+            let automatedTaskData = {
+                "company": "Petramco",
+                "requesterId": "qkatawazi",
+                "templateName": 'A Failing Task'
+            }
+            automatedTaskDNPResponse = await apiHelper.addTaskToCase(automatedTaskData, responseCaseDNP.id);
+            automatedTaskNTResponse = await apiHelper.addTaskToCase(automatedTaskData, responseCaseNT.id);
+            automatedTaskPWNTResponse = await apiHelper.addTaskToCase(automatedTaskData, responseCasePWNT.id);
+
+            //Add External Task in all cases
             let externalTaskData = {
                 "company": "Petramco",
                 "requesterId": "qkatawazi",
@@ -605,6 +615,8 @@ describe('Conditional Task Life Cycle', () => {
             await editCasePage.clickOnSelectCaseTemplate();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateData1.templateSummary);
             await editCasePage.clickSaveCase();
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(caseResponse1.displayId);
             expect(await viewCasePage.isAllTaskUnderStatusTitleMatches('Upcoming Tasks', [manualTaskTemplateData1.templateSummary, externalTaskTemplateData1.templateSummary, automatedTaskTemplateData1.templateSummary])).toBeTruthy();
 
             await apiHelper.updateCaseStatus(caseResponse1.id, 'InProgress');
@@ -616,7 +628,8 @@ describe('Conditional Task Life Cycle', () => {
             await apiHelper.updateTaskStatus(manualTaskGuid, 'Completed', 'Successful');
             await apiHelper.updateTaskStatus(externalTaskGuid, 'Completed', 'Successful');
 
-            await editTaskPo.clickOnRefreshActivity();
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(caseResponse1.displayId);
             expect(await viewCasePage.isAllTaskUnderStatusTitleMatches('Completed Tasks', [manualTaskTemplateData1.templateSummary, externalTaskTemplateData1.templateSummary, automatedTaskTemplateData1.templateSummary])).toBeTruthy();
 
             await updateStatusBlade.changeCaseStatus('Resolved');
