@@ -960,12 +960,12 @@ describe('Notes template', () => {
             //upload image with URL
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnImageIcon();
-            await ckeditorOpsPo.imageUploadWithURL(uploadURL, imageUrlFieldIndex, imageWidthFieldIndex, '200');
+            await ckeditorOpsPo.imageUploadWithURL(uploadURL, imageUrlFieldIndex, imageWidthFieldIndex, '100');
             expect(await ckeditorOpsPo.isImageDisplayedInCKE(uploadURL)).toBeTruthy('Image with URL not uploaded');
             //upload image with Local
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnImageIcon();
-            imageSource = await ckeditorOpsPo.uploadImageFromLocal('Upload', '../../../data/ui/attachment/articleStatus.png', imageWidthFieldIndex, imageUrlFieldIndex, '200');
+            imageSource = await ckeditorOpsPo.uploadImageFromLocal('Upload', '../../../data/ui/attachment/articleStatus.png', imageWidthFieldIndex, imageUrlFieldIndex, '50');
             expect(await ckeditorOpsPo.isImageDisplayedInCKE(imageSource)).toBeTruthy();
             // Link added
             await ckeditorOpsPo.enterNewLineInCKE();
@@ -1176,12 +1176,12 @@ describe('Notes template', () => {
             //upload image with URL
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnImageIcon();
-            await ckeditorOpsPo.imageUploadWithURL(uploadURL, imageUrlFieldIndex, imageWidthFieldIndex, '200');
+            await ckeditorOpsPo.imageUploadWithURL(uploadURL, imageUrlFieldIndex, imageWidthFieldIndex, '100');
             expect(await ckeditorOpsPo.isImageDisplayedInCKE(uploadURL)).toBeTruthy('Image with URL not uploaded');
             //upload image with Local
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnImageIcon();
-            imageSource = await ckeditorOpsPo.uploadImageFromLocal('Upload', '../../../data/ui/attachment/articleStatus.png', imageWidthFieldIndex, imageUrlFieldIndex, '200');
+            imageSource = await ckeditorOpsPo.uploadImageFromLocal('Upload', '../../../data/ui/attachment/articleStatus.png', imageWidthFieldIndex, imageUrlFieldIndex, '50');
             expect(await ckeditorOpsPo.isImageDisplayedInCKE(imageSource)).toBeTruthy();
             // Link added
             await ckeditorOpsPo.enterNewLineInCKE();
@@ -1405,12 +1405,12 @@ describe('Notes template', () => {
             //upload image with URL
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnImageIcon();
-            await ckeditorOpsPo.imageUploadWithURL(uploadURL, imageUrlFieldIndex, imageWidthFieldIndex, '200');
+            await ckeditorOpsPo.imageUploadWithURL(uploadURL, imageUrlFieldIndex, imageWidthFieldIndex, '100');
             expect(await ckeditorOpsPo.isImageDisplayedInCKE(uploadURL)).toBeTruthy('Image with URL not uploaded');
             //upload image with Local
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnImageIcon();
-            imageSource1 = await ckeditorOpsPo.uploadImageFromLocal('Upload', '../../../data/ui/attachment/articleStatus.png', imageWidthFieldIndex, imageUrlFieldIndex, '100');
+            imageSource1 = await ckeditorOpsPo.uploadImageFromLocal('Upload', '../../../data/ui/attachment/articleStatus.png', imageWidthFieldIndex, imageUrlFieldIndex, '50');
             expect(await ckeditorOpsPo.isImageDisplayedInCKE(imageSource1)).toBeTruthy();
             // Link added
             await ckeditorOpsPo.enterNewLineInCKE();
@@ -1440,8 +1440,18 @@ describe('Notes template', () => {
             //upload image with Local
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnImageIcon();
-            imageSource2 = await ckeditorOpsPo.uploadImageFromLocal('Upload', '../../../data/ui/attachment/bwfJpg.jpg', imageWidthFieldIndex, imageUrlFieldIndex, '100');
+            imageSource2 = await ckeditorOpsPo.uploadImageFromLocal('Upload', '../../../data/ui/attachment/bwfJpg.jpg', imageWidthFieldIndex, imageUrlFieldIndex, '50');
             expect(await ckeditorOpsPo.isImageDisplayedInCKE(imageSource2)).toBeTruthy();
+            //upload image with URL
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await ckeditorOpsPo.clickOnImageIcon();
+            await ckeditorOpsPo.imageUploadWithURL(uploadURL, imageUrlFieldIndex, imageWidthFieldIndex, '100');
+            expect(await ckeditorOpsPo.isImageDisplayedInCKE(uploadURL)).toBeTruthy('Image with URL not uploaded');
+            //upload image with Local
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await ckeditorOpsPo.clickOnImageIcon();
+            imageSource1 = await ckeditorOpsPo.uploadImageFromLocal('Upload', '../../../data/ui/attachment/articleStatus.png', imageWidthFieldIndex, imageUrlFieldIndex, '50');
+            expect(await ckeditorOpsPo.isImageDisplayedInCKE(imageSource1)).toBeTruthy();
             await createNotesTemplate.clickOnSaveButton();
             await utilCommon.closePopUpMessage();
         });
@@ -1594,12 +1604,12 @@ describe('Notes template', () => {
             //upload image with URL
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnImageIcon();
-            await ckeditorOpsPo.imageUploadWithURL(uploadURL, imageUrlFieldIndex, imageWidthFieldIndex, '200');
+            await ckeditorOpsPo.imageUploadWithURL(uploadURL, imageUrlFieldIndex, imageWidthFieldIndex, '100');
             expect(await ckeditorOpsPo.isImageDisplayedInCKE(uploadURL)).toBeTruthy('Image with URL not uploaded');
             //upload image with Local
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnImageIcon();
-            imageSource = await ckeditorOpsPo.uploadImageFromLocal('Upload', '../../../data/ui/attachment/articleStatus.png', imageWidthFieldIndex, imageUrlFieldIndex, '200');
+            imageSource = await ckeditorOpsPo.uploadImageFromLocal('Upload', '../../../data/ui/attachment/articleStatus.png', imageWidthFieldIndex, imageUrlFieldIndex, '50');
             expect(await ckeditorOpsPo.isImageDisplayedInCKE(imageSource)).toBeTruthy();
             // Link added
             await ckeditorOpsPo.enterNewLineInCKE();
@@ -1722,12 +1732,12 @@ describe('Notes template', () => {
             //upload image with URL
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnImageIcon();
-            await ckeditorOpsPo.imageUploadWithURL(uploadURL, imageUrlFieldIndex, imageWidthFieldIndex, '200');
+            await ckeditorOpsPo.imageUploadWithURL(uploadURL, imageUrlFieldIndex, imageWidthFieldIndex, '100');
             expect(await ckeditorOpsPo.isImageDisplayedInCKE(uploadURL)).toBeTruthy('Image with URL not uploaded');
             //upload image with Local
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnImageIcon();
-            imageSource = await ckeditorOpsPo.uploadImageFromLocal('Upload', '../../../data/ui/attachment/articleStatus.png', imageWidthFieldIndex, imageUrlFieldIndex, '200');
+            imageSource = await ckeditorOpsPo.uploadImageFromLocal('Upload', '../../../data/ui/attachment/articleStatus.png', imageWidthFieldIndex, imageUrlFieldIndex, '50');
             expect(await ckeditorOpsPo.isImageDisplayedInCKE(imageSource)).toBeTruthy();
             // Link added
             await ckeditorOpsPo.enterNewLineInCKE();
@@ -1849,12 +1859,12 @@ describe('Notes template', () => {
             //upload image with URL
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnImageIcon();
-            await ckeditorOpsPo.imageUploadWithURL(uploadURL, imageUrlFieldIndex, imageWidthFieldIndex, '200');
+            await ckeditorOpsPo.imageUploadWithURL(uploadURL, imageUrlFieldIndex, imageWidthFieldIndex, '100');
             expect(await ckeditorOpsPo.isImageDisplayedInCKE(uploadURL)).toBeTruthy('Image with URL not uploaded');
             //upload image with Local
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnImageIcon();
-            imageSource1 = await ckeditorOpsPo.uploadImageFromLocal('Upload', '../../../data/ui/attachment/articleStatus.png', imageWidthFieldIndex, imageUrlFieldIndex, '100');
+            imageSource1 = await ckeditorOpsPo.uploadImageFromLocal('Upload', '../../../data/ui/attachment/articleStatus.png', imageWidthFieldIndex, imageUrlFieldIndex, '50');
             expect(await ckeditorOpsPo.isImageDisplayedInCKE(imageSource1)).toBeTruthy();
             // Link added
             await ckeditorOpsPo.enterNewLineInCKE();
@@ -1884,7 +1894,7 @@ describe('Notes template', () => {
             //upload image with Local
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnImageIcon();
-            imageSource2 = await ckeditorOpsPo.uploadImageFromLocal('Upload', '../../../data/ui/attachment/bwfJpg.jpg', imageWidthFieldIndex, imageUrlFieldIndex, '100');
+            imageSource2 = await ckeditorOpsPo.uploadImageFromLocal('Upload', '../../../data/ui/attachment/bwfJpg.jpg', imageWidthFieldIndex, imageUrlFieldIndex, '50');
             expect(await ckeditorOpsPo.isImageDisplayedInCKE(imageSource2)).toBeTruthy();
             await createNotesTemplate.clickOnSaveButton();
             await utilCommon.closePopUpMessage();
@@ -1964,12 +1974,12 @@ describe('Notes template', () => {
             //upload image with URL
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnImageIcon();
-            await ckeditorOpsPo.imageUploadWithURL(uploadURL, imageUrlFieldIndex, imageWidthFieldIndex, '200');
+            await ckeditorOpsPo.imageUploadWithURL(uploadURL, imageUrlFieldIndex, imageWidthFieldIndex, '100');
             expect(await ckeditorOpsPo.isImageDisplayedInCKE(uploadURL)).toBeTruthy('Image with URL not uploaded');
             //upload image with Local
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnImageIcon();
-            imageSource = await ckeditorOpsPo.uploadImageFromLocal('Upload', '../../../data/ui/attachment/articleStatus.png', imageWidthFieldIndex, imageUrlFieldIndex, '200');
+            imageSource = await ckeditorOpsPo.uploadImageFromLocal('Upload', '../../../data/ui/attachment/articleStatus.png', imageWidthFieldIndex, imageUrlFieldIndex, '50');
             expect(await ckeditorOpsPo.isImageDisplayedInCKE(imageSource)).toBeTruthy();
             // Link added
             await ckeditorOpsPo.enterNewLineInCKE();
@@ -2201,12 +2211,12 @@ describe('Notes template', () => {
             //upload image with URL
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnImageIcon();
-            await ckeditorOpsPo.imageUploadWithURL(uploadURL, imageUrlFieldIndex, imageWidthFieldIndex, '200');
+            await ckeditorOpsPo.imageUploadWithURL(uploadURL, imageUrlFieldIndex, imageWidthFieldIndex, '100');
             expect(await ckeditorOpsPo.isImageDisplayedInCKE(uploadURL)).toBeTruthy('Image with URL not uploaded');
             //upload image with Local
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnImageIcon();
-            imageSource = await ckeditorOpsPo.uploadImageFromLocal('Upload', '../../../data/ui/attachment/articleStatus.png', imageWidthFieldIndex, imageUrlFieldIndex, '200');
+            imageSource = await ckeditorOpsPo.uploadImageFromLocal('Upload', '../../../data/ui/attachment/articleStatus.png', imageWidthFieldIndex, imageUrlFieldIndex, '50');
             expect(await ckeditorOpsPo.isImageDisplayedInCKE(imageSource)).toBeTruthy();
             // Link added
             await ckeditorOpsPo.enterNewLineInCKE();

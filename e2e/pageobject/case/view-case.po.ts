@@ -1,6 +1,7 @@
 import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions, ElementFinder } from "protractor";
 import updateStatusBlade from '../../pageobject/common/update.status.blade.po';
 import utilityCommon from '../../utils/utility.common';
+import ckeditorValidationPo from '../common/ck-editor/ckeditor-validation.po';
 
 class ViewCasePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -64,7 +65,8 @@ class ViewCasePage {
         taskCardName: '.task-list__task-card .task-summary__name',
         taskCountOnTaskCard: '.task-list__task-card .task-summary__adhoc-task-count',
         taskTab: '[rx-view-component-id="4c82d32f-5efd-437d-b020-a57910532aa0"] adapt-button',
-        taskDisplayId: '[rx-view-component-id="beb9c44b-6bd5-4f68-b9b9-37d427d9d2e5"] .task-meta-data__display-id'
+        taskDisplayId: '[rx-view-component-id="beb9c44b-6bd5-4f68-b9b9-37d427d9d2e5"] .task-meta-data__display-id',
+        description: '9d3ef0fc-c49f-425f-a9e1-52422ba87f4f'
     }
 
     async clickDescriptionShowMore(): Promise<void> {
@@ -525,6 +527,10 @@ class ViewCasePage {
                 return await header.getAttribute('innerText');
             });
         return displayIds;
+    }
+
+    async getTableCellAlignText(value: string): Promise<string> {
+        return await ckeditorValidationPo.getTableCellAlignText(value, this.selectors.description);
     }
 }
 

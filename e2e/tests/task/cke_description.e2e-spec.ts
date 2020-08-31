@@ -699,7 +699,7 @@ describe('CKE Description', () => {
             expect(await ckeditorValidationPo.isImageDisplayed(uploadURL)).toBeTruthy();
             expect(await ckeditorValidationPo.getColorFontStyleOfText("text-align: right;")).toContain(rightAlignText);
             expect(await ckeditorValidationPo.getColorFontStyleOfText("text-align: center;")).toContain(centerAlignText);
-            expect(await ckeditorValidationPo.getTableCellAlignText("text-align: center;")).toContain(randomString);
+            expect(await viewCasePo.getTableCellAlignText("text-align: center;")).toContain(randomString);
             await viewCasePo.clickEditCaseButton();
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnLinkIcon();
