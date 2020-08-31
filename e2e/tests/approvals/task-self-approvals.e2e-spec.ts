@@ -115,8 +115,8 @@ describe("Task Self Approval Tests", () => {
             await createApprovalMappingPage.selectCompany('Petramco');
             await createApprovalMappingPage.selectStatusTrigger('Assigned');
             await createApprovalMappingPage.selectStatusMappingApproved('In Progress');
-            await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Assigned');
             await createApprovalMappingPage.selectStatusMappingRejected('Approval Rejected');
+            await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Assigned');
             await createApprovalMappingPage.selectStatusMappingError('Canceled');
             expect(await createApprovalMappingPage.isSaveApprovalMappingBtnEnabled()).toBeFalsy();
             await createApprovalMappingPage.clickSaveApprovalMappingBtn();
@@ -260,8 +260,8 @@ describe("Task Self Approval Tests", () => {
             await createApprovalMappingPage.selectCompany('Petramco');
             await createApprovalMappingPage.selectStatusTrigger('Assigned');
             await createApprovalMappingPage.selectStatusMappingApproved('In Progress');
-            await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Assigned');
             await createApprovalMappingPage.selectStatusMappingRejected('Approval Rejected');
+            await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Assigned');
             await createApprovalMappingPage.selectStatusMappingError('Canceled');
             expect(await createApprovalMappingPage.isSaveApprovalMappingBtnEnabled()).toBeFalsy();
             await createApprovalMappingPage.clickSaveApprovalMappingBtn();
@@ -449,7 +449,7 @@ describe("Task Self Approval Tests", () => {
             expect(await viewTask.isShowApproversBannerDisplayed()).toBeTruthy('Show Approvers Banner is not displayed');
         });
 
-        it('[DRDMV-21827]:Toggle False, task created without template, task should NOT go in Approval', async () => {
+        it('[DRDMV-22951]:Toggle False, task created without template, task should NOT go in Approval', async () => {
             await apiHelper.apiLogin('fritz');
             let caseData = {
                 "Requester": "qdu",

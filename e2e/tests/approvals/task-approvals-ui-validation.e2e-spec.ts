@@ -1,23 +1,22 @@
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
+import approvalConsolePage from "../../pageobject/approval/approvals-console.po";
 import viewCasePo from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import approvalConfigurationPage from "../../pageobject/settings/approval/approval-configuration.po";
-import activityTabPage from '../../pageobject/social/activity-tab.po';
-import { BWF_BASE_URL } from '../../utils/constants';
 import showApproversBladePo from "../../pageobject/common/show-approvers-list-tab.po";
-import utilityCommon from '../../utils/utility.common';
-import utilityGrid from '../../utils/utility.grid';
+import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
+import approvalConfigurationPage from "../../pageobject/settings/approval/approval-configuration.po";
 import approvalMappingConsolePage from "../../pageobject/settings/task-management/approval-mapping-console.po";
 import createApprovalMappingPage from "../../pageobject/settings/task-management/create-approval-mapping.po";
-import utilCommon from '../../utils/util.common';
+import editApprovalMappingPage from "../../pageobject/settings/task-management/edit-approval-mapping.po";
+import activityTabPage from '../../pageobject/social/activity-tab.po';
 import { default as manageTask } from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
-import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
-import editApprovalMappingPage from "../../pageobject/settings/task-management/edit-approval-mapping.po";
-import approvalConsolePage from "../../pageobject/approval/approvals-console.po";
-
+import { BWF_BASE_URL } from '../../utils/constants';
+import utilCommon from '../../utils/util.common';
+import utilityCommon from '../../utils/utility.common';
+import utilityGrid from '../../utils/utility.grid';
 
 describe("Task Approval UI Validations", () => {
     const taskApprovalRecordDefinition = 'com.bmc.dsm.task-lib:Task';
@@ -136,8 +135,8 @@ describe("Task Approval UI Validations", () => {
             await createApprovalMappingPage.selectCompany('Petramco');
             await createApprovalMappingPage.selectStatusTrigger('Assigned');
             await createApprovalMappingPage.selectStatusMappingApproved('In Progress');
-            await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Assigned');
             await createApprovalMappingPage.selectStatusMappingRejected('Approval Rejected');
+            await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Assigned');
             await createApprovalMappingPage.selectStatusMappingError('Canceled');
             expect(await createApprovalMappingPage.isSaveApprovalMappingBtnEnabled()).toBeFalsy();
             await createApprovalMappingPage.clickSaveApprovalMappingBtn();
@@ -242,7 +241,4 @@ describe("Task Approval UI Validations", () => {
         });
     });
 
-
-
-
-}); 
+});

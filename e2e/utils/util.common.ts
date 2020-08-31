@@ -95,10 +95,12 @@ export class Util {
     }
 
     async isDrpDownvalueDisplayed(guid: string, data: string[]): Promise<boolean> {
+        console.log("Checking drop down ===>", guid);
         let arr: string[] = [];
         const dropDown = await $(`[rx-view-component-id="${guid}"]`);
         const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
         //        await browser.wait(this.EC.elementToBeClickable(dropDownBoxElement));
+        await browser.executeScript("arguments[0].scrollIntoView();", dropDownBoxElement);
         await dropDownBoxElement.click();
         //        await browser.wait(this.EC.or(async () => {
         //            await browser.wait(this.EC.invisibilityOf(element(by.cssContainingText(this.selectors.dropDownOption, 'Loading data...'))), 2000);
