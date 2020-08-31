@@ -42,14 +42,11 @@ import { KNOWLEDGE_ARTICLE_EXTERNAL_FLAG } from "../data/api/knowledge/knowledge
 import { KNOWLEDGEARTICLE_HELPFULCOUNTER, KNOWLEDGEARTICLE_TEMPLATE } from '../data/api/knowledge/knowledge-article.template.api';
 import { KNOWLEDEGESET_ASSOCIATION, KNOWLEDGESET_PERMISSION, KNOWLEDGE_SET } from '../data/api/knowledge/knowledge-set.data.api';
 import { KNOWLEDGE_ARTICLE_PAYLOAD, UPDATE_KNOWLEDGE_ARTICLE_PAYLOAD } from '../data/api/knowledge/knowledge.article.api';
-import { EMAIL_ALERT_SUBJECT_BODY, NOTIFICATION_EVENT_ACTIVE, NOTIFICATION_TEMPLATE } from '../data/api/notification/notification-config.api';
+import { EMAIL_ALERT_SUBJECT_BODY, NOTIFICATION_EVENT_ACTIVE, NOTIFICATION_TEMPLATE, ARTCILE_DUE_DATE } from '../data/api/notification/notification-config.api';
 import { COMMON_CONFIG_PAYLOAD } from '../data/api/shared-services/common.configurations.api';
 import { ACTIONABLE_NOTIFICATIONS_ENABLEMENT_SETTING, NOTIFICATIONS_EVENT_STATUS_CHANGE } from '../data/api/shared-services/enabling.actionable.notifications.api';
-import { AUTOMATED_CASE_STATUS_TRANSITION } from '../data/api/shared-services/process.data.api';
-import { BUSINESS_TIME_SEGMENT } from '../data/api/slm/business.time.segment.api';
-import { BUSINESS_TIME_SHARED_ENTITY } from '../data/api/slm/business.time.shared.entity.api';
-import { SERVICE_TARGET_Group_PAYLOAD } from '../data/api/slm/service.target.group.api';
-import { SERVICE_TARGET_PAYLOAD } from '../data/api/slm/serviceTarget.api';
+import { AUTOMATED_CASE_STATUS_TRANSITION, ENABLE_DISABLE_PROCESS } from '../data/api/shared-services/process.data.api';
+import { SERVICE_TARGET_PAYLOAD, BUSINESS_TIME_SEGMENT, BUSINESS_TIME_SHARED_ENTITY, SERVICE_TARGET_GROUP, CASE_MILESTONE, TASK_MILESTONE } from '../data/api/slm/serviceTarget.api';
 import { POST_ACTIVITY, POST_ACTIVITY_WITH_ATTACHMENT } from '../data/api/social/post.activity.api';
 import { ADHOC_TASK_PAYLOAD, REGISTER_ADHOC_TASK, TASK_CREATION_FROM_TEMPLATE, UPDATE_TASK, UPDATE_TASK_STATUS } from '../data/api/task/task.creation.api';
 import { AUTO_TASK_TEMPLATE_PAYLOAD, DOC_FOR_AUTO_TASK_TEMPLATE, EXTERNAL_TASK_TEMPLATE_PAYLOAD, MANUAL_TASK_TEMPLATE_PAYLOAD, PROCESS_FOR_AUTO_TASK_TEMPLATE } from '../data/api/task/task.template.api';
@@ -2603,7 +2600,7 @@ class ApiHelper {
     }
 
     async createServiceTargetGroup(svtGroupName: string, dataSource: string, company?: string): Promise<boolean> {
-        let svtGroup = cloneDeep(SERVICE_TARGET_Group_PAYLOAD);
+        let svtGroup = cloneDeep(SERVICE_TARGET_GROUP);
         svtGroup.fieldInstances[8].value = svtGroupName;
         svtGroup.fieldInstances[300523400].value = await apiCoreUtil.getDataSourceGuid(dataSource);
         svtGroup.fieldInstances[1000000001].value = company ? await apiCoreUtil.getOrganizationGuid(company) : svtGroup.fieldInstances[1000000001].value;
@@ -2994,6 +2991,43 @@ class ApiHelper {
             });
             return isAllDataSetMappingDeleted === true;
         }
+    }
+
+    async enableDisableProcess(processName: string, enable: boolean): Promise<boolean> {
+        let url = `api/rx/application/process/processdefinition/${processName}`;
+        let processEnablingPayload = cloneDeep(ENABLE_DISABLE_PROCESS);
+        processEnablingPayload.guid = await apiCoreUtil.getProcessGuid(processName);
+        processEnablingPayload.name = processName;
+        processEnablingPayload.isEnabled = enable;
+        const processEnablementResponse = await axios.put(
+            url,
+            processEnablingPayload
+        );
+        console.log("Enable/Disable Process API Status =============>", processEnablementResponse.status);
+        return processEnablementResponse.status == 204;
+    }
+
+    async updateReviewDueDateRule(): Promise<boolean> {
+        let url = 'api/rx/application/rule/ruledefinition/com.bmc.dsm.knowledge:Knowledge Article - Notify ReviewDate due';
+        const reviewOverdueNotifyUpdateResponse = await axios.put(
+            url,
+            ARTCILE_DUE_DATE
+        );
+        console.log("Update Review Date Overdue =============>", reviewOverdueNotifyUpdateResponse.status);
+        return reviewOverdueNotifyUpdateResponse.status == 204;
+    }
+
+    async attachMilestone(recordGuid: string, recordType: string): Promise<boolean> {
+        let attachMilestonePayload = undefined;
+        if(recordType == 'CASE') attachMilestonePayload = cloneDeep(CASE_MILESTONE);
+        else if(recordType == 'TASK') attachMilestonePayload = cloneDeep(TASK_MILESTONE);
+        attachMilestonePayload.svtID = recordGuid;
+        let attachMileStoneResponse = await axios.post(
+            'api/com.bmc.dsm.slm-lib/rx/application/SLM/Milestone/saveMilestoneAssociation/',
+            attachMilestonePayload
+        );
+        console.log("Add SLM milestone =============>", attachMileStoneResponse.status);
+        return attachMileStoneResponse.status == 200;
     }
 }
 

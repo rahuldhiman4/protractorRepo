@@ -446,6 +446,14 @@ class ApiCoreUtil {
         );
         return newRecord;
     }
+
+    async getProcessGuid(processName: string): Promise<string> {
+        let url = `api/rx/application/process/processdefinition/${processName}?_v=AGGADGG8ECDC0AQ1L2YDQ0NIVGZV001598589534000en`;
+        let processDetails = await axios.get(
+            url
+        );
+        return processDetails.data['guid'];
+    }
 }
 
 export default new ApiCoreUtil();

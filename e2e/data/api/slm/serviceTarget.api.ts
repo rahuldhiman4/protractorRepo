@@ -48,3 +48,175 @@ export const SERVICE_TARGET_PAYLOAD = {
     }
   }
 }
+
+export const CASE_MILESTONE = {
+  "svtID": "##SVTID##",
+  "associations": [
+      {
+          "milestoneInstanceID": "",
+          "title": "AutoCaseAlertMilestone1",
+          "description": "",
+          "executeQualification": "1=1",
+          "executeCondition": "HoursFromStartTime",
+          "executeAtPercentage": 0,
+          "executeAtHours": 0,
+          "executeAtMinutes": "1",
+          "repeatInterval": "",
+          "notifications": [
+              {
+                  "instanceId": "",
+                  "name": "AutoCaseAlertAction1",
+                  "description": null,
+                  "companyID": null,
+                  "entityType": 1,
+                  "subType": null,
+                  "sourceRecordDefName": "com.bmc.dsm.case-lib:Case",
+                  "fieldList": null,
+                  "type": "Alert",
+                  "toList": "$4$;$1000000217$;",
+                  "ccList": "",
+                  "bccList": "",
+                  "templateName": "Case SLA Missed",
+                  "updated": false
+              }
+          ],
+          "actions": [
+
+          ],
+          "template": false,
+          "updated": false
+      }
+  ]
+};
+
+export const TASK_MILESTONE = {
+  "name": "TaskSVTMilestoneForAlertField",
+  "data": {
+      "svtID": "##SVTID##",
+      "associations": [
+          {
+              "milestoneInstanceID": "",
+              "title": "AutoTaskAlertMilestone",
+              "description": "",
+              "executeQualification": "1=1",
+              "executeCondition": "HoursFromStartTime",
+              "executeAtPercentage": 0,
+              "executeAtHours": 0,
+              "executeAtMinutes": "1",
+              "repeatInterval": "",
+              "notifications": [
+                  {
+                      "instanceId": "",
+                      "name": "AutoTaskAlertAction",
+                      "description": null,
+                      "companyID": null,
+                      "entityType": 1,
+                      "subType": null,
+                      "sourceRecordDefName": "com.bmc.dsm.task-lib:Task",
+                      "fieldList": null,
+                      "type": "Alert",
+                      "toList": "$4$;$1000000217$;",
+                      "ccList": "",
+                      "bccList": "",
+                      "templateName": "Task SLA Missed",
+                      "updated": false
+                  }
+              ],
+              "actions": [
+
+              ],
+              "template": false,
+              "updated": false
+          }
+      ]
+  }
+};
+
+export const SERVICE_TARGET_GROUP = {
+  "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
+  "recordDefinitionName": "com.bmc.dsm.slm-lib:Config SVT Group",
+  "fieldInstances": {
+    "8": {
+      "id": 8,
+      "value": "SVT Group Name"
+    },
+    "300523400": {
+      "id": 300523400,
+      "value": "AGGAA5V0GFCOUAOO0SG2ON4TGYA8N5"
+    },
+    "1000000001": {
+      "id": 1000000001,
+      "value": "5a30545b15c828bf11139ffa453419200d69684e9d423ab2f3e869e6bb386507ee9ee24b1252f990cf587177918283e34694939025cd17154380ba49ce43f330"
+    }
+  }
+};
+
+export const BUSINESS_TIME_SHARED_ENTITY = {
+  "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
+  "recordDefinitionName": "Business Time Shared Entity",
+  "fieldInstances": {
+    "7": {
+      "resourceType": "com.bmc.arsys.rx.services.record.domain.FieldInstance",
+      "id": 7,
+      "value": 1
+    },
+    "8": {
+      "resourceType": "com.bmc.arsys.rx.services.record.domain.FieldInstance",
+      "id": 8,
+      "value": "abcd"
+    },
+    "2601": {
+      "resourceType": "com.bmc.arsys.rx.services.record.domain.FieldInstance",
+      "id": 2601,
+      "value": "SLM"
+    },
+    "2614": {
+      "resourceType": "com.bmc.arsys.rx.services.record.domain.FieldInstance",
+      "id": 2614,
+      "value": "SLM"
+    }
+  }
+};
+
+export const BUSINESS_TIME_SEGMENT = {
+  "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
+  "recordDefinitionName": "Business Time Segment",
+  "fieldInstances": {
+      "7": {
+      "id": 7,
+      "value": 1
+    },
+    "8": {
+      "id": 8,
+      "value": "Descrip3"
+    },
+    "2402": {
+      "id": 2402,
+      "value": 1
+    },
+    "2403": {
+      "id": 2403,
+      "value": 1
+    },
+    "2418": {
+      "id": 2418,
+      "value": "2020-04-02"
+    },
+    "2419": {
+      "id": 2419,
+      "value": "2022-12-01"
+    },
+    "2422": {
+      "id": 2422,
+      "value": "14:52:00"
+    },
+    "2423": {
+      "id": 2423,
+      "value": "14:52:00"
+    },
+    "2440": {
+      "id": 2440,
+      "value": 0
+    }
+  }
+};

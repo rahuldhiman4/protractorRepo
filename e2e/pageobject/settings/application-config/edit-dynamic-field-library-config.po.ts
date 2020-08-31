@@ -49,7 +49,8 @@ class EditDynamicFieldLibrary {
     }
 
     async isFieldDescriptionRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.fieldDescriptionGuid);
+        let fieldDescriptionRequired = await $('[rx-view-component-id="f502e31f-69c2-4b63-aeb7-e6ee0be7dfd0"] .d-textfield__item');
+        return await utilCommon.isRequiredTagToFieldElement(fieldDescriptionRequired);
     }
 
     async isStatusRequiredText(): Promise<boolean> {

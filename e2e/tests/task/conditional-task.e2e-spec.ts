@@ -152,7 +152,7 @@ describe('Conditional Task', () => {
             expect(await taskTemplatePreview.isFieldLabelDisplayed('attachment1')).toBeTruthy('attachment1 is not getting displayed');
             expect(await taskTemplatePreview.isFieldLabelDisplayed('attachment2')).toBeTruthy('attachment2 is not getting displayed');
             expect(await taskTemplatePreview.isFieldLabelDisplayed('attachment3')).toBeTruthy('attachment3 is not getting displayed');
-            expect(await taskTemplatePreview.isTaskDescriptionTitleDisplayed('Task Description')).toBeTruthy('Task Description is not getting displayed');
+            expect(await taskTemplatePreview.isTaskDescriptionTitleDisplayed()).toBeTruthy('Task Description is not getting displayed');
 
             //Validate field values of Manual Task Template
             expect(await taskTemplatePreview.getTaskTemplateName()).toBe(manualTaskTemplateData.templateName);
@@ -191,7 +191,7 @@ describe('Conditional Task', () => {
             expect(await taskTemplatePreview.isFieldLabelDisplayed('attachment1')).toBeTruthy('attachment1 is not getting displayed');
             expect(await taskTemplatePreview.isFieldLabelDisplayed('attachment2')).toBeTruthy('attachment2 is not getting displayed');
             expect(await taskTemplatePreview.isFieldLabelDisplayed('attachment3')).toBeTruthy('attachment3 is not getting displayed');
-            expect(await taskTemplatePreview.isTaskDescriptionTitleDisplayed('Task Description')).toBeTruthy('Task Description is not getting displayed');
+            expect(await taskTemplatePreview.isTaskDescriptionTitleDisplayed()).toBeTruthy('Task Description is not getting displayed');
 
             //Validate field values of External Task Template
             expect(await taskTemplatePreview.getTaskTemplateName()).toBe(externalTaskTemplateData.templateName);
@@ -227,7 +227,7 @@ describe('Conditional Task', () => {
             expect(await taskTemplatePreview.isFieldLabelDisplayed('attachment1')).toBeTruthy('attachment1 is not getting displayed');
             expect(await taskTemplatePreview.isFieldLabelDisplayed('attachment2')).toBeTruthy('attachment2 is not getting displayed');
             expect(await taskTemplatePreview.isFieldLabelDisplayed('attachment3')).toBeTruthy('attachment3 is not getting displayed');
-            expect(await taskTemplatePreview.isTaskDescriptionTitleDisplayed('Task Description')).toBeTruthy('Task Description is not getting displayed');
+            expect(await taskTemplatePreview.isTaskDescriptionTitleDisplayed()).toBeTruthy('Task Description is not getting displayed');
 
             //Validate field values of Automated Task Template
             expect(await taskTemplatePreview.getTaskTemplateName()).toBe(automatedTaskTemplateData.templateName);
@@ -633,12 +633,11 @@ describe('Conditional Task', () => {
                 "ownerGroup": "Psilon Support Group1"
             }
             await apiHelper.createCaseTemplate(psilonCaseTemplateData);
-
+            await navigationPage.signOut();
+            await loginPage.login('DRDMV-14898_User@petramco.com', 'Password_1234');
         });
 
         it('[DRDMV-14898]: [Task] - Task Template availability when adding it into Case Template', async () => {
-            await navigationPage.signOut();
-            await loginPage.login('DRDMV-14898_User@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
 

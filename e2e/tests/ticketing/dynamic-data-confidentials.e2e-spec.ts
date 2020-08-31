@@ -485,7 +485,7 @@ describe('Dynamic Confidentials Data', () => {
             expect(await editDynamicFieldLibraryConfigPo.isInformationSoucreRequiredText()).toBeTruthy("isInformationSoucreRequiredText");
             expect(await editDynamicFieldLibraryConfigPo.isFieldValueTypeRequiredText()).toBeTruthy("isFieldValueTypeRequiredText");
             expect(await editDynamicFieldLibraryConfigPo.isFieldNameAttribute("readonly")).toBe("true");
-            expect(await editDynamicFieldLibraryConfigPo.isFieldValueTypeAttribute("disabled")).toBe("disabled");
+            expect(await editDynamicFieldLibraryConfigPo.isFieldValueTypeAttribute("disabled")).toBe("true");
             await editDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
             await localizeValuePopPo.setLocalizeValue('LibTextField' + randomStr);
             await localizeValuePopPo.clickOnSaveButton();

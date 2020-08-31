@@ -17,7 +17,7 @@ class CreateDynamicFieldLibrary {
         informationSource: 'b9b14785-4b48-4fde-83ac-dc012eb36858',
         saveButton: '[rx-view-component-id="2f8db2c3-2352-4732-81b9-fdaf46ccbde7"] button',
         activeConfidentialsCheckbox: '[rx-view-component-id="067cbf9a-a1db-4268-8f6b-3132270f6356"] button[uib-btn-radio="trueValue"]',
-        requiredWarningmessage:'.localized-character-field-design div',
+        requiredWarningmessage: '.localized-character-field-design div',
     }
 
     async clickOnSaveButton(): Promise<void> {
@@ -25,7 +25,7 @@ class CreateDynamicFieldLibrary {
     }
 
     async getRequiredWarningMessage(): Promise<string> {
-      return await $(this.selectors.requiredWarningmessage).getText();
+        return await $(this.selectors.requiredWarningmessage).getText();
     }
 
     async clickOnActiveConfidentialsCheckbox(): Promise<void> {
@@ -48,7 +48,8 @@ class CreateDynamicFieldLibrary {
     }
 
     async isFieldDescriptionRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.fieldDescriptionGuid);
+        let fieldDescriptionRequired = await $('[rx-view-component-id="827cea0b-82d6-4741-8051-1cc52b83b770"] .d-textfield__item');
+        return await utilCommon.isRequiredTagToFieldElement(fieldDescriptionRequired);
     }
 
     async isStatusRequiredText(): Promise<boolean> {
