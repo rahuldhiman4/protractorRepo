@@ -16,7 +16,8 @@ class ManageTaskBlade {
         taskTemplateGuid: '0f3712cc-95da-49c3-b2b0-6b7409c8349b',
         taskSummaryLink: '[rx-view-component-id="8334a05d-06ba-4d9b-8c35-e40e90637e85"] .task-summary__name',
         taskDisplayId: '[rx-view-component-id="ab0b52da-6511-4202-b1c4-f1d3eb65aada"] .bwf-task-card .task-meta-data__display-id',
-        taskCardLocator: '[rx-view-component-id="ab0b52da-6511-4202-b1c4-f1d3eb65aada"] .bwf-task-card'
+        taskCardLocator: '[rx-view-component-id="ab0b52da-6511-4202-b1c4-f1d3eb65aada"] .bwf-task-card',
+        rerunBtn: 'button.btn-rerun'
     }
 
     async clickAddTaskFromTemplateButton(): Promise<void> {
@@ -119,6 +120,10 @@ class ManageTaskBlade {
             }
         }
         return statusValue.trim();
+    }
+
+    async clickRerunBtn(): Promise<void> {
+        await $(this.selectors.rerunBtn).click();
     }
 }
 
