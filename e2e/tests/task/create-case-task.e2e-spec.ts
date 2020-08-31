@@ -1295,12 +1295,11 @@ describe('Create Case Task', () => {
             await previewCasePo.clickGoToCaseButton();
         });
         it('[DRDMV-3880,DRDMV-5320]: [Task Status] Task Status change from Completed', async () => {
-            await viewCasePage.openTaskCard(1);
-            await manageTask.clickTaskLink(`manualTaskTemplateSummary1 ${randomStr}`);
+            await viewCasePage.clickOnTaskLink(`manualTaskTemplateSummary1 ${randomStr}`);
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
             await viewTask.clickOnViewCase();
             await viewCasePage.clickOnTaskLink(`manualTaskTemplateSummary2 ${randomStr}`);
-            expect(await viewTask.getTaskStatusValue()).toBe("Staged");
+            expect(await viewTask.getTaskStatusValue()).toBe("Staged"); 
             await viewTask.clickOnViewCase();
         });
         it('[DRDMV-3880,DRDMV-5320]: [Task Status] Task Status change from Completed', async () => {
@@ -1310,22 +1309,18 @@ describe('Create Case Task', () => {
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
-            await viewCasePage.openTaskCard(1);
-            await manageTask.clickTaskLink(`manualTaskTemplateSummary1 ${randomStr}`);
+            await viewCasePage.clickOnTaskLink(`manualTaskTemplateSummary1 ${randomStr}`);
             expect(await viewTask.getTaskStatusValue()).toBe("Assigned");
             await viewTask.clickOnViewCase();
-            await viewCasePage.openTaskCard(2);
-            await manageTask.clickTaskLink(`manualTaskTemplateSummary2 ${randomStr}`);
+            await viewCasePage.clickOnTaskLink(`manualTaskTemplateSummary2 ${randomStr}`);
             expect(await viewTask.getTaskStatusValue()).toBe("Assigned");
             await viewTask.clickOnViewCase();
-            await viewCasePage.openTaskCard(3);
-            await manageTask.clickTaskLink(`manualTaskTemplateSummary3 ${randomStr}`);
+            await viewCasePage.clickOnTaskLink(`manualTaskTemplateSummary3 ${randomStr}`);
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
             await viewTask.clickOnViewCase();
         });
         it('[DRDMV-3880,DRDMV-5320]: [Task Status] Task Status change from Completed', async () => {  
-            await viewCasePage.openTaskCard(1);
-            await manageTask.clickTaskLink(`manualTaskTemplateSummary1 ${randomStr}`);
+            await viewCasePage.clickOnTaskLink(`manualTaskTemplateSummary1 ${randomStr}`);
             await viewTask.clickOnChangeStatus();
             await updateStatusBladePo.allStatusOptionsPresent(statusDropdown1);
             await updateStatusBladePo.clickCancelButton();
@@ -1348,8 +1343,7 @@ describe('Create Case Task', () => {
         it('[DRDMV-3880,DRDMV-5320]: [Task Status] Task Status change from Completed', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePage.searchAndOpenCase('DRDMV3880Summary' + randomStr);
-            await viewCasePage.openTaskCard(1);
-            await manageTask.clickTaskLink(`manualTaskTemplateSummary2 ${randomStr}`);
+            await viewCasePage.clickOnTaskLink(`manualTaskTemplateSummary2 ${randomStr}`);
             await viewTask.clickOnChangeStatus();
             await viewTask.changeTaskStatus('Completed');
             await updateStatusBladePo.setStatusReason('Successful');
