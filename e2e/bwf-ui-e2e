@@ -1,6 +1,3 @@
-import groovy.json.JsonSlurper;
-import groovy.json.JsonOutput;
-
 def NODE = "AutoUI"
 node("${NODE}"){
     def user = 'dsm-bot'
@@ -63,9 +60,7 @@ node("${NODE}"){
             // merge all summary-report output files
             def finalMap = [:];
             for (int k=0; k < suiteNameList.size(); k++){
-                def fileLines = readFile("artefact/jira-report/${suiteNameList[k]}_summary-report.json").readLines();                
-                def jsonSlurper = new JsonSlurper();
-                def componentObj = jsonSlurper.parseText(fileLines);
+                def componentObj = readJSON file: "artefact/jira-report/${suiteNameList[k]}_summary-report.json";
                 def components = componentObj.keySet();
                 components.each {
                     def passAll = (componentObj.get(it).get("passed"));
@@ -81,9 +76,7 @@ node("${NODE}"){
                     finalMap.put(it, [pass: passAll, fail: failAll, skip: skipAll, total: totalAll]);
                 }
             }
-            def jsonBuilObj = new groovy.json.JsonBuilder();
-            jsonBuilObj finalMap;
-            writeFile(file: "artefact/jira-report/summary-report.json", text: jsonBuilObj);
+            writeJSON file: "artefact/jira-report/summary-report.json", json: finalMap, pretty: 1;
 
             //create zip of jira-report folder
             zip archive: false, dir: 'artefact/jira-report', zipFile: 'artefact/jira-report.zip'
@@ -135,7 +128,7 @@ node("${NODE}"){
                 '${FILE, path="e2e/reports/spec-jira-report/CycleReport.html"}'
                 +
                 "</table>",
-                to: "prasad_vidhate@bmc.com;sunil_patil@bmc.com;pravin_ajagunde@bmc.com;tushar_garud@bmc.com;anant_sahitya@bmc.com;swapnil_khobragade_tp@bmc.com;ankush_agrawal_tp@bmc.com;kiran_gaikwad_tp@bmc.com;naziya_mujawar@bmc.com;rahul_dhiman_tp@bmc.com;apurva_deshmukh_tp@bmc.com;nikhil_bokade_tp@bmc.com;ashish_gabhane@bmc.com;swapnil_yelkar@bmc.com;sushrut_sawarkar@bmc.com",
+                to: "prasad_vidhate@bmc.com;sunil_patil@bmc.com;pravin_ajagunde@bmc.com;tushar_garud@bmc.com;anant_sahitya@bmc.com;swapnil_khobragade_tp@bmc.com;ankush_agrawal_tp@bmc.com;kiran_gaikwad_tp@bmc.com;naziya_mujawar@bmc.com;rahul_dhiman_tp@bmc.com;apurva_deshmukh_tp@bmc.com;nikhil_bokade_tp@bmc.com;ashish_gabhane@bmc.com;swapnil_yelkar@bmc.com;sushrut_sawarkar@bmc.com;shalakha_hemrajani_tp@bmc.com",
                 attachmentsPattern: 'artefact/jira-report/jira-report.csv'
             )
 
