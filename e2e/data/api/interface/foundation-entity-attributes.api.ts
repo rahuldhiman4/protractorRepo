@@ -14,4 +14,5 @@ export interface IFoundationEntity {
     vipStatus?: string;
     confidential?: string;
     functionalRole?: string;
+    abbreviation?: string;
 };

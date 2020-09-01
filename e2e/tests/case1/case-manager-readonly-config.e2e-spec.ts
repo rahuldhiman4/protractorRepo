@@ -165,7 +165,7 @@ describe('Case Manager Read-only Config', () => {
         expect(await configureDataSourceConfigConsole.isConfigDataSourceBtnDisabled()).toBeTruthy("Add button is enabled");
         console.log("aaa");
         await utilGrid.searchAndOpenHyperlink("Case Management");
-        await configureDataSourceEditPage.clickShowAdvancedSettings();
+        await configureDataSourceEditPage.clickDataSourceLink('Show Advanced Settings');
         expect(await configureDataSourceEditPage.isAssociationNameDisabled()).toBeTruthy("Association Name is enabled");
         expect(await configureDataSourceEditPage.isBuildExpressionBtnDisabled()).toBeTruthy("Build Expression button is enabled");
         expect(await configureDataSourceEditPage.isSaveBtnDisabled()).toBeTruthy("Save button is enabled");

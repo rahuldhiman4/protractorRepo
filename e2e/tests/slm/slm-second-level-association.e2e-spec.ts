@@ -157,9 +157,8 @@ describe('Service Target - Second Level Association Tests', () => {
         expect(await viewCasePage.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
     }, 1000 * 1000);
 
-    //Application issue...
     it('[DRDMV-19660]:SVT created for Company associations and SVT get links to a Case', async () => {
-        let caseId = undefined;
+        let caseId=undefined;
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows'); expect(await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows'))
             .toEqual('Service Target - Administration - Business Workflows');
@@ -186,7 +185,8 @@ describe('Service Target - Second Level Association Tests', () => {
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
         await browser.sleep(31000);
-        caseId = viewCasePage.getCaseID();
+        caseId = await viewCasePage.getCaseID();
+        
         expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
         expect(await viewCasePage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
         await browser.sleep(130000);
@@ -229,7 +229,7 @@ describe('Service Target - Second Level Association Tests', () => {
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
-        caseId = viewCasePage.getCaseID();
+        caseId = await viewCasePage.getCaseID();
         await browser.sleep(31000);
         expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
         expect(await viewCasePage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
@@ -245,8 +245,14 @@ describe('Service Target - Second Level Association Tests', () => {
         expect(await viewCasePage.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
     }, 820 * 1000);
 
-    //Application issue...
     it('[DRDMV-19663]:SVT created for Assigned Company associations and SVT get links to a Case', async () => {
+
+        let organizationData = {
+            "abbreviation": "ptramco"
+        }
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.updateFoundationEntity('Organization', 'Petramco', organizationData);
+
         let caseId = undefined;
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows'))
@@ -298,9 +304,9 @@ describe('Service Target - Second Level Association Tests', () => {
         await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
 
         //Verify second level association for Requester
-        await slmExpressionBuilder.selectSecondLevelExpressionQualification('Requester', 'Email', "=", 'TEXT', "qdu@petramco.com1");
+        await slmExpressionBuilder.selectSecondLevelExpressionQualification('Requester', 'Email', "=", 'TEXT', "qdu@petramco1.com");
         let selectedExpx = await slmExpressionBuilder.getSelectedExpression();
-        let expectedSelectedExp = "'" + "Requester > Email" + "'" + "=" + '"' + "qdu@petramco.com1" + '"';
+        let expectedSelectedExp = "'" + "Requester > Email" + "'" + "=" + '"' + "qdu@petramco1.com" + '"';
         expect(selectedExpx).toEqual(expectedSelectedExp);
         await slmExpressionBuilder.clickOnSaveExpressionButton();
         await serviceTargetConfig.selectGoal("3");
@@ -309,7 +315,7 @@ describe('Service Target - Second Level Association Tests', () => {
         await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
         await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
         await serviceTargetConfig.clickOnSaveSVTButton();
-        browser.sleep(3000);
+        await browser.sleep(3000);
         await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester('Qiang');
         await createCasePage.setSummary('Case for SVT creation');
@@ -317,7 +323,7 @@ describe('Service Target - Second Level Association Tests', () => {
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
-        caseId = viewCasePage.getCaseID();
+        caseId = await viewCasePage.getCaseID();
         await browser.sleep(31000);
         expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
         expect(await viewCasePage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green

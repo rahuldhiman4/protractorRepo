@@ -16,7 +16,7 @@ import { COGNITIVE_CATEGORY_DATASET, COGNITIVE_CATEGORY_DATASET_MAPPING, COGNITI
 import { EMAILCONFIG_DEFAULT, INCOMINGMAIL_DEFAULT, OUTGOINGEMAIL_DEFAULT } from '../data/api/email/email.configuration.data.api';
 import { EMAIL_WHITELIST } from '../data/api/email/email.whitelist.data.api';
 import { NEW_PROCESS_LIB } from '../data/api/flowset/create-process-lib';
-import { UPDATE_PERSON, UPDATE_SUPPORT_GROUP } from '../data/api/foundation/update-foundation-entity.data.api';
+import { UPDATE_PERSON, UPDATE_SUPPORT_GROUP, UPDATE_ORGANIZATION } from '../data/api/foundation/update-foundation-entity.data.api';
 import { IBusinessUnit } from '../data/api/interface/business.unit.interface.api';
 import { ICaseAssignmentMapping } from "../data/api/interface/case.assignment.mapping.interface.api";
 import { ICaseTemplate } from "../data/api/interface/case.template.interface.api";
@@ -2055,6 +2055,20 @@ class ApiHelper {
                         "value": confidentialFlag
                     }
                     jsonBody.fieldInstances[300000000] = updateConfidentialPayload;
+                }
+                break;
+            }
+            case "Organization": {
+                recordName = 'com.bmc.arsys.rx.foundation:Primary Organization';
+                recordGUID = await apiCoreUtil.getOrganizationGuid(entityName);
+                if (data.abbreviation) {
+                    jsonBody = cloneDeep(UPDATE_ORGANIZATION);
+                    jsonBody.id = recordGUID;
+                    let updateOrganizationPayload = {
+                        "id": "1000000071",
+                        "value": data.abbreviation
+                    }
+                    jsonBody.fieldInstances[1000000071] = updateOrganizationPayload;
                 }
                 break;
             }
