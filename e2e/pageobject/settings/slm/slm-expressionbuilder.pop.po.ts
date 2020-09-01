@@ -191,8 +191,10 @@ class SlmExpressionBuilder {
 
     async selectSecondLevelExpressionQualification(firstLevelAssociationfield: string, secondLevelAssociationfield: string, operator: string, fieldAttribute: string, fieldvalue: string): Promise<void> {
         let qBuilder = await $(this.expressionBuilderSelectors.qualificationBuilder);
+        await browser.sleep(2000);
         await qBuilder.element(by.model(this.expressionBuilderSelectors.searchField)).clear();
         await qBuilder.element(by.model(this.expressionBuilderSelectors.searchField)).sendKeys(firstLevelAssociationfield);
+        await browser.sleep(2000);
         await this.selectSecondLevelExpressionField(firstLevelAssociationfield, secondLevelAssociationfield);
         await this.selectOperator(operator);
         await this.selectFieldOption(fieldAttribute, fieldvalue);

@@ -433,6 +433,26 @@ export class Util {
             if (result) return await element(by.cssContainingText('button.d-button', buttonName)).isDisplayed();
         })
     }
+
+    async isDropDownOptionsMatches(fieldName:string,dropdownOptions: string[],dropDownSearchValue?:string): Promise<boolean> {
+        const dropDown = await $(`[title="${fieldName}"]`);        
+        let arr: string[] = [];
+        const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
+        await dropDownBoxElement.click();
+        const dropDownInputElement = await dropDown.$(this.selectors.dropDownInput);
+        if (dropDownSearchValue) await dropDownInputElement.sendKeys(dropDownSearchValue);
+        let drpDwnvalue: number = await $$(this.selectors.dropDownOption).count();
+        for (let i = 0; i < drpDwnvalue; i++) {
+            let ab: string = await $$(this.selectors.dropDownOption).get(i).getText();
+            arr[i] = ab;
+        }
+        arr = arr.sort();
+        dropdownOptions = dropdownOptions.sort();
+        return arr.length === dropdownOptions.length && arr.every(
+            (value, index) => (value === dropdownOptions[index])
+        );
+    }
+
 }
 
 export default new Util();
