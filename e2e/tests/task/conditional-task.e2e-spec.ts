@@ -308,7 +308,7 @@ describe('Conditional Task', () => {
             await apiHelper.createAutomatedTaskTemplate(automatedTaskTemplateData);
         });
 
-        it('[DRDMV-14902]: [Task] [UI]- Task Flow Process display in Case Template > Task section', async () => {
+        it('[DRDMV-14902,DRDMV-14903]: [Task] [UI]- Task Flow Process display in Case Template > Task section', async () => {
             //Validating task flow creation with all type of task templates
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
@@ -324,7 +324,7 @@ describe('Conditional Task', () => {
             await editCaseTemplatePage.clickOnSaveCaseTemplateMetadata();
             expect(await viewCaseTemplatePage.isTaskFlowBtnEnabled()).toBeFalsy('Task Flow button is enabled');
             await viewCaseTemplatePage.zoomOutTaskFlowSection(3);
-            expect(await viewCaseTemplatePage.isHeightWidthMatches(357.004, 824.901)).toBeTruthy('Height Width not matching');
+            expect(await viewCaseTemplatePage.isHeightWidthMatches(362.004, 824.901)).toBeTruthy('Height Width not matching');
             await viewCaseTemplatePage.zoomInTaskFlowSection(6);
             expect(await viewCaseTemplatePage.isHeightWidthMatches(1104, 2580.11)).toBeTruthy('Height Width not matching');
             await editCaseTemplatePage.clickOnEditCaseTemplateMetadata();
@@ -346,14 +346,14 @@ describe('Conditional Task', () => {
             await selectCasetemplateBladePo.searchAndOpenCaseTemplate(draftCaseTemplatePetramcoData.templateName);
             expect(await previewCaseTemplatePage.getReadOnlyFieldCount()).toEqual(10); //Detailed Read only fields are verified in DRDMV-8868 test
             await previewCaseTemplatePage.zoomOutTaskFlowSection(3);
-            expect(await viewCaseTemplatePage.isHeightWidthMatches(439.693, 989.177)).toBeTruthy('Height Width not matching on Case Template Preview');
+            expect(await viewCaseTemplatePage.isHeightWidthMatches(432.705, 989.177)).toBeTruthy('Height Width not matching on Case Template Preview');
             await previewCaseTemplatePage.zoomInTaskFlowSection(6);
-            expect(await viewCaseTemplatePage.isHeightWidthMatches(1160.69, 1599.18)).toBeTruthy('Height Width not matching on Case Template Preview');
+            expect(await viewCaseTemplatePage.isHeightWidthMatches(1117.7, 1599.18)).toBeTruthy('Height Width not matching on Case Template Preview');
             await previewCaseTemplatePage.clickOnBackButton();
             await utilityCommon.closeAllBlades();
         });
 
-        it('[DRDMV-14902]: [Task] [UI]- Task Flow Process display in Case Template > Task section', async () => {
+        it('[DRDMV-14902,DRDMV-14903]: [Task] [UI]- Task Flow Process display in Case Template > Task section', async () => {
             //Validate the Case Template Preview from Quick Case
             await navigationPage.gotoQuickCase();
             await quickCasePage.selectRequesterName('qfeng');
@@ -361,9 +361,9 @@ describe('Conditional Task', () => {
             await quickCasePage.clickOnCaseTemplate(draftCaseTemplatePetramcoData.templateName);
             expect(await previewCaseTemplatePage.getReadOnlyFieldCount()).toEqual(10);
             await previewCaseTemplatePage.zoomOutTaskFlowSection(3);
-            expect(await viewCaseTemplatePage.isHeightWidthMatches(441.227, 989.291)).toBeTruthy('Height Width not matching on Case Template Preview');
+            expect(await viewCaseTemplatePage.isHeightWidthMatches(434.182, 989.291)).toBeTruthy('Height Width not matching on Case Template Preview');
             await previewCaseTemplatePage.zoomInTaskFlowSection(6);
-            expect(await viewCaseTemplatePage.isHeightWidthMatches(1162.23, 1601.29)).toBeTruthy('Height Width not matching on Case Template Preview');
+            expect(await viewCaseTemplatePage.isHeightWidthMatches(1119.18, 1601.29)).toBeTruthy('Height Width not matching on Case Template Preview');
             await previewCaseTemplatePage.clickOnBackButton();
             await utilityCommon.closeAllBlades();
 

@@ -654,11 +654,13 @@ describe('Conditional Task Life Cycle', () => {
             await editCasePage.clickOnChangeCaseTemplate();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateData2.templateSummary);
             await editCasePage.clickSaveCase();
-            await editTaskPo.clickOnRefreshActivity();
-
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(caseResponse1.displayId);
+``
             expect(await viewCasePage.isAllTaskUnderStatusTitleMatches('Upcoming Tasks', [manualTaskTemplateData2.templateSummary, externalTaskTemplateData2.templateSummary])).toBeTruthy();
             await apiHelper.updateCaseStatus(caseResponse2.id, 'InProgress');
-            await editTaskPo.clickOnRefreshActivity();
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(caseResponse1.displayId);
 
             expect(await viewCasePage.isAllTaskUnderStatusTitleMatches('In Progress Tasks', [manualTaskTemplateData2.templateSummary, externalTaskTemplateData2.templateSummary])).toBeTruthy();
 
@@ -670,7 +672,8 @@ describe('Conditional Task Life Cycle', () => {
             await apiHelper.updateTaskStatus(manualTaskGuid, 'Completed', 'Successful');
             await apiHelper.updateTaskStatus(externalTaskGuid, 'Completed', 'Successful');
 
-            await editTaskPo.clickOnRefreshActivity();
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(caseResponse1.displayId);
             expect(await viewCasePage.isAllTaskUnderStatusTitleMatches('Completed Tasks', [manualTaskTemplateData2.templateSummary, externalTaskTemplateData2.templateSummary])).toBeTruthy();
 
             await updateStatusBlade.changeCaseStatus('Resolved');

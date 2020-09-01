@@ -67,6 +67,10 @@ class ViewKnowledgePage {
         });
     }
 
+    async getKnowledgeArticleId(): Promise<string> {
+        return (await $(this.selectors.knowledgeArticleId).getText()).trim();
+    }
+
     async clickOnKAUsefulYesButton(): Promise<void> {
         await $(this.selectors.kAUsefulYesButton).click();
     }

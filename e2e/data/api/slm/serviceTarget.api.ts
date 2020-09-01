@@ -52,84 +52,81 @@ export const SERVICE_TARGET_PAYLOAD = {
 export const CASE_MILESTONE = {
   "svtID": "##SVTID##",
   "associations": [
-      {
-          "milestoneInstanceID": "",
-          "title": "AutoCaseAlertMilestone1",
-          "description": "",
-          "executeQualification": "1=1",
-          "executeCondition": "HoursFromStartTime",
-          "executeAtPercentage": 0,
-          "executeAtHours": 0,
-          "executeAtMinutes": "1",
-          "repeatInterval": "",
-          "notifications": [
-              {
-                  "instanceId": "",
-                  "name": "AutoCaseAlertAction1",
-                  "description": null,
-                  "companyID": null,
-                  "entityType": 1,
-                  "subType": null,
-                  "sourceRecordDefName": "com.bmc.dsm.case-lib:Case",
-                  "fieldList": null,
-                  "type": "Alert",
-                  "toList": "$4$;$1000000217$;",
-                  "ccList": "",
-                  "bccList": "",
-                  "templateName": "Case SLA Missed",
-                  "updated": false
-              }
-          ],
-          "actions": [
-
-          ],
-          "template": false,
+    {
+      "milestoneInstanceID": "",
+      "title": "AutoCaseAlertMilestone1",
+      "description": "",
+      "executeQualification": "1=1",
+      "executeCondition": "HoursFromStartTime",
+      "executeAtPercentage": 0,
+      "executeAtHours": 0,
+      "executeAtMinutes": "1",
+      "repeatInterval": "",
+      "notifications": [
+        {
+          "instanceId": "",
+          "name": "AutoCaseAlertAction1",
+          "description": null,
+          "companyID": null,
+          "entityType": 1,
+          "subType": null,
+          "sourceRecordDefName": "com.bmc.dsm.case-lib:Case",
+          "fieldList": null,
+          "type": "Alert",
+          "toList": "$4$;$1000000217$;",
+          "ccList": "",
+          "bccList": "",
+          "templateName": "Case SLA Missed",
           "updated": false
-      }
+        }
+      ],
+      "actions": [
+
+      ],
+      "template": false,
+      "updated": false
+    }
   ]
 };
 
 export const TASK_MILESTONE = {
-  "name": "TaskSVTMilestoneForAlertField",
-  "data": {
-      "svtID": "##SVTID##",
-      "associations": [
-          {
-              "milestoneInstanceID": "",
-              "title": "AutoTaskAlertMilestone",
-              "description": "",
-              "executeQualification": "1=1",
-              "executeCondition": "HoursFromStartTime",
-              "executeAtPercentage": 0,
-              "executeAtHours": 0,
-              "executeAtMinutes": "1",
-              "repeatInterval": "",
-              "notifications": [
-                  {
-                      "instanceId": "",
-                      "name": "AutoTaskAlertAction",
-                      "description": null,
-                      "companyID": null,
-                      "entityType": 1,
-                      "subType": null,
-                      "sourceRecordDefName": "com.bmc.dsm.task-lib:Task",
-                      "fieldList": null,
-                      "type": "Alert",
-                      "toList": "$4$;$1000000217$;",
-                      "ccList": "",
-                      "bccList": "",
-                      "templateName": "Task SLA Missed",
-                      "updated": false
-                  }
-              ],
-              "actions": [
+  "svtID": "##SVTID##",
+  "associations": [
+    {
+      "milestoneInstanceID": "",
+      "title": "AutoTaskAlertMilestone",
+      "description": "",
+      "executeQualification": "1=1",
+      "executeCondition": "HoursFromStartTime",
+      "executeAtPercentage": 0,
+      "executeAtHours": 0,
+      "executeAtMinutes": "1",
+      "repeatInterval": "",
+      "notifications": [
+        {
+          "instanceId": "",
+          "name": "AutoTaskAlertAction12",
+          "description": null,
+          "companyID": null,
+          "entityType": 1,
+          "subType": null,
+          "sourceRecordDefName": "com.bmc.dsm.task-lib:Task",
+          "fieldList": null,
+          "type": "Alert",
+          "toList": "$4$;$1000000217$;",
+          "ccList": "",
+          "bccList": "",
+          "templateName": "Task SLA Missed",
+          "updated": false
+        }
+      ],
+      "actions": [
 
-              ],
-              "template": false,
-              "updated": false
-          }
-      ]
-  }
+      ],
+      "template": false,
+      "updated": false
+    }
+  ]
 };
 
 export const SERVICE_TARGET_GROUP = {
@@ -182,7 +179,7 @@ export const BUSINESS_TIME_SEGMENT = {
   "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
   "recordDefinitionName": "Business Time Segment",
   "fieldInstances": {
-      "7": {
+    "7": {
       "id": 7,
       "value": 1
     },

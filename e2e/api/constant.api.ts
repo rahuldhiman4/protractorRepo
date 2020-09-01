@@ -100,7 +100,7 @@ export enum ApplicationConfigurationsGuid {
 
 export enum ApplicationConfigurationsValue {
     '1_MONTH' = '2629743',
-    '2_MINUTE' = '120'
+    '1_MINUTE' = '60'
 };
 
 export enum FunctionalRoleGuid {
