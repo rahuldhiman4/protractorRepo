@@ -10,6 +10,7 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
+import knowledgeArticleViewPage from '../../pageobject/knowledge/view-knowledge-article.po';
 
 const caseData = require('../../data/ui/case/case.ui.json');
 const manageNotificationTempNavigation = 'Notification Configuration--Manage Templates';
@@ -30,6 +31,7 @@ describe("Actionable Notifications", () => {
         await apiHelper.setDefaultNotificationForUser('Fritz', "Alert");
         await apiHelper.setDefaultNotificationForUser('qfeng', "Alert");
         await apiHelper.setDefaultNotificationForUser('qkatawazi', "Alert");
+        await apiHelper.setDefaultNotificationForUser('khardison', 'Alert');
         await apiHelper.apiLogin('sasadmin');
         await apiHelper.enableActionableNotificationSetting();
     });
@@ -591,6 +593,243 @@ describe("Actionable Notifications", () => {
         expect(await notificationPo.isAlertPresent("Status of Request ID : " + response1.displayId + " is changed to Canceled.")).toBeTruthy();
         expect(await notificationPo.isAlertPresent("Status of Request ID : " + response1.displayId + " is changed to Pending.")).toBeTruthy();
         await utilCommon.closePopUpMessage();
+    });
+
+    //asahitya
+    describe('[DRDMV-16828,DRDMV-16832,DRDMV-16830]: Check out of the box notification-"Article Reviewer assignment" is actionable for type Alert', () => {
+        const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let articleResponse = undefined;
+        beforeAll(async () => {
+            await apiHelper.apiLogin('sasadmin');
+            await apiHelper.updateReviewDueDateRule();
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.addCommonConfig('NEXT_REVIEW_PERIOD', ['1_MINUTE'], 'Petramco');
+            await apiHelper.deleteApprovalMapping('Knowledge');
+        });
+
+        it('[DRDMV-16828,DRDMV-16832,DRDMV-16830]: Check out of the box notification-"Article Reviewer assignment" is actionable for type Alert', async () => {
+            //Create Article
+            let articleData = {
+                "knowledgeSet": "HR",
+                "title": `DRDMV-16828 ${randomStr}`,
+                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "assignedCompany": "Petramco"
+            }
+            await apiHelper.apiLogin('khardison');
+            articleResponse = await apiHelper.createKnowledgeArticle(articleData);
+
+            //Update the Article to Published status
+            await apiHelper.updateKnowledgeArticleStatus(articleResponse.id, 'Draft');
+            await apiHelper.updateKnowledgeArticleStatus(articleResponse.id, 'SMEReview', 'khardison', 'CA Support 3', 'Petramco');
+            await apiHelper.updateKnowledgeArticleStatus(articleResponse.id, 'PublishApproval', 'khardison', 'CA Support 3', 'Petramco');
+
+            //Verify all the Notification Templates of Knowledge Module
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
+            await utilGrid.searchAndOpenHyperlink('Article Reviewer Assignment');
+            await notificationTemplateEditPage.openAlertEditMessageText();
+            expect(await notificationTemplateEditPage.isFieldClickable('Content ID')).toBeTruthy('Content ID is not clickable');
+            await notificationTemplateEditPage.cancelAlertMessageText();
+            await utilCommon.clickOnWarningOk();
+            await notificationTemplateEditPage.clickOnEmailTab();
+            await notificationTemplateEditPage.openEmailBodyEditMessageText();
+            expect(await notificationTemplateEditPage.isFieldClickable('Content ID')).toBeTruthy('Content ID is not clickable');
+            await notificationTemplateEditPage.cancelEmailBodyBlade();
+
+            await utilCommon.closeBladeOnSettings();
+            await utilGrid.searchAndOpenHyperlink('Article Review due');
+            await notificationTemplateEditPage.openAlertEditMessageText();
+            expect(await notificationTemplateEditPage.isFieldClickable('Content ID')).toBeTruthy('Content ID is not clickable');
+            await notificationTemplateEditPage.cancelAlertMessageText();
+            await utilCommon.clickOnWarningOk();
+            await notificationTemplateEditPage.clickOnEmailTab();
+            await notificationTemplateEditPage.openEmailBodyEditMessageText();
+            expect(await notificationTemplateEditPage.isFieldClickable('Content ID')).toBeTruthy('Content ID is not clickable');
+            await notificationTemplateEditPage.cancelEmailBodyBlade();
+
+            await utilCommon.closeBladeOnSettings();
+            await utilGrid.searchAndOpenHyperlink('Article Review Overdue');
+            await notificationTemplateEditPage.openAlertEditMessageText();
+            expect(await notificationTemplateEditPage.isFieldClickable('Content ID')).toBeTruthy('Content ID is not clickable');
+            await notificationTemplateEditPage.cancelAlertMessageText();
+            await utilCommon.clickOnWarningOk();
+            await notificationTemplateEditPage.clickOnEmailTab();
+            await notificationTemplateEditPage.openEmailBodyEditMessageText();
+            expect(await notificationTemplateEditPage.isFieldClickable('Content ID')).toBeTruthy('Content ID is not clickable');
+            await notificationTemplateEditPage.cancelEmailBodyBlade();
+        });
+
+        it('[DRDMV-16828,DRDMV-16832,DRDMV-16830]: Check out of the box notification-"Article Reviewer assignment" is actionable for type Alert', async () => {
+            await browser.sleep(60000); //Wait till due date and overdue dates are passed
+
+            //Login with khardison and verify notifications are actionable
+            await navigationPage.signOut();
+            await loginPage.login('khardison');
+            await navigationPage.switchToApplication('Knowledge Management');
+            await utilityCommon.switchToNewTab(1);
+            await notificationPo.clickOnNotificationIcon();
+            await notificationPo.clickActionableLink(`Knowledge article ${articleResponse.displayId} is assigned to you for Review.`);
+            await utilityCommon.switchToNewTab(2);
+            expect(await knowledgeArticleViewPage.getKnowledgeArticleId()).toBe(articleResponse.displayId);
+
+            await utilityCommon.switchToNewTab(1);
+            await notificationPo.clickActionableLink(`Knowledge article ${articleResponse.displayId} is due for review`);
+            await utilityCommon.switchToNewTab(2);
+            expect(await knowledgeArticleViewPage.getKnowledgeArticleId()).toBe(articleResponse.displayId);
+
+            await utilityCommon.switchToNewTab(1);
+            await notificationPo.clickActionableLink(`Knowledge article ${articleResponse.displayId} is overdue for review.`);
+            await utilityCommon.switchToNewTab(2);
+            expect(await knowledgeArticleViewPage.getKnowledgeArticleId()).toBe(articleResponse.displayId);
+        });
+
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteCommonConfig('NEXT_REVIEW_PERIOD', 'Petramco');
+        });
+    });
+
+    describe('[DRDMV-16826]: Check out of the box notification-"Case SLA missed" is actionable for type Alert', () => {
+        let caseResponse = undefined;
+        beforeAll(async () => {
+            await apiHelper.apiLogin('qkatawazi');
+            let svtCreateData = {
+                "terms": "'1000000337'=\"e7c60fdad2002d4c199935a94b253ad99d9a68b555f60a08a8de2c9feb2c5c4384b4342bc1571d45eb31b96696b3c309e6b007f0469d329dfffbee32c5139e34\" AND '1000000164'=\"1000\"",
+                "readableTerms": "'Company'=\"Petramco\"",
+                "startWhen": "'450000021'=\"2000\"",
+                "readableStartWhen": "'Status'=\"Assigned\"",
+                "stopWhen": "'450000021'=\"7000\"",
+                "readableStopWhen": "'Status'=\"Closed\"",
+                "goalTimeMinutes": "2",
+                "dataSource": "Case Management",
+                "company": "Petramco",
+                "svtName": 'DRDMV-16826'
+            }
+            let svtResponse = await apiHelper.createSVT(svtCreateData);
+            await apiHelper.attachMilestone(svtResponse.id, 'CASE');
+
+            let caseData = {
+                "Company": "Petramco",
+                "Requester": "tcruise",
+                "Priority": "1000",
+                "Summary": "Case SLM Actionable Notification",
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
+                "Assignee": "qfeng"
+            }
+            await apiHelper.apiLogin('qdu');
+            caseResponse = await apiHelper.createCase(caseData);
+        });
+
+        it('[DRDMV-16826]: Check out of the box notification-"Case SLA missed" is actionable for type Alert', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
+            await utilGrid.searchAndOpenHyperlink('Case SLA Missed');
+            await notificationTemplateEditPage.openAlertEditMessageText();
+            expect(await notificationTemplateEditPage.isFieldClickable('Display ID')).toBeTruthy('Display ID is not clickable on Alert');
+            await notificationTemplateEditPage.cancelAlertMessageText();
+            await utilCommon.clickOnWarningOk();
+            await notificationTemplateEditPage.clickOnEmailTab();
+            await notificationTemplateEditPage.openEmailBodyEditMessageText();
+            expect(await notificationTemplateEditPage.isFieldClickable('Display ID')).toBeTruthy('Display ID is not clickable on Email');
+            await browser.sleep(120000); //Wait to miss the SLM Goals
+        });
+
+        it('[DRDMV-16826]: Check out of the box notification-"Case SLA missed" is actionable for type Alert', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qfeng');
+            await notificationPo.clickOnNotificationIcon();
+            await notificationPo.clickActionableLink(`Service target associated with ${caseResponse.displayId} is missed.`);
+            await utilityCommon.switchToNewTab(1);
+            expect(await viewCasePage.getCaseID()).toBe(caseResponse.displayId);
+        });
+
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteServiceTargets('DRDMV-16826');
+        });
+    });
+
+    describe('[DRDMV-16846]: Check out of the box notification-"Task SLA Missed" is actionable for type Alert', () => {
+        let caseResponse, taskResponse = undefined;
+        beforeAll(async () => {
+            await apiHelper.apiLogin('qkatawazi');
+            let svtCreateData = {
+                "terms": "'1000000164'=\"1000\" AND '1000000063'=\"4bae23c056ea5678c965c0ac99a0d42129fac36dad17734f4cccf72ed0728970484abbb531b3257310f5218d372e9f858c4dab28b02703e23a18a069d7cc079c\"",
+                "readableTerms": "'Priority'=\"Critical\" AND 'Category Tier 1'=\"Accounts Payable\"",
+                "startWhen": "'450000021'=\"2000\"",
+                "readableStartWhen": "'Status'=\"Assigned\"",
+                "stopWhen": "'450000021'=\"5000\"",
+                "readableStopWhen": "'Status'=\"Completed\"",
+                "goalTimeMinutes": "1",
+                "dataSource": "Task Management",
+                "company": "Petramco",
+                "svtName": 'DRDMV-16846'
+            }
+            let svtResponse = await apiHelper.createSVT(svtCreateData);
+            await apiHelper.attachMilestone(svtResponse.id, 'TASK');
+
+            let caseData = {
+                "Company": "Petramco",
+                "Requester": "tcruise",
+                "Priority": "1000",
+                "Summary": "Case SLM Actionable Notification DRDMV-16846",
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
+                "Assignee": "qfeng"
+            }
+            await apiHelper.apiLogin('qdu');
+            caseResponse = await apiHelper.createCase(caseData);
+
+            let taskData = {
+                "taskName": "Task SLM Actionable Notification",
+                "company": "Petramco",
+                "priority": "Critical",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qfeng",
+                "category1": "Accounts Payable"
+            }
+            taskResponse = await apiHelper.createAdhocTask(caseResponse.id, taskData)
+            await apiHelper.updateCaseStatus(caseResponse.id, 'InProgress')
+        });
+
+        it('[DRDMV-16846]: Check out of the box notification-"Task SLA Missed" is actionable for type Alert', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
+            await utilGrid.searchAndOpenHyperlink('Task SLA Missed');
+            await notificationTemplateEditPage.openAlertEditMessageText();
+            expect(await notificationTemplateEditPage.isFieldClickable('Display ID')).toBeTruthy('Display ID is not clickable on Alert');
+            await notificationTemplateEditPage.cancelAlertMessageText();
+            await utilCommon.clickOnWarningOk();
+            await notificationTemplateEditPage.clickOnEmailTab();
+            await notificationTemplateEditPage.openEmailBodyEditMessageText();
+            expect(await notificationTemplateEditPage.isFieldClickable('Display ID')).toBeTruthy('Display ID is not clickable on Email');
+            await browser.sleep(90000); //Wait to miss the SLM Goals
+        });
+
+        it('[DRDMV-16846]: Check out of the box notification-"Task SLA Missed" is actionable for type Alert', async () => {
+            await browser.sleep(30000); //Wait to miss the SLM Goals
+            await navigationPage.signOut();
+            await loginPage.login('qfeng');
+            await notificationPo.clickOnNotificationIcon();
+            await notificationPo.clickActionableLink(`Service target associated with ${taskResponse.displayId} is missed.`);
+            await utilityCommon.switchToNewTab(1);
+            expect(await viewTaskPage.getTaskID()).toBe(taskResponse.displayId);
+        });
+
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteServiceTargets('DRDMV-16846');
+        });
     });
 
 });
