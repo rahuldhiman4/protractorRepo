@@ -18,7 +18,7 @@ export interface ITaskTemplate {
     businessUnit?: string;
     supportGroup?: string;
     assignee?: string;
-    label?: string
+    label?: string;
 };
 
 export interface IAdhocTask {
@@ -30,4 +30,5 @@ export interface IAdhocTask {
     assignee?: string;
     priority?: string;
     label?: string;
+    category1?: string;
 }

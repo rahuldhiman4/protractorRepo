@@ -5,7 +5,7 @@ import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import notificationPo from '../../pageobject/notification/notification.po';
 import notificationTemplateEditPage from '../../pageobject/settings/notification-config/edit-notification-template.po';
-import viewTaskPasge from '../../pageobject/task/view-task.po';
+import viewTaskPage from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
@@ -310,7 +310,7 @@ describe("Actionable Notifications", () => {
             await notificationPo.clickOnNotificationIcon();
             await notificationPo.clickActionableLink(`${response2.displayId} has been assigned to you.`);
             await utilityCommon.switchToNewTab(1);
-            expect(await viewTaskPasge.getTaskID()).toBe(response2.displayId);
+            expect(await viewTaskPage.getTaskID()).toBe(response2.displayId);
         }
         catch (ex) {
             throw ex;
@@ -353,7 +353,7 @@ describe("Actionable Notifications", () => {
             await notificationPo.clickOnNotificationIcon();
             await notificationPo.clickActionableLink(`Qiao Feng changed status of ${response2.displayId} to In Progress`);
             await utilityCommon.switchToNewTab(1);
-            expect(await viewTaskPasge.getTaskID()).toBe(response2.displayId);
+            expect(await viewTaskPage.getTaskID()).toBe(response2.displayId);
         }
         catch (ex) {
             throw ex;
@@ -433,7 +433,7 @@ describe("Actionable Notifications", () => {
             await notificationPo.clickOnNotificationIcon();
             await notificationPo.clickActionableLink(`Qianru Tao added a note to ${response2.displayId}`);
             await utilityCommon.switchToNewTab(1);
-            expect(await viewTaskPasge.getTaskID()).toBe(response2.displayId);
+            expect(await viewTaskPage.getTaskID()).toBe(response2.displayId);
         }
         catch (ex) {
             throw ex;
@@ -477,7 +477,7 @@ describe("Actionable Notifications", () => {
             await notificationPo.clickOnNotificationIcon();
             await notificationPo.clickActionableLink(`${response2.displayId} has been assigned to your group.`);
             await utilityCommon.switchToNewTab(1);
-            expect(await viewTaskPasge.getTaskID()).toBe(response2.displayId);
+            expect(await viewTaskPage.getTaskID()).toBe(response2.displayId);
         }
         catch (ex) {
             throw ex;
@@ -523,8 +523,8 @@ describe("Actionable Notifications", () => {
         }
     });
 
-     //asahitya
-     it('[DRDMV-16844]: Check out of the box notification-"Notes from Activity Feed in Task with attachment" is actionable for type Alert', async () => {
+    //asahitya
+    it('[DRDMV-16844]: Check out of the box notification-"Notes from Activity Feed in Task with attachment" is actionable for type Alert', async () => {
         let taskData = {
             "taskName": "DRDMV-16841",
             "company": "Petramco",
@@ -558,7 +558,7 @@ describe("Actionable Notifications", () => {
             await notificationPo.clickOnNotificationIcon();
             await notificationPo.clickActionableLink(`Qianru Tao added a note to ${response2.displayId}`);
             await utilityCommon.switchToNewTab(1);
-            expect(await viewTaskPasge.getTaskID()).toBe(response2.displayId);
+            expect(await viewTaskPage.getTaskID()).toBe(response2.displayId);
         }
         catch (ex) {
             throw ex;
@@ -570,27 +570,27 @@ describe("Actionable Notifications", () => {
     });
 
     //ptidke
-     it('[DRDMV-22377]: Verify Alert at Requester On case submit , Case Pending-Customer Response Notification, Case Resolution and Case Canceled Notification', async () => {
+    it('[DRDMV-22377]: Verify Alert at Requester On case submit , Case Pending-Customer Response Notification, Case Resolution and Case Canceled Notification', async () => {
         await apiHelper.apiLogin('qkatawazi');
-        await apiHelper.updateNotificationEventStatus('Case Pending - Customer Response - Requester Notification','Enabled');
-        await apiHelper.updateNotificationEventStatus('Case Canceled - Requester Notification','Enabled');
-        await apiHelper.updateNotificationEventStatus('Case Submitted - Requester Notification','Enabled');
-        await apiHelper.updateNotificationEventStatus('Case Resolved - Requester Notification','Enabled');
+        await apiHelper.updateNotificationEventStatus('Case Pending - Customer Response - Requester Notification', 'Enabled');
+        await apiHelper.updateNotificationEventStatus('Case Canceled - Requester Notification', 'Enabled');
+        await apiHelper.updateNotificationEventStatus('Case Submitted - Requester Notification', 'Enabled');
+        await apiHelper.updateNotificationEventStatus('Case Resolved - Requester Notification', 'Enabled');
         await apiHelper.apiLogin('qtao');
         let response1 = await apiHelper.createCase(caseData['actionableNotificationWithAssignee']);
         await apiHelper.updateCaseStatus(response1.id, 'InProgress');
-        await apiHelper.updateCaseStatus(response1.id, 'Pending','Customer Response');
+        await apiHelper.updateCaseStatus(response1.id, 'Pending', 'Customer Response');
         await apiHelper.updateCaseStatus(response1.id, 'Resolved', 'Customer Follow-Up Required');
         await apiHelper.updateCaseStatus(response1.id, 'InProgress');
-        await apiHelper.updateCaseStatus(response1.id, 'Canceled','Customer Canceled');
+        await apiHelper.updateCaseStatus(response1.id, 'Canceled', 'Customer Canceled');
         await navigationPage.signOut();
         await loginPage.login('qkatawazi');
         await notificationPo.clickOnNotificationIcon();
-        expect(await notificationPo.isAlertPresent("Your Request ID : "+response1.displayId+" is submitted.")).toBeTruthy();
-        expect(await notificationPo.isAlertPresent("Your Request ID : "+response1.displayId+" is Resolved.")).toBeTruthy();
-        expect(await notificationPo.isAlertPresent("Status of Request ID : "+response1.displayId+" is changed to Canceled.")).toBeTruthy();
-        expect(await notificationPo.isAlertPresent("Status of Request ID : "+response1.displayId+" is changed to Pending.")).toBeTruthy();
+        expect(await notificationPo.isAlertPresent("Your Request ID : " + response1.displayId + " is submitted.")).toBeTruthy();
+        expect(await notificationPo.isAlertPresent("Your Request ID : " + response1.displayId + " is Resolved.")).toBeTruthy();
+        expect(await notificationPo.isAlertPresent("Status of Request ID : " + response1.displayId + " is changed to Canceled.")).toBeTruthy();
+        expect(await notificationPo.isAlertPresent("Status of Request ID : " + response1.displayId + " is changed to Pending.")).toBeTruthy();
         await utilCommon.closePopUpMessage();
     });
-  
-})
+
+});

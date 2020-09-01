@@ -494,6 +494,7 @@ describe('CKE Description', () => {
             await linkPropertiesPo.clickOnOkBtn();
             expect(await ckeditorOpsPo.isLinkDisplayedInCkEditorTextArea('youtube')).toBeTruthy('Link Text not ipresent');
             await copyTasktemplatePo.clickSaveCopytemplate();
+            await viewTasktemplatePo.clickShowMoreDescriptionLink();
             expect(await viewTasktemplatePo.isLinkDisplayedInCKE('http://www.youtube.com')).toBeTruthy('Link Text not present');
         });
 

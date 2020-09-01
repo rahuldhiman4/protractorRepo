@@ -54,6 +54,8 @@ import { ONE_TASKFLOW, PROCESS_DOCUMENT, THREE_TASKFLOW_SEQUENTIAL, TWO_TASKFLOW
 import { DOC_LIB_DRAFT, DOC_LIB_PUBLISH, DOC_LIB_READ_ACCESS } from '../data/api/ticketing/document-library.data.api';
 import { DOCUMENT_TEMPLATE } from '../data/api/ticketing/document-template.data.api';
 import * as DYNAMIC from '../data/api/ticketing/dynamic.data.api';
+import { NEW_USER, ENABLE_USER } from '../data/api/foundation/create-foundation-entity.api';
+import { CASE_ASSIGNMENT_PAYLOAD } from '../data/api/case/case.config.api';
 
 let fs = require('fs');
 
@@ -99,9 +101,10 @@ class ApiHelper {
     }
 
     async createCase(data: any): Promise<IIDs> {
+        let caseData = cloneDeep(data);
         const newCase = await axios.post(
             "api/com.bmc.dsm.case-lib/cases",
-            data
+            caseData
         );
         console.log('Create Case API Status =============>', newCase.status);
         const caseDetails = await axios.get(
@@ -502,8 +505,7 @@ class ApiHelper {
     }
 
     async createCaseAssignmentMapping(data: ICaseAssignmentMapping): Promise<IIDs> {
-        let assignmentMappingDataFile = await require('../data/api/case/case.assignment.api.json');
-        let assignmentMappingData = await assignmentMappingDataFile.CaseAssignmentMappingData;
+        let assignmentMappingData = cloneDeep(CASE_ASSIGNMENT_PAYLOAD);
         assignmentMappingData.fieldInstances[8].value = data.assignmentMappingName;
         assignmentMappingData.fieldInstances[1000001437].value = data.assignmentMappingName;
         assignmentMappingData.fieldInstances[1000000001].value = await apiCoreUtil.getOrganizationGuid(data.company);
@@ -955,8 +957,7 @@ class ApiHelper {
     async createNewUser(data: IPerson): Promise<string> {
         let personGuid = await apiCoreUtil.getPersonGuid(data.userId);
         if (personGuid == null) {
-            let userDataFile = await require('../data/api/foundation/new.user.api.json');
-            let userData = await userDataFile.NewUser;
+            let userData = cloneDeep(NEW_USER);
             userData.fieldInstances[1000000019].value = data.firstName;
             userData.fieldInstances[1000000018].value = data.lastName;
             userData.fieldInstances[4].value = data.userId;
@@ -974,7 +975,7 @@ class ApiHelper {
             let recordGUID: string = userDetails.data.id;
             let recordDisplayId: string = userDetails.data.displayId;
 
-            let updateUser = await userDataFile.EnableUser;
+            let updateUser = cloneDeep(ENABLE_USER);
             data.company ? updateUser.fieldInstances[536870913].value = await apiCoreUtil.getOrganizationGuid(data.company) : updateUser.fieldInstances[536870913].value;
             updateUser.displayId = recordDisplayId;
             updateUser.id = recordGUID;
@@ -2110,6 +2111,14 @@ class ApiHelper {
             }
             adhocTaskPayload.fieldInstances["1000000000"] = taskDescription;
         }
+        if (taskData.category1) {
+            let category1Guid = await apiCoreUtil.getCategoryGuid(taskData.category1);
+            let taskCategory1 = {
+                "id": "1000000063",
+                "value": category1Guid
+            }
+            adhocTaskPayload.fieldInstances["1000000063"] = taskCategory1;
+        }
 
         let createTaskResponse = await apiCoreUtil.createRecordInstance(adhocTaskPayload);
         console.log('Create Task API Status =============>', createTaskResponse.status);
@@ -2407,7 +2416,7 @@ class ApiHelper {
             });
         }
     }
-    
+
     async associateTemplateWithApprovalMapping(approvalModule: string, templatedId: string, approvalMapping: string): Promise<boolean> {
         let url;
         switch (approvalModule) {
@@ -3019,8 +3028,8 @@ class ApiHelper {
 
     async attachMilestone(recordGuid: string, recordType: string): Promise<boolean> {
         let attachMilestonePayload = undefined;
-        if(recordType == 'CASE') attachMilestonePayload = cloneDeep(CASE_MILESTONE);
-        else if(recordType == 'TASK') attachMilestonePayload = cloneDeep(TASK_MILESTONE);
+        if (recordType == 'CASE') attachMilestonePayload = cloneDeep(CASE_MILESTONE);
+        else if (recordType == 'TASK') attachMilestonePayload = cloneDeep(TASK_MILESTONE);
         attachMilestonePayload.svtID = recordGuid;
         let attachMileStoneResponse = await axios.post(
             'api/com.bmc.dsm.slm-lib/rx/application/SLM/Milestone/saveMilestoneAssociation/',

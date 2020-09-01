@@ -23,8 +23,8 @@ describe('Failed Task', () => {
     });
 
     afterAll(async () => {
-        await navigationPage.signOut();
         await utilityCommon.closeAllBlades();
+        await navigationPage.signOut();
     });
 
     //asahitya
@@ -79,16 +79,15 @@ describe('Failed Task', () => {
                 "assignee": "Fritz",
             }
             let automatedTaskTemplate = await apiHelper.createAutomatedTaskTemplate(automatedTaskTemplateData);
+            await apiHelper.apiLogin('fritz');
             await apiHelper.associateCaseTemplateWithThreeTaskTemplate(newCaseTemplate.displayId, failedTaskTemplateDisplayId, automatedTaskTemplate.displayId, manualTaskTemplate.displayId, 'THREE_TASKFLOW_SEQUENTIAL_PARALLEL');
 
-            let caseDataCriticalPriority = {
+            let caseData = {
                 "Requester": "qkatawazi",
                 "Summary": `DRDMV-10057 Medium Priority ${randomStr}`,
-                "Origin": "Agent",
-                "Case Template ID": caseTemplateDisplayId,
-                "Priority": "1000"
+                "Case Template ID": caseTemplateDisplayId
             }
-            caseResponse = await apiHelper.createCase(caseDataCriticalPriority);
+            caseResponse = await apiHelper.createCase(caseData);
             await apiHelper.updateCaseStatus(caseResponse.id, 'InProgress');
         });
 
@@ -116,6 +115,10 @@ describe('Failed Task', () => {
             await updateStatusBlade.setStatusReason('Auto Resolved');
             await updateStatusBlade.clickSaveStatus('Resolved');
             expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
+        });
+
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
         });
     });
 
