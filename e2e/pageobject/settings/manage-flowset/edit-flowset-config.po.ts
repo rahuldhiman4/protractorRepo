@@ -27,7 +27,7 @@ class EditFlowsetPage {
         processMappingConsoleGuid: '0e25a330-f284-4892-9777-84ae2a5583ff',
         confidentialSupportGroupAccess: '.ac-label-manage-support',
         supportGroupDropDown: '.flex-item .ac-confidential-group-field button',
-        dropdownElement: '.ac-confidential-group-field .options li',
+        dropdownElement: '.ac-confidential-group-field .options li:last-of-type',
         confidentialFieldSearchBox: '.field input[placeholder="Search for Support Groups"]',
         addConfidentialSupportGroup: '[ng-if="enableAddSupportGroup"]',
         confidentialSupportGroupAssignToMe: '[class="d-checkbox__item ac-label-assign-confidential-write"]',

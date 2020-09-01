@@ -300,6 +300,7 @@ class ComposeMail {
         }
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.popupEmail)), 4000);
         await $$(this.selectors.popupEmail).first().click();
+        await browser.sleep(1000); //required to poulate the email id from text box
     }
 
     async getSubjectInputValue(): Promise<string> {
