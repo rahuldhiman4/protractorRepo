@@ -1309,6 +1309,9 @@ describe('Create Case Task', () => {
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
+            await caseConsolePage.searchAndOpenCase('DRDMV3880Summary' + randomStr);
             await viewCasePage.clickOnTaskLink(`manualTaskTemplateSummary1 ${randomStr}`);
             expect(await viewTask.getTaskStatusValue()).toBe("Assigned");
             await viewTask.clickOnViewCase();

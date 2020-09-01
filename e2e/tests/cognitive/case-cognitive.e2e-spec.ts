@@ -17,6 +17,10 @@ describe('Case Cognitive', () => {
     let categName3 = 'DemoCateg3';
     let categName4 = 'DemoCateg4';
     let categoryDataSetMapping, templateDataSetMapping;
+    let apiKey = "HnmJ6tOYmUheiH7hLbQdW6HHvIhUFYCq6NVo5acPY4Ww";
+    let templateDataSet = "My Template Data Set";
+    let categoryDataSet = "My Category Data Set";
+    let caseTemplateResponse1,caseTemplateResponse2,caseTemplateResponse3,caseTemplateResponse4,caseTemplateResponse5;
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
@@ -48,9 +52,6 @@ describe('Case Cognitive', () => {
     }
 
     async function createCognitiveConfig() {
-        let apiKey = "HnmJ6tOYmUheiH7hLbQdW6HHvIhUFYCq6NVo5acPY4Ww";
-        let templateDataSet = "My Template Data Set";
-        let categoryDataSet = "My Category Data Set";
         let created = await apiHelper.addWatsonAccount(apiKey);
         console.log("Watson Account Added ==> ", created);
         let dataSetMappingDeleted = await apiHelper.deleteCognitiveDataSetMapping();
@@ -61,10 +62,18 @@ describe('Case Cognitive', () => {
         console.log("Template DataSet Created ==> ", templateDataSetCreated);
         let categoryDataSetCreated = await apiHelper.createCognitiveDataSet("category", { name: categoryDataSet });
         console.log("Category DataSet Created ==> ", categoryDataSetCreated);
+    }
+
+    async function trainCognitiveDataSet1() {   
         let templateDataSetTrained = await apiHelper.trainCognitiveDataSet(templateDataSet);
         console.log("Template DataSet Created ==> ", templateDataSetTrained);
+    }    
+    async function trainCognitiveDataSet2() {   
         let categoryDataSetTrained = await apiHelper.trainCognitiveDataSet(categoryDataSet);
         console.log("Category DataSet Created ==> ", categoryDataSetTrained);
+    } 
+
+    async function createCognitiveDataSetMapping() {   
         templateDataSetMapping = {
             name: "Petramco Template Dataset Mapping",
             company: "Petramco",
@@ -106,24 +115,24 @@ describe('Case Cognitive', () => {
             "ownerBU": "United States Support",
             "ownerGroup": "US Support 3"
         }
-        let caseTemplateResponse1 = await apiHelper.createCaseTemplate(caseTemplateData);
+        caseTemplateResponse1 = await apiHelper.createCaseTemplate(caseTemplateData);
         caseTemplateData.templateName = 'caseTemplateForCognitive3' + randomStr;
         caseTemplateData.categoryTier1 = categName1;
         caseTemplateData.categoryTier2 = categName2;
-        let caseTemplateResponse2 = await apiHelper.createCaseTemplate(caseTemplateData);
+        caseTemplateResponse2 = await apiHelper.createCaseTemplate(caseTemplateData);
         caseTemplateData.templateName = 'caseTemplateForCognitive2' + randomStr;
         caseTemplateData.categoryTier1 = categName1;
         caseTemplateData.categoryTier2 = categName2;
         caseTemplateData.categoryTier3 = categName3;
-        let caseTemplateResponse3 = await apiHelper.createCaseTemplate(caseTemplateData);
+        caseTemplateResponse3 = await apiHelper.createCaseTemplate(caseTemplateData);
         caseTemplateData.templateName = 'caseTemplateForCognitive4' + randomStr;
         caseTemplateData.categoryTier1 = categName1;
         caseTemplateData.categoryTier2 = categName2;
         caseTemplateData.categoryTier3 = categName3;
         caseTemplateData.categoryTier4 = categName4;
-        let caseTemplateResponse4 = await apiHelper.createCaseTemplate(caseTemplateData);
+        caseTemplateResponse4 = await apiHelper.createCaseTemplate(caseTemplateData);
         caseTemplateData.templateName = 'caseTemplateForCognitive5' + randomStr;
-        let caseTemplateResponse5 = await apiHelper.createCaseTemplate(caseTemplateData);
+        caseTemplateResponse5 = await apiHelper.createCaseTemplate(caseTemplateData);
         caseTemplateData.templateName = 'caseTemplateForCognitive6' + randomStr;
         await apiHelper.createCaseTemplate(caseTemplateData);
         caseTemplateData.templateName = 'caseTemplateForCognitive7' + randomStr;
@@ -136,6 +145,9 @@ describe('Case Cognitive', () => {
         await apiHelper.createCaseTemplate(caseTemplateData);
         caseTemplateData.templateName = 'caseTemplateForCognitive11' + randomStr;
         await apiHelper.createCaseTemplate(caseTemplateData);
+    }
+
+    async function createCaseData(){
         let caseData = {
             "Requester": "apavlik",
             "Summary": "SearchCateg4",
@@ -163,7 +175,19 @@ describe('Case Cognitive', () => {
             await createCognitiveSearchData();
         });   
         it('[DRDMV-9023,DRDMV-8981]:Cognitive Config Creation', async () => {
+            await createCaseData();
+        });
+        it('[DRDMV-9023,DRDMV-8981]:Cognitive Config Creation', async () => {
             await createCognitiveConfig();
+        });
+        it('[DRDMV-9023,DRDMV-8981]:Cognitive Config Creation', async () => {
+            await trainCognitiveDataSet1();
+        });
+        it('[DRDMV-9023,DRDMV-8981]:Cognitive Config Creation', async () => {
+            await trainCognitiveDataSet2();
+        });
+        it('[DRDMV-9023,DRDMV-8981]:Cognitive Config Creation', async () => {
+            await createCognitiveDataSetMapping();
         });
         it('[DRDMV-9023,DRDMV-8981]:[Case Workspace] Cases search using filters', async () => {
             await navigationPage.gotoCreateCase();

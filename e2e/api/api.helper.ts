@@ -54,6 +54,7 @@ import { ONE_TASKFLOW, PROCESS_DOCUMENT, THREE_TASKFLOW_SEQUENTIAL, TWO_TASKFLOW
 import { DOC_LIB_DRAFT, DOC_LIB_PUBLISH, DOC_LIB_READ_ACCESS } from '../data/api/ticketing/document-library.data.api';
 import { DOCUMENT_TEMPLATE } from '../data/api/ticketing/document-template.data.api';
 import * as DYNAMIC from '../data/api/ticketing/dynamic.data.api';
+import { CASE_ASSIGNMENT_PAYLOAD } from '../data/api/case/case.config.api';
 
 let fs = require('fs');
 
@@ -502,8 +503,7 @@ class ApiHelper {
     }
 
     async createCaseAssignmentMapping(data: ICaseAssignmentMapping): Promise<IIDs> {
-        let assignmentMappingDataFile = await require('../data/api/case/case.assignment.api.json');
-        let assignmentMappingData = await assignmentMappingDataFile.CaseAssignmentMappingData;
+        let assignmentMappingData = cloneDeep(CASE_ASSIGNMENT_PAYLOAD);
         assignmentMappingData.fieldInstances[8].value = data.assignmentMappingName;
         assignmentMappingData.fieldInstances[1000001437].value = data.assignmentMappingName;
         assignmentMappingData.fieldInstances[1000000001].value = await apiCoreUtil.getOrganizationGuid(data.company);

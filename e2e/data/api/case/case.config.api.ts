@@ -1,6 +1,5 @@
-{
-    "CaseAssignmentMappingData":{
-      "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
+export const CASE_ASSIGNMENT_PAYLOAD = {
+    "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
       "recordDefinitionName": "com.bmc.dsm.case-lib:Case Assignment Mapping",
       "fieldInstances": {
         "8": {
@@ -76,5 +75,4 @@
           "value": null
         }
       }
-    }
-}
+  };

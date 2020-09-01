@@ -1,4 +1,5 @@
 import { $, $$, browser, protractor, ProtractorExpectedConditions } from "protractor";
+import utilityCommon from '../../../utils/utility.common';
 
 class CKEValidation {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -41,7 +42,9 @@ class CKEValidation {
     async getColorFontStyleOfText(value: string, guid?: string): Promise<string> {
         let alignColorFontStyle = `${this.selectors.descriptionView} div[style="${value}"]`;
         if (guid) alignColorFontStyle = `[rx-view-component-id="${guid}"] ${this.selectors.descriptionView} div[style="${value}"]`;
-        return await $(alignColorFontStyle).getText();
+        let fontStyleElement = await $(alignColorFontStyle);
+        await utilityCommon.scrollToElement(fontStyleElement);
+        return fontStyleElement.getText();
     }
 
     async isItalicTextDisplayed(value: string,guid?:string): Promise<boolean> {

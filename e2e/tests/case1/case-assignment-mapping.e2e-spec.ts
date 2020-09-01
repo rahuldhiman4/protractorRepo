@@ -40,7 +40,7 @@ describe("Create Case Assignment Mapping", () => {
     const personDataFile = require('../../data/ui/foundation/person.ui.json');
     let categName1, categName2, categName3, categName4;
     let userData = undefined, userData1 = undefined;
-    const userId1 = "idphylum1@petramco.com";
+    const userId1 = "idphylum4@petramco.com";
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
@@ -156,6 +156,8 @@ describe("Create Case Assignment Mapping", () => {
 
     //radhiman
     it('[DRDMV-1210]: Case Workspace table columns', async () => {
+        let allCaseColumns: string[] = ["Assigned Group", "Assignee","Assignee Login Name","Case ID","Case Site","Category Tier 1","Category Tier 2","Category Tier 3","Company","Created Date","ID","Label","Modified By", "Modified Date", "Priority","Region", "Request ID",  "Requester", "SLM Status","Source", "Status","Status Value","Summary", "Target Date"];
+        let defaultCaseColumns: string[] = ["Case ID", "Request ID", "Priority", "Status", "Summary", "Assigned Group", "Assignee", "Requester", "Modified Date", "SLM Status"];
         await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester('apavlik');
         await createCasePage.setSummary('DRDMV-1210 summary');
@@ -163,8 +165,9 @@ describe("Create Case Assignment Mapping", () => {
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
         await navigationPage.gotoCaseConsole();
+        await caseConsolePage.removeColumns(allCaseColumns);
+        await caseConsolePage.addColumns(defaultCaseColumns);
         await caseConsolePage.setCaseSearchBoxValue('DRDMV-1210 summary');
-        let defaultCaseColumns: string[] = ["Case ID", "Request ID", "Priority", "Status", "Summary", "Assigned Group", "Assignee", "Requester", "Modified Date", "SLM Status"];
         expect(await caseConsolePage.areCaseGridColumnMatches(defaultCaseColumns)).toBeTruthy("Default columns are not matching");
         let caseLabelColumn: string[] = ["Label"];
         await caseConsolePage.addRequestedCaseGridColumn(caseLabelColumn);
@@ -1131,11 +1134,13 @@ describe("Create Case Assignment Mapping", () => {
                 "company": "Phylum",
                 "ownerBU": "Phylum Support Org1",
                 "ownerGroup": "Phylum Support Group1"
-            }
+            }          
+        });
+        it('[DRDMV-1206,DRDMV-1208]:[Assignment Mapping] Applying Assignment Mappings to cases with partial match', async () => {
             await apiHelper.apiLoginWithCredential(userId1, "Password_1234");
             await apiHelper.createCaseAssignmentMapping(assignmentData);
             await apiHelper.createCaseTemplate(caseTemplateData);
-            await apiHelper.createCaseTemplate(caseTemplateData1);
+            await apiHelper.createCaseTemplate(caseTemplateData1); 
         });
         it('[DRDMV-1206,DRDMV-1208]:[Assignment Mapping] Applying Assignment Mappings to cases with partial match', async () => {
             await navigationPage.signOut();
@@ -1361,8 +1366,8 @@ describe("Create Case Assignment Mapping", () => {
             await createCasePage.selectCategoryTier2("Kitchen");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            expect(await viewCasePo.getAssignedGroupText()).toBe(suppGrpData1.orgName);
-            expect(await viewCasePo.getAssigneeText()).toBe("phylumfn4 phylumln4");
+            expect(await viewCasePo.getAssignedGroupText()).toBe(suppGrpData2.orgName);
+            expect(await viewCasePo.getAssigneeText()).toBe("phylumfn5 phylumln5");
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Anna');
             await createCasePage.setSummary('Summary11');

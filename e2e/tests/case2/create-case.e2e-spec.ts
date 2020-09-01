@@ -663,23 +663,34 @@ describe("Create Case", () => {
                 "firstName": "Petramco",
                 "lastName": "Psilon",
                 "userId": "DRDMV-12061",
+                "company": "Psilon"
             }
             await apiHelper.createNewUser(userData);
             await apiHelper.associatePersonToCompany(userData.userId, "Psilon");
             await navigationPage.signOut();
             await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
             //Create Case
-            await navigationPage.gotoCreateCase();
-            await createCasePage.selectRequester('Glit');
-            await createCasePage.setSummary('Summary');
-            await createCasePage.clickSaveCaseButton();
-            await previewCasePo.clickGoToCaseButton();
+            let caseDataPsilon = {
+                "Description": "DRDMV-16112 Psilon",
+                "Requester": "gderuno",
+                "Summary": "DRDMV-16112 Psilon",
+                "Assigned Company": "Psilon",
+                "Business Unit": "Psilon Support Org2",
+                "Support Group": "Psilon Support Group2",
+                "Assignee": "gwixillian"
+            }
+            await apiHelper.apiLoginWithCredential(userData.userId + "@petramco.com", 'Password_1234');
+            let psilonCaseResponse = await apiHelper.createCase(caseDataPsilon);
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
+            await caseConsolePage.searchAndOpenCase(psilonCaseResponse.displayId);
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickAddTaskFromTemplateButton();
             await manageTask.setTaskSearchBoxValue(TaskSummary);
             await manageTask.clickFirstCheckBoxInTaskTemplateSearchGrid();
             await manageTask.clickTaskGridSaveButton();
-            await manageTask.clickCloseButton();
+            await manageTask.clickTaskLink(TaskSummary);
+            expect(await viewTaskPo.isAssigneeDisplayed('None')).toBeTruthy("Assignee Should be blank");
         } catch (e) {
             throw e;
         } finally {

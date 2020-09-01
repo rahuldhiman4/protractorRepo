@@ -866,7 +866,7 @@ class ActivityTabPage {
     }
 
     async isRightAlignTextDisplayedInActivity(bodyText: string, activityNumber: number): Promise<boolean> {
-        let getTextmsg = await $$(this.selectors.activityLogBody).get(activityNumber - 1).$('[style="text-align: right;"]').getText();
+        let getTextmsg = await $$(this.selectors.activityLogBody).get(activityNumber - 1).$('p[style="text-align: right;"]').getText();
         if (getTextmsg.trim().includes(bodyText)) {
             return true;
         } else return false;
