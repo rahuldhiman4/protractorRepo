@@ -25,6 +25,7 @@ class ConfigureDataSourceConfigConsolePage {
     }
 
     async clickConfigDataSourceBtn(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addConfigDataSource)), 5000);
         await $(this.selectors.addConfigDataSource).click();
     }
 

@@ -8,6 +8,7 @@ import utilGrid from '../../utils/util.grid';
 import createConfigureDataSourceConfigPo from '../../pageobject/settings/slm/create-configure-data-source-config.po';
 import editConfigureDataSourceConfigPo from '../../pageobject/settings/slm/edit-configure-data-source-config.po';
 import approvalConfigurationPage from "../../pageobject/settings/approval/approval-configuration.po";
+import utilityCommon from '../../utils/utility.common';
 
 let caseBAUser = 'qkatawazi';
 
@@ -22,8 +23,8 @@ describe('Data Source Configuration Tests', () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
-        await loginPage.login(caseBAUser);
     });
 
     //skhobrag
@@ -39,7 +40,7 @@ describe('Data Source Configuration Tests', () => {
             expect(await configureDataSourceConsolePage.getDataSourceConfigurationConsoleHeading()).toBe(dataSourceConsoleHeading);
             expect(await configureDataSourceConsolePage.getDataSourceConfigurationConsoleDescription()).toBe(dataSourceConsoleDesc);
             await configureDataSourceConsolePage.clickConfigDataSourceBtn();
-            // await browser.sleep(5000);  // added hard wait to load Add Data Source Blade
+            // await browser.sleep(2000);  // added hard wait to load Add Data Source Blade
             expect(await createConfigureDataSourceConfigPo.getAddDataSourceConfigurationHeading()).toBe(createdataSourceConfigHeading);
             expect(await createConfigureDataSourceConfigPo.isDataSourceFieldRequired('Display Name')).toBeTruthy('Display Name field is marked as optional field');
             expect(await createConfigureDataSourceConfigPo.isDataSourceFieldRequired('Application Name')).toBeTruthy('Application Name field is marked as optional field');
@@ -48,11 +49,11 @@ describe('Data Source Configuration Tests', () => {
             await createConfigureDataSourceConfigPo.clickCancelButton();
             // await browser.sleep(2000);  // added hard wait to close Add Data Source Blade
             await configureDataSourceConsolePage.clickConfigDataSourceBtn();
+            expect(await createConfigureDataSourceConfigPo.getAddDataSourceConfigurationHeading()).toBe(createdataSourceConfigHeading);
             await createConfigureDataSourceConfigPo.setDataSourceDisplayName(dataSourceDisplayName);
             await createConfigureDataSourceConfigPo.clickCancelButton();
             expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue?');
             await utilCommon.clickOnWarningCancel();
-            await createConfigureDataSourceConfigPo.setDataSourceDisplayName(dataSourceDisplayName);
             await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Application Name', 'Innovation Studio');
             expect(await utilCommon.isPopUpMessagePresent('No Record Definition exists for the selected Application Name Innovation Studio')).toBeTruthy('Error : Record definition does not exists error message is not displayed.');
             expect(await createConfigureDataSourceConfigPo.isSaveBtnDisabled()).toBeTruthy('Save button is found enabled.');
@@ -134,7 +135,7 @@ describe('Data Source Configuration Tests', () => {
             expect(await editConfigureDataSourceConfigPo.getDatSourceAdvancedFieldValue('Dynamic End Time Field')).toBe('Created By Primary');
             expect(await editConfigureDataSourceConfigPo.getDatSourceAdvancedFieldValue('Dynamic Goal Time Field')).toBe('');
             expect(await editConfigureDataSourceConfigPo.getDatSourceAdvancedFieldValue('Category Field')).toBe('Category Tier 1 Primary');
-            let expectedSelectedExp = `'Assignee GUID Primary'="Petramco"`;
+            let expectedSelectedExp = `'Assignee GUID Primary' ="Petramco"`;
             expect(await editConfigureDataSourceConfigPo.getDatSourceFieldValue('Reset Goal Condition')).toBe(expectedSelectedExp);
             await editConfigureDataSourceConfigPo.selectDataSourceFieldOption('Assigned Group','Assigned Department Primary');
             await editConfigureDataSourceConfigPo.clickSaveButton();

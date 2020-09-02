@@ -11,6 +11,19 @@ import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import knowledgeArticleViewPage from '../../pageobject/knowledge/view-knowledge-article.po';
+import taskTemplateConsolePage from '../../pageobject/settings/task-management/console-tasktemplate.po';
+import createTaskTemplatePage from '../../pageobject/settings/task-management/create-tasktemplate.po';
+import notificationEventConsolePage from '../../pageobject/settings/notification-config/console-notification-event.po';
+import createNotificationEventPage from '../../pageobject/settings/notification-config/create-notification-event.po';
+import createNotificationTemplatePage from '../../pageobject/settings/notification-config/create-notification-template.po';
+import notificationTemplateConsolePage from "../../pageobject/settings/notification-config/console-notification-template.po";
+import editNotificationTemplatePage from '../../pageobject/settings/notification-config/edit-notification-template.po';
+import createCasePage from '../../pageobject/case/create-case.po';
+import previewCasePo from '../../pageobject/case/case-preview.po';
+import assignmentBladePO from '../../pageobject/common/change-assignment-blade.po';
+import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
+import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
+import addFieldsPopPo from '../../pageobject/common/add-fields-pop.po';
 
 const caseData = require('../../data/ui/case/case.ui.json');
 const manageNotificationTempNavigation = 'Notification Configuration--Manage Templates';
@@ -829,6 +842,112 @@ describe("Actionable Notifications", () => {
             await loginPage.login('qkatawazi');
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets('DRDMV-16846');
+        });
+    });
+
+    describe('[DRDMV-17006]: Check newly created notification template is actionable', () => {
+        let caseDisplayId: string = undefined;
+        beforeAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.createDocumentAndProcessForActionableNotifications();
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+        });
+
+        it('[DRDMV-17006]: Check newly created notification template is actionable', async () => {
+            //Create Automated Task Template
+            await taskTemplateConsolePage.clickOnAutomationTaskTemplateButton();
+            await createTaskTemplatePage.setTemplateName('Actionable Notification template');
+            await createTaskTemplatePage.selectCompanyByName('Petramco');
+            await createTaskTemplatePage.setExistingProcessName('Actionable Notification Process');
+            await createTaskTemplatePage.setTaskSummary('Desc Actionable Notification template');
+            await createTaskTemplatePage.selectOwnerCompany('Petramco');
+            await createTaskTemplatePage.selectBuisnessUnit('Canada Support');
+            await createTaskTemplatePage.selectOwnerGroup('CA Support 3');
+            await createTaskTemplatePage.selectTaskPriority('Critical');
+            await createTaskTemplatePage.selectTemplateStatus('Active');
+            await createTaskTemplatePage.clickOnSaveTaskTemplate();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+
+            //Create Notification Event
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Events', 'Manage Notification Event - Business Workflows');
+            await notificationEventConsolePage.clickAddNotificationEventBtn();
+            await createNotificationEventPage.setEventName('Actionable Notification Event');
+            await createNotificationEventPage.setCompanyValue('- Global -');
+            await createNotificationEventPage.setDescription('NotificationEvent for Actionable Notification');
+            await createNotificationEventPage.saveEventConfig();
+        });
+
+        it('[DRDMV-17006]: Check newly created notification template is actionable', async () => {
+            //Create NotificationTemplate
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Notification Template - Business Workflows');
+            await notificationTemplateConsolePage.clickOnCreateNotificationTemplate();
+            await createNotificationTemplatePage.setTemplateName('Actionable Notification');
+            await createNotificationTemplatePage.selectModuleName('Cases');
+            await createNotificationTemplatePage.setDescription('Actionable Notification Template'),
+            await createNotificationTemplatePage.selectEvent('Actionable Notification Event');
+            await editNotificationTemplatePage.clickRecipientsCheckbox('Assignee', 'TO');
+            await createNotificationTemplatePage.setAlertMessage('Actionable Alert check for Case ID: ');
+            await createNotificationTemplatePage.clickOnInsertFieldOfAlert();
+            await addFieldsPopPo.clickOnCase();
+            await addFieldsPopPo.selectDynamicField('Display ID');
+            await addFieldsPopPo.clickOnOkButtonOfEditor();
+            await createNotificationTemplatePage.clickOnGenerateClickableLinkIconOnAlert();
+            await createNotificationTemplatePage.clickOnTab();
+            await createNotificationTemplatePage.setSubject('Notification Template Email Subject ');
+            await createNotificationTemplatePage.setEmailBody('Notification Template Email Body Actionable Link: ');
+            await createNotificationTemplatePage.clickOnInsertFieldOfEmail();
+            await addFieldsPopPo.clickOnCase();
+            await addFieldsPopPo.selectDynamicField('Display ID');
+            await addFieldsPopPo.clickOnOkButtonOfEditor();
+            await createNotificationTemplatePage.clickOnGenerateClickableLinkIconOnEmail();
+            await createNotificationTemplatePage.clickOnSaveButton();
+
+            //Create new case
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester("Allen");
+            await createCasePage.setSummary("DRDMV-16241");
+            await createCasePage.clickChangeAssignmentButton();
+            await assignmentBladePO.selectCompany('Petramco');
+            await assignmentBladePO.selectBusinessUnit('United States Support');
+            await assignmentBladePO.selectSupportGroup('US Support 3');
+            await assignmentBladePO.selectAssignee('Qiao Feng');
+            await assignmentBladePO.clickOnAssignButton();
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            caseDisplayId = await viewCasePage.getCaseID();
+        });
+
+        it('[DRDMV-17006]: Check newly created notification template is actionable', async () => {
+            //Attach the Automated Task from Task Template as created above
+            await viewCasePage.clickAddTaskButton();
+            await manageTaskBladePo.addTaskFromTaskTemplate('Actionable Notification template');
+            await manageTaskBladePo.clickCloseButton();
+
+            //Update the status of Case to In Progress
+            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.clickSaveStatus();
+            await utilityCommon.closePopUpMessage();
+
+            //Verify that Notification generated is Actionable
+            await navigationPage.signOut();
+            await loginPage.login('qfeng');
+            await notificationPo.clickOnNotificationIcon();
+            await notificationPo.clickActionableLink(`Actionable Alert check for Case ID: ${caseDisplayId}`);
+            await utilityCommon.switchToNewTab(1);
+            expect(await viewCasePage.getCaseID()).toBe(caseDisplayId);
+        });
+
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteEmailOrNotificationTemplate('Actionable Notification', '- Global -');
+            await apiHelper.deleteNotificationEvent('Actionable Notification Event');
+            await apiHelper.deleteTaskTemplate('Actionable Notification template');
+            await apiHelper.deleteDocumentAndProcessForActionableNotifications();
         });
     });
 

@@ -237,7 +237,7 @@ describe('Dynamic data', () => {
         expect(await createNotificationTemplatePo.isDynamicFieldDisplayedInAlertBody('confidentialPublic')).toBeTruthy();
         await createNotificationTemplatePo.clickOnTab();
         await createNotificationTemplatePo.setSubject(randomStr);
-        await createNotificationTemplatePo.clickOnInsetFieldOfEmail();
+        await createNotificationTemplatePo.clickOnInsertFieldOfEmail();
         await addFieldsPopPo.navigateToDynamicFieldInCaseTemplate(caseTemplateName);
         expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('OuterConfidential')).toBeTruthy();
         expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('OuterNonConfidential')).toBeTruthy();
@@ -288,7 +288,7 @@ describe('Dynamic data', () => {
         expect(await createNotificationTemplatePo.isDynamicFieldDisplayedInAlertBody('Confidential data')).toBeTruthy();
         expect(await createNotificationTemplatePo.isDynamicFieldDisplayedInAlertBody('Additional Site Details')).toBeTruthy();
         await createNotificationTemplatePo.clickOnTab();
-        await createNotificationTemplatePo.clickOnInsetFieldOfEmail();
+        await createNotificationTemplatePo.clickOnInsertFieldOfEmail();
         await createNotificationTemplatePo.setSubject(randomStr);
         await addFieldsPopPo.navigateToAssociationsInCase();
         expect(await addFieldsPopPo.isAssocitionDisplayed('Case Origin Lookup Assoc')).toBeTruthy();

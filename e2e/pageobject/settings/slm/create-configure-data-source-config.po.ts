@@ -37,6 +37,7 @@ class CreateDataSourceConfigurationPage {
     }
 
     async setDataSourceDisplayName(dataSourceDisplayName: string): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.displayNameInputField)), 4000);
         await $(this.selectors.displayNameInputField).clear();
         await $(this.selectors.displayNameInputField).sendKeys(dataSourceDisplayName);
     }
@@ -77,8 +78,8 @@ class CreateDataSourceConfigurationPage {
         await $(this.selectors.regularExpSaveButton).click();
     }
 
-    async isDataSourceDropDownOptionsMatches(fieldName:string,dropdownOptions: string[],fieldValue:string): Promise<boolean> {
-      return await utilCommon.isDropDownOptionsMatches(fieldName,dropdownOptions,fieldValue);
+    async isDataSourceDropDownOptionsMatches(fieldName: string, dropdownOptions: string[], fieldValue: string): Promise<boolean> {
+        return await utilCommon.isDropDownOptionsMatches(fieldName, dropdownOptions, fieldValue);
     }
 
 

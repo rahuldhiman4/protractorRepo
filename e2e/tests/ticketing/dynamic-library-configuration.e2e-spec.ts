@@ -506,10 +506,10 @@ describe('Dynamic Library Configuration', () => {
             expect(await dynamicFieldsPage.isFieldDisplayedInFieldSection('FieldGroup1')).toBeTruthy();
             expect(await dynamicFieldsPage.getFieldNameAttribute('readonly')).toBeTruthy();
             expect(await dynamicFieldsPage.getDescriptionName('readonly')).toBeTruthy();
-            expect(await dynamicFieldsPage.getFieldValueType('readonly')).toBeTruthy();
+            expect(await dynamicFieldsPage.getFieldValueType('disabled')).toBeTruthy();
             await dynamicFieldsPage.removeField('GroupOne');
             await dynamicFieldsPage.clickSaveButton();
-            expect(await viewCasetemplatePo.isDynamicFieldDisplayed("FieldGroup1")).toBeTruthy();
+            expect(await viewCasetemplatePo.isDynamicFieldDisplayed("FieldGroup1")).toBeFalsy();
         });
         it('[DRDMV-13110]: [Dynamic Data]- Add Dynamic Fields and Groups to Case Template', async () => {
             await navigationPage.gotoSettingsPage();
@@ -530,10 +530,10 @@ describe('Dynamic Library Configuration', () => {
             expect(await dynamicFieldsPage.isFieldDisplayedInFieldSection('FieldGroup1')).toBeTruthy();
             expect(await dynamicFieldsPage.getFieldNameAttribute('readonly')).toBeTruthy();
             expect(await dynamicFieldsPage.getDescriptionName('readonly')).toBeTruthy();
-            expect(await dynamicFieldsPage.getFieldValueType('readonly')).toBeTruthy();
+            expect(await dynamicFieldsPage.getFieldValueType('disabled')).toBeTruthy();
             await dynamicFieldsPage.removeField('GroupOne');
             await dynamicFieldsPage.clickSaveButton();
-            expect(await viewCasetemplatePo.isDynamicFieldDisplayed("FieldGroup1")).toBeTruthy();
+            expect(await viewCasetemplatePo.isDynamicFieldDisplayed("FieldGroup1")).toBeFalsy();
         });
     });
 });
