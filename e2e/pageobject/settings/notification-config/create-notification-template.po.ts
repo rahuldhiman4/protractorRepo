@@ -21,7 +21,9 @@ class createNotificationTemplate {
         alertMessage: '[rx-view-component-id="b77c0581-b76e-4c92-a5e1-5c3026b379fa"] .cke_wysiwyg_div',
         emailBasedApprovalFlag: '[rx-view-component-id="be4360ec-c852-457f-87c0-c1bf1abf8952"] .d-textfield',
         emailBasedApprovalToggleGuid: '4c32ae80-d3de-4cca-88b9-0714972d15c1',
-        notificationMethodGuid: '0788e5c4-93ca-4d92-b61a-cd024f523a3e'
+        notificationMethodGuid: '0788e5c4-93ca-4d92-b61a-cd024f523a3e',
+        generateClickableLinkIconAlert: '[rx-view-component-id="b77c0581-b76e-4c92-a5e1-5c3026b379fa"] .cke_button__clickablelink_icon',
+        generateClickableLinkIconEmail: '[rx-view-component-id="cbc9e73f-032f-463a-9c6c-2b5abd5b59e1"] .cke_button__clickablelink_icon',
     }
     async selectModuleName(value: string): Promise<void> {
         await utilCommon.selectDropDown('bbaf88e2-7db2-4be4-858c-950d53ace33c', value);
@@ -39,6 +41,10 @@ class createNotificationTemplate {
         await $(this.selectors.subject).sendKeys(value);
     }
 
+    async setEmailBody(value: string): Promise<void> {
+        await utilCommon.setCKEditor(value, 'cbc9e73f-032f-463a-9c6c-2b5abd5b59e1');
+    }
+
     async setDescription(value: string): Promise<void> {
         await $(this.selectors.description).sendKeys(value);
     }
@@ -47,7 +53,7 @@ class createNotificationTemplate {
         await $(this.selectors.alertInsertField).click();
     }
 
-    async clickOnInsetFieldOfEmail(): Promise<void> {
+    async clickOnInsertFieldOfEmail(): Promise<void> {
         await $(this.selectors.emailInsertField).click();
     }
 
@@ -110,6 +116,14 @@ class createNotificationTemplate {
 
     async selectDefaultNotificationMethod(methodName: string) {
         await utilCommon.selectDropDown(this.selectors.notificationMethodGuid, methodName);
+    }
+
+    async clickOnGenerateClickableLinkIconOnAlert(): Promise<void> {
+        await $(this.selectors.generateClickableLinkIconAlert).click();
+    }
+
+    async clickOnGenerateClickableLinkIconOnEmail(): Promise<void> {
+        await $(this.selectors.generateClickableLinkIconEmail).click();
     }
 }
 export default new createNotificationTemplate(); 

@@ -56,6 +56,7 @@ import { DOCUMENT_TEMPLATE } from '../data/api/ticketing/document-template.data.
 import * as DYNAMIC from '../data/api/ticketing/dynamic.data.api';
 import { NEW_USER, ENABLE_USER } from '../data/api/foundation/create-foundation-entity.api';
 import { CASE_ASSIGNMENT_PAYLOAD } from '../data/api/case/case.config.api';
+import * as actionableNotificationPayloads from '../data/api/notification/actionable.notification.supporting.api';
 
 let fs = require('fs');
 
@@ -3051,6 +3052,62 @@ class ApiHelper {
         );
         console.log("Add SLM milestone =============>", attachMileStoneResponse.status);
         return attachMileStoneResponse.status == 200;
+    }
+
+    async createDocumentAndProcessForActionableNotifications(): Promise<void> {
+        let createProcessResponse = await axios.post(
+            'api/rx/application/process/processdefinition/',
+            actionableNotificationPayloads.NOTIIFCATION_CREATE_PROCESS
+        );
+        console.log("Create Process Response =============>", createProcessResponse.status);
+
+        let createDcoumentResponse = await axios.post(
+            'api/rx/application/document/documentdefinition',
+            actionableNotificationPayloads.NOTIFICATION_CREATE_DOCUMENT
+        );
+        console.log("Create Document Response =============>", createDcoumentResponse.status);
+
+        let updateProcessUri = `api/rx/application/process/processdefinition/${actionableNotificationPayloads.NOTIIFCATION_CREATE_PROCESS.name}`;
+        console.log('updateProcessUri', updateProcessUri);
+        let updateProcessResponse = await axios.put(
+            updateProcessUri,
+            actionableNotificationPayloads.NOTIFICATION_UPDATE_PROCESS
+        );
+        console.log("Update Process Response =============>", updateProcessResponse.status);
+    }
+
+    async deleteDocumentAndProcessForActionableNotifications(): Promise<void> { 
+        let deleteProcessResponse = await axios.post(
+            'api/rx/application/command',
+            actionableNotificationPayloads.NOTIFICATION_DELETE_PROCESS
+        );
+        console.log("Delete Process Response =============>", deleteProcessResponse.status);
+
+         let deleteDocumentResponse = await axios.post(
+            'api/rx/application/command',
+            actionableNotificationPayloads.NOTIFICATION_DELETE_DOCUMENT
+        );
+        console.log("Delete Document Response =============>", deleteDocumentResponse.status);
+    }
+
+    async deleteNotificationEvent(notificationEventName: string, company?: string): Promise<boolean> {
+        let notificationEventGuid: string = undefined;
+        if(company) notificationEventGuid = await apiCoreUtil.getNotificationEventGuid(notificationEventName, company);
+        else notificationEventGuid = await apiCoreUtil.getNotificationEventGuid(notificationEventName);
+        if (notificationEventGuid) {
+            let status = await apiCoreUtil.deleteRecordInstance('com.bmc.dsm.notification-lib%3ANotificationEvent', notificationEventGuid);
+            console.log(`Notification Event: ${notificationEventName} deletion status ==> ${status}`);
+            return status;
+        } else console.log('Notification Event GUID not found =============>', notificationEventName);
+    }
+
+    async deleteTaskTemplate(taskTemplateName: string): Promise<boolean> {
+        let taskTemplateGuid = await apiCoreUtil.getTaskTemplateGuid(taskTemplateName);
+        if (taskTemplateGuid) {
+            let status = await apiCoreUtil.deleteRecordInstance('com.bmc.dsm.task-lib:Task Template', taskTemplateGuid);
+            console.log(`Task Template: ${taskTemplateName} deletion status ==> ${status}`);
+            return status;
+        } else console.log('Task Template GUID not found =============>', taskTemplateName);
     }
 }
 
