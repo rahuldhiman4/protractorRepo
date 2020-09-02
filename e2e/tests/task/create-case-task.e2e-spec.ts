@@ -1295,10 +1295,13 @@ describe('Create Case Task', () => {
             await previewCasePo.clickGoToCaseButton();
         });
         it('[DRDMV-3880,DRDMV-5320]: [Task Status] Task Status change from Completed', async () => {
-            await viewCasePage.clickOnTaskLink(`manualTaskTemplateSummary1 ${randomStr}`);
+            await navigationPage.gotoTaskConsole();
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(`manualTaskTemplateSummary1 ${randomStr}`);
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
-            await viewTask.clickOnViewCase();
-            await viewCasePage.clickOnTaskLink(`manualTaskTemplateSummary2 ${randomStr}`);
+            await navigationPage.gotoTaskConsole();
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(`manualTaskTemplateSummary2 ${randomStr}`);
             expect(await viewTask.getTaskStatusValue()).toBe("Staged"); 
             await viewTask.clickOnViewCase();
         });
