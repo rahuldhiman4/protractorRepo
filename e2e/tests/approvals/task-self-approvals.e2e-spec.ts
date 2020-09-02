@@ -40,7 +40,7 @@ describe("Task Self Approval Tests", () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let summary = '"' + "Automated Approval without process for task" + '"';
         let caseData = undefined;
-        let manualTaskTemplateData, autoTaskTemplateData, caseId,caseId2;
+        let manualTaskTemplateData, autoTaskTemplateData, caseId, caseId2;
 
         beforeAll(async () => {
             manualTaskTemplateData = {
@@ -139,7 +139,7 @@ describe("Task Self Approval Tests", () => {
             await manageTask.addTaskFromTaskTemplate(manualTaskTemplateData.templateName);
             await manageTask.waitUntilNumberOfTaskLinkAppear(1);
             expect(await manageTask.isTaskLinkPresent(manualTaskTemplateData.templateSummary)).toBeTruthy(manualTaskTemplateData.templateSummary + ' Task is not added to case');
-            await manageTask.clickCloseButton();            
+            await manageTask.clickCloseButton();
         });
 
         it('[DRDMV-21589]: Verify if task approved is triggered for manual task', async () => {
@@ -162,7 +162,7 @@ describe("Task Self Approval Tests", () => {
             await manageTask.addTaskFromTaskTemplate(autoTaskTemplateData.templateName);
             await manageTask.waitUntilNumberOfTaskLinkAppear(1);
             expect(await manageTask.isTaskLinkPresent(autoTaskTemplateData.templateSummary)).toBeTruthy(autoTaskTemplateData.templateSummary + ' Task is not added to case');
-            await manageTask.clickCloseButton();            
+            await manageTask.clickCloseButton();
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
@@ -184,7 +184,7 @@ describe("Task Self Approval Tests", () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let summary = '"' + "Automated Approval with process for task" + '"';
         let caseData = undefined;
-        let manualTaskTemplateData, autoTaskTemplateData, caseId,caseId2;
+        let manualTaskTemplateData, autoTaskTemplateData, caseId, caseId2;
 
         beforeAll(async () => {
             manualTaskTemplateData = {
@@ -284,7 +284,7 @@ describe("Task Self Approval Tests", () => {
             await manageTask.addTaskFromTaskTemplate(manualTaskTemplateData.templateName);
             await manageTask.waitUntilNumberOfTaskLinkAppear(1);
             expect(await manageTask.isTaskLinkPresent(manualTaskTemplateData.templateSummary)).toBeTruthy(manualTaskTemplateData.templateSummary + ' Task is not added to case');
-            await manageTask.clickCloseButton();            
+            await manageTask.clickCloseButton();
         });
 
         it('[DRDMV-21588]: Verify if task approved is triggered for manual task', async () => {
@@ -307,7 +307,7 @@ describe("Task Self Approval Tests", () => {
             await manageTask.addTaskFromTaskTemplate(autoTaskTemplateData.templateName);
             await manageTask.waitUntilNumberOfTaskLinkAppear(1);
             expect(await manageTask.isTaskLinkPresent(autoTaskTemplateData.templateSummary)).toBeTruthy(autoTaskTemplateData.templateSummary + ' Task is not added to case');
-            await manageTask.clickCloseButton();            
+            await manageTask.clickCloseButton();
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
@@ -327,8 +327,8 @@ describe("Task Self Approval Tests", () => {
 
     describe('[DRDMV-22951]:Different Approval Mapping Configurations for Task and the way it processes', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let caseId, caseData, caseTemplateData1,manualTaskTemplateData1, approvalMappingResponse, approvalMappingData,manualTaskDisplayId;
-        let caseTemplateData,manualTaskTemplateData,manualTaskTemplate,manualTaskTemplate1, caseTemplate,caseTemplate1;
+        let caseId, caseData, caseTemplateData1, manualTaskTemplateData1, approvalMappingResponse, approvalMappingData, manualTaskDisplayId;
+        let caseTemplateData, manualTaskTemplateData, manualTaskTemplate, manualTaskTemplate1, caseTemplate, caseTemplate1;
         beforeAll(async () => {
             // Create Case Templates through API
             caseTemplateData = {
@@ -373,7 +373,7 @@ describe("Task Self Approval Tests", () => {
                 "ownerGroup": "US Support 3"
             }
 
-            manualTaskTemplateData1= {
+            manualTaskTemplateData1 = {
                 "templateName": `manualTaskTemplate second ${randomStr}`,
                 "templateSummary": 'Automated Approval for task second',
                 "templateStatus": "Active",
@@ -403,9 +403,9 @@ describe("Task Self Approval Tests", () => {
                 "qualification": "'Priority' = \"Low\"",
                 "precedence": 0,
                 "isLevelUp": true,
-                "levels": 1,          
+                "levels": 1,
             }
-        
+
             await apiHelper.createApprovalFlow(approvalFlows, taskModule);
 
             //Create Approval Mapping through API
@@ -463,7 +463,7 @@ describe("Task Self Approval Tests", () => {
             let taskData = {
                 "taskName": "Toggle False, task created without template" + "_" + randomStr,
                 "company": "Petramco",
-                "priority":"Low",
+                "priority": "Low",
                 "businessUnit": "United States Support",
                 "supportGroup": "US Support 1",
                 "assignee": "qtao",
@@ -562,7 +562,7 @@ describe("Task Self Approval Tests", () => {
             let taskData = {
                 "taskName": "Toggle true, task created without template" + "_" + randomStr,
                 "company": "Petramco",
-                "priority":"Low",
+                "priority": "Low",
                 "businessUnit": "United States Support",
                 "supportGroup": "US Support 1",
                 "assignee": "qtao",
@@ -671,7 +671,7 @@ describe("Task Self Approval Tests", () => {
             let approvalFlows = {
                 "flowName": 'Approval Flow1' + randomStr,
                 "approver": "U:qliu;U:Fritz",
-                "isLevelUp":false,
+                "isLevelUp": false,
                 "qualification": "'Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.bccb0487dc2fab9e5052c16c67f647df8ce68a989fd53a4999763c5a336e5b79c83b8ba8108907851a28e035b87c73ae2f086df65912d77eff8e21299d90c32c.304405421} AND 'Category Tier 2' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.8c700e7edba91d3091aed763ab1c3c0bcf1c44c8c8776d53fa6bc76b6ff78bb48f106c210f41c330a2c42af0daab956847e9712a4a8822b8c571e5b97eec1bf5.304405421}",
                 "precedence": 0,
                 "signingCriteria": 0,
@@ -764,6 +764,8 @@ describe("Task Self Approval Tests", () => {
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(caseId);
             await viewCasePo.openTaskCard(1);
             automatedTaskDisplayId = await manageTask.getTaskDisplayIdFromManageTaskBlade();
             await manageTask.clickTaskLink(manualTaskTemplateData.templateSummary);
@@ -801,7 +803,7 @@ describe("Task Self Approval Tests", () => {
 
     describe('[DRDMV-22264]:[Approval] Verify precedence will be given to company specific approval mapping if we have global approval mapping with Same name when task enters approval cycle', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let caseId, caseData, automatedTaskDisplayId, approvalMappingResponse, approvalMappingData,globalApprovalMappingData;
+        let caseId, caseData, automatedTaskDisplayId, approvalMappingResponse, approvalMappingData, globalApprovalMappingData;
         let caseTemplateData, manualTaskTemplateData, automatedTask, caseTemplate;
         beforeAll(async () => {
             // Create Case Templates through API
@@ -842,7 +844,7 @@ describe("Task Self Approval Tests", () => {
             let approvalFlows = {
                 "flowName": 'Approval Flow1' + randomStr,
                 "approver": "U:qliu;U:Fritz",
-                "isLevelUp":false,
+                "isLevelUp": false,
                 "qualification": "'Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.bccb0487dc2fab9e5052c16c67f647df8ce68a989fd53a4999763c5a336e5b79c83b8ba8108907851a28e035b87c73ae2f086df65912d77eff8e21299d90c32c.304405421} AND 'Category Tier 2' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.8c700e7edba91d3091aed763ab1c3c0bcf1c44c8c8776d53fa6bc76b6ff78bb48f106c210f41c330a2c42af0daab956847e9712a4a8822b8c571e5b97eec1bf5.304405421}",
                 "precedence": 0,
                 "signingCriteria": 0,
@@ -900,6 +902,8 @@ describe("Task Self Approval Tests", () => {
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(caseId);
             await viewCasePo.openTaskCard(1);
             automatedTaskDisplayId = await manageTask.getTaskDisplayIdFromManageTaskBlade();
             await manageTask.clickTaskLink(manualTaskTemplateData.templateSummary);
@@ -973,7 +977,7 @@ describe("Task Self Approval Tests", () => {
             expect(await viewTask.getTaskStatusValue()).toBe("Completed");
             expect(await viewTask.isShowApproversBannerDisplayed()).toBeFalsy('Show Approvers Banner is not displayed');
             await apiHelper.apiLogin('fritz');
-            await apiHelper.deleteApprovalMapping(taskModule,"Task Approval Mapping_" + randomStr);
+            await apiHelper.deleteApprovalMapping(taskModule, "Task Approval Mapping_" + randomStr);
             let newCase = await apiHelper.createCase(caseData);
             caseId = newCase.displayId;
             await navigationPage.gotoCaseConsole();
@@ -1041,7 +1045,4 @@ describe("Task Self Approval Tests", () => {
             await loginPage.login('qkatawazi');
         });
     });
-
-
-
 }); 

@@ -645,7 +645,6 @@ describe('CKE Description', () => {
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickMaximizeMinimizeIcon();
         });
-
         it('[DRDMV-22095] Upload image with URL and local , Style text, Insert Link and Table', async () => {
             //add style
             await createCasePo.updateCaseDescription(formatText);
@@ -689,7 +688,6 @@ describe('CKE Description', () => {
             await createCasePo.clickSaveCaseButton();
             await casePreviewPo.clickGoToCaseButton();
         });
-
         it('[DRDMV-22095] Verify case description field on case', async () => {
             await viewCasePo.clickDescriptionShowMore();
             expect(await ckeditorValidationPo.isLinkDisplayedInCKE('Google')).toBeTruthy();
@@ -711,7 +709,6 @@ describe('CKE Description', () => {
             await editCasePo.clickOnAssignToMe();
             await editCasePo.clickSaveCase();
         });
-
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
@@ -787,7 +784,6 @@ describe('CKE Description', () => {
             await createAdhocTaskPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickMaximizeMinimizeIcon();
         });
-
         it('[DRDMV-22096] Upload image with URL and local , Style text, Insert Link and Table', async () => {
             //upload image with URL
             await ckeditorOpsPo.clickOnImageIcon();
@@ -831,7 +827,6 @@ describe('CKE Description', () => {
             await createAdhocTaskPo.clickSaveAdhoctask()
             await manageTaskBladePo.clickTaskLink(randomString);
         });
-
         it('[DRDMV-22096] Verify task description field on Task', async () => {
             await viewTaskPo.clickShowMoreTaskDescription();
             expect(await ckeditorValidationPo.isLinkDisplayedInCKE('Google')).toBeTruthy();
@@ -853,7 +848,6 @@ describe('CKE Description', () => {
             await editTaskPo.clickOnAssignToMe();
             await editTaskPo.clickOnSaveButton();
         });
-
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');

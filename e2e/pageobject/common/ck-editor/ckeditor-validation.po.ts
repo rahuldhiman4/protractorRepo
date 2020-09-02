@@ -9,18 +9,18 @@ class CKEValidation {
         underLineText: '[rx-view-component-id="cce67ce7-e6a5-4ed6-aa50-c57ea75d2854"] u,.rx-description-textarea-read u,.bwf-description-read-state u,.bwf-description-read-state u',
         linkText: '[rx-view-component-id="cce67ce7-e6a5-4ed6-aa50-c57ea75d2854"] div a,.rx-description-textarea-read div a,.bwf-description-read-state div a,.bwf-description-read-state a',
         descriptionView: '.rx-description-textarea-read,.bwf-description-read-state',
-    } 
+    }
 
-    async isBoldTextDisplayed(value: string,guid?:string): Promise<boolean> {
-        let bold= this.selectors.boldText;
+    async isBoldTextDisplayed(value: string, guid?: string): Promise<boolean> {
+        let bold = this.selectors.boldText;
         if (guid) bold = `[rx-view-component-id="${guid}"] strong`;
         let text = await $(bold).getText();
         return text.includes(value);
     }
 
-    async getTableCellAlignText(alignValue: string,guid?:string): Promise<string> {
+    async getTableCellAlignText(alignValue: string, guid?: string): Promise<string> {
         let locator = `table td[style="${alignValue}"]`;
-         if (guid) locator = `[rx-view-component-id="${guid}"] table td[style="${alignValue}"]`;
+        if (guid) locator = `[rx-view-component-id="${guid}"] table td[style="${alignValue}"]`;
         return await $(locator).getText();
     }
 
@@ -42,20 +42,23 @@ class CKEValidation {
     async getColorFontStyleOfText(value: string, guid?: string): Promise<string> {
         let alignColorFontStyle = `${this.selectors.descriptionView} div[style="${value}"]`;
         if (guid) alignColorFontStyle = `[rx-view-component-id="${guid}"] ${this.selectors.descriptionView} div[style="${value}"]`;
-        let fontStyleElement = await $(alignColorFontStyle);
-        await utilityCommon.scrollToElement(fontStyleElement);
-        return fontStyleElement.getText();
+        let elementText: string;
+        let styleElementCount = (await $$(alignColorFontStyle)).length;
+        for (let i: number = 0; i < styleElementCount; i++) {
+            elementText += await $$(alignColorFontStyle).get(i).getText();
+        }
+        return elementText;
     }
 
-    async isItalicTextDisplayed(value: string,guid?:string): Promise<boolean> {
-        let italic= this.selectors.italicText;
+    async isItalicTextDisplayed(value: string, guid?: string): Promise<boolean> {
+        let italic = this.selectors.italicText;
         if (guid) italic = `[rx-view-component-id="${guid}"] em`;
         let text = await $(italic).getText();
         return text.includes(value);
     }
 
-    async isUnderLineTextDisplayed(value: string,guid?:string): Promise<boolean> {
-        let underLine= this.selectors.underLineText;
+    async isUnderLineTextDisplayed(value: string, guid?: string): Promise<boolean> {
+        let underLine = this.selectors.underLineText;
         if (guid) underLine = `[rx-view-component-id="${guid}"] u`;
         let text = await $(underLine).getText();
         return text.includes(value);
@@ -70,11 +73,11 @@ class CKEValidation {
     async isColorTextDisplayed(value: string, guid?: string): Promise<boolean> {
         let isColorText = `${this.selectors.descriptionView} span[style="${value}"]`;
         if (guid) isColorText = `[rx-view-component-id="${guid}"] ${this.selectors.descriptionView} span[style="${value}"]`;
-         return await $(isColorText).isDisplayed(); 
+        return await $(isColorText).isDisplayed();
     }
 
-    async isLinkDisplayedInCKE(value: string,guid?:string): Promise<boolean> {
-        let link=this.selectors.linkText;
+    async isLinkDisplayedInCKE(value: string, guid?: string): Promise<boolean> {
+        let link = this.selectors.linkText;
         if (guid) link = `[rx-view-component-id="${guid}"] a`;
         return await $$(this.selectors.linkText).first().getText() == value;
     }
@@ -86,4 +89,4 @@ class CKEValidation {
     }
 }
 
- export default new CKEValidation();
+export default new CKEValidation();
