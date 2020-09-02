@@ -287,4 +287,58 @@ describe('Case Cognitive', () => {
         await createCasePo.clickClearTemplateButton();
         expect(await createCasePo.isAutoCategorizeButtonEnabled()).toBeTruthy("Button is Disable");
     });
+
+    //Created Bug - DRDMV-23210
+    describe('[DRDMV-8985,DRDMV-8987]:[Cognitive] - Auto categorization when cognitive search return only tier 1, tier 1,2 and tier 1,2,3 values', async () => {
+        it('[DRDMV-8985,DRDMV-8987]:[Cognitive] - Auto categorization when cognitive search return only tier 1, tier 1,2 and tier 1,2,3 values', async () => {
+            await navigationPage.gotoCreateCase();
+            await createCasePo.selectRequester('adam');
+            await createCasePo.setSummary('SearchCateg4');
+            await createCasePo.clickOnAutoCategorize();
+            expect(await createCasePo.getCategoryTier1Value()).toBe(categName1);
+            expect(await createCasePo.getCategoryTier2Value()).toBe('Select');
+            expect(await createCasePo.getCategoryTier3Value()).toBe('Select');
+            expect(await createCasePo.getCategoryTier4Value()).toBe('Select');
+            await createCasePo.setSummary('SearchCat');
+            await createCasePo.clickOnAutoCategorize();
+            expect(await utilityCommon.isPopUpMessagePresent('No results found for categories.')).toBeTruthy();
+            expect(await createCasePo.getCategoryTier1Value()).toBe(categName1);
+            expect(await createCasePo.getCategoryTier2Value()).toBe('Select');
+            expect(await createCasePo.getCategoryTier3Value()).toBe('Select');
+            expect(await createCasePo.getCategoryTier4Value()).toBe('Select');         
+            await createCasePo.clearSummary();
+            await createCasePo.setSummary('SearchCateg3');
+            await createCasePo.clickOnAutoCategorize();
+            expect(await createCasePo.getCategoryTier1Value()).toBe(categName1);
+            expect(await createCasePo.getCategoryTier2Value()).toBe(categName2);
+            expect(await createCasePo.getCategoryTier3Value()).toBe('Select');
+            expect(await createCasePo.getCategoryTier4Value()).toBe('Select');
+        });
+        it('[DRDMV-8985,DRDMV-8987]:[Cognitive] - Auto categorization when cognitive search return only tier 1, tier 1,2 and tier 1,2,3 values', async () => {
+            await createCasePo.clearSummary();
+            await createCasePo.setSummary('SearchCateg2');
+            await createCasePo.clickOnAutoCategorize();
+            expect(await createCasePo.getCategoryTier1Value()).toBe(categName1);
+            expect(await createCasePo.getCategoryTier2Value()).toBe(categName2);
+            expect(await createCasePo.getCategoryTier3Value()).toBe(categName3);
+            expect(await createCasePo.getCategoryTier4Value()).toBe('Select');  
+            await createCasePo.selectCategoryTier1("Facilities");
+            await createCasePo.selectCategoryTier2("Conference Room");
+            await createCasePo.selectCategoryTier3("Furniture");
+            expect(await createCasePo.getCategoryTier1Value()).toBe("Facilities");
+            expect(await createCasePo.getCategoryTier2Value()).toBe("Conference Room");
+            expect(await createCasePo.getCategoryTier3Value()).toBe("Furniture");
+            await createCasePo.clearSummary();
+            await createCasePo.setSummary('SearchCateg1');
+            await createCasePo.clickOnAutoCategorize();
+            expect(await createCasePo.getCategoryTier1Value()).toBe(categName1);
+            expect(await createCasePo.getCategoryTier2Value()).toBe(categName2);
+            expect(await createCasePo.getCategoryTier3Value()).toBe(categName3);
+            expect(await createCasePo.getCategoryTier4Value()).toBe(categName4);      
+        });
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+    });
 });

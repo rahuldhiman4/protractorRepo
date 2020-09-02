@@ -86,7 +86,8 @@ class ActivityTabPage {
         activityLogBody: '.activity__wrapper .collapse-block div div[style="position: relative;"]',
         showApproversLink: '.activity__wrapper button.btn-sm',
         alertTooltipMessage: '.alert-content',
-        alertTooltipIcon: '.d-icon-info_circle'
+        alertTooltipIcon: '.d-icon-info_circle',
+        rightAlign: 'p[style="text-align: right;"],div[style="text-align: right;"]'
     }
 
     async isLockIconDisplayedInActivity(activityNumber: number): Promise<boolean> {
@@ -866,7 +867,7 @@ class ActivityTabPage {
     }
 
     async isRightAlignTextDisplayedInActivity(bodyText: string, activityNumber: number): Promise<boolean> {
-        let getTextmsg = await $$(this.selectors.activityLogBody).get(activityNumber - 1).$('p[style="text-align: right;"]').getText();
+        let getTextmsg = await $$(this.selectors.activityLogBody).get(activityNumber - 1).$(this.selectors.rightAlign).getText();
         if (getTextmsg.trim().includes(bodyText)) {
             return true;
         } else return false;

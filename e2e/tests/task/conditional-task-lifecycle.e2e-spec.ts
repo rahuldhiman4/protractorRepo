@@ -21,8 +21,8 @@ describe('Conditional Task Life Cycle', () => {
     });
 
     afterAll(async () => {
-        await navigationPage.signOut();
         await utilityCommon.closeAllBlades();
+        await navigationPage.signOut();
     });
 
     //asahitya
@@ -655,12 +655,12 @@ describe('Conditional Task Life Cycle', () => {
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateData2.templateSummary);
             await editCasePage.clickSaveCase();
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.searchAndOpenHyperlink(caseResponse1.displayId);
+            await utilityGrid.searchAndOpenHyperlink(caseResponse2.displayId);
 ``
             expect(await viewCasePage.isAllTaskUnderStatusTitleMatches('Upcoming Tasks', [manualTaskTemplateData2.templateSummary, externalTaskTemplateData2.templateSummary])).toBeTruthy();
             await apiHelper.updateCaseStatus(caseResponse2.id, 'InProgress');
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.searchAndOpenHyperlink(caseResponse1.displayId);
+            await utilityGrid.searchAndOpenHyperlink(caseResponse2.displayId);
 
             expect(await viewCasePage.isAllTaskUnderStatusTitleMatches('In Progress Tasks', [manualTaskTemplateData2.templateSummary, externalTaskTemplateData2.templateSummary])).toBeTruthy();
 
@@ -673,7 +673,7 @@ describe('Conditional Task Life Cycle', () => {
             await apiHelper.updateTaskStatus(externalTaskGuid, 'Completed', 'Successful');
 
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.searchAndOpenHyperlink(caseResponse1.displayId);
+            await utilityGrid.searchAndOpenHyperlink(caseResponse2.displayId);
             expect(await viewCasePage.isAllTaskUnderStatusTitleMatches('Completed Tasks', [manualTaskTemplateData2.templateSummary, externalTaskTemplateData2.templateSummary])).toBeTruthy();
 
             await updateStatusBlade.changeCaseStatus('Resolved');

@@ -21,6 +21,7 @@ class Copytaskpage {
         ownerGuid: '61278673-8106-419c-83e4-a9e00f12f835',
         ownerGroupValueOnCopy: '[rx-view-component-id="61278673-8106-419c-83e4-a9e00f12f835"] .ui-select-match-text',
         buisnessUnitGuid: 'a81cc2df-7b89-4367-81f7-f0ad5e786ca2',
+        showMoreDescriptionLink: '[rx-view-component-id="cce67ce7-e6a5-4ed6-aa50-c57ea75d2854"] button.more',
     }
 
     async unSelectCopyExistingProcess(): Promise<string> {
@@ -85,6 +86,10 @@ class Copytaskpage {
 
     async selectBuisnessUnitGroup(ownerGroup: string): Promise<void> {
         await util.selectDropDown(this.selectors.buisnessUnitGuid, ownerGroup);
+    }
+
+    async clickShowMoreDescriptionLink(): Promise<void> {
+        return await $(this.selectors.showMoreDescriptionLink).click();
     }
 }
 

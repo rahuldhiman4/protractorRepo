@@ -105,7 +105,7 @@ class DynamicField {
     }
 
     async removeField(fieldName: string): Promise<void> {
-        await $(`[aria-label=${fieldName}] .remove-button-text`).click();
+        await $(`[aria-label=${fieldName}] [class="d-icon-left-cross header-icon"]`).click();
     }
 
     async selectFieldValueType(dataType: string): Promise<void> {
