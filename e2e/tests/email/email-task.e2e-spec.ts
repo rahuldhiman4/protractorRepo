@@ -484,10 +484,10 @@ describe('Email Task', () => {
         await utilityGrid.clearFilter();
         await utilityGrid.searchAndOpenHyperlink(displayId);
         await viewCasePo.clickOnEmailLink();
-        await emailPo.addAttachment(['../../data/ui/attachment/demo.txt']);
         await emailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
-        await emailPo.setToOrCCInputTetxbox('Cc', 'qkatawazi@petramco.com')
+        await emailPo.setToOrCCInputTetxbox('Cc', 'qkatawazi@petramco.com');
         await emailPo.setEmailBody('this is new email sending frist time to the user');
+        await emailPo.addAttachment(['../../data/ui/attachment/demo.txt']);
         await emailPo.clickOnSendButton();
         expect(await activityTabPo.getEmailTitle()).toContain('Fritz Schulz sent an email');
         expect(await activityTabPo.getRecipientInTo()).toContain('To: Fritz Schulz');

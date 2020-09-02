@@ -21,7 +21,9 @@ class EditTask {
         categoryTier4: 'ff1636f8-4efe-4447-9c04-f32799904f2b',
         priority: 'e638927a-e1e1-46e7-bfe3-8fe9904a5c5a',
         dynamicDate: '.i-date',
-        dynamicDateTime: 'input[ng-model="datetime"]',
+        dynamicBooleanValue: 'button.d-icon-check_adapt',
+        dynamicFieldTime: '.i-time',
+        dynamicDateTime: '.fields-container .i-date-time',
         taskSummary: '[rx-view-component-id="1261e01e-00fb-4e2c-b2ac-72e837f9fcea"] input',
         dynamicFieldName: '[rx-view-component-id="4c988a95-b148-475f-b91c-9788d8e6c0cb"] label',
         ckeditorGuid: '6053a7e8-5194-420b-965a-1c3bfe3ad0a1',
@@ -54,9 +56,16 @@ class EditTask {
         await $(this.selectors.dynamicDate).sendKeys(value);
     }
 
+    async selectValueFromList(value: string): Promise<void> {
+        await utilityCommon.selectDropDown('4c988a95-b148-475f-b91c-9788d8e6c0cb', value);
+    }
+
     async setDateTimeDynamicFieldValue(value: string): Promise<void> {
-        await $(this.selectors.dynamicDateTime).clear();
         await $(this.selectors.dynamicDateTime).sendKeys(value);
+    }
+
+    async setTimeInDynamicField(value: string): Promise<void> {
+        await $(this.selectors.dynamicFieldTime).sendKeys(value);
     }
 
     async addAttachment(fileToUpload: string[]): Promise<void> {
@@ -125,6 +134,10 @@ class EditTask {
 
     async selectTaskCategoryTier2(categoryTier2: string): Promise<void> {
         await utilityCommon.selectDropDown(this.selectors.categoryTier2, categoryTier2);
+    }
+
+    async clickOnTrueValueOfDynamicField(): Promise<void> {
+        await $(this.selectors.dynamicBooleanValue).click();
     }
 
     async selectTaskCategoryTier3(categoryTier3: string): Promise<void> {

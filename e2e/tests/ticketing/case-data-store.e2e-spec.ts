@@ -1111,6 +1111,8 @@ describe('Case Data Store', () => {
             await editDynamicFieldLibraryConfigPo.clickCancelButton();
             expect(await utilCommon.getWarningDialogMsg()).toBe("You have unsaved data. Do you want to continue without saving?");
             await utilCommon.clickOnWarningOk();
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', 'Field Management Console - Business Workflows');
             await utilGrid.searchAndOpenHyperlink('NewLibTextField' + randomStr);
             await editDynamicFieldLibraryConfigPo.clickCancelButton();
         });

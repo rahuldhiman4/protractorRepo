@@ -1,20 +1,33 @@
+import viewTasktemplatePo from '../../pageobject/settings/task-management/view-tasktemplate.po';
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
+import dynamicFieldsPage from '../../pageobject/common/dynamic-fields.po';
 import localizeValuePopPo from '../../pageobject/common/localize-value-pop.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import createDynamicFieldLibraryConfigPo from '../../pageobject/settings/application-config/create-dynamic-field-library-config.po';
 import dynamicFieldLibraryConfigConsolePo from '../../pageobject/settings/application-config/dynamic-field-library-config-console.po';
+import editDynamicFieldLibraryConfigPo from '../../pageobject/settings/application-config/edit-dynamic-field-library-config.po';
+import selectTaskTemplate from "../../pageobject/settings/task-management/console-tasktemplate.po";
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
-import utilityCommon from '../../utils/utility.common';
-import editDynamicFieldLibraryConfigPo from '../../pageobject/settings/application-config/edit-dynamic-field-library-config.po';
 import utilGrid from '../../utils/util.grid';
+import utilityCommon from '../../utils/utility.common';
+import consoleCasetemplatePo from '../../pageobject/settings/case-management/console-casetemplate.po';
+import viewCasetemplatePo from '../../pageobject/settings/case-management/view-casetemplate.po';
+import viewCasePo from '../../pageobject/case/view-case.po';
+import createCasePo from '../../pageobject/case/create-case.po';
+import casePreviewPo from '../../pageobject/case/case-preview.po';
+import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
+import editTaskPo from '../../pageobject/task/edit-task.po';
+import viewTaskPo from '../../pageobject/task/view-task.po';
+import editCasetemplatePo from '../../pageobject/settings/case-management/edit-casetemplate.po';
+
 
 describe('Dynamic Library Configuration', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
-        await loginPage.login('qkatawazi');
+        await loginPage.login('fritz');
     });
 
     afterAll(async () => {
@@ -54,11 +67,33 @@ describe('Dynamic Library Configuration', () => {
         await utilCommon.clickOnWarningOk();
     });
 
-    describe('[DRDMV-13104,DRDMV-13103]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
+    describe('[DRDMV-13104,DRDMV-13103,DRDMV-13107]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
         let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        it('[DRDMV-13104,DRDMV-13103]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
+        it('[DRDMV-13104,DRDMV-13103,DRDMV-13107]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', 'Field Management Console - Business Workflows');
+            let headers: string[] = ["Field Description", "Field Name", "Field Value Type", "Status"];
+            let updatedHeaders: string[] = ["Field Description", "Field Name", "Field Value Type", "Status","Confidential", "Information Source"];
+            let header: string[] = ["InformationSource","Confidential"]
+            //field Text type    
+            expect(await dynamicFieldLibraryConfigConsolePo.areRequestedColumnMatches(headers)).toBeTruthy();
+            await dynamicFieldLibraryConfigConsolePo.addColumnOnGrid(header);
+            expect(await dynamicFieldLibraryConfigConsolePo.areRequestedColumnMatches(updatedHeaders)).toBeTruthy();
+            expect(await dynamicFieldLibraryConfigConsolePo.isRequestedColumnSortedAscending("Field Description")).toBeTruthy("asc");
+            expect(await dynamicFieldLibraryConfigConsolePo.isRequestedColumnSortedDescending("Field Description")).toBeTruthy("desc");
+            expect(await dynamicFieldLibraryConfigConsolePo.isRequestedColumnSortedAscending("Field Name")).toBeTruthy("asc");
+            expect(await dynamicFieldLibraryConfigConsolePo.isRequestedColumnSortedDescending("Field Name")).toBeTruthy("desc");
+            expect(await dynamicFieldLibraryConfigConsolePo.isRequestedColumnSortedAscending("Field Value Type")).toBeTruthy("asc");
+            expect(await dynamicFieldLibraryConfigConsolePo.isRequestedColumnSortedDescending("Field Value Type")).toBeTruthy("desc");
+            expect(await dynamicFieldLibraryConfigConsolePo.isRequestedColumnSortedAscending("Status")).toBeTruthy("asc");
+            expect(await dynamicFieldLibraryConfigConsolePo.isRequestedColumnSortedDescending("Status")).toBeTruthy("desc");
+            expect(await dynamicFieldLibraryConfigConsolePo.isRequestedColumnSortedAscending("InformationSource")).toBeTruthy("asc");
+            expect(await dynamicFieldLibraryConfigConsolePo.isRequestedColumnSortedDescending("InformationSource")).toBeTruthy("desc");
+            expect(await dynamicFieldLibraryConfigConsolePo.isRequestedColumnSortedAscending("Confidential")).toBeTruthy("asc");
+            expect(await dynamicFieldLibraryConfigConsolePo.isRequestedColumnSortedDescending("Confidential")).toBeTruthy("desc");
+
+        });
+        it('[DRDMV-13104,DRDMV-13103,DRDMV-13107]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
 
@@ -83,7 +118,7 @@ describe('Dynamic Library Configuration', () => {
             await createDynamicFieldLibraryConfigPo.setFieldValueType('NUMBER');
             await createDynamicFieldLibraryConfigPo.clickOnSaveButton();
         });
-        it('[DRDMV-13104,DRDMV-13103]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
+        it('[DRDMV-13104,DRDMV-13103,DRDMV-13107]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
             await dynamicFieldLibraryConfigConsolePo.clickAddDynamicFieldButton();
             await createDynamicFieldLibraryConfigPo.setFieldName('ABC1237GC234wer324werfer7df');
             await createDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
@@ -104,9 +139,9 @@ describe('Dynamic Library Configuration', () => {
             await createDynamicFieldLibraryConfigPo.setFieldValueType('DATE');
             await createDynamicFieldLibraryConfigPo.clickOnSaveButton();
         });
-        it('[DRDMV-13104,DRDMV-13103]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
+        it('[DRDMV-13104,DRDMV-13103,DRDMV-13107]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
             await dynamicFieldLibraryConfigConsolePo.clickAddDynamicFieldButton();
-            await createDynamicFieldLibraryConfigPo.setFieldName('Field 123 Test_1');
+            await createDynamicFieldLibraryConfigPo.setFieldName('Field 123 Test_12');
             await createDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
             await localizeValuePopPo.setLocalizeValue('Field 123 Test_1' + randomString);
             await localizeValuePopPo.clickOnSaveButton();
@@ -126,10 +161,21 @@ describe('Dynamic Library Configuration', () => {
             await createDynamicFieldLibraryConfigPo.clickOnSaveButton();
             await editDynamicFieldLibraryConfigPo.clickCancelButton();
         });
-        it('[DRDMV-13104,DRDMV-13103]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
+        it('[DRDMV-13104,DRDMV-13103,DRDMV-13107]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
+            await utilGrid.addFilter("InformationSource", "Requester", "checkbox");
+            expect(utilGrid.isGridRecordPresent("'List' + randomString")).toBeTruthy();
+            await utilGrid.addFilter("Confidential", "False", "checkbox");
+            expect(utilGrid.isGridRecordPresent("'List' + randomString")).toBeTruthy();
+            await utilGrid.addFilter("Field Value Type", "LIST", "checkbox");
+            expect(utilGrid.isGridRecordPresent("'List' + randomString")).toBeTruthy();
+            await utilGrid.clearFilter();
+        });
+        it('[DRDMV-13104,DRDMV-13103,DRDMV-13107]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
             await utilGrid.searchAndOpenHyperlink('ABCDEFGHIJKLMNOPQRSTUVWXYZ' + randomString);
+            expect(await editDynamicFieldLibraryConfigPo.isFieldNameAttribute("readOnly")).toBeTruthy();
+            expect(await editDynamicFieldLibraryConfigPo.isFieldValueTypeAttribute("disabled")).toBeTruthy();
             await editDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
-            await localizeValuePopPo.setLocalizeValue(randomString+"ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+            await localizeValuePopPo.setLocalizeValue(randomString + "ABCDEFGHIJKLMNOPQRSTUVWXYZ");
             await localizeValuePopPo.clickOnSaveButton();
             await editDynamicFieldLibraryConfigPo.setInformationSourceValueType('Requester');
             await editDynamicFieldLibraryConfigPo.setStatusValue('Inactive');
@@ -137,16 +183,16 @@ describe('Dynamic Library Configuration', () => {
 
             await utilGrid.searchAndOpenHyperlink('123456789' + randomString);
             await editDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
-            await localizeValuePopPo.setLocalizeValue("123456789"+randomString);
+            await localizeValuePopPo.setLocalizeValue("123456789" + randomString);
             await localizeValuePopPo.clickOnSaveButton();
             await editDynamicFieldLibraryConfigPo.setInformationSourceValueType('Requester');
             await editDynamicFieldLibraryConfigPo.setStatusValue('Inactive');
             await editDynamicFieldLibraryConfigPo.clickOnSaveButton();
         });
-        it('[DRDMV-13104,DRDMV-13103]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
+        it('[DRDMV-13104,DRDMV-13103,DRDMV-13107]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
             await utilGrid.searchAndOpenHyperlink('ABC1237GC234wer324werfer7df' + randomString);
             await editDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
-            await localizeValuePopPo.setLocalizeValue(randomString+"ABC1237GC234wer324werfer7df");
+            await localizeValuePopPo.setLocalizeValue(randomString + "ABC1237GC234wer324werfer7df");
             await localizeValuePopPo.clickOnSaveButton();
             await editDynamicFieldLibraryConfigPo.setInformationSourceValueType('Requester');
             await editDynamicFieldLibraryConfigPo.setStatusValue('Inactive');
@@ -154,16 +200,16 @@ describe('Dynamic Library Configuration', () => {
 
             await utilGrid.searchAndOpenHyperlink('@#$%^&*()_-++{[}' + randomString);
             await editDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
-            await localizeValuePopPo.setLocalizeValue(randomString+'@#$%^&*()_-++{[}');
+            await localizeValuePopPo.setLocalizeValue(randomString + '@#$%^&*()_-++{[}');
             await localizeValuePopPo.clickOnSaveButton();
             await editDynamicFieldLibraryConfigPo.setInformationSourceValueType('Requester');
             await editDynamicFieldLibraryConfigPo.setStatusValue('Inactive');
             await editDynamicFieldLibraryConfigPo.clickOnSaveButton();
         });
-        it('[DRDMV-13104,DRDMV-13103]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
+        it('[DRDMV-13104,DRDMV-13103,DRDMV-13107]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
             await utilGrid.searchAndOpenHyperlink('Field 123 Test_1' + randomString);
             await editDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
-            await localizeValuePopPo.setLocalizeValue(randomString+"Field 123 Test_1");
+            await localizeValuePopPo.setLocalizeValue(randomString + "Field 123 Test_1");
             await localizeValuePopPo.clickOnSaveButton();
             await editDynamicFieldLibraryConfigPo.setInformationSourceValueType('Requester');
             await editDynamicFieldLibraryConfigPo.setStatusValue('Inactive');
@@ -171,11 +217,187 @@ describe('Dynamic Library Configuration', () => {
 
             await utilGrid.searchAndOpenHyperlink('List' + randomString);
             await editDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
-            await localizeValuePopPo.setLocalizeValue(randomString+'List');
+            await localizeValuePopPo.setLocalizeValue(randomString + 'List');
             await localizeValuePopPo.clickOnSaveButton();
             await editDynamicFieldLibraryConfigPo.setInformationSourceValueType('Task Assignee');
             await editDynamicFieldLibraryConfigPo.setStatusValue('Inactive');
             await editDynamicFieldLibraryConfigPo.clickOnSaveButton();
+        });
+    });
+
+    describe('[DRDMV-13105]: [-ve] [Dynamic Data] - Add fields with different format of field names (ID)', async () => {
+        let caseTemplateData, templateData, randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        beforeAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteDynamicFieldAndGroup();
+            caseTemplateData = {
+                "templateName": randomStr + 'caseTemplateName',
+                "templateSummary": 'CaseSummaryName' + randomStr,
+                "caseStatus": "InProgress",
+                "templateStatus": "Draft",
+                "assignee": "Fritz",
+                "company": "Petramco",
+                "supportGroup": "Facilities",
+                "ownerGroup": "Facilities"
+            }
+            templateData = {
+                "templateName": `manualTaskTemplate1 ${randomStr}`,
+                "templateSummary": `manualTaskTemplateSummary1 ${randomStr}`,
+                "templateStatus": "Draft",
+                "taskCompany": 'Petramco',
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities",
+                "assignee": "Fritz",
+                "company": "Petramco",
+                "supportGroup": "Facilities",
+                "businessUnit": "Facilities Support",
+            }
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteDynamicFieldAndGroup();
+            await apiHelper.apiLogin('fritz');
+            await apiHelper.createManualTaskTemplate(templateData);
+            await apiHelper.createCaseTemplate(caseTemplateData);
+        });
+        it('[DRDMV-13105]: [-ve] [Dynamic Data] - Add fields with different format of field names (ID)', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
+            await viewTasktemplatePo.clickOnManageDynamicFieldLink();
+            await dynamicFieldsPage.clickOnDynamicField();
+            await dynamicFieldsPage.setFieldName('Field Name' + randomStr);
+            await dynamicFieldsPage.setDescriptionName('ABCDEFGHIJKLMNOPQRSTUVWZYZ' + randomStr);
+            await dynamicFieldsPage.selectInfromationSource("Requester");
+            await dynamicFieldsPage.clickSaveButton();
+            await viewTasktemplatePo.clickOnManageDynamicFieldLink();
+            await dynamicFieldsPage.clickOnDynamicField();
+            await dynamicFieldsPage.setFieldName('Field Number' + randomStr);
+            await dynamicFieldsPage.setDescriptionName('1234567890' + randomStr);
+            await dynamicFieldsPage.selectFieldValueType('NUMBER');
+            await dynamicFieldsPage.selectInfromationSource("Task Assignee");
+            await dynamicFieldsPage.clickSaveButton();
+        });
+        it('[DRDMV-13105]: [-ve] [Dynamic Data] - Add fields with different format of field names (ID)', async () => {
+            await viewTasktemplatePo.clickOnManageDynamicFieldLink();
+            await dynamicFieldsPage.clickOnDynamicField();
+            await dynamicFieldsPage.setFieldName('Field Date' + randomStr);
+            await dynamicFieldsPage.setDescriptionName('12345ABCDE' + randomStr);
+            await dynamicFieldsPage.selectFieldValueType('DATE');
+            await dynamicFieldsPage.selectInfromationSource("System");
+            await dynamicFieldsPage.clickSaveButton();
+            await viewTasktemplatePo.clickOnManageDynamicFieldLink();
+            await dynamicFieldsPage.clickOnDynamicField();
+            await dynamicFieldsPage.setFieldName('Field BOOLEAN' + randomStr);
+            await dynamicFieldsPage.setDescriptionName('!@#$%^&*' + randomStr);
+            await dynamicFieldsPage.selectFieldValueType('BOOLEAN');
+            await dynamicFieldsPage.selectInfromationSource("Agent");
+            await dynamicFieldsPage.clickSaveButton();
+            await viewTasktemplatePo.clickOnManageDynamicFieldLink();
+            await dynamicFieldsPage.clickOnDynamicField();
+            await dynamicFieldsPage.setFieldName('Field LIST' + randomStr);
+            await dynamicFieldsPage.setDescriptionName('123 Test_1' + randomStr);
+            await dynamicFieldsPage.selectFieldValueType('LIST');
+            await dynamicFieldsPage.clickSaveButton();
+        });
+
+        it('[DRDMV-13105]: [-ve] [Dynamic Data] - Add fields with different format of field names (ID)', async () => {
+            await viewTasktemplatePo.clickOnManageDynamicFieldLink();
+            await dynamicFieldsPage.clickOnDynamicField();
+            await dynamicFieldsPage.setFieldName('Field ATTACHMENT' + randomStr);
+            await dynamicFieldsPage.setDescriptionName('Field ATTACHMENT' + randomStr);
+            await dynamicFieldsPage.selectFieldValueType('ATTACHMENT');
+            await dynamicFieldsPage.clickSaveButton();
+            await viewTasktemplatePo.clickOnManageDynamicFieldLink();
+            await dynamicFieldsPage.clickOnDynamicField();
+            await dynamicFieldsPage.setFieldName('Field DATE_TIME' + randomStr);
+            await dynamicFieldsPage.setDescriptionName('Field DATE_TIME' + randomStr);
+            await dynamicFieldsPage.selectFieldValueType('DATE_TIME');
+            await dynamicFieldsPage.clickSaveButton();
+            await viewTasktemplatePo.clickOnManageDynamicFieldLink();
+            await dynamicFieldsPage.clickOnDynamicField();
+            await dynamicFieldsPage.setFieldName('Field TIME' + randomStr);
+            await dynamicFieldsPage.setDescriptionName('Field TIME' + randomStr);
+            await dynamicFieldsPage.selectFieldValueType('TIME');
+            await dynamicFieldsPage.clickSaveButton();
+        });
+
+        it('[DRDMV-13105]: [-ve] [Dynamic Data] - Add fields with different format of field names (ID)', async () => {
+            expect(await viewTasktemplatePo.isDynamicFieldPresent('ABCDEFGHIJKLMNOPQRSTUVWZYZ' + randomStr)).toBeTruthy();
+            expect(await viewTasktemplatePo.isDynamicFieldPresent('1234567890' + randomStr)).toBeTruthy();
+            expect(await viewTasktemplatePo.isDynamicFieldPresent('12345ABCDE' + randomStr)).toBeTruthy();
+            expect(await viewTasktemplatePo.isDynamicFieldPresent('!@#$%^&*' + randomStr)).toBeTruthy();
+            expect(await viewTasktemplatePo.isDynamicFieldPresent('123 Test_1' + randomStr)).toBeTruthy();
+            expect(await viewTasktemplatePo.isDynamicFieldPresent('Field ATTACHMENT' + randomStr)).toBeTruthy();
+            expect(await viewTasktemplatePo.isDynamicFieldPresent('Field DATE_TIME' + randomStr)).toBeTruthy();
+            expect(await viewTasktemplatePo.isDynamicFieldPresent('Field TIME' + randomStr)).toBeTruthy();
+
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(caseTemplateData.templateName);
+            await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
+            await dynamicFieldsPage.clickOnDynamicField();
+            await dynamicFieldsPage.setFieldName('Field Name' + randomStr);
+            await dynamicFieldsPage.setDescriptionName('ABCDEFGHIJKLMNOPQRSTUVWZYZ' + randomStr);
+            await dynamicFieldsPage.selectInfromationSource("Requester");
+            await dynamicFieldsPage.clickSaveButton();
+            await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
+            await dynamicFieldsPage.clickOnDynamicField();
+            await dynamicFieldsPage.setFieldName('Field Number' + randomStr);
+            await dynamicFieldsPage.setDescriptionName('1234567890' + randomStr);
+            await dynamicFieldsPage.selectFieldValueType('NUMBER');
+            await dynamicFieldsPage.selectInfromationSource("Task Assignee");
+            await dynamicFieldsPage.clickSaveButton();
+        });
+        it('[DRDMV-13105]: [-ve] [Dynamic Data] - Add fields with different format of field names (ID)', async () => {
+            await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
+            await dynamicFieldsPage.clickOnDynamicField();
+            await dynamicFieldsPage.setFieldName('Field Date' + randomStr);
+            await dynamicFieldsPage.setDescriptionName('12345ABCDE' + randomStr);
+            await dynamicFieldsPage.selectFieldValueType('DATE');
+            await dynamicFieldsPage.selectInfromationSource("System");
+            await dynamicFieldsPage.clickSaveButton();
+            await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
+            await dynamicFieldsPage.clickOnDynamicField();
+            await dynamicFieldsPage.setFieldName('Field BOOLEAN' + randomStr);
+            await dynamicFieldsPage.setDescriptionName('!@#$%^&*' + randomStr);
+            await dynamicFieldsPage.selectFieldValueType('BOOLEAN');
+            await dynamicFieldsPage.selectInfromationSource("Agent");
+            await dynamicFieldsPage.clickSaveButton();
+            await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
+            await dynamicFieldsPage.clickOnDynamicField();
+            await dynamicFieldsPage.setFieldName('Field LIST' + randomStr);
+            await dynamicFieldsPage.setDescriptionName('123 Test_1' + randomStr);
+            await dynamicFieldsPage.selectFieldValueType('LIST');
+            await dynamicFieldsPage.clickSaveButton();
+        });
+
+        it('[DRDMV-13105]: [-ve] [Dynamic Data] - Add fields with different format of field names (ID)', async () => {
+            await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
+            await dynamicFieldsPage.clickOnDynamicField();
+            await dynamicFieldsPage.setFieldName('Field ATTACHMENT' + randomStr);
+            await dynamicFieldsPage.setDescriptionName('Field ATTACHMENT' + randomStr);
+            await dynamicFieldsPage.selectFieldValueType('ATTACHMENT');
+            await dynamicFieldsPage.clickSaveButton();
+            await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
+            await dynamicFieldsPage.clickOnDynamicField();
+            await dynamicFieldsPage.setFieldName('Field DATE_TIME' + randomStr);
+            await dynamicFieldsPage.setDescriptionName('Field DATE_TIME' + randomStr);
+            await dynamicFieldsPage.selectFieldValueType('DATE_TIME');
+            await dynamicFieldsPage.clickSaveButton();
+            await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
+            await dynamicFieldsPage.clickOnDynamicField();
+            await dynamicFieldsPage.setFieldName('Field TIME' + randomStr);
+            await dynamicFieldsPage.setDescriptionName('Field TIME' + randomStr);
+            await dynamicFieldsPage.selectFieldValueType('TIME');
+            await dynamicFieldsPage.clickSaveButton();
+            expect(await viewCasetemplatePo.isDynamicFieldDisplayed('ABCDEFGHIJKLMNOPQRSTUVWZYZ' + randomStr)).toBeTruthy();
+            expect(await viewCasetemplatePo.isDynamicFieldDisplayed('1234567890' + randomStr)).toBeTruthy();
+            expect(await viewCasetemplatePo.isDynamicFieldDisplayed('12345ABCDE' + randomStr)).toBeTruthy();
+            expect(await viewCasetemplatePo.isDynamicFieldDisplayed('!@#$%^&*' + randomStr)).toBeTruthy();
+            expect(await viewCasetemplatePo.isDynamicFieldDisplayed('123 Test_1' + randomStr)).toBeTruthy();
+            expect(await viewCasetemplatePo.isDynamicFieldDisplayed('Field ATTACHMENT' + randomStr)).toBeTruthy();
+            expect(await viewCasetemplatePo.isDynamicFieldDisplayed('Field DATE_TIME' + randomStr)).toBeTruthy();
+            expect(await viewCasetemplatePo.isDynamicFieldDisplayed('Field TIME' + randomStr)).toBeTruthy();
         });
     });
 });
