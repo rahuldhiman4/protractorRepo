@@ -37,8 +37,8 @@ describe('Conditional Task', () => {
     });
 
     afterAll(async () => {
-        await navigationPage.signOut();
         await utilityCommon.closeAllBlades();
+        await navigationPage.signOut();
     });
 
     //asahitya
