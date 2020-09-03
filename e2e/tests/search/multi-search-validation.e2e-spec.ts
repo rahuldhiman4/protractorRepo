@@ -190,8 +190,6 @@ describe('Multi Search Validation', () => {
             "userId": loginId,
             "emailId": emailId,
             "userPermission": "AGGAA5V0GE9Z4AOR0BXUOQ3ZT04EJA;AGGADG1AAO0VGAP8SXEGP7VU2U4ZS8",
-            // "company": ""
-
         }
         if (company) {
             await apiHelper.createNewUser(caseAgentuserData);
@@ -384,7 +382,7 @@ describe('Multi Search Validation', () => {
     });
 
     //kgaikwad
-    fdescribe('[DRDMV-16133]: Global search based on change in category by keeping the same search pattern', async () => {
+    describe('[DRDMV-16133]: Global search based on change in category by keeping the same search pattern', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let attachmentFilePath = 'e2e/data/ui/attachment/globalsearch1.pdf';
         let caseSummary = '1caseSummaryDRDMV16133' + randomStr;
