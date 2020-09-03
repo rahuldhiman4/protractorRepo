@@ -265,6 +265,14 @@ class ApiCoreUtil {
         return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
     }
 
+    async getTaskGuid(summaryName: string): Promise<string> {
+        let allRecords = await this.getGuid("com.bmc.dsm.task-lib:Task");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj[8] == summaryName;
+        });
+        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+    }
+
     async getDataSourceGuid(dataSourceName: string): Promise<string> {
         let allRecords = await this.getGuid("com.bmc.dsm.slm-lib:Config%20Data%20Source");
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
@@ -399,6 +407,22 @@ class ApiCoreUtil {
         return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
     }
 
+    async getCognitiveDataSetGuid(dataSetName: string): Promise<string> {
+        let allRecords = await this.getGuid("Cognitive Service Data Set Descriptor");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj[1731] === dataSetName;
+        });
+        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+    }
+
+    async getCognitiveDataSetMappingGuid(dataSetMappingName: string): Promise<string> {
+        let allRecords = await this.getGuid("com.bmc.dsm.cognitive-lib:Training Data Set Mapping");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj[1731] === dataSetMappingName;
+        });
+        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+    }
+
     async createDocumentForAutoTaskTemplate(jsonBody): Promise<AxiosResponse> {
         const newRecord = await axios.post(
             documentUri,
@@ -421,6 +445,14 @@ class ApiCoreUtil {
             jsonBody
         );
         return newRecord;
+    }
+
+    async getProcessGuid(processName: string): Promise<string> {
+        let url = `api/rx/application/process/processdefinition/${processName}?_v=AGGADGG8ECDC0AQ1L2YDQ0NIVGZV001598589534000en`;
+        let processDetails = await axios.get(
+            url
+        );
+        return processDetails.data['guid'];
     }
 }
 

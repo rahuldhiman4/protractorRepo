@@ -597,7 +597,7 @@ describe("Create Case", () => {
             expect(await taskTemplatePreview.isTaskCategoryTier4TitleDisplayed('Task Category Tier 4')).toBeTruthy('Task Category Tier 4 is not getting displayed');
             expect(await taskTemplatePreview.isTaskTypeTitleDisplayed('Task Type')).toBeTruthy('Task Type is not getting displayed');
             expect(await taskTemplatePreview.isLabelTitleDisplayed('Label')).toBeTruthy('Label is not getting displayed');
-            expect(await taskTemplatePreview.isTaskDescriptionTitleDisplayed('Task Description')).toBeTruthy('Task Description is not getting displayed');
+            expect(await taskTemplatePreview.isTaskDescriptionTitleDisplayed()).toBeTruthy('Task Description is not getting displayed');
             expect(await taskTemplatePreview.getTaskTemplateName()).toBe(templateData.templateName);
             expect(await taskTemplatePreview.getTaskSummary()).toBe(templateData.templateSummary);
             expect(await taskTemplatePreview.getTaskCompany()).toBe("Petramco");
@@ -663,23 +663,34 @@ describe("Create Case", () => {
                 "firstName": "Petramco",
                 "lastName": "Psilon",
                 "userId": "DRDMV-12061",
+                "company": "Psilon"
             }
             await apiHelper.createNewUser(userData);
             await apiHelper.associatePersonToCompany(userData.userId, "Psilon");
             await navigationPage.signOut();
             await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
             //Create Case
-            await navigationPage.gotoCreateCase();
-            await createCasePage.selectRequester('Glit');
-            await createCasePage.setSummary('Summary');
-            await createCasePage.clickSaveCaseButton();
-            await previewCasePo.clickGoToCaseButton();
+            let caseDataPsilon = {
+                "Description": "DRDMV-16112 Psilon",
+                "Requester": "gderuno",
+                "Summary": "DRDMV-16112 Psilon",
+                "Assigned Company": "Psilon",
+                "Business Unit": "Psilon Support Org2",
+                "Support Group": "Psilon Support Group2",
+                "Assignee": "gwixillian"
+            }
+            await apiHelper.apiLoginWithCredential(userData.userId + "@petramco.com", 'Password_1234');
+            let psilonCaseResponse = await apiHelper.createCase(caseDataPsilon);
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
+            await caseConsolePage.searchAndOpenCase(psilonCaseResponse.displayId);
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickAddTaskFromTemplateButton();
             await manageTask.setTaskSearchBoxValue(TaskSummary);
             await manageTask.clickFirstCheckBoxInTaskTemplateSearchGrid();
             await manageTask.clickTaskGridSaveButton();
-            await manageTask.clickCloseButton();
+            await manageTask.clickTaskLink(TaskSummary);
+            expect(await viewTaskPo.isAssigneeDisplayed('None')).toBeTruthy("Assignee Should be blank");
         } catch (e) {
             throw e;
         } finally {
@@ -1156,6 +1167,11 @@ describe("Create Case", () => {
             expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
         });
         afterAll(async () => {
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.deleteCommonConfig('RESOLUTION_CODE_MANDATORY', 'Petramco');
+            await apiHelper.deleteCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY', 'Petramco');
+            await apiHelper.deleteCommonConfig('RESOLUTION_CODE_MANDATORY', '- Global -');
+            await apiHelper.deleteCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY', '- Global -');
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });

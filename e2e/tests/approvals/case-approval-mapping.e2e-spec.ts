@@ -115,29 +115,29 @@ describe("Approval Mapping Tests", () => {
             //Verify status Mapping drop down options when status trigger is Assigned
             await createApprovalMappingPage.isStatusTriggerDropDownOptionsMatches(statusTriggerDropDownOptions);
             await createApprovalMappingPage.isStatusMappingApprovedDropDownOptionsMatches(statusMappingApprovedWhenStatusTriggerAssigned);
-            await createApprovalMappingPage.isStatusMappingNoApprovalFoundDropDownOptionsMatches(statusMappingNoApprovalFoundWhenStatusTriggerAssigned);
             await createApprovalMappingPage.isStatusMappingRejectedDropDownOptionsMatches(statusMappingRejectedWhenStatusTriggerAssigned);
+            await createApprovalMappingPage.isStatusMappingNoApprovalFoundDropDownOptionsMatches(statusMappingNoApprovalFoundWhenStatusTriggerAssigned);
             await createApprovalMappingPage.isStatusMappingErrorDropDownOptionsMatches(statusMappingErrorWhenStatusTriggerAssigned);
 
             //Verify status Mapping drop down options when status trigger is In Progress
             await createApprovalMappingPage.selectStatusTrigger('In Progress');
             await createApprovalMappingPage.isStatusMappingApprovedDropDownOptionsMatches(statusMappingApprovedWhenStatusTriggerInProgress);
-            await createApprovalMappingPage.isStatusMappingNoApprovalFoundDropDownOptionsMatches(statusMappingNoApprovalFoundWhenStatusTriggerInProgress);
             await createApprovalMappingPage.isStatusMappingRejectedDropDownOptionsMatches(statusMappingRejectedWhenStatusTriggerInProgress);
+            await createApprovalMappingPage.isStatusMappingNoApprovalFoundDropDownOptionsMatches(statusMappingNoApprovalFoundWhenStatusTriggerInProgress);
             await createApprovalMappingPage.isStatusMappingErrorDropDownOptionsMatches(statusMappingErrorWhenStatusTriggerInProgress);
 
             //Verify status Mapping drop down options when status trigger is Resolved
             await createApprovalMappingPage.selectStatusTrigger('Resolved');
             await createApprovalMappingPage.isStatusMappingApprovedDropDownOptionsMatches(statusMappingApprovedWhenStatusTriggerResolved);
-            await createApprovalMappingPage.isStatusMappingNoApprovalFoundDropDownOptionsMatches(statusMappingNoApprovalFoundWhenStatusTriggerResolved);
             await createApprovalMappingPage.isStatusMappingRejectedDropDownOptionsMatches(statusMappingRejectedWhenStatusTriggerResolved);
+            await createApprovalMappingPage.isStatusMappingNoApprovalFoundDropDownOptionsMatches(statusMappingNoApprovalFoundWhenStatusTriggerResolved);
             await createApprovalMappingPage.isStatusMappingErrorDropDownOptionsMatches(statusMappingErrorWhenStatusTriggerResolved);
 
             //Verify status Mapping drop down options when status trigger is Canceled
             await createApprovalMappingPage.selectStatusTrigger('Canceled');
             await createApprovalMappingPage.isStatusMappingApprovedDropDownOptionsMatches(statusMappingApprovedWhenStatusTriggerCanceled);
-            await createApprovalMappingPage.isStatusMappingNoApprovalFoundDropDownOptionsMatches(statusMappingNoApprovalFoundWhenStatusTriggerCanceled);
             await createApprovalMappingPage.isStatusMappingRejectedDropDownOptionsMatches(statusMappingRejectedWhenStatusTriggerCanceled);
+            await createApprovalMappingPage.isStatusMappingNoApprovalFoundDropDownOptionsMatches(statusMappingNoApprovalFoundWhenStatusTriggerCanceled);
             await createApprovalMappingPage.isStatusMappingErrorDropDownOptionsMatches(statusMappingErrorWhenStatusTriggerCanceled);
         });
         it('[DRDMV-10698,DRDMV-10710,DRDMV-10700,DRDMV-10701]: Create Approval Mapping with Mandatory Fields', async () => {
@@ -145,8 +145,8 @@ describe("Approval Mapping Tests", () => {
             await createApprovalMappingPage.selectCompany('Petramco');
             await createApprovalMappingPage.selectStatusTrigger('Assigned');
             await createApprovalMappingPage.selectStatusMappingApproved('In Progress');
-            await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Pending');
             await createApprovalMappingPage.selectStatusMappingRejected('Canceled');
+            await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Pending');
             await createApprovalMappingPage.selectStatusMappingError('New');
             expect(await createApprovalMappingPage.isSaveApprovalMappingBtnEnabled()).toBeFalsy();
             await createApprovalMappingPage.clickSaveApprovalMappingBtn();
@@ -168,8 +168,8 @@ describe("Approval Mapping Tests", () => {
             await createApprovalMappingPage.selectStatusTrigger('Assigned');
             await createApprovalMappingPage.selectFlowset('Facilities Management');
             await createApprovalMappingPage.selectStatusMappingApproved('In Progress');
-            await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Pending');
             await createApprovalMappingPage.selectStatusMappingRejected('Canceled');
+            await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Pending');
             await createApprovalMappingPage.selectStatusMappingError('New');
             expect(await createApprovalMappingPage.isSaveApprovalMappingBtnEnabled()).toBeFalsy();
             await createApprovalMappingPage.clickSaveApprovalMappingBtn();
@@ -232,8 +232,8 @@ describe("Approval Mapping Tests", () => {
             await createApprovalMappingPage.selectCompany('Petramco');
             await createApprovalMappingPage.selectStatusTrigger('Assigned');
             await createApprovalMappingPage.selectStatusMappingApproved('In Progress');
-            await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Pending');
             await createApprovalMappingPage.selectStatusMappingRejected('Canceled');
+            await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Pending');
             await createApprovalMappingPage.selectStatusMappingError('New');
             expect(await createApprovalMappingPage.isSaveApprovalMappingBtnEnabled()).toBeFalsy();
             await createApprovalMappingPage.clickSaveApprovalMappingBtn();
@@ -251,8 +251,8 @@ describe("Approval Mapping Tests", () => {
             await createApprovalMappingPage.selectCompany('Petramco');
             await createApprovalMappingPage.selectStatusTrigger('Assigned');
             await createApprovalMappingPage.selectStatusMappingApproved('In Progress');
-            await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Pending');
             await createApprovalMappingPage.selectStatusMappingRejected('Canceled');
+            await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Pending');
             await createApprovalMappingPage.selectStatusMappingError('New');
             expect(await createApprovalMappingPage.isSaveApprovalMappingBtnEnabled()).toBeFalsy();
             await createApprovalMappingPage.clickSaveApprovalMappingBtn();
@@ -264,8 +264,8 @@ describe("Approval Mapping Tests", () => {
             await createApprovalMappingPage.selectCompany('Petramco');
             await createApprovalMappingPage.selectStatusTrigger('In Progress');
             await createApprovalMappingPage.selectStatusMappingApproved('Resolved');
-            await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Pending');
             await createApprovalMappingPage.selectStatusMappingRejected('Canceled');
+            await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Pending');
             await createApprovalMappingPage.selectStatusMappingError('New');
             expect(await createApprovalMappingPage.isSaveApprovalMappingBtnEnabled()).toBeFalsy();
             await createApprovalMappingPage.clickSaveApprovalMappingBtn();
@@ -350,8 +350,8 @@ describe("Approval Mapping Tests", () => {
             await createApprovalMappingPage.selectStatusTrigger('Assigned');
             await createApprovalMappingPage.selectFlowset('Facilities Management');
             await createApprovalMappingPage.selectStatusMappingApproved('In Progress');
-            await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Pending');
             await createApprovalMappingPage.selectStatusMappingRejected('Canceled');
+            await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Pending');
             await createApprovalMappingPage.selectStatusMappingError('New');
             expect(await editApprovalMappingPage.isCaseCreatedUsingTemplateGoInApprovalToggleDisplayed()).toBeFalsy('Cases created without using any template should go through approval displayed.');
             expect(await createApprovalMappingPage.isSaveApprovalMappingBtnEnabled()).toBeFalsy();
@@ -392,8 +392,8 @@ describe("Approval Mapping Tests", () => {
             await createApprovalMappingPage.selectStatusTrigger('Assigned');
             await createApprovalMappingPage.selectFlowset('Facilities Management');
             await createApprovalMappingPage.selectStatusMappingApproved('In Progress');
-            await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Pending');
             await createApprovalMappingPage.selectStatusMappingRejected('Canceled');
+            await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Pending');
             await createApprovalMappingPage.selectStatusMappingError('New');
             expect(await createApprovalMappingPage.isSaveApprovalMappingBtnEnabled()).toBeFalsy();
             await createApprovalMappingPage.clickSaveApprovalMappingBtn();
@@ -512,8 +512,8 @@ describe("Approval Mapping Tests", () => {
             await createApprovalMappingPage.selectCompany('Petramco');
             await createApprovalMappingPage.selectStatusTrigger('Assigned');
             await createApprovalMappingPage.selectStatusMappingApproved('In Progress');
-            await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Pending');
             await createApprovalMappingPage.selectStatusMappingRejected('Canceled');
+            await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Pending');
             await createApprovalMappingPage.selectStatusMappingError('New');
             expect(await createApprovalMappingPage.isSaveApprovalMappingBtnEnabled()).toBeFalsy();
             await createApprovalMappingPage.clickSaveApprovalMappingBtn();
@@ -587,8 +587,8 @@ describe("Approval Mapping Tests", () => {
             await createApprovalMappingPage.selectCompany('Global');
             await createApprovalMappingPage.selectStatusTrigger('Assigned');
             await createApprovalMappingPage.selectStatusMappingApproved('In Progress');
-            await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Pending');
             await createApprovalMappingPage.selectStatusMappingRejected('Canceled');
+            await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Pending');
             await createApprovalMappingPage.selectStatusMappingError('New');
             expect(await createApprovalMappingPage.isSaveApprovalMappingBtnEnabled()).toBeFalsy();
             await createApprovalMappingPage.clickSaveApprovalMappingBtn();

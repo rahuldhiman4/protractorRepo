@@ -100,6 +100,7 @@ export enum ApplicationConfigurationsGuid {
 
 export enum ApplicationConfigurationsValue {
     '1_MONTH' = '2629743',
+    '1_MINUTE' = '60'
 };
 
 export enum FunctionalRoleGuid {
@@ -110,4 +111,9 @@ export enum FunctionalRoleGuid {
     'Case Business Analyst' = 'AGGAA5V0GE9Z4AOR7DBBOQLAW74PH7',
     'Document Manager' = 'AGGADG1AAO0VGAP8SXEGP7VU2U4ZS8',
     'Person Activity Read' = 'AGGADG1AAO0VGAPSXWAEPSA6PDZAG6'
+};
+
+export enum TaskFailConfiguration {
+    'Do Not Proceed' = 1000,
+    'Proceed With Next Task' = 2000
 };

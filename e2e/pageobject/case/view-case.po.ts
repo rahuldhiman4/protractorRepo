@@ -1,6 +1,7 @@
-import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions, ElementFinder } from "protractor";
 import updateStatusBlade from '../../pageobject/common/update.status.blade.po';
 import utilityCommon from '../../utils/utility.common';
+import ckeditorValidationPo from '../common/ck-editor/ckeditor-validation.po';
 
 class ViewCasePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -60,6 +61,12 @@ class ViewCasePage {
         approvalButtons: '.approval-buttons span',
         approveButton: '.d-icon-left-check_shield',
         rejectButton: '.d-icon-left-cross_circle',
+        assignee: '[rx-view-component-id="dfe65f6f-7aea-476c-8042-f3aa34e3fb04"]',
+        taskCardName: '.task-list__task-card .task-summary__name',
+        taskCountOnTaskCard: '.task-list__task-card .task-summary__adhoc-task-count',
+        taskTab: '[rx-view-component-id="4c82d32f-5efd-437d-b020-a57910532aa0"] adapt-button',
+        taskDisplayId: '[rx-view-component-id="beb9c44b-6bd5-4f68-b9b9-37d427d9d2e5"] .task-meta-data__display-id',
+        description: '9d3ef0fc-c49f-425f-a9e1-52422ba87f4f'
     }
 
     async clickDescriptionShowMore(): Promise<void> {
@@ -119,9 +126,9 @@ class ViewCasePage {
 
     async isCaseReopenLinkDisabled(): Promise<boolean> {
         return await $(this.selectors.reOpenCase).isPresent().then(async (result) => {
-            if (result){
+            if (result) {
                 return await $(this.selectors.reOpenCase).getAttribute("disabled") == "true";
-            }else return false;
+            } else return false;
         });
     }
 
@@ -162,7 +169,7 @@ class ViewCasePage {
     }
 
     async clickAddToWatchlistLink(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addToWatchlist)),7000);
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addToWatchlist)), 7000);
         await $(this.selectors.addToWatchlist).click();
     }
 
@@ -261,7 +268,12 @@ class ViewCasePage {
     }
 
     async getAssigneeText(): Promise<string> {
-        return await $(this.selectors.assigneeText).getText();
+        let valueassignee: boolean = await $(this.selectors.assignee + ' .person-link').isPresent();
+        if (valueassignee == true) {
+           return await $(this.selectors.assignee + ' .person-link').getText();
+        } else {
+           return await $(this.selectors.assignee + ' .ac-person-absent').getText();
+        }
     }
 
     async getAssignedGroupText(): Promise<string> {
@@ -445,10 +457,80 @@ class ViewCasePage {
 
     async isAddTaskButtonDisabled(): Promise<boolean> {
         return await $(this.selectors.addTaskButton).isPresent().then(async (result) => {
-            if (result){
+            if (result) {
                 return await $(this.selectors.addTaskButton).getAttribute("disabled") == "true";
-            }else return false;
+            } else return false;
         });
+    }
+
+    async getTaskCardCount(): Promise<number> {
+        if(!(await $(this.selectors.taskCardName).isPresent())) return 0;
+        else return await $$(this.selectors.taskCardName).count();
+    }
+
+    async isTaskCountPresentOnAnyTaskCard(): Promise<boolean> {
+        return await $(this.selectors.taskCountOnTaskCard).isPresent().then(async (result) => {
+            if (result) return await $(this.selectors.taskCountOnTaskCard).isDisplayed();
+            else return false;
+        });
+    }
+
+    async isTaskCardPresent(taskCardName: string): Promise<boolean> {
+        let taskNameLocator: ElementFinder = await element(by.cssContainingText(this.selectors.taskCardName, taskCardName));
+        return await taskNameLocator.isPresent().then(async (result) => {
+            if (result) return await taskNameLocator.isDisplayed();
+            else return false;
+        });
+    }
+
+    async clickOnTaskViewTypeBtn(tabName: string): Promise<void> {
+        await element(by.cssContainingText(this.selectors.taskTab, tabName)).click();
+    }
+
+    async isTaskBoxColorCodeMatches(name: string, colorCode: string): Promise<boolean> {
+        let taskListParentLocator = $$('.rotatable');
+        let actualColorCodeValue = undefined;
+        for(let i=0; i< await taskListParentLocator.count(); i++) {
+            if(await taskListParentLocator.get(i).$('.content').isPresent()) {
+                let taskBoxContent  = await taskListParentLocator.get(i).$('.content').getText();
+                if(taskBoxContent == name|| taskBoxContent ==name +" Memory") {
+                    actualColorCodeValue = await taskListParentLocator.get(i).$$('.body.outer').first().getAttribute('stroke');
+                    break;
+                }
+            }
+        }
+        return colorCode == actualColorCodeValue;
+    }
+
+    async isAllTaskUnderStatusTitleMatches(taskStatus: string, expectedTaskCardNames: string[]): Promise<boolean> {
+        let taskListParentLocator = $$('[rx-view-component-id="beb9c44b-6bd5-4f68-b9b9-37d427d9d2e5"] .task-list');
+        let allTaskNames: string[] = [];
+        for (let i = 0; i < await taskListParentLocator.count(); i++) {
+            let tasksLocator = await taskListParentLocator.get(i).$$('a.task-summary__name');
+            if (await taskListParentLocator.get(i).$('.task-list__title').getText() == taskStatus) {
+                for (let j = 0; j < tasksLocator.length; j++) {
+                    allTaskNames[j] = await taskListParentLocator.get(i).$$('a.task-summary__name').get(j).getText();
+                }
+                break;
+            }
+        }
+        allTaskNames.sort();
+        expectedTaskCardNames.sort();
+        return allTaskNames.length === expectedTaskCardNames.length && allTaskNames.every(
+            (value, index) => (value === expectedTaskCardNames[index])
+        );
+    }
+
+    async getAllTasksDisplayId(): Promise<string[]> {
+        let displayIds: string[] = await element.all(by.css(this.selectors.taskDisplayId))
+            .map(async function (header) {
+                return await header.getAttribute('innerText');
+            });
+        return displayIds;
+    }
+
+    async getTableCellAlignText(value: string): Promise<string> {
+        return await ckeditorValidationPo.getTableCellAlignText(value, this.selectors.description);
     }
 }
 

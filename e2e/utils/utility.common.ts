@@ -28,6 +28,7 @@ export class Utility {
         clearDateTimePicker: '.btn-secondary',
         ckEditor: 'bwf-rich-text-editor[style="display: block;"], .activity-feed-note-text-container,.doc-editor',
         ckEditorTextArea: '.cke_enable_context_menu',
+        fieldParentLocator: '[rx-configuration="configuration"] .d-textfield'
     }
 
     async selectDropDown(guid: string|ElementFinder, value: string): Promise<void> {
@@ -469,6 +470,18 @@ export class Utility {
 
     async scrollToElement(element: ElementFinder): Promise<void> {
         await browser.executeScript("arguments[0].scrollIntoView();", element.getWebElement());
+    }
+
+    async getFieldValue(fieldName: string): Promise<string> {
+        let fieldValue: string = undefined;
+        for(let i=0; i<(await $$(this.selectors.fieldParentLocator)).length; i++) {
+            let fieldLabelLocator = await $$(this.selectors.fieldParentLocator).get(i).$('label .d-textfield__item');
+            if(await fieldLabelLocator.getText() == fieldName) {
+                fieldValue = (await $$(this.selectors.fieldParentLocator).get(i).$('p').getText()).trim();
+                break;
+            }
+        }
+        return fieldValue;
     }
 }
 

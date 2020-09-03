@@ -320,9 +320,43 @@ describe('Login and create case from API', () => {
         console.log("doc lib created, published?.. ", docLibPublished);
     });
 
-    it('Add Watson Account', async () => {
+    it('Cognitive APIs', async () => {
         let apiKey = "jE9dMMf2WMx-M4nNWk8KoJ8lF0AfBRw-8QQHagg4jk40";
+        let templateDataSet = "My Template Data Set";
+        let categoryDataSet = "My Category Data Set";
         let created = await apiHelper.addWatsonAccount(apiKey);
-        console.log("Watson Account Added? ", created);
+        console.log("Watson Account Added ==> ", created);
+        let dataSetMappingDeleted = await apiHelper.deleteCognitiveDataSetMapping();
+        console.log("All DataSet Mapping Deleted ==> ", dataSetMappingDeleted);
+        let dataSetDeleted = await apiHelper.deleteCognitiveDataSet();
+        console.log("All DataSet Deleted ==> ", dataSetDeleted);
+        let templateDataSetCreated = await apiHelper.createCognitiveDataSet("template", { name: templateDataSet });
+        console.log("Template DataSet Created ==> ", templateDataSetCreated);
+        let categoryDataSetCreated = await apiHelper.createCognitiveDataSet("category", { name: categoryDataSet });
+        console.log("Category DataSet Created ==> ", categoryDataSetCreated);
+        let templateDataSetTrained = await apiHelper.trainCognitiveDataSet(templateDataSet);
+        console.log("Template DataSet Created ==> ", templateDataSetTrained);
+        let categoryDataSetTrained = await apiHelper.trainCognitiveDataSet(categoryDataSet);
+        console.log("Category DataSet Created ==> ", categoryDataSetTrained);
+        let templateDataSetMapping = {
+            name: "Petramco Template Dataset Mapping",
+            company: "Petramco",
+            enable: true,
+            dataset: templateDataSet,
+            confidenceLevelAutomatic: 60,
+            confidenceLevelAgent: 70
+        }
+        let templateDataSetMappingStatus = await apiHelper.createCognitiveDataSetMapping("template", templateDataSetMapping);
+        console.log("Template DataSet Mapping Created ==> ", templateDataSetMappingStatus);
+        let categoryDataSetMapping = {
+            name: "Petramco Category Dataset Mapping",
+            company: "Petramco",
+            dataset: categoryDataSet,
+            enable: false,
+            confidenceLevelAutomatic: 90,
+            confidenceLevelAgent: 80
+        }
+        let categoryDataSetMappingStatus = await apiHelper.createCognitiveDataSetMapping("category", categoryDataSetMapping);
+        console.log("Category DataSet Mapping Created ==> ", categoryDataSetMappingStatus);
     });
 });

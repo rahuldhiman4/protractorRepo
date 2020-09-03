@@ -12,14 +12,15 @@ import { CASE_REOPEN } from '../data/api/case/case.reopen.api';
 import { CASE_TEMPLATE_PAYLOAD, CASE_TEMPLATE_STATUS_UPDATE_PAYLOAD } from '../data/api/case/case.template.data.api';
 import { ADD_TO_WATCHLIST } from '../data/api/case/case.watchlist.api';
 import { CASE_STATUS_CHANGE, UPDATE_CASE, UPDATE_CASE_ASSIGNMENT } from '../data/api/case/update.case.api';
-import { COGNITIVE_LICENSE } from '../data/api/cognitive/cognitive.config.api';
+import { COGNITIVE_CATEGORY_DATASET, COGNITIVE_CATEGORY_DATASET_MAPPING, COGNITIVE_LICENSE, COGNITIVE_TEMPLATE_DATASET, COGNITIVE_TEMPLATE_DATASET_MAPPING } from '../data/api/cognitive/cognitive.config.api';
 import { EMAILCONFIG_DEFAULT, INCOMINGMAIL_DEFAULT, OUTGOINGEMAIL_DEFAULT } from '../data/api/email/email.configuration.data.api';
 import { EMAIL_WHITELIST } from '../data/api/email/email.whitelist.data.api';
 import { NEW_PROCESS_LIB } from '../data/api/flowset/create-process-lib';
-import { UPDATE_PERSON, UPDATE_SUPPORT_GROUP } from '../data/api/foundation/update-foundation-entity.data.api';
+import { UPDATE_PERSON, UPDATE_SUPPORT_GROUP, UPDATE_ORGANIZATION } from '../data/api/foundation/update-foundation-entity.data.api';
 import { IBusinessUnit } from '../data/api/interface/business.unit.interface.api';
 import { ICaseAssignmentMapping } from "../data/api/interface/case.assignment.mapping.interface.api";
 import { ICaseTemplate } from "../data/api/interface/case.template.interface.api";
+import { ICognitiveDataSet, ICognitiveDataSetMapping } from '../data/api/interface/cognitive.interface.api';
 import { IDepartment } from '../data/api/interface/department.interface.api';
 import { IDocumentLib } from '../data/api/interface/doc.lib.interface.api';
 import { IDomainTag } from '../data/api/interface/domain.tag.interface.api';
@@ -41,21 +42,21 @@ import { KNOWLEDGE_ARTICLE_EXTERNAL_FLAG } from "../data/api/knowledge/knowledge
 import { KNOWLEDGEARTICLE_HELPFULCOUNTER, KNOWLEDGEARTICLE_TEMPLATE } from '../data/api/knowledge/knowledge-article.template.api';
 import { KNOWLEDEGESET_ASSOCIATION, KNOWLEDGESET_PERMISSION, KNOWLEDGE_SET } from '../data/api/knowledge/knowledge-set.data.api';
 import { KNOWLEDGE_ARTICLE_PAYLOAD, UPDATE_KNOWLEDGE_ARTICLE_PAYLOAD } from '../data/api/knowledge/knowledge.article.api';
-import { EMAIL_ALERT_SUBJECT_BODY, NOTIFICATION_EVENT_ACTIVE, NOTIFICATION_TEMPLATE } from '../data/api/notification/notification-config.api';
+import { EMAIL_ALERT_SUBJECT_BODY, NOTIFICATION_EVENT_ACTIVE, NOTIFICATION_TEMPLATE, ARTCILE_DUE_DATE } from '../data/api/notification/notification-config.api';
 import { COMMON_CONFIG_PAYLOAD } from '../data/api/shared-services/common.configurations.api';
 import { ACTIONABLE_NOTIFICATIONS_ENABLEMENT_SETTING, NOTIFICATIONS_EVENT_STATUS_CHANGE } from '../data/api/shared-services/enabling.actionable.notifications.api';
-import { AUTOMATED_CASE_STATUS_TRANSITION } from '../data/api/shared-services/process.data.api';
-import { BUSINESS_TIME_SEGMENT } from '../data/api/slm/business.time.segment.api';
-import { BUSINESS_TIME_SHARED_ENTITY } from '../data/api/slm/business.time.shared.entity.api';
-import { SERVICE_TARGET_Group_PAYLOAD } from '../data/api/slm/service.target.group.api';
-import { SERVICE_TARGET_PAYLOAD } from '../data/api/slm/serviceTarget.api';
+import { AUTOMATED_CASE_STATUS_TRANSITION, ENABLE_DISABLE_PROCESS } from '../data/api/shared-services/process.data.api';
+import { SERVICE_TARGET_PAYLOAD, BUSINESS_TIME_SEGMENT, BUSINESS_TIME_SHARED_ENTITY, SERVICE_TARGET_GROUP, CASE_MILESTONE, TASK_MILESTONE } from '../data/api/slm/serviceTarget.api';
 import { POST_ACTIVITY, POST_ACTIVITY_WITH_ATTACHMENT } from '../data/api/social/post.activity.api';
 import { ADHOC_TASK_PAYLOAD, REGISTER_ADHOC_TASK, TASK_CREATION_FROM_TEMPLATE, UPDATE_TASK, UPDATE_TASK_STATUS } from '../data/api/task/task.creation.api';
 import { AUTO_TASK_TEMPLATE_PAYLOAD, DOC_FOR_AUTO_TASK_TEMPLATE, EXTERNAL_TASK_TEMPLATE_PAYLOAD, MANUAL_TASK_TEMPLATE_PAYLOAD, PROCESS_FOR_AUTO_TASK_TEMPLATE } from '../data/api/task/task.template.api';
-import { ONE_TASKFLOW, PROCESS_DOCUMENT, THREE_TASKFLOW_SEQUENTIAL, TWO_TASKFLOW_PARALLEL, TWO_TASKFLOW_SEQUENTIAL } from '../data/api/task/taskflow.process.data.api';
+import { ONE_TASKFLOW, PROCESS_DOCUMENT, THREE_TASKFLOW_SEQUENTIAL, TWO_TASKFLOW_PARALLEL, TWO_TASKFLOW_SEQUENTIAL, DRDMV_15000, THREE_TASKFLOW_SEQUENTIAL_PARALLEL } from '../data/api/task/taskflow.process.data.api';
 import { DOC_LIB_DRAFT, DOC_LIB_PUBLISH, DOC_LIB_READ_ACCESS } from '../data/api/ticketing/document-library.data.api';
 import { DOCUMENT_TEMPLATE } from '../data/api/ticketing/document-template.data.api';
 import * as DYNAMIC from '../data/api/ticketing/dynamic.data.api';
+import { NEW_USER, ENABLE_USER } from '../data/api/foundation/create-foundation-entity.api';
+import { CASE_ASSIGNMENT_PAYLOAD } from '../data/api/case/case.config.api';
+import * as actionableNotificationPayloads from '../data/api/notification/actionable.notification.supporting.api';
 
 let fs = require('fs');
 
@@ -101,9 +102,10 @@ class ApiHelper {
     }
 
     async createCase(data: any): Promise<IIDs> {
+        let caseData = cloneDeep(data);
         const newCase = await axios.post(
             "api/com.bmc.dsm.case-lib/cases",
-            data
+            caseData
         );
         console.log('Create Case API Status =============>', newCase.status);
         const caseDetails = await axios.get(
@@ -472,6 +474,15 @@ class ApiHelper {
             templateData.fieldInstances["450000166"] = caseTemplateDataresolveCaseonLastTaskCompletion;
         }
 
+        if (data.taskFailureConfiguration) {
+            let taskFailureConfigurationValue = await constants.TaskFailConfiguration[data.taskFailureConfiguration];
+            let caseTaskStatusConfiguration = {
+                "id": 450000291,
+                "value": taskFailureConfigurationValue
+            }
+            templateData.fieldInstances["450000291"] = caseTaskStatusConfiguration;
+        }
+
         let newCaseTemplate: AxiosResponse = await apiCoreUtil.createRecordInstance(templateData);
         console.log('Create Case Template API Status =============>', newCaseTemplate.status);
         const caseTemplateDetails = await axios.get(
@@ -495,8 +506,7 @@ class ApiHelper {
     }
 
     async createCaseAssignmentMapping(data: ICaseAssignmentMapping): Promise<IIDs> {
-        let assignmentMappingDataFile = await require('../data/api/case/case.assignment.api.json');
-        let assignmentMappingData = await assignmentMappingDataFile.CaseAssignmentMappingData;
+        let assignmentMappingData = cloneDeep(CASE_ASSIGNMENT_PAYLOAD);
         assignmentMappingData.fieldInstances[8].value = data.assignmentMappingName;
         assignmentMappingData.fieldInstances[1000001437].value = data.assignmentMappingName;
         assignmentMappingData.fieldInstances[1000000001].value = await apiCoreUtil.getOrganizationGuid(data.company);
@@ -948,8 +958,7 @@ class ApiHelper {
     async createNewUser(data: IPerson, userStatus?:string): Promise<string> {
         let personGuid = await apiCoreUtil.getPersonGuid(data.userId);
         if (personGuid == null) {
-            let userDataFile = await require('../data/api/foundation/new.user.api.json');
-            let userData = await userDataFile.NewUser;
+            let userData = cloneDeep(NEW_USER);
             userData.fieldInstances[1000000019].value = data.firstName;
             userData.fieldInstances[1000000018].value = data.lastName;
             userData.fieldInstances[4].value = data.userId;
@@ -967,7 +976,7 @@ class ApiHelper {
             let recordGUID: string = userDetails.data.id;
             let recordDisplayId: string = userDetails.data.displayId;
 
-            let updateUser = await userDataFile.EnableUser;
+            let updateUser = cloneDeep(ENABLE_USER);
             data.company ? updateUser.fieldInstances[536870913].value = await apiCoreUtil.getOrganizationGuid(data.company) : updateUser.fieldInstances[536870913].value;
             updateUser.displayId = recordDisplayId;
             updateUser.id = recordGUID;
@@ -1138,8 +1147,12 @@ class ApiHelper {
 
     async associateCaseTemplateWithThreeTaskTemplate(caseTemplateId: string, taskTemplateId1: string, taskTemplateId2: string, taskTemplateId3: string, structure?: any): Promise<boolean> {
         let threeTaskFlowProcess: any = cloneDeep(THREE_TASKFLOW_SEQUENTIAL);
-        if (structure) threeTaskFlowProcess = threeTaskFlowProcess;
-
+        if (structure == 'DRDMV_15000') {
+            threeTaskFlowProcess = cloneDeep(DRDMV_15000);
+        }
+        else if(structure == 'THREE_TASKFLOW_SEQUENTIAL_PARALLEL') {
+            threeTaskFlowProcess = cloneDeep(THREE_TASKFLOW_SEQUENTIAL_PARALLEL);
+        }
         let taskTemplateGuid1 = await apiCoreUtil.getTaskTemplateGuid(taskTemplateId1);
         let taskTemplateGuid2 = await apiCoreUtil.getTaskTemplateGuid(taskTemplateId2);
         let taskTemplateGuid3 = await apiCoreUtil.getTaskTemplateGuid(taskTemplateId3);
@@ -1181,7 +1194,7 @@ class ApiHelper {
         let caseTemplateJsonData = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid);
         caseTemplateJsonData.fieldInstances[450000165].value = threeTaskFlowProcess.name;
         let associateCaseTemplateWithThreeTaskTemplateResponse: AxiosResponse = await apiCoreUtil.updateRecordInstance("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid, caseTemplateJsonData);
-        console.log('AssociateCaseTemplateWithOneTaskTemplateResponse API Status =============>', associateCaseTemplateWithThreeTaskTemplateResponse.status);
+        console.log('AssociateCaseTemplateWithThreeTaskTemplateResponse API Status =============>', associateCaseTemplateWithThreeTaskTemplateResponse.status);
         return associateCaseTemplateWithThreeTaskTemplateResponse.status == 204;
     }
 
@@ -2049,6 +2062,20 @@ class ApiHelper {
                 }
                 break;
             }
+            case "Organization": {
+                recordName = 'com.bmc.arsys.rx.foundation:Primary Organization';
+                recordGUID = await apiCoreUtil.getOrganizationGuid(entityName);
+                if (data.abbreviation) {
+                    jsonBody = cloneDeep(UPDATE_ORGANIZATION);
+                    jsonBody.id = recordGUID;
+                    let updateOrganizationPayload = {
+                        "id": "1000000071",
+                        "value": data.abbreviation
+                    }
+                    jsonBody.fieldInstances[1000000071] = updateOrganizationPayload;
+                }
+                break;
+            }
             default: {
                 console.log('ERROR: Invalid Entity Type.');
                 break;
@@ -2101,6 +2128,14 @@ class ApiHelper {
                 "value": taskData.description
             }
             adhocTaskPayload.fieldInstances["1000000000"] = taskDescription;
+        }
+        if (taskData.category1) {
+            let category1Guid = await apiCoreUtil.getCategoryGuid(taskData.category1);
+            let taskCategory1 = {
+                "id": "1000000063",
+                "value": category1Guid
+            }
+            adhocTaskPayload.fieldInstances["1000000063"] = taskCategory1;
         }
 
         let createTaskResponse = await apiCoreUtil.createRecordInstance(adhocTaskPayload);
@@ -2592,7 +2627,7 @@ class ApiHelper {
     }
 
     async createServiceTargetGroup(svtGroupName: string, dataSource: string, company?: string): Promise<boolean> {
-        let svtGroup = cloneDeep(SERVICE_TARGET_Group_PAYLOAD);
+        let svtGroup = cloneDeep(SERVICE_TARGET_GROUP);
         svtGroup.fieldInstances[8].value = svtGroupName;
         svtGroup.fieldInstances[300523400].value = await apiCoreUtil.getDataSourceGuid(dataSource);
         svtGroup.fieldInstances[1000000001].value = company ? await apiCoreUtil.getOrganizationGuid(company) : svtGroup.fieldInstances[1000000001].value;
@@ -2829,7 +2864,7 @@ class ApiHelper {
 
     }
 
-    async addWatsonAccount(apiKey: String): Promise<boolean> {
+    async addWatsonAccount(apiKey: string): Promise<boolean> {
         // Pre-requisite: Enable Cognitive Licenses
         await this.apiLogin('sasadmin');
         let enableCognitiveLicPayload = cloneDeep(COGNITIVE_LICENSE);
@@ -2861,6 +2896,221 @@ class ApiHelper {
         console.log("Add Watson Account API Status =============>", addWatsonAccountResponse.status);
         // verify watson account is valid.. that part is missing in this API
         return enableCognitiveLicResponse.status == 200 && cognitiveServiceRegionResponse.status == 204 && addWatsonAccountResponse.status == 204;
+    }
+
+    async createCognitiveDataSet(type: string, cognitiveDataSet?: ICognitiveDataSet): Promise<boolean> {
+        let dataSetPayload: any;
+        switch (type) {
+            case "template": {
+                dataSetPayload = cloneDeep(COGNITIVE_TEMPLATE_DATASET);
+                break;
+            };
+            case "category": {
+                dataSetPayload = cloneDeep(COGNITIVE_CATEGORY_DATASET);
+                break;
+            };
+            default: {
+                console.log("ERROR: Invalid cognitive type");
+                break;
+            }
+        }
+        if (cognitiveDataSet) {
+            dataSetPayload.fieldInstances[1731].value = cognitiveDataSet.name ? cognitiveDataSet.name : dataSetPayload.fieldInstances[1731].value;
+            dataSetPayload.fieldInstances[8].value = cognitiveDataSet.description ? cognitiveDataSet.description : dataSetPayload.fieldInstances[8].value;
+        }
+
+        const createCognitiveDataSetResponse = await apiCoreUtil.createRecordInstance(dataSetPayload);
+        console.log('Create Cognitive Data Set API Status =============>', createCognitiveDataSetResponse.status);
+        return createCognitiveDataSetResponse.status == 201;
+    }
+
+    async deleteCognitiveDataSet(dataSetName?: string): Promise<boolean> {
+        if (dataSetName) {
+            let dataSetGuid = await apiCoreUtil.getCognitiveDataSetGuid(dataSetName);
+            if (dataSetGuid) {
+                return await apiCoreUtil.deleteRecordInstance('Cognitive Service Data Set Descriptor', dataSetGuid);
+            }
+        }
+        else {
+            let allDataSetRecords = await apiCoreUtil.getGuid('Cognitive Service Data Set Descriptor');
+            let dataSetArrayMap = allDataSetRecords.data.data.map(async (obj: string) => {
+                return await apiCoreUtil.deleteRecordInstance('Cognitive Service Data Set Descriptor', obj[179]);
+            });
+            let isAllDataSetDeleted: boolean = await Promise.all(dataSetArrayMap).then(async (result) => {
+                return !result.includes(false);
+            });
+            return isAllDataSetDeleted === true;
+        }
+    }
+
+    async trainCognitiveDataSet(dataSetName: string): Promise<boolean> {
+        // start data set training
+        let startDataSetTrainingResponse = await axios.post(
+            "api/rx/application/command",
+            { "resourceType": "com.bmc.arsys.rx.application.cognitive.command.TrainCognitiveServiceCommand", "trainingDataSetName": `com.bmc.dsm.bwfa:${dataSetName}` }
+        );
+        console.log('Start Data Set Training API Status =============>', startDataSetTrainingResponse.status);
+
+        // verify data set is trained
+        let allDataSetRecords = await apiCoreUtil.getGuid('Cognitive Service Data Set Descriptor');
+        let entityObj: any = allDataSetRecords.data.data.filter(function (obj: string[]) {
+            return obj[1731] === dataSetName;
+        });
+        let dataSetTrainingStatus = entityObj.length >= 1 ? entityObj[0]['7'] || null : null;
+        let sleeptime: number = 0; // maxminum time while loop will run
+        while (dataSetTrainingStatus != 2) {
+            await browser.sleep(5000);
+            allDataSetRecords = await apiCoreUtil.getGuid('Cognitive Service Data Set Descriptor');
+            entityObj = allDataSetRecords.data.data.filter(function (obj: string[]) {
+                return obj[1731] === dataSetName;
+            });
+            dataSetTrainingStatus = entityObj.length >= 1 ? entityObj[0]['7'] || null : null;
+            sleeptime += 5000;
+            if (sleeptime > 500000) {
+                break;
+            }
+        }
+        return dataSetTrainingStatus == 2;
+    }
+
+    async createCognitiveDataSetMapping(type: string, cognitiveDataSetMapping: ICognitiveDataSetMapping): Promise<boolean> {
+        let dataSetMappingPayload: any;
+        switch (type) {
+            case "template": {
+                dataSetMappingPayload = cloneDeep(COGNITIVE_TEMPLATE_DATASET_MAPPING);
+                break;
+            };
+            case "category": {
+                dataSetMappingPayload = cloneDeep(COGNITIVE_CATEGORY_DATASET_MAPPING);
+                break;
+            };
+            default: {
+                console.log("ERROR: Invalid cognitive type");
+                break;
+            }
+        }
+        dataSetMappingPayload.fieldInstances[450000152].value = cognitiveDataSetMapping.name;
+        dataSetMappingPayload.fieldInstances[450000154].value = cognitiveDataSetMapping.confidenceLevelAgent;
+        dataSetMappingPayload.fieldInstances[450000155].value = cognitiveDataSetMapping.confidenceLevelAutomatic;
+        dataSetMappingPayload.fieldInstances[450000156].value = cognitiveDataSetMapping.enable ? "1" : "0";
+        dataSetMappingPayload.fieldInstances[450000157].value = await apiCoreUtil.getOrganizationGuid(cognitiveDataSetMapping.company);
+        dataSetMappingPayload.fieldInstances[450000158].value = await apiCoreUtil.getCognitiveDataSetGuid(cognitiveDataSetMapping.dataset);
+
+        const createCognitiveDataSetMappingResponse = await apiCoreUtil.createRecordInstance(dataSetMappingPayload);
+        console.log('Create Cognitive Data Set Mapping API Status =============>', createCognitiveDataSetMappingResponse.status);
+        return createCognitiveDataSetMappingResponse.status == 201;
+    }
+
+    async deleteCognitiveDataSetMapping(dataSetMappingName?: string): Promise<boolean> {
+        if (dataSetMappingName) {
+            let dataSetMappingGuid = await apiCoreUtil.getCognitiveDataSetMappingGuid(dataSetMappingName);
+            if (dataSetMappingGuid) {
+                return await apiCoreUtil.deleteRecordInstance('com.bmc.dsm.cognitive-lib:Training Data Set Mapping', dataSetMappingGuid);
+            }
+        }
+        else {
+            let allDataSetMappingRecords = await apiCoreUtil.getGuid('com.bmc.dsm.cognitive-lib:Training Data Set Mapping');
+            let dataSetMappingArrayMap = allDataSetMappingRecords.data.data.map(async (obj: string) => {
+                return await apiCoreUtil.deleteRecordInstance('com.bmc.dsm.cognitive-lib:Training Data Set Mapping', obj[179]);
+            });
+            let isAllDataSetMappingDeleted: boolean = await Promise.all(dataSetMappingArrayMap).then(async (result) => {
+                return !result.includes(false);
+            });
+            return isAllDataSetMappingDeleted === true;
+        }
+    }
+
+    async enableDisableProcess(processName: string, enable: boolean): Promise<boolean> {
+        let url = `api/rx/application/process/processdefinition/${processName}`;
+        let processEnablingPayload = cloneDeep(ENABLE_DISABLE_PROCESS);
+        processEnablingPayload.guid = await apiCoreUtil.getProcessGuid(processName);
+        processEnablingPayload.name = processName;
+        processEnablingPayload.isEnabled = enable;
+        const processEnablementResponse = await axios.put(
+            url,
+            processEnablingPayload
+        );
+        console.log("Enable/Disable Process API Status =============>", processEnablementResponse.status);
+        return processEnablementResponse.status == 204;
+    }
+
+    async updateReviewDueDateRule(): Promise<boolean> {
+        let url = 'api/rx/application/rule/ruledefinition/com.bmc.dsm.knowledge:Knowledge Article - Notify ReviewDate due';
+        const reviewOverdueNotifyUpdateResponse = await axios.put(
+            url,
+            ARTCILE_DUE_DATE
+        );
+        console.log("Update Review Date Overdue =============>", reviewOverdueNotifyUpdateResponse.status);
+        return reviewOverdueNotifyUpdateResponse.status == 204;
+    }
+
+    async attachMilestone(recordGuid: string, recordType: string): Promise<boolean> {
+        let attachMilestonePayload = undefined;
+        if (recordType == 'CASE') attachMilestonePayload = cloneDeep(CASE_MILESTONE);
+        else if (recordType == 'TASK') attachMilestonePayload = cloneDeep(TASK_MILESTONE);
+        attachMilestonePayload.svtID = recordGuid;
+        let attachMileStoneResponse = await axios.post(
+            'api/com.bmc.dsm.slm-lib/rx/application/SLM/Milestone/saveMilestoneAssociation/',
+            attachMilestonePayload
+        );
+        console.log("Add SLM milestone =============>", attachMileStoneResponse.status);
+        return attachMileStoneResponse.status == 200;
+    }
+
+    async createDocumentAndProcessForActionableNotifications(): Promise<void> {
+        let createProcessResponse = await axios.post(
+            'api/rx/application/process/processdefinition/',
+            actionableNotificationPayloads.NOTIIFCATION_CREATE_PROCESS
+        );
+        console.log("Create Process Response =============>", createProcessResponse.status);
+
+        let createDcoumentResponse = await axios.post(
+            'api/rx/application/document/documentdefinition',
+            actionableNotificationPayloads.NOTIFICATION_CREATE_DOCUMENT
+        );
+        console.log("Create Document Response =============>", createDcoumentResponse.status);
+
+        let updateProcessUri = `api/rx/application/process/processdefinition/${actionableNotificationPayloads.NOTIIFCATION_CREATE_PROCESS.name}`;
+        console.log('updateProcessUri', updateProcessUri);
+        let updateProcessResponse = await axios.put(
+            updateProcessUri,
+            actionableNotificationPayloads.NOTIFICATION_UPDATE_PROCESS
+        );
+        console.log("Update Process Response =============>", updateProcessResponse.status);
+    }
+
+    async deleteDocumentAndProcessForActionableNotifications(): Promise<void> { 
+        let deleteProcessResponse = await axios.post(
+            'api/rx/application/command',
+            actionableNotificationPayloads.NOTIFICATION_DELETE_PROCESS
+        );
+        console.log("Delete Process Response =============>", deleteProcessResponse.status);
+
+         let deleteDocumentResponse = await axios.post(
+            'api/rx/application/command',
+            actionableNotificationPayloads.NOTIFICATION_DELETE_DOCUMENT
+        );
+        console.log("Delete Document Response =============>", deleteDocumentResponse.status);
+    }
+
+    async deleteNotificationEvent(notificationEventName: string, company?: string): Promise<boolean> {
+        let notificationEventGuid: string = undefined;
+        if(company) notificationEventGuid = await apiCoreUtil.getNotificationEventGuid(notificationEventName, company);
+        else notificationEventGuid = await apiCoreUtil.getNotificationEventGuid(notificationEventName);
+        if (notificationEventGuid) {
+            let status = await apiCoreUtil.deleteRecordInstance('com.bmc.dsm.notification-lib%3ANotificationEvent', notificationEventGuid);
+            console.log(`Notification Event: ${notificationEventName} deletion status ==> ${status}`);
+            return status;
+        } else console.log('Notification Event GUID not found =============>', notificationEventName);
+    }
+
+    async deleteTaskTemplate(taskTemplateName: string): Promise<boolean> {
+        let taskTemplateGuid = await apiCoreUtil.getTaskTemplateGuid(taskTemplateName);
+        if (taskTemplateGuid) {
+            let status = await apiCoreUtil.deleteRecordInstance('com.bmc.dsm.task-lib:Task Template', taskTemplateGuid);
+            console.log(`Task Template: ${taskTemplateName} deletion status ==> ${status}`);
+            return status;
+        } else console.log('Task Template GUID not found =============>', taskTemplateName);
     }
 }
 

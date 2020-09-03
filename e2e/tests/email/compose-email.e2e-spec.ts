@@ -784,6 +784,8 @@ describe("Compose Email", () => {
             await utilityGrid.clearFilter();
             await caseConsole.searchAndOpenCase(newCase.displayId);
             await viewCasePo.clickOnEmailLink();
+            await composeMail.clickOnSelectEmailTemplateLink();
+            await selectEmailTemplateBladePo.clickOnCancelButton();
             await composeMail.setEmailBody('Uploading Image through Browsing');
             await composeMail.clickOnImageIcon();
             sourceValue = await imagePropertiesPo.addImageOnEmail('Upload', '../../../data/ui/attachment/articleStatus.png', imageWidthFieldIndex, imageUrlFieldIndex);

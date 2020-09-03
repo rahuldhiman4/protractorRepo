@@ -48,7 +48,7 @@ describe('Case Bulk Operation', () => {
         personData = personDataFile['PersonData_BulkOperation'];
         await apiHelper.apiLogin('tadmin');
         await apiHelper.createNewUser(personData);
-        await apiHelper.deleteApprovalMapping(caseModule,'Bulk Operation Mapping');
+        await apiHelper.deleteApprovalMapping(caseModule, 'Bulk Operation Mapping');
         await apiHelper.associatePersonToCompany(personData.userId, petramcoStr);
         orgId = await apiCoreUtil.getOrganizationGuid(petramcoStr);
         businessData.relatedOrgId = orgId;
@@ -305,6 +305,9 @@ describe('Case Bulk Operation', () => {
                 await navigationPage.gotoCaseConsole();
             }
         });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
     });
 
     describe('[DRDMV-16110]: Verify that Agent creates the Case with Org, Support Group and while Bulk Assignment select BU, Org, Support Group, Department', async () => {
@@ -411,8 +414,8 @@ describe('Case Bulk Operation', () => {
             "company": "Petramco",
             "mappingName": "Bulk Operation Mapping"
         }
-        let approvalMappingId = await apiHelper.createApprovalMapping(caseModule,approvalMappingData);
-        await apiHelper.associateTemplateWithApprovalMapping(caseModule,caseTemplateResponse.id, approvalMappingId.id);
+        let approvalMappingId = await apiHelper.createApprovalMapping(caseModule, approvalMappingData);
+        await apiHelper.associateTemplateWithApprovalMapping(caseModule, caseTemplateResponse.id, approvalMappingId.id);
 
         //Create Approval Flow. Category 1 = Applications, Category 2 = Social and Category 3 = Chatter
         let approvalFlowData = {
@@ -420,7 +423,7 @@ describe('Case Bulk Operation', () => {
             "approver": "qkatawazi",
             "qualification": "'Category Tier 3' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.c2636a9ab1d4aa37cf23b2cf0dbd1f9ea3a5d6046a3ad0ad998c63411e41815d81709de7a5f6153e78fc47ebcc9c3f3f4db51dd0d9e44084eb3a345df03cb66d.304405421}"
         }
-        await apiHelper.createApprovalFlow(approvalFlowData,caseModule);
+        await apiHelper.createApprovalFlow(approvalFlowData, caseModule);
 
         let caseData = {
             "Requester": "qkatawazi",

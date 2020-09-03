@@ -24,7 +24,7 @@ class DynamicField {
         target: '[class="group-fields-area flex"]',
         src: '.column-pill-icon',
         downArrow: '.d-icon-right-angle_down',
-        searchField:'.ac-input-search-fields',
+        searchField: '.ac-input-search-fields',
         deleteButton: '[class="d-icon-left-cross header-icon"]',
     }
 
@@ -37,7 +37,7 @@ class DynamicField {
     }
 
     async isDynamicFieldDisplayed(): Promise<boolean> {
-       return await $(this.selectors.dynamicField).isDisplayed();
+        return await $(this.selectors.dynamicField).isDisplayed();
     }
 
     async clickOnAddDynamicGroup(): Promise<void> {
@@ -45,7 +45,7 @@ class DynamicField {
     }
 
     async isAddDynamicGroupDisplayed(): Promise<boolean> {
-      return  await $(this.selectors.dynamicGroup).isDisplayed();
+        return await $(this.selectors.dynamicGroup).isDisplayed();
     }
 
     async clickOnDownArrow(): Promise<void> {
@@ -57,13 +57,25 @@ class DynamicField {
         await $$(this.selectors.fieldName).last().sendKeys(name);
     }
 
+    async getFieldNameAttribute(name: string): Promise<string> {
+        return await $$(this.selectors.fieldName).last().getAttribute(name);
+    }
+
+    async getDescriptionName(name: string): Promise<string> {
+        return await $$(this.selectors.fieldDescription).last().getAttribute(name);
+    }
+
+    async getFieldValueType(dataType: string): Promise<string> {
+        return await $$(this.selectors.fieldValueType).last().getAttribute(dataType);
+    }
+
     async setGroupName(name: string): Promise<void> {
         await $(this.selectors.groupName).clear();
         await $(this.selectors.groupName).sendKeys(name);
     }
 
     async isGroupNameDisplayed(): Promise<boolean> {
-     return   await $(this.selectors.groupName).isDisplayed();
+        return await $(this.selectors.groupName).isDisplayed();
     }
 
     async setGroupDescription(name: string): Promise<void> {
@@ -72,7 +84,7 @@ class DynamicField {
     }
 
     async isGroupDescriptionDisplay(): Promise<boolean> {
-      return  await $(this.selectors.groupDescription).isDisplayed();
+        return await $(this.selectors.groupDescription).isDisplayed();
     }
 
     async setDescriptionName(name: string): Promise<void> {
@@ -93,7 +105,7 @@ class DynamicField {
     }
 
     async removeField(fieldName: string): Promise<void> {
-        await $(`[aria-label=${fieldName}] .remove-button-text`).click();
+        await $(`[aria-label=${fieldName}] [class="d-icon-left-cross header-icon"]`).click();
     }
 
     async selectFieldValueType(dataType: string): Promise<void> {
@@ -119,12 +131,20 @@ class DynamicField {
         await $(this.selectors.enabledConfidentialsField).click();
     }
 
+
+    async isConfidentialsRadioButtonDisplayed(): Promise<boolean> {
+        return await $(this.selectors.enabledConfidentialsField).isPresent().then(async (result) => {
+            if (result) return await $(this.selectors.enabledConfidentialsField).isDisplayed();
+            else return false;
+        });
+    }
+
     async clickEnabledPublishInLibraryButton(): Promise<void> {
         await $(this.selectors.enabledPublishInLibrary).click();
     }
 
     async isEnabledPublishInLibraryButtonDisplayed(): Promise<boolean> {
-      return await $(this.selectors.enabledPublishInLibrary).isDisplayed();
+        return await $(this.selectors.enabledPublishInLibrary).isDisplayed();
     }
 
     async clickDisabledConfidentialsRadioButton(): Promise<void> {
@@ -150,9 +170,9 @@ class DynamicField {
         });
     }
 
-    async searchField(value:string):Promise<void>{
+    async searchField(value: string): Promise<void> {
         await $(this.selectors.searchField).clear();
-        await $(this.selectors.searchField).sendKeys(value+Key.ENTER);
+        await $(this.selectors.searchField).sendKeys(value + Key.ENTER);
     }
 }
 

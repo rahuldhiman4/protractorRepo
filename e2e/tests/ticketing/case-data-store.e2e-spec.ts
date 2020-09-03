@@ -27,6 +27,9 @@ import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import dynamicGroupLibraryConfigConsolePo from '../../pageobject/settings/application-config/dynamic-group-library-config-console.po';
+import createDynamicGroupLibraryConfigPo from '../../pageobject/settings/application-config/create-dynamic-group-library-config.po';
+import editDynamicFieldLibraryConfigPo from '../../pageobject/settings/application-config/edit-dynamic-field-library-config.po';
 
 describe('Case Data Store', () => {
     beforeAll(async () => {
@@ -1058,6 +1061,60 @@ describe('Case Data Store', () => {
         afterAll(async () => {
             await editCasetemplatePo.clickOnCancelButton();
             await utilCommon.clickOnWarningOk();
+        });
+    });
+
+    //ankagraw
+    describe('[DRDMV-13101]: [Dynamic Data] [UI] - Behavior of Save, Cancel button in Add/Update Dynamic field from Library', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        it('[DRDMV-13101]: [Dynamic Data] [UI] - Behavior of Save, Cancel button in Add/Update Dynamic field from Library', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', 'Field Management Console - Business Workflows');
+            await dynamicFieldLibraryConfigConsolePo.clickAddDynamicFieldButton();
+            await createDynamicFieldLibraryConfigPo.setFieldName('LibTextField' + randomStr);
+            await createDynamicFieldLibraryConfigPo.setStatusValue('Active');
+            await createDynamicFieldLibraryConfigPo.setInformationSourceValueType('Agent');
+            await createDynamicFieldLibraryConfigPo.setFieldValueType('TEXT');
+            await createDynamicFieldLibraryConfigPo.clickCancelButton();
+            await utilCommon.clickOnWarningOk();
+            await dynamicFieldLibraryConfigConsolePo.clickAddDynamicFieldButton();
+            await createDynamicFieldLibraryConfigPo.setFieldName('LibTextField' + randomStr);
+            await createDynamicFieldLibraryConfigPo.setStatusValue('Active');
+            await createDynamicFieldLibraryConfigPo.setInformationSourceValueType('Agent');
+            await createDynamicFieldLibraryConfigPo.setFieldValueType('TEXT');
+            await createDynamicFieldLibraryConfigPo.clickOnActiveConfidentialsCheckbox();
+            await createDynamicFieldLibraryConfigPo.clickOnSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent("Resolve the field validation errors"));
+            expect(await createDynamicFieldLibraryConfigPo.getRequiredWarningMessage()).toBe("Value is required.")
+            await createDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
+            await localizeValuePopPo.setLocalizeValue('LibTextField' + randomStr);
+            await localizeValuePopPo.clickOnSaveButton();
+            await createDynamicFieldLibraryConfigPo.clickOnSaveButton();
+        });
+        it('[DRDMV-13101]: [Dynamic Data] [UI] - Behavior of Save, Cancel button in Add/Update Dynamic field from Library', async () => {
+            await utilGrid.searchAndOpenHyperlink('LibTextField' + randomStr);
+            await editDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
+            await localizeValuePopPo.clearLocalizeValue();
+            await localizeValuePopPo.clickOnSaveButton();
+            await editDynamicFieldLibraryConfigPo.clickOnSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent("Resolve the field validation errors"));
+            await editDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
+            await localizeValuePopPo.setLocalizeValue('NewLibTextField' + randomStr);
+            await localizeValuePopPo.clickOnSaveButton();
+            await editDynamicFieldLibraryConfigPo.clickOnSaveButton();
+        });
+        it('[DRDMV-13101]: [Dynamic Data] [UI] - Behavior of Save, Cancel button in Add/Update Dynamic field from Library', async () => {
+            await utilGrid.searchAndOpenHyperlink('NewLibTextField' + randomStr);
+            await editDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
+            await localizeValuePopPo.setLocalizeValue('NewLibTextField' + randomStr);
+            await localizeValuePopPo.clickOnSaveButton();
+            await editDynamicFieldLibraryConfigPo.clickCancelButton();
+            expect(await utilCommon.getWarningDialogMsg()).toBe("You have unsaved data. Do you want to continue without saving?");
+            await utilCommon.clickOnWarningOk();
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', 'Field Management Console - Business Workflows');
+            await utilGrid.searchAndOpenHyperlink('NewLibTextField' + randomStr);
+            await editDynamicFieldLibraryConfigPo.clickCancelButton();
         });
     });
 });
