@@ -40,6 +40,7 @@ exports.config = {
     flowset: ["./tests/flowset/*.e2e-spec.ts"],
     knowledge: ["./tests/knowledge/*.e2e-spec.ts"],
     notification: ["./tests/notification/*.e2e-spec.ts"],
+    search: ["./tests/search/*.e2e-spec.ts"],
     slm: ["./tests/slm/*.e2e-spec.ts"],
     social: ["./tests/social/*.e2e-spec.ts"],
     task: ["./tests/task/*.e2e-spec.ts"],
