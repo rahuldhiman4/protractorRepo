@@ -209,14 +209,14 @@ describe('Service Target Tests', () => {
     });
 
     //skhobrag
-    describe('[DRDMV-5039]: "Terms and Condition" qualification is added on Service Target - Edit View', async () => {
+    describe('[DRDMV-5039,DRDMV-17015]: "Terms and Condition" qualification is added on Service Target - Edit View', async () => {
         let selectedExp: string = '';
         let expectedSelectedExp = '';
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
         });
-        it('[DRDMV-5039]: Verify SVT Creation', async () => {
+        it('[DRDMV-5039,DRDMV-17015]: Verify SVT Creation', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Global', 'Case Management');
@@ -233,7 +233,7 @@ describe('Service Target Tests', () => {
             await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Resolved");
             await serviceTargetConfig.clickOnSaveSVTButton();
         });
-        it('[DRDMV-5039]: Verify "Terms and Condition" qualification on Service Target - Edit View', async () => {
+        it('[DRDMV-5039,DRDMV-17015]: Verify "Terms and Condition" qualification on Service Target - Edit View', async () => {
             await utilGrid.searchAndOpenHyperlink('SVT from Protractor');
             expect(await serviceTargetConfig.isServiceTargetBladeDisplayed()).toBeTruthy('Edit Service Target Configuration blade is not displayed.');
             expect(await serviceTargetConfig.isSaveButtonEnabled()).toBeFalsy('Save button is enabled when mandatory fields are left empty. 1');
@@ -293,7 +293,7 @@ describe('Service Target Tests', () => {
 
     //skhobrag
     describe('[DRDMV-21723]: SLAs attached even though current user loose access to the current record', async () => {
-        let caseId=undefined;
+        let caseId = undefined;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
@@ -370,5 +370,60 @@ describe('Service Target Tests', () => {
         });
 
     });
-    
+
+    //skhobrag
+    describe('[DRDMV-2357]: SLM - Service Target - Error Messages', async () => {
+        beforeAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteServiceTargets();
+        });
+        it('[DRDMV-2357]:Verify Goal Time selection Valiation on Service Target', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
+            await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Global', 'Case Management');
+            await SlmExpressionBuilder.selectExpressionQualification('Category Tier 1', '=', 'ASSOCIATION', 'Applications');
+            await SlmExpressionBuilder.clickOnAddExpressionButton('ASSOCIATION');
+            let selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
+            let expectedSelectedExp = "'" + "Category Tier 1" + "'" + "=" + '"' + "Applications" + '"'
+            expect(selectedExp).toEqual(expectedSelectedExp);
+            await SlmExpressionBuilder.clickOnSaveExpressionButton();
+            await serviceTargetConfig.selectGoal("60");
+            expect(await utilCommon.isPopUpMessagePresent('Minutes can have max value of 59')).toBeTruthy('Error : Record definition does not exists error message is not displayed.');
+            await serviceTargetConfig.selectGoal("-1");
+            expect(await utilCommon.isPopUpMessagePresent('Minutes can have min value of 0')).toBeTruthy('Error : Record definition does not exists error message is not displayed.');
+            await serviceTargetConfig.selectGoal("24", "Hours");
+            expect(await utilCommon.isPopUpMessagePresent('Hours can have max value of 23')).toBeTruthy('Error : Record definition does not exists error message is not displayed.');
+            await serviceTargetConfig.selectGoal("-1", "Hours");
+            expect(await utilCommon.isPopUpMessagePresent('Hours can have min value of 0')).toBeTruthy('Error : Record definition does not exists error message is not displayed.');
+            await serviceTargetConfig.selectGoal("366", "Days");
+            expect(await utilCommon.isPopUpMessagePresent('Days can have max value of 365')).toBeTruthy('Error : Record definition does not exists error message is not displayed.');
+            await serviceTargetConfig.selectGoal("-1", "Days");
+            expect(await utilCommon.isPopUpMessagePresent('Days can have min value of 0')).toBeTruthy('Error : Record definition does not exists error message is not displayed.');
+            await serviceTargetConfig.clickCloseButton();
+            expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue?');
+            await utilCommon.clickOnWarningOk();
+        });
+
+        it('[DRDMV-2357]: Verify SVT warning when data source is modified', async () => {
+            await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Global', 'Case Management');
+            await SlmExpressionBuilder.selectExpressionQualification('Category Tier 1', '=', 'ASSOCIATION', 'Applications');
+            await SlmExpressionBuilder.clickOnAddExpressionButton('ASSOCIATION');
+            let selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
+            let expectedSelectedExp = "'" + "Category Tier 1" + "'" + "=" + '"' + "Applications" + '"'
+            expect(selectedExp).toEqual(expectedSelectedExp);
+            await SlmExpressionBuilder.clickOnSaveExpressionButton();
+            await browser.sleep(2000); // added hard wait to load Edit Data Source Blade
+            await serviceTargetConfig.selectDataSource('Task Management');
+            let expectedWarningMsg = `You are about to change the Data source for this service target. All parameters including 'Milestones', 'Measurements', 'Goal', and 'Measurement Criteria' will be switched to default values.Are you sure you want to continue ?`;
+            expect(await utilCommon.getWarningDialogMsg()).toBe(expectedWarningMsg);
+            await utilCommon.clickOnWarningOk();
+        });
+
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
+
+    });
+
+
 });

@@ -100,10 +100,26 @@ class ServiceTargetConfig {
         await $$(this.selectors.expressionBuilderBtn).first().click();
     }
 
-    async selectGoal(goalTime: string) {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.segmentsArrow)));
-        await $$(this.selectors.timer).last().sendKeys(goalTime);
+    async selectGoal(goalTime: string, goalType?: string) {
+        switch (goalType) {
+            case "Days": {
+                await $$(this.selectors.timer).first().clear();
+                await $$(this.selectors.timer).first().sendKeys(goalTime);
+                break;
+            }
+            case "Hours": {
+                await $$(this.selectors.timer).get(1).clear();
+                await $$(this.selectors.timer).get(1).sendKeys(goalTime);
+                break;
+            }
+            default: {
+                await $$(this.selectors.timer).last().clear();
+                await $$(this.selectors.timer).last().sendKeys(goalTime);
+                break;
+            }
+        }
     }
+
 
     async selectMileStone() {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.segmentsArrow)));
