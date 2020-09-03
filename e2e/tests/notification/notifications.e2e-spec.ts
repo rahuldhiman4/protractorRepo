@@ -98,7 +98,7 @@ describe("Notifications", () => {
         }
     });
 
-    fit('[DRDMV-22964]: [Notifications] Case created without Case Template that has assignee - Assignee', async () => {
+    it('[DRDMV-22964]: [Notifications] Case created without Case Template that has assignee - Assignee', async () => {
         let caseData = {
             "Description": "Actionable Notification Desc",
             "Requester": "Elizabeth",

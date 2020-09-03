@@ -65,7 +65,7 @@ describe('Case Cognitive', () => {
         console.log("Category DataSet Created ==> ", categoryDataSetCreated);
     }
 
-    async function trainTeamplateDataSet() {
+    async function trainTemplateDataSet() {
         await apiHelper.apiLogin('tadmin');
         let templateDataSetTrained = await apiHelper.trainCognitiveDataSet(templateDataSet);
         console.log("Template DataSet Created ==> ", templateDataSetTrained);
@@ -187,7 +187,7 @@ describe('Case Cognitive', () => {
             await createCognitiveConfig();
         });
         it('[DRDMV-9023,DRDMV-8981]:Cognitive Config Creation', async () => {
-            await trainTeamplateDataSet();
+            await trainTemplateDataSet();
         });
         it('[DRDMV-9023,DRDMV-8981]:Cognitive Config Creation', async () => {
             await trainCategoryDataSet();
