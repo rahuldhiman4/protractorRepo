@@ -14,6 +14,8 @@ describe("Notifications", () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
+        await apiHelper.apiLogin('sasadmin');
+        await apiHelper.enableActionableNotificationSetting();
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteApprovalMapping(caseModule);
 
@@ -96,7 +98,7 @@ describe("Notifications", () => {
         }
     });
 
-    it('[DRDMV-22964]: [Notifications] Case created without Case Template that has assignee - Assignee', async () => {
+    fit('[DRDMV-22964]: [Notifications] Case created without Case Template that has assignee - Assignee', async () => {
         let caseData = {
             "Description": "Actionable Notification Desc",
             "Requester": "Elizabeth",
@@ -107,17 +109,17 @@ describe("Notifications", () => {
             "Assignee": "qkatawazi"
         }
         await apiHelper.apiLogin('fritz');
-        let response = await apiHelper.createCase(caseData);
+        let caseCreateResponse = await apiHelper.createCase(caseData);
         await utilityCommon.refresh(); //Refreshing the page to reflect the notification
         await notificationPo.clickOnNotificationIcon();
-        expect(await notificationPo.isAlertPresent(`${response.displayId} has been assigned to you.`)).toBeTruthy();
-        expect(await notificationPo.isAlertPresent(`${response.displayId} has been assigned to your group.`)).toBeFalsy();
+        expect(await notificationPo.isAlertPresent(`${caseCreateResponse.displayId} has been assigned to you.`)).toBeTruthy();
+        expect(await notificationPo.isAlertPresent(`${caseCreateResponse.displayId} has been assigned to your group.`)).toBeFalsy();
         try {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await notificationPo.clickOnNotificationIcon();
-            expect(await notificationPo.isAlertPresent(`${response.displayId} has been assigned to you.`)).toBeFalsy();
-            expect(await notificationPo.isAlertPresent(`${response.displayId} has been assigned to your group.`)).toBeFalsy();
+            expect(await notificationPo.isAlertPresent(`${caseCreateResponse.displayId} has been assigned to you.`)).toBeFalsy();
+            expect(await notificationPo.isAlertPresent(`${caseCreateResponse.displayId} has been assigned to your group.`)).toBeFalsy();
         }
         catch (ex) {
             throw ex;
