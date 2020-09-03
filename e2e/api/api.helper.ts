@@ -1150,7 +1150,7 @@ class ApiHelper {
         if (structure == 'DRDMV_15000') {
             threeTaskFlowProcess = cloneDeep(DRDMV_15000);
         }
-        else if(structure == 'THREE_TASKFLOW_SEQUENTIAL_PARALLEL') {
+        else if (structure == 'THREE_TASKFLOW_SEQUENTIAL_PARALLEL') {
             threeTaskFlowProcess = cloneDeep(THREE_TASKFLOW_SEQUENTIAL_PARALLEL);
         }
         let taskTemplateGuid1 = await apiCoreUtil.getTaskTemplateGuid(taskTemplateId1);
@@ -1729,7 +1729,7 @@ class ApiHelper {
 
         let updateCaseStatus = await apiCoreUtil.updateRecordInstance("com.bmc.dsm.case-lib:Case", caseGuid, caseStatusChange);
         await browser.sleep(1000); // hardwait to reflect updated status
-        console.log(`Changing the case to ${status} API status is =============>`, updateCaseStatus.status);
+        console.log(`Update case status to ${status} API status =============>`, updateCaseStatus.status);
         return updateCaseStatus.status;
     }
 
@@ -2174,7 +2174,7 @@ class ApiHelper {
 
         let updateTaskStatus = await apiCoreUtil.updateRecordInstance("com.bmc.dsm.task-lib:Task", taskGuid, updateTaskStatusPayload);
         await browser.sleep(1000); // hardwait to reflect updated status
-        console.log(`Update task status to ${status} API status is ${updateTaskStatus.status}`);
+        console.log(`Update task status to ${status} API status =============>`, updateTaskStatus.status);
         return updateTaskStatus.status;
     }
 
@@ -3079,14 +3079,14 @@ class ApiHelper {
         console.log("Update Process Response =============>", updateProcessResponse.status);
     }
 
-    async deleteDocumentAndProcessForActionableNotifications(): Promise<void> { 
+    async deleteDocumentAndProcessForActionableNotifications(): Promise<void> {
         let deleteProcessResponse = await axios.post(
             'api/rx/application/command',
             actionableNotificationPayloads.NOTIFICATION_DELETE_PROCESS
         );
         console.log("Delete Process Response =============>", deleteProcessResponse.status);
 
-         let deleteDocumentResponse = await axios.post(
+        let deleteDocumentResponse = await axios.post(
             'api/rx/application/command',
             actionableNotificationPayloads.NOTIFICATION_DELETE_DOCUMENT
         );
@@ -3095,7 +3095,7 @@ class ApiHelper {
 
     async deleteNotificationEvent(notificationEventName: string, company?: string): Promise<boolean> {
         let notificationEventGuid: string = undefined;
-        if(company) notificationEventGuid = await apiCoreUtil.getNotificationEventGuid(notificationEventName, company);
+        if (company) notificationEventGuid = await apiCoreUtil.getNotificationEventGuid(notificationEventName, company);
         else notificationEventGuid = await apiCoreUtil.getNotificationEventGuid(notificationEventName);
         if (notificationEventGuid) {
             let status = await apiCoreUtil.deleteRecordInstance('com.bmc.dsm.notification-lib%3ANotificationEvent', notificationEventGuid);
