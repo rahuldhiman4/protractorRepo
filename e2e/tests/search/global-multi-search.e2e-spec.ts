@@ -3,9 +3,9 @@ import apiHelper from "../../api/api.helper";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import searchPo from '../../pageobject/search/global-search.po';
-import peoplePo from '../../pageobject/search/people.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
+import personProfilePo from '../../pageobject/common/person-profile.po';
 
 export interface IIDs {
     id: string;
@@ -292,23 +292,23 @@ describe('Multi Search Validation', () => {
         });
 
         it('[DRDMV-16124]: Verify People Preview Fields', async () => {
-            expect(await peoplePo.isFieldLabelDisplayed('Employee')).toBeTruthy('FailureMsg22: field label displayed');
-            expect(await peoplePo.isFieldLabelDisplayed('Job Title')).toBeTruthy('FailureMsg22: field label displayed');
-            expect(await peoplePo.isFieldLabelDisplayed('Corporate ID')).toBeTruthy('FailureMsg22: field label displayed');
-            expect(await peoplePo.isFieldLabelDisplayed('Type')).toBeTruthy('FailureMsg22: field label displayed');
-            expect(await peoplePo.isFieldLabelDisplayed('Login ID')).toBeTruthy('FailureMsg22: field label displayed');
-            expect(await peoplePo.isFieldLabelDisplayed('Functional Roles')).toBeTruthy('FailureMsg22: field label displayed');
-            expect(await peoplePo.isFieldLabelDisplayed('Site')).toBeTruthy('FailureMsg22: field label displayed');
+            expect(await personProfilePo.isFieldLabelDisplayed('Employee')).toBeTruthy('FailureMsg22: field label displayed');
+            expect(await personProfilePo.isFieldLabelDisplayed('Job Title')).toBeTruthy('FailureMsg22: field label displayed');
+            expect(await personProfilePo.isFieldLabelDisplayed('Corporate ID')).toBeTruthy('FailureMsg22: field label displayed');
+            expect(await personProfilePo.isFieldLabelDisplayed('Type')).toBeTruthy('FailureMsg22: field label displayed');
+            expect(await personProfilePo.isFieldLabelDisplayed('Login ID')).toBeTruthy('FailureMsg22: field label displayed');
+            expect(await personProfilePo.isFieldLabelDisplayed('Functional Roles')).toBeTruthy('FailureMsg22: field label displayed');
+            expect(await personProfilePo.isFieldLabelDisplayed('Site')).toBeTruthy('FailureMsg22: field label displayed');
 
-            expect(await peoplePo.isDataDisplayed('EmployeeName', `${firstName} ${lastName}`)).toBeTruthy('FailureMsg22: first Name is missing');
-            expect(await peoplePo.isDataDisplayed('EmployeeCompany', company)).toBeTruthy('FailureMsg22: company name is missing');
-            expect(await peoplePo.isDataDisplayed('LoginId', loginId + 1)).toBeTruthy('FailureMsg22: Login id missing');
-            expect(await peoplePo.isDataDisplayed('EmailId', emailId)).toBeTruthy('FailureMsg23: emailId is missing');
-            expect(await peoplePo.isDataDisplayed('TabName', 'Related Persons')).toBeTruthy('FailureMsg24: Related Persons tab is missing');
-            expect(await peoplePo.isDataDisplayed('TabName', 'Requested Cases')).toBeTruthy('FailureMsg24: Requested Cases tab is missing');
-            expect(await peoplePo.isDataDisplayed('TabName', 'Assigned Cases')).toBeTruthy('FailureMsg24: Assigned Cases tab is missing');
-            expect(await peoplePo.isDataDisplayed('TabName', 'Support Groups')).toBeTruthy('FailureMsg24: Support Groups tab is missing');
-            expect(await peoplePo.isDataDisplayed('TabName', 'Related Cases')).toBeTruthy('FailureMsg24:Related Cases tab is missing');
+            expect(await personProfilePo.getPersonName()).toBe(`${firstName} ${lastName}`, 'FailureMsg22: first Name is missing');
+            expect(await personProfilePo.getCompany()).toBe(company, 'FailureMsg22: company name is missing');
+            expect(await personProfilePo.getLoginID()).toBe(loginId + 1, 'FailureMsg22: Login id is missing');
+            expect(await personProfilePo.getEmail()).toBe(emailId, 'FailureMsg22: emailId is missing');
+            await personProfilePo.clickOnTab('Related Persons');
+            await personProfilePo.clickOnTab('Requested Cases');
+            await personProfilePo.clickOnTab('Assigned Cases');
+            await personProfilePo.clickOnTab('Support Groups');
+            await personProfilePo.clickOnTab('Related Cases');
         });
 
         it('[DRDMV-16124]: Verify People with non matching Name', async () => {

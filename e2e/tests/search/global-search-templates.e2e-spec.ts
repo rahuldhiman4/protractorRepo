@@ -13,7 +13,8 @@ export interface IIDs {
     id: string;
     displayId: string;
 }
-describe('Global Search Doc Template Category', () => {
+
+describe('Global Search Template', () => {
     let caseTemplateModule = "Case Templates";
     let taskTemplateModule = "Task Templates";
     let documentModule = "Documents";
