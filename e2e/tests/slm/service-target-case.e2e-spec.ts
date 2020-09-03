@@ -709,19 +709,20 @@ describe('Service Target Tests for Cases', () => {
             browser.sleep(100000);
         });
         it('[DRDMV-8368]: Verify SVT missed goal pending status', async () => {
-            browser.sleep(130000);
+            browser.sleep(120000);
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
             expect(await viewCasePage.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
+            browser.sleep(60000);
+        });
+        it('[DRDMV-8368]: Verify SVT Missed Goal Status', async () => {
             await updateStatusBladePo.changeCaseStatus('Pending');
             await updateStatusBladePo.setStatusReason('Customer Response');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Pending');
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
-        });
-        it('[DRDMV-8368]: Verify SVT Missed Goal Status', async () => {
             await slmProgressBar.clickOnSLAProgressBarPausedIcon();
             expect(await serviceTargetInfoPage.isServiceTargetInformationBladeDisplayed()).toBeTruthy('Service Target Information Blade is not displayed.');
             expect(await serviceTargetInfoPage.isServiceTargetInformationPausedIconDisplayed()).toBeTruthy('SVT Pending Icon on SVT Info Blade is not displayed.');
