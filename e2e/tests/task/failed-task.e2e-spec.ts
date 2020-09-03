@@ -30,8 +30,7 @@ describe('Failed Task', () => {
     //asahitya
     describe('[DRDMV-10057]: Task behaviour when 2 of 3 tasks on same sequence and first task is failed(Condition set is Proceed further)', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let caseTemplatePetramco, newCaseTemplate, manualTaskTemplateData, automatedTaskTemplateData, caseResponse;
-        let failedTaskTemplateDisplayId = 'TTPL-0000000104';
+        let caseTemplatePetramco, newCaseTemplate, manualTaskTemplateData, automatedTaskTemplateSummary1, automatedTaskTemplateSummary2, caseResponse;
         beforeAll(async () => {
             await apiHelper.apiLogin('fritz');
             caseTemplatePetramco = {
@@ -64,12 +63,12 @@ describe('Failed Task', () => {
             }
             let manualTaskTemplate = await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
 
-            automatedTaskTemplateData = {
-                "templateName": 'Automated task10057' + randomStr,
-                "templateSummary": 'Automated task10057' + randomStr,
+            let automatedTaskTemplateData = {
+                "templateName": 'Automated1 task10057' + randomStr,
+                "templateSummary": 'Automated1 task10057' + randomStr,
                 "templateStatus": "Active",
                 "processBundle": "com.bmc.dsm.case-lib",
-                "processName": 'Auto Proces' + randomStr,
+                "processName": 'Auto Proces1' + randomStr,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "Facilities Support",
@@ -78,9 +77,14 @@ describe('Failed Task', () => {
                 "supportGroup": "Facilities",
                 "assignee": "Fritz",
             }
-            let automatedTaskTemplate = await apiHelper.createAutomatedTaskTemplate(automatedTaskTemplateData);
+            automatedTaskTemplateSummary1 = automatedTaskTemplateData.templateSummary;
+            let automatedTaskTemplate1 = await apiHelper.createAutomatedTaskTemplate(automatedTaskTemplateData);
+            automatedTaskTemplateSummary2 = automatedTaskTemplateData.templateSummary = automatedTaskTemplateData.templateName = 'Automated2 task10057' + randomStr;
+            automatedTaskTemplateData.processName = 'Auto Proces2' + randomStr;
+            let automatedTaskTemplate2 = await apiHelper.createAutomatedTaskTemplate(automatedTaskTemplateData);
             await apiHelper.apiLogin('fritz');
-            await apiHelper.associateCaseTemplateWithThreeTaskTemplate(newCaseTemplate.displayId, failedTaskTemplateDisplayId, automatedTaskTemplate.displayId, manualTaskTemplate.displayId, 'THREE_TASKFLOW_SEQUENTIAL_PARALLEL');
+            await apiHelper.enableDisableProcess(`${automatedTaskTemplateData.processBundle}:${automatedTaskTemplateData.processName}`, false);
+            await apiHelper.associateCaseTemplateWithThreeTaskTemplate(newCaseTemplate.displayId, automatedTaskTemplate2.displayId, automatedTaskTemplate1.displayId, manualTaskTemplate.displayId, 'THREE_TASKFLOW_SEQUENTIAL_PARALLEL');
 
             let caseData = {
                 "Requester": "qkatawazi",
@@ -99,11 +103,11 @@ describe('Failed Task', () => {
             await utilityCommon.closeAllBlades();
 
             await viewCasePage.openTaskCard(2);
-            expect(await manageTaskBlade.getTaskStatus('The execution of this task will fail and can be used to demonstrate how to handle this case.')).toContain('Failed');
+            expect(await manageTaskBlade.getTaskStatus(automatedTaskTemplateSummary2)).toContain('Failed');
             await utilityCommon.closeAllBlades();
 
             await viewCasePage.openTaskCard(3);
-            expect(await manageTaskBlade.getTaskStatus(automatedTaskTemplateData.templateSummary)).toContain('Completed');
+            expect(await manageTaskBlade.getTaskStatus(automatedTaskTemplateSummary1)).toContain('Completed');
             await utilityCommon.closeAllBlades();
 
             await apiHelper.apiLogin('tadmin');
@@ -125,8 +129,7 @@ describe('Failed Task', () => {
     //asahitya
     describe('[DRDMV-10056]: Task behaviour when 2 of 3 automated tasks on same sequence and first task is failed(Condition set is Do not Proceed)', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let caseTemplatePetramco, newCaseTemplate, manualTaskTemplateData, automatedTaskTemplateData, caseResponse;
-        let failedTaskTemplateDisplayId = 'TTPL-0000000104';
+        let caseTemplatePetramco, newCaseTemplate, manualTaskTemplateData, automatedTaskTemplateSummary1, automatedTaskTemplateSummary2, caseResponse;
         beforeAll(async () => {
             await apiHelper.apiLogin('fritz');
             caseTemplatePetramco = {
@@ -160,7 +163,7 @@ describe('Failed Task', () => {
             }
             let manualTaskTemplate = await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
 
-            automatedTaskTemplateData = {
+            let automatedTaskTemplateData = {
                 "templateName": 'Automated task10056' + randomStr,
                 "templateSummary": 'Automated task10056' + randomStr,
                 "templateStatus": "Active",
@@ -174,8 +177,14 @@ describe('Failed Task', () => {
                 "supportGroup": "Facilities",
                 "assignee": "Fritz",
             }
-            let automatedTaskTemplate = await apiHelper.createAutomatedTaskTemplate(automatedTaskTemplateData);
-            await apiHelper.associateCaseTemplateWithThreeTaskTemplate(newCaseTemplate.displayId, failedTaskTemplateDisplayId, automatedTaskTemplate.displayId, manualTaskTemplate.displayId, 'THREE_TASKFLOW_SEQUENTIAL_PARALLEL');
+            automatedTaskTemplateSummary1 = automatedTaskTemplateData.templateSummary;
+            let automatedTaskTemplate1 = await apiHelper.createAutomatedTaskTemplate(automatedTaskTemplateData);
+            automatedTaskTemplateSummary2 = automatedTaskTemplateData.templateSummary = automatedTaskTemplateData.templateName = 'Automated2 task10057' + randomStr;
+            automatedTaskTemplateData.processName = 'Auto Proces2' + randomStr;
+            let automatedTaskTemplate2 = await apiHelper.createAutomatedTaskTemplate(automatedTaskTemplateData);
+            await apiHelper.apiLogin('fritz');
+            await apiHelper.enableDisableProcess(`${automatedTaskTemplateData.processBundle}:${automatedTaskTemplateData.processName}`, false);
+            await apiHelper.associateCaseTemplateWithThreeTaskTemplate(newCaseTemplate.displayId, automatedTaskTemplate2.displayId, automatedTaskTemplate1.displayId, manualTaskTemplate.displayId, 'THREE_TASKFLOW_SEQUENTIAL_PARALLEL');
 
             let caseDataCriticalPriority = {
                 "Requester": "qkatawazi",
@@ -194,7 +203,7 @@ describe('Failed Task', () => {
             await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
 
             await viewCasePage.openTaskCard(1);
-            expect(await manageTaskBlade.getTaskStatus('The execution of this task will fail and can be used to demonstrate how to handle this case.')).toContain('Failed');
+            expect(await manageTaskBlade.getTaskStatus(automatedTaskTemplateSummary2)).toContain('Failed');
             await utilityCommon.closeAllBlades();
 
             await viewCasePage.openTaskCard(2);
@@ -202,7 +211,7 @@ describe('Failed Task', () => {
             await utilityCommon.closeAllBlades();
 
             await viewCasePage.openTaskCard(3);
-            expect(await manageTaskBlade.getTaskStatus(automatedTaskTemplateData.templateSummary)).toContain('Staged');
+            expect(await manageTaskBlade.getTaskStatus(automatedTaskTemplateSummary1)).toContain('Staged');
             await utilityCommon.closeAllBlades();
         });
     });

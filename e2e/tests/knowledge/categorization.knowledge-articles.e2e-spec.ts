@@ -200,9 +200,9 @@ describe('Knowledge Articles - Categorization Tests', () => {
             expect(categoryTier1Val).toEqual(emptyStr);
             expect(categoryTier2Val).toEqual(emptyStr);
             expect(categoryTier3Val).toEqual(emptyStr);
-            await navigationPage.signOut();
-
+            
             //Login with case Manager
+            await navigationPage.signOut();
             await loginPage.login(caseManagerUser);
             await navigationPage.gotoKnowledgeConsole();
             await utilityGrid.clearFilter();
@@ -228,11 +228,11 @@ describe('Knowledge Articles - Categorization Tests', () => {
             expect(categoryTier1Val).toEqual(emptyStr);
             expect(categoryTier2Val).toEqual(emptyStr);
             expect(categoryTier3Val).toEqual(emptyStr);
-            await navigationPage.signOut();
         });
-
+        
         it('[DRDMV-18999,DRDMV-19000,DRDMV-19002]:Verify the search functionality of knowledge articles console for category tiers 1,2 and 3', async () => {
             //Login with Case Agent user
+            await navigationPage.signOut();
             await loginPage.login(caseAgentUser);
             await navigationPage.gotoKnowledgeConsole();
             await utilityGrid.clearFilter();
@@ -258,9 +258,9 @@ describe('Knowledge Articles - Categorization Tests', () => {
             expect(categoryTier1Val).toEqual(emptyStr);
             expect(categoryTier2Val).toEqual(emptyStr);
             expect(categoryTier3Val).toEqual(emptyStr);
-            await navigationPage.signOut();
-
+            
             //Login with knowledge candidate user
+            await navigationPage.signOut();
             await loginPage.login(knowledgeCandidateUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
@@ -289,11 +289,11 @@ describe('Knowledge Articles - Categorization Tests', () => {
             expect(categoryTier2Val).toEqual(emptyStr);
             expect(categoryTier3Val).toEqual(emptyStr);
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
-            await navigationPage.signOut();
         });
-
+        
         it('[DRDMV-18999,DRDMV-19000,DRDMV-19002]:Verify the search functionality of knowledge articles console for category tiers 1,2 and 3', async () => {
             //Login with knowledge contributor 
+            await navigationPage.signOut();
             await loginPage.login(knowledgeContributorUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
@@ -322,9 +322,9 @@ describe('Knowledge Articles - Categorization Tests', () => {
             expect(categoryTier2Val).toEqual(emptyStr);
             expect(categoryTier3Val).toEqual(emptyStr);
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
-            await navigationPage.signOut();
-
+            
             //Login with knowledge Publisher
+            await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
@@ -353,11 +353,11 @@ describe('Knowledge Articles - Categorization Tests', () => {
             expect(categoryTier2Val).toEqual(emptyStr);
             expect(categoryTier3Val).toEqual(emptyStr);
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
-            await navigationPage.signOut();
         });
-
+        
         it('[DRDMV-18999,DRDMV-19000,DRDMV-19002]:Verify the search functionality of knowledge articles console for category tiers 1,2 and 3', async () => {
             //Login with knowledge coach 
+            await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
@@ -511,11 +511,11 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
             await expect(await resources.getAdvancedSearchResultForParticularSection(articleInCanceledStatus)).toEqual(articleInCanceledStatus);
-            await navigationPage.signOut();
         });
-
+        
         it('[DRDMV-19004]:Verify the knowledge articles search based on category tier on Quick case / Create case', async () => {
             //Login with Case Manager
+            await navigationPage.signOut();
             await loginPage.login(caseManagerUser);
             await navigationPage.gotoQuickCase();
             await quickCase.selectRequesterName(caseAgentUser);
@@ -629,11 +629,11 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
             await expect(await resources.getAdvancedSearchResultForParticularSection(articleInCanceledStatus)).toEqual(articleInCanceledStatus);
-            await navigationPage.signOut();
         });
-
+        
         it('[DRDMV-19004]:Verify the knowledge articles search based on category tier on Quick case / Create case', async () => {
             //Login with Case Agent
+            await navigationPage.signOut();
             await loginPage.login(caseAgentUser);
             await navigationPage.gotoQuickCase();
             await quickCase.selectRequesterName(caseManagerUser);
@@ -874,12 +874,12 @@ describe('Knowledge Articles - Categorization Tests', () => {
         await apiHelper.createKnowledgeSet(knowledgeSetData);
 
         try {
-            await navigationPage.signOut();
             let businessData = businessDataFile['BusinessUnitData2002'];
             let departmentData = departmentDataFile['DepartmentData2002'];
             let suppGrpData = supportGrpDataFile['SuppGrpData2002'];
             let knowledgeDataFile = require("../../data/ui/knowledge/knowledgeArticle.ui.json")
             let knowledgeData = knowledgeDataFile['DRDMV-2002'];
+            await navigationPage.signOut();
             await loginPage.login('werusha');
             await navigationPage.gotoCreateKnowledge();
             await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
