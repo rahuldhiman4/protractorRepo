@@ -21,6 +21,7 @@ class GlobalSearch {
         peopleGuid: '04d2b294-42c4-4d11-ac7a-4d17b5621f70',
         caseTemplatesGuid: 'e69a451f-fccb-488b-ab70-33018801f747',
         taskTemplateGuid: 'fe57b0e4-2546-407e-a2ea-c6f01868a835',
+        recentSearchDropDownValue: '.dropdown-item'
     }
 
     async searchRecord(record: string): Promise<void> {
@@ -78,6 +79,32 @@ class GlobalSearch {
     async selectCategoryDropDownValue(categoryDropdownValue: string): Promise<void> {
         let elemeent = await $(this.selectors.categoryDropDown);
         await utilityCommon.selectDropDown(elemeent, categoryDropdownValue);
+    }
+
+    async clickOnRecentSearchDropDownButton(): Promise<void> {
+        await $$(this.selectors.searchBox).get(1).click();
+        await $(this.selectors.recentSearch).click();
+    }
+
+    async selectRecentSearchDropDownValue(value: string): Promise<void> {
+        await $(this.selectors.recentSearch).click();
+        await element.all(by.cssContainingText(this.selectors.recentSearchDropDownValue, value)).click();
+    }
+
+    async getCountOfRecentDropDownValue(value: string): Promise<number> {
+        return await element.all(by.cssContainingText(this.selectors.recentSearchDropDownValue, value)).count();
+    }
+
+    async isRecentSearchesDropDownValueDisplayed(value: string): Promise<boolean> {
+        return await element(by.cssContainingText(this.selectors.recentSearchDropDownValue, value)).isPresent().then(async (link) => {
+            if (link) {
+                return await element(by.cssContainingText(this.selectors.recentSearchDropDownValue, value)).isDisplayed();
+            } else return false;
+        });
+    }
+
+    async getRecentSerachDropDownValue(recordNumber): Promise<string> {
+        return await $$(this.selectors.recentSearchDropDownValue).get(recordNumber - 1).getText();
     }
 
     async isLeftGlobalSearchPannelDisplayed(): Promise<boolean> {
@@ -166,6 +193,8 @@ class GlobalSearch {
         }
 
         let booleanVal: boolean;
+        booleanVal= await $(`[rx-view-component-id="${guid}"] h2`).isPresent();
+        if(booleanVal==true){
         for (let i: number = 0; i < 12; i++) {
             let moduleTitleText = await $(`[rx-view-component-id="${guid}"] h2`).getText();
             if (moduleTitleText.includes(moduleTitle)) {
@@ -176,10 +205,11 @@ class GlobalSearch {
                 await this.searchRecord(record);
             }
         }
+    }
         return booleanVal;
     }
 
-    async isRecordDisplayedOnLeftPannel(record: string, moduleName: string, recordNumber?:number): Promise<boolean> {
+    async isRecordDisplayedOnLeftPannel(record: string, moduleName: string, recordNumber?: number): Promise<boolean> {
         let guid;
         switch (moduleName) {
             case "Case": {
@@ -215,16 +245,16 @@ class GlobalSearch {
                 break;
             }
         }
-        if(recordNumber){
-            return await $$(`[rx-view-component-id="${guid}"] .bwf-search-fields[title="${record}"]`).get(recordNumber-1).isPresent().then(async (link) => {
+        if (recordNumber) {
+            return await $$(`[rx-view-component-id="${guid}"] .bwf-search-fields[title="${record}"]`).get(recordNumber - 1).isPresent().then(async (link) => {
                 if (link) {
-                        return await $$(`[rx-view-component-id="${guid}"] .bwf-search-fields[title="${record}"]`).get(recordNumber-1).isDisplayed();
+                    return await $$(`[rx-view-component-id="${guid}"] .bwf-search-fields[title="${record}"]`).get(recordNumber - 1).isDisplayed();
                 } else return false;
             });
-        }else{
+        } else {
             return await $(`[rx-view-component-id="${guid}"] .bwf-search-fields[title="${record}"]`).isPresent().then(async (link) => {
                 if (link) {
-                        return await $(`[rx-view-component-id="${guid}"] .bwf-search-fields[title="${record}"]`).isDisplayed();
+                    return await $(`[rx-view-component-id="${guid}"] .bwf-search-fields[title="${record}"]`).isDisplayed();
                 } else return false;
             });
         }
