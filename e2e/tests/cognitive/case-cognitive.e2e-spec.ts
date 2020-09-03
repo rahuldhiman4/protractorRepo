@@ -1,14 +1,14 @@
 import { browser } from "protractor";
 import apiHelper from "../../api/api.helper";
+import casePreviewPo from '../../pageobject/case/case-preview.po';
+import createCasePo from '../../pageobject/case/create-case.po';
+import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
+import viewCasePo from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
+import caseTemplatePreview from '../../pageobject/settings/case-management/preview-case-template.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
-import viewCasePo from '../../pageobject/case/view-case.po';
-import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
-import createCasePo from '../../pageobject/case/create-case.po';
-import caseTemplatePreview from '../../pageobject/settings/case-management/preview-case-template.po';
-import casePreviewPo from '../../pageobject/case/case-preview.po';
 
 describe('Case Cognitive', () => {
     const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -20,11 +20,10 @@ describe('Case Cognitive', () => {
     let apiKey = "HnmJ6tOYmUheiH7hLbQdW6HHvIhUFYCq6NVo5acPY4Ww";
     let templateDataSet = "My Template Data Set";
     let categoryDataSet = "My Category Data Set";
-    let caseTemplateResponse1,caseTemplateResponse2,caseTemplateResponse3,caseTemplateResponse4,caseTemplateResponse5;
+    let caseTemplateResponse1, caseTemplateResponse2, caseTemplateResponse3, caseTemplateResponse4, caseTemplateResponse5;
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
-        await apiHelper.apiLogin('tadmin');
         await createCategoryAssociation();
     });
 
@@ -41,6 +40,7 @@ describe('Case Cognitive', () => {
         categName2 = 'DemoCateg2';
         categName3 = 'DemoCateg3';
         categName4 = 'DemoCateg4';
+        await apiHelper.apiLogin('tadmin');
         await apiHelper.createOperationalCategory(categName1);
         await apiHelper.createOperationalCategory(categName2);
         await apiHelper.createOperationalCategory(categName3);
@@ -52,6 +52,7 @@ describe('Case Cognitive', () => {
     }
 
     async function createCognitiveConfig() {
+        await apiHelper.apiLogin('tadmin');
         let created = await apiHelper.addWatsonAccount(apiKey);
         console.log("Watson Account Added ==> ", created);
         let dataSetMappingDeleted = await apiHelper.deleteCognitiveDataSetMapping();
@@ -64,16 +65,19 @@ describe('Case Cognitive', () => {
         console.log("Category DataSet Created ==> ", categoryDataSetCreated);
     }
 
-    async function trainCognitiveDataSet1() {   
+    async function trainTeamplateDataSet() {
+        await apiHelper.apiLogin('tadmin');
         let templateDataSetTrained = await apiHelper.trainCognitiveDataSet(templateDataSet);
         console.log("Template DataSet Created ==> ", templateDataSetTrained);
-    }    
-    async function trainCognitiveDataSet2() {   
+    }
+
+    async function trainCategoryDataSet() {
+        await apiHelper.apiLogin('tadmin');
         let categoryDataSetTrained = await apiHelper.trainCognitiveDataSet(categoryDataSet);
         console.log("Category DataSet Created ==> ", categoryDataSetTrained);
-    } 
+    }
 
-    async function createCognitiveDataSetMapping() {   
+    async function createCognitiveDataSetMapping() {
         templateDataSetMapping = {
             name: "Petramco Template Dataset Mapping",
             company: "Petramco",
@@ -82,6 +86,7 @@ describe('Case Cognitive', () => {
             confidenceLevelAutomatic: 60,
             confidenceLevelAgent: 70
         }
+        await apiHelper.apiLogin('tadmin');
         let templateDataSetMappingStatus = await apiHelper.createCognitiveDataSetMapping("template", templateDataSetMapping);
         console.log("Template DataSet Mapping Created ==> ", templateDataSetMappingStatus);
         categoryDataSetMapping = {
@@ -147,13 +152,14 @@ describe('Case Cognitive', () => {
         await apiHelper.createCaseTemplate(caseTemplateData);
     }
 
-    async function createCaseData(){
+    async function createCaseData() {
         let caseData = {
             "Requester": "apavlik",
             "Summary": "SearchCateg4",
             "Origin": "Agent",
             "Case Template ID": caseTemplateResponse1.id
         }
+        await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createCase(caseData);
         caseData.Summary = "SearchCateg3";
         caseData["Case Template ID"] = caseTemplateResponse2.id;
@@ -173,7 +179,7 @@ describe('Case Cognitive', () => {
     describe('[DRDMV-9023,DRDMV-8981]:[Case Workspace] Cases search using filters', async () => {
         beforeAll(async () => {
             await createCognitiveSearchData();
-        });   
+        });
         it('[DRDMV-9023,DRDMV-8981]:Cognitive Config Creation', async () => {
             await createCaseData();
         });
@@ -181,10 +187,10 @@ describe('Case Cognitive', () => {
             await createCognitiveConfig();
         });
         it('[DRDMV-9023,DRDMV-8981]:Cognitive Config Creation', async () => {
-            await trainCognitiveDataSet1();
+            await trainTeamplateDataSet();
         });
         it('[DRDMV-9023,DRDMV-8981]:Cognitive Config Creation', async () => {
-            await trainCognitiveDataSet2();
+            await trainCategoryDataSet();
         });
         it('[DRDMV-9023,DRDMV-8981]:Cognitive Config Creation', async () => {
             await createCognitiveDataSetMapping();
@@ -196,14 +202,14 @@ describe('Case Cognitive', () => {
             await createCasePo.clickOnAutoCategorize();
             expect(await utilityCommon.isPopUpMessagePresent('Cognitive mapping is not configured.')).toBeTruthy();
         });
-        it('[DRDMV-9023,DRDMV-8981]:[Case Workspace] Cases search using filters', async () => { 
+        it('[DRDMV-9023,DRDMV-8981]:[Case Workspace] Cases search using filters', async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteCognitiveDataSetMapping();
             categoryDataSetMapping.enable = true;
             await apiHelper.createCognitiveDataSetMapping("category", categoryDataSetMapping);
             await apiHelper.createCognitiveDataSetMapping("template", templateDataSetMapping);
         });
-        it('[DRDMV-9023,DRDMV-8981]:[Case Workspace] Cases search using filters', async () => {   
+        it('[DRDMV-9023,DRDMV-8981]:[Case Workspace] Cases search using filters', async () => {
             await createCasePo.clearSummary();
             await createCasePo.setSummary(randomStr + 'randomCaseSummary');
             await createCasePo.clickOnAutoCategorize();
@@ -305,7 +311,7 @@ describe('Case Cognitive', () => {
             expect(await createCasePo.getCategoryTier1Value()).toBe(categName1);
             expect(await createCasePo.getCategoryTier2Value()).toBe('Select');
             expect(await createCasePo.getCategoryTier3Value()).toBe('Select');
-            expect(await createCasePo.getCategoryTier4Value()).toBe('Select');         
+            expect(await createCasePo.getCategoryTier4Value()).toBe('Select');
             await createCasePo.clearSummary();
             await createCasePo.setSummary('SearchCateg3');
             await createCasePo.clickOnAutoCategorize();
@@ -321,7 +327,7 @@ describe('Case Cognitive', () => {
             expect(await createCasePo.getCategoryTier1Value()).toBe(categName1);
             expect(await createCasePo.getCategoryTier2Value()).toBe(categName2);
             expect(await createCasePo.getCategoryTier3Value()).toBe(categName3);
-            expect(await createCasePo.getCategoryTier4Value()).toBe('Select');  
+            expect(await createCasePo.getCategoryTier4Value()).toBe('Select');
             await createCasePo.selectCategoryTier1("Facilities");
             await createCasePo.selectCategoryTier2("Conference Room");
             await createCasePo.selectCategoryTier3("Furniture");
@@ -334,7 +340,7 @@ describe('Case Cognitive', () => {
             expect(await createCasePo.getCategoryTier1Value()).toBe(categName1);
             expect(await createCasePo.getCategoryTier2Value()).toBe(categName2);
             expect(await createCasePo.getCategoryTier3Value()).toBe(categName3);
-            expect(await createCasePo.getCategoryTier4Value()).toBe(categName4);      
+            expect(await createCasePo.getCategoryTier4Value()).toBe(categName4);
         });
         afterAll(async () => {
             await navigationPage.signOut();
