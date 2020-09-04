@@ -849,6 +849,7 @@ describe("Task Approval Tests", () => {
             await manageTask.clickTaskLink(autoTaskTemplateData.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Approval Rejected");
             expect(await viewTask.isShowApproversBannerDisplayed()).toBeFalsy('Show Approvers Banner is not displayed');
+            await browser.sleep(3000); // hardwait to reflect task approval details in activity
             expect(await activityTabPage.getApprovalErrorActivityText('An error occurred during approval')).toBeTruthy('Show Approvers Banner is not displayed');
 
         });

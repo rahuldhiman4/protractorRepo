@@ -314,6 +314,7 @@ describe("Task Self Approval Tests", () => {
             await viewCasePo.openTaskCard(1);
             await manageTask.clickTaskLink(autoTaskTemplateData.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Completed");
+            await browser.sleep(3000); // hardwait to reflect task approval details in activity
             expect(await activityTabPage.getApprovalActivityText('Task was self-approved')).toBeTruthy();
         });
 
