@@ -9,7 +9,7 @@ import { CASE_APPROVAL_FLOW, MULTI_APPROVAL_FLOW, TASK_APPROVAL_FLOW } from '../
 import { CASE_APPROVAL_MAPPING, TASK_APPROVAL_MAPPING } from '../data/api/approval/approval.mapping.api';
 import { CASE_READ_ACCESS } from '../data/api/case/case.read.access.api';
 import { CASE_REOPEN } from '../data/api/case/case.reopen.api';
-import { CASE_TEMPLATE_PAYLOAD, CASE_TEMPLATE_STATUS_UPDATE_PAYLOAD } from '../data/api/case/case.template.data.api';
+import { CASE_TEMPLATE_PAYLOAD, CASE_TEMPLATE_STATUS_UPDATE_PAYLOAD, CASE_TEMPLATE_IDENTITY_UPDATE_PAYLOAD } from '../data/api/case/case.template.data.api';
 import { ADD_TO_WATCHLIST } from '../data/api/case/case.watchlist.api';
 import { CASE_STATUS_CHANGE, UPDATE_CASE, UPDATE_CASE_ASSIGNMENT } from '../data/api/case/update.case.api';
 import { COGNITIVE_CATEGORY_DATASET, COGNITIVE_CATEGORY_DATASET_MAPPING, COGNITIVE_LICENSE, COGNITIVE_TEMPLATE_DATASET, COGNITIVE_TEMPLATE_DATASET_MAPPING } from '../data/api/cognitive/cognitive.config.api';
@@ -456,7 +456,14 @@ class ApiHelper {
             }
             templateData.fieldInstances["450000381"] = caseTemplateDataBusinessUnit;
         }
-
+        if (data.department) {
+            let assigneeDepartment = await apiCoreUtil.getDepartmentGuid(data.department);
+            let caseTemplateDataDepartment = {
+                "id": 450000381,
+                "value": `${assigneeDepartment}`
+            }
+            templateData.fieldInstances["450000371"] = caseTemplateDataDepartment;
+        }
         if (data.categoryTier4) {
             let categoryTier4 = await apiCoreUtil.getCategoryGuid(data.categoryTier4);
             let caseTemplateDataCategoryTier4 = {
@@ -502,6 +509,7 @@ class ApiHelper {
         updateStatusPayload.id = caseTemplateGuid;
         updateStatusPayload.fieldInstances[7].value = constants.CaseTemplate[status];
         let updateCaseStatus = await apiCoreUtil.updateRecordInstance("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid, updateStatusPayload);
+        console.log("Updated Case Template Status =============>", updateCaseStatus.status);
         return updateCaseStatus.status;
     }
 
@@ -2680,6 +2688,7 @@ class ApiHelper {
     async addCommonConfig(configName: string, params: any[], company: string): Promise<boolean> {
         let commonConfigPayload, commonConfigGuid;
         let companyGuid = await apiCoreUtil.getOrganizationGuid(company);
+        
         let headerConfig = {
             headers: {
                 'default-bundle-scope': 'com.bmc.dsm.shared-services-lib'
@@ -2730,6 +2739,17 @@ class ApiHelper {
                     if (commonConfigPayload[i].settingName == 'Expression') commonConfigPayload[i].settingValue = companyGuid;
                 }
                 commonConfigPayload[1].settingValue = String(params[0]);
+                break;
+            }
+            case "IDENTITY_VALIDATION": {
+                commonConfigGuid = constants.ApplicationConfigurationsGuid[configName];
+                await this.deleteCommonConfig(configName, company); // delete existing config of company
+                commonConfigPayload = cloneDeep(COMMON_CONFIG_PAYLOAD);
+                for (let i: number = 0; i < commonConfigPayload.length; i++) {
+                    commonConfigPayload[i].ownerKeyValue2 = commonConfigGuid;
+                    if (commonConfigPayload[i].settingName == 'Expression') commonConfigPayload[i].settingValue = companyGuid;
+                }
+                commonConfigPayload[1].settingValue = String(constants.ApplicationConfigurationsValue[params[0]]);
                 break;
             }
             default: {
@@ -3111,6 +3131,15 @@ class ApiHelper {
             console.log(`Task Template: ${taskTemplateName} deletion status ==> ${status}`);
             return status;
         } else console.log('Task Template GUID not found =============>', taskTemplateName);
+    }
+
+    async updateCaseTemplateIdentitiyValidation(caseTemplateGuid: string, optionValue: string): Promise<number> {
+        let updatePayload = cloneDeep(CASE_TEMPLATE_IDENTITY_UPDATE_PAYLOAD);
+        updatePayload.id = caseTemplateGuid;
+        updatePayload.fieldInstances[450000153].value = constants.ApplicationConfigurationsValue[optionValue];
+        let updateIdentitiy = await apiCoreUtil.updateRecordInstance("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid, updatePayload);
+        console.log("Updated Identity =============>", updateIdentitiy.status);
+        return updateIdentitiy.status;
     }
 }
 

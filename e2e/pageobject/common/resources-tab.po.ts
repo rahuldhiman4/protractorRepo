@@ -180,6 +180,13 @@ export class Resources {
     async clickPaginationNext(): Promise<void> {
         await $(this.selectors.paginationNextButton).click();
     }
+
+    async isSectionTitleDisplayed(sectionName: string): Promise<boolean> {
+        return await $(`[aria-label*="${sectionName}"]`).isPresent().then(async (link) => {
+            if (link) return await $(`[aria-label*="${sectionName}"]`).isDisplayed();
+            else return false;
+        });
+    }
 }
 
 export default new Resources();
