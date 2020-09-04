@@ -955,7 +955,7 @@ class ApiHelper {
         }
     }
 
-    async createNewUser(data: IPerson): Promise<string> {
+    async createNewUser(data: IPerson, userStatus?:string): Promise<string> {
         let personGuid = await apiCoreUtil.getPersonGuid(data.userId);
         if (personGuid == null) {
             let userData = cloneDeep(NEW_USER);
@@ -980,9 +980,12 @@ class ApiHelper {
             data.company ? updateUser.fieldInstances[536870913].value = await apiCoreUtil.getOrganizationGuid(data.company) : updateUser.fieldInstances[536870913].value;
             updateUser.displayId = recordDisplayId;
             updateUser.id = recordGUID;
-
-            const userUpdate = await apiCoreUtil.updateRecordInstance(recordName, recordGUID, updateUser);
-            console.log('Enable User API Status =============>', userUpdate.status);
+            if (userStatus=='Inactive'){
+                console.log('New user created with Inactive status');
+            }else{
+                const userUpdate = await apiCoreUtil.updateRecordInstance(recordName, recordGUID, updateUser);
+                console.log('Enable User API Status =============>', userUpdate.status);
+            }
             return recordGUID;
         } else {
             console.log('New User API Status =============> User already exists =============> ', personGuid);
