@@ -691,7 +691,7 @@ describe("Approval Mapping Tests", () => {
                 "mappingName": "Approval Mapping for One Must Approval"
             }
             let approvalMappingResponse = await apiHelper.createApprovalMapping(caseModule, approvalMappingData);
-            await apiHelper.associateTemplateWithApprovalMapping(caseModule,caseTemplate1.id, approvalMappingResponse.id);
+            await apiHelper.associateTemplateWithApprovalMapping(caseModule, caseTemplate1.id, approvalMappingResponse.id);
         });
         it('[DRDMV-22949]:Toggle False, case created using template which added in approval mapping, case should go in Approval', async () => {
             await apiHelper.apiLogin('qkatawazi');
