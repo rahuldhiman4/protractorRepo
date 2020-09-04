@@ -45,7 +45,11 @@ export const CASE_TEMPLATE_PAYLOAD = {
     "1000000065": {
       "id": 1000000065,
       "value": null
-    }
+    },
+    "450000371": {
+      "id": 450000371,
+      "value": null
+    },
   }
 };
 
@@ -58,6 +62,19 @@ export const CASE_TEMPLATE_STATUS_UPDATE_PAYLOAD = {
       "resourceType": "com.bmc.arsys.rx.services.record.domain.FieldInstance",
       "id": 7,
       "value": 1000
+    }
+  }
+};
+
+export const CASE_TEMPLATE_IDENTITY_UPDATE_PAYLOAD = {
+  "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
+  "id": "AGGADGG8ECDC0AQ6BFQNQ5CVYMVV90",
+  "recordDefinitionName": "com.bmc.dsm.case-lib:Case Template",
+  "fieldInstances": {
+    "450000153": {
+      "resourceType": "com.bmc.arsys.rx.services.record.domain.FieldInstance",
+      "id": 450000153,
+      "value": 2,
     }
   }
 };

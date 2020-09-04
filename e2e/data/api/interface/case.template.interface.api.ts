@@ -13,6 +13,7 @@ export interface ICaseTemplate {
     categoryTier4?: string;
     businessUnit?: string;
     supportGroup?: string;
+    department?: string;
     assignee?: string;
     description?: string;
     resolutionCode?: string;

@@ -297,6 +297,7 @@ describe('Case Cognitive', () => {
     //Created Bug - DRDMV-23210
     describe('[DRDMV-8985,DRDMV-8987]:[Cognitive] - Auto categorization when cognitive search return only tier 1, tier 1,2 and tier 1,2,3 values', async () => {
         it('[DRDMV-8985,DRDMV-8987]:[Cognitive] - Auto categorization when cognitive search return only tier 1, tier 1,2 and tier 1,2,3 values', async () => {
+            await navigationPage.gotoCaseConsole();
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('adam');
             await createCasePo.setSummary('SearchCateg4');

@@ -252,12 +252,16 @@ describe("Case Read Access", () => {
             await apiHelper.apiLogin('qkatawazi');
             caseTemplateData = {
                 "templateName": `${randomStr}Case template`,
-                "templateStatus": "Draft",
+                "templateStatus": "Active",
                 "templateSummary": `${randomStr}Summary`,
                 "caseStatus": "New",
                 "casePriority": "Critical",
                 "categoryTier1": 'Purchasing Card',
                 "company": "Petramco",
+                "businessUnit": businessData2.orgName,
+                "department": departmentData2.orgName,
+                "supportGroup": suppGrpData2.orgName,
+                "assignee": "idPerson19501"
             }
             await apiHelper.createCaseTemplate(caseTemplateData);
         });
@@ -287,28 +291,8 @@ describe("Case Read Access", () => {
             await utilCommon.closePopUpMessage();
         });
         it('[DRDMV-7061,DRDMV-6998]: [Read Access] Configuring non-default Read Access', async () => {
-            await navigationPo.gotoSettingsPage();
-            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
-            await utilGrid.searchAndOpenHyperlink(caseTemplateData.templateName);
-            await editCaseTemplate.clickEditCaseTemplate();
-            await editCaseTemplate.clickOnChangeAssignmentButton();
-            await changAssignmentOldPage.selectCompany('Petramco');
-            await changAssignmentOldPage.selectBusinessUnit(businessData2.orgName);
-            await changAssignmentOldPage.selectDepartment(departmentData2.orgName);
-            await changAssignmentOldPage.selectSupportGroup(suppGrpData2.orgName);
-            await changAssignmentOldPage.selectAssignee('fnPerson19501 lnPerson19501');
-            await changAssignmentOldPage.clickOnAssignButton();
-            await editCaseTemplate.clickSaveCaseTemplate();
-            await editCaseTemplate.clickOnEditCaseTemplateMetadata();
-            await editCaseTemplate.changeTemplateStatusDropdownValue('Active');
-            await editCaseTemplate.clickOnSaveCaseTemplateMetadata();
-            await utilCommon.closePopUpMessage();
-        });
-        it('[DRDMV-7061,DRDMV-6998]: [Read Access] Configuring non-default Read Access', async () => {
-            await navigationPo.signOut();
-            await loginPage.login('qtao')
             await navigationPo.gotoQuickCase();
-            await quickCasePo.selectRequesterName('qkatawazi');
+            await quickCasePo.selectRequesterName('qtao');
             await quickCasePo.selectCaseTemplate(caseTemplateData.templateName);
             await quickCasePo.saveCase();
             await casePreviewPo.clickGoToCaseButton();
