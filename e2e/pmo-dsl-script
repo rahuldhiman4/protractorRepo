@@ -1,0 +1,49 @@
+import groovy.json.JsonSlurper;
+
+def jsonFileContent = readFileFromWorkspace("${JSON}");
+def componentObj = new JsonSlurper().parseText(jsonFileContent);
+def components = componentObj.keySet();
+//----------------
+components.each {
+//----------------
+if(it == "Total") return;
+def passed = (componentObj.get(it).get("pass"));
+def failed = (componentObj.get(it).get("fail"));
+def skipped = (componentObj.get(it).get("skip"));
+def total = (componentObj.get(it).get("total"));
+def descTxt = "Tests:" + total + " Passed:" + passed + " Failed:" + failed + " Skipped:" + skipped;
+pipelineJob(it + '_UI') {
+    parameters {
+      	stringParam('desc', descTxt)
+    }
+	definition {
+		cps {
+			script('''
+				pipeline {
+					agent {	label 'deployment' }
+						stages {
+							stage('SetBuildDescription') {
+								steps {
+									script {currentBuild.description = "${desc}"}
+								}
+							}
+						}
+					}
+				'''.stripIndent())
+				sandbox()
+			}
+		}
+	}
+}
+//----------------
+components.each {
+//----------------
+	queue(it + '_UI')
+}
+
+buildMonitorView('project-A') {
+    description('All jobs for project A')
+    jobs {
+        regex(/.*_UI/)
+    }
+}
