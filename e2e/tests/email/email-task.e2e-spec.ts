@@ -15,6 +15,8 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import composeMailPo from '../../pageobject/email/compose-mail.po';
+import selectEmailTemplateBladePo from '../../pageobject/email/select-email-template-blade.po';
 
 describe('Email Task', () => {
     beforeAll(async () => {
@@ -413,6 +415,8 @@ describe('Email Task', () => {
         await browser.sleep(2000);
         let ManualtaskID = await viewTaskPo.getTaskID();
         await viewTaskPo.clickEmailLink();
+        await composeMailPo.clickOnSelectEmailTemplateLink();
+        await selectEmailTemplateBladePo.clickOnCancelButton();
         await emailPo.setEmailBody('this is new email sending frist time to the user');
         await emailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
         await emailPo.setToOrCCInputTetxbox('Cc', 'qkatawazi@petramco.com');
@@ -465,7 +469,7 @@ describe('Email Task', () => {
         await emailPo.setEmailBody('this is third reply');
         await emailPo.clickOnSendButton();
         expect(await activityTabPo.getEmailBody()).toContain('this is third reply');
-    }, 300 * 1000);
+    }, 350 * 1000);
 
     it('[DRDMV-19557]: For Reply / Reply All earlier email context should be copied as part of email composition on Case', async () => {
         let caseData = {
@@ -484,6 +488,8 @@ describe('Email Task', () => {
         await utilityGrid.clearFilter();
         await utilityGrid.searchAndOpenHyperlink(displayId);
         await viewCasePo.clickOnEmailLink();
+        await composeMailPo.clickOnSelectEmailTemplateLink();
+        await selectEmailTemplateBladePo.clickOnCancelButton();
         await emailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
         await emailPo.setToOrCCInputTetxbox('Cc', 'qkatawazi@petramco.com');
         await emailPo.setEmailBody('this is new email sending frist time to the user');
