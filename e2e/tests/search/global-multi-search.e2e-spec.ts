@@ -302,7 +302,7 @@ describe('Multi Search Validation', () => {
 
             expect(await personProfilePo.getPersonName()).toBe(`${firstName} ${lastName}`, 'FailureMsg22: first Name is missing');
             expect(await personProfilePo.getCompany()).toBe(company, 'FailureMsg22: company name is missing');
-            expect(await personProfilePo.getLoginID()).toBe(loginId + 1, 'FailureMsg22: Login id is missing');
+            expect(await personProfilePo.getLoginID()).toContain(loginId, 'FailureMsg22: Login id is missing');
             expect(await personProfilePo.getEmail()).toBe(emailId, 'FailureMsg22: emailId is missing');
             await personProfilePo.clickOnTab('Related Persons');
             await personProfilePo.clickOnTab('Requested Cases');
@@ -374,34 +374,26 @@ describe('Multi Search Validation', () => {
             expect(await searchPo.isModuleTitleDisplayed(nonAccessLastName, 'People (0)', peopleModule)).toBeTruthy('FailureMsg63: people module title is missing');
             expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(peopleModule)).toBeTruthy(`FailureMsg64: No result found validation is missing`);
         });
-
+        
         afterAll(async () => {
             await navigationPage.signOut();
-            await loginPage.login('qtao');
+            await loginPage.login('elizabeth');
         });
     });
 
     //kgaikwad
-    describe('[DRDMV-16133]: Global search based on change in category by keeping the same search pattern', async () => {
+    describe('[DRDMV-16133]: 1 Global search based on change in category by keeping the same search pattern', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let attachmentFilePath = 'e2e/data/ui/attachment/globalsearch1.pdf';
         let caseSummary = '1caseSummaryDRDMV16133' + randomStr;
         let taskSummary = '1taskSummaryDRDMV16133' + randomStr;
-        let caseTemplateName = 'caseTemplateDRDMV16133' + randomStr;
-        let taskTemplateName = 'taskTemplateDRDMV16133' + randomStr;
-        let lastName = 'lastNameDRDMV16133' + randomStr;
-        let loginId = 'loginIdDRDMV16133' + randomStr;
         let commonSearchAll = 'commonSearchDRDMV16133' + randomStr;
 
         let caseDisplayId = [];
         let taskDisplayId = [];
-        let caseTemplateDisplayId = [];
-        let taskTemplateDisplayId = [];
         let kaDisplayId = [];
         let caseDetails;
 
         beforeAll(async () => {
-
             await apiHelper.apiLogin('elizabeth');
             // Create Case
             for (let a = 1; a <= 5; a++) {
@@ -414,36 +406,13 @@ describe('Multi Search Validation', () => {
                 taskDisplayId[b] = await createTask(taskSummary, caseDetails.id, commonSearchAll);
             }
 
-            // Create Case Template
-            for (let c = 1; c <= 5; c++) {
-                caseTemplateDisplayId[c] = await createCaseTemplate(caseTemplateName + c, commonSearchAll, 'Active', 'Petramco');
-            }
-
-            // Create Task Template
-            for (let d = 1; d <= 5; d++) {
-                taskTemplateDisplayId[d] = await createTaskTemplate(taskTemplateName + d, 'Active', 'Petramco', commonSearchAll);
-            }
-
             // Create Knowledge Article
             for (let e = 1; e <= 5; e++) {
                 kaDisplayId[e] = await createKnowledgeArticleWithPublish(commonSearchAll);
             }
-
-            // Create Document Library
-            for (let f = 1; f <= 5; f++) {
-                await createPublishDocumentLibrary(commonSearchAll, attachmentFilePath);
-            }
-
-            // Create New User
-            await apiHelper.apiLogin('tadmin');
-            for (let g = 1; g <= 5; g++) {
-                await createNewUser(commonSearchAll, lastName, loginId + g, 'DRDMV16133@petramco.com', 'Petramco');
-            }
         });
 
-        it('[DRDMV-16123]: Verify All Records Are Displayed On Left Pannel', async () => {
-            await navigationPage.signOut();
-            await loginPage.login('elizabeth');
+        it('[DRDMV-16133]: Verify All Records Are Displayed On Left Pannel', async () => {
             await navigationPage.gotoSearch();
             expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
 
@@ -472,41 +441,9 @@ describe('Multi Search Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId[3], KAModule)).toBeTruthy(`FailureMsg13: ${kaDisplayId[3]} Knowledge Article id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId[4], KAModule)).toBeTruthy(`FailureMsg14: ${kaDisplayId[4]} Knowledge Article id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId[5], KAModule)).toBeTruthy(`FailureMsg15: ${kaDisplayId[5]} Knowledge Article id  is missing`);
-
-            // Verify Case Template With Left Pannel
-            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Case Templates (5)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId[1], caseTemplateModule)).toBeTruthy(`FailureMsg4: ${caseTemplateDisplayId[1]} case id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId[2], caseTemplateModule)).toBeTruthy(`FailureMsg6: ${caseTemplateDisplayId[2]} case id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId[3], caseTemplateModule)).toBeTruthy(`FailureMsg7: ${caseTemplateDisplayId[3]} case id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId[4], caseTemplateModule)).toBeTruthy(`FailureMsg7: ${caseTemplateDisplayId[4]} case id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId[5], caseTemplateModule)).toBeTruthy(`FailureMsg7: ${caseTemplateDisplayId[5]} case id  is missing`);
-
-            // Verify Task Template With Left Pannel
-            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Task Templates (5)', taskTemplateModule)).toBeTruthy('FailureMsg2: Task module title is missing');
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId[1], taskTemplateModule)).toBeTruthy(`FailureMsg4: ${taskTemplateDisplayId[1]} task template id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId[2], taskTemplateModule)).toBeTruthy(`FailureMsg4: ${taskTemplateDisplayId[2]} task template id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId[3], taskTemplateModule)).toBeTruthy(`FailureMsg4: ${taskTemplateDisplayId[3]} task template id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId[4], taskTemplateModule)).toBeTruthy(`FailureMsg4: ${taskTemplateDisplayId[4]} task template id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId[5], taskTemplateModule)).toBeTruthy(`FailureMsg4: ${taskTemplateDisplayId[5]} task template id  is missing`);
-
-            // Verify Document With Left Pannel
-            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Documents (5)', documentModule)).toBeTruthy('FailureMsg2: Document module title is missing');
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(commonSearchAll, documentModule, 1)).toBeTruthy(`FailureMsg4: ${commonSearchAll} 1 Document is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(commonSearchAll, documentModule, 2)).toBeTruthy(`FailureMsg4: ${commonSearchAll} 2 Document is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(commonSearchAll, documentModule, 3)).toBeTruthy(`FailureMsg5: ${commonSearchAll} 3 Document is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(commonSearchAll, documentModule, 4)).toBeTruthy(`FailureMsg6: ${commonSearchAll} 4 Document is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(commonSearchAll, documentModule, 5)).toBeTruthy(`FailureMsg7: ${commonSearchAll} 5 Document is missing`);
-
-            // Verify People Pannel
-            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'People (5)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${commonSearchAll} ${lastName}`, peopleModule, 1)).toBeTruthy(`FailureMsg4: ${commonSearchAll} ${lastName} 1 Person Name is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${commonSearchAll} ${lastName}`, peopleModule, 2)).toBeTruthy(`FailureMsg5: ${commonSearchAll} ${lastName} 2 Person Name is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${commonSearchAll} ${lastName}`, peopleModule, 3)).toBeTruthy(`FailureMsg6: ${commonSearchAll} ${lastName} 3 Person Name is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${commonSearchAll} ${lastName}`, peopleModule, 4)).toBeTruthy(`FailureMsg7: ${commonSearchAll} ${lastName} 4 Person Name is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${commonSearchAll} ${lastName}`, peopleModule, 5)).toBeTruthy(`FailureMsg8: ${commonSearchAll} ${lastName} 5 Person Name is missing`);
         });
 
-        it('[DRDMV-16123]: Change Category and verify records are still displayed', async () => {
+        it('[DRDMV-16133]: Change Category and verify records are still displayed', async () => {
             // Verify Cases After Change Category To Case Category
             await searchPo.selectCategoryDropDownValue(caseModule);
             expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Cases (5)', caseModule)).toBeTruthy('FailureMsg2: Case module title is missing');
@@ -551,7 +488,57 @@ describe('Multi Search Validation', () => {
             expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Task Templates (5)', taskTemplateModule)).toBeFalsy('FailureMsg2: Task module title is displayed');
             expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Documents (5)', documentModule)).toBeFalsy('FailureMsg2: Document module title is displayed');
             expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'People (5)', peopleModule)).toBeFalsy('FailureMsg2: People module title is displayed');
+        });
+    });
 
+    //kgaikwad
+    describe('[DRDMV-16133]: 2 Global search based on change in category by keeping the same search pattern', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseTemplateName = 'caseTemplateDRDMV16133' + randomStr;
+        let taskTemplateName = 'taskTemplateDRDMV16133' + randomStr;
+        let commonSearchAll = 'commonSearchDRDMV16133' + randomStr;
+
+        let caseTemplateDisplayId = [];
+        let taskTemplateDisplayId = [];
+
+        beforeAll(async () => {
+            await apiHelper.apiLogin('elizabeth');
+            // Create Case Template
+            for (let c = 1; c <= 5; c++) {
+                caseTemplateDisplayId[c] = await createCaseTemplate(caseTemplateName + c, commonSearchAll, 'Active', 'Petramco');
+            }
+
+            // Create Task Template
+            for (let d = 1; d <= 5; d++) {
+                taskTemplateDisplayId[d] = await createTaskTemplate(taskTemplateName + d, 'Active', 'Petramco', commonSearchAll);
+            }
+        });
+
+        it('[DRDMV-16133]: Verify All Records Are Displayed On Left Pannel', async () => {
+            await navigationPage.gotoSearch();
+            await searchPo.selectCategoryDropDownValue('All');
+            expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
+
+            await searchPo.searchRecord(commonSearchAll);
+
+            // Verify Case Template With Left Pannel
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Case Templates (5)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case Template module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId[1], caseTemplateModule)).toBeTruthy(`FailureMsg4: ${caseTemplateDisplayId[1]} case id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId[2], caseTemplateModule)).toBeTruthy(`FailureMsg6: ${caseTemplateDisplayId[2]} case id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId[3], caseTemplateModule)).toBeTruthy(`FailureMsg7: ${caseTemplateDisplayId[3]} case id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId[4], caseTemplateModule)).toBeTruthy(`FailureMsg7: ${caseTemplateDisplayId[4]} case id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId[5], caseTemplateModule)).toBeTruthy(`FailureMsg7: ${caseTemplateDisplayId[5]} case id  is missing`);
+
+            // Verify Task Template With Left Pannel
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Task Templates (5)', taskTemplateModule)).toBeTruthy('FailureMsg2: Task Template module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId[1], taskTemplateModule)).toBeTruthy(`FailureMsg4: ${taskTemplateDisplayId[1]} task template id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId[2], taskTemplateModule)).toBeTruthy(`FailureMsg4: ${taskTemplateDisplayId[2]} task template id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId[3], taskTemplateModule)).toBeTruthy(`FailureMsg4: ${taskTemplateDisplayId[3]} task template id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId[4], taskTemplateModule)).toBeTruthy(`FailureMsg4: ${taskTemplateDisplayId[4]} task template id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId[5], taskTemplateModule)).toBeTruthy(`FailureMsg4: ${taskTemplateDisplayId[5]} task template id  is missing`);
+        });
+
+        it('[DRDMV-16133]: Change Category and verify records are still displayed', async () => {
             // Verify Case Template After Change Category To Case Template Category
             await searchPo.selectCategoryDropDownValue('Case Template');
             expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Case Templates (5)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
@@ -581,7 +568,56 @@ describe('Multi Search Validation', () => {
             expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Case Templates (5)', caseTemplateModule)).toBeFalsy('FailureMsg2: Case module title is displayed');
             expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Documents (5)', documentModule)).toBeFalsy('FailureMsg2: Document module title is displayed');
             expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'People (5)', peopleModule)).toBeFalsy('FailureMsg2: People module title is displayed');
+        });
+    });
 
+    //kgaikwad
+    describe('[DRDMV-16133]: 3 Global search based on change in category by keeping the same search pattern', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let attachmentFilePath = 'e2e/data/ui/attachment/globalsearch1.pdf';
+        let lastName = 'lastNameDRDMV16133' + randomStr;
+        let loginId = 'loginIdDRDMV16133' + randomStr;
+        let commonSearchAll = 'commonSearchDRDMV16133' + randomStr;
+
+        beforeAll(async () => {
+            await apiHelper.apiLogin('elizabeth');
+            // Create Document Library
+            for (let f = 1; f <= 5; f++) {
+                await createPublishDocumentLibrary(commonSearchAll, attachmentFilePath);
+            }
+
+            // Create New User
+            await apiHelper.apiLogin('tadmin');
+            for (let g = 1; g <= 5; g++) {
+                await createNewUser(commonSearchAll, lastName, loginId + g, 'DRDMV16133@petramco.com', 'Petramco');
+            }
+        });
+
+        it('[DRDMV-16133]: Verify All Records Are Displayed On Left Pannel', async () => {
+            await navigationPage.gotoSearch();
+            await searchPo.selectCategoryDropDownValue('All');
+            expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
+
+            await searchPo.searchRecord(commonSearchAll);
+
+            // Verify Document With Left Pannel
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Documents (5)', documentModule)).toBeTruthy('FailureMsg2: Document module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(commonSearchAll, documentModule, 1)).toBeTruthy(`FailureMsg4: ${commonSearchAll} 1 Document is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(commonSearchAll, documentModule, 2)).toBeTruthy(`FailureMsg4: ${commonSearchAll} 2 Document is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(commonSearchAll, documentModule, 3)).toBeTruthy(`FailureMsg5: ${commonSearchAll} 3 Document is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(commonSearchAll, documentModule, 4)).toBeTruthy(`FailureMsg6: ${commonSearchAll} 4 Document is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(commonSearchAll, documentModule, 5)).toBeTruthy(`FailureMsg7: ${commonSearchAll} 5 Document is missing`);
+
+            // Verify People Pannel
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'People (5)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${commonSearchAll} ${lastName}`, peopleModule, 1)).toBeTruthy(`FailureMsg4: ${commonSearchAll} ${lastName} 1 Person Name is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${commonSearchAll} ${lastName}`, peopleModule, 2)).toBeTruthy(`FailureMsg5: ${commonSearchAll} ${lastName} 2 Person Name is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${commonSearchAll} ${lastName}`, peopleModule, 3)).toBeTruthy(`FailureMsg6: ${commonSearchAll} ${lastName} 3 Person Name is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${commonSearchAll} ${lastName}`, peopleModule, 4)).toBeTruthy(`FailureMsg7: ${commonSearchAll} ${lastName} 4 Person Name is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${commonSearchAll} ${lastName}`, peopleModule, 5)).toBeTruthy(`FailureMsg8: ${commonSearchAll} ${lastName} 5 Person Name is missing`);
+        });
+
+        it('[DRDMV-16133]: Change Category and verify records are still displayed', async () => {
             // Verify Document After Change Category To Document Category
             await searchPo.selectCategoryDropDownValue('Document');
             expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Documents (5)', documentModule)).toBeTruthy('FailureMsg2: Document module title is missing');
@@ -611,11 +647,6 @@ describe('Multi Search Validation', () => {
             expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Case Templates (5)', caseTemplateModule)).toBeFalsy('FailureMsg2: Case module title is displayed');
             expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Task Templates (5)', taskTemplateModule)).toBeFalsy('FailureMsg2: Task module title is displayed');
             expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Documents (5)', documentModule)).toBeFalsy('FailureMsg2: Document module title is displayed');
-        });
-
-        afterAll(async () => {
-            await navigationPage.signOut();
-            await loginPage.login('qtao');
         });
     });
 
@@ -677,9 +708,8 @@ describe('Multi Search Validation', () => {
         });
 
         it('[DRDMV-16825]: Verify Recent With Case Summary And Descripiton And Check Is Duplicates Case Summary', async () => {
-            // await navigationPage.signOut();
-            // await loginPage.login('elizabeth');
             await navigationPage.gotoSearch();
+            await searchPo.selectCategoryDropDownValue('All');
             expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
             await searchPo.selectCategoryDropDownValue(caseModule);
 
@@ -704,6 +734,7 @@ describe('Multi Search Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId[5], caseModule)).toBeTruthy(`FailureMsg6: ${caseDisplayId[1]} case id  is missing`);
 
             await searchPo.clickOnRecentSearchDropDownButton();
+            
             expect(await searchPo.isRecentSearchesDropDownValueDisplayed(caseDescription)).toBeTruthy('FailureMsg6: case description is missing from recent search')
             expect (await searchPo.getCountOfRecentDropDownValue(caseDescription)).toBe(1, 'FailureMsg6: Count of recent search is incorrect');
 

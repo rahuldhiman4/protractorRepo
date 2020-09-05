@@ -26,7 +26,8 @@ class GlobalSearch {
 
     async searchRecord(record: string): Promise<void> {
         await $$(this.selectors.searchBox).get(1).clear();
-        await $$(this.selectors.searchBox).get(1).sendKeys(record + protractor.Key.ENTER);
+        await $$(this.selectors.searchBox).get(1).sendKeys(record);
+        await $$(this.selectors.searchBox).get(1).sendKeys(protractor.Key.ENTER);
     }
 
     async isSearchBoxLabelDisplayed(): Promise<boolean> {
@@ -201,6 +202,7 @@ class GlobalSearch {
                 booleanVal = true;
                 break;
             } else {
+                await browser.sleep(2000);//Need this sleep because after create record it takes time to show on UI
                 booleanVal = false;
                 await this.searchRecord(record);
             }

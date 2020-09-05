@@ -22,7 +22,7 @@ describe('Global Search Template', () => {
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
-        await loginPage.login('elizabeth');
+        await loginPage.login('qkatawazi');
         // Create Date
         let year: string;
         let month: string;
@@ -141,10 +141,10 @@ describe('Global Search Template', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateName = 'summaryDRDMV16116' + randomStr;
         let description = 'descriptionDRDMV16116' + randomStr;
-        let summary1 = '1summaryDRDMV16114' + randomStr;
-        let summary2 = '2summaryDRDMV16114' + randomStr;
-        let summary3 = '3summaryDRDMV16114' + randomStr;
-        let summary4 = '4summaryDRDMV16114' + randomStr;
+        let summary1 = '1summaryDRDMV16116' + randomStr;
+        let summary2 = '2summaryDRDMV16116' + randomStr;
+        let summary3 = '3summaryDRDMV16116' + randomStr;
+        let summary4 = '4summaryDRDMV16116' + randomStr;
         let activeStatus = 'Active';
         let inactiveStatus = 'Inactive'
         let nonMatchingSummary = 'NonMatchingSummaryDRDMV16116' + randomStr;
@@ -285,7 +285,6 @@ describe('Global Search Template', () => {
             expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(caseTemplateModule)).toBeTruthy(`FailureMsg66: No result found validation is missing`);
         });
 
-
         it('[DRDMV-16116]: Verify search case with assignee user', async () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
@@ -405,7 +404,7 @@ describe('Global Search Template', () => {
 
         afterAll(async () => {
             await navigationPage.signOut();
-            await loginPage.login('qtao')
+            await loginPage.login('qkatawazi')
         });
     });
 
@@ -538,7 +537,6 @@ describe('Global Search Template', () => {
             expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(taskTemplateModule)).toBeTruthy(`FailureMsg66: No result found validation is missing`);
         });
 
-
         it('[DRDMV-16118]: Verify search task with assignee user', async () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
@@ -634,15 +632,15 @@ describe('Global Search Template', () => {
 
         afterAll(async () => {
             await navigationPage.signOut();
-            await loginPage.login('qtao')
+            await loginPage.login('qkatawazi')
         });
     });
 
     //kgaikwad
     describe('[DRDMV-16123]: Global search with only Document Category', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let attachmentFilePath = 'e2e/data/ui/attachment/globalsearch1.pdf';
-        let attachmentFileName = 'globalsearch1.pdf';
+        let attachmentFilePath = 'e2e/data/ui/attachment/globalsearch3.jpg';
+        let attachmentFileName = 'globalsearch3.jpg';
         let docName1 = '1docNameDRDMV16123' + randomStr;
         let docName2 = '2docNameDRDMV16123' + randomStr;
         let keywordStr = '1keywordDRDMV16123' + randomStr;
@@ -669,11 +667,10 @@ describe('Global Search Template', () => {
             // Non access Document
             await apiHelper.apiLogin('elizabeth');
             await createPublishDocumentLibrary(nonAccessDocName, attachmentFilePath);
+            await browser.sleep(30000); //Need this sleep as document attachment takes time to show on UI
         });
 
         it('[DRDMV-16123]: Verify Document Name, Keyword, Attachment', async () => {
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
             await navigationPage.gotoSearch();
             expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
             await searchPo.selectCategoryDropDownValue('Document');
@@ -804,7 +801,7 @@ describe('Global Search Template', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(nonAccessDocName, documentModule)).toBeTruthy(`FailureMsg4: ${nonAccessDocName} 1 non access Doc Name is missing`);
         });
 
-        it('[DRDMV-16123]: Verify saerch Document with other group user', async () => {
+        it('[DRDMV-16123]: Verify search Document with other group user', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz')
             await navigationPage.gotoSearch();
@@ -833,7 +830,7 @@ describe('Global Search Template', () => {
             expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(documentModule)).toBeTruthy(`FailureMsg64: No result found validation is missing`);
         });
 
-        it('[DRDMV-16123]: Verify saerch KA with other company user', async () => {
+        it('[DRDMV-16123]: Verify search Document with other company user', async () => {
             await navigationPage.signOut();
             await loginPage.login('gderuno')
             await navigationPage.gotoSearch();
@@ -864,7 +861,7 @@ describe('Global Search Template', () => {
 
         afterAll(async () => {
             await navigationPage.signOut();
-            await loginPage.login('qtao');
+            await loginPage.login('qkatawazi');
         });
     });
 });
