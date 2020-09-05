@@ -1,5 +1,7 @@
 import groovy.json.JsonSlurper;
 
+def viewName = "Helix BWF";
+def extn = "_UI";
 def jsonFileContent = readFileFromWorkspace("${JSON}");
 def componentObj = new JsonSlurper().parseText(jsonFileContent);
 def components = componentObj.keySet();
@@ -11,10 +13,15 @@ def passed = (componentObj.get(it).get("pass"));
 def failed = (componentObj.get(it).get("fail"));
 def skipped = (componentObj.get(it).get("skip"));
 def total = (componentObj.get(it).get("total"));
+def percent = (passed * 100) / total;
+boolean isPar = true;
+if (percent < 90) isPar = false;
+
 def descTxt = "Tests:" + total + " Passed:" + passed + " Failed:" + failed + " Skipped:" + skipped;
-pipelineJob(it + '_UI') {
+pipelineJob(it + extn) {
     parameters {
       	stringParam('desc', descTxt)
+      	booleanParam('isBuildPass', isPar)
     }
 	definition {
 		cps {
@@ -24,7 +31,11 @@ pipelineJob(it + '_UI') {
 						stages {
 							stage('SetBuildDescription') {
 								steps {
-									script {currentBuild.description = "${desc}"}
+									script {
+										echo "test false ${isBuildPass}"
+										currentBuild.description = "${desc}"
+										if("${isBuildPass}" == "false") currentBuild.result = 'FAILURE'
+									}
 								}
 							}
 						}
@@ -38,11 +49,11 @@ pipelineJob(it + '_UI') {
 //----------------
 components.each {
 //----------------
-	queue(it + '_UI')
+	queue(it + extn)
 }
 
-buildMonitorView('project-A') {
-    description('All jobs for project A')
+buildMonitorView(viewName) {
+    description('All jobs for PMO dashboard')
     jobs {
         regex(/.*_UI/)
     }
