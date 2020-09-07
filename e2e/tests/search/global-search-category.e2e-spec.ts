@@ -657,7 +657,7 @@ describe('Global Search Category Validation', () => {
     //kgaikwad
     describe('[DRDMV-16114]: Global search with only Knowledge Articles Category', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let attachmentFilePath = 'e2e/tests/search/globalsearch2.json';
+        let attachmentFilePath = 'e2e/data/ui/search/globalsearch2.json';
         let summary1 = '1summaryDRDMV16114' + randomStr;
         let summary2 = '2summaryDRDMV16114' + randomStr;
         let summary3 = '3summaryDRDMV16114' + randomStr;

@@ -639,7 +639,7 @@ describe('Global Search Template', () => {
     //kgaikwad
     describe('[DRDMV-16123]: Global search with only Document Category', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let attachmentFilePath = 'e2e/tests/search/globalsearch3.jpg';
+        let attachmentFilePath = 'e2e/data/ui/search/globalsearch3.jpg';
         let docName1 = '1docNameDRDMV16123' + randomStr;
         let docName2 = '2docNameDRDMV16123' + randomStr;
         let keywordStr = '1keywordDRDMV16123' + randomStr;
