@@ -11,6 +11,7 @@ class GoalTypeConfigEditPage {
         goalTypeName: '[rx-view-component-id="3a87092d-7c2f-4c3d-b3db-285af38753db"] input',
         goalType: '[rx-view-component-id="ffc11039-6ae1-48b9-9fe4-39b547217e71"] .ui-select-container',
         statusDropDown: '[rx-view-component-id="16be0d06-4165-49f0-ba10-5478ae4ad12e"] .ui-select-match',
+        goalTypeStatusDropDown: '[rx-view-component-id="16be0d06-4165-49f0-ba10-5478ae4ad12e"] .ui-select-container',
     }
 
     async isStatusFieldDisabled(): Promise<boolean> {
@@ -54,6 +55,19 @@ class GoalTypeConfigEditPage {
     async getStatusDropDownFieldValue(): Promise<string> {
         return await $(this.selectors.status).getAttribute("innerText");
     }
+
+    async isGoalTypeFieldRequired(): Promise<boolean> {
+        return await $(this.selectors.goalType).getAttribute("required") == "true";
+    }
+
+    async isGoalTypeNameFieldRequired(): Promise<boolean> {
+        return await $(this.selectors.goalTypeName).getAttribute("required") == "true";
+    }
+
+    async isStatusFieldRequired(): Promise<boolean> {
+        return await $(this.selectors.goalTypeStatusDropDown).getAttribute("required") == "true";
+    }
+
 
 }
 
