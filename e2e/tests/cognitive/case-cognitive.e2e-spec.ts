@@ -210,7 +210,9 @@ describe('Case Cognitive', () => {
             await apiHelper.createCognitiveDataSetMapping("template", templateDataSetMapping);
         });
         it('[DRDMV-9023,DRDMV-8981]:[Case Workspace] Cases search using filters', async () => {
-            await createCasePo.clearSummary();
+            await navigationPage.gotoCaseConsole();
+            await navigationPage.gotoCreateCase();
+            await createCasePo.selectRequester('adam');
             await createCasePo.setSummary(randomStr + 'randomCaseSummary');
             await createCasePo.clickOnAutoCategorize();
             expect(await utilityCommon.isPopUpMessagePresent('No results found for categories.')).toBeTruthy();
@@ -327,7 +329,7 @@ describe('Case Cognitive', () => {
             await createCasePo.clickOnAutoCategorize();
             expect(await createCasePo.getCategoryTier1Value()).toBe(categName1);
             expect(await createCasePo.getCategoryTier2Value()).toBe(categName2);
-            expect(await createCasePo.getCategoryTier3Value()).toBe(categName3);
+            expect(await createCasePo.getCategoryTier3Value()).toBe('Select');
             expect(await createCasePo.getCategoryTier4Value()).toBe('Select');
             await createCasePo.selectCategoryTier1("Facilities");
             await createCasePo.selectCategoryTier2("Conference Room");

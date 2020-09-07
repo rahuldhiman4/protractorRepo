@@ -270,7 +270,9 @@ class CreateCasePage {
     }
 
     async clickOnAutoCategorize(): Promise<void> {
-        await $(this.selectors.autoCategorize).click();   
+        await $(this.selectors.autoCategorize).isEnabled().then(async (result) => {
+            if (result) await $(this.selectors.autoCategorize).click();
+        });
     }
 
     async isRecommendedTemplatePresent(templateName: string): Promise<boolean> {
