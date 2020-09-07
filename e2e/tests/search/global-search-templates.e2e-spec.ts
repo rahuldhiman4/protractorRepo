@@ -639,8 +639,7 @@ describe('Global Search Template', () => {
     //kgaikwad
     describe('[DRDMV-16123]: Global search with only Document Category', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let attachmentFilePath = 'e2e/data/ui/attachment/globalsearch3.jpg';
-        let attachmentFileName = 'globalsearch3.jpg';
+        let attachmentFilePath = 'e2e/tests/search/globalsearch3.jpg';
         let docName1 = '1docNameDRDMV16123' + randomStr;
         let docName2 = '2docNameDRDMV16123' + randomStr;
         let keywordStr = '1keywordDRDMV16123' + randomStr;
@@ -667,7 +666,6 @@ describe('Global Search Template', () => {
             // Non access Document
             await apiHelper.apiLogin('elizabeth');
             await createPublishDocumentLibrary(nonAccessDocName, attachmentFilePath);
-            await browser.sleep(30000); //Need this sleep as document attachment takes time to show on UI
         });
 
         it('[DRDMV-16123]: Verify Document Name, Keyword, Attachment', async () => {
@@ -677,7 +675,7 @@ describe('Global Search Template', () => {
             await searchPo.searchRecord(docName1);
             expect(await searchPo.isModuleTitleDisplayed(docName1, 'Documents (5)', documentModule)).toBeTruthy('FailureMsg2: Document module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, documentModule)).toBeTruthy(`${updatedDate} updatedDate is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(attachmentFileName, documentModule)).toBeTruthy(`${attachmentFileName} attachment File Name is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel('globalsearch3.jpg', documentModule)).toBeTruthy(`${'globalsearch3.jpg'} attachment File Name is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(docName1, documentModule, 1)).toBeTruthy(`FailureMsg4: ${docName1} 1 Document is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(docName1, documentModule, 2)).toBeTruthy(`FailureMsg4: ${docName1} 2 Document is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(docName1, documentModule, 3)).toBeTruthy(`FailureMsg5: ${docName1} 3 Document is missing`);
@@ -687,17 +685,17 @@ describe('Global Search Template', () => {
             await searchPo.searchRecord(keywordStr);
             expect(await searchPo.isModuleTitleDisplayed(docName1, 'Documents (5)', documentModule)).toBeTruthy('FailureMsg2: Document module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, documentModule)).toBeTruthy(`${updatedDate} updatedDate is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(attachmentFileName, documentModule)).toBeTruthy(`${attachmentFileName} attachment File Name is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel('globalsearch3.jpg', documentModule)).toBeTruthy(`${'globalsearch3.jpg'} attachment File Name is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(docName1, documentModule, 1)).toBeTruthy(`FailureMsg4: ${docName1} 1 Document is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(docName1, documentModule, 2)).toBeTruthy(`FailureMsg4: ${docName1} 2 Document is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(docName1, documentModule, 3)).toBeTruthy(`FailureMsg5: ${docName1} 3 Document is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(docName1, documentModule, 4)).toBeTruthy(`FailureMsg6: ${docName1} 4 Document is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(docName1, documentModule, 5)).toBeTruthy(`FailureMsg7: ${docName1} 5 Document is missing`);
 
-            await searchPo.searchRecord(attachmentFileName);
+            await searchPo.searchRecord('globalsearch3.jpg');
             expect(await searchPo.isModuleTitleDisplayed(docName1, 'Documents (6)', documentModule)).toBeTruthy('FailureMsg2: Document module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, documentModule)).toBeTruthy(`${updatedDate} updatedDate is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(attachmentFileName, documentModule)).toBeTruthy(`${attachmentFileName} attachment File Name is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel('globalsearch3.jpg', documentModule)).toBeTruthy(`${'globalsearch3.jpg'} attachment File Name is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(docName1, documentModule, 1)).toBeTruthy(`FailureMsg4: ${docName1} 1 Document is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(docName1, documentModule, 2)).toBeTruthy(`FailureMsg4: ${docName1} 2 Document is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(docName1, documentModule, 3)).toBeTruthy(`FailureMsg5: ${docName1} 3 Document is missing`);
@@ -724,7 +722,7 @@ describe('Global Search Template', () => {
             expect(await previewDocumentLibraryPo.isDataDisplayed('Location', 'Location')).toBeTruthy('FailureMsg22: field label displayed');
 
             expect(await previewDocumentLibraryPo.isDataDisplayed('DocumentName', docName1)).toBeTruthy('FailureMsg23: docName1 Displayed');
-            expect(await previewDocumentLibraryPo.isDataDisplayed('Attachment', attachmentFileName)).toBeTruthy('FailureMsg24: attachment file name missing');
+            expect(await previewDocumentLibraryPo.isDataDisplayed('Attachment', 'globalsearch3.jpg')).toBeTruthy('FailureMsg24: attachment file name missing');
             expect(await previewDocumentLibraryPo.isDataDisplayed('DocumentStatus', 'Published')).toBeTruthy('FailureMsg25: Doc status missing');
             expect(await previewDocumentLibraryPo.isDataDisplayed('Company', 'Petramco')).toBeTruthy('FailureMsg26: Company Value missing');
             expect(await previewDocumentLibraryPo.isDataDisplayed('ShareExternally', 'False')).toBeTruthy('FailureMsg27: Share External Value is missing');
@@ -764,7 +762,7 @@ describe('Global Search Template', () => {
             await searchPo.searchRecord(docName1);
             expect(await searchPo.isModuleTitleDisplayed(docName1, 'Documents (5)', documentModule)).toBeTruthy('FailureMsg2: Document module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, documentModule)).toBeTruthy(`${updatedDate} updatedDate is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(attachmentFileName, documentModule)).toBeTruthy(`${attachmentFileName} attachment File Name is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel('globalsearch3.jpg', documentModule)).toBeTruthy(`${'globalsearch3.jpg'} attachment File Name is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(docName1, documentModule, 1)).toBeTruthy(`FailureMsg4: ${docName1} 1 Document is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(docName1, documentModule, 2)).toBeTruthy(`FailureMsg4: ${docName1} 2 Document is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(docName1, documentModule, 3)).toBeTruthy(`FailureMsg5: ${docName1} 3 Document is missing`);
@@ -775,17 +773,17 @@ describe('Global Search Template', () => {
             await searchPo.searchRecord(keywordStr);
             expect(await searchPo.isModuleTitleDisplayed(docName1, 'Documents (5)', documentModule)).toBeTruthy('FailureMsg2: Document module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, documentModule)).toBeTruthy(`${updatedDate} updatedDate is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(attachmentFileName, documentModule)).toBeTruthy(`${attachmentFileName} attachment File Name is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel('globalsearch3.jpg', documentModule)).toBeTruthy(`${'globalsearch3.jpg'} attachment File Name is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(docName1, documentModule, 1)).toBeTruthy(`FailureMsg4: ${docName1} 1 Document is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(docName1, documentModule, 2)).toBeTruthy(`FailureMsg4: ${docName1} 2 Document is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(docName1, documentModule, 3)).toBeTruthy(`FailureMsg5: ${docName1} 3 Document is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(docName1, documentModule, 4)).toBeTruthy(`FailureMsg6: ${docName1} 4 Document is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(docName1, documentModule, 5)).toBeTruthy(`FailureMsg7: ${docName1} 5 Document is missing`);
 
-            await searchPo.searchRecord(attachmentFileName);
-            expect(await searchPo.isModuleTitleDisplayed(attachmentFileName, 'Documents (7)', documentModule)).toBeTruthy('FailureMsg2: Document module title is missing');
+            await searchPo.searchRecord('globalsearch3.jpg');
+            expect(await searchPo.isModuleTitleDisplayed('globalsearch3.jpg', 'Documents (7)', documentModule)).toBeTruthy('FailureMsg2: Document module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, documentModule)).toBeTruthy(`${updatedDate} updatedDate is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(attachmentFileName, documentModule)).toBeTruthy(`${attachmentFileName} attachment File Name is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel('globalsearch3.jpg', documentModule)).toBeTruthy(`${'globalsearch3.jpg'} attachment File Name is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(docName1, documentModule, 1)).toBeTruthy(`FailureMsg4: ${docName1} 1 Document is missing`);
 
             await searchPo.searchRecord(nonMatchingDocName);
@@ -813,8 +811,8 @@ describe('Global Search Template', () => {
             expect(await searchPo.isModuleTitleDisplayed(keywordStr, 'Documents (0)', documentModule)).toBeTruthy('FailureMsg63: Document module title is missing');
             expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(documentModule)).toBeTruthy(`FailureMsg64: No result found validation is missing`);
 
-            await searchPo.searchRecord(attachmentFileName);
-            expect(await searchPo.isModuleTitleDisplayed(attachmentFileName, 'Documents (0)', documentModule)).toBeTruthy('FailureMsg63: Document module title is missing');
+            await searchPo.searchRecord('globalsearch3.jpg');
+            expect(await searchPo.isModuleTitleDisplayed('globalsearch3.jpg', 'Documents (0)', documentModule)).toBeTruthy('FailureMsg63: Document module title is missing');
             expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(documentModule)).toBeTruthy(`FailureMsg64: No result found validation is missing`);
 
             await searchPo.searchRecord(nonMatchingDocName);
@@ -842,8 +840,8 @@ describe('Global Search Template', () => {
             expect(await searchPo.isModuleTitleDisplayed(keywordStr, 'Documents (0)', documentModule)).toBeTruthy('FailureMsg63: Document module title is missing');
             expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(documentModule)).toBeTruthy(`FailureMsg64: No result found validation is missing`);
 
-            await searchPo.searchRecord(attachmentFileName);
-            expect(await searchPo.isModuleTitleDisplayed(attachmentFileName, 'Documents (0)', documentModule)).toBeTruthy('FailureMsg63: Document module title is missing');
+            await searchPo.searchRecord('globalsearch3.jpg');
+            expect(await searchPo.isModuleTitleDisplayed('globalsearch3.jpg', 'Documents (0)', documentModule)).toBeTruthy('FailureMsg63: Document module title is missing');
             expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(documentModule)).toBeTruthy(`FailureMsg64: No result found validation is missing`);
 
             await searchPo.searchRecord(nonMatchingDocName);

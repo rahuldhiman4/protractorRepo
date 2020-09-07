@@ -657,8 +657,7 @@ describe('Global Search Category Validation', () => {
     //kgaikwad
     describe('[DRDMV-16114]: Global search with only Knowledge Articles Category', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let attachmentFilePath = 'e2e/data/ui/attachment/globalsearch2.json';
-        let attachmentFileName = 'globalsearch2.json';
+        let attachmentFilePath = 'e2e/tests/search/globalsearch2.json';
         let summary1 = '1summaryDRDMV16114' + randomStr;
         let summary2 = '2summaryDRDMV16114' + randomStr;
         let summary3 = '3summaryDRDMV16114' + randomStr;
@@ -783,8 +782,8 @@ describe('Global Search Category Validation', () => {
             expect(await knowledgeArticlePreview.isKnowledgeArticleID()).toBeTruthy('FailureMsg48: KA id is missing');
 
             //Verify  Search KA attachment
-            await searchPo.searchRecord(attachmentFileName);
-            expect(await searchPo.isModuleTitleDisplayed(attachmentFileName, 'Knowledge Articles (1)', KAModule)).toBeTruthy('FailureMsg47: Knowledge Articles module title is missing');
+            await searchPo.searchRecord('globalsearch2.json');
+            expect(await searchPo.isModuleTitleDisplayed('globalsearch2.json', 'Knowledge Articles (1)', KAModule)).toBeTruthy('FailureMsg47: Knowledge Articles module title is missing');
             await searchPo.clickOnLeftPannelRecord(kaDisplayId3, KAModule);
             expect(await knowledgeArticlePreview.isKnowledgeArticleID()).toBeTruthy('FailureMsg48: KA id is missing');
         });
@@ -861,7 +860,7 @@ describe('Global Search Category Validation', () => {
             expect(await searchPo.isModuleTitleDisplayed(keywordStr, 'Knowledge Articles (5)', KAModule)).toBeTruthy('FailureMsg58: KA module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId2[0], KAModule)).toBeTruthy(`FailureMsg48: ${kaDisplayId2} KA id  is displayed`);
 
-            await searchPo.searchRecord(attachmentFileName);
+            await searchPo.searchRecord('globalsearch2.json');
             expect(await searchPo.isModuleTitleDisplayed(nonMatchingSummary, 'Knowledge Articles (1)', KAModule)).toBeTruthy('FailureMsg58: KA module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId3, KAModule)).toBeTruthy(`FailureMsg48: ${kaDisplayId3} KA id  is displayed`);
 
@@ -884,7 +883,7 @@ describe('Global Search Category Validation', () => {
             expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(KAModule)).toBeTruthy(`FailureMsg59: No result found validation is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId2[0], KAModule)).toBeFalsy(`FailureMsg48: ${kaDisplayId2} KA id  is displayed`);
 
-            await searchPo.searchRecord(attachmentFileName);
+            await searchPo.searchRecord('globalsearch2.json');
             expect(await searchPo.isModuleTitleDisplayed(nonMatchingSummary, 'Knowledge Articles (0)', KAModule)).toBeTruthy('FailureMsg58: KA module title is missing');
             expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(KAModule)).toBeTruthy(`FailureMsg59: No result found validation is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId3[0], KAModule)).toBeFalsy(`FailureMsg48: ${kaDisplayId3} KA id  is displayed`);
