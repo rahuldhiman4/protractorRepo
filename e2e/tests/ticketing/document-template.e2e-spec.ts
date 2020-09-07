@@ -11,6 +11,7 @@ import editDocumentTemplatePo from '../../pageobject/settings/document-managemen
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
+import addFieldsPopPo from '../../pageobject/common/add-fields-pop.po';
 
 describe('Document Template', () => {
     beforeAll(async () => {
@@ -190,6 +191,74 @@ describe('Document Template', () => {
             await documentTemplateConsolePo.searchOnGridConsole(documentName);
             expect(await documentTemplateConsolePo.getSelectedGridRecordValue('Label')).toBe(lable2, 'Label is missing on Grid');
             expect(await documentTemplateConsolePo.isGridColumnSorted('Label', 'descending')).toBeTruthy('Label is not get sorted with descending order');
+        });
+    });
+
+    //kgaikwad
+    describe('[DRDMV-14973]: Verify document body expression editor will list dynamic fields along with Case fields.', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseTemplateData;
+        let documentName1 = '1Document'+ randomStr;
+        let documentName2 = '2Document'+ randomStr;
+        let caseTempateName = 'caseTemplateName' +randomStr;
+        let caseTemplateSummary = 'CaseSummaryName' + randomStr;
+        beforeAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteDynamicFieldAndGroup();
+
+            caseTemplateData = {
+                "templateName": caseTempateName,
+                "templateSummary": caseTemplateSummary,
+                "caseStatus": "InProgress",
+                "templateStatus": "Active",
+                "assignee": "Fritz",
+                "company": "Petramco",
+                "supportGroup": "Facilities",
+                "ownerGroup": "Facilities"
+            }
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteDynamicFieldAndGroup();
+            await apiHelper.apiLogin('fritz');
+            let newCaseTemplate = await apiHelper.createCaseTemplate(caseTemplateData);
+            await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'DynamicGroupField');
+        });
+
+        it('[14973]: Verify Document dynamic field with case', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Document Management--Templates', 'Document Templates - Business Workflows');
+            await createDocumentTemplatePo.clickOnAddTemplate();
+            await createDocumentTemplatePo.setTemplateName(documentName1);
+            await createDocumentTemplatePo.setCompany("Petramco");
+            await createDocumentTemplatePo.clickOnInsertFieldOfDocumentBody();
+            await addFieldsPopPo.navigateToDynamicFieldInCaseTemplate('Case');
+            expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('Category Tier 1')).toBeTruthy("Field");
+            await addFieldsPopPo.selectDynamicField('Category Tier 1');
+            await addFieldsPopPo.clickOnOkButtonOfEditor();
+            await createDocumentTemplatePo.setDescription("Description");
+            expect(await createDocumentTemplatePo.getDynamicFieldOnBody()).toContain('Category Tier 1');
+            await createDocumentTemplatePo.clickOnSaveButton();
+            await documentTemplateConsolePo.searchAndOpenDocumentTemplate(documentName1);
+            expect(await editDocumentTemplatePo.getDynamicFieldOnBody()).toContain('Category Tier 1');                
+            await editDocumentTemplatePo.clickOnCancelButton();
+            await utilCommon.clickOnWarningOk();
+        });
+
+        it('[14973]: Verify Document dynamic field with case template', async () => {
+            await createDocumentTemplatePo.clickOnAddTemplate();
+            await createDocumentTemplatePo.setTemplateName(documentName2);
+            await createDocumentTemplatePo.setCompany("Petramco");
+            await createDocumentTemplatePo.clickOnInsertFieldOfDocumentBody();
+            await addFieldsPopPo.navigateToDynamicFieldInCaseTemplate(caseTempateName);
+            expect(await addFieldsPopPo.isAssocitionDisplayed('GroupOne')).toBeTruthy("Group");
+            await addFieldsPopPo.clickOnGroupName('GroupOne');
+            expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('FieldGroup1')).toBeTruthy("Field");
+            await addFieldsPopPo.selectDynamicField('FieldGroup1');
+            await addFieldsPopPo.clickOnOkButtonOfEditor();
+            await createDocumentTemplatePo.setDescription("Description");
+            expect(await createDocumentTemplatePo.getDynamicFieldOnBody()).toContain('FieldGroup1');
+            await createDocumentTemplatePo.clickOnSaveButton();
+            await documentTemplateConsolePo.searchAndOpenDocumentTemplate(documentName2);
+            expect(await editDocumentTemplatePo.getDynamicFieldOnBody()).toContain('FieldGroup1');                
         });
     });
 });

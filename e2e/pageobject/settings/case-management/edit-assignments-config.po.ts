@@ -15,7 +15,9 @@ class AssignmentConfigEditPage {
         defaultToggleGuid: '7ca691fd-c299-411f-90fa-9639cbe083c1',
         cancelButton: '[rx-view-component-id="83133eec-6274-4b89-bdff-b5880658ef4b"] button',
         categoryTier2Guid: 'b2dc177f-4ad0-4c12-8809-c9211cda502b',
-        categoryTier3Guid: 'a373976b-498a-46da-a97f-5573fc6c3b03'
+        categoryTier3Guid: 'a373976b-498a-46da-a97f-5573fc6c3b03',
+        categoryTier4Guid: '647bd05c-d3b3-46dd-8747-b67a87013d1b'
+
     }
 
     async isEditAssignmentNameDisabled(): Promise<boolean> {
@@ -81,6 +83,10 @@ class AssignmentConfigEditPage {
 
     async setCategoryTier3(categoryTier3: string): Promise<void> {
         await utilCommon.selectDropDown(this.selectors.categoryTier3Guid, categoryTier3);
+    }
+
+    async getCategoryTier4(): Promise<string> {
+        return await $(`[rx-view-component-id="${this.selectors.categoryTier4Guid}"] .ui-select-match-text`).getText();
     }
 }
 

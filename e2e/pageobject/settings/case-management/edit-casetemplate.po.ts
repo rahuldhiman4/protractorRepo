@@ -47,7 +47,8 @@ class EditCaseTemplate {
         assignmentMethodValue: '[rx-view-component-id="9183824b-61c4-4a00-bcfa-7f4e7461e10c"] .ui-select-match-text',
         tier1ValueOnCaseTemplate: '[rx-view-component-id="241f0e58-3106-4f8a-a1cc-43554414bb7c"] .d-textfield__rx-value',
         tier2ValueOnCaseTemplate: '[rx-view-component-id="4f950be7-d968-41a4-8bb9-018674e53f88"] .d-textfield__rx-value',
-        tier3ValueOnCaseTemplate: '[rx-view-component-id="a7fbc4bc-23c6-4f92-818a-5554107d04c0"] .d-textfield__rx-value',
+        tier3ValueOnCaseTemplate: '[rx-view-component-id="a7fbc4bc-23c6-4f92-818a-5554107d04c0"] .ui-select-match-text',
+        tier4ValueOnCaseTemplate: '[rx-view-component-id="fbc0f516-1f57-44ad-82ab-f8bbbe1aa5f5"] .ui-select-match-text',
         summaryGuid: 'e3cb1a92-1e94-477d-93fa-b63b29c1c129',
         priorityGuid: 'c933ab70-9004-4347-9537-3ae65ec633b9',
         companyGuid: '39db6cc5-79ae-4934-a4bc-74765278fcda',
@@ -132,6 +133,10 @@ class EditCaseTemplate {
     async getValueOfTier3(): Promise<string> {
 //        await browser.wait(this.EC.visibilityOf($(this.selectors.tier3ValueOnCaseTemplate)));
         return await $(this.selectors.tier3ValueOnCaseTemplate).getText();
+    }
+
+    async getValueOfTier4(): Promise<string> {
+    return await $(this.selectors.tier4ValueOnCaseTemplate).getText();
     }
 
     async changeCategoryTier1(tier1Value: string): Promise<void> {

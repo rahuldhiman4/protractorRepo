@@ -214,6 +214,10 @@ class DocumentLibraryPage {
         await utilCommon.selectDropDown(this.selectors.category3, categValue);
     }
 
+    async selectCategoryTier4(categValue: string): Promise<void> {
+        await utilCommon.selectDropDown(this.selectors.category4, categValue);
+    }
+
     async selectRegion(regionValue: string): Promise<void> {
         await utilCommon.selectDropDown(this.selectors.region, regionValue);
     }

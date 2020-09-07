@@ -387,6 +387,12 @@ class CaseEditPage {
     async setTimeInDynamicField(value: string): Promise<void> {
         await $(this.selectors.dynamicFieldTime).sendKeys(value);
     }
+
+    async getCategoryTier4(): Promise<string> {
+        return await $(`[rx-view-component-id="${this.selectors.categoryTier4Guid}"] button`).getText();
+    }
+
+    
 }
 
 export default new CaseEditPage();

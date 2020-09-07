@@ -57,6 +57,10 @@ class AssignmentConfigCreatePage {
         await utilCommon.selectDropDown(this.selectors.catTier3DrpDwn, category3);
     }
 
+    async setCategoryTier4(category4:string){
+        await utilCommon.selectDropDown(this.selectors.catTier4DrpDwn, category4);
+    }
+
     async setPriority(company:string){
         await utilCommon.selectDropDown(this.selectors.priorityDrpDwn, company);
     }

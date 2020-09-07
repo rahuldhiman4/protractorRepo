@@ -19,6 +19,31 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import manageTask from "../../pageobject/task/manage-task-blade.po";
+import consoleCasetemplatePo from '../../pageobject/settings/case-management/console-casetemplate.po';
+import createCasetemplatePo from '../../pageobject/settings/case-management/create-casetemplate.po';
+import viewCasetemplatePo from '../../pageobject/settings/case-management/view-casetemplate.po';
+import editCasetemplatePo from '../../pageobject/settings/case-management/edit-casetemplate.po';
+import createTasktemplatePo from '../../pageobject/settings/task-management/create-tasktemplate.po';
+import selectTaskTemplate from "../../pageobject/settings/task-management/console-tasktemplate.po";
+import viewTasktemplatePo from '../../pageobject/settings/task-management/view-tasktemplate.po';
+import editTasktemplatePo from '../../pageobject/settings/task-management/edit-tasktemplate.po';
+import assignmentsConfigConsolePo from '../../pageobject/settings/case-management/assignments-config-console.po';
+import createAssignmentsConfigPo from '../../pageobject/settings/case-management/create-assignments-config.po';
+import editAssignmentsConfigPo from '../../pageobject/settings/case-management/edit-assignments-config.po';
+import consoleReadAcess from '../../pageobject/settings/case-management/read-access-console.po';
+import addReadAccess from '../../pageobject/settings/case-management/add-read-access-configuration.po';
+import utilGrid from '../../utils/util.grid';
+import editReadAccess from "../../pageobject/settings/case-management/edit-read-access-config.po";
+import documentLibraryConsolePo from '../../pageobject/settings/document-management/document-library-console.po';
+import createDocumentLibraryPo from '../../pageobject/settings/document-management/create-document-library.po';
+import editDocumentLibraryPo from '../../pageobject/settings/document-management/edit-document-library.po';
+import { default as createKnowledgePage } from "../../pageobject/knowledge/create-knowlege.po";
+import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
+import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
+import { default as serviceTargetBladePo, default as serviceTargetConfig } from '../../pageobject/settings/slm/service-target-blade.po';
+import slmExpressionBuilder from '../../pageobject/settings/slm/slm-expressionbuilder.pop.po';
+import approvalConfigurationPage from "../../pageobject/settings/approval/approval-configuration.po";
 
 describe("Attachment", () => {
     beforeAll(async () => {
@@ -510,5 +535,211 @@ describe("Attachment", () => {
         expect(await utilCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('File is delete sucessfully');
         await attachmentInformationBladePo.clickCloseButton();
         await attachmentBladePo.clickCloseButton();
+    });
+      
+    //kgaikwad
+    describe('[DRDMV-15252]: Verify Category tier 4 and Label field is added on views', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let categName1 = 'DemoCateg1DRDMV15252';
+        let categName2 = 'DemoCateg2DRDMV15252';
+        let categName3 = 'DemoCateg3DRDMV15252';
+        let categName4 = 'DemoCateg4DRDMV15252';
+        let summary= 'summaryDRDMV15252'+randomStr;
+        let title= 'titleDRDMV15252'+randomStr;
+        beforeAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.createOperationalCategory(categName1);
+            await apiHelper.createOperationalCategory(categName2);
+            await apiHelper.createOperationalCategory(categName3);
+            await apiHelper.createOperationalCategory(categName4);
+            await apiHelper.associateCategoryToOrganization(categName1, 'Petramco');
+            await apiHelper.associateCategoryToCategory(categName1, categName2);
+            await apiHelper.associateCategoryToCategory(categName2, categName3);
+            await apiHelper.associateCategoryToCategory(categName3, categName4);
+            await apiHelper.associateCategoryToOrganization(categName1, '- Global -');
+        });
+
+        it('[DRDMV-15252]: Verify Category Tier 4 With Case ', async () => {
+            await navigationPage.gotoCreateCase();
+            await createCasePo.selectRequester('adam');
+            await createCasePo.setSummary(summary);
+            await createCasePo.selectCategoryTier1(categName1);
+            await createCasePo.selectCategoryTier2(categName2);
+            await createCasePo.selectCategoryTier3(categName3);
+            await createCasePo.selectCategoryTier4(categName4);
+            await createCasePo.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            expect (await viewCasePo.getCategoryTier4Value()).toBe(categName4,'FailureMsg1: CategoryTier4 is displayed');
+            // Verify CategoryTier4 on Edit Case
+            await viewCasePo.clickEditCaseButton();
+            expect (await editCasePo.getCategoryTier4()).toBe(categName4,'FailureMsg2: CategoryTier4 is displayed');
+            await editCasePo.clickOnCancelCaseButton();
+        });
+
+        it('[DRDMV-15252]: Verify Category Tier 4 With Task ', async () => {
+            await viewCasePo.clickAddTaskButton();
+            await manageTask.clickAddAdhocTaskButton();
+            await adhoctaskTemplate.setSummary(summary);
+            await adhoctaskTemplate.setDescription("Description");
+            expect (await adhoctaskTemplate.getCategoryTier4()).toBe(categName4,'FailureMsg3: CategoryTier4 is displayed');
+            await adhoctaskTemplate.clickSaveAdhoctask();
+            await manageTask.clickTaskLink(summary);
+            expect (await viewTaskPo.getCategoryTier4Value()).toBe(categName4,'FailureMsg5: CategoryTier4 is displayed');
+            await viewTaskPo.clickOnEditTask();
+            expect (await editTaskPo.getTaskCategoryTier4()).toBe(categName4,'FailureMsg6: CategoryTier4 is displayed');
+            await editTaskPo.clickOnCancelButton();
+        });
+
+        it('[DRDMV-15252]: Verify Category Tier 4 With Case Template ', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
+            await createCasetemplatePo.setTemplateName(title);
+            await createCasetemplatePo.setCompanyName('Petramco');
+            await createCasetemplatePo.setCaseSummary(summary);
+            await createCasetemplatePo.setCategoryTier1(categName1);
+            await createCasetemplatePo.setCategoryTier2(categName2);
+            await createCasetemplatePo.setCategoryTier3(categName3);
+            await createCasetemplatePo.setCategoryTier4(categName4);
+            await createCasetemplatePo.clickSaveCaseTemplate();
+            expect (await viewCasetemplatePo.getCategoryTier4()).toBe(categName4,'FailureMsg7: CategoryTier4 is displayed');
+            await viewCasetemplatePo.clickOnEditCaseTemplateButton();
+            expect (await editCasetemplatePo.getValueOfTier4()).toBe(categName4,'FailureMsg6: CategoryTier4 is displayed');
+            await editCasetemplatePo.clickOnCancelButton();
+            await utilCommon.clickOnWarningOk();
+        });
+     
+        it('[DRDMV-15252]: Verify Category Tier 4 With Assignment Mapping ', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
+            await assignmentsConfigConsolePo.clickOnCreateAssignmentConfiguration();
+            await createAssignmentsConfigPo.setAssignmentMapName(title);
+            await createAssignmentsConfigPo.setCompany("Petramco");
+            await createAssignmentsConfigPo.setCategoryTier1(categName1);
+            await createAssignmentsConfigPo.setCategoryTier2(categName2);
+            await createAssignmentsConfigPo.setCategoryTier3(categName3);
+            await createAssignmentsConfigPo.setCategoryTier4(categName4);
+            await createAssignmentsConfigPo.setSupportCompany("Petramco");
+            await createAssignmentsConfigPo.setBusinessUnit('Canada Support');
+            await createAssignmentsConfigPo.setSupportGroup("CA Support 1");
+            await createAssignmentsConfigPo.clickonSaveButton();
+
+            await assignmentsConfigConsolePo.searchAndClickOnAssignmentConfig(title);
+            expect (await editAssignmentsConfigPo.getCategoryTier4()).toBe(categName4,'FailureMsg8: CategoryTier4 is displayed');
+            await editAssignmentsConfigPo.clickOnCancelButton();
+        });
+
+        it('[DRDMV-15252]: Verify Category Tier 4 With Case Read Access ', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            await consoleReadAcess.clickOnReadAccessConfiguration();
+            await addReadAccess.setReadAccessConfigurationName(title);
+            await addReadAccess.selectCompany('Petramco');
+            await addReadAccess.selectSupportCompany('Petramco');
+            await addReadAccess.selectBusinessUnit('Canada Support');
+            await addReadAccess.selectSupportGroup('CA Support 1');
+            await addReadAccess.selectCategoryTier1(categName1);
+            await addReadAccess.selectCategoryTier2(categName2);
+            await addReadAccess.selectCategoryTier3(categName3);
+            await addReadAccess.selectCategoryTier4(categName4);
+            await addReadAccess.clickOnSave();
+            await utilGrid.searchAndOpenHyperlink(title);
+            expect (await editReadAccess.getCategoryTier4()).toBe(categName4,'FailureMsg8: CategoryTier4 is displayed');
+            await editReadAccess.clickOnCancel();
+        });
+
+        it('[DRDMV-15252]: Verify Category Tier 4 With Document Library ', async () => {
+        let filePath = '../../../data/ui/attachment/demo.txt';
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+        await createDocumentLibraryPo.openAddNewDocumentBlade();
+        await createDocumentLibraryPo.addAttachment(filePath);
+        await createDocumentLibraryPo.setTitle(title);
+        await createDocumentLibraryPo.selectCompany('Petramco');
+        await createDocumentLibraryPo.selectBusinessUnit('Canada Support');
+        await createDocumentLibraryPo.selectOwnerGroup('CA Support 1');
+        await createDocumentLibraryPo.selectCategoryTier1(categName1);
+        await createDocumentLibraryPo.selectCategoryTier2(categName2);
+        await createDocumentLibraryPo.selectCategoryTier3(categName3);
+        await createDocumentLibraryPo.selectCategoryTier4(categName4);
+        await createDocumentLibraryPo.clickOnSaveButton();
+
+        await documentLibraryConsolePo.searchAndOpenDocumentLibrary(title);
+        expect (await editDocumentLibraryPo.getCategoryTier4()).toBe(categName4,'FailureMsg8: CategoryTier4 is displayed');
+        });
+
+        it('[DRDMV-15252]: Verify Category Tier 4 With Knowledge Article ', async () => {
+            await navigationPage.gotoCreateKnowledge();
+            await createKnowledgePage.clickOnTemplate('Reference');
+            await createKnowledgePage.clickOnUseSelectedTemplateButton();
+            await createKnowledgePage.addTextInKnowlegeTitleField('Knowledge' + randomStr);
+            await createKnowledgePage.setReferenceValue('KnowledgeReference' + randomStr);
+            await createKnowledgePage.selectKnowledgeSet('HR');
+            await createKnowledgePage.selectCategoryTier1Option(categName1);
+            await createKnowledgePage.selectCategoryTier2Option(categName2);
+            await createKnowledgePage.selectCategoryTier3Option(categName3);
+            await createKnowledgePage.selectCategoryTier4Option(categName4);
+            await createKnowledgePage.clickOnSaveKnowledgeButton();
+            await previewKnowledgePo.clickGoToArticleButton();
+            expect (await viewKnowledgeArticlePo.getCategoryTier4Value()).toBe(categName4,'FailureMsg1: CategoryTier4 is displayed');
+        });
+
+        it('[DRDMV-15252]: Verify Category Tier 4 With SLM Build Expression ', async () => {
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
+        await serviceTargetConfig.createServiceTargetConfig('SVT with all fields', 'Petramco', 'Case Management');
+        await slmExpressionBuilder.selectFields('category Tier 4');
+        });
+
+        it('[DRDMV-15252]: Verify Category Tier 4 With Approval Configuration ', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Approvals--Approval Configuration', 'Approval Configuration - Administration - Business Workflows');
+            await approvalConfigurationPage.searchAndOpenApprovalConfiguration('com.bmc.dsm.case-lib:Case');
+            expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
+            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Edit Approval Flow');
+            await approvalConfigurationPage.clickApprovalConfigurationTab('Approval Flows');
+            await approvalConfigurationPage.clickApprovalGroup('BWFA Group');
+            // await approvalConfigurationPage.deleteApprovalConfiguration('Approval Flows');
+            await approvalConfigurationPage.clickAddNewFlowLinkButton();
+            await approvalConfigurationPage.selectApprovalFlowOption('General Approval Flow');
+            await approvalConfigurationPage.clickExpressionLink();
+
+            await browser.sleep(5000); // sleep added for expression builder loading time
+            expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
+            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Create New Approval Flow');
+            await browser.sleep(3000); // sleep added for expression builder loading time
+            await approvalConfigurationPage.searchExpressionFieldOption('Category Tier 4');
+
+            await approvalConfigurationPage.clickRecordOption('Record Definition');
+            await approvalConfigurationPage.clickRecordOption('Case');
+            await browser.sleep(2000); // sleep added for expression builder loading time
+            await approvalConfigurationPage.selectExpressionFieldOption();
+            await browser.sleep(2000); // sleep added for expression builder loading time
+            await approvalConfigurationPage.selectExpressionOperator('=');
+        });
+
+        it('[DRDMV-15252]: Verify Category Tier 4 With Task Template ', async () => {
+            await navigationPage.gotoSettingsPage();
+            expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows')).toEqual('Task Templates - Business Workflows');
+            await selectTaskTemplate.clickOnManualTaskTemplateButton();
+            await createTasktemplatePo.setTemplateName(title);
+            await createTasktemplatePo.setTaskSummary(summary);
+            await createTasktemplatePo.selectTaskCategoryTier1(categName1);
+            await createTasktemplatePo.selectTaskCategoryTier2(categName2);
+            await createTasktemplatePo.selectTaskCategoryTier3(categName3);
+            await createTasktemplatePo.selectTaskCategoryTier4(categName4);
+            await createTasktemplatePo.selectCompanyByName('Petramco');
+            await createTasktemplatePo.clickOnSaveTaskTemplate();
+            expect (await viewTasktemplatePo.getCategoryTier4Value()).toBe(categName4,'FailureMsg7: CategoryTier4 is displayed');
+            await viewTasktemplatePo.clickOnEditLink();
+            expect (await editTasktemplatePo.getTaskCategoryTier4()).toBe(categName4,'FailureMsg8: CategoryTier4 is displayed');
+            await navigationPage.gotoCaseConsole();
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
     });
 });

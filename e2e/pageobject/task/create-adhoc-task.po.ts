@@ -212,6 +212,10 @@ class CreateAdhocTaskTemplatePage {
         const absPathArray = fileToUpload.map((curStr) => { return resolve(__dirname, curStr) });
         await $(this.selectors.attachmentField).sendKeys(absPathArray.join('\n'));
     }
+
+    async getCategoryTier4(): Promise<string> {
+        return await $(`[rx-view-component-id="${this.selectors.categoryTier4}"] button`).getText();
+    }
 }
 
 export default new CreateAdhocTaskTemplatePage();

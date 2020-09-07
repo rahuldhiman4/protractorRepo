@@ -266,6 +266,10 @@ class EditTask {
         }
         return await utilityCommon.isRequiredTagToField(locator);
     }
+
+    async getTaskCategoryTier4(): Promise<string> {
+        return await $(`[rx-view-component-id="${this.selectors.categoryTier4}"] button`).getText();
+    }
 }
 
 export default new EditTask();

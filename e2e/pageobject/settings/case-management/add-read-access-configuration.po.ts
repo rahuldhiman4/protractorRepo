@@ -22,6 +22,9 @@ class AddReadAccessConfigurationPage {
         categoryTier1: '[rx-view-component-id="2c1b19e6-6b0c-4c44-b8ac-ecff4f3e41bd"] .d-textfield__item',
         priority: '[rx-view-component-id="dc84e827-e82d-4663-858b-a131d58be352"] .d-textfield__item',
         useAsDefault: '77424ee9-4d45-40b3-992f-82fc3a8162c3',
+        categoryTier2Guid: '0bdb722f-3fcd-48d4-b10c-29712ed2cd86',
+        categoryTier3Guid: '78f414cd-19df-4457-a2dc-cf226371eac3',
+        categoryTier4Guid: '899d8ac7-85a0-4337-8435-da69fd1b81ac',
     }
 
     async setReadAccessConfigurationName(accessmapping:string): Promise<void> {
@@ -70,6 +73,18 @@ class AddReadAccessConfigurationPage {
      async selectCategoryTier1(categValue: string): Promise<void> {
         await utilCommon.selectDropDown(this.selectors.categoryTier1Guid, categValue);
      }
+
+     async selectCategoryTier2(categValue: string): Promise<void> {
+      await utilCommon.selectDropDown(this.selectors.categoryTier2Guid, categValue);
+   }
+
+   async selectCategoryTier3(categValue: string): Promise<void> {
+      await utilCommon.selectDropDown(this.selectors.categoryTier3Guid, categValue);
+   }
+
+   async selectCategoryTier4(categValue: string): Promise<void> {
+      await utilCommon.selectDropDown(this.selectors.categoryTier4Guid, categValue);
+   }
      
    async isSaveButtonDisplayed(): Promise<boolean> {
       return await $(this.selectors.saveButton).isPresent().then(async (result) => {

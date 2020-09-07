@@ -20,7 +20,7 @@ class EditTaskTemplate {
         taskCategoryDrpDown1: 'cab2e62d-090e-4281-985d-2f021bb01a9f',
         taskCategoryDrpDown2: '27a4fb75-0d9c-417b-9638-698f371ec4ec',
         taskCategoryDrpDown3: '414723be-a5c7-4271-b9b0-d76f07023682',
-        taskCategoryDrpDown4: 'd88c4135-b283-4b9a-9909-80f1e83e6087',
+        taskCategoryDrpDown4: 'f1703efa-79e9-4e74-b38f-782272b803af',
         priority: '0cf493f2-9e6b-4f23-bf3e-ba210c2baef8',
         saveMetadata: '[rx-view-component-id="39f08c8c-48ad-450e-b5f2-f379a4432666"] button',
         cancelMetadata: '[rx-view-component-id="209049eb-ef6d-4ddd-8ee4-257ff7a878e5"] button',
@@ -176,6 +176,11 @@ class EditTaskTemplate {
     async isSaveTemplateMetadataBtnEnabled(): Promise<boolean> {
         return await $(this.selectors.saveMetadata).isEnabled();
     }
+
+    async getTaskCategoryTier4(): Promise<string> {
+        return await $(`[rx-view-component-id="${this.selectors.taskCategoryDrpDown4}"] .ui-select-match-text`).getText();
+    }
+
 
 }
 

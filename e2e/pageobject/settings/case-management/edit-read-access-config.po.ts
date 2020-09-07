@@ -17,6 +17,7 @@ class ReadAccessConfigEditPage {
         priorityGuid: '732d1377-9873-476d-a5ee-bee0eb9ee5f3',
         supportGroupGuid: '59fae521-483b-4d6a-93ed-84c88919351a',
         businessUnitGuid: '2d897e8d-c447-4a0f-b494-50c0eb0fc3ac',
+        categoryTier4Guid: '0ad049c9-856d-4945-82f1-9981d2d62465'
     }
 
     async isAccessMappingNameDisabled(): Promise<boolean> {
@@ -80,6 +81,9 @@ class ReadAccessConfigEditPage {
         await utilCommon.selectDropDown(this.selectors.businessUnitGuid,businessUnit);
      }
 
+     async getCategoryTier4(): Promise<string> {
+        return await $(`[rx-view-component-id="${this.selectors.categoryTier4Guid}"] .ui-select-match-text`).getText();
+    }
 }
 
 export default new ReadAccessConfigEditPage();
