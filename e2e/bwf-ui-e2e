@@ -158,7 +158,16 @@ node("${NODE}"){
             if (matcher.matches()) total = matcher.group(1).toInteger()
 
             currentBuild.description = "Tests:" + total + " Passed:" + passed + " Failed:" + failed + " Skipped:" + skipped
-            if (percent < 90) currentBuild.result = 'FAILURE'
+            if (percent < 90) currentBuild.result = 'FAILURE';
+
+            // PMO Dashboard per component
+            if("${PMO}" == "true") {
+            build job: 'bwf-pmo-dashboard', 
+                parameters: [
+		            string(name: 'NODE', value: "${NODE}"),
+                    string(name: 'JSON', value: "${WORKSPACE}/artefact/jira-report/summary-report.json")
+                ]
+            }
         }
     } catch (Exception e) {
         echo "Reporting Failed ==> " + e;
