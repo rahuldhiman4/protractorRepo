@@ -9,6 +9,10 @@ import editEmailTemplatePo from '../../pageobject/settings/email/edit-email-temp
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
+import utilityGrid from '../../utils/utility.grid';
+import viewCasePo from '../../pageobject/case/view-case.po';
+import composeMailPo from '../../pageobject/email/compose-mail.po';
+import selectEmailTemplateBladePo from '../../pageobject/email/select-email-template-blade.po';
 
 describe('Email Template', () => {
     const emailTemplateData = require('../../data/ui/email/email.template.api.json');
@@ -297,5 +301,47 @@ describe('Email Template', () => {
         await editEmailTemplatePo.clickOnCancelButton();
         expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue without saving?');
         await utilCommon.clickOnWarningOk();
-});
+    });
+
+    //ankagraw
+    describe('[DRDMV-10385]: Active Email Temlate list in Grid', async () => {
+        let filePath1 = 'e2e/data/ui/attachment/bwfJpg1.jpg';
+        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseData, newCase, emailTemplateNamePsilon, emailTemplateNameDraft, emailTemplateName;
+        beforeAll(async () => {
+            caseData = {
+                "Requester": "qtao",
+                "Summary": "Test case for DRDMV-21499RandVal" + summary,
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
+                "Assignee": "qkatawazi"
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            newCase = await apiHelper.createCase(caseData);
+            //create an email template
+            emailTemplateName = await emailTemplateData['emailTemplateToComposeEmail'].TemplateName + summary;
+            emailTemplateData['emailTemplateToComposeEmail'].TemplateName = emailTemplateName;
+            await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateToComposeEmail']);
+            emailTemplateNameDraft = await emailTemplateData['emailTemplateToComposeEmail'].TemplateName + summary;
+            emailTemplateData['emailTemplateToComposeEmail'].TemplateName = emailTemplateNameDraft;
+            await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateToComposeEmail']);
+            emailTemplateNameDraft = await emailTemplateData['emailTemplateDraft'].TemplateName + summary;
+            emailTemplateData['emailTemplateDraft'].TemplateName = emailTemplateNameDraft;
+            await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateDraft']);
+            await apiHelper.apiLogin('gwixillian');
+            emailTemplateNamePsilon = await emailTemplateData['emailTemplatePsilon'].TemplateName + summary;
+            emailTemplateData['emailTemplatePsilon'].TemplateName = emailTemplateNamePsilon;
+            await apiHelper.createEmailTemplate(emailTemplateData['emailTemplatePsilon']);
+        });
+        it('[DRDMV-10385]: Active Email Temlate list in Grid', async () => {
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(newCase.displayId)
+            await viewCasePo.clickOnEmailLink();
+            await composeMailPo.clickOnSelectEmailTemplateLink();
+            expect(await selectEmailTemplateBladePo.isRecordPresent(emailTemplateName)).toBeTruthy();
+            expect(await selectEmailTemplateBladePo.isRecordPresent(emailTemplateNameDraft)).toBeFalsy();
+            expect(await selectEmailTemplateBladePo.isRecordPresent(emailTemplateNamePsilon)).toBeFalsy()
+        });
+    });
 });

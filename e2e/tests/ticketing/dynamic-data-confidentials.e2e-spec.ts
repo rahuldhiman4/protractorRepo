@@ -386,6 +386,8 @@ describe('Dynamic Confidentials Data', () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.updateFoundationEntity('SupportGroup', 'Facilities', { confidential: 'true' });
             await apiHelper.updateFoundationEntity('SupportGroup', 'AU Support 1', { confidential: 'true' });
+            await navigationPage.signOut();
+            await loginPage.login("fritz");
         });
         it('[DRDMV-15187]: [DesignTime+Flowset] Add confidential support group on flowset', async () => {
             await navigationPage.gotoSettingsPage();
@@ -416,6 +418,9 @@ describe('Dynamic Confidentials Data', () => {
             await editFlowsetConfigPo.selectConfidentialSupportGroup("AU Support 1");
             await editFlowsetConfigPo.clickAddConfidentialSupportGroup();
             expect(await editFlowsetConfigPo.getSupportGroupWarningMessage()).toContain("The group already exists in the access list.");
+        });
+        afterAll(async () => {
+            await navigationPage.gotoCaseConsole();
         });
     });
 

@@ -11,6 +11,8 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
+import editCasePo from '../../pageobject/case/edit-case.po';
 
 let userData1 = undefined;
 describe("Case Approval UI Validations", () => {
@@ -77,8 +79,8 @@ describe("Case Approval UI Validations", () => {
                 "company": "Petramco",
                 "mappingName": "Approval Mapping for Self Approval"
             }
-            let approvalMappingId = await apiHelper.createApprovalMapping(caseModule,approvalMappingData);
-            await apiHelper.associateTemplateWithApprovalMapping(caseModule,caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
+            let approvalMappingId = await apiHelper.createApprovalMapping(caseModule, approvalMappingData);
+            await apiHelper.associateTemplateWithApprovalMapping(caseModule, caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
 
             caseData = {
                 "Requester": "apavlik",
@@ -280,8 +282,8 @@ describe("Case Approval UI Validations", () => {
                 "company": "Petramco",
                 "mappingName": "Approval Mapping for All Must Approval"
             }
-            let approvalMappingId = await apiHelper.createApprovalMapping(caseModule,approvalMappingData);
-            await apiHelper.associateTemplateWithApprovalMapping(caseModule,caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
+            let approvalMappingId = await apiHelper.createApprovalMapping(caseModule, approvalMappingData);
+            await apiHelper.associateTemplateWithApprovalMapping(caseModule, caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
 
             caseData = {
                 "Requester": "qdu",
@@ -518,8 +520,8 @@ describe("Case Approval UI Validations", () => {
                 "company": "Petramco",
                 "mappingName": "Approval Mapping for Self Approval"
             }
-            let approvalMappingId = await apiHelper.createApprovalMapping(caseModule,approvalMappingData);
-            await apiHelper.associateTemplateWithApprovalMapping(caseModule,caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
+            let approvalMappingId = await apiHelper.createApprovalMapping(caseModule, approvalMappingData);
+            await apiHelper.associateTemplateWithApprovalMapping(caseModule, caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
 
             caseData = {
                 "Requester": "qdu",
@@ -679,8 +681,8 @@ describe("Case Approval UI Validations", () => {
                 "company": "Petramco",
                 "mappingName": "Approval Mapping for Self Approval"
             }
-            let approvalMappingId = await apiHelper.createApprovalMapping(caseModule,approvalMappingData);
-            await apiHelper.associateTemplateWithApprovalMapping(caseModule,caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
+            let approvalMappingId = await apiHelper.createApprovalMapping(caseModule, approvalMappingData);
+            await apiHelper.associateTemplateWithApprovalMapping(caseModule, caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
             caseData = {
                 "Requester": "qdu",
                 "Summary": "Automated One must Approval Case" + randomStr,
@@ -822,4 +824,157 @@ describe("Case Approval UI Validations", () => {
         });
     });
 
+    //ankagraw
+    describe('[DRDMV-780,DRDMV-783]:[Case Status Reason] Transiting between the statuses that have Status Reason values', async () => {
+        let approvalMappingData, caseData, caseId, caseData1, caseData2,caseData3, caseTemplateDataWithMatchingCriteria, randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        beforeAll(async () => {
+            // Create Case Template through API
+            let caseTemplateData = {
+                "templateName": 'caseTemplateName' + randomStr,
+                "templateSummary": 'caseTemplateSummary' + randomStr,
+                "categoryTier1": 'Applications',
+                "categoryTier2": 'Social',
+                "categoryTier3": 'Chatter',
+                "casePriority": "Low",
+                "templateStatus": "Active",
+                "company": "Petramco",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qfeng",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3"
+            }
+
+            await apiHelper.apiLogin('qkatawazi');
+            let caseTemplateResponse = await apiHelper.createCaseTemplate(caseTemplateData);
+            let caseTemplateDisplayId = caseTemplateResponse.displayId;
+
+            //Create Approval Mapping
+            let approvalMappingData = {
+                "triggerStatus": "Assigned",
+                "errorStatus": "Canceled",
+                "approvedStatus": "Resolved",
+                "noApprovalFoundStatus": "Pending",
+                "rejectStatus": "Canceled",
+                "company": "Petramco",
+                "mappingName": "Bulk Operation Mapping"
+            }
+            let approvalMappingId = await apiHelper.createApprovalMapping(caseModule, approvalMappingData);
+            await apiHelper.associateTemplateWithApprovalMapping(caseModule, caseTemplateResponse.id, approvalMappingId.id);
+
+
+            //Create Approval Flow. Category 1 = Applications, Category 2 = Social and Category 3 = Chatter
+            let approvalFlowData = {
+                "flowName": `Bulk Operation ${randomStr}`,
+                "approver": "qkatawazi",
+                "qualification": "'Category Tier 3' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.c2636a9ab1d4aa37cf23b2cf0dbd1f9ea3a5d6046a3ad0ad998c63411e41815d81709de7a5f6153e78fc47ebcc9c3f3f4db51dd0d9e44084eb3a345df03cb66d.304405421}"
+            }
+            await apiHelper.createApprovalFlow(approvalFlowData, caseModule);
+
+            caseData = {
+                "Requester": "qdu",
+                "Summary": "Automated All must Approval Case" + randomStr,
+                "Origin": "Agent",
+                "Case Template ID": caseTemplateDisplayId
+            }
+            caseData2 = {
+                "Requester": "qdu",
+                "Summary": "Automated All must Approval Case" + randomStr,
+                "Origin": "Agent",
+                "Case Template ID": caseTemplateDisplayId
+            }
+
+            caseData1 = {
+                "Requester": "apavlik",
+                "Summary": "Summary" + randomStr,
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
+                "Assignee": "qkatawazi",
+            }
+
+            caseData3 = {
+                "Requester": "apavlik",
+                "Summary": "Summary" + randomStr,
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
+                "Assignee": "qkatawazi",
+            }
+
+            await apiHelper.apiLogin('qkatawazi');
+            caseId = await apiHelper.createCase(caseData1);
+        });
+
+        it('[DRDMV-780,DRDMV-783]:[Case Status Reason] Transiting between the statuses that have Status Reason values', async () => {
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(caseId.displayId);
+            expect(await viewCasePo.getTextOfStatus()).toBe("Assigned"), 'status should be new of status';
+            await updateStatusBladePo.changeCaseStatus("Resolved");
+            let resolvedStatusReasons: string[] = ['None', 'Auto Resolved', 'Customer Follow-Up Required', 'No Further Action Required'];
+            await expect(await updateStatusBladePo.allStatusReasonOptionsPresent(resolvedStatusReasons)).toBeTruthy('Resolved status reason options mismatch');
+            await updateStatusBladePo.clickOnstatusReason();
+            await updateStatusBladePo.setStatusReason('Auto Resolved');
+            await updateStatusBladePo.clickSaveStatus();
+
+            await updateStatusBladePo.changeCaseStatus("Pending");
+            let pendingStatusReasons: string[] = ['None', 'Approval', 'Customer Response', 'Error', 'Required Fields Are Missing', 'Third Party'];
+            expect(await updateStatusBladePo.allStatusReasonOptionsPresent(pendingStatusReasons)).toBeTruthy('Pending status reason options mismatch');
+            await updateStatusBladePo.clickOnstatusReason();
+            await updateStatusBladePo.setStatusReason('Error');
+            await updateStatusBladePo.clickSaveStatus();
+
+            await updateStatusBladePo.changeCaseStatus("Canceled");
+            let cancelStatusReasons: string[] = ['None', 'Approval Rejected', 'Customer Canceled'];
+            expect(await updateStatusBladePo.allStatusReasonOptionsPresent(cancelStatusReasons)).toBeTruthy('Cancel status reason options mismatch');
+            await updateStatusBladePo.clickOnstatusReason();
+            await updateStatusBladePo.setStatusReason('Customer Canceled');
+            await updateStatusBladePo.clickSaveStatus();
+        });
+
+        it('[DRDMV-780,DRDMV-783]:[Case Status Reason] Transiting between the statuses that have Status Reason values', async () => {
+            await apiHelper.apiLogin('qkatawazi');
+            caseId = await apiHelper.createCase(caseData3);
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(caseId.displayId);
+            expect(await viewCasePo.getTextOfStatus()).toBe("Assigned"), 'status should be new of status';
+            await updateStatusBladePo.changeCaseStatus("Pending");
+            expect(await updateStatusBladePo.isStatusReasonRequiredTextPresent()).toBeTruthy();
+            await updateStatusBladePo.setStatusReason('Error');
+            await updateStatusBladePo.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus("Assigned");
+            expect(await updateStatusBladePo.isStatusReasonRequiredTextPresent()).toBeFalsy();
+            await updateStatusBladePo.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus("Resolved");
+            expect(await updateStatusBladePo.isStatusReasonRequiredTextPresent()).toBeFalsy();
+            await updateStatusBladePo.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus("Canceled");
+            expect(await updateStatusBladePo.isStatusReasonRequiredTextPresent()).toBeTruthy();
+            await updateStatusBladePo.setStatusReason('Customer Canceled');
+            await updateStatusBladePo.clickSaveStatus();
+        });
+
+        it('[DRDMV-780,DRDMV-783]:[Case Status Reason] Transiting between the statuses that have Status Reason values', async () => {
+            await apiHelper.apiLogin('qkatawazi');
+            caseId = await apiHelper.createCase(caseData);
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(caseId.displayId);
+            expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
+            expect(viewCasePo.getStatusReason("Approval")).toContain("Approval");
+            await viewCasePo.clickOnApproveLink();
+            expect(await viewCasePo.getTextOfStatus()).toBe("Resolved");
+        });
+
+        it('[DRDMV-780,DRDMV-783]:[Case Status Reason] Transiting between the statuses that have Status Reason values', async () => {
+            await apiHelper.apiLogin('qkatawazi');
+            caseId = await apiHelper.createCase(caseData2);
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(caseId.displayId);
+            expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
+            expect(viewCasePo.getStatusReason("Approval")).toBe("Approval");
+            await viewCasePo.clickOnRejectLink();
+            expect(await viewCasePo.getTextOfStatus()).toBe("Canceled");
+            expect(await viewCasePo.getStatusReason("Approval Rejected")).toBe("Approval Rejected");
+        });
+    });
 });
