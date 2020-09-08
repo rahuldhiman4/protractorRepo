@@ -57,6 +57,6 @@ def reg = '.*' + extn;
 buildMonitorView(viewName) {
     description('All jobs for PMO dashboard')
     jobs {
-        regex(/${reg}/)
+        regex('.*_UI|.*_API')
     }
 }
