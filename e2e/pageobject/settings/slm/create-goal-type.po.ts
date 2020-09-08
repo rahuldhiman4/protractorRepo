@@ -12,7 +12,6 @@ class GoalTypeCreateConfigPage {
         statusDropDown: '[rx-view-component-id="267b5a81-e7e8-48ba-bb3c-25f39624ab59"] .ui-select-match',
         saveButton: '[rx-view-component-id="da0c86c7-26b4-4b29-afeb-180479b85bfd"] button',
         closeButton: 'div[rx-view-component-id="c195a2d9-9e49-42c5-994f-7f6896c3d295"] .d-button_secondary'
-
     }
 
     async isGoalTypeDisabled(): Promise<boolean> {
@@ -32,7 +31,7 @@ class GoalTypeCreateConfigPage {
     }
 
     async clickSaveGoalTypeButton(): Promise<void> {
-               await $(this.selectors.saveButton).click();
+        await $(this.selectors.saveButton).click();
     }
 
     async clickCloseGoalTypeButton(): Promise<void> {

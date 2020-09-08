@@ -9,6 +9,8 @@ import createConfigureDataSourceConfigPo from '../../pageobject/settings/slm/cre
 import editConfigureDataSourceConfigPo from '../../pageobject/settings/slm/edit-configure-data-source-config.po';
 import approvalConfigurationPage from "../../pageobject/settings/approval/approval-configuration.po";
 import utilityCommon from '../../utils/utility.common';
+import { default as serviceTargetConfig } from '../../pageobject/settings/slm/service-target-blade.po';
+import SlmExpressionBuilder from '../../pageobject/settings/slm/slm-expressionbuilder.pop.po';
 
 let caseBAUser = 'qkatawazi';
 
@@ -28,13 +30,13 @@ describe('Data Source Configuration Tests', () => {
     });
 
     //skhobrag
-    describe('[DRDMV-2209,DRDMV-2210,DRDMV-2212]: SLM - Configure Data Source - Create a new Data Source', async () => {
+    describe('[DRDMV-2208,DRDMV-2209,DRDMV-2210,DRDMV-2212,DRDMV-2224]: SLM - Configure Data Source - Create a new Data Source', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let dataSourceDisplayName = 'Case Data Source_' + randomStr;
         let dataSourceDisplayName2 = 'Case Data Source2_' + randomStr;
-        let dataSourceRecordDefinitionOptions = ['com.bmc.dsm.case-lib:Case Audit','com.bmc.dsm.case-lib:Case Detail Signature','com.bmc.dsm.case-lib:Case Detail Signature Question','com.bmc.dsm.case-lib:Case Detail Signature Question Attachment']
+        let dataSourceRecordDefinitionOptions = ['com.bmc.dsm.case-lib:Case Audit', 'com.bmc.dsm.case-lib:Case Detail Signature', 'com.bmc.dsm.case-lib:Case Detail Signature Question', 'com.bmc.dsm.case-lib:Case Detail Signature Question Attachment']
 
-        it('[DRDMV-2209,DRDMV-2210,DRDMV-2212]: Verify Data Source Configuration Creation', async () => {
+        it('[DRDMV-2208,DRDMV-2209,DRDMV-2210,DRDMV-2212,DRDMV-2224]: Verify Data Source Configuration Creation', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Configure Data Source', 'Configure Data Source - Administration - Business Workflows');
             expect(await configureDataSourceConsolePage.getDataSourceConfigurationConsoleHeading()).toBe(dataSourceConsoleHeading);
@@ -75,14 +77,14 @@ describe('Data Source Configuration Tests', () => {
             expect(await createConfigureDataSourceConfigPo.isDataSourceFieldRequired('Dynamic Goal Time Field')).toBeFalsy('Dynamic Goal Time Field field is marked as required field');
             expect(await createConfigureDataSourceConfigPo.isDataSourceFieldRequired('Category Field')).toBeFalsy('Category Field field is marked as required field');
             expect(await createConfigureDataSourceConfigPo.isDatSourceAdvancedFieldsDisabled('Dynamic End Time Field')).toBeTruthy('Dynamic End Time Field is enabled on Create Data Source Config screen');
-            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Association Name','com.bmc.dsm.case-lib:Case Approval Mapping Field - Company');
-            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Create Qualification View','com.bmc.dsm.case-lib:Case Qualification Builder');
-            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Edit Qualification View','com.bmc.dsm.case-lib:Case Qualification Builder');
-            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Assigned Group','Assigned Group Primary');
-            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Dynamic Business Entity','Assigned Business Unit Primary');
-            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Dynamic Start Time Field','Created Date Primary');
-            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Dynamic Goal Time Field','Assignee Primary');
-            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Category Field','Category Tier 1 Primary');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Association Name', 'com.bmc.dsm.case-lib:Case Approval Mapping Field - Company');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Create Qualification View', 'com.bmc.dsm.case-lib:Case Qualification Builder');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Edit Qualification View', 'com.bmc.dsm.case-lib:Case Qualification Builder');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Assigned Group', 'Assigned Group Primary');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Dynamic Business Entity', 'Assigned Business Unit Primary');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Dynamic Start Time Field', 'Created Date Primary');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Dynamic Goal Time Field', 'Assignee Primary');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Category Field', 'Category Tier 1 Primary');
             await createConfigureDataSourceConfigPo.clickUseEndTimeCheckbox();
             expect(await createConfigureDataSourceConfigPo.isDatSourceAdvancedFieldsDisabled('Dynamic End Time Field')).toBeFalsy('Dynamic End Time Field is disabled on Create Data Source Config screen');
             expect(await createConfigureDataSourceConfigPo.isDatSourceAdvancedFieldsDisabled('Dynamic Goal Time Field')).toBeTruthy('Dynamic Goal Time Field is enabled on Create Data Source Config screen');
@@ -98,13 +100,13 @@ describe('Data Source Configuration Tests', () => {
             await browser.sleep(2000); // sleep added for expression builder loading time
             await approvalConfigurationPage.selectExpressionOperator('=');
             await browser.sleep(1000); // sleep added for expression builder loading time
-            await approvalConfigurationPage.setExpressionValueForParameter('"'+"Petramco"+'"');
+            await approvalConfigurationPage.setExpressionValueForParameter('"' + "Petramco" + '"');
             await createConfigureDataSourceConfigPo.clickRegularExpressionSaveButton();
             await createConfigureDataSourceConfigPo.clickSaveButton();
             expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message is not displayed.');
         });
 
-        it('[DRDMV-2209,DRDMV-2210,DRDMV-2212]: Verify Data Source Configuration Updation', async () => {
+        it('[DRDMV-2208,DRDMV-2209,DRDMV-2210,DRDMV-2212,DRDMV-2224]: Verify Data Source Configuration Updation', async () => {
             await utilGrid.searchAndOpenHyperlink(dataSourceDisplayName);
             await browser.sleep(2000); // added hard wait to load Edit Data Source Blade
             expect(await editConfigureDataSourceConfigPo.isDatSourceFieldDisabled('Display Name')).toBeTruthy('Display Name field is optional on Edit Data Source Config screen');
@@ -115,7 +117,7 @@ describe('Data Source Configuration Tests', () => {
             expect(await editConfigureDataSourceConfigPo.getDatSourceFieldValue('Application Name')).toBe('Case Management Service');
             expect(await editConfigureDataSourceConfigPo.getDatSourceFieldValue('Record Definition Name')).toBe('com.bmc.dsm.case-lib:Case Detail');
             expect(await editConfigureDataSourceConfigPo.getDatSourceCompanyFieldValue()).toBe('ASSIGNED COMPANY_ID Primary');
-            await editConfigureDataSourceConfigPo.clickDataSourceLink('Show Advanced Settings'); 
+            await editConfigureDataSourceConfigPo.clickDataSourceLink('Show Advanced Settings');
             expect(await editConfigureDataSourceConfigPo.isDatSourceFieldDisabled('Association Name')).toBeFalsy('Association Name field is required on Edit Data Source Config screen');
             expect(await editConfigureDataSourceConfigPo.isDatSourceFieldDisabled('Create Qualification View')).toBeFalsy('Create Qualification View field is required on Edit Data Source Config screen');
             expect(await editConfigureDataSourceConfigPo.isDatSourceFieldDisabled('Edit Qualification View')).toBeFalsy('Edit Qualification View field is required on Edit Data Source Config screen');
@@ -125,7 +127,7 @@ describe('Data Source Configuration Tests', () => {
             expect(await editConfigureDataSourceConfigPo.isDatSourceFieldDisabled('Dynamic End Time Field')).toBeFalsy('Dynamic End Time Field is required on Edit Data Source Config screen');
             expect(await editConfigureDataSourceConfigPo.isDatSourceFieldDisabled('Dynamic Goal Time Field')).toBeFalsy('Dynamic Goal Time Field field is required on Edit Data Source Config screen');
             expect(await editConfigureDataSourceConfigPo.isDatSourceFieldDisabled('Category Field')).toBeFalsy('Category Field Field field is required on Edit Data Source Config screen');
-           
+
             expect(await editConfigureDataSourceConfigPo.getDatSourceAdvancedFieldValue('Association Name')).toBe('com.bmc.dsm.case-lib:Case Approval Mapping Field - Company');
             expect(await editConfigureDataSourceConfigPo.getDatSourceAdvancedFieldValue('Create Qualification View')).toBe('com.bmc.dsm.case-lib:Case Qualification Builder');
             expect(await editConfigureDataSourceConfigPo.getDatSourceAdvancedFieldValue('Edit Qualification View')).toBe('com.bmc.dsm.case-lib:Case Qualification Builder');
@@ -137,29 +139,29 @@ describe('Data Source Configuration Tests', () => {
             expect(await editConfigureDataSourceConfigPo.getDatSourceAdvancedFieldValue('Category Field')).toBe('Category Tier 1 Primary');
             let expectedSelectedExp = `'Assignee GUID Primary' ="Petramco"`;
             expect(await editConfigureDataSourceConfigPo.getDatSourceFieldValue('Reset Goal Condition')).toBe(expectedSelectedExp);
-            await editConfigureDataSourceConfigPo.selectDataSourceFieldOption('Assigned Group','Assigned Department Primary');
+            await editConfigureDataSourceConfigPo.selectDataSourceFieldOption('Assigned Group', 'Assigned Department Primary');
             await editConfigureDataSourceConfigPo.clickSaveButton();
             expect(await utilCommon.isPopUpMessagePresent('Record has been updated successfully')).toBeTruthy('Record saved successfully confirmation message is not displayed.');
             await utilGrid.searchAndOpenHyperlink(dataSourceDisplayName);
             await browser.sleep(2000); // added hard wait to close Edit Data Source Blade
-            await editConfigureDataSourceConfigPo.clickDataSourceLink('Show Advanced Settings'); 
+            await editConfigureDataSourceConfigPo.clickDataSourceLink('Show Advanced Settings');
             expect(await editConfigureDataSourceConfigPo.getDatSourceAdvancedFieldValue('Assigned Group')).toBe('Assigned Department Primary');
             await editConfigureDataSourceConfigPo.clickCancelButton();
         });
 
-        it('[DRDMV-2209,DRDMV-2210,DRDMV-2212]: Verify that the already utilized record definition is not available for new data source', async () => {
+        it('[DRDMV-2208,DRDMV-2209,DRDMV-2210,DRDMV-2212,DRDMV-2224]: Verify that the already utilized record definition is not available for new data source', async () => {
             await configureDataSourceConsolePage.clickConfigDataSourceBtn();
             await browser.sleep(5000); // added hard wait to load Create Data Source Blade
             expect(await createConfigureDataSourceConfigPo.getAddDataSourceConfigurationHeading()).toBe(createdataSourceConfigHeading);
             await createConfigureDataSourceConfigPo.setDataSourceDisplayName(dataSourceDisplayName2);
             await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Application Name', 'Case Management Service');
-            expect(await createConfigureDataSourceConfigPo.isDataSourceDropDownOptionsMatches('Record Definition Name', dataSourceRecordDefinitionOptions,'Case Detail')).toBeFalsy('Field Option Not Displayed');
+            expect(await createConfigureDataSourceConfigPo.isDataSourceDropDownOptionsMatches('Record Definition Name', dataSourceRecordDefinitionOptions, 'Case Detail')).toBeFalsy('Field Option Not Displayed');
             await editConfigureDataSourceConfigPo.clickCancelButton();
             expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue?');
             await utilCommon.clickOnWarningOk();
         });
 
-        it('[DRDMV-2209,DRDMV-2210,DRDMV-2212]: Verify the error when existing data source used in SVT configs is modified', async () => {
+        it('[DRDMV-2208,DRDMV-2209,DRDMV-2210,DRDMV-2212,DRDMV-2224]: Verify the error when existing data source used in SVT configs is modified', async () => {
             await utilGrid.searchRecord('nonmatchingtext');
             await utilGrid.searchAndOpenHyperlink('Case Management');
             await browser.sleep(2000); // added hard wait to load Edit Data Source Blade
@@ -171,6 +173,87 @@ describe('Data Source Configuration Tests', () => {
             await editConfigureDataSourceConfigPo.clickCancelButton();
             expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue?');
             await utilCommon.clickOnWarningOk();
+        });
+
+    });
+
+
+    //skhobrag
+    describe('[DRDMV-2211,DRDMV-2211,DRDMV-2216]: SLM - Configure Data Source - Build Expression', async () => {
+        let dataSourceMaxLimit = "DataSource is a name given to the connection set to.";
+        let dataSourceAlphaNumeric = "DaTaSource is a Name given to the set 21378236872";
+        let dataSourceSpecialChars = "DaTaSource is a #$%&@^(*@#&*&@*( given to the set";
+
+        it('[DRDMV-2211,DRDMV-2211,DRDMV-2216]: Verify Data Source Configuration Creation with Input Characters Validation', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Service Level Management--Configure Data Source', 'Configure Data Source - Administration - Business Workflows');
+            expect(await configureDataSourceConsolePage.getDataSourceConfigurationConsoleHeading()).toBe(dataSourceConsoleHeading);
+            expect(await configureDataSourceConsolePage.getDataSourceConfigurationConsoleDescription()).toBe(dataSourceConsoleDesc);
+            await configureDataSourceConsolePage.clickConfigDataSourceBtn();
+            // await browser.sleep(2000);  // added hard wait to load Add Data Source Blade
+            expect(await createConfigureDataSourceConfigPo.getAddDataSourceConfigurationHeading()).toBe(createdataSourceConfigHeading);
+            await createConfigureDataSourceConfigPo.setDataSourceDisplayName(dataSourceMaxLimit);
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Application Name', 'Case Management Service');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Record Definition Name', 'com.bmc.dsm.case-lib:Case Approval Mapping');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Company Field', 'Company');
+            expect(await createConfigureDataSourceConfigPo.isSaveBtnDisabled()).toBeFalsy('Save button is found disabled.');
+            await createConfigureDataSourceConfigPo.clickSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (306): Value does not fall within the limits specified for the field (Field ID - com.bmc.dsm.slm-lib:Config Data Source <300520600>, Maximum length - 50)')).toBeTruthy('Record saved successfully confirmation message is not displayed.');
+            await createConfigureDataSourceConfigPo.setDataSourceDisplayName(dataSourceAlphaNumeric);
+            await createConfigureDataSourceConfigPo.clickDataSourceLink('Show Advanced Settings');
+            expect(await createConfigureDataSourceConfigPo.isDatSourceAdvancedFieldsDisabled('Dynamic End Time Field')).toBeTruthy('Dynamic End Time Field is enabled on Create Data Source Config screen');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Association Name', 'com.bmc.dsm.case-lib:Case Approval Mapping Field - Category Tier 1');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Create Qualification View', 'com.bmc.dsm.case-lib:Case Qualification Builder');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Edit Qualification View', 'com.bmc.dsm.case-lib:Case Qualification Builder');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Assigned Group', 'Assignee');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Dynamic Business Entity', 'Approval Process');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Dynamic Start Time Field', 'Created Date');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Dynamic Goal Time Field', 'Category Tier 2');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Category Field', 'Category Tier 2');
+            await createConfigureDataSourceConfigPo.clickUseEndTimeCheckbox();
+            expect(await createConfigureDataSourceConfigPo.isDatSourceAdvancedFieldsDisabled('Dynamic End Time Field')).toBeFalsy('Dynamic End Time Field is disabled on Create Data Source Config screen');
+            expect(await createConfigureDataSourceConfigPo.isDatSourceAdvancedFieldsDisabled('Dynamic Goal Time Field')).toBeTruthy('Dynamic Goal Time Field is enabled on Create Data Source Config screen');
+            await createConfigureDataSourceConfigPo.clickSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('You must enter an End Time value.')).toBeTruthy('Dynamic End Time Validation message is not displayed.');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Dynamic End Time Field', 'Created Date');
+            await createConfigureDataSourceConfigPo.clickDataSourceLink('Build Expression');
+            expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
+            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Create Expression');
+            await browser.sleep(3000); // sleep added for expression builder loading time
+            await approvalConfigurationPage.searchExpressionFieldOption('Company');
+            await approvalConfigurationPage.clickRecordOption('Record Instance');
+            await browser.sleep(2000); // sleep added for expression builder loading time
+            await approvalConfigurationPage.selectExpressionFieldOption();
+            await browser.sleep(2000); // sleep added for expression builder loading time
+            await approvalConfigurationPage.selectExpressionOperator('=');
+            await browser.sleep(1000); // sleep added for expression builder loading time
+            await approvalConfigurationPage.setExpressionValueForParameter('"' + "Petramco" + '"');
+            await createConfigureDataSourceConfigPo.clickRegularExpressionSaveButton();
+            await createConfigureDataSourceConfigPo.clickSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message is not displayed.');
+        });
+
+        it('[DRDMV-2211,DRDMV-2211,DRDMV-2216]: Verify Data Source Configuration Creation with Reset Goal Validation', async () => {
+            await utilGrid.searchAndOpenHyperlink(dataSourceAlphaNumeric);
+            await browser.sleep(2000); // added hard wait to load Edit Data Source Blade
+            expect(await editConfigureDataSourceConfigPo.getDatSourceFieldValue('Display Name')).toBe(dataSourceAlphaNumeric);
+            await editConfigureDataSourceConfigPo.clickDataSourceLink('Show Advanced Settings');
+            let expectedSelectedExp = `'Company' ="Petramco"`;
+            expect(await editConfigureDataSourceConfigPo.getDatSourceFieldValue('Reset Goal Condition')).toBe(expectedSelectedExp);
+            await editConfigureDataSourceConfigPo.clickCancelButton();
+        });
+
+        it('[DRDMV-2211,DRDMV-2211,DRDMV-2216]: Verify Data Source Configuration Creation with Build Expression Validation', async () => {
+            await configureDataSourceConsolePage.clickConfigDataSourceBtn();
+            await browser.sleep(5000); // added hard wait to load Create Data Source Blade
+            expect(await createConfigureDataSourceConfigPo.getAddDataSourceConfigurationHeading()).toBe(createdataSourceConfigHeading);
+            await createConfigureDataSourceConfigPo.setDataSourceDisplayName(dataSourceSpecialChars);
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Application Name', 'Case Management Service');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Record Definition Name', 'com.bmc.dsm.case-lib:Case Audit');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Company Field', 'ASSIGNED COMPANY_ID');
+            expect(await createConfigureDataSourceConfigPo.isSaveBtnDisabled()).toBeFalsy('Save button is found disabled.');
+            await createConfigureDataSourceConfigPo.clickSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message is not displayed.');
         });
 
     });

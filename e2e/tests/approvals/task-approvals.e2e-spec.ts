@@ -847,9 +847,11 @@ describe("Task Approval Tests", () => {
             await viewCasePo.openTaskCard(1);
             automatedTaskDisplayId = await manageTask.getTaskDisplayIdFromManageTaskBlade();
             await manageTask.clickTaskLink(autoTaskTemplateData.templateSummary);
+            let taskId = await viewTask.getTaskID();
+            await navigationPage.gotoTaskConsole();
+            await utilityGrid.searchAndOpenHyperlink(taskId);
             expect(await viewTask.getTaskStatusValue()).toBe("Approval Rejected");
             expect(await viewTask.isShowApproversBannerDisplayed()).toBeFalsy('Show Approvers Banner is not displayed');
-            await browser.sleep(3000); // hardwait to reflect task approval details in activity
             expect(await activityTabPage.getApprovalErrorActivityText('An error occurred during approval')).toBeTruthy('Show Approvers Banner is not displayed');
 
         });
