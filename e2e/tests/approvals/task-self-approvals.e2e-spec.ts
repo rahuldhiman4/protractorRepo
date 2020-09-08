@@ -150,6 +150,9 @@ describe("Task Self Approval Tests", () => {
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
             await viewCasePo.openTaskCard(1);
             await manageTask.clickTaskLink(manualTaskTemplateData.templateSummary);
+            let taskId = await viewTask.getTaskID();
+            await navigationPage.gotoTaskConsole();
+            await utilityGrid.searchAndOpenHyperlink(taskId);
             expect(await viewTask.getTaskStatusValue()).toBe("In Progress");
             expect(await activityTabPage.getApprovalActivityText('Task was auto-approved')).toBeTruthy();
         });
@@ -168,6 +171,9 @@ describe("Task Self Approval Tests", () => {
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
             await viewCasePo.openTaskCard(1);
             await manageTask.clickTaskLink(autoTaskTemplateData.templateSummary);
+            let taskId = await viewTask.getTaskID();
+            await navigationPage.gotoTaskConsole();
+            await utilityGrid.searchAndOpenHyperlink(taskId);
             expect(await viewTask.getTaskStatusValue()).toBe("Completed");
             expect(await activityTabPage.getApprovalActivityText('Task was auto-approved')).toBeTruthy();
         });
@@ -313,8 +319,10 @@ describe("Task Self Approval Tests", () => {
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
             await viewCasePo.openTaskCard(1);
             await manageTask.clickTaskLink(autoTaskTemplateData.templateSummary);
+            let taskId = await viewTask.getTaskID();
+            await navigationPage.gotoTaskConsole();
+            await utilityGrid.searchAndOpenHyperlink(taskId);
             expect(await viewTask.getTaskStatusValue()).toBe("Completed");
-            await browser.sleep(3000); // hardwait to reflect task approval details in activity
             expect(await activityTabPage.getApprovalActivityText('Task was self-approved')).toBeTruthy();
         });
 
@@ -991,6 +999,9 @@ describe("Task Self Approval Tests", () => {
             await viewCasePo.openTaskCard(1);
             automatedTaskDisplayId = await manageTask.getTaskDisplayIdFromManageTaskBlade();
             await manageTask.clickTaskLink(manualTaskTemplateData.templateSummary);
+            let taskId = await viewTask.getTaskID();
+            await navigationPage.gotoTaskConsole();
+            await utilityGrid.searchAndOpenHyperlink(taskId);
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
         });
 
