@@ -165,7 +165,7 @@ node("${NODE}"){
             build job: 'bwf-pmo-dashboard', 
                 parameters: [
 		            string(name: 'NODE', value: "${NODE}"),
-                    string(name: 'JSON', value: "${WORKSPACE}/artefact/jira-report/summary-report.json")
+                    string(name: 'JSON', value: "${WORKSPACE}/artefact/jira-report/summary-report.json"),
                     string(name: 'EXTN', value: "_UI")
                 ]
             }
