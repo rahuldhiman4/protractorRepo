@@ -1,7 +1,7 @@
 import groovy.json.JsonSlurper;
 
 def viewName = "Helix BWF";
-def extn = "_UI";
+def extn = "${EXTN}";
 def jsonFileContent = readFileFromWorkspace("${JSON}");
 def componentObj = new JsonSlurper().parseText(jsonFileContent);
 def components = componentObj.keySet();
@@ -15,7 +15,7 @@ def skipped = (componentObj.get(it).get("skip"));
 def total = (componentObj.get(it).get("total"));
 def percent = (passed * 100) / total;
 boolean isPar = true;
-if (percent < 90) isPar = false;
+if (percent < 95) isPar = false;
 
 def descTxt = "Tests:" + total + " Passed:" + passed + " Failed:" + failed + " Skipped:" + skipped;
 pipelineJob(it + extn) {
@@ -52,9 +52,11 @@ components.each {
 	queue(it + extn)
 }
 
+def reg = '.*' + extn;
+
 buildMonitorView(viewName) {
     description('All jobs for PMO dashboard')
     jobs {
-        regex(/.*_UI/)
+        regex(/${reg}/)
     }
 }

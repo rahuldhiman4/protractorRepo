@@ -166,6 +166,7 @@ node("${NODE}"){
                 parameters: [
 		            string(name: 'NODE', value: "${NODE}"),
                     string(name: 'JSON', value: "${WORKSPACE}/artefact/jira-report/summary-report.json")
+                    string(name: 'EXTN', value: "_UI")
                 ]
             }
         }
