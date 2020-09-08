@@ -41,7 +41,7 @@ import editDocumentLibraryPo from '../../pageobject/settings/document-management
 import { default as createKnowledgePage } from "../../pageobject/knowledge/create-knowlege.po";
 import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
 import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
-import { default as serviceTargetBladePo, default as serviceTargetConfig } from '../../pageobject/settings/slm/service-target-blade.po';
+import serviceTargetConfig from '../../pageobject/settings/slm/service-target-blade.po';
 import slmExpressionBuilder from '../../pageobject/settings/slm/slm-expressionbuilder.pop.po';
 import approvalConfigurationPage from "../../pageobject/settings/approval/approval-configuration.po";
 
@@ -540,12 +540,13 @@ describe("Attachment", () => {
     //kgaikwad
     describe('[DRDMV-15252]: Verify Category tier 4 and Label field is added on views', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let categName1 = 'DemoCateg1DRDMV15252';
-        let categName2 = 'DemoCateg2DRDMV15252';
-        let categName3 = 'DemoCateg3DRDMV15252';
-        let categName4 = 'DemoCateg4DRDMV15252';
+        let categName1 = 'DemoCateg1';
+        let categName2 = 'DemoCateg2';
+        let categName3 = 'DemoCateg3';
+        let categName4 = 'DemoCateg4';
         let summary= 'summaryDRDMV15252'+randomStr;
         let title= 'titleDRDMV15252'+randomStr;
+
         beforeAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
@@ -559,7 +560,6 @@ describe("Attachment", () => {
             await apiHelper.associateCategoryToCategory(categName1, categName2);
             await apiHelper.associateCategoryToCategory(categName2, categName3);
             await apiHelper.associateCategoryToCategory(categName3, categName4);
-            await apiHelper.associateCategoryToOrganization(categName1, '- Global -');
         });
 
         it('[DRDMV-15252]: Verify Category Tier 4 With Case ', async () => {
@@ -597,6 +597,7 @@ describe("Attachment", () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
+            
             await createCasetemplatePo.setTemplateName(title);
             await createCasetemplatePo.setCompanyName('Petramco');
             await createCasetemplatePo.setCaseSummary(summary);
@@ -605,6 +606,7 @@ describe("Attachment", () => {
             await createCasetemplatePo.setCategoryTier3(categName3);
             await createCasetemplatePo.setCategoryTier4(categName4);
             await createCasetemplatePo.clickSaveCaseTemplate();
+            
             expect (await viewCasetemplatePo.getCategoryTier4()).toBe(categName4,'FailureMsg7: CategoryTier4 is displayed');
             await viewCasetemplatePo.clickOnEditCaseTemplateButton();
             expect (await editCasetemplatePo.getValueOfTier4()).toBe(categName4,'FailureMsg6: CategoryTier4 is displayed');
@@ -740,6 +742,9 @@ describe("Attachment", () => {
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
+            await navigationPage.signOut();
+            await loginPage.login('qtao');
+
         });
     });
 });

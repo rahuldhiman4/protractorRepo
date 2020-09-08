@@ -21,7 +21,7 @@ class CreateCaseTemplate {
         caseStatus: '6b1d1112-129e-4c27-82b2-2248f12dc09a',
         statusReason: 'b6a6fc24-c3e7-4565-b2d2-848dd4a6747b',
         label: '7ea99756-16a7-4aae-a8a0-8e5e11acfb77',
-        caseCategoryTier1: '57b0a78a-b91a-46c3-8800-04acc0d81108',
+        caseCategoryTier1: '[rx-view-component-id="57b0a78a-b91a-46c3-8800-04acc0d81108"], [rx-view-component-id="c8ce4fd2-d864-4544-baf7-4b27b59c12c3"]',
         caseCategoryTier2: '42e3edda-f057-41e2-8160-7a9482e847dc',
         caseCategoryTier3: 'bb675d8f-82bc-497b-8b99-dfc1baa1dd41',
         caseCategoryTier4: 'ec532c69-dbc8-4473-b76d-ad90bec193d2',
@@ -44,6 +44,7 @@ class CreateCaseTemplate {
         searchInput: 'input[type="search"]',
         ckEditor: '.cke_inner',
         ckEditorTextArea: '.cke_editable_themed',
+        flowsetVal: '[rx-view-component-id="e29c6d30-5ac3-4f18-a4c6-9192017d46ed"] .ui-select-toggle .ui-select-match-text',
     }
 
     async setCompanyName(companyValue: string): Promise<void> {
@@ -63,7 +64,12 @@ class CreateCaseTemplate {
     }
 
     async setCategoryTier1(tier1Value: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.caseCategoryTier1, tier1Value);
+        let flowsetgetText = await $(this.selectors.flowsetVal).getText();
+        if(flowsetgetText == ''){
+            await utilCommon.selectDropDown('57b0a78a-b91a-46c3-8800-04acc0d81108', tier1Value);
+        }else{
+            await utilCommon.selectDropDown2($(this.selectors.caseCategoryTier1), tier1Value);
+        }
     }
 
     async isResolveCaseOnLastTaskCompletion(value: boolean): Promise<void> {

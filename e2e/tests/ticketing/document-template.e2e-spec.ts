@@ -223,7 +223,7 @@ describe('Document Template', () => {
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'DynamicGroupField');
         });
 
-        it('[14973]: Verify Document dynamic field with case', async () => {
+        it('[14973]: Verify Document Template With Case Dynamic Field ', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Templates', 'Document Templates - Business Workflows');
             await createDocumentTemplatePo.clickOnAddTemplate();
@@ -243,7 +243,7 @@ describe('Document Template', () => {
             await utilCommon.clickOnWarningOk();
         });
 
-        it('[14973]: Verify Document dynamic field with case template', async () => {
+        it('[14973]: Verify Document Template With Case Template Dynamic Field  ', async () => {
             await createDocumentTemplatePo.clickOnAddTemplate();
             await createDocumentTemplatePo.setTemplateName(documentName2);
             await createDocumentTemplatePo.setCompany("Petramco");
