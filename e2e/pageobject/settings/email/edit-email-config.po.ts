@@ -40,10 +40,20 @@ export class EditEmailConfig {
         clearDefaultCaseTemplateToUse: '[rx-view-component-id="085b8e93-0e68-41a7-a1ed-77b6ab2c9522"] input[type="search"]',
         supportGroupCheckbox: '.record__list i',
         addTrustedEmailBtn: '[rx-view-component-id="0dfbc207-b03e-40ab-8e6b-c74f5609aa89"] button',
+        newTrustedEmailId: '[rx-view-component-id="00fb62e7-3e31-4aba-b9b5-a60daec4db46"] input',
+        newTrustedEmailIdGuid: '00fb62e7-3e31-4aba-b9b5-a60daec4db46',
+        newTrustedEmailSaveBtn: '[rx-view-component-id="c0dcdafe-6d39-4c38-b26c-38ec48b9450f"] button',
+        newTrustedEmailCancelBtn: '[rx-view-component-id="c8d38843-d953-4bdd-9913-b6210ee1daa4"] button',
+        newTrustedEmailMappedRequesterGuid: '5021ef29-9cae-4538-bf9b-2907936a8c78',
         addBlockedEmail: '[rx-view-component-id="d7309e2b-06c2-46a6-85e0-8b8f83159f9a"] button',
         createEmailTemplateLink: '[rx-view-component-id="010a2bf3-5b2d-4c72-9c33-fa26d3be6b78"] button',
         inputFieldAcknowledgementTemplate: '[rx-view-component-id="a5437a3a-3a11-4e07-8829-9cee403dca61"] input[type="search"]',
         acknowledgementTemplateList: '[rx-view-component-id="a5437a3a-3a11-4e07-8829-9cee403dca61"] .ui-select-choices-row-inner *',
+        trustedEmailConsoleGuid: '46526dc0-07f0-4dc6-abd3-80651dabd24f',
+        editTrustedEmailButtonOnTrustedEmail: '[rx-view-component-id="c9e5d798-e0b2-49b2-89d8-5875209b29a6"] button',
+        editTrustedEmailSaveButton: '[rx-view-component-id="39083019-c851-43f6-bcab-e6d9d59ac83d"]  button',
+        editTrustedEmailCancelButton: '[rx-view-component-id="43790bdf-8e59-47d1-9b11-8577140da637"]  button',
+        setEmailidOnEditTrusted: '[rx-view-component-id="ac869aba-620e-42a5-af4d-5ed1bd580a6e"] input',
     }
 
     async clickDefaultMailIdCheckbox(value: string): Promise<void> {
@@ -158,6 +168,10 @@ export class EditEmailConfig {
 
     async clickAssociatedSupportGroupRightArrow(): Promise<void> {
         await $(this.selectors.associatedSupportGroup).click();
+    }
+
+    async clickAssociatedSupportGroupLeftArrow(): Promise<void> {
+        await $$(this.selectors.associatedSupportGroup).get(1).click();
     }
 
     async clickCancelAcknowledgementTemplate(): Promise<void> {
@@ -276,8 +290,73 @@ export class EditEmailConfig {
         return await $(this.selectors.addTrustedEmailBtn).isEnabled();
     }
 
+    async clickAddTrustedEmailBtn(): Promise<void> {
+        await $(this.selectors.addTrustedEmailBtn).click();
+    }
+
+    async clickNewTrustedEmailSaveBtn(): Promise<void> {
+        await $(this.selectors.newTrustedEmailSaveBtn).click();
+    }
+
+    async isNewTrustedEmailSaveBtnDisabled(): Promise<string> {
+      return  await $(this.selectors.newTrustedEmailSaveBtn).getAttribute("disabled");
+    }
+
+    async clickNewTrustedEmailCancelBtn(): Promise<void> {
+        await $(this.selectors.newTrustedEmailCancelBtn).click();
+    }
+
+    async setNewTrustedEmail(email: string): Promise<void> {
+        await $(this.selectors.newTrustedEmailId).sendKeys(email);
+    }
+
+    async selectMappedRequesterDropDown(email: string): Promise<void> {
+        await utilCommon.selectDropDown(this.selectors.newTrustedEmailMappedRequesterGuid, email);
+    }
+
+    async isNewTrustedEmailRequiredTextPresent(): Promise<boolean> {
+        return await utilCommon.isRequiredTagToField(this.selectors.newTrustedEmailIdGuid);
+    }
+
+    async isColumnPresentIn(header: string[]): Promise<boolean> {
+        return await utilGrid.areColumnHeaderMatches(this.selectors.acknowledgementTemplateGridGuid, header);
+    }
+
+    async isMappedRequesterRequiredTextPresent(): Promise<boolean> {
+        return await utilCommon.isRequiredTagToField(this.selectors.newTrustedEmailMappedRequesterGuid);
+    }
+
+    async isMappedRequesterDropDownPresent(email: string): Promise<void> {
+        await utilCommon.isValuePresentInDropDown(this.selectors.newTrustedEmailMappedRequesterGuid, email);
+    }
+
     async isBlockedEmailBtnEnabled(): Promise<boolean> {
         return await $(this.selectors.addBlockedEmail).isEnabled();
+    }
+
+    async selectAndClickCheckboxOnTrustedEmail(value:string): Promise<void> {
+        await utilGrid.searchAndSelectFirstCheckBox(this.selectors.trustedEmailConsoleGuid,value);
+    }
+
+    async isRecordPresentonTrustedEmail(value:string): Promise<boolean> {
+       return await utilGrid.isGridRecordPresent(this.selectors.trustedEmailConsoleGuid,value);
+    }
+
+    async clickEditTrustedEmailButtonOnTrustedEmail(): Promise<void> {
+        await $(this.selectors.editTrustedEmailButtonOnTrustedEmail).click();
+    }
+
+    async clickEditTrustedEmailSaveButtonOnTrustedEmail(): Promise<void> {
+        await $(this.selectors.editTrustedEmailSaveButton).click();
+    }
+
+    async clickEditTrustedEmailCancelButtonOnTrustedEmail(): Promise<void> {
+        await $(this.selectors.editTrustedEmailCancelButton).click();
+    }
+
+    async setEmailOnEditTrustedEmail(email: string): Promise<void> {
+        await $(this.selectors.setEmailidOnEditTrusted).clear();
+        await $(this.selectors.setEmailidOnEditTrusted).sendKeys(email);
     }
 
 }
