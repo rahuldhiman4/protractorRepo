@@ -16,6 +16,7 @@ class EditDataSourceConfigurationPage {
         advancedFieldValues: '.record-registration-form .d-textfield__label span',
         companyfieldValue: '.record-registration-form .d-textfield__label .ui-select-match-text',
         companyfield: '.record-registration-form .d-textfield__label .ui-select-toggle',
+        useEndTimeCheckbox: '.d-checkbox__input + .d-checkbox__item',
     }
 
     async getDataSourceConfigurationHeading(): Promise<string> {
@@ -99,6 +100,9 @@ class EditDataSourceConfigurationPage {
         await utilCommon.selectDropDownWithName(fieldName, fieldOption);
     }
 
+    async isUseEndTimeCheckboxAlreadySelected(): Promise<boolean> {
+        return await $(this.selectors.useEndTimeCheckbox).getAttribute("checked")  == "true" ? true : false;
+      }  
 
 }
 

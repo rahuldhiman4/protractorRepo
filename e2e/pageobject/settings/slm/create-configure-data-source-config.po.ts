@@ -82,6 +82,9 @@ class CreateDataSourceConfigurationPage {
         return await utilCommon.isDropDownOptionsMatches(fieldName, dropdownOptions, fieldValue);
     }
 
+    async isUseEndTimeCheckboxAlreadySelected(): Promise<boolean> {
+        return await $(this.selectors.useEndTimeCheckbox).getAttribute("checked")  == "true" ? true : false;
+      }  
 
 }
 
