@@ -45,7 +45,11 @@ class AddField {
     }
 
     async isAssocitionDisplayed(value: string): Promise<boolean> {
-        return await element(by.cssContainingText(this.selectors.parentFields, value)).isDisplayed();
+        return await element(by.cssContainingText(this.selectors.parentFields, value)).isPresent().then(async (result) => {
+            if (result) return await element(by.cssContainingText(this.selectors.parentFields, value)).isDisplayed();
+            else return false;
+        });
+
     }
 
     async clickOnAssocitionAndSelectField(association: string, fieldValue: string): Promise<void> {
@@ -79,6 +83,10 @@ class AddField {
 
     async clickOnOkButtonOfEditor(): Promise<void> {
         await $(this.selectors.okButtonOnEditor).click();
+    }
+
+    async clickOnCancelButtonOfEditor(): Promise<void> {
+        await $(this.selectors.cancelButtonOnEditor).click();
     }
 }
 

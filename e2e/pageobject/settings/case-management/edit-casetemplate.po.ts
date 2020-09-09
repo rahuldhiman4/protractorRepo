@@ -1,5 +1,5 @@
 import { ICaseTemplate } from 'e2e/data/ui/interface/caseTemplate.interface';
-import { $, $$, browser, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, browser, protractor, ProtractorExpectedConditions, element, by } from "protractor";
 import utilCommon from '../../../utils/util.common';
 
 class EditCaseTemplate {
@@ -47,7 +47,8 @@ class EditCaseTemplate {
         assignmentMethodValue: '[rx-view-component-id="9183824b-61c4-4a00-bcfa-7f4e7461e10c"] .ui-select-match-text',
         tier1ValueOnCaseTemplate: '[rx-view-component-id="241f0e58-3106-4f8a-a1cc-43554414bb7c"] .d-textfield__rx-value',
         tier2ValueOnCaseTemplate: '[rx-view-component-id="4f950be7-d968-41a4-8bb9-018674e53f88"] .d-textfield__rx-value',
-        tier3ValueOnCaseTemplate: '[rx-view-component-id="a7fbc4bc-23c6-4f92-818a-5554107d04c0"] .d-textfield__rx-value',
+        tier3ValueOnCaseTemplate: '[rx-view-component-id="a7fbc4bc-23c6-4f92-818a-5554107d04c0"] .ui-select-match-text',
+        tier4ValueOnCaseTemplate: '[rx-view-component-id="fbc0f516-1f57-44ad-82ab-f8bbbe1aa5f5"] .ui-select-match-text',
         summaryGuid: 'e3cb1a92-1e94-477d-93fa-b63b29c1c129',
         priorityGuid: 'c933ab70-9004-4347-9537-3ae65ec633b9',
         companyGuid: '39db6cc5-79ae-4934-a4bc-74765278fcda',
@@ -55,7 +56,8 @@ class EditCaseTemplate {
         caseStatusValue: '[rx-view-component-id="5289a531-7138-4e4f-afdc-ee3f67a2aa64"] .ui-select-toggle', 
         manageDynamicField: '[rx-view-component-id="3cd9b535-36f6-4718-bede-9154ca02ae22"] button',
         dynamicFieldsName:'[rx-view-component-id="3cd9b535-36f6-4718-bede-9154ca02ae22"] span',
-        caseStatus: '[rx-view-component-id="5289a531-7138-4e4f-afdc-ee3f67a2aa64"] .dropdown'
+        caseStatus: '[rx-view-component-id="5289a531-7138-4e4f-afdc-ee3f67a2aa64"] .dropdown',
+        labelValue : '[rx-view-component-id="06d4ad28-b48e-493a-b6b3-925fea737576"] .ui-select-match-text',
     }
 
     async clickOnCopyCaseTemplate(): Promise<void> {
@@ -132,6 +134,10 @@ class EditCaseTemplate {
     async getValueOfTier3(): Promise<string> {
 //        await browser.wait(this.EC.visibilityOf($(this.selectors.tier3ValueOnCaseTemplate)));
         return await $(this.selectors.tier3ValueOnCaseTemplate).getText();
+    }
+
+    async getValueOfTier4(): Promise<string> {
+    return await $(this.selectors.tier4ValueOnCaseTemplate).getText();
     }
 
     async changeCategoryTier1(tier1Value: string): Promise<void> {
@@ -341,6 +347,13 @@ class EditCaseTemplate {
 
     async isSaveMetadataBtnEnabled(): Promise<boolean> {
         return await $(this.selectors.saveTemplateMetaData).isEnabled();
+    }
+
+    async isCaseTemplateLabelValueDisplayed(labelName: string): Promise<boolean> {
+        return await element(by.cssContainingText(this.selectors.labelValue, labelName)).isPresent().then(async (result) => {
+            if (result) return await element(by.cssContainingText(this.selectors.labelValue, labelName)).isDisplayed();
+            else return false;
+        });
     }
 }
 

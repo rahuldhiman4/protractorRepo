@@ -26,6 +26,7 @@ class EditDocumentLibraryPage {
         categoryTier2: '[rx-view-component-id="400ac801-1c40-43c7-87c3-a21e1d5531e9"] .ui-select-toggle',
         categoryTier3: '[rx-view-component-id="6d35f3df-e3eb-4e6c-8ba8-ff0c683a9bb7"] .ui-select-toggle',
         categoryTier4: '[rx-view-component-id="a82103c1-077b-4bae-8ef5-69093da58be8"] .ui-select-toggle',
+        categorTier4Guid: 'a82103c1-077b-4bae-8ef5-69093da58be8',
         region: '[rx-view-component-id="836aa6d7-1d77-46b4-b270-50d7d25424ba"] .ui-select-toggle',
         regionGuid: '836aa6d7-1d77-46b4-b270-50d7d25424ba',
         site: '[rx-view-component-id="b22d4dc1-83b5-4b06-a2c0-10e3865fb46e"] .ui-select-toggle',
@@ -507,7 +508,9 @@ class EditDocumentLibraryPage {
         return await utilCommon.getSelectedFieldValue(fieldName);
     }
 
-
+    async getCategoryTier4(): Promise<string> {
+        return await $(`[rx-view-component-id="${this.selectors.categorTier4Guid}"] .ui-select-toggle`).getText();
+    }
 }
 
 export default new EditDocumentLibraryPage();
