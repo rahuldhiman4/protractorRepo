@@ -298,6 +298,10 @@ class CreateCasePage {
     async getCategoryTier4Value(): Promise<string> {
         return await $(this.selectors.categoryTier4Value).getText();
     }
+
+    async isSaveCaseButtonDisabled(): Promise<boolean> {
+        return await $(this.selectors.saveCaseButton).getAttribute("disabled") == "true";
+    }
 }
 
 export default new CreateCasePage();

@@ -438,5 +438,27 @@ export class GridOperation {
             (value, index) => (value === originalArray[index])
         );
     }
+
+    async isAllFilterValueMatches(expectedFilterValues: string[], guid?: string): Promise<boolean> {
+        await $(this.selectors.filterPreset).click();
+        let csslocator: string = undefined;
+        if (guid) csslocator = `[rx-view-component-id='${guid}'] ${this.selectors.filterItems}`;
+        else csslocator = this.selectors.filterItems;
+        let actualFilterValues = await element.all(by.css(csslocator))
+            .map(async function (filterItems) {
+                return await filterItems.getAttribute('innerText');
+            });
+        actualFilterValues.sort();
+        expectedFilterValues.sort();
+        return actualFilterValues.length === expectedFilterValues.length && actualFilterValues.every(
+            (value, index) => (value === expectedFilterValues[index])
+        );
+    }
+
+    async isEntireColumnContainsSameValue(columnHeader: string, value: string, guid: string): Promise<boolean> {
+        let allValues = await this.getAllValuesFromColoumn(guid, columnHeader);
+        const allEqual = arr => arr.every(v => v === arr[0]);
+        return allEqual(allValues) && allValues[0] === value;
+    }
 }
 export default new GridOperation();

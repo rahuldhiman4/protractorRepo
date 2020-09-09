@@ -27,4 +27,31 @@ export const NEW_PROCESS_LIB = {
             "value": "5a30545b15c828bf11139ffa453419200d69684e9d423ab2f3e869e6bb386507ee9ee24b1252f990cf587177918283e34694939025cd17154380ba49ce43f330"
         }
     }
-}
+};
+
+export const PROCESS_FLOWSET_MAPPING = {
+    "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
+    "recordDefinitionName": "com.bmc.dsm.flowsets-lib:Flowsets Process Mapping",
+    "fieldInstances": {
+        "7": {
+            "id": 7,
+            "value": 10
+        },
+        "8": {
+            "id": 8,
+            "value": "AGGADG1AAP0ICAOYYI8EOYBVLDIWPD"
+        },
+        "450000002": {
+            "id": 450000002,
+            "value": "AGGADGG8ECDC0AQ6B9G8Q5DJ2DQO7P"
+        },
+        "450000003": {
+            "id": 450000003,
+            "value": 70
+        },
+        "1000000001": {
+            "id": 1000000001,
+            "value": "- Global -"
+        }
+    }
+};

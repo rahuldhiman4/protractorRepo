@@ -72,8 +72,16 @@ class ConsoleProcessLibrary {
         return await utilGrid.isGridColumnSorted(columnHeader, 'ascending', this.selectors.registerProcessGuid);
     }
 
-    async clearSearcBox(): Promise<void> {
+    async clearSearchBox(): Promise<void> {
         await $(this.selectors.summaryField1).clear();
+    }
+
+    async isColumnContainsSameValue(columnName: string, value: string): Promise<boolean> {
+        return await utilGrid.isEntireColumnContainsSameValue(columnName, value, this.selectors.registerProcessGuid);
+    }
+
+    async getFirstValueOfColumn(columnName: string): Promise<string> {
+        return await utilGrid.getSelectedGridRecordValue(this.selectors.registerProcessGuid, columnName);
     }
 }
 
