@@ -121,3 +121,12 @@ export enum TaskFailConfiguration {
     'Do Not Proceed' = 1000,
     'Proceed With Next Task' = 2000
 };
+
+export enum FlowsetFunctions {
+    Initialization = 70,
+    'User Activity Feeds' = 80
+};
+
+export enum ProcessFlowsetMappingStatus {
+    Active = 10
+}

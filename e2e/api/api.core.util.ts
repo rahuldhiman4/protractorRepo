@@ -454,6 +454,14 @@ class ApiCoreUtil {
         );
         return processDetails.data['guid'];
     }
+
+    async getProcessRunCount(bundleName: string, processName: string): Promise<number> {
+        let uri = `api/rx/application/datapage?dataPageType=com.bmc.arsys.rx.application.process.datapage.ProcessInstanceDataPageQuery&pageSize=50&processDefinitionName=${bundleName}:${processName}&propertySelection=contextKey,instanceId,processDefinitionName,owner,startTime,endTime,status,isStartInstanceError&startIndex=0`;
+        const processRunDetails = await axios.get(
+            uri
+        );
+        return await processRunDetails.data.totalSize;
+    }
 }
 
 export default new ApiCoreUtil();

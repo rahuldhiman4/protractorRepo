@@ -12,10 +12,6 @@ class QuickCasePage {
         confirmedItemSelection: '.sr-preview-pane .sr-preview-item-header',
         caseTemplate: '.bwf-selectable-list-item .sr-template-name',
         gotoCaseButton: '[rx-view-component-id="529287cb-4d9d-4729-aa6c-5676980df72e"] button',
-        validateButton: '[rx-view-component-id="390a77cd-518e-4d67-abb4-bc4d410ce3df"] button',
-        pinValidateInput: '[rx-view-component-id="bfe9a8e0-26e7-43a5-9561-1c92539bdda3"] input',
-        pinOk: '[rx-view-component-id="ea1b7291-a0de-47d6-9239-cccf6b850a86"] button',
-        pinCancel: '[rx-view-component-id="e755e4ee-073c-4fbd-aad8-7f91a8f639e4"] button',
         quickCaseGuid: 'ac36dcad-30f0-4ab0-86a4-11fee7195051',
         smartSearchText: '.smart-recorder-highlightPerfectMatch',
         createCaseButton: '.d-inline-block [rx-view-component-id="8b88c054-4445-43e4-90f0-72f829571fd5"] button',
@@ -37,7 +33,6 @@ class QuickCasePage {
         recommendedCaseTemplateGuid: '[rx-view-component-id="b01aa3f3-0371-4b7e-a956-b1cf025927d6"]',
         recommendedKnowledgeGuid: '[rx-view-component-id="dceba6c7-a422-4937-8314-e7c6c1bc2ce1"]',
         dropdownSourceValue: '.dropdown-item span',
-        popUpMessage: 'button.d-icon-left-exclamation_triangle span',
     }
 
     async pinRecommendedCases(numberOfCases: number): Promise<void> {
@@ -162,12 +157,6 @@ class QuickCasePage {
         return success;
     }
 
-    async validatePin(pinValue: string): Promise<void> {
-        await $(this.selectors.validateButton).click();
-        await $(this.selectors.pinValidateInput).sendKeys(pinValue);
-        await $(this.selectors.pinOk).click();
-    }
-
     async getDescriptionDetails(): Promise<string> {
         return await browser.element(by.css(this.selectors.descriptionText)).getText();
     }
@@ -265,17 +254,6 @@ class QuickCasePage {
             }
         }
         return success;
-    }
-
-    async isIdentityValidationMessageDisplayed(messageValue: string): Promise<boolean> {
-        return await element(by.cssContainingText(this.selectors.popUpMessage, messageValue)).isPresent().then(async (result) => {
-            if(result) return await element(by.cssContainingText(this.selectors.popUpMessage, messageValue)).isDisplayed();
-            else return false;
-        })
-    }
-    
-    async clickOnPINCancelBtn(): Promise<void> {
-        await $(this.selectors.pinCancel).click();
     }
 }
 export default new QuickCasePage();

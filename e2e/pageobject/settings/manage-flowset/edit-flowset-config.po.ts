@@ -14,6 +14,7 @@ class EditFlowsetPage {
         flowsetName: '[rx-view-component-id="4304c07c-602a-4a07-b05b-0406aa6747be"] input',
         descriptionField: '[rx-view-component-id="a825a900-6197-430c-ae9e-197291a6ff01"] textarea',
         statusGuid: '046e725c-0b9a-440d-9c96-77a730cf23f3',
+        processStatusGuid: 'b48823c7-8eb0-4b30-bd9a-b44e53fcc195',
         status: '[rx-view-component-id="046e725c-0b9a-440d-9c96-77a730cf23f3"] .ui-select-toggle',
         addAssociateCategoryBtn: '[rx-view-component-id="88810c80-2be6-4052-bd3c-40dbc782f046"] button',
         saveButton: '[rx-view-component-id="ec655846-3db8-4072-beef-2dab6438e0e3"] button',
@@ -83,6 +84,10 @@ class EditFlowsetPage {
 
     async selectStatus(status: string): Promise<void> {
         await utilCommon.selectDropDown(this.selectors.statusGuid, status);
+    }
+
+    async selectProcessStatus(status: string): Promise<void> {
+        await utilCommon.selectDropDown(this.selectors.processStatusGuid, status);
     }
 
     async selectProcessExecutionType(process: string): Promise<void> {

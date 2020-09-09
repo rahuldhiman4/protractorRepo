@@ -609,4 +609,45 @@ describe('Email Configuration', () => {
             expect(await editEmailConfigPo.isAcknowledgementPresentnDropDown('GlobaltemplateName' + randomStr)).toBeTruthy();
         });
     });
+
+
+    describe('[DRDMV-13584]: Email - UI validation of Add/Edit Email Sender Mapping views', async () => {
+        let trustedMail: string = "test@abc.com"
+        it('[DRDMV-13584]: Email - UI validation of Add/Edit Email Sender Mapping views', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
+            await utilGrid.searchAndOpenHyperlink(emailID);
+            await editEmailConfigPo.selectTab("Trusted Email");
+            await editEmailConfigPo.clickAddTrustedEmailBtn();
+            expect(await editEmailConfigPo.isMappedRequesterRequiredTextPresent()).toBeTruthy();
+            expect(await editEmailConfigPo.isNewTrustedEmailRequiredTextPresent()).toBeTruthy();
+            await editEmailConfigPo.setNewTrustedEmail(trustedMail);
+            expect(await editEmailConfigPo.isNewTrustedEmailSaveBtnDisabled()).toBeTruthy();
+            expect(await editEmailConfigPo.isMappedRequesterDropDownPresent("Barney")).toBeFalsy();
+            expect(await editEmailConfigPo.isMappedRequesterDropDownPresent("Thorn")).toBeFalsy();
+            expect(await editEmailConfigPo.isMappedRequesterDropDownPresent("Ochoa")).toBeTruthy();
+            await editEmailConfigPo.selectMappedRequesterDropDown("Adam Pavlik");
+            await editEmailConfigPo.clickNewTrustedEmailCancelBtn();
+            await utilCommon.clickOnWarningCancel();
+            await editEmailConfigPo.clickNewTrustedEmailCancelBtn();
+            await utilCommon.clickOnWarningOk();
+        });
+        it('[DRDMV-13584]: Email - UI validation of Add/Edit Email Sender Mapping views', async () => {
+            await editEmailConfigPo.clickAddTrustedEmailBtn();
+            await editEmailConfigPo.setNewTrustedEmail(trustedMail);
+            await editEmailConfigPo.selectMappedRequesterDropDown("Adam Pavlik");
+            await editEmailConfigPo.clickNewTrustedEmailSaveBtn();
+            await editEmailConfigPo.selectAndClickCheckboxOnTrustedEmail(trustedMail);
+            await editEmailConfigPo.clickEditTrustedEmailButtonOnTrustedEmail();
+            await editEmailConfigPo.setEmailOnEditTrustedEmail("Test@xyz.com");
+            await editEmailConfigPo.clickEditTrustedEmailCancelButtonOnTrustedEmail();
+            await utilCommon.clickOnWarningCancel();
+            await editEmailConfigPo.clickEditTrustedEmailCancelButtonOnTrustedEmail();
+            await utilCommon.clickOnWarningOk();
+            await editEmailConfigPo.clickEditTrustedEmailButtonOnTrustedEmail();
+            await editEmailConfigPo.setEmailOnEditTrustedEmail("Test@xyz.com");
+            await editEmailConfigPo.clickEditTrustedEmailSaveButtonOnTrustedEmail();
+            expect(await editEmailConfigPo.isRecordPresentonTrustedEmail("Test@xyz.com")).toBeTruthy();
+        });
+    });
 });
