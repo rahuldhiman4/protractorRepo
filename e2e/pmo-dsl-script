@@ -1,7 +1,7 @@
-import groovy.json.JsonSlurper;
-
 def viewName = "Helix BWF";
-def extn = "${EXTN}";
+def type = "${EXTN}";
+def extn = "_UI";
+if(type == "API") extn = "_API";
 def jsonFileContent = readFileFromWorkspace("${JSON}");
 def componentObj = new JsonSlurper().parseText(jsonFileContent);
 def components = componentObj.keySet();
@@ -51,8 +51,6 @@ components.each {
 //----------------
 	queue(it + extn)
 }
-
-def reg = '.*' + extn;
 
 buildMonitorView(viewName) {
     description('All jobs for PMO dashboard')
