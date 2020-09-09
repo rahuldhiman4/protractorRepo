@@ -223,12 +223,14 @@ describe('Document Template', () => {
 
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
-            await apiHelper.apiLogin('qkatawazi');
 
+            await apiHelper.apiLogin('qkatawazi');
             caseTemplateData.templateName = caseTempateName1;
             let newCaseTemplate1 = await apiHelper.createCaseTemplate(caseTemplateData);
+
             caseTemplateData.templateName = caseTempateName2;
             let newCaseTemplate2 = await apiHelper.createCaseTemplate(caseTemplateData);
+
             caseTemplateData.templateName = caseTempateName3;
             await apiHelper.createCaseTemplate(caseTemplateData);
 
@@ -321,7 +323,7 @@ describe('Document Template', () => {
             await utilCommon.clickOnWarningOk();
         });
 
-        it('[14973]: Verify Document Template With Case Template Dynamic Field  ', async () => {
+        it('[14973]: Verify Document Template With Add Case Template Dynamic Field  ', async () => {
             await createDocumentTemplatePo.clickOnAddTemplate();
             await createDocumentTemplatePo.setTemplateName(documentName2);
             await createDocumentTemplatePo.setCompany("Petramco");
