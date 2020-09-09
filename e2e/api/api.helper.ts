@@ -15,7 +15,7 @@ import { CASE_STATUS_CHANGE, UPDATE_CASE, UPDATE_CASE_ASSIGNMENT } from '../data
 import { COGNITIVE_CATEGORY_DATASET, COGNITIVE_CATEGORY_DATASET_MAPPING, COGNITIVE_LICENSE, COGNITIVE_TEMPLATE_DATASET, COGNITIVE_TEMPLATE_DATASET_MAPPING } from '../data/api/cognitive/cognitive.config.api';
 import { EMAILCONFIG_DEFAULT, INCOMINGMAIL_DEFAULT, OUTGOINGEMAIL_DEFAULT } from '../data/api/email/email.configuration.data.api';
 import { EMAIL_WHITELIST } from '../data/api/email/email.whitelist.data.api';
-import { NEW_PROCESS_LIB } from '../data/api/flowset/create-process-lib';
+import { NEW_PROCESS_LIB, PROCESS_FLOWSET_MAPPING } from '../data/api/flowset/create-process-lib';
 import { UPDATE_PERSON, UPDATE_SUPPORT_GROUP, UPDATE_ORGANIZATION } from '../data/api/foundation/update-foundation-entity.data.api';
 import { IBusinessUnit } from '../data/api/interface/business.unit.interface.api';
 import { ICaseAssignmentMapping } from "../data/api/interface/case.assignment.mapping.interface.api";
@@ -25,7 +25,7 @@ import { IDepartment } from '../data/api/interface/department.interface.api';
 import { IDocumentLib } from '../data/api/interface/doc.lib.interface.api';
 import { IDomainTag } from '../data/api/interface/domain.tag.interface.api';
 import { IEmailTemplate } from '../data/api/interface/email.template.interface.api';
-import { IFlowset, IProcessLibConfig } from '../data/api/interface/flowset.interface.api';
+import { IFlowset, IProcessLibConfig, IProcessFlowsetMapping } from '../data/api/interface/flowset.interface.api';
 import { IFoundationEntity, IPerson } from '../data/api/interface/foundation-entity-attributes.api';
 import { IKnowledgeSet } from '../data/api/interface/knowledge-set.interface.api';
 import { IknowledgeSetPermissions } from '../data/api/interface/knowledge-set.permissions.interface.api';
@@ -57,6 +57,7 @@ import * as DYNAMIC from '../data/api/ticketing/dynamic.data.api';
 import { NEW_USER, ENABLE_USER } from '../data/api/foundation/create-foundation-entity.api';
 import { CASE_ASSIGNMENT_PAYLOAD } from '../data/api/case/case.config.api';
 import * as actionableNotificationPayloads from '../data/api/notification/actionable.notification.supporting.api';
+import * as processes from '../data/api/shared-services/create-new-process.api';
 
 let fs = require('fs');
 
@@ -406,6 +407,13 @@ class ApiHelper {
             templateData.fieldInstances["450000162"] = resolutionCodeObj;
         }
 
+        if (data.flowset) {
+            let flowset = {
+                "id": "450000121",
+                "value": `${data.flowset}`
+            }
+            templateData.fieldInstances["450000121"] = flowset;
+        }
 
         if (data.resolutionDescription) {
             let resolutionDescriptionObj = {
@@ -3131,6 +3139,41 @@ class ApiHelper {
             console.log(`Task Template: ${taskTemplateName} deletion status ==> ${status}`);
             return status;
         } else console.log('Task Template GUID not found =============>', taskTemplateName);
+    }
+
+    async createProcess(processName: string, processStructure: string): Promise<boolean> {
+        let processPayload = undefined;
+        switch (processStructure) {
+            case "AGENT_ORIGIN": {
+                processPayload = cloneDeep(processes.AGENT_ORIGIN);
+                break;
+            }
+            case "EMAIL_ORIGIN": {
+                processPayload = cloneDeep(processes.EMAIL_ORIGIN);
+                break;
+            }
+            default: {
+                console.log("ERROR: Invalid Process Structure");
+                break;
+            }
+        }
+        processPayload.name = processPayload.name + processName;
+        let processGuid = await apiCoreUtil.createProcess(processPayload);
+        console.log('Create Process API status =============> ', processGuid.length > 0);
+        return processGuid.length > 0;
+    }
+
+    async mapProcessToFlowset(mappingData: IProcessFlowsetMapping): Promise<boolean> {
+        let mappingPayload = cloneDeep(PROCESS_FLOWSET_MAPPING);
+        mappingPayload.fieldInstances[7].value = constants.ProcessFlowsetMappingStatus[mappingData.status];
+        mappingPayload.fieldInstances[8].value = mappingData.registeredProcessId;
+        mappingPayload.fieldInstances[450000002].value = mappingData.flowsetId;
+        mappingPayload.fieldInstances[450000003].value = constants.FlowsetFunctions[mappingData.function];
+        mappingPayload.fieldInstances[1000000001].value = mappingData.company ? await apiCoreUtil.getOrganizationGuid(mappingData.company) : mappingPayload.fieldInstances[1000000001].value;
+        
+        let mappingResponse: AxiosResponse = await apiCoreUtil.createRecordInstance(mappingPayload);
+        console.log('Process Flowset Mapping status =============> ', mappingResponse.status);
+        return mappingResponse.status == 201;
     }
 
     async updateCaseTemplateIdentitiyValidation(caseTemplateGuid: string, optionValue: string): Promise<number> {
