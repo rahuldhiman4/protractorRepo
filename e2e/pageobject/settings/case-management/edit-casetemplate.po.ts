@@ -1,5 +1,5 @@
 import { ICaseTemplate } from 'e2e/data/ui/interface/caseTemplate.interface';
-import { $, $$, browser, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, browser, protractor, ProtractorExpectedConditions, element, by } from "protractor";
 import utilCommon from '../../../utils/util.common';
 
 class EditCaseTemplate {
@@ -56,7 +56,8 @@ class EditCaseTemplate {
         caseStatusValue: '[rx-view-component-id="5289a531-7138-4e4f-afdc-ee3f67a2aa64"] .ui-select-toggle', 
         manageDynamicField: '[rx-view-component-id="3cd9b535-36f6-4718-bede-9154ca02ae22"] button',
         dynamicFieldsName:'[rx-view-component-id="3cd9b535-36f6-4718-bede-9154ca02ae22"] span',
-        caseStatus: '[rx-view-component-id="5289a531-7138-4e4f-afdc-ee3f67a2aa64"] .dropdown'
+        caseStatus: '[rx-view-component-id="5289a531-7138-4e4f-afdc-ee3f67a2aa64"] .dropdown',
+        labelValue : '[rx-view-component-id="06d4ad28-b48e-493a-b6b3-925fea737576"] .ui-select-match-text',
     }
 
     async clickOnCopyCaseTemplate(): Promise<void> {
@@ -346,6 +347,13 @@ class EditCaseTemplate {
 
     async isSaveMetadataBtnEnabled(): Promise<boolean> {
         return await $(this.selectors.saveTemplateMetaData).isEnabled();
+    }
+
+    async isCaseTemplateLabelValueDisplayed(labelName: string): Promise<boolean> {
+        return await element(by.cssContainingText(this.selectors.labelValue, labelName)).isPresent().then(async (result) => {
+            if (result) return await element(by.cssContainingText(this.selectors.labelValue, labelName)).isDisplayed();
+            else return false;
+        });
     }
 }
 

@@ -544,13 +544,19 @@ describe("Attachment", () => {
         let categName2 = 'DemoCateg2';
         let categName3 = 'DemoCateg3';
         let categName4 = 'DemoCateg4';
+        let label = 'labelDRDMV15252'+randomStr;
         let summary= 'summaryDRDMV15252'+randomStr;
         let title= 'titleDRDMV15252'+randomStr;
 
         beforeAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
-
+            // Create Label
+            await apiHelper.apiLogin('qkatawazi');
+            let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
+            menuItemDataFile['sampleMenuItem'].menuItemName = label;
+            await apiHelper.createNewMenuItem(menuItemDataFile['sampleMenuItem']);
+            
             await apiHelper.apiLogin('tadmin');
             await apiHelper.createOperationalCategory(categName1);
             await apiHelper.createOperationalCategory(categName2);
@@ -566,6 +572,7 @@ describe("Attachment", () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('adam');
             await createCasePo.setSummary(summary);
+            await createCasePo.setLabel(label);
             await createCasePo.selectCategoryTier1(categName1);
             await createCasePo.selectCategoryTier2(categName2);
             await createCasePo.selectCategoryTier3(categName3);
@@ -573,9 +580,11 @@ describe("Attachment", () => {
             await createCasePo.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             expect (await viewCasePo.getCategoryTier4Value()).toBe(categName4,'FailureMsg1: CategoryTier4 is displayed');
+            expect (await viewCasePo.getlabel()).toBe(label,'FailureMsg2: Label is displayed');
             // Verify CategoryTier4 on Edit Case
             await viewCasePo.clickEditCaseButton();
-            expect (await editCasePo.getCategoryTier4()).toBe(categName4,'FailureMsg2: CategoryTier4 is displayed');
+            expect (await editCasePo.getCategoryTier4()).toBe(categName4,'FailureMsg3: CategoryTier4 is displayed');
+            expect (await editCasePo.isCaseLabelValueDisplayed(label)).toBeTruthy('FailureMsg2: Case Label is missing');
             await editCasePo.clickOnCancelCaseButton();
         });
 
@@ -584,12 +593,20 @@ describe("Attachment", () => {
             await manageTask.clickAddAdhocTaskButton();
             await adhoctaskTemplate.setSummary(summary);
             await adhoctaskTemplate.setDescription("Description");
+            await adhoctaskTemplate.selectCategoryTier1(categName1);
+            await adhoctaskTemplate.selectCategoryTier2(categName2);
+            await adhoctaskTemplate.selectCategoryTier3(categName3);
+            await adhoctaskTemplate.selectCategoryTier4(categName4);
+            await adhoctaskTemplate.selectLabel(label);
             expect (await adhoctaskTemplate.getCategoryTier4()).toBe(categName4,'FailureMsg3: CategoryTier4 is displayed');
             await adhoctaskTemplate.clickSaveAdhoctask();
             await manageTask.clickTaskLink(summary);
             expect (await viewTaskPo.getCategoryTier4Value()).toBe(categName4,'FailureMsg5: CategoryTier4 is displayed');
+            expect (await viewTaskPo.getLabelValue()).toContain(label,'FailureMsg5: label is displayed');
+
             await viewTaskPo.clickOnEditTask();
             expect (await editTaskPo.getTaskCategoryTier4()).toBe(categName4,'FailureMsg6: CategoryTier4 is displayed');
+            expect (await editTaskPo.isTaskLabelValueDisplayed(label)).toBeTruthy('FailureMsg5: Task label is displayed');
             await editTaskPo.clickOnCancelButton();
         });
 
@@ -601,15 +618,19 @@ describe("Attachment", () => {
             await createCasetemplatePo.setTemplateName(title);
             await createCasetemplatePo.setCompanyName('Petramco');
             await createCasetemplatePo.setCaseSummary(summary);
+            await createCasetemplatePo.setLabelValue(label);
             await createCasetemplatePo.setCategoryTier1(categName1);
             await createCasetemplatePo.setCategoryTier2(categName2);
             await createCasetemplatePo.setCategoryTier3(categName3);
             await createCasetemplatePo.setCategoryTier4(categName4);
+            
             await createCasetemplatePo.clickSaveCaseTemplate();
             
             expect (await viewCasetemplatePo.getCategoryTier4()).toBe(categName4,'FailureMsg7: CategoryTier4 is displayed');
+            expect (await viewCasetemplatePo.getLabelValue()).toBe(label,'FailureMsg7: Label is displayed');
             await viewCasetemplatePo.clickOnEditCaseTemplateButton();
             expect (await editCasetemplatePo.getValueOfTier4()).toBe(categName4,'FailureMsg6: CategoryTier4 is displayed');
+            expect (await editCasetemplatePo.isCaseTemplateLabelValueDisplayed(label)).toBeTruthy('FailureMsg6: label is missing');
             await editCasetemplatePo.clickOnCancelButton();
             await utilCommon.clickOnWarningOk();
         });
@@ -624,6 +645,7 @@ describe("Attachment", () => {
             await createAssignmentsConfigPo.setCategoryTier2(categName2);
             await createAssignmentsConfigPo.setCategoryTier3(categName3);
             await createAssignmentsConfigPo.setCategoryTier4(categName4);
+            await createAssignmentsConfigPo.setLabel(label);
             await createAssignmentsConfigPo.setSupportCompany("Petramco");
             await createAssignmentsConfigPo.setBusinessUnit('Canada Support');
             await createAssignmentsConfigPo.setSupportGroup("CA Support 1");
@@ -631,6 +653,8 @@ describe("Attachment", () => {
 
             await assignmentsConfigConsolePo.searchAndClickOnAssignmentConfig(title);
             expect (await editAssignmentsConfigPo.getCategoryTier4()).toBe(categName4,'FailureMsg8: CategoryTier4 is displayed');
+            expect (await editAssignmentsConfigPo.isLabelValueDisplayed(label)).toBeTruthy('FailureMsg6: label is missing');
+
             await editAssignmentsConfigPo.clickOnCancelButton();
         });
 
@@ -647,9 +671,11 @@ describe("Attachment", () => {
             await addReadAccess.selectCategoryTier2(categName2);
             await addReadAccess.selectCategoryTier3(categName3);
             await addReadAccess.selectCategoryTier4(categName4);
+            await addReadAccess.selectLabel(label);
             await addReadAccess.clickOnSave();
             await utilGrid.searchAndOpenHyperlink(title);
             expect (await editReadAccess.getCategoryTier4()).toBe(categName4,'FailureMsg8: CategoryTier4 is displayed');
+            expect (await editReadAccess.isLabelValueDisplayed(label)).toBeTruthy('FailureMsg6: label is missing');
             await editReadAccess.clickOnCancel();
         });
 
@@ -694,6 +720,8 @@ describe("Attachment", () => {
         await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
         await serviceTargetConfig.createServiceTargetConfig('SVT with all fields', 'Petramco', 'Case Management');
         await slmExpressionBuilder.selectFields('category Tier 4');
+        await slmExpressionBuilder.clearSearchField();
+        await slmExpressionBuilder.selectFields('Label');
         });
 
         it('[DRDMV-15252]: Verify Category Tier 4 With Approval Configuration ', async () => {
@@ -714,13 +742,19 @@ describe("Attachment", () => {
             expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Create New Approval Flow');
             await browser.sleep(3000); // sleep added for expression builder loading time
             await approvalConfigurationPage.searchExpressionFieldOption('Category Tier 4');
-
+            
             await approvalConfigurationPage.clickRecordOption('Record Definition');
             await approvalConfigurationPage.clickRecordOption('Case');
+            
             await browser.sleep(2000); // sleep added for expression builder loading time
             await approvalConfigurationPage.selectExpressionFieldOption();
             await browser.sleep(2000); // sleep added for expression builder loading time
             await approvalConfigurationPage.selectExpressionOperator('=');
+            
+            await approvalConfigurationPage.searchExpressionFieldOption('LABEL_ID');
+            await browser.sleep(2000); // sleep added for expression builder loading time
+            await approvalConfigurationPage.selectExpressionFieldOption();
+            await browser.sleep(2000); // sleep added for expression builder loading time
         });
 
         it('[DRDMV-15252]: Verify Category Tier 4 With Task Template ', async () => {
@@ -729,15 +763,19 @@ describe("Attachment", () => {
             await selectTaskTemplate.clickOnManualTaskTemplateButton();
             await createTasktemplatePo.setTemplateName(title);
             await createTasktemplatePo.setTaskSummary(summary);
+            await createTasktemplatePo.selectCompanyByName('Petramco');
             await createTasktemplatePo.selectTaskCategoryTier1(categName1);
             await createTasktemplatePo.selectTaskCategoryTier2(categName2);
             await createTasktemplatePo.selectTaskCategoryTier3(categName3);
             await createTasktemplatePo.selectTaskCategoryTier4(categName4);
-            await createTasktemplatePo.selectCompanyByName('Petramco');
+            await createTasktemplatePo.selectLabel(label);
             await createTasktemplatePo.clickOnSaveTaskTemplate();
             expect (await viewTasktemplatePo.getCategoryTier4Value()).toBe(categName4,'FailureMsg7: CategoryTier4 is displayed');
+            expect (await viewTasktemplatePo.getLabelValue()).toBe(label,'FailureMsg7: label is displayed');
             await viewTasktemplatePo.clickOnEditLink();
             expect (await editTasktemplatePo.getTaskCategoryTier4()).toBe(categName4,'FailureMsg8: CategoryTier4 is displayed');
+            expect (await editTasktemplatePo.getLabelValue()).toBe(label,'FailureMsg8: label is displayed');
+
             await navigationPage.gotoCaseConsole();
         });
         afterAll(async () => {

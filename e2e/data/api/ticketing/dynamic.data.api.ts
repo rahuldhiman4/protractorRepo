@@ -1455,6 +1455,52 @@ export const hiddenField = {
     }
     ]
 };
+
+export const AllDataType = {
+    "name": "case template",
+    "templateRecordDefinition": "com.bmc.dsm.task-lib:Task Template",
+    "templateId": "nnn",
+    "attributeDefinitions": [{
+        "name": "requiredFieldTrue",
+        "description": "requiredTrueFieldDescription",
+        "dataType": "TEXT",
+        "required": true,
+        "confidential": false,
+        "dataProviderUserRole": "Agent",
+        "dataProviderApplication": "",
+        "active": true,
+        "attachmentGroupId": null,
+        "type": "SIMPLE_FIELD",
+        "hidden": false
+    },
+    {
+        "name": "confidentialFieldTrue",
+        "description": "confidentialTrueFieldDescription",
+        "dataType": "TEXT",
+        "required": false,
+        "confidential": true,
+        "dataProviderUserRole": "Agent",
+        "dataProviderApplication": "",
+        "active": true,
+        "attachmentGroupId": null,
+        "type": "SIMPLE_FIELD",
+        "hidden": false
+    },
+    {
+        "name": "hiddenFieldTrue",
+        "description": "hiddenTrueFieldDescription",
+        "dataType": "TEXT",
+        "required": false,
+        "confidential": false,
+        "dataProviderUserRole": "Agent",
+        "dataProviderApplication": "",
+        "active": true,
+        "attachmentGroupId": null,
+        "type": "SIMPLE_FIELD",
+        "hidden": true
+    }]
+};
+
 export const DuplicateOFhiddenFieldDRDMV21418 = {
     "name": "case template",
     "templateRecordDefinition": "com.bmc.dsm.task-lib:Task Template",
@@ -1471,8 +1517,7 @@ export const DuplicateOFhiddenFieldDRDMV21418 = {
         "attachmentGroupId": null,
         "type": "SIMPLE_FIELD",
         "hidden": false
-    }
-    ]
+    }]
 };
 export const UnhiddenField = {
     "name": "Not Applicable",

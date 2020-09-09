@@ -27,6 +27,7 @@ class CaseEditPage {
         categoryTier2Drpbox: '[rx-view-component-id="7beae951-8345-4f97-9cac-48933083928f"] adapt-select',
         categoryTier3Drpbox: '[rx-view-component-id="68d56b74-b9ad-444e-8dfc-ddec1e16897f"] adapt-select',
         labelGuid: 'd9b7ead5-02e4-4af4-b87e-9103439922b7',
+        caseLabel: '[rx-view-component-id="d9b7ead5-02e4-4af4-b87e-9103439922b7"] .btn-secondary',
         siteGuid: '664af3b6-dde6-47a7-84f9-4a5ad721e993',
         clearSiteField: '[rx-view-component-id="664af3b6-dde6-47a7-84f9-4a5ad721e993"] .btn-secondary',
         resolutionCodeGuid: '32eeffe4-f5c1-4fc8-9c91-25946cc86d66',
@@ -131,6 +132,13 @@ class CaseEditPage {
 
     async updateLabel(label: string): Promise<void> {
         await utilityCommon.selectDropDown(this.selectors.labelGuid, label);
+    }
+    
+    async isCaseLabelValueDisplayed(labelName: string): Promise<boolean> {
+    return await element(by.cssContainingText(this.selectors.caseLabel, labelName)).isPresent().then(async (result) => {
+        if (result) return await element(by.cssContainingText(this.selectors.caseLabel, labelName)).isDisplayed();
+        else return false;
+    });
     }
 
     async updateCaseSite(caseSite: string): Promise<void> {

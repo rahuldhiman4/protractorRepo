@@ -1,4 +1,4 @@
-import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, browser, protractor, ProtractorExpectedConditions} from "protractor";
 import utilCommon from '../../../utils/util.common'
 class AddReadAccessConfigurationPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -25,6 +25,7 @@ class AddReadAccessConfigurationPage {
         categoryTier2Guid: '0bdb722f-3fcd-48d4-b10c-29712ed2cd86',
         categoryTier3Guid: '78f414cd-19df-4457-a2dc-cf226371eac3',
         categoryTier4Guid: '899d8ac7-85a0-4337-8435-da69fd1b81ac',
+        labelGuid: '44afa82c-ebbf-4818-8224-2818a8f46404',
     }
 
     async setReadAccessConfigurationName(accessmapping:string): Promise<void> {
@@ -154,5 +155,10 @@ class AddReadAccessConfigurationPage {
    async isUseAsDefaultFieldMandatory(): Promise<boolean> {
       return await utilCommon.isRequiredTagToField(this.selectors.companyGuid);
    }
+
+   async selectLabel(label:string): Promise<void> {
+      await utilCommon.selectDropDown(this.selectors.labelGuid, label);
+   }
+
 }
 export default new AddReadAccessConfigurationPage

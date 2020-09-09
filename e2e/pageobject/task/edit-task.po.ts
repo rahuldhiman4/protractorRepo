@@ -41,6 +41,7 @@ class EditTask {
         assignedGroupRequiredText: '60b50604-dfc9-42ef-9688-1db148b00809',
         priorityRequiredText: 'e638927a-e1e1-46e7-bfe3-8fe9904a5c5a',
         taskTypeRequiredText: '057f2521-313b-40c9-be56-829827512abf',
+        taskLabel: '[rx-view-component-id="4c2784af-c080-4630-8f16-d9e6b07e87a2"] .btn-secondary',
     }
 
     async isAutomatedTaskTypeDisabled(): Promise<boolean> {
@@ -270,6 +271,14 @@ class EditTask {
     async getTaskCategoryTier4(): Promise<string> {
         return await $(`[rx-view-component-id="${this.selectors.categoryTier4}"] button`).getText();
     }
+
+    async isTaskLabelValueDisplayed(labelName: string): Promise<boolean> {
+        return await element(by.cssContainingText(this.selectors.taskLabel, labelName)).isPresent().then(async (result) => {
+            if (result) return await element(by.cssContainingText(this.selectors.taskLabel, labelName)).isDisplayed();
+            else return false;
+        });
+    }
+    
 }
 
 export default new EditTask();

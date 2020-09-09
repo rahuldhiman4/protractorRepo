@@ -31,7 +31,8 @@ class EditTaskTemplate {
         taskTypeValueDisabled: '[rx-view-component-id="cee6d303-5db9-4b3a-98e1-3096ffebf363"] span.btn-default',
         processNameValue: '[rx-view-component-id="534ab8af-7e9d-49a9-8cab-c3ab1aa38c91"] input',
         taskDescription: 'b9b752cf-8cef-4598-9a8d-85748b13f0d7',
-        templateStatus: '[rx-view-component-id="279fd957-576d-4428-b503-a1330cbd9498"] .dropdown'
+        templateStatus: '[rx-view-component-id="279fd957-576d-4428-b503-a1330cbd9498"] .dropdown',
+        labelValue: '[rx-view-component-id="11b0e7ec-10f6-4ecf-a69f-b513d68fa45d"] .ui-select-match-text'
     }
 
     async selectPriorityValue(priority: string): Promise<void> {
@@ -64,6 +65,10 @@ class EditTaskTemplate {
 
     async selectLabel(label: string): Promise<void> {
         await utilCommon.selectDropDown(this.selectors.label, label);
+    }
+
+    async getLabelValue(): Promise<string> {
+        return await $(this.selectors.labelValue).getText();
     }
 
     async selectTaskCompany(company: string): Promise<void> {
