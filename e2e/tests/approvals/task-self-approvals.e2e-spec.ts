@@ -600,6 +600,9 @@ describe("Task Self Approval Tests", () => {
             await viewCasePo.openTaskCard(1);
             manualTaskDisplayId = await manageTask.getTaskDisplayIdFromManageTaskBlade();
             await manageTask.clickTaskLink(taskData.taskName);
+            let taskId = await viewTask.getTaskID();
+            await navigationPage.gotoTaskConsole();
+            await utilityGrid.searchAndOpenHyperlink(taskId);
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
             expect(await viewTask.isShowApproversBannerDisplayed()).toBeTruthy('Show Approvers Banner is not displayed');
         });

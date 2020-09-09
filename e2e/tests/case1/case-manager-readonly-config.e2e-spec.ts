@@ -423,8 +423,23 @@ describe('Case Manager Read-only Config', () => {
     });
 
     it('[DRDMV-18171]: Check Case manager is not able to perform Create Update Delete operation on Service Target Group', async () => {
-        let svtGrpName = 'DRDMV-18171' + [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let svtGrpName = 'DRDMV-18171' + randomStr;
         await apiHelper.apiLogin('qkatawazi');
+        const svtData = {
+            "terms": "'1000000063'=\"cb500f4763edeb302d4644e2d5cf22372543dedda74717135ffc927758066570c1a59648f541d5392790876c312fcf2a0501a76d13290562cce65a69c48e7356\"",
+            "readableTerms": "'Company'=\"Petramco\"",
+            "startWhen": "'450000021'=\"5000\"",
+            "readableStartWhen": "'Status'=\"Resolved\"",
+            "stopWhen": "'450000021'=\"7000\"",
+            "readableStopWhen": "'Status'=\"Closed\"",
+            "goalTimeMinutes": "4",
+            "dataSource": "Case Management",
+            "company": "Petramco",
+            "svtName": "DRDMV-18171"
+        }
+        svtData.svtName = "DRDMV-18170" + randomStr;
+        await apiHelper.createSVT(svtData);
         await apiHelper.createServiceTargetGroup(svtGrpName, 'Case Management');
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target Group', 'Service Target Group - Administration - Business Workflows');
