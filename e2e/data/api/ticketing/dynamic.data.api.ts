@@ -1456,7 +1456,7 @@ export const hiddenField = {
     ]
 };
 
-export const AllDataType = {
+export const ALL_DATA_TYPE = {
     "name": "case template",
     "templateRecordDefinition": "com.bmc.dsm.task-lib:Task Template",
     "templateId": "nnn",
