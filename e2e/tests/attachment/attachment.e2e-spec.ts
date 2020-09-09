@@ -593,12 +593,11 @@ describe("Attachment", () => {
             await manageTask.clickAddAdhocTaskButton();
             await adhoctaskTemplate.setSummary(summary);
             await adhoctaskTemplate.setDescription("Description");
-            await adhoctaskTemplate.selectCategoryTier1(categName1);
-            await adhoctaskTemplate.selectCategoryTier2(categName2);
-            await adhoctaskTemplate.selectCategoryTier3(categName3);
-            await adhoctaskTemplate.selectCategoryTier4(categName4);
             await adhoctaskTemplate.selectLabel(label);
-            expect (await adhoctaskTemplate.getCategoryTier4()).toBe(categName4,'FailureMsg3: CategoryTier4 is displayed');
+            expect (await adhoctaskTemplate.getCategoryTier1()).toBe(categName1,'FailureMsg1: CategoryTier1 is displayed');
+            expect (await adhoctaskTemplate.getCategoryTier2()).toBe(categName2,'FailureMsg2: CategoryTier2 is displayed');
+            expect (await adhoctaskTemplate.getCategoryTier3()).toBe(categName3,'FailureMsg3: CategoryTier3 is displayed');
+            expect (await adhoctaskTemplate.getCategoryTier4()).toBe(categName4,'FailureMsg4: CategoryTier4 is displayed');
             await adhoctaskTemplate.clickSaveAdhoctask();
             await manageTask.clickTaskLink(summary);
             expect (await viewTaskPo.getCategoryTier4Value()).toBe(categName4,'FailureMsg5: CategoryTier4 is displayed');

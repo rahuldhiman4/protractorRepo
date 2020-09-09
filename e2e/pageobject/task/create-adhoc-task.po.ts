@@ -213,6 +213,18 @@ class CreateAdhocTaskTemplatePage {
         await $(this.selectors.attachmentField).sendKeys(absPathArray.join('\n'));
     }
 
+    async getCategoryTier1(): Promise<string> {
+        return await $(`[rx-view-component-id="${this.selectors.categoryTier1}"] button`).getText();
+    }
+
+    async getCategoryTier2(): Promise<string> {
+        return await $(`[rx-view-component-id="${this.selectors.categoryTier2}"] button`).getText();
+    }
+
+    async getCategoryTier3(): Promise<string> {
+        return await $(`[rx-view-component-id="${this.selectors.categoryTier3}"] button`).getText();
+    }
+
     async getCategoryTier4(): Promise<string> {
         return await $(`[rx-view-component-id="${this.selectors.categoryTier4}"] button`).getText();
     }

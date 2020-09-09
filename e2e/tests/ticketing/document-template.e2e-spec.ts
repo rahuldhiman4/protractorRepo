@@ -235,7 +235,7 @@ describe('Document Template', () => {
 
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate1.id, 'DynamicGroupField'); 
             
-            await apiHelper.createDynamicDataOnTemplate(newCaseTemplate2.id, 'AllDataType');
+            await apiHelper.createDynamicDataOnTemplate(newCaseTemplate2.id, 'ALL_DATA_TYPE');
         });
 
         it('[14973]: Verify Document Template With Case Dynamic Field ', async () => {
