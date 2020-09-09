@@ -1,4 +1,4 @@
-import { $, $$, browser, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, browser, protractor, ProtractorExpectedConditions, element, by } from "protractor";
 import utilCommon from '../../../utils/util.common'
 
 class ReadAccessConfigEditPage {
@@ -17,6 +17,8 @@ class ReadAccessConfigEditPage {
         priorityGuid: '732d1377-9873-476d-a5ee-bee0eb9ee5f3',
         supportGroupGuid: '59fae521-483b-4d6a-93ed-84c88919351a',
         businessUnitGuid: '2d897e8d-c447-4a0f-b494-50c0eb0fc3ac',
+        categoryTier4Guid: '0ad049c9-856d-4945-82f1-9981d2d62465',
+        labelValue: '[rx-view-component-id="692fed6d-f2b5-4f72-8f4e-d7e7ec192cfb"] .ui-select-match-text'
     }
 
     async isAccessMappingNameDisabled(): Promise<boolean> {
@@ -79,6 +81,17 @@ class ReadAccessConfigEditPage {
      async selectBusinessUnit(businessUnit:string): Promise<void> {
         await utilCommon.selectDropDown(this.selectors.businessUnitGuid,businessUnit);
      }
+
+     async getCategoryTier4(): Promise<string> {
+        return await $(`[rx-view-component-id="${this.selectors.categoryTier4Guid}"] .ui-select-match-text`).getText();
+    }
+
+    async isLabelValueDisplayed(labelName: string): Promise<boolean> {
+        return await element(by.cssContainingText(this.selectors.labelValue, labelName)).isPresent().then(async (result) => {
+            if (result) return await element(by.cssContainingText(this.selectors.labelValue, labelName)).isDisplayed();
+            else return false;
+        });
+    }
 
 }
 

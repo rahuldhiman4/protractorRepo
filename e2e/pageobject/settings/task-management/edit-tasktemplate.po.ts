@@ -20,7 +20,7 @@ class EditTaskTemplate {
         taskCategoryDrpDown1: 'cab2e62d-090e-4281-985d-2f021bb01a9f',
         taskCategoryDrpDown2: '27a4fb75-0d9c-417b-9638-698f371ec4ec',
         taskCategoryDrpDown3: '414723be-a5c7-4271-b9b0-d76f07023682',
-        taskCategoryDrpDown4: 'd88c4135-b283-4b9a-9909-80f1e83e6087',
+        taskCategoryDrpDown4: 'f1703efa-79e9-4e74-b38f-782272b803af',
         priority: '0cf493f2-9e6b-4f23-bf3e-ba210c2baef8',
         saveMetadata: '[rx-view-component-id="39f08c8c-48ad-450e-b5f2-f379a4432666"] button',
         cancelMetadata: '[rx-view-component-id="209049eb-ef6d-4ddd-8ee4-257ff7a878e5"] button',
@@ -31,7 +31,8 @@ class EditTaskTemplate {
         taskTypeValueDisabled: '[rx-view-component-id="cee6d303-5db9-4b3a-98e1-3096ffebf363"] span.btn-default',
         processNameValue: '[rx-view-component-id="534ab8af-7e9d-49a9-8cab-c3ab1aa38c91"] input',
         taskDescription: 'b9b752cf-8cef-4598-9a8d-85748b13f0d7',
-        templateStatus: '[rx-view-component-id="279fd957-576d-4428-b503-a1330cbd9498"] .dropdown'
+        templateStatus: '[rx-view-component-id="279fd957-576d-4428-b503-a1330cbd9498"] .dropdown',
+        labelValue: '[rx-view-component-id="11b0e7ec-10f6-4ecf-a69f-b513d68fa45d"] .ui-select-match-text'
     }
 
     async selectPriorityValue(priority: string): Promise<void> {
@@ -64,6 +65,10 @@ class EditTaskTemplate {
 
     async selectLabel(label: string): Promise<void> {
         await utilCommon.selectDropDown(this.selectors.label, label);
+    }
+
+    async getLabelValue(): Promise<string> {
+        return await $(this.selectors.labelValue).getText();
     }
 
     async selectTaskCompany(company: string): Promise<void> {
@@ -176,6 +181,11 @@ class EditTaskTemplate {
     async isSaveTemplateMetadataBtnEnabled(): Promise<boolean> {
         return await $(this.selectors.saveMetadata).isEnabled();
     }
+
+    async getTaskCategoryTier4(): Promise<string> {
+        return await $(`[rx-view-component-id="${this.selectors.taskCategoryDrpDown4}"] .ui-select-match-text`).getText();
+    }
+
 
 }
 
