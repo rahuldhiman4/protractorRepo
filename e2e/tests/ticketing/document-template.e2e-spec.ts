@@ -220,7 +220,6 @@ describe('Document Template', () => {
                 "supportGroup": "Facilities",
                 "ownerGroup": "Facilities"
             }
-
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
 
