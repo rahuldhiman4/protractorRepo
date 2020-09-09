@@ -1,4 +1,4 @@
-import {element, by, $, protractor, ProtractorExpectedConditions, $$ } from "protractor";
+import {element, by, $, protractor, ProtractorExpectedConditions, $$, browser } from "protractor";
 
 class CasePreview {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -163,6 +163,7 @@ class CasePreview {
 
     async clickGoToCaseButton(): Promise<void> {
         await $(this.selectors.gotoCaseButton).click();
+        await browser.wait(this.EC.invisibilityOf($('rx-runtime-view-modal')), 5000);
     }
 
     async isAssignedGroupDisplayed(assignedGroup: string): Promise<boolean> {

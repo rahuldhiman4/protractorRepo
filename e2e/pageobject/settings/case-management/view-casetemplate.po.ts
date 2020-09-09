@@ -1,5 +1,10 @@
 import { $, protractor, ProtractorExpectedConditions, $$, browser, element, by } from 'protractor';
-import utilCommon from '../../../utils/util.common';
+
+export interface sizeAttribute {
+    height: string;
+    width: string;
+}
+
 class ViewCaseTemplate {
 
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -244,12 +249,14 @@ class ViewCaseTemplate {
         }
     }
 
-    async isHeightWidthMatches(height: number, width: number): Promise<boolean> {
+    async getHeightAndWidth(): Promise<sizeAttribute> {
         let styleAttributeValue = await $(this.selectors.taskFlowSectionSizeLocator).getAttribute('style');
         let heightAtt = ((styleAttributeValue.split(':'))[2].split('px'))[0].trim();
         let widthAtt = ((styleAttributeValue.split(':'))[1].split('px'))[0].trim();
-        console.log(heightAtt, '--AND--', widthAtt);
-        return heightAtt == height.toString() && widthAtt == width.toString();
+        return {
+            height: heightAtt,
+            width: widthAtt
+        };
     }
 
 }
