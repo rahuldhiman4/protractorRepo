@@ -1025,7 +1025,7 @@ describe("Create Case", () => {
 
     describe('[DRDMV-22293,DRDMV-22292,DRDMV-22294]: User Should not allow to remove assignee when case is in "In Progress" Status', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let templateData1, templateData2, newCaseTemplate,autoTaskTemplateData;
+        let templateData1, templateData2, newCaseTemplate, autoTaskTemplateData;
         beforeAll(async () => {
             templateData1 = {
                 "templateName": randomStr + "CaseTemplate1",
@@ -1088,8 +1088,8 @@ describe("Create Case", () => {
             await previewCasePo.clickGoToCaseButton();
             await updateStatusBladePo.changeCaseStatus('In Progress');
             expect(await viewCasePage.getErrorMsgOfInprogressStatus()).toBe('Assignee is required for this case status.  Please select an assignee. ');
-            await updateStatusBladePo.clickCancelButton();      
-            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");      
+            await updateStatusBladePo.clickCancelButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await viewCasePage.clickEditCaseButton();
             await editCasePage.clickOnChangeCaseTemplate();
             await selectCaseTemplateBlade.selectCaseTemplate(templateData2.templateName);
@@ -1098,14 +1098,14 @@ describe("Create Case", () => {
             await utilityGrid.searchAndOpenHyperlink('Summary2' + randomStr);
             await updateStatusBladePo.changeCaseStatus('In Progress');
             expect(await viewCasePage.getErrorMsgOfInprogressStatus()).toBe('Assignee is required for this case status.  Please select an assignee. ');
-            await updateStatusBladePo.clickCancelButton();   
-            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes"); 
+            await updateStatusBladePo.clickCancelButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await viewCasePage.clickEditCaseButton();
             await editCasePage.clickOnAssignToMe();
-            await editCasePage.clickSaveCase();  
+            await editCasePage.clickSaveCase();
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
-            await utilityCommon.closePopUpMessage();   
+            await utilityCommon.closePopUpMessage();
             await viewCasePage.openTaskCard(1);
             await manageTaskBladePo.clickTaskLink(autoTaskTemplateData.templateName);
             expect(await viewTaskPo.getTaskStatusValue()).toBe('Completed');
@@ -1132,7 +1132,7 @@ describe("Create Case", () => {
             expect(await updateStatusBladePo.isRequiredTagToResolutionDescription()).toBeTruthy('FailureMsg: Required Tab for Resolution Code is missing');
             expect(await updateStatusBladePo.isSaveUpdateStatusButtonEnabled()).toBeFalsy('FailureMsg: Save button is not enabled');
             await updateStatusBladePo.clickCancelButton();
-            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");  
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.deleteCommonConfig('RESOLUTION_CODE_MANDATORY', 'Petramco');
             await apiHelper.deleteCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY', 'Petramco');
@@ -1176,4 +1176,38 @@ describe("Create Case", () => {
             await loginPage.login('qkatawazi');
         });
     });
-}); 
+
+    describe('[DRDMV-9052]: [Case] Source field on Case details/Case Workspace', async () => {
+        let caseDataForEmail, caseDataForDwp, caseIdForEmail, caseIdForDWP
+        beforeAll(async () => {
+            caseDataForEmail = {
+                "Description": "DRDMV-9181 Desc",
+                "Requester": "qtao",
+                "Summary": "DRDMV-9181-Summary",
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 1",
+                "Origin": "Email"
+            }
+            caseDataForDwp =
+            {
+                "requester": "qtao",
+                "summary": "Testing case creation with minimal input data"
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            caseIdForEmail = await apiHelper.createCase(caseDataForEmail);
+            caseIdForDWP = await apiHelper.createCaseFromDwp(caseDataForDwp);
+        });
+        it('[DRDMV-9052]: [Case] Source field on Case details/Case Workspace', async () => {
+            let column: string[] = ["Source"];
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePage.addColumns(column);
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter("Source","Digital Workplace","text");
+            expect( await utilityGrid.isGridRecordPresent(caseIdForDWP.displayId)).toBeTruthy();
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter("Source","Email","text");
+            expect( await utilityGrid.isGridRecordPresent(caseIdForEmail.displayId)).toBeTruthy();
+        });
+    });
+});  

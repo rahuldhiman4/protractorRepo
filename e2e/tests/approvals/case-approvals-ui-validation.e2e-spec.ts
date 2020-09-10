@@ -844,7 +844,8 @@ describe("Case Approval UI Validations", () => {
                 "ownerBU": "United States Support",
                 "ownerGroup": "US Support 3"
             }
-
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
             await apiHelper.apiLogin('qkatawazi');
             let caseTemplateResponse = await apiHelper.createCaseTemplate(caseTemplateData);
             let caseTemplateDisplayId = caseTemplateResponse.displayId;

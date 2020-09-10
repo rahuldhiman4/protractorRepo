@@ -574,8 +574,10 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.createNewUser(caseAgentuserData);
             await apiHelper.associatePersonToCompany(caseAgentuserData.userId, "Petramco");
+            await apiHelper.associatePersonToSupportGroup(caseAgentuserData.userId, ownerSupportGroup);
             await apiHelper.createNewUser(caseManageruserData);
             await apiHelper.associatePersonToCompany(caseManageruserData.userId, "Petramco");
+            await apiHelper.associatePersonToSupportGroup(caseManageruserData.userId, ownerSupportGroup);
         });
 
         it('[DRDMV-19575]:Verify the search functionality of Document library console for Region', async () => {
@@ -679,6 +681,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
+            let caseId: string = await viewCasePage.getCaseID();
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnAttachLink();
             await resources.clickOnAdvancedSearchOptions();
@@ -687,30 +690,37 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(title)).toEqual(title);
+            expect(await resources.isAdvancedSearchResultContainsRecord(title)).toBeTruthy();
+            
             await resources.enterAdvancedSearchText(title);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(documentLibraryStr)).toEqual(title);
+            expect(await resources.isAdvancedSearchResultContainsRecord(title)).toBeTruthy();
             await utilityCommon.closeAllBlades();
 
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(caseId);
             await viewCasePage.clickOnEmailLink();
             await composeMailPo.clickOnAttachmentLink();
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(title);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(title)).toEqual(title);
+            expect(await resources.isAdvancedSearchResultContainsRecord(title)).toBeTruthy();
             await resources.enterAdvancedSearchText(title);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(title)).toEqual(title);
+            expect(await resources.isAdvancedSearchResultContainsRecord(title)).toBeTruthy();
             await utilityCommon.closeAllBlades();
+            await composeMailPo.clickOnDiscardButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await navigationPage.signOut();
         });
 
@@ -723,8 +733,29 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
+            let caseId: string = await viewCasePage.getCaseID();
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnAttachLink();
+            await resources.clickOnAdvancedSearchOptions();
+            await resources.enterAdvancedSearchText(title);
+            await resources.clickOnAdvancedSearchSettingsIconToOpen();
+            await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
+            await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
+            await resources.clickOnAdvancedSearchSettingsIconToClose();
+            expect(await resources.isAdvancedSearchResultContainsRecord(title)).toBeTruthy();
+            await resources.enterAdvancedSearchText(title);
+            await resources.clickOnAdvancedSearchSettingsIconToOpen();
+            await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
+            await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
+            await resources.clickOnAdvancedSearchSettingsIconToClose();
+            await expect(await resources.getAdvancedSearchResultForParticularSection(title)).toEqual(title);
+            await utilityCommon.closeAllBlades();
+
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(caseId);
+            await viewCasePage.clickOnEmailLink();
+            await composeMailPo.clickOnAttachmentLink();
             await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(title);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
@@ -737,24 +768,10 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(title)).toEqual(title);
+            expect(await resources.isAdvancedSearchResultContainsRecord(title)).toBeTruthy();
             await utilityCommon.closeAllBlades();
-
-            await viewCasePage.clickOnEmailLink();
-            await composeMailPo.clickOnAttachmentLink();
-            await resources.enterAdvancedSearchText(title);
-            await resources.clickOnAdvancedSearchSettingsIconToOpen();
-            await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
-            await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
-            await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(title)).toEqual(title);
-            await resources.enterAdvancedSearchText(title);
-            await resources.clickOnAdvancedSearchSettingsIconToOpen();
-            await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
-            await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
-            await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(title)).toEqual(title);
-            await utilityCommon.closeAllBlades();
+            await composeMailPo.clickOnDiscardButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await navigationPage.signOut();
         });
 
@@ -767,6 +784,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
+            let caseId: string = await viewCasePage.getCaseID();
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnAttachLink();
             await resources.clickOnAdvancedSearchOptions();
@@ -775,34 +793,37 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(title)).toEqual(title);
+            expect(await resources.isAdvancedSearchResultContainsRecord(title)).toBeTruthy();
             await resources.enterAdvancedSearchText(title);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(title)).toEqual(title);
+            expect(await resources.isAdvancedSearchResultContainsRecord(title)).toBeTruthy();
             await utilityCommon.closeAllBlades();
 
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(caseId);
             await viewCasePage.clickOnEmailLink();
             await composeMailPo.clickOnAttachmentLink();
+            await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(title);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(regionField, regionFieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(title)).toEqual(title);
+            expect(await resources.isAdvancedSearchResultContainsRecord(title)).toBeTruthy();
             await resources.enterAdvancedSearchText(title);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(title)).toEqual(title);
-            await utilityCommon.closeAllBlades();
-            await navigationPage.signOut();
+            expect(await resources.isAdvancedSearchResultContainsRecord(title)).toBeTruthy();
         });
 
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await composeMailPo.clickOnDiscardButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await navigationPage.signOut();

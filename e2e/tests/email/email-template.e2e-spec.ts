@@ -326,9 +326,6 @@ describe('Email Template', () => {
             emailTemplateNameDraft = await emailTemplateData['emailTemplateToComposeEmail'].TemplateName + summary;
             emailTemplateData['emailTemplateToComposeEmail'].TemplateName = emailTemplateNameDraft;
             await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateToComposeEmail']);
-            emailTemplateNameDraft = await emailTemplateData['emailTemplateDraft'].TemplateName + summary;
-            emailTemplateData['emailTemplateDraft'].TemplateName = emailTemplateNameDraft;
-            await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateDraft']);
             await apiHelper.apiLogin('gwixillian');
             emailTemplateNamePsilon = await emailTemplateData['emailTemplatePsilon'].TemplateName + summary;
             emailTemplateData['emailTemplatePsilon'].TemplateName = emailTemplateNamePsilon;
@@ -339,9 +336,13 @@ describe('Email Template', () => {
             await utilityGrid.searchAndOpenHyperlink(newCase.displayId)
             await viewCasePo.clickOnEmailLink();
             await composeMailPo.clickOnSelectEmailTemplateLink();
-            expect(await selectEmailTemplateBladePo.isRecordPresent(emailTemplateName)).toBeTruthy();
+            expect(await selectEmailTemplateBladePo.getGridRecordValue(emailTemplateName)).toBeTruthy("emailTemplateName");
             expect(await selectEmailTemplateBladePo.isRecordPresent(emailTemplateNameDraft)).toBeFalsy();
-            expect(await selectEmailTemplateBladePo.isRecordPresent(emailTemplateNamePsilon)).toBeFalsy()
+            expect(await selectEmailTemplateBladePo.isRecordPresent(emailTemplateNamePsilon)).toBeFalsy();
+            await selectEmailTemplateBladePo.clickOnCancelButton();
+            await composeMailPo.clickOnDiscardButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+            
         });
     });
 });

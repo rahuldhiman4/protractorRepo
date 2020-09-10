@@ -76,3 +76,13 @@ export const CASE_ASSIGNMENT_PAYLOAD = {
         }
       }
   };
+
+export const CASE_FROM_DWP ={
+  "processDefinitionName": "com.bmc.dsm.case-lib:Case Interface - Create",
+  "processInputValues": {
+  "Origin": "Digital Workplace",
+  "Requester": "544f3f8b31f1184a6e4632b1c9ba1533ba98b44f510daff6fcfb29765fb9223df6f4d0c70f6342caacd9dad837b7f38a104a324d48906ff638bf3ada8ee9e16c",
+  "Summary": "Case from DWP"
+    },
+  "resourceType": "com.bmc.arsys.rx.application.process.command.StartProcessInstanceCommand"
+  }  

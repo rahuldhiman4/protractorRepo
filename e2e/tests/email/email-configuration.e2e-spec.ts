@@ -21,6 +21,7 @@ import createAcknowledgmentTemplatesPo from '../../pageobject/settings/email/cre
 import viewCasePo from '../../pageobject/case/view-case.po';
 import composeMailPo from '../../pageobject/email/compose-mail.po';
 import utilityGrid from '../../utils/utility.grid';
+import activityTabPo from '../../pageobject/social/activity-tab.po';
 
 describe('Email Configuration', () => {
     let offlineSupportGroup, emailID = "bmctemptestemail@gmail.com";
@@ -494,6 +495,7 @@ describe('Email Configuration', () => {
         });
     });
 
+    //ankagraw
     describe('[DRDMV-10930,DRDMV-10457,DRDMV-10802,DRDMV-10997,,DRDMV-9037]: Acknowledgment Template: Deletion & status update shouldnt allow when Acknowledgment Template associated with email id', async () => {
         let caseTemplateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
@@ -610,7 +612,7 @@ describe('Email Configuration', () => {
         });
     });
 
-
+    //ankagraw
     describe('[DRDMV-13584]: Email - UI validation of Add/Edit Email Sender Mapping views', async () => {
         let trustedMail: string = "test@abc.com"
         it('[DRDMV-13584]: Email - UI validation of Add/Edit Email Sender Mapping views', async () => {
@@ -648,6 +650,69 @@ describe('Email Configuration', () => {
             await editEmailConfigPo.setEmailOnEditTrustedEmail("Test@xyz.com");
             await editEmailConfigPo.clickEditTrustedEmailSaveButtonOnTrustedEmail();
             expect(await editEmailConfigPo.isRecordPresentonTrustedEmail("Test@xyz.com")).toBeTruthy();
+        });
+    });
+
+    //this test get failed and will refactor on 1 foundation
+    //ankagraw
+    describe('[DRDMV-10426]: Support Group: Disassociate Support group', async () => {
+        let caseData, caseId, randomStr = Math.floor(Math.random() * 1000000);
+        beforeAll(async () => {
+            caseData =
+            {
+                "Requester": "apavlik",
+                "Summary": randomStr,
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 1",
+                "Assignee": "qtao",
+                "Status": "3000",
+            }
+            await apiHelper.apiLogin('qtao');
+            caseId = await apiHelper.createCase(caseData);
+        });
+        it('[DRDMV-10426]: Support Group: Disassociate Support group', async () => {
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(caseId.displayId);
+            await viewCasePo.clickOnEmailLink();
+            await composeMailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+            await composeMailPo.clickOnSendButton();
+            expect(await activityTabPo.isTitleTextDisplayedInActivity('Fritz created the task', 3)).toBeTruthy('FailureMsg4: log title is missing');
+            let subject = `Fritz Schulz changed the status of `;
+            console.log("Subject of the email: ", subject);
+            await browser.sleep(5000); // hardwait to appear email message in "AR System Email Messages"
+            await apiHelper.apiLogin('tadmin');
+            let body = await apiHelper.getHTMLBodyOfEmail(subject);
+            await expect(body.includes('<td><u>FirstUnderLine</u></td>')).toBeTruthy();
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
+            await utilGrid.searchAndOpenHyperlink(emailID);
+            await editEmailConfigPo.selectTab("Associated Support Group");
+            await editEmailConfigPo.selectBusinessUnitInAssociatedSupportGroupTab("Facilities Support");
+            await editEmailConfigPo.searchAvailableEntitiesToBeAssociated("Facilities");
+            await editEmailConfigPo.clickSupportGroup();
+            await editEmailConfigPo.clickAssociatedSupportGroupRightArrow();
+            await editEmailConfigPo.clickSaveButton();
+
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(caseId.displayId);
+            await viewCasePo.clickOnEmailLink();
+            await composeMailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+            await composeMailPo.clickOnSendButton();
+
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
+            await utilGrid.searchAndOpenHyperlink(emailID);
+            await editEmailConfigPo.selectTab("Associated Support Group");
+            await editEmailConfigPo.clickSupportGroup();
+            await editEmailConfigPo.clickAssociatedSupportGroupLeftArrow();
+            await editEmailConfigPo.clickSaveButton();
+
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(caseId.displayId);
+            await viewCasePo.clickOnEmailLink();
+            await composeMailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+            await composeMailPo.clickOnSendButton();
         });
     });
 });

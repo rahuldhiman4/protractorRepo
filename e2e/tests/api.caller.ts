@@ -17,6 +17,18 @@ describe('Login and create case from API', () => {
         console.log("case is created===", newCaseTemplate.displayId);
     });
 
+    it('create case with DWP', async () => {
+        let caseData =
+        {
+            "requester": "qtao",
+            "summary": "Testing case creation with minimal input data"
+        }
+        await apiHelper.apiLogin('qkatawazi');
+        let newCaseTemplate = await apiHelper.createCaseFromDwp(caseData);
+        console.log("case is created===", newCaseTemplate.id);
+        console.log("case is created===", newCaseTemplate.displayId);
+    });
+
     it('update case status', async () => {
         let caseData = {
             "Requester": "Fritz",
