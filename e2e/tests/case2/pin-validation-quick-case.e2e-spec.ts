@@ -81,6 +81,7 @@ describe('PIN Validation Quick Case', () => {
             expect(await previewCasePo.isDescriptionDisplayed('Gleeu Wixillian ' + `${casetemplatePsilon1.templateName}`)).toBeTruthy();
             await quickCasePo.gotoCaseButton();
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Requester is not validated for this case.')).toBeFalsy();
+            await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog('validated the PIN of the requester')).toBeTruthy();
         });
         it('[DRDMV-13708,DRDMV-10508,DRDMV-10560,DRDMV-10563,DRDMV-10564]:Case creation via Quick Case ,Template validation is ENFORCED', async () => {
@@ -98,6 +99,7 @@ describe('PIN Validation Quick Case', () => {
             expect(await utilityCommon.isPopupMsgsMatches(['Validation of requester is successful.'])).toBeTruthy();
             await quickCasePo.createCaseButton();
             await quickCasePo.gotoCaseButton();
+            await activityTabPo.clickOnRefreshButton();
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Requester is not validated for this case.')).toBeFalsy();
             expect(await activityTabPo.isTextPresentInActivityLog('validated the PIN of the requester')).toBeTruthy();
         });
@@ -120,6 +122,7 @@ describe('PIN Validation Quick Case', () => {
             await quickCasePo.createCaseButton();
             await quickCasePo.gotoCaseButton();
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Requester is not validated for this case.')).toBeFalsy();
+            await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog('validated the PIN of the requester')).toBeTruthy();
         });
         afterAll(async () => {
@@ -187,6 +190,7 @@ describe('PIN Validation Quick Case', () => {
             expect(await resourcesTabPo.isSectionTitleDisplayed('Recommended Knowledge')).toBeTruthy('Section is Present');
             await quickCasePo.createCaseButton();
             await quickCasePo.gotoCaseButton();
+            await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog('validated the PIN of the requester')).toBeTruthy();
         });
         it('[DRDMV-10506,DRDMV-10507,DRDMV-10558,DRDMV-10559,DRDMV-10562]:Case creation via Quick Case ,Template validation is OPTIONAL', async () => {
@@ -220,6 +224,7 @@ describe('PIN Validation Quick Case', () => {
             expect(await resourcesTabPo.isSectionTitleDisplayed('Recommended Knowledge')).toBeTruthy('Section is Present');
             await quickCasePo.createCaseButton();
             await quickCasePo.gotoCaseButton();
+            await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog('validated the PIN of the requester')).toBeTruthy();
         });
         it('[DRDMV-10506,DRDMV-10507,DRDMV-10558,DRDMV-10559,DRDMV-10562]:Case creation via Quick Case ,Template validation is OPTIONAL', async () => {
@@ -240,6 +245,7 @@ describe('PIN Validation Quick Case', () => {
             expect(await resourcesTabPo.isSectionTitleDisplayed('Recommended Knowledge')).toBeTruthy('Section is Present');
             await quickCasePo.createCaseButton();
             await quickCasePo.gotoCaseButton();
+            await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog('validated the PIN of the requester')).toBeTruthy();
         });
         afterAll(async () => {
@@ -350,6 +356,7 @@ describe('PIN Validation Quick Case', () => {
             expect(await resourcesPo.getAdvancedSearchResultForParticularSection(casetemplatePsilon1.templateName)).toEqual(casetemplatePsilon1.templateName);  
             await quickCasePo.createCaseButton();
             await quickCasePo.gotoCaseButton();
+            await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog('validated the PIN of the requester')).toBeFalsy();
         });
         it('[DRDMV-10663,DRDMV-10471,DRDMV-10616,DRDMV-10618]:Case creation via Quick Case ,Template validation is OPTIONAL and NONE', async () => {        
@@ -383,6 +390,7 @@ describe('PIN Validation Quick Case', () => {
             expect(await resourcesTabPo.isSectionTitleDisplayed('Recommended Knowledge')).toBeTruthy('Section is Present');
             await quickCasePo.createCaseButton();
             await quickCasePo.gotoCaseButton();
+            await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog('validated the PIN of the requester')).toBeTruthy();
         });
         afterAll(async () => {
@@ -498,6 +506,7 @@ describe('PIN Validation Quick Case', () => {
             expect(await resourcesPo.getAdvancedSearchResultForParticularSection(casetemplatePsilon1.templateName)).toEqual(casetemplatePsilon1.templateName);  
             await quickCasePo.createCaseButton();
             await quickCasePo.gotoCaseButton();
+            await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog('validated the PIN of the requester')).toBeTruthy();
         });
         it('[DRDMV-10554,DRDMV-10557,DRDMV-10617,DRDMV-10561]:Case creation via Quick Case ,Template validation is OPTIONAL & NONE & ENFORCED', async () => {
@@ -525,6 +534,7 @@ describe('PIN Validation Quick Case', () => {
             await quickCasePo.createCaseButton();
             await quickCasePo.gotoCaseButton();
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Requester is not validated for this case.')).toBeFalsy();
+            await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog('validated the PIN of the requester')).toBeTruthy();
         });
         afterAll(async () => {
