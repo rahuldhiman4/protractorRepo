@@ -1177,7 +1177,7 @@ describe("Create Case", () => {
         });
     });
 
-    describe('DRDMV-9052: [Case] Source field on Case details/Case Workspace', async () => {
+    describe('[DRDMV-9052]: [Case] Source field on Case details/Case Workspace', async () => {
         let caseDataForEmail, caseDataForDwp, caseIdForEmail, caseIdForDWP
         beforeAll(async () => {
             caseDataForEmail = {
@@ -1198,7 +1198,7 @@ describe("Create Case", () => {
             caseIdForEmail = await apiHelper.createCase(caseDataForEmail);
             caseIdForDWP = await apiHelper.createCaseFromDwp(caseDataForDwp);
         });
-        it('DRDMV-9052: [Case] Source field on Case details/Case Workspace', async () => {
+        it('[DRDMV-9052]: [Case] Source field on Case details/Case Workspace', async () => {
             let column: string[] = ["Source"];
             await navigationPage.gotoCaseConsole();
             await caseConsolePage.addColumns(column);
