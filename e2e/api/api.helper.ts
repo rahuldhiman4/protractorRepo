@@ -18,7 +18,7 @@ import { EMAIL_WHITELIST } from '../data/api/email/email.whitelist.data.api';
 import { NEW_PROCESS_LIB, PROCESS_FLOWSET_MAPPING } from '../data/api/flowset/create-process-lib';
 import { UPDATE_PERSON, UPDATE_SUPPORT_GROUP, UPDATE_ORGANIZATION } from '../data/api/foundation/update-foundation-entity.data.api';
 import { IBusinessUnit } from '../data/api/interface/business.unit.interface.api';
-import { ICaseAssignmentMapping } from "../data/api/interface/case.assignment.mapping.interface.api";
+import { ICaseAssignmentMapping, ICaseCreate } from "../data/api/interface/case.assignment.mapping.interface.api";
 import { ICaseTemplate } from "../data/api/interface/case.template.interface.api";
 import { ICognitiveDataSet, ICognitiveDataSetMapping } from '../data/api/interface/cognitive.interface.api';
 import { IDepartment } from '../data/api/interface/department.interface.api';
@@ -55,7 +55,7 @@ import { DOC_LIB_DRAFT, DOC_LIB_PUBLISH, DOC_LIB_READ_ACCESS } from '../data/api
 import { DOCUMENT_TEMPLATE } from '../data/api/ticketing/document-template.data.api';
 import * as DYNAMIC from '../data/api/ticketing/dynamic.data.api';
 import { NEW_USER, ENABLE_USER } from '../data/api/foundation/create-foundation-entity.api';
-import { CASE_ASSIGNMENT_PAYLOAD } from '../data/api/case/case.config.api';
+import { CASE_ASSIGNMENT_PAYLOAD, CASE_FROM_DWP } from '../data/api/case/case.config.api';
 import * as actionableNotificationPayloads from '../data/api/notification/actionable.notification.supporting.api';
 import * as processes from '../data/api/shared-services/create-new-process.api';
 
@@ -117,6 +117,27 @@ class ApiHelper {
         return {
             id: caseDetails.data.id,
             displayId: caseDetails.data.displayId
+        };
+    }
+
+    async createCaseFromDwp(data: ICaseCreate): Promise<IIDs> {
+        let caseData = cloneDeep(CASE_FROM_DWP);
+        caseData.processInputValues.Requester=await apiCoreUtil.getPersonGuid(data.requester);
+        caseData.processInputValues.Summary=data.summary;
+        
+        const newCase = await axios.post(
+            commandUri,
+            caseData
+        );
+        console.log('Create Case API Status =============>', newCase.status);
+        const caseDetails = await axios.get(
+            newCase.headers.location
+        );
+        console.log('New Case Details API Status =============>', caseDetails.status);
+
+        return {
+            id: caseDetails.data.processVariables['Case ID'],
+            displayId: caseDetails.data.processVariables["Case Display ID"]
         };
     }
 
@@ -2974,7 +2995,7 @@ class ApiHelper {
     async trainCognitiveDataSet(dataSetName: string): Promise<boolean> {
         // start data set training
         let startDataSetTrainingResponse = await axios.post(
-            "api/rx/application/command",
+            commandUri,
             { "resourceType": "com.bmc.arsys.rx.application.cognitive.command.TrainCognitiveServiceCommand", "trainingDataSetName": `com.bmc.dsm.bwfa:${dataSetName}` }
         );
         console.log('Start Data Set Training API Status =============>', startDataSetTrainingResponse.status);
@@ -3109,13 +3130,13 @@ class ApiHelper {
 
     async deleteDocumentAndProcessForActionableNotifications(): Promise<void> {
         let deleteProcessResponse = await axios.post(
-            'api/rx/application/command',
+            commandUri,
             actionableNotificationPayloads.NOTIFICATION_DELETE_PROCESS
         );
         console.log("Delete Process Response =============>", deleteProcessResponse.status);
 
         let deleteDocumentResponse = await axios.post(
-            'api/rx/application/command',
+            commandUri,
             actionableNotificationPayloads.NOTIFICATION_DELETE_DOCUMENT
         );
         console.log("Delete Document Response =============>", deleteDocumentResponse.status);

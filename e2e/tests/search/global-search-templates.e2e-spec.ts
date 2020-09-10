@@ -640,6 +640,8 @@ describe('Global Search Template', () => {
     describe('[DRDMV-16123]: Global search with only Document Category', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let attachmentFilePath = 'e2e/data/ui/search/globalsearch3.jpg';
+        let attachmentFilePath2 = 'e2e/data/ui/search/globalsearch2.json';
+
         let docName1 = '1docNameDRDMV16123' + randomStr;
         let docName2 = '2docNameDRDMV16123' + randomStr;
         let keywordStr = '1keywordDRDMV16123' + randomStr;
@@ -661,11 +663,11 @@ describe('Global Search Template', () => {
 
             // Non maching Document 
             let nonMatchingKeyword = '2keywordDRDMV16123' + randomStr;
-            await createPublishDocumentLibrary(nonMatchingDocName, attachmentFilePath, nonMatchingKeyword);
+            await createPublishDocumentLibrary(nonMatchingDocName, attachmentFilePath2, nonMatchingKeyword);
 
             // Non access Document
             await apiHelper.apiLogin('elizabeth');
-            await createPublishDocumentLibrary(nonAccessDocName, attachmentFilePath);
+            await createPublishDocumentLibrary(nonAccessDocName, attachmentFilePath2);
         });
 
         it('[DRDMV-16123]: Verify Document Name, Keyword, Attachment', async () => {
@@ -692,8 +694,13 @@ describe('Global Search Template', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(docName1, documentModule, 4)).toBeTruthy(`FailureMsg6: ${docName1} 4 Document is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(docName1, documentModule, 5)).toBeTruthy(`FailureMsg7: ${docName1} 5 Document is missing`);
 
+            await searchPo.searchRecord('globalsearch2.json');
+            expect(await searchPo.isModuleTitleDisplayed('globalsearch2.json', 'Documents (1)', documentModule)).toBeTruthy('FailureMsg2: Document module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel('globalsearch2.json', documentModule)).toBeTruthy(`${'globalsearch2.json'} attachment File Name is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(nonMatchingDocName, documentModule, 1)).toBeTruthy(`FailureMsg4: ${nonMatchingDocName} 1 Document is missing`);
+
             await searchPo.searchRecord('globalsearch3.jpg');
-            expect(await searchPo.isModuleTitleDisplayed(docName1, 'Documents (6)', documentModule)).toBeTruthy('FailureMsg2: Document module title is missing');
+            expect(await searchPo.isModuleTitleDisplayed(docName1, 'Documents (5)', documentModule)).toBeTruthy('FailureMsg2: Document module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, documentModule)).toBeTruthy(`${updatedDate} updatedDate is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel('globalsearch3.jpg', documentModule)).toBeTruthy(`${'globalsearch3.jpg'} attachment File Name is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(docName1, documentModule, 1)).toBeTruthy(`FailureMsg4: ${docName1} 1 Document is missing`);
@@ -701,7 +708,7 @@ describe('Global Search Template', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(docName1, documentModule, 3)).toBeTruthy(`FailureMsg5: ${docName1} 3 Document is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(docName1, documentModule, 4)).toBeTruthy(`FailureMsg6: ${docName1} 4 Document is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(docName1, documentModule, 5)).toBeTruthy(`FailureMsg7: ${docName1} 5 Document is missing`);
-
+            
             await searchPo.clickOnLeftPannelRecord(docName1, documentModule);
         });
 
@@ -726,8 +733,8 @@ describe('Global Search Template', () => {
             expect(await previewDocumentLibraryPo.isDataDisplayed('DocumentStatus', 'Published')).toBeTruthy('FailureMsg25: Doc status missing');
             expect(await previewDocumentLibraryPo.isDataDisplayed('Company', 'Petramco')).toBeTruthy('FailureMsg26: Company Value missing');
             expect(await previewDocumentLibraryPo.isDataDisplayed('ShareExternally', 'False')).toBeTruthy('FailureMsg27: Share External Value is missing');
-            expect(await previewDocumentLibraryPo.isDataDisplayed('BussinessUnit', 'Canada Support')).toBeTruthy('FailureMsg28: Status KA Displayed');
-            expect(await previewDocumentLibraryPo.isDataDisplayed('OwnerGroup', 'CA Support 1')).toBeTruthy('FailureMsg29: Status KA Displayed');
+            expect(await previewDocumentLibraryPo.isDataDisplayed('BussinessUnit', 'Canada Support')).toBeTruthy('FailureMsg28: BussinessUnit is missing');
+            expect(await previewDocumentLibraryPo.isDataDisplayed('OwnerGroup', 'CA Support 1')).toBeTruthy('FailureMsg29: OwnerGroup is missing');
             expect(await previewDocumentLibraryPo.isDataDisplayed('Keyword', 'keyword')).toBeTruthy('FailureMsg30: Keywords is missing');
         });
 
@@ -781,7 +788,7 @@ describe('Global Search Template', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(docName1, documentModule, 5)).toBeTruthy(`FailureMsg7: ${docName1} 5 Document is missing`);
 
             await searchPo.searchRecord('globalsearch3.jpg');
-            expect(await searchPo.isModuleTitleDisplayed('globalsearch3.jpg', 'Documents (7)', documentModule)).toBeTruthy('FailureMsg2: Document module title is missing');
+            expect(await searchPo.isModuleTitleDisplayed('globalsearch3.jpg', 'Documents (5)', documentModule)).toBeTruthy('FailureMsg2: Document module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, documentModule)).toBeTruthy(`${updatedDate} updatedDate is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel('globalsearch3.jpg', documentModule)).toBeTruthy(`${'globalsearch3.jpg'} attachment File Name is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(docName1, documentModule, 1)).toBeTruthy(`FailureMsg4: ${docName1} 1 Document is missing`);

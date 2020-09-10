@@ -28,6 +28,10 @@ class CognitiveConsole {
         return await utilGrid.isGridRecordPresent(value, this.selectors.categorizationConsoleGuid)
     }
 
+    async addColumnOnCategorization(value: string[]): Promise<void> {
+        await utilGrid.addGridColumn( this.selectors.categorizationConsoleGuid,value);
+   }
+
     async isColumnSortedOnTemplate(value: string, sortType: string): Promise<boolean> {
         return await utilGrid.isGridColumnSorted(value, sortType, this.selectors.templateConsoleGuid)
     }
@@ -38,6 +42,10 @@ class CognitiveConsole {
 
     async isRecordPresentOnTemplate(value: string): Promise<boolean> {
         return await utilGrid.isGridRecordPresent(value, this.selectors.templateConsoleGuid)
+    }
+
+    async addColumnOnTemplate(value: string[]): Promise<void> {
+         await utilGrid.addGridColumn( this.selectors.templateConsoleGuid,value);
     }
 
 }
