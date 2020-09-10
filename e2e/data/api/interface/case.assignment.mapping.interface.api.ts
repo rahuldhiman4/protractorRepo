@@ -16,4 +16,9 @@ export interface ICaseAssignmentMapping {
     businessUnit?: string;
     department?: string;
     assignee?: string;
+};
+
+export interface ICaseCreate {
+    requester: string;
+    summary: string;
 }
