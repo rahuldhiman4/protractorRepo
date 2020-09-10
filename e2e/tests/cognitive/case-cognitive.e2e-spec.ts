@@ -358,6 +358,7 @@ describe('Case Cognitive', () => {
         });
     });
 
+    //ankagraw
     describe('[DRDMV-8973,DRDMV-8971,DRDMV-8972,DRDMV-8977,DRDMV-8974]:[Cognitive] - Add Data Set Mapping for Categorization', async () => {
         let trainedCategoryDataSet, randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
@@ -466,6 +467,8 @@ describe('Case Cognitive', () => {
             await utilCommon.clickOnWarningOk();
         });
     });
+
+    //ankagraw
     it('[DRDMV-8975]:[Cognitive] - Category Data Set Mapping Grid validation', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Cognitive--Categorization', 'Categorization Configuration - Business Workflows');
@@ -483,5 +486,132 @@ describe('Case Cognitive', () => {
         expect(await consoleCognitivePo.isColumnSortedOnCategorization("Data Set Name", "desc")).toBeTruthy();
         expect(await consoleCognitivePo.isColumnSortedOnCategorization("Mapping Type", "asc")).toBeTruthy();
         expect(await consoleCognitivePo.isColumnSortedOnCategorization("Mapping Type", "desc")).toBeTruthy();
+    });
+
+    //ankagraw
+    describe('[DRDMV-8454,DRDMV-8453,DRDMV-8464,DRDMV-8455,DRDMV-8456]:[Cognitive] - Data Set Mapping for Templates UI validation', async () => {
+        let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let trainedCategoryDataSet = "Trained Templates Data Set";
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteCognitiveDataSetMapping();
+        await apiHelper.deleteCognitiveDataSet();
+
+        // add watson account
+        let apiKey = "2fVs7RMM9IuTvZyB3qD1eXnFzUR4KGJNqd5tF0XMwz4J";
+        await apiHelper.addWatsonAccount(apiKey);
+
+        // trained data set
+        await apiHelper.createCognitiveDataSet("template", { name: trainedCategoryDataSet });
+        await apiHelper.trainCognitiveDataSet(trainedCategoryDataSet);
+        it('[DRDMV-8454,DRDMV-8453,DRDMV-8464,DRDMV-8455,DRDMV-8456]:[Cognitive] - Data Set Mapping for Templates UI validation', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Cognitive--Template', 'Template Configuration - Business Workflows');
+            await consoleCognitivePo.clickAddDataSetMapping();
+            expect(await createCognitiveTemplateMappingPo.isMappingRequiredTextPresent()).toBeTruthy();
+            expect(await createCognitiveTemplateMappingPo.isCompanyTextPresent()).toBeTruthy();
+            expect(await createCognitiveTemplateMappingPo.isDatasetTextPresent()).toBeTruthy();
+            expect(await createCognitiveTemplateMappingPo.isEnableMappingRequiredTextPresent()).toBe("true");
+            expect(await createCognitiveTemplateMappingPo.isConfidentialsLevelOfCategorizationTextPresent()).toBeTruthy();
+            expect(await createCognitiveTemplateMappingPo.isConfidentialsLevelByAgentRequiredTextPresent()).toBeTruthy();
+            expect(await createCognitiveTemplateMappingPo.isSaveButtonDisabled()).toBe("true");
+            await createCognitiveTemplateMappingPo.setMappingName("Add Mapping" + randomStr);
+            await createCognitiveTemplateMappingPo.selectCompany("Petramco");
+            await createCognitiveTemplateMappingPo.selectDataSet(trainedCategoryDataSet);
+            await createCognitiveTemplateMappingPo.setConfidentialsLevelOfCategorization("20");
+            await createCognitiveTemplateMappingPo.setConfidentialsLevelByAgent("10");
+            await createCognitiveTemplateMappingPo.clickCancelButton();
+            await utilCommon.clickOnWarningCancel();
+            await createCognitiveTemplateMappingPo.clickCancelButton();
+            await utilCommon.clickOnWarningOk();
+        });
+        it('[DRDMV-8454,DRDMV-8453,DRDMV-8464,DRDMV-8455,DRDMV-8456]:[Cognitive] - Data Set Mapping for Templates UI validation', async () => {
+            await consoleCognitivePo.clickAddDataSetMapping();
+            await createCognitiveTemplateMappingPo.setMappingName("Add Mapping" + randomStr);
+            await createCognitiveTemplateMappingPo.selectCompany("Petramco");
+            await createCognitiveTemplateMappingPo.selectDataSet(trainedCategoryDataSet);
+            await createCognitiveTemplateMappingPo.setConfidentialsLevelOfCategorization("200");
+            expect(await createCognitiveTemplateMappingPo.getMaximumValueErrorMessage()).toContain("Maximum value is 100.");
+            await createCognitiveTemplateMappingPo.setConfidentialsLevelOfCategorization("20");
+            await createCognitiveTemplateMappingPo.setConfidentialsLevelByAgent("101");
+            expect(await createCognitiveTemplateMappingPo.getMaximumValueErrorMessage()).toContain("Maximum value is 100.");
+            await createCognitiveTemplateMappingPo.setConfidentialsLevelByAgent("10");
+            await createCognitiveTemplateMappingPo.clickSaveButton();
+        });
+        it('[DRDMV-8454,DRDMV-8453,DRDMV-8464,DRDMV-8455,DRDMV-8456]:[Cognitive] - Data Set Mapping for Templates UI validation', async () => {
+            await utilGrid.searchAndOpenHyperlink("Add Mapping" + randomStr);
+            expect(await editCognitiveTemplateMappingPo.isMappingRequiredTextPresent()).toBeTruthy();
+            expect(await editCognitiveTemplateMappingPo.isCompanyTextPresent()).toBeTruthy();
+            expect(await editCognitiveTemplateMappingPo.isDatasetTextPresent()).toBeTruthy();
+            expect(await editCognitiveTemplateMappingPo.isEnableMappingRequiredTextPresent()).toBe("true");
+            expect(await editCognitiveTemplateMappingPo.isConfidentialsLevelOfCategorizationTextPresent()).toBeTruthy();
+            expect(await editCognitiveTemplateMappingPo.isConfidentialsLevelByAgentRequiredTextPresent()).toBeTruthy();
+            await editCognitiveTemplateMappingPo.updateMappingName("update Mapping" + randomStr);
+            await editCognitiveTemplateMappingPo.updateConfidentialsLevelOfCategorization("40");
+            await editCognitiveTemplateMappingPo.updateConfidentialsLevelByAgent("40");
+            await editCognitiveTemplateMappingPo.clickCancelButton();
+            await utilCommon.clickOnWarningCancel();
+            await editCognitiveTemplateMappingPo.clickCancelButton();
+            await utilCommon.clickOnWarningOk();
+        });
+        it('[DRDMV-8454,DRDMV-8453,DRDMV-8464,DRDMV-8455,DRDMV-8456]:[Cognitive] - Data Set Mapping for Templates UI validation', async () => {
+            await utilGrid.searchAndOpenHyperlink("Add Mapping" + randomStr);
+            await editCognitiveTemplateMappingPo.updateMappingName("update Mapping" + randomStr);
+            await editCognitiveTemplateMappingPo.updateConfidentialsLevelOfCategorization("400");
+            expect(await editCognitiveTemplateMappingPo.getMaximumValueErrorMessage()).toContain("Maximum value is 100.");
+            await editCognitiveTemplateMappingPo.updateConfidentialsLevelOfCategorization("40");
+            await editCognitiveTemplateMappingPo.updateConfidentialsLevelByAgent("400");
+            expect(await editCognitiveTemplateMappingPo.getMaximumValueErrorMessage()).toContain("Maximum value is 100.");
+            await editCognitiveTemplateMappingPo.updateConfidentialsLevelByAgent("40");
+            await editCognitiveTemplateMappingPo.clickSaveButton();
+        });
+
+        it('[DRDMV-8454,DRDMV-8453,DRDMV-8464,DRDMV-8455,DRDMV-8456]:[Cognitive] - Data Set Mapping for Templates UI validation', async () => {
+            await consoleCognitivePo.clickAddDataSetMapping();
+            await createCognitiveTemplateMappingPo.setMappingName("Add Mapping Group " + randomStr);
+            await createCognitiveTemplateMappingPo.selectCompany("Petramco");
+            await createCognitiveTemplateMappingPo.selectDataSet(trainedCategoryDataSet);
+            await createCognitiveTemplateMappingPo.setConfidentialsLevelOfCategorization("20");
+            await createCognitiveTemplateMappingPo.setConfidentialsLevelByAgent("10");
+            await createCognitiveTemplateMappingPo.clickSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent("ERROR (382): The value(s) for this entry violate a unique index ")).toBeTruthy();
+            await createCognitiveTemplateMappingPo.clickEnabledMapping(false);
+            await createCognitiveTemplateMappingPo.clickSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent("ERROR (382): The value(s) for this entry violate a unique index ")).toBeTruthy();
+            await createCognitiveTemplateMappingPo.selectCompany("Psilon");
+            await createCognitiveTemplateMappingPo.clickSaveButton();
+        });
+        it('[DRDMV-8454,DRDMV-8453,DRDMV-8464,DRDMV-8455,DRDMV-8456]:[Cognitive] - Data Set Mapping for Templates UI validation', async () => {
+            await consoleCognitivePo.clickAddDataSetMapping();
+            await createCognitiveTemplateMappingPo.setMappingName("Add Mapping Psilon" + randomStr);
+            await createCognitiveTemplateMappingPo.selectCompany("Psilon");
+            await createCognitiveTemplateMappingPo.selectDataSet(trainedCategoryDataSet);
+            await createCognitiveTemplateMappingPo.setConfidentialsLevelOfCategorization("20");
+            await createCognitiveTemplateMappingPo.setConfidentialsLevelByAgent("10");
+            await createCognitiveTemplateMappingPo.clickSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent("ERROR (382): The value(s) for this entry violate a unique index ")).toBeTruthy();
+            await createCognitiveTemplateMappingPo.clickCancelButton();
+            await utilCommon.clickOnWarningOk();
+        });
+    });
+
+    //ankagraw
+    it('[DRDMV-8457]: [Cognitive] - Template Data Set Mapping Grid validation', async () => {
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Case Management--Cognitive--Template', 'Template Configuration - Business Workflows');
+        await consoleCognitivePo.addFilterOnTemplate("Mapping Name","Add Mapping Group " + randomStr,"text");
+        expect(await consoleCognitivePo.isRecordPresentOnTemplate("Add Mapping Group " + randomStr)).toBeTruthy();
+        await consoleCognitivePo.addFilterOnTemplate("Company","Petramco","text");
+        expect(await consoleCognitivePo.isRecordPresentOnTemplate("update Mapping" + randomStr)).toBeTruthy();
+        await consoleCognitivePo.addFilterOnTemplate("Mapping Type","Categorization","text");
+        expect(await consoleCognitivePo.isRecordPresentOnTemplate("update Mapping" + randomStr)).toBeTruthy();
+        expect(await consoleCognitivePo.isColumnSortedOnTemplate("Mapping Name", "asc")).toBeTruthy();
+        expect(await consoleCognitivePo.isColumnSortedOnTemplate("Mapping Name", "desc")).toBeTruthy();
+        expect(await consoleCognitivePo.isColumnSortedOnTemplate("Company", "asc")).toBeTruthy();
+        expect(await consoleCognitivePo.isColumnSortedOnTemplate("Company", "desc")).toBeTruthy();
+        expect(await consoleCognitivePo.isColumnSortedOnTemplate("Data Set Name", "asc")).toBeTruthy();
+        expect(await consoleCognitivePo.isColumnSortedOnTemplate("Data Set Name", "desc")).toBeTruthy();
+        expect(await consoleCognitivePo.isColumnSortedOnTemplate("Mapping Type", "asc")).toBeTruthy();
+        expect(await consoleCognitivePo.isColumnSortedOnTemplate("Mapping Type", "desc")).toBeTruthy();
+        
     });
 });
