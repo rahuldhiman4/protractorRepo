@@ -574,8 +574,10 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.createNewUser(caseAgentuserData);
             await apiHelper.associatePersonToCompany(caseAgentuserData.userId, "Petramco");
+            await apiHelper.associatePersonToSupportGroup(caseAgentuserData.userId, ownerSupportGroup);
             await apiHelper.createNewUser(caseManageruserData);
             await apiHelper.associatePersonToCompany(caseManageruserData.userId, "Petramco");
+            await apiHelper.associatePersonToSupportGroup(caseManageruserData.userId, ownerSupportGroup);
         });
 
         it('[DRDMV-19575]:Verify the search functionality of Document library console for Region', async () => {

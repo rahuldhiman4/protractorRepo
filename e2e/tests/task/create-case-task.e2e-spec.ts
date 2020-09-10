@@ -853,6 +853,7 @@ describe('Create Case Task', () => {
             await quickCase.createCaseButton();
             await quickCase.gotoCaseButton();
             await utilityCommon.closePopUpMessage();
+            await editTask.clickOnRefreshActivity();
             await viewCasePage.clickOnTaskLink(`AutomatedTaskTemplateActive ${randomStr}`);
             expect(await viewTask.getTaskStatusValue()).toBe("Completed");
         });

@@ -21,6 +21,7 @@ class SlmExpressionBuilder {
         selectFirstLevelExpressionField: '.expanded_field',
         selectSecondLevelExpressionField: '.expanded_field .child_field',
         clearExpression: '.ux-qualification-editor',
+        fieldSearch: '.d-textfield__input'
     }
 
     async getExpressionFieldAvailable(expressionField: string): Promise<string> {
@@ -49,6 +50,9 @@ class SlmExpressionBuilder {
         await qBuilder.element(by.model(this.expressionBuilderSelectors.searchField)).clear();
         await qBuilder.element(by.model(this.expressionBuilderSelectors.searchField)).sendKeys(firstLevelExpression);
         return await $(expressionFields).getText();
+    }
+    async clearSearchField(): Promise<void> {
+        await $$(this.expressionBuilderSelectors.fieldSearch).get(0).clear();
     }
 
     async getFirstLevelExpressionFieldAll(data: string[]): Promise<boolean> {

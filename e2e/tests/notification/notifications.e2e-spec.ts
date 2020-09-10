@@ -41,6 +41,53 @@ describe("Notifications", () => {
     });
 
     //asahitya
+    describe('[DRDMV-16036]: Verify that Case Agent is notified for status(Customized one) change in Case life cycle once Case Agent follow the case status change', () => {
+        beforeAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('idphylum1@petramco.com', 'Password_1234');
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.setDefaultNotificationForUser('idphylum1', "Alert");
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
+            await statusConfig.setCompanyDropdown('Phylum', 'case');
+            await statusConfig.clickEditLifeCycleLink();
+            await statusConfig.addCustomStatus('Resolved', 'Closed', 'AfterResolved');
+        });
+
+        it('[DRDMV-16036]: Verify that Case Agent is notified for status(Customized one) change in Case life cycle once Case Agent follow the case status change', async () => {
+            await apiHelper.apiLoginWithCredential('idphylum2@petramco.com', "Password_1234");
+            let caseData = {
+                "Description": "DRDMV-16036-Desc",
+                "Requester": "idphylum2",
+                "Summary": "DRDMV-16036-Summary",
+                "Assigned Company": "Phylum",
+                "Business Unit": "Phylum Support Org1",
+                "Support Group": "Phylum Support Group1",
+                "Assignee": "idphylum1",
+                "Status": "2000"
+            }
+            let response = await apiHelper.createCase(caseData);
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
+            await apiHelper.apiLoginWithCredential('idphylum1@petramco.com', "Password_1234");
+            await apiHelper.addCaseToWatchlistAllEvents(response.id);
+            await apiHelper.apiLoginWithCredential('idphylum2@petramco.com', "Password_1234");
+            await apiHelper.updateCaseStatus(response.id, 'InProgress');
+            await apiHelper.updateCaseStatus(response.id, 'Pending', 'Customer Response');
+            await apiHelper.updateCaseStatus(response.id, 'Resolved', 'Auto Resolved');
+            await apiHelper.updateCaseStatus(response.id, 'AfterResolved');
+            await utilityCommon.refresh(); //Refreshing the page to reflect the notification
+            await notificationPo.clickOnNotificationIcon();
+            expect(await notificationPo.isAlertPresent(`Watchlist Alert: ${response.displayId} Marked: AfterResolved by phylumfn2 phylumln2.`)).toBeTruthy();
+        });
+
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+    });
+    
+    //asahitya
     it('[DRDMV-8319]: [Alerts] Notification alerts on Case status update, for case with assignee', async () => {
         let caseData = {
             "Description": "DRDMV-8319 Desc",
@@ -98,6 +145,7 @@ describe("Notifications", () => {
         }
     });
 
+    //asahitya
     it('[DRDMV-22964]: [Notifications] Case created without Case Template that has assignee - Assignee', async () => {
         let caseData = {
             "Description": "Actionable Notification Desc",
@@ -129,51 +177,4 @@ describe("Notifications", () => {
             await loginPage.login('qkatawazi');
         }
     });
-
-    describe('[DRDMV-16036]: Verify that Case Agent is notified for status(Customized one) change in Case life cycle once Case Agent follow the case status change', () => {
-        beforeAll(async () => {
-            await navigationPage.signOut();
-            await loginPage.login('idphylum1@petramco.com', 'Password_1234');
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.setDefaultNotificationForUser('idphylum1', "Alert");
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
-            await statusConfig.setCompanyDropdown('Phylum', 'case');
-            await statusConfig.clickEditLifeCycleLink();
-            await statusConfig.addCustomStatus('Resolved', 'Closed', 'AfterResolved');
-        });
-
-        it('[DRDMV-16036]: Verify that Case Agent is notified for status(Customized one) change in Case life cycle once Case Agent follow the case status change', async () => {
-            await apiHelper.apiLoginWithCredential('idphylum2@petramco.com', "Password_1234");
-            let caseData = {
-                "Description": "DRDMV-16036-Desc",
-                "Requester": "idphylum2",
-                "Summary": "DRDMV-16036-Summary",
-                "Assigned Company": "Phylum",
-                "Business Unit": "Phylum Support Org1",
-                "Support Group": "Phylum Support Group1",
-                "Assignee": "idphylum1",
-                "Status": "2000"
-            }
-            let response = await apiHelper.createCase(caseData);
-            await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
-            await apiHelper.apiLoginWithCredential('idphylum1@petramco.com', "Password_1234");
-            await apiHelper.addCaseToWatchlistAllEvents(response.id);
-            await apiHelper.apiLoginWithCredential('idphylum2@petramco.com', "Password_1234");
-            await apiHelper.updateCaseStatus(response.id, 'InProgress');
-            await apiHelper.updateCaseStatus(response.id, 'Pending', 'Customer Response');
-            await apiHelper.updateCaseStatus(response.id, 'Resolved', 'Auto Resolved');
-            await apiHelper.updateCaseStatus(response.id, 'AfterResolved');
-            await utilityCommon.refresh(); //Refreshing the page to reflect the notification
-            await notificationPo.clickOnNotificationIcon();
-            expect(await notificationPo.isAlertPresent(`Watchlist Alert: ${response.displayId} Marked: AfterResolved by phylumfn2 phylumln2.`)).toBeTruthy();
-        });
-
-        afterAll(async () => {
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
-        });
-    });
-
 });

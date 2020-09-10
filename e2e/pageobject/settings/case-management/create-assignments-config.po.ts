@@ -15,7 +15,7 @@ class AssignmentConfigCreatePage {
         catTier3DrpDwn: 'f644d025-c5a8-46a7-baa5-4f09994d9859',
         catTier4DrpDwn: 'e357ee21-d59e-4d89-9864-5e481a116a04',
         priorityDrpDwn: '790dfab1-2353-4b06-909d-741ebbc896d5',
-        labelDrpDwn: '0274367e-248b-40cc-9f6b-7fed430e9829',
+        labelDrpDwn: 'ae22985a-f9b8-451b-ac89-c9df8e1f222e',
         regionDrpDwn: '917ab504-369d-49e9-8e4f-e3e9d87e6897',
         siteDrpDwn: '01c1857c-046e-4f5a-b38c-10480098a36b',
         defaultToggle: '[rx-view-component-id="d52b16e7-3cd4-4ef1-a31b-922eac1007c1"] .d-icon-circle_slash_o',
@@ -55,6 +55,10 @@ class AssignmentConfigCreatePage {
 
     async setCategoryTier3(category3:string){
         await utilCommon.selectDropDown(this.selectors.catTier3DrpDwn, category3);
+    }
+
+    async setCategoryTier4(category4:string){
+        await utilCommon.selectDropDown(this.selectors.catTier4DrpDwn, category4);
     }
 
     async setPriority(company:string){
@@ -114,6 +118,10 @@ class AssignmentConfigCreatePage {
 
     async isSiteAllDropDownValuesMatches(data: string[]): Promise<boolean> {
         return await utilCommon.isDrpDownvalueDisplayed(this.selectors.siteDrpDwn, data);
+    }
+
+    async setLabel(label:string){
+        await utilCommon.selectDropDown(this.selectors.labelDrpDwn, label);
     }
 }
 

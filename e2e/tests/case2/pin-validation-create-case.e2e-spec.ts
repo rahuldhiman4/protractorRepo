@@ -71,6 +71,7 @@ describe('PIN Validation Create Case', () => {
             expect(await previewCasePo.isAssignedCompanyDisplayed('Psilon')).toBeTruthy();
             expect(await previewCasePo.isRequesterEmailIdDisplayed('gwixillian@psilon.com')).toBeTruthy();
             await previewCasePo.clickGoToCaseButton();
+            await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog('validated the PIN of the requester')).toBeTruthy();
         });
         it('[DRDMV-13709,DRDMV-10603,DRDMV-10611,DRDMV-10608,DRDMV-10612]:Case creation via Create Case ,Template validation is ENFORCED', async () => {
@@ -88,6 +89,7 @@ describe('PIN Validation Create Case', () => {
             expect(await utilityCommon.isPopupMsgsMatches(['Validation of requester is successful.'])).toBeTruthy();
             await createCasePo.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
+            await activityTabPo.clickOnRefreshButton();
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Requester is not validated for this case.')).toBeFalsy();
             expect(await activityTabPo.isTextPresentInActivityLog('validated the PIN of the requester')).toBeTruthy();
         });
@@ -106,6 +108,7 @@ describe('PIN Validation Create Case', () => {
             expect(await utilityCommon.isPopupMsgsMatches(['Validation of requester is successful.'])).toBeTruthy();
             await createCasePo.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
+            await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog('validated the PIN of the requester')).toBeTruthy();
         });
         afterAll(async () => {
@@ -170,6 +173,7 @@ describe('PIN Validation Create Case', () => {
             expect(await utilityCommon.isPopupMsgsMatches(['Validation of requester is successful.'])).toBeTruthy();
             await createCasePo.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();            
+            await activityTabPo.clickOnRefreshButton();            
             expect(await activityTabPo.isTextPresentInActivityLog('validated the PIN of the requester')).toBeTruthy();
         });
         it('[DRDMV-10601,DRDMV-10602,DRDMV-10606,DRDMV-10607,DRDMV-10610]:Case creation via Create Case ,Template validation is OPTIONAL', async () => {
@@ -200,6 +204,7 @@ describe('PIN Validation Create Case', () => {
             expect(await utilityCommon.isPopupMsgsMatches(['Validation of requester is successful.'])).toBeTruthy();
             await createCasePo.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();           
+            await activityTabPo.clickOnRefreshButton();      
             expect(await activityTabPo.isTextPresentInActivityLog('validated the PIN of the requester')).toBeTruthy();
         });
         it('[DRDMV-10601,DRDMV-10602,DRDMV-10606,DRDMV-10607,DRDMV-10610]:Case creation via Create Case ,Template validation is OPTIONAL', async () => {
@@ -217,6 +222,7 @@ describe('PIN Validation Create Case', () => {
             expect(await utilityCommon.isPopupMsgsMatches(['Validation of requester is successful.'])).toBeTruthy();
             await createCasePo.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();          
+            await activityTabPo.clickOnRefreshButton();          
             expect(await activityTabPo.isTextPresentInActivityLog('validated the PIN of the requester')).toBeTruthy();
         });
         afterAll(async () => {
@@ -310,6 +316,7 @@ describe('PIN Validation Create Case', () => {
             expect(await utilityCommon.isPopupMsgsMatches(['Validation of requester is successful.'])).toBeTruthy();
             await createCasePo.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();           
+            await activityTabPo.clickOnRefreshButton();       
             expect(await activityTabPo.isTextPresentInActivityLog('validated the PIN of the requester')).toBeTruthy();
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('gwixillian');
@@ -320,6 +327,7 @@ describe('PIN Validation Create Case', () => {
             expect(await utilityCommon.isPopupMsgsMatches(['Validation of requester is successful.'])).toBeTruthy();
             await createCasePo.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
+            await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog('validated the PIN of the requester')).toBeTruthy();
         });
         it('[DRDMV-10604,DRDMV-10609,DRDMV-10605,DRDMV-10600]:Case creation via Create Case ,Template validation is OPTIONAL and NONE', async () => {
@@ -337,6 +345,7 @@ describe('PIN Validation Create Case', () => {
             expect(await utilityCommon.isPopupMsgsMatches(['Validation of requester is successful.'])).toBeTruthy();
             await createCasePo.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();          
+            await activityTabPo.clickOnRefreshButton();          
             expect(await activityTabPo.isTextPresentInActivityLog('validated the PIN of the requester')).toBeTruthy();
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('gwixillian');
@@ -347,6 +356,7 @@ describe('PIN Validation Create Case', () => {
             expect(await utilityCommon.isPopupMsgsMatches(['Validation of requester is successful.'])).toBeTruthy();
             await createCasePo.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();          
+            await activityTabPo.clickOnRefreshButton();        
             expect(await activityTabPo.isTextPresentInActivityLog('validated the PIN of the requester')).toBeTruthy();
         });
         afterAll(async () => {
@@ -392,6 +402,7 @@ describe('PIN Validation Create Case', () => {
             expect(await utilityCommon.isPopupMsgsMatches(['Validation of requester is successful.'])).toBeTruthy();
             await createCasePo.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
+            await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog('validated the PIN of the requester')).toBeTruthy();
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('gwixillian');
@@ -419,6 +430,7 @@ describe('PIN Validation Create Case', () => {
             expect(await utilityCommon.isPopupMsgsMatches(['Validation of requester is successful.'])).toBeTruthy();
             await createCasePo.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();          
+            await activityTabPo.clickOnRefreshButton();     
             expect(await activityTabPo.isTextPresentInActivityLog('validated the PIN of the requester')).toBeTruthy();
         });
         afterAll(async () => {

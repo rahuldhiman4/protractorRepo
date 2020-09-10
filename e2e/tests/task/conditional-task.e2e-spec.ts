@@ -323,10 +323,14 @@ describe('Conditional Task', () => {
             await editCaseTemplatePage.changeTemplateStatusDropdownValue('Active');
             await editCaseTemplatePage.clickOnSaveCaseTemplateMetadata();
             expect(await viewCaseTemplatePage.isTaskFlowBtnEnabled()).toBeFalsy('Task Flow button is enabled');
+            let defaultWidth = (await viewCaseTemplatePage.getHeightAndWidth()).width;
+            let defaultHeight = (await viewCaseTemplatePage.getHeightAndWidth()).height;
             await viewCaseTemplatePage.zoomOutTaskFlowSection(3);
-            expect(await viewCaseTemplatePage.isHeightWidthMatches(362.004, 824.901)).toBeTruthy('Height Width not matching');
+            expect((await viewCaseTemplatePage.getHeightAndWidth()).height).toBeLessThan(Number(defaultHeight));
+            expect((await viewCaseTemplatePage.getHeightAndWidth()).width).toBeLessThan(Number(defaultWidth));
             await viewCaseTemplatePage.zoomInTaskFlowSection(6);
-            expect(await viewCaseTemplatePage.isHeightWidthMatches(1104, 2580.11)).toBeTruthy('Height Width not matching');
+            expect((await viewCaseTemplatePage.getHeightAndWidth()).height).toBeGreaterThan(Number(defaultHeight));
+            expect((await viewCaseTemplatePage.getHeightAndWidth()).width).toBeGreaterThan(Number(defaultWidth));
             await editCaseTemplatePage.clickOnEditCaseTemplateMetadata();
             await editCaseTemplatePage.changeTemplateStatusDropdownValue('Inactive');
             await editCaseTemplatePage.clickOnSaveCaseTemplateMetadata();
@@ -345,10 +349,14 @@ describe('Conditional Task', () => {
             await selectCasetemplateBladePo.clickOnAllTemplateTab();
             await selectCasetemplateBladePo.searchAndOpenCaseTemplate(draftCaseTemplatePetramcoData.templateName);
             expect(await previewCaseTemplatePage.getReadOnlyFieldCount()).toEqual(10); //Detailed Read only fields are verified in DRDMV-8868 test
+            defaultWidth = (await viewCaseTemplatePage.getHeightAndWidth()).width;
+            defaultHeight = (await viewCaseTemplatePage.getHeightAndWidth()).height;
             await previewCaseTemplatePage.zoomOutTaskFlowSection(3);
-            expect(await viewCaseTemplatePage.isHeightWidthMatches(432.705, 989.177)).toBeTruthy('Height Width not matching on Case Template Preview');
+            expect((await viewCaseTemplatePage.getHeightAndWidth()).height).toBeLessThan(Number(defaultHeight));
+            expect((await viewCaseTemplatePage.getHeightAndWidth()).width).toBeLessThan(Number(defaultWidth));
             await previewCaseTemplatePage.zoomInTaskFlowSection(6);
-            expect(await viewCaseTemplatePage.isHeightWidthMatches(1117.7, 1599.18)).toBeTruthy('Height Width not matching on Case Template Preview');
+            expect((await viewCaseTemplatePage.getHeightAndWidth()).height).toBeGreaterThan(Number(defaultHeight));
+            expect((await viewCaseTemplatePage.getHeightAndWidth()).width).toBeGreaterThan(Number(defaultWidth));
             await previewCaseTemplatePage.clickOnBackButton();
             await utilityCommon.closeAllBlades();
         });
@@ -360,10 +368,14 @@ describe('Conditional Task', () => {
             await quickCasePage.selectCaseTemplate(draftCaseTemplatePetramcoData.templateName);
             await quickCasePage.clickOnCaseTemplate(draftCaseTemplatePetramcoData.templateName);
             expect(await previewCaseTemplatePage.getReadOnlyFieldCount()).toEqual(10);
+            let defaultWidth = (await viewCaseTemplatePage.getHeightAndWidth()).width;
+            let defaultHeight = (await viewCaseTemplatePage.getHeightAndWidth()).height;
             await previewCaseTemplatePage.zoomOutTaskFlowSection(3);
-            expect(await viewCaseTemplatePage.isHeightWidthMatches(434.182, 989.291)).toBeTruthy('Height Width not matching on Case Template Preview');
+            expect((await viewCaseTemplatePage.getHeightAndWidth()).height).toBeLessThan(Number(defaultHeight));
+            expect((await viewCaseTemplatePage.getHeightAndWidth()).width).toBeLessThan(Number(defaultWidth));
             await previewCaseTemplatePage.zoomInTaskFlowSection(6);
-            expect(await viewCaseTemplatePage.isHeightWidthMatches(1119.18, 1601.29)).toBeTruthy('Height Width not matching on Case Template Preview');
+            expect((await viewCaseTemplatePage.getHeightAndWidth()).height).toBeGreaterThan(Number(defaultHeight));
+            expect((await viewCaseTemplatePage.getHeightAndWidth()).width).toBeGreaterThan(Number(defaultWidth));
             await previewCaseTemplatePage.clickOnBackButton();
             await utilityCommon.closeAllBlades();
 
