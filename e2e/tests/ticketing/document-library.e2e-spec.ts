@@ -650,7 +650,7 @@ describe('Document Library', () => {
         await navigationPage.gotoQuickCase();
         await quickCasePo.selectRequesterName('Angelina Jolie');
         await quickCasePo.setCaseSummary(titleRandVal);
-        expect(await resources.getCountOfHeading('Recommended Knowledge')).toBe('0', 'heading Count is not correct');
+        expect(await resources.getCountOfHeading('Recommended Knowledge')).toBe(0, 'heading Count is not correct');
         await navigationPage.gotoCreateKnowledge();
         expect(await browser.getTitle()).toBe('Knowledge Article Templates Preview - Business Workflows');
         await createKnowlegePo.clickOnTemplate('Reference');

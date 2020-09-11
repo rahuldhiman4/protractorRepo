@@ -106,12 +106,12 @@ export class Resources {
         });
     }
 
-    async getCountOfHeading(headerName: string): Promise<string> {
+    async getCountOfHeading(headerName: string): Promise<number> {
         let smartRecorderResults: ElementFinder[] = await $$(this.selectors.smartSearchResult);
         for (let i: number = 0; i < smartRecorderResults.length; i++) {
             if ((await smartRecorderResults[i].getText()).includes(headerName)) {
                 let count: string = await smartRecorderResults[i].$('span').getText();
-                return count.substring(1, count.length - 1);
+                return parseInt(count.substring(1, count.length - 1));
             }
         }
     }

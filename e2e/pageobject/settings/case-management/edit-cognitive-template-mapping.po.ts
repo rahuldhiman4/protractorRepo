@@ -40,7 +40,7 @@ class EditTemplateMapping {
         await $(`[rx-view-component-id="d0f55567-9833-471f-88bf-d6cde326386c"] button[aria-pressed= ${booleanValue}`).click();
     }
 
-    async updateConfidentialsLevelOfCategorization(auto: string): Promise<void> {
+    async updateValueOfCasesCreatedAutomatically(auto: string): Promise<void> {
         await $(this.selectors.caseCreatedAutomatically).clear();
         await $(this.selectors.caseCreatedAutomatically).sendKeys(auto);
     }
