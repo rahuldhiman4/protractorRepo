@@ -14,6 +14,8 @@ describe("Knowledge Approval Mapping Tests", () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
+        await apiHelper.apiLogin('elizabeth');
+        await apiHelper.deleteApprovalMapping(knowledgeModule);
     });
 
     afterAll(async () => {
