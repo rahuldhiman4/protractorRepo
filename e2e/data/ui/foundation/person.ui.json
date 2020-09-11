@@ -125,5 +125,26 @@
         "lastName": "Tendulkar",
         "userId": "stendulkar",
         "userPermission": "AGGAA5V0GE9Z4AOR0BXUOQ3ZT04EJA;AGGAA5V0H3XY6AOTLKINOSP72R7YAE"
+    },
+
+    "AlienwareCaseAdmin1": {
+        "firstName": "Indian",
+        "lastName": "People",
+        "userId": "Ipeople",
+        "company": "Pico Systems",
+        "userPermission": "AGGAA5V0GE9Z4AOR0BXUOQ3ZT04EJA;AGGAA5V0GE9Z4AOR7DBBOQLAW74PH7;AGGAA5V0H3XY6AOTLKINOSP72R7YAE"
+    },
+    "AlienwareCaseAdmin2": {
+        "firstName": "Indian",
+        "lastName": "Peoples",
+        "userId": "Jpeople",
+        "company": "Pico Systems"
+    },
+    "AlienwareKnowledgeUser": {
+        "firstName": "India",
+        "lastName": "People",
+        "userId": "Kpeople",
+        "company": "Pico Systems",
+        "userPermission": "AGGAA5V0GE9Z4AOR0BXUOQ3ZT04EJA;AGGAA5V0H3XY6AOTLKINOSP72R7YAE"
     }
 }
