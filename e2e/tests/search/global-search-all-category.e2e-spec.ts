@@ -209,7 +209,7 @@ describe('Global Search All Category', () => {
     }
 
     async function createNewUser(firstName: string, lastName: string, loginId: string, emailId: string, company?: string): Promise<void> {
-        var caseAgentuserData = {
+        let caseAgentuserData = {
             "firstName": firstName,
             "lastName": lastName,
             "userId": loginId,
@@ -886,8 +886,6 @@ describe('Global Search All Category', () => {
 
         });
     });
-
-    
 });
 
 
