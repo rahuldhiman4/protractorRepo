@@ -3173,6 +3173,10 @@ class ApiHelper {
                 processPayload = cloneDeep(processes.EMAIL_ORIGIN);
                 break;
             }
+            case "SOCIAL_ACTIVITY_FEED": {
+                processPayload = cloneDeep(processes.SOCIAL_ACTIVITY_FEED);
+                break;
+            }
             default: {
                 console.log("ERROR: Invalid Process Structure");
                 break;
