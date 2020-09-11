@@ -12,6 +12,11 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
+import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
+import createAdhocTaskPo from '../../pageobject/task/create-adhoc-task.po';
+import viewTaskPo from '../../pageobject/task/view-task.po';
+import knowledgeArticlesConsolePo from '../../pageobject/knowledge/knowledge-articles-console.po';
 
 describe('Case Status Configuration', () => {
     let flowsetData;
@@ -403,4 +408,249 @@ describe('Case Status Configuration', () => {
         await statusConfigPo.clickEditStatus("Staged");
         await statusConfigPo.renameExistingStatus('Update');
     });
+
+    //ankagraw
+    describe('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
+        let caseId, taskId, caseId1, caseData, articleData1, caseDataInProgress, knowledgeSetData, randomStr = Math.floor(Math.random() * 1000000);
+        let manualTask = 'manual task' + randomStr;
+        let manualSummary = 'manual' + randomStr;
+        let personData1;
+        beforeAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            const personDataFile = require('../../data/ui/foundation/person.ui.json');
+            personData1 = personDataFile['AlienwareCaseAdmin1'];
+            await apiHelper.createNewUser(personData1);
+            await apiHelper.associatePersonToCompany(personData1.userId, 'Pico Systems');
+            await apiHelper.associatePersonToSupportGroup(personData1.userId, 'Pico Support Group1');
+            await browser.sleep(7000); //Wait to reflect the user created above
+
+            let personData2 = personDataFile['AlienwareCaseAdmin2'];
+            await apiHelper.createNewUser(personData2);
+            await apiHelper.associatePersonToCompany(personData2.userId, 'Pico Systems');
+            await apiHelper.associatePersonToSupportGroup(personData2.userId, 'Pico Support Group1');
+            await browser.sleep(7000); //Wait to reflect the user created above
+
+            let personData3 = personDataFile['AlienwareKnowledgeUser'];
+            await apiHelper.createNewUser(personData3);
+            await apiHelper.associatePersonToCompany(personData3.userId, 'Pico Systems');
+            await apiHelper.associatePersonToSupportGroup(personData3.userId, 'Pico Support Group2');
+            await browser.sleep(7000); //Wait to reflect the user created above
+            caseData =
+            {
+                "Requester": personData3.userId,
+                "Summary": randomStr + "test",
+                "Assigned Company": "Pico Systems",
+                "Business Unit": "Pico Support Org1",
+                "Support Group": "Pico Support Group1",
+                "Assignee": personData1.userId,
+            }
+            caseDataInProgress =
+            {
+                "Requester": personData3.userId,
+                "Summary": randomStr + "test",
+                "Assigned Company": "Pico Systems",
+                "Business Unit": "Pico Support Org1",
+                "Support Group": "Pico Support Group1",
+                "Assignee": personData1.userId,
+                "status": "In Progress",
+
+            }
+            articleData1 = {
+                "knowledgeSet": "test knowledge",
+                "title": "KnowledgeArticle" + randomStr,
+                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "United States Support",
+                "assigneeSupportGroup": "US Support 1",
+                "assignee": "kayo",
+                "categoryTier1": "Applications",
+                "region": "Australia",
+                "site": "Canberra",
+            }
+
+            knowledgeSetData = {
+                knowledgeSetTitle: "test knowledge",
+                knowledgeSetDesc: "test description",
+                company: 'Petramco'
+            }
+            await loginPage.login(personData1.userId + '@petramco.com', 'Password_1234');
+            await apiHelper.apiLoginWithCredential(personData1.userId + '@petramco.com', 'Password_1234');
+            caseId1 = await apiHelper.createCase(caseData);
+        });
+        it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Task Management--Status Configuration', 'Configure Task Status Tranistions - Business Workflows');
+            await statusConfigPo.setCompanyDropdown('Pico Systems', 'task');
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.addCustomStatus("Staged", "Assigned", "customStatus");
+            await statusConfigPo.saveSetting();
+        });
+        it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
+            await apiHelper.apiLoginWithCredential(personData1.userId + '@petramco.com', 'Password_1234');
+            caseId = await apiHelper.createCase(caseData);
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(caseId.displayId);
+            await viewCasePo.clickAddTaskButton();
+            await manageTaskBladePo.clickAddAdhocTaskButton();
+            await createAdhocTaskPo.setSummary("Summary" + randomStr);
+            await createAdhocTaskPo.clickSaveAdhoctask();
+            await manageTaskBladePo.clickTaskLink("Summary" + randomStr);
+            expect(await viewTaskPo.getTaskStatusValue()).toBe("customStatus");
+            taskId = await viewTaskPo.getTaskID();
+
+        });
+        it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Task Management--Status Configuration', 'Configure Task Status Tranistions - Business Workflows');
+            await statusConfigPo.setCompanyDropdown('Pico Systems', 'task');
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditStatus("customStatus");
+            expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
+            await statusConfigPo.clickOnDeleteButton();
+            await utilCommon.clickOnWarningOk();
+            expect(await utilCommon.isPopUpMessagePresent("Cases with this status are present")).toBeTruthy();
+        });
+
+        it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
+            await navigationPage.gotoTaskConsole();
+            await utilityGrid.searchAndOpenHyperlink(taskId);
+            expect(await viewTaskPo.getTaskStatusValue()).toBe("customStatus");
+            await updateStatusBladePo.changeCaseStatus('Assigned');
+            await updateStatusBladePo.clickSaveStatus('Assigned');
+            expect(await viewTaskPo.getTaskStatusValue()).toBe("Assigned");
+        });
+        it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Task Management--Status Configuration', 'Configure Task Status Tranistions - Business Workflows');
+            await statusConfigPo.setCompanyDropdown('Pico Systems', 'task');
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditStatus("customStatus");
+            expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
+            await statusConfigPo.clickOnDeleteButton();
+            await utilCommon.clickOnWarningOk();
+        });
+
+        it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(caseId.displayId);
+            await viewCasePo.clickAddTaskButton();
+            await manageTaskBladePo.clickAddAdhocTaskButton();
+            await createAdhocTaskPo.setSummary("Summary" + randomStr);
+            await createAdhocTaskPo.clickSaveAdhoctask();
+            await manageTaskBladePo.clickTaskLink("Summary" + randomStr);
+            expect(await viewTaskPo.getTaskStatusValue()).toBe("Assigned");
+        });
+
+        it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
+            await statusConfigPo.setCompanyDropdown("Pico Systems", 'case');
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.addCustomStatus("New", "Assigned", "customStatus");
+            await statusConfigPo.saveSetting();
+
+        });
+        it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
+            await apiHelper.apiLoginWithCredential(personData1.userId + '@petramco.com', 'Password_1234');
+            caseId = await apiHelper.createCase(caseData);
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(caseId.displayId);
+            expect(await viewCasePo.getCaseStatusValue()).toBe('customStatus');
+
+        });
+        it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
+            await statusConfigPo.setCompanyDropdown("Pico Systems", 'case');
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditStatus("customStatus");
+            expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
+            await statusConfigPo.clickOnDeleteButton();
+            await utilCommon.clickOnWarningOk();
+            expect(await utilCommon.isPopUpMessagePresent("Cases with this status are present")).toBeTruthy();
+
+        });
+        it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(caseId.displayId);
+            await updateStatusBladePo.changeCaseStatus('Assigned');
+            await updateStatusBladePo.clickSaveStatus('Assigned');
+            expect(await viewCasePo.getCaseStatusValue()).toBe("Assigned");
+        });
+        it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
+            await statusConfigPo.setCompanyDropdown("Pico Systems", 'case');
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditStatus("customStatus");
+            expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
+            await statusConfigPo.clickOnDeleteButton();
+            await utilCommon.clickOnWarningOk();
+
+        });
+        it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
+            await apiHelper.apiLoginWithCredential(personData1.userId + '@petramco.com', 'Password_1234');
+            caseId = await apiHelper.createCase(caseData);
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(caseId1.displayId);
+            expect(await viewCasePo.getCaseStatusValue()).toBe('Assigned');
+        });
+        it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Status Configuration', 'Configure Knowledge Status Transition - Business Workflows');
+            await statusConfigPo.setCompanyDropdown('Pico Systems', 'knowledge');
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.addCustomStatus("In Progress", "Draft", "Custom");
+            await statusConfigPo.saveSetting();
+        });
+
+        it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
+            await apiHelper.createKnowledgeSet(knowledgeSetData);
+            await apiHelper.createKnowledgeArticle(articleData1);
+            await navigationPage.gotoKnowledgeConsole();
+            await knowledgeArticlesConsolePo.searchKnowledgeArticle(articleData1.title);
+            await updateStatusBladePo.changeCaseStatus('Custom');
+            await updateStatusBladePo.clickSaveStatus('Custom');
+        });
+
+        it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Status Configuration', 'Configure Knowledge Status Transition - Business Workflows');
+            await statusConfigPo.setCompanyDropdown('Pico Systems', 'knowledge');
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditStatus("Custom");
+            expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
+            await statusConfigPo.clickOnDeleteButton();
+            await utilCommon.clickOnWarningOk();
+            expect(await utilCommon.isPopUpMessagePresent("knowledge with this status are present")).toBeTruthy();
+        });
+        it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
+            await navigationPage.gotoKnowledgeConsole();
+            await knowledgeArticlesConsolePo.searchKnowledgeArticle(articleData1.title);
+            await updateStatusBladePo.changeCaseStatus('Draft');
+            await updateStatusBladePo.clickSaveStatus('Draft');
+        });
+
+        it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Status Configuration', 'Configure Knowledge Status Transition - Business Workflows');
+            await statusConfigPo.setCompanyDropdown('Pico Systems', 'knowledge');
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditStatus("Custom");
+            expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
+            await statusConfigPo.clickOnDeleteButton();
+            await utilCommon.clickOnWarningOk();
+        });
+
+        it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
+            await apiHelper.createKnowledgeSet(knowledgeSetData);
+            await apiHelper.createKnowledgeArticle(articleData1);
+            await navigationPage.gotoKnowledgeConsole();
+            await knowledgeArticlesConsolePo.searchKnowledgeArticle(articleData1.title);
+            await updateStatusBladePo.changeCaseStatus('Draft');
+            await updateStatusBladePo.clickSaveStatus('Draft');
+        });
+
+    });
+
 });

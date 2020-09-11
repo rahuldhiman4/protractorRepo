@@ -378,7 +378,7 @@ describe('Case Cognitive', () => {
             await apiHelper.createCognitiveDataSet("category", { name: trainedCategoryDataSet });
             await apiHelper.trainCognitiveDataSet(trainedCategoryDataSet);
         });
-        it('[DRDMV-8973,DRDMV-8971,DRDMV-8972,DRDMV-8977,DRDMV-8974]:[Cognitive] - Add Data Set Mapping for Categorization', async () => {
+        it('[DRDMV-8973,DRDMV-8971,DRDMV-8972,DRDMV-8977,DRDMV-8974,DRDMV-8975]:[Cognitive] - Add Data Set Mapping for Categorization', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Cognitive--Categorization', 'Categorization Configuration - Business Workflows');
             await consoleCognitivePo.clickAddDataSetMapping();
@@ -399,7 +399,7 @@ describe('Case Cognitive', () => {
             await createCognitiveCategorizationMappingPo.clickCancelButton();
             await utilCommon.clickOnWarningOk();
         });
-        it('[DRDMV-8973,DRDMV-8971,DRDMV-8972,DRDMV-8977,DRDMV-8974]:[Cognitive] - Add Data Set Mapping for Categorization', async () => {
+        it('[DRDMV-8973,DRDMV-8971,DRDMV-8972,DRDMV-8977,DRDMV-8974,DRDMV-8975]:[Cognitive] - Add Data Set Mapping for Categorization', async () => {
             await consoleCognitivePo.clickAddDataSetMapping();
             await createCognitiveCategorizationMappingPo.setMappingName("Add Mapping" + randomStr);
             await createCognitiveCategorizationMappingPo.selectCompany("Petramco");
@@ -412,7 +412,7 @@ describe('Case Cognitive', () => {
             await createCognitiveCategorizationMappingPo.setConfidentialsLevelByAgent("10");
             await createCognitiveCategorizationMappingPo.clickSaveButton();
         });
-        it('[DRDMV-8973,DRDMV-8971,DRDMV-8972,DRDMV-8977,DRDMV-8974]:[Cognitive] - Add Data Set Mapping for Categorization', async () => {
+        it('[DRDMV-8973,DRDMV-8971,DRDMV-8972,DRDMV-8977,DRDMV-8974,DRDMV-8975]:[Cognitive] - Add Data Set Mapping for Categorization', async () => {
             await utilGrid.searchAndOpenHyperlink("Add Mapping" + randomStr);
             expect(await editCognitiveCategorizationMappingPo.isMappingRequiredTextPresent()).toBeTruthy();
             expect(await editCognitiveCategorizationMappingPo.isCompanyTextPresent()).toBeTruthy();
@@ -428,7 +428,7 @@ describe('Case Cognitive', () => {
             await editCognitiveCategorizationMappingPo.clickCancelButton();
             await utilCommon.clickOnWarningOk();
         });
-        it('[DRDMV-8973,DRDMV-8971,DRDMV-8972,DRDMV-8977,DRDMV-8974]:[Cognitive] - Add Data Set Mapping for Categorization', async () => {
+        it('[DRDMV-8973,DRDMV-8971,DRDMV-8972,DRDMV-8977,DRDMV-8974,DRDMV-8975]:[Cognitive] - Add Data Set Mapping for Categorization', async () => {
             await utilGrid.searchAndOpenHyperlink("Add Mapping" + randomStr);
             await editCognitiveCategorizationMappingPo.updateMappingName("update Mapping" + randomStr);
             await editCognitiveCategorizationMappingPo.updateConfidentialsLevelOfCategorization("400");
@@ -440,7 +440,7 @@ describe('Case Cognitive', () => {
             await editCognitiveCategorizationMappingPo.clickSaveButton();
         });
 
-        it('[DRDMV-8973,DRDMV-8971,DRDMV-8972,DRDMV-8977,DRDMV-8974]:[Cognitive] - Add Data Set Mapping for Categorization', async () => {
+        it('[DRDMV-8973,DRDMV-8971,DRDMV-8972,DRDMV-8977,DRDMV-8974,DRDMV-8975]:[Cognitive] - Add Data Set Mapping for Categorization', async () => {
             await consoleCognitivePo.clickAddDataSetMapping();
             await createCognitiveCategorizationMappingPo.setMappingName("Add Mapping Group " + randomStr);
             await createCognitiveCategorizationMappingPo.selectCompany("Petramco");
@@ -457,7 +457,7 @@ describe('Case Cognitive', () => {
             await createCognitiveCategorizationMappingPo.selectCompany("Psilon");
             await createCognitiveCategorizationMappingPo.clickSaveButton();
         });
-        it('[DRDMV-8973,DRDMV-8971,DRDMV-8972,DRDMV-8977,DRDMV-8974]:[Cognitive] - Add Data Set Mapping for Categorization', async () => {
+        it('[DRDMV-8973,DRDMV-8971,DRDMV-8972,DRDMV-8977,DRDMV-8974,DRDMV-8975]:[Cognitive] - Add Data Set Mapping for Categorization', async () => {
             await consoleCognitivePo.clickAddDataSetMapping();
             await createCognitiveCategorizationMappingPo.setMappingName("Add Mapping Psilon" + randomStr);
             await createCognitiveCategorizationMappingPo.selectCompany("Psilon");
@@ -467,42 +467,41 @@ describe('Case Cognitive', () => {
             await createCognitiveCategorizationMappingPo.clickSaveButton();
             expect(await utilCommon.isPopUpMessagePresent('ERROR (382): The value(s) for this entry violate a unique index that has been defined for this record definition.')).toBeTruthy();
             await utilCommon.closePopUpMessage();
-            await editCognitiveCategorizationMappingPo.clickCancelButton();
+            await createCognitiveCategorizationMappingPo.clickCancelButton();
             await utilCommon.clickOnWarningOk();
         });
-    });
+        //ankagraw
+        it('[DRDMV-8973,DRDMV-8971,DRDMV-8972,DRDMV-8977,DRDMV-8974,DRDMV-8975]:[Cognitive] - Add Data Set Mapping for Categorization', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Cognitive--Categorization', 'Categorization Configuration - Business Workflows');
+            let column: string[] = ["Mapping Status"];
+            await consoleCognitivePo.addColumnOnCategorization(column);
+            await utilGrid.addFilter("Mapping Name", "Add Mapping Group " + randomStr, "text");
+            expect(await consoleCognitivePo.isRecordPresentOnCategorization("Add Mapping Group " + randomStr)).toBeTruthy();
+            await utilGrid.clearFilter();
+            await utilGrid.addFilter("Company", "Petramco", "text");
+            expect(await consoleCognitivePo.isRecordPresentOnCategorization("update Mapping" + randomStr)).toBeTruthy();
+            await utilGrid.clearFilter();
+            await utilGrid.addFilter("Mapping Type", "Categorization", "checkbox");
+            expect(await consoleCognitivePo.isRecordPresentOnCategorization("update Mapping" + randomStr)).toBeTruthy();
+            await utilGrid.clearFilter();
+            await utilGrid.addFilter("Data Set Name", "Trained Templates Data Set", "text");
+            expect(await consoleCognitivePo.isRecordPresentOnCategorization("Add Mapping Group " + randomStr)).toBeTruthy();
+            await utilGrid.clearFilter();
+            await utilGrid.addFilter("Mapping Status", "True", "checkbox");
+            expect(await consoleCognitivePo.isRecordPresentOnCategorization("Add Mapping Group " + randomStr)).toBeTruthy();
+            await utilGrid.clearFilter();
+            expect(await consoleCognitivePo.isColumnSortedOnCategorization("Mapping Name", "asc")).toBeTruthy();
+            expect(await consoleCognitivePo.isColumnSortedOnCategorization("Mapping Name", "desc")).toBeTruthy();
+            expect(await consoleCognitivePo.isColumnSortedOnCategorization("Company", "asc")).toBeTruthy();
+            expect(await consoleCognitivePo.isColumnSortedOnCategorization("Company", "desc")).toBeTruthy();
+            expect(await consoleCognitivePo.isColumnSortedOnCategorization("Data Set Name", "asc")).toBeTruthy();
+            expect(await consoleCognitivePo.isColumnSortedOnCategorization("Data Set Name", "desc")).toBeTruthy();
+            expect(await consoleCognitivePo.isColumnSortedOnCategorization("Mapping Type", "asc")).toBeTruthy();
+            expect(await consoleCognitivePo.isColumnSortedOnCategorization("Mapping Type", "desc")).toBeTruthy();
 
-    //ankagraw
-    it('[DRDMV-8975]:[Cognitive] - Category Data Set Mapping Grid validation', async () => {
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Cognitive--Categorization', 'Categorization Configuration - Business Workflows');
-        let column:string[] =["Mapping Status"];
-        await consoleCognitivePo.addColumnOnCategorization(column);
-        await utilGrid.addFilter("Mapping Name", "Add Mapping Group " + randomStr, "text");
-        expect(await consoleCognitivePo.isRecordPresentOnCategorization("Add Mapping Group " + randomStr)).toBeTruthy();
-        await utilGrid.clearFilter();
-        await utilGrid.addFilter("Company", "Petramco", "text");
-        expect(await consoleCognitivePo.isRecordPresentOnCategorization("update Mapping" + randomStr)).toBeTruthy();
-        await utilGrid.clearFilter();
-        await utilGrid.addFilter("Mapping Type", "Categorization", "checkbox");
-        expect(await consoleCognitivePo.isRecordPresentOnCategorization("update Mapping" + randomStr)).toBeTruthy();
-        await utilGrid.clearFilter();
-        await utilGrid.addFilter("Data Set Name", "Trained Templates Data Set", "text");
-        expect(await consoleCognitivePo.isRecordPresentOnCategorization("Add Mapping Group " + randomStr)).toBeTruthy();
-        await utilGrid.clearFilter();
-        await utilGrid.addFilter("Mapping Status", "True", "checkbox");
-        expect(await consoleCognitivePo.isRecordPresentOnCategorization("Add Mapping Group " + randomStr)).toBeTruthy();
-        await utilGrid.clearFilter();
-        expect(await consoleCognitivePo.isColumnSortedOnCategorization("Mapping Name", "asc")).toBeTruthy();
-        expect(await consoleCognitivePo.isColumnSortedOnCategorization("Mapping Name", "desc")).toBeTruthy();
-        expect(await consoleCognitivePo.isColumnSortedOnCategorization("Company", "asc")).toBeTruthy();
-        expect(await consoleCognitivePo.isColumnSortedOnCategorization("Company", "desc")).toBeTruthy();
-        expect(await consoleCognitivePo.isColumnSortedOnCategorization("Data Set Name", "asc")).toBeTruthy();
-        expect(await consoleCognitivePo.isColumnSortedOnCategorization("Data Set Name", "desc")).toBeTruthy();
-        expect(await consoleCognitivePo.isColumnSortedOnCategorization("Mapping Type", "asc")).toBeTruthy();
-        expect(await consoleCognitivePo.isColumnSortedOnCategorization("Mapping Type", "desc")).toBeTruthy();
+        });
     });
-
     //ankagraw
     describe('[DRDMV-8454,DRDMV-8453,DRDMV-8464,DRDMV-8455,DRDMV-8456]:[Cognitive] - Data Set Mapping for Templates UI validation', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -618,7 +617,7 @@ describe('Case Cognitive', () => {
     it('[DRDMV-8457]: [Cognitive] - Template Data Set Mapping Grid validation', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Cognitive--Template', 'Template Configuration - Business Workflows');
-        let column:string[] =["Mapping Status"];
+        let column: string[] = ["Mapping Status"];
         await consoleCognitivePo.addColumnOnTemplate(column);
         await utilGrid.addFilter("Mapping Name", "Add Mapping Group" + randomStr, "text");
         expect(await consoleCognitivePo.isRecordPresentOnTemplate("Add Mapping Group " + randomStr)).toBeTruthy();
