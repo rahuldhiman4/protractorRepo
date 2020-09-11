@@ -21,6 +21,9 @@ import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate
 import viewCasePage from '../../pageobject/case/view-case.po';
 import utilityGrid from '../../utils/utility.grid';
 import utilGrid from '../../utils/util.grid';
+import activityTabPage from '../../pageobject/social/activity-tab.po';
+import statusBladePo from '../../pageobject/common/update.status.blade.po';
+import composeEmailPo from '../../pageobject/email/compose-mail.po';
 
 describe('Create Process in Flowset', () => {
     beforeAll(async () => {
@@ -540,6 +543,202 @@ describe('Create Process in Flowset', () => {
 
             await consoleFlowsetProcessLibrary.removeColumn(['Process Name', 'ID']);
         });
+    });
+
+    describe('[DRDMV-10328,DRDMV-10023,DRDMV-10028]: User Activity Feeds process execution for post created by email', () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseResponse = undefined;
+        let processName = undefined;
+        beforeAll(async () => {
+            //Create a Process
+            await apiHelper.apiLogin('tadmin');
+            processName = `Activity Feed Email ${randomStr}`
+            await apiHelper.createProcess(processName, 'SOCIAL_ACTIVITY_FEED');
+
+            //Register the Process
+            await apiHelper.apiLogin('fritz');
+            const registerProcessData = {
+                applicationServicesLib: "com.bmc.dsm.social-lib",
+                processName: 'com.bmc.dsm.social-lib:' + processName,
+                processAliasName: processName,
+                company: 'Petramco',
+                description: 'Desc ' + randomStr,
+                status: 'Active'
+            }
+            let registeredProcessResponse = await apiHelper.createProcessLibConfig(registerProcessData);
+
+            //Create new flowset
+            let flowsetData = require('../../data/ui/case/flowset.ui.json');
+            let flowsetName: string = `DRDMV-10328 ${randomStr}`;
+            flowsetData['flowsetMandatoryFields'].flowsetName = flowsetName;
+            let flowsetResponse = await apiHelper.createNewFlowset(flowsetData['flowsetMandatoryFields']);
+
+            //Map Process to Flowset
+            let flowsetProcessMappingData = {
+                function: 'User Activity Feeds',
+                registeredProcessId: registeredProcessResponse.id,
+                status: 'Active',
+                flowsetId: flowsetResponse.id,
+                company: 'Petramco'
+            }
+            await apiHelper.mapProcessToFlowset(flowsetProcessMappingData);
+
+            //Create Case Template
+            let caseTemplateData = {
+                "templateName": 'DRDMV-10328 tname' + randomStr,
+                "templateSummary": 'DRDMV-10328 Summary' + randomStr,
+                "casePriority": "Medium",
+                "templateStatus": "Active",
+                "company": "Petramco",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qfeng",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3",
+                "flowset": flowsetResponse.id
+            }
+            let caseTemplateResponse = await apiHelper.createCaseTemplate(caseTemplateData)
+            await apiHelper.apiLogin('qfeng');
+
+            //Create Case using above Case Template
+            let caseData = {
+                "Requester": "qtao",
+                "Summary": "DRDMV-10328 Create Case",
+                "Origin": "Email",
+                "Case Template ID": caseTemplateResponse.displayId
+            }
+            caseResponse = await apiHelper.createCase(caseData);
+        });
+
+        it('[DRDMV-10328,DRDMV-10023,DRDMV-10028]: User Activity Feeds process execution for post created by email', async () => {
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
+            await viewCasePage.clickOnRequestersEmail();
+            await composeEmailPo.setEmailBody('Text added for DRDMV-10328');
+            await composeEmailPo.clickOnSendButton();
+            await utilityCommon.closePopUpMessage();
+            await activityTabPage.clickOnRefreshButton();
+            await activityTabPage.clickOnShowMore();
+            expect(await activityTabPage.getRecipientInTo()).toContain('To: Qianru Tao');
+            expect(await activityTabPage.getEmailSubject()).toContain(caseResponse.displayId + ':DRDMV-10328 Create Case');
+            expect(await activityTabPage.getEmailBody()).toContain('Text added for DRDMV-10328');
+            await apiHelper.apiLogin('tadmin');
+            expect(await apiCoreUtil.getProcessRunCount('com.bmc.dsm.social-lib', processName)).toEqual(1);
+
+            await activityTabPage.addActivityNote("hello");
+            await activityTabPage.clickOnPostButton();
+            expect(await apiCoreUtil.getProcessRunCount('com.bmc.dsm.social-lib', processName)).toEqual(2);
+
+            await statusBladePo.changeCaseStatus('In Progress');
+            await statusBladePo.clickSaveStatus('In Progress');
+            expect(await apiCoreUtil.getProcessRunCount('com.bmc.dsm.social-lib', processName)).toEqual(2);
+        });
+    });
+
+    describe('[DRDMV-10024]: Flowset with multiple process mapping with different functions', () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseResponse = undefined;
+        let processName1, processName2;
+        beforeAll(async () => {
+            //Create Process1
+            await apiHelper.apiLogin('tadmin');
+            processName1 = `Activity Feed Email DRDMV-10024 ${randomStr}`
+            await apiHelper.createProcess(processName1, 'SOCIAL_ACTIVITY_FEED');
+
+            //Create Process2
+            processName2 = `Email Origin DRDMV-10024 ${randomStr}`
+            await apiHelper.createProcess(processName2, 'EMAIL_ORIGIN');
+
+            //Register the Process1
+            await apiHelper.apiLogin('fritz');
+            const registerProcessData1 = {
+                applicationServicesLib: "com.bmc.dsm.social-lib",
+                processName: 'com.bmc.dsm.social-lib:' + processName1,
+                processAliasName: processName1,
+                company: 'Petramco',
+                description: 'Desc ' + randomStr,
+                status: 'Active'
+            }
+            let registeredProcessResponse1 = await apiHelper.createProcessLibConfig(registerProcessData1);
+
+            //Register the Process2
+            await apiHelper.apiLogin('fritz');
+            const registerProcessData2 = {
+                applicationServicesLib: "com.bmc.dsm.case-lib",
+                processName: 'com.bmc.dsm.case-lib:' + processName2,
+                processAliasName: processName2,
+                company: 'Petramco',
+                description: 'Desc ' + randomStr,
+                status: 'Active'
+            }
+            let registeredProcessResponse2 = await apiHelper.createProcessLibConfig(registerProcessData2);
+
+            //Create new flowset
+            let flowsetData = require('../../data/ui/case/flowset.ui.json');
+            let flowsetName: string = `DRDMV-10024 ${randomStr}`;
+            flowsetData['flowsetMandatoryFields'].flowsetName = flowsetName;
+            let flowsetResponse = await apiHelper.createNewFlowset(flowsetData['flowsetMandatoryFields']);
+
+            //Map Process1 to Flowset
+            let flowsetProcessMappingData1 = {
+                function: 'User Activity Feeds',
+                registeredProcessId: registeredProcessResponse1.id,
+                status: 'Active',
+                flowsetId: flowsetResponse.id,
+                company: 'Petramco'
+            }
+            await apiHelper.mapProcessToFlowset(flowsetProcessMappingData1);
+
+            //Map Process2 to Flowset
+            let flowsetProcessMappingData2 = {
+                function: 'Initialization',
+                registeredProcessId: registeredProcessResponse2.id,
+                status: 'Active',
+                flowsetId: flowsetResponse.id,
+                company: 'Petramco'
+            }
+            await apiHelper.mapProcessToFlowset(flowsetProcessMappingData2);
+
+            //Create Case Template
+            let caseTemplateData = {
+                "templateName": 'DRDMV-10024 tname' + randomStr,
+                "templateSummary": 'DRDMV-10024 Summary' + randomStr,
+                "casePriority": "Medium",
+                "templateStatus": "Active",
+                "company": "Petramco",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qfeng",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3",
+                "flowset": flowsetResponse.id
+            }
+            let caseTemplateResponse = await apiHelper.createCaseTemplate(caseTemplateData)
+            await apiHelper.apiLogin('qfeng');
+
+            //Create Case using above Case Template
+            let caseData = {
+                "Requester": "qtao",
+                "Summary": "DRDMV-10024 Create Case",
+                "Origin": "Email",
+                "Case Template ID": caseTemplateResponse.displayId
+            }
+            caseResponse = await apiHelper.createCase(caseData);
+        });
+
+        it('[DRDMV-10024]: Flowset with multiple process mapping with different functions', async () => {
+            await apiHelper.apiLogin('tadmin');
+            expect(await apiCoreUtil.getProcessRunCount('com.bmc.dsm.case-lib', `Email Origin DRDMV-10024 ${randomStr}`)).toEqual(1);
+            expect(await apiCoreUtil.getProcessRunCount('com.bmc.dsm.social-lib', `Activity Feed Email DRDMV-10024 ${randomStr}`)).toEqual(0);
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
+            await activityTabPage.addActivityNote("hello");
+            await activityTabPage.clickOnPostButton();
+            expect(await apiCoreUtil.getProcessRunCount('com.bmc.dsm.case-lib', `Email Origin DRDMV-10024 ${randomStr}`)).toEqual(1);
+            expect(await apiCoreUtil.getProcessRunCount('com.bmc.dsm.social-lib', `Activity Feed Email DRDMV-10024 ${randomStr}`)).toEqual(1);
+        });     
     });
 
 });
