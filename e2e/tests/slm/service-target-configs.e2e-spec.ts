@@ -17,6 +17,10 @@ import viewCasePo, { default as viewCasePage } from '../../pageobject/case/view-
 import changeAssignmentPage from '../../pageobject/common/change-assignment-blade.po';
 import utilityGrid from '../../utils/utility.grid';
 import editCasePo from '../../pageobject/case/edit-case.po';
+import serviceTargetConsole from '../../pageobject/settings/slm/service-target-viewconsole.po';
+import createConfigureDataSourceConfigPo from '../../pageobject/settings/slm/create-configure-data-source-config.po';
+import approvalConfigurationPage from "../../pageobject/settings/approval/approval-configuration.po";
+import configureDataSourceConsolePage from '../../pageobject/settings/slm/configure-data-source-config-console.po';
 
 let caseBAUser = 'qkatawazi';
 
@@ -85,7 +89,7 @@ describe('Service Target Tests', () => {
             await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("2");
-            await serviceTargetConfig.selectMileStone();
+            await serviceTargetConfig.selectMeasurement();
             await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
             await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
             await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
@@ -141,7 +145,7 @@ describe('Service Target Tests', () => {
             await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("2");
-            await serviceTargetConfig.selectMileStone();
+            await serviceTargetConfig.selectMeasurement();
             await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
             await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
             await serviceTargetConfig.clickOnSaveSVTButton();
@@ -155,7 +159,7 @@ describe('Service Target Tests', () => {
             await serviceTargetConfig.selectGoalType('Case Response Time');
             await serviceTargetConfig.enterSVTDescription('SVT with all fields Desc');
             await serviceTargetConfig.selectGoal("2");
-            await serviceTargetConfig.selectMileStone();
+            await serviceTargetConfig.selectMeasurement();
             await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
             await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
             await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
@@ -193,7 +197,7 @@ describe('Service Target Tests', () => {
             await serviceTargetConfig.selectGoal("2");
         });
         it('[DRDMV-5038]: Verify "Terms and Condition" qualification on Service Target - Create View', async () => {
-            await serviceTargetConfig.selectMileStone();
+            await serviceTargetConfig.selectMeasurement();
             await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
             await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Pending");
             await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Resolved");
@@ -227,7 +231,7 @@ describe('Service Target Tests', () => {
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("2");
-            await serviceTargetConfig.selectMileStone();
+            await serviceTargetConfig.selectMeasurement();
             await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
             await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Pending");
             await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Resolved");
@@ -272,7 +276,7 @@ describe('Service Target Tests', () => {
             await serviceTargetConfig.selectGoalType('Case Response Time');
             await serviceTargetConfig.enterSVTDescription('SVT with all fields Desc');
             await serviceTargetConfig.selectGoal("2");
-            await serviceTargetConfig.selectMileStone();
+            await serviceTargetConfig.selectMeasurement();
             await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
             await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
             await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
@@ -282,7 +286,7 @@ describe('Service Target Tests', () => {
         it('[DRDMV-2363]: Verify SVT Updation', async () => {
             await utilGrid.searchAndOpenHyperlink('SVT with all fields');
             await browser.sleep(1000);
-            await serviceTargetConfig.selectMileStone();
+            await serviceTargetConfig.selectMeasurement();
             await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "New");
             await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "In Progress");
             await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
@@ -309,7 +313,7 @@ describe('Service Target Tests', () => {
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("6");
-            await serviceTargetConfig.selectMileStone();
+            await serviceTargetConfig.selectMeasurement();
             await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
             await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Pending");
             await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Resolved");
@@ -425,5 +429,284 @@ describe('Service Target Tests', () => {
 
     });
 
+    //skhobrag
+    describe('[DRDMV-2362]: SLM - Service Target - Console', async () => {
+        let caseSVTData, taskSVTData, serviceTargetGUID, serviceTargetID;
+        let serviceTargetColumns: string[] = ["GUID"];
+
+        beforeAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteServiceTargets();
+        });
+
+        it('[DRDMV-2362]: Verify Service Target for Case Creation', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
+            await serviceTargetConfig.createServiceTargetConfig(caseSVTData.svtName, 'Petramco', 'Case Management');
+            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
+            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await SlmExpressionBuilder.clickOnSaveExpressionButton();
+            await serviceTargetConfig.selectGoalType('Case Resolution Time');
+            await serviceTargetConfig.enterSVTDescription('SVT with all fields Desc');
+            await serviceTargetConfig.selectGoal("2");
+            await serviceTargetConfig.selectMeasurement();
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.clickOnSaveSVTButton();
+            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+        });
+
+        it('[DRDMV-2362]: Verify Service Target for Task Creation', async () => {
+            await serviceTargetConfig.createServiceTargetConfig('task svt', 'Petramco', 'Task Management');
+            await SlmExpressionBuilder.selectExpressionQualification('Task Type', '=', 'SELECTION', 'Automated');
+            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await SlmExpressionBuilder.clickOnSaveExpressionButtonForTask();
+            await serviceTargetConfig.selectGoalType('Task Resolution Time');
+            await serviceTargetConfig.selectStatus('Disabled');
+            await serviceTargetConfig.selectGoal("2");
+            await serviceTargetConfig.selectMeasurement();
+            await serviceTargetConfig.selectExpressionForMeasurementForTask(0, "status", "=", "STATUS", "Staged");
+            await serviceTargetConfig.selectExpressionForMeasurementForTask(1, "status", "=", "STATUS", "Completed");
+            await serviceTargetConfig.selectExpressionForMeasurementForTask(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.clickOnSaveSVTButton();
+        });
+
+        it('[DRDMV-2362]: Verify Service Target Console Fields Sort Order', async () => {
+            await serviceTargetConsole.addColumns(serviceTargetColumns);
+            await serviceTargetConsole.searchOnGridConsole(caseSVTData.svtName);
+            serviceTargetGUID = await serviceTargetConsole.getServiceTargetGUID();
+            serviceTargetID = await serviceTargetConsole.getServiceTargetID();
+            await utilGrid.clearFilter();
+            await utilGrid.clearGridSearchBox();
+            expect(await serviceTargetConsole.isGridColumnSorted('Service Target Title', 'asc')).toBeTruthy('Goal Type Name Column is not sorted in ascending order');
+            expect(await serviceTargetConsole.isGridColumnSorted('Service Target Title', 'desc')).toBeTruthy('Goal Type Name Column is not sorted in descending order');
+            await serviceTargetConsole.clickRefreshIcon();
+            expect(await serviceTargetConsole.isGridColumnSorted('Data source', 'asc')).toBeTruthy('Status Column is not sorted in ascending order');
+            expect(await serviceTargetConsole.isGridColumnSorted('Data source', 'desc')).toBeTruthy('Status Column is not sorted in descending order');
+            await serviceTargetConsole.clickRefreshIcon();
+            expect(await serviceTargetConsole.isGridColumnSorted('Service Target ID', 'asc')).toBeTruthy('Goal Type Column is not sorted in ascending order');
+            expect(await serviceTargetConsole.isGridColumnSorted('Service Target ID', 'desc')).toBeTruthy('Goal Type Column is not sorted in descending order');
+            await serviceTargetConsole.clickRefreshIcon();
+            expect(await serviceTargetConsole.isGridColumnSorted('Goal Type', 'asc')).toBeTruthy('Status Column is not sorted in ascending order');
+            expect(await serviceTargetConsole.isGridColumnSorted('Goal Type', 'desc')).toBeTruthy('Status Column is not sorted in descending order');
+            await serviceTargetConsole.clickRefreshIcon();
+            expect(await serviceTargetConsole.isGridColumnSorted('GUID', 'asc')).toBeTruthy('Status Column is not sorted in ascending order');
+            expect(await serviceTargetConsole.isGridColumnSorted('GUID', 'desc')).toBeTruthy('Status Column is not sorted in descending order');
+            await serviceTargetConsole.clickRefreshIcon();
+
+            expect(await serviceTargetConsole.isGridRecordDisplayed(caseSVTData.svtName)).toBeTruthy('Service Target Name record is not searched.');
+
+            await serviceTargetConsole.clickRefreshIcon();
+            expect(await serviceTargetConsole.isGridRecordDisplayed(caseSVTData.dataSource)).toBeTruthy('Service Target Data Source record is not searched.');
+
+            await serviceTargetConsole.clickRefreshIcon();
+            expect(await serviceTargetConsole.isGridRecordDisplayed('Case Resolution Time')).toBeTruthy('SVT Goal Type record is not searched.');
+
+            await serviceTargetConsole.clickRefreshIcon();
+            expect(await serviceTargetConsole.isGridRecordDisplayed(serviceTargetID)).toBeTruthy('Service Target ID record is not searched.');
+
+            await serviceTargetConsole.clickRefreshIcon();
+            expect(await serviceTargetConsole.isGridRecordDisplayed(serviceTargetGUID)).toBeTruthy('Service Target ID record is not searched.');
+        });
+
+        it('[DRDMV-2362]: Verify Service Target Console Fields Search functionality', async () => {
+            await utilGrid.clearGridSearchBox();
+            await serviceTargetConsole.clickRefreshIcon();
+            await utilGrid.addFilter('Service Target Title', caseSVTData.svtName, 'text');
+            expect(await serviceTargetConsole.isFilteredRecordDisplayed()).toBeTruthy('Service Target Title record is not searched.');
+
+            await serviceTargetConsole.clearFilter();
+            await serviceTargetConsole.clickRefreshIcon();
+            await utilGrid.addFilter('Service Target ID', serviceTargetID, 'text');
+            expect(await serviceTargetConsole.isFilteredRecordDisplayed()).toBeTruthy('Service Target ID record is not searched.');
+
+            await serviceTargetConsole.clearFilter();
+            await serviceTargetConsole.clickRefreshIcon();
+            await utilGrid.addFilter('GUID', serviceTargetGUID, 'text');
+            expect(await serviceTargetConsole.isFilteredRecordDisplayed()).toBeTruthy('Service Target GUID record is not searched.');
+
+            await serviceTargetConsole.clearFilter();
+            await serviceTargetConsole.clickRefreshIcon();
+            await utilGrid.addFilter('Data source', caseSVTData.dataSource, 'text');
+            expect(await serviceTargetConsole.isFilteredRecordDisplayed()).toBeTruthy('Service Target Data Source record is not searched.');
+
+            await serviceTargetConsole.clearFilter();
+            await serviceTargetConsole.clickRefreshIcon();
+            await utilGrid.addFilter('Goal Type', 'Case Resolution Time', 'text');
+            expect(await serviceTargetConsole.isFilteredRecordDisplayed()).toBeTruthy('Service Target Data Source record is not searched.');
+
+            await serviceTargetConsole.clearFilter();
+            await serviceTargetConsole.clickRefreshIcon();
+            await utilGrid.addFilter('Status', 'Enabled', 'checkbox');
+            expect(await serviceTargetConsole.isFilteredRecordDisplayed()).toBeTruthy('Service Target Status record is not searched.');
+            await serviceTargetConsole.clearFilter();
+        });
+    });
+
+    //skhobrag
+    describe('[DRDMV-2358,DRDMV-1376,DRDMV-1378,DRDMV-1387]: SLM - Service Target - Field Dependency (UI validations)', async () => {
+        let dataSourceDisplayName = 'Case Data Source_Test';
+
+        beforeAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteServiceTargets();
+        });
+
+        it('[DRDMV-2358,DRDMV-1376,DRDMV-1378,DRDMV-1387]: Create Data Source with All Fields', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Service Level Management--Configure Data Source', 'Configure Data Source - Administration - Business Workflows');
+            await configureDataSourceConsolePage.clickConfigDataSourceBtn();
+            // await browser.sleep(2000);  // added hard wait to load Add Data Source Blade
+            await createConfigureDataSourceConfigPo.setDataSourceDisplayName(dataSourceDisplayName);
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Application Name', 'Case Management Service');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Record Definition Name', 'com.bmc.dsm.case-lib:Case Detail');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Company Field', 'ASSIGNED COMPANY_ID Primary');
+            expect(await createConfigureDataSourceConfigPo.isSaveBtnDisabled()).toBeFalsy('Save button is found disabled.');
+            await createConfigureDataSourceConfigPo.clickDataSourceLink('Show Advanced Settings');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Association Name', 'com.bmc.dsm.case-lib:Case Approval Mapping Field - Company');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Create Qualification View', 'com.bmc.dsm.case-lib:Case Qualification Builder');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Edit Qualification View', 'com.bmc.dsm.case-lib:Case Qualification Builder');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Assigned Group', 'Assigned Group Primary');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Dynamic Business Entity', 'Assigned Business Unit Primary');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Dynamic Start Time Field', 'Created Date Primary');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Dynamic Goal Time Field', 'Assignee Primary');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Category Field', 'Category Tier 1 Primary');
+            await createConfigureDataSourceConfigPo.clickUseEndTimeCheckbox();
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Dynamic End Time Field', 'Created By Primary');
+            await createConfigureDataSourceConfigPo.clickDataSourceLink('Build Expression');
+            expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
+            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Create Expression');
+            await browser.sleep(3000); // sleep added for expression builder loading time
+            await approvalConfigurationPage.searchExpressionFieldOption('Assignee GUID Primary');
+            await approvalConfigurationPage.clickRecordOption('Record Instance');
+            await browser.sleep(2000); // sleep added for expression builder loading time
+            await approvalConfigurationPage.selectExpressionFieldOption();
+            await browser.sleep(2000); // sleep added for expression builder loading time
+            await approvalConfigurationPage.selectExpressionOperator('=');
+            await browser.sleep(1000); // sleep added for expression builder loading time
+            await approvalConfigurationPage.setExpressionValueForParameter('"' + "Petramco" + '"');
+            await createConfigureDataSourceConfigPo.clickRegularExpressionSaveButton();
+            await createConfigureDataSourceConfigPo.clickSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message is not displayed.');
+        });
+
+        it('[DRDMV-2358,DRDMV-1376,DRDMV-1378,DRDMV-1387]: Create SVT and check whether goal type and measurement details are disabled', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
+            await serviceTargetConfig.createServiceTargetConfig('SVT with mandatory fields', 'Petramco', 'Case Management');
+            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
+            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await SlmExpressionBuilder.clickOnSaveExpressionButton();
+            await serviceTargetConfig.selectGoal("2");
+            expect(await serviceTargetConfig.isGoalCheckboxDisabled('Goal Time')).toBeTruthy('Goal Time field is enabled.');
+            expect(await serviceTargetConfig.isGoalCheckboxDisabled('Business Entity')).toBeTruthy('Business Entity field is enabled.');
+            expect(await serviceTargetConfig.isGoalCheckboxDisabled('Start Time')).toBeTruthy('Start Time field is enabled.');
+            await serviceTargetConfig.selectMeasurement();
+            expect(await serviceTargetConfig.isMeasurementCheckboxDisabled('Reset Goal for Same Request?')).toBeTruthy('Reset Goal for Same Request? field is enabled.');
+            expect(await serviceTargetConfig.isMeasurementCheckboxDisabled('Allow Measurement to Re-Open?')).toBeTruthy('Allow Measurement to Re-Open? field is enabled.');
+            expect(await serviceTargetConfig.isMeasurementCheckboxDisabled('Enable Team Tracking')).toBeTruthy('Enable Team Tracking field is enabled.');
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
+            await serviceTargetConfig.clickCloseButton();
+            expect(await utilCommon.isWarningDialogBoxDisplayed()).toBeTruthy('Warning Dialog Box is not displayed.');
+            expect(await utilCommon.getWarningDialogTitle()).toBe('Warning!');
+            expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue?');
+            await utilCommon.clickOnWarningOk();
+            await utilityCommon.closeAllBlades();
+        });
+
+        it('[DRDMV-2358,DRDMV-1376,DRDMV-1378,DRDMV-1387]: Verify the SVT details', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
+            await serviceTargetConfig.createServiceTargetConfig('SVT with mandatory fields', 'Petramco', dataSourceDisplayName);
+            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
+            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await SlmExpressionBuilder.clickOnSaveExpressionButton();
+            await serviceTargetConfig.selectGoal("2");
+            expect(await serviceTargetConfig.isGoalCheckboxDisabled('Goal Time')).toBeFalsy('Goal Time field is disabled.');
+            expect(await serviceTargetConfig.isGoalCheckboxDisabled('Business Entity')).toBeFalsy('Business Entity field is disabled.');
+            expect(await serviceTargetConfig.isGoalCheckboxDisabled('Start Time')).toBeFalsy('Start Time field is disabled.');
+            await serviceTargetConfig.selectGoalTypeCheckbox('Goal Time');
+            await serviceTargetConfig.selectGoalTypeCheckbox('Business Entity');
+            await serviceTargetConfig.selectGoalTypeCheckbox('Start Time');
+            expect(await serviceTargetConfig.isBusinessEntityDisabled()).toBeTruthy('Business Entity field is disabled.');
+            await serviceTargetConfig.selectMeasurement();
+            expect(await serviceTargetConfig.isMeasurementCheckboxDisabled('Reset Goal for Same Request?')).toBeFalsy('Reset Goal for Same Request? field is disabled.');
+            expect(await serviceTargetConfig.isMeasurementCheckboxDisabled('Allow Measurement to Re-Open?')).toBeFalsy('Allow Measurement to Re-Open? field is disabled.');
+            expect(await serviceTargetConfig.isMeasurementCheckboxDisabled('Enable Team Tracking')).toBeFalsy('Enable Team Tracking field is disabled.');
+            await serviceTargetConfig.selectMeasurementCheckbox('Reset Goal for Same Request?');
+            await serviceTargetConfig.selectMeasurementCheckbox('Allow Measurement to Re-Open?');
+            await serviceTargetConfig.selectMeasurementCheckbox('Enable Team Tracking');
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
+            await serviceTargetConfig.clickOnSaveSVTButton();
+            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            await serviceTargetConsole.searchServiceTarget("SVT with mandatory fields");
+            await serviceTargetConfig.selectGoalTab();
+            await serviceTargetConfig.selectGoalTypeCheckbox('Business Entity');
+            await serviceTargetConfig.selectGoalTypeCheckbox('Start Time');
+            expect(await serviceTargetConfig.isGoalCheckboxDisabled('Goal Time')).toBeFalsy('Goal Time field is disabled.');
+            expect(await serviceTargetConfig.isGoalCheckboxDisabled('Business Entity')).toBeFalsy('Business Entity field is disabled.');
+            expect(await serviceTargetConfig.isGoalCheckboxDisabled('Start Time')).toBeFalsy('Start Time field is disabled.');
+            expect(await serviceTargetConfig.isBusinessEntityDisabled()).toBeTruthy('Business Entity field is disabled.');
+            expect(await serviceTargetConfig.isGoalTypeCountersDisabled('Days')).toBeTruthy('Days field is disabled.');
+            expect(await serviceTargetConfig.isGoalTypeCountersDisabled('Hours')).toBeTruthy('Hours field is disabled.');
+            expect(await serviceTargetConfig.isGoalTypeCountersDisabled('Minutes')).toBeTruthy('Minutes field is disabled.');
+            await serviceTargetConfig.selectGoalTypeCheckbox('Goal Time');
+            expect(await serviceTargetConfig.isGoalCheckboxDisabled('Goal Time')).toBeFalsy('Goal Time field is enabled.');
+            await serviceTargetConfig.selectGoalTypeCheckbox('Goal Time');
+            await serviceTargetConfig.selectMeasurement();
+            expect(await serviceTargetConfig.isMeasurementCheckboxDisabled('Reset Goal for Same Request?')).toBeFalsy('Reset Goal for Same Request? field is disabled.');
+            expect(await serviceTargetConfig.isMeasurementCheckboxDisabled('Allow Measurement to Re-Open?')).toBeFalsy('Allow Measurement to Re-Open? field is disabled.');
+            expect(await serviceTargetConfig.isMeasurementCheckboxDisabled('Enable Team Tracking')).toBeFalsy('Enable Team Tracking field is disabled.');
+            await serviceTargetConfig.clickCloseButton();
+        });
+    });
+
+    //skhobrag
+    describe('[DRDMV-6168,DRDMV-2354]: UI Validation for Qualification Builder with Single company.', async () => {
+        beforeAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteServiceTargets();
+        });
+        it('[DRDMV-6168,DRDMV-2354]: Verify SVT UI Fields', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
+            await serviceTargetConfig.createServiceTargetConfig('SVT with mandatory fields', 'Petramco', 'Case Management');
+            expect(await serviceTargetConfig.isSaveButtonEnabled()).toBeFalsy('Save SVT button is enabled when no mandatory fields are left empty.');
+            expect(await serviceTargetConfig.isCloseButtonEnabled()).toBeTruthy('Close SVT button is disabled when no mandatory fields are left empty.');
+            expect(await serviceTargetConfig.isServiceTargetFieldRequired('Title')).toBeTruthy('Title field is marked as optional field');
+            expect(await serviceTargetConfig.isServiceTargetFieldRequired('Company')).toBeTruthy('Company field is marked as optional field');
+            expect(await serviceTargetConfig.isServiceTargetFieldRequired('Data source')).toBeTruthy('Data Source field is marked as optional field');
+            expect(await serviceTargetConfig.isServiceTargetFieldRequired('Status')).toBeTruthy('Status field is marked as optional field');
+            expect(await serviceTargetConfig.isServiceTargetFieldRequired('Goal Type')).toBeFalsy('Goal Type field is marked as required field');
+            expect(await serviceTargetConfig.isServiceTargetFieldRequired('Effective From')).toBeTruthy('Effective From Field field is marked as optional field');
+            expect(await serviceTargetConfig.isServiceTargetFieldRequired('Agreement Type')).toBeFalsy('Agreement Type field is marked as required field');
+            expect(await serviceTargetConfig.isServiceTargetFieldRequired('Add to Group')).toBeFalsy('Add to Group Field field is marked as required field');
+            expect(await serviceTargetConfig.isServiceTargetFieldRequired('Description')).toBeFalsy('Description Field field is marked as required field');
+            expect(await serviceTargetConfig.isServiceTargetFieldRequired('Terms and Condition')).toBeTruthy('Terms and Condition field is marked as optional field');
+            expect(await serviceTargetConfig.isServiceTargetFieldRequired('Goal Time')).toBeTruthy('Goal Time field is marked as optional field');
+            expect(await serviceTargetConfig.isServiceTargetFieldRequired('Business Entity')).toBeFalsy('Business Entity field is marked as required field');
+            expect(await serviceTargetConfig.isServiceTargetFieldRequired('Days')).toBeFalsy('Days field is marked as required field');
+            expect(await serviceTargetConfig.isServiceTargetFieldRequired('Hours')).toBeFalsy('Hours field is marked as required field');
+            expect(await serviceTargetConfig.isServiceTargetFieldRequired('Minutes')).toBeFalsy('Minutes field is marked as required field');
+            expect(await serviceTargetConfig.isServiceTargetFieldRequired('Start Time')).toBeFalsy('Start Time field is marked as required field');
+            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
+            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await SlmExpressionBuilder.clickOnSaveExpressionButton();
+            await serviceTargetConfig.selectGoal("2");
+            await serviceTargetConfig.selectMeasurement();
+            expect(await serviceTargetConfig.isServiceTargetFieldRequired('Description')).toBeFalsy('Description field is marked as required field');
+            expect(await serviceTargetConfig.isServiceTargetFieldRequired('Start When')).toBeTruthy('Start When field is marked as optional field');
+            expect(await serviceTargetConfig.isServiceTargetFieldRequired('Stop When')).toBeTruthy('Stop When field is marked as optional field');
+            expect(await serviceTargetConfig.isServiceTargetFieldRequired('Pause When')).toBeFalsy('Pause When field is marked as required field');
+            expect(await serviceTargetConfig.isServiceTargetFieldRequired('Set Warning Status At(% of Goal)')).toBeTruthy('Set Warning Status At(% of Goal) field is marked as optional field');
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
+            await serviceTargetConfig.clickOnSaveSVTButton();
+            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+        });
+    });
 
 });

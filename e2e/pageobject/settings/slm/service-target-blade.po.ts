@@ -1,5 +1,6 @@
-import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions, ElementFinder } from "protractor";
 import SlmExpressionBuilder from './slm-expressionbuilder.pop.po';
+import utilCommon from '../../../utils/util.common';
 
 class ServiceTargetConfig {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -28,7 +29,17 @@ class ServiceTargetConfig {
         valueSearch: ' input[type="search"]',
         addButton: '.d-textfield__label .margin-top-10 button',
         expressionBuilderBtn: 'button.d-textfield__item',
-        termsAndConditionsField: 'textarea[aria-label="Terms and Condition"]'
+        termsAndConditionsField: 'textarea[aria-label="Terms and Condition"]',
+        selectStatusField: '.ui-select-match[placeholder="Select Status field"]',
+        selectBusinessEntity: '.ui-select-match[placeholder="Select Business Entity"]',
+        fieldNameLabel: 'span.d-textfield__item',
+        noMileStonesPresentText: '.slm-group-list-item_empty',
+        addNewMileStoneBtn: 'button.d-icon-left-plus_circle',
+        mileStoneWindow: '[name="milestoneForm"]',
+        mileStoneTitle: '[name="milestoneForm"] input[placeholder="Enter Milestone Title"]',
+        mileStoneDescription: '[name="milestoneForm"]input[placeholder="Enter Description"]',
+        mileStonePercentage: '[name="milestoneForm"] .d-counter__input',
+        mileStoneExpression: '[name="milestoneForm"] .d-button_link',
     }
 
     async isServiceTargetBladeDisplayed(): Promise<boolean> {
@@ -75,11 +86,14 @@ class ServiceTargetConfig {
         await $$(this.selectors.buildExpressionLink).first().click();
     }
 
-
-
     async selectGoalType(svtGoalType: string): Promise<void> {
         await $(this.selectors.selectGoalType).click();
         await element(by.cssContainingText(this.selectors.dropDownOption, svtGoalType)).click();
+    }
+
+    async selectStatus(svtStatus: string): Promise<void> {
+        await $(this.selectors.selectStatusField).click();
+        await element(by.cssContainingText(this.selectors.dropDownOption, svtStatus)).click();
     }
 
     async enterSVTDescription(svtDesc: string): Promise<void> {
@@ -120,10 +134,11 @@ class ServiceTargetConfig {
         }
     }
 
+    async selectGoalTab() {
+        await $$(this.selectors.segmentsArrow).get(0).click();
+    }
 
-    async selectMileStone() {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.segmentsArrow)));
-        //        browser.sleep(3000);
+    async selectMeasurement() {
         await $$(this.selectors.segmentsArrow).get(1).click();
     }
 
@@ -147,8 +162,6 @@ class ServiceTargetConfig {
     }
 
     async clickOnSaveSVTButton() {
-        //        browser.sleep(2000);
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveSVTButton)));
         await $(this.selectors.saveSVTButton).click();
     }
 
@@ -170,6 +183,128 @@ class ServiceTargetConfig {
 
     async getGoalTypeSelectedValue(svtGoalType: string): Promise<boolean> {
         return await element(by.cssContainingText(this.selectors.goalTypeSelectedValue, svtGoalType)).isDisplayed();
+    }
+
+    async selectGoalTypeCheckbox(checkboxLabel: string): Promise<void> {
+        let chkBoxVal: any = await $$('.d-checkbox__label input + span.d-checkbox__item');
+        switch (checkboxLabel) {
+            case "Goal Time": {
+                await chkBoxVal.first().click();
+                break;
+            }
+            case "Start Time": {
+                await chkBoxVal.get(1).click();
+                break;
+            }
+            case "Business Entity": {
+                await chkBoxVal.get(2).click();
+                break;
+            }
+            default: {
+                console.log("Error: Goal Type checkbox are not enabled.");
+                break;
+            }
+        }
+    }
+
+    async selectMeasurementCheckbox(checkboxLabel: string): Promise<void> {
+        let chkBoxVal: any = await $$('.d-checkbox__label input + span');
+        for (let i: number = 1; i <= (await chkBoxVal).length; i++) {
+            let val = await chkBoxVal.get(i).getText();
+            if (val == checkboxLabel) {
+                console.log("val is :" + val);
+                await chkBoxVal.get(i).click();
+                break;
+            }
+        }
+    }
+
+    async isGoalCheckboxDisabled(checkboxLabel: string): Promise<boolean> {
+        let chkBoxVal: any = await $$('.d-checkbox__label input');
+        let isDisabledAttr: boolean;
+        switch (checkboxLabel) {
+            case "Goal Time": {
+                isDisabledAttr = await chkBoxVal.first().getAttribute("disabled") == "true" ? true : false;
+                break;
+            }
+            case "Start Time": {
+                isDisabledAttr = await chkBoxVal.get(1).getAttribute("disabled") == "true" ? true : false;
+                break;
+            }
+            case "Business Entity": {
+                isDisabledAttr = await chkBoxVal.get(2).getAttribute("disabled") == "true" ? true : false;
+                break;
+            }
+            default: {
+                console.log("Error: Goal Type checkbox are not enabled.");
+                break;
+            }
+        }
+        return isDisabledAttr;
+    }
+
+    async isMeasurementCheckboxDisabled(checkboxLabel: string): Promise<boolean> {
+        let chkBox: any = await $$('.d-checkbox__label span');
+        let chkBoxVal: any = await $$('.d-checkbox__label input');
+        let cnt: number = 0;
+        for (let i: number = 1; i <= (await chkBox).length; i++) {
+            let val = await chkBox.get(i).getText();
+            if (val == checkboxLabel) {
+                cnt++;
+                break;
+            }
+        }
+        return await chkBoxVal.get(cnt).getAttribute("disabled") == "true" ? true : false;;
+    }
+
+    async isGoalCheckboxSelected(checkboxLabel: string): Promise<boolean> {
+        let chkBoxVal: any = await $$('.d-checkbox__label input');
+        let isDisabledAttr: boolean;
+        switch (checkboxLabel) {
+            case "Goal Time": {
+                isDisabledAttr = await chkBoxVal.get(1).getAttribute("checked") == "true" ? true : false;
+                break;
+            }
+            case "Start Time": {
+                isDisabledAttr = await chkBoxVal.get(2).getAttribute("checked") == "true" ? true : false;
+                break;
+            }
+            case "Business Entity": {
+                isDisabledAttr = await chkBoxVal.get(3).getAttribute("checked") == "true" ? true : false;
+                break;
+            }
+            default: {
+                console.log("Error: Goal Type checkbox are not enabled.");
+                break;
+            }
+        }
+        return isDisabledAttr;
+    }
+
+    async isBusinessEntityDisabled(): Promise<boolean> {
+        return await $(this.selectors.selectBusinessEntity).getAttribute("readonly") == "true" ? true : false;
+    }
+
+    async isGoalTypeCountersDisabled(goalType: string): Promise<boolean> {
+        let chkBox: any = await $$('span.d-textfield__item');
+        let cnt: number = 0;
+        for (let i: number = 1; i <= (await chkBox).length; i++) {
+            let val = await chkBox.get(i).getText();
+            if (val == goalType) {
+                cnt++;
+                break;
+            }
+        }
+        return await $$('span.d-textfield__item + input').get(cnt).getAttribute("disabled") == "true" ? true : false;
+    }
+
+    async isServiceTargetFieldRequired(fieldName: string): Promise<boolean> {
+        let fieldNameRequiredTag = await element(by.cssContainingText(this.selectors.fieldNameLabel, fieldName));
+        return await utilCommon.isRequiredTagToFieldElement(fieldNameRequiredTag);
+    }
+
+    async selectMilestone() {
+        await $$(this.selectors.segmentsArrow).last().click();
     }
 
 

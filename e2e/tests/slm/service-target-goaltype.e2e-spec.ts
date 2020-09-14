@@ -29,10 +29,10 @@ describe('Service Level Management - Goal Type Tests', () => {
     });
 
     //skhobrag
-    describe('[DRDMV-2247,DRDMV-2248,DRDMV-2246]: SLM - Goal Type - Create new record', async () => {
+    describe('[DRDMV-2247,DRDMV-2248,DRDMV-2246,DRDMV-2245]: SLM - Goal Type - Create new record', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let goalTypeTitle = 'New Goal Type' + randomStr;
-        it('[DRDMV-2247,DRDMV-2248,DRDMV-2246]: Create a Goal Type', async () => {
+        it('[DRDMV-2247,DRDMV-2248,DRDMV-2246,DRDMV-2245]: Create a Goal Type', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Goal Type', 'Goal Type');
             await createGoalType.clickCreateGoalTypeConfigButton();
@@ -42,7 +42,7 @@ describe('Service Level Management - Goal Type Tests', () => {
             await createGoalType.clickSaveGoalTypeButton();
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
-        it('[DRDMV-2247,DRDMV-2248,DRDMV-2246]: Update Goal Type and Verify the details', async () => {
+        it('[DRDMV-2247,DRDMV-2248,DRDMV-2246,DRDMV-2245]: Update Goal Type and Verify the details', async () => {
             await utilGrid.searchAndOpenHyperlink(goalTypeTitle);
             expect(await editGoalType.isGoalTypeFieldDisabled()).toBeTruthy('Goal Type field is enabled.');
             expect(await editGoalType.isGoalTypeNameFieldDisabled()).toBeTruthy('Goal Type Name field is enabled.');
