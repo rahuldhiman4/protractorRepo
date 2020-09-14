@@ -574,7 +574,6 @@ describe("Case Read Access", () => {
                 "Assignee": "Fritz"
             }
             newCase1 = await apiHelper.createCase(caseData);
-            await foundationData2("Petramco");
         });
         it('[DRDMV-22479]: Bulk Case Access update clicking Reset to default.', async () => {
             await navigationPo.signOut();
@@ -584,43 +583,33 @@ describe("Case Read Access", () => {
             //Bulk Read Access
             await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
             await caseAccessTabPo.selectCompany('Petramco', 'Select Company');
-            await caseAccessTabPo.selectBusinessUnit(businessData1.orgName, 'Select Business Unit');
+            await caseAccessTabPo.selectBusinessUnit('United States Support', 'Select Business Unit');
             await caseAccessTabPo.clickOnReadAccessAddButton('Add Business Unit');
             await caseAccessTabPo.selectCompany('Petramco', 'Select Company');
-            await caseAccessTabPo.selectBusinessUnit(businessData1.orgName, 'Select Business Unit');
-            await caseAccessTabPo.selectDepartment(departmentData1.orgName, 'Select Department');
-            await caseAccessTabPo.clickOnReadAccessAddButton('Add Support Department');
-            await caseAccessTabPo.selectCompany('Petramco', 'Select Company');
-            await caseAccessTabPo.selectBusinessUnit(businessData1.orgName, 'Select Business Unit');
-            await caseAccessTabPo.selectDepartment(departmentData1.orgName, 'Select Department');
-            await caseAccessTabPo.selectSupportGroup(suppGrpData1.orgName, 'Select Support Group');
+            await caseAccessTabPo.selectBusinessUnit('United States Support', 'Select Business Unit');
+            await caseAccessTabPo.selectSupportGroup('US Support 1', 'Select Support Group');
             await caseAccessTabPo.clickOnReadAccessAddButton('Add Support Group');
             await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Agent Access');
-            await caseAccessTabPo.selectAndAddAgent('fnPerson lnPerson');
-            expect(await activityTabPo.getGrantedReadAccessCount('granted read access')).toBe(4);
+            await caseAccessTabPo.selectAndAddAgent('Adam Warlock');
+            expect(await activityTabPo.getGrantedReadAccessCount('granted read access')).toBe(3);
         });
         it('[DRDMV-22479]: Bulk Case Access update clicking Reset to default.', async () => {
             //Bulk Write Access
             await caseAccessTabPo.selectCompany('Petramco', 'Select Company');
-            await caseAccessTabPo.selectBusinessUnit(businessData2.orgName, 'Select Business Unit');
+            await caseAccessTabPo.selectBusinessUnit('Australia Support', 'Select Business Unit');
             await caseAccessTabPo.clickOnWriteAccessAddButton('Add Business Unit');
             await caseAccessTabPo.selectCompany('Petramco', 'Select Company');
-            await caseAccessTabPo.selectBusinessUnit(businessData2.orgName, 'Select Business Unit');
-            await caseAccessTabPo.selectDepartment(departmentData2.orgName, 'Select Department');
-            await caseAccessTabPo.clickOnWriteAccessAddButton('Add Support Department');
-            await caseAccessTabPo.selectCompany('Petramco', 'Select Company');
-            await caseAccessTabPo.selectBusinessUnit(businessData2.orgName, 'Select Business Unit');
-            await caseAccessTabPo.selectDepartment(departmentData2.orgName, 'Select Department');
-            await caseAccessTabPo.selectSupportGroup(suppGrpData2.orgName, 'Select Support Group');
+            await caseAccessTabPo.selectBusinessUnit('Australia Support', 'Select Business Unit');
+            await caseAccessTabPo.selectSupportGroup('AU Support 1', 'Select Support Group');
             await caseAccessTabPo.clickOnWriteAccessAddButton('Add Support Group');
-            await caseAccessTabPo.selectAgentWithWriteAccess('fnPerson19501 lnPerson19501');
             await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
-            expect(await activityTabPo.getGrantedReadAccessCount('granted write access')).toBe(4);
+            await caseAccessTabPo.selectAgentWithWriteAccess('Elizabeth Peters');
+            expect(await activityTabPo.getGrantedReadAccessCount('granted write access')).toBe(3);
             await caseAccessTabPo.clickOnResetToDefault();
             await activityTabPo.clickShowMoreLinkInActivity(1);
-            expect(await activityTabPo.getRevokedReadAccessCount('revoked read access of')).toBe(4);
+            expect(await activityTabPo.getRevokedReadAccessCount('revoked read access of')).toBe(3);
             await activityTabPo.clickShowMoreLinkInActivity(1);
-            expect(await activityTabPo.getRevokedReadAccessCount('revoked write access of')).toBe(4);
+            expect(await activityTabPo.getRevokedReadAccessCount('revoked write access of')).toBe(3);
         });
         afterAll(async () => {
             await navigationPo.signOut();

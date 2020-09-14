@@ -83,7 +83,7 @@ describe('Service Target Tests for Tasks', () => {
             expect(selectedExp).toEqual(expectedSelectedExp);
             await slmExpressionBuilder.clickOnSaveExpressionButtonForTask();
             await serviceTargetConfig.selectGoal("2");
-            await serviceTargetConfig.selectMileStone();
+            await serviceTargetConfig.selectMeasurement();
             await serviceTargetConfig.selectExpressionForMeasurementForTask(0, "status", "=", "STATUS", "Assigned");
             await serviceTargetConfig.selectExpressionForMeasurementForTask(1, "status", "=", "STATUS", "Completed");
             await serviceTargetConfig.selectExpressionForMeasurementForTask(2, "status", "=", "STATUS", "Pending");
@@ -185,7 +185,7 @@ describe('Service Target Tests for Tasks', () => {
             expect(selectedExp).toEqual(expectedSelectedExp);
             await slmExpressionBuilder.clickOnSaveExpressionButtonForTask();
             await serviceTargetConfig.selectGoal("2");
-            await serviceTargetConfig.selectMileStone();
+            await serviceTargetConfig.selectMeasurement();
             await serviceTargetConfig.selectExpressionForMeasurementForTask(0, "status", "=", "STATUS", "Staged");
             await serviceTargetConfig.selectExpressionForMeasurementForTask(1, "status", "=", "STATUS", "Completed");
             await serviceTargetConfig.selectExpressionForMeasurementForTask(2, "status", "=", "STATUS", "Pending");
@@ -277,7 +277,7 @@ describe('Service Target Tests for Tasks', () => {
             expect(selectedExp).toEqual(expectedSelectedExp);
             await slmExpressionBuilder.clickOnSaveExpressionButtonForTask();
             await serviceTargetConfig.selectGoal("4");
-            await serviceTargetConfig.selectMileStone();
+            await serviceTargetConfig.selectMeasurement();
             await serviceTargetConfig.selectExpressionForMeasurementForTask(0, "status", "=", "STATUS", "Assigned");
             await serviceTargetConfig.selectExpressionForMeasurementForTask(1, "status", "=", "STATUS", "Completed");
             await serviceTargetConfig.selectExpressionForMeasurementForTask(2, "status", "=", "STATUS", "Pending");
@@ -448,7 +448,7 @@ describe('Service Target Tests for Tasks', () => {
             expect(selectedExp).toEqual(expectedSelectedExp);
             await slmExpressionBuilder.clickOnSaveExpressionButtonForTask();
             await serviceTargetConfig.selectGoal("3");
-            await serviceTargetConfig.selectMileStone();
+            await serviceTargetConfig.selectMeasurement();
             await serviceTargetConfig.selectExpressionForMeasurementForTask(0, "status", "=", "STATUS", "Planning");
             await serviceTargetConfig.selectExpressionForMeasurementForTask(1, "status", "=", "STATUS", "BeforeCompleted");
             await serviceTargetConfig.selectExpressionForMeasurementForTask(2, "status", "=", "STATUS", "Pending");

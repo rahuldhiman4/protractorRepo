@@ -86,7 +86,7 @@ describe('Service Target - Second Level Association Tests', () => {
         expect(selectedExpx).toEqual(expectedSelectedExp);
         await slmExpressionBuilder.clickOnSaveExpressionButton();
         await serviceTargetConfig.selectGoal("4");
-        await serviceTargetConfig.selectMileStone();
+        await serviceTargetConfig.selectMeasurement();
         await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
         await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
         await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
@@ -128,7 +128,7 @@ describe('Service Target - Second Level Association Tests', () => {
         expect(selectedExp).toEqual(expectedSelectedExp);
         await slmExpressionBuilder.clickOnSaveExpressionButton();
         await serviceTargetConfig.selectGoal("4");
-        await serviceTargetConfig.selectMileStone();
+        await serviceTargetConfig.selectMeasurement();
         await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
         await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
         await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
@@ -171,7 +171,7 @@ describe('Service Target - Second Level Association Tests', () => {
         expect(selectedExpx).toEqual(expectedSelectedExp);
         await slmExpressionBuilder.clickOnSaveExpressionButton();
         await serviceTargetConfig.selectGoal("3");
-        await serviceTargetConfig.selectMileStone();
+        await serviceTargetConfig.selectMeasurement();
         await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
         await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
         await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
@@ -216,7 +216,7 @@ describe('Service Target - Second Level Association Tests', () => {
         expect(selectedExpx).toEqual(expectedSelectedExp);
         await slmExpressionBuilder.clickOnSaveExpressionButton();
         await serviceTargetConfig.selectGoal("4");
-        await serviceTargetConfig.selectMileStone();
+        await serviceTargetConfig.selectMeasurement();
         await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
         await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
         await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
@@ -266,7 +266,7 @@ describe('Service Target - Second Level Association Tests', () => {
         expect(selectedExpx).toEqual(expectedSelectedExp);
         await slmExpressionBuilder.clickOnSaveExpressionButton();
         await serviceTargetConfig.selectGoal("3");
-        await serviceTargetConfig.selectMileStone();
+        await serviceTargetConfig.selectMeasurement();
         await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
         await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
         await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
@@ -310,7 +310,7 @@ describe('Service Target - Second Level Association Tests', () => {
         expect(selectedExpx).toEqual(expectedSelectedExp);
         await slmExpressionBuilder.clickOnSaveExpressionButton();
         await serviceTargetConfig.selectGoal("3");
-        await serviceTargetConfig.selectMileStone();
+        await serviceTargetConfig.selectMeasurement();
         await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
         await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
         await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
@@ -353,7 +353,7 @@ describe('Service Target - Second Level Association Tests', () => {
         expect(selectedExpx).toEqual(expectedSelectedExp);
         await slmExpressionBuilder.clickOnSaveExpressionButton();
         await serviceTargetConfig.selectGoal("3");
-        await serviceTargetConfig.selectMileStone();
+        await serviceTargetConfig.selectMeasurement();
         await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
         await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
         await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");

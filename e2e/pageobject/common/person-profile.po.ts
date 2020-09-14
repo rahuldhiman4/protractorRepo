@@ -42,8 +42,9 @@ class PersonProfilePage {
     }
 
     async isPersonProfileImageDisplayed(): Promise<boolean> {
+        await browser.wait(this.EC.visibilityOf($(this.selectors.personImage)), 6000);
         let len: string = await $(this.selectors.personImage).getAttribute("style");
-        return await len.includes('url');
+        return len.includes('url');
     }
 
     async isPersonManagerImageDisplayed(): Promise<boolean> {

@@ -123,13 +123,8 @@ class CaseAccessTab {
                 await $$(this.selectors.addButton).get(0).click();
                 break;
             }
-            case "Add Support Department": {
-                await $$(this.selectors.assignWriteAccess).get(2).click();
-                await $$(this.selectors.addButton).get(1).click();
-                break;
-            }
             case "Add Support Group": {
-                await $$(this.selectors.assignWriteAccess).get(3).click();
+                await $$(this.selectors.assignWriteAccess).get(2).click();
                 await $$(this.selectors.addButton).get(2).click();
                 break;
             }
