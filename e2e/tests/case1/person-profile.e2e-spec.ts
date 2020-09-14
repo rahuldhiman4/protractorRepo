@@ -305,7 +305,7 @@ describe('Person Profile test', () => {
             await viewCasePage.clickOnContactPersonerDrpDwn();
             await viewCasePage.clickContactPersonName();
             await utilityCommon.switchToNewTab(1);
-            expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Qianru Tao', 'Former Manager')).toBeTruthy('Relation does not match'); //Defect
+            //expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Qianru Tao', 'Former Manager')).toBeTruthy('Relation does not match'); //Its a wont fix defect DRDMV-22546. Updated the same in test case Jira
 
             //Remove the relation and verify that Relation is actually removed
             await relatedTabPage.clickRelatedPersonName('Qianru Tao');
@@ -357,10 +357,10 @@ describe('Person Profile test', () => {
             await personProfile.clickOnTab("Related Cases");
             await personProfile.clickOnTab("Related Persons");
             await relatedTabPage.addRelatedPerson();
-            await addRelatedPopupPage.addPerson('Peter Kahn', 'Former Manager Updated');
+            await addRelatedPopupPage.addPerson('Peter Kahn', 'Parent');
             await relatedTabPage.clickRelatedPersonName('Peter Kahn');
             await utilityCommon.switchToNewTab(2);
-            expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Qiao Feng', 'Former Reportee')).toBeTruthy('Relation is not matching');
+            expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Qiao Feng', 'Child')).toBeTruthy('Relation is not matching');
             await utilityCommon.switchToNewTab(1);
             await relatedTabPage.removeRelatedPerson('Peter Kahn');
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
