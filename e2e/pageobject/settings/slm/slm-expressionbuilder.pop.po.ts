@@ -302,6 +302,22 @@ class SlmExpressionBuilder {
         await $(this.expressionBuilderSelectors.clearExpression).clear();
     }
 
+    async getExpressionFields(data: string[]): Promise<boolean> {
+        let arr: string[] = [];
+        let expressionFields: string = `div.record_field`;
+        let drpDwnvalue: number = await $$(expressionFields).count();
+        for (let i = 0; i < drpDwnvalue; i++) {
+            let ab: string = await $$(expressionFields).get(i).getText();
+            arr[i] = ab;
+        }
+        arr = arr.sort();
+        data = data.sort();
+        return arr.length === data.length && arr.every(
+            (value, index) => (value === data[index])
+        );
+    }
+
+
 }
 
 export default new SlmExpressionBuilder();
