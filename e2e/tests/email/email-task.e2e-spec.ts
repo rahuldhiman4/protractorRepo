@@ -425,6 +425,7 @@ describe('Email Task', () => {
         expect(await activityTabPo.getEmailTitle()).toContain('Fritz Schulz sent an email');
         expect(await activityTabPo.getRecipientInTo()).toContain('To: Fritz Schulz');
         expect(await activityTabPo.getEmailSubject()).toContain(displayId + ':' + ManualtaskID + ':' + manualTaskSummary);
+        await activityTabPo.clickShowMoreLinkInActivity(1);
         expect(await activityTabPo.getEmailBody()).toContain('this is new email sending frist time to the user');
         await activityTabPo.clickOnReplyAll();
         await emailPo.isComposeEmailUIDisplay();
@@ -434,6 +435,7 @@ describe('Email Task', () => {
         expect(await emailPo.getEmailBody()).toContain('While replying, please do not add information below this line');
         await emailPo.setEmailBody('this is second reply to all');
         await emailPo.clickOnSendButton();
+        await activityTabPo.clickShowMoreLinkInActivity(1);
         expect(await activityTabPo.getEmailBody()).toContain('this is second reply to all');
         await activityTabPo.clickOnReply();
         expect(await emailPo.getToEmailPerson()).toContain('Fritz Schulz');
@@ -453,7 +455,9 @@ describe('Email Task', () => {
         expect(await activityTabPo.getEmailTitle()).toContain('Fritz Schulz sent an email');
         expect(await activityTabPo.getRecipientInTo()).toContain('To: Fritz Schulz');
         expect(await activityTabPo.getEmailSubject()).toContain(displayId + ':' + externaltaskID + ':' + externalTaskSummary);
-        expect(await activityTabPo.getEmailBody()).toContain('this is new email sending frist time to the user');
+        await activityTabPo.clickShowMoreLinkInActivity(1);
+        expect(await activityTabPo.getEmailBody()).toContain('this is new email sending frist time to the user',"460");
+        await activityTabPo.clickShowLessLinkInActivity(1);
         await activityTabPo.clickOnReplyAll();
         await emailPo.isComposeEmailUIDisplay();
         expect(await emailPo.getToEmailPerson()).toContain('Fritz Schulz');
@@ -462,13 +466,15 @@ describe('Email Task', () => {
         expect(await emailPo.getEmailBody()).toContain('this is new email sending frist time to the user');
         await emailPo.setEmailBody('this is second reply to all');
         await emailPo.clickOnSendButton();
+        await activityTabPo.clickShowMoreLinkInActivity(1);
         expect(await activityTabPo.getEmailBody()).toContain('this is second reply to all');
         await activityTabPo.clickOnReply();
         expect(await emailPo.getToEmailPerson()).toContain('Fritz Schulz');
-        expect(await activityTabPo.getEmailBody()).toContain('this is second reply to all');
+        expect(await emailPo.getEmailBody()).toContain('this is second reply to all');
         await emailPo.setEmailBody('this is third reply');
         await emailPo.clickOnSendButton();
-        expect(await activityTabPo.getEmailBody()).toContain('this is third reply');
+        await activityTabPo.clickShowMoreLinkInActivity(1);
+        expect(await activityTabPo.getEmailBody()).toContain('this is third reply',"477");
     }, 350 * 1000);
 
     it('[DRDMV-19557]: For Reply / Reply All earlier email context should be copied as part of email composition on Case', async () => {
@@ -507,10 +513,11 @@ describe('Email Task', () => {
         expect(await emailPo.getEmailBody()).toContain('While replying, please do not add information below this line');
         await emailPo.setEmailBody('this is second reply to all');
         await emailPo.clickOnSendButton();
+        await activityTabPo.clickShowMoreLinkInActivity(1);
         expect(await activityTabPo.getEmailBody()).toContain('this is second reply to all');
         await activityTabPo.clickOnReply();
         expect(await emailPo.getToEmailPerson()).toContain('Fritz Schulz');
-        expect(await activityTabPo.getEmailBody()).toContain('this is second reply to all');
+        expect(await emailPo.getEmailBody()).toContain('this is second reply to all');
         await emailPo.setEmailBody('this is third reply');
         await emailPo.clickOnSendButton();
     });
