@@ -16,6 +16,9 @@ import utilGrid from '../../utils/util.grid';
 import editCognitiveCategorizationMappingPo from '../../pageobject/settings/case-management/edit-cognitive-categorization-mapping.po';
 import createCognitiveTemplateMappingPo from '../../pageobject/settings/case-management/create-cognitive-template-mapping.po';
 import editCognitiveTemplateMappingPo from '../../pageobject/settings/case-management/edit-cognitive-template-mapping.po';
+import quickCasePo from '../../pageobject/case/quick-case.po';
+import resourcesTabPo from '../../pageobject/common/resources-tab.po';
+import previewCasePo from '../../pageobject/case/case-preview.po';
 import utilityGrid from '../../utils/utility.grid';
 
 describe('Case Cognitive', () => {
@@ -28,7 +31,7 @@ describe('Case Cognitive', () => {
     let apiKey = "HnmJ6tOYmUheiH7hLbQdW6HHvIhUFYCq6NVo5acPY4Ww";
     let templateDataSet = "My Template Data Set";
     let categoryDataSet = "My Category Data Set";
-    let caseTemplateResponse1, caseTemplateResponse2, caseTemplateResponse3, caseTemplateResponse4, caseTemplateResponse5;
+    let caseTemplateData,caseData,caseTemplateResponse1, caseTemplateResponse2, caseTemplateResponse3, caseTemplateResponse4, caseTemplateResponse5, caseTemplateResponse6, caseTemplateResponse7;
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
@@ -91,7 +94,7 @@ describe('Case Cognitive', () => {
             company: "Petramco",
             enable: true,
             dataset: templateDataSet,
-            confidenceLevelAutomatic: 60,
+            confidenceLevelAutomatic: 70,
             confidenceLevelAgent: 70
         }
         await apiHelper.apiLogin('tadmin');
@@ -102,8 +105,8 @@ describe('Case Cognitive', () => {
             company: "Petramco",
             dataset: categoryDataSet,
             enable: false,
-            confidenceLevelAutomatic: 90,
-            confidenceLevelAgent: 80
+            confidenceLevelAutomatic: 70,
+            confidenceLevelAgent: 70
         }
         let categoryDataSetMappingStatus = await apiHelper.createCognitiveDataSetMapping("category", categoryDataSetMapping);
         console.log("Category DataSet Mapping Created ==> ", categoryDataSetMappingStatus);
@@ -112,10 +115,10 @@ describe('Case Cognitive', () => {
     async function createCognitiveSearchData() {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await apiHelper.apiLogin('qkatawazi');
-        let caseTemplateData = {
+        caseTemplateData = {
             "templateName": 'caseTemplateForCognitive1' + randomStr,
-            "templateSummary": 'cognitive search',
-            "categoryTier1": categName1,
+            "templateSummary": 'Employee asked requested for ergonomics assessment change',
+            "categoryTier1": "",
             "categoryTier2": "",
             "categoryTier3": "",
             "categoryTier4": "",
@@ -129,27 +132,34 @@ describe('Case Cognitive', () => {
             "ownerGroup": "US Support 3"
         }
         caseTemplateResponse1 = await apiHelper.createCaseTemplate(caseTemplateData);
-        caseTemplateData.templateName = 'caseTemplateForCognitive3' + randomStr;
-        caseTemplateData.categoryTier1 = categName1;
-        caseTemplateData.categoryTier2 = categName2;
-        caseTemplateResponse2 = await apiHelper.createCaseTemplate(caseTemplateData);
         caseTemplateData.templateName = 'caseTemplateForCognitive2' + randomStr;
-        caseTemplateData.categoryTier1 = categName1;
-        caseTemplateData.categoryTier2 = categName2;
-        caseTemplateData.categoryTier3 = categName3;
+        caseTemplateData.templateSummary = 'New Joinee is looking for assessment for his workplace change';
+        caseTemplateData.categoryTier1 = 'Applications';
+        caseTemplateData.categoryTier2 = 'Help Desk';
+        caseTemplateResponse2 = await apiHelper.createCaseTemplate(caseTemplateData);
+        caseTemplateData.templateName = 'caseTemplateForCognitive3' + randomStr;
+        caseTemplateData.templateSummary = 'Employee ergonomic assessment is requested change';
+        caseTemplateData.categoryTier1 = 'Accounts Payable';
+        caseTemplateData.categoryTier2 = 'Invoices';
+        caseTemplateData.categoryTier3 = 'Payment';
         caseTemplateResponse3 = await apiHelper.createCaseTemplate(caseTemplateData);
         caseTemplateData.templateName = 'caseTemplateForCognitive4' + randomStr;
+        caseTemplateData.templateSummary = 'Employee needs an employment verification letter bonus';
+        caseTemplateData.categoryTier1 = 'Accounts Payable';
+        caseTemplateData.categoryTier2 = 'Invoices';
+        caseTemplateData.categoryTier3 = 'Payment';
+        caseTemplateResponse4 = await apiHelper.createCaseTemplate(caseTemplateData);
+        caseTemplateData.templateName = 'caseTemplateForCognitive5' + randomStr;
+        caseTemplateData.templateSummary = 'Employee is looking for supplemental life insurance options bonus';
+        caseTemplateData.categoryTier1 = 'Applications';
+        caseTemplateResponse5 = await apiHelper.createCaseTemplate(caseTemplateData);
+        caseTemplateData.templateName = 'caseTemplateForCognitive6' + randomStr;
+        caseTemplateData.templateSummary = 'Employee is looking for supplemental life insurance options bonus';
         caseTemplateData.categoryTier1 = categName1;
         caseTemplateData.categoryTier2 = categName2;
         caseTemplateData.categoryTier3 = categName3;
         caseTemplateData.categoryTier4 = categName4;
-        caseTemplateResponse4 = await apiHelper.createCaseTemplate(caseTemplateData);
-        caseTemplateData.templateName = 'caseTemplateForCognitive5' + randomStr;
-        caseTemplateResponse5 = await apiHelper.createCaseTemplate(caseTemplateData);
-        caseTemplateData.templateName = 'caseTemplateForCognitive6' + randomStr;
-        await apiHelper.createCaseTemplate(caseTemplateData);
-        caseTemplateData.templateName = 'caseTemplateForCognitive7' + randomStr;
-        await apiHelper.createCaseTemplate(caseTemplateData);
+        caseTemplateResponse6 = await apiHelper.createCaseTemplate(caseTemplateData);
         caseTemplateData.templateName = 'caseTemplateForCognitive8' + randomStr;
         await apiHelper.createCaseTemplate(caseTemplateData);
         caseTemplateData.templateName = 'caseTemplateForCognitive9' + randomStr;
@@ -160,28 +170,46 @@ describe('Case Cognitive', () => {
         await apiHelper.createCaseTemplate(caseTemplateData);
     }
 
-    async function createCaseData() {
-        let caseData = {
+    async function createCaseDataPart1() {
+        caseData = {
             "Requester": "apavlik",
-            "Summary": "SearchCateg4",
             "Origin": "Agent",
-            "Case Template ID": caseTemplateResponse1.id
         }
         await apiHelper.apiLogin('qkatawazi');
-        await apiHelper.createCase(caseData);
-        caseData.Summary = "SearchCateg3";
-        caseData["Case Template ID"] = caseTemplateResponse2.id;
-        await apiHelper.createCase(caseData);
-        caseData.Summary = "SearchCateg2";
-        caseData["Case Template ID"] = caseTemplateResponse3.id;
-        await apiHelper.createCase(caseData);
-        caseData.Summary = "SearchCateg1";
-        caseData["Case Template ID"] = caseTemplateResponse4.id;
-        await apiHelper.createCase(caseData);
-        caseData["Case Template ID"] = caseTemplateResponse5.id;
-        await apiHelper.createCase(caseData);
-        caseData["Case Template ID"] = caseTemplateResponse5.id;
-        await apiHelper.createCase(caseData);
+        for (let a = 1; a <= 2; a++) {
+            caseData["Case Template ID"] = caseTemplateResponse1.id;
+            await apiHelper.createCase(caseData);
+        }
+        for (let a = 1; a <= 2; a++) {
+            caseData["Case Template ID"] = caseTemplateResponse2.id;
+            await apiHelper.createCase(caseData);
+        }
+        for (let a = 1; a <= 2; a++) {
+            caseData["Case Template ID"] = caseTemplateResponse3.id;
+            await apiHelper.createCase(caseData);
+        }
+    }
+
+    async function createCaseDataPar2() {
+        caseData = {
+            "Requester": "apavlik",
+            "Origin": "Agent",
+        }
+        await apiHelper.apiLogin('qkatawazi');
+        for (let a = 1; a <= 2; a++) {
+            caseData["Case Template ID"] = caseTemplateResponse4.id;
+            await apiHelper.createCase(caseData);
+        }
+        await apiHelper.apiLogin('qkatawazi');
+        for (let a = 1; a <= 2; a++) {
+            caseData["Case Template ID"] = caseTemplateResponse5.id;
+            await apiHelper.createCase(caseData);
+        }
+        await apiHelper.apiLogin('qkatawazi');
+        for (let a = 1; a <= 2; a++) {
+            caseData["Case Template ID"] = caseTemplateResponse6.id;
+            await apiHelper.createCase(caseData);
+        }
     }
 
     describe('[DRDMV-9023,DRDMV-8981]:[Case Workspace] Cases search using filters', async () => {
@@ -189,7 +217,34 @@ describe('Case Cognitive', () => {
             await createCognitiveSearchData();
         });
         it('[DRDMV-9023,DRDMV-8981]:Cognitive Config Creation', async () => {
-            await createCaseData();
+          await createCaseDataPart1();
+        });
+        it('[DRDMV-9023,DRDMV-8981]:Cognitive Config Creation', async () => {
+            await createCaseDataPar2();
+        });
+        it('[DRDMV-9023,DRDMV-8981]:Cognitive Config Creation', async () => {
+            await navigationPage.gotoCreateCase();
+            await createCasePo.selectRequester('qtao');
+            await createCasePo.setSummary('Cognitive summary2');
+            await createCasePo.selectCategoryTier1(categName1);
+            await createCasePo.selectCategoryTier2(categName2);
+            await createCasePo.selectCategoryTier3(categName3);
+            await createCasePo.selectCategoryTier4(categName4);
+            await createCasePo.clickAssignToMeButton();
+            await createCasePo.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+        });
+        it('[DRDMV-9023,DRDMV-8981]:Cognitive Config Creation', async () => {
+            await navigationPage.gotoCreateCase();
+            await createCasePo.selectRequester('qtao');
+            await createCasePo.setSummary('Cognitive summary2');
+            await createCasePo.selectCategoryTier1(categName1);
+            await createCasePo.selectCategoryTier2(categName2);
+            await createCasePo.selectCategoryTier3(categName3);
+            await createCasePo.selectCategoryTier4(categName4);
+            await createCasePo.clickAssignToMeButton();
+            await createCasePo.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
         });
         it('[DRDMV-9023,DRDMV-8981]:Cognitive Config Creation', async () => {
             await createCognitiveConfig();
@@ -202,6 +257,19 @@ describe('Case Cognitive', () => {
         });
         it('[DRDMV-9023,DRDMV-8981]:Cognitive Config Creation', async () => {
             await createCognitiveDataSetMapping();
+        });
+        it('[DRDMV-9023,DRDMV-8981]:Cognitive Config Creation', async () => {
+            caseTemplateData.templateName = 'caseTemplateForCognitive7' + randomStr;
+            caseTemplateData.templateSummary = 'Employee asked requested for ergonomics assessment after training';
+            caseTemplateData.categoryTier1 = 'Accounts Payable';
+            caseTemplateData.categoryTier2 = 'Invoices';
+            caseTemplateData.categoryTier3 = 'Payment';
+            await apiHelper.apiLogin('qkatawazi');
+            caseTemplateResponse7 = await apiHelper.createCaseTemplate(caseTemplateData);
+            for (let a = 1; a <= 2; a++) {
+                caseData["Case Template ID"] = caseTemplateResponse7.id;
+                await apiHelper.createCase(caseData);
+            }
         });
         it('[DRDMV-9023,DRDMV-8981]:[Case Workspace] Cases search using filters', async () => {
             await navigationPage.gotoCreateCase();
@@ -224,6 +292,46 @@ describe('Case Cognitive', () => {
             await createCasePo.setSummary(randomStr + 'randomCaseSummary');
             await createCasePo.clickOnAutoCategorize();
             expect(await utilityCommon.isPopUpMessagePresent('No results found for categories.')).toBeTruthy();
+        });
+        it('[DRDMV-9023,DRDMV-8981]:[Case Workspace] Cases search using filters', async () => {
+            await navigationPage.gotoCaseConsole();
+            await navigationPage.gotoQuickCase();
+            await quickCasePo.selectRequesterName('adam');
+            await quickCasePo.setCaseSummary('Employee asked requested bonus');
+            expect(await resourcesTabPo.getCountOfHeading('Recommended Templates')).toBe(1, 'heading Count is not correct');
+        });
+        it('[DRDMV-9023,DRDMV-8981]:[Case Workspace] Cases search using filters', async () => {
+            await navigationPage.gotoCaseConsole();
+            await navigationPage.gotoQuickCase();
+            await quickCasePo.selectRequesterName('adam');
+            await quickCasePo.setCaseSummary('Employee asked requested change');
+            expect(await resourcesTabPo.getCountOfHeading('Recommended Templates')).toBe(1, 'heading Count is not correct');
+        });
+        it('[DRDMV-9023,DRDMV-8981]:[Case Workspace] Cases search using filters', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('tadmin');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Cognitive--Template', 'Template Configuration - Business Workflows');
+            await utilGrid.searchAndOpenHyperlink("Petramco Template Dataset Mapping");
+            await editCognitiveTemplateMappingPo.updateValueOfCasesCreatedAutomatically("90");
+            await editCognitiveTemplateMappingPo.updateConfidentialsLevelByAgent("90");
+            await editCognitiveTemplateMappingPo.clickSaveButton();
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+        it('[DRDMV-9023,DRDMV-8981]:[Case Workspace] Cases search using filters', async () => {
+            await navigationPage.gotoCaseConsole();
+            await navigationPage.gotoQuickCase();
+            await quickCasePo.selectRequesterName('adam');
+            await quickCasePo.setCaseSummary('Employee asked requested bonus');
+            expect(await resourcesTabPo.getCountOfHeading('Recommended Templates')).toBeGreaterThan(1, 'heading Count is not correct');
+        });
+        it('[DRDMV-9023,DRDMV-8981]:[Case Workspace] Cases search using filters', async () => {
+            await navigationPage.gotoCaseConsole();
+            await navigationPage.gotoQuickCase();
+            await quickCasePo.selectRequesterName('adam');
+            await quickCasePo.setCaseSummary('Employee asked requested change');
+            expect(await resourcesTabPo.getCountOfHeading('Recommended Templates')).toBeGreaterThan(1, 'heading Count is not correct');
         });
         afterAll(async () => {
             await navigationPage.signOut();
@@ -310,34 +418,35 @@ describe('Case Cognitive', () => {
             await navigationPage.gotoCaseConsole();
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('adam');
-            await createCasePo.setSummary('SearchCateg4');
+            await createCasePo.setSummary('Employee looking supplemental insurance options bonus');
             await createCasePo.clickOnAutoCategorize();
-            expect(await createCasePo.getCategoryTier1Value()).toBe(categName1);
-            expect(await createCasePo.getCategoryTier2Value()).toBe('Select');
-            expect(await createCasePo.getCategoryTier3Value()).toBe('Select');
-            expect(await createCasePo.getCategoryTier4Value()).toBe('Select');
-            await createCasePo.setSummary('SearchCat');
-            await createCasePo.clickOnAutoCategorize();
-            expect(await utilityCommon.isPopUpMessagePresent('No results found for categories.')).toBeTruthy();
-            expect(await createCasePo.getCategoryTier1Value()).toBe(categName1);
+            expect(await createCasePo.getCategoryTier1Value()).toBe("Applications");
             expect(await createCasePo.getCategoryTier2Value()).toBe('Select');
             expect(await createCasePo.getCategoryTier3Value()).toBe('Select');
             expect(await createCasePo.getCategoryTier4Value()).toBe('Select');
             await createCasePo.clearSummary();
-            await createCasePo.setSummary('SearchCateg3');
+            await createCasePo.setSummary('Employee asked requested change');
             await createCasePo.clickOnAutoCategorize();
-            expect(await createCasePo.getCategoryTier1Value()).toBe(categName1);
-            expect(await createCasePo.getCategoryTier2Value()).toBe(categName2);
+            expect(await utilityCommon.isPopUpMessagePresent('No results found for categories.')).toBeTruthy();
+            expect(await createCasePo.getCategoryTier1Value()).toBe("Applications");
+            expect(await createCasePo.getCategoryTier2Value()).toBe('Select');
+            expect(await createCasePo.getCategoryTier3Value()).toBe('Select');
+            expect(await createCasePo.getCategoryTier4Value()).toBe('Select');
+            await createCasePo.clearSummary();
+            await createCasePo.setSummary('New Joinee assessment workplace change');
+            await createCasePo.clickOnAutoCategorize();
+            expect(await createCasePo.getCategoryTier1Value()).toBe("Applications");
+            expect(await createCasePo.getCategoryTier2Value()).toBe('Help Desk');
             expect(await createCasePo.getCategoryTier3Value()).toBe('Select');
             expect(await createCasePo.getCategoryTier4Value()).toBe('Select');
         });
         it('[DRDMV-8985,DRDMV-8987]:[Cognitive] - Auto categorization when cognitive search return only tier 1, tier 1,2 and tier 1,2,3 values', async () => {
             await createCasePo.clearSummary();
-            await createCasePo.setSummary('SearchCateg2');
+            await createCasePo.setSummary('Employee needs an employment');
             await createCasePo.clickOnAutoCategorize();
-            expect(await createCasePo.getCategoryTier1Value()).toBe(categName1);
-            expect(await createCasePo.getCategoryTier2Value()).toBe(categName2);
-            expect(await createCasePo.getCategoryTier3Value()).toBe('Select');
+            expect(await createCasePo.getCategoryTier1Value()).toBe("Accounts Payable");
+            expect(await createCasePo.getCategoryTier2Value()).toBe("Invoices");
+            expect(await createCasePo.getCategoryTier3Value()).toBe('Payment');
             expect(await createCasePo.getCategoryTier4Value()).toBe('Select');
             await createCasePo.selectCategoryTier1("Facilities");
             await createCasePo.selectCategoryTier2("Conference Room");
@@ -346,7 +455,7 @@ describe('Case Cognitive', () => {
             expect(await createCasePo.getCategoryTier2Value()).toBe("Conference Room");
             expect(await createCasePo.getCategoryTier3Value()).toBe("Furniture");
             await createCasePo.clearSummary();
-            await createCasePo.setSummary('SearchCateg1');
+            await createCasePo.setSummary('supplemental life insurance options bonus');
             await createCasePo.clickOnAutoCategorize();
             expect(await createCasePo.getCategoryTier1Value()).toBe(categName1);
             expect(await createCasePo.getCategoryTier2Value()).toBe(categName2);
@@ -378,7 +487,7 @@ describe('Case Cognitive', () => {
             await apiHelper.createCognitiveDataSet("category", { name: trainedCategoryDataSet });
             await apiHelper.trainCognitiveDataSet(trainedCategoryDataSet);
         });
-        it('[DRDMV-8973,DRDMV-8971,DRDMV-8972,DRDMV-8977,DRDMV-8974]:[Cognitive] - Add Data Set Mapping for Categorization', async () => {
+        it('[DRDMV-8973,DRDMV-8971,DRDMV-8972,DRDMV-8977,DRDMV-8974,DRDMV-8975]:[Cognitive] - Add Data Set Mapping for Categorization', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Cognitive--Categorization', 'Categorization Configuration - Business Workflows');
             await consoleCognitivePo.clickAddDataSetMapping();
@@ -399,7 +508,7 @@ describe('Case Cognitive', () => {
             await createCognitiveCategorizationMappingPo.clickCancelButton();
             await utilCommon.clickOnWarningOk();
         });
-        it('[DRDMV-8973,DRDMV-8971,DRDMV-8972,DRDMV-8977,DRDMV-8974]:[Cognitive] - Add Data Set Mapping for Categorization', async () => {
+        it('[DRDMV-8973,DRDMV-8971,DRDMV-8972,DRDMV-8977,DRDMV-8974,DRDMV-8975]:[Cognitive] - Add Data Set Mapping for Categorization', async () => {
             await consoleCognitivePo.clickAddDataSetMapping();
             await createCognitiveCategorizationMappingPo.setMappingName("Add Mapping" + randomStr);
             await createCognitiveCategorizationMappingPo.selectCompany("Petramco");
@@ -412,7 +521,7 @@ describe('Case Cognitive', () => {
             await createCognitiveCategorizationMappingPo.setConfidentialsLevelByAgent("10");
             await createCognitiveCategorizationMappingPo.clickSaveButton();
         });
-        it('[DRDMV-8973,DRDMV-8971,DRDMV-8972,DRDMV-8977,DRDMV-8974]:[Cognitive] - Add Data Set Mapping for Categorization', async () => {
+        it('[DRDMV-8973,DRDMV-8971,DRDMV-8972,DRDMV-8977,DRDMV-8974,DRDMV-8975]:[Cognitive] - Add Data Set Mapping for Categorization', async () => {
             await utilGrid.searchAndOpenHyperlink("Add Mapping" + randomStr);
             expect(await editCognitiveCategorizationMappingPo.isMappingRequiredTextPresent()).toBeTruthy();
             expect(await editCognitiveCategorizationMappingPo.isCompanyTextPresent()).toBeTruthy();
@@ -428,7 +537,7 @@ describe('Case Cognitive', () => {
             await editCognitiveCategorizationMappingPo.clickCancelButton();
             await utilCommon.clickOnWarningOk();
         });
-        it('[DRDMV-8973,DRDMV-8971,DRDMV-8972,DRDMV-8977,DRDMV-8974]:[Cognitive] - Add Data Set Mapping for Categorization', async () => {
+        it('[DRDMV-8973,DRDMV-8971,DRDMV-8972,DRDMV-8977,DRDMV-8974,DRDMV-8975]:[Cognitive] - Add Data Set Mapping for Categorization', async () => {
             await utilGrid.searchAndOpenHyperlink("Add Mapping" + randomStr);
             await editCognitiveCategorizationMappingPo.updateMappingName("update Mapping" + randomStr);
             await editCognitiveCategorizationMappingPo.updateConfidentialsLevelOfCategorization("400");
@@ -440,7 +549,7 @@ describe('Case Cognitive', () => {
             await editCognitiveCategorizationMappingPo.clickSaveButton();
         });
 
-        it('[DRDMV-8973,DRDMV-8971,DRDMV-8972,DRDMV-8977,DRDMV-8974]:[Cognitive] - Add Data Set Mapping for Categorization', async () => {
+        it('[DRDMV-8973,DRDMV-8971,DRDMV-8972,DRDMV-8977,DRDMV-8974,DRDMV-8975]:[Cognitive] - Add Data Set Mapping for Categorization', async () => {
             await consoleCognitivePo.clickAddDataSetMapping();
             await createCognitiveCategorizationMappingPo.setMappingName("Add Mapping Group " + randomStr);
             await createCognitiveCategorizationMappingPo.selectCompany("Petramco");
@@ -457,7 +566,7 @@ describe('Case Cognitive', () => {
             await createCognitiveCategorizationMappingPo.selectCompany("Psilon");
             await createCognitiveCategorizationMappingPo.clickSaveButton();
         });
-        it('[DRDMV-8973,DRDMV-8971,DRDMV-8972,DRDMV-8977,DRDMV-8974]:[Cognitive] - Add Data Set Mapping for Categorization', async () => {
+        it('[DRDMV-8973,DRDMV-8971,DRDMV-8972,DRDMV-8977,DRDMV-8974,DRDMV-8975]:[Cognitive] - Add Data Set Mapping for Categorization', async () => {
             await consoleCognitivePo.clickAddDataSetMapping();
             await createCognitiveCategorizationMappingPo.setMappingName("Add Mapping Psilon" + randomStr);
             await createCognitiveCategorizationMappingPo.selectCompany("Psilon");
@@ -467,42 +576,41 @@ describe('Case Cognitive', () => {
             await createCognitiveCategorizationMappingPo.clickSaveButton();
             expect(await utilCommon.isPopUpMessagePresent('ERROR (382): The value(s) for this entry violate a unique index that has been defined for this record definition.')).toBeTruthy();
             await utilCommon.closePopUpMessage();
-            await editCognitiveCategorizationMappingPo.clickCancelButton();
+            await createCognitiveCategorizationMappingPo.clickCancelButton();
             await utilCommon.clickOnWarningOk();
         });
-    });
+        //ankagraw
+        it('[DRDMV-8973,DRDMV-8971,DRDMV-8972,DRDMV-8977,DRDMV-8974,DRDMV-8975]:[Cognitive] - Add Data Set Mapping for Categorization', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Cognitive--Categorization', 'Categorization Configuration - Business Workflows');
+            let column: string[] = ["Mapping Status"];
+            await consoleCognitivePo.addColumnOnCategorization(column);
+            await utilGrid.addFilter("Mapping Name", "Add Mapping Group " + randomStr, "text");
+            expect(await consoleCognitivePo.isRecordPresentOnCategorization("Add Mapping Group " + randomStr)).toBeTruthy();
+            await utilGrid.clearFilter();
+            await utilGrid.addFilter("Company", "Petramco", "text");
+            expect(await consoleCognitivePo.isRecordPresentOnCategorization("update Mapping" + randomStr)).toBeTruthy();
+            await utilGrid.clearFilter();
+            await utilGrid.addFilter("Mapping Type", "Categorization", "checkbox");
+            expect(await consoleCognitivePo.isRecordPresentOnCategorization("update Mapping" + randomStr)).toBeTruthy();
+            await utilGrid.clearFilter();
+            await utilGrid.addFilter("Data Set Name", "Trained Templates Data Set", "text");
+            expect(await consoleCognitivePo.isRecordPresentOnCategorization("Add Mapping Group " + randomStr)).toBeTruthy();
+            await utilGrid.clearFilter();
+            await utilGrid.addFilter("Mapping Status", "True", "checkbox");
+            expect(await consoleCognitivePo.isRecordPresentOnCategorization("Add Mapping Group " + randomStr)).toBeTruthy();
+            await utilGrid.clearFilter();
+            expect(await consoleCognitivePo.isColumnSortedOnCategorization("Mapping Name", "asc")).toBeTruthy();
+            expect(await consoleCognitivePo.isColumnSortedOnCategorization("Mapping Name", "desc")).toBeTruthy();
+            expect(await consoleCognitivePo.isColumnSortedOnCategorization("Company", "asc")).toBeTruthy();
+            expect(await consoleCognitivePo.isColumnSortedOnCategorization("Company", "desc")).toBeTruthy();
+            expect(await consoleCognitivePo.isColumnSortedOnCategorization("Data Set Name", "asc")).toBeTruthy();
+            expect(await consoleCognitivePo.isColumnSortedOnCategorization("Data Set Name", "desc")).toBeTruthy();
+            expect(await consoleCognitivePo.isColumnSortedOnCategorization("Mapping Type", "asc")).toBeTruthy();
+            expect(await consoleCognitivePo.isColumnSortedOnCategorization("Mapping Type", "desc")).toBeTruthy();
 
-    //ankagraw
-    it('[DRDMV-8975]:[Cognitive] - Category Data Set Mapping Grid validation', async () => {
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Cognitive--Categorization', 'Categorization Configuration - Business Workflows');
-        let column:string[] =["Mapping Status"];
-        await consoleCognitivePo.addColumnOnCategorization(column);
-        await utilGrid.addFilter("Mapping Name", "Add Mapping Group " + randomStr, "text");
-        expect(await consoleCognitivePo.isRecordPresentOnCategorization("Add Mapping Group " + randomStr)).toBeTruthy();
-        await utilGrid.clearFilter();
-        await utilGrid.addFilter("Company", "Petramco", "text");
-        expect(await consoleCognitivePo.isRecordPresentOnCategorization("update Mapping" + randomStr)).toBeTruthy();
-        await utilGrid.clearFilter();
-        await utilGrid.addFilter("Mapping Type", "Categorization", "checkbox");
-        expect(await consoleCognitivePo.isRecordPresentOnCategorization("update Mapping" + randomStr)).toBeTruthy();
-        await utilGrid.clearFilter();
-        await utilGrid.addFilter("Data Set Name", "Trained Templates Data Set", "text");
-        expect(await consoleCognitivePo.isRecordPresentOnCategorization("Add Mapping Group " + randomStr)).toBeTruthy();
-        await utilGrid.clearFilter();
-        await utilGrid.addFilter("Mapping Status", "True", "checkbox");
-        expect(await consoleCognitivePo.isRecordPresentOnCategorization("Add Mapping Group " + randomStr)).toBeTruthy();
-        await utilGrid.clearFilter();
-        expect(await consoleCognitivePo.isColumnSortedOnCategorization("Mapping Name", "asc")).toBeTruthy();
-        expect(await consoleCognitivePo.isColumnSortedOnCategorization("Mapping Name", "desc")).toBeTruthy();
-        expect(await consoleCognitivePo.isColumnSortedOnCategorization("Company", "asc")).toBeTruthy();
-        expect(await consoleCognitivePo.isColumnSortedOnCategorization("Company", "desc")).toBeTruthy();
-        expect(await consoleCognitivePo.isColumnSortedOnCategorization("Data Set Name", "asc")).toBeTruthy();
-        expect(await consoleCognitivePo.isColumnSortedOnCategorization("Data Set Name", "desc")).toBeTruthy();
-        expect(await consoleCognitivePo.isColumnSortedOnCategorization("Mapping Type", "asc")).toBeTruthy();
-        expect(await consoleCognitivePo.isColumnSortedOnCategorization("Mapping Type", "desc")).toBeTruthy();
+        });
     });
-
     //ankagraw
     describe('[DRDMV-8454,DRDMV-8453,DRDMV-8464,DRDMV-8455,DRDMV-8456]:[Cognitive] - Data Set Mapping for Templates UI validation', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -563,7 +671,7 @@ describe('Case Cognitive', () => {
             expect(await editCognitiveTemplateMappingPo.isConfidentialsLevelOfCategorizationTextPresent()).toBeTruthy();
             expect(await editCognitiveTemplateMappingPo.isConfidentialsLevelByAgentRequiredTextPresent()).toBeTruthy();
             await editCognitiveTemplateMappingPo.updateMappingName("update Mapping" + randomStr);
-            await editCognitiveTemplateMappingPo.updateConfidentialsLevelOfCategorization("40");
+            await editCognitiveTemplateMappingPo.updateValueOfCasesCreatedAutomatically("40");
             await editCognitiveTemplateMappingPo.updateConfidentialsLevelByAgent("40");
             await editCognitiveTemplateMappingPo.clickCancelButton();
             await utilCommon.clickOnWarningCancel();
@@ -573,9 +681,9 @@ describe('Case Cognitive', () => {
         it('[DRDMV-8454,DRDMV-8453,DRDMV-8464,DRDMV-8455,DRDMV-8456]:[Cognitive] - Data Set Mapping for Templates UI validation', async () => {
             await utilGrid.searchAndOpenHyperlink("Add Mapping" + randomStr);
             await editCognitiveTemplateMappingPo.updateMappingName("update Mapping" + randomStr);
-            await editCognitiveTemplateMappingPo.updateConfidentialsLevelOfCategorization("400");
+            await editCognitiveTemplateMappingPo.updateValueOfCasesCreatedAutomatically("400");
             expect(await editCognitiveTemplateMappingPo.getMaximumValueErrorMessage()).toContain("Maximum value is 100.");
-            await editCognitiveTemplateMappingPo.updateConfidentialsLevelOfCategorization("40");
+            await editCognitiveTemplateMappingPo.updateValueOfCasesCreatedAutomatically("40");
             await editCognitiveTemplateMappingPo.updateConfidentialsLevelByAgent("400");
             expect(await editCognitiveTemplateMappingPo.getMaximumValueErrorMessage()).toContain("Maximum value is 100.");
             await editCognitiveTemplateMappingPo.updateConfidentialsLevelByAgent("40");
@@ -618,7 +726,7 @@ describe('Case Cognitive', () => {
     it('[DRDMV-8457]: [Cognitive] - Template Data Set Mapping Grid validation', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Cognitive--Template', 'Template Configuration - Business Workflows');
-        let column:string[] =["Mapping Status"];
+        let column: string[] = ["Mapping Status"];
         await consoleCognitivePo.addColumnOnTemplate(column);
         await utilGrid.addFilter("Mapping Name", "Add Mapping Group" + randomStr, "text");
         expect(await consoleCognitivePo.isRecordPresentOnTemplate("Add Mapping Group " + randomStr)).toBeTruthy();

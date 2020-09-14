@@ -278,6 +278,7 @@ describe('PIN Validation Create Case', () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('gwixillian');
             await createCasePo.setSummary('Summary' + randomStr);
+            await createCasePo.clickAssignToMeButton();
             expect(await createCasePo.isSaveCaseButtonDisabled()).toBeFalsy('Save button Enabled');
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Please validate the requester.')).toBeFalsy();
             await createCasePo.clickSaveCaseButton();
@@ -321,6 +322,7 @@ describe('PIN Validation Create Case', () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('gwixillian');
             await createCasePo.setSummary('Summary' + randomStr);
+            await createCasePo.clickAssignToMeButton();
             expect(await createCasePo.isSaveCaseButtonDisabled()).toBeFalsy('Save button Enabled');
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Please validate the requester.')).toBeTruthy();
             await pinValidationPo.validatePin("12345");
@@ -350,6 +352,7 @@ describe('PIN Validation Create Case', () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('gwixillian');
             await createCasePo.setSummary('Summary' + randomStr);
+            await createCasePo.clickAssignToMeButton();
             expect(await createCasePo.isSaveCaseButtonDisabled()).toBeTruthy('Save button Enabled');
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Please validate the requester.')).toBeTruthy();
             await pinValidationPo.validatePin("12345");
@@ -379,6 +382,7 @@ describe('PIN Validation Create Case', () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('gwixillian');
             await createCasePo.setSummary('Summary' + randomStr);
+            await createCasePo.clickAssignToMeButton();
             expect(await createCasePo.isSaveCaseButtonDisabled()).toBeFalsy('Save button Enabled');
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Please validate the requester.')).toBeFalsy();
             await createCasePo.clickSaveCaseButton();
@@ -396,6 +400,7 @@ describe('PIN Validation Create Case', () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('gwixillian');
             await createCasePo.setSummary('Summary' + randomStr);
+            await createCasePo.clickAssignToMeButton();
             expect(await createCasePo.isSaveCaseButtonDisabled()).toBeFalsy('Save button Enabled');
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Please validate the requester.')).toBeTruthy();
             await pinValidationPo.validatePin("12345");
@@ -407,6 +412,7 @@ describe('PIN Validation Create Case', () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('gwixillian');
             await createCasePo.setSummary('Summary' + randomStr);
+            await createCasePo.clickAssignToMeButton();
             expect(await createCasePo.isSaveCaseButtonDisabled()).toBeFalsy('Save button Enabled');
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Please validate the requester.')).toBeTruthy();
             await createCasePo.clickSaveCaseButton();
@@ -424,6 +430,7 @@ describe('PIN Validation Create Case', () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('gwixillian');
             await createCasePo.setSummary('Summary' + randomStr);
+            await createCasePo.clickAssignToMeButton();
             expect(await createCasePo.isSaveCaseButtonDisabled()).toBeTruthy('Save button Enabled');
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Please validate the requester.')).toBeTruthy();
             await pinValidationPo.validatePin("12345");

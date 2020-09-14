@@ -301,6 +301,9 @@ describe("Task Self Approval Tests", () => {
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
             await viewCasePo.openTaskCard(1);
             await manageTask.clickTaskLink(manualTaskTemplateData.templateSummary);
+            let taskId = await viewTask.getTaskID();
+            await navigationPage.gotoTaskConsole();
+            await utilityGrid.searchAndOpenHyperlink(taskId);
             expect(await viewTask.getTaskStatusValue()).toBe("In Progress");
             expect(await activityTabPage.getApprovalActivityText('Task was self-approved')).toBeTruthy();
         });
@@ -553,6 +556,9 @@ describe("Task Self Approval Tests", () => {
             await viewCasePo.openTaskCard(1);
             manualTaskDisplayId = await manageTask.getTaskDisplayIdFromManageTaskBlade();
             await manageTask.clickTaskLink(manualTaskTemplateData.templateSummary);
+            let taskId = await viewTask.getTaskID();
+            await navigationPage.gotoTaskConsole();
+            await utilityGrid.searchAndOpenHyperlink(taskId);
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
             expect(await viewTask.isShowApproversBannerDisplayed()).toBeTruthy('Show Approvers Banner is not displayed');
         });
