@@ -947,11 +947,11 @@ describe("Case Approval UI Validations", () => {
             expect(await updateStatusBladePo.isStatusReasonRequiredTextPresent()).toBeFalsy();
             await updateStatusBladePo.clickSaveStatus();
             await updateStatusBladePo.changeCaseStatus("Resolved");
-            expect(await updateStatusBladePo.isStatusReasonRequiredTextPresent()).toBeFalsy();
-            await updateStatusBladePo.clickSaveStatus();
-            await updateStatusBladePo.changeCaseStatus("Canceled");
             expect(await updateStatusBladePo.isStatusReasonRequiredTextPresent()).toBeTruthy();
-            await updateStatusBladePo.setStatusReason('Customer Canceled');
+            await updateStatusBladePo.setStatusReason('Auto Resolved');
+            await updateStatusBladePo.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus("Closed");
+            expect(await updateStatusBladePo.isStatusReasonRequiredTextPresent()).toBeTruthy();
             await updateStatusBladePo.clickSaveStatus();
         });
 

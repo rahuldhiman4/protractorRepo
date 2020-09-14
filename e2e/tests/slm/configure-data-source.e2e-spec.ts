@@ -30,13 +30,13 @@ describe('Data Source Configuration Tests', () => {
     });
 
     //skhobrag
-    describe('[DRDMV-2208,DRDMV-2209,DRDMV-2210,DRDMV-2212,DRDMV-2224]: SLM - Configure Data Source - Create a new Data Source', async () => {
+    describe('[DRDMV-2208,DRDMV-2209,DRDMV-2210,DRDMV-2212,DRDMV-2224,DRDMV-2223]: SLM - Configure Data Source - Create a new Data Source', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let dataSourceDisplayName = 'Case Data Source_' + randomStr;
         let dataSourceDisplayName2 = 'Case Data Source2_' + randomStr;
         let dataSourceRecordDefinitionOptions = ['com.bmc.dsm.case-lib:Case Audit', 'com.bmc.dsm.case-lib:Case Detail Signature', 'com.bmc.dsm.case-lib:Case Detail Signature Question', 'com.bmc.dsm.case-lib:Case Detail Signature Question Attachment']
 
-        it('[DRDMV-2208,DRDMV-2209,DRDMV-2210,DRDMV-2212,DRDMV-2224]: Verify Data Source Configuration Creation', async () => {
+        it('[DRDMV-2208,DRDMV-2209,DRDMV-2210,DRDMV-2212,DRDMV-2224,DRDMV-2223]: Verify Data Source Configuration Creation', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Configure Data Source', 'Configure Data Source - Administration - Business Workflows');
             expect(await configureDataSourceConsolePage.getDataSourceConfigurationConsoleHeading()).toBe(dataSourceConsoleHeading);
@@ -106,7 +106,7 @@ describe('Data Source Configuration Tests', () => {
             expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message is not displayed.');
         });
 
-        it('[DRDMV-2208,DRDMV-2209,DRDMV-2210,DRDMV-2212,DRDMV-2224]: Verify Data Source Configuration Updation', async () => {
+        it('[DRDMV-2208,DRDMV-2209,DRDMV-2210,DRDMV-2212,DRDMV-2224,DRDMV-2223]: Verify Data Source Configuration Updation', async () => {
             await utilGrid.searchAndOpenHyperlink(dataSourceDisplayName);
             await browser.sleep(2000); // added hard wait to load Edit Data Source Blade
             expect(await editConfigureDataSourceConfigPo.isDatSourceFieldDisabled('Display Name')).toBeTruthy('Display Name field is optional on Edit Data Source Config screen');
@@ -149,7 +149,7 @@ describe('Data Source Configuration Tests', () => {
             await editConfigureDataSourceConfigPo.clickCancelButton();
         });
 
-        it('[DRDMV-2208,DRDMV-2209,DRDMV-2210,DRDMV-2212,DRDMV-2224]: Verify that the already utilized record definition is not available for new data source', async () => {
+        it('[DRDMV-2208,DRDMV-2209,DRDMV-2210,DRDMV-2212,DRDMV-2224,DRDMV-2223]: Verify that the already utilized record definition is not available for new data source', async () => {
             await configureDataSourceConsolePage.clickConfigDataSourceBtn();
             await browser.sleep(5000); // added hard wait to load Create Data Source Blade
             expect(await createConfigureDataSourceConfigPo.getAddDataSourceConfigurationHeading()).toBe(createdataSourceConfigHeading);
@@ -161,7 +161,7 @@ describe('Data Source Configuration Tests', () => {
             await utilCommon.clickOnWarningOk();
         });
 
-        it('[DRDMV-2208,DRDMV-2209,DRDMV-2210,DRDMV-2212,DRDMV-2224]: Verify the error when existing data source used in SVT configs is modified', async () => {
+        it('[DRDMV-2208,DRDMV-2209,DRDMV-2210,DRDMV-2212,DRDMV-2224,DRDMV-2223]: Verify the error when existing data source used in SVT configs is modified', async () => {
             await utilGrid.searchRecord('nonmatchingtext');
             await utilGrid.searchAndOpenHyperlink('Case Management');
             await browser.sleep(2000); // added hard wait to load Edit Data Source Blade
@@ -177,14 +177,13 @@ describe('Data Source Configuration Tests', () => {
 
     });
 
-
     //skhobrag
-    describe('[DRDMV-2211,DRDMV-2211,DRDMV-2216]: SLM - Configure Data Source - Build Expression', async () => {
+    describe('[DRDMV-2211,DRDMV-2211,DRDMV-2216,DRDMV-2213]: SLM - Configure Data Source - Build Expression', async () => {
         let dataSourceMaxLimit = "DataSource is a name given to the connection set to.";
         let dataSourceAlphaNumeric = "DaTaSource is a Name given to the set 21378236872";
         let dataSourceSpecialChars = "DaTaSource is a #$%&@^(*@#&*&@*( given to the set";
 
-        it('[DRDMV-2211,DRDMV-2211,DRDMV-2216]: Verify Data Source Configuration Creation with Input Characters Validation', async () => {
+        it('[DRDMV-2211,DRDMV-2211,DRDMV-2216,DRDMV-2213]: Verify Data Source Configuration Creation with Input Characters Validation', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Configure Data Source', 'Configure Data Source - Administration - Business Workflows');
             expect(await configureDataSourceConsolePage.getDataSourceConfigurationConsoleHeading()).toBe(dataSourceConsoleHeading);
@@ -233,7 +232,7 @@ describe('Data Source Configuration Tests', () => {
             expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message is not displayed.');
         });
 
-        it('[DRDMV-2211,DRDMV-2211,DRDMV-2216]: Verify Data Source Configuration Creation with Reset Goal Validation', async () => {
+        it('[DRDMV-2211,DRDMV-2211,DRDMV-2216,DRDMV-2213]: Verify Data Source Configuration Creation with Reset Goal Validation', async () => {
             await utilGrid.searchAndOpenHyperlink(dataSourceAlphaNumeric);
             await browser.sleep(2000); // added hard wait to load Edit Data Source Blade
             expect(await editConfigureDataSourceConfigPo.getDatSourceFieldValue('Display Name')).toBe(dataSourceAlphaNumeric);
@@ -243,7 +242,7 @@ describe('Data Source Configuration Tests', () => {
             await editConfigureDataSourceConfigPo.clickCancelButton();
         });
 
-        it('[DRDMV-2211,DRDMV-2211,DRDMV-2216]: Verify Data Source Configuration Creation with Build Expression Validation', async () => {
+        it('[DRDMV-2211,DRDMV-2211,DRDMV-2216,DRDMV-2213]: Verify Data Source Configuration Creation with Build Expression Validation', async () => {
             await configureDataSourceConsolePage.clickConfigDataSourceBtn();
             await browser.sleep(5000); // added hard wait to load Create Data Source Blade
             expect(await createConfigureDataSourceConfigPo.getAddDataSourceConfigurationHeading()).toBe(createdataSourceConfigHeading);
@@ -258,5 +257,69 @@ describe('Data Source Configuration Tests', () => {
 
     });
 
+    //skhobrag
+    describe('[DRDMV-13063]: Create a Task Management Data Source to enable Dynamic fields and check dependencies on SVT blade', async () => {
+        let dataSourceDisplayName = "Task Management";
+
+        it('[DRDMV-13063]: Verify Task Management Data Source Configuration is provided OOTB and can be modified', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Service Level Management--Configure Data Source', 'Configure Data Source - Administration - Business Workflows');
+            expect(await configureDataSourceConsolePage.getDataSourceConfigurationConsoleHeading()).toBe(dataSourceConsoleHeading);
+            expect(await configureDataSourceConsolePage.getDataSourceConfigurationConsoleDescription()).toBe(dataSourceConsoleDesc);
+            await utilGrid.searchAndOpenHyperlink(dataSourceDisplayName);
+            await browser.sleep(2000); // added hard wait to load Edit Data Source Blade
+            await createConfigureDataSourceConfigPo.clickDataSourceLink('Show Advanced Settings');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Dynamic Business Entity', 'Company');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Dynamic Start Time Field', 'Created Date');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Dynamic Goal Time Field', 'Assignee');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Category Field', 'Category Tier 1');
+            await createConfigureDataSourceConfigPo.clickUseEndTimeCheckbox();
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Dynamic End Time Field', 'Created By');
+            await createConfigureDataSourceConfigPo.clickDataSourceLink('Build Expression');
+            expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
+            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Create Expression');
+            await browser.sleep(3000); // sleep added for expression builder loading time
+            await approvalConfigurationPage.searchExpressionFieldOption('Assignee GUID');
+            await approvalConfigurationPage.clickRecordOption('Record Instance');
+            await browser.sleep(2000); // sleep added for expression builder loading time
+            await approvalConfigurationPage.selectExpressionFieldOption();
+            await browser.sleep(2000); // sleep added for expression builder loading time
+            await approvalConfigurationPage.selectExpressionOperator('=');
+            await browser.sleep(1000); // sleep added for expression builder loading time
+            await approvalConfigurationPage.setExpressionValueForParameter('"' + "Petramco" + '"');
+            await createConfigureDataSourceConfigPo.clickRegularExpressionSaveButton();
+            await createConfigureDataSourceConfigPo.clickSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('Record has been updated successfully')).toBeTruthy('Record saved successfully confirmation message is not displayed.');
+        });
+
+        it('[DRDMV-13063]: Create a Task SVT and verify the data source details are enabled', async () => {
+            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
+            await serviceTargetConfig.createServiceTargetConfig('SVT with all fields', 'Petramco', 'Task Management');
+            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
+            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await SlmExpressionBuilder.clickOnSaveExpressionButton();
+            await serviceTargetConfig.selectGoalType('Task Resolution Time');
+            await serviceTargetConfig.enterSVTDescription('SVT with all fields Desc');
+            await serviceTargetConfig.selectGoal("2");
+            expect(await serviceTargetConfig.isGoalCheckboxDisabled('Goal Time')).toBeFalsy('Goal Time field is disabled.');
+            expect(await serviceTargetConfig.isGoalCheckboxDisabled('Business Entity')).toBeFalsy('Business Entity field is disabled.');
+            expect(await serviceTargetConfig.isGoalCheckboxDisabled('Start Time')).toBeFalsy('Start Time field is disabled.');
+            await serviceTargetConfig.selectGoalTypeCheckbox('Goal Time');
+            await serviceTargetConfig.selectGoalTypeCheckbox('Business Entity');
+            await serviceTargetConfig.selectGoalTypeCheckbox('Start Time');
+            expect(await serviceTargetConfig.isBusinessEntityDisabled()).toBeTruthy('Business Entity field is disabled.');
+            await serviceTargetConfig.selectMeasurement();
+            expect(await serviceTargetConfig.isMeasurementCheckboxDisabled('Reset Goal for Same Request?')).toBeFalsy('Reset Goal for Same Request? field is disabled.');
+            expect(await serviceTargetConfig.isMeasurementCheckboxDisabled('Allow Measurement to Re-Open?')).toBeFalsy('Allow Measurement to Re-Open? field is disabled.');
+            expect(await serviceTargetConfig.isMeasurementCheckboxDisabled('Enable Team Tracking')).toBeFalsy('Enable Team Tracking field is disabled.');
+            await serviceTargetConfig.selectMeasurementCheckbox('Reset Goal for Same Request?');
+            await serviceTargetConfig.selectMeasurementCheckbox('Allow Measurement to Re-Open?');
+            await serviceTargetConfig.selectMeasurementCheckbox('Enable Team Tracking');
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
+            await serviceTargetConfig.clickOnSaveSVTButton();
+            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+        });
+    });
 
 });

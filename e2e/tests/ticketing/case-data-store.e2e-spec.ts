@@ -454,7 +454,8 @@ describe('Case Data Store', () => {
             await createCasePo.selectRequester('qkatawazi');
             await createCasePo.setSummary(casetemplateData.templateSummary);
             await createCasePo.clickSelectCaseTemplateButton();
-            await selectCasetemplateBladePo.clickOnCaseTemplate(casetemplateData.templateName);
+            await selectCasetemplateBladePo.clickOnAllTemplateTab();
+            await utilityGrid.searchAndOpenHyperlink(casetemplateData.templateName);;
             //verify dynmaic groups and fields
             expect(await previewCaseTemplateCasesPo.isGroupDisplayed(group1)).toBeTruthy('group is not present');
             expect(await previewCaseTemplateCasesPo.isGroupDisplayed(group2)).toBeTruthy('group is not present');

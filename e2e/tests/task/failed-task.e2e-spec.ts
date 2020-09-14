@@ -13,6 +13,10 @@ import taskViewPage from '../../pageobject/task/view-task.po';
 import editTaskPo from '../../pageobject/task/edit-task.po';
 import notificationPo from '../../pageobject/notification/notification.po';
 import activityTabPo from '../../pageobject/social/activity-tab.po';
+import createCasePo from '../../pageobject/case/create-case.po';
+import previewCasePo from '../../pageobject/case/case-preview.po';
+import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
+import statusUpdateBladePo from '../../pageobject/common/update.status.blade.po';
 
 describe('Failed Task', () => {
     beforeAll(async () => {
@@ -30,7 +34,7 @@ describe('Failed Task', () => {
     //asahitya
     describe('[DRDMV-10057]: Task behaviour when 2 of 3 tasks on same sequence and first task is failed(Condition set is Proceed further)', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let caseTemplatePetramco, newCaseTemplate, manualTaskTemplateData, automatedTaskTemplateSummary1, automatedTaskTemplateSummary2, caseResponse;
+        let caseTemplatePetramco, newCaseTemplate, manualTaskTemplateData, automatedTaskTemplateSummary1, automatedTaskTemplateSummary2, caseDisplayId;
         beforeAll(async () => {
             await apiHelper.apiLogin('fritz');
             caseTemplatePetramco = {
@@ -48,7 +52,7 @@ describe('Failed Task', () => {
                 "taskFailureConfiguration": "Proceed With Next Task"
             }
             newCaseTemplate = await apiHelper.createCaseTemplate(caseTemplatePetramco);
-            let caseTemplateDisplayId = await newCaseTemplate.displayId;
+
             manualTaskTemplateData = {
                 "templateName": 'Manual task10057' + randomStr,
                 "templateSummary": 'Manual task10057' + randomStr,
@@ -86,18 +90,23 @@ describe('Failed Task', () => {
             await apiHelper.enableDisableProcess(`${automatedTaskTemplateData.processBundle}:${automatedTaskTemplateData.processName}`, false);
             await apiHelper.associateCaseTemplateWithThreeTaskTemplate(newCaseTemplate.displayId, automatedTaskTemplate2.displayId, automatedTaskTemplate1.displayId, manualTaskTemplate.displayId, 'THREE_TASKFLOW_SEQUENTIAL_PARALLEL');
 
-            let caseData = {
-                "Requester": "qkatawazi",
-                "Summary": `DRDMV-10057 Medium Priority ${randomStr}`,
-                "Case Template ID": caseTemplateDisplayId
-            }
-            caseResponse = await apiHelper.createCase(caseData);
-            await apiHelper.updateCaseStatus(caseResponse.id, 'InProgress');
+            await navigationPage.gotoCreateCase();
+            await createCasePo.selectRequester('qtao');
+            await createCasePo.setSummary('Summary');
+            await createCasePo.clickSelectCaseTemplateButton();
+            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplatePetramco.templateSummary);
+            await createCasePo.clickAssignToMeButton();
+            await createCasePo.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            caseDisplayId = await viewCasePage.getCaseID();
         });
 
         it('[DRDMV-10057]: Task behaviour when 2 of 3 tasks on same sequence and first task is failed(Condition set is Proceed further)', async () => {
+            await statusUpdateBladePo.changeCaseStatus('In Progress');
+            await statusUpdateBladePo.clickSaveStatus('In Progress');
+            await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
-            await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
+            await utilityGrid.searchAndOpenHyperlink(caseDisplayId);
             await viewCasePage.openTaskCard(1);
             expect(await manageTaskBlade.getTaskStatus(manualTaskTemplateData.templateSummary)).toContain('Assigned');
             await utilityCommon.closeAllBlades();
@@ -205,7 +214,7 @@ describe('Failed Task', () => {
             await viewCasePage.openTaskCard(1);
             expect(await manageTaskBlade.getTaskStatus(automatedTaskTemplateSummary2)).toContain('Failed');
             await utilityCommon.closeAllBlades();
-
+            await editTaskPo.clickOnRefreshActivity();
             await viewCasePage.openTaskCard(2);
             expect(await manageTaskBlade.getTaskStatus(manualTaskTemplateData.templateSummary)).toContain('Staged');
             await utilityCommon.closeAllBlades();
