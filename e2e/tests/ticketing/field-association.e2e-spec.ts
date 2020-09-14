@@ -9,7 +9,7 @@ import utilityCommon from '../../utils/utility.common';
 import utilGrid from '../../utils/util.grid';
 import editFieldAssociationMappingsPo from '../../pageobject/settings/application-config/edit-field-association-mappings.po';
 
-describe('Menu Item', () => {
+describe('Field Association', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('tadmin');
@@ -22,7 +22,6 @@ describe('Menu Item', () => {
   
     //kgaikwad
     describe('[DRDMV-8955]: [Notification Association][UI] Association Mapping UI', async () => {
-        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let allColoumn: string[] = ['Field Name', 'Association Name', 'Application Or Bundle Name', 'Record Definition Name', 'Status'];
 
         beforeAll(async () => {
