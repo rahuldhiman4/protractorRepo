@@ -448,6 +448,7 @@ describe('Global Search Category Validation', () => {
     describe('[DRDMV-16115]:Global search with only Task Category', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let summary = 'summaryDRDMV16115' + randomStr;
+        let summary2 = 'twoSummaryDRDMV16115' + randomStr;
         let description = 'taskDescriptionDRDMV16115' + randomStr;
         let nonMatchingSummary = 'NonMatchingSummaryDRDMV16115' + randomStr;
         let nonMatchingDescription = 'NonMatchingDescriptionDRDMV16115' + randomStr;
@@ -462,7 +463,7 @@ describe('Global Search Category Validation', () => {
             let caseGuid1 = caseDetails1.id;
 
             // Create Task
-            for (let a = 0; a < 10; a++) {
+            for (let a = 0; a < 5; a++) {
                 taskDisplayId[a] = await createTask(summary, caseGuid1, description);
             }
 
@@ -475,7 +476,7 @@ describe('Global Search Category Validation', () => {
             let caseGuid2 = caseDetails2.id;
 
             for (let c = 0; c < 2; c++) {
-                taskDisplayId3[c] = await createTask(summary, caseGuid2, description);
+                taskDisplayId3[c] = await createTask(summary2, caseGuid2, description);
             }
         });
 
@@ -483,8 +484,7 @@ describe('Global Search Category Validation', () => {
             await navigationPage.gotoSearch();
             expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
             await searchPo.selectCategoryDropDownValue(taskModule);
-            expect(await searchPo.isModuleTitleDisplayed(summary, 'Tasks (10)', taskModule)).toBeTruthy('FailureMsg2: Task module title is missing');
-            expect(await searchPo.isPaginationDisplayed(taskModule)).toBeTruthy('FailureMsg3: Pagination is missing for TaskModule');
+            expect(await searchPo.isModuleTitleDisplayed(summary, 'Tasks (5)', taskModule)).toBeTruthy('FailureMsg2: Task module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[0], taskModule)).toBeTruthy(`FailureMsg4: ${taskDisplayId[0]} task id  is missing`);
 
             expect(await searchPo.isRecordDisplayedOnLeftPannel(summary, taskModule)).toBeTruthy(`FailureMsg5: ${summary} Task summary is missing`);
@@ -493,20 +493,6 @@ describe('Global Search Category Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[2], taskModule)).toBeTruthy(`FailureMsg7: ${taskDisplayId[2]} task id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[3], taskModule)).toBeTruthy(`FailureMsg8: ${taskDisplayId[3]} task id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[4], taskModule)).toBeTruthy(`FailureMsg9: ${taskDisplayId[4]} task id  is missing`);
-
-            await searchPo.clickOnPaginationPageNo(taskModule, "2");
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[5], taskModule)).toBeTruthy(`FailureMsg10: ${taskDisplayId[5]} task id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[6], taskModule)).toBeTruthy(`FailureMsg11: ${taskDisplayId[6]} task id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[7], taskModule)).toBeTruthy(`FailureMsg12: ${taskDisplayId[7]} task id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[8], taskModule)).toBeTruthy(`FailureMsg13: ${taskDisplayId[8]} task id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[9], taskModule)).toBeTruthy(`FailureMsg14: ${taskDisplayId[9]} task id  is missing`);
-
-            await searchPo.clickOnPaginationPageNo(taskModule, "1");
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[0], taskModule)).toBeTruthy(`FailureMsg15: ${taskDisplayId[0]} task id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[1], taskModule)).toBeTruthy(`FailureMsg16: ${taskDisplayId[1]} task id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[2], taskModule)).toBeTruthy(`FailureMsg17: ${taskDisplayId[2]} task id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[3], taskModule)).toBeTruthy(`FailureMsg18: ${taskDisplayId[3]} task id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[4], taskModule)).toBeTruthy(`FailureMsg19: ${taskDisplayId[4]} task id  is missing`);
 
             await searchPo.clickOnLeftPannelRecord(taskDisplayId[0], taskModule);
         });
@@ -538,7 +524,7 @@ describe('Global Search Category Validation', () => {
 
             // Search Task with description
             await searchPo.searchRecord(description);
-            expect(await searchPo.isModuleTitleDisplayed(description, 'Tasks (10)', taskModule)).toBeTruthy('FailureMsg42: Task module title is missing');
+            expect(await searchPo.isModuleTitleDisplayed(description, 'Tasks (5)', taskModule)).toBeTruthy('FailureMsg42: Task module title is missing');
             await searchPo.clickOnLeftPannelRecord(taskDisplayId[0], taskModule);
             expect(await taskPreviewPo.isTaskIdDisplayed(taskDisplayId[0])).toBeTruthy('FailureMsg43: Task id is missing');
             expect(await taskPreviewPo.isTaskDescriptionDisplayed(description)).toBeTruthy('FailureMsg44: Task Description is missing');
@@ -552,21 +538,20 @@ describe('Global Search Category Validation', () => {
         it('[DRDMV-16115]: Verify Task with non matching Task summary and description Also Verify Task summary and description who have not access of the task', async () => {
             await navigationPage.gotoSearch();
             await searchPo.searchRecord(summary);
-            expect(await searchPo.isModuleTitleDisplayed(summary, 'Tasks (10)', taskModule)).toBeTruthy('FailureMsg54: Task module title is missing');
+            expect(await searchPo.isModuleTitleDisplayed(summary, 'Tasks (5)', taskModule)).toBeTruthy('FailureMsg54: Task module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(nonMatchingSummary, taskModule)).toBeFalsy(`FailureMsg46: ${nonMatchingSummary} task Summary is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId3[0], taskModule)).toBeFalsy(`FailureMsg48: ${taskDisplayId3[0]} task id  is displayed`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId3[1], taskModule)).toBeFalsy(`FailureMsg49: ${taskDisplayId3[1]} task id  is displayed`);
 
-            await searchPo.clickOnPaginationPageNo(taskModule, "2");
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(nonMatchingSummary, taskModule)).toBeFalsy(`FailureMsg50: ${nonMatchingSummary} task Summary is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId3[0], taskModule)).toBeFalsy(`FailureMsg52: ${taskDisplayId3[0]} task id  is displayed`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId3[1], taskModule)).toBeFalsy(`FailureMsg53: ${taskDisplayId3[1]} task id  is displayed`);
-
+            await searchPo.searchRecord(summary2);
+            expect(await searchPo.isModuleTitleDisplayed(summary2, 'Tasks (0)', taskModule)).toBeTruthy('FailureMsg54: Task module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId3[0], taskModule)).toBeFalsy(`FailureMsg48: ${taskDisplayId3[0]} task id  is displayed`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId3[1], taskModule)).toBeFalsy(`FailureMsg49: ${taskDisplayId3[1]} task id  is displayed`);
         });
 
         it('[DRDMV-16115]: Clear search and verify record displayed on left pannel ', async () => {
             await searchPo.searchRecord(summary);
-            expect(await searchPo.isModuleTitleDisplayed(summary, 'Tasks (10)', taskModule)).toBeTruthy('FailureMsg54: Task module title is missing');
+            expect(await searchPo.isModuleTitleDisplayed(summary, 'Tasks (5)', taskModule)).toBeTruthy('FailureMsg54: Task module title is missing');
             await searchPo.clickClearSearchButton();
             expect(await searchPo.isClearSearchButtonDisplayed()).toBeFalsy('FailureMsg55: Search box is cleared and cross button gets hide');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[0], taskModule)).toBeTruthy(`FailureMsg56: ${taskDisplayId3[0]} task id  is missing`);
@@ -605,21 +590,15 @@ describe('Global Search Category Validation', () => {
             await navigationPage.gotoSearch();
 
             await searchPo.searchRecord(summary);
-            expect(await searchPo.isModuleTitleDisplayed(summary, 'Tasks (12)', taskModule)).toBeTruthy('FailureMsg42: Task module title is missing');
+            expect(await searchPo.isModuleTitleDisplayed(summary, 'Tasks (5)', taskModule)).toBeTruthy('FailureMsg42: Task module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[0], taskModule)).toBeTruthy(`FailureMsg6: ${taskDisplayId[0]} task id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[1], taskModule)).toBeTruthy(`FailureMsg6: ${taskDisplayId[1]} task id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[2], taskModule)).toBeTruthy(`FailureMsg7: ${taskDisplayId[2]} task id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[3], taskModule)).toBeTruthy(`FailureMsg8: ${taskDisplayId[3]} task id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[4], taskModule)).toBeTruthy(`FailureMsg9: ${taskDisplayId[4]} task id  is missing`);
 
-            await searchPo.clickOnPaginationPageNo(taskModule, "2");
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[5], taskModule)).toBeTruthy(`FailureMsg10: ${taskDisplayId[5]} task id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[6], taskModule)).toBeTruthy(`FailureMsg11: ${taskDisplayId[6]} task id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[7], taskModule)).toBeTruthy(`FailureMsg12: ${taskDisplayId[7]} task id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[8], taskModule)).toBeTruthy(`FailureMsg13: ${taskDisplayId[8]} task id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[9], taskModule)).toBeTruthy(`FailureMsg14: ${taskDisplayId[9]} task id  is missing`);
-
-            await searchPo.clickOnPaginationPageNo(taskModule, "3");
+            await searchPo.searchRecord(summary2);
+            expect(await searchPo.isModuleTitleDisplayed(summary2, 'Tasks (2)', taskModule)).toBeTruthy('FailureMsg42: Task module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId3[0], taskModule)).toBeTruthy(`FailureMsg10: ${taskDisplayId3[0]} task id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId3[1], taskModule)).toBeTruthy(`FailureMsg10: ${taskDisplayId3[2]} task id  is missing`);
 
