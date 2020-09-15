@@ -19,7 +19,7 @@ class EditCaseTemplate {
         casePriority: '98327bc1-9ada-48f9-ab88-9787ddecd409',
         caseStatusGuid: '5289a531-7138-4e4f-afdc-ee3f67a2aa64',
         statusReason: 'cfde7589-436d-4835-aab8-f5d71e04f91a',
-        label: '7ea99756-16a7-4aae-a8a0-8e5e11acfb77',
+        label: '06d4ad28-b48e-493a-b6b3-925fea737576',
         caseCategoryTier1: '241f0e58-3106-4f8a-a1cc-43554414bb7c',
         caseCategoryTier2: '4f950be7-d968-41a4-8bb9-018674e53f88',
         caseCategoryTier3: 'a7fbc4bc-23c6-4f92-818a-5554107d04c0',
@@ -157,7 +157,7 @@ class EditCaseTemplate {
     }
 
     async changeLabelValue(labelValue: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.caseCategoryTier4, labelValue);
+        await utilCommon.selectDropDown(this.selectors.label, labelValue);
     }
 
     async changeFlowsetValue(flowsetValue: string): Promise<void> {

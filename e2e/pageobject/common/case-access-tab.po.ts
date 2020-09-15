@@ -152,5 +152,11 @@ class CaseAccessTab {
     async clickOnResetToDefault(): Promise<void> {
         await $(this.selectors.resetToDefault).click();
     }
+
+    async removeConfidentialGroup(groupName): Promise<void> {
+        await $(`[rx-view-component-id="b1606736-7480-4368-aac6-a8273f0ff0d5"] .d-icon-cross[aria-label="Remove,${groupName}"]`).click();
+        await $('[rx-view-component-id="b1606736-7480-4368-aac6-a8273f0ff0d5"] .btn-primary').click();
+    }
+
 }
 export default new CaseAccessTab();

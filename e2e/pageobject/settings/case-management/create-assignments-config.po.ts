@@ -123,6 +123,41 @@ class AssignmentConfigCreatePage {
     async setLabel(label:string){
         await utilCommon.selectDropDown(this.selectors.labelDrpDwn, label);
     }
+
+    async isValuePresentInDropdown(DropDownName: string, value: string): Promise<boolean> {
+        let guid;
+        switch (DropDownName) {
+            case "Label": {
+                guid = this.selectors.labelDrpDwn;
+                break;
+            }
+            case "Priority": {
+                guid = this.selectors.priorityDrpDwn;
+                break;
+            }
+            case "Category Tier 1": {
+                guid = this.selectors.catTier1DrpDwn;
+                break;
+            }
+            case "Category Tier 2": {
+                guid = this.selectors.catTier2DrpDwn;
+                break;
+            }
+            case "Category Tier 3": {
+                guid = this.selectors.catTier3DrpDwn;
+                break;
+            }
+            case "Category Tier 4": {
+                guid = this.selectors.catTier4DrpDwn;
+                break;
+            }
+            default: {
+                console.log('Drop Down name does not match');
+                break;
+            }
+        }
+        return await utilCommon.isValuePresentInDropDown(guid, value);
+    }
 }
 
 export default new AssignmentConfigCreatePage();
