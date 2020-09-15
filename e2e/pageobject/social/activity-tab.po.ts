@@ -162,6 +162,26 @@ class ActivityTabPage {
                 return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-files_change_o').isPresent();
             }
 
+            case "check_circle": {
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-check_circle').isPresent();
+            }
+
+            case "right-refresh": {
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-right-refresh').isPresent();
+            }
+
+            case "arrow_squares": {
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-arrow_squares').isPresent();
+            }
+
+            case "envelope": {
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-envelope_o').isPresent();
+            }
+
+            case "lock_shield": {
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-lock_shield').isPresent();
+            }
+
             default: {
                 console.log('No such a match');
                 break;

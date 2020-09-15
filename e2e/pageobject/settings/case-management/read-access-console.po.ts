@@ -46,6 +46,11 @@ class ReadAccessConsolePage {
         await utilGrid.addFilter(fieldName, textValue, type);
     }
 
+    async searchAndOpenReadAccess(ReadAccessName: string): Promise<void> {
+        await utilGrid.searchAndOpenHyperlink(ReadAccessName);
+    }
+
+
     async deleteDefaultReadAccess(): Promise<void> {
         await utilGrid.clearFilter();
         await this.addFilter('Default Mapping', 'True', 'checkbox');

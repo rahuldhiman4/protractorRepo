@@ -167,11 +167,11 @@ class PersonProfilePage {
                 guid = '173d2bf1-5758-45ed-ae16-fdbf6a62d981, bfa03a3b-cc7c-4d33-95d5-2c63a882aaeb';
                 break;
             }
-            case "JobTitle": {
+            case "Job Title": {
                 guid = 'fb7bf28b-a603-433c-9e48-6f42bbb60cab, 4457754f-8879-44d0-aec3-01e45e5fd1f1';
                 break;
             }
-            case "CorporateID": {
+            case "Corporate ID": {
                 guid = 'e7274572-2e82-49fa-961f-d406853c452d, 5aa010cd-978c-4556-a25f-889e1f140b35';
                 break;
             }
@@ -179,7 +179,7 @@ class PersonProfilePage {
                 guid = '6ae2d2ca-a0c7-48d4-9c03-9714081518bf, 4ce8b56c-f9f4-4259-bbeb-62f15a7255b7';
                 break;
             }
-            case "LoginID": {
+            case "Login ID": {
                 guid = '00e01e18-c688-4c97-b103-0eeed0f71f83, a97bb771-1f17-49a1-a043-dc778e5e0658';
                 break;
             }

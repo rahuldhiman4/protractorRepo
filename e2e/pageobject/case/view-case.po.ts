@@ -78,7 +78,7 @@ class ViewCasePage {
     }
 
     async getStatusReason(value: string): Promise<string> {
-        return await $(`[rx-view-component-id="76dd86e7-bae5-4782-a49d-8cffaeb01053"] div[title="${value}"]`).getText();
+        return await $(`[rx-view-component-id="73dd86e7-bae5-4782-a49d-8cffaeb01053"] div[title="${value}"]`).getText();
     }
 
     async isColorTextPresent(value: string): Promise<boolean> {

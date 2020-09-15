@@ -228,6 +228,41 @@ class CreateAdhocTaskTemplatePage {
     async getCategoryTier4(): Promise<string> {
         return await $(`[rx-view-component-id="${this.selectors.categoryTier4}"] button`).getText();
     }
+
+    async isValuePresentInDropdown(DropDownName: string, value: string): Promise<boolean> {
+        let guid;
+        switch (DropDownName) {
+            case "Label": {
+                guid = this.selectors.label;
+                break;
+            }
+            case "Priority": {
+                guid = this.selectors.priority;
+                break;
+            }
+            case "Category Tier 1": {
+                guid = this.selectors.categoryTier1;
+                break;
+            }
+            case "Category Tier 2": {
+                guid = this.selectors.categoryTier2;
+                break;
+            }
+            case "Category Tier 3": {
+                guid = this.selectors.categoryTier3;
+                break;
+            }
+            case "Category Tier 4": {
+                guid = this.selectors.categoryTier4;
+                break;
+            }
+            default: {
+                console.log('Drop Down name does not match');
+                break;
+            }
+        }
+        return await utilityCommon.isValuePresentInDropDown(guid, value);
+    }
 }
 
 export default new CreateAdhocTaskTemplatePage();

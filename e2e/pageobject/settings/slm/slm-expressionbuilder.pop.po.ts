@@ -241,6 +241,11 @@ class SlmExpressionBuilder {
                 option = await element(by.cssContainingText(selectFieldOptionFromDropDown, fieldOptionValue));
                 await option.click();
                 break;
+            case "LABEL":
+                    await browser.sleep(2000); //Need this wait till displayed label drop down
+                    await $$('.ui-select-toggle[aria-label="Select box activate"]').get(0).click();
+                    await element(by.cssContainingText('.ui-select-choices-row-inner div', fieldOptionValue)).click();
+                    break;
             case "PERSON":
                 await element(by.model('personGroupListCtrl.ngModel')).sendKeys(fieldOptionValue);
                 await element(by.className('uib-typeahead-match active')).click();

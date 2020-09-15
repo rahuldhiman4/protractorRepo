@@ -2222,5 +2222,65 @@ export const DynamicGroupContainsConfidentialsFieldDRDMV15041 = {
         }
     ]
 };
-
-
+export const TASK_TEMPLATE__DYNAMIC_FIELDS_DRDMV_13948 =
+{
+    "name": "case template",
+    "templateRecordDefinition": "com.bmc.dsm.task-lib:Task Template",
+    "templateId": "nnn",
+    "attributeDefinitions": [
+        {
+            "name": "temp",
+            "description": "temp",
+            "dataType": "TEXT",
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "temp1",
+            "description": "temp1",
+            "dataType": "NUMBER",
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "temp2",
+            "description": "temp2",
+            "dataType": "DATE",
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "temp3",
+            "description": "temp3",
+            "dataType": "BOOLEAN",
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "temp4",
+            "description": "temp4",
+            "dataType": "DATE_TIME",
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "temp5",
+            "description": "temp5",
+            "dataType": "TIME",
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "attachment4",
+            "description": "attachment4",
+            "dataType": "ATTACHMENT",
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "attachment5",
+            "description": "attachment5",
+            "dataType": "ATTACHMENT",
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "attachment6",
+            "description": "attachment6",
+            "dataType": "ATTACHMENT",
+            "dataProviderUserRole": "Agent",
+        }
+    ]
+};

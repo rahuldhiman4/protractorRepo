@@ -101,25 +101,25 @@ describe('Automated Case Status Transition', () => {
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', 'Configure Automated Status Transitions - Business Workflows');
-            expect(await automatedStatusTransitionConsole.isAddAutomatedStatusTransitionBtnPresent()).toBeFalsy();
+            expect(await automatedStatusTransitionConsole.isAddAutomatedStatusTransitionBtnPresent()).toBeFalsy('Add button is available');
             await utilGrid.searchAndSelectGridRecord(configName1);
-            expect(await automatedStatusTransitionConsole.isDeleteAutomatedStatusTransitionBtnPresent()).toBeFalsy();
+            expect(await automatedStatusTransitionConsole.isDeleteAutomatedStatusTransitionBtnPresent()).toBeFalsy('Delete button is available');
             await automatedStatusTransitionConsole.openAutomatedTransitionConfig(configName1);
-            expect(await automatedStatusTransitionEditPage.isAutomatedStatusTransitionNameEnabled()).toBeFalsy();
-            expect(await automatedStatusTransitionEditPage.isAutomatedStatusTransitionSaveBtnEnabled()).toBeFalsy();
+            expect(await automatedStatusTransitionEditPage.isAutomatedStatusTransitionNameEnabled()).toBeFalsy('Name field is enabled');
+            expect(await automatedStatusTransitionEditPage.isAutomatedStatusTransitionSaveBtnEnabled()).toBeFalsy('Save button is enabled');
             await utilCommon.closeBladeOnSettings();
             //Search and presence of existing rule test
-            expect(await utilGrid.isGridRecordPresent(configName1)).toBeTruthy();
+            expect(await utilGrid.isGridRecordPresent(configName1)).toBeTruthy('Record 1 is missing');
             await utilGrid.clearGridSearchBox();
-            expect(await utilGrid.isGridRecordPresent(configName2)).toBeTruthy();
+            expect(await utilGrid.isGridRecordPresent(configName2)).toBeTruthy('Record 2 is missing');
             await utilGrid.clearGridSearchBox();
         });
         it('[DRDMV-17553]: Case manager - automatic case status transtion rule console validations', async () => {
             //Filter test
             await utilGrid.addFilter("Name", configName1, 'text');
-            expect(await utilGrid.isGridRecordPresent(configName1)).toBeTruthy();
+            expect(await utilGrid.isGridRecordPresent(configName1)).toBeTruthy('Record 1 is missing');
             await utilGrid.clearGridSearchBox();
-            expect(await utilGrid.isGridRecordPresent(configName2)).toBeFalsy();
+            expect(await utilGrid.isGridRecordPresent(configName2)).toBeFalsy('Record 2 is getting displayed');
             await utilGrid.clearGridSearchBox();
 
             //Grid Column and sort test

@@ -510,6 +510,12 @@ describe('Document Library Consume Permission', () => {
             await attachDocumentBladePo.searchRecord('%');
             expect(await attachDocumentBladePo.isPaginationPresent()).toBeTruthy('Failure: Pagination is missing');
             await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
+            // Verify Category Tier 1/2/3/4  on UI
+            expect(await resourcesTabPo.isAdvancedSearchFilterDropDownLabelDisplayed('Operational Category 1')).toBeTruthy('Failure: Operational Category 1 is missing'); 
+            expect(await resourcesTabPo.isAdvancedSearchFilterDropDownLabelDisplayed('Operational Category 2')).toBeFalsy('Failure: Operational Category 2 is missing'); 
+            expect(await resourcesTabPo.isAdvancedSearchFilterDropDownLabelDisplayed('Operational Category 3')).toBeFalsy('Failure: Operational Category 3 is missing'); 
+            expect(await resourcesTabPo.isAdvancedSearchFilterDropDownLabelDisplayed('Operational Category 4')).toBeFalsy('Failure: Operational Category 4 is missing'); 
+
             await resourcesTabPo.selectAdvancedSearchFilterOption('Operational Category Tier 1', 'Employee Relations');
             await resourcesTabPo.selectAdvancedSearchFilterOption('Region', 'Australia');
             await resourcesTabPo.selectAdvancedSearchFilterOption('Site', 'Canberra');

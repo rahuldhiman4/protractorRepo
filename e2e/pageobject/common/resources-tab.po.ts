@@ -65,6 +65,13 @@ export class Resources {
         }
     }
 
+    async isAdvancedSearchFilterDropDownLabelDisplayed(dropDownLabel: string): Promise<boolean> {
+        return await element(by.cssContainingText('.form-control-label', dropDownLabel)).isPresent().then(async (link) => {
+            if (link) return await element(by.cssContainingText('.form-control-label', dropDownLabel)).isDisplayed();
+            else return false;
+        });
+    }
+
     async isAdvancedSearchFilterOptionDropDownValueDisplayed(data: string[], dropDownNumber: number): Promise<boolean> {
         let arr: string[] = [];
         await $$('.advance-search button.dropdown-toggle').get(dropDownNumber).click();

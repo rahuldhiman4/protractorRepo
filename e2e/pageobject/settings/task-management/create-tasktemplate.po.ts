@@ -204,6 +204,41 @@ class CreateTaskTemplatePage {
     async isTemplateMetadataTitleDisplayed(value: string): Promise<boolean> {
         return await $(this.selectors.templateMetadataTitle).getText() == value;
     }
+
+    async isValuePresentInDropdown(DropDownName: string, value: string): Promise<boolean> {
+        let guid;
+        switch (DropDownName) {
+            case "Label": {
+                guid = this.selectors.label;
+                break;
+            }
+            case "Priority": {
+                guid = this.selectors.taskPriority;
+                break;
+            }
+            case "Category Tier 1": {
+                guid = this.selectors.taskCategoryDrpDown1;
+                break;
+            }
+            case "Category Tier 2": {
+                guid = this.selectors.taskCategoryDrpDown2;
+                break;
+            }
+            case "Category Tier 3": {
+                guid = this.selectors.taskCategoryDrpDown3;
+                break;
+            }
+            case "Category Tier 4": {
+                guid = this.selectors.taskCategoryDrpDown4;
+                break;
+            }
+            default: {
+                console.log('Drop Down name does not match');
+                break;
+            }
+        }
+        return await utilCommon.isValuePresentInDropDown(guid, value);
+    }
 }
 
 export default new CreateTaskTemplatePage();
