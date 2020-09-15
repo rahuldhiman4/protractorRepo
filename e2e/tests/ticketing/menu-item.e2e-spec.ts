@@ -14,6 +14,33 @@ import menuItemsConfigConsolePo from '../../pageobject/settings/application-conf
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
+import editCasePo from '../../pageobject/case/edit-case.po';
+import manageTask from "../../pageobject/task/manage-task-blade.po";
+import manageTaskPo from "../../pageobject/task/manage-task-blade.po";
+import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
+import { deprecate } from 'util';
+import consoleCasetemplatePo from '../../pageobject/settings/case-management/console-casetemplate.po';
+import createCasetemplatePo from '../../pageobject/settings/case-management/create-casetemplate.po';
+import assignmentsConfigConsolePo from '../../pageobject/settings/case-management/assignments-config-console.po';
+import createAssignmentsConfigPo from '../../pageobject/settings/case-management/create-assignments-config.po';
+import selectTaskTemplate from "../../pageobject/settings/task-management/console-tasktemplate.po";
+import createTasktemplatePo from '../../pageobject/settings/task-management/create-tasktemplate.po';
+import consoleReadAcess from '../../pageobject/settings/case-management/read-access-console.po';
+import addReadAccess from '../../pageobject/settings/case-management/add-read-access-configuration.po';
+import serviceTargetConfig from '../../pageobject/settings/slm/service-target-blade.po';
+import SlmExpressionBuilder from '../../pageobject/settings/slm/slm-expressionbuilder.pop.po';
+import caseConsolePo from '../../pageobject/case/case-console.po';
+import editTaskPo from '../../pageobject/task/edit-task.po';
+import viewTaskPo from '../../pageobject/task/view-task.po';
+import viewCasetemplatePo from '../../pageobject/settings/case-management/view-casetemplate.po';
+import editCasetemplatePo from '../../pageobject/settings/case-management/edit-casetemplate.po';
+import consoleTasktemplatePo from '../../pageobject/settings/task-management/console-tasktemplate.po';
+import viewTasktemplatePo from '../../pageobject/settings/task-management/view-tasktemplate.po';
+import editTasktemplatePo from '../../pageobject/settings/task-management/edit-tasktemplate.po';
+import editAssignmentsConfigPo from '../../pageobject/settings/case-management/edit-assignments-config.po';
+import serviceTargetViewconsolePo from '../../pageobject/settings/slm/service-target-viewconsole.po';
+import editServiceTargetConfigPo from '../../pageobject/settings/slm/edit-service-target-config.po';
+import editReadAccessConfigPo from '../../pageobject/settings/case-management/edit-read-access-config.po';
 
 describe('Menu Item', () => {
     beforeAll(async () => {
@@ -483,6 +510,315 @@ describe('Menu Item', () => {
             await updateStatusBladePo.changeCaseStatus('Closed');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('Closed');
+        });
+    });
+
+    //kgaikwad
+    describe('[DRDMV-16276]: [Menu Items] - Only Active Label and Sources are available for consumption', async () => {
+            let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let caseId;
+            console.log('caseId>>>>>>>>>',caseId);
+            let title = 'titleDRDMV16276' + randomStr;
+            let summary = 'summaryDRDMV16276' + randomStr;
+            let sourcesActiveUiTrue = 'sourcesActiveUiTrueDRDMV16276' + randomStr;
+            let sourcesActiveUiFalse = 'sourcesActiveUifalseDRDMV16276' + randomStr;
+            let sourcesInactiveUiTrue = 'sourcesInactiveUiTrueDRDMV16276' + randomStr;
+            let sourcesDeprecatedUiTrue = 'sourcesInactiveUiTrueDRDMV16276' + randomStr;
+            let labelActive1 = 'oneLabelActiveDRDMV16276' + randomStr;
+            let labelActive2 = 'twoLabelActiveDRDMV16276' + randomStr;
+            let labelInactive = 'labelInactiveDRDMV16276' + randomStr;
+            let labelDeprecated = 'labelDeprecatedDRDMV16276' + randomStr;
+
+
+            beforeAll(async () => {
+                await apiHelper.apiLogin('qkatawazi');
+                let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
+                // Create SourceActive UI True
+                menuItemDataFile['sourceMenuItem'].menuItemName = sourcesActiveUiTrue;
+                await apiHelper.createNewMenuItem(menuItemDataFile['sourceMenuItem']);
+
+                // Create SourceActive UI False
+                menuItemDataFile['sourceActiveUIFalse'].menuItemName = sourcesActiveUiFalse;
+                await apiHelper.createNewMenuItem(menuItemDataFile['sourceActiveUIFalse']);
+
+                // Create sourcesInactiveUiTrue UI True
+                menuItemDataFile['sourceInActive'].menuItemName = sourcesInactiveUiTrue;
+                await apiHelper.createNewMenuItem(menuItemDataFile['sourceInActive']);
+
+                // Create sources Deprecated Ui True
+                menuItemDataFile['sourceDeprecated'].menuItemName = sourcesDeprecatedUiTrue;
+                menuItemDataFile['sourceDeprecated'].uiVisible = '1';
+                await apiHelper.createNewMenuItem(menuItemDataFile['sourceDeprecated']);
+
+                // Create Label 1 Active
+                menuItemDataFile['sampleMenuItem'].menuItemName = labelActive1;
+                await apiHelper.createNewMenuItem(menuItemDataFile['sampleMenuItem']);
+                
+                // Create Label 2 Active
+                menuItemDataFile['sampleMenuItem'].menuItemName = labelActive2;
+                await apiHelper.createNewMenuItem(menuItemDataFile['sampleMenuItem']);
+
+                // Create Label Inactive
+                menuItemDataFile['sampleMenuItem'].menuItemName = labelInactive;
+                menuItemDataFile['sampleMenuItem'].menuItemStatus = 'Inactive';
+                await apiHelper.createNewMenuItem(menuItemDataFile['sampleMenuItem']);
+
+                // Create Label Deprecated
+                menuItemDataFile['sampleMenuItem'].menuItemName = labelDeprecated;
+                menuItemDataFile['sampleMenuItem'].menuItemStatus = 'Deprecated';
+                await apiHelper.createNewMenuItem(menuItemDataFile['sampleMenuItem']);
+            });
+
+        it('[DRDMV-17654]: Verify Label & Source With Create Case', async () => {
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester('adam');
+            expect(await createCasePage.isValuePresentInDropdown('Label',labelInactive)).toBeFalsy('Value is present in  label drop down');
+            await createCasePage.clickAssignToMeButton(); 
+            expect(await createCasePage.isValuePresentInDropdown('Label',labelDeprecated)).toBeFalsy('Value is present in  label drop down');
+            await createCasePage.clickAssignToMeButton(); 
+            await createCasePage.setLabel(labelActive1);
+
+            expect(await createCasePage.isValuePresentInDropdown('Source',sourcesActiveUiTrue)).toBeTruthy('Value is present in  label drop down');
+            await createCasePage.clickAssignToMeButton(); 
+            expect(await createCasePage.isValuePresentInDropdown('Source',sourcesActiveUiFalse)).toBeFalsy('Value is present in  label drop down');
+            await createCasePage.clickAssignToMeButton(); 
+            expect(await createCasePage.isValuePresentInDropdown('Source',sourcesInactiveUiTrue)).toBeFalsy('Value is present in  label drop down');
+            await createCasePage.clickAssignToMeButton(); 
+            expect(await createCasePage.isValuePresentInDropdown('Source',sourcesDeprecatedUiTrue)).toBeFalsy('Value is present in  label drop down');
+            await createCasePage.clickAssignToMeButton(); 
+            await createCasePage.setSource(sourcesActiveUiTrue);
+            await createCasePage.setSummary(summary);
+
+            await createCasePage.clickSaveCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
+            caseId = await viewCasePo.getCaseID();
+        });
+
+        it('[DRDMV-17654]: Verify Label With Create Task', async () => {
+            await viewCasePo.clickAddTaskButton();
+            await manageTask.clickAddAdhocTaskButton();
+            
+            await adhoctaskTemplate.setDescription("Description");
+            expect(await adhoctaskTemplate.isValuePresentInDropdown('Label',labelInactive)).toBeFalsy('Value is present in  label drop down');
+            await adhoctaskTemplate.clickAssignToMeButton();
+            expect(await adhoctaskTemplate.isValuePresentInDropdown('Label',labelDeprecated)).toBeFalsy('Value is present in  label drop down');
+            await adhoctaskTemplate.clickAssignToMeButton();
+            await adhoctaskTemplate.selectLabel(labelActive1);
+            await adhoctaskTemplate.setSummary(summary);
+            await adhoctaskTemplate.clickSaveAdhoctask();
+            await manageTask.clickCloseButton();
+        });
+
+        it('[DRDMV-17654]: Verify Label With Create Case Template', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
+            await createCasetemplatePo.setTemplateName(title);
+            expect(await createCasetemplatePo.isValuePresentInDropdown('Label',labelInactive)).toBeFalsy('Value is present in  label drop down');
+            await createCasetemplatePo.setCompanyName('Petramco');
+            expect(await createCasetemplatePo.isValuePresentInDropdown('Label',labelDeprecated)).toBeFalsy('Value is present in  label drop down');
+            
+            await createCasetemplatePo.setCaseSummary(summary);
+            await createCasetemplatePo.setPriorityValue('Low');
+            await createCasetemplatePo.setLabelValue(labelActive1);
+            await createCasetemplatePo.clickSaveCaseTemplate();
+        });
+
+        it('[DRDMV-17654]: Verify Label With Create Task Template', async () => {
+            await navigationPage.gotoSettingsPage();
+            expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows')).toEqual('Task Templates - Business Workflows');
+            await selectTaskTemplate.clickOnManualTaskTemplateButton();
+            await createTasktemplatePo.setTemplateName(title);
+            await createTasktemplatePo.setTaskSummary(summary);
+
+            expect(await createTasktemplatePo.isValuePresentInDropdown('Label',labelInactive)).toBeFalsy('Value is present in  label drop down');
+            await createTasktemplatePo.selectTaskPriority('Low');
+            expect(await createTasktemplatePo.isValuePresentInDropdown('Label',labelDeprecated)).toBeFalsy('Value is present in  label drop down');
+            await createTasktemplatePo.selectCompanyByName('Petramco')
+            await createTasktemplatePo.selectLabel(labelActive1);
+            await createTasktemplatePo.clickOnSaveTaskTemplate();
+        });
+
+        it('[DRDMV-17654]: Verify Label With Create Assignment Mapping', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
+            await assignmentsConfigConsolePo.clickOnCreateAssignmentConfiguration();
+            await createAssignmentsConfigPo.setAssignmentMapName(title);
+
+            expect(await createAssignmentsConfigPo.isValuePresentInDropdown('Label',labelInactive)).toBeFalsy('Value is present in  label drop down');
+            await createAssignmentsConfigPo.setCompany("Petramco");
+            expect(await createAssignmentsConfigPo.isValuePresentInDropdown('Label',labelDeprecated)).toBeFalsy('Value is present in  label drop down');
+            await createAssignmentsConfigPo.setSupportCompany("Petramco");
+            await createAssignmentsConfigPo.setBusinessUnit('Canada Support');
+            await createAssignmentsConfigPo.setSupportGroup("CA Support 1");
+
+            await createAssignmentsConfigPo.setLabel(labelActive1);
+            await createAssignmentsConfigPo.clickonSaveButton();
+        });
+
+        it('[DRDMV-17654]: Verify Label With Case Read Access', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            await consoleReadAcess.clickOnReadAccessConfiguration();
+            await addReadAccess.setReadAccessConfigurationName(title);
+            await addReadAccess.selectCompany('Petramco');
+            await addReadAccess.selectSupportCompany('Petramco');
+            expect(await addReadAccess.isValuePresentInDropdown('Label',labelInactive)).toBeFalsy('Value is present in  label drop down');
+            await addReadAccess.selectBusinessUnit('Canada Support');
+            expect(await addReadAccess.isValuePresentInDropdown('Label',labelDeprecated)).toBeFalsy('Value is present in  label drop down');
+
+            await addReadAccess.selectSupportGroup('CA Support 1');
+            await addReadAccess.selectLabel(labelActive1)
+            await addReadAccess.clickOnSave();
+        });
+
+        it('[DRDMV-17654]: Verify Label With Create SVT', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
+            await serviceTargetConfig.createServiceTargetConfig(title, 'Global', 'Case Management');
+            await SlmExpressionBuilder.selectExpressionQualification('Label', '=', 'LABEL', labelActive1);
+            await SlmExpressionBuilder.clickOnSaveExpressionButton();
+        });
+        
+        it('[DRDMV-17654]: Change Status Active Label Status to InActive', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
+            await menuItemsConfigConsolePo.searchAndEditMenuOption(labelActive1);
+            await editMenuItemsConfigPo.selectStatusDropDown('Inactive');
+            await editMenuItemsConfigPo.clickOnSaveButton();
+        });
+
+
+        it('[DRDMV-17654]: Verify Labe With Edit Case', async () => {
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
+            await viewCasePo.clickEditCaseButton();
+            await editCasePo.scrollTillLabelElement();
+            await editCasePo.updateLabel(labelInactive);
+            await editCasePo.clickSaveCase();
+            await expect(await utilityCommon.getAllPopupMsg()).toContain(`The Label you have selected is either Inactive or Deprecated. Please select a valid Label.`);
+            await editCasePo.updateLabel(labelDeprecated);
+            await editCasePo.clickSaveCase();
+            await expect(await utilityCommon.getAllPopupMsg()).toContain(`The Label you have selected is either Inactive or Deprecated. Please select a valid Label.`);
+            await editCasePo.updateLabel(labelActive2);
+            await editCasePo.clickSaveCase();
+            await viewCasePo.clickEditCaseButton();
+            await editCasePo.updateLabel(labelDeprecated);
+            await editCasePo.updateLabel(labelActive1);
+
+            await editCasePo.clickSaveCase();
+            await expect(await utilityCommon.getAllPopupMsg()).toContain(`The Label you have selected is either Inactive or Deprecated. Please select a valid Label.`);
+            await editCasePo.clickOnCancelCaseButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+        });
+
+        it('[DRDMV-17654]: Verify Label With Edit Task', async () => {
+            await viewCasePo.clickOnTaskLink(summary);
+            await viewTaskPo.clickOnEditTask();
+            await editTaskPo.setLabel(labelInactive);
+            await editTaskPo.clickOnSaveButton();
+            await expect(await utilityCommon.getAllPopupMsg()).toContain(`The Label you have selected is either Inactive or Deprecated. Please select a valid Label.`);
+            
+            await editTaskPo.setLabel(labelDeprecated);
+            await editTaskPo.clickOnSaveButton();
+            await expect(await utilityCommon.getAllPopupMsg()).toContain(`The Label you have selected is either Inactive or Deprecated. Please select a valid Label.`);
+            
+            await editTaskPo.setLabel(labelActive2);
+            await editTaskPo.clickOnSaveButton();
+            await viewTaskPo.clickOnEditTask();
+            await editTaskPo.setLabel(labelActive1);
+            await editTaskPo.clickOnSaveButton();
+            await expect(await utilityCommon.getAllPopupMsg()).toContain(`The Label you have selected is either Inactive or Deprecated. Please select a valid Label.`);
+            await editTaskPo.clickOnCancelButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+        });
+
+        it('[DRDMV-17654]: Verify Label With Edit Case Template', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+
+            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(title);
+            await viewCasetemplatePo.clickOnEditCaseTemplateButton();
+
+            await editCasetemplatePo.changeLabelValue(labelInactive);
+            await editCasetemplatePo.clickSaveCaseTemplate();
+            expect(await utilCommon.getAllPopupMsg()).toContain('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.');
+
+            await editCasetemplatePo.changeLabelValue(labelDeprecated);
+            await editCasetemplatePo.clickSaveCaseTemplate();
+            expect(await utilCommon.getAllPopupMsg()).toContain('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.');
+
+            await editCasetemplatePo.changeLabelValue(labelActive2);
+            await editCasetemplatePo.clickSaveCaseTemplate();
+            await viewCasetemplatePo.clickOnEditCaseTemplateButton();
+            await editCasetemplatePo.changeLabelValue(labelActive1);
+            await editCasetemplatePo.clickSaveCaseTemplate();
+            expect(await utilCommon.getAllPopupMsg()).toContain('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.');
+        });
+
+        it('[DRDMV-17654]: Verify Label With Edit Task Template', async () => {
+            await navigationPage.gotoSettingsPage();
+            expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows')).toEqual('Task Templates - Business Workflows');
+            await consoleTasktemplatePo.searchAndOpenTaskTemplate(title);
+            await viewTasktemplatePo.clickOnEditLink();
+
+            await editTasktemplatePo.selectLabel(labelInactive);
+            await editTasktemplatePo.clickOnSaveButton();
+            expect(await utilCommon.getAllPopupMsg()).toContain('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.');
+            
+            await editTasktemplatePo.selectLabel(labelDeprecated);
+            await editTasktemplatePo.clickOnSaveButton();
+            expect(await utilCommon.getAllPopupMsg()).toContain('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.');
+
+            await editTasktemplatePo.selectLabel(labelActive2);
+            await editTasktemplatePo.clickOnSaveButton();
+            await viewTasktemplatePo.clickOnEditLink();
+            await editTasktemplatePo.selectLabel(labelActive1);
+            await editTasktemplatePo.clickOnSaveButton();
+            expect(await utilCommon.getAllPopupMsg()).toContain('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.');
+        });
+
+        it('[DRDMV-17654]: Verify Label With Edit Assignment Mapping', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
+            await assignmentsConfigConsolePo.searchAndClickOnAssignmentConfig(title);
+
+            await editAssignmentsConfigPo.setLabel(labelInactive);
+            await editAssignmentsConfigPo.clickonSaveButton();
+            expect(await utilCommon.getAllPopupMsg()).toContain('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.');
+
+            await editAssignmentsConfigPo.setLabel(labelDeprecated);
+            await editAssignmentsConfigPo.clickonSaveButton();
+            expect(await utilCommon.getAllPopupMsg()).toContain('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.');
+
+            await editAssignmentsConfigPo.setLabel(labelActive2);
+            await editAssignmentsConfigPo.clickonSaveButton();
+
+            await assignmentsConfigConsolePo.searchAndClickOnAssignmentConfig(title);
+            await editAssignmentsConfigPo.setLabel(labelActive1);
+            await editAssignmentsConfigPo.clickonSaveButton();
+            expect(await utilCommon.getAllPopupMsg()).toContain('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.');
+        });
+
+        it('[DRDMV-17654]: Verify Label With Edit Case Read Access', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            await consoleReadAcess.searchAndOpenReadAccess(title);
+
+            await editReadAccessConfigPo.setLabel(labelInactive);
+            await editReadAccessConfigPo.clickOnSave();
+            expect(await utilCommon.getAllPopupMsg()).toContain('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.');
+
+            await editReadAccessConfigPo.setLabel(labelDeprecated);
+            await editReadAccessConfigPo.clickOnSave();
+            expect(await utilCommon.getAllPopupMsg()).toContain('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.');
+
+            await editReadAccessConfigPo.setLabel(labelActive2);
+            await editReadAccessConfigPo.clickOnSave();
+            await consoleReadAcess.searchAndOpenReadAccess(title);
+            await editReadAccessConfigPo.setLabel(labelActive1);
+            await editReadAccessConfigPo.clickOnSave();
+            expect(await utilCommon.getAllPopupMsg()).toContain('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.');
         });
     });
 });

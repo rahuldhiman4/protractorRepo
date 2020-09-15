@@ -153,6 +153,10 @@ class CreateCasePage {
         await utilityCommon.selectDropDown(this.selectors.labelGuid, label);
     }
 
+    async setSource(value: string): Promise<void> {
+        await utilityCommon.selectDropDown(this.selectors.sourceGuid, value);
+    }
+
     async setPriority(priorityVal: string): Promise<void> {
         await $(this.selectors.priorityDropDown).click();
         await element(by.cssContainingText(this.selectors.priorityOption, priorityVal)).click();
@@ -302,6 +306,41 @@ class CreateCasePage {
 
     async isSaveCaseButtonDisabled(): Promise<boolean> {
         return await $(this.selectors.saveCaseButton).getAttribute("disabled") == "true";
+    }
+
+    async isValuePresentInDropdown(DropDownName: string, value: string): Promise<boolean> {
+        let guid;
+        switch (DropDownName) {
+            case "Label": {
+                guid = this.selectors.labelGuid;
+                break;
+            }
+            case "Source": {
+                guid = this.selectors.sourceGuid;
+                break;
+            }
+            case "Category Tier 1": {
+                guid = this.selectors.categoryTier1Guid;
+                break;
+            }
+            case "Category Tier 2": {
+                guid = this.selectors.categoryTier2Guid;
+                break;
+            }
+            case "Category Tier 3": {
+                guid = this.selectors.categoryTier3Guid;
+                break;
+            }
+            case "Category Tier 4": {
+                guid = this.selectors.categoryTier4Guid;
+                break;
+            }
+            default: {
+                console.log('Drop Down name does not match');
+                break;
+            }
+        }
+        return await utilityCommon.isValuePresentInDropDown(guid, value);
     }
 }
 

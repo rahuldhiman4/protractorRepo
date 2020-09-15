@@ -18,7 +18,8 @@ class ReadAccessConfigEditPage {
         supportGroupGuid: '59fae521-483b-4d6a-93ed-84c88919351a',
         businessUnitGuid: '2d897e8d-c447-4a0f-b494-50c0eb0fc3ac',
         categoryTier4Guid: '0ad049c9-856d-4945-82f1-9981d2d62465',
-        labelValue: '[rx-view-component-id="692fed6d-f2b5-4f72-8f4e-d7e7ec192cfb"] .ui-select-match-text'
+        labelValue: '[rx-view-component-id="692fed6d-f2b5-4f72-8f4e-d7e7ec192cfb"] .ui-select-match-text',
+        labelGuid: '692fed6d-f2b5-4f72-8f4e-d7e7ec192cfb'
     }
 
     async isAccessMappingNameDisabled(): Promise<boolean> {
@@ -61,6 +62,11 @@ class ReadAccessConfigEditPage {
     async selectFlowset(flowsetName: string): Promise<void> {
         await utilCommon.selectDropDown(this.selectors.flowsetGuid, flowsetName);
     }
+
+    async setLabel(value: string): Promise<void> {
+        await utilCommon.selectDropDown(this.selectors.labelGuid, value);
+    }
+
 
     async selectPriority(priority: string): Promise<void> {
         await utilCommon.selectDropDown(this.selectors.priorityGuid, priority);

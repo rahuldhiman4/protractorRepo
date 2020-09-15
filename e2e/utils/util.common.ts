@@ -435,7 +435,7 @@ export class Util {
     }
 
     async isDropDownOptionsMatches(fieldName:string,dropdownOptions: string[],dropDownSearchValue?:string): Promise<boolean> {
-        const dropDown = await $(`[title="${fieldName}"]`);        
+        const dropDown = await $(`[title="${fieldName}"],[aria-label="${fieldName}"]`);        
         let arr: string[] = [];
         const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
         await dropDownBoxElement.click();
