@@ -627,7 +627,7 @@ describe('Email Configuration', () => {
             expect(await editEmailConfigPo.isNewTrustedEmailSaveBtnDisabled()).toBeTruthy();
             expect(await editEmailConfigPo.isMappedRequesterDropDownPresent("Barney")).toBeFalsy();
             expect(await editEmailConfigPo.isValuePresentInDropDown("Thorn")).toBeFalsy();
-            expect(await editEmailConfigPo.isValuePresentInDropDown("Ochoa")).toBeTruthy();
+            expect(await editEmailConfigPo.isValuePresentInDropDown("Ochoa")).toBeFalsy();
             await editEmailConfigPo.clickNewTrustedEmailCancelBtn();
             await utilCommon.clickOnWarningCancel();
             await editEmailConfigPo.clickNewTrustedEmailCancelBtn();
