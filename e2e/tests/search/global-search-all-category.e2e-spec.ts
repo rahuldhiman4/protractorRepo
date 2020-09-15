@@ -531,7 +531,7 @@ describe('Global Search All Category', () => {
 
             expect(await personProfilePo.getPersonName()).toBe(`${commonSearchForAll} ${lastName}`, 'FailureMsg22: first Name is missing');
             expect(await personProfilePo.getCompany()).toBe('Petramco', 'FailureMsg22: company name is missing');
-            expect(await personProfilePo.getLoginID()).toBe(loginId + 1, 'FailureMsg22: Login id is missing');
+            expect(await personProfilePo.getLoginID()).toContain(loginId, 'FailureMsg22: Login id is missing');
             expect(await personProfilePo.getEmail()).toBe(emailId, 'FailureMsg22: emailId is missing');
             await personProfilePo.clickOnTab('Related Persons');
             await personProfilePo.clickOnTab('Requested Cases');

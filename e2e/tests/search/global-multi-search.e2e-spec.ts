@@ -324,23 +324,23 @@ describe('Multi Search Validation', () => {
 
         it('[DRDMV-16124]: Verify saerch people with other company user', async () => {
             await navigationPage.signOut();
-            await loginPage.login('gderuno')
+            await loginPage.login('werusha')
             await navigationPage.gotoSearch();
             await searchPo.searchRecord(firstName);
             expect(await searchPo.isModuleTitleDisplayed(firstName, 'People (0)', peopleModule)).toBeTruthy('FailureMsg63: people module title is missing');
             expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(peopleModule)).toBeTruthy(`FailureMsg64: No result found validation is missing`);
 
             await searchPo.searchRecord(lastName);
-            expect(await searchPo.isModuleTitleDisplayed(lastName, 'People (0)', peopleModule)).toBeTruthy('FailureMsg63: people module title is missing');
-            expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(peopleModule)).toBeTruthy(`FailureMsg64: No result found validation is missing`);
+            expect(await searchPo.isModuleTitleDisplayed(lastName, 'People (0)', peopleModule)).toBeTruthy('FailureMsg65: people module title is missing');
+            expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(peopleModule)).toBeTruthy(`FailureMsg66: No result found validation is missing`);
 
             await searchPo.searchRecord(nonAccessFirstName);
-            expect(await searchPo.isModuleTitleDisplayed(nonAccessFirstName, 'People (0)', peopleModule)).toBeTruthy('FailureMsg63: people module title is missing');
-            expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(peopleModule)).toBeTruthy(`FailureMsg64: No result found validation is missing`);
+            expect(await searchPo.isModuleTitleDisplayed(nonAccessFirstName, 'People (0)', peopleModule)).toBeTruthy('FailureMsg67: people module title is missing');
+            expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(peopleModule)).toBeTruthy(`FailureMsg68: No result found validation is missing`);
 
             await searchPo.searchRecord(nonAccessLastName);
-            expect(await searchPo.isModuleTitleDisplayed(nonAccessLastName, 'People (0)', peopleModule)).toBeTruthy('FailureMsg63: people module title is missing');
-            expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(peopleModule)).toBeTruthy(`FailureMsg64: No result found validation is missing`);
+            expect(await searchPo.isModuleTitleDisplayed(nonAccessLastName, 'People (0)', peopleModule)).toBeTruthy('FailureMsg69: people module title is missing');
+            expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(peopleModule)).toBeTruthy(`FailureMsg70: No result found validation is missing`);
         });
         
         afterAll(async () => {
