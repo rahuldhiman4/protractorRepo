@@ -48,7 +48,6 @@ class FieldAssociationMappingConsole {
     async updateFieldNameValue(dropDownSearchValue: string): Promise<void> {
         await $$('[rx-view-component-id="934607ab-0ea0-40d0-a549-ae650bdf8904"] .rx-definition-picker__fake-input').get(0).click();
         await $$('.d-textfield__input').get(0).sendKeys(dropDownSearchValue);
-        browser.sleep(5000);
         await $$(`.d-icon-plus_circle[aria-label="Add ${dropDownSearchValue}"]`).click();
     }
 

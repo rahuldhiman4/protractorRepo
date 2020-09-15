@@ -242,9 +242,8 @@ class SlmExpressionBuilder {
                 await option.click();
                 break;
             case "LABEL":
-                    await browser.sleep(5000);
+                    await browser.sleep(2000); //Need this wait till displayed label drop down
                     await $$('.ui-select-toggle[aria-label="Select box activate"]').get(0).click();
-                    console.log('fieldOptionValue>>>>>>>>>',fieldOptionValue);
                     await element(by.cssContainingText('.ui-select-choices-row-inner div', fieldOptionValue)).click();
                     break;
             case "PERSON":

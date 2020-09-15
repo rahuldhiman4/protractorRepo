@@ -165,7 +165,7 @@ describe('Menu Item', () => {
             await createMenuItems.selectStatusDropDown('Active');
             await createMenuItems.selectAvailableOnUiToggleButton(true);
             await createMenuItems.clickOnSaveButton();
-            await expect(await utilCommon.isPopUpMessagePresent('ERROR (382): The value(s) for this entry violate a unique index that has been defined for this record definition.')).toBeTruthy();
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (382): The value(s) for this entry violate a unique index that has been defined for this record definition.')).toBeTruthy();
             await createMenuItems.clickOnLocalizeLink();
             await utilCommon.waitUntilSpinnerToHide();
             await localizeValuePopPo.clearValueTextBox();
@@ -694,10 +694,10 @@ describe('Menu Item', () => {
             await viewCasePo.clickEditCaseButton();
             await editCasePo.updateLabel(labelInactive);
             await editCasePo.clickSaveCase();
-            await expect(await utilityCommon.getAllPopupMsg()).toContain(`The Label you have selected is either Inactive or Deprecated. Please select a valid Label.`);
+            expect(await utilityCommon.getAllPopupMsg()).toContain(`The Label you have selected is either Inactive or Deprecated. Please select a valid Label.`);
             await editCasePo.updateLabel(labelDeprecated);
             await editCasePo.clickSaveCase();
-            await expect(await utilityCommon.getAllPopupMsg()).toContain(`The Label you have selected is either Inactive or Deprecated. Please select a valid Label.`);
+            expect(await utilityCommon.getAllPopupMsg()).toContain(`The Label you have selected is either Inactive or Deprecated. Please select a valid Label.`);
             await editCasePo.updateLabel(labelActive2);
             await editCasePo.clickSaveCase();
             await viewCasePo.clickEditCaseButton();
@@ -705,7 +705,7 @@ describe('Menu Item', () => {
             await editCasePo.updateLabel(labelActive1);
 
             await editCasePo.clickSaveCase();
-            await expect(await utilityCommon.getAllPopupMsg()).toContain(`The Label you have selected is either Inactive or Deprecated. Please select a valid Label.`);
+            expect(await utilityCommon.getAllPopupMsg()).toContain(`The Label you have selected is either Inactive or Deprecated. Please select a valid Label.`);
             await editCasePo.clickOnCancelCaseButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
@@ -715,18 +715,18 @@ describe('Menu Item', () => {
             await viewTaskPo.clickOnEditTask();
             await editTaskPo.setLabel(labelInactive);
             await editTaskPo.clickOnSaveButton();
-            await expect(await utilityCommon.getAllPopupMsg()).toContain(`The Label you have selected is either Inactive or Deprecated. Please select a valid Label.`);
+            expect(await utilityCommon.getAllPopupMsg()).toContain(`The Label you have selected is either Inactive or Deprecated. Please select a valid Label.`);
             
             await editTaskPo.setLabel(labelDeprecated);
             await editTaskPo.clickOnSaveButton();
-            await expect(await utilityCommon.getAllPopupMsg()).toContain(`The Label you have selected is either Inactive or Deprecated. Please select a valid Label.`);
+            expect(await utilityCommon.getAllPopupMsg()).toContain(`The Label you have selected is either Inactive or Deprecated. Please select a valid Label.`);
             
             await editTaskPo.setLabel(labelActive2);
             await editTaskPo.clickOnSaveButton();
             await viewTaskPo.clickOnEditTask();
             await editTaskPo.setLabel(labelActive1);
             await editTaskPo.clickOnSaveButton();
-            await expect(await utilityCommon.getAllPopupMsg()).toContain(`The Label you have selected is either Inactive or Deprecated. Please select a valid Label.`);
+            expect(await utilityCommon.getAllPopupMsg()).toContain(`The Label you have selected is either Inactive or Deprecated. Please select a valid Label.`);
             await editTaskPo.clickOnCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
