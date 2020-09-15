@@ -1,6 +1,6 @@
 import { browser } from "protractor";
 import apiHelper from "../../api/api.helper";
-import { default as casePreviewPo, default as previewCasePo } from '../../pageobject/case/case-preview.po';
+import casePreviewPo from '../../pageobject/case/case-preview.po';
 import createCasePo from '../../pageobject/case/create-case.po';
 import quickCasePo from '../../pageobject/case/quick-case.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
@@ -85,7 +85,6 @@ describe('Case Cognitive', () => {
     }
 
     async function createCognitiveConfig() {
-        await apiHelper.apiLogin('tadmin');
         let created = await apiHelper.addWatsonAccount(apiKey);
         console.log("Watson Account Added ==> ", created);
         let dataSetMappingDeleted = await apiHelper.deleteCognitiveDataSetMapping();
@@ -137,11 +136,31 @@ describe('Case Cognitive', () => {
     async function createCaseTemplateData1() {
         await apiHelper.apiLogin('qkatawazi');
         caseTemplateResponse1 = await apiHelper.createCaseTemplate(caseTemplateData);
+        caseTemplateData.templateName = 'caseTemplateForCognitive8' + randomStr;
+        await apiHelper.createCaseTemplate(caseTemplateData);
+        caseTemplateData.templateName = 'caseTemplateForCognitive9' + randomStr;
+        await apiHelper.createCaseTemplate(caseTemplateData);
+        caseTemplateData.templateName = 'caseTemplateForCognitive10' + randomStr;
+        await apiHelper.createCaseTemplate(caseTemplateData);
+    }
+
+    async function createCaseTemplateData2() {
+        await apiHelper.apiLogin('qkatawazi');
+        caseTemplateData.templateName = 'caseTemplateForCognitive11' + randomStr;
+        await apiHelper.createCaseTemplate(caseTemplateData);
+        caseTemplateData.templateName = 'caseTemplateForCognitive5' + randomStr;
+        caseTemplateData.templateSummary = 'Employee is looking for supplemental life insurance options bonus';
+        caseTemplateData.categoryTier1 = 'Applications';
+        caseTemplateResponse5 = await apiHelper.createCaseTemplate(caseTemplateData);
         caseTemplateData.templateName = 'caseTemplateForCognitive2' + randomStr;
         caseTemplateData.templateSummary = 'New Joinee is looking for assessment for his workplace change';
         caseTemplateData.categoryTier1 = 'Applications';
         caseTemplateData.categoryTier2 = 'Help Desk';
         caseTemplateResponse2 = await apiHelper.createCaseTemplate(caseTemplateData);
+    }
+
+    async function createCaseTemplateData3() {
+        await apiHelper.apiLogin('qkatawazi');
         caseTemplateData.templateName = 'caseTemplateForCognitive3' + randomStr;
         caseTemplateData.templateSummary = 'Employee ergonomic assessment is requested change';
         caseTemplateData.categoryTier1 = 'Accounts Payable';
@@ -154,14 +173,6 @@ describe('Case Cognitive', () => {
         caseTemplateData.categoryTier2 = 'Invoices';
         caseTemplateData.categoryTier3 = 'Payment';
         caseTemplateResponse4 = await apiHelper.createCaseTemplate(caseTemplateData);
-    }
-
-    async function createCaseTemplateData2() {
-        await apiHelper.apiLogin('qkatawazi');
-        caseTemplateData.templateName = 'caseTemplateForCognitive5' + randomStr;
-        caseTemplateData.templateSummary = 'Employee is looking for supplemental life insurance options bonus';
-        caseTemplateData.categoryTier1 = 'Applications';
-        caseTemplateResponse5 = await apiHelper.createCaseTemplate(caseTemplateData);
         caseTemplateData.templateName = 'caseTemplateForCognitive6' + randomStr;
         caseTemplateData.templateSummary = 'Employee is looking for supplemental life insurance options bonus';
         caseTemplateData.categoryTier1 = categName1;
@@ -169,18 +180,6 @@ describe('Case Cognitive', () => {
         caseTemplateData.categoryTier3 = categName3;
         caseTemplateData.categoryTier4 = categName4;
         caseTemplateResponse6 = await apiHelper.createCaseTemplate(caseTemplateData);
-        caseTemplateData.templateName = 'caseTemplateForCognitive8' + randomStr;
-        await apiHelper.createCaseTemplate(caseTemplateData);
-    }
-
-    async function createCaseTemplateData3() {
-        await apiHelper.apiLogin('qkatawazi');
-        caseTemplateData.templateName = 'caseTemplateForCognitive9' + randomStr;
-        await apiHelper.createCaseTemplate(caseTemplateData);
-        caseTemplateData.templateName = 'caseTemplateForCognitive10' + randomStr;
-        await apiHelper.createCaseTemplate(caseTemplateData);
-        caseTemplateData.templateName = 'caseTemplateForCognitive11' + randomStr;
-        await apiHelper.createCaseTemplate(caseTemplateData);
     }
 
     async function createCaseData1() {
@@ -248,7 +247,7 @@ describe('Case Cognitive', () => {
             await createCasePo.selectCategoryTier4(categName4);
             await createCasePo.clickAssignToMeButton();
             await createCasePo.clickSaveCaseButton();
-            await previewCasePo.clickGoToCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
         });
         it('[DRDMV-9023,DRDMV-8981]:Cognitive Config Creation', async () => {
             await navigationPage.gotoCreateCase();
@@ -260,7 +259,7 @@ describe('Case Cognitive', () => {
             await createCasePo.selectCategoryTier4(categName4);
             await createCasePo.clickAssignToMeButton();
             await createCasePo.clickSaveCaseButton();
-            await previewCasePo.clickGoToCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
         });
         it('[DRDMV-9023,DRDMV-8981]:Cognitive Config Creation', async () => {
             await createCognitiveConfig();
@@ -275,13 +274,23 @@ describe('Case Cognitive', () => {
             await createCognitiveDataSetMapping();
         });
         it('[DRDMV-9023,DRDMV-8981]:Cognitive Config Creation', async () => {
-            caseTemplateData.templateName = 'caseTemplateForCognitive7' + randomStr;
-            caseTemplateData.templateSummary = 'Employee asked requested for ergonomics assessment after training';
-            caseTemplateData.categoryTier1 = 'Accounts Payable';
-            caseTemplateData.categoryTier2 = 'Invoices';
-            caseTemplateData.categoryTier3 = 'Payment';
+            let caseTemplatePayload = {
+                "templateName": 'caseTemplateForCognitive7' + randomStr,
+                "templateSummary": 'Employee asked requested for ergonomics assessment after training',
+                "categoryTier1": 'Accounts Payable',
+                "categoryTier2": 'Invoices',
+                "categoryTier3": 'Payment',
+                "casePriority": "Critical",
+                "templateStatus": "Active",
+                "company": "Petramco",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3"
+            }
             await apiHelper.apiLogin('qkatawazi');
-            caseTemplateResponse7 = await apiHelper.createCaseTemplate(caseTemplateData);
+            caseTemplateResponse7 = await apiHelper.createCaseTemplate(caseTemplatePayload);
             for (let a = 1; a <= 2; a++) {
                 caseData["Case Template ID"] = caseTemplateResponse7.id;
                 await apiHelper.createCase(caseData);
@@ -488,7 +497,7 @@ describe('Case Cognitive', () => {
     });
 
     //ankagraw
-    describe('[DRDMV-8973,DRDMV-8971,DRDMV-8972,DRDMV-8977,DRDMV-8974]:[Cognitive] - Add Data Set Mapping for Categorization', async () => {
+    describe('[DRDMV-8973,DRDMV-8971,DRDMV-8972,DRDMV-8977,DRDMV-8974,DRDMV-8975]:[Cognitive] - Add Data Set Mapping for Categorization', async () => {
         let trainedCategoryDataSet, randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             await navigationPage.signOut();
