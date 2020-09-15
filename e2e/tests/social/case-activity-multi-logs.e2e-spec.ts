@@ -685,7 +685,7 @@ describe('Case Activity Multi Logs', () => {
         let automatedTaskTemplateSummary = 'AutomatedTaskTemplateSummaryDRDMV16729'+ randomStr;
         let manualTaskTemplateSummary = 'ManualTaskTemplateSummaryDRDMV16729'+ randomStr;
         let externalTaskTemplateSummary = 'ExternalTaskTemplateSummaryDRDMV16729'+ randomStr;
-        let automatedTaskTemplateDetails
+        let automatedTaskTemplateDetails;
         let manualTaskTemplateDetails;
         let externalTaskTemplateDetails;
         let caseApprovalRecordDefinition = 'com.bmc.dsm.case-lib:Case';
@@ -694,6 +694,7 @@ describe('Case Activity Multi Logs', () => {
         let categName2 = 'DemoCateg2DRDMV15252';
         let categName3 = 'DemoCateg3DRDMV15252';
         let categName4 = 'DemoCateg4DRDMV15252';
+        let manualTaskId;
 
 
         beforeAll(async () => {
@@ -773,7 +774,7 @@ describe('Case Activity Multi Logs', () => {
             externalTaskTemplateDetails = await apiHelper.createExternalTaskTemplate(tasktemplateData);
 
             await apiHelper.associateCaseTemplateWithThreeTaskTemplate(caseTemplateDisplayId, manualTaskTemplateDetails.displayId, externalTaskTemplateDetails.displayId, automatedTaskTemplateDetails.displayId);
-            
+
             // create case json
             caseData = {
                 "Requester": "apavlik",
@@ -916,7 +917,7 @@ describe('Case Activity Multi Logs', () => {
         it('[DRDMV-16729]:Verify social activity with Task activity', async () => {
             // Verify manual task on case activity
             await viewCasePo.clickOnTaskLink(manualTaskTemplateSummary);
-            let manualTaskId = await viewTaskPo.getTaskID();
+            manualTaskId = await viewTaskPo.getTaskID();
             await activityTabPage.addActivityNote('manualTaskActivityNote');
             await activityTabPage.clickOnPostButton();
 
@@ -1128,6 +1129,25 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg20: lock icon missing in activity logs');
             expect(await activityTabPage.isTextPresentInActivityLog('Qiao Feng removed the confidential support group')).toBeTruthy('FailureMsg21: Qiao Feng removed the confidential support group Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Facilities')).toBeTruthy('FailureMsg21: Facilities Text is missing in activity log');
+        });
+    
+        it('[DRDMV-16729]:Verify social activity with task email activity', async () => {
+            await viewCasePo.clickOnTab('Tasks');
+            await viewCasePo.clickOnTaskLink(manualTaskTemplateSummary);
+            await activityTabPage.clickOnRefreshButton();
+            await viewTaskPo.clickEmailLink();
+            await browser.sleep(2000); // Need this sleep till open conmpose email pop up
+            await composeMailPo.setToOrCCInputTetxbox('To', 'qkatawazi');
+            await composeMailPo.clickOnSendButton();
+            await viewTaskPo.clickOnViewCase()
+            await activityTabPage.clickOnRefreshButton();
+
+            expect(await activityTabPage.isLogIconDisplayedInActivity('envelope', 1)).toBeTruthy('FailureMsg19: log icon is missing');
+            expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg20: lock icon missing in activity logs');
+            expect(await activityTabPage.isTextPresentInActivityLog('Qiao Feng sent an email')).toBeTruthy('FailureMsg21: Qiao Feng sent an email Text is missing in activity log');
+            expect(await activityTabPage.isTextPresentInActivityLog('Qadim Katawazi')).toBeTruthy('FailureMsg22: Qadim Katawazi Text is missing in activity log');
+            expect(await activityTabPage.isTextPresentInActivityLog(`${caseId}:${manualTaskId}:${manualTaskTemplateSummary}`)).toBeTruthy(`FailureMsg23: ${manualTaskId}:${manualTaskTemplateSummary} Text is missing in activity log`);
+            expect(await activityTabPage.isTextPresentInActivityLog('------ While replying, please do not add information below this line -----')).toBeTruthy('FailureMsg24: ------ While replying, please do not add information below this line ----- Text is missing in activity log');
         });
     });
 });
