@@ -568,7 +568,7 @@ describe('Menu Item', () => {
                 await apiHelper.createNewMenuItem(menuItemDataFile['sampleMenuItem']);
             });
 
-        it('[DRDMV-17654]: Verify Label & Source With Create Case', async () => {
+        it('[DRDMV-16276]: Verify Label & Source With Create Case', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             expect(await createCasePage.isValuePresentInDropdown('Label',labelInactive)).toBeFalsy('Value is present in  label drop down');
@@ -593,7 +593,7 @@ describe('Menu Item', () => {
             caseId = await viewCasePo.getCaseID();
         });
 
-        it('[DRDMV-17654]: Verify Label With Create Task', async () => {
+        it('[DRDMV-16276]: Verify Label With Create Task', async () => {
             await viewCasePo.clickAddTaskButton();
             await manageTask.clickAddAdhocTaskButton();
             
@@ -608,7 +608,7 @@ describe('Menu Item', () => {
             await manageTask.clickCloseButton();
         });
 
-        it('[DRDMV-17654]: Verify Label With Create Case Template', async () => {
+        it('[DRDMV-16276]: Verify Label With Create Case Template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
@@ -623,7 +623,7 @@ describe('Menu Item', () => {
             await createCasetemplatePo.clickSaveCaseTemplate();
         });
 
-        it('[DRDMV-17654]: Verify Label With Create Task Template', async () => {
+        it('[DRDMV-16276]: Verify Label With Create Task Template', async () => {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows')).toEqual('Task Templates - Business Workflows');
             await selectTaskTemplate.clickOnManualTaskTemplateButton();
@@ -638,7 +638,7 @@ describe('Menu Item', () => {
             await createTasktemplatePo.clickOnSaveTaskTemplate();
         });
 
-        it('[DRDMV-17654]: Verify Label With Create Assignment Mapping', async () => {
+        it('[DRDMV-16276]: Verify Label With Create Assignment Mapping', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
             await assignmentsConfigConsolePo.clickOnCreateAssignmentConfiguration();
@@ -655,7 +655,7 @@ describe('Menu Item', () => {
             await createAssignmentsConfigPo.clickonSaveButton();
         });
 
-        it('[DRDMV-17654]: Verify Label With Case Read Access', async () => {
+        it('[DRDMV-16276]: Verify Label With Case Read Access', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
             await consoleReadAcess.clickOnReadAccessConfiguration();
@@ -671,7 +671,7 @@ describe('Menu Item', () => {
             await addReadAccess.clickOnSave();
         });
 
-        it('[DRDMV-17654]: Verify Label With Create SVT', async () => {
+        it('[DRDMV-16276]: Verify Label With Create SVT', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             await serviceTargetConfig.createServiceTargetConfig(title, 'Global', 'Case Management');
@@ -679,7 +679,7 @@ describe('Menu Item', () => {
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
         });
         
-        it('[DRDMV-17654]: Change Status Active Label Status to InActive', async () => {
+        it('[DRDMV-16276]: Change Status Active Label Status to InActive', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
             await menuItemsConfigConsolePo.searchAndEditMenuOption(labelActive1);
@@ -688,7 +688,7 @@ describe('Menu Item', () => {
         });
 
 
-        it('[DRDMV-17654]: Verify Labe With Edit Case', async () => {
+        it('[DRDMV-16276]: Verify Labe With Edit Case', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
             await viewCasePo.clickEditCaseButton();
@@ -710,7 +710,7 @@ describe('Menu Item', () => {
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
 
-        it('[DRDMV-17654]: Verify Label With Edit Task', async () => {
+        it('[DRDMV-16276]: Verify Label With Edit Task', async () => {
             await viewCasePo.clickOnTaskLink(summary);
             await viewTaskPo.clickOnEditTask();
             await editTaskPo.setLabel(labelInactive);
@@ -731,7 +731,7 @@ describe('Menu Item', () => {
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
 
-        it('[DRDMV-17654]: Verify Label With Edit Case Template', async () => {
+        it('[DRDMV-16276]: Verify Label With Edit Case Template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
 
@@ -754,7 +754,7 @@ describe('Menu Item', () => {
             expect(await utilCommon.getAllPopupMsg()).toContain('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.');
         });
 
-        it('[DRDMV-17654]: Verify Label With Edit Task Template', async () => {
+        it('[DRDMV-16276]: Verify Label With Edit Task Template', async () => {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows')).toEqual('Task Templates - Business Workflows');
             await consoleTasktemplatePo.searchAndOpenTaskTemplate(title);
@@ -776,7 +776,7 @@ describe('Menu Item', () => {
             expect(await utilCommon.getAllPopupMsg()).toContain('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.');
         });
 
-        it('[DRDMV-17654]: Verify Label With Edit Assignment Mapping', async () => {
+        it('[DRDMV-16276]: Verify Label With Edit Assignment Mapping', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
             await assignmentsConfigConsolePo.searchAndClickOnAssignmentConfig(title);
@@ -798,7 +798,7 @@ describe('Menu Item', () => {
             expect(await utilCommon.getAllPopupMsg()).toContain('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.');
         });
 
-        it('[DRDMV-17654]: Verify Label With Edit Case Read Access', async () => {
+        it('[DRDMV-16276]: Verify Label With Edit Case Read Access', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
             await consoleReadAcess.searchAndOpenReadAccess(title);
