@@ -600,7 +600,7 @@ describe('Dynamic data', () => {
             "ownerGroup": "Facilities"
         }
         let tasktemplate = await apiHelper.createManualTaskTemplate(templateData);
-        await apiHelper.createDynamicDataOnTemplate(tasktemplate.id, 'TASK_TEMPLATE__DYNAMIC_FIELDS');
+        await apiHelper.createDynamicDataOnTemplate(tasktemplate.id, 'TASK_TEMPLATE__DYNAMIC_FIELDS_DRDMV_13948');
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate(taskTemplateName);
         await manageTaskBladePo.clickTaskLink(manualTaskSummary);
@@ -611,19 +611,19 @@ describe('Dynamic data', () => {
         expect(await editTaskPo.isDynamicFieldDisplayed('temp2')).toBeTruthy('field is not present');
         expect(await editTaskPo.isDynamicFieldDisplayed('temp3')).toBeTruthy('field is not present');
         expect(await editTaskPo.isDynamicFieldDisplayed('temp4')).toBeTruthy('field is not present');
-        expect(await editTaskPo.isDynamicFieldDisplayed('attachment1')).toBeTruthy('field is not present');
-        expect(await editTaskPo.isDynamicFieldDisplayed('attachment2')).toBeTruthy('field is not present');
-        expect(await editTaskPo.isDynamicFieldDisplayed('attachment3')).toBeTruthy('field is not present');
+        expect(await editTaskPo.isDynamicFieldDisplayed('attachment4')).toBeTruthy('field is not present');
+        expect(await editTaskPo.isDynamicFieldDisplayed('attachment5')).toBeTruthy('field is not present');
+        expect(await editTaskPo.isDynamicFieldDisplayed('attachment6')).toBeTruthy('field is not present');
         await editTaskPo.clickOnAssignToMe();
         //attachment3 add 1 file 
-        await editTaskPo.addAttachmentInDynamicField('attachment1', filesToUpload2);
+        await editTaskPo.addAttachmentInDynamicField('attachment4', filesToUpload2);
         await editTaskPo.clickOnSaveButton();
         await utilityCommon.closePopUpMessage();
-        await viewTaskPo.clickShowMoreShowLessLink('attachment1');
         await viewTaskPo.clickOnDownloadFile('bwfJpg.jpg');
         expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('failureMsg: bwfJpg.jpg File is not downloaded.');
         await viewTaskPo.clickOnDownloadFile('bwfPdf.pdf');
         expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('failureMsg: bwfPdf.pdf File is not downloaded.');
+        await viewTaskPo.clickShowMoreShowLessLink();
         await viewTaskPo.clickOnDownloadFile('bwfWord2.rtf');
         expect(await utilityCommon.isFileDownloaded('bwfWord2.rtf')).toBeTruthy('failureMsg: bwfWord2.rtf File is not downloaded.');
         //delete downloaded files
