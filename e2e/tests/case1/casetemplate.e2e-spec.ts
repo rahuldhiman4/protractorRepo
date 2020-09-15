@@ -1349,41 +1349,27 @@ describe('Case Template', () => {
     });
 
     describe('[DRDMV-19741]: [RESOLVE_CASE_ON_LAST_TASK_COMPLETION] - Case behavior when Case Template is changed', async () => {
-        let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseId,caseId1, randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateName = 'caseTemplateName' + randomStr;
         let casTemplateSummary = 'CaseSummaryName' + randomStr;
         let caseTemplateNameWithNoValue = 'caseTemplateWithNoResolve' + randomStr;
         let caseTemplateSummaryNoValue = 'CaseSummaryNoResolved' + randomStr;
-        let taskTemplateNameWithYesValue = 'taskTemplateWithYesResolve' + randomStr;
-        let taskTemplateSummaryYesValue = 'taskYesResolved' + randomStr;
         let manualTask = 'ManualTaskTemp' + randomStr;
         let ManualTaskTempSummary = 'ManualTaskSumm' + randomStr;
         beforeAll(async () => {
-            let templateData = {
+            let templateDataSetYes = {
                 "templateName": `${caseTemplateName}`,
                 "templateSummary": `${casTemplateSummary}`,
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "resolveCaseonLastTaskCompletion": "1",
-                "assignee": "Fritz",
+                "businessUnit": "Facilities Support",
                 "supportGroup": "Facilities",
-                "caseStatus": "Assigned",
-            }
-            await apiHelper.apiLogin('fritz');
-            let newCaseTemplate = await apiHelper.createCaseTemplate(templateData);
-            let taskTemplateDataSet = {
-                "templateName": `${taskTemplateNameWithYesValue}`,
-                "templateSummary": `${taskTemplateSummaryYesValue}`,
-                "templateStatus": "Active",
                 "assignee": "Fritz",
-                "taskCompany": "Petramco",
-                "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "Facilities Support",
                 "ownerGroup": "Facilities"
             }
-            let manualTaskTemplate = await apiHelper.createManualTaskTemplate(taskTemplateDataSet);
-            await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId);
-            let templateDataSet = {
+            let templateDataSetNO = {
                 "templateName": `${caseTemplateNameWithNoValue}`,
                 "templateSummary": `${caseTemplateSummaryNoValue}`,
                 "templateStatus": "Active",
@@ -1395,7 +1381,6 @@ describe('Case Template', () => {
                 "ownerBusinessUnit": "Facilities Support",
                 "ownerGroup": "Facilities"
             }
-            let newCaseTemplateOne = await apiHelper.createCaseTemplate(templateDataSet);
             let taskTemplateData = {
                 "templateName": `${manualTask}`,
                 "templateSummary": `${ManualTaskTempSummary}`,
@@ -1403,33 +1388,41 @@ describe('Case Template', () => {
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerGroup": "Facilities",
+                "supportGroup": "Facilities",
+                "assignee": "Fritz"
             }
+            await apiHelper.apiLogin('fritz');
             let manualTaskTemplateOne = await apiHelper.createManualTaskTemplate(taskTemplateData);
-            await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplateOne.displayId, manualTaskTemplateOne.displayId);
+
+            let newCaseTemplate1 = await apiHelper.createCaseTemplate(templateDataSetYes);
+            let newCaseTemplate2 = await apiHelper.createCaseTemplate(templateDataSetNO);
+            await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate1.displayId, manualTaskTemplateOne.displayId);
+            await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate2.displayId, manualTaskTemplateOne.displayId);
+
+            let caseData = {
+                "Requester": "qkatawazi",
+                "Summary": "All Categories selected",
+                "Origin": "Agent",
+                "Case Template ID": newCaseTemplate1.displayId,
+            }
+            let caseData1 = {
+                "Requester": "qkatawazi",
+                "Summary": "All Categories selected",
+                "Origin": "Agent",
+                "Case Template ID": newCaseTemplate2.displayId,
+            }
+           caseId= await apiHelper.createCase(caseData);
+           caseId1= await apiHelper.createCase(caseData1);
         });
         it('[DRDMV-19741]: Case behavior when Case Template is changed', async () => {
-            await navigationPage.gotoCreateCase();
-            await createCasePo.selectRequester('qtao');
-            await createCasePo.setSummary('Summary');
-            await createCasePo.clickSelectCaseTemplateButton();
-            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
-            await createCasePo.clickAssignToMeButton();
-            await createCasePo.clickSaveCaseButton();
-            await previewCasePo.clickGoToCaseButton();
-            await viewCasePo.isEditLinkDisplay();
-            expect(await viewCasePo.isCoreTaskPresent(taskTemplateSummaryYesValue)).toBeTruthy();
-            await viewCasePo.clickEditCaseButton();
-            await editCasePo.clickOnChangeCaseTemplate();
-            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateNameWithNoValue);
-            await editCasePo.clickSaveCase();
-            await utilCommon.closePopUpMessage();
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(caseId1.displayId);
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus('In Progress');
-            await utilCommon.closePopUpMessage();
         });
         it('[DRDMV-19741]: Case behavior when Case Template is changed', async () => {
-             await viewCasePo.openTaskCard(1);
+            await viewCasePo.openTaskCard(1);
             await manageTaskBladePo.clickTaskLink(ManualTaskTempSummary);
             await viewTaskPo.clickOnChangeStatus();
             await viewTaskPo.changeTaskStatus('Completed');
@@ -1439,23 +1432,14 @@ describe('Case Template', () => {
             expect(await viewCasePo.getCaseStatusValue()).toContain('In Progress');
         });
         it('[DRDMV-19741]: Case behavior when Case Template is changed', async () => {
-            await navigationPage.gotoCreateCase();
-            await createCasePo.selectRequester('fritz');
-            await createCasePo.setSummary('Summary');
-            await createCasePo.clickSelectCaseTemplateButton();
-            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
-            await createCasePo.clickAssignToMeButton();
-            await createCasePo.clickSaveCaseButton();
-            await previewCasePo.clickGoToCaseButton();
-            await viewCasePo.isEditLinkDisplay();
-            expect(await viewCasePo.isCoreTaskPresent(taskTemplateSummaryYesValue)).toBeTruthy();
-        });
-        it('[DRDMV-19741]: [RESOLVE_CASE_ON_LAST_TASK_COMPLETION] - Case behavior when Case Template is changed', async () => {
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(caseId.displayId);
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus('In Progress');
-            await utilCommon.closePopUpMessage();
+        });
+        it('[DRDMV-19741]: [RESOLVE_CASE_ON_LAST_TASK_COMPLETION] - Case behavior when Case Template is changed', async () => {
             await viewCasePo.openTaskCard(1);
-            await manageTaskBladePo.clickTaskLink(taskTemplateSummaryYesValue);
+            await manageTaskBladePo.clickTaskLink(ManualTaskTempSummary);
             await viewTaskPo.clickOnChangeStatus();
             await viewTaskPo.changeTaskStatus('Completed');
             await updateStatusBladePo.setStatusReason('Successful');
@@ -1465,7 +1449,6 @@ describe('Case Template', () => {
         });
         afterAll(async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz');
         });
     });
 });

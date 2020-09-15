@@ -8,6 +8,7 @@ class UpdateStatus {
         caseStatusDropDownGuid: '3c8d9278-fc1f-430c-b866-cdc9d217318b',
         taskStatusDropDownGuid: '8b4cef48-0a4c-4ec1-bc4c-cce47179c964',
         caseStatusReasonDropDownGuid: '049c43a1-4cbd-482d-980d-5db4ed78f295',
+        caseStatusReasonRequired: '[rx-view-component-id="049c43a1-4cbd-482d-980d-5db4ed78f295"] .form-control-label',
         taskStatusReasonDropDownGuid: 'baf69b56-c37b-4a0b-9e68-f18558738ebb',
         caseStatusReasonDropDown: '[rx-view-component-id="7128b36c-5d4f-4333-8ee4-2a5163258a45"] button',
         resolutionCodeDropDownGuid: 'fb07b5ff-3c9b-454a-8b0c-a1dfd9987856',
@@ -71,7 +72,7 @@ class UpdateStatus {
     }
 
     async isStatusReasonRequiredTextPresent(): Promise<boolean> {
-        return await utilityCommon.isRequiredTagToField(this.selectors.caseStatusReasonDropDownGuid);
+        return await utilityCommon.isRequiredTagToFieldElement($(this.selectors.caseStatusReasonRequired));
     }
 
     async isChangeStatusFieldPresent(): Promise<boolean> {

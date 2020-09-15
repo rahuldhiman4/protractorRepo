@@ -1,4 +1,4 @@
-import { $, $$, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, by, element, protractor, ProtractorExpectedConditions, browser } from "protractor";
 import utilCommon from '../../../utils/util.common';
 import utilGrid from '../../../utils/util.grid';
 
@@ -46,6 +46,7 @@ class EditFlowsetPage {
     async selectConfidentialSupportGroup(supportGroup: string): Promise<void> {
         await $$(this.selectors.supportGroupDropDown).get(1).click();
         await $$(this.selectors.confidentialFieldSearchBox).get(3).sendKeys(supportGroup);
+        await browser.sleep(1000);
         await element(by.cssContainingText(this.selectors.dropdownElement, supportGroup)).isPresent().then(async (result) => {
             if (result) {
                 await element(by.cssContainingText(this.selectors.dropdownElement, supportGroup)).click();

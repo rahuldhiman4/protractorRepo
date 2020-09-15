@@ -739,7 +739,7 @@ describe('Create Task Template', () => {
 
     //ankagraw
     describe('[DRDMV-3830]: [Task Workspace] Filter menu verification', async () => {
-        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let tempIdClosed,tempIdCanceled,tempIdCompleted,randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase1, tempIdLow, tempIdMedium, tempIdHigh, tempIdCritical, exactDate;
         let createdDate = new Date();
         let month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -776,6 +776,19 @@ describe('Create Task Template', () => {
             tempIdHigh = await apiHelper.createAdhocTask(newCase1.id, adhocTaskData);
             adhocTaskData.priority = "Critical";
             tempIdCritical = await apiHelper.createAdhocTask(newCase1.id, adhocTaskData);
+            adhocTaskData.taskName = "manualTaskTemplateClosed"+randomStr;
+            tempIdClosed = await apiHelper.createAdhocTask(newCase1.id, adhocTaskData);
+            adhocTaskData.taskName = "manualTaskTemplateCompleted"+randomStr;
+            tempIdCompleted = await apiHelper.createAdhocTask(newCase1.id, adhocTaskData);
+            adhocTaskData.taskName = "manualTaskTemplateCanceled"+randomStr;
+            tempIdCanceled = await apiHelper.createAdhocTask(newCase1.id, adhocTaskData);
+
+            await apiHelper.updateCaseStatus(newCase1.id, 'InProgress');
+            apiHelper.updateTaskStatus(tempIdMedium.id, 'Pending')
+            apiHelper.updateTaskStatus(tempIdHigh.id, 'InProgress')
+            apiHelper.updateTaskStatus(tempIdCanceled.id, 'Canceled')
+            apiHelper.updateTaskStatus(tempIdClosed.id, 'Closed')
+            await apiHelper.updateTaskStatus(tempIdCompleted.id, 'Completed', 'Successful');
         });
         it('[DRDMV-3830]: Create case with task', async () => {
             await navigationPage.gotoCaseConsole();

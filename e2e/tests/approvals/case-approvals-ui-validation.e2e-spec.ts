@@ -826,7 +826,7 @@ describe("Case Approval UI Validations", () => {
 
     //ankagraw
     describe('[DRDMV-780,DRDMV-783]:[Case Status Reason] Transiting between the statuses that have Status Reason values', async () => {
-        let approvalMappingData, caseData, caseId, caseData1, caseData2,caseData3, caseTemplateDataWithMatchingCriteria, randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseData, caseId, caseData1, caseData2,caseData3, caseTemplateDataWithMatchingCriteria, randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             // Create Case Template through API
             let caseTemplateData = {
@@ -951,7 +951,7 @@ describe("Case Approval UI Validations", () => {
             await updateStatusBladePo.setStatusReason('Auto Resolved');
             await updateStatusBladePo.clickSaveStatus();
             await updateStatusBladePo.changeCaseStatus("Closed");
-            expect(await updateStatusBladePo.isStatusReasonRequiredTextPresent()).toBeTruthy();
+            expect(await updateStatusBladePo.isStatusReasonRequiredTextPresent()).toBeFalsy();
             await updateStatusBladePo.clickSaveStatus();
         });
 
