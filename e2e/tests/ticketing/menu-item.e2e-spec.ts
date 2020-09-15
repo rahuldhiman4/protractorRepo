@@ -517,7 +517,6 @@ describe('Menu Item', () => {
     describe('[DRDMV-16276]: [Menu Items] - Only Active Label and Sources are available for consumption', async () => {
             let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let caseId;
-            console.log('caseId>>>>>>>>>',caseId);
             let title = 'titleDRDMV16276' + randomStr;
             let summary = 'summaryDRDMV16276' + randomStr;
             let sourcesActiveUiTrue = 'sourcesActiveUiTrueDRDMV16276' + randomStr;
@@ -693,7 +692,6 @@ describe('Menu Item', () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
             await viewCasePo.clickEditCaseButton();
-            await editCasePo.scrollTillLabelElement();
             await editCasePo.updateLabel(labelInactive);
             await editCasePo.clickSaveCase();
             await expect(await utilityCommon.getAllPopupMsg()).toContain(`The Label you have selected is either Inactive or Deprecated. Please select a valid Label.`);
