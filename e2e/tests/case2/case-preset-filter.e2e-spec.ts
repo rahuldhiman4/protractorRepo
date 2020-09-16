@@ -515,16 +515,16 @@ describe('Case Console Preset Filter', () => {
 
             let response9 = await apiHelper.createCase(caseData.NEW_CRITICAL_ASSIGNEDTOLOGGEDINUSER);
             caseId.push(response9.displayId);
-            await browser.sleep(130000);
+            await browser.sleep(140000);
 
         });
 
         it('[DRDMV-22214]: Validate the My Open Breached Cases filter after applying and removing the filter', async () => {
-            await utilityGrid.applyPresetFilter('My Open Breached Cases');
-            expect(await utilityGrid.getAppliedFilterName()).toBe('My Open Breached Cases');
-
             //Waiting for SVT to Breached
             await browser.sleep(160000);
+            await utilityGrid.applyPresetFilter('My Open Breached Cases');
+            expect(await utilityGrid.getAppliedFilterName()).toBe('My Open Breached Cases');
+            
             for (let i: number = 0; i < 4; i++) {
                 expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeTruthy(caseId[i] + ' :Record is not available');
             }

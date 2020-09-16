@@ -163,10 +163,11 @@ class RelatedPersonPage {
             let nm: string = await person.$(this.selectors.relatedPersonNames).getText();
             if (nm == personName) {
                 await person.$(this.selectors.removePersonCrossIcon).click();
+                await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+                await browser.wait(this.EC.invisibilityOf(await element(by.cssContainingText('.person-summary .person-name a', personName))), 5000);
                 break;
             }
         }
-        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
     }
 
     async isRelatedPersonPresent(personName: string): Promise<boolean> {

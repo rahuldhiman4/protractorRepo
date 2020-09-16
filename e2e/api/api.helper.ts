@@ -58,6 +58,7 @@ import { NEW_USER, ENABLE_USER } from '../data/api/foundation/create-foundation-
 import { CASE_ASSIGNMENT_PAYLOAD, CASE_FROM_DWP } from '../data/api/case/case.config.api';
 import * as actionableNotificationPayloads from '../data/api/notification/actionable.notification.supporting.api';
 import * as processes from '../data/api/shared-services/create-new-process.api';
+import { MENU_ITEM } from '../data/api/shared-services/menu.item.api';
 
 let fs = require('fs');
 
@@ -1629,9 +1630,7 @@ class ApiHelper {
 
     async createNewMenuItem(data: IMenuItem): Promise<IIDs> {
         let randomStr = [...Array(6)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let menuItemFile = await require('../data/api/shared-services/menuItemConfiguration.api.json');
-        console.log('New Menu Item API Status =============>');
-        let menuItemData = await menuItemFile.MenuItemConfiguration;
+        let menuItemData = cloneDeep(MENU_ITEM);
         menuItemData.fieldInstances[450000153].value = data.menuType;
         menuItemData.fieldInstances[450000152].value = data.menuItemName;
         menuItemData.fieldInstances[7].value = constants.MenuItemStatus[data.menuItemStatus];
