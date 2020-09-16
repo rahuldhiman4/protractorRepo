@@ -35,11 +35,6 @@ class ServiceTargetConfig {
         fieldNameLabel: 'span.d-textfield__item',
         noMileStonesPresentText: '.slm-group-list-item_empty',
         addNewMileStoneBtn: 'button.d-icon-left-plus_circle',
-        mileStoneWindow: '[name="milestoneForm"]',
-        mileStoneTitle: '[name="milestoneForm"] input[placeholder="Enter Milestone Title"]',
-        mileStoneDescription: '[name="milestoneForm"]input[placeholder="Enter Description"]',
-        mileStonePercentage: '[name="milestoneForm"] .d-counter__input',
-        mileStoneExpression: '[name="milestoneForm"] .d-button_link',
     }
 
     async isServiceTargetBladeDisplayed(): Promise<boolean> {
@@ -305,6 +300,10 @@ class ServiceTargetConfig {
 
     async selectMilestone() {
         await $$(this.selectors.segmentsArrow).last().click();
+    }
+
+    async clickAddNewMileStoneBtn():Promise<void>{
+        await $(this.selectors.addNewMileStoneBtn).click();
     }
 
 

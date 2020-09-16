@@ -1265,13 +1265,13 @@ describe('Service Target Tests for Cases', () => {
     });
 
     //skhobrag
-    describe('[DRDMV-2044]: Tooltip text & display allignment for measurements on SLA Progress Bar', async () => {
+    describe('[DRDMV-2044,DRDMV-2036]: Tooltip text & display allignment for measurements on SLA Progress Bar', async () => {
         let caseId = undefined;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
         });
-        it('[DRDMV-2044]: Create a SVT', async () => {
+        it('[DRDMV-2044,DRDMV-2036]: Create a SVT', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             //Create a SVT with 2 mins timeline
@@ -1291,7 +1291,7 @@ describe('Service Target Tests for Cases', () => {
             await browser.sleep(1000);
             await navigationPage.signOut();
         });
-        it('[DRDMV-2044]: Create a case and verify SVT attached to the case', async () => {
+        it('[DRDMV-2044,DRDMV-2036]: Create a case and verify SVT attached to the case', async () => {
             await loginPage.login(caseAgentUser);
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Qiang Du');
@@ -1310,7 +1310,7 @@ describe('Service Target Tests for Cases', () => {
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('Status : InProcess');
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('due on');
         });
-        it('[DRDMV-2044]: Update case status to and verify SVT status ', async () => {
+        it('[DRDMV-2044,DRDMV-2036]: Update case status to and verify SVT status ', async () => {
             await updateStatusBladePo.changeCaseStatus('Pending');
             await updateStatusBladePo.setStatusReason('Customer Response');
             await updateStatusBladePo.clickSaveStatus();
@@ -1327,7 +1327,7 @@ describe('Service Target Tests for Cases', () => {
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('Status : InProcess');
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('due on');
         });
-        it('[DRDMV-2044]: update case status to resolved and verify SVT status', async () => {
+        it('[DRDMV-2044,DRDMV-2036]: update case status to resolved and verify SVT status', async () => {
             await updateStatusBladePo.changeCaseStatus('Resolved');
             await updateStatusBladePo.setStatusReason('Auto Resolved');
             await updateStatusBladePo.clickSaveStatus();
@@ -1338,7 +1338,7 @@ describe('Service Target Tests for Cases', () => {
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('due on');
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('met on');
         });
-        it('[DRDMV-2044]: Create another case to verify SVT warning and missed goal status', async () => {
+        it('[DRDMV-2044,DRDMV-2036]: Create another case to verify SVT warning and missed goal status', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Qiang Du');
             await createCasePage.setPriority('Critical');
@@ -1353,7 +1353,7 @@ describe('Service Target Tests for Cases', () => {
             expect(await viewCasePage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
             await browser.sleep(70000);
         });
-        it('[DRDMV-2044]: Verify SVT with Warning status', async () => {
+        it('[DRDMV-2044,DRDMV-2036]: Verify SVT with Warning status', async () => {
             await browser.sleep(20000);
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
@@ -1363,7 +1363,7 @@ describe('Service Target Tests for Cases', () => {
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('Status : Warning');
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('due on');
         });
-        it('[DRDMV-2044]: Verify SVT with Missed Goal Status', async () => {
+        it('[DRDMV-2044,DRDMV-2036]: Verify SVT with Missed Goal Status', async () => {
             await browser.sleep(70000);
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
