@@ -118,7 +118,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
     //skhobrag
     describe('[DRDMV-20742]: Verify the functionality of Edit article with Minor Edit button', () => {
         let knowledgeTitleStr = 'Versioning for article' + "_" + randomStr;
-        let articleAccessPermission: string[] = ['GB Support 2', 'Petramco'];
+        let articleAccessPermission: string[] = ['GB Support 2', 'Petramco','Kane Williamson'];
         let articleAttachments = ['articleStatus.png'];
         let articleAccessPermissionUser: string[] = ['Kane Williamson'];
         let updatedArticleTitle = "updated article title" + "_" + randomStr;
@@ -149,7 +149,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
                 "site": "Canberra",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
-                "assigneeSupportGroup": "GB Support 1",
+                "assigneeSupportGroup": "GB Support 2",
                 "assignee": "KMills",
                 "articleDesc": `${knowledgeTitleStr} Desc`
             }
@@ -203,7 +203,9 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await viewKnowledgeArticlePo.clickReviewPendingLink();
             await reviewCommentsPo.setTextInTellUsMore(articleDetails.displayId);
             await reviewCommentsPo.clickApprovedButton();
+            await browser.sleep(2000); //Hard wait to load the tab properly
             await utilityCommon.refresh();
+            await browser.sleep(2000); //Hard wait to load the tab properly
             expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Article is updated with Published status.');
             await apiHelper.apiLogin('tadmin');
             await apiHelper.updateKnowledgeArticleViewAndHelpFulCounter(articleDetails.id, articleHelpFulCounterData);
@@ -220,7 +222,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await viewKnowledgeArticlePo.getCategoryTier3Value()).toBe(articleData.categoryTier3);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAssigneeGroupValue()).toBe(articleData.assigneeSupportGroup);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAccessPermissionGroupDetails()).toEqual(articleAccessPermission);
-            expect(await viewKnowledgeArticlePo.getKnowledgeArticleAccessPermissionUsersDetails()).toEqual(articleAccessPermissionUser);
             expect(await viewKnowledgeArticlePo.getArticleViewCounter()).toContain(articleHelpFulCounterData.viewCounter.toString());
             expect(await viewKnowledgeArticlePo.getArticleHelpfulCounter()).toContain(articleHelpFulCounterData.helpfulPercentage.toString());
             expect(await viewKnowledgeArticlePo.getRegionValue()).toBe(articleData.region);
@@ -241,7 +242,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await editKnowledgePage.updateKnowledgeArticleTitle(updatedArticleTitle);
             await editKnowledgePage.updateKnowledgeArticleDescription(updatedArticleDesc);
             await editKnowledgePage.clickOnSaveButtonOfKA();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
             await utilityCommon.refresh();
             expect(await viewKnowledgeArticlePo.getArticleVersion()).toBe(expectedVersion);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(updatedArticleTitle);
@@ -254,7 +255,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await viewKnowledgeArticlePo.getCategoryTier3Value()).toBe(articleData.categoryTier3);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAssigneeGroupValue()).toBe(articleData.assigneeSupportGroup);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAccessPermissionGroupDetails()).toEqual(articleAccessPermission);
-            expect(await viewKnowledgeArticlePo.getKnowledgeArticleAccessPermissionUsersDetails()).toEqual(articleAccessPermissionUser);
             expect(await viewKnowledgeArticlePo.getArticleViewCounter()).toContain(articleHelpFulCounterData.viewCounter.toString());
             expect(await viewKnowledgeArticlePo.getArticleHelpfulCounter()).toContain(articleHelpFulCounterData.helpfulPercentage.toString());
             expect(await viewKnowledgeArticlePo.getRegionValue()).toBe(articleData.region);

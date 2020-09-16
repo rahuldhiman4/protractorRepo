@@ -31,7 +31,7 @@ class ViewKnowledgePage {
         categoryTier3Value: '[rx-view-component-id="f2703b24-f357-46f7-83bc-e216f6d33cb0"] .read-only-content',
         categoryTier4Value: '[rx-view-component-id="863425e3-0e4e-4e83-a05d-86f57f919248"] .read-only-content',
         articleLocalValue: '[rx-view-component-id="ff9f0fe2-c714-4c6f-96ea-5c22ef78198d"] .read-only-content',
-        articleAttachments: '.rx-attachment-view-name', // need to check
+        articleAttachments: '[rx-view-component-id="1f42f6d7-99cc-4c07-9249-94172d98d526"] .bwf-attachment-container__file-name',
         articlePermissionGroups: '[rx-view-component-id="eeb63a7a-9687-4527-95ca-92af413dcc9d"] .bfw-badge',
         articlePermissionUsers: '[rx-view-component-id="eeb63a7a-9687-4527-95ca-92af413dcc9d"] [class="ng-tns-c48-196 ng-star-inserted"] .bfw-badge',
         articlePermissionWriteAccess: '[rx-view-component-id="eeb63a7a-9687-4527-95ca-92af413dcc9d"] .d-icon-pencil',
@@ -40,7 +40,7 @@ class ViewKnowledgePage {
         articleHelpfulCounter: '[rx-view-component-id="5cc2757f-7a22-4827-82c0-1e7dee2e12a2"] p',
         articleKeywords: '[rx-view-component-id="51e52d59-3acd-49b3-8291-e10558985fa1"] div.tagsReadMode p',
         articleReviewer: '[rx-view-component-id="387dfda7-4f77-4df0-9ac0-6f4fb83b6fe7"] .read-only-content',
-        articleReviewerGroup: '[rx-view-component-id="51f0da81-fea9-4566-9eb0-0c706c60a445"] .read-only-content',
+        articleReviewerGroup: '[rx-view-component-id="0b622151-c917-4d1c-97e4-3a9b7f082e2d"] .read-only-content',
         articleLastReviewDate: '[rx-view-component-id="bccc3ffb-8be9-4332-8f7f-fef96b43c3b9"] .read-only-content',
         articleNextReviewDate: '[rx-view-component-id="7529ddbb-6ef2-46ab-9f66-c85639c3b490"] .read-only-content',
         articleTitle: '[rx-view-component-id="4a5abb06-d6fb-4aa3-81a8-2d5e80c78acf"] p',

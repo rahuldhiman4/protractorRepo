@@ -183,6 +183,11 @@ describe("Approval Mapping Tests", () => {
             expect(await editApprovalMappingPage.getStatusMappingRejectedOption()).toBe('Canceled');
             expect(await editApprovalMappingPage.getStatusMappingErrorOption()).toBe('New');
             await editApprovalMappingPage.clickCancelApprovalMappingBtn();
+            //Below are the validation for [DRDMV-10704]
+            await approvalMappingConsolePage.addColumnOnGrid(['ID', 'Flowset']);
+            await approvalMappingConsolePage.searchValueOnGrid('Facilities Management');
+            expect(await approvalMappingConsolePage.isRecordPresent('Facilities Management')).toBeTruthy();
+            await approvalMappingConsolePage.removeColumnFromGrid(['ID', 'Flowset']);
         });
         afterAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
@@ -799,6 +804,80 @@ describe("Approval Mapping Tests", () => {
             await apiHelper.deleteApprovalMapping(caseModule);
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
+        });
+    });
+    describe('[DRDMV-10704]:Approval Mapping - Console', async () => {
+
+
+        beforeAll(async () => {
+            //Create Approval Mapping through API
+            let approvalMappingData = undefined;
+            approvalMappingData = {
+                "triggerStatus": "Assigned",
+                "errorStatus": "New",
+                "approvedStatus": "InProgress",
+                "noApprovalFoundStatus": "Assigned",
+                "rejectStatus": "Canceled",
+                "company": "Petramco",
+                "mappingName": "Approval Mapping for Petramco - Automated"
+            }
+            let approvalMappingId = await apiHelper.createApprovalMapping(caseModule, approvalMappingData);
+        });
+        it('[DRDMV-10704]: Approval Mapping - Console', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', 'Configure Case Approvals - Business Workflows');
+
+            //Verify Column Labels
+            await approvalMappingConsolePage.addColumnOnGrid(['ID', 'Flowset']);
+            expect(await approvalMappingConsolePage.areGridColumnMatches(['Approval Name', 'ID', 'Status Trigger', 'Company', 'Flowset']));
+
+            //Verify remove column
+            await approvalMappingConsolePage.removeColumnFromGrid(['ID']);
+            expect(await approvalMappingConsolePage.areGridColumnMatches(['Approval Name', 'Status Trigger', 'Company', 'Flowset']));
+
+            //Verify Edit Approval mapping record
+            await utilGrid.searchAndOpenHyperlink('Approval Mapping for Petramco - Automated');
+            await editApprovalMappingPage.selectStatusTrigger('In Progress');
+            await editApprovalMappingPage.setApprovalMappingName('Update Aprroval Mapping-Petramco');
+            await editApprovalMappingPage.selectCaseTemplateCheckbox();
+            await editApprovalMappingPage.selectStatusMappingNoApprovalFound('In Progress');
+            await editApprovalMappingPage.clickSaveApprovalMappingBtn();
+
+            //Verify sorting on column
+            await approvalMappingConsolePage.addColumnOnGrid(['ID']);
+            expect(await approvalMappingConsolePage.isColumnSorted("Approval Name", "asc")).toBeTruthy();
+            expect(await approvalMappingConsolePage.isColumnSorted("Approval Name", "desc")).toBeTruthy();
+            expect(await approvalMappingConsolePage.isColumnSorted("Status Trigger", "asc")).toBeTruthy();
+            expect(await approvalMappingConsolePage.isColumnSorted("Status Trigger", "desc")).toBeTruthy();
+            expect(await approvalMappingConsolePage.isColumnSorted("Company", "asc")).toBeTruthy();
+            expect(await approvalMappingConsolePage.isColumnSorted("Company", "desc")).toBeTruthy();
+            expect(await approvalMappingConsolePage.isColumnSorted("Flowset", "asc")).toBeTruthy();
+            expect(await approvalMappingConsolePage.isColumnSorted("Flowset", "desc")).toBeTruthy();
+
+            //Verify search Field
+            await approvalMappingConsolePage.searchValueOnGrid('Update Aprroval Mapping-Petramco');
+            expect(await approvalMappingConsolePage.isRecordPresent('Update Aprroval Mapping-Petramco')).toBeTruthy();
+            await approvalMappingConsolePage.searchValueOnGrid('Petramco');
+            expect(await approvalMappingConsolePage.isRecordPresent('Petramco')).toBeTruthy();
+            await approvalMappingConsolePage.searchValueOnGrid('Human Resources');
+            await approvalMappingConsolePage.searchValueOnGrid('In Progress');
+            expect(await approvalMappingConsolePage.isRecordPresent('In Progress')).toBeTruthy();
+
+            //Verify records after applying filter
+            await approvalMappingConsolePage.addFilter('Company', 'Petramco', 'text');
+            expect(await approvalMappingConsolePage.isRecordPresent('Petramco')).toBeTruthy();
+            await utilGrid.clearFilter();
+            await approvalMappingConsolePage.addFilter('Approval Name', 'Update Aprroval Mapping-Petramco', 'text');
+            expect(await approvalMappingConsolePage.isRecordPresent('Update Aprroval Mapping-Petramco')).toBeTruthy();
+            await utilGrid.clearFilter();
+            await approvalMappingConsolePage.addFilter('Status Trigger', 'In Progress', 'text');
+            expect(await approvalMappingConsolePage.isRecordPresent('In Progress')).toBeTruthy();
+            await utilGrid.clearFilter();
+            await approvalMappingConsolePage.addFilter('Flowset', 'Human Resources', 'text');
+            await utilGrid.clearFilter();
+        });
+        afterAll(async () => {
+            await apiHelper.deleteApprovalMapping(caseModule);
         });
     });
 });
