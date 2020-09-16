@@ -32,8 +32,6 @@ const notifTempGridPageTitle = 'Manage Notification Template - Business Workflow
 let uploadURL = "https://www.google.com/homepage/images/hero-dhp-chrome-win.jpg?mmfb=90bec8294f441f5c41987596ca1b8cff";
 
 describe("Compose Email", () => {
-    let emailGuid;
-    let incomingGUID, outgoingGUID, emailconfigGUID;
     let imageUrlFieldIndex = 0;
     let imageWidthFieldIndex = 2;
     let tableRowFieldIndex = 0;
@@ -51,10 +49,7 @@ describe("Compose Email", () => {
         await loginPage.login("qtao");
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteAllEmailConfiguration();
-        emailGuid = await apiHelper.createEmailConfiguration();
-        incomingGUID = await emailGuid.incomingMailGUID;
-        outgoingGUID = await emailGuid.outGoingMailGUID;
-        emailconfigGUID = await emailGuid.emailConfigurationEmailGUID;
+        await apiHelper.createEmailConfiguration();
     });
 
     afterAll(async () => {
@@ -644,6 +639,9 @@ describe("Compose Email", () => {
         let randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase;
         beforeAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteAllEmailConfiguration();
+            await apiHelper.createEmailConfiguration();
             let caseData = {
                 "Requester": "qkatawazi",
                 "Summary": "Test case for DRDMV-20368 RandVal" + randomString,
@@ -804,7 +802,7 @@ describe("Compose Email", () => {
             await composeMail.setEmailBody("Table: ");
             await composeMail.clickOnTableIcon();
             await tablePropertiesPo.setValueOfTableProperties('4', tableRowFieldIndex);
-            await tablePropertiesPo.setValueOfTableProperties('10', tableColumnFieldIndex);
+            await tablePropertiesPo.setValueOfTableProperties('9', tableColumnFieldIndex);
             await tablePropertiesPo.setValueOfTableProperties('500', tableWidthFieldIndex);
             await tablePropertiesPo.setValueOfTableProperties('200', tableHeightFieldIndex);
             await tablePropertiesPo.setValueOfTableProperties('new' + randomString, cellCaption);
@@ -889,6 +887,7 @@ describe("Compose Email", () => {
             expect(await composeMail.isImageDisplayedComposeEmail(sourceValue2)).toBeTruthy('Image is not displayed');
             await composeMail.clickOnSendButton();
             await utilityCommon.closePopUpMessage();
+            await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isImageDisplayedInActivity(sourceValue2)).toBeTruthy('Image not displayed');
         });
