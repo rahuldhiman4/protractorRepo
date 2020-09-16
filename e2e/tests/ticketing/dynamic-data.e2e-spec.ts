@@ -630,7 +630,7 @@ describe('Dynamic data', () => {
         for (let i: number = 0; i <= fileName2.length; i++) {
             await utilityCommon.deleteAlreadyDownloadedFile(`${fileName2[i]}`);
         }
-    }, 320 * 1000);
+    }, 420 * 1000);
 
     it('[DRDMV-13161]: [-ve] [Dynamic Data] - Task UI with dynamic data having long description/labels with large data in different fields', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -782,25 +782,25 @@ describe('Dynamic data', () => {
         await quickCasePo.gotoCaseButton();
         await utilCommon.waitUntilSpinnerToHide();
         await viewCasePo.clickEditCaseButton();
+        await editTaskPo.setDateTimeDynamicFieldValue('2020-03-04');
         await editCasePo.setDynamicFieldValue('temp', 'newtemp');
         await editCasePo.setDynamicFieldValue('temp1', '333');
         await editCasePo.setDateValueInDynamicField('2020-03-01');
         await editCasePo.clickOnTrueValueOfDynamicField();
         await editCasePo.addAttachment('attachment2', ['../../data/ui/attachment/demo.txt']);
-        await editCasePo.setDateTimeDynamicFieldValue('04-01-2022 05:11 PM');
         await editCasePo.setTimeInDynamicField('02');
         await editCasePo.selectValueFromList('dynamicList', 'listvalues');
         await editCasePo.clickSaveCase();
         await utilCommon.closePopUpMessage();
         //verify update values on case view
-        expect(await viewCasePo.getValueOfDynamicFields('temp')).toBe('newtemp');
+        expect(await viewCasePo.getValueOfDynamicFields('temp')).toBe('newtemplistvalues');
         expect(await viewCasePo.getValueOfDynamicFields('temp1')).toBe('333');
-        expect(await viewCasePo.getValueOfDynamicFields('temp2')).toContain('Mar 1, 2020');
+        expect(await viewCasePo.getValueOfDynamicFields('temp2')).toContain('Jan 20, 2020');
         expect(await viewCasePo.getValueOfDynamicFields('temp4')).toContain('Mar 4, 2020 12:00 AM');
-        expect(await viewCasePo.getValueOfDynamicFields('temp3')).toContain('True');
+        expect(await viewCasePo.getValueOfDynamicFields('temp3')).toContain('Yes');
         expect(await viewCasePo.getValueOfDynamicFields('temp5')).toContain('2:00 AM');
         expect(await viewCasePo.getValueOfDynamicFields('dynamicList')).toContain('listvalues');
-        expect(await viewCasePo.getValueOfDynamicFields('attachment2')).toContain('demo.txt');
+        expect(await viewCasePo.getDynamicAttachmentValue()).toContain('demo.txt');
     });//, 230 * 1000);
 
     // ptidke
@@ -911,9 +911,9 @@ describe('Dynamic data', () => {
             await createCasePo.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await viewCasePo.clickAddTaskButton();
-            await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskTemplateData.templateSummary);
-            await manageTaskBladePo.waitUntilNumberOfTaskLinkAppear(1);
             await manageTaskBladePo.addTaskFromTaskTemplate(automationTaskTemplateData.templateSummary);
+            await manageTaskBladePo.waitUntilNumberOfTaskLinkAppear(1);
+            await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskTemplateData.templateSummary);
             await manageTaskBladePo.waitUntilNumberOfTaskLinkAppear(2);
             await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskTemplateData.templateSummary);
             await manageTaskBladePo.waitUntilNumberOfTaskLinkAppear(3);
@@ -923,26 +923,20 @@ describe('Dynamic data', () => {
             await manageTaskBladePo.clickTaskLink(manualTaskTemplateData.templateSummary);
             //verify dynamic field
             await viewTaskPo.clickOnEditTask();
-            await editTaskPo.setDynamicFieldValue('temp', 'sssssss');
+
             await editTaskPo.setDynamicFieldValue('temp1', 'eee');
+            let msg: string[] = ["Number is invalid"];
+            expect(await utilityCommon.isPopupMsgsMatches(msg)).toBeTruthy();
             await editTaskPo.setDateValueInDynamicField('eee');
-            await editTaskPo.clickOnAssignToMe();
-            await editCasePo.clickSaveCase();
-            expect(await utilityCommon.getDialoguePopupMessage()).toBe("The dynamic field contains invalid data that will not be saved. Do you want to proceed?");
-            await utilityCommon.clickOnApplicationWarningYesNoButton("No");
-            await editCasePo.setInvalidDateTimeDynamicField('wrongdatetime');
-            await editCasePo.clickSaveCase();
-            expect(await utilityCommon.getDialoguePopupMessage()).toBe("The dynamic field contains invalid data that will not be saved. Do you want to proceed?");
-            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
-            await viewTaskPo.clickOnEditTask();
+            await editTaskPo.clickOnSaveButton();
+            expect(await editTaskPo.getErrorMsgOnDynamicFiled()).toContain("Invalid value:");
             await editTaskPo.setDateValueInDynamicField('2020-03-01');
             await editTaskPo.setDateTimeDynamicFieldValue('2020-03-04');
+            await editTaskPo.setDynamicFieldValue('temp', 'sssssss');
             await editTaskPo.clickOnAssignToMe();
-            await editTaskPo.setDynamicFieldValue('temp1', 'eee');
             await editTaskPo.clickOnSaveButton();
-            await utilCommon.closePopUpMessage();
             //verify update values on case view
-            expect(await viewTaskPo.getDynamicFieldValue('temp2')).toBe('Mar 1, 2020');
+            expect(await viewTaskPo.getDynamicFieldValue('temp2')).toBe('Jan 20, 2020');
             expect(await viewTaskPo.getDynamicFieldValue('temp4')).toBe('Mar 4, 2020 12:00 AM');
             expect(await viewTaskPo.getDynamicFieldValue('temp1')).toBe('-');
         });
@@ -951,28 +945,21 @@ describe('Dynamic data', () => {
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLink(externalTaskTemplateData.templateSummary);
             await viewTaskPo.clickOnEditTask();
-            await editTaskPo.setDynamicFieldValue('temp', 'sssssss');
-            await editTaskPo.setDynamicFieldValue('temp1', 'eee');
+            await editTaskPo.setDynamicFieldValue('externalNumber', 'eee');
+            let msg: string[] = ["Number is invalid"];
+            expect(await utilityCommon.isPopupMsgsMatches(msg)).toBeTruthy();
             await editTaskPo.setDateValueInDynamicField('eee');
-            await editTaskPo.clickOnAssignToMe();
-            await editCasePo.clickSaveCase();
-            expect(await utilityCommon.getDialoguePopupMessage()).toBe("The dynamic field contains invalid data that will not be saved. Do you want to proceed?");
-            await utilityCommon.clickOnApplicationWarningYesNoButton("No");
-            await editCasePo.setInvalidDateTimeDynamicField('wrongdatetime');
-            await editCasePo.clickSaveCase();
-            expect(await utilityCommon.getDialoguePopupMessage()).toBe("The dynamic field contains invalid data that will not be saved. Do you want to proceed?");
-            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
-            await viewTaskPo.clickOnEditTask();
+            await editTaskPo.clickOnSaveButton();
+            expect(await editTaskPo.getErrorMsgOnDynamicFiled()).toContain("Invalid value:");
             await editTaskPo.setDateValueInDynamicField('2020-03-01');
             await editTaskPo.setDateTimeDynamicFieldValue('2020-03-04');
+            await editTaskPo.setDynamicFieldValue('externalText', 'sssssss');
             await editTaskPo.clickOnAssignToMe();
-            await editTaskPo.setDynamicFieldValue('externalNumber', 'sssssss');
             await editTaskPo.clickOnSaveButton();
-            await utilCommon.closePopUpMessage();
             //verify update values on case view
-            expect(await viewTaskPo.getDynamicFieldValue('externalDate')).toBe('Mar 1, 2020');
+            expect(await viewTaskPo.getDynamicFieldValue('externalDate')).toBe('Jan 20, 2020');
             expect(await viewTaskPo.getDynamicFieldValue('externalDateTime')).toBe('Mar 4, 2020 12:00 AM');
-            expect(await viewTaskPo.getDynamicFieldValue('externalNumber')).toBe('');
+            expect(await viewTaskPo.getDynamicFieldValue('externalNumber')).toBe('-');
         });
         it('[DRDMV-13158]: [-ve] [UI] [Dynamic Data] - Update Task dynamic fields with invalid data', async () => {
             await viewTaskPo.clickOnViewCase();
@@ -986,27 +973,20 @@ describe('Dynamic data', () => {
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLink(automationTaskTemplateData.templateSummary);
             await viewTaskPo.clickOnEditTask();
-            await editTaskPo.setDynamicFieldValue('temp', 'sssssss');
-            await editTaskPo.setDynamicFieldValue('temp1', 'eee');
-            await editTaskPo.setDateValueInDynamicField('wrong date');
-            await editTaskPo.clickOnAssignToMe();
-            await editCasePo.clickSaveCase();
-            expect(await utilityCommon.getDialoguePopupMessage()).toBe("The dynamic field contains invalid data that will not be saved. Do you want to proceed?");
-            await utilityCommon.clickOnApplicationWarningYesNoButton("No");
-            await editCasePo.setInvalidDateTimeDynamicField('wrongdatetime');
-            await editCasePo.clickSaveCase();
-            expect(await utilityCommon.getDialoguePopupMessage()).toBe("The dynamic field contains invalid data that will not be saved. Do you want to proceed?");
-            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
-            await viewTaskPo.clickOnEditTask();
+            await editTaskPo.setDynamicFieldValue('automatedNumber', 'eee');
+            let msg: string[] = ["Number is invalid"];
+            expect(await utilityCommon.isPopupMsgsMatches(msg)).toBeTruthy();
+            await editTaskPo.setDateValueInDynamicField('eee');
+            await editTaskPo.clickOnSaveButton();
+            expect(await editTaskPo.getErrorMsgOnDynamicFiled()).toContain("Invalid value:");
             await editTaskPo.setDateValueInDynamicField('2020-03-01');
             await editTaskPo.setDateTimeDynamicFieldValue('2020-03-04');
-            await editTaskPo.setDynamicFieldValue('automatedNumber', 'values');
+            await editTaskPo.setDynamicFieldValue('automatedText', 'sssssss');
             await editTaskPo.clickOnSaveButton();
-            await utilityCommon.closePopUpMessage();
             //verify update values on case view
-            expect(await viewTaskPo.getDynamicFieldValue('automatedDate')).toBe('Mar 1, 2020');
+            expect(await viewTaskPo.getDynamicFieldValue('automatedDate')).toBe('Jan 20, 2020');
             expect(await viewTaskPo.getDynamicFieldValue('automatedDateTime')).toBe('Mar 4, 2020 12:00 AM');
-            expect(await viewTaskPo.getDynamicFieldValue('automatedNumber')).toBe('');
+            expect(await viewTaskPo.getDynamicFieldValue('automatedNumber')).toBe('-');
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
@@ -1097,19 +1077,19 @@ describe('Dynamic data', () => {
         expect(await viewCasePo.isDynamicFieldDisplayed('attachment3')).toBeTruthy('dynamic fields not present');
         expect(await viewCasePo.isDynamicFieldDisplayed('dynamicList')).toBeTruthy('dynamic fields not present');
         await viewCasePo.clickEditCaseButton();
-        await editCasePo.setDynamicFieldValue('temp', 'newtemp');
-        await editCasePo.setDynamicFieldValue('temp1', 'eeee');
-        await editCasePo.setDateValueInDynamicField('wrong date');
+        await editCasePo.setDynamicFieldValue('temp1', 'eee');
+        let msg: string[] = ["Number is invalid"];
+        expect(await utilityCommon.isPopupMsgsMatches(msg)).toBeTruthy();
+        await editCasePo.setDateValueInDynamicField('eee');
         await editCasePo.clickSaveCase();
-        expect(await utilityCommon.getDialoguePopupMessage()).toBe("The dynamic field contains invalid data that will not be saved. Do you want to proceed?");
-        await utilityCommon.clickOnApplicationWarningYesNoButton("No");
-        await editCasePo.setInvalidDateTimeDynamicField('wrongdatetime');
+        expect(await editTaskPo.getErrorMsgOnDynamicFiled()).toContain("Invalid value:");
+        await editCasePo.setDateValueInDynamicField('2020-03-01');
+        await editCasePo.setDynamicFieldValue('temp', 'sssssss');
+        await editCasePo.clickOnAssignToMe();
         await editCasePo.clickSaveCase();
-        expect(await utilityCommon.getDialoguePopupMessage()).toBe("The dynamic field contains invalid data that will not be saved. Do you want to proceed?");
-        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
-        expect(await viewCasePo.getValueOfDynamicFields('temp1')).toBe('-', 'field should be empty');
-        expect(await viewCasePo.getValueOfDynamicFields('temp2')).toBe('-', 'field should be empty');
-        expect(await viewCasePo.getValueOfDynamicFields('temp4')).toBe('-', 'field should be empty');
+        //verify update values on case view
+        expect(await viewCasePo.getValueOfDynamicFields('temp2')).toBe('Jan 20, 2020');
+        expect(await viewCasePo.getValueOfDynamicFields('temp1')).toBe('-');
     }, 940 * 1000);
 
     //ptidke

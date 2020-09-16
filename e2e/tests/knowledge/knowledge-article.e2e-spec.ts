@@ -2449,7 +2449,7 @@ describe('Knowledge Article', () => {
             expect(await viewKnowledgeArticlePo.getCategoryTier3Value()).toBe(articleData.categoryTier3);
             expect(await viewKnowledgeArticlePo.getRegionValue()).toBe(articleData.region);
             expect(await viewKnowledgeArticlePo.getSiteValue()).toBe(articleData.site);
-            expect(await viewKnowledgeArticlePo.getArticleReviewerGroup()).toBe('GB Support 1');
+            expect(await viewKnowledgeArticlePo.getKnowledgeArticleAssigneeGroupValue()).toBe('GB Support 1');
         });       
         afterAll(async () => {
             await navigationPage.signOut();
