@@ -709,7 +709,7 @@ describe("Quick Case", () => {
             await resourcesPo.enterAdvancedSearchText(caseTemplateData.templateName);
             await resourcesPo.clickOnAdvancedSearchSettingsIconToOpen();
             await resourcesPo.clickOnAdvancedSearchFiltersButton('Apply');           
-            await resourcesPo.clickArrowFirstRecommendedKnowledge();
+            await resourcesPo.clickArrowFirstRecommendedKnowledge('Recommended Knowledge');
             expect(await previewKnowledgePo.isStatusOfKADisplay()).toBeTruthy('Knowledge status not present');
             expect(await previewKnowledgePo.isBackButtonDisplay()).toBeTruthy('back button not present');
             await previewKnowledgePo.clickOnBackButton();
