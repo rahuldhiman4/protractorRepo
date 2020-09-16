@@ -373,6 +373,7 @@ class CaseEditPage {
     }
 
     async setDateValueInDynamicField(value: string): Promise<void> {
+        await $(this.selectors.dynamicFieldDate).clear();
         await $(this.selectors.dynamicFieldDate).sendKeys(value);
     }
 

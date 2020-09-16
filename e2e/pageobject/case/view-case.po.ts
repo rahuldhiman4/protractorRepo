@@ -66,11 +66,16 @@ class ViewCasePage {
         taskCountOnTaskCard: '.task-list__task-card .task-summary__adhoc-task-count',
         taskTab: '[rx-view-component-id="4c82d32f-5efd-437d-b020-a57910532aa0"] adapt-button',
         taskDisplayId: '[rx-view-component-id="beb9c44b-6bd5-4f68-b9b9-37d427d9d2e5"] .task-meta-data__display-id',
-        description: '9d3ef0fc-c49f-425f-a9e1-52422ba87f4f'
+        description: '9d3ef0fc-c49f-425f-a9e1-52422ba87f4f',
+        dynamicAttachmentValue: '[class="text-default bwf-attachment-container__file-name"]',
     }
 
     async clickDescriptionShowMore(): Promise<void> {
         await $(this.selectors.showMoreDescription).click();
+    }
+
+    async getDynamicAttachmentValue(): Promise<string> {
+       return await $(this.selectors.dynamicAttachmentValue).getText();
     }
 
     async isImageDisplayed(value: string): Promise<boolean> {

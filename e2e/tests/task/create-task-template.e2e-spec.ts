@@ -836,7 +836,7 @@ describe('Create Task Template', () => {
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter("Priority", 'Critical', "checkbox");
             priorityColumnValues = await utilityGrid.getAllValuesFromColumn('Priority');
-            expect(priorityColumnValues.length == 1 && priorityColumnValues[0] == 'Critical' == true).toBeTruthy("Critical not Displayed");
+            expect(priorityColumnValues[0] == 'Critical' == true).toBeTruthy("Critical not Displayed");
         });
         it('[DRDMV-3830]: Verify filter with status values', async () => {
             await utilityGrid.searchRecord(''); // clear grid searchbox value
