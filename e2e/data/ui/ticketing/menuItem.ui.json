@@ -2,7 +2,8 @@
     "sampleMenuItem": {
         "menuItemName": "TestMenuItemName",
         "menuItemStatus": "Active",
-        "menuType": "Label"
+        "menuType": "Label",
+        "uiVisible":"1"
     },
     "sourceMenuItem": {
         "menuItemName": "ItemName",
