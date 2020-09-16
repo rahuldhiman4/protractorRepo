@@ -1,5 +1,6 @@
 import { $, by, element, protractor, ProtractorExpectedConditions, browser } from "protractor";
 import utilCommon from '../../../utils/util.common';
+import utilityCommon from '../../../utils/utility.common';
 class CreateFlowset {
 
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -83,7 +84,7 @@ class CreateFlowset {
     }
 
     async selectStatus(status: string): Promise<void> {
-        await browser.actions().mouseMove(await $(this.selectors.status));
+        await utilityCommon.scrollToElement(await $(this.selectors.status));
         await utilCommon.selectDropDown(this.selectors.statusGuid, status);
     }
 
