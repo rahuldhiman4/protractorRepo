@@ -28,7 +28,7 @@ describe('Conditional Task Life Cycle', () => {
     //asahitya
     describe('[DRDMV-14996]: [Task] Case created with CaseTemplate (with no TaskFlow) and without CaseTemplate', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let caseTemplateDoNotProceed, caseTemplateProceedWithNextTask, manualTaskTemplateData, externalTaskTemplateData, responseCaseDNP, responseCasePWNT, responseCaseNT, adhocTaskData, manualTaskDNPResponse, manualTaskNTResponse, manualTaskPWNTResponse, externalTaskDNPResponse, externalTaskNTResponse, externalTaskPWNTResponse, automatedTaskDNPResponse, automatedTaskNTResponse, automatedTaskPWNTResponse, manualTaskDNPId, manualTaskNTId, manualTaskPWNTId, externalTaskDNPId, externalTaskNTId, externalTaskPWNTId;
+        let caseTemplateDoNotProceed, caseTemplateProceedWithNextTask, manualTaskTemplateData, externalTaskTemplateData, responseCaseDNP, responseCasePWNT, responseCaseNT, adhocTaskData, manualTaskDNPResponse, manualTaskNTResponse, manualTaskPWNTResponse, externalTaskDNPResponse, externalTaskNTResponse, externalTaskPWNTResponse, automatedTaskDNPResponse, automatedTaskNTResponse, automatedTaskPWNTResponse, manualTaskDNPId, manualTaskNTId, manualTaskPWNTId, externalTaskDNPId, externalTaskNTId, externalTaskPWNTId, automatedTaskTemplateData, automatedTaskDNPId, automatedTaskNTId, automatedTaskPWNTId;
         let completedStr: string = 'Completed';
         let assignedStr: string = 'Assigned';
         beforeAll(async () => {
@@ -98,6 +98,23 @@ describe('Conditional Task Life Cycle', () => {
             }
             await apiHelper.createExternalTaskTemplate(externalTaskTemplateData);
 
+            automatedTaskTemplateData = {
+                "templateName": 'Automated task 14996' + randomStr,
+                "templateSummary": 'Automated task 14996' + randomStr,
+                "templateStatus": "Active",
+                "processBundle": "com.bmc.dsm.case-lib",
+                "processName": 'Auto Proces' + randomStr,
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities",
+                "businessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
+                "assignee": "Fritz",
+            }
+            await apiHelper.createAutomatedTaskTemplate(automatedTaskTemplateData);
+            await apiHelper.enableDisableProcess(`${automatedTaskTemplateData.processBundle}:${automatedTaskTemplateData.processName}`, false);
+
             //Create Cases
             let caseDataDNP = {
                 "Requester": "qkatawazi",
@@ -151,7 +168,7 @@ describe('Conditional Task Life Cycle', () => {
             let automatedTaskData = {
                 "company": "Petramco",
                 "requesterId": "qkatawazi",
-                "templateName": 'A Failing Task'
+                "templateName": automatedTaskTemplateData.templateName
             }
             automatedTaskDNPResponse = await apiHelper.addTaskToCase(automatedTaskData, responseCaseDNP.id);
             automatedTaskNTResponse = await apiHelper.addTaskToCase(automatedTaskData, responseCaseNT.id);
@@ -170,12 +187,15 @@ describe('Conditional Task Life Cycle', () => {
             //Get Id of all the tasks created from task template
             await apiHelper.apiLogin('tadmin');
             manualTaskDNPId = (await apiHelper.getCreatedTaskIds(manualTaskDNPResponse)).id;
+            automatedTaskDNPId = (await apiHelper.getCreatedTaskIds(automatedTaskDNPResponse)).id;
             externalTaskDNPId = (await apiHelper.getCreatedTaskIds(externalTaskDNPResponse)).id;
 
             manualTaskNTId = (await apiHelper.getCreatedTaskIds(manualTaskNTResponse)).id;
+            automatedTaskNTId = (await apiHelper.getCreatedTaskIds(automatedTaskNTResponse)).id;
             externalTaskNTId = (await apiHelper.getCreatedTaskIds(externalTaskNTResponse)).id;
 
             manualTaskPWNTId = (await apiHelper.getCreatedTaskIds(manualTaskPWNTResponse)).id;
+            automatedTaskPWNTId = (await apiHelper.getCreatedTaskIds(automatedTaskPWNTResponse)).id;
             externalTaskPWNTId = (await apiHelper.getCreatedTaskIds(externalTaskPWNTResponse)).id;
 
             //Update the adhoc task status of all Cases to Completed
@@ -203,7 +223,7 @@ describe('Conditional Task Life Cycle', () => {
             await utilityGrid.searchAndOpenHyperlink(responseCaseDNP.displayId);
             await viewCasePage.openTaskCard(1);
             expect(await manageTaskBlade.getTaskStatus(manualTaskTemplateData.templateName)).toContain(completedStr);
-            expect(await manageTaskBlade.getTaskStatus('The execution of this task will fail and can be used to demonstrate how to handle this case.')).toContain('Failed');
+            expect(await manageTaskBlade.getTaskStatus(automatedTaskTemplateData.templateName)).toContain('Failed');
             expect(await manageTaskBlade.getTaskStatus(externalTaskTemplateData.templateName)).toContain('Staged');
             await utilityCommon.closeAllBlades();
         });
@@ -225,7 +245,7 @@ describe('Conditional Task Life Cycle', () => {
             await editTaskPo.clickOnRefreshActivity();
             await viewCasePage.openTaskCard(1);
             expect(await manageTaskBlade.getTaskStatus(manualTaskTemplateData.templateName)).toContain(completedStr);
-            expect(await manageTaskBlade.getTaskStatus('The execution of this task will fail and can be used to demonstrate how to handle this case.')).toContain('Failed');
+            expect(await manageTaskBlade.getTaskStatus(automatedTaskTemplateData.templateName)).toContain('Failed');
             expect(await manageTaskBlade.getTaskStatus(externalTaskTemplateData.templateName)).toContain('Staged');
             await utilityCommon.closeAllBlades();
 
@@ -252,7 +272,7 @@ describe('Conditional Task Life Cycle', () => {
             await utilityGrid.searchAndOpenHyperlink(responseCasePWNT.displayId);
             await viewCasePage.openTaskCard(1);
             expect(await manageTaskBlade.getTaskStatus(manualTaskTemplateData.templateName)).toContain(completedStr);
-            expect(await manageTaskBlade.getTaskStatus('The execution of this task will fail and can be used to demonstrate how to handle this case.')).toContain('Failed');
+            expect(await manageTaskBlade.getTaskStatus(automatedTaskTemplateData.templateName)).toContain('Failed');
             expect(await manageTaskBlade.getTaskStatus(externalTaskTemplateData.templateName)).toContain('Assigned');
             await utilityCommon.closeAllBlades();
 

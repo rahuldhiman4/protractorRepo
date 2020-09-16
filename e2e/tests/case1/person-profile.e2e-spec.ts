@@ -234,6 +234,7 @@ describe('Person Profile test', () => {
 
     //asahitya
     describe('[DRDMV-16802]: Person profile display for Contact', () => {
+        let response = undefined;
         afterEach(async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
@@ -255,7 +256,7 @@ describe('Person Profile test', () => {
             }
 
             //Create the case with contact as Adam Pavlik
-            let response = await apiHelper.createCase(caseData);
+            response = await apiHelper.createCase(caseData);
 
             //Verify the Person Profile of Adam Pavlik
             await navigationPage.gotoCaseConsole();
@@ -288,7 +289,9 @@ describe('Person Profile test', () => {
             await utilityCommon.switchToNewTab(2);
             expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Adam Pavlik', 'Former Reportee')).toBeTruthy('Relation does not match');
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+        });
 
+        it('[DRDMV-16802]: Person profile display for non Agent Contact', async () => {
             //Modify the Person to Person relationship
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
@@ -305,6 +308,7 @@ describe('Person Profile test', () => {
             await viewCasePage.clickOnContactPersonerDrpDwn();
             await viewCasePage.clickContactPersonName();
             await utilityCommon.switchToNewTab(1);
+            await browser.sleep(3000); //Hard wait to load new page
             //expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Qianru Tao', 'Former Manager')).toBeTruthy('Relation does not match'); //Its a wont fix defect DRDMV-22546. Updated the same in test case Jira
 
             //Remove the relation and verify that Relation is actually removed
@@ -403,7 +407,7 @@ describe('Person Profile test', () => {
     });
 
     //asahitya
-    it('[DRDMV-17019]: Check agent cannot view notes to own Person profile in agent work history tab', async () => {
+    it('[DRDMV-17019]: Check agent can view notes to own Person profile in agent work history tab', async () => {
         await navigationPage.gotoPersonProfile();
         await relatedTabPage.addRelatedPerson();
         await addRelatedPopupPage.addPerson('Qiang Du', 'Parent');
@@ -411,11 +415,26 @@ describe('Person Profile test', () => {
         await utilityCommon.switchToNewTab(1);
         await activityTabPage.addActivityNote("DRDMV-17019");
         await activityTabPage.clickOnPostButton();
+        await activityTabPage.clickOnRefreshButton();
+        expect(await activityTabPage.isTextPresentInNote("DRDMV-17019")).toBeTruthy("Elizabeth cannot see post on qdu's activity");
+        await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+        await activityTabPage.clickOnRefreshButton();
+        expect(await activityTabPage.isTextPresentInNote("DRDMV-17019")).toBeTruthy("Elizabeth cannot see post on his own activity");
         try {
             await navigationPage.signOut();
             await loginPage.login("qdu");
             await navigationPage.gotoPersonProfile();
-            expect(await activityTabPage.isTextPresentInNote("DRDMV-17019")).toBeFalsy("Notes are avaialble on Hannah's Profile");
+            expect(await activityTabPage.isTextPresentInNote("DRDMV-17019")).toBeTruthy("Qiang Du cannot see post on his own activity");
+
+            await navigationPage.signOut();
+            await loginPage.login("qkatawazi");
+            await navigationPage.gotoPersonProfile();
+            expect(await activityTabPage.isTextPresentInNote("DRDMV-17019")).toBeFalsy("Qadim can see post on his own activity");
+            await relatedTabPage.addRelatedPerson();
+            await addRelatedPopupPage.addPerson('Qiang Du', 'Parent');
+            await relatedTabPage.clickRelatedPersonName('Qiang Du');
+            await utilityCommon.switchToNewTab(1);
+            expect(await activityTabPage.isTextPresentInNote("DRDMV-17019")).toBeFalsy("Qadim can see post on qdu's activity");
         }
         catch (e) {
             throw e;
