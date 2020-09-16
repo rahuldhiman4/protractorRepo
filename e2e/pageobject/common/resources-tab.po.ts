@@ -171,11 +171,11 @@ export class Resources {
         });
     }
 
-    async clickArrowFirstRecommendedKnowledge(): Promise<void> {
+    async clickArrowFirstRecommendedKnowledge(sectionTitle : string ): Promise<void> {
         let sections = $$('div.bwf-search-result');
         for(let i=0; i<(await sections).length; i++){
             let sectionLocator = sections.get(i).$('h2');
-            if((await sectionLocator.getText()).includes('Recommended Knowledge')) {
+            if((await sectionLocator.getText()).includes(sectionTitle)) {
                 await sections.get(i).$$('div.search-result-fields').first().click();
             }
         }

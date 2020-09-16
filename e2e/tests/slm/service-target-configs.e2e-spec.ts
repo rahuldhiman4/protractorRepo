@@ -21,6 +21,10 @@ import serviceTargetConsole from '../../pageobject/settings/slm/service-target-v
 import createConfigureDataSourceConfigPo from '../../pageobject/settings/slm/create-configure-data-source-config.po';
 import approvalConfigurationPage from "../../pageobject/settings/approval/approval-configuration.po";
 import configureDataSourceConsolePage from '../../pageobject/settings/slm/configure-data-source-config-console.po';
+import milestoneConfig from '../../pageobject/settings/slm/slm-milestone.pop.po';
+import activityTabPo from '../../pageobject/social/activity-tab.po';
+import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
+import viewTaskPo from '../../pageobject/task/view-task.po';
 
 let caseBAUser = 'qkatawazi';
 
@@ -665,12 +669,12 @@ describe('Service Target Tests', () => {
     });
 
     //skhobrag
-    describe('[DRDMV-6168,DRDMV-2354]: UI Validation for Qualification Builder with Single company.', async () => {
+    describe('[DRDMV-6168]: UI Validation for Qualification Builder with Single company.', async () => {
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
         });
-        it('[DRDMV-6168,DRDMV-2354]: Verify SVT UI Fields', async () => {
+        it('[DRDMV-6168]: Verify SVT UI Fields', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             await serviceTargetConfig.createServiceTargetConfig('SVT with mandatory fields', 'Petramco', 'Case Management');
@@ -708,5 +712,251 @@ describe('Service Target Tests', () => {
             expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
     });
+
+    //skhobrag
+    describe('[DRDMV-6148]: Create SVT for one line of Business with Milestone action', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let updatedCaseSummary = "Updating Case summary from SVT";
+        let svttile = "SVT for Case fields" + randomStr;
+        beforeAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteServiceTargets();
+        });
+
+        it('[DRDMV-6148]: Verify Processing of Set field Milestone Action for Task SLA', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
+            await serviceTargetConfig.createServiceTargetConfig(svttile, 'Petramco', 'Case Management');
+            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
+            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await SlmExpressionBuilder.clickOnSaveExpressionButton();
+            await serviceTargetConfig.selectGoalType('Case Resolution Time');
+            await serviceTargetConfig.enterSVTDescription('SVT with all fields Desc' + randomStr);
+            await serviceTargetConfig.selectGoal("2");
+            await serviceTargetConfig.selectMeasurement();
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+        });
+
+        it('[DRDMV-6148]: Add milestone to the service target and verify milestone details', async () => {
+            await serviceTargetConfig.selectMilestone();
+            await serviceTargetConfig.clickAddNewMileStoneBtn();
+            expect(await milestoneConfig.isSLMMileStonePopUpDisplayed()).toBeTruthy("SLM Milestone Pop up window not displayed");
+            await milestoneConfig.setMileStoneTitle("SVT Milestone" + randomStr);
+            await milestoneConfig.setMileStoneDescription("SVT Milestone Desc" + randomStr);
+            await milestoneConfig.setMileStonePercentage("10");
+            await milestoneConfig.clickMileStoneExpression();
+            await SlmExpressionBuilder.selectSecondLevelExpressionQualification('Requester', 'Email', "=", 'TEXT', "qdu@petramco1.com");
+            let selectedExpx = await SlmExpressionBuilder.getSelectedExpression();
+            let expectedSelectedExp = "'" + "Requester > Email" + "'" + "=" + '"' + "qdu@petramco1.com" + '"';
+            expect(selectedExpx).toEqual(expectedSelectedExp);
+            await SlmExpressionBuilder.clickOnSaveExpressionButton();
+            await milestoneConfig.clickMileStoneActionsSegment();
+            await milestoneConfig.clickAddNewMileStoneActionBtn();
+            await milestoneConfig.selectMileStoneActionCondition("New Set Fields Action");
+            expect(await milestoneConfig.isSetMileStoneActionPopUpDisplayed()).toBeTruthy("SLM Milestone Action Pop up window not displayed");
+            await milestoneConfig.setMileStoneActionTitle("SVT Action" + randomStr);
+            await milestoneConfig.selectMileStoneActionField("Summary");
+            await milestoneConfig.setMileStoneActionFieldValue(updatedCaseSummary);
+            await milestoneConfig.clickAddMileStoneActionBtn();
+            await milestoneConfig.clickSaveMileStoneAction();
+            await milestoneConfig.selectMileStoneAction();
+            await milestoneConfig.clickSaveMileStone();
+            await serviceTargetConfig.clickOnSaveSVTButton();
+            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+        });
+
+        it('[DRDMV-6148]: Create a case and verify if the case is updated as per the milestone configurations', async () => {
+            let caseData = {
+                "Requester": "qdu",
+                "Summary": "Summary_" + randomStr,
+                "Source": "Agent",
+                "Priority": "High",
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
+                "Assignee": "qkatawazi",
+            }
+
+            await apiHelper.apiLogin('fritz');
+            let response = await apiHelper.createCase(caseData);
+            let caseId = response.displayId;
+
+            await browser.sleep(40000); // wait added for milestone to trigger and reflect the changes
+
+            await utilityGrid.clearFilter();
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(caseId);
+            expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
+            expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
+            expect(await viewCasePage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
+            expect(await viewCasePage.getCaseSummary()).toBe(updatedCaseSummary);
+            await viewCasePo.clickOnTab('Activity');
+            await activityTabPo.clickOnRefreshButton();
+            expect(await activityTabPo.isTextPresentInActivityLog(updatedCaseSummary)).toBeTruthy('TemplateText is not available');
+            expect(await activityTabPo.isTextPresentInActivityLog("Summary")).toBeTruthy('TemplateText is not available');
+        });
+
+        it('[DRDMV-6148]: Create a case wit mismatched qualifications and  verify if the case is updated as per the milestone configurations', async () => {
+            let caseData = {
+                "Requester": "qtao",
+                "Summary": "Summary_" + randomStr,
+                "Source": "Agent",
+                "Priority": "High",
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
+                "Assignee": "qkatawazi",
+            }
+
+            await apiHelper.apiLogin('fritz');
+            let response = await apiHelper.createCase(caseData);
+            let caseId = response.displayId;
+
+            await browser.sleep(30000); // wait added for milestone to trigger and reflect the changes
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(caseId);
+            expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
+            expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
+            expect(await viewCasePage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
+            expect(await viewCasePage.getCaseSummary()).toBe(caseData.Summary);
+        });
+
+    });
+
+    //skhobrag
+    describe('[DRDMV-2354]: Verify Processing of Set field Milestone Action for Task SLA', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let updatedTaskSummary = "Updating Task summary from SVT";
+        let svttile = "SVT for Task fields" + randomStr;
+        beforeAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteServiceTargets();
+        });
+
+        it('[DRDMV-2354]: Verify Processing of Set field Milestone Action for Task SLA', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
+            await serviceTargetConfig.createServiceTargetConfig(svttile, 'Petramco', 'Task Management');
+            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
+            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await SlmExpressionBuilder.clickOnSaveExpressionButtonForTask();
+            await serviceTargetConfig.selectGoal("2");
+            await serviceTargetConfig.selectMeasurement();
+            await serviceTargetConfig.selectExpressionForMeasurementForTask(0, "status", "=", "STATUS", "Staged");
+            await serviceTargetConfig.selectExpressionForMeasurementForTask(1, "status", "=", "STATUS", "Completed");
+            await serviceTargetConfig.selectExpressionForMeasurementForTask(2, "status", "=", "STATUS", "Pending");
+        });
+
+        it('[DRDMV-2354]: Add milestone to the service target and verify milestone details', async () => {
+            await serviceTargetConfig.selectMilestone();
+            await serviceTargetConfig.clickAddNewMileStoneBtn();
+            expect(await milestoneConfig.isSLMMileStonePopUpDisplayed()).toBeTruthy("SLM Milestone Pop up window not displayed");
+            await milestoneConfig.setMileStoneTitle("SVT Milestone" + randomStr);
+            await milestoneConfig.setMileStoneDescription("SVT Milestone Desc" + randomStr);
+            await milestoneConfig.setMileStonePercentage("10");
+            await milestoneConfig.clickMileStoneExpression();
+            await SlmExpressionBuilder.selectExpressionQualification('Task Type', '=', 'SELECTION', 'Manual');
+            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            let selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
+            let expectedSelectedExp = "'" + "Task Type" + "'" + "=" + '"' + "Manual" + '"'
+            expect(selectedExp).toEqual(expectedSelectedExp);
+            await SlmExpressionBuilder.clickOnSaveExpressionButtonForTask();
+            await milestoneConfig.clickMileStoneActionsSegment();
+            await milestoneConfig.clickAddNewMileStoneActionBtn();
+            await milestoneConfig.selectMileStoneActionCondition("New Set Fields Action");
+            expect(await milestoneConfig.isSetMileStoneActionPopUpDisplayed()).toBeTruthy("SLM Milestone Action Pop up window not displayed");
+            await milestoneConfig.setMileStoneActionTitle("SVT Action" + randomStr);
+            await milestoneConfig.selectMileStoneActionField("Summary");
+            await milestoneConfig.setMileStoneActionFieldValue(updatedTaskSummary);
+            await milestoneConfig.clickAddMileStoneActionBtn();
+            await milestoneConfig.clickSaveMileStoneAction();
+            await milestoneConfig.selectMileStoneAction();
+            await milestoneConfig.clickSaveMileStone();
+            await serviceTargetConfig.clickOnSaveSVTButton();
+            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+        });
+
+        it('[DRDMV-2354]: Create a task and verify if the case is updated as per the milestone configurations', async () => {
+            let manualTemplateData = {
+                "templateName": "manual_task template" + randomStr,
+                "templateSummary": "Manual_task template summary" + randomStr,
+                "templateStatus": "Active",
+                "priority": 'High',
+                "taskCompany": 'Petramco',
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities"
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createManualTaskTemplate(manualTemplateData);
+            // 1st step: Login to BWFA as Case agent and open Manual Task from pre condition
+            await navigationPage.gotoCreateCase();
+            await createCasePo.selectRequester('qdu');
+            await createCasePo.setSummary('manual task test for svt milestone' + randomStr);
+            await createCasePo.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+
+            // On view case page.
+            await viewCasePo.clickAddTaskButton();
+            await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateData.templateSummary);
+            let taskId = await manageTaskBladePo.getTaskDisplayIdFromManageTaskBlade();
+            await manageTaskBladePo.clickTaskLink(manualTemplateData.templateSummary);
+
+            await browser.sleep(40000); // wait added for milestone to trigger and reflect the changes
+
+            await utilityGrid.clearFilter();
+            await navigationPage.gotoTaskConsole();
+            await utilityGrid.searchAndOpenHyperlink(taskId);
+            expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
+            expect(await viewTaskPo.getTaskSummaryValue()).toBe(updatedTaskSummary);
+            await activityTabPo.clickOnRefreshButton();
+            expect(await activityTabPo.isTextPresentInActivityLog(updatedTaskSummary)).toBeTruthy('TemplateText is not available');
+            expect(await activityTabPo.isTextPresentInActivityLog("Summary")).toBeTruthy('TemplateText is not available');
+        });
+
+        it('[DRDMV-2354]: Create a task wit mismatched qualifications and verify if the case is updated as per the milestone configurations', async () => {
+         let   automatedtemplateData = {
+                "templateName": 'Automated task19011' + randomStr,
+                "templateSummary": 'Automated task19011' + randomStr,
+                "templateStatus": "Active",
+                "processBundle": "com.bmc.dsm.case-lib",
+                "processName": 'Auto Proces' + randomStr,
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities",
+                "businessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
+                "assignee": "Fritz",
+            }
+            let automatedTaskTemplate = await apiHelper.createAutomatedTaskTemplate(automatedtemplateData);
+
+            await apiHelper.apiLogin('qkatawazi');
+            // 1st step: Login to BWFA as Case agent and open Manual Task from pre condition
+            await navigationPage.gotoCreateCase();
+            await createCasePo.selectRequester('qdu');
+            await createCasePo.setSummary('manual task test for svt milestone' + randomStr);
+            await createCasePo.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+
+            // On view case page.
+            await viewCasePo.clickAddTaskButton();
+            await manageTaskBladePo.addTaskFromTaskTemplate(automatedtemplateData.templateSummary);
+            let taskId = await manageTaskBladePo.getTaskDisplayIdFromManageTaskBlade();
+            await manageTaskBladePo.clickTaskLink(automatedtemplateData.templateSummary);
+
+            await browser.sleep(35000); // wait added for milestone to trigger and reflect the changes
+
+            await navigationPage.gotoTaskConsole();
+            await utilityGrid.searchAndOpenHyperlink(taskId);
+            expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
+            expect(await viewTaskPo.getTaskSummaryValue()).toBe('manual task test for svt milestone' + randomStr);
+        });
+
+    });
+
+
 
 });

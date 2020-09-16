@@ -42,11 +42,16 @@ class EditTask {
         priorityRequiredText: 'e638927a-e1e1-46e7-bfe3-8fe9904a5c5a',
         taskTypeRequiredText: '057f2521-313b-40c9-be56-829827512abf',
         taskLabel: '[rx-view-component-id="4c2784af-c080-4630-8f16-d9e6b07e87a2"] .btn-secondary',
+        errorMsgOnDynamicFiled: '.form-control-feedback strong',
         labelGuid: '4c2784af-c080-4630-8f16-d9e6b07e87a2'
     }
 
     async isAutomatedTaskTypeDisabled(): Promise<boolean> {
         return await $(this.selectors.taskTypeValue).getAttribute('disabled') == 'true' ? true : false;
+    }
+
+    async getErrorMsgOnDynamicFiled(): Promise<string> {
+        return await $(this.selectors.errorMsgOnDynamicFiled).getText();
     }
 
     async isProcessNameDisabled(): Promise<boolean> {

@@ -43,6 +43,8 @@ describe('Knowledge Article', () => {
     let knowledgeManagementApp = "Knowledge Management";
     let knowledgeArticlesTitleStr = "Knowledge Articles";
     let knowledgeModule = 'Knowledge';
+    let kaDetails1, kaDetails2, kaDetails3, knowledgeTemplateId;
+    let knowledgeSetTitleStr = 'KASet_' + randomStr;
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('peter');
@@ -77,6 +79,30 @@ describe('Knowledge Article', () => {
         await apiHelper.associatePersonToSupportGroup(personData.userId, suppGrpData.orgName);
         await apiHelper.associatePersonToCompany(personData.userId, company)
     }
+
+    async function knowledgeConfigCreation() {
+        let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let knowledgeTemplateStr = 'KATemplate_' + randomStr;
+        await apiHelper.apiLogin("tadmin");
+        apiHelper.deleteApprovalMapping(knowledgeModule);
+        await apiHelper.apiLogin('dbomei');
+        let knowledgeSetData = {
+            knowledgeSetTitle: `${knowledgeSetTitleStr}`,
+            knowledgeSetDesc: `${knowledgeSetTitleStr}_Desc`,
+            company: 'Petramco'
+        }
+        let knowledgeArticleTemplateData = {
+            templateName: `${knowledgeTemplateStr}`,
+            company: "Petramco",
+            knowledgeSetId: "AGGADGG8ECDC0AQGPUJ1QFRW9RZH4E",
+            title: "articleSection"
+        }
+        await apiHelper.apiLogin('elizabeth');
+        let knowledgeSet = await apiHelper.createKnowledgeSet(knowledgeSetData);
+        await apiHelper.createKnowledgeArticleTemplate(knowledgeSetData.knowledgeSetTitle, knowledgeSet.id, knowledgeArticleTemplateData);
+        knowledgeTemplateId = await apiCoreUtil.getKnowledgeTemplateGuid(knowledgeTemplateStr);
+    }
+
     //ptidke
     it('[DRDMV-2604]: [Flag an Article] Unflag a published artilcles by Asignee_Knowledge publisher', async () => {
         try {
@@ -1755,12 +1781,13 @@ describe('Knowledge Article', () => {
     });
 
     describe('[DRDMV-753]:[Advanced Search] [Pin/Unpin] Relate Knowledge Article on Knowledge Edit view from Advanced search', async () => {
-        let kaDetails1, kaDetails2, kaDetails3, articleData;
-        beforeAll(async () => {
-            articleData = {
-                "knowledgeSet": "HR",
+        it('[DRDMV-753]:[Advanced Search] Knowledge Creation', async () => {
+            await knowledgeConfigCreation();
+            await apiHelper.apiLogin('qtao');
+            let articleData = {
+                "knowledgeSet": `${knowledgeSetTitleStr}`,
                 "title": 'KA1' + randomStr,
-                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "templateId": `${knowledgeTemplateId}`,
                 "categoryTier1": "Applications",
                 "categoryTier2": "Help Desk",
                 "categoryTier3": "Incident",
@@ -1769,13 +1796,22 @@ describe('Knowledge Article', () => {
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
                 "assigneeSupportGroup": "GB Support 1",
-                "assignee": "KMills"
+                "assignee": "KMills",
+                "articleDesc": `${knowledgeSetTitleStr} Desc`
             }
-            await apiHelper.apiLogin('elizabeth');
             kaDetails1 = await apiHelper.createKnowledgeArticle(articleData);
+            let knowledgeArticleGUID1 = kaDetails1.id;
             kaDetails2 = await apiHelper.createKnowledgeArticle(articleData);
+            let knowledgeArticleGUID2 = kaDetails2.id;
             articleData.title = 'KA2' + randomStr;
             kaDetails3 = await apiHelper.createKnowledgeArticle(articleData);
+            let knowledgeArticleGUID3 = kaDetails3.id;
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID1, 'Draft')).toBeTruthy('Status Not Set');
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID1, 'PublishApproval')).toBeTruthy('Status Not Set');
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID2, 'Draft')).toBeTruthy('Status Not Set');
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID2, 'PublishApproval')).toBeTruthy('Status Not Set');
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID3, 'Draft')).toBeTruthy('Status Not Set');
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID3, 'PublishApproval')).toBeTruthy('Status Not Set');
         });
         it('[DRDMV-753]:[Advanced Search] [Pin/Unpin] Relate Knowledge Article on Knowledge Edit view from Advanced search', async () => {
             await navigationPage.signOut();
@@ -1833,29 +1869,20 @@ describe('Knowledge Article', () => {
     });
 
     describe('[DRDMV-620]: [Advanced Search] Advanced Search UI verification on the Knowledge Edit view', async () => {
-        let knowledgeArticleData, knowledgeArticleData1, articleData1, articleData2, articleData3, articleData4, articleData5, articleData6, randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let articleData1, articleData2, articleData3, randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let currentDate = new Date();
         let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         let dateFormateValue: string = months[currentDate.getMonth()];
-        let dateFormateNew: string = dateFormateValue.substring(0, 4);
-        let dateFormate = dateFormateNew + " " + currentDate.getDate() + ", " + currentDate.getFullYear();
+        let dateFormate = dateFormateValue + " " + currentDate.getDate() + ", " + currentDate.getFullYear();
+        let knowledgeArticleData1, knowledgeArticleData2, knowledgeArticleData3;
         beforeAll(async () => {
+            await knowledgeConfigCreation();
+        });
+        it('[DRDMV-620]: Advanced Search UI verification on the Quick Case view', async () => {``
             articleData1 = {
-                "knowledgeSet": "HR",
+                "knowledgeSet": `${knowledgeSetTitleStr}`,
                 "title": randomStr + 'KA1',
-                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-                "categoryTier1": "Workforce Administration",
-                "region": "Australia",
-                "site": "Canberra",
-                "assignedCompany": "Petramco",
-                "assigneeBusinessUnit": "United Kingdom Support",
-                "assigneeSupportGroup": "GB Support 1",
-                "assignee": "KMills"
-            }
-            articleData2 = {
-                "knowledgeSet": "HR",
-                "title": randomStr + 'KA2',
-                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "templateId": `${knowledgeTemplateId}`,
                 "categoryTier1": "Workforce Administration",
                 "region": "Central America",
                 "site": "Mexico City",
@@ -1864,22 +1891,10 @@ describe('Knowledge Article', () => {
                 "assigneeSupportGroup": "GB Support 1",
                 "assignee": "KMills"
             }
-            articleData3 = {
-                "knowledgeSet": "Benefits",
-                "title": randomStr + 'KA3',
-                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-                "categoryTier1": "Workforce Administration",
-                "region": "Australia",
-                "site": "Canberra",
-                "assignedCompany": "Petramco",
-                "assigneeBusinessUnit": "United Kingdom Support",
-                "assigneeSupportGroup": "GB Support 1",
-                "assignee": "KMills"
-            }
-            articleData4 = {
-                "knowledgeSet": "HR",
-                "title": randomStr + 'KA4',
-                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+            articleData2 = {
+                "knowledgeSet": `${knowledgeSetTitleStr}`,
+                "title": randomStr + 'KA2',
+                "templateId": `${knowledgeTemplateId}`,
                 "categoryTier1": "Workforce Administration",
                 "region": "EMEA",
                 "site": "Barcelona 1",
@@ -1888,10 +1903,10 @@ describe('Knowledge Article', () => {
                 "assigneeSupportGroup": "GB Support 1",
                 "assignee": "KMills"
             }
-            articleData5 = {
-                "knowledgeSet": "HR",
-                "title": randomStr + 'KA5',
-                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+            articleData3 = {
+                "knowledgeSet": `${knowledgeSetTitleStr}`,
+                "title": randomStr + 'KA3',
+                "templateId": `${knowledgeTemplateId}`,
                 "categoryTier1": "Employee Relations",
                 "region": "Australia",
                 "site": "Canberra",
@@ -1900,27 +1915,16 @@ describe('Knowledge Article', () => {
                 "assigneeSupportGroup": "GB Support 1",
                 "assignee": "KMills"
             }
-            articleData6 = {
-                "knowledgeSet": "HR",
-                "title": randomStr + 'KA6',
-                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-                "categoryTier1": "Workforce Administration",
-                "region": "Australia",
-                "site": "Canberra",
-                "assignedCompany": "Petramco",
-                "assigneeBusinessUnit": "United Kingdom Support",
-                "assigneeSupportGroup": "GB Support 1",
-                "assignee": "KMills"
-            }
-            await apiHelper.apiLogin('elizabeth');
-            await apiHelper.createKnowledgeArticle(articleData2);
-            await apiHelper.createKnowledgeArticle(articleData3);
-            await apiHelper.createKnowledgeArticle(articleData4);
-            await apiHelper.createKnowledgeArticle(articleData5);
-            knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData6);
+            await apiHelper.apiLogin('qtao');
             knowledgeArticleData1 = await apiHelper.createKnowledgeArticle(articleData1);
-            let knowledgeArticleGUID = knowledgeArticleData1.id;
-            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'Draft')).toBeTruthy('Status Not Set');
+            knowledgeArticleData2 = await apiHelper.createKnowledgeArticle(articleData2);
+            knowledgeArticleData3 = await apiHelper.createKnowledgeArticle(articleData3);
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData1.id, 'Draft')).toBeTruthy('Status Not Set');
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData2.id, 'Draft')).toBeTruthy('Status Not Set');
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData3.id, 'Draft')).toBeTruthy('Status Not Set');
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData1.id, 'PublishApproval')).toBeTruthy('Status Not Set');
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData2.id, 'PublishApproval')).toBeTruthy('Status Not Set');
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData3.id, 'PublishApproval')).toBeTruthy('Status Not Set');
         });
         it('[DRDMV-620]: Advanced Search UI verification on the Quick Case view', async () => {
             await navigationPage.signOut();
@@ -1929,7 +1933,7 @@ describe('Knowledge Article', () => {
             await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.clearFilter();
-            await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
+            await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData1.displayId);
             await viewKnowledgeArticlePo.clickOnTab("Resources");
             await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText("Suggested Articles");
@@ -1946,38 +1950,34 @@ describe('Knowledge Article', () => {
             await viewKnowledgeArticlePo.clickOnTab("Resources");
             await resources.clickOnAdvancedSearchOptions();
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
-            await resources.enterAdvancedSearchText(articleData1.title);
-            await resources.selectAdvancedSearchFilterOption('ArticleStatus', 'Draft');
+            await resources.enterAdvancedSearchText(articleData2.title);
+            await resources.selectAdvancedSearchFilterOption('ArticleStatus', 'Published');
             await resources.clickOnAdvancedSearchFiltersButton('Apply');
-            expect(await resources.getAdvancedSearchResultForParticularSection(articleData1.title)).toEqual(articleData1.title);
+            expect(await resources.getAdvancedSearchResultForParticularSection(articleData2.title)).toEqual(articleData2.title);
             await resources.clickOnAdvancedSearchFiltersButton('Clear');
             await resources.enterAdvancedSearchText(articleData3.title);
-            await resources.selectAdvancedSearchFilterOption('Knowledge Set', 'Benefits');
+            await resources.selectAdvancedSearchFilterOption('Knowledge Set', `${knowledgeSetTitleStr}`);
             await resources.clickOnAdvancedSearchFiltersButton('Apply');
             expect(await resources.getAdvancedSearchResultForParticularSection(articleData3.title)).toEqual(articleData3.title);
             await resources.clickOnAdvancedSearchFiltersButton('Clear');
             await resources.enterAdvancedSearchText(articleData2.title);
-            await resources.selectAdvancedSearchFilterOption('Region', 'Central America');
+            await resources.selectAdvancedSearchFilterOption('Region', 'EMEA');
             await resources.clickOnAdvancedSearchFiltersButton('Apply');
             expect(await resources.getAdvancedSearchResultForParticularSection(articleData2.title)).toEqual(articleData2.title);
             await resources.clickOnAdvancedSearchFiltersButton('Clear');
-            await resources.enterAdvancedSearchText(articleData4.title);
-            await resources.selectAdvancedSearchFilterOption('Site', 'Barcelona 1');
+            await resources.enterAdvancedSearchText(articleData3.title);
+            await resources.selectAdvancedSearchFilterOption('Site', 'Canberra');
             await resources.clickOnAdvancedSearchFiltersButton('Apply');
-            expect(await resources.getAdvancedSearchResultForParticularSection(articleData4.title)).toEqual(articleData4.title);
-            await navigationPage.gotoKnoweldgeConsoleFromKM();
-            await utilityGrid.clearFilter();
-            await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData1.displayId);
-            await viewKnowledgeArticlePo.clickOnTab("Resources");
-            await resources.clickOnAdvancedSearchOptions();
-            await resources.clickOnAdvancedSearchSettingsIconToOpen();
-            await resources.enterAdvancedSearchText(articleData5.title);
+            expect(await resources.getAdvancedSearchResultForParticularSection(articleData3.title)).toEqual(articleData3.title);
+            await resources.clickOnAdvancedSearchFiltersButton('Clear');
+            await resources.enterAdvancedSearchText(articleData3.title);
             await resources.selectAdvancedSearchFilterOption('Operational Category Tier 1', 'Employee Relations');
             await resources.clickOnAdvancedSearchFiltersButton('Apply');
-            expect(await resources.getAdvancedSearchResultForParticularSection(articleData5.title)).toEqual(articleData5.title);
+            expect(await resources.getAdvancedSearchResultForParticularSection(articleData3.title)).toEqual(articleData3.title);
             expect(await resources.getKnowledgeArticleInfo()).toContain(dateFormate, 'Date not correct');
-            await resources.clickArrowFirstRecommendedKnowledge();
-            expect(await previewKnowledgePo.getKnowledgeArticleTitle()).toContain(articleData5.title);
+            await resources.clickOnAdvancedSearchSettingsIconToClose();
+            await resources.clickArrowFirstRecommendedKnowledge('Suggested Articles');
+            expect(await previewKnowledgePo.getKnowledgeArticleTitle()).toContain(articleData3.title);
             expect(await previewKnowledgePo.isBackButtonDisplay()).toBeTruthy('back button not present');
             expect(await previewKnowledgePo.isStatusOfKADisplay()).toBeTruthy('Status not displaying');
             expect(await previewKnowledgePo.getKnowledgeArticleID()).toContain('KA-', 'KA ID not correct');
@@ -1995,8 +1995,7 @@ describe('Knowledge Article', () => {
         let currentDate = new Date();
         let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         let dateFormateValue: string = months[currentDate.getMonth()];
-        let dateFormateNew: string = dateFormateValue.substring(0, 4);
-        let dateFormate = dateFormateNew + " " + currentDate.getDate() + ", " + currentDate.getFullYear();
+        let dateFormate = dateFormateValue + " " + currentDate.getDate() + ", " + currentDate.getFullYear();
         beforeAll(async () => {
             articleData1 = {
                 "knowledgeSet": "HR",
@@ -2135,17 +2134,14 @@ describe('Knowledge Article', () => {
             await resources.selectAdvancedSearchFilterOption('Site', 'Barcelona 1');
             await resources.clickOnAdvancedSearchFiltersButton('Apply');
             expect(await resources.getAdvancedSearchResultForParticularSection(articleData4.title)).toEqual(articleData4.title);
-            await navigationPage.gotoCaseConsole();
-            await utilityGrid.searchAndOpenHyperlink(caseDisplayId);
-            await viewCasePage.clickOnTab("Resources");
-            await resources.clickOnAdvancedSearchOptions();
-            await resources.clickOnAdvancedSearchSettingsIconToOpen();
+            await resources.clickOnAdvancedSearchFiltersButton('Clear');
             await resources.enterAdvancedSearchText(articleData5.title);
             await resources.selectAdvancedSearchFilterOption('Operational Category Tier 1', 'Employee Relations');
             await resources.clickOnAdvancedSearchFiltersButton('Apply');
             expect(await resources.getAdvancedSearchResultForParticularSection(articleData5.title)).toEqual(articleData5.title);
             expect(await resources.getKnowledgeArticleInfo()).toContain(dateFormate, 'Date not correct');
-            await resources.clickArrowFirstRecommendedKnowledge();
+            await resources.clickOnAdvancedSearchSettingsIconToClose();
+            await resources.clickArrowFirstRecommendedKnowledge('Knowledge Articles');
             expect(await previewKnowledgePo.getKnowledgeArticleTitle()).toContain(articleData5.title);
             expect(await previewKnowledgePo.isBackButtonDisplay()).toBeTruthy('back button not present');
             expect(await previewKnowledgePo.isStatusOfKADisplay()).toBeTruthy('Status not displaying');
@@ -2218,7 +2214,7 @@ describe('Knowledge Article', () => {
             expect(await resources.getKnowledgeArticleInfo()).toContain('Fritz Schulz', 'Author not correct');
             expect(await resources.getKnowledgeArticleInfo()).toContain('In Progress', 'status not correct');
             expect(await resources.getKnowledgeArticleInfo()).toContain(dateFormate, 'KA ID not correct');
-            await resources.clickArrowFirstRecommendedKnowledge();
+            await resources.clickArrowFirstRecommendedKnowledge('Recommended Knowledge');
             expect(await previewKnowledgePo.getKnowledgeArticleTitle()).toContain(articleData.title);
             expect(await previewKnowledgePo.isBackButtonDisplay()).toBeTruthy('back button not present');
             expect(await previewKnowledgePo.isStatusOfKADisplay()).toBeTruthy('Status not displaying');
@@ -2453,7 +2449,7 @@ describe('Knowledge Article', () => {
             expect(await viewKnowledgeArticlePo.getCategoryTier3Value()).toBe(articleData.categoryTier3);
             expect(await viewKnowledgeArticlePo.getRegionValue()).toBe(articleData.region);
             expect(await viewKnowledgeArticlePo.getSiteValue()).toBe(articleData.site);
-            expect(await viewKnowledgeArticlePo.getArticleReviewerGroup()).toBe('GB Support 1');
+            expect(await viewKnowledgeArticlePo.getKnowledgeArticleAssigneeGroupValue()).toBe('GB Support 1');
         });       
         afterAll(async () => {
             await navigationPage.signOut();

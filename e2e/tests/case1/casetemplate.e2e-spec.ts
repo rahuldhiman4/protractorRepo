@@ -1428,6 +1428,7 @@ describe('Case Template', () => {
             await viewTaskPo.changeTaskStatus('Completed');
             await updateStatusBladePo.setStatusReason('Successful');
             await updateStatusBladePo.clickSaveStatus();
+            await utilityCommon.closePopUpMessage();
             await viewTaskPo.clickOnViewCase();
             expect(await viewCasePo.getCaseStatusValue()).toContain('In Progress');
         });
@@ -1444,11 +1445,9 @@ describe('Case Template', () => {
             await viewTaskPo.changeTaskStatus('Completed');
             await updateStatusBladePo.setStatusReason('Successful');
             await updateStatusBladePo.clickSaveStatus();
+            await utilityCommon.closePopUpMessage();
             await viewTaskPo.clickOnViewCase();
             expect(await viewCasePo.getCaseStatusValue()).toContain('Resolved');
-        });
-        afterAll(async () => {
-            await navigationPage.signOut();
         });
     });
 });

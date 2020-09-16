@@ -237,7 +237,7 @@ describe('Case Cognitive', () => {
         it('[DRDMV-9023,DRDMV-8981]:Cognitive createCaseData3 Creation', async () => {
             await createCaseData3();
         });
-        it('[DRDMV-9023,DRDMV-8981]:Cognitive Config Creation', async () => {
+        it('[DRDMV-9023,DRDMV-8981]:Cognitive Case 1 Creation', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary('Cognitive summary2');
@@ -249,7 +249,7 @@ describe('Case Cognitive', () => {
             await createCasePo.clickSaveCaseButton();
             await casePreviewPo.clickGoToCaseButton();
         });
-        it('[DRDMV-9023,DRDMV-8981]:Cognitive Config Creation', async () => {
+        it('[DRDMV-9023,DRDMV-8981]:Cognitive Case 2 Creation', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary('Cognitive summary2');
@@ -264,16 +264,16 @@ describe('Case Cognitive', () => {
         it('[DRDMV-9023,DRDMV-8981]:Cognitive Config Creation', async () => {
             await createCognitiveConfig();
         });
-        it('[DRDMV-9023,DRDMV-8981]:Cognitive Config Creation', async () => {
+        it('[DRDMV-9023,DRDMV-8981]:Train Template Data Set', async () => {
             await trainTemplateDataSet();
         });
-        it('[DRDMV-9023,DRDMV-8981]:Cognitive Config Creation', async () => {
+        it('[DRDMV-9023,DRDMV-8981]:Train Category Data Set', async () => {
             await trainCategoryDataSet();
         });
-        it('[DRDMV-9023,DRDMV-8981]:Cognitive Config Creation', async () => {
+        it('[DRDMV-9023,DRDMV-8981]:Create Cognitive Data Set Mapping', async () => {
             await createCognitiveDataSetMapping();
         });
-        it('[DRDMV-9023,DRDMV-8981]:Cognitive Config Creation', async () => {
+        it('[DRDMV-9023,DRDMV-8981]:Create case & template after training', async () => {
             let caseTemplatePayload = {
                 "templateName": 'caseTemplateForCognitive7' + randomStr,
                 "templateSummary": 'Employee asked requested for ergonomics assessment after training',
@@ -296,21 +296,21 @@ describe('Case Cognitive', () => {
                 await apiHelper.createCase(caseData);
             }
         });
-        it('[DRDMV-9023,DRDMV-8981]:[Case Workspace] Cases search using filters', async () => {
+        it('[DRDMV-9023,DRDMV-8981]:Verify Mapping is Disabled', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('adam');
             await createCasePo.setSummary(randomStr + 'randomCaseSummary');
             await createCasePo.clickOnAutoCategorize();
             expect(await utilityCommon.isPopUpMessagePresent('Cognitive mapping is not configured.')).toBeTruthy();
         });
-        it('[DRDMV-9023,DRDMV-8981]:[Case Workspace] Cases search using filters', async () => {
+        it('[DRDMV-9023,DRDMV-8981]:Enabled The Dataset mapping', async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteCognitiveDataSetMapping();
             categoryDataSetMapping.enable = true;
             await apiHelper.createCognitiveDataSetMapping("category", categoryDataSetMapping);
             await apiHelper.createCognitiveDataSetMapping("template", templateDataSetMapping);
         });
-        it('[DRDMV-9023,DRDMV-8981]:[Case Workspace] Cases search using filters', async () => {
+        it('[DRDMV-9023,DRDMV-8981]:Verify string is not matching', async () => {
             await navigationPage.gotoCaseConsole();
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('adam');
@@ -318,21 +318,21 @@ describe('Case Cognitive', () => {
             await createCasePo.clickOnAutoCategorize();
             expect(await utilityCommon.isPopUpMessagePresent('No results found for categories.')).toBeTruthy();
         });
-        it('[DRDMV-9023,DRDMV-8981]:[Case Workspace] Cases search using filters', async () => {
+        it('[DRDMV-9023,DRDMV-8981]:Search with string1 and verify the records count', async () => {
             await navigationPage.gotoCaseConsole();
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('adam');
             await quickCasePo.setCaseSummary('Employee asked requested bonus');
             expect(await resourcesTabPo.getCountOfHeading('Recommended Templates')).toBe(1, 'heading Count is not correct');
         });
-        it('[DRDMV-9023,DRDMV-8981]:[Case Workspace] Cases search using filters', async () => {
+        it('[DRDMV-9023,DRDMV-8981]:Search with string2 and verify the records count', async () => {
             await navigationPage.gotoCaseConsole();
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('adam');
             await quickCasePo.setCaseSummary('Employee asked requested change');
             expect(await resourcesTabPo.getCountOfHeading('Recommended Templates')).toBe(1, 'heading Count is not correct');
         });
-        it('[DRDMV-9023,DRDMV-8981]:[Case Workspace] Cases search using filters', async () => {
+        it('[DRDMV-9023,DRDMV-8981]:Update the threshold values', async () => {
             await navigationPage.signOut();
             await loginPage.login('tadmin');
             await navigationPage.gotoSettingsPage();
@@ -344,14 +344,14 @@ describe('Case Cognitive', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
-        it('[DRDMV-9023,DRDMV-8981]:[Case Workspace] Cases search using filters', async () => {
+        it('[DRDMV-9023,DRDMV-8981]:Verify FTS search is working with string 1', async () => {
             await navigationPage.gotoCaseConsole();
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('adam');
             await quickCasePo.setCaseSummary('Employee asked requested bonus');
             expect(await resourcesTabPo.getCountOfHeading('Recommended Templates')).toBeGreaterThan(1, 'heading Count is not correct');
         });
-        it('[DRDMV-9023,DRDMV-8981]:[Case Workspace] Cases search using filters', async () => {
+        it('[DRDMV-9023,DRDMV-8981]:Verify FTS search is working with string 2', async () => {
             await navigationPage.gotoCaseConsole();
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('adam');
@@ -365,26 +365,22 @@ describe('Case Cognitive', () => {
         });
     });
 
-    describe('[DRDMV-8937,DRDMV-8935,DRDMV-8938]:[Create Case] [Predict Template] - Recommended Template and All template selection behavior', async () => {
-        it('[DRDMV-8937,DRDMV-8935,DRDMV-8938]:[Create Case] [Predict Template] - Recommended Template and All template selection behavior', async () => {
+    describe('[DRDMV-8937,DRDMV-8935,DRDMV-8938,DRDMV-8980]:[Create Case] [Predict Template] - Recommended Template and All template selection behavior', async () => {
+        it('[DRDMV-8937,DRDMV-8935,DRDMV-8938,DRDMV-8980]:[Create Case] [Predict Template] - Recommended Template and All template selection behavior', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('adam');
-            await createCasePo.setSummary('cognitive search');
+            await createCasePo.setSummary('Employee employment verification bonus');
             await createCasePo.clickSelectCaseTemplateButton();
-            expect(await selectCasetemplateBladePo.isCaseSummaryPresentInRecommendedTemplates('cognitive search')).toBeTruthy('Template seach is not working');
+            expect(await selectCasetemplateBladePo.isCaseSummaryPresentInRecommendedTemplates('Employee needs an employment verification letter bonus')).toBeTruthy('Template seach is not working');
             expect(await selectCasetemplateBladePo.isApplyButtonEnabled()).toBeFalsy("Apply button is Enabled");
             expect(await selectCasetemplateBladePo.isPaginationPresent()).toBeTruthy("Pagination is present");
             expect(await selectCasetemplateBladePo.getCountOfTemplates()).toBe(5);
             await selectCasetemplateBladePo.selectFirstRecommendedTemplate();
             expect(await selectCasetemplateBladePo.isApplyButtonEnabled()).toBeTruthy("Apply button is Enabled");
             await selectCasetemplateBladePo.selectFirstRecommendedTemplate();
-            await selectCasetemplateBladePo.clickPaginationNext();
-            expect(await selectCasetemplateBladePo.isApplyButtonEnabled()).toBeFalsy("Apply button is Enabled");
-            await selectCasetemplateBladePo.selectFirstRecommendedTemplate();
-            expect(await selectCasetemplateBladePo.isApplyButtonEnabled()).toBeTruthy("Apply button is Enabled");
             await selectCasetemplateBladePo.clickOnFirstRecommendedArrow();
             await browser.sleep(1000);
-            expect(await caseTemplatePreview.getCaseSummary()).toBe('cognitive search');
+            expect(await caseTemplatePreview.getCaseSummary()).toContain('Employee needs an employment verification letter bonus');
             expect(await caseTemplatePreview.getCaseTemplateName()).toContain('caseTemplateForCognitive');
             expect(await caseTemplatePreview.getCaseCompanyValue()).toBe('Petramco');
             expect(await caseTemplatePreview.getCasePriority()).toBe('Critical');
@@ -403,9 +399,13 @@ describe('Case Cognitive', () => {
             expect(await caseTemplatePreview.isSupportGroupTitleDisplayed('Support Group')).toBeTruthy('Support Group is not getting displayed');
             expect(await caseTemplatePreview.isAssigneeTitleDisplayed()).toBeTruthy('Assignee is not getting displayed');
             await caseTemplatePreview.clickOnBackButton();
+            await selectCasetemplateBladePo.clickPaginationNext();
+            expect(await selectCasetemplateBladePo.isApplyButtonEnabled()).toBeFalsy("Apply button is Enabled");
+            await selectCasetemplateBladePo.selectFirstRecommendedTemplate();
+            expect(await selectCasetemplateBladePo.isApplyButtonEnabled()).toBeTruthy("Apply button is Enabled");
             await selectCasetemplateBladePo.clickRecommendedCancelBtn();
         });
-        it('[DRDMV-8937,DRDMV-8935,DRDMV-8938]:[Create Case] [Predict Template] - Recommended Template and All template selection behavior', async () => {
+        it('[DRDMV-8937,DRDMV-8935,DRDMV-8938,DRDMV-8980]:[Create Case] [Predict Template] - Recommended Template and All template selection behavior', async () => {
             await createCasePo.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectFirstRecommendedTemplate();
             await selectCasetemplateBladePo.clickRecommendedApplyBtn();
@@ -413,30 +413,29 @@ describe('Case Cognitive', () => {
             await createCasePo.clickSaveCaseButton();
             await casePreviewPo.clickGoToCaseButton();
             expect(await viewCasePo.getPriorityValue()).toBe('Critical');
-            expect(await viewCasePo.getCategoryTier1Value()).toBe(categName1);
+            expect(await viewCasePo.getCategoryTier1Value()).toBe('Accounts Payable');
             expect(await viewCasePo.getAssignedCompanyText()).toBe('Petramco');
-            expect(await viewCasePo.getCaseSummary()).toBe('cognitive search');
+            expect(await viewCasePo.getCaseSummary()).toBe('Employee employment verification bonus');
+        });
+        it('[DRDMV-8937,DRDMV-8935,DRDMV-8938,DRDMV-8980]:[Cognitive] - Auto Categorization button validation on Case Create screen', async () => {
+            await navigationPage.gotoCreateCase();
+            expect(await createCasePo.isAutoCategorizeButtonEnabled()).toBeFalsy("Button is Enabled");
+            await createCasePo.selectRequester('adam');
+            expect(await createCasePo.isAutoCategorizeButtonEnabled()).toBeFalsy("Button is Enabled");
+            await createCasePo.setSummary('Employee asked requested bonus');
+            expect(await createCasePo.isAutoCategorizeButtonEnabled()).toBeTruthy("Button is Disable");
+            await createCasePo.clickSelectCaseTemplateButton();
+            await selectCasetemplateBladePo.selectFirstRecommendedTemplate();
+            await selectCasetemplateBladePo.clickRecommendedApplyBtn();
+            expect(await createCasePo.isAutoCategorizeButtonEnabled()).toBeFalsy("Button is Enabled");
+            await createCasePo.clickClearTemplateButton();
+            expect(await createCasePo.isAutoCategorizeButtonEnabled()).toBeTruthy("Button is Disable");
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
-    });
-
-    it('[DRDMV-8980]:[Cognitive] - Auto Categorization button validation on Case Create screen', async () => {
-        await navigationPage.gotoCreateCase();
-        expect(await createCasePo.isAutoCategorizeButtonEnabled()).toBeFalsy("Button is Enabled");
-        await createCasePo.selectRequester('adam');
-        expect(await createCasePo.isAutoCategorizeButtonEnabled()).toBeFalsy("Button is Enabled");
-        await createCasePo.setSummary('cognitive search');
-        expect(await createCasePo.isAutoCategorizeButtonEnabled()).toBeTruthy("Button is Disable");
-        await createCasePo.clickSelectCaseTemplateButton();
-        await selectCasetemplateBladePo.selectFirstRecommendedTemplate();
-        await selectCasetemplateBladePo.clickRecommendedApplyBtn();
-        expect(await createCasePo.isAutoCategorizeButtonEnabled()).toBeFalsy("Button is Enabled");
-        await createCasePo.clickClearTemplateButton();
-        expect(await createCasePo.isAutoCategorizeButtonEnabled()).toBeTruthy("Button is Disable");
     });
 
     //Created Bug - DRDMV-23210
