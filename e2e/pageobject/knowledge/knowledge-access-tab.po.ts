@@ -12,7 +12,7 @@ class KnowledgeAccessTab {
         assignmentDropDownList: '.flex-column bwf-select-with-pagination',
         selectOptions: '.dropdown-item span',
         addSupportGroupAccess: 'button.add-btn-center',
-        isWriteAccessCheckbox: 'input.ac-assign-support-group-write-group + span',
+        isWriteAccessCheckbox: 'input.checkbox__input',
         agentAccess: '[rx-view-component-id="a99704e0-5441-4ddc-8357-bd4fc7d078d4"] .bwf-access-manager .access-group .btn-title',
         agents: '.dropdown-item .popup-template',
         searchInput: '[rx-view-component-id="a99704e0-5441-4ddc-8357-bd4fc7d078d4"] .bwf-flexi-type-ahead input.rx-form-control',
@@ -82,8 +82,8 @@ class KnowledgeAccessTab {
     }
 
     async selectSupportGroupWriteAccess(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.isWriteAccessCheckbox)), 3000);
-        await $(this.selectors.isWriteAccessCheckbox).click();
+        //await browser.wait(this.EC.elementToBeClickable($(this.selectors.isWriteAccessCheckbox)), 3000);
+        await $$(this.selectors.isWriteAccessCheckbox).last().click();
     }
 
     async clickOnAccessButton(agentName: string): Promise<void> {

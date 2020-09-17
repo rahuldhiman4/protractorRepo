@@ -310,13 +310,13 @@ class EditKnowledgePage {
         await $(this.selectors.keywordValue).sendKeys(protractor.Key.ENTER);
     }
 
-    async isMinorEditSaveButtonEnabled(): Promise<boolean> {
+    async isMinorEditSaveButtonDisabled(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.saveButtonONKA)));
         return await $(this.selectors.saveButtonONKA).getAttribute("disabled") == 'true';
 
     }
 
-    async isMajorEditSaveButtonEnabled(): Promise<boolean> {
+    async isMajorEditSaveButtonDisabled(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.categoryTier1Drpbox)));
         return await $(this.selectors.articleMajorEditSaveButton).getAttribute("disabled") == 'true';
 
