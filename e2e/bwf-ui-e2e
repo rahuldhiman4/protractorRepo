@@ -8,7 +8,7 @@ node("node2"){
     	echo "APP_IMAGE_TAG: ${APP_IMAGE_TAG}"
     	sh "./create-inventory.sh ${STACK}"
         sh "ansible-playbook -i ${STACK} bwfondemand.yml -e APP_IMAGE_TAG=${APP_IMAGE_TAG} -e reboot=true"
-    	sleep(24youyouyou0)
+    	sleep(240)
     }
 }
 
