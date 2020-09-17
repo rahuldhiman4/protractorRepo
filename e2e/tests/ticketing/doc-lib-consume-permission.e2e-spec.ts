@@ -510,6 +510,19 @@ describe('Document Library Consume Permission', () => {
             await attachDocumentBladePo.searchRecord('%');
             expect(await attachDocumentBladePo.isPaginationPresent()).toBeTruthy('Failure: Pagination is missing');
             await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
+
+            expect(await resourcesTabPo.isValuePresentInDropdown('Operational Category 1','DemoCateg1')).toBeTruthy('Failure: Operational Category 1 is missing'); 
+            await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
+            await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
+            expect(await resourcesTabPo.isValuePresentInDropdown('Operational Category 1','DemoCateg2')).toBeFalsy('Failure: Operational Category 2 is displayed'); 
+            await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
+            await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
+            expect(await resourcesTabPo.isValuePresentInDropdown('Operational Category 1','DemoCateg3')).toBeFalsy('Failure: Operational Category 3 is displayed'); 
+            await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
+            await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
+            expect(await resourcesTabPo.isValuePresentInDropdown('Operational Category 1','DemoCateg4')).toBeFalsy('Failure: Operational Category 4 is displayed'); 
+            await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
+            await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
             // Verify Category Tier 1/2/3/4  on UI
             expect(await resourcesTabPo.isAdvancedSearchFilterDropDownLabelDisplayed('Operational Category 1')).toBeTruthy('Failure: Operational Category 1 is missing'); 
             expect(await resourcesTabPo.isAdvancedSearchFilterDropDownLabelDisplayed('Operational Category 2')).toBeFalsy('Failure: Operational Category 2 is missing'); 
@@ -534,6 +547,7 @@ describe('Document Library Consume Permission', () => {
             await activityTabPo.clickAndDownloadAttachmentFile('bwfPdf.pdf');
             expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is not downloaded.');
         });
+        
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
         });
