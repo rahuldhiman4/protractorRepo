@@ -784,10 +784,10 @@ describe('Create Task Template', () => {
             tempIdCanceled = await apiHelper.createAdhocTask(newCase1.id, adhocTaskData);
 
             await apiHelper.updateCaseStatus(newCase1.id, 'InProgress');
-            apiHelper.updateTaskStatus(tempIdMedium.id, 'Pending')
-            apiHelper.updateTaskStatus(tempIdHigh.id, 'InProgress')
-            apiHelper.updateTaskStatus(tempIdCanceled.id, 'Canceled')
-            apiHelper.updateTaskStatus(tempIdClosed.id, 'Closed')
+            await apiHelper.updateTaskStatus(tempIdMedium.id, 'Pending');
+            await apiHelper.updateTaskStatus(tempIdHigh.id, 'InProgress');
+            await apiHelper.updateTaskStatus(tempIdCanceled.id, 'Canceled');
+            await apiHelper.updateTaskStatus(tempIdClosed.id, 'Closed');
             await apiHelper.updateTaskStatus(tempIdCompleted.id, 'Completed', 'Successful');
         });
         it('[DRDMV-3830]: Create case with task', async () => {
@@ -803,9 +803,7 @@ describe('Create Task Template', () => {
             let diffTime = time.split(" ");
             let newTime = diffTime[0].split(":");
             let exactTime = newTime[0] + ":" + newTime[1] + " " + diffTime[1];
-            console.log("exactTime" + exactTime)
             let modifiedDateFormate = modifiedMonthValue + " " + modifiedDate.getDate() + ", " + modifiedDate.getFullYear() + " " + exactTime;
-            console.log("exactDate" + dateFormate + "-" + modifiedDateFormate);
             exactDate = dateFormate + "-" + modifiedDateFormate;
         });
         it('[DRDMV-3830]: Verify filter with Case ID values', async () => {
