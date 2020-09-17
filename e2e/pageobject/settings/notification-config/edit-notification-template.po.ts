@@ -68,6 +68,7 @@ class EditNotificationTemplate {
 
     async clickOnEditButtonOfEmailTab(): Promise<void> {
         await $(this.selectors.editButtonOnEmailTab).click();
+        await browser.sleep(2000); // After click, edit email tab load takes time
     }
 
     async openAlertEditMessageText(): Promise<void> {

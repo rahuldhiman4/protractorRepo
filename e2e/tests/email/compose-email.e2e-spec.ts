@@ -639,9 +639,6 @@ describe("Compose Email", () => {
         let randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase;
         beforeAll(async () => {
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteAllEmailConfiguration();
-            await apiHelper.createEmailConfiguration();
             let caseData = {
                 "Requester": "qkatawazi",
                 "Summary": "Test case for DRDMV-20368 RandVal" + randomString,
@@ -730,6 +727,9 @@ describe("Compose Email", () => {
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteAllEmailConfiguration();
+            await apiHelper.createEmailConfiguration();
             let subject = `Fritz Schulz changed the status of ${newCase.displayId} to In Progress`;
             console.log("Subject of the email: ", subject);
             await browser.sleep(5000); // hardwait to appear email message in "AR System Email Messages"
