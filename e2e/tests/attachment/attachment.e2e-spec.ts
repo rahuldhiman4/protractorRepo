@@ -553,9 +553,15 @@ describe("Attachment", () => {
         beforeAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
+
             // Create Label
             await apiHelper.apiLogin('qkatawazi');
-            let menuItemData = cloneDeep(SAMPLE_MENU_ITEM);
+            let menuItemData = {
+                "menuItemName": "TestMenuItemName",
+                "menuItemStatus": "Active",
+                "menuType": "Label",
+                "uiVisible": "1"
+            }
             menuItemData.menuItemName = label;
             await apiHelper.createNewMenuItem(menuItemData);
             
