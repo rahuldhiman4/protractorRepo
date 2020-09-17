@@ -21,6 +21,8 @@ import createCasePo from '../../pageobject/case/create-case.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import casePreviewPo from '../../pageobject/case/case-preview.po';
 import templateAccessTabPo from '../../pageobject/settings/case-management/template-access-tab.po';
+import { SOURCE_MENU_ITEM, SOURCE_INACTIVE, SOURCE_DEPRECATED, SOURCE_ACTIVE_NOT_ON_UI } from '../../data/ui/ticketing/menu.item.ui';
+import { cloneDeep } from 'lodash';
 
 describe("Quick Case", () => {
     const requester = "The requester of the case";
@@ -732,25 +734,32 @@ describe("Quick Case", () => {
     describe('[DRDMV-741]: [Quick Case] UI validation including Source field in Quick Case', async () => {
         let activeSourceUI, inActiveSource741, sourceDeprecated741, activeSourceNotUI;
         beforeAll(async () => {
-            let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
             let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            activeSourceUI = await menuItemDataFile['sourceMenuItem'].menuItemName + randomStr;
-            menuItemDataFile['sourceMenuItem'].menuItemName = activeSourceUI;
             await apiHelper.apiLogin('qkatawazi');
+
             //active yes on UI
-            await apiHelper.createNewMenuItem(menuItemDataFile['sourceMenuItem']);
-            inActiveSource741 = await menuItemDataFile['sourceInActive'].menuItemName + randomStr;
-            menuItemDataFile['sourceInActive'].menuItemName = inActiveSource741;
+            let sourceMenuItemData = cloneDeep(SOURCE_MENU_ITEM);
+            activeSourceUI = sourceMenuItemData.menuItemName + randomStr;
+            sourceMenuItemData.menuItemName = activeSourceUI;
+            await apiHelper.createNewMenuItem(sourceMenuItemData);
+
             //Inactive 
-            await apiHelper.createNewMenuItem(menuItemDataFile['sourceInActive']);
-            sourceDeprecated741 = await menuItemDataFile['sourceDeprecated'].menuItemName + randomStr;
-            menuItemDataFile['sourceDeprecated'].menuItemName = sourceDeprecated741;
+            let sourceInActiveData = cloneDeep(SOURCE_INACTIVE);
+            inActiveSource741 = sourceInActiveData.menuItemName + randomStr;
+            sourceInActiveData.menuItemName = inActiveSource741;
+            await apiHelper.createNewMenuItem(sourceInActiveData);
+
             //deprecated
-            await apiHelper.createNewMenuItem(menuItemDataFile['sourceDeprecated']);
-            activeSourceNotUI = await menuItemDataFile['sourceActiveNotOnUI'].menuItemName + randomStr;
-            menuItemDataFile['sourceActiveNotOnUI'].menuItemName = activeSourceNotUI;
+            let sourceDeprecatedData = cloneDeep(SOURCE_DEPRECATED);
+            sourceDeprecated741 = sourceDeprecatedData.menuItemName + randomStr;
+            sourceDeprecatedData.menuItemName = sourceDeprecated741;
+            await apiHelper.createNewMenuItem(sourceDeprecatedData);
+
             //Not on UI
-            await apiHelper.createNewMenuItem(menuItemDataFile['sourceActiveNotOnUI']);
+            let sourceActiveNotOnUIData = cloneDeep(SOURCE_ACTIVE_NOT_ON_UI);
+            activeSourceNotUI = sourceActiveNotOnUIData.menuItemName + randomStr;
+            sourceActiveNotOnUIData.menuItemName = activeSourceNotUI;
+            await apiHelper.createNewMenuItem(sourceActiveNotOnUIData);
         });
         it('[DRDMV-741]: Creating the case with source values', async () => {
             await navigationPo.gotoQuickCase();

@@ -44,6 +44,8 @@ import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-ar
 import serviceTargetConfig from '../../pageobject/settings/slm/service-target-blade.po';
 import slmExpressionBuilder from '../../pageobject/settings/slm/slm-expressionbuilder.pop.po';
 import approvalConfigurationPage from "../../pageobject/settings/approval/approval-configuration.po";
+import { SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
+import { cloneDeep } from 'lodash';
 
 describe("Attachment", () => {
     beforeAll(async () => {
@@ -553,9 +555,9 @@ describe("Attachment", () => {
             await loginPage.login('qkatawazi');
             // Create Label
             await apiHelper.apiLogin('qkatawazi');
-            let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
-            menuItemDataFile['sampleMenuItem'].menuItemName = label;
-            await apiHelper.createNewMenuItem(menuItemDataFile['sampleMenuItem']);
+            let menuItemData = cloneDeep(SAMPLE_MENU_ITEM);
+            menuItemData.menuItemName = label;
+            await apiHelper.createNewMenuItem(menuItemData);
             
             await apiHelper.apiLogin('tadmin');
             await apiHelper.createOperationalCategory(categName1);

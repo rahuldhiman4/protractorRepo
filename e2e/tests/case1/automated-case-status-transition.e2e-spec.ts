@@ -11,6 +11,8 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
+import { SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
+import { cloneDeep } from 'lodash';
 
 describe('Automated Case Status Transition', () => {
     beforeAll(async () => {
@@ -239,14 +241,14 @@ describe('Automated Case Status Transition', () => {
 
         let randomStr: string = [...Array(7)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let days: any = Math.floor(Math.random() * 180) + 1;
-        let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
         await apiHelper.apiLogin('tadmin');
         await apiHelper.associateCategoryToCategory('Bonus', 'Failure');
 
-        let label = await menuItemDataFile['sampleMenuItem'].menuItemName + randomStr;
-        menuItemDataFile['sampleMenuItem'].menuItemName = label;
+        let menuItemData = cloneDeep(SAMPLE_MENU_ITEM);
+        let label = menuItemData.menuItemName + randomStr;
+        menuItemData.menuItemName = label;
         await apiHelper.apiLogin('qkatawazi');
-        await apiHelper.createNewMenuItem(menuItemDataFile['sampleMenuItem']);
+        await apiHelper.createNewMenuItem(menuItemData);
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', 'Configure Automated Status Transitions - Business Workflows');
         await automatedStatusTransitionConsole.clickAddAutomatedStatusTransitionBtn();

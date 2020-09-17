@@ -13,18 +13,21 @@ import utilityGrid from '../../utils/utility.grid';
 import viewCasePo from '../../pageobject/case/view-case.po';
 import composeMailPo from '../../pageobject/email/compose-mail.po';
 import selectEmailTemplateBladePo from '../../pageobject/email/select-email-template-blade.po';
+import { SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
+import { cloneDeep } from 'lodash';
 
 describe('Email Template', () => {
     const emailTemplateData = require('../../data/ui/email/email.template.api.json');
-    let label, menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
+    let label = undefined;
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
         await apiHelper.apiLogin('qkatawazi');
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        label = await menuItemDataFile['sampleMenuItem'].menuItemName + randomStr;
-        menuItemDataFile['sampleMenuItem'].menuItemName = label;
-        await apiHelper.createNewMenuItem(menuItemDataFile['sampleMenuItem']);
+        let menuItemData = cloneDeep(SAMPLE_MENU_ITEM);
+        label = menuItemData.menuItemName + randomStr;
+        menuItemData.menuItemName = label;
+        await apiHelper.createNewMenuItem(menuItemData);
     });
 
     afterAll(async () => {

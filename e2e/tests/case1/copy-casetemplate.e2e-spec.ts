@@ -21,6 +21,8 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
+import { SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
+import { cloneDeep } from 'lodash';
 
 let caseTemplateAllFields = ALL_FIELD;
 let caseTemplateRequiredFields = MANDATORY_FIELD;
@@ -967,12 +969,12 @@ describe('Copy Case Template', () => {
         let caseTemplateData, taskTemplateData, label: string = undefined;
         beforeAll(async () => {
             await createCategories();
-            let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
             await apiHelper.apiLogin('tadmin');
-            label = await menuItemDataFile['sampleMenuItem'].menuItemName + randomStr;
-            menuItemDataFile['sampleMenuItem'].menuItemName = label;
+            let menuItemData = cloneDeep(SAMPLE_MENU_ITEM);
+            label = await menuItemData.menuItemName + randomStr;
+            menuItemData.menuItemName = label;
             await apiHelper.apiLogin('qkatawazi');
-            await apiHelper.createNewMenuItem(menuItemDataFile['sampleMenuItem']);
+            await apiHelper.createNewMenuItem(menuItemData);
             caseTemplateData = {
                 "templateName": 'caseTemplateName' + randomStr,
                 "templateSummary": 'caseTemplateSummary' + randomStr,
