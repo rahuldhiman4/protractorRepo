@@ -9,6 +9,8 @@ import navigationPage from "../../pageobject/common/navigation.po";
 import resources from '../../pageobject/common/resources-tab.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
+import { SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
+import { cloneDeep } from 'lodash';
 
 let caseTemplateName = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('') + " Case Preview Sample";
 
@@ -139,12 +141,12 @@ describe("Case Preview", () => {
     it('[DRDMV-13680]: UI Validation for Fields on Case Preview Page', async () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let description = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
+        let menuItemData = cloneDeep(SAMPLE_MENU_ITEM);
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let label = await menuItemDataFile['sampleMenuItem'].menuItemName + randomStr;
-        menuItemDataFile['sampleMenuItem'].menuItemName = label;
+        let label = await menuItemData.menuItemName + randomStr;
+        menuItemData.menuItemName = label;
         await apiHelper.apiLogin('qkatawazi');
-        await apiHelper.createNewMenuItem(menuItemDataFile['sampleMenuItem']);
+        await apiHelper.createNewMenuItem(menuItemData);
 
         await navigationPage.gotoCreateCase();
         await createCasePo.selectRequester('Elizabeth Peters');
