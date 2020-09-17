@@ -1,3 +1,4 @@
+import utilityCommon from '../../utils/utility.common';
 import { $, $$, browser, by, element, ElementFinder, protractor, ProtractorExpectedConditions } from 'protractor';
 
 export class Resources {
@@ -77,9 +78,8 @@ export class Resources {
                 if (result) {
                     let dropDownLabelText: string = await dropDown[i].$('.form-control-label').getText();
                     if (dropDownLabelText === dropDownLabel) {
-                        await dropDown[i].$('button').click();
-                        await dropDown[i].$('input').sendKeys(dropDownValue);
-                        return element(by.cssContainingText('[role="option"] span', dropDownValue)).isPresent();
+                        let elementDropdown:ElementFinder = await dropDown[i].$('button');
+                        return await utilityCommon.isValuePresentInDropDown(elementDropdown, dropDownValue);
                     }
                 }
             });

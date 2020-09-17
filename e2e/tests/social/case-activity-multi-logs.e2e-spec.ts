@@ -803,7 +803,7 @@ describe('Case Activity Multi Logs', () => {
 
         });
 
-        it('[DRDMV-10822]:Create Self Approval Flow Without Process', async () => {
+        it('[DRDMV-16729]:Create Self Approval Flow Without Process', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Approvals--Approval Configuration', 'Approval Configuration - Administration - Business Workflows');
             await approvalConfigurationPage.searchAndOpenApprovalConfiguration(caseApprovalRecordDefinition);
@@ -828,11 +828,10 @@ describe('Case Activity Multi Logs', () => {
             await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
         });
 
-        it('[DRDMV-10822]:Create case and verify self approval without process', async () => {
+        it('[DRDMV-16729]:Create case and verify self approval without process', async () => {
             await apiHelper.apiLogin('qfeng');
             caseResponseDetails = await apiHelper.createCase(caseData);
             caseId = caseResponseDetails.displayId;
-            console.log('caseId>>>>>>>>>>>>>>>>>>',caseId);
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await navigationPage.gotoCaseConsole();
