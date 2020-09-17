@@ -127,9 +127,10 @@ describe('Create Process in Flowset', () => {
     });
 
     //ankagraw
-    it('[DRDMV-7607]: [Permissions] Process Library access', async () => {
-        try {
-            let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+    describe('[DRDMV-7607]: [Permissions] Process Library access', () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let alias = undefined;
+        beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             let social_Service = SOCIAL_SERVICE_PROCESS;
             let social_Service_Process = social_Service.name + randomStr;
@@ -145,7 +146,9 @@ describe('Create Process in Flowset', () => {
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createProcessLibConfig(processLibConfData1);
+        });
 
+        it('[DRDMV-7607]: [Permissions] Process Library access', async () => {
             //login with same company Manager
             await navigationPage.signOut();
             await loginPage.login('qdu');
@@ -161,12 +164,14 @@ describe('Create Process in Flowset', () => {
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
             await consoleFlowsetProcessLibrary.searchAndSelectFlowset(`Process${randomStr}`);
             await editFlowsetProcessLibrary.setDescription('UpdataDescription' + randomStr);
-            let alias = 'UpdateAlias' + randomStr;
+            alias = 'UpdateAlias' + randomStr;
             await editFlowsetProcessLibrary.setAliasName(alias);
             await editFlowsetProcessLibrary.clickOnSaveButton();
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
             await expect(consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid(alias)).toBeTruthy(alias + "Name is not present");
+        });
 
+        it('[DRDMV-7607]: [Permissions] Process Library access', async () => {
             //login with different company CBA
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
@@ -189,13 +194,13 @@ describe('Create Process in Flowset', () => {
             await apiHelper.apiLogin('tadmin');
             let processName = 'com.bmc.dsm.social-lib:Social - Sample Activity Update By User';
             await apiHelper.deleteFlowsetProcessLibConfig(processName);
-        } catch (e) {
-            throw e;
-        } finally {
+        });
+
+        afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
-        }
-    }, 350 * 1000);
+        });
+    });
 
     it('[DRDMV-1298]: [Flowsets] Flowsets Console verification', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -738,7 +743,7 @@ describe('Create Process in Flowset', () => {
             await activityTabPage.clickOnPostButton();
             expect(await apiCoreUtil.getProcessRunCount('com.bmc.dsm.case-lib', `Email Origin DRDMV-10024 ${randomStr}`)).toEqual(1);
             expect(await apiCoreUtil.getProcessRunCount('com.bmc.dsm.social-lib', `Activity Feed Email DRDMV-10024 ${randomStr}`)).toEqual(1);
-        });     
+        });
     });
 
 });

@@ -26,8 +26,8 @@ class NavigationPage {
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
             await element(by.linkText('Create')).click();
-            let createCase: boolean = await element(by.buttonText('Case ')).isDisplayed();
-            await $$(this.selectors.closeHambergerMenu).get(1).click();
+            let createCase: boolean = await element(by.cssContainingText('button.a-hamburger__menu-link',/^Case $/)).isPresent();
+            await $$(this.selectors.closeHambergerMenu).get(2).click();
             return createCase;
         } else {
             await element(by.cssContainingText(this.selectors.menu, /^Create$/)).click();
@@ -38,7 +38,7 @@ class NavigationPage {
     async isQuickCaseDisplayed(): Promise<boolean> {
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
-            let quickCase: boolean = await element(by.linkText('Quick Case ')).isDisplayed();
+            let quickCase: boolean = await element(by.cssContainingText('button.a-hamburger__menu-link', 'Quick Case ')).isPresent();
             await $$(this.selectors.closeHambergerMenu).get(0).click();
             return quickCase;
         } else return await element(by.cssContainingText('button.a-menu__link', 'Quick Case ')).isPresent();
@@ -48,8 +48,8 @@ class NavigationPage {
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
             await element(by.linkText('Create')).click();
-            let createKnowledge: boolean = await element(by.buttonText('Knowledge ')).isDisplayed();
-            await $$(this.selectors.closeHambergerMenu).get(1).click();
+            let createKnowledge: boolean = await element(by.cssContainingText('button.a-hamburger__menu-link',/^Knowledge $/)).isPresent();
+            await $$(this.selectors.closeHambergerMenu).get(2).click();
             return createKnowledge;
         } else return await element(by.cssContainingText(this.selectors.menu, /^Knowledge$/)).isDisplayed();
     }
@@ -58,7 +58,7 @@ class NavigationPage {
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
             await element(by.linkText('Workspace')).click();
-            let caseConsole: boolean = await element(by.buttonText('Case ')).isDisplayed();
+            let caseConsole: boolean = await element(by.cssContainingText('button.a-hamburger__menu-link',/^Case $/)).isDisplayed();
             await $$(this.selectors.closeHambergerMenu).get(1).click();
             return caseConsole;
         } else {
@@ -71,7 +71,7 @@ class NavigationPage {
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
             await element(by.linkText('Workspace')).click();
-            let knowledgeConsole: boolean = await element(by.buttonText('Knowledge ')).isDisplayed();
+            let knowledgeConsole: boolean = await element(by.cssContainingText('button.a-hamburger__menu-link',/^Knowledge $/)).isDisplayed();
             await $$(this.selectors.closeHambergerMenu).get(1).click();
             return knowledgeConsole;
         } else return await element(by.cssContainingText(this.selectors.menu, /^Knowledge$/)).isDisplayed();
@@ -81,7 +81,7 @@ class NavigationPage {
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
             await element(by.linkText('Workspace')).click();
-            let taskConsole: boolean = await element(by.buttonText('Task ')).isDisplayed();
+            let taskConsole: boolean = await element(by.cssContainingText('button.a-hamburger__menu-link',/^Task $/)).isDisplayed();
             await $$(this.selectors.closeHambergerMenu).get(1).click();
             return taskConsole;
         } else return await element(by.cssContainingText(this.selectors.menu, /^Task$/)).isDisplayed();
