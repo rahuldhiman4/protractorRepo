@@ -966,10 +966,10 @@ describe('Case Template', () => {
     });
 
     describe('[DRDMV-1245]: [Case Template] Template status lifecycle', async () => {
-        let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let templateDataDraft,randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateName = randomStr + 'Draft';
         beforeAll(async () => {
-            let templateDataDraft = {
+            templateDataDraft = {
                 "templateName": caseTemplateName,
                 "templateSummary": caseTemplateName,
                 "templateStatus": "Active",
@@ -994,11 +994,10 @@ describe('Case Template', () => {
             await loginPage.login('fritz');
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('adam');
-            await quickCasePo.selectCaseTemplate(caseTemplateName);
-            await quickCasePo.setCaseSummary(caseTemplateName);
+            await quickCasePo.selectCaseTemplate(templateDataDraft.templateName);
             await quickCasePo.createCaseButton();
             await quickCasePo.gotoCaseButton();
-            expect(await viewCasePo.getCaseTemplateText()).toBe(caseTemplateName);
+            expect(await viewCasePo.getCaseTemplateText()).toBe(templateDataDraft.templateName);
         });
         it('[DRDMV-1245]: [Case Template] Template status lifecycle', async () => {
             await navigationPage.gotoSettingsPage();
