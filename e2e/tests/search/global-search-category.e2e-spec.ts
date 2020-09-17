@@ -665,13 +665,13 @@ describe('Global Search Category Validation', () => {
             await apiHelper.apiLogin('qtao');
             // Create KA 
             for (let a = 0; a < 5; a++) {
-                browser.sleep(1000); //Need this sleep create record with correct count and void skip the record
+                browser.sleep(1000); //Need this sleep create record with correct count and avoid skip the record from loop
                 kaDisplayId1[a] = await createKnowledgeArticleWithPublish(summary1);
             }
 
             // Create KA with Keyword
             for (let b = 0; b < 5; b++) {
-                browser.sleep(1000); //Need this sleep create record with correct count and void skip the record
+                browser.sleep(1000); //Need this sleep create record with correct count and avoid skip the record from loop
                 kaDisplayId2[b] = await createKnowledgeArticleWithPublish(summary2, keywordStr);
             }
 
