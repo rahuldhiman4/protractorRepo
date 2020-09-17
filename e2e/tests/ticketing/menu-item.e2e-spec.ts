@@ -41,6 +41,8 @@ import editAssignmentsConfigPo from '../../pageobject/settings/case-management/e
 import serviceTargetViewconsolePo from '../../pageobject/settings/slm/service-target-viewconsole.po';
 import editServiceTargetConfigPo from '../../pageobject/settings/slm/edit-service-target-config.po';
 import editReadAccessConfigPo from '../../pageobject/settings/case-management/edit-read-access-config.po';
+import { RESOLUTION_CODE_ACTIVE_ON_UI, SOURCE_MENU_ITEM, SOURCE_ACTIVE_UI_FALSE, SOURCE_INACTIVE, SOURCE_DEPRECATED, SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
+import { cloneDeep } from 'lodash';
 
 describe('Menu Item', () => {
     beforeAll(async () => {
@@ -377,10 +379,10 @@ describe('Menu Item', () => {
         beforeAll(async () => {
             // Create Resoution code
             await apiHelper.apiLogin('qkatawazi');
-            let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
-            resolutionCode = await menuItemDataFile['resolutionCodeActiveOnUI'].menuItemName + randomStr;
-            menuItemDataFile['resolutionCodeActiveOnUI'].menuItemName = resolutionCode;
-            await apiHelper.createNewMenuItem(menuItemDataFile['resolutionCodeActiveOnUI']);
+            let resolutionCodeActiveOnUIData = cloneDeep(RESOLUTION_CODE_ACTIVE_ON_UI)
+            resolutionCode = resolutionCodeActiveOnUIData.menuItemName + randomStr;
+            resolutionCodeActiveOnUIData.menuItemName = resolutionCode;
+            await apiHelper.createNewMenuItem(resolutionCodeActiveOnUIData);
 
             // Create case template 1 
             let caseTemplateData = {
@@ -528,44 +530,50 @@ describe('Menu Item', () => {
             let labelInactive = 'labelInactiveDRDMV16276' + randomStr;
             let labelDeprecated = 'labelDeprecatedDRDMV16276' + randomStr;
 
-
             beforeAll(async () => {
                 await apiHelper.apiLogin('qkatawazi');
-                let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
                 // Create SourceActive UI True
-                menuItemDataFile['sourceMenuItem'].menuItemName = sourcesActiveUiTrue;
-                await apiHelper.createNewMenuItem(menuItemDataFile['sourceMenuItem']);
+                let sourceMenuItemData = cloneDeep(SOURCE_MENU_ITEM);
+                sourceMenuItemData.menuItemName = sourcesActiveUiTrue;
+                await apiHelper.createNewMenuItem(sourceMenuItemData);
 
                 // Create SourceActive UI False
-                menuItemDataFile['sourceActiveUIFalse'].menuItemName = sourcesActiveUiFalse;
-                await apiHelper.createNewMenuItem(menuItemDataFile['sourceActiveUIFalse']);
+                let sourceActiveUIFalseData = cloneDeep(SOURCE_ACTIVE_UI_FALSE);
+                sourceActiveUIFalseData.menuItemName = sourcesActiveUiFalse;
+                await apiHelper.createNewMenuItem(sourceActiveUIFalseData);
 
                 // Create sourcesInactiveUiTrue UI True
-                menuItemDataFile['sourceInActive'].menuItemName = sourcesInactiveUiTrue;
-                await apiHelper.createNewMenuItem(menuItemDataFile['sourceInActive']);
+                let sourceInActiveData = cloneDeep(SOURCE_INACTIVE);
+                sourceInActiveData.menuItemName = sourcesInactiveUiTrue;
+                await apiHelper.createNewMenuItem(sourceInActiveData);
 
                 // Create sources Deprecated Ui True
-                menuItemDataFile['sourceDeprecated'].menuItemName = sourcesDeprecatedUiTrue;
-                menuItemDataFile['sourceDeprecated'].uiVisible = '1';
-                await apiHelper.createNewMenuItem(menuItemDataFile['sourceDeprecated']);
+                let sourceDeprecatedData = cloneDeep(SOURCE_DEPRECATED);
+                sourceDeprecatedData.menuItemName = sourcesDeprecatedUiTrue;
+                sourceDeprecatedData.uiVisible = '1';
+                await apiHelper.createNewMenuItem(sourceDeprecatedData);
 
                 // Create Label 1 Active
-                menuItemDataFile['sampleMenuItem'].menuItemName = labelActive1;
-                await apiHelper.createNewMenuItem(menuItemDataFile['sampleMenuItem']);
+                let sampleMeniItemData1 = cloneDeep(SAMPLE_MENU_ITEM);
+                sampleMeniItemData1.menuItemName = labelActive1;
+                await apiHelper.createNewMenuItem(sampleMeniItemData1);
                 
                 // Create Label 2 Active
-                menuItemDataFile['sampleMenuItem'].menuItemName = labelActive2;
-                await apiHelper.createNewMenuItem(menuItemDataFile['sampleMenuItem']);
+                let sampleMeniItemData2 = cloneDeep(SAMPLE_MENU_ITEM);
+                sampleMeniItemData2.menuItemName = labelActive2;
+                await apiHelper.createNewMenuItem(sampleMeniItemData2);
 
                 // Create Label Inactive
-                menuItemDataFile['sampleMenuItem'].menuItemName = labelInactive;
-                menuItemDataFile['sampleMenuItem'].menuItemStatus = 'Inactive';
-                await apiHelper.createNewMenuItem(menuItemDataFile['sampleMenuItem']);
+                let sampleMeniItemData3 = cloneDeep(SAMPLE_MENU_ITEM);
+                sampleMeniItemData3.menuItemName = labelInactive;
+                sampleMeniItemData3.menuItemStatus = 'Inactive';
+                await apiHelper.createNewMenuItem(sampleMeniItemData3);
 
                 // Create Label Deprecated
-                menuItemDataFile['sampleMenuItem'].menuItemName = labelDeprecated;
-                menuItemDataFile['sampleMenuItem'].menuItemStatus = 'Deprecated';
-                await apiHelper.createNewMenuItem(menuItemDataFile['sampleMenuItem']);
+                let sampleMeniItemData4 = cloneDeep(SAMPLE_MENU_ITEM);
+                sampleMeniItemData4.menuItemName = labelDeprecated;
+                sampleMeniItemData4.menuItemStatus = 'Deprecated';
+                await apiHelper.createNewMenuItem(sampleMeniItemData4);
             });
 
         it('[DRDMV-16276]: Verify Label & Source With Create Case', async () => {

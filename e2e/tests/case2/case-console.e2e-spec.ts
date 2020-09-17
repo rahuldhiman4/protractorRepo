@@ -14,6 +14,8 @@ import viewCasePo from '../../pageobject/case/view-case.po';
 import editCasePo from '../../pageobject/case/edit-case.po';
 import caseConsolePo from '../../pageobject/case/case-console.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
+import { SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
+import { cloneDeep } from 'lodash';
 
 describe('Case Console', () => {
     let categName1 = 'DemoCateg1';
@@ -81,11 +83,11 @@ describe('Case Console', () => {
         let categoryTier4Str = 'Category Tier 4';
         let caseTemplateData, taskTemplateData, assignmentMappingData, readAccessMappingData;
         beforeAll(async () => {
-            let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
-            label = await menuItemDataFile['sampleMenuItem'].menuItemName + randomStr;
-            menuItemDataFile['sampleMenuItem'].menuItemName = label;
+            let menuItemData = cloneDeep(SAMPLE_MENU_ITEM);
+            label = menuItemData.menuItemName + randomStr;
+            menuItemData.menuItemName = label;
             await apiHelper.apiLogin('qkatawazi');
-            await apiHelper.createNewMenuItem(menuItemDataFile['sampleMenuItem']);
+            await apiHelper.createNewMenuItem(menuItemData);
 
             caseTemplateData = {
                 "templateName": 'caseTemplateName' + randomStr,
@@ -253,10 +255,10 @@ describe('Case Console', () => {
             newCase2 = await apiHelper.createCase(caseData2);
             await apiHelper.createCaseTemplate(caseTemplateData2);
             month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-            let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
+            let menuItemData = cloneDeep(SAMPLE_MENU_ITEM);
             label = "CaseLabel" + randomStr;
-            menuItemDataFile['sampleMenuItem'].menuItemName = label;
-            await apiHelper.createNewMenuItem(menuItemDataFile['sampleMenuItem']);
+            menuItemData.menuItemName = label;
+            await apiHelper.createNewMenuItem(menuItemData);
             id = newCase1.id;
         });
         it('[DRDMV-8280]:[Case Workspace] Cases search using filters', async () => {

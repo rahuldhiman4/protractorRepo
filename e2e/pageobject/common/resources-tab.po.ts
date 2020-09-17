@@ -66,24 +66,9 @@ export class Resources {
         }
     }
 
-
     async isValuePresentInDropdown(dropDownLabel: string, dropDownValue: string): Promise<boolean> {
-        await browser.wait(this.EC.or(async () => {
-            let count = await $$('.dropdown.dropdown_select').count();
-            return count >= 1;
-        }), 3000);
-        const dropDown: ElementFinder[] = await $$('.dropdown.dropdown_select');
-        for (let i: number = 0; i < dropDown.length; i++) {
-            return await dropDown[i].$('.form-control-label').isPresent().then(async (result) => {
-                if (result) {
-                    let dropDownLabelText: string = await dropDown[i].$('.form-control-label').getText();
-                    if (dropDownLabelText === dropDownLabel) {
-                        let elementDropdown:ElementFinder = await dropDown[i].$('button');
-                        return await utilityCommon.isValuePresentInDropDown(elementDropdown, dropDownValue);
-                    }
-                }
-            });
-        }
+        let elementDropdown:ElementFinder =  await element(by.cssContainingText('.form-control-label', dropDownLabel));
+        return await utilityCommon.isValuePresentInDropDown(elementDropdown, dropDownValue);
     }
 
     async isAdvancedSearchFilterDropDownLabelDisplayed(dropDownLabel: string): Promise<boolean> {

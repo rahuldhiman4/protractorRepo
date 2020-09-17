@@ -12,6 +12,8 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 import addFieldsPopPo from '../../pageobject/common/add-fields-pop.po';
+import { SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
+import { cloneDeep } from 'lodash';
 
 describe('Document Template', () => {
     beforeAll(async () => {
@@ -139,22 +141,22 @@ describe('Document Template', () => {
         let documentName = "DocumentTemplate" + randomStr;
         let documentDescription = "description" + randomStr;
         let documentBody = "documentBody" + randomStr;
-        let lable1, lable2;
+        let label1, label2;
 
         beforeAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             // Create Menu item Lables with API
             await apiHelper.apiLogin('qkatawazi');
-            let menuItemDataFile1 = require('../../data/ui/ticketing/menuItem.ui.json');
-            lable1 = await menuItemDataFile1['sampleMenuItem'].menuItemName + "lable1" + randomStr;
-            menuItemDataFile1['sampleMenuItem'].menuItemName = lable1;
-            await apiHelper.createNewMenuItem(menuItemDataFile1['sampleMenuItem']);
+            let menuItemData1 = cloneDeep(SAMPLE_MENU_ITEM);
+            label1 = menuItemData1.menuItemName + "lable1" + randomStr;
+            menuItemData1.menuItemName = label1;
+            await apiHelper.createNewMenuItem(menuItemData1);
 
-            let menuItemDataFile2 = require('../../data/ui/ticketing/menuItem.ui.json');
-            lable2 = await menuItemDataFile2['sampleMenuItem'].menuItemName + "lable2" + randomStr;
-            menuItemDataFile2['sampleMenuItem'].menuItemName = lable2;
-            await apiHelper.createNewMenuItem(menuItemDataFile2['sampleMenuItem']);
+            let menuItemData2 = cloneDeep(SAMPLE_MENU_ITEM);
+            label2 = menuItemData2.menuItemName + "lable2" + randomStr;
+            menuItemData2.menuItemName = label2;
+            await apiHelper.createNewMenuItem(menuItemData2);
         });
 
         it('[DRDMV-14977]: Verify Create Document Template UI', async () => {
@@ -172,7 +174,7 @@ describe('Document Template', () => {
 
             await createDocumentTemplatePo.setTemplateName(documentName);
             await createDocumentTemplatePo.setCompany('Petramco');
-            await createDocumentTemplatePo.selectLabelDropDown(lable1);
+            await createDocumentTemplatePo.selectLabelDropDown(label1);
             await createDocumentTemplatePo.setDescription(documentDescription);
             await createDocumentTemplatePo.setDocumentBody(documentBody);
             await createDocumentTemplatePo.clickOnSaveButton();
@@ -183,13 +185,13 @@ describe('Document Template', () => {
             await documentTemplateConsolePo.searchOnGridConsole(documentName);
             expect(await documentTemplateConsolePo.getSelectedGridRecordValue('Template Name')).toBe(documentName, 'FailureMsg: Template name is missing on Grid');
             expect(await documentTemplateConsolePo.getSelectedGridRecordValue('Company')).toBe('Petramco', 'FailureMsg: Petramco  Company name is missing on Grid');
-            expect(await documentTemplateConsolePo.getSelectedGridRecordValue('Label')).toBe(lable1, 'FailureMsg: Label is missing on Grid');
+            expect(await documentTemplateConsolePo.getSelectedGridRecordValue('Label')).toBe(label1, 'FailureMsg: Label is missing on Grid');
 
             await documentTemplateConsolePo.searchAndOpenDocumentTemplate(documentName);
-            await editDocumentTemplatePo.selectLabelDropDown(lable2);
+            await editDocumentTemplatePo.selectLabelDropDown(label2);
             await editDocumentTemplatePo.clickOnSaveButton();
             await documentTemplateConsolePo.searchOnGridConsole(documentName);
-            expect(await documentTemplateConsolePo.getSelectedGridRecordValue('Label')).toBe(lable2, 'Label is missing on Grid');
+            expect(await documentTemplateConsolePo.getSelectedGridRecordValue('Label')).toBe(label2, 'Label is missing on Grid');
             expect(await documentTemplateConsolePo.isGridColumnSorted('Label', 'descending')).toBeTruthy('Label is not get sorted with descending order');
         });
     });
