@@ -60,6 +60,7 @@ export class Util {
         //        }));
         let optionCss: string = `[rx-view-component-id="${guid}"] .ui-select-choices-row-inner *`;
         //        await browser.sleep(1000);
+        console.log('Selecting the Dropdown value:', value);
         let option = await element(by.cssContainingText(optionCss, value));
         await browser.wait(this.EC.elementToBeClickable(option), 3000).then(async function () {
             await option.click();

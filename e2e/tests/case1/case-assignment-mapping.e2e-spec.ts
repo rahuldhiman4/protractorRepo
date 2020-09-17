@@ -31,7 +31,8 @@ import utilityCommon from '../../utils/utility.common';
 import editCasetemplatePo from '../../pageobject/settings/case-management/edit-casetemplate.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import editAssignmentsConfigPo from '../../pageobject/settings/case-management/edit-assignments-config.po';
-
+import { SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
+import { cloneDeep } from 'lodash';
 
 describe("Create Case Assignment Mapping", () => {
     const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
@@ -772,9 +773,9 @@ describe("Create Case Assignment Mapping", () => {
             suppGrpData = supportGrpDataFile['SuppGrpDataPhylum1'];
             await createNewUsers();
             await createCategoryAssociation();
-            let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
+            let menuItemData = cloneDeep(SAMPLE_MENU_ITEM);
             label = "MappingLabel" + randomStr;
-            menuItemDataFile['sampleMenuItem'].menuItemName = label;
+            menuItemData.menuItemName = label;
             assignmentData1 = {
                 "assignmentMappingName": randomStr + "1DRDMV8968",
                 "company": "Phylum",
@@ -807,7 +808,7 @@ describe("Create Case Assignment Mapping", () => {
                 "label": label
             }
             await apiHelper.apiLoginWithCredential(userId1, "Password_1234");
-            await apiHelper.createNewMenuItem(menuItemDataFile['sampleMenuItem']);
+            await apiHelper.createNewMenuItem(menuItemData);
             assignmentMapping1 = await apiHelper.createCaseAssignmentMapping(assignmentData1);
             await apiHelper.createCaseAssignmentMapping(assignmentData2);
             id = assignmentMapping1.id;

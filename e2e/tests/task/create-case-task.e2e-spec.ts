@@ -27,9 +27,10 @@ import changeAssignmentBladePo from '../../pageobject/common/change-assignment-b
 import editCasePo from '../../pageobject/case/edit-case.po';
 import composeMailPo from '../../pageobject/email/compose-mail.po';
 import personProfilePo from '../../pageobject/common/person-profile.po';
+import { SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
+import { cloneDeep } from 'lodash';
 
 describe('Create Case Task', () => {
-    let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
@@ -129,7 +130,7 @@ describe('Create Case Task', () => {
         let automationTaskTemplateWithallField = 'Automation task with All field' + Math.floor(Math.random() * 1000000);
         let automationTaskSummaryWithallField = 'Automation task Summary with All field' + Math.floor(Math.random() * 1000000) + 1;
         beforeAll(async () => {
-            menuItem = menuItemDataFile['sampleMenuItem'];
+            menuItem = cloneDeep(SAMPLE_MENU_ITEM);
             menuItem.menuItemName = "TestMenuItemName" + randomStr;
             await apiHelper.apiLogin('tadmin');
             await apiHelper.associateCategoryToCategory('Chatter', 'Failure');

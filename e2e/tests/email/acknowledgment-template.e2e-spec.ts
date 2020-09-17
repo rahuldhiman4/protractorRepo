@@ -9,19 +9,21 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
+import { SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
+import { cloneDeep } from 'lodash';
 
 describe('Acknowledgment Template', () => {
     let label: string;
-    let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
 
         await apiHelper.apiLogin('qkatawazi');
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        label = await menuItemDataFile['sampleMenuItem'].menuItemName + randomStr;
-        menuItemDataFile['sampleMenuItem'].menuItemName = label;
-        await apiHelper.createNewMenuItem(menuItemDataFile['sampleMenuItem']);
+        let menuItemData = cloneDeep(SAMPLE_MENU_ITEM);
+        label = menuItemData.menuItemName + randomStr;
+        menuItemData.menuItemName = label;
+        await apiHelper.createNewMenuItem(menuItemData);
     });
 
     afterAll(async () => {
@@ -59,10 +61,10 @@ describe('Acknowledgment Template', () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
         await apiHelper.apiLogin('qkatawazi');
-        let menuItemDataFile = require('../../data/ui/ticketing/menuItem.ui.json');
-        let label: string = await menuItemDataFile['sampleMenuItem'].menuItemName + randomStr;
-        menuItemDataFile['sampleMenuItem'].menuItemName = label;
-        await apiHelper.createNewMenuItem(menuItemDataFile['sampleMenuItem']);
+        let menuItemData = cloneDeep(SAMPLE_MENU_ITEM);
+        let label: string = await menuItemData.menuItemName + randomStr;
+        menuItemData.menuItemName = label;
+        await apiHelper.createNewMenuItem(menuItemData);
         await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
         await createAcknowledgmentTemplatesPo.setTemplateName(templateName);
         await createAcknowledgmentTemplatesPo.selectCompanyDropDown('Petramco');
