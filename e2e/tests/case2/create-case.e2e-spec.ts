@@ -495,11 +495,11 @@ describe("Create Case", () => {
 
     //ankagraw
     it('[DRDMV-7027]: [Permissions] [Global navigation] Access to the shell menu items for different roles', async () => {
-        await expect((await caseConsolePage.getCaseTitle()).trim()).toBe('Cases', "Case title is not displayed in Case Console Page");
         await expect(navigationPage.isCaseConsoleDisplayed()).toBeTruthy("Case Console is not displayed ");
         await expect(navigationPage.isTaskConsoleDisplayed()).toBeTruthy("task Console is not displayed ");
         await expect(navigationPage.isKnowledgeConsoleDisplayed()).toBeTruthy("Knowledge Console is not displayed ");
         await utilityCommon.refresh();
+        await expect((await caseConsolePage.getCaseTitle()).trim()).toBe('Cases', "Case title is not displayed in Case Console Page");
         await expect(navigationPage.isCreateCaseDisplayed()).toBeTruthy("Create Case is not displayed ");
         await expect(navigationPage.isCreateKnowledgeDisplayed()).toBeTruthy("Create knowledge is not displayed ");
         await expect(navigationPage.isQuickCaseDisplayed()).toBeTruthy('Quick case is not displayed');
