@@ -172,6 +172,7 @@ describe('PIN Validation Quick Case', () => {
             await quickCasePo.createCaseButton();
             await quickCasePo.gotoCaseButton();
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Requester is not validated for this case.')).toBeTruthy();
+            await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog('did not validate the PIN of the requester')).toBeTruthy();
             await viewCasePo.clickEditCaseButton();
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Requester is not validated for this case.')).toBeTruthy();
@@ -209,6 +210,7 @@ describe('PIN Validation Quick Case', () => {
             await quickCasePo.createCaseButton();
             await quickCasePo.gotoCaseButton();
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Requester is not validated for this case.')).toBeTruthy();
+            await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog('did not validate the PIN of the requester')).toBeTruthy();
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName("gwixillian");
@@ -335,6 +337,7 @@ describe('PIN Validation Quick Case', () => {
             await quickCasePo.createCaseButton();
             await quickCasePo.gotoCaseButton();
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Requester is not validated for this case.')).toBeFalsy();
+            await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog('did not validate the PIN of the requester')).toBeFalsy();
             await viewCasePo.clickEditCaseButton();
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Requester is not validated for this case.')).toBeFalsy();
@@ -375,6 +378,7 @@ describe('PIN Validation Quick Case', () => {
             await quickCasePo.createCaseButton();
             await quickCasePo.gotoCaseButton();
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Requester is not validated for this case.')).toBeTruthy();
+            await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog('did not validate the PIN of the requester')).toBeTruthy();
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName("gwixillian");
@@ -480,6 +484,7 @@ describe('PIN Validation Quick Case', () => {
             await quickCasePo.gotoCaseButton();
             await browser.sleep(2000); // requird to populate "did not validate the PIN of the requester" in case activity
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Requester is not validated for this case.')).toBeTruthy();
+            await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog('did not validate the PIN of the requester')).toBeTruthy();
             await viewCasePo.clickEditCaseButton();
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Requester is not validated for this case.')).toBeTruthy();
