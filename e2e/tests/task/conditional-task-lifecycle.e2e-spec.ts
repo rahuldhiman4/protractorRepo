@@ -474,6 +474,8 @@ describe('Conditional Task Life Cycle', () => {
             expect(await activityPage.isTextPresentInActivityLog('Completed')).toBeTruthy('Completed is not present in Activity Log');
             expect(await activityPage.isTextPresentInActivityLog('Successful')).toBeTruthy('Successful is not present in Activity Log');
             expect(await activityPage.isTextPresentInActivityLog(taskDisplayIds[0])).toBeTruthy(`Task1:${taskDisplayIds[0]} is not present in Activity Log`);
+            await activityPage.applyActivityFilter('Status Change');
+            await activityPage.clickOnRefreshButton();
             expect(await activityPage.isTextPresentInActivityLog(taskDisplayIds[1])).toBeTruthy(`Task2:${taskDisplayIds[1]} is not present in Activity Log`);
         });
     });
