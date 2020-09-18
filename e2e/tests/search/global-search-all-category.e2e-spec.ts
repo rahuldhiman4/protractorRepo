@@ -284,7 +284,6 @@ describe('Global Search All Category', () => {
             }
         });
 
-
         it('[DRDMV-16066]: Verify Case On Left Pannel', async () => {
             await navigationPage.gotoSearch();
             await searchPo.searchRecord(commonSearchForAll);
@@ -542,7 +541,7 @@ describe('Global Search All Category', () => {
             await searchPo.searchRecord(lastName);
             expect(await searchPo.isModuleTitleDisplayed(lastName, 'People (5)', peopleModule)).toBeTruthy('FailureMsg2: Person module title is missing');
             await searchPo.clickOnLeftPannelRecord(`${commonSearchForAll} ${lastName}`, peopleModule);
-            expect(await personProfilePo.getLoginID()).toBe(loginId + 1, 'FailureMsg22: Login id is missing');
+            expect(await personProfilePo.getLoginID()).toContain(loginId, 'FailureMsg22: Login id is missing');
             expect(await personProfilePo.getEmail()).toBe(emailId, 'FailureMsg22: emailId is missing');
         });
     });
