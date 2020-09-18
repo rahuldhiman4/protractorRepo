@@ -7,16 +7,16 @@ import viewCasePo from '../../pageobject/case/view-case.po';
 import assignmentBladePO from '../../pageobject/common/change-assignment-blade.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
-import editKnowledgePo from '../../pageobject/knowledge/edit-knowledge.po';
 import statusConfigPo from '../../pageobject/settings/common/status-config.po';
-import createAdhocTaskPo from '../../pageobject/task/create-adhoc-task.po';
-import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
-import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
+import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
+import createAdhocTaskPo from '../../pageobject/task/create-adhoc-task.po';
+import viewTaskPo from '../../pageobject/task/view-task.po';
+import editKnowledgePo from '../../pageobject/knowledge/edit-knowledge.po';
 describe('Case Status Configuration', () => {
     let flowsetData;
     let flowsetName: string;
@@ -52,81 +52,86 @@ describe('Case Status Configuration', () => {
     });
 
     //asahitya
-    it('[DRDMV-13617]: Verify User not able to delete mandatory status for case', async () => {
+    describe('[DRDMV-13617]: Verify User not able to delete mandatory status for case', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        flowsetData = require('../../data/ui/case/flowset.ui.json');
-        flowsetName = await flowsetData['flowsetPhytoFields'].flowsetName + randomStr;
-        flowsetData['flowsetPhytoFields'].flowsetName = flowsetName;
-        await apiHelper.apiLoginWithCredential('tadmin@petramco.com', 'Password_1234');
-        let flowset = flowsetData['flowsetPhytoFields'];
-        await apiHelper.createNewFlowset(flowsetData['flowsetPhytoFields']);
+        beforeAll(async () => {
+            flowsetData = require('../../data/ui/case/flowset.ui.json');
+            flowsetName = await flowsetData['flowsetPhytoFields'].flowsetName + randomStr;
+            flowsetData['flowsetPhytoFields'].flowsetName = flowsetName;
+            await apiHelper.apiLoginWithCredential('tadmin@petramco.com', 'Password_1234');
+            await apiHelper.createNewFlowset(flowsetData['flowsetPhytoFields']);
+        });
 
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
-        await statusConfigPo.setCompanyDropdown('Phyto', 'case');
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.clickEditStatus("New");
-        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
-        await statusConfigPo.clickOnBackButton();
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.clickEditStatus("Progress");
-        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
-        await statusConfigPo.clickOnBackButton();
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.clickEditStatus("Assigned");
-        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
-        await statusConfigPo.clickOnBackButton();
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.clickEditStatus("Resolved");
-        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
-        await statusConfigPo.clickOnBackButton();
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.clickEditStatus("Closed");
-        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
-        await statusConfigPo.clickOnBackButton();
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.clickEditStatus("Pending");
-        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
-        await statusConfigPo.clickOnBackButton();
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.clickEditStatus("Canceled");
-        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
-        await statusConfigPo.clickOnBackButton();
+        it('[DRDMV-13617]: Verify User not able to delete mandatory status for case', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
+            await statusConfigPo.setCompanyDropdown('Phyto', 'case');
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditStatus("New");
+            expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
+            await statusConfigPo.clickOnBackButton();
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditStatus("Progress");
+            expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
+            await statusConfigPo.clickOnBackButton();
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditStatus("Assigned");
+            expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
+            await statusConfigPo.clickOnBackButton();
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditStatus("Resolved");
+            expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
+            await statusConfigPo.clickOnBackButton();
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditStatus("Closed");
+            expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
+            await statusConfigPo.clickOnBackButton();
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditStatus("Pending");
+            expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
+            await statusConfigPo.clickOnBackButton();
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditStatus("Canceled");
+            expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
+            await statusConfigPo.clickOnBackButton();
+        });
 
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
-        await statusConfigPo.setCompanyDropdown('Phyto', 'case');
-        await statusConfigPo.selectFlowset(flowsetName);
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.clickEditStatus("New");
-        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
-        await statusConfigPo.clickOnBackButton();
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.clickEditStatus("Progress");
-        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
-        await statusConfigPo.clickOnBackButton();
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.clickEditStatus("Assigned");
-        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
-        await statusConfigPo.clickOnBackButton();
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.clickEditStatus("Resolved");
-        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
-        await statusConfigPo.clickOnBackButton();
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.clickEditStatus("Closed");
-        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
-        await statusConfigPo.clickOnBackButton();
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.clickEditStatus("Pending");
-        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
-        await statusConfigPo.clickOnBackButton();
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.clickEditStatus("Canceled");
-        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
-        await statusConfigPo.clickOnBackButton();
-        await utilityCommon.switchToDefaultWindowClosingOtherTabs();
-    }, 340 * 1000);
+        it('[DRDMV-13617]: Verify User not able to delete mandatory status for case', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
+            await statusConfigPo.setCompanyDropdown('Phyto', 'case');
+            await statusConfigPo.selectFlowset(flowsetName);
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditStatus("New");
+            expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
+            await statusConfigPo.clickOnBackButton();
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditStatus("Progress");
+            expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
+            await statusConfigPo.clickOnBackButton();
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditStatus("Assigned");
+            expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
+            await statusConfigPo.clickOnBackButton();
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditStatus("Resolved");
+            expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
+            await statusConfigPo.clickOnBackButton();
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditStatus("Closed");
+            expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
+            await statusConfigPo.clickOnBackButton();
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditStatus("Pending");
+            expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
+            await statusConfigPo.clickOnBackButton();
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditStatus("Canceled");
+            expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
+            await statusConfigPo.clickOnBackButton();
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+        });
+    });
 
     //asahitya
     it('[DRDMV-13615]:Verify UI for case status configuration', async () => {
@@ -147,147 +152,161 @@ describe('Case Status Configuration', () => {
     });
 
     //asahitya
-    it('[DRDMV-13899]:Verify case created prior to label change will reflect new status label changes', async () => {
-        await navigationPage.gotoCreateCase();
-        await createCasePo.selectRequester('zkhan');
-        await createCasePo.setSummary("DRDMV-13899 before configuration");
-        await createCasePo.clickChangeAssignmentButton();
-        await assignmentBladePO.selectCompany('Phyto');
-        await assignmentBladePO.selectBusinessUnit('Phyto Support Org1');
-        await assignmentBladePO.selectSupportGroup('Phyto Support Group1');
-        await assignmentBladePO.selectAssignee('Zaheer Khan');
-        await assignmentBladePO.clickOnAssignButton();
-        await createCasePo.clickSaveCaseButton();
-        await previewCasePo.clickGoToCaseButton();
-        let caseId1 = await viewCasePo.getCaseID();
+    describe('[DRDMV-13899]:Verify case created prior to label change will reflect new status label changes', () => {
+        let caseId1: string = undefined;
+        it('[DRDMV-13899]:Verify case created prior to label change will reflect new status label changes', async () => {
+            await navigationPage.gotoCreateCase();
+            await createCasePo.selectRequester('zkhan');
+            await createCasePo.setSummary("DRDMV-13899 before configuration");
+            await createCasePo.clickChangeAssignmentButton();
+            await assignmentBladePO.selectCompany('Phyto');
+            await assignmentBladePO.selectBusinessUnit('Phyto Support Org1');
+            await assignmentBladePO.selectSupportGroup('Phyto Support Group1');
+            await assignmentBladePO.selectAssignee('Zaheer Khan');
+            await assignmentBladePO.clickOnAssignButton();
+            await createCasePo.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            caseId1 = await viewCasePo.getCaseID();
 
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
-        await statusConfigPo.setCompanyDropdown("Phyto", 'case');
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.clickEditStatus("Assigned");
-        await statusConfigPo.renameExistingStatus('Staged');
-        await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
+            await statusConfigPo.setCompanyDropdown("Phyto", 'case');
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditStatus("Assigned");
+            await statusConfigPo.renameExistingStatus('Staged');
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+        });
 
-        await navigationPage.gotoCreateCase();
-        await createCasePo.selectRequester('zkhan');
-        await createCasePo.setSummary("DRDMV-13899 after configuration");
-        await createCasePo.clickAssignToMeButton();
-        await createCasePo.clickSaveCaseButton();
-        await previewCasePo.clickGoToCaseButton();
-        expect(await viewCasePo.getTextOfStatus()).toBe("Staged");
+        it('[DRDMV-13899]:Verify case created prior to label change will reflect new status label changes', async () => {
+            await navigationPage.gotoCreateCase();
+            await createCasePo.selectRequester('zkhan');
+            await createCasePo.setSummary("DRDMV-13899 after configuration");
+            await createCasePo.clickAssignToMeButton();
+            await createCasePo.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            expect(await viewCasePo.getTextOfStatus()).toBe("Staged");
 
-        await navigationPage.gotoCaseConsole();
-        await utilityGrid.clearFilter();
-        await caseConsolePo.searchAndOpenCase(caseId1);
-        expect(await viewCasePo.getTextOfStatus()).toBe("Staged");
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
+            await caseConsolePo.searchAndOpenCase(caseId1);
+            expect(await viewCasePo.getTextOfStatus()).toBe("Staged");
 
-        //back to default
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
-        await statusConfigPo.setCompanyDropdown("Phyto", 'case');
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.clickEditStatus("Staged");
-        await statusConfigPo.renameExistingStatus('Assigned');
-    }, 420 * 1000);
+            //back to default
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
+            await statusConfigPo.setCompanyDropdown("Phyto", 'case');
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditStatus("Staged");
+            await statusConfigPo.renameExistingStatus('Assigned');
+        });
+    });
 
     //asahitya  
-    it('[DRDMV-13631]: Verify User not able to delete mandatory status for task', async () => {
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Task Management--Status Configuration', 'Configure Task Status Tranistions - Business Workflows');
-        await statusConfigPo.setCompanyDropdown('Phyto', 'task');
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.addCustomStatus("Staged", "Assigned", "customStatus");
-        await statusConfigPo.clickOnBackButton();
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.clickEditStatus("Staged");
-        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy('Staged status delete button is enabled');
-        await statusConfigPo.clickOnBackButton();
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.clickEditStatus("Progress");
-        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy('In Progress status delete button is enabled');
-        await statusConfigPo.clickOnBackButton();
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.clickEditStatus("Assigned");
-        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy('Assigned status delete button is enabled');
-        await statusConfigPo.clickOnBackButton();
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.clickEditStatus("Completed");
-        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy('Completed status delete button is enabled');
-        await statusConfigPo.clickOnBackButton();
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.clickEditStatus("Closed");
-        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy('Closed status delete button is enabled');
-        await statusConfigPo.clickOnBackButton();
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.clickEditStatus("Pending");
-        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy('Pending status delete button is enabled');
-        await statusConfigPo.clickOnBackButton();
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.clickEditStatus("Canceled");
-        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy('Canceled status delete button is enabled');
-        await statusConfigPo.clickOnBackButton();
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.clickEditStatus("Failed");
-        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy('Failed status delete button is enabled');
-        await statusConfigPo.clickOnBackButton();
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.clickEditStatus("customStatus");
-        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy('customStatus status delete button is enabled');
-        await statusConfigPo.clickOnDeleteButton();
-        await utilCommon.clickOnWarningOk();
-        await statusConfigPo.clickOnBackButton();
-    }, 270 * 1000);
+    describe('[DRDMV-13631]: Verify User not able to delete mandatory status for task', () => {
+        it('[DRDMV-13631]: Verify User not able to delete mandatory status for task', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Task Management--Status Configuration', 'Configure Task Status Tranistions - Business Workflows');
+            await statusConfigPo.setCompanyDropdown('Phyto', 'task');
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.addCustomStatus("Staged", "Assigned", "customStatus");
+            await statusConfigPo.clickOnBackButton();
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditStatus("Staged");
+            expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy('Staged status delete button is enabled');
+            await statusConfigPo.clickOnBackButton();
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditStatus("Progress");
+            expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy('In Progress status delete button is enabled');
+            await statusConfigPo.clickOnBackButton();
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditStatus("Assigned");
+            expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy('Assigned status delete button is enabled');
+            await statusConfigPo.clickOnBackButton();
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditStatus("Completed");
+            expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy('Completed status delete button is enabled');
+            await statusConfigPo.clickOnBackButton();
+        });
+
+        it('[DRDMV-13631]: Verify User not able to delete mandatory status for task', async () => {
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditStatus("Closed");
+            expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy('Closed status delete button is enabled');
+            await statusConfigPo.clickOnBackButton();
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditStatus("Pending");
+            expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy('Pending status delete button is enabled');
+            await statusConfigPo.clickOnBackButton();
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditStatus("Canceled");
+            expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy('Canceled status delete button is enabled');
+            await statusConfigPo.clickOnBackButton();
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditStatus("Failed");
+            expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy('Failed status delete button is enabled');
+            await statusConfigPo.clickOnBackButton();
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditStatus("customStatus");
+            expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy('customStatus status delete button is enabled');
+            await statusConfigPo.clickOnDeleteButton();
+            await utilCommon.clickOnWarningOk();
+            await statusConfigPo.clickOnBackButton();
+        });
+    });
 
     //asahitya
-    it('[DRDMV-13632]: Verify User not able to delete mandatory status for Knowledge', async () => {
-        await navigationPage.signOut()
-        await loginPage.login('stendulkar@petramco.com', 'Password_1234');
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Knowledge Management--Status Configuration', 'Configure Knowledge Status Transition - Business Workflows');
-        await statusConfigPo.setCompanyDropdown('Phyto', 'knowledge');
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.addCustomStatus("In Progress", "Draft", "Custom");
-        await statusConfigPo.clickOnBackButton();
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.clickEditStatus("Draft");
-        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
-        await statusConfigPo.clickOnBackButton();
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.clickEditStatus("Progress");
-        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
-        await statusConfigPo.clickOnBackButton();
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.clickEditStatus("SME"); //Need to change
-        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
-        await statusConfigPo.clickOnBackButton();
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.clickEditStatus("Approval");
-        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
-        await statusConfigPo.clickOnBackButton();
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.clickEditStatus("Closed");
-        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
-        await statusConfigPo.clickOnBackButton();
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.clickEditStatus("Published");
-        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
-        await statusConfigPo.clickOnBackButton();
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.clickEditStatus("Canceled");
-        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
-        await statusConfigPo.clickOnBackButton();
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.clickEditStatus("Retired");
-        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
-        await statusConfigPo.clickOnBackButton();
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.clickEditStatus("Custom");
-        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
-        await statusConfigPo.clickOnDeleteButton();
-        await utilCommon.clickOnWarningOk();
-        await statusConfigPo.clickOnBackButton();
-    }, 300 * 1000);
+    describe('[DRDMV-13632]: Verify User not able to delete mandatory status for Knowledge', () => {
+        it('[DRDMV-13632]: Verify User not able to delete mandatory status for Knowledge', async () => {
+            await navigationPage.signOut()
+            await loginPage.login('stendulkar@petramco.com', 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Status Configuration', 'Configure Knowledge Status Transition - Business Workflows');
+            await statusConfigPo.setCompanyDropdown('Phyto', 'knowledge');
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.addCustomStatus("In Progress", "Draft", "Custom");
+            await statusConfigPo.clickOnBackButton();
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditStatus("Draft");
+            expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
+            await statusConfigPo.clickOnBackButton();
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditStatus("Progress");
+            expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
+            await statusConfigPo.clickOnBackButton();
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditStatus("SME"); //Need to change
+            expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
+            await statusConfigPo.clickOnBackButton();
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditStatus("Approval");
+            expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
+            await statusConfigPo.clickOnBackButton();
+        });
+        it('[DRDMV-13632]: Verify User not able to delete mandatory status for Knowledge', async () => {
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditStatus("Closed");
+            expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
+            await statusConfigPo.clickOnBackButton();
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditStatus("Published");
+            expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
+            await statusConfigPo.clickOnBackButton();
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditStatus("Canceled");
+            expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
+            await statusConfigPo.clickOnBackButton();
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditStatus("Retired");
+            expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
+            await statusConfigPo.clickOnBackButton();
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditStatus("Custom");
+            expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
+            await statusConfigPo.clickOnDeleteButton();
+            await utilCommon.clickOnWarningOk();
+            await statusConfigPo.clickOnBackButton();
+        });
+    });
 
     //asahitya
     it('[DRDMV-13635]:Verify UI for Knowledge status configuration', async () => {
@@ -332,52 +351,56 @@ describe('Case Status Configuration', () => {
     });
 
     //asahitya
-    it('[DRDMV-13639,DRDMV-13710]:Verify Custom status operations for case', async () => {
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
-        await statusConfigPo.setCompanyDropdown("Phyto", 'case');
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.addCustomStatus("New", "Assigned", "customStatus");
-        await statusConfigPo.clickOnBackButton();
-        await statusConfigPo.clickEditLifeCycleLink();
+    describe('[DRDMV-13639,DRDMV-13710]:Verify Custom status operations for case', () => {
+        it('[DRDMV-13639,DRDMV-13710]:Verify Custom status operations for case', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
+            await statusConfigPo.setCompanyDropdown("Phyto", 'case');
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.addCustomStatus("New", "Assigned", "customStatus");
+            await statusConfigPo.clickOnBackButton();
+            await statusConfigPo.clickEditLifeCycleLink();
 
-        await statusConfigPo.clickEditStatus("customStatus");
-        await statusConfigPo.clickOnMandatoryCheckbox();
-        await statusConfigPo.saveSetting();
-        expect(await utilCommon.getAllPopupMsg()).toContain('The Status Reason Mandatory check box is selected. Add a status reason or clear the check box.');
-        await statusConfigPo.setStatusReason("customStatus required");
-        await statusConfigPo.clickOnBackButton();
-        //delete custom status
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.clickEditStatus("customStatus");
-        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
-        await statusConfigPo.clickOnDeleteButton();
-        await utilCommon.clickOnWarningOk();
-        await statusConfigPo.clickOnBackButton();
+            await statusConfigPo.clickEditStatus("customStatus");
+            await statusConfigPo.clickOnMandatoryCheckbox();
+            await statusConfigPo.saveSetting();
+            expect(await utilCommon.getAllPopupMsg()).toContain('The Status Reason Mandatory check box is selected. Add a status reason or clear the check box.');
+            await statusConfigPo.setStatusReason("customStatus required");
+            await statusConfigPo.clickOnBackButton();
+            //delete custom status
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditStatus("customStatus");
+            expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
+            await statusConfigPo.clickOnDeleteButton();
+            await utilCommon.clickOnWarningOk();
+            await statusConfigPo.clickOnBackButton();
+        });
 
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
-        await statusConfigPo.setCompanyDropdown("Phyto", 'case');
-        await statusConfigPo.selectFlowset(flowsetName);
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.addCustomStatus("New", "Assigned", "customStatus");
-        await statusConfigPo.clickOnBackButton();
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.clickEditStatus("customStatus");
-        await statusConfigPo.clickOnMandatoryCheckbox();
-        await statusConfigPo.saveSetting();
-        expect(await utilCommon.getAllPopupMsg()).toContain('The Status Reason Mandatory check box is selected. Add a status reason or clear the check box.');
-        await statusConfigPo.setStatusReason("customStatus required");
-        await statusConfigPo.clickOnBackButton();
-        //delete custom status
-        await statusConfigPo.clickEditLifeCycleLink();
-        await statusConfigPo.clickEditStatus("customStatus");
-        expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
-        await statusConfigPo.clickOnDeleteButton();
-        await utilCommon.clickOnWarningOk();
-        await statusConfigPo.clickOnBackButton();
-        await utilityCommon.switchToDefaultWindowClosingOtherTabs();
-    }, 360 * 1000);
+        it('[DRDMV-13639,DRDMV-13710]:Verify Custom status operations for case', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
+            await statusConfigPo.setCompanyDropdown("Phyto", 'case');
+            await statusConfigPo.selectFlowset(flowsetName);
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.addCustomStatus("New", "Assigned", "customStatus");
+            await statusConfigPo.clickOnBackButton();
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditStatus("customStatus");
+            await statusConfigPo.clickOnMandatoryCheckbox();
+            await statusConfigPo.saveSetting();
+            expect(await utilCommon.getAllPopupMsg()).toContain('The Status Reason Mandatory check box is selected. Add a status reason or clear the check box.');
+            await statusConfigPo.setStatusReason("customStatus required");
+            await statusConfigPo.clickOnBackButton();
+            //delete custom status
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditStatus("customStatus");
+            expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
+            await statusConfigPo.clickOnDeleteButton();
+            await utilCommon.clickOnWarningOk();
+            await statusConfigPo.clickOnBackButton();
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+        });
+    });
 
     it('[DRDMV-13625]:Verify Custom status operations for Task', async () => {
         await navigationPage.gotoSettingsPage();
@@ -410,7 +433,7 @@ describe('Case Status Configuration', () => {
 
     //ankagraw
     describe('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
-        let caseId, taskId, caseId1, caseData, articleData1, articleData2,caseDataInProgress, knowledgeSetData, knowldgeId,randomStr = Math.floor(Math.random() * 1000000);
+        let caseId, taskId, caseId1, caseData, articleData1, articleData2, caseDataInProgress, knowledgeSetData, knowldgeId, randomStr = Math.floor(Math.random() * 1000000);
         let personData1;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
@@ -453,7 +476,7 @@ describe('Case Status Configuration', () => {
             }
 
             knowledgeSetData = {
-                knowledgeSetTitle: "test knowledge"+randomStr,
+                knowledgeSetTitle: "test knowledge" + randomStr,
                 knowledgeSetDesc: "test description",
                 company: 'Pico Systems'
             }
@@ -482,7 +505,7 @@ describe('Case Status Configuration', () => {
             await statusConfigPo.setCompanyDropdown('Pico Systems', 'task');
             await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.addCustomStatus("Staged", "Assigned", "customStatus");
-            await statusConfigPo.clickOnSaveButton();
+            await statusConfigPo.saveSetting();
         });
         it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
             await apiHelper.apiLoginWithCredential(personData1.userId + '@petramco.com', 'Password_1234');
@@ -512,7 +535,7 @@ describe('Case Status Configuration', () => {
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
             await statusConfigPo.clickOnDeleteButton();
             await utilCommon.clickOnWarningOk();
-            expect(await utilCommon.isPopUpMessagePresent("ERROR (10000): Task with this status are present")).toBeTruthy();
+            expect(await utilCommon.isPopUpMessagePresent("ERROR (10000): Task with this status are present.")).toBeTruthy();
         });
 
         it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
@@ -551,7 +574,7 @@ describe('Case Status Configuration', () => {
             await statusConfigPo.setCompanyDropdown("Pico Systems", 'case');
             await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.addCustomStatus("New", "Assigned", "customStatus");
-            await statusConfigPo.clickOnSaveButton();
+            await statusConfigPo.saveSetting();
 
         });
         it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
@@ -594,7 +617,7 @@ describe('Case Status Configuration', () => {
         });
         it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
             await apiHelper.apiLoginWithCredential(personData1.userId + '@petramco.com', 'Password_1234');
-            caseId1 = await apiHelper.createCase(caseData);
+            caseId = await apiHelper.createCase(caseData);
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId1.displayId);
             expect(await viewCasePo.getCaseStatusValue()).toBe('Assigned');
@@ -605,7 +628,7 @@ describe('Case Status Configuration', () => {
             await statusConfigPo.setCompanyDropdown('Pico Systems', 'knowledge');
             await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.addCustomStatus("In Progress", "Draft", "Custom");
-            await statusConfigPo.clickOnSaveButton();
+            await statusConfigPo.saveSetting();
         });
 
         it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
@@ -613,7 +636,6 @@ describe('Case Status Configuration', () => {
             await apiHelper.createKnowledgeSet(knowledgeSetData);
             knowldgeId = await apiHelper.createKnowledgeArticle(articleData1);
             await navigationPage.gotoKnowledgeConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(knowldgeId.displayId);
             await editKnowledgePo.setKnowledgeStatus('Custom');
         });
@@ -631,7 +653,6 @@ describe('Case Status Configuration', () => {
         });
         it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
             await navigationPage.gotoKnowledgeConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(knowldgeId.displayId);
             await editKnowledgePo.setKnowledgeStatus('Draft');
         });
@@ -651,9 +672,8 @@ describe('Case Status Configuration', () => {
             await apiHelper.apiLoginWithCredential(personData1.userId + '@petramco.com', 'Password_1234');
             knowldgeId = await apiHelper.createKnowledgeArticle(articleData2);
             await navigationPage.gotoKnowledgeConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(knowldgeId.displayId);
-            
+            await editKnowledgePo.setKnowledgeStatus('Draft');
         });
 
     });
