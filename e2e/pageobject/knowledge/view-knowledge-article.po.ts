@@ -398,7 +398,7 @@ class ViewKnowledgePage {
     }
 
     async getArticleIsExternalValue(): Promise<string> {
-        // await browser.wait(this.EC.elementToBeClickable($(this.selectors.articleIsExternal)));
+       // await browser.wait(this.EC.elementToBeClickable($(this.selectors.articleIsExternal)));
        // return await $(this.selectors.articleIsExternal).getText();
         return await $(this.selectors.articleIsExternal).isPresent().then(async (result) => {
             if (result) return await $(this.selectors.articleIsExternal).getText();
