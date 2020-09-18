@@ -583,6 +583,7 @@ describe('Case Activity CKE Styling', () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
+            expect(await viewCasePo.getCaseID()).toBe(newCase.displayId, 'Case Id is missing');
             await activityTabPage.clickOnRefreshButton();
             await activityTabPage.clickOnHyperlinkFromActivity(2, 'Qadim Katawazi');
             await activityTabPage.addActivityNote(addNoteBodyText);
