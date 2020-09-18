@@ -7,20 +7,16 @@ import viewCasePo from '../../pageobject/case/view-case.po';
 import assignmentBladePO from '../../pageobject/common/change-assignment-blade.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
+import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
+import editKnowledgePo from '../../pageobject/knowledge/edit-knowledge.po';
 import statusConfigPo from '../../pageobject/settings/common/status-config.po';
+import createAdhocTaskPo from '../../pageobject/task/create-adhoc-task.po';
+import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
+import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
-import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
-import createAdhocTaskPo from '../../pageobject/task/create-adhoc-task.po';
-import viewTaskPo from '../../pageobject/task/view-task.po';
-import knowledgeArticlesConsolePo from '../../pageobject/knowledge/knowledge-articles-console.po';
-import createKnowledgePage from "../../pageobject/knowledge/create-knowlege.po";
-import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
-import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
-import editKnowledgePo from '../../pageobject/knowledge/edit-knowledge.po';
 describe('Case Status Configuration', () => {
     let flowsetData;
     let flowsetName: string;
@@ -486,7 +482,7 @@ describe('Case Status Configuration', () => {
             await statusConfigPo.setCompanyDropdown('Pico Systems', 'task');
             await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.addCustomStatus("Staged", "Assigned", "customStatus");
-            await statusConfigPo.saveSetting();
+            await statusConfigPo.clickOnSaveButton();
         });
         it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
             await apiHelper.apiLoginWithCredential(personData1.userId + '@petramco.com', 'Password_1234');
@@ -516,7 +512,7 @@ describe('Case Status Configuration', () => {
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
             await statusConfigPo.clickOnDeleteButton();
             await utilCommon.clickOnWarningOk();
-            expect(await utilCommon.isPopUpMessagePresent("ERROR (10000): Task with this status are present.")).toBeTruthy();
+            expect(await utilCommon.isPopUpMessagePresent("ERROR (10000): Task with this status are present")).toBeTruthy();
         });
 
         it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
@@ -555,7 +551,7 @@ describe('Case Status Configuration', () => {
             await statusConfigPo.setCompanyDropdown("Pico Systems", 'case');
             await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.addCustomStatus("New", "Assigned", "customStatus");
-            await statusConfigPo.saveSetting();
+            await statusConfigPo.clickOnSaveButton();
 
         });
         it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
@@ -598,7 +594,7 @@ describe('Case Status Configuration', () => {
         });
         it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
             await apiHelper.apiLoginWithCredential(personData1.userId + '@petramco.com', 'Password_1234');
-            caseId = await apiHelper.createCase(caseData);
+            caseId1 = await apiHelper.createCase(caseData);
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId1.displayId);
             expect(await viewCasePo.getCaseStatusValue()).toBe('Assigned');
@@ -609,7 +605,7 @@ describe('Case Status Configuration', () => {
             await statusConfigPo.setCompanyDropdown('Pico Systems', 'knowledge');
             await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.addCustomStatus("In Progress", "Draft", "Custom");
-            await statusConfigPo.saveSetting();
+            await statusConfigPo.clickOnSaveButton();
         });
 
         it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
@@ -617,6 +613,7 @@ describe('Case Status Configuration', () => {
             await apiHelper.createKnowledgeSet(knowledgeSetData);
             knowldgeId = await apiHelper.createKnowledgeArticle(articleData1);
             await navigationPage.gotoKnowledgeConsole();
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(knowldgeId.displayId);
             await editKnowledgePo.setKnowledgeStatus('Custom');
         });
@@ -634,6 +631,7 @@ describe('Case Status Configuration', () => {
         });
         it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
             await navigationPage.gotoKnowledgeConsole();
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(knowldgeId.displayId);
             await editKnowledgePo.setKnowledgeStatus('Draft');
         });
@@ -653,8 +651,9 @@ describe('Case Status Configuration', () => {
             await apiHelper.apiLoginWithCredential(personData1.userId + '@petramco.com', 'Password_1234');
             knowldgeId = await apiHelper.createKnowledgeArticle(articleData2);
             await navigationPage.gotoKnowledgeConsole();
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(knowldgeId.displayId);
-            await editKnowledgePo.setKnowledgeStatus('Draft');
+            
         });
 
     });
