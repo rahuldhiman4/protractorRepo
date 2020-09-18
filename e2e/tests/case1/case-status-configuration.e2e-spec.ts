@@ -17,7 +17,10 @@ import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import createAdhocTaskPo from '../../pageobject/task/create-adhoc-task.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import knowledgeArticlesConsolePo from '../../pageobject/knowledge/knowledge-articles-console.po';
-
+import createKnowledgePage from "../../pageobject/knowledge/create-knowlege.po";
+import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
+import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
+import editKnowledgePo from '../../pageobject/knowledge/edit-knowledge.po';
 describe('Case Status Configuration', () => {
     let flowsetData;
     let flowsetName: string;
@@ -411,9 +414,7 @@ describe('Case Status Configuration', () => {
 
     //ankagraw
     describe('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
-        let caseId, taskId, caseId1, caseData, articleData1, caseDataInProgress, knowledgeSetData, randomStr = Math.floor(Math.random() * 1000000);
-        let manualTask = 'manual task' + randomStr;
-        let manualSummary = 'manual' + randomStr;
+        let caseId, taskId, caseId1, caseData, articleData1, articleData2,caseDataInProgress, knowledgeSetData, knowldgeId,randomStr = Math.floor(Math.random() * 1000000);
         let personData1;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
@@ -453,29 +454,31 @@ describe('Case Status Configuration', () => {
                 "Support Group": "Pico Support Group1",
                 "Assignee": personData1.userId,
                 "status": "In Progress",
-
-            }
-            articleData1 = {
-                "knowledgeSet": "test knowledge",
-                "title": "KnowledgeArticle" + randomStr,
-                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-                "assignedCompany": "Petramco",
-                "assigneeBusinessUnit": "United States Support",
-                "assigneeSupportGroup": "US Support 1",
-                "assignee": "kayo",
-                "categoryTier1": "Applications",
-                "region": "Australia",
-                "site": "Canberra",
             }
 
             knowledgeSetData = {
-                knowledgeSetTitle: "test knowledge",
+                knowledgeSetTitle: "test knowledge"+randomStr,
                 knowledgeSetDesc: "test description",
-                company: 'Petramco'
+                company: 'Pico Systems'
             }
+
+            articleData1 = {
+                "knowledgeSet": knowledgeSetData.knowledgeSetTitle,
+                "title": "KnowledgeArticle" + randomStr,
+                "templateId": "AGGAA5V0HGVMIAOK04TZO94MC355RA",
+                "company": 'Pico Systems'
+            }
+
+            articleData2 = {
+                "knowledgeSet": knowledgeSetData.knowledgeSetTitle,
+                "title": "KnowledgeArticleData" + randomStr,
+                "templateId": "AGGAA5V0HGVMIAOK04TZO94MC355RA",
+                "company": 'Pico Systems'
+            }
+
+            await navigationPage.signOut();
             await loginPage.login(personData1.userId + '@petramco.com', 'Password_1234');
             await apiHelper.apiLoginWithCredential(personData1.userId + '@petramco.com', 'Password_1234');
-            caseId1 = await apiHelper.createCase(caseData);
         });
         it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
             await navigationPage.gotoSettingsPage();
@@ -487,13 +490,18 @@ describe('Case Status Configuration', () => {
         });
         it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
             await apiHelper.apiLoginWithCredential(personData1.userId + '@petramco.com', 'Password_1234');
-            caseId = await apiHelper.createCase(caseData);
+            caseId = await apiHelper.createCase(caseDataInProgress);
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId.displayId);
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickAddAdhocTaskButton();
             await createAdhocTaskPo.setSummary("Summary" + randomStr);
             await createAdhocTaskPo.clickSaveAdhoctask();
+            await manageTaskBladePo.clickTaskLink("Summary" + randomStr);
+            await viewTaskPo.clickOnViewCase();
+            await updateStatusBladePo.changeCaseStatus("In Progress");
+            await updateStatusBladePo.clickSaveStatus();
+            await viewCasePo.openTaskCard(1);
             await manageTaskBladePo.clickTaskLink("Summary" + randomStr);
             expect(await viewTaskPo.getTaskStatusValue()).toBe("customStatus");
             taskId = await viewTaskPo.getTaskID();
@@ -508,7 +516,7 @@ describe('Case Status Configuration', () => {
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
             await statusConfigPo.clickOnDeleteButton();
             await utilCommon.clickOnWarningOk();
-            expect(await utilCommon.isPopUpMessagePresent("Cases with this status are present")).toBeTruthy();
+            expect(await utilCommon.isPopUpMessagePresent("ERROR (10000): Task with this status are present.")).toBeTruthy();
         });
 
         it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
@@ -516,7 +524,7 @@ describe('Case Status Configuration', () => {
             await utilityGrid.searchAndOpenHyperlink(taskId);
             expect(await viewTaskPo.getTaskStatusValue()).toBe("customStatus");
             await updateStatusBladePo.changeCaseStatus('Assigned');
-            await updateStatusBladePo.clickSaveStatus('Assigned');
+            await updateStatusBladePo.clickSaveStatus();
             expect(await viewTaskPo.getTaskStatusValue()).toBe("Assigned");
         });
         it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
@@ -567,7 +575,7 @@ describe('Case Status Configuration', () => {
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
             await statusConfigPo.clickOnDeleteButton();
             await utilCommon.clickOnWarningOk();
-            expect(await utilCommon.isPopUpMessagePresent("Cases with this status are present")).toBeTruthy();
+            expect(await utilCommon.isPopUpMessagePresent("ERROR (10000): Case with this status are present.")).toBeTruthy();
 
         });
         it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
@@ -605,12 +613,12 @@ describe('Case Status Configuration', () => {
         });
 
         it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
+            await apiHelper.apiLoginWithCredential(personData1.userId + '@petramco.com', 'Password_1234');
             await apiHelper.createKnowledgeSet(knowledgeSetData);
-            await apiHelper.createKnowledgeArticle(articleData1);
+            knowldgeId = await apiHelper.createKnowledgeArticle(articleData1);
             await navigationPage.gotoKnowledgeConsole();
-            await knowledgeArticlesConsolePo.searchKnowledgeArticle(articleData1.title);
-            await updateStatusBladePo.changeCaseStatus('Custom');
-            await updateStatusBladePo.clickSaveStatus('Custom');
+            await utilityGrid.searchAndOpenHyperlink(knowldgeId.displayId);
+            await editKnowledgePo.setKnowledgeStatus('Custom');
         });
 
         it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
@@ -622,13 +630,12 @@ describe('Case Status Configuration', () => {
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
             await statusConfigPo.clickOnDeleteButton();
             await utilCommon.clickOnWarningOk();
-            expect(await utilCommon.isPopUpMessagePresent("knowledge with this status are present")).toBeTruthy();
+            expect(await utilCommon.isPopUpMessagePresent("ERROR (10000): Knowledge articles with this status are present.")).toBeTruthy();
         });
         it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
             await navigationPage.gotoKnowledgeConsole();
-            await knowledgeArticlesConsolePo.searchKnowledgeArticle(articleData1.title);
-            await updateStatusBladePo.changeCaseStatus('Draft');
-            await updateStatusBladePo.clickSaveStatus('Draft');
+            await utilityGrid.searchAndOpenHyperlink(knowldgeId.displayId);
+            await editKnowledgePo.setKnowledgeStatus('Draft');
         });
 
         it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
@@ -643,12 +650,11 @@ describe('Case Status Configuration', () => {
         });
 
         it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
-            await apiHelper.createKnowledgeSet(knowledgeSetData);
-            await apiHelper.createKnowledgeArticle(articleData1);
+            await apiHelper.apiLoginWithCredential(personData1.userId + '@petramco.com', 'Password_1234');
+            knowldgeId = await apiHelper.createKnowledgeArticle(articleData2);
             await navigationPage.gotoKnowledgeConsole();
-            await knowledgeArticlesConsolePo.searchKnowledgeArticle(articleData1.title);
-            await updateStatusBladePo.changeCaseStatus('Draft');
-            await updateStatusBladePo.clickSaveStatus('Draft');
+            await utilityGrid.searchAndOpenHyperlink(knowldgeId.displayId);
+            await editKnowledgePo.setKnowledgeStatus('Draft');
         });
 
     });

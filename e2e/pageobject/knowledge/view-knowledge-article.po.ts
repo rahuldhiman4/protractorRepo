@@ -38,7 +38,7 @@ class ViewKnowledgePage {
         articlePermissionReadAccess: '[rx-view-component-id="eeb63a7a-9687-4527-95ca-92af413dcc9d"] .d-icon-eye',
         articleViewCounter: '[rx-view-component-id="407ae5ae-c7a2-4a3c-87b3-f4e26837b2fb"] p',
         articleHelpfulCounter: '[rx-view-component-id="5cc2757f-7a22-4827-82c0-1e7dee2e12a2"] p',
-        articleKeywords: '[rx-view-component-id="51e52d59-3acd-49b3-8291-e10558985fa1"] div.tagsReadMode p',
+        articleKeywords: '[rx-view-component-id="51e52d59-3acd-49b3-8291-e10558985fa1"] .bwf-item-text',
         articleReviewer: '[rx-view-component-id="387dfda7-4f77-4df0-9ac0-6f4fb83b6fe7"] .read-only-content',
         articleReviewerGroup: '[rx-view-component-id="0b622151-c917-4d1c-97e4-3a9b7f082e2d"] .read-only-content',
         articleLastReviewDate: '[rx-view-component-id="bccc3ffb-8be9-4332-8f7f-fef96b43c3b9"] .read-only-content',
@@ -59,7 +59,7 @@ class ViewKnowledgePage {
     }
 
     async isKnowledgeArticleIdDisplayed(knowledgeArticleId: string): Promise<boolean> {
-        
+
         return await element(by.cssContainingText(this.selectors.knowledgeArticleId, knowledgeArticleId)).isPresent().then(async (link) => {
             if (link) {
                 return await element(by.cssContainingText(this.selectors.knowledgeArticleId, knowledgeArticleId)).isDisplayed();
@@ -86,7 +86,7 @@ class ViewKnowledgePage {
     async getSiteValueAfterClear(): Promise<string> {
         return await $(this.selectors.siteValueAfterClear).getText();
     }
-    
+
     async isKAUsefulYesButtonDisplayed(): Promise<boolean> {
         return await $(this.selectors.kAUsefulYesButton).isDisplayed();
     }
@@ -221,7 +221,7 @@ class ViewKnowledgePage {
         let month: string = new Number(numMonth).toString();
         let numDate: number = objDate.getDate();
         let date: string = new Number(numDate).toString();
-    
+
         let formatted_date: string = months[month] + " " + date + ", " + year;
         return formatted_date;
     }
@@ -334,21 +334,47 @@ class ViewKnowledgePage {
         return await $(this.selectors.articleNextReviewDate).getText();
     }
 
-    async isArticleReviewerUserDisplayed(): Promise<void> {
-        // await browser.wait(this.EC.elementToBeClickable($(this.selectors.articleReviewer)));
-        await $(this.selectors.articleReviewer).isDisplayed();
+    async isArticleReviewerUserDisplayed(): Promise<boolean> {
+
+
+        return await $(this.selectors.articleReviewer).isPresent().then(async (result) => {
+            if (result) return await $(this.selectors.articleReviewer).isDisplayed();
+            else {
+                return false;
+            }
+
+        });
     }
-    async isArticleReviewerGroupDisplayed(): Promise<void> {
+    async isArticleReviewerGroupDisplayed(): Promise<boolean> {
         // await browser.wait(this.EC.elementToBeClickable($(this.selectors.articleReviewerGroup)));
-        await $(this.selectors.articleReviewerGroup).isDisplayed();
+        
+        return await $(this.selectors.articleReviewerGroup).isPresent().then(async (result) => {
+            if (result) return await $(this.selectors.articleReviewerGroup).isDisplayed();
+            else {
+                return false;
+            }
+
+        });
     }
-    async isArticleLastReviewDateDisplayed(): Promise<void> {
-        // await browser.wait(this.EC.elementToBeClickable($(this.selectors.articleLastReviewDate)));
-        await $(this.selectors.articleLastReviewDate).isDisplayed();
+    async isArticleLastReviewDateDisplayed(): Promise<boolean> {
+       
+        return await $(this.selectors.articleLastReviewDate).isPresent().then(async (result) => {
+            if (result) return await $(this.selectors.articleLastReviewDate).isDisplayed();
+            else {
+                return false;
+            }
+
+        });
     }
-    async isArticleNextReviewDateDisplayed(): Promise<void> {
-        // await browser.wait(this.EC.elementToBeClickable($(this.selectors.articleNextReviewDate)));
-        await $(this.selectors.articleNextReviewDate).isDisplayed();
+    async isArticleNextReviewDateDisplayed(): Promise<boolean> {
+        
+        return await $(this.selectors.articleNextReviewDate).isPresent().then(async (result) => {
+            if (result) return await $(this.selectors.articleNextReviewDate).isDisplayed();
+            else {
+                return false;
+            }
+
+        });
     }
 
     async getKnowledgeArticleTitle(): Promise<string> {
@@ -373,12 +399,20 @@ class ViewKnowledgePage {
 
     async getArticleIsExternalValue(): Promise<string> {
         // await browser.wait(this.EC.elementToBeClickable($(this.selectors.articleIsExternal)));
-        return await $(this.selectors.articleIsExternal).getText();
+       // return await $(this.selectors.articleIsExternal).getText();
+        return await $(this.selectors.articleIsExternal).isPresent().then(async (result) => {
+            if (result) return await $(this.selectors.articleIsExternal).getText();
+
+        });
     }
 
     async isArticleIsExternalValueDisplayed(): Promise<boolean> {
         // await browser.wait(this.EC.elementToBeClickable($(this.selectors.articleIsExternal)));
-        return await $(this.selectors.articleIsExternal).isDisplayed();
+        //return await $(this.selectors.articleIsExternal).isDisplayed();
+        return await $(this.selectors.articleIsExternal).isPresent().then(async (result) => {
+            if (result) return await $(this.selectors.articleIsExternal).isDisplayed();
+
+        });
     }
 
     async isFlagArticleOptionDisplayed(): Promise<boolean> {
@@ -424,7 +458,7 @@ class ViewKnowledgePage {
     async clickOnAttachments(attachmentName: string): Promise<void> {
         await element(by.cssContainingText(this.selectors.attachmentName, attachmentName)).click();
     }
-    
+
     async isApprovalButtonsPresent(buttonText: string): Promise<boolean> {
         return await element(by.cssContainingText(this.selectors.approvalButtons, buttonText)).isPresent().then(async (result) => {
             if (result) return await element(by.cssContainingText(this.selectors.approvalButtons, buttonText)).isDisplayed();
