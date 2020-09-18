@@ -451,7 +451,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
     });
 
     //skhobrag
-    fdescribe('[DRDMV-20754]: Verify the search functionality of articles with versions from Case Edit > Resources screen', () => {
+    describe('[DRDMV-20754]: Verify the search functionality of articles with versions from Case Edit > Resources screen', () => {
         beforeAll(async () => {
             let articleData1 = {
                 "knowledgeSet": "HR",
