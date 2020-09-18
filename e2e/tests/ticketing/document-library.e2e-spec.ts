@@ -37,10 +37,6 @@ describe('Document Library', () => {
         await navigationPage.signOut();
     });
 
-    afterEach(async () => {
-        await utilityCommon.refresh();
-    });
-
     async function foundationData(company: string) {
         await apiHelper.apiLogin('tadmin');
         let businessData = businessDataFile['BusinessUnitData'];

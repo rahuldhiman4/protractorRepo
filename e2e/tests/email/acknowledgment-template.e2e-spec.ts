@@ -31,10 +31,6 @@ describe('Acknowledgment Template', () => {
         await navigationPage.signOut();
     });
 
-    afterEach(async () => {
-        await utilityCommon.refresh();
-    });
-
     //ankagraw
     it('[DRDMV-10897]: Acknowledgment Template : Acknowledgment Template creation UI validations', async () => {
         await navigationPage.gotoSettingsPage();

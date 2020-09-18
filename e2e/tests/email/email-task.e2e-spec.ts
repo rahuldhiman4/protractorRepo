@@ -29,10 +29,6 @@ describe('Email Task', () => {
         await navigationPage.signOut();
     });
 
-    afterEach(async () => {
-        await utilityCommon.refresh();
-    });
-
     describe('[DRDMV-19011]: Automated task should not have email options but other type of task should have email option	', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let taskTemplateName = 'Manual task19011' + randomStr;
