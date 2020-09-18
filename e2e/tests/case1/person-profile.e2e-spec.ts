@@ -314,6 +314,7 @@ describe('Person Profile test', () => {
             //Remove the relation and verify that Relation is actually removed
             await relatedTabPage.clickRelatedPersonName('Qianru Tao');
             await utilityCommon.switchToNewTab(2);
+            await browser.sleep(3000); //Hard wait to load new page
             await relatedTabPage.removeRelatedPerson('Adam Pavlik');
             await navigationPage.signOut();
             await loginPage.login('qtao');

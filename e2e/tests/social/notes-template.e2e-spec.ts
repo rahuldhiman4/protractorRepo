@@ -717,6 +717,7 @@ describe('Notes template', () => {
 
         it('[DRDMV-16051,DRDMV-16013]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', async () => {
             //Validating the People Notes
+            await navigationPage.gotoQuickCase();
             await navigationPage.gotoPersonProfile();
             await relatedTabPage.addRelatedPerson();
             await addRelatedPopupPage.addPerson('Qiang Du', 'Parent');
