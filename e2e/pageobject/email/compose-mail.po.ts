@@ -60,6 +60,7 @@ class ComposeMail {
     async clickInTableCell(row: number, column: number, summary: string): Promise<void> {
         let locator = `table[summary='${summary}'] tr`;
         await browser.waitForAngularEnabled(false);
+        await browser.sleep(1000); // sleep required for proper frame switch
         await browser.switchTo().frame(element(by.css('[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] iframe.cke_wysiwyg_frame')).getWebElement());
         let rowLocator = await $$(locator).get(row - 1);
         await rowLocator.$$('td').get(column - 1).click();
