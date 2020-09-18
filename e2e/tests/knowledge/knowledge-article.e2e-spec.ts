@@ -1782,28 +1782,22 @@ describe('Knowledge Article', () => {
 
     describe('[DRDMV-753]:[Advanced Search] [Pin/Unpin] Relate Knowledge Article on Knowledge Edit view from Advanced search', async () => {
         it('[DRDMV-753]:[Advanced Search] Knowledge Creation', async () => {
-            await knowledgeConfigCreation();
-            await apiHelper.apiLogin('qtao');
+            await apiHelper.apiLogin('kmills');
             let articleData = {
-                "knowledgeSet": `${knowledgeSetTitleStr}`,
+                "knowledgeSet": "HR",
                 "title": 'KA1' + randomStr,
-                "templateId": `${knowledgeTemplateId}`,
-                "categoryTier1": "Applications",
-                "categoryTier2": "Help Desk",
-                "categoryTier3": "Incident",
-                "region": "Australia",
-                "site": "Canberra",
+                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
                 "assigneeSupportGroup": "GB Support 1",
-                "assignee": "KMills",
-                "articleDesc": `${knowledgeSetTitleStr} Desc`
+                "assignee": "KMills"
             }
             kaDetails1 = await apiHelper.createKnowledgeArticle(articleData);
             let knowledgeArticleGUID1 = kaDetails1.id;
+            articleData.title = 'KA2' + randomStr;
             kaDetails2 = await apiHelper.createKnowledgeArticle(articleData);
             let knowledgeArticleGUID2 = kaDetails2.id;
-            articleData.title = 'KA2' + randomStr;
+            articleData.title = 'KA3' + randomStr;
             kaDetails3 = await apiHelper.createKnowledgeArticle(articleData);
             let knowledgeArticleGUID3 = kaDetails3.id;
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID1, 'Draft')).toBeTruthy('Status Not Set');
@@ -1812,6 +1806,7 @@ describe('Knowledge Article', () => {
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID2, 'PublishApproval')).toBeTruthy('Status Not Set');
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID3, 'Draft')).toBeTruthy('Status Not Set');
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID3, 'PublishApproval')).toBeTruthy('Status Not Set');
+            await browser.sleep(2000); // hardwait to populate resource tab data
         });
         it('[DRDMV-753]:[Advanced Search] [Pin/Unpin] Relate Knowledge Article on Knowledge Edit view from Advanced search', async () => {
             await navigationPage.signOut();
@@ -1823,21 +1818,33 @@ describe('Knowledge Article', () => {
             await utilityGrid.searchAndOpenHyperlink(kaDetails3.displayId);
             await viewKnowledgeArticlePo.clickOnTab('Resources');
             await resources.clickOnAdvancedSearchOptions();
-            await resources.enterAdvancedSearchText(kaDetails1.displayId);
+            await resources.enterAdvancedSearchText("%");
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton("Apply");
             await resources.pinRecommendedKnowledgeArticles(1);
             expect(await resources.isFirstPinnedArticleDisplayed()).toBeTruthy();
-            await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await resources.enterAdvancedSearchText("Suggested Articles");
+        });
+        it('[DRDMV-753]:[Advanced Search] [Pin/Unpin] Relate Knowledge Article on Knowledge Edit view from Advanced search', async () => {
+            await navigationPage.gotoKnoweldgeConsoleFromKM();
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(kaDetails3.displayId);
+            await viewKnowledgeArticlePo.clickOnTab("Resources");
+            await resources.clickOnAdvancedSearchOptions();
+            await resources.enterAdvancedSearchText("%");
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton("Apply");
             expect(await resources.isFirstPinnedArticleDisplayed()).toBeTruthy();
             await resources.pinRecommendedKnowledgeArticles(2);
             expect(await resources.getCountOfPinKnowledgeArticles()).toBe(3);
-            await viewKnowledgeArticlePo.clickOnTab('Activity');
+        });
+        it('[DRDMV-753]:[Advanced Search] [Pin/Unpin] Relate Knowledge Article on Knowledge Edit view from Advanced search', async () => {
+            await navigationPage.gotoKnoweldgeConsoleFromKM();
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(kaDetails3.displayId);
             await viewKnowledgeArticlePo.clickOnTab('Resources');
             expect(await resources.getCountOfPinKnowledgeArticles()).toBe(3);
+            await resources.clickOnAdvancedSearchOptions();
+            await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnBackButton();
             expect(await resources.getCountOfPinKnowledgeArticles()).toBe(3);
             await resources.unpinRecommendedKnowledgeArticles(1);
@@ -1853,7 +1860,7 @@ describe('Knowledge Article', () => {
             await utilityGrid.searchAndOpenHyperlink(kaDetails2.displayId);
             await viewKnowledgeArticlePo.clickOnTab("Resources");
             await resources.clickOnAdvancedSearchOptions();
-            await resources.enterAdvancedSearchText("Suggested Articles");
+            await resources.enterAdvancedSearchText("%");
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton("Apply");
             await resources.pinRecommendedKnowledgeArticles(2);
@@ -1878,7 +1885,7 @@ describe('Knowledge Article', () => {
         beforeAll(async () => {
             await knowledgeConfigCreation();
         });
-        it('[DRDMV-620]: Advanced Search UI verification on the Quick Case view', async () => {``
+        it('[DRDMV-620]: Advanced Search UI verification on the Quick Case view', async () => {
             articleData1 = {
                 "knowledgeSet": `${knowledgeSetTitleStr}`,
                 "title": randomStr + 'KA1',

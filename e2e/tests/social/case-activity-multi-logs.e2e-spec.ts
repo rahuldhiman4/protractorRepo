@@ -679,8 +679,7 @@ describe('Case Activity Multi Logs', () => {
         let approvalFlowName = 'Approval Flow' + randomStr;
         let caseData = undefined;
         let caseId: string;
-        let approvalMappingData = undefined;
-        let caseTemplateDataWithMatchingCriteria;
+        let caseTemplateDataWithMatchingSummary;
         let caseModule = 'Case';
         let automatedTaskTemplateSummary = 'AutomatedTaskTemplateSummaryDRDMV16729'+ randomStr;
         let manualTaskTemplateSummary = 'ManualTaskTemplateSummaryDRDMV16729'+ randomStr;
@@ -695,14 +694,18 @@ describe('Case Activity Multi Logs', () => {
         let categName3 = 'DemoCateg3DRDMV15252';
         let categName4 = 'DemoCateg4DRDMV15252';
         let manualTaskId;
+        let summary = '"' + "Automated Self Approval without process" + '"';
 
 
         beforeAll(async () => {
         // Create Case Template through API
-        caseTemplateDataWithMatchingCriteria = {
+        caseTemplateDataWithMatchingSummary = {
             "templateName": 'caseTemplateForSelfApprovalWithoutProcessWithCriticalPriority' + randomStr,
-            "templateSummary": 'Automated One must Approval Case',
-            "categoryTier1": 'Phones',
+            "templateSummary": 'Automated Self Approval without process',
+            "categoryTier1": 'Applications',
+            "categoryTier2": 'Social',
+            "categoryTier3": 'Chatter',
+            "casePriority": "Medium",
             "templateStatus": "Active",
             "company": "Petramco",
             "businessUnit": "United States Support",
@@ -710,14 +713,14 @@ describe('Case Activity Multi Logs', () => {
             "assignee": "qfeng",
             "ownerBU": "United States Support",
             "ownerGroup": "US Support 3"
-        }
+    }
 
         await apiHelper.apiLogin('qkatawazi');
-        let caseTemplateWithMatchingSummaryResponse = await apiHelper.createCaseTemplate(caseTemplateDataWithMatchingCriteria);
+        let caseTemplateWithMatchingSummaryResponse = await apiHelper.createCaseTemplate(caseTemplateDataWithMatchingSummary);
         let caseTemplateDisplayId = caseTemplateWithMatchingSummaryResponse.displayId;
 
         //Create Approval Mapping through API
-        approvalMappingData = {
+        let approvalMappingData = {
             "triggerStatus": "Assigned",
             "errorStatus": "New",
             "approvedStatus": "InProgress",
@@ -777,8 +780,8 @@ describe('Case Activity Multi Logs', () => {
 
             // create case json
             caseData = {
-                "Requester": "apavlik",
-                "Summary": "Automated One must Approval Case",
+                "Requester": "qdu",
+                "Summary": "Automated Self Approval without process",
                 "Origin": "Agent",
                 "Case Template ID": caseTemplateDisplayId
             }
@@ -800,106 +803,56 @@ describe('Case Activity Multi Logs', () => {
 
         });
 
-        it('[DRDMV-16729]:Create General Approval Flow', async () => {
+        it('[DRDMV-16729]:Create Self Approval Flow Without Process', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Approvals--Approval Configuration', 'Approval Configuration - Administration - Business Workflows');
             await approvalConfigurationPage.searchAndOpenApprovalConfiguration(caseApprovalRecordDefinition);
             expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
             expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Edit Approval Flow');
-            await approvalConfigurationPage.clickApprovalConfigurationTab('Approval Flows');
-            await approvalConfigurationPage.clickApprovalGroup('BWFA Group');
-            await approvalConfigurationPage.clickAddNewFlowLinkButton();
-            await approvalConfigurationPage.selectApprovalFlowOption('General Approval Flow');
-            expect(await approvalConfigurationPage.getNewApprovalFlowDefaultTitle()).toBe('Flow:New General Flow');
-            await approvalConfigurationPage.editNewApprovalFlowDefaultTitle(approvalFlowName);
-            await approvalConfigurationPage.selectMultipleApproversDropDownOption('One Must Approve');
-            await approvalConfigurationPage.clickExpressionLink();
-            await browser.sleep(5000); // sleep added for expression builder loading time
+            await approvalConfigurationPage.clickApprovalConfigurationTab('Self Approval');
+            await approvalConfigurationPage.clickNewSelfApprovalFlowButton();
             expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
-            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Create New Approval Flow');
-            await browser.sleep(3000); // sleep added for expression builder loading time
-            await approvalConfigurationPage.searchExpressionFieldOption('Category Tier 1');
+            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Create Approval Flow');
+            await browser.sleep(5000); //sleep added for expression builder loading
+            await approvalConfigurationPage.searchExpressionFieldOption('Summary');
             await approvalConfigurationPage.clickRecordOption('Record Definition');
             await approvalConfigurationPage.clickRecordOption('Case');
-            await browser.sleep(2000); // sleep added for expression builder loading time
             await approvalConfigurationPage.selectExpressionFieldOption();
-            await browser.sleep(2000); // sleep added for expression builder loading time
+            await browser.sleep(1000); //sleep added for expression builder loading
             await approvalConfigurationPage.selectExpressionOperator('=');
-            await browser.sleep(1000); // sleep added for expression builder loading time
-            await approvalConfigurationPage.clickExpressionOperatorLinkToSelectExpressionValue();
-            await approvalConfigurationPage.selectExpressionValuesOptions('Categorization', 'Operational');
-            await approvalConfigurationPage.searchFoundationDataToApprovalExpression(caseTemplateDataWithMatchingCriteria.categoryTier1);
-            await approvalConfigurationPage.clickSelectLink();
-            await approvalConfigurationPage.clickFoundationDataSaveButton();
+            await browser.sleep(1000); //sleep added for expression builder loading
+            await approvalConfigurationPage.setExpressionValueForParameter(summary);
+            await approvalConfigurationPage.clickNextbuttonOnSelfApproval();
+            await approvalConfigurationPage.setAuditInformationValue('test self approval');
             await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
-            await approvalConfigurationPage.clickSelectApproversLink();
-            await approvalConfigurationPage.selectApproversForApproverFlow('Person', 'Katawazi');
-            await approvalConfigurationPage.selectApproverSectionForGeneralApprovalFlow('Person');
-            await approvalConfigurationPage.selectApproversForApproverFlow('Person', 'qliu');
-            await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
-            await approvalConfigurationPage.clickApprovalFlowSaveButton();
             await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
         });
 
-        it('[DRDMV-16729]:Create a case and verify approval details on case', async () => {
-            await navigationPage.signOut();
-            await loginPage.login('qfeng');
-
+        it('[DRDMV-16729]:Create case and verify self approval without process', async () => {
             await apiHelper.apiLogin('qfeng');
             caseResponseDetails = await apiHelper.createCase(caseData);
             caseId = caseResponseDetails.displayId;
-            await caseConsolePo.searchAndOpenCase(caseId);
-            expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
-            expect(await viewCasePo.isShowApproversBannerDisplayed()).toBeTruthy('Show Approvers Banner is not displayed');
-            expect(await viewCasePo.getShowPendingApproversInfo()).toContain('Pending Approval :1');
-            await viewCasePo.clickShowApproversLink();
-            expect(await showApproversBladePo.isShowApproversBladeDisplayed()).toBeTruthy('Approver List blade is not displayed');
-            expect(await showApproversBladePo.getShowApproversBladeLabel()).toEqual('Approver List');
-            expect(await showApproversBladePo.getApproversTabLabel('Pending Approval')).toContain('Pending Approval (1)');
-            expect(await showApproversBladePo.getApproversTabLabel('Approval Decision')).toContain('Approval Decision (0)');
-            expect(await showApproversBladePo.getApprovalsHelpTextOnShowApproversBlade()).toContain('One of following people must approve this case:');
-            expect(await showApproversBladePo.getApproversCount()).toBe(2);
-            expect(await showApproversBladePo.getApproversName('Qadim Katawazi')).toBeTruthy('Approver not present');
-            expect(await showApproversBladePo.getApproversName('RA3 Liu')).toBeTruthy('Approver not present');
-            expect(await showApproversBladePo.isApproverPersonIconDisplayed('RA3 Liu')).toBeTruthy('Approver Person Icon is not displayed');
-            expect(await showApproversBladePo.isAwaitingApproverIconDisplayed()).toBeTruthy('Awaiting approver icon is not displayed');
-            expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
-            expect(await showApproversBladePo.getApproversCompany('Petramco')).toBeTruthy('Approver Company is not displayed');
-            expect(await showApproversBladePo.getApprovalStatusLabel()).toContain('Awaiting Approval');
-            await showApproversBladePo.clickApproversTab('Approval Decision');
-            expect(await showApproversBladePo.getApproversCount()).toBe(0);
-            await showApproversBladePo.clickBackButtonOnApprovalBlade();
-        });
-
-        it('[DRDMV-16729]:Verify social activity with approval', async () => {
-            await navigationPage.signOut();
-            await loginPage.login('qliu');
-            await navigationPage.switchToJSApplication('Approval');
-            await approvalConsolePage.searchCaseOnApprovalConsole('Automated One must Approval Case', 'Approve');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await utilityGrid.searchAndOpenHyperlink(caseId);
-
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("In Progress");
-            expect(await activityTabPage.getFirstPostContent()).toContain('Case was approved');
-
-            expect(await activityTabPage.isLogIconDisplayedInActivity('check_circle', 1)).toBeTruthy('FailureMsg11: log icon is missing');
-            expect(await activityTabPage.isTextPresentInActivityLog('Case was approved')).toBeTruthy('FailureMsg23: In Progress Text is missing in activity log');
-            expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeFalsy('FailureMsg12: lock icon displayed on activity logs');
+            expect(await activityTabPage.isLogIconDisplayedInActivity('check_circle', 4)).toBeTruthy('FailureMsg11: log icon is missing');
+            expect(await activityTabPage.isTextPresentInActivityLog('Case was auto-approved')).toBeTruthy('FailureMsg23: In Progress Text is missing in activity log');
+            expect(await activityTabPage.isLockIconDisplayedInActivity(5)).toBeFalsy('FailureMsg12: lock icon displayed on activity logs');
         });
 
         it('[DRDMV-16729]: Verify case creation', async () => {
             await activityTabPage.clickOnShowMore();
-            expect(await activityTabPage.isLogIconDisplayedInActivity('filePlus', 5)).toBeTruthy('FailureMsg11: log icon is missing');
-            expect(await activityTabPage.isLockIconDisplayedInActivity(5)).toBeTruthy('FailureMsg12: lock icon missing in activity logs');
-            expect(await activityTabPage.isTextPresentInActivityLog('Automated One must Approval Case ')).toBeTruthy('FailureMsg23: In Progress Text is missing in activity log');
+            expect(await activityTabPage.isLogIconDisplayedInActivity('filePlus', 3)).toBeTruthy('FailureMsg11: log icon is missing');
+            expect(await activityTabPage.isLockIconDisplayedInActivity(3)).toBeTruthy('FailureMsg12: lock icon missing in activity logs');
+            expect(await activityTabPage.isTextPresentInActivityLog('Automated Self Approval without process ')).toBeTruthy('FailureMsg23: Automated Self Approval without process Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Status ')).toBeTruthy('FailureMsg23: Status  Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Assigned ')).toBeTruthy('FailureMsg23: Assigned  Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Assignee ')).toBeTruthy('FailureMsg23: Assignee  Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Qiao Feng')).toBeTruthy('FailureMsg23: Qiao Feng Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Site ')).toBeTruthy('FailureMsg23: Site  Text is missing in activity log');
-            expect(await activityTabPage.isTextPresentInActivityLog('Pleasanton ')).toBeTruthy('FailureMsg23: Pleasanton  Text is missing in activity log');
+            expect(await activityTabPage.isTextPresentInActivityLog('Vancouver  ')).toBeTruthy('FailureMsg23: Vancouver   Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Assigned Company')).toBeTruthy('FailureMsg23: Assigned Company Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Petramco')).toBeTruthy('FailureMsg23: Petramco Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Assigned Business Unit')).toBeTruthy('FailureMsg23: Assigned Business Unit Text is missing in activity log');
@@ -907,7 +860,11 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isTextPresentInActivityLog('Description')).toBeTruthy('FailureMsg23: Description  Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Case Template description')).toBeTruthy('FailureMsg23: Case Template description Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Category Tier 1')).toBeTruthy('FailureMsg23: Category Tier 1 Text is missing in activity log');
-            expect(await activityTabPage.isTextPresentInActivityLog('Phones')).toBeTruthy('FailureMsg23: Phones  Text is missing in activity log');
+            expect(await activityTabPage.isTextPresentInActivityLog('Applications ')).toBeTruthy('FailureMsg23: Applications   Text is missing in activity log');
+            expect(await activityTabPage.isTextPresentInActivityLog('Category Tier 2')).toBeTruthy('FailureMsg23: Category Tier 2 Text is missing in activity log');
+            expect(await activityTabPage.isTextPresentInActivityLog('Social')).toBeTruthy('FailureMsg23: Social Text is missing in activity log');
+            expect(await activityTabPage.isTextPresentInActivityLog('Category Tier 3')).toBeTruthy('FailureMsg23: Category Tier 3 Text is missing in activity log');
+            expect(await activityTabPage.isTextPresentInActivityLog('Chatter')).toBeTruthy('FailureMsg23: Chatter Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Priority')).toBeTruthy('FailureMsg23: Priority Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Medium')).toBeTruthy('FailureMsg23: Medium Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Assigned Group')).toBeTruthy('FailureMsg23: Assigned Group Text is missing in activity log');
@@ -1068,7 +1025,7 @@ describe('Case Activity Multi Logs', () => {
             await activityTabPage.clickOnRefreshButton();
 
             expect(await activityTabPage.isLogIconDisplayedInActivity('envelope', 1)).toBeTruthy('FailureMsg19: log icon is missing');
-            expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeFalsy('FailureMsg20: lock icon displayed activity logs');
+            expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg20: lock icon displayed activity logs');
             expect(await activityTabPage.isTextPresentInActivityLog('Qiao Feng sent an email')).toBeTruthy('FailureMsg21: Qiao Feng sent an email Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Adam Pavlik')).toBeTruthy('FailureMsg22: Adam Pavlik Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog(`${caseId}:caseSummary`)).toBeTruthy(`FailureMsg23: ${caseId}:caseSummary Text is missing in activity log`);

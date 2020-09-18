@@ -1,3 +1,4 @@
+import utilityCommon from '../../utils/utility.common';
 import { $, $$, browser, by, element, ElementFinder, protractor, ProtractorExpectedConditions } from 'protractor';
 
 export class Resources {
@@ -63,6 +64,11 @@ export class Resources {
                 }
             });
         }
+    }
+
+    async isValuePresentInDropdown(dropDownLabel: string, dropDownValue: string): Promise<boolean> {
+        let elementDropdown:ElementFinder =  await element(by.cssContainingText('.form-control-label', dropDownLabel));
+        return await utilityCommon.isValuePresentInDropDown(elementDropdown, dropDownValue);
     }
 
     async isAdvancedSearchFilterDropDownLabelDisplayed(dropDownLabel: string): Promise<boolean> {
