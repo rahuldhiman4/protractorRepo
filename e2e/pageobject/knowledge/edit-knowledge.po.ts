@@ -67,6 +67,7 @@ class EditKnowledgePage {
     }
 
     async getStatusValue(): Promise<string> {
+        console.log('Statusvalue', await $(this.selectors.statusChange).getText());
         return await $(this.selectors.statusChange).getText();
     }
 

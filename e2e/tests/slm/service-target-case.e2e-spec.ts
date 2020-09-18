@@ -147,7 +147,7 @@ describe('Service Target Tests for Cases', () => {
         });
         it('[DRDMV-11913]: [Global] Create a Case with global SVT', async () => {
             expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
-            await browser.sleep(70000);
+            await browser.sleep(65000); // hard wait added for svt changes reflection
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green

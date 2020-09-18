@@ -77,7 +77,7 @@ describe('Create Flowset', () => {
         await editFlowset.clickSaveBtn();
         await consoleFlowset.searchAndSelectFlowset("edit Flowset" + randomStr);
         await expect(editFlowset.getStatusvalue()).toBe("Draft");
-    }, 290 * 1000);
+    });
 
     //ankagraw
     it('[DRDMV-6212]: [Flowsets] Search Flowsets on Console', async () => {
@@ -174,20 +174,23 @@ describe('Create Flowset', () => {
         let processName1 = 'com.bmc.dsm.case-lib:Case - Initialization';
         await apiHelper.deleteFlowsetProcessLibConfig(processName1);
         await apiHelper.deleteFlowsetProcessLibConfig(processName);
-    });//, 150 * 1000);
+    });
 
     //ankagraw
-    it('[DRDMV-1259]: [Permissions] Flowsets access', async () => {
+    describe('[DRDMV-1259]: [Permissions] Flowsets access', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let flowsetName: string
 
-        try {
+        beforeAll(async () => {
             //API call to create the flowset
             await apiHelper.apiLogin('qkatawazi');
             let flowsetData = require('../../data/ui/case/flowset.ui.json');
-            let flowsetName: string = await flowsetData['flowsetMandatoryFields'].flowsetName + randomStr;
+            flowsetName = await flowsetData['flowsetMandatoryFields'].flowsetName + randomStr;
             flowsetData['flowsetMandatoryFields'].flowsetName = flowsetName;
             await apiHelper.createNewFlowset(flowsetData['flowsetMandatoryFields']);
+        });
 
+        it('[DRDMV-1259]: [Permissions] Flowsets access', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', 'Flowsets - Console - Business Workflows');
             await consoleFlowset.searchAndSelectFlowset(flowsetName);
@@ -203,13 +206,13 @@ describe('Create Flowset', () => {
             await loginPage.login('qtao');
             await navigationPage.gotoSettingsPage();
             await expect(navigationPage.isSettingMenuPresent('Manage Flowsets')).toBeFalsy("Setting menu present");
-        } catch (e) {
-            throw e;
-        } finally {
+        });
+
+        afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
-        }
-    }, 330 * 1000);
+        });
+    });
 
     //ankagraw
     it('[DRDMV-6213]: [Flowsets] Flowsets Console verification', async () => {
@@ -239,48 +242,54 @@ describe('Create Flowset', () => {
     });
 
     //ankagraw
-    it('[DRDMV-6214]: [Flowsets] Filter menu verification on Define Flowsets Console	', async () => {
+    describe('[DRDMV-6214]: [Flowsets] Filter menu verification on Define Flowsets Console	', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let randomStr1 = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let availableValues: string[] = ['Company', 'Description', 'Display ID', 'Flowset Name', 'ID', 'Status'];
+        let flowsetName, id, displayId;
+        beforeAll(async () => {
+            //API call to create the flowset
+            await apiHelper.apiLogin('qkatawazi');
+            let flowsetData = require('../../data/ui/case/flowset.ui.json');
+            flowsetName = await flowsetData['flowsetMandatoryFields'].flowsetName + randomStr;
+            flowsetData['flowsetMandatoryFields'].flowsetName = flowsetName;
+            let flowset = await apiHelper.createNewFlowset(flowsetData['flowsetMandatoryFields']);
+            id = flowset.id;
+            displayId = flowset.displayId;
+        });
 
-        //API call to create the flowset
-        await apiHelper.apiLogin('qkatawazi');
-        let flowsetData = require('../../data/ui/case/flowset.ui.json');
-        let flowsetName: string = await flowsetData['flowsetMandatoryFields'].flowsetName + randomStr;
-        flowsetData['flowsetMandatoryFields'].flowsetName = flowsetName;
-        let flowset = await apiHelper.createNewFlowset(flowsetData['flowsetMandatoryFields']);
-        let id = flowset.id;
-        let Display = flowset.displayId;
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', 'Flowsets - Console - Business Workflows');
-        await consoleFlowset.addColumn(["ID", 'Display ID']);
-        await expect(consoleFlowset.isAllVisibleColumnPresent(availableValues)).toBeTruthy("Available value is not present");
+        it('[DRDMV-6214]: [Flowsets] Filter menu verification on Define Flowsets Console	', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', 'Flowsets - Console - Business Workflows');
+            await consoleFlowset.addColumn(["ID", 'Display ID']);
+            await expect(consoleFlowset.isAllVisibleColumnPresent(availableValues)).toBeTruthy("Available value is not present");
 
-        await utilGrid.addFilter("Flowset Name", flowsetName, "text");
-        expect(await utilGrid.isGridRecordPresent(flowsetName)).toBeTruthy('flowsetName not present');
-        await utilGrid.clearFilter();
+            await utilGrid.addFilter("Flowset Name", flowsetName, "text");
+            expect(await utilGrid.isGridRecordPresent(flowsetName)).toBeTruthy('flowsetName not present');
+            await utilGrid.clearFilter();
 
-        await utilGrid.addFilter("Description", "Test Flowset name description", "text");
-        expect(await utilGrid.isGridRecordPresent('Test Flowset name description')).toBeTruthy('Test Flowset name description not present');
-        await utilGrid.clearFilter();
+            await utilGrid.addFilter("Description", "Test Flowset name description", "text");
+            expect(await utilGrid.isGridRecordPresent('Test Flowset name description')).toBeTruthy('Test Flowset name description not present');
+            await utilGrid.clearFilter();
+        });
 
-        await utilGrid.addFilter("Company", "Petramco", "text");
-        expect(await utilGrid.isGridRecordPresent('Petramco')).toBeTruthy('Petramco not present');
-        await utilGrid.clearFilter();
+        it('[DRDMV-6214]: [Flowsets] Filter menu verification on Define Flowsets Console	', async () => {
+            await utilGrid.addFilter("Company", "Petramco", "text");
+            expect(await utilGrid.isGridRecordPresent('Petramco')).toBeTruthy('Petramco not present');
+            await utilGrid.clearFilter();
 
-        await utilGrid.addFilter("Status", "Active", "checkbox");
-        expect(await utilGrid.isGridRecordPresent(flowsetName)).toBeTruthy('Active not present');
-        await utilGrid.clearFilter();
+            await utilGrid.addFilter("Status", "Active", "checkbox");
+            expect(await utilGrid.isGridRecordPresent(flowsetName)).toBeTruthy('Active not present');
+            await utilGrid.clearFilter();
 
-        await utilGrid.addFilter("Display ID", Display, "text");
-        expect(await utilGrid.isGridRecordPresent(Display)).toBeTruthy(Display + ' not present');
-        await utilGrid.clearFilter();
+            await utilGrid.addFilter("Display ID", displayId, "text");
+            expect(await utilGrid.isGridRecordPresent(displayId)).toBeTruthy(displayId + ' not present');
+            await utilGrid.clearFilter();
 
-        await utilGrid.addFilter("ID", id, "text");
-        expect(await utilGrid.isGridRecordPresent(id)).toBeTruthy(id + ' not present');
-        await utilGrid.clearFilter();
+            await utilGrid.addFilter("ID", id, "text");
+            expect(await utilGrid.isGridRecordPresent(id)).toBeTruthy(id + ' not present');
+            await utilGrid.clearFilter();
 
-        await consoleFlowset.removeColumn(["ID", 'Display ID']);
-    }, 620 * 1000);
+            await consoleFlowset.removeColumn(["ID", 'Display ID']);
+        });
+    });
 });
