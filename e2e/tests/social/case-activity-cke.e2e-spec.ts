@@ -625,16 +625,17 @@ describe('Case Activity CKE', () => {
             expect(await activityTabPage.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('FailureMsg Image missing in activity tab');
         });
 
-        it('[DRDMV-21619]: Login in with Assignee User And Verify Comment Posted In Activity For Person Profile', async () => {
+        it('[DRDMV-21619]: Login in with Assignee User And Navigate to Person Profile', async () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
             expect(await viewCasePo.getCaseID()).toBe(newCase.displayId, 'Case Id is missing');
-
             // Profile View CK Editor
             await activityTabPage.clickOnRefreshButton();
             await activityTabPage.clickOnHyperlinkFromActivity(2, 'Qadim Katawazi');
-
+        });
+        
+        it('[DRDMV-21619]: Verify Comment Posted In Activity For Person Profile', async () => {
             await activityTabPage.addActivityNote(addNoteBodyText);
             await activityTabPage.clearActivityNote();
             //bold
