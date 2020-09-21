@@ -738,28 +738,29 @@ describe('CKE Description', () => {
             await createAdhocTaskPo.updateTaskDescription(italicText);
             expect(await ckeditorOpsPo.isItalicTextDisplayedInCkEditorTextArea(italicText)).toBeTruthy('Text is not Italic In Ck Editor');
             await createAdhocTaskPo.clickOnItalicIcon();
-            //underlinef
+            //underline
             await createAdhocTaskPo.clickOnUnderLineIcon();
             await createAdhocTaskPo.updateTaskDescription(underLineText);
             expect(await ckeditorOpsPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
             await createAdhocTaskPo.enterNewLineInCKE();
+            await createAdhocTaskPo.clickOnUnderLineIcon();
         });
         it('[DRDMV-22096] Alignment,Bullet Point and Maximum / Minimum with CKE', async () => {
-            await createAdhocTaskPo.enterNewLineInCKE();
-            await createAdhocTaskPo.clickOnUnderLineIcon();
             //left Align
+            await createAdhocTaskPo.enterNewLineInCKE();
             await createAdhocTaskPo.clickOnLeftAlignIcon();
             await createAdhocTaskPo.updateTaskDescription(lefAlignText);
-            expect(await ckeditorOpsPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
-            await createAdhocTaskPo.enterNewLineInCKE();
+            expect(await createAdhocTaskPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
             await createAdhocTaskPo.clickOnLeftAlignIcon();
             //Right Align
+            await createAdhocTaskPo.enterNewLineInCKE();
             await createAdhocTaskPo.clickOnRightAlignIcon();
             await createAdhocTaskPo.updateTaskDescription(rightAlignText);
             expect(await ckeditorOpsPo.isTextRightAlignInCkEditorTextArea(rightAlignText)).toBeTruthy('Text is not right Align In Ck Editor');
             await createAdhocTaskPo.enterNewLineInCKE();
             await createAdhocTaskPo.clickOnRightAlignIcon();
             //Center Align
+            await createAdhocTaskPo.enterNewLineInCKE();
             await createAdhocTaskPo.clickOnCenterAlignIcon();
             await createAdhocTaskPo.updateTaskDescription(centerAlignText);
             expect(await ckeditorOpsPo.isTextCenterAlignInCkEditorTextArea(centerAlignText)).toBeTruthy('Text is not center Align In Ck Editor');
@@ -772,36 +773,31 @@ describe('CKE Description', () => {
             expect(await ckeditorOpsPo.isColorTextDisplayedInCkEditorTextArea(redColorText, 'color:#c0392b;')).toBeTruthy('Color is not set In Ck Editor');
             //checking number list
             await createAdhocTaskPo.enterNewLineInCKE();
-            await activityTabPo.setInsertRemoveNumberList('PlusOne');
+            await createAdhocTaskPo.setInsertRemoveNumberList('PlusOne');
             expect(await ckeditorOpsPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Text is not center Align In Ck Editor');
             await createAdhocTaskPo.enterNewLineInCKE();
             // checking bullot points
-            await activityTabPo.setInsertRemoveBulletedList('BulletOne');
+            await createAdhocTaskPo.setInsertRemoveBulletedList('BulletOne');
             expect(await activityTabPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Text is not center Align In Ck Editor');
             expect(await ckeditorOpsPo.getTextCkEditorMinimizeOrMiximize()).toBe('Maximize');
-            await ckeditorOpsPo.clickMaximizeMinimizeIcon();
-            expect(await ckeditorOpsPo.getTextCkEditorMinimizeOrMiximize()).toBe('Minimize');
+            await createAdhocTaskPo.clickMaximizeMinimizeIcon();
+            expect(await ckeditorOpsPo.getTextCkEditorMinimizeOrMiximize()).toBe('Maximize');
             await createAdhocTaskPo.enterNewLineInCKE();
-            await ckeditorOpsPo.clickMaximizeMinimizeIcon();
+            await createAdhocTaskPo.clickMaximizeMinimizeIcon();
         });
         it('[DRDMV-22096] Upload image with URL and local , Style text, Insert Link and Table', async () => {
             //upload image with URL
             await ckeditorOpsPo.clickOnImageIcon();
-            await ckeditorOpsPo.imageUploadWithURL(uploadURL, imageUrlFieldIndex, imageWidthFieldIndex, '200');
+            await ckeditorOpsPo.imageUploadWithURL(uploadURL, imageUrlFieldIndex, imageWidthFieldIndex, '50');
             expect(await ckeditorOpsPo.isImageDisplayedInCKE(uploadURL)).toBeTruthy();
             //add style
             await createAdhocTaskPo.enterNewLineInCKE();
             await createAdhocTaskPo.updateTaskDescription(formatText);
             await ckeditorOpsPo.selectStyles('Heading 2');
             expect(await ckeditorOpsPo.isStyleApplied(formatText, 'h2')).toBeTruthy();
-            //upload image with Local
-            await createAdhocTaskPo.enterNewLineInCKE();
-            await ckeditorOpsPo.clickOnImageIcon();
-            imageSource = await ckeditorOpsPo.uploadImageFromLocal('Upload', '../../../data/ui/attachment/articleStatus.png', imageWidthFieldIndex, imageUrlFieldIndex, '200');
-            expect(await ckeditorOpsPo.isImageDisplayedInCKE(imageSource)).toBeTruthy();
             // Link added
             await createAdhocTaskPo.enterNewLineInCKE();
-            await ckeditorOpsPo.clickOnLinkIcon();
+            await createAdhocTaskPo.clickOnLinkIcon();
             await linkPropertiesPo.setValueOfLinkProperties('Google', linkDisplayTextFieldIndex);
             await linkPropertiesPo.setValueOfLinkProperties('www.google.com', linkUrlFieldIndex);
             await linkPropertiesPo.clickOnTargetTab();
@@ -810,7 +806,7 @@ describe('CKE Description', () => {
             expect(await ckeditorOpsPo.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('Text is not center Align In Ck Editor');
             await createAdhocTaskPo.enterNewLineInCKE();
             //add table
-            await ckeditorOpsPo.clickOnTableIcon();
+            await createAdhocTaskPo.clickOnTableIcon();
             await tablePropertiesPo.setValueOfTableProperties('4', tableRowFieldIndex);
             await tablePropertiesPo.setValueOfTableProperties('10', tableColumnFieldIndex);
             await tablePropertiesPo.setValueOfTableProperties('500', tableWidthFieldIndex);
@@ -819,11 +815,16 @@ describe('CKE Description', () => {
             await tablePropertiesPo.setValueOfTableProperties('tableSummary', cellSummary);
             await tablePropertiesPo.clickOnOkButton();
             await ckeditorOpsPo.clickInTableCell(2, 2, 'tableSummary');
-            await ckeditorOpsPo.clickOnCenterAlignIcon();
+            await createAdhocTaskPo.clickOnCenterAlignIcon();
             await ckeditorOpsPo.setDataInTable(2, 2, randomString, 'tableSummary');
             await ckeditorOpsPo.clickInTableCell(1, 2, 'tableSummary');
-            await ckeditorOpsPo.clickOnRightAlignIcon();
+            await createAdhocTaskPo.clickOnRightAlignIcon();
             await ckeditorOpsPo.setDataInTable(1, 2, randomString, 'tableSummary');
+            //upload image with Local
+            await createAdhocTaskPo.enterNewLineInCKE();
+            await createAdhocTaskPo.clickOnImageIcon();
+            imageSource = await ckeditorOpsPo.uploadImageFromLocal('Upload', '../../../data/ui/attachment/articleStatus.png', imageWidthFieldIndex, imageUrlFieldIndex, '50');
+            expect(await ckeditorOpsPo.isImageDisplayedInCKE(imageSource)).toBeTruthy();
             await createAdhocTaskPo.clickSaveAdhoctask()
             await manageTaskBladePo.clickTaskLink(randomString);
         });
@@ -839,8 +840,8 @@ describe('CKE Description', () => {
             expect(await ckeditorValidationPo.getColorFontStyleOfText("text-align: center;")).toContain(centerAlignText);
             expect(await ckeditorValidationPo.getTableCellAlignText("text-align: center;")).toContain(randomString);
             await viewTaskPo.clickOnEditTask();
-            await ckeditorOpsPo.enterNewLineInCKE();
-            await ckeditorOpsPo.clickOnLinkIcon();
+            await editTaskPo.enterNewLineInCKE();
+            await editTaskPo.clickOnLinkIcon();
             await linkPropertiesPo.setValueOfLinkProperties('youtube', linkDisplayTextFieldIndex);
             await linkPropertiesPo.setValueOfLinkProperties('www.youtube.com', linkUrlFieldIndex);
             await linkPropertiesPo.clickOnOkBtn();

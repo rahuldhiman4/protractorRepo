@@ -1417,7 +1417,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary(articleInDraftStatus);
-            await createCasePage.clickAssignToMeButton();
+            await createCasePage.clickChangeAssignmentButton();
             await changeAssignmentBladePo.setAssignee('Petramco', 'Canada Support', 'CA Support 1', 'Qiang Du');
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
