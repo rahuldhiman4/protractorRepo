@@ -36,8 +36,8 @@ describe('KnowledgeArticlestyle', () => {
         expect(await articleTemplateStylePo.getStyleOfAllTemplate()).toContain('Paragraph');
     });
 
-    it('[DRDMV-5019]: [Template Styles] Deletion of template styles - OOB/Custom Templates', async () => {
-        try {
+    describe('[DRDMV-5019]: [Template Styles] Deletion of template styles - OOB/Custom Templates', () => {
+        it('[DRDMV-5019]: [Template Styles] Deletion of template styles - OOB/Custom Templates', async () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.gotoSettingsPage();
@@ -65,6 +65,9 @@ describe('KnowledgeArticlestyle', () => {
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
             expect(await articleTemplateStylePo.isAddedStyleDeleted(randomStr)).toBeFalsy();
             await browser.navigate().back();
+        });
+
+        it('[DRDMV-5019]: [Template Styles] Deletion of template styles - OOB/Custom Templates', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Template Styles', 'Template Styles Configuration - Business Workflows');
             await articleTemplateStylePo.navigateToTemplateName('Global', "DRDMV-5019" + randomStr);
@@ -77,15 +80,13 @@ describe('KnowledgeArticlestyle', () => {
             await articleTemplateStylePo.clickSaveButton()
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
             expect(await articleTemplateStylePo.isAddedStyleDeleted(randomStr)).toBeFalsy('');
-        }
-        catch (e) {
-            throw e;
-        }
-        finally {
+        });
+
+        afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('peter');
-        }
-    }, 300 * 1000);
+        });
+    });
 
     it('[DRDMV-5020]: [Article Styles] Mandatory field validation on template styles', async () => {
         await navigationPage.gotoSettingsPage();
@@ -108,36 +109,41 @@ describe('KnowledgeArticlestyle', () => {
         expect(await utilCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
     });
 
-    it('[DRDMV-5014,DRDMV-5022]: [Template Styles] Availability of default styles on custom templates', async () => {
+    describe('[DRDMV-5014,DRDMV-5022]: [Template Styles] Availability of default styles on custom templates', () => {
         let styleName: string = "DRDMV-5014" + randomStr;
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', 'Knowledge Article Templates - Business Workflows');
-        await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
-        await createKnowledgeArticleTemplatePo.setTemplateName(styleName);
-        await createKnowledgeArticleTemplatePo.clickOnAddSection();
-        await createKnowledgeArticleTemplatePo.setKnowledgeSetValue('Global');
-        await createKnowledgeArticleTemplatePo.setSectionTitle('NewThings' + randomStr);
-        await createKnowledgeArticleTemplatePo.setDescription('DescriptionOFKA');
-        await createKnowledgeArticleTemplatePo.clickOnSaveButton();
-        await browser.navigate().back();
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Template Styles', 'Template Styles Configuration - Business Workflows');
-        await articleTemplateStylePo.navigateToTemplateName('Global', styleName);
-        expect(await articleTemplateStylePo.getStyleOfAllTemplate()).toContain('Header 1');
-        expect(await articleTemplateStylePo.getStyleOfAllTemplate()).toContain('Header 2');
-        expect(await articleTemplateStylePo.getStyleOfAllTemplate()).toContain('Header 3');
-        expect(await articleTemplateStylePo.getStyleOfAllTemplate()).toContain('Link');
-        expect(await articleTemplateStylePo.getStyleOfAllTemplate()).toContain('Paragraph');
-        expect(await articleTemplateStylePo.isAddNewStyleButtonDisplay()).toBeTruthy('Add new style button not displayed');
-        await articleTemplateStylePo.clickAddNewStyle();
-        await articleTemplateStylePo.setStyleName(styleName);
-        await articleTemplateStylePo.clickSaveButton();
-        expect(await utilCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy("Save Message is not present");
-        await articleTemplateStylePo.clickAddNewStyle();
-        await articleTemplateStylePo.setStyleName(styleName);
-        await articleTemplateStylePo.clickSaveButton();
-        expect(await utilCommon.isPopUpMessagePresent(`The style name ${styleName} is already taken by another style. Please select a different name.`)).toBeTruthy("Duplicate style Message is not present");
-    }, 500 * 1000);
+        it('[DRDMV-5014,DRDMV-5022]: [Template Styles] Availability of default styles on custom templates', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', 'Knowledge Article Templates - Business Workflows');
+            await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
+            await createKnowledgeArticleTemplatePo.setTemplateName(styleName);
+            await createKnowledgeArticleTemplatePo.clickOnAddSection();
+            await createKnowledgeArticleTemplatePo.setKnowledgeSetValue('Global');
+            await createKnowledgeArticleTemplatePo.setSectionTitle('NewThings' + randomStr);
+            await createKnowledgeArticleTemplatePo.setDescription('DescriptionOFKA');
+            await createKnowledgeArticleTemplatePo.clickOnSaveButton();
+            await browser.navigate().back();
+        });
+
+        it('[DRDMV-5014,DRDMV-5022]: [Template Styles] Availability of default styles on custom templates', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Template Styles', 'Template Styles Configuration - Business Workflows');
+            await articleTemplateStylePo.navigateToTemplateName('Global', styleName);
+            expect(await articleTemplateStylePo.getStyleOfAllTemplate()).toContain('Header 1');
+            expect(await articleTemplateStylePo.getStyleOfAllTemplate()).toContain('Header 2');
+            expect(await articleTemplateStylePo.getStyleOfAllTemplate()).toContain('Header 3');
+            expect(await articleTemplateStylePo.getStyleOfAllTemplate()).toContain('Link');
+            expect(await articleTemplateStylePo.getStyleOfAllTemplate()).toContain('Paragraph');
+            expect(await articleTemplateStylePo.isAddNewStyleButtonDisplay()).toBeTruthy('Add new style button not displayed');
+            await articleTemplateStylePo.clickAddNewStyle();
+            await articleTemplateStylePo.setStyleName(styleName);
+            await articleTemplateStylePo.clickSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy("Save Message is not present");
+            await articleTemplateStylePo.clickAddNewStyle();
+            await articleTemplateStylePo.setStyleName(styleName);
+            await articleTemplateStylePo.clickSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent(`The style name ${styleName} is already taken by another style. Please select a different name.`)).toBeTruthy("Duplicate style Message is not present");
+        });
+    });
 
     describe('[DRDMV-5023,DRDMV-5018,DRDMV-5015]: [Template Styles] Add/Modify New Style - OOB/Custom Templates', async () => {
         it('[DRDMV-5023,DRDMV-5018,DRDMV-5015]: [Template Styles] Add/Modify New Style - OOB/Custom Templates', async () => {
@@ -174,22 +180,22 @@ describe('KnowledgeArticlestyle', () => {
             await articleTemplateStylePo.clickDeleteButton();
             await articleTemplateStylePo.clickSaveButton();
             expect(await articleTemplateStylePo.isAddedStyleDeleted(randomStr)).toBeFalsy('');
-            
+
             await articleTemplateStylePo.clickAddNewStyle();
             await articleTemplateStylePo.selectFont("Times");
-            expect(await articleTemplateStylePo.isFontStylDetailsDisplayed("Font Family","times")).toBeTruthy('Text Displayed in Font Family');
+            expect(await articleTemplateStylePo.isFontStylDetailsDisplayed("Font Family", "times")).toBeTruthy('Text Displayed in Font Family');
             await articleTemplateStylePo.clickCancelButton();
             await utilCommon.clickOnWarningOk();
 
             await articleTemplateStylePo.clickAddNewStyle();
             await articleTemplateStylePo.selectTextColor("#ef8282");
-            expect(await articleTemplateStylePo.isFontStylDetailsDisplayed("Text Color","rgb(239, 130, 130)")).toBeTruthy('Text Displayed in Text Color');
+            expect(await articleTemplateStylePo.isFontStylDetailsDisplayed("Text Color", "rgb(239, 130, 130)")).toBeTruthy('Text Displayed in Text Color');
             await articleTemplateStylePo.clickCancelButton();
             await utilCommon.clickOnWarningOk();
 
             await articleTemplateStylePo.clickAddNewStyle();
             await articleTemplateStylePo.selectBackgroundColor("#ef8282");
-            expect(await articleTemplateStylePo.isFontStylDetailsDisplayed("Background Color","rgb(239, 130, 130)")).toBeTruthy('Text Displayed in Background Color');
+            expect(await articleTemplateStylePo.isFontStylDetailsDisplayed("Background Color", "rgb(239, 130, 130)")).toBeTruthy('Text Displayed in Background Color');
             await articleTemplateStylePo.clickCancelButton();
             await utilCommon.clickOnWarningOk();
         });
@@ -235,19 +241,19 @@ describe('KnowledgeArticlestyle', () => {
 
             await articleTemplateStylePo.clickAddNewStyle();
             await articleTemplateStylePo.selectFont("Times");
-            expect(await articleTemplateStylePo.isFontStylDetailsDisplayed("Font Family","times")).toBeTruthy('Text Displayed in Font Family');
+            expect(await articleTemplateStylePo.isFontStylDetailsDisplayed("Font Family", "times")).toBeTruthy('Text Displayed in Font Family');
             await articleTemplateStylePo.clickCancelButton();
             await utilCommon.clickOnWarningOk();
 
             await articleTemplateStylePo.clickAddNewStyle();
             await articleTemplateStylePo.selectTextColor("#ef8282");
-            expect(await articleTemplateStylePo.isFontStylDetailsDisplayed("Text Color","rgb(239, 130, 130)")).toBeTruthy('Text Displayed in Text Color');
+            expect(await articleTemplateStylePo.isFontStylDetailsDisplayed("Text Color", "rgb(239, 130, 130)")).toBeTruthy('Text Displayed in Text Color');
             await articleTemplateStylePo.clickCancelButton();
             await utilCommon.clickOnWarningOk();
 
             await articleTemplateStylePo.clickAddNewStyle();
             await articleTemplateStylePo.selectBackgroundColor("#ef8282");
-            expect(await articleTemplateStylePo.isFontStylDetailsDisplayed("Background Color","rgb(239, 130, 130)")).toBeTruthy('Text Displayed in Background Color');
+            expect(await articleTemplateStylePo.isFontStylDetailsDisplayed("Background Color", "rgb(239, 130, 130)")).toBeTruthy('Text Displayed in Background Color');
             await articleTemplateStylePo.clickCancelButton();
             await utilCommon.clickOnWarningOk();
         });
@@ -256,4 +262,5 @@ describe('KnowledgeArticlestyle', () => {
             await loginPage.login('elizabeth');
         });
     });
+    
 });
