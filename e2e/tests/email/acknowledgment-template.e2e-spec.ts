@@ -17,7 +17,6 @@ describe('Acknowledgment Template', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
-
         await apiHelper.apiLogin('qkatawazi');
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let menuItemData = cloneDeep(SAMPLE_MENU_ITEM);
@@ -55,14 +54,17 @@ describe('Acknowledgment Template', () => {
         let body = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let arr: string[] = ["Label"];
-        it('[DRDMV-10896,DRDMV-10901,DRDMV-10922,DRDMV-10895]: Acknowledgment Template : Acknowledgment Template creation', async () => {
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
+        beforeAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
             let menuItemData = cloneDeep(SAMPLE_MENU_ITEM);
             let label: string = await menuItemData.menuItemName + randomStr;
             menuItemData.menuItemName = label;
             await apiHelper.createNewMenuItem(menuItemData);
+        });
+
+        it('[DRDMV-10896,DRDMV-10901,DRDMV-10922,DRDMV-10895]: Acknowledgment Template : Acknowledgment Template creation', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
             await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
             await createAcknowledgmentTemplatesPo.setTemplateName(templateName);
             await createAcknowledgmentTemplatesPo.selectCompanyDropDown('Petramco');

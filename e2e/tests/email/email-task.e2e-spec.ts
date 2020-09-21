@@ -125,7 +125,7 @@ describe('Email Task', () => {
         let manualTaskSummary = 'ManualSummary19008' + randomStr;
         let ExternaltaskID, displayId;
         let externalTaskTemplateName = 'Externaltask19008' + randomStr;
-        let ManualtaskID,externalTaskSummary = 'ExternalSummary19008' + randomStr;
+        let ManualtaskID, externalTaskSummary = 'ExternalSummary19008' + randomStr;
         beforeAll(async () => {
             let templateData = {
                 "templateName": `${taskTemplateName}`,
@@ -552,9 +552,6 @@ describe('Email Task', () => {
         emailTemplateDataForTest1.TemplateName = 'TemplateWithMandatoryField' + randomStr;
         let emailTemplateDataForTest2 = await emailTemplateData['emailTemplateForSalary'];
         emailTemplateDataForTest2.TemplateName = 'TemplateForSalary' + randomStr;
-        await apiHelper.apiLogin('fritz');
-        await apiHelper.createEmailTemplate(emailTemplateDataForTest1);
-        await apiHelper.createEmailTemplate(emailTemplateDataForTest2);
         let taskTemplateName = 'Manual task19555' + randomStr;
         let manualTaskSummary = 'ManualSummary19555' + randomStr;
         let externalTaskTemplateName = 'Externaltask19555' + randomStr;
@@ -589,6 +586,9 @@ describe('Email Task', () => {
                 "Support Group": "US Support 3",
                 "Assignee": "Qadim Katawazi"
             }
+            await apiHelper.apiLogin('fritz');
+            await apiHelper.createEmailTemplate(emailTemplateDataForTest1);
+            await apiHelper.createEmailTemplate(emailTemplateDataForTest2);
             await apiHelper.createManualTaskTemplate(templateData);
             await apiHelper.createExternalTaskTemplate(externaltemplateData);
             let newCaseTemplate = await apiHelper.createCase(caseData);
