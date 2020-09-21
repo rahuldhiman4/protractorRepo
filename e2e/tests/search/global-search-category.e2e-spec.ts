@@ -708,7 +708,7 @@ describe('Global Search Category Validation', () => {
             expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('KA edit link is missing');
             expect(await viewKnowledgeArticlePo.getArticleVersion()).toBe(expectedVersion2, 'version missing on view KA page');
             await editKnowledgePo.setKnowledgeStatus('Publish Approval');
-            await browser.sleep(2000);//Need this sleep till status gets change from Publish Approval to Published
+            await browser.sleep(4000);//Need this sleep till status gets change from Publish Approval to Published
             expect(await viewKnowledgeArticlePo.getStatusValue()).toBe('Published', 'FailureMsg25: On view knowledge article status value is missing');
 
             // Verify with draft status

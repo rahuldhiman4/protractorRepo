@@ -254,6 +254,7 @@ describe('Global Search All Category', () => {
         it('[DRDMV-16066]: Create Knowledge Article', async () => {
             await apiHelper.apiLogin('elizabeth');
             for (let a = 0; a < 5; a++) {
+                await browser.sleep(1000); //Need this sleep create record with correct count and avoid skip the record from loop
                 kaDisplayId1[a] = await createKnowledgeArticleWithPublish(commonSearchForAll);
             }
         });

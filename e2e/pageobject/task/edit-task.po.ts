@@ -289,6 +289,13 @@ class EditTask {
         });
     }
     
+    async clickOnLinkIcon():Promise<void>{
+        await ckeditorOpsPo.clickOnLinkIcon(this.selectors.ckeditorGuid);
+    }
+    
+    async enterNewLineInCKE():Promise<void>{
+        await ckeditorOpsPo.enterNewLineInCKE(this.selectors.ckeditorGuid);
+    }
 }
 
 export default new EditTask();
