@@ -387,6 +387,7 @@ describe('Multi Search Validation', () => {
 
         it('[DRDMV-16133]: Create Knowledge Article With API', async () => {
             for (let e = 1; e <= 5; e++) {
+                await browser.sleep(1000); //Need this sleep create record with correct count and avoid skip the record from loop
                 kaDisplayId[e] = await createKnowledgeArticleWithPublish(commonSearchAll);
             }
         });
