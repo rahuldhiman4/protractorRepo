@@ -47,9 +47,6 @@ describe('Dynamic data', () => {
 
     describe('[DRDMV-19353]: Accessibility of Dynamic Fields in Notification and Dynamic Templates', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        await apiHelper.apiLogin('tadmin');
-        let recDeleted = await apiHelper.deleteDynamicFieldAndGroup();
-        console.log("Record deleted...", recDeleted);
         let caseTemplateName = 'caseTemplate' + randomStr;
         let globalcaseTemplateName, globalTaskTemplateName, taskTemplateName, caseTemaplateSummary = 'caseTemplate' + randomStr;
         beforeAll(async () => {
@@ -64,6 +61,8 @@ describe('Dynamic data', () => {
                 "supportGroup": "Facilities",
                 "ownerGroup": "Facilities"
             }
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteDynamicFieldAndGroup();
             await apiHelper.apiLogin('fritz');
             let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'SAVE_EXISTING_AND_NEW_CASE_DYNAMIC_DATA_DEFINITION');
@@ -187,9 +186,7 @@ describe('Dynamic data', () => {
 
     describe('[DRDMV-19270]: Associated and Dynamic fields usage on Notification/Email/Activity Templates', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        await apiHelper.apiLogin('tadmin');
-        let recDeleted = await apiHelper.deleteDynamicFieldAndGroup();
-        console.log("Record deleted...", recDeleted);
+       
         let caseTemplateName = 'caseTempRDMV-192700lp3ir' + randomStr;
         let caseTemaplateSummary = 'caseTempRDMV-19270Template' + randomStr;
         let taskTemplateName = 'ManualtaskDRDMV-19270' + randomStr;
@@ -206,6 +203,8 @@ describe('Dynamic data', () => {
                 "supportGroup": "Facilities",
                 "ownerGroup": "Facilities"
             }
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteDynamicFieldAndGroup();
             await apiHelper.apiLogin('fritz');
             let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_WITH_CONFIDENTIAL');
@@ -682,8 +681,7 @@ describe('Dynamic data', () => {
         let dynamicfield2 = 'theSecondDynamicFieldsIsgettingMouseOveredMouseOvered';
         let dynamicfield3 = 'theThirdDynamicFieldsIsgettingMouseOveredMouseOvered';
         let dynamicfield4 = 'temp1theNewDynamicFieldsIsgettingMouseOveredMouseOvered';
-        await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteDynamicFieldAndGroup();
+       
         let taskTemplateName = 'ManualtaskDRDMV-13161' + randomStr;
         let manualTaskSummary = 'ManualSummaryDRDMV-13161' + randomStr;
         let externalTask = 'externalTaskDRDMV-13161' + randomStr;
@@ -702,11 +700,10 @@ describe('Dynamic data', () => {
                 "ownerBusinessUnit": "Facilities Support",
                 "ownerGroup": "Facilities"
             }
-            let tasktemplate = await apiHelper.createManualTaskTemplate(templateData);
-            await apiHelper.createDynamicDataOnTemplate(tasktemplate.id, 'TASK_TEMPLATE_LONG__DYNAMIC_FIELDS');
-
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
+            let tasktemplate = await apiHelper.createManualTaskTemplate(templateData);
+            await apiHelper.createDynamicDataOnTemplate(tasktemplate.id, 'TASK_TEMPLATE_LONG__DYNAMIC_FIELDS');
             let externalTemplateData = {
                 "templateName": `${externalTask}`,
                 "templateSummary": `${externalTaskSummary}`,
@@ -719,9 +716,6 @@ describe('Dynamic data', () => {
             await apiHelper.apiLogin('qkatawazi');
             let externalTaskTemplate = await apiHelper.createExternalTaskTemplate(externalTemplateData);
             await apiHelper.createDynamicDataOnTemplate(externalTaskTemplate.id, 'EXTERNAL_TASK_TEMPLATE_LONG__DYNAMIC');
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteDynamicFieldAndGroup();
-
             let automationTemplateData = {
                 "templateName": `${automatedTask}`,
                 "templateSummary": `${automatedTaskSummary}`,
@@ -812,8 +806,6 @@ describe('Dynamic data', () => {
     // ptidke
     describe('[DRDMV-13128]: [Dynamic Data] - Create Case with Case Template having dynamic fields and Update dynamic fields data in Case', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteDynamicFieldAndGroup();
         let caseTemplateName = randomStr + 'caseTemplateDRDMV-13128';
         let caseTemaplateSummary = randomStr + 'caseTemplateDRDMV-13128';
         beforeAll(async () => {
@@ -828,6 +820,8 @@ describe('Dynamic data', () => {
                 "supportGroup": "Facilities",
                 "ownerGroup": "Facilities"
             }
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteDynamicFieldAndGroup();
             await apiHelper.apiLogin('fritz');
             let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_DYNAMIC_FIELDS');
@@ -867,8 +861,6 @@ describe('Dynamic data', () => {
     // ptidke
     describe('[DRDMV-13127]: [Dynamic Data] - Create Case from Create Case with Template having dynamic fields and also have field with source as Requester', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteDynamicFieldAndGroup();
         let caseTemplateName = randomStr + 'caseTemplateDRDMV-13127';
         let caseTemaplateSummary = randomStr + 'caseTemplateDRDMV-13127';
         beforeAll(async () => {
@@ -883,6 +875,8 @@ describe('Dynamic data', () => {
                 "supportGroup": "Facilities",
                 "ownerGroup": "Facilities"
             }
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteDynamicFieldAndGroup();
             await apiHelper.apiLogin('fritz');
             let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_REQUESTER_DYNAMIC_FIELDS');
@@ -1114,8 +1108,6 @@ describe('Dynamic data', () => {
     //ptidke
     describe('[DRDMV-13132,DRDMV-13124]:[-ve] [Dynamic Data] [UI] - Update Case dynamic fields with invalid data', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteDynamicFieldAndGroup();
         let caseTemplateName = randomStr + 'caseTemplateDRDMV-13132';
         let caseTemaplateSummary = randomStr + 'caseTemplateDRDMV-13132';
         beforeAll(async () => {
@@ -1124,6 +1116,8 @@ describe('Dynamic data', () => {
                 "templateSummary": `${caseTemaplateSummary}`,
                 "templateStatus": "Active",
             }
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteDynamicFieldAndGroup();
             await apiHelper.apiLogin('fritz');
             let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_DYNAMIC_FIELDS');

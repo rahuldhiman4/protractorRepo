@@ -25,6 +25,7 @@ import utilityGrid from "../../utils/utility.grid";
 import statusConfigPO from '../../pageobject/settings/common/status-config.po';
 import changeAssignmentBlade from "../../pageobject/common/change-assignment-blade.po";
 
+
 let caseBAUser = 'qkatawazi';
 let caseAgentUser = 'qtao';
 let caseManagerUser = 'qdu';
@@ -486,7 +487,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInDraftStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInDraftStatus)).toEqual(articleInDraftStatus);
 
             //Navigate to Create case
             await navigationPage.gotoCreateCase();
@@ -503,13 +504,14 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInDraftStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInDraftStatus)).toEqual(articleInDraftStatus);
         });
+
 
         it('[DRDMV-20754]: Verify the search functionality of articles with versions from Case Edit > Resources screen', async () => {
             //Login with Case Manager
             await navigationPage.signOut();
-            await loginPage.login(caseManagerUser);
+            await loginPage.login('frieda');
             await navigationPage.gotoQuickCase();
             await quickCase.selectRequesterName(caseAgentUser);
             await quickCase.setCaseSummary(articleInDraftStatus);
@@ -520,7 +522,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInDraftStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInDraftStatus)).toEqual(articleInDraftStatus);
 
             //Navigate to Create case
             await navigationPage.gotoCreateCase();
@@ -538,7 +540,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInDraftStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInDraftStatus)).toEqual(articleInDraftStatus);
         });
 
         it('[DRDMV-20754]: Verify the search functionality of articles with versions from Case Edit > Resources screen', async () => {
@@ -555,7 +557,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(RecommendedKnowledgeStr)).toEqual(articleInDraftStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInDraftStatus)).toEqual(articleInDraftStatus);
 
             //Navigate to Create case
             await navigationPage.gotoCreateCase();
@@ -572,7 +574,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
-            await expect(await resources.getAdvancedSearchResultForParticularSection(knowledgeArticlesStr)).toEqual(articleInDraftStatus);
+            await expect(await resources.getAdvancedSearchResultForParticularSection(articleInDraftStatus)).toEqual(articleInDraftStatus);
         });
 
         afterAll(async () => {
@@ -689,7 +691,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await editKnowledgePage.selectIsExternalOption('Yes');
             await editKnowledgePage.enterKeyword(articleDetails.displayId);
             await editKnowledgePage.clickSaveKnowledgeMetadata();
-            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
             await utilityCommon.closePopUpMessage();
             await viewKnowledgeArticlePo.clickOnFlagButton();
@@ -914,6 +915,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await browser.sleep(4000); // Hard wait for browser tab to load properly
             expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Article is updated with Published status.');
             await viewKnowledgeArticlePo.selectArticleVersion('1');
+            await browser.sleep(2000); // Hard wait to load the browser completely
             expect(await editKnowledgePage.getStatusValue()).toContain('Closed', 'Article is updated with Closed status.');
         });
 
@@ -1320,7 +1322,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await utilityCommon.refresh();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             await editKnowledgePage.selectIsExternalOption('Yes');
-            //await editKnowledgePage.enterKeyword(articleDetails.displayId);
+            await editKnowledgePage.enterKeyword(articleDetails.displayId);
             await editKnowledgePage.clickSaveKnowledgeMetadata();
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
             await utilityCommon.closePopUpMessage();

@@ -271,7 +271,7 @@ describe('Document Library Consume Permission', () => {
                 await apiHelper.publishDocumentLibrary(docLib);
             }
 
-            let draftDocLibData = {
+             draftDocLibData = {
                 docLibTitle: 'drdmv13517_draft_document',
                 company: 'Petramco',
                 businessUnit: 'HR Support',

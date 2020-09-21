@@ -138,7 +138,7 @@ describe('Failed Task', () => {
     //asahitya
     describe('[DRDMV-10056]: Task behaviour when 2 of 3 automated tasks on same sequence and first task is failed(Condition set is Do not Proceed)', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let caseTemplatePetramco, newCaseTemplate, manualTaskTemplateData, automatedTaskTemplateSummary1, automatedTaskTemplateSummary2, caseResponse;
+        let caseTemplatePetramco, newCaseTemplate, manualTaskTemplateData, automatedTaskTemplateSummary1, automatedTaskTemplateSummary2, caseResponse, caseDisplayId;
         beforeAll(async () => {
             await apiHelper.apiLogin('fritz');
             caseTemplatePetramco = {
@@ -156,7 +156,7 @@ describe('Failed Task', () => {
                 "taskFailureConfiguration": "Do Not Proceed"
             }
             newCaseTemplate = await apiHelper.createCaseTemplate(caseTemplatePetramco);
-            let caseTemplateDisplayId = await newCaseTemplate.displayId;
+            await newCaseTemplate.displayId;
 
             manualTaskTemplateData = {
                 "templateName": 'Manual task10056' + randomStr,
@@ -195,21 +195,24 @@ describe('Failed Task', () => {
             await apiHelper.enableDisableProcess(`${automatedTaskTemplateData.processBundle}:${automatedTaskTemplateData.processName}`, false);
             await apiHelper.associateCaseTemplateWithThreeTaskTemplate(newCaseTemplate.displayId, automatedTaskTemplate2.displayId, automatedTaskTemplate1.displayId, manualTaskTemplate.displayId, 'THREE_TASKFLOW_SEQUENTIAL_PARALLEL');
 
-            let caseDataCriticalPriority = {
-                "Requester": "qkatawazi",
-                "Summary": `DRDMV-10056 Medium Priority ${randomStr}`,
-                "Origin": "Agent",
-                "Case Template ID": caseTemplateDisplayId,
-                "Priority": "1000"
-            }
-            caseResponse = await apiHelper.createCase(caseDataCriticalPriority);
-            await apiHelper.updateCaseStatus(caseResponse.id, 'InProgress');
+            await navigationPage.gotoCreateCase();
+            await createCasePo.selectRequester('qtao');
+            await createCasePo.setSummary('Summary');
+            await createCasePo.clickSelectCaseTemplateButton();
+            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplatePetramco.templateSummary);
+            await createCasePo.clickAssignToMeButton();
+            await createCasePo.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            caseDisplayId = await viewCasePage.getCaseID();
+            
         });
 
         it('[DRDMV-10056]: Task behaviour when 2 of 3 automated tasks on same sequence and first task is failed(Condition set is Do not Proceed)', async () => {
+            await statusUpdateBladePo.changeCaseStatus('In Progress');
+            await statusUpdateBladePo.clickSaveStatus('In Progress');
             await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
-            await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
+            await utilityGrid.searchAndOpenHyperlink(caseDisplayId);
 
             await viewCasePage.openTaskCard(1);
             expect(await manageTaskBlade.getTaskStatus(automatedTaskTemplateSummary2)).toContain('Failed');

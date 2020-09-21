@@ -137,7 +137,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         let knowledgeArticleData6 = await apiHelper.createKnowledgeArticle(articleData);
         let knowledgeArticleGUID6 = knowledgeArticleData6.id;
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID6, canceledApprovalStatus)).toBeTruthy("Article with Canceled status not updated.");
-    }, 3 * 60 * 1000);
+    });
 
     afterAll(async () => {
         await utilityCommon.closeAllBlades();
@@ -692,7 +692,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
             expect(await resources.isAdvancedSearchResultContainsRecord(title)).toBeTruthy();
-            
+
             await resources.enterAdvancedSearchText(title);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption(siteField, siteFieldVal);
