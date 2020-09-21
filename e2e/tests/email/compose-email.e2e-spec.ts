@@ -59,6 +59,129 @@ describe("Compose Email", () => {
         await navigationPage.signOut();
     });
 
+    describe('[DRDMV-20368,DRDMV-20371]: Verify Able to insert table,hyperlink, images and Copy paste images in Notification template and notifications received by user with these contents', async () => {
+        let randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let newCase;
+        beforeAll(async () => {
+            let caseData = {
+                "Requester": "qkatawazi",
+                "Summary": "Test case for DRDMV-20368 RandVal" + randomString,
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
+                "Assignee": "qkatawazi"
+            }
+            await apiHelper.apiLogin('fritz');
+            newCase = await apiHelper.createCase(caseData);
+        });
+        it('[DRDMV-20368,DRDMV-20371]: Verify Able to insert table,hyperlink, images and Copy paste images in Notification template and notifications received by user with these contents', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
+            await utilGrid.clearFilter();
+            await utilGrid.searchAndSelectGridRecord('Case Status Change');
+            await consoleNotificationTemplatePo.clickCopyTemplate();
+            await copyNotificationTemplatePo.setCompanyValue('Petramco');
+            await copyNotificationTemplatePo.clickOnCreateCopyButton();
+            await editNotificationTemplatePo.selectDefaultNotificationMethod('Email');
+            await editNotificationTemplatePo.clickOnEmailTab();
+            await editNotificationTemplatePo.selectCheckBoxOfBody();
+            await editNotificationTemplatePo.clickOnEditButtonOfEmailTab();
+            await editMessageTextBladePo.setMessageBody('new');
+            await editMessageTextBladePo.clickOnImageIcon();
+            await imagePropertiesPo.addImageOnEmail('Upload', '../../../data/ui/attachment/articleStatus.png', imageWidthFieldIndex, imageUrlFieldIndex);
+            await editMessageTextBladePo.setMessageBody('this is link ');
+            await editMessageTextBladePo.clickOnLinkIcon();
+            await linkPropertiesPo.setValueOfLinkProperties('Google', linkDisplayTextFieldIndex);
+            await linkPropertiesPo.setValueOfLinkProperties('www.google.com', linkUrlFieldIndex);
+            await linkPropertiesPo.clickOnTargetTab();
+            await linkPropertiesPo.selectDropDown('_blank', linkTargetDropDownIndex);
+            await linkPropertiesPo.clickOnOkBtn();
+            await editMessageTextBladePo.setMessageBody('this is table');
+            await editMessageTextBladePo.clickOnTableIcon();
+            await tablePropertiesPo.setValueOfTableProperties('4', tableRowFieldIndex);
+            await tablePropertiesPo.setValueOfTableProperties('3', tableColumnFieldIndex);
+            await tablePropertiesPo.setValueOfTableProperties('500', tableWidthFieldIndex);
+            await tablePropertiesPo.setValueOfTableProperties('200', tableHeightFieldIndex);
+            await tablePropertiesPo.setValueOfTableProperties('new' + randomString, cellCaption);
+            await tablePropertiesPo.setValueOfTableProperties('NotiFicationT', cellSummary);
+            await tablePropertiesPo.clickOnOkButton();
+            //bold
+            await createEmailTemplatePo.clickInTableRowOfEmailTemplate(1, 1, 'NotiFicationT');
+            await editMessageTextBladePo.clickOnBoldIcon();
+            await createEmailTemplatePo.setDataInEmailTemplateTable(1, 1, 'FirstBold', 'NotiFicationT');
+            //italic
+            await createEmailTemplatePo.clickInTableRowOfEmailTemplate(1, 2, 'NotiFicationT');
+            await editMessageTextBladePo.clickOnItalicIcon();
+            await createEmailTemplatePo.setDataInEmailTemplateTable(1, 2, 'FirstItalic', 'NotiFicationT');
+            //underline
+            await createEmailTemplatePo.clickInTableRowOfEmailTemplate(1, 3, 'NotiFicationT');
+            await editMessageTextBladePo.clickOnUnderLineIcon();
+            await createEmailTemplatePo.setDataInEmailTemplateTable(1, 3, 'FirstUnderLine', 'NotiFicationT');
+            //left Align
+            await createEmailTemplatePo.clickInTableRowOfEmailTemplate(2, 1, 'NotiFicationT');
+            await editMessageTextBladePo.clickOnLeftAlignIcon();
+            await createEmailTemplatePo.setDataInEmailTemplateTable(2, 1, 'FirstLeftAlign', 'NotiFicationT');
+            //Right Align
+            await createEmailTemplatePo.clickInTableRowOfEmailTemplate(2, 2, 'NotiFicationT');
+            await editMessageTextBladePo.clickOnRightAlignIcon();
+            await createEmailTemplatePo.setDataInEmailTemplateTable(2, 2, 'FirstRightAlign', 'NotiFicationT');
+            //Center Align
+            await createEmailTemplatePo.clickInTableRowOfEmailTemplate(2, 3, 'NotiFicationT');
+            await editMessageTextBladePo.clickOnCenterAlignIcon();
+            await createEmailTemplatePo.setDataInEmailTemplateTable(2, 3, 'FirstCenterAlign', 'NotiFicationT');
+            //set color
+            await createEmailTemplatePo.clickInTableRowOfEmailTemplate(3, 1, 'NotiFicationT');
+            await editMessageTextBladePo.selectColor('Bright Blue');
+            await createEmailTemplatePo.setDataInEmailTemplateTable(3, 1, 'SettingColor', 'NotiFicationT');
+            //set font
+            await createEmailTemplatePo.clickInTableRowOfEmailTemplate(3, 2, 'NotiFicationT');
+            await editMessageTextBladePo.clickOnFontSizeIcon();
+            await editMessageTextBladePo.selectFontTypeOrSize('18');
+            await createEmailTemplatePo.setDataInEmailTemplateTable(3, 2, 'SettingFontSize', 'NotiFicationT');
+            await editMessageTextBladePo.setMessageBody('');
+            await editMessageTextBladePo.clickOnSaveButton();
+            await editNotificationTemplatePo.clickOnCancelButton();
+        });
+        it('[DRDMV-20368,DRDMV-20371]: Verify Able to insert table,hyperlink, images and Copy paste images in Notification template and notifications received by user with these contents', async () => {
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
+            await caseConsole.searchAndOpenCase(newCase.displayId);
+            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.clickSaveStatus();
+            await utilityCommon.closePopUpMessage();
+            let subject = `Fritz Schulz changed the status of ${newCase.displayId} to In Progress`;
+            console.log("Subject of the email: ", subject);
+            await browser.sleep(5000); // hardwait to appear email message in "AR System Email Messages"
+            await apiHelper.apiLogin('tadmin');
+            let body = await apiHelper.getHTMLBodyOfEmail(subject);
+            console.log('body:', body);
+            //color span
+            await expect(body.includes('<td><span style="color:#3498db;">SettingColor</span></td>')).toBeTruthy('Color is not available');
+            //table width size attaribute
+            await expect(body.includes('<table summary="NotiFicationT" border="1" cellspacing="1" cellpadding="1" style="height:200px;width:500px;">')).toBeTruthy('Table properties not displayed');
+            //image
+            await expect(body.includes('<a target="_blank">Google</a>')).toBeTruthy('link tag is not displaying');
+            //font 
+            await expect(body.includes('<td><span style="font-size:18px;">SettingFontSize</span></td>')).toBeTruthy('Font Size is not present');
+            //right allign
+            await expect(body.includes('<td style="text-align: right;">FirstRightAlign</td>')).toBeTruthy('Right Alignment is not present');
+            //center align
+            await expect(body.includes('<td style="text-align: center;">FirstCenterAlign</td>')).toBeTruthy('Center Alignment is not present');
+            //italic
+            await expect(body.includes('<td><em>FirstItalic</em></td>')).toBeTruthy('Italic Font is not present');
+            //underline
+            await expect(body.includes('<td><u>FirstUnderLine</u></td>')).toBeTruthy('Underline Font is not present');
+        });
+        afterAll(async () => {
+            await apiHelper.apiLogin('fritz');
+            await apiHelper.deleteEmailOrNotificationTemplate('Case Status Change', 'Petramco');
+            await navigationPage.signOut();
+            await loginPage.login("qtao");
+        });
+    });
+
     //kgaikwad
     describe('[DRDMV-8377]: UI validation Email Option via Create New Case', async () => {
         let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -632,132 +755,6 @@ describe("Compose Email", () => {
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await navigationPage.signOut();
             await loginPage.login('qtao');
-        });
-    });
-
-    describe('[DRDMV-20368,DRDMV-20371]: Verify Able to insert table,hyperlink, images and Copy paste images in Notification template and notifications received by user with these contents', async () => {
-        let randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let newCase;
-        beforeAll(async () => {
-            let caseData = {
-                "Requester": "qkatawazi",
-                "Summary": "Test case for DRDMV-20368 RandVal" + randomString,
-                "Assigned Company": "Petramco",
-                "Business Unit": "United States Support",
-                "Support Group": "US Support 3",
-                "Assignee": "qkatawazi"
-            }
-            await apiHelper.apiLogin('fritz');
-            newCase = await apiHelper.createCase(caseData);
-        });
-        it('[DRDMV-20368,DRDMV-20371]: Verify Able to insert table,hyperlink, images and Copy paste images in Notification template and notifications received by user with these contents', async () => {
-            await navigationPage.signOut();
-            await loginPage.login('fritz');
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndSelectGridRecord('Case Status Change');
-            await consoleNotificationTemplatePo.clickCopyTemplate();
-            await copyNotificationTemplatePo.setCompanyValue('Petramco');
-            await copyNotificationTemplatePo.clickOnCreateCopyButton();
-            await editNotificationTemplatePo.selectDefaultNotificationMethod('Email');
-            await editNotificationTemplatePo.clickOnEmailTab();
-            await editNotificationTemplatePo.selectCheckBoxOfBody();
-            await editNotificationTemplatePo.clickOnEditButtonOfEmailTab();
-            await editMessageTextBladePo.setMessageBody('new');
-            await editMessageTextBladePo.clickOnImageIcon();
-            await imagePropertiesPo.addImageOnEmail('Upload', '../../../data/ui/attachment/articleStatus.png', imageWidthFieldIndex, imageUrlFieldIndex);
-            await editMessageTextBladePo.setMessageBody('this is link ');
-            await editMessageTextBladePo.clickOnLinkIcon();
-            await linkPropertiesPo.setValueOfLinkProperties('Google', linkDisplayTextFieldIndex);
-            await linkPropertiesPo.setValueOfLinkProperties('www.google.com', linkUrlFieldIndex);
-            await linkPropertiesPo.clickOnTargetTab();
-            await linkPropertiesPo.selectDropDown('_blank', linkTargetDropDownIndex);
-            await linkPropertiesPo.clickOnOkBtn();
-            await editMessageTextBladePo.setMessageBody('this is table');
-            await editMessageTextBladePo.clickOnTableIcon();
-            await tablePropertiesPo.setValueOfTableProperties('4', tableRowFieldIndex);
-            await tablePropertiesPo.setValueOfTableProperties('3', tableColumnFieldIndex);
-            await tablePropertiesPo.setValueOfTableProperties('500', tableWidthFieldIndex);
-            await tablePropertiesPo.setValueOfTableProperties('200', tableHeightFieldIndex);
-            await tablePropertiesPo.setValueOfTableProperties('new' + randomString, cellCaption);
-            await tablePropertiesPo.setValueOfTableProperties('NotiFicationT', cellSummary);
-            await tablePropertiesPo.clickOnOkButton();
-            //bold
-            await createEmailTemplatePo.clickInTableRowOfEmailTemplate(1, 1, 'NotiFicationT');
-            await editMessageTextBladePo.clickOnBoldIcon();
-            await createEmailTemplatePo.setDataInEmailTemplateTable(1, 1, 'FirstBold', 'NotiFicationT');
-            //italic
-            await createEmailTemplatePo.clickInTableRowOfEmailTemplate(1, 2, 'NotiFicationT');
-            await editMessageTextBladePo.clickOnItalicIcon();
-            await createEmailTemplatePo.setDataInEmailTemplateTable(1, 2, 'FirstItalic', 'NotiFicationT');
-            //underline
-            await createEmailTemplatePo.clickInTableRowOfEmailTemplate(1, 3, 'NotiFicationT');
-            await editMessageTextBladePo.clickOnUnderLineIcon();
-            await createEmailTemplatePo.setDataInEmailTemplateTable(1, 3, 'FirstUnderLine', 'NotiFicationT');
-            //left Align
-            await createEmailTemplatePo.clickInTableRowOfEmailTemplate(2, 1, 'NotiFicationT');
-            await editMessageTextBladePo.clickOnLeftAlignIcon();
-            await createEmailTemplatePo.setDataInEmailTemplateTable(2, 1, 'FirstLeftAlign', 'NotiFicationT');
-            //Right Align
-            await createEmailTemplatePo.clickInTableRowOfEmailTemplate(2, 2, 'NotiFicationT');
-            await editMessageTextBladePo.clickOnRightAlignIcon();
-            await createEmailTemplatePo.setDataInEmailTemplateTable(2, 2, 'FirstRightAlign', 'NotiFicationT');
-            //Center Align
-            await createEmailTemplatePo.clickInTableRowOfEmailTemplate(2, 3, 'NotiFicationT');
-            await editMessageTextBladePo.clickOnCenterAlignIcon();
-            await createEmailTemplatePo.setDataInEmailTemplateTable(2, 3, 'FirstCenterAlign', 'NotiFicationT');
-            //set color
-            await createEmailTemplatePo.clickInTableRowOfEmailTemplate(3, 1, 'NotiFicationT');
-            await editMessageTextBladePo.selectColor('Bright Blue');
-            await createEmailTemplatePo.setDataInEmailTemplateTable(3, 1, 'SettingColor', 'NotiFicationT');
-            //set font
-            await createEmailTemplatePo.clickInTableRowOfEmailTemplate(3, 2, 'NotiFicationT');
-            await editMessageTextBladePo.clickOnFontSizeIcon();
-            await editMessageTextBladePo.selectFontTypeOrSize('18');
-            await createEmailTemplatePo.setDataInEmailTemplateTable(3, 2, 'SettingFontSize', 'NotiFicationT');
-            await editMessageTextBladePo.setMessageBody('');
-            await editMessageTextBladePo.clickOnSaveButton();
-            await editNotificationTemplatePo.clickOnCancelButton();
-        });
-        it('[DRDMV-20368,DRDMV-20371]: Verify Able to insert table,hyperlink, images and Copy paste images in Notification template and notifications received by user with these contents', async () => {
-            await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
-            await caseConsole.searchAndOpenCase(newCase.displayId);
-            await updateStatusBladePo.changeCaseStatus('In Progress');
-            await updateStatusBladePo.clickSaveStatus();
-            await utilityCommon.closePopUpMessage();
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteAllEmailConfiguration();
-            await apiHelper.createEmailConfiguration();
-            let subject = `Fritz Schulz changed the status of ${newCase.displayId} to In Progress`;
-            console.log("Subject of the email: ", subject);
-            await browser.sleep(5000); // hardwait to appear email message in "AR System Email Messages"
-            await apiHelper.apiLogin('tadmin');
-            let body = await apiHelper.getHTMLBodyOfEmail(subject);
-            console.log('body:', body);
-            //color span
-            await expect(body.includes('<td><span style="color:#3498db;">SettingColor</span></td>')).toBeTruthy('Color is not available');
-            //table width size attaribute
-            await expect(body.includes('<table summary="NotiFicationT" border="1" cellspacing="1" cellpadding="1" style="height:200px;width:500px;">')).toBeTruthy('Table properties not displayed');
-            //image
-            await expect(body.includes('<a target="_blank">Google</a>')).toBeTruthy('link tag is not displaying');
-            //font 
-            await expect(body.includes('<td><span style="font-size:18px;">SettingFontSize</span></td>')).toBeTruthy('Font Size is not present');
-            //right allign
-            await expect(body.includes('<td style="text-align: right;">FirstRightAlign</td>')).toBeTruthy('Right Alignment is not present');
-            //center align
-            await expect(body.includes('<td style="text-align: center;">FirstCenterAlign</td>')).toBeTruthy('Center Alignment is not present');
-            //italic
-            await expect(body.includes('<td><em>FirstItalic</em></td>')).toBeTruthy('Italic Font is not present');
-            //underline
-            await expect(body.includes('<td><u>FirstUnderLine</u></td>')).toBeTruthy('Underline Font is not present');
-        });
-        afterAll(async () => {
-            await apiHelper.apiLogin('fritz');
-            await apiHelper.deleteEmailOrNotificationTemplate('Case Status Change', 'Petramco');
-            await navigationPage.signOut();
-            await loginPage.login("qtao");
         });
     });
 
