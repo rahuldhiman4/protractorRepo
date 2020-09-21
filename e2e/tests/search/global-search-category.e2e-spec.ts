@@ -656,7 +656,6 @@ describe('Global Search Category Validation', () => {
         let kaDisplayId5 = [];
         let kaDisplayId6;
 
-
         beforeAll(async () => {
             actualDate = await viewKnowledgeArticlePo.formatDate();
             expectedVersion1 = "Version " + "1" + " - " + actualDate;

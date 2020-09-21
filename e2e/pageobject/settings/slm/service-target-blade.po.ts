@@ -130,7 +130,7 @@ class ServiceTargetConfig {
     }
 
     async selectGoalTab() {
-        await $$(this.selectors.segmentsArrow).get(0).click();
+        await $$(this.selectors.segmentsArrow).first().click();
     }
 
     async selectMeasurement() {
@@ -181,7 +181,7 @@ class ServiceTargetConfig {
     }
 
     async selectGoalTypeCheckbox(checkboxLabel: string): Promise<void> {
-        let chkBoxVal: any = await $$('.d-checkbox__label input + span.d-checkbox__item');
+        let chkBoxVal = $$('.d-checkbox__label input + span.d-checkbox__item');
         switch (checkboxLabel) {
             case "Goal Time": {
                 await chkBoxVal.first().click();
@@ -203,7 +203,7 @@ class ServiceTargetConfig {
     }
 
     async selectMeasurementCheckbox(checkboxLabel: string): Promise<void> {
-        let chkBoxVal: any = await $$('.d-checkbox__label input + span');
+        let chkBoxVal = $$('.d-checkbox__label input + span');
         for (let i: number = 1; i <= (await chkBoxVal).length; i++) {
             let val = await chkBoxVal.get(i).getText();
             if (val == checkboxLabel) {
@@ -215,7 +215,7 @@ class ServiceTargetConfig {
     }
 
     async isGoalCheckboxDisabled(checkboxLabel: string): Promise<boolean> {
-        let chkBoxVal: any = await $$('.d-checkbox__label input');
+        let chkBoxVal = $$('.d-checkbox__label input');
         let isDisabledAttr: boolean;
         switch (checkboxLabel) {
             case "Goal Time": {
@@ -239,8 +239,8 @@ class ServiceTargetConfig {
     }
 
     async isMeasurementCheckboxDisabled(checkboxLabel: string): Promise<boolean> {
-        let chkBox: any = await $$('.d-checkbox__label span');
-        let chkBoxVal: any = await $$('.d-checkbox__label input');
+        let chkBox = $$('.d-checkbox__label span');
+        let chkBoxVal =  $$('.d-checkbox__label input');
         let cnt: number = 0;
         for (let i: number = 1; i <= (await chkBox).length; i++) {
             let val = await chkBox.get(i).getText();
@@ -253,19 +253,19 @@ class ServiceTargetConfig {
     }
 
     async isGoalCheckboxSelected(checkboxLabel: string): Promise<boolean> {
-        let chkBoxVal: any = await $$('.d-checkbox__label input');
+        let chkBoxVal = $$('.d-checkbox__label input');
         let isDisabledAttr: boolean;
         switch (checkboxLabel) {
             case "Goal Time": {
-                isDisabledAttr = await chkBoxVal.get(1).getAttribute("checked") == "true" ? true : false;
+                isDisabledAttr = await chkBoxVal.first().getAttribute("checked") == "true" ? true : false;
                 break;
             }
             case "Start Time": {
-                isDisabledAttr = await chkBoxVal.get(2).getAttribute("checked") == "true" ? true : false;
+                isDisabledAttr = await chkBoxVal.get(1).getAttribute("checked") == "true" ? true : false;
                 break;
             }
             case "Business Entity": {
-                isDisabledAttr = await chkBoxVal.get(3).getAttribute("checked") == "true" ? true : false;
+                isDisabledAttr = await chkBoxVal.get(2).getAttribute("checked") == "true" ? true : false;
                 break;
             }
             default: {
@@ -281,7 +281,7 @@ class ServiceTargetConfig {
     }
 
     async isGoalTypeCountersDisabled(goalType: string): Promise<boolean> {
-        let chkBox: any = await $$('span.d-textfield__item');
+        let chkBox = $$('span.d-textfield__item');
         let cnt: number = 0;
         for (let i: number = 1; i <= (await chkBox).length; i++) {
             let val = await chkBox.get(i).getText();

@@ -397,14 +397,14 @@ describe('Service Target Tests', () => {
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("60");
             expect(await utilCommon.isPopUpMessagePresent('Minutes can have max value of 59')).toBeTruthy('Error : Record definition does not exists error message is not displayed.');
-            await serviceTargetConfig.selectGoal("-1");
-            expect(await utilCommon.isPopUpMessagePresent('Minutes can have min value of 0')).toBeTruthy('Error : Record definition does not exists error message is not displayed.');
-            await serviceTargetConfig.selectGoal("24", "Hours");
-            expect(await utilCommon.isPopUpMessagePresent('Hours can have max value of 23')).toBeTruthy('Error : Record definition does not exists error message is not displayed.');
-            await serviceTargetConfig.selectGoal("-1", "Hours");
-            expect(await utilCommon.isPopUpMessagePresent('Hours can have min value of 0')).toBeTruthy('Error : Record definition does not exists error message is not displayed.');
             await serviceTargetConfig.selectGoal("366", "Days");
             expect(await utilCommon.isPopUpMessagePresent('Days can have max value of 365')).toBeTruthy('Error : Record definition does not exists error message is not displayed.');
+            await serviceTargetConfig.selectGoal("24", "Hours");
+            expect(await utilCommon.isPopUpMessagePresent('Hours can have max value of 23')).toBeTruthy('Error : Record definition does not exists error message is not displayed.');
+            await serviceTargetConfig.selectGoal("-1");
+            expect(await utilCommon.isPopUpMessagePresent('Minutes can have min value of 0')).toBeTruthy('Error : Record definition does not exists error message is not displayed.');
+            await serviceTargetConfig.selectGoal("-1", "Hours");
+            expect(await utilCommon.isPopUpMessagePresent('Hours can have min value of 0')).toBeTruthy('Error : Record definition does not exists error message is not displayed.');
             await serviceTargetConfig.selectGoal("-1", "Days");
             expect(await utilCommon.isPopUpMessagePresent('Days can have min value of 0')).toBeTruthy('Error : Record definition does not exists error message is not displayed.');
             await serviceTargetConfig.clickCloseButton();
@@ -437,6 +437,8 @@ describe('Service Target Tests', () => {
     describe('[DRDMV-2362]: SLM - Service Target - Console', async () => {
         let caseSVTData, taskSVTData, serviceTargetGUID, serviceTargetID;
         let serviceTargetColumns: string[] = ["GUID"];
+        let svtName = "Case for SVT creation";
+        let svtDataSource = "Case Management";
 
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
@@ -446,7 +448,7 @@ describe('Service Target Tests', () => {
         it('[DRDMV-2362]: Verify Service Target for Case Creation', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
-            await serviceTargetConfig.createServiceTargetConfig(caseSVTData.svtName, 'Petramco', 'Case Management');
+            await serviceTargetConfig.createServiceTargetConfig(svtName, 'Petramco', svtDataSource);
             await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
             await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
@@ -478,7 +480,7 @@ describe('Service Target Tests', () => {
 
         it('[DRDMV-2362]: Verify Service Target Console Fields Sort Order', async () => {
             await serviceTargetConsole.addColumns(serviceTargetColumns);
-            await serviceTargetConsole.searchOnGridConsole(caseSVTData.svtName);
+            await serviceTargetConsole.searchOnGridConsole(svtName);
             serviceTargetGUID = await serviceTargetConsole.getServiceTargetGUID();
             serviceTargetID = await serviceTargetConsole.getServiceTargetID();
             await utilGrid.clearFilter();
@@ -499,10 +501,10 @@ describe('Service Target Tests', () => {
             expect(await serviceTargetConsole.isGridColumnSorted('GUID', 'desc')).toBeTruthy('Status Column is not sorted in descending order');
             await serviceTargetConsole.clickRefreshIcon();
 
-            expect(await serviceTargetConsole.isGridRecordDisplayed(caseSVTData.svtName)).toBeTruthy('Service Target Name record is not searched.');
+            expect(await serviceTargetConsole.isGridRecordDisplayed(svtName)).toBeTruthy('Service Target Name record is not searched.');
 
             await serviceTargetConsole.clickRefreshIcon();
-            expect(await serviceTargetConsole.isGridRecordDisplayed(caseSVTData.dataSource)).toBeTruthy('Service Target Data Source record is not searched.');
+            expect(await serviceTargetConsole.isGridRecordDisplayed(svtDataSource)).toBeTruthy('Service Target Data Source record is not searched.');
 
             await serviceTargetConsole.clickRefreshIcon();
             expect(await serviceTargetConsole.isGridRecordDisplayed('Case Resolution Time')).toBeTruthy('SVT Goal Type record is not searched.');
@@ -517,7 +519,7 @@ describe('Service Target Tests', () => {
         it('[DRDMV-2362]: Verify Service Target Console Fields Search functionality', async () => {
             await utilGrid.clearGridSearchBox();
             await serviceTargetConsole.clickRefreshIcon();
-            await utilGrid.addFilter('Service Target Title', caseSVTData.svtName, 'text');
+            await utilGrid.addFilter('Service Target Title', svtName, 'text');
             expect(await serviceTargetConsole.isFilteredRecordDisplayed()).toBeTruthy('Service Target Title record is not searched.');
 
             await serviceTargetConsole.clearFilter();
@@ -532,7 +534,7 @@ describe('Service Target Tests', () => {
 
             await serviceTargetConsole.clearFilter();
             await serviceTargetConsole.clickRefreshIcon();
-            await utilGrid.addFilter('Data source', caseSVTData.dataSource, 'text');
+            await utilGrid.addFilter('Data source', svtDataSource, 'text');
             expect(await serviceTargetConsole.isFilteredRecordDisplayed()).toBeTruthy('Service Target Data Source record is not searched.');
 
             await serviceTargetConsole.clearFilter();
@@ -617,12 +619,9 @@ describe('Service Target Tests', () => {
             expect(await utilCommon.getWarningDialogTitle()).toBe('Warning!');
             expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue?');
             await utilCommon.clickOnWarningOk();
-            await utilityCommon.closeAllBlades();
         });
 
         it('[DRDMV-2358,DRDMV-1376,DRDMV-1378,DRDMV-1387]: Verify the SVT details', async () => {
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             await serviceTargetConfig.createServiceTargetConfig('SVT with mandatory fields', 'Petramco', dataSourceDisplayName);
             await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
             await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
@@ -632,6 +631,7 @@ describe('Service Target Tests', () => {
             expect(await serviceTargetConfig.isGoalCheckboxDisabled('Business Entity')).toBeFalsy('Business Entity field is disabled.');
             expect(await serviceTargetConfig.isGoalCheckboxDisabled('Start Time')).toBeFalsy('Start Time field is disabled.');
             await serviceTargetConfig.selectGoalTypeCheckbox('Goal Time');
+
             await serviceTargetConfig.selectGoalTypeCheckbox('Business Entity');
             await serviceTargetConfig.selectGoalTypeCheckbox('Start Time');
             expect(await serviceTargetConfig.isBusinessEntityDisabled()).toBeTruthy('Business Entity field is disabled.');
@@ -647,13 +647,12 @@ describe('Service Target Tests', () => {
             await serviceTargetConfig.clickOnSaveSVTButton();
             expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
             await serviceTargetConsole.searchServiceTarget("SVT with mandatory fields");
-            await serviceTargetConfig.selectGoalTab();
             await serviceTargetConfig.selectGoalTypeCheckbox('Business Entity');
             await serviceTargetConfig.selectGoalTypeCheckbox('Start Time');
             expect(await serviceTargetConfig.isGoalCheckboxDisabled('Goal Time')).toBeFalsy('Goal Time field is disabled.');
             expect(await serviceTargetConfig.isGoalCheckboxDisabled('Business Entity')).toBeFalsy('Business Entity field is disabled.');
             expect(await serviceTargetConfig.isGoalCheckboxDisabled('Start Time')).toBeFalsy('Start Time field is disabled.');
-            expect(await serviceTargetConfig.isBusinessEntityDisabled()).toBeTruthy('Business Entity field is disabled.');
+            expect(await serviceTargetConfig.isBusinessEntityDisabled()).toBeFalsy('Business Entity field is disabled.');
             expect(await serviceTargetConfig.isGoalTypeCountersDisabled('Days')).toBeTruthy('Days field is disabled.');
             expect(await serviceTargetConfig.isGoalTypeCountersDisabled('Hours')).toBeTruthy('Hours field is disabled.');
             expect(await serviceTargetConfig.isGoalTypeCountersDisabled('Minutes')).toBeTruthy('Minutes field is disabled.');
@@ -906,8 +905,8 @@ describe('Service Target Tests', () => {
 
             await browser.sleep(40000); // wait added for milestone to trigger and reflect the changes
 
-            await utilityGrid.clearFilter();
             await navigationPage.gotoTaskConsole();
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(taskId);
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
             expect(await viewTaskPo.getTaskSummaryValue()).toBe(updatedTaskSummary);
@@ -917,10 +916,11 @@ describe('Service Target Tests', () => {
         });
 
         it('[DRDMV-2354]: Create a task wit mismatched qualifications and verify if the case is updated as per the milestone configurations', async () => {
-         let   automatedtemplateData = {
+            let automatedtemplateData = {
                 "templateName": 'Automated task19011' + randomStr,
                 "templateSummary": 'Automated task19011' + randomStr,
                 "templateStatus": "Active",
+                "priority": 'High',
                 "processBundle": "com.bmc.dsm.case-lib",
                 "processName": 'Auto Proces' + randomStr,
                 "taskCompany": "Petramco",
@@ -950,9 +950,10 @@ describe('Service Target Tests', () => {
             await browser.sleep(35000); // wait added for milestone to trigger and reflect the changes
 
             await navigationPage.gotoTaskConsole();
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(taskId);
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
-            expect(await viewTaskPo.getTaskSummaryValue()).toBe('manual task test for svt milestone' + randomStr);
+            expect(await viewTaskPo.getTaskSummaryValue()).toBe(automatedtemplateData.templateSummary);
         });
 
     });

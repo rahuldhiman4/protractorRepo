@@ -226,7 +226,10 @@ describe("Case Preview", () => {
         await apiHelper.apiLogin('qtao');
         await apiHelper.createCase(caseData);
         await apiHelper.createCaseTemplate(templateData);
-        await apiHelper.createKnowledgeArticle(articleData1);
+        let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData1);
+        let knowledgeArticleGUID = knowledgeArticleData.id;
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'Draft')).toBeTruthy('Status Not Set');
+        expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'PublishApproval')).toBeTruthy('Status Not Set');
         await navigationPage.gotoQuickCase();
         await quickCasePo.selectRequesterName('qkatawazi');
         await quickCasePo.selectCaseTemplate(caseTemplateName);

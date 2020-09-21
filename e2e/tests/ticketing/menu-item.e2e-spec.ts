@@ -1,7 +1,11 @@
+import { cloneDeep } from 'lodash';
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
+import { RESOLUTION_CODE_ACTIVE_ON_UI, SAMPLE_MENU_ITEM, SOURCE_ACTIVE_UI_FALSE, SOURCE_DEPRECATED, SOURCE_INACTIVE, SOURCE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
+import caseConsolePo from '../../pageobject/case/case-console.po';
 import casePreviewPo from '../../pageobject/case/case-preview.po';
 import createCasePage from '../../pageobject/case/create-case.po';
+import editCasePo from '../../pageobject/case/edit-case.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
 import localizeValuePopPo from '../../pageobject/common/localize-value-pop.po';
@@ -11,38 +15,29 @@ import updateStatusBladePo from '../../pageobject/common/update.status.blade.po'
 import createMenuItems from '../../pageobject/settings/application-config/create-menu-items-blade.po';
 import editMenuItemsConfigPo from '../../pageobject/settings/application-config/edit-menu-items-config.po';
 import menuItemsConfigConsolePo from '../../pageobject/settings/application-config/menu-items-config-console.po';
+import addReadAccess from '../../pageobject/settings/case-management/add-read-access-configuration.po';
+import assignmentsConfigConsolePo from '../../pageobject/settings/case-management/assignments-config-console.po';
+import consoleCasetemplatePo from '../../pageobject/settings/case-management/console-casetemplate.po';
+import createAssignmentsConfigPo from '../../pageobject/settings/case-management/create-assignments-config.po';
+import createCasetemplatePo from '../../pageobject/settings/case-management/create-casetemplate.po';
+import editAssignmentsConfigPo from '../../pageobject/settings/case-management/edit-assignments-config.po';
+import editCasetemplatePo from '../../pageobject/settings/case-management/edit-casetemplate.po';
+import editReadAccessConfigPo from '../../pageobject/settings/case-management/edit-read-access-config.po';
+import consoleReadAcess from '../../pageobject/settings/case-management/read-access-console.po';
+import viewCasetemplatePo from '../../pageobject/settings/case-management/view-casetemplate.po';
+import serviceTargetConfig from '../../pageobject/settings/slm/service-target-blade.po';
+import SlmExpressionBuilder from '../../pageobject/settings/slm/slm-expressionbuilder.pop.po';
+import { default as consoleTasktemplatePo, default as selectTaskTemplate } from "../../pageobject/settings/task-management/console-tasktemplate.po";
+import createTasktemplatePo from '../../pageobject/settings/task-management/create-tasktemplate.po';
+import editTasktemplatePo from '../../pageobject/settings/task-management/edit-tasktemplate.po';
+import viewTasktemplatePo from '../../pageobject/settings/task-management/view-tasktemplate.po';
+import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
+import editTaskPo from '../../pageobject/task/edit-task.po';
+import manageTask from "../../pageobject/task/manage-task-blade.po";
+import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
-import editCasePo from '../../pageobject/case/edit-case.po';
-import manageTask from "../../pageobject/task/manage-task-blade.po";
-import manageTaskPo from "../../pageobject/task/manage-task-blade.po";
-import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
-import { deprecate } from 'util';
-import consoleCasetemplatePo from '../../pageobject/settings/case-management/console-casetemplate.po';
-import createCasetemplatePo from '../../pageobject/settings/case-management/create-casetemplate.po';
-import assignmentsConfigConsolePo from '../../pageobject/settings/case-management/assignments-config-console.po';
-import createAssignmentsConfigPo from '../../pageobject/settings/case-management/create-assignments-config.po';
-import selectTaskTemplate from "../../pageobject/settings/task-management/console-tasktemplate.po";
-import createTasktemplatePo from '../../pageobject/settings/task-management/create-tasktemplate.po';
-import consoleReadAcess from '../../pageobject/settings/case-management/read-access-console.po';
-import addReadAccess from '../../pageobject/settings/case-management/add-read-access-configuration.po';
-import serviceTargetConfig from '../../pageobject/settings/slm/service-target-blade.po';
-import SlmExpressionBuilder from '../../pageobject/settings/slm/slm-expressionbuilder.pop.po';
-import caseConsolePo from '../../pageobject/case/case-console.po';
-import editTaskPo from '../../pageobject/task/edit-task.po';
-import viewTaskPo from '../../pageobject/task/view-task.po';
-import viewCasetemplatePo from '../../pageobject/settings/case-management/view-casetemplate.po';
-import editCasetemplatePo from '../../pageobject/settings/case-management/edit-casetemplate.po';
-import consoleTasktemplatePo from '../../pageobject/settings/task-management/console-tasktemplate.po';
-import viewTasktemplatePo from '../../pageobject/settings/task-management/view-tasktemplate.po';
-import editTasktemplatePo from '../../pageobject/settings/task-management/edit-tasktemplate.po';
-import editAssignmentsConfigPo from '../../pageobject/settings/case-management/edit-assignments-config.po';
-import serviceTargetViewconsolePo from '../../pageobject/settings/slm/service-target-viewconsole.po';
-import editServiceTargetConfigPo from '../../pageobject/settings/slm/edit-service-target-config.po';
-import editReadAccessConfigPo from '../../pageobject/settings/case-management/edit-read-access-config.po';
-import { RESOLUTION_CODE_ACTIVE_ON_UI, SOURCE_MENU_ITEM, SOURCE_ACTIVE_UI_FALSE, SOURCE_INACTIVE, SOURCE_DEPRECATED, SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
-import { cloneDeep } from 'lodash';
 
 describe('Menu Item', () => {
     beforeAll(async () => {
@@ -517,82 +512,82 @@ describe('Menu Item', () => {
 
     //kgaikwad
     describe('[DRDMV-16276]: [Menu Items] - Only Active Label and Sources are available for consumption', async () => {
-            let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            let caseId;
-            let title = 'titleDRDMV16276' + randomStr;
-            let summary = 'summaryDRDMV16276' + randomStr;
-            let sourcesActiveUiTrue = 'sourcesActiveUiTrueDRDMV16276' + randomStr;
-            let sourcesActiveUiFalse = 'sourcesActiveUifalseDRDMV16276' + randomStr;
-            let sourcesInactiveUiTrue = 'sourcesInactiveUiTrueDRDMV16276' + randomStr;
-            let sourcesDeprecatedUiTrue = 'sourcesInactiveUiTrueDRDMV16276' + randomStr;
-            let labelActive1 = 'oneLabelActiveDRDMV16276' + randomStr;
-            let labelActive2 = 'twoLabelActiveDRDMV16276' + randomStr;
-            let labelInactive = 'labelInactiveDRDMV16276' + randomStr;
-            let labelDeprecated = 'labelDeprecatedDRDMV16276' + randomStr;
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseId;
+        let title = 'titleDRDMV16276' + randomStr;
+        let summary = 'summaryDRDMV16276' + randomStr;
+        let sourcesActiveUiTrue = 'sourcesActiveUiTrueDRDMV16276' + randomStr;
+        let sourcesActiveUiFalse = 'sourcesActiveUifalseDRDMV16276' + randomStr;
+        let sourcesInactiveUiTrue = 'sourcesInactiveUiTrueDRDMV16276' + randomStr;
+        let sourcesDeprecatedUiTrue = 'sourcesInactiveUiTrueDRDMV16276' + randomStr;
+        let labelActive1 = 'oneLabelActiveDRDMV16276' + randomStr;
+        let labelActive2 = 'twoLabelActiveDRDMV16276' + randomStr;
+        let labelInactive = 'labelInactiveDRDMV16276' + randomStr;
+        let labelDeprecated = 'labelDeprecatedDRDMV16276' + randomStr;
 
-            beforeAll(async () => {
-                await apiHelper.apiLogin('qkatawazi');
-                // Create SourceActive UI True
-                let sourceMenuItemData = cloneDeep(SOURCE_MENU_ITEM);
-                sourceMenuItemData.menuItemName = sourcesActiveUiTrue;
-                await apiHelper.createNewMenuItem(sourceMenuItemData);
+        beforeAll(async () => {
+            await apiHelper.apiLogin('qkatawazi');
+            // Create SourceActive UI True
+            let sourceMenuItemData = cloneDeep(SOURCE_MENU_ITEM);
+            sourceMenuItemData.menuItemName = sourcesActiveUiTrue;
+            await apiHelper.createNewMenuItem(sourceMenuItemData);
 
-                // Create SourceActive UI False
-                let sourceActiveUIFalseData = cloneDeep(SOURCE_ACTIVE_UI_FALSE);
-                sourceActiveUIFalseData.menuItemName = sourcesActiveUiFalse;
-                await apiHelper.createNewMenuItem(sourceActiveUIFalseData);
+            // Create SourceActive UI False
+            let sourceActiveUIFalseData = cloneDeep(SOURCE_ACTIVE_UI_FALSE);
+            sourceActiveUIFalseData.menuItemName = sourcesActiveUiFalse;
+            await apiHelper.createNewMenuItem(sourceActiveUIFalseData);
 
-                // Create sourcesInactiveUiTrue UI True
-                let sourceInActiveData = cloneDeep(SOURCE_INACTIVE);
-                sourceInActiveData.menuItemName = sourcesInactiveUiTrue;
-                await apiHelper.createNewMenuItem(sourceInActiveData);
+            // Create sourcesInactiveUiTrue UI True
+            let sourceInActiveData = cloneDeep(SOURCE_INACTIVE);
+            sourceInActiveData.menuItemName = sourcesInactiveUiTrue;
+            await apiHelper.createNewMenuItem(sourceInActiveData);
 
-                // Create sources Deprecated Ui True
-                let sourceDeprecatedData = cloneDeep(SOURCE_DEPRECATED);
-                sourceDeprecatedData.menuItemName = sourcesDeprecatedUiTrue;
-                sourceDeprecatedData.uiVisible = '1';
-                await apiHelper.createNewMenuItem(sourceDeprecatedData);
+            // Create sources Deprecated Ui True
+            let sourceDeprecatedData = cloneDeep(SOURCE_DEPRECATED);
+            sourceDeprecatedData.menuItemName = sourcesDeprecatedUiTrue;
+            sourceDeprecatedData.uiVisible = '1';
+            await apiHelper.createNewMenuItem(sourceDeprecatedData);
 
-                // Create Label 1 Active
-                let sampleMeniItemData1 = cloneDeep(SAMPLE_MENU_ITEM);
-                sampleMeniItemData1.menuItemName = labelActive1;
-                await apiHelper.createNewMenuItem(sampleMeniItemData1);
-                
-                // Create Label 2 Active
-                let sampleMeniItemData2 = cloneDeep(SAMPLE_MENU_ITEM);
-                sampleMeniItemData2.menuItemName = labelActive2;
-                await apiHelper.createNewMenuItem(sampleMeniItemData2);
+            // Create Label 1 Active
+            let sampleMeniItemData1 = cloneDeep(SAMPLE_MENU_ITEM);
+            sampleMeniItemData1.menuItemName = labelActive1;
+            await apiHelper.createNewMenuItem(sampleMeniItemData1);
 
-                // Create Label Inactive
-                let sampleMeniItemData3 = cloneDeep(SAMPLE_MENU_ITEM);
-                sampleMeniItemData3.menuItemName = labelInactive;
-                sampleMeniItemData3.menuItemStatus = 'Inactive';
-                await apiHelper.createNewMenuItem(sampleMeniItemData3);
+            // Create Label 2 Active
+            let sampleMeniItemData2 = cloneDeep(SAMPLE_MENU_ITEM);
+            sampleMeniItemData2.menuItemName = labelActive2;
+            await apiHelper.createNewMenuItem(sampleMeniItemData2);
 
-                // Create Label Deprecated
-                let sampleMeniItemData4 = cloneDeep(SAMPLE_MENU_ITEM);
-                sampleMeniItemData4.menuItemName = labelDeprecated;
-                sampleMeniItemData4.menuItemStatus = 'Deprecated';
-                await apiHelper.createNewMenuItem(sampleMeniItemData4);
-            });
+            // Create Label Inactive
+            let sampleMeniItemData3 = cloneDeep(SAMPLE_MENU_ITEM);
+            sampleMeniItemData3.menuItemName = labelInactive;
+            sampleMeniItemData3.menuItemStatus = 'Inactive';
+            await apiHelper.createNewMenuItem(sampleMeniItemData3);
+
+            // Create Label Deprecated
+            let sampleMeniItemData4 = cloneDeep(SAMPLE_MENU_ITEM);
+            sampleMeniItemData4.menuItemName = labelDeprecated;
+            sampleMeniItemData4.menuItemStatus = 'Deprecated';
+            await apiHelper.createNewMenuItem(sampleMeniItemData4);
+        });
 
         it('[DRDMV-16276]: Verify Label & Source With Create Case', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
-            expect(await createCasePage.isValuePresentInDropdown('Label',labelInactive)).toBeFalsy('Value is present in  label drop down');
-            await createCasePage.clickAssignToMeButton(); 
-            expect(await createCasePage.isValuePresentInDropdown('Label',labelDeprecated)).toBeFalsy('Value is present in  label drop down');
-            await createCasePage.clickAssignToMeButton(); 
+            expect(await createCasePage.isValuePresentInDropdown('Label', labelInactive)).toBeFalsy('Value is present in  label drop down');
+            await createCasePage.clickAssignToMeButton();
+            expect(await createCasePage.isValuePresentInDropdown('Label', labelDeprecated)).toBeFalsy('Value is present in  label drop down');
+            await createCasePage.clickAssignToMeButton();
             await createCasePage.setLabel(labelActive1);
 
-            expect(await createCasePage.isValuePresentInDropdown('Source',sourcesActiveUiTrue)).toBeTruthy('Value is present in  label drop down');
-            await createCasePage.clickAssignToMeButton(); 
-            expect(await createCasePage.isValuePresentInDropdown('Source',sourcesActiveUiFalse)).toBeFalsy('Value is present in  label drop down');
-            await createCasePage.clickAssignToMeButton(); 
-            expect(await createCasePage.isValuePresentInDropdown('Source',sourcesInactiveUiTrue)).toBeFalsy('Value is present in  label drop down');
-            await createCasePage.clickAssignToMeButton(); 
-            expect(await createCasePage.isValuePresentInDropdown('Source',sourcesDeprecatedUiTrue)).toBeFalsy('Value is present in  label drop down');
-            await createCasePage.clickAssignToMeButton(); 
+            expect(await createCasePage.isValuePresentInDropdown('Source', sourcesActiveUiTrue)).toBeTruthy('Value is present in  label drop down');
+            await createCasePage.clickAssignToMeButton();
+            expect(await createCasePage.isValuePresentInDropdown('Source', sourcesActiveUiFalse)).toBeFalsy('Value is present in  label drop down');
+            await createCasePage.clickAssignToMeButton();
+            expect(await createCasePage.isValuePresentInDropdown('Source', sourcesInactiveUiTrue)).toBeFalsy('Value is present in  label drop down');
+            await createCasePage.clickAssignToMeButton();
+            expect(await createCasePage.isValuePresentInDropdown('Source', sourcesDeprecatedUiTrue)).toBeFalsy('Value is present in  label drop down');
+            await createCasePage.clickAssignToMeButton();
             await createCasePage.setSource(sourcesActiveUiTrue);
             await createCasePage.setSummary(summary);
 
@@ -604,11 +599,11 @@ describe('Menu Item', () => {
         it('[DRDMV-16276]: Verify Label With Create Task', async () => {
             await viewCasePo.clickAddTaskButton();
             await manageTask.clickAddAdhocTaskButton();
-            
+
             await adhoctaskTemplate.setDescription("Description");
-            expect(await adhoctaskTemplate.isValuePresentInDropdown('Label',labelInactive)).toBeFalsy('Value is present in  label drop down');
+            expect(await adhoctaskTemplate.isValuePresentInDropdown('Label', labelInactive)).toBeFalsy('Value is present in  label drop down');
             await adhoctaskTemplate.clickAssignToMeButton();
-            expect(await adhoctaskTemplate.isValuePresentInDropdown('Label',labelDeprecated)).toBeFalsy('Value is present in  label drop down');
+            expect(await adhoctaskTemplate.isValuePresentInDropdown('Label', labelDeprecated)).toBeFalsy('Value is present in  label drop down');
             await adhoctaskTemplate.clickAssignToMeButton();
             await adhoctaskTemplate.selectLabel(labelActive1);
             await adhoctaskTemplate.setSummary(summary);
@@ -621,10 +616,10 @@ describe('Menu Item', () => {
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
             await createCasetemplatePo.setTemplateName(title);
-            expect(await createCasetemplatePo.isValuePresentInDropdown('Label',labelInactive)).toBeFalsy('Value is present in  label drop down');
+            expect(await createCasetemplatePo.isValuePresentInDropdown('Label', labelInactive)).toBeFalsy('Value is present in  label drop down');
             await createCasetemplatePo.setCompanyName('Petramco');
-            expect(await createCasetemplatePo.isValuePresentInDropdown('Label',labelDeprecated)).toBeFalsy('Value is present in  label drop down');
-            
+            expect(await createCasetemplatePo.isValuePresentInDropdown('Label', labelDeprecated)).toBeFalsy('Value is present in  label drop down');
+
             await createCasetemplatePo.setCaseSummary(summary);
             await createCasetemplatePo.setPriorityValue('Low');
             await createCasetemplatePo.setLabelValue(labelActive1);
@@ -638,9 +633,9 @@ describe('Menu Item', () => {
             await createTasktemplatePo.setTemplateName(title);
             await createTasktemplatePo.setTaskSummary(summary);
 
-            expect(await createTasktemplatePo.isValuePresentInDropdown('Label',labelInactive)).toBeFalsy('Value is present in  label drop down');
+            expect(await createTasktemplatePo.isValuePresentInDropdown('Label', labelInactive)).toBeFalsy('Value is present in  label drop down');
             await createTasktemplatePo.selectTaskPriority('Low');
-            expect(await createTasktemplatePo.isValuePresentInDropdown('Label',labelDeprecated)).toBeFalsy('Value is present in  label drop down');
+            expect(await createTasktemplatePo.isValuePresentInDropdown('Label', labelDeprecated)).toBeFalsy('Value is present in  label drop down');
             await createTasktemplatePo.selectCompanyByName('Petramco')
             await createTasktemplatePo.selectLabel(labelActive1);
             await createTasktemplatePo.clickOnSaveTaskTemplate();
@@ -652,9 +647,9 @@ describe('Menu Item', () => {
             await assignmentsConfigConsolePo.clickOnCreateAssignmentConfiguration();
             await createAssignmentsConfigPo.setAssignmentMapName(title);
 
-            expect(await createAssignmentsConfigPo.isValuePresentInDropdown('Label',labelInactive)).toBeFalsy('Value is present in  label drop down');
+            expect(await createAssignmentsConfigPo.isValuePresentInDropdown('Label', labelInactive)).toBeFalsy('Value is present in  label drop down');
             await createAssignmentsConfigPo.setCompany("Petramco");
-            expect(await createAssignmentsConfigPo.isValuePresentInDropdown('Label',labelDeprecated)).toBeFalsy('Value is present in  label drop down');
+            expect(await createAssignmentsConfigPo.isValuePresentInDropdown('Label', labelDeprecated)).toBeFalsy('Value is present in  label drop down');
             await createAssignmentsConfigPo.setSupportCompany("Petramco");
             await createAssignmentsConfigPo.setBusinessUnit('Canada Support');
             await createAssignmentsConfigPo.setSupportGroup("CA Support 1");
@@ -670,9 +665,9 @@ describe('Menu Item', () => {
             await addReadAccess.setReadAccessConfigurationName(title);
             await addReadAccess.selectCompany('Petramco');
             await addReadAccess.selectSupportCompany('Petramco');
-            expect(await addReadAccess.isValuePresentInDropdown('Label',labelInactive)).toBeFalsy('Value is present in  label drop down');
+            expect(await addReadAccess.isValuePresentInDropdown('Label', labelInactive)).toBeFalsy('Value is present in  label drop down');
             await addReadAccess.selectBusinessUnit('Canada Support');
-            expect(await addReadAccess.isValuePresentInDropdown('Label',labelDeprecated)).toBeFalsy('Value is present in  label drop down');
+            expect(await addReadAccess.isValuePresentInDropdown('Label', labelDeprecated)).toBeFalsy('Value is present in  label drop down');
 
             await addReadAccess.selectSupportGroup('CA Support 1');
             await addReadAccess.selectLabel(labelActive1)
@@ -686,7 +681,7 @@ describe('Menu Item', () => {
             await SlmExpressionBuilder.selectExpressionQualification('Label', '=', 'LABEL', labelActive1);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
         });
-        
+
         it('[DRDMV-16276]: Change Status Active Label Status to InActive', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
@@ -695,17 +690,16 @@ describe('Menu Item', () => {
             await editMenuItemsConfigPo.clickOnSaveButton();
         });
 
-
-        it('[DRDMV-16276]: Verify Labe With Edit Case', async () => {
+        it('[DRDMV-16276]: Verify Label With Edit Case', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
             await viewCasePo.clickEditCaseButton();
             await editCasePo.updateLabel(labelInactive);
             await editCasePo.clickSaveCase();
-            expect(await utilityCommon.getAllPopupMsg()).toContain(`The Label you have selected is either Inactive or Deprecated. Please select a valid Label.`);
+            expect(await utilityCommon.isPopUpMessagePresent('The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
             await editCasePo.updateLabel(labelDeprecated);
             await editCasePo.clickSaveCase();
-            expect(await utilityCommon.getAllPopupMsg()).toContain(`The Label you have selected is either Inactive or Deprecated. Please select a valid Label.`);
+            expect(await utilityCommon.isPopUpMessagePresent('The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
             await editCasePo.updateLabel(labelActive2);
             await editCasePo.clickSaveCase();
             await viewCasePo.clickEditCaseButton();
@@ -713,7 +707,7 @@ describe('Menu Item', () => {
             await editCasePo.updateLabel(labelActive1);
 
             await editCasePo.clickSaveCase();
-            expect(await utilityCommon.getAllPopupMsg()).toContain(`The Label you have selected is either Inactive or Deprecated. Please select a valid Label.`);
+            expect(await utilityCommon.isPopUpMessagePresent('The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
             await editCasePo.clickOnCancelCaseButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
@@ -723,18 +717,18 @@ describe('Menu Item', () => {
             await viewTaskPo.clickOnEditTask();
             await editTaskPo.setLabel(labelInactive);
             await editTaskPo.clickOnSaveButton();
-            expect(await utilityCommon.getAllPopupMsg()).toContain(`The Label you have selected is either Inactive or Deprecated. Please select a valid Label.`);
-            
+            expect(await utilityCommon.isPopUpMessagePresent('The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
+
             await editTaskPo.setLabel(labelDeprecated);
             await editTaskPo.clickOnSaveButton();
-            expect(await utilityCommon.getAllPopupMsg()).toContain(`The Label you have selected is either Inactive or Deprecated. Please select a valid Label.`);
-            
+            expect(await utilityCommon.isPopUpMessagePresent('The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
+
             await editTaskPo.setLabel(labelActive2);
             await editTaskPo.clickOnSaveButton();
             await viewTaskPo.clickOnEditTask();
             await editTaskPo.setLabel(labelActive1);
             await editTaskPo.clickOnSaveButton();
-            expect(await utilityCommon.getAllPopupMsg()).toContain(`The Label you have selected is either Inactive or Deprecated. Please select a valid Label.`);
+            expect(await utilityCommon.isPopUpMessagePresent('The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
             await editTaskPo.clickOnCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
@@ -748,21 +742,21 @@ describe('Menu Item', () => {
 
             await editCasetemplatePo.changeLabelValue(labelInactive);
             await editCasetemplatePo.clickSaveCaseTemplate();
-            expect(await utilCommon.getAllPopupMsg()).toContain('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.');
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
 
             await editCasetemplatePo.changeLabelValue(labelDeprecated);
             await editCasetemplatePo.clickSaveCaseTemplate();
-            expect(await utilCommon.getAllPopupMsg()).toContain('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.');
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
 
             await editCasetemplatePo.changeLabelValue(labelActive2);
             await editCasetemplatePo.clickSaveCaseTemplate();
             await viewCasetemplatePo.clickOnEditCaseTemplateButton();
             await editCasetemplatePo.changeLabelValue(labelActive1);
             await editCasetemplatePo.clickSaveCaseTemplate();
-            expect(await utilCommon.getAllPopupMsg()).toContain('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.');
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
         });
 
-        it('[DRDMV-16276]: Verify Label With Edit Task Template', async () => {
+        it('[DRDMV-16276]: Verify Inactive, deprecated label With Edit Task Template', async () => {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows')).toEqual('Task Templates - Business Workflows');
             await consoleTasktemplatePo.searchAndOpenTaskTemplate(title);
@@ -770,18 +764,20 @@ describe('Menu Item', () => {
 
             await editTasktemplatePo.selectLabel(labelInactive);
             await editTasktemplatePo.clickOnSaveButton();
-            expect(await utilCommon.getAllPopupMsg()).toContain('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.');
-            
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
+
             await editTasktemplatePo.selectLabel(labelDeprecated);
             await editTasktemplatePo.clickOnSaveButton();
-            expect(await utilCommon.getAllPopupMsg()).toContain('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.');
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
+        });
 
+        it('[DRDMV-16276]: Verify Label With Edit Task Template', async () => {
             await editTasktemplatePo.selectLabel(labelActive2);
             await editTasktemplatePo.clickOnSaveButton();
             await viewTasktemplatePo.clickOnEditLink();
             await editTasktemplatePo.selectLabel(labelActive1);
             await editTasktemplatePo.clickOnSaveButton();
-            expect(await utilCommon.getAllPopupMsg()).toContain('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.');
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
         });
 
         it('[DRDMV-16276]: Verify Label With Edit Assignment Mapping', async () => {
@@ -791,11 +787,11 @@ describe('Menu Item', () => {
 
             await editAssignmentsConfigPo.setLabel(labelInactive);
             await editAssignmentsConfigPo.clickonSaveButton();
-            expect(await utilCommon.getAllPopupMsg()).toContain('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.');
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
 
             await editAssignmentsConfigPo.setLabel(labelDeprecated);
             await editAssignmentsConfigPo.clickonSaveButton();
-            expect(await utilCommon.getAllPopupMsg()).toContain('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.');
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
 
             await editAssignmentsConfigPo.setLabel(labelActive2);
             await editAssignmentsConfigPo.clickonSaveButton();
@@ -803,7 +799,7 @@ describe('Menu Item', () => {
             await assignmentsConfigConsolePo.searchAndClickOnAssignmentConfig(title);
             await editAssignmentsConfigPo.setLabel(labelActive1);
             await editAssignmentsConfigPo.clickonSaveButton();
-            expect(await utilCommon.getAllPopupMsg()).toContain('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.');
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
         });
 
         it('[DRDMV-16276]: Verify Label With Edit Case Read Access', async () => {
@@ -813,18 +809,18 @@ describe('Menu Item', () => {
 
             await editReadAccessConfigPo.setLabel(labelInactive);
             await editReadAccessConfigPo.clickOnSave();
-            expect(await utilCommon.getAllPopupMsg()).toContain('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.');
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
 
             await editReadAccessConfigPo.setLabel(labelDeprecated);
             await editReadAccessConfigPo.clickOnSave();
-            expect(await utilCommon.getAllPopupMsg()).toContain('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.');
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
 
             await editReadAccessConfigPo.setLabel(labelActive2);
             await editReadAccessConfigPo.clickOnSave();
             await consoleReadAcess.searchAndOpenReadAccess(title);
             await editReadAccessConfigPo.setLabel(labelActive1);
             await editReadAccessConfigPo.clickOnSave();
-            expect(await utilCommon.getAllPopupMsg()).toContain('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.');
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
         });
     });
 });

@@ -272,7 +272,6 @@ describe('Data Source Configuration Tests', () => {
             await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Dynamic Business Entity', 'Company');
             await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Dynamic Start Time Field', 'Created Date');
             await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Dynamic Goal Time Field', 'Assignee');
-            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Category Field', 'Category Tier 1');
             await createConfigureDataSourceConfigPo.clickUseEndTimeCheckbox();
             await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Dynamic End Time Field', 'Created By');
             await createConfigureDataSourceConfigPo.clickDataSourceLink('Build Expression');
@@ -293,11 +292,12 @@ describe('Data Source Configuration Tests', () => {
         });
 
         it('[DRDMV-13063]: Create a Task SVT and verify the data source details are enabled', async () => {
+            await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             await serviceTargetConfig.createServiceTargetConfig('SVT with all fields', 'Petramco', 'Task Management');
             await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
             await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
-            await SlmExpressionBuilder.clickOnSaveExpressionButton();
+            await SlmExpressionBuilder.clickOnSaveExpressionButtonForTask();
             await serviceTargetConfig.selectGoalType('Task Resolution Time');
             await serviceTargetConfig.enterSVTDescription('SVT with all fields Desc');
             await serviceTargetConfig.selectGoal("2");
@@ -315,8 +315,8 @@ describe('Data Source Configuration Tests', () => {
             await serviceTargetConfig.selectMeasurementCheckbox('Reset Goal for Same Request?');
             await serviceTargetConfig.selectMeasurementCheckbox('Allow Measurement to Re-Open?');
             await serviceTargetConfig.selectMeasurementCheckbox('Enable Team Tracking');
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
+            await serviceTargetConfig.selectExpressionForMeasurementForTask(0, "status", "=", "STATUS", "Assigned");
+            await serviceTargetConfig.selectExpressionForMeasurementForTask(1, "status", "=", "STATUS", "Completed");
             await serviceTargetConfig.clickOnSaveSVTButton();
             expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
