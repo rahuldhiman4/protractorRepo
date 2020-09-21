@@ -1,5 +1,5 @@
 import { resolve } from "path";
-import { $, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
 import utilityCommon from '../../utils/utility.common';
 import CreateTaskTemplatePage from "../settings/task-management/create-tasktemplate.po";
 import ckeditorOpsPo from '../common/ck-editor/ckeditor-ops.po';
@@ -32,6 +32,10 @@ class CreateAdhocTaskTemplatePage {
         assignedCompanyRequiredText: '359f0c65-e48c-458d-8f14-3c2fc85c5cf6',
         assignedGroupRequiredText: '6a22a1f6-8bb2-4f28-8e91-399b3fa6c08d',
         attachmentField: '[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] input[type="file"]',
+        description: '[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"]',
+        adHocTaskTextArea: '[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] .cke_editable_themed',
+        numberIcon: '[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] .cke_button__numberedlist_icon',
+        bulletIcon: '[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] .cke_button__bulletedlist_icon',
     }
 
     async addAttachment(fileToUpload: string[]): Promise<void> {
@@ -262,6 +266,41 @@ class CreateAdhocTaskTemplatePage {
             }
         }
         return await utilityCommon.isValuePresentInDropDown(guid, value);
+    }
+
+    async isTextLeftAlignInCkEditorTextArea(bodyText: string): Promise<boolean> {
+        let leftAlignemntElement = await element(by.css('[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] div.cke_enable_context_menu div'));
+        return await ckeditorOpsPo.isTextLeftAlignInCkEditorTextArea(bodyText, leftAlignemntElement)
+    }
+
+    async setInsertRemoveNumberList(value: string): Promise<void> {
+        await $(this.selectors.adHocTaskTextArea).sendKeys(Key.CONTROL, Key.END);
+        await $(this.selectors.adHocTaskTextArea).sendKeys(Key.ENTER);
+        await $(this.selectors.numberIcon).click();
+        await $(this.selectors.adHocTaskTextArea).sendKeys(value);
+    }
+
+    async setInsertRemoveBulletedList(value: string): Promise<void> {
+        await $(this.selectors.adHocTaskTextArea).sendKeys(Key.CONTROL, Key.END);
+        await $(this.selectors.adHocTaskTextArea).sendKeys(Key.ENTER);
+        await $(this.selectors.bulletIcon).click();
+        await $(this.selectors.adHocTaskTextArea).sendKeys(value);
+    }
+
+    async clickMaximizeMinimizeIcon():Promise<void>{
+        await ckeditorOpsPo.clickMaximizeMinimizeIcon(this.selectors.descriptionGuid);
+    }  
+
+    async clickOnLinkIcon():Promise<void>{
+        await ckeditorOpsPo.clickOnLinkIcon(this.selectors.descriptionGuid);
+    }
+    
+    async clickOnTableIcon():Promise<void>{
+        await ckeditorOpsPo.clickOnTableIcon(this.selectors.descriptionGuid);
+    }
+
+    async clickOnImageIcon():Promise<void>{
+        await ckeditorOpsPo.clickOnImageIcon(this.selectors.descriptionGuid);
     }
 }
 
