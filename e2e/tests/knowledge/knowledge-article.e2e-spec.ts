@@ -43,7 +43,7 @@ describe('Knowledge Article', () => {
     let knowledgeManagementApp = "Knowledge Management";
     let knowledgeArticlesTitleStr = "Knowledge Articles";
     let knowledgeModule = 'Knowledge';
-    let kaDetails1, kaDetails2, kaDetails3, knowledgeTemplateId;
+    let kaDetails1, kaDetails2, kaDetails3,kaDetails4,kaDetails5,kaDetails6,kaDetails7, knowledgeTemplateId;
     let knowledgeSetTitleStr = 'KASet_' + randomStr;
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
@@ -2548,10 +2548,10 @@ describe('Knowledge Article', () => {
 
     describe('[DRDMV-753]:[Advanced Search] [Pin/Unpin] Relate Knowledge Article on Knowledge Edit view from Advanced search', async () => {
         it('[DRDMV-753]:[Advanced Search] Knowledge Creation', async () => {
-            await apiHelper.apiLogin('kmills');
+            await apiHelper.apiLogin('qkatawazi');
             let articleData = {
                 "knowledgeSet": "HR",
-                "title": 'KA1' + randomStr,
+                "title": 'DRDMV-753 KnowledgeArticle_KA ' + randomStr,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
@@ -2560,31 +2560,51 @@ describe('Knowledge Article', () => {
             }
             kaDetails1 = await apiHelper.createKnowledgeArticle(articleData);
             let knowledgeArticleGUID1 = kaDetails1.id;
-            articleData.title = 'KA2' + randomStr;
+            articleData.title = 'DRDMV-753 KnowledgeArticle_KA ' + randomStr;
             kaDetails2 = await apiHelper.createKnowledgeArticle(articleData);
             let knowledgeArticleGUID2 = kaDetails2.id;
-            articleData.title = 'KA3' + randomStr;
+            articleData.title = 'DRDMV-753 KnowledgeArticle_KA ' + randomStr;
             kaDetails3 = await apiHelper.createKnowledgeArticle(articleData);
             let knowledgeArticleGUID3 = kaDetails3.id;
+            articleData.title = 'DRDMV-753 KnowledgeArticle_KA ' + randomStr;
+            kaDetails4 = await apiHelper.createKnowledgeArticle(articleData);
+            let knowledgeArticleGUID4 = kaDetails4.id;
+            articleData.title = 'DRDMV-753 KnowledgeArticle_KA ' + randomStr;
+            kaDetails5 = await apiHelper.createKnowledgeArticle(articleData);
+            let knowledgeArticleGUID5 = kaDetails5.id;
+            articleData.title = 'DRDMV-753 KnowledgeArticle_KA ' + randomStr;
+            kaDetails6 = await apiHelper.createKnowledgeArticle(articleData);
+            let knowledgeArticleGUID6 = kaDetails6.id;
+            articleData.title = 'DRDMV-753 KnowledgeArticle_KA ' + randomStr;
+            kaDetails7 = await apiHelper.createKnowledgeArticle(articleData);
+            let knowledgeArticleGUID7 = kaDetails7.id;
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID1, 'Draft')).toBeTruthy('Status Not Set');
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID1, 'PublishApproval')).toBeTruthy('Status Not Set');
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID2, 'Draft')).toBeTruthy('Status Not Set');
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID2, 'PublishApproval')).toBeTruthy('Status Not Set');
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID3, 'Draft')).toBeTruthy('Status Not Set');
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID3, 'PublishApproval')).toBeTruthy('Status Not Set');
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID4, 'Draft')).toBeTruthy('Status Not Set');
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID4, 'PublishApproval')).toBeTruthy('Status Not Set');
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID5, 'Draft')).toBeTruthy('Status Not Set');
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID5, 'PublishApproval')).toBeTruthy('Status Not Set');
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID6, 'Draft')).toBeTruthy('Status Not Set');
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID6, 'PublishApproval')).toBeTruthy('Status Not Set');            
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID7, 'Draft')).toBeTruthy('Status Not Set');
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID7, 'PublishApproval')).toBeTruthy('Status Not Set');            
             await browser.sleep(2000); // hardwait to populate resource tab data
         });
         it('[DRDMV-753]:[Advanced Search] [Pin/Unpin] Relate Knowledge Article on Knowledge Edit view from Advanced search', async () => {
             await navigationPage.signOut();
-            await loginPage.login('kmills');
+            await loginPage.login('qkatawazi');
             await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.clearFilter();
-            await utilityGrid.searchAndOpenHyperlink(kaDetails3.displayId);
+            await utilityGrid.searchAndOpenHyperlink(kaDetails2.displayId);
             await viewKnowledgeArticlePo.clickOnTab('Resources');
             await resources.clickOnAdvancedSearchOptions();
-            await resources.enterAdvancedSearchText("%");
+            await resources.enterAdvancedSearchText("DRDMV-753 KnowledgeArticle_KA ");
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton("Apply");
             await resources.pinRecommendedKnowledgeArticles(1);
@@ -2593,10 +2613,10 @@ describe('Knowledge Article', () => {
         it('[DRDMV-753]:[Advanced Search] [Pin/Unpin] Relate Knowledge Article on Knowledge Edit view from Advanced search', async () => {
             await navigationPage.gotoKnoweldgeConsoleFromKM();
             await utilityGrid.clearFilter();
-            await utilityGrid.searchAndOpenHyperlink(kaDetails3.displayId);
+            await utilityGrid.searchAndOpenHyperlink(kaDetails2.displayId);
             await viewKnowledgeArticlePo.clickOnTab("Resources");
             await resources.clickOnAdvancedSearchOptions();
-            await resources.enterAdvancedSearchText("%");
+            await resources.enterAdvancedSearchText("DRDMV-753 KnowledgeArticle_KA ");
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton("Apply");
             expect(await resources.isFirstPinnedArticleDisplayed()).toBeTruthy();
@@ -2606,12 +2626,11 @@ describe('Knowledge Article', () => {
         it('[DRDMV-753]:[Advanced Search] [Pin/Unpin] Relate Knowledge Article on Knowledge Edit view from Advanced search', async () => {
             await navigationPage.gotoKnoweldgeConsoleFromKM();
             await utilityGrid.clearFilter();
-            await utilityGrid.searchAndOpenHyperlink(kaDetails3.displayId);
+            await utilityGrid.searchAndOpenHyperlink(kaDetails2.displayId);
             await viewKnowledgeArticlePo.clickOnTab('Resources');
             expect(await resources.getCountOfPinKnowledgeArticles()).toBe(3);
-            await resources.clickOnAdvancedSearchOptions();
-            await resources.clickOnAdvancedSearchSettingsIconToOpen();
-            await resources.clickOnBackButton();
+            await viewKnowledgeArticlePo.clickOnTab('Activity');
+            await viewKnowledgeArticlePo.clickOnTab('Resources');
             expect(await resources.getCountOfPinKnowledgeArticles()).toBe(3);
             await resources.unpinRecommendedKnowledgeArticles(1);
             expect(await resources.isFirstPinnedArticleDisplayed()).toBeTruthy();
@@ -2626,7 +2645,7 @@ describe('Knowledge Article', () => {
             await utilityGrid.searchAndOpenHyperlink(kaDetails2.displayId);
             await viewKnowledgeArticlePo.clickOnTab("Resources");
             await resources.clickOnAdvancedSearchOptions();
-            await resources.enterAdvancedSearchText("%");
+            await resources.enterAdvancedSearchText("DRDMV-753 KnowledgeArticle_KA ");
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton("Apply");
             await resources.pinRecommendedKnowledgeArticles(2);
