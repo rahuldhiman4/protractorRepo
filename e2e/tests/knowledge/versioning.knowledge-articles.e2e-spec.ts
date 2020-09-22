@@ -25,7 +25,6 @@ import utilityGrid from "../../utils/utility.grid";
 import statusConfigPO from '../../pageobject/settings/common/status-config.po';
 import changeAssignmentBlade from "../../pageobject/common/change-assignment-blade.po";
 
-
 let caseBAUser = 'qkatawazi';
 let caseAgentUser = 'qtao';
 let caseManagerUser = 'qdu';
@@ -114,7 +113,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
         console.log(actualDate);
         let expectedVersion = "Version " + "1" + " - " + actualDate;
         expect(actualVersion).toBe(expectedVersion);
-    });//, 150 * 1000);
+    });
 
     //skhobrag
     describe('[DRDMV-20742]: Verify the functionality of Edit article with Minor Edit button', () => {
@@ -1314,7 +1313,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await utilityCommon.refresh();
             await browser.sleep(2000);
             expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Article is updated with Published status.');
-        }, 1000 * 350);
+        });
 
         it('[DRDMV-20753]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', async () => {
             await apiHelper.apiLogin('tadmin');
@@ -1412,7 +1411,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await viewKnowledgeArticlePo.clickOnTab(activityTabStr);
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.getFirstPostContent()).toContain('Kane Williamson created a new version.', 'content not displaying on Activity');
-        }, 1000 * 350);
+        });
 
         it('[DRDMV-20753]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', async () => {
             await editKnowledgePage.setKnowledgeStatus('Request Cancelation');
@@ -1448,7 +1447,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await viewKnowledgeArticlePo.getCategoryTier3Value()).toBe(articleData.categoryTier3);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAssigneeGroupValue()).toBe(articleData.assigneeSupportGroup);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAccessPermissionGroupDetails()).toEqual(articleAccessPermission);
-            //expect(await viewKnowledgeArticlePo.getKnowledgeArticleAccessPermissionUsersDetails()).toEqual(articleAccessPermissionUser);
             expect(await viewKnowledgeArticlePo.getArticleViewCounter()).toContain(articleHelpFulCounterData.viewCounter.toString());
             expect(await viewKnowledgeArticlePo.getArticleHelpfulCounter()).toContain(articleHelpFulCounterData.helpfulPercentage.toString());
             expect(await viewKnowledgeArticlePo.getRegionValue()).toBe(articleData.region);
@@ -1467,7 +1465,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await viewKnowledgeArticlePo.clickOnTab(activityTabStr);
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.getFirstPostContent()).toContain('Kane Williamson created a new version.', 'content not displaying on Activity');
-        }, 1000 * 350);
+        });
 
         afterAll(async () => {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
@@ -1541,7 +1539,8 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await knowledgeAccessPage.selectSupportGroupWriteAccess();
             await knowledgeAccessPage.clickAddSupportGroupAccessButton();
             await knowledgeAccessPage.clickCloseKnowledgeAccessBlade();
-
+        });
+        it('[DRDMV-20748]:  Verify whether the user with appropriate knowledge permission roles can able to update the article with updated / new version', async () => {
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
             await knowledgeAccessPage.clickOnAccessButton('Support Group Access');
             await knowledgeAccessPage.selectCompany('Petramco');
@@ -1574,7 +1573,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await utilCommon.clickOnWarningOk();
             await statusBladeKnowledgeArticlePo.setKnowledgeStatusWithReviewerDetails('SME Review', 'Petramco', 'Australia Support', 'AU Support 3', 'Kane Williamson');
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
-        }, 1000 * 350);
+        });
 
         it('[DRDMV-20748]:  Verify whether the user with appropriate knowledge permission roles can able to update the article with updated / new version', async () => {
             await navigationPage.signOut();
