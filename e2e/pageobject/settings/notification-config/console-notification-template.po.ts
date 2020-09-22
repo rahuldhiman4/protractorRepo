@@ -94,6 +94,33 @@ class NotificationTemplateGridPage {
     async isGridColumnSorted(columnName: string ): Promise<boolean> {
         return await utilGrid.isGridColumnSorted(columnName, 'ascending', this.selectors.guid);
     }
+
+    async clickCopyTmplate() {
+        await $(this.selectors.copyTemplate).click();
+    }
+
+    async getValueOnAssignmentConfigGrid(columnName: string): Promise<string> {
+        return await utilGrid.getSelectedGridRecordValue(this.selectors.guid, columnName);
+    }
+    
+    async isAddNotificationTemplateBtnDisplayed(): Promise<boolean> {
+        return await $(this.selectors.createNotificationTemplate).isPresent();
+    }
+
+    async isDeleteNotificationTemplateBtnDisplayed(): Promise<boolean> {
+        return await $(this.selectors.deleteButton).isPresent();
+    }
+
+    async searchTemplate(tempName: string) {
+        await $(this.selectors.searchBox).clear();
+        await $(this.selectors.searchBox).sendKeys(tempName);
+        await $(this.selectors.searchButton).click();
+    }
+
+    async clickAndOpenTemplate(tempName: string) {
+        await element(by.cssContainingText("a[class='ui-grid__link']", tempName)).click();
+    }
+
 }
 
 export default new NotificationTemplateGridPage();
