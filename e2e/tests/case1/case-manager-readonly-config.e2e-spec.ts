@@ -36,7 +36,7 @@ import serviceTargetConsolePage from '../../pageobject/settings/slm/service-targ
 import editServiceTargetConfigPage from '../../pageobject/settings/slm/edit-service-target-config.po';
 import serviceTargetGroupConsole from '../../pageobject/settings/slm/service-target-group-console.po';
 import editServiceTargetGroupPage from '../../pageobject/settings/slm/edit-service-target-group-config.po';
-import notificationTemplateConsolePage from '../../pageobject/settings/notification-config/console-notificationTemplate.po';
+import notificationTemplateConsolePage from '../../pageobject/settings/notification-config/console-notification-template.po';
 import editNotificationTemplatePage from '../../pageobject/settings/notification-config/edit-notification-template.po';
 import approvalMappingConsolePO from '../../pageobject/settings/case-management/approval-mapping-console.po';
 import editApprovalMappingPage from '../../pageobject/settings/case-management/edit-approval-mapping.po';
