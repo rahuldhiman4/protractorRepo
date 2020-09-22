@@ -49,8 +49,8 @@ class CKEditor {
         let cke_editor = '.cke_inner';
         let ckeTextArea = '.cke_editable_themed';
         if (guidId) {
-            cke_editor = `[rx-view-component-id="${guidId}"]` + this.selectors.ckEditor;
-            ckeTextArea = `[rx-view-component-id="${guidId}"]` + this.selectors.ckEditorTextArea;
+            cke_editor = `[rx-view-component-id="${guidId}"] .cke_inner`;
+            ckeTextArea = `[rx-view-component-id="${guidId}"] .cke_editable_themed`;
         }
         await $(cke_editor).isPresent().then(async (result) => {
             if (result) {

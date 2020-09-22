@@ -151,6 +151,7 @@ class CaseAccessTab {
 
     async clickOnResetToDefault(): Promise<void> {
         await $(this.selectors.resetToDefault).click();
+        await browser.sleep(2000); //hardwait for resetting on UI
     }
 
     async removeConfidentialGroup(groupName): Promise<void> {
