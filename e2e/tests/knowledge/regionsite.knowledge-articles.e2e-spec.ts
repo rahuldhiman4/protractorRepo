@@ -196,7 +196,6 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
 
             await loginPage.login(knowledgeCandidateUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilityCommon.switchToNewTab(1);
             await utilityGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(regionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
@@ -214,7 +213,6 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         it('[DRDMV-19569,DRDMV-19570,DRDMV-19571]:Verify the search functionality of knowledge articles console for Region', async () => {
             await loginPage.login(knowledgeContributorUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilityCommon.switchToNewTab(1);
             await utilityGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(regionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
@@ -230,7 +228,6 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
 
             await loginPage.login(knowledgePublisherUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilityCommon.switchToNewTab(1);
             await utilityGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(regionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
@@ -248,7 +245,6 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         it('[DRDMV-19569,DRDMV-19570,DRDMV-19571]:Verify the search functionality of knowledge articles console for Region', async () => {
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilityCommon.switchToNewTab(1);
             await utilityGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(regionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
@@ -344,7 +340,6 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             //Login with Knowledge Candidate
             await loginPage.login(knowledgeCandidateUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
             await utilCommon.waitUntilSpinnerToHide();
             await navigationPage.gotoCreateKnowledge();
             await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
@@ -369,7 +364,6 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             //Login with Knowledge Contributor
             await loginPage.login(knowledgeContributorUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
             await utilCommon.waitUntilSpinnerToHide();
             await navigationPage.gotoCreateKnowledge();
             await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
@@ -393,7 +387,6 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             //Login with Knowledge Publisher
             await loginPage.login(knowledgePublisherUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
             await utilCommon.waitUntilSpinnerToHide();
             await navigationPage.gotoCreateKnowledge();
             await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
@@ -418,7 +411,6 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             //Login with Knowledge Coach
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
             await utilCommon.waitUntilSpinnerToHide();
             await navigationPage.gotoCreateKnowledge();
             await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);

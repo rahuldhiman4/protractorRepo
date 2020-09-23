@@ -1262,7 +1262,6 @@ describe('Notes template', () => {
             await navigationPage.signOut();
             await loginPage.login('kWilliamson');
             await navigationPage.switchToApplication("Knowledge Management");
-            await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual("Knowledge Articles", 'title not correct');
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink("KnowledgeTitle_" + randomString);
