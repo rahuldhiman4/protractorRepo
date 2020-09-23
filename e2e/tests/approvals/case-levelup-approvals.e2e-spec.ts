@@ -680,7 +680,7 @@ describe("Case Level Up Approval Tests", () => {
             expect(await showApproversBladePo.getApproversCompany('Petramco')).toBeTruthy('Approver Company is not displayed');
             expect(await showApproversBladePo.getApprovalStatusLabel()).toContain('Awaiting Approval');
             await showApproversBladePo.clickApproversTab('Approval Decision');
-            await browser.sleep(2000);
+            await browser.sleep(2000); // Hard wait added to load content on approval blade
             expect(await showApproversBladePo.getApproversCount()).toBe(0);
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         });
