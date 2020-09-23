@@ -123,9 +123,9 @@ class ApiHelper {
 
     async createCaseFromDwp(data: ICaseCreate): Promise<IIDs> {
         let caseData = cloneDeep(CASE_FROM_DWP);
-        caseData.processInputValues.Requester=await apiCoreUtil.getPersonGuid(data.requester);
-        caseData.processInputValues.Summary=data.summary;
-        
+        caseData.processInputValues.Requester = await apiCoreUtil.getPersonGuid(data.requester);
+        caseData.processInputValues.Summary = data.summary;
+
         const newCase = await axios.post(
             commandUri,
             caseData
@@ -993,14 +993,21 @@ class ApiHelper {
         }
     }
 
-    async createNewUser(data: IPerson, userStatus?:string): Promise<string> {
+    async createNewUser(data: IPerson, userStatus?: string): Promise<string> {
         let personGuid = await apiCoreUtil.getPersonGuid(data.userId);
         if (personGuid == null) {
             let userData = cloneDeep(NEW_USER);
             userData.fieldInstances[1000000019].value = data.firstName;
             userData.fieldInstances[1000000018].value = data.lastName;
             userData.fieldInstances[4].value = data.userId;
-            userData.fieldInstances[430000002].value = data.userPermission ? data.userPermission : userData.fieldInstances[430000002].value;
+            let functionalRolesGuidArray: string[] = [];
+            let functionalRolesGuid: string;
+            if (data.userPermission) {
+                for (let i = 0; i < data.userPermission.length; i++) { functionalRolesGuidArray[i] = constants.FunctionalRoleGuid[data.userPermission[i]]; }
+                functionalRolesGuid = functionalRolesGuidArray.join(';');
+            }
+
+            userData.fieldInstances[430000002].value = data.userPermission ? functionalRolesGuid : userData.fieldInstances[430000002].value;
             userData.fieldInstances[1000000048].value = data.emailId ? data.emailId : userData.fieldInstances[1000000048].value;
             const newUser = await apiCoreUtil.createRecordInstance(userData);
             console.log('Create New User Details API Status =============>', newUser.status);
@@ -1018,9 +1025,9 @@ class ApiHelper {
             data.company ? updateUser.fieldInstances[536870913].value = await apiCoreUtil.getOrganizationGuid(data.company) : updateUser.fieldInstances[536870913].value;
             updateUser.displayId = recordDisplayId;
             updateUser.id = recordGUID;
-            if (userStatus=='Inactive'){
+            if (userStatus == 'Inactive') {
                 console.log('New user created with Inactive status');
-            }else{
+            } else {
                 const userUpdate = await apiCoreUtil.updateRecordInstance(recordName, recordGUID, updateUser);
                 console.log('Enable User API Status =============>', userUpdate.status);
             }
@@ -2716,7 +2723,7 @@ class ApiHelper {
     async addCommonConfig(configName: string, params: any[], company: string): Promise<boolean> {
         let commonConfigPayload, commonConfigGuid;
         let companyGuid = await apiCoreUtil.getOrganizationGuid(company);
-        
+
         let headerConfig = {
             headers: {
                 'default-bundle-scope': 'com.bmc.dsm.shared-services-lib'
@@ -3194,7 +3201,7 @@ class ApiHelper {
         mappingPayload.fieldInstances[450000002].value = mappingData.flowsetId;
         mappingPayload.fieldInstances[450000003].value = constants.FlowsetFunctions[mappingData.function];
         mappingPayload.fieldInstances[1000000001].value = mappingData.company ? await apiCoreUtil.getOrganizationGuid(mappingData.company) : mappingPayload.fieldInstances[1000000001].value;
-        
+
         let mappingResponse: AxiosResponse = await apiCoreUtil.createRecordInstance(mappingPayload);
         console.log('Process Flowset Mapping status =============> ', mappingResponse.status);
         return mappingResponse.status == 201;

@@ -28,7 +28,7 @@ describe('Conditional Task', () => {
             "lastName": "Access",
             "userId": "DRDMV-14898_User",
             "emailId": "DRDMV-14898_User@petramco.com",
-            "userPermission": "AGGAA5V0GE9Z4AOR0BXUOQ3ZT04EJA;AGGAA5V0GEON8AOZHHGIOY0UZNXGOR;AGGADG1AAO0VGAP8SXEGP7VU2U4ZS8;AGGAA5V0GE9Z4AOR7DBBOQLAW74PH7"
+            "userPermission": ["Case Agent", "Foundation Read", "Document Manager", "Case Business Analyst"]
         }
         await apiHelper.createNewUser(userData);
         await apiHelper.associatePersonToCompany(userData.userId, "Petramco");

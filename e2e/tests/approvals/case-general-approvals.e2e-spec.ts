@@ -31,7 +31,7 @@ describe("Case General Approval Tests", () => {
             "firstName": "Petramco",
             "lastName": "SGUser1",
             "userId": "10843User1",
-            "userPermission": "AGGAA5V0GE9Z4AOR7DBBOQLAW74PH7",
+            "userPermission": "Case Business Analyst",
         }
         await apiHelper.createNewUser(userData1);
         await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");

@@ -51,14 +51,14 @@ describe('Copy Case Template', () => {
             "firstName": "Petramco",
             "lastName": "SGUser1",
             "userId": "13550User1",
-            "userPermission": "AGGAA5V0GE9Z4AOR7DBBOQLAW74PH7",
+            "userPermission": ["Case Business Analyst"]
         }
         await apiHelper.createNewUser(userData1);
         userData2 = {
             "firstName": "Petramco",
             "lastName": "SGUser2",
             "userId": "13550User2",
-            "userPermission": "AGGAA5V0GE9Z4AOR7DBBOQLAW74PH7",
+            "userPermission": ["Case Business Analyst"]
         }
         await apiHelper.createNewUser(userData2);
         await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");

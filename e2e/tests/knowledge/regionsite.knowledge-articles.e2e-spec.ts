@@ -442,13 +442,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             "firstName": "caseAgent",
             "lastName": "user",
             "userId": "caseAgent",
-            "userPermission": "AGGAA5V0GE9Z4AOR0BXUOQ3ZT04EJA;AGGAA5V0GEON8AOZHHGIOY0UZNXGOR;AGGADG1AAO0VGAP8SXEGP7VU2U4ZS8",
+            "userPermission": ["Case Agent","Foundation Read","Document Manager"]
         }
         let caseManageruserData = {
             "firstName": "caseManager",
             "lastName": "user",
             "userId": "caseManager",
-            "userPermission": "AGGAA5V0GE9Z4AOR7CWOOQLASE4PHJ;AGGAA5V0GEON8AOZHHGIOY0UZNXGOR;AGGADG1AAO0VGAP8SXEGP7VU2U4ZS8",
+            "userPermission": ["Case Manager","Foundation Read","Document Manager"]
         }
         let title = `Document-${new Date().valueOf()}`;
 
@@ -554,13 +554,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             "firstName": "caseAgent",
             "lastName": "user",
             "userId": "caseAgent",
-            "userPermission": "AGGAA5V0GE9Z4AOR0BXUOQ3ZT04EJA;AGGAA5V0GEON8AOZHHGIOY0UZNXGOR;AGGADG1AAO0VGAP8SXEGP7VU2U4ZS8",
+            "userPermission": ["Case Agent", "Foundation Read", "Document Manager"]
         }
         let caseManageruserData = {
             "firstName": "caseManager",
             "lastName": "user",
             "userId": "caseManager",
-            "userPermission": "AGGAA5V0GE9Z4AOR7CWOOQLASE4PHJ;AGGAA5V0GEON8AOZHHGIOY0UZNXGOR;AGGADG1AAO0VGAP8SXEGP7VU2U4ZS8",
+            "userPermission": ["Case Manager", "Foundation Read", "Document Manager"]
         }
 
         beforeAll(async () => {

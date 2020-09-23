@@ -89,13 +89,13 @@
         "firstName": "phylumfnk1",
         "lastName": "phylumlnk1",
         "userId": "idphylumkuser",
-        "userPermission": "AGGAA5V0GE9Z4AOR0BXUOQ3ZT04EJA;AGGAA5V0H3XY6AOTLKINOSP72R7YAE"
+        "userPermission": ["Case Agent","Knowledge Coach"]
     },
     "PhylumKnowledgeUser2": {
         "firstName": "phylumfnk2",
         "lastName": "phylumlnk2",
         "userId": "idphylumkuser2",
-        "userPermission": "AGGAA5V0GE9Z4AOR0BXUOQ3ZT04EJA;AGGAA5V0H3XY6AOTLKINOSP72R7YAE"
+        "userPermission": ["Case Agent","Knowledge Coach"]
     },
     "PersonData11825":{
         "firstName": "fnPerson11825",
@@ -112,7 +112,7 @@
         "lastName": "Nehra",
         "userId": "anehra",
         "company": "Phyto",
-        "userPermission": "AGGAA5V0GE9Z4AOR0BXUOQ3ZT04EJA;AGGAA5V0GE9Z4AOR7DBBOQLAW74PH7;AGGAA5V0H3XY6AOTLKINOSP72R7YAE"
+        "userPermission": ["Case Agent","Case Business Analyst","Knowledge Coach"]
     },
     "PhytoCaseAdmin2": {
         "firstName": "Zaheer",
@@ -124,7 +124,7 @@
         "firstName": "Sachin",
         "lastName": "Tendulkar",
         "userId": "stendulkar",
-        "userPermission": "AGGAA5V0GE9Z4AOR0BXUOQ3ZT04EJA;AGGAA5V0H3XY6AOTLKINOSP72R7YAE"
+        "userPermission": ["Case Agent","Knowledge Coach"]
     },
 
     "AlienwareCaseAdmin1": {
@@ -132,7 +132,7 @@
         "lastName": "People",
         "userId": "Ipeople",
         "company": "Pico Systems",
-        "userPermission": "AGGAA5V0GE9Z4AOR0BXUOQ3ZT04EJA;AGGAA5V0GE9Z4AOR7DBBOQLAW74PH7;AGGAA5V0H3XY6AOTLKINOSP72R7YAE"
+        "userPermission": ["Case Agent","Case Business Analyst","Knowledge Coach"]
     },
     "AlienwareCaseAdmin2": {
         "firstName": "Indian",
@@ -145,6 +145,6 @@
         "lastName": "People",
         "userId": "Kpeople",
         "company": "Pico Systems",
-        "userPermission": "AGGAA5V0GE9Z4AOR0BXUOQ3ZT04EJA;AGGAA5V0H3XY6AOTLKINOSP72R7YAE"
+        "userPermission": ["Case Agent","Knowledge Coach"]
     }
 }

@@ -41,7 +41,7 @@ describe('Document Library Consume Permission', () => {
             "firstName": "caseAgent2",
             "lastName": "user2",
             "userId": loginId,
-            "userPermission": "AGGAA5V0GE9Z4AOR0BXUOQ3ZT04EJA;AGGADG1AAO0VGAP8SXEGP7VU2U4ZS8",
+            "userPermission": ["Case Agent", "Document Manager"]
         }
         await apiHelper.createNewUser(caseAgentuserData);
         await apiHelper.associatePersonToCompany(caseAgentuserData.userId, "Petramco");
@@ -271,7 +271,7 @@ describe('Document Library Consume Permission', () => {
                 await apiHelper.publishDocumentLibrary(docLib);
             }
 
-             draftDocLibData = {
+            draftDocLibData = {
                 docLibTitle: 'drdmv13517_draft_document',
                 company: 'Petramco',
                 businessUnit: 'HR Support',
@@ -359,7 +359,7 @@ describe('Document Library Consume Permission', () => {
                 "firstName": "CaseManager",
                 "lastName": "WithDocManager",
                 "userId": loginId2,
-                "userPermission": "AGGAA5V0GE9Z4AOR7CWOOQLASE4PHJ;AGGAA5V0GEON8AOZHHGIOY0UZNXGOR;AGGADG1AAO0VGAP8SXEGP7VU2U4ZS8",
+                "userPermission": ["Case Manager", "Foundation Read", "Document Manager"]
             }
             await apiHelper.createNewUser(caseAgentuserData);
             await apiHelper.associatePersonToCompany(caseAgentuserData.userId, "Petramco");
