@@ -547,17 +547,18 @@ describe('Email Task', () => {
 
     describe('[DRDMV-19555]: In Case of Reply/Reply All if we select new Email template then previous contents should not be erased.', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let emailTemplateData = require('../../data/ui/email/email.template.api.json');
-        let emailTemplateDataForTest1 = await emailTemplateData['emailTemplateWithMandatoryField'];
-        emailTemplateDataForTest1.TemplateName = 'TemplateWithMandatoryField' + randomStr;
-        let emailTemplateDataForTest2 = await emailTemplateData['emailTemplateForSalary'];
-        emailTemplateDataForTest2.TemplateName = 'TemplateForSalary' + randomStr;
+        let emailTemplateDataForTest1, emailTemplateDataForTest2;
         let taskTemplateName = 'Manual task19555' + randomStr;
         let manualTaskSummary = 'ManualSummary19555' + randomStr;
         let externalTaskTemplateName = 'Externaltask19555' + randomStr;
         let displayId, externalTaskSummary = 'ExternalSummary19555' + randomStr;
 
         beforeAll(async () => {
+            let emailTemplateData = require('../../data/ui/email/email.template.api.json');
+            emailTemplateDataForTest1 = await emailTemplateData['emailTemplateWithMandatoryField'];
+            emailTemplateDataForTest1.TemplateName = 'TemplateWithMandatoryField' + randomStr;
+            emailTemplateDataForTest2 = await emailTemplateData['emailTemplateForSalary'];
+            emailTemplateDataForTest2.TemplateName = 'TemplateForSalary' + randomStr;
             let templateData = {
                 "templateName": `${taskTemplateName}`,
                 "templateSummary": `${manualTaskSummary}`,
