@@ -741,7 +741,7 @@ describe("Create Case", () => {
             await manageTask.clickFirstCheckBoxInTaskTemplateSearchGrid();
             await manageTask.clickTaskGridSaveButton();
             await manageTask.clickTaskLink(TaskSummary);
-            expect(await viewTaskPo.isAssigneeDisplayed('None')).toBeTruthy("Assignee Should be blank");
+            expect(await viewTaskPo.getAssigneeText()).toBe('None', 'Assignee Should be blank');
         });
 
         afterAll(async () => {

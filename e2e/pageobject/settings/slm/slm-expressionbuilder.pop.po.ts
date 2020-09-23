@@ -170,7 +170,6 @@ class SlmExpressionBuilder {
 
     async selectOperator(operator: string): Promise<void> {
         let expressionOperatorVal = `operator ux-expression-editor-button-${operator}`;
-        await browser.wait(this.EC.elementToBeClickable(element(by.className(expressionOperatorVal))), 4000);
         await element(by.className(expressionOperatorVal)).click();
     }
 
