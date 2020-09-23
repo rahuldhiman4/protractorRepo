@@ -1453,7 +1453,7 @@ describe('Create Case Task', () => {
             await utilityCommon.closePopUpMessage();
             await manageTask.clickTaskLink("Summary2" + randomStr);
             expect(await viewTask.getAssignedGroupText()).toBe('Facilities');
-            expect(await viewTask.isAssigneeDisplayed('None')).toBeTruthy('Assignee name is missing');
+            expect(await viewTask.getAssigneeText()).toBe('None', 'None assignee Text is missing');
         });
         afterAll(async () => {
             await navigationPage.signOut();
@@ -1688,7 +1688,7 @@ describe('Create Case Task', () => {
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssignedGroupText()).toBe('Facilities');
-            expect(await viewTask.isAssigneeDisplayed('None')).toBeTruthy('Assignee name is missing');
+            expect(await viewTask.getAssigneeText()).toBe('None', 'None assignee Text is missing');
             await viewTask.clickOnChangeStatus();
             await viewTask.changeTaskStatus('In Progress');
             expect(await viewTask.getErrorMsgOfInprogressStatus()).toBe('Assignee is required for this task status.  Please select an assignee. ');
