@@ -75,7 +75,7 @@ describe('Notes template', () => {
             "firstName": "Petramco",
             "lastName": "SGUser1",
             "userId": "22653User",
-            "userPermission": "AGGAA5V0GE9Z4AOR7DBBOQLAW74PH7;AGGAA5V0GEON8AOZHHGIOY0UZNXGOR;AGGAA5V0H3XY6AOTLKINOSP72R7YAE;AGGAA5V0H3XY6AOTLL9ROSP8NW7YD9;AGGAA5V0H3XY6AOTLLLEOSP8PI7YDM;AGGAA5V0H3XY6AOTLLPTOSP8TY7YDT;AGGADG1AANVNMAP1JE54P02183EGA9;AGGADG1AAO0VGAPSXWAEPSA6PDZAG6",
+            "userPermission": ["Case Business Analyst","Foundation Read","Knowledge Coach","Knowledge Publisher","Knowledge Contributor","Knowledge Candidate","Case Catalog Administrator","Person Activity Read"]
         }
         await apiHelper.createNewUser(userData);
         await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
@@ -766,7 +766,7 @@ describe('Notes template', () => {
                 "lastName": "Access",
                 "userId": "DRDMV-16112_User",
                 "emailId": "DRDMV-16112_User@petramco.com",
-                "userPermission": "AGGAA5V0GE9Z4AOR0BXUOQ3ZT04EJA;AGGAA5V0GEON8AOZHHGIOY0UZNXGOR;AGGADG1AAO0VGAP8SXEGP7VU2U4ZS8;AGGAA5V0GE9Z4AOR7DBBOQLAW74PH7"
+                "userPermission": ["Case Agent", "Foundation Read", "Document Manager", "Case Business Analyst"]
             }
             await apiHelper.createNewUser(userData);
             await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
@@ -1262,7 +1262,6 @@ describe('Notes template', () => {
             await navigationPage.signOut();
             await loginPage.login('kWilliamson');
             await navigationPage.switchToApplication("Knowledge Management");
-            await utilityCommon.switchToNewTab(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual("Knowledge Articles", 'title not correct');
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink("KnowledgeTitle_" + randomString);

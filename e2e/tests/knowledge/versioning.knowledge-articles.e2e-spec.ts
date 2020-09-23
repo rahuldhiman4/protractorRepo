@@ -679,7 +679,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await viewKnowledgeArticlePo.clickReviewPendingLink();
             await reviewCommentsPo.setTextInTellUsMore(articleDetails.displayId);
             await reviewCommentsPo.clickApprovedButton();
-            await navigationPage.gotoKnoweldgeConsoleFromKM();
+            await navigationPage.gotoKnowledgeConsole(true);
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Article is updated with Published status.');
             await apiHelper.apiLogin('tadmin');
@@ -730,7 +730,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await editKnowledgePage.updateKnowledgeArticleTitle(updatedArticleTitle);
             await editKnowledgePage.updateKnowledgeArticleDescription(updatedArticleDesc);
             await editKnowledgePage.clickArticleMajorEditSaveButton();
-            await navigationPage.gotoKnoweldgeConsoleFromKM();
+            await navigationPage.gotoKnowledgeConsole(true);
             await utilityGrid.sortGridColumn('Created Date', 'desc');
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             let updatedVersion = "Version " + "2" + " - " + actualDate;
@@ -1363,7 +1363,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await editKnowledgePage.clickArticleMajorEditSaveButton();
         });
         it('[DRDMV-20753]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', async () => {
-            await navigationPage.gotoKnoweldgeConsoleFromKM();
+            await navigationPage.gotoKnowledgeConsole(true);            
             await utilityGrid.sortGridColumn('Created Date', 'desc');
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             //await utilityCommon.refresh();
@@ -1415,7 +1415,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
 
         it('[DRDMV-20753]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', async () => {
             await editKnowledgePage.setKnowledgeStatus('Request Cancelation');
-            await navigationPage.gotoKnoweldgeConsoleFromKM();
+            await navigationPage.gotoKnowledgeConsole(true);            
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             await browser.sleep(2000);
             await utilityCommon.refresh();
@@ -1432,7 +1432,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await browser.sleep(2000);
         });
         it('[DRDMV-20753]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', async () => {
-            await navigationPage.gotoKnoweldgeConsoleFromKM();
+            await navigationPage.gotoKnowledgeConsole(true);            
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             updatedVersion = "Version " + "3" + " - " + actualDate;
             expect(await viewKnowledgeArticlePo.getArticleVersion()).toBe(updatedVersion);
@@ -1680,7 +1680,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await reviewCommentsPo.setTextInTellUsMore('Approved Article');
             await reviewCommentsPo.clickApprovedButton();
             await utilityCommon.closePopUpMessage();
-            await navigationPage.gotoKnoweldgeConsoleFromKM();
+            await navigationPage.gotoKnowledgeConsole(true);
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(knowledgeArticleDisplayId);
             expect(await viewKnowledgeArticlePo.getStatusValue()).toContain('BeforePublished', 'value is not matched with status');
@@ -1690,7 +1690,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await editKnowledgePage.clickArticleCancelButton();
             await editKnowledgePage.setKnowledgeStatus('Publish Approval');
             await utilityCommon.closePopUpMessage();
-            await navigationPage.gotoKnoweldgeConsoleFromKM();
+            await navigationPage.gotoKnowledgeConsole(true);            
             await utilityGrid.searchAndOpenHyperlink(knowledgeArticleDisplayId);
             expect(await viewKnowledgeArticlePo.getStatusValue()).toContain('Released', 'value is not matched with status');
             await viewKnowledgeArticlePo.clickOnEditLink();

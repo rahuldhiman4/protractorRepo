@@ -37,7 +37,7 @@ describe('Document Library Consume UI', () => {
             "firstName": "caseAgent2",
             "lastName": "user2",
             "userId": 'caseagentbwf',
-            "userPermission": "AGGAA5V0GE9Z4AOR0BXUOQ3ZT04EJA;AGGADG1AAO0VGAP8SXEGP7VU2U4ZS8",
+            "userPermission": ["Case Agent", "Document Manager"]
         }
         await apiHelper.createNewUser(caseAgentuserData);
         await apiHelper.associatePersonToCompany(caseAgentuserData.userId, "Petramco");

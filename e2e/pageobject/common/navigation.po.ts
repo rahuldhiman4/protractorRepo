@@ -87,14 +87,6 @@ class NavigationPage {
         } else return await element(by.cssContainingText(this.selectors.menu, /^Task$/)).isDisplayed();
     }
 
-    async gotoKnoweldgeConsoleFromKM(): Promise<void> {
-        if ((await browser.getCurrentUrl()).includes("isettings")) await this.switchToAngularTab();
-        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
-        await element(by.cssContainingText('.a-menu__link[type="button"]', 'Knowledge Console')).click().then(async () => {
-            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
-        });
-    }
-
     async gotoCaseConsole(): Promise<void> {
         if ((await browser.getCurrentUrl()).includes("isettings")) await this.switchToAngularTab();
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
@@ -113,22 +105,30 @@ class NavigationPage {
         await browser.wait(this.EC.titleContains('Cases - Business Workflows'), 10000);
     }
 
-    async gotoKnowledgeConsole(): Promise<void> {
+    async gotoKnowledgeConsole(consoleFromKA?: boolean): Promise<void> {
         if ((await browser.getCurrentUrl()).includes("isettings")) await this.switchToAngularTab();
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
-        if (await this.isHambergerIconPresent()) {
-            await $(this.selectors.hamburgerIcon).click();
-            await element(by.linkText('Workspace')).click();
-            await element(by.cssContainingText('.a-hamburger__menu-link', 'Knowledge ')).click().then(async () => {
-                await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
-            });
-        } else {
-            await element(by.cssContainingText(this.selectors.menu, /^Workspace$/)).click();
-            await element(by.cssContainingText(this.selectors.menu, /^Knowledge$/)).click().then(async () => {
+        if (consoleFromKA) {
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+            await element(by.cssContainingText('.a-menu__link[type="button"]', 'Knowledge Console')).click().then(async () => {
                 await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             });
         }
-        await browser.wait(this.EC.titleContains('Knowledge Articles - Business Workflows'), 10000);
+        else {
+            if (await this.isHambergerIconPresent()) {
+                await $(this.selectors.hamburgerIcon).click();
+                await element(by.linkText('Workspace')).click();
+                await element(by.cssContainingText('.a-hamburger__menu-link', 'Knowledge ')).click().then(async () => {
+                    await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+                });
+            } else {
+                await element(by.cssContainingText(this.selectors.menu, /^Workspace$/)).click();
+                await element(by.cssContainingText(this.selectors.menu, /^Knowledge$/)).click().then(async () => {
+                    await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+                });
+            }
+            await browser.wait(this.EC.titleContains('Knowledge Articles - Business Workflows'), 10000);
+        }
     }
 
     async gotoTaskConsole(): Promise<void> {
@@ -316,6 +316,7 @@ class NavigationPage {
         await $(this.selectors.TileSearchInput).click();
         await $(this.selectors.TileSearchInput).sendKeys(applicationName);
         await element(by.cssContainingText(this.selectors.TileSearchResult, applicationName)).click();
+        await utilityCommon.switchToNewTab(1);
     }
 
     async switchToJSApplication(applicationName: string): Promise<void> {

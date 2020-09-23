@@ -114,7 +114,11 @@ export enum FunctionalRoleGuid {
     'Case Manager' = 'AGGAA5V0GE9Z4AOR7CWOOQLASE4PHJ',
     'Case Business Analyst' = 'AGGAA5V0GE9Z4AOR7DBBOQLAW74PH7',
     'Document Manager' = 'AGGADG1AAO0VGAP8SXEGP7VU2U4ZS8',
-    'Person Activity Read' = 'AGGADG1AAO0VGAPSXWAEPSA6PDZAG6'
+    'Person Activity Read' = 'AGGADG1AAO0VGAPSXWAEPSA6PDZAG6',
+    'Foundation Read' = 'AGGAA5V0GEON8AOZHHGIOY0UZNXGOR',
+    'Knowledge Contributor' = 'AGGAA5V0H3XY6AOTLLLEOSP8PI7YDM',
+    'Knowledge Candidate' = 'AGGAA5V0H3XY6AOTLLPTOSP8TY7YDT',
+    'Case Catalog Administrator' = 'AGGADG1AANVNMAP1JE54P02183EGA9'
 };
 
 export enum TaskFailConfiguration {

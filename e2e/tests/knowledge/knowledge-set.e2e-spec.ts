@@ -23,8 +23,7 @@ describe('Knowledge Article Set', () => {
         await browser.get(BWF_BASE_URL);
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteKnowledgeSet('DRDMV-1062');
-        await loginPage.login('tadmin');
-        await navigationPage.switchToApplication("Knowledge Management");
+        await loginPage.login('elizabeth');
     });
 
     afterAll(async () => {
@@ -122,7 +121,6 @@ describe('Knowledge Article Set', () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
             await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
@@ -132,7 +130,6 @@ describe('Knowledge Article Set', () => {
             await navigationPage.signOut();
             await loginPage.login('qtao');
             await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
             await navigationPage.gotoCreateKnowledge();
             await createKnowledgePage.clickOnTemplate(knowledgeTemplateStr);
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
@@ -155,7 +152,6 @@ describe('Knowledge Article Set', () => {
             await navigationPage.signOut();
             await loginPage.login('qtao');
             await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
             await navigationPage.gotoCreateKnowledge();
             expect(await createKnowledgePage.isTemplatePresent(knowledgeTemplateStr)).toBeFalsy(`Template ${knowledgeTemplateStr} is not present`);
         });
@@ -172,7 +168,6 @@ describe('Knowledge Article Set', () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
             await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
             await navigationPage.gotoCreateKnowledge();
             expect(await createKnowledgePage.isTemplatePresent(knowledgeTemplateStr)).toBeFalsy(`Template ${knowledgeTemplateStr} is not present`);
         });

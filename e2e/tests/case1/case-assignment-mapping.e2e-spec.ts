@@ -115,13 +115,13 @@ describe("Create Case Assignment Mapping", () => {
             "lastName": "Company",
             "userId": "nosg",
             "emailId": "nosg@petramco.com",
-            "userPermission": "AGGAA5V0GE9Z4AOR0BXUOQ3ZT04EJA;AGGAA5V0GEON8AOZHHGIOY0UZNXGOR;AGGADG1AAO0VGAP8SXEGP7VU2U4ZS8;AGGAA5V0GE9Z4AOR7DBBOQLAW74PH7"
+            "userPermission": ["Case Agent","Foundation Read","Document Manager","Case Business Analyst"]
         }
         userData1 = {
             "firstName": "Petramco",
             "lastName": "SGUser1",
             "userId": "13550User1",
-            "userPermission": "AGGAA5V0GE9Z4AOR7DBBOQLAW74PH7",
+            "userPermission": ["Case Business Analyst"]
         }
         await apiHelper.apiLogin('tadmin');
         await apiHelper.createNewUser(userData);

@@ -114,7 +114,7 @@ describe("Case Read Access", () => {
             "lastName": "User1",
             "userId": "manager",
             "emailId": "manager@petramco.com",
-            "userPermission": "AGGAA5V0GE9Z4AOR7CWOOQLASE4PHJ"
+            "userPermission": ["Case Manager"]
         }
         await apiHelper.createNewUser(userData1);
         userData2 = {
@@ -122,7 +122,7 @@ describe("Case Read Access", () => {
             "lastName": "User2",
             "userId": "analyst",
             "emailId": "analyst@petramco.com",
-            "userPermission": "AGGAA5V0GE9Z4AOR7DBBOQLAW74PH7"
+            "userPermission": ["Case Business Analyst"]
         }
         await apiHelper.createNewUser(userData2);
         await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
