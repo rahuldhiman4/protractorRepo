@@ -68,6 +68,7 @@ class ViewCasePage {
         taskDisplayId: '[rx-view-component-id="beb9c44b-6bd5-4f68-b9b9-37d427d9d2e5"] .task-meta-data__display-id',
         description: '9d3ef0fc-c49f-425f-a9e1-52422ba87f4f',
         dynamicAttachmentValue: '[class="text-default bwf-attachment-container__file-name"]',
+        text: 'p',
     }
 
     async clickDescriptionShowMore(): Promise<void> {
@@ -75,7 +76,7 @@ class ViewCasePage {
     }
 
     async getDynamicAttachmentValue(): Promise<string> {
-       return await $(this.selectors.dynamicAttachmentValue).getText();
+        return await $(this.selectors.dynamicAttachmentValue).getText();
     }
 
     async isImageDisplayed(value: string): Promise<boolean> {
@@ -279,9 +280,9 @@ class ViewCasePage {
     async getAssigneeText(): Promise<string> {
         let valueassignee: boolean = await $(this.selectors.assignee + ' .person-link').isPresent();
         if (valueassignee == true) {
-           return await $(this.selectors.assignee + ' .person-link').getText();
+            return await $(this.selectors.assignee + ' .person-link').getText();
         } else {
-           return await $(this.selectors.assignee + ' .ac-person-absent').getText();
+            return await $(this.selectors.assignee + ' .ac-person-absent').getText();
         }
     }
 
@@ -301,9 +302,12 @@ class ViewCasePage {
         return await $(this.selectors.assignedCompanyText).getText();
     }
 
-    async isTextPresent(text: string): Promise<boolean> {
-        let textLocator = `(//p[contains(@title,'${text}')])`;
-        return await element(by.xpath(textLocator)).isPresent();
+    async isTextPresent(textValue: string): Promise<boolean> {
+        return await element(by.cssContainingText(this.selectors.text, textValue)).isPresent().then(async (link) => {
+            if (link) {
+                return await element(by.cssContainingText(this.selectors.text, textValue)).isDisplayed();
+            } else return false;
+        });;
     }
 
     async isCoreTaskPresent(taskSummary: string): Promise<boolean> {
@@ -473,7 +477,7 @@ class ViewCasePage {
     }
 
     async getTaskCardCount(): Promise<number> {
-        if(!(await $(this.selectors.taskCardName).isPresent())) return 0;
+        if (!(await $(this.selectors.taskCardName).isPresent())) return 0;
         else return await $$(this.selectors.taskCardName).count();
     }
 
@@ -499,10 +503,10 @@ class ViewCasePage {
     async isTaskBoxColorCodeMatches(name: string, colorCode: string): Promise<boolean> {
         let taskListParentLocator = $$('.rotatable');
         let actualColorCodeValue = undefined;
-        for(let i=0; i< await taskListParentLocator.count(); i++) {
-            if(await taskListParentLocator.get(i).$('.content').isPresent()) {
-                let taskBoxContent  = await taskListParentLocator.get(i).$('.content').getText();
-                if(taskBoxContent == name|| taskBoxContent ==name +" Memory") {
+        for (let i = 0; i < await taskListParentLocator.count(); i++) {
+            if (await taskListParentLocator.get(i).$('.content').isPresent()) {
+                let taskBoxContent = await taskListParentLocator.get(i).$('.content').getText();
+                if (taskBoxContent == name || taskBoxContent == name + " Memory") {
                     actualColorCodeValue = await taskListParentLocator.get(i).$$('.body.outer').first().getAttribute('stroke');
                     break;
                 }

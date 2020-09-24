@@ -364,10 +364,18 @@ class ActivityTabPage {
         return fileName;
     }
 
-    async getActivityNotesText(textToMatch: string): Promise<boolean> {
-        let elem = element(by.xpath("//div[contains(@class,'d-icon-note_pencil')]/following-sibling::div"));
-        let value = await elem.getText();
-        return value.includes(textToMatch) ? true : false;
+    async getActivityReplyNotesText(textToMatch: string): Promise<boolean> {
+        return await $(this.selectors.emailReply).isPresent().then(async (result) => {
+            if (result) return (await $(this.selectors.emailReply).getText()).includes(textToMatch) ? true : false;
+            else return false;
+        });
+    }
+
+    async getActivityReplyAllNotesText(textToMatch: string): Promise<boolean> {
+        return await $(this.selectors.emailReplyAll).isPresent().then(async (result) => {
+            if (result) return (await $(this.selectors.emailReplyAll).getText()).includes(textToMatch) ? true : false;
+            else return false;
+        });
     }
 
     async getApprovalActivityText(textToMatch: string): Promise<boolean> {
@@ -390,8 +398,8 @@ class ActivityTabPage {
 
 
     async isApprovalActivityDisplayed(textToMatch: string): Promise<boolean> {
-        return await element(by.cssContainingText('div.d-icon-check_circle + div', textToMatch)).isPresent().then( async (result) => {
-            if(result) return await element(by.cssContainingText('div.d-icon-check_circle + div', textToMatch)).isDisplayed();
+        return await element(by.cssContainingText('div.d-icon-check_circle + div', textToMatch)).isPresent().then(async (result) => {
+            if (result) return await element(by.cssContainingText('div.d-icon-check_circle + div', textToMatch)).isDisplayed();
         })
     }
 
@@ -816,13 +824,13 @@ class ActivityTabPage {
     }
 
     async isTextRightAlignInCkEditorTextArea(bodyText: string): Promise<boolean> {
-        let rightAlignmentElement= await $(this.selectors.alignmentTextCkEditorTextArea).$('div[style="text-align: right;"]');
-        return await ckEditorOpsPo.isTextRightAlignInCkEditorTextArea(bodyText,rightAlignmentElement);
+        let rightAlignmentElement = await $(this.selectors.alignmentTextCkEditorTextArea).$('div[style="text-align: right;"]');
+        return await ckEditorOpsPo.isTextRightAlignInCkEditorTextArea(bodyText, rightAlignmentElement);
     }
 
     async isTextCenterAlignInCkEditorTextArea(bodyText: string): Promise<boolean> {
-        let centerAlignmentElement= await $(this.selectors.alignmentTextCkEditorTextArea).$('div[style="text-align: center;"]');
-        return await ckEditorOpsPo.isTextCenterAlignInCkEditorTextArea(bodyText,centerAlignmentElement);
+        let centerAlignmentElement = await $(this.selectors.alignmentTextCkEditorTextArea).$('div[style="text-align: center;"]');
+        return await ckEditorOpsPo.isTextCenterAlignInCkEditorTextArea(bodyText, centerAlignmentElement);
     }
 
     async isNumberListDisplayedInCkEditorTextArea(bodyText: string): Promise<boolean> {
@@ -944,9 +952,9 @@ class ActivityTabPage {
         return await element.all(by.cssContainingText('.activity__body .fields span', accessName)).count();
     }
 
-  
+
     async isTableSummaryDisplayedInCkEditorTextArea(tableSummary: string): Promise<boolean> {
-        let locator = `table[summary='${tableSummary}']`;       
+        let locator = `table[summary='${tableSummary}']`;
         return await element(by.css(locator)).isPresent().then(async (link) => {
             if (link) {
                 return await element(by.css(locator)).isDisplayed();
@@ -954,8 +962,8 @@ class ActivityTabPage {
         });
     }
 
-    async isTableCaptionDisplayedInCkEditorTextArea(tableSummary: string,tableCaption: string): Promise<boolean> {
-        let locator = `table[summary='${tableSummary}'] caption`;       
+    async isTableCaptionDisplayedInCkEditorTextArea(tableSummary: string, tableCaption: string): Promise<boolean> {
+        let locator = `table[summary='${tableSummary}'] caption`;
         return await element(by.css(locator)).isPresent().then(async (result) => {
             if (result) {
                 let tableCaptionText = await element(by.css(locator)).getText();
@@ -977,7 +985,7 @@ class ActivityTabPage {
 
     async isInfoTooltipIconDisplayed(): Promise<boolean> {
         return await $(this.selectors.alertTooltipIcon).isPresent().then(async (result) => {
-            if(result) return await $(this.selectors.alertTooltipIcon).isDisplayed();
+            if (result) return await $(this.selectors.alertTooltipIcon).isDisplayed();
             else return false;
         })
     }
