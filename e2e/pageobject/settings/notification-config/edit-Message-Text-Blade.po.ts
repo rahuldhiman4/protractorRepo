@@ -21,17 +21,17 @@ class EditMessageTextBlade {
 
     async clickOnTableIcon(): Promise<void> {
         await $(this.selectors.tableIcon).click();
-        await browser.sleep(2000);
+        await browser.sleep(2000); // To Wait For Table Pop-up Gets Open.
     }
 
     async clickOnImageIcon(): Promise<void> {
         await $(this.selectors.imageIcon).click();
-        await browser.sleep(2000);
+        await browser.sleep(2000); // To Wait For Image Pop-up Gets Open.
     }
 
     async clickOnLinkIcon(): Promise<void> {
         await $(this.selectors.linkIcon).click();
-        await browser.sleep(2000);
+        await browser.sleep(2000); // To Wait For Link Pop-Up Gets Open.
     }
 
     async clickOnBoldIcon(): Promise<void> {

@@ -515,7 +515,7 @@ describe('Case Console Preset Filter', () => {
 
             let response9 = await apiHelper.createCase(caseData.NEW_CRITICAL_ASSIGNEDTOLOGGEDINUSER);
             caseId.push(response9.displayId);
-            await browser.sleep(140000);
+            await browser.sleep(140000); // Waiting for SVT to Breached
 
         });
 

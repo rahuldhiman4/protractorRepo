@@ -43,17 +43,17 @@ class ComposeMail {
 
     async clickOnTableIcon(): Promise<void> {
         await $(this.selectors.tableIcon).click();
-        await browser.sleep(2000);
+        await browser.sleep(2000); // Wait For Table Pop Up Gets Open.
     }
 
     async clickOnImageIcon(): Promise<void> {
         await $(this.selectors.imageIcon).click();
-        await browser.sleep(2000);
+        await browser.sleep(2000); // Wait For Image Icon Popup Gets Open.
     }
 
     async clickOnLinkIcon(): Promise<void> {
         await $(this.selectors.linkIcon).click();
-        await browser.sleep(2000);
+        await browser.sleep(2000); // Wait For Link Pop up Gets Open.
     }
 
 
@@ -229,7 +229,7 @@ class ComposeMail {
 
     async setEmailBody(value: string): Promise<void> {
         await browser.waitForAngularEnabled(false);
-        await browser.sleep(6000);
+        await browser.sleep(6000); // Wait For Switch To Frame
         await browser.switchTo().frame(await element(by.css('[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] iframe.cke_wysiwyg_frame')).getWebElement());
         await $(this.selectors.emailBody).sendKeys(Key.chord(Key.CONTROL, Key.END));
         await $(this.selectors.emailBody).sendKeys(Key.ENTER);

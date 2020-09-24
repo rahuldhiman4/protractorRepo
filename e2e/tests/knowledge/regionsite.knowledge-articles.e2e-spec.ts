@@ -118,7 +118,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         let knowledgeArticleGUID4 = knowledgeArticleData4.id;
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID4, draftStatus)).toBeTruthy("Article with Draft status not updated.");
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID4, publishedApprovalStatus)).toBeTruthy("Article with Published status not updated.");
-        await browser.sleep(5000);
+        await browser.sleep(5000); // To Wait Until Publish Approval Status Change
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID4, retiredApprovalStatus)).toBeTruthy("Article with Retired status not updated.");
 
         //Create article in Closed status
@@ -127,9 +127,9 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         let knowledgeArticleGUID5 = knowledgeArticleData5.id;
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID5, draftStatus)).toBeTruthy("Article with Draft status not updated.");
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID5, publishedApprovalStatus)).toBeTruthy("Article with Published status not updated.");
-        await browser.sleep(5000);
+        await browser.sleep(5000); // To Wait Until Publish Approval Status Change.
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID5, retiredApprovalStatus)).toBeTruthy("Article with Published status not updated.");
-        await browser.sleep(5000);
+        await browser.sleep(5000); // To Wait Until Retire Approval Status Change.
         expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID5, closedStatus)).toBeTruthy("Article with Closed status not updated.");
 
         //Create article in Canceled status
@@ -671,7 +671,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             expect(await editDocumentLibraryPo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
             await createDocumentLibraryPage.selectStatus(documentLibraryStatus);
             await createDocumentLibraryPage.saveUpdatedDocument();
-            await browser.sleep(30000);
+            await browser.sleep(30000); // To Wait For Document Library Record Updates And Display Console Page.
         });
 
         it('[DRDMV-19573]:Verify the document search based on Region and Site from attachments', async () => {

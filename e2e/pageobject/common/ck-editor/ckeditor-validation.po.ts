@@ -83,7 +83,7 @@ class CKEValidation {
     }
 
     async isTitleDisplayed(title: string): Promise<boolean> {
-        await browser.sleep(1000);
+        await browser.sleep(1000); // To Wait For Display Title.
         let text = await browser.getTitle();
         return text.includes(title);
     }

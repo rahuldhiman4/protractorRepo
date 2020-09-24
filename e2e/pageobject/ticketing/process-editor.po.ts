@@ -49,7 +49,7 @@ class ProcessEditor {
 
     async addAllTaskTypeFromProcessEditor(temp1: string, temp2: string, temp3: string): Promise<void> {
         //Drag and Drop first Create task
-        await browser.sleep(5000);
+        await browser.sleep(5000); // Required For Drag And Drop Operation
         let source = await $('[data-type="rx.CallActivity.com.bmc.dsm.task-lib.Create Task"] .body.inner');
         let d1 = await $$('.marker-target').last();
         let d2 = await $('svg[id="v-2"] [joint-selector="layers"]');

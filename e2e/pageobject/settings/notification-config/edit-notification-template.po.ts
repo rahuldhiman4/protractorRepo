@@ -182,7 +182,7 @@ class EditNotificationTemplate {
                         await dropDown[i].$('.d-icon-angle_down').click();
                         await dropDown[i].$('input').sendKeys(option);
                         await element(by.cssContainingText("li[ng-repeat*='option']", option)).isPresent().then(async () => {
-                            await browser.sleep(1000);
+                            await browser.sleep(1000); // Wait For Drop Down Value Is Ready To Select.
                             await element(by.cssContainingText(".is-open li[ng-repeat*='option']", option)).click();
                         });
                     }

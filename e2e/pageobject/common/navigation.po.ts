@@ -327,7 +327,7 @@ class NavigationPage {
         await $(this.selectors.TileSearchInput).sendKeys(applicationName);
         await element(by.cssContainingText(this.selectors.TileSearchResult, applicationName)).click();
         await this.switchToAngularJsTab();
-        await browser.sleep(3000);
+        await browser.sleep(3000); // Required To Settle Focus On New Tab.
     }
 
     async isSettingPanelTextMatches(text: string): Promise<boolean> {
@@ -340,14 +340,14 @@ class NavigationPage {
     }
 
     async switchToAngularJsTab(): Promise<void> {
-        await browser.sleep(2000);
+        await browser.sleep(2000); // Required To Settle Focus On New Tab.
         await browser.getAllWindowHandles().then(async function (handles) {
             await browser.switchTo().window(handles[1]);
         });
     }
 
     async switchToAngularTab(): Promise<void> {
-        await browser.sleep(2000);
+        await browser.sleep(2000); // Required To Settle Focus On New Tab.
         await browser.getAllWindowHandles().then(async function (handles) {
             for (let i = handles.length; i > 1; i--) {
                 await browser.switchTo().window(handles[i - 1]);
