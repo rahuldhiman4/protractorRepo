@@ -169,7 +169,7 @@ describe('Email Task', () => {
             await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary);
             await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary);
             await manageTaskBladePo.clickTaskLink(manualTaskSummary);
-            await browser.sleep(2000);
+            await browser.sleep(2000);// To wait until view task page gets load corrrectly.
             await expect(await emailPo.isEmailIconLinkPresent()).toBeTruthy();
             ManualtaskID = await viewTaskPo.getTaskID();
             await viewTaskPo.clickEmailLink();
@@ -277,7 +277,7 @@ describe('Email Task', () => {
             await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary);
             await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary);
             await manageTaskBladePo.clickTaskLink(manualTaskSummary);
-            await browser.sleep(2000);
+            await browser.sleep(2000); // To wait until view task page gets load corrrectly.
             await viewTaskPo.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
             await changeAssignmentBladePo.selectBusinessUnit('Facilities Support');
@@ -428,7 +428,7 @@ describe('Email Task', () => {
             await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary);
             await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary);
             await manageTaskBladePo.clickTaskLink(manualTaskSummary);
-            await browser.sleep(2000);
+            await browser.sleep(2000); // To wait until view task page gets load corrrectly.
             ManualtaskID = await viewTaskPo.getTaskID();
             await viewTaskPo.clickEmailLink();
             await composeMailPo.clickOnSelectEmailTemplateLink();
@@ -647,7 +647,7 @@ describe('Email Task', () => {
             await emailTemplateBladePo.clickOnApplyButton();
             await emailPo.clickOnSendButton();
             await utilityCommon.refresh();
-            await browser.sleep(2000);
+            await browser.sleep(2000); // Afteer refresh page wait untile view task page gets load correctly.
             await activityTabPo.clickOnReply();
             expect(await emailPo.getToEmailPerson()).toContain('Fritz Schulz');
             expect(await emailPo.getEmailBody()).toContain('Hi Team ,\n\nI am taking leave today.\n\nThanks.');
@@ -756,7 +756,7 @@ describe('Email Task', () => {
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(ManualtaskID);
             await viewTaskPo.clickOnRequesterEmail();
-            await browser.sleep(2000);
+            await browser.sleep(2000); // Wait until Email Pop up gets display.
             expect(await emailPo.isSelectEmailTemplateButtonPresent()).toBeFalsy("Email template button visible to task assignee having no case access");
             await emailPo.clickOnDiscardButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");

@@ -437,7 +437,7 @@ class ActivityTabPage {
 
     async clickActivityNoteTextBox(): Promise<void> {
         await $(this.selectors.addNoteBox).click();
-        await browser.sleep(1500);
+        await browser.sleep(1500); // Wait Until Activity Note Text Box Show ON Page.
     }
 
     async addActivityNote(addNoteText: string): Promise<void> {
@@ -725,7 +725,7 @@ class ActivityTabPage {
 
     async clickOnLinkIcon(): Promise<void> {
         await $(this.selectors.linkIcon).click();
-        await browser.sleep(2000);
+        await browser.sleep(2000); // Wait For Link Pop up Gets Open.
     }
 
     async clickOnBoldIcon(): Promise<void> {

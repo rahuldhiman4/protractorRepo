@@ -528,7 +528,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary(articleInDraftStatus);
             await createCasePage.clickAssignToMeButton();
-            await browser.sleep(3000);
+            await browser.sleep(3000); // To Wait Until Assignee Displayed On Page.
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await viewCasePage.clickOnTab(resourcesTabStr);
@@ -1037,7 +1037,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await editKnowledgePage.getHelpTextForMajorEditOptionDisplayed()).toBe(majorEditHelpText);
             await editKnowledgePage.updateKnowledgeArticleTitle(updatedArticleTitle);
             await editKnowledgePage.clickArticleMajorEditSaveButton();
-            await browser.sleep(4000);
+            await browser.sleep(4000); // To Wait Until Edit Knowledge Changes Gets Saved KA Version Gets Change.
             await utilityCommon.refresh();
             let updatedVersion = "Version " + "2" + " - " + actualDate;
             expect(await viewKnowledgeArticlePo.getArticleVersion()).toBe(updatedVersion);
@@ -1065,7 +1065,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await editKnowledgePage.updateKnowledgeArticleTitle(updatedArticleTitle + "_updated version");
             await editKnowledgePage.clickArticleMajorEditSaveButton();
             expect(await utilityCommon.isPopUpMessagePresent('Draft version already created.')).toBeTruthy();
-            await browser.sleep(4000);
+            await browser.sleep(4000); // To Wait Until Edit Knowledge Changes Gets Saved KA Version Gets Change.
             await utilityCommon.refresh();
             expect(await viewKnowledgeArticlePo.getArticleVersion()).toBe(expectedVersion);
         });

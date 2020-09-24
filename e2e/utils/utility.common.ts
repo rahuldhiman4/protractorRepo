@@ -144,14 +144,14 @@ export class Utility {
     }
 
     async switchToNewTab(tabNum: number): Promise<void> {
-        await browser.sleep(2000);
+        await browser.sleep(2000); // Wait For immediate getWindowHandles don't capture all the windows for few cases - it was taking time for few cases.
         await browser.getAllWindowHandles().then(async function (handles) {
             await browser.switchTo().window(handles[tabNum]);
         });
     }
 
     async switchToDefaultWindowClosingOtherTabs(): Promise<void> {
-        await browser.sleep(2000);
+        await browser.sleep(2000); // Wait For immediate getWindowHandles don't capture all the windows for few cases - it was taking time for few cases.
         await browser.getAllWindowHandles().then(async function (handles) {
             for (let i = handles.length; i > 1; i--) {
                 await browser.switchTo().window(handles[i - 1]);
@@ -225,7 +225,7 @@ export class Utility {
 
     async isFileDownloaded(fileName: string): Promise<boolean> {
         let filePath: string = 'e2e/data/downloads/' + fileName;
-        await browser.sleep(5000);
+        await browser.sleep(5000); // Wait For File Gets Download. 
         return await fs.existsSync(filePath);
     }
 
@@ -296,7 +296,7 @@ export class Utility {
                 }
             }
 
-            await browser.sleep(2000);
+            await browser.sleep(2000); // When it clicks right and left navigation on clock, It was taking time to load elements
             let numberOfDays = await dateFieldGuid.$$(this.selectors.calendarDays).count();
             let dayToCompare: string = day + ", " + year;
             for (let i = 0; i < numberOfDays; i++) {

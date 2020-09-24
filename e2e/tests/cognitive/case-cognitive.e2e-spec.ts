@@ -379,7 +379,7 @@ describe('Case Cognitive', () => {
             expect(await selectCasetemplateBladePo.isApplyButtonEnabled()).toBeTruthy("Apply button is Enabled");
             await selectCasetemplateBladePo.selectFirstRecommendedTemplate();
             await selectCasetemplateBladePo.clickOnFirstRecommendedArrow();
-            await browser.sleep(1000);
+            await browser.sleep(1000); // Wait For Case Template Preview Page Open.
             expect(await caseTemplatePreview.getCaseSummary()).toContain('Employee needs an employment verification letter bonus');
             expect(await caseTemplatePreview.getCaseTemplateName()).toContain('caseTemplateForCognitive');
             expect(await caseTemplatePreview.getCaseCompanyValue()).toBe('Petramco');

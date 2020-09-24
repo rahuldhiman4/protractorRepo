@@ -46,7 +46,6 @@ describe("Create Case Assignment Mapping", () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
         await foundationData("Petramco");
-        await browser.sleep(5000);
     });
 
     async function foundationData(company: string) {
@@ -68,6 +67,7 @@ describe("Create Case Assignment Mapping", () => {
         await apiHelper.createNewUser(personData);
         await apiHelper.associatePersonToSupportGroup(personData.userId, suppGrpData.orgName);
         await apiHelper.associatePersonToCompany(personData.userId, company);
+        await browser.sleep(5000); // timeout requried to reflect data on UI
     }
 
     async function foundationData2(company: string, businessUnit: string, department: string, supportGroup: string, person: string) {
