@@ -18,7 +18,6 @@ describe('Knowledge Article Template', () => {
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteArticleTemplate('Template Name DRDMV-1088');
         await loginPage.login('kWilliamson');
-        await navigationPage.switchToApplication("Knowledge Management");
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', 'Knowledge Article Templates');
     });
@@ -150,11 +149,12 @@ describe('Knowledge Article Template', () => {
             await createKnowledgeArticleTemplatePo.clickOnSaveButton();
             expect(await utilGrid.isGridRecordPresent('DRDMV-1065')).toBeTruthy('Record does not exist');
             expect(await utilGrid.isGridRecordPresent('DRDMV-619')).toBeTruthy('Record does not exist');
-            await utilCommon.switchToNewWidnow(2);
+            await utilCommon.switchToNewWidnow(1);
+            await navigationPage.switchToApplication("Knowledge Management");
+            await navigationPage.gotoCreateKnowledge();
         });
 
         it('[DRDMV-619,DRDMV-1065,DRDMV-1180]: [Create Mode] Create a template for Knowledge article', async () => {
-            await navigationPage.gotoCreateKnowledge();
             expect(await createKnowledgePage.isTemplatePresent('DRDMV-1065')).toBeTruthy('Template DRDMV-1065 is not present');
             expect(await createKnowledgePage.isTemplatePresent('DRDMV-619')).toBeTruthy('Template DRDMV-619 is not present');
             expect(await createKnowledgePage.isTemplatePresent('Article Template Name Psilon')).toBeFalsy('Template Article Template Name Psilon is present');
@@ -184,7 +184,6 @@ describe('Knowledge Article Template', () => {
 
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.switchToApplication("Knowledge Management");
-            await utilityCommon.switchToNewTab(1);
             await utilityGrid.clearFilter();
             expect(await utilityGrid.isGridRecordPresent('Article Title KCS')).toBeTruthy('Article is not present');
             expect(await utilityGrid.isGridRecordPresent('Article Title 619')).toBeTruthy('Article is not present');

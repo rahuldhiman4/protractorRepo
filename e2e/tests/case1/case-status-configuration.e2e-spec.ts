@@ -535,7 +535,7 @@ describe('Case Status Configuration', () => {
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
             await statusConfigPo.clickOnDeleteButton();
             await utilCommon.clickOnWarningOk();
-            expect(await utilCommon.isPopUpMessagePresent("ERROR (10000): Task with this status are present.")).toBeTruthy();
+            expect(await utilCommon.isPopUpMessagePresent("Task with this status are present.")).toBeTruthy();
         });
 
         it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
@@ -594,7 +594,7 @@ describe('Case Status Configuration', () => {
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
             await statusConfigPo.clickOnDeleteButton();
             await utilCommon.clickOnWarningOk();
-            expect(await utilCommon.isPopUpMessagePresent("ERROR (10000): Case with this status are present.")).toBeTruthy();
+            expect(await utilCommon.isPopUpMessagePresent("Case with this status are present.")).toBeTruthy();
 
         });
         it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
@@ -617,7 +617,7 @@ describe('Case Status Configuration', () => {
         });
         it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
             await apiHelper.apiLoginWithCredential(personData1.userId + '@petramco.com', 'Password_1234');
-            caseId = await apiHelper.createCase(caseData);
+            caseId1 = await apiHelper.createCase(caseData);
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId1.displayId);
             expect(await viewCasePo.getCaseStatusValue()).toBe('Assigned');
@@ -636,6 +636,7 @@ describe('Case Status Configuration', () => {
             await apiHelper.createKnowledgeSet(knowledgeSetData);
             knowldgeId = await apiHelper.createKnowledgeArticle(articleData1);
             await navigationPage.gotoKnowledgeConsole();
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(knowldgeId.displayId);
             await editKnowledgePo.setKnowledgeStatus('Custom');
         });
@@ -649,7 +650,7 @@ describe('Case Status Configuration', () => {
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
             await statusConfigPo.clickOnDeleteButton();
             await utilCommon.clickOnWarningOk();
-            expect(await utilCommon.isPopUpMessagePresent("ERROR (10000): Knowledge articles with this status are present.")).toBeTruthy();
+            expect(await utilCommon.isPopUpMessagePresent("Knowledge articles with this status are present.")).toBeTruthy();
         });
         it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
             await navigationPage.gotoKnowledgeConsole();

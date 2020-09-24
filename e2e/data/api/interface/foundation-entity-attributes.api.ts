@@ -3,7 +3,7 @@ export interface IPerson {
     lastName: string;
     userId: string;
     emailId?: string;
-    userPermission?: string;
+    userPermission?: string[];
     company?: string;
 };
 

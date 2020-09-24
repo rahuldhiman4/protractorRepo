@@ -140,8 +140,6 @@ describe('Dynamic Library Configuration', () => {
             await createDynamicFieldLibraryConfigPo.clickOnSaveButton();
         });
         it('[DRDMV-13104,DRDMV-13103,DRDMV-13107]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteDynamicFieldAndGroup();
             await dynamicFieldLibraryConfigConsolePo.clickAddDynamicFieldButton();
             await createDynamicFieldLibraryConfigPo.setFieldName('Field 123 Test_12');
             await createDynamicFieldLibraryConfigPo.clickOnLocalizeButton();

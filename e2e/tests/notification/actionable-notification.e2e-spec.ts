@@ -679,7 +679,6 @@ describe("Actionable Notifications", () => {
             await navigationPage.signOut();
             await loginPage.login('khardison');
             await navigationPage.switchToApplication('Knowledge Management');
-            await utilityCommon.switchToNewTab(1);
             await notificationPo.clickOnNotificationIcon();
             await notificationPo.clickActionableLink(`Knowledge article ${articleResponse.displayId} is assigned to you for Review.`);
             await utilityCommon.switchToNewTab(2);

@@ -19,7 +19,6 @@ describe('Case Console Preset Filter', () => {
 
         //Create the Phylum users
         await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteServiceTargets();
         await apiHelper.deleteApprovalMapping(caseModule);
         const personDataFile = require('../../data/ui/foundation/person.ui.json');
         let personData1 = personDataFile['PhylumCaseAgent1'];
@@ -58,6 +57,7 @@ describe('Case Console Preset Filter', () => {
 
     afterAll(async () => {
         await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteServiceTargets();
         await apiHelper.updateFoundationEntity('Person', 'idphylum2', { vipStatus: 'No' });
         await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
