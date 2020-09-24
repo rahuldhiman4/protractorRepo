@@ -59,6 +59,7 @@ import { CASE_ASSIGNMENT_PAYLOAD, CASE_FROM_DWP } from '../data/api/case/case.co
 import * as actionableNotificationPayloads from '../data/api/notification/actionable.notification.supporting.api';
 import * as processes from '../data/api/shared-services/create-new-process.api';
 import { MENU_ITEM } from '../data/api/shared-services/menu.item.api';
+import * as COMPLEX_SURVEY from '../data/api/case/complex-survey.api';
 
 let fs = require('fs');
 
@@ -1662,12 +1663,16 @@ class ApiHelper {
         };
     }
 
-    async createComplexSurvey(data: any): Promise<void> {
-        const complexSurvey = await axios.post(
+    async createComplexSurvey(serviceReqId: string, payloadName: string): Promise<boolean> {
+        let complexSurveyData = cloneDeep(COMPLEX_SURVEY[payloadName]);
+        complexSurveyData['serviceRequestId'] = serviceReqId;
+        
+            const complexSurvey = await axios.post(
             "api/com.bmc.dsm.catalog-lib/surveys",
-            data
+            complexSurveyData
         );
-        console.log("Complex Survey status =============>", complexSurvey.status);
+        console.log('Complex Survey API Status =============>', complexSurvey.status);
+        return complexSurvey.status == 200;
     }
 
     async setDefaultNotificationForUser(user: string, notificationType: string): Promise<void> {

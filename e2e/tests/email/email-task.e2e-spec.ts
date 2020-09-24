@@ -366,15 +366,15 @@ describe('Email Task', () => {
         await utilityGrid.searchAndOpenHyperlink(displayId);
         await activityTabPo.addActivityNote('This is case notes templates');
         await activityTabPo.clickOnPostButton();
-        await expect(activityTabPo.getActivityNotesText('Reply')).toBeFalsy();
-        await expect(activityTabPo.getActivityNotesText('Reply all')).toBeFalsy();
+        await expect(activityTabPo.getActivityReplyNotesText('Reply')).toBeFalsy();
+        await expect(activityTabPo.getActivityReplyAllNotesText('Reply all')).toBeFalsy();
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary);
         await manageTaskBladePo.clickTaskLink(manualTaskSummary);
         await activityTabPo.addActivityNote('This is case notes templates');
         await activityTabPo.clickOnPostButton();
-        await expect(activityTabPo.getActivityNotesText('Reply')).toBeFalsy();
-        await expect(activityTabPo.getActivityNotesText('Reply all')).toBeFalsy();
+        await expect(activityTabPo.getActivityReplyNotesText('Reply')).toBeFalsy();
+        await expect(activityTabPo.getActivityReplyAllNotesText('Reply all')).toBeFalsy();
     });
 
     //Failed due to application issue...defect logged DRDMV-21883

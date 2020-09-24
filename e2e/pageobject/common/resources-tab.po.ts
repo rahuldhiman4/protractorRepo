@@ -94,8 +94,7 @@ export class Resources {
     }
 
     async clickOnAdvancedSearchFiltersButton(buttonText: string): Promise<void> {
-        const advancedSearchFilterBtn = await element(by.xpath(`//*[contains(@class,'justify-content-end')]//button[contains(text(),"${buttonText}")]`));
-        await advancedSearchFilterBtn.click();
+       await element(by.cssContainingText('.justify-content-end button',buttonText)).click();
     }
 
     async isApplyOrClearButtonButtonEnabled(buttonText: string): Promise<boolean> {
