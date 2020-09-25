@@ -66,10 +66,6 @@ describe('Case Manager Read-only Config', () => {
         await navigationPage.signOut();
     });
 
-    afterEach(async () => {
-        await utilityCommon.refresh();
-    });
-
     // asahitya
     it('[DRDMV-18033]: Check Case manager is not able to perform Create Update Delete operation on Case Assignment Mapping', async () => {
         await navigationPage.gotoCaseConsole();
@@ -78,12 +74,10 @@ describe('Case Manager Read-only Config', () => {
         expect(await assignmentConfigConsole.isAddAssignmentsBtnDisplayed()).toBeFalsy();
         await utilGrid.searchAndSelectAllCheckBoxWOGrid("Benefits Assignment");
         expect(await assignmentConfigConsole.isDeleteAssignmentConfigBtnDisplayed()).toBeFalsy();
-        await utilityCommon.refresh();
         await utilGrid.searchAndOpenHyperlink("Benefits Assignment");
         expect(await assignmentConfigEditPage.isEditAssignmentNameDisabled()).toBeTruthy();
         expect(await assignmentConfigEditPage.isDefaultToggleBtnDisabled()).toBeTruthy();
         expect(await assignmentConfigEditPage.isSaveBtnDisabled()).toBeTruthy();
-        await utilityCommon.refresh();
     });
 
     // asahitya
@@ -94,12 +88,10 @@ describe('Case Manager Read-only Config', () => {
         expect(await caseReadAccessConfigConsole.isAddButtonDisplayed()).toBeFalsy();
         await utilGrid.searchAndSelectAllCheckBoxWOGrid("Relocation - Facilities Access Mapping");
         expect(await caseReadAccessConfigConsole.isDeleteButtonDisplayed()).toBeFalsy();
-        await utilityCommon.refresh();
         await utilGrid.searchAndOpenHyperlink("Relocation - Facilities Access Mapping");
         expect(await caseReadAccessConfigEditPage.isAccessMappingNameDisabled()).toBeTruthy();
         expect(await caseReadAccessConfigEditPage.isDefaultToggleBtnDisabled()).toBeTruthy();
         expect(await caseReadAccessConfigEditPage.isSaveBtnDisabled()).toBeTruthy();
-        await utilityCommon.refresh();
     });
 
     // asahitya
@@ -112,7 +104,6 @@ describe('Case Manager Read-only Config', () => {
         expect(await processLibraryEditPage.isDescriptionDisabled()).toBeTruthy("Description field is enabled");
         expect(await processLibraryEditPage.isStatusDisabled()).toBeTruthy("Status field is enabled");
         expect(await processLibraryEditPage.isSaveButtonDisabled()).toBeTruthy("Save button is enabled");
-        await utilityCommon.refresh();
     });
 
     // asahitya
@@ -125,7 +116,6 @@ describe('Case Manager Read-only Config', () => {
         expect(await menuItemEditPage.isMenuItemsStatusDisabled()).toBeTruthy("Status field is enabled");
         expect(await menuItemEditPage.isDefaultToggleBtnDisabled()).toBeTruthy("Default Toggle is enabled");
         expect(await menuItemEditPage.isSaveButtonDisabled()).toBeTruthy("Save button is enabled");
-        await utilityCommon.refresh();
     });
 
     // asahitya
@@ -155,7 +145,6 @@ describe('Case Manager Read-only Config', () => {
         await utilGrid.searchAndOpenHyperlink("Case Resolution Time");
         expect(await goalTypeEditPage.isStatusFieldDisabled()).toBeTruthy("Status field is enabled");
         expect(await goalTypeEditPage.isSaveButtonDisabled()).toBeTruthy("Save button is enabled");
-        await utilityCommon.refresh();
     });
 
     // asahitya
@@ -171,7 +160,6 @@ describe('Case Manager Read-only Config', () => {
         expect(await configureDataSourceEditPage.isAssociationNameDisabled()).toBeTruthy("Association Name is enabled");
         expect(await configureDataSourceEditPage.isBuildExpressionBtnDisabled()).toBeTruthy("Build Expression button is enabled");
         expect(await configureDataSourceEditPage.isSaveBtnDisabled()).toBeTruthy("Save button is enabled");
-        await utilityCommon.refresh();
     });
 
     // asahitya
@@ -188,7 +176,6 @@ describe('Case Manager Read-only Config', () => {
         expect(await businessTimeEntityConfigEditPage.isAddBusinessSegmentBtnDisabled()).toBeTruthy("Add business time segment button is enabled");
         await businessTimeEntityConfigEditPage.selectAllShortDescription();
         expect(await businessTimeEntityConfigEditPage.isRemoveBtnDisabled()).toBeTruthy("Remove button is enabled");
-        await utilityCommon.refresh();
     });
 
     // asahitya
@@ -203,7 +190,6 @@ describe('Case Manager Read-only Config', () => {
         await businessTimeSegmentConfigEditPage.updateStatus("Draft");
         await businessTimeSegmentConfigEditPage.clickNextButton();
         expect(await businessTimeSegmentConfigEditPage.isFinishButtonDisabled()).toBeTruthy("Finish button is enabled");
-        await utilityCommon.refresh();
     });
 
     // asahitya
@@ -220,11 +206,9 @@ describe('Case Manager Read-only Config', () => {
         expect(await notesTemplateConsole.isAddNotesTemplateBtnDisplayed()).toBeFalsy("Add notes template button is enabled");
         await utilGrid.clickCheckBoxOfValueInGrid(NOTES_TEMPLATE_MANDATORY_FIELD.templateName);
         expect(await notesTemplateConsole.isDeleteNotesTemplateBtnDisplayed()).toBeFalsy("Delete notes template button is enabled");
-        await utilityCommon.refresh();
         await utilGrid.searchAndOpenHyperlink(NOTES_TEMPLATE_MANDATORY_FIELD.templateName);
         expect(await editNotesTemplateConfig.isStatusFieldDisabled()).toBeTruthy("Status field is enabled");
         expect(await editNotesTemplateConfig.isDescriptionFieldDisabled()).toBeTruthy("Description field is enabled");
-        await utilityCommon.refresh();
     });
 
     // asahitya
@@ -241,11 +225,9 @@ describe('Case Manager Read-only Config', () => {
         expect(await notesTemplateConsole.isAddNotesTemplateBtnDisplayed()).toBeFalsy("Add notes template button is enabled");
         await utilGrid.clickCheckBoxOfValueInGrid(NOTES_TEMPLATE_MANDATORY_FIELD.templateName);
         expect(await notesTemplateConsole.isDeleteNotesTemplateBtnDisplayed()).toBeFalsy("Delete notes template button is enabled");
-        await utilityCommon.refresh();
         await utilGrid.searchAndOpenHyperlink(NOTES_TEMPLATE_MANDATORY_FIELD.templateName);
         expect(await editNotesTemplateConfig.isStatusFieldDisabled()).toBeTruthy("Status field is enabled");
         expect(await editNotesTemplateConfig.isDescriptionFieldDisabled()).toBeTruthy("Description field is enabled");
-        await utilityCommon.refresh();
     });
 
     // asahitya
@@ -262,11 +244,9 @@ describe('Case Manager Read-only Config', () => {
         expect(await notesTemplateConsole.isAddNotesTemplateBtnDisplayed()).toBeFalsy("Add notes template button is enabled");
         await utilGrid.clickCheckBoxOfValueInGrid(NOTES_TEMPLATE_MANDATORY_FIELD.templateName);
         expect(await notesTemplateConsole.isDeleteNotesTemplateBtnDisplayed()).toBeFalsy("Delete notes template button is enabled");
-        await utilityCommon.refresh();
         await utilGrid.searchAndOpenHyperlink(NOTES_TEMPLATE_MANDATORY_FIELD.templateName);
         expect(await editNotesTemplateConfig.isStatusFieldDisabled()).toBeTruthy("Status field is enabled");
         expect(await editNotesTemplateConfig.isDescriptionFieldDisabled()).toBeTruthy("Description field is enabled");
-        await utilityCommon.refresh();
     });
 
     // asahitya
@@ -295,7 +275,6 @@ describe('Case Manager Read-only Config', () => {
         await flowsetEditPage.navigateToResolutionCodesTab();
         expect(await flowsetEditPage.isAddResolutionCodeBtnDisabled()).toBeTruthy("Add Resolution Code button is enabled");
         expect(await flowsetEditPage.isAssociateResolutionCodeBtnDisabled()).toBeTruthy("Associate Resolution Code button is enabled");
-        await utilityCommon.refresh();
     });
 
     // asahitya
@@ -344,7 +323,6 @@ describe('Case Manager Read-only Config', () => {
         await utilGrid.searchRecord(emailTemplateName);
         await utilGrid.clickCheckBoxOfValueInGrid(emailTemplateName);
         expect(await emailTemplateConsolePage.isDeleteEmailTemplateButtonDisplayed()).toBeFalsy('Delete Template Button is enabled');
-        await utilityCommon.refresh();
         await utilGrid.searchAndOpenHyperlink(emailTemplateName);
         expect(await editEmailTemplatePage.isTemplateNameEnabled()).toBeFalsy('Template Name is enabled');
         expect(await editEmailTemplatePage.isStatusFieldEnabled()).toBeFalsy('Status field is enabled');
@@ -353,7 +331,6 @@ describe('Case Manager Read-only Config', () => {
         expect(await editEmailTemplatePage.isEditButtonEnabled()).toBeFalsy('Edit Body button is enabled');
         await editEmailTemplatePage.clickOnSubjectCheckbox();
         expect(await editEmailTemplatePage.isEditButtonEnabled()).toBeFalsy('Edit Subject button is enabled');
-        await utilityCommon.refresh();
     });
 
     //asahitya
@@ -372,7 +349,6 @@ describe('Case Manager Read-only Config', () => {
         await utilGrid.searchRecord(emailTemplateName);
         await utilGrid.clickCheckBoxOfValueInGrid(emailTemplateName);
         expect(await acknowledgementTemplateConsolePage.isDeleteAcknowledgementTemplateButtonDisplayed()).toBeFalsy('Delete Template Button is enabled');
-        await utilityCommon.refresh();
         await utilGrid.searchAndOpenHyperlink(emailTemplateName);
         expect(await editAcknowledementTemplatePage.isTemplateNameEnabled()).toBeFalsy('Template Name is enabled');
         expect(await editAcknowledementTemplatePage.isStatusFieldEnabled()).toBeFalsy('Status field is enabled');
@@ -381,7 +357,6 @@ describe('Case Manager Read-only Config', () => {
         expect(await editAcknowledementTemplatePage.isEditButtonEnabled()).toBeFalsy('Edit Body button is enabled');
         await editAcknowledementTemplatePage.clickOnSubjectCheckbox();
         expect(await editAcknowledementTemplatePage.isEditButtonEnabled()).toBeFalsy('Edit Subject button is enabled');
-        await utilityCommon.refresh();
     });
 
     //asahitya

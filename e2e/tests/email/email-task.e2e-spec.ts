@@ -617,7 +617,6 @@ describe('Email Task', () => {
             await emailPo.clickOnSendButton();
         });
         it('[DRDMV-19555]: In Case of Reply/Reply All if we select new Email template then previous contents should not be erased.', async () => {
-            await utilityCommon.refresh();
             expect(await activityTabPo.getEmailTitle()).toContain('Fritz Schulz sent an email');
             expect(await activityTabPo.getRecipientInTo()).toContain('To: Qiang Du');
             await activityTabPo.clickOnReply();
@@ -646,8 +645,7 @@ describe('Email Task', () => {
             await emailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateDataForTest1.TemplateName);
             await emailTemplateBladePo.clickOnApplyButton();
             await emailPo.clickOnSendButton();
-            await utilityCommon.refresh();
-            await browser.sleep(2000); // Afteer refresh page wait untile view task page gets load correctly.
+            await browser.sleep(2000); // After sent email wait until email log gets displayed on actvity.
             await activityTabPo.clickOnReply();
             expect(await emailPo.getToEmailPerson()).toContain('Fritz Schulz');
             expect(await emailPo.getEmailBody()).toContain('Hi Team ,\n\nI am taking leave today.\n\nThanks.');

@@ -24,10 +24,6 @@ describe('Create Flowset', () => {
         await navigationPage.signOut();
     });
 
-    afterEach(async () => {
-        await utilityCommon.refresh();
-    });
-
     //ankagraw
     it('[DRDMV-6211,DRDMV-7128]: [Flowsets] Create new flowset configuration', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');

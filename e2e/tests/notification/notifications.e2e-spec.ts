@@ -111,7 +111,7 @@ describe("Notifications", () => {
         let response2 = await apiHelper.createCase(caseData);
         await apiHelper.updateCaseAccess(response1.id, caseAccessDataFritz);
         await apiHelper.updateCaseStatus(response1.id, 'InProgress');
-        await utilityCommon.refresh();
+        await utilityCommon.refresh(); //Refreshing the page to reflect the notification
         await notificationPo.clickOnNotificationIcon();
         expect(await notificationPo.isAlertPresent(`Qianru Tao changed the status of ${response1.displayId} to In Progress`)).toBeTruthy('1');
         await apiHelper.apiLogin('fritz');
@@ -121,7 +121,7 @@ describe("Notifications", () => {
 
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.updateCaseStatus(response2.id, 'InProgress');
-        await utilityCommon.refresh();
+        await utilityCommon.refresh(); //Refreshing the page to reflect the notification
         await notificationPo.clickOnNotificationIcon();
         expect(await notificationPo.isAlertPresent(`Fritz Schulz changed the status of ${response1.displayId} to Pending`)).toBeTruthy('2');
         expect(await notificationPo.isAlertPresent(`Fritz Schulz changed the status of ${response1.displayId} to Resolved`)).toBeTruthy('3');
