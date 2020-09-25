@@ -645,7 +645,7 @@ describe('Email Task', () => {
             await emailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateDataForTest1.TemplateName);
             await emailTemplateBladePo.clickOnApplyButton();
             await emailPo.clickOnSendButton();
-            await browser.sleep(2000); // After sent email wait until log gets displayed on actvity.
+            await browser.sleep(2000); // After sent email wait until email log gets displayed on actvity.
             await activityTabPo.clickOnReply();
             expect(await emailPo.getToEmailPerson()).toContain('Fritz Schulz');
             expect(await emailPo.getEmailBody()).toContain('Hi Team ,\n\nI am taking leave today.\n\nThanks.');
