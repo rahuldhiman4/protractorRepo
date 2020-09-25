@@ -49,10 +49,6 @@ describe('Knowledge Article', () => {
         await navigationPage.signOut();
     });
 
-    afterEach(async () => {
-        await utilityCommon.refresh();
-    });
-
     async function foundationData(company: string) {
         await apiHelper.apiLogin('tadmin');
         let businessData = businessDataFile['BusinessUnitData'];
@@ -302,7 +298,7 @@ describe('Knowledge Article', () => {
             await createKnowledgePage.selectKnowledgeSet('HR');
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             let knowledgeIdValue: string = await previewKnowledgePo.getKnowledgeArticleID();
-            await utilityCommon.refresh();
+            await previewKnowledgePo.clickOnBackButton();
             await navigationPage.gotoKnowledgeConsole();
             await utilityGrid.clearFilter();
             await knowledgeArticlesConsolePo.searchKnowledgeArticle(knowledgeTitle);
@@ -495,12 +491,12 @@ describe('Knowledge Article', () => {
         expect(await createKnowledgePage.getKnowledgeSetValue()).toContain('HR', 'expected Value not present');
         expect(await createKnowledgePage.isSaveButtonEnabled()).toBeTruthy('Save Button is disabled');
         await createKnowledgePage.clickOnSaveKnowledgeButton();
-        await utilityCommon.refresh();
+        await previewKnowledgePo.clickOnBackButton();
         await navigationPage.gotoKnowledgeConsole();
         await utilityGrid.clearFilter();
         await utilityGrid.searchRecord(knowledgeTitle);
         expect(await knowledgeArticlesConsolePo.isValueDisplayedInGrid('Knowledge Set')).toContain('HR', 'HR not display on Knowledge Console');
-    });
+    },500 * 1000);
 
     it('[DRDMV-1783]: [Knowledge Article] Access to the Create Knowledge view (Negative)', async () => {
         try {
