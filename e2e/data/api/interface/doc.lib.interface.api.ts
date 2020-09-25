@@ -14,3 +14,23 @@ export interface IDocumentLib {
     category3?: string,
     category4?: string
 }
+
+export interface IDocumentTemplate {
+    templateName: string;
+    description: string;
+    messageBody: string;
+    company?: string;
+}
+
+export interface IReadAccess {
+templateName:string;
+templateStatus:string;
+templateSummary:string;
+caseStatus:string;
+casePriority:string;
+categoryTier1?:string;
+categoryTier2?:string;
+categoryTier3?:string;
+categoryTier4?:string;
+company: string;
+}
