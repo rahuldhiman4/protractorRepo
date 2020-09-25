@@ -18,11 +18,11 @@ import { EMAIL_WHITELIST } from '../data/api/email/email.whitelist.data.api';
 import { NEW_PROCESS_LIB, PROCESS_FLOWSET_MAPPING } from '../data/api/flowset/create-process-lib';
 import { UPDATE_PERSON, UPDATE_SUPPORT_GROUP, UPDATE_ORGANIZATION } from '../data/api/foundation/update-foundation-entity.data.api';
 import { IBusinessUnit } from '../data/api/interface/business.unit.interface.api';
-import { ICaseAssignmentMapping, ICaseCreate } from "../data/api/interface/case.assignment.mapping.interface.api";
+import { ICaseAssignmentMapping, ICreateCaseDWP,ICreateCase,IUpdateCaseAccess } from "../data/api/interface/case.assignment.mapping.interface.api";
 import { ICaseTemplate } from "../data/api/interface/case.template.interface.api";
 import { ICognitiveDataSet, ICognitiveDataSetMapping } from '../data/api/interface/cognitive.interface.api';
 import { IDepartment } from '../data/api/interface/department.interface.api';
-import { IDocumentLib } from '../data/api/interface/doc.lib.interface.api';
+import { IDocumentLib,IDocumentTemplate,IReadAccess } from '../data/api/interface/doc.lib.interface.api';
 import { IDomainTag } from '../data/api/interface/domain.tag.interface.api';
 import { IEmailTemplate } from '../data/api/interface/email.template.interface.api';
 import { IFlowset, IProcessLibConfig, IProcessFlowsetMapping } from '../data/api/interface/flowset.interface.api';
@@ -59,6 +59,7 @@ import { CASE_ASSIGNMENT_PAYLOAD, CASE_FROM_DWP } from '../data/api/case/case.co
 import * as actionableNotificationPayloads from '../data/api/notification/actionable.notification.supporting.api';
 import * as processes from '../data/api/shared-services/create-new-process.api';
 import { MENU_ITEM } from '../data/api/shared-services/menu.item.api';
+import * as COMPLEX_SURVEY from '../data/api/case/complex-survey.api';
 
 let fs = require('fs');
 
@@ -103,7 +104,7 @@ class ApiHelper {
         axios.defaults.headers.common['Cookie'] = `AR-JWT=${response.data}`;
     }
 
-    async createCase(data: any): Promise<IIDs> {
+    async createCase(data: ICreateCase): Promise<IIDs> {
         let caseData = cloneDeep(data);
         const newCase = await axios.post(
             "api/com.bmc.dsm.case-lib/cases",
@@ -121,7 +122,7 @@ class ApiHelper {
         };
     }
 
-    async createCaseFromDwp(data: ICaseCreate): Promise<IIDs> {
+    async createCaseFromDwp(data: ICreateCaseDWP): Promise<IIDs> {
         let caseData = cloneDeep(CASE_FROM_DWP);
         caseData.processInputValues.Requester = await apiCoreUtil.getPersonGuid(data.requester);
         caseData.processInputValues.Summary = data.summary;
@@ -1662,12 +1663,16 @@ class ApiHelper {
         };
     }
 
-    async createComplexSurvey(data: any): Promise<void> {
-        const complexSurvey = await axios.post(
+    async createComplexSurvey(serviceReqId: string, payloadName: string): Promise<boolean> {
+        let complexSurveyData = cloneDeep(COMPLEX_SURVEY[payloadName]);
+        complexSurveyData['serviceRequestId'] = serviceReqId;
+        
+            const complexSurvey = await axios.post(
             "api/com.bmc.dsm.catalog-lib/surveys",
-            data
+            complexSurveyData
         );
-        console.log("Complex Survey status =============>", complexSurvey.status);
+        console.log('Complex Survey API Status =============>', complexSurvey.status);
+        return complexSurvey.status == 200;
     }
 
     async setDefaultNotificationForUser(user: string, notificationType: string): Promise<void> {
@@ -1740,7 +1745,7 @@ class ApiHelper {
         return updatedOrgData.status == 204;
     }
 
-    async updateCaseAccess(caseGuid: string, data: any): Promise<number> {
+    async updateCaseAccess(caseGuid: string, data: IUpdateCaseAccess): Promise<number> {
         let accessFile = await require('../data/api/case/case.access.api.json');
         let caseAccessData = await accessFile.CaseAccess;
         caseAccessData.processInputValues['Record Instance ID'] = caseGuid;
@@ -2679,7 +2684,7 @@ class ApiHelper {
         return svtGroupCreateResponse.status == 201;
     }
 
-    async createDocumentTemplate(data: any): Promise<boolean> {
+    async createDocumentTemplate(data: IDocumentTemplate): Promise<boolean> {
         DOCUMENT_TEMPLATE.processInputValues.Company = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : DOCUMENT_TEMPLATE.processInputValues.Company;
         DOCUMENT_TEMPLATE.processInputValues["Template Name"] = data.templateName;
         DOCUMENT_TEMPLATE.processInputValues.Description = data.description;

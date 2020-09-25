@@ -24,6 +24,8 @@ import utilGrid from '../../utils/util.grid';
 import activityTabPage from '../../pageobject/social/activity-tab.po';
 import statusBladePo from '../../pageobject/common/update.status.blade.po';
 import composeEmailPo from '../../pageobject/email/compose-mail.po';
+import { flowsetMandatoryFields } from '../../data/ui/flowset/flowset.ui';
+import { cloneDeep } from 'lodash';
 
 describe('Create Process in Flowset', () => {
     beforeAll(async () => {
@@ -408,10 +410,10 @@ describe('Create Process in Flowset', () => {
             let registeredProcessResponse = await apiHelper.createProcessLibConfig(registerProcessData);
 
             //Create new flowset
-            let flowsetData = require('../../data/ui/case/flowset.ui.json');
             let flowsetName: string = `DRDMV-10327 ${randomStr}`;
-            flowsetData['flowsetMandatoryFields'].flowsetName = flowsetName;
-            let flowsetResponse = await apiHelper.createNewFlowset(flowsetData['flowsetMandatoryFields']);
+            let flowsetMandatoryFieldsData = cloneDeep(flowsetMandatoryFields);
+            flowsetMandatoryFieldsData.flowsetName = flowsetName;
+            let flowsetResponse = await apiHelper.createNewFlowset(flowsetMandatoryFieldsData);
 
             //Map Process to Flowset
             let flowsetProcessMappingData = {
@@ -573,10 +575,10 @@ describe('Create Process in Flowset', () => {
             let registeredProcessResponse = await apiHelper.createProcessLibConfig(registerProcessData);
 
             //Create new flowset
-            let flowsetData = require('../../data/ui/case/flowset.ui.json');
             let flowsetName: string = `DRDMV-10328 ${randomStr}`;
-            flowsetData['flowsetMandatoryFields'].flowsetName = flowsetName;
-            let flowsetResponse = await apiHelper.createNewFlowset(flowsetData['flowsetMandatoryFields']);
+            let flowsetMandatoryFieldsData = cloneDeep(flowsetMandatoryFields);
+            flowsetMandatoryFieldsData.flowsetName = flowsetName;
+            let flowsetResponse = await apiHelper.createNewFlowset(flowsetMandatoryFieldsData);
 
             //Map Process to Flowset
             let flowsetProcessMappingData = {
@@ -680,10 +682,10 @@ describe('Create Process in Flowset', () => {
             let registeredProcessResponse2 = await apiHelper.createProcessLibConfig(registerProcessData2);
 
             //Create new flowset
-            let flowsetData = require('../../data/ui/case/flowset.ui.json');
             let flowsetName: string = `DRDMV-10024 ${randomStr}`;
-            flowsetData['flowsetMandatoryFields'].flowsetName = flowsetName;
-            let flowsetResponse = await apiHelper.createNewFlowset(flowsetData['flowsetMandatoryFields']);
+            let flowsetMandatoryFieldsData = cloneDeep(flowsetMandatoryFields);
+            flowsetMandatoryFieldsData.flowsetName = flowsetName
+            let flowsetResponse = await apiHelper.createNewFlowset(flowsetMandatoryFieldsData);
 
             //Map Process1 to Flowset
             let flowsetProcessMappingData1 = {

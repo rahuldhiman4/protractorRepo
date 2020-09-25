@@ -34,7 +34,7 @@ class AttachmentBlade {
         for (let i: number = 0; i < 5; i++) {
             let isFilePresent: boolean = await element(by.cssContainingText(this.selectors.attachmentName, attachment)).isPresent();
             if (isFilePresent == false) {
-                await browser.sleep(5000);
+                await browser.sleep(5000); // To Wait For Attachment gets Display On Grid.
                 await this.searchAttachmentOnGrid(attachment);
             } else {
                 break;

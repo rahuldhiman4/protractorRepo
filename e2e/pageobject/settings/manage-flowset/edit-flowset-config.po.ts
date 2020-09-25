@@ -46,10 +46,10 @@ class EditFlowsetPage {
     async selectConfidentialSupportGroup(supportGroup: string): Promise<void> {
         await $$(this.selectors.supportGroupDropDown).get(1).click();
         await $$(this.selectors.confidentialFieldSearchBox).get(3).sendKeys(supportGroup);
-        await browser.sleep(1000);
+        await browser.sleep(1000); // Wait Until Searched Confidential Support Group Loaded.
         await element(by.cssContainingText(this.selectors.dropdownElement, supportGroup)).isPresent().then(async (result) => {
             if (result) {
-                await browser.sleep(1000);
+                await browser.sleep(1000); // Wait Until Confidential Support Group Ready To Click.
                 await element(by.cssContainingText(this.selectors.dropdownElement, supportGroup)).click();
             } else {
                 console.log(supportGroup," this confidential support group not present");

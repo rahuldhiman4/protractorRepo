@@ -85,7 +85,7 @@ class CKEditor {
     async imageUploadWithURL(uploadURL: string, imageUrlFieldIndex: number, imageWidthFieldIndex: number, widthSize: string): Promise<void> {
         await imagePropertiesPo.setInputBoxValue(uploadURL, imageUrlFieldIndex);
         await imagePropertiesPo.setInputBoxValue(widthSize, imageWidthFieldIndex);
-        await browser.sleep(1000);
+        await browser.sleep(1000); // To Wait For Image Upload.
         await imagePropertiesPo.clickOnOkButton();
     }
 
@@ -102,26 +102,26 @@ class CKEditor {
         await imagePropertiesPo.clickOnSendItToServerButton();
         await imagePropertiesPo.setInputBoxValue(widthSize, width);
         let source = await imagePropertiesPo.getInputBoxValue(getInputValue);
-        await browser.sleep(2000);
+        await browser.sleep(2000); // To wait For Image Set Correctly
         await imagePropertiesPo.clickOnOkButton();
         return source;
     }
     async clickOnTableIcon(guidId?: string): Promise<void> {
         if (guidId) await $(`[rx-view-component-id="${guidId}"] ` + this.selectors.tableIcon).click();
         else await $(this.selectors.tableIcon).click();
-        await browser.sleep(1000);
+        await browser.sleep(1000); // To Wait For Table Pop-up Gets Open.
     }
 
     async clickOnImageIcon(guidId?: string): Promise<void> {
         if (guidId) await $(`[rx-view-component-id="${guidId}"] ` + this.selectors.imageIcon).click();
         else await $(this.selectors.imageIcon).click();
-        await browser.sleep(1000);
+        await browser.sleep(1000); // To Wait For Image Pop-up Gets Open.
 
     }
     async clickOnLinkIcon(guidId?: string): Promise<void> {
         if (guidId) await $(`[rx-view-component-id="${guidId}"] ` + this.selectors.linkIcon).click();
         else await $(this.selectors.linkIcon).click();
-        await browser.sleep(1000);
+        await browser.sleep(1000); // To Wait Until Link Pop-Up Gets Open.
     }
 
 
@@ -154,7 +154,7 @@ class CKEditor {
     async clickOnCenterAlignIcon(guidId?: string): Promise<void> {
         if (guidId) await $(`[rx-view-component-id="${guidId}"] ` + this.selectors.centerAlignIcon).click();
         else await $(this.selectors.centerAlignIcon).click();
-        await browser.sleep(1000);
+        await browser.sleep(1000); // To Wait Until Text/Cursor Gets With Center Allign.
     }
 
     async selectColor(colorValue: string, guidId?: string): Promise<void> {
@@ -182,7 +182,7 @@ class CKEditor {
     async selectStyles(styleValue: string, guidId?: string): Promise<void> {
         if (guidId) { await $(`[rx-view-component-id="${guidId}"] ` + this.selectors.styleDropDown).click(); }
         else { await $(this.selectors.styleDropDown).click(); }
-        await browser.sleep(1000);
+        await browser.sleep(1000); // Wait For Show Styles From Drop Down And Switch To Frame.
         await browser.waitForAngularEnabled(false);
         await browser.switchTo().frame(await $$('iframe.cke_panel_frame').last().getWebElement());
         let locator: string = `a[title="${styleValue}"]`;
@@ -609,7 +609,7 @@ class CKEditor {
     async selectFont(fontValue, guidId?: string): Promise<void> {
         if (guidId) { await $(`[rx-view-component-id="${guidId}"] ` + this.selectors.fontDropDown).click(); }
         else { await $(this.selectors.fontDropDown).click(); }
-        await browser.sleep(1000);
+        await browser.sleep(1000); // Wait For Font Drop down Values Shows And Switch To Frame.
         await browser.waitForAngularEnabled(false);
         await browser.switchTo().frame(await $$('iframe.cke_panel_frame').last().getWebElement());
         let locator: string = `a[title="${fontValue}"]`;
@@ -636,7 +636,7 @@ class CKEditor {
     async clickOnJustifyAlignIcon(guidId?: string): Promise<void> {
         if (guidId) await $(`[rx-view-component-id="${guidId}"] ` + this.selectors.justifyAlignIcon).click();
         else await $(this.selectors.justifyAlignIcon).click();
-        await browser.sleep(1000);
+        await browser.sleep(1000); // Wait For Text/Cursor Gets Allign As Per Justify Functionality
     }
 
     async isTextJustifyAlignInCkEditorTextArea(bodyText: string, justifyAlignTextElement?: ElementFinder): Promise<boolean> {

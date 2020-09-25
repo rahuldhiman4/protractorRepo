@@ -10,6 +10,8 @@ import editFlowset from '../../pageobject/settings/manage-flowset/edit-flowset-c
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
+import { flowsetMandatoryFields } from '../../data/ui/flowset/flowset.ui';
+import { cloneDeep } from 'lodash';
 
 describe('Create Flowset', () => {
     beforeAll(async () => {
@@ -20,10 +22,6 @@ describe('Create Flowset', () => {
     afterAll(async () => {
         await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
-    });
-
-    afterEach(async () => {
-        await utilityCommon.refresh();
     });
 
     //ankagraw
@@ -62,14 +60,14 @@ describe('Create Flowset', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         //API call to create the flowset
         await apiHelper.apiLogin('qkatawazi');
-        let flowsetData = require('../../data/ui/case/flowset.ui.json');
-        let flowsetName: string = await flowsetData['flowsetMandatoryFields'].flowsetName + randomStr;
-        flowsetData['flowsetMandatoryFields'].flowsetName = flowsetName;
-        await apiHelper.createNewFlowset(flowsetData['flowsetMandatoryFields']);
+
+        let flowsetMandatoryFieldsData = cloneDeep(flowsetMandatoryFields);
+        flowsetMandatoryFieldsData.flowsetName = flowsetMandatoryFieldsData.flowsetName + randomStr;
+        await apiHelper.createNewFlowset(flowsetMandatoryFieldsData);
 
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', 'Flowsets - Console - Business Workflows');
-        await consoleFlowset.searchAndSelectFlowset(flowsetName);
+        await consoleFlowset.searchAndSelectFlowset(flowsetMandatoryFieldsData.flowsetName);
         await editFlowset.setFlowset("edit Flowset" + randomStr);
         await editFlowset.setDescription("edit description" + randomStr);
         await expect(editFlowset.getStatusvalue()).toBe("Active");
@@ -85,14 +83,13 @@ describe('Create Flowset', () => {
 
         //API call to create the flowset
         await apiHelper.apiLogin('qkatawazi');
-        let flowsetData = require('../../data/ui/case/flowset.ui.json');
-        let flowsetName: string = await flowsetData['flowsetMandatoryFields'].flowsetName + randomStr;
-        flowsetData['flowsetMandatoryFields'].flowsetName = flowsetName;
-        await apiHelper.createNewFlowset(flowsetData['flowsetMandatoryFields']);
+        let flowsetMandatoryFieldsData = cloneDeep(flowsetMandatoryFields);
+        flowsetMandatoryFieldsData.flowsetName = flowsetMandatoryFieldsData.flowsetName + randomStr;
+        await apiHelper.createNewFlowset(flowsetMandatoryFieldsData);
 
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', 'Flowsets - Console - Business Workflows');
-        await expect(consoleFlowset.isFlowsetPresentOnGrid(flowsetName)).toBeTruthy(" Flowset is not present ")
+        await expect(consoleFlowset.isFlowsetPresentOnGrid(flowsetMandatoryFieldsData.flowsetName)).toBeTruthy(" Flowset is not present ")
         await expect(consoleFlowset.isDecriptionPresentOnGrid('Test Flowset name description')).toBeTruthy(" description is not present ")
         await expect(consoleFlowset.isFlowsetPresentOnGrid("FlowsetHasNoName")).toBeFalsy(" Flowset is present ")
     });
@@ -138,14 +135,13 @@ describe('Create Flowset', () => {
         await apiHelper.createProcessLibConfig(processLibConfData1);
         //API call to create the flowset
         await apiHelper.apiLogin('qkatawazi');
-        let flowsetData = require('../../data/ui/case/flowset.ui.json');
-        let flowsetName: string = await flowsetData['flowsetMandatoryFields'].flowsetName + randomStr;
-        flowsetData['flowsetMandatoryFields'].flowsetName = flowsetName;
-        await apiHelper.createNewFlowset(flowsetData['flowsetMandatoryFields']);
+        let flowsetMandatoryFieldsData = cloneDeep(flowsetMandatoryFields);
+        flowsetMandatoryFieldsData.flowsetName = flowsetMandatoryFieldsData.flowsetName + randomStr;
+        await apiHelper.createNewFlowset(flowsetMandatoryFieldsData);
 
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', 'Flowsets - Console - Business Workflows');
-        await consoleFlowset.searchAndSelectFlowset(flowsetName);
+        await consoleFlowset.searchAndSelectFlowset(flowsetMandatoryFieldsData.flowsetName);
         await editFlowset.navigateToProcessTab();
         await editFlowset.clickOnAddNewMappingBtn();
         await editFlowset.selectProcessName(`First Process ${randomStr}`);
@@ -179,29 +175,28 @@ describe('Create Flowset', () => {
     //ankagraw
     describe('[DRDMV-1259]: [Permissions] Flowsets access', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let flowsetName: string
+        let flowsetMandatoryFieldsData = undefined;
 
         beforeAll(async () => {
             //API call to create the flowset
             await apiHelper.apiLogin('qkatawazi');
-            let flowsetData = require('../../data/ui/case/flowset.ui.json');
-            flowsetName = await flowsetData['flowsetMandatoryFields'].flowsetName + randomStr;
-            flowsetData['flowsetMandatoryFields'].flowsetName = flowsetName;
-            await apiHelper.createNewFlowset(flowsetData['flowsetMandatoryFields']);
+            flowsetMandatoryFieldsData = cloneDeep(flowsetMandatoryFields);
+            flowsetMandatoryFieldsData.flowsetName = flowsetMandatoryFieldsData.flowsetName + randomStr;
+            await apiHelper.createNewFlowset(flowsetMandatoryFieldsData);
         });
 
         it('[DRDMV-1259]: [Permissions] Flowsets access', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', 'Flowsets - Console - Business Workflows');
-            await consoleFlowset.searchAndSelectFlowset(flowsetName);
+            await consoleFlowset.searchAndSelectFlowset(flowsetMandatoryFieldsData.flowsetName);
             await editFlowset.setDescription("edit description" + randomStr);
             await editFlowset.clickSaveBtn();
-            await expect(consoleFlowset.isFlowsetPresentOnGrid(flowsetName)).toBeTruthy(" Flowset is not present ");
+            await expect(consoleFlowset.isFlowsetPresentOnGrid(flowsetMandatoryFieldsData.flowsetName)).toBeTruthy(" Flowset is not present ");
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', 'Flowsets - Console - Business Workflows');
-            await expect(consoleFlowset.isFlowsetPresentOnGrid(flowsetName)).toBeFalsy(" Flowset is present ");
+            await expect(consoleFlowset.isFlowsetPresentOnGrid(flowsetMandatoryFieldsData.flowsetName)).toBeFalsy(" Flowset is present ");
             await navigationPage.signOut();
             await loginPage.login('qtao');
             await navigationPage.gotoSettingsPage();
@@ -222,16 +217,15 @@ describe('Create Flowset', () => {
 
         //API call to create the flowset
         await apiHelper.apiLogin('qkatawazi');
-        let flowsetData = require('../../data/ui/case/flowset.ui.json');
-        let flowsetName: string = await flowsetData['flowsetMandatoryFields'].flowsetName + randomStr;
-        flowsetData['flowsetMandatoryFields'].flowsetName = flowsetName;
-        await apiHelper.createNewFlowset(flowsetData['flowsetMandatoryFields']);
+        let flowsetMandatoryFieldsData = cloneDeep(flowsetMandatoryFields);
+        flowsetMandatoryFieldsData.flowsetName = flowsetMandatoryFieldsData.flowsetName + randomStr;
+        await apiHelper.createNewFlowset(flowsetMandatoryFieldsData);
 
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', 'Flowsets - Console - Business Workflows');
         await consoleFlowset.addColumn(["ID", 'Display ID']);
         await expect(consoleFlowset.isAllVisibleColumnPresent(availableValues)).toBeTruthy("Available value is not present");
-        await consoleFlowset.searchAndSelectFlowset(flowsetName);
+        await consoleFlowset.searchAndSelectFlowset(flowsetMandatoryFieldsData.flowsetName);
         await editFlowset.setFlowset("edit Flowset" + randomStr);
         await editFlowset.clickSaveBtn();
         await consoleFlowset.clickGridRefreshButton();
@@ -245,14 +239,13 @@ describe('Create Flowset', () => {
     describe('[DRDMV-6214]: [Flowsets] Filter menu verification on Define Flowsets Console	', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let availableValues: string[] = ['Company', 'Description', 'Display ID', 'Flowset Name', 'ID', 'Status'];
-        let flowsetName, id, displayId;
+        let id, displayId, flowsetMandatoryFieldsData;
         beforeAll(async () => {
             //API call to create the flowset
             await apiHelper.apiLogin('qkatawazi');
-            let flowsetData = require('../../data/ui/case/flowset.ui.json');
-            flowsetName = await flowsetData['flowsetMandatoryFields'].flowsetName + randomStr;
-            flowsetData['flowsetMandatoryFields'].flowsetName = flowsetName;
-            let flowset = await apiHelper.createNewFlowset(flowsetData['flowsetMandatoryFields']);
+            flowsetMandatoryFieldsData = cloneDeep(flowsetMandatoryFields);
+            flowsetMandatoryFieldsData.flowsetName = flowsetMandatoryFieldsData.flowsetName + randomStr;
+            let flowset = await apiHelper.createNewFlowset(flowsetMandatoryFieldsData);
             id = flowset.id;
             displayId = flowset.displayId;
         });
@@ -263,8 +256,8 @@ describe('Create Flowset', () => {
             await consoleFlowset.addColumn(["ID", 'Display ID']);
             await expect(consoleFlowset.isAllVisibleColumnPresent(availableValues)).toBeTruthy("Available value is not present");
 
-            await utilGrid.addFilter("Flowset Name", flowsetName, "text");
-            expect(await utilGrid.isGridRecordPresent(flowsetName)).toBeTruthy('flowsetName not present');
+            await utilGrid.addFilter("Flowset Name", flowsetMandatoryFieldsData.flowsetName, "text");
+            expect(await utilGrid.isGridRecordPresent(flowsetMandatoryFieldsData.flowsetName)).toBeTruthy('flowsetName not present');
             await utilGrid.clearFilter();
 
             await utilGrid.addFilter("Description", "Test Flowset name description", "text");
@@ -278,7 +271,7 @@ describe('Create Flowset', () => {
             await utilGrid.clearFilter();
 
             await utilGrid.addFilter("Status", "Active", "checkbox");
-            expect(await utilGrid.isGridRecordPresent(flowsetName)).toBeTruthy('Active not present');
+            expect(await utilGrid.isGridRecordPresent(flowsetMandatoryFieldsData.flowsetName)).toBeTruthy('Active not present');
             await utilGrid.clearFilter();
 
             await utilGrid.addFilter("Display ID", displayId, "text");

@@ -689,6 +689,7 @@ describe('Global Search Category Validation', () => {
             // Non access to Knowledge Article
             await apiHelper.apiLogin('qstrong');
             for (let d = 0; d < 2; d++) {
+                await browser.sleep(1000); //Need this sleep create record with correct count and avoid skip the record from loop.
                 kaDisplayId5[d] = await createKnowledgeArticleWithPublish(nonMatchingSummary);
             }
 
@@ -709,6 +710,7 @@ describe('Global Search Category Validation', () => {
             expect(await viewKnowledgeArticlePo.getArticleVersion()).toBe(expectedVersion2, 'version missing on view KA page');
             await editKnowledgePo.setKnowledgeStatus('Publish Approval');
             await browser.sleep(4000);//Need this sleep till status gets change from Publish Approval to Published
+            await utilityCommon.refresh(); // Need this refresh status gets change from Publish Approval to Published
             expect(await viewKnowledgeArticlePo.getStatusValue()).toBe('Published', 'FailureMsg25: On view knowledge article status value is missing');
 
             // Verify with draft status
@@ -835,20 +837,20 @@ describe('Global Search Category Validation', () => {
             await loginPage.login('fritz');
             await navigationPage.gotoSearch();
             await searchPo.searchRecord(summary1);
-            expect(await searchPo.isModuleTitleDisplayed(summary1, 'Knowledge Articles (5)', KAModule)).toBeTruthy('FailureMsg58: KA module title is missing');
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId1[0], KAModule)).toBeTruthy(`FailureMsg48: ${kaDisplayId1[0]} KA id  is displayed`);
+            expect(await searchPo.isModuleTitleDisplayed(summary1, 'Knowledge Articles (5)', KAModule)).toBeTruthy('FailureMsg1: KA module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId1[0], KAModule)).toBeTruthy(`FailureMsg2: ${kaDisplayId1[0]} KA id  is displayed`);
 
             await searchPo.searchRecord(keywordStr);
-            expect(await searchPo.isModuleTitleDisplayed(keywordStr, 'Knowledge Articles (5)', KAModule)).toBeTruthy('FailureMsg58: KA module title is missing');
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId2[0], KAModule)).toBeTruthy(`FailureMsg48: ${kaDisplayId2} KA id  is displayed`);
+            expect(await searchPo.isModuleTitleDisplayed(keywordStr, 'Knowledge Articles (5)', KAModule)).toBeTruthy('FailureMsg3: KA module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId2[0], KAModule)).toBeTruthy(`FailureMsg4: ${kaDisplayId2} KA id  is displayed`);
 
             await searchPo.searchRecord('globalsearch2.json');
-            expect(await searchPo.isModuleTitleDisplayed('globalsearch2.json', 'Knowledge Articles (1)', KAModule)).toBeTruthy('FailureMsg58: KA module title is missing');
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId3, KAModule)).toBeTruthy(`FailureMsg48: ${kaDisplayId3} KA id  is displayed`);
+            expect(await searchPo.isModuleTitleDisplayed('globalsearch2.json', 'Knowledge Articles (1)', KAModule)).toBeTruthy('FailureMsg5: KA module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId3, KAModule)).toBeTruthy(`FailureMsg6: ${kaDisplayId3} KA id  is displayed`);
 
             await searchPo.searchRecord(nonMatchingSummary);
-            expect(await searchPo.isModuleTitleDisplayed(nonMatchingSummary, 'Knowledge Articles (3)', KAModule)).toBeTruthy('FailureMsg58: KA module title is missing');
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId4, KAModule)).toBeTruthy(`FailureMsg48: ${kaDisplayId4} KA id  is displayed`);
+            expect(await searchPo.isModuleTitleDisplayed(nonMatchingSummary, 'Knowledge Articles (3)', KAModule)).toBeTruthy('FailureMsg7: KA module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId4, KAModule)).toBeTruthy(`FailureMsg8: ${kaDisplayId4} KA id  is displayed`);
         });
 
         it('[DRDMV-16114]: Verify saerch KA with other company user', async () => {
@@ -857,24 +859,24 @@ describe('Global Search Category Validation', () => {
 
             await navigationPage.gotoSearch();
             await searchPo.searchRecord(summary1);
-            expect(await searchPo.isModuleTitleDisplayed(summary1, 'Knowledge Articles (0)', KAModule)).toBeTruthy('FailureMsg58: KA module title is missing');
-            expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(KAModule)).toBeTruthy(`FailureMsg59: No result found validation is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId1[0], KAModule)).toBeFalsy(`FailureMsg48: ${kaDisplayId1[0]} KA id  is displayed`);
+            expect(await searchPo.isModuleTitleDisplayed(summary1, 'Knowledge Articles (0)', KAModule)).toBeTruthy('FailureMsg1: KA module title is missing');
+            expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(KAModule)).toBeTruthy(`FailureMsg2: No result found validation is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId1[0], KAModule)).toBeFalsy(`FailureMsg3: ${kaDisplayId1[0]} KA id  is displayed`);
 
             await searchPo.searchRecord(keywordStr);
-            expect(await searchPo.isModuleTitleDisplayed(keywordStr, 'Knowledge Articles (0)', KAModule)).toBeTruthy('FailureMsg58: KA module title is missing');
-            expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(KAModule)).toBeTruthy(`FailureMsg59: No result found validation is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId2[0], KAModule)).toBeFalsy(`FailureMsg48: ${kaDisplayId2} KA id  is displayed`);
+            expect(await searchPo.isModuleTitleDisplayed(keywordStr, 'Knowledge Articles (0)', KAModule)).toBeTruthy('FailureMsg4: KA module title is missing');
+            expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(KAModule)).toBeTruthy(`FailureMsg5: No result found validation is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId2[0], KAModule)).toBeFalsy(`FailureMsg6: ${kaDisplayId2} KA id  is displayed`);
 
             await searchPo.searchRecord('globalsearch2.json');
-            expect(await searchPo.isModuleTitleDisplayed('globalsearch2.json', 'Knowledge Articles (0)', KAModule)).toBeTruthy('FailureMsg58: KA module title is missing');
-            expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(KAModule)).toBeTruthy(`FailureMsg59: No result found validation is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId3, KAModule)).toBeFalsy(`FailureMsg48: ${kaDisplayId3} KA id  is displayed`);
+            expect(await searchPo.isModuleTitleDisplayed('globalsearch2.json', 'Knowledge Articles (0)', KAModule)).toBeTruthy('FailureMsg7: KA module title is missing');
+            expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(KAModule)).toBeTruthy(`FailureMsg8: No result found validation is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId3, KAModule)).toBeFalsy(`FailureMsg9: ${kaDisplayId3} KA id  is displayed`);
 
             await searchPo.searchRecord(nonMatchingSummary);
-            expect(await searchPo.isModuleTitleDisplayed(nonMatchingSummary, 'Knowledge Articles (0)', KAModule)).toBeTruthy('FailureMsg58: KA module title is missing');
-            expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(KAModule)).toBeTruthy(`FailureMsg59: No result found validation missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId4, KAModule)).toBeFalsy(`FailureMsg48: ${kaDisplayId4} KA id  is displayed`);
+            expect(await searchPo.isModuleTitleDisplayed(nonMatchingSummary, 'Knowledge Articles (0)', KAModule)).toBeTruthy('FailureMsg9: KA module title is missing');
+            expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(KAModule)).toBeTruthy(`FailureMsg10: No result found validation missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId4, KAModule)).toBeFalsy(`FailureMsg11: ${kaDisplayId4} KA id  is displayed`);
         });
 
         afterAll(async () => {

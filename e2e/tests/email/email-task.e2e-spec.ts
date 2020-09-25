@@ -169,7 +169,7 @@ describe('Email Task', () => {
             await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary);
             await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary);
             await manageTaskBladePo.clickTaskLink(manualTaskSummary);
-            await browser.sleep(2000);
+            await browser.sleep(2000);// To wait until view task page gets load corrrectly.
             await expect(await emailPo.isEmailIconLinkPresent()).toBeTruthy();
             ManualtaskID = await viewTaskPo.getTaskID();
             await viewTaskPo.clickEmailLink();
@@ -277,7 +277,7 @@ describe('Email Task', () => {
             await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary);
             await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary);
             await manageTaskBladePo.clickTaskLink(manualTaskSummary);
-            await browser.sleep(2000);
+            await browser.sleep(2000); // To wait until view task page gets load corrrectly.
             await viewTaskPo.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
             await changeAssignmentBladePo.selectBusinessUnit('Facilities Support');
@@ -366,15 +366,15 @@ describe('Email Task', () => {
         await utilityGrid.searchAndOpenHyperlink(displayId);
         await activityTabPo.addActivityNote('This is case notes templates');
         await activityTabPo.clickOnPostButton();
-        await expect(activityTabPo.getActivityNotesText('Reply')).toBeFalsy();
-        await expect(activityTabPo.getActivityNotesText('Reply all')).toBeFalsy();
+        await expect(activityTabPo.getActivityReplyNotesText('Reply')).toBeFalsy();
+        await expect(activityTabPo.getActivityReplyAllNotesText('Reply all')).toBeFalsy();
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary);
         await manageTaskBladePo.clickTaskLink(manualTaskSummary);
         await activityTabPo.addActivityNote('This is case notes templates');
         await activityTabPo.clickOnPostButton();
-        await expect(activityTabPo.getActivityNotesText('Reply')).toBeFalsy();
-        await expect(activityTabPo.getActivityNotesText('Reply all')).toBeFalsy();
+        await expect(activityTabPo.getActivityReplyNotesText('Reply')).toBeFalsy();
+        await expect(activityTabPo.getActivityReplyAllNotesText('Reply all')).toBeFalsy();
     });
 
     //Failed due to application issue...defect logged DRDMV-21883
@@ -428,7 +428,7 @@ describe('Email Task', () => {
             await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary);
             await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary);
             await manageTaskBladePo.clickTaskLink(manualTaskSummary);
-            await browser.sleep(2000);
+            await browser.sleep(2000); // To wait until view task page gets load corrrectly.
             ManualtaskID = await viewTaskPo.getTaskID();
             await viewTaskPo.clickEmailLink();
             await composeMailPo.clickOnSelectEmailTemplateLink();
@@ -617,7 +617,6 @@ describe('Email Task', () => {
             await emailPo.clickOnSendButton();
         });
         it('[DRDMV-19555]: In Case of Reply/Reply All if we select new Email template then previous contents should not be erased.', async () => {
-            await utilityCommon.refresh();
             expect(await activityTabPo.getEmailTitle()).toContain('Fritz Schulz sent an email');
             expect(await activityTabPo.getRecipientInTo()).toContain('To: Qiang Du');
             await activityTabPo.clickOnReply();
@@ -646,8 +645,7 @@ describe('Email Task', () => {
             await emailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateDataForTest1.TemplateName);
             await emailTemplateBladePo.clickOnApplyButton();
             await emailPo.clickOnSendButton();
-            await utilityCommon.refresh();
-            await browser.sleep(2000);
+            await browser.sleep(2000); // After sent email wait until email log gets displayed on actvity.
             await activityTabPo.clickOnReply();
             expect(await emailPo.getToEmailPerson()).toContain('Fritz Schulz');
             expect(await emailPo.getEmailBody()).toContain('Hi Team ,\n\nI am taking leave today.\n\nThanks.');
@@ -756,7 +754,7 @@ describe('Email Task', () => {
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(ManualtaskID);
             await viewTaskPo.clickOnRequesterEmail();
-            await browser.sleep(2000);
+            await browser.sleep(2000); // Wait until Email Pop up gets display.
             expect(await emailPo.isSelectEmailTemplateButtonPresent()).toBeFalsy("Email template button visible to task assignee having no case access");
             await emailPo.clickOnDiscardButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");

@@ -158,6 +158,7 @@ describe('PIN Validation Create Case', () => {
             await createCasePo.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();            
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Requester is not validated for this case.')).toBeTruthy();
+            await activityTabPo.clickOnRefreshButton();      
             expect(await activityTabPo.isTextPresentInActivityLog('did not validate the PIN of the requester')).toBeTruthy();
             await viewCasePo.clickEditCaseButton();
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Requester is not validated for this case.')).toBeTruthy();
@@ -192,6 +193,7 @@ describe('PIN Validation Create Case', () => {
             await createCasePo.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();          
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Requester is not validated for this case.')).toBeTruthy();
+            await activityTabPo.clickOnRefreshButton();      
             expect(await activityTabPo.isTextPresentInActivityLog('did not validate the PIN of the requester')).toBeTruthy();
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('gwixillian');
@@ -271,6 +273,7 @@ describe('PIN Validation Create Case', () => {
             await createCasePo.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Requester is not validated for this case.')).toBeFalsy();
+            await activityTabPo.clickOnRefreshButton();       
             expect(await activityTabPo.isTextPresentInActivityLog('did not validate the PIN of the requester')).toBeFalsy();
             await viewCasePo.clickEditCaseButton();
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Requester is not validated for this case.')).toBeFalsy();
@@ -283,6 +286,7 @@ describe('PIN Validation Create Case', () => {
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Please validate the requester.')).toBeFalsy();
             await createCasePo.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
+            await activityTabPo.clickOnRefreshButton();      
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Requester is not validated for this case.')).toBeFalsy();
             expect(await activityTabPo.isTextPresentInActivityLog('did not validate the PIN of the requester')).toBeFalsy();
             await viewCasePo.clickEditCaseButton();
@@ -305,6 +309,7 @@ describe('PIN Validation Create Case', () => {
             await createCasePo.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();          
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Requester is not validated for this case.')).toBeTruthy();
+            await activityTabPo.clickOnRefreshButton();       
             expect(await activityTabPo.isTextPresentInActivityLog('did not validate the PIN of the requester')).toBeTruthy();
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('gwixillian');
@@ -387,6 +392,7 @@ describe('PIN Validation Create Case', () => {
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Please validate the requester.')).toBeFalsy();
             await createCasePo.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
+            await activityTabPo.clickOnRefreshButton();      
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Requester is not validated for this case.')).toBeFalsy();
             expect(await activityTabPo.isTextPresentInActivityLog('did not validate the PIN of the requester')).toBeFalsy();
             await viewCasePo.clickEditCaseButton();
@@ -417,6 +423,7 @@ describe('PIN Validation Create Case', () => {
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Please validate the requester.')).toBeTruthy();
             await createCasePo.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();            
+            await activityTabPo.clickOnRefreshButton();      
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Requester is not validated for this case.')).toBeTruthy();
             expect(await activityTabPo.isTextPresentInActivityLog('did not validate the PIN of the requester')).toBeTruthy();
             await viewCasePo.clickEditCaseButton();
