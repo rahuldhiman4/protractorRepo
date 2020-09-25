@@ -50,6 +50,8 @@ import editTaskTemplatePage from '../../pageobject/settings/task-management/edit
 import viewTaskTemplatePage from '../../pageobject/settings/task-management/view-tasktemplate.po';
 import documentTemplateConsolePo from '../../pageobject/settings/document-management/document-template-console.po';
 import editDocumentTemplatePage from '../../pageobject/settings/document-management/edit-document-template.po';
+import { flowsetMandatoryFields } from '../../data/ui/flowset/flowset.ui';
+import { cloneDeep } from 'lodash';
 
 describe('Case Manager Read-only Config', () => {
     let caseModule = 'Case';
@@ -272,16 +274,15 @@ describe('Case Manager Read-only Config', () => {
         //API call to create the flowset
         await apiHelper.apiLogin('qkatawazi');
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let flowsetData = require('../../data/ui/case/flowset.ui.json');
-        let flowsetName: string = await flowsetData['flowsetMandatoryFields'].flowsetName + randomStr;
-        flowsetData['flowsetMandatoryFields'].flowsetName = flowsetName;
-        await apiHelper.createNewFlowset(flowsetData['flowsetMandatoryFields']);
+        let flowsetMandatoryFieldsData = cloneDeep(flowsetMandatoryFields);
+        flowsetMandatoryFieldsData.flowsetName = flowsetMandatoryFieldsData.flowsetName + randomStr;
+        await apiHelper.createNewFlowset(flowsetMandatoryFieldsData);
 
         await navigationPage.gotoCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', 'Flowsets - Console - Business Workflows');
         expect(await flowsetConsole.isAddFlowsetButtonDisplayed()).toBeFalsy("Add button is enabled");
-        await utilGrid.searchAndOpenHyperlink(flowsetName);
+        await utilGrid.searchAndOpenHyperlink(flowsetMandatoryFieldsData.flowsetName);
         expect(await flowsetEditPage.isAddAssociationBtnDisabled()).toBeTruthy("Add Associate Category button is enabled");
         expect(await flowsetEditPage.isFlowsetNameDisabled()).toBeTruthy("Flowset name  is enabled");
         expect(await flowsetEditPage.isStatusFieldDisabled()).toBeTruthy("Add Associate Category button is enabled");
