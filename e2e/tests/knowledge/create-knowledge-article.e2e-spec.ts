@@ -496,7 +496,7 @@ describe('Knowledge Article', () => {
         await utilityGrid.clearFilter();
         await utilityGrid.searchRecord(knowledgeTitle);
         expect(await knowledgeArticlesConsolePo.isValueDisplayedInGrid('Knowledge Set')).toContain('HR', 'HR not display on Knowledge Console');
-    },500 * 1000);
+    });
 
     it('[DRDMV-1783]: [Knowledge Article] Access to the Create Knowledge view (Negative)', async () => {
         try {

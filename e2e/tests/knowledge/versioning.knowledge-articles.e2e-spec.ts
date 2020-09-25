@@ -921,7 +921,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
     });
 
     //skhobrag
-    fdescribe('[DRDMV-20752]: Verify the behavior when the user who does not have access to view current article version and he tries to create or update existing version', () => {
+    describe('[DRDMV-20752]: Verify the behavior when the user who does not have access to view current article version and he tries to create or update existing version', () => {
         let knowledgeTitleStr = 'Versioning for article' + "_" + randomStr;
         let updatedArticleTitle = "updated article title" + "_" + randomStr;
         let articleData = undefined;
