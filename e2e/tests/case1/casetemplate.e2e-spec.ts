@@ -24,6 +24,8 @@ import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import { flowsetMandatoryFields, flowsetGlobalFields } from '../../data/ui/flowset/flowset.ui';
+import { cloneDeep } from 'lodash';
 
 describe('Case Template', () => {
     let userData = undefined;
@@ -1140,13 +1142,14 @@ describe('Case Template', () => {
     it('[DRDMV-11979]:[Negative Testing] - Global as well as company specific flowset will list if we select specific company while creating case template.', async () => {
         await apiHelper.apiLogin('qkatawazi');
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let flowsetData = require('../../data/ui/case/flowset.ui.json');
-        let flowsetPetramcoName: string = await flowsetData['flowsetMandatoryFields'].flowsetName + randomStr;
-        flowsetData['flowsetMandatoryFields'].flowsetName = flowsetPetramcoName;
-        await apiHelper.createNewFlowset(flowsetData['flowsetMandatoryFields']);
-        let flowsetGlobalName: string = await flowsetData['flowsetGlobalFields'].flowsetName + randomStr;
-        flowsetData['flowsetGlobalFields'].flowsetName = flowsetGlobalName;
-        await apiHelper.createNewFlowset(flowsetData['flowsetGlobalFields']);
+
+        let flowsetMandatoryFieldsData = cloneDeep(flowsetMandatoryFields);
+        flowsetMandatoryFieldsData.flowsetName = flowsetMandatoryFieldsData.flowsetName + randomStr;
+        await apiHelper.createNewFlowset(flowsetMandatoryFieldsData);
+
+        let flowsetGlobalFieldsData = cloneDeep(flowsetGlobalFields);
+        flowsetGlobalFieldsData.flowsetName = flowsetGlobalFieldsData.flowsetName + randomStr;
+        await apiHelper.createNewFlowset(flowsetGlobalFieldsData);
 
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
@@ -1157,13 +1160,13 @@ describe('Case Template', () => {
         await createCaseTemplate.setCompanyName(ALL_FIELD.company);
         await createCaseTemplate.setCaseSummary(ALL_FIELD.templateSummary);
         await createCaseTemplate.setPriorityValue(ALL_FIELD.casePriority);
-        await createCaseTemplate.setFlowsetValue(flowsetPetramcoName);
+        await createCaseTemplate.setFlowsetValue(flowsetMandatoryFieldsData.flowsetName);
         await createCaseTemplate.clickSaveCaseTemplate();
-        expect(await viewCaseTemplate.getFlowsetValue()).toBe(flowsetPetramcoName);
+        expect(await viewCaseTemplate.getFlowsetValue()).toBe(flowsetMandatoryFieldsData.flowsetName);
         await viewCaseTemplate.clickOnEditCaseTemplateButton();
-        await editCasetemplatePo.changeFlowsetValue(flowsetGlobalName);
+        await editCasetemplatePo.changeFlowsetValue(flowsetGlobalFieldsData.flowsetName);
         await editCasetemplatePo.clickSaveCaseTemplate();
-        expect(await viewCaseTemplate.getFlowsetValue()).toBe(flowsetGlobalName);
+        expect(await viewCaseTemplate.getFlowsetValue()).toBe(flowsetGlobalFieldsData.flowsetName);
     });
 
     describe('[DRDMV-15245]: Verify case assignment method is not applicable if user changes the case template', async () => {
