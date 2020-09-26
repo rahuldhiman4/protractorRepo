@@ -82,6 +82,10 @@ describe('Knowledge Articles - Versioning Tests', () => {
         await apiHelper.createKnowledgeArticleTemplate(knowledgeSetData.knowledgeSetTitle, knowledgeSet.id, knowledgeArticleTemplateData);
     });
 
+    afterEach(async () => {
+        await utilityCommon.refresh();
+    });
+
     afterAll(async () => {
         await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
@@ -200,12 +204,12 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await reviewCommentsPo.setTextInTellUsMore(articleDetails.displayId);
             await reviewCommentsPo.clickApprovedButton();
             await browser.sleep(2000); //Hard wait to load the tab properly
-            await utilityCommon.refresh(); // Refresh needed to reflect changes.
+            await utilityCommon.refresh();
             await browser.sleep(2000); //Hard wait to load the tab properly
             expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Article is updated with Published status.');
             await apiHelper.apiLogin('tadmin');
             await apiHelper.updateKnowledgeArticleViewAndHelpFulCounter(articleDetails.id, articleHelpFulCounterData);
-            await utilityCommon.refresh(); // Refresh needed to reflect changes.
+            await utilityCommon.refresh();
             console.log(await viewKnowledgeArticlePo.getKnowledgeArticleTitle());
             console.log(await viewKnowledgeArticlePo.getKnowledgeArticleDescription());
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(knowledgeTitleStr);
@@ -239,7 +243,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await editKnowledgePage.updateKnowledgeArticleDescription(updatedArticleDesc);
             await editKnowledgePage.clickOnSaveButtonOfKA();
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
-            await utilityCommon.refresh(); // Refresh needed to reflect version updates.
+            await utilityCommon.refresh();
             expect(await viewKnowledgeArticlePo.getArticleVersion()).toBe(expectedVersion);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(updatedArticleTitle);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(updatedArticleDesc);
@@ -680,7 +684,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Article is updated with Published status.');
             await apiHelper.apiLogin('tadmin');
             await apiHelper.updateKnowledgeArticleViewAndHelpFulCounter(articleDetails.id, articleHelpFulCounterData);
-            await utilityCommon.refresh(); // Refresh needed to reflect API changes.
+            await utilityCommon.refresh();
             await browser.sleep(3000); //hard wait to load tab completely
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             await editKnowledgePage.selectIsExternalOption('Yes');
@@ -787,6 +791,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
 
         afterAll(async () => {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await utilityCommon.refresh();
             await utilCommon.waitUntilSpinnerToHide();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
@@ -866,14 +871,14 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await viewKnowledgeArticlePo.clickReviewPendingLink();
             await reviewCommentsPo.setTextInTellUsMore(articleDetails.displayId);
             await reviewCommentsPo.clickApprovedButton();
-            await utilityCommon.refresh(); // Refresh needed to reflect status changes.
+            await utilityCommon.refresh();
             expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Article is updated with Published status.');
         });
 
         it('[DRDMV-20744]: Verify the article status of previous version articles when the new versioned article is moved to Published status', async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.updateKnowledgeArticleViewAndHelpFulCounter(articleDetails.id, articleHelpFulCounterData);
-            await utilityCommon.refresh(); // Refresh needed to reflect API changes.
+            await utilityCommon.refresh();
             await browser.sleep(3000); // Hard wait for browser tab to load properly
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             await editKnowledgePage.selectIsExternalOption('Yes');
@@ -893,7 +898,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await editKnowledgePage.updateKnowledgeArticleTitle(updatedArticleTitle);
             await editKnowledgePage.clickArticleMajorEditSaveButton();
             await browser.sleep(4000); // Hard wait for browser tab to load properly
-            await utilityCommon.refresh(); // Refresh needed to reflect version updates.
+            await utilityCommon.refresh();
             await browser.sleep(4000);// Hard wait for browser tab to load properly
             let updatedVersion = "Version " + "2" + " - " + actualDate;
             expect(await viewKnowledgeArticlePo.getArticleVersion()).toBe(updatedVersion);
@@ -905,7 +910,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await reviewCommentsPo.setTextInTellUsMore(articleDetails.displayId);
             await reviewCommentsPo.clickApprovedButton();
             await browser.sleep(4000); // Hard wait for browser tab to load properly
-            await utilityCommon.refresh(); // Refresh needed to reflect status changes.
+            await utilityCommon.refresh();
             await browser.sleep(4000); // Hard wait for browser tab to load properly
             expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Article is updated with Published status.');
             await viewKnowledgeArticlePo.selectArticleVersion('1');
@@ -997,13 +1002,13 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await reviewCommentsPo.setTextInTellUsMore(articleDetails.displayId);
             await reviewCommentsPo.clickApprovedButton();
             await browser.sleep(2000); // Hard wait to load tab completely
-            await utilityCommon.refresh(); // Refresh needed to reflect changes.
+            await utilityCommon.refresh();
             await browser.sleep(2000); // Hard wait to load tab completely
             expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Article is updated with Published status.');
             await apiHelper.apiLogin('tadmin');
             await apiHelper.updateKnowledgeArticleViewAndHelpFulCounter(articleDetails.id, articleHelpFulCounterData);
             await browser.sleep(2000); // Hard wait to load tab completely
-            await utilityCommon.refresh(); // Refresh needed to reflect status changes.
+            await utilityCommon.refresh();
             await browser.sleep(2000); // Hard wait to load tab completely
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             await editKnowledgePage.selectIsExternalOption('Yes');
@@ -1033,7 +1038,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await editKnowledgePage.updateKnowledgeArticleTitle(updatedArticleTitle);
             await editKnowledgePage.clickArticleMajorEditSaveButton();
             await browser.sleep(4000); // To Wait Until Edit Knowledge Changes Gets Saved KA Version Gets Change.
-            await utilityCommon.refresh(); // Refresh needed to reflect version update.
+            await utilityCommon.refresh();
             let updatedVersion = "Version " + "2" + " - " + actualDate;
             expect(await viewKnowledgeArticlePo.getArticleVersion()).toBe(updatedVersion);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(updatedArticleTitle);
@@ -1061,11 +1066,13 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await editKnowledgePage.clickArticleMajorEditSaveButton();
             expect(await utilityCommon.isPopUpMessagePresent('Draft version already created.')).toBeTruthy();
             await browser.sleep(4000); // To Wait Until Edit Knowledge Changes Gets Saved KA Version Gets Change.
-            await utilityCommon.refresh(); // Refresh needed to reflect version updates.
+            await utilityCommon.refresh();
             expect(await viewKnowledgeArticlePo.getArticleVersion()).toBe(expectedVersion);
         });
 
         afterAll(async () => {
+            await utilityCommon.refresh();
+            await utilCommon.waitUntilSpinnerToHide();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });
@@ -1148,7 +1155,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await reviewCommentsPo.setTextInTellUsMore(articleDetails.displayId);
             await reviewCommentsPo.clickApprovedButton();
             await browser.sleep(3000); //Hard ward to load tab completely
-            await utilityCommon.refresh(); // Refresh needed to reflect status changes.
+            await utilityCommon.refresh();
             await browser.sleep(3000); //Hard ward to load tab completely
             expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Article is updated with Published status.');
         });
@@ -1156,7 +1163,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
         it('[DRDMV-20718]: Verify that the newly created article with version displays on knowledge grid console', async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.updateKnowledgeArticleViewAndHelpFulCounter(articleDetails.id, articleHelpFulCounterData);
-            await utilityCommon.refresh(); // Refresh needed to reflect API changes.
+            await utilityCommon.refresh();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             await editKnowledgePage.selectIsExternalOption('Yes');
             await editKnowledgePage.enterKeyword(articleDetails.displayId);
@@ -1175,7 +1182,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await editKnowledgePage.updateKnowledgeArticleTitle(updatedArticleTitle);
             await editKnowledgePage.clickArticleMajorEditSaveButton();
             await browser.sleep(4000); // Hard wait to load the browser tab completely
-            await utilityCommon.refresh(); // Refresh needed to reflect version updates.
+            await utilityCommon.refresh();
             await browser.sleep(4000); // Hard wait to load the browser tab completely
             let updatedVersion = "Version " + "2" + " - " + actualDate;
             expect(await viewKnowledgeArticlePo.getArticleVersion()).toBe(updatedVersion);
@@ -1303,7 +1310,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await reviewCommentsPo.setTextInTellUsMore(articleDetails.displayId);
             await reviewCommentsPo.clickApprovedButton();
             await browser.sleep(2000);
-            await utilityCommon.refresh(); // Refresh needed to reflect status changes.
+            await utilityCommon.refresh();
             await browser.sleep(2000);
             expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Article is updated with Published status.');
         });
@@ -1311,7 +1318,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
         it('[DRDMV-20753]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.updateKnowledgeArticleViewAndHelpFulCounter(articleDetails.id, articleHelpFulCounterData);
-            await utilityCommon.refresh(); // Refresh needed to reflect API changes.
+            await utilityCommon.refresh();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             await editKnowledgePage.selectIsExternalOption('Yes');
             await editKnowledgePage.enterKeyword(articleDetails.displayId);
@@ -1359,7 +1366,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await navigationPage.gotoKnowledgeConsole(true);            
             await utilityGrid.sortGridColumn('Created Date', 'desc');
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
-            await utilityCommon.refresh(); // Refresh needed to reflect version update.
+            //await utilityCommon.refresh();
             await browser.sleep(2000);
 
             updatedVersion = "Version " + "2" + " - " + actualDate;
@@ -1374,7 +1381,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await knowledgeAccessPage.clickAddSupportGroupAccessButton();
             await knowledgeAccessPage.clickCloseKnowledgeAccessBlade();
             await browser.sleep(2000);
-            await utilityCommon.refresh(); // Refresh needed to reflect article updates.
+            await utilityCommon.refresh();
             await browser.sleep(2000);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(updatedArticleDesc);
             expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStr);
@@ -1411,7 +1418,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await navigationPage.gotoKnowledgeConsole(true);            
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             await browser.sleep(2000);
-            await utilityCommon.refresh(); // Refresh needed to reflect status changes.
+            await utilityCommon.refresh();
             await browser.sleep(2000);
             expect(await editKnowledgePage.getStatusValue()).toContain('Canceled', 'Article is updated with Draft status.');
             await viewKnowledgeArticlePo.selectArticleVersion('1');
@@ -1557,6 +1564,8 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await knowledgeAccessPage.clickAddSupportGroupAccessButton();
             await knowledgeAccessPage.clickCloseKnowledgeAccessBlade();
 
+            await utilityCommon.refresh();
+
             await viewKnowledgeArticlePo.clickOnEditLink();
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(minorEditOption)).toBeFalsy('Minor Edit Option is displayed for Draft Knowledge Article.');
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(majorEditOption)).toBeFalsy('Major Edit Option is displayed for Draft Knowledge Article.');
@@ -1583,13 +1592,13 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await reviewCommentsPo.setTextInTellUsMore(articleDetails.displayId);
             await reviewCommentsPo.clickApprovedButton();
             await browser.sleep(2000); //Hard ward to load tab completely
-            await utilityCommon.refresh(); // Refresh needed to reflect status changes.
+            await utilityCommon.refresh();
             await browser.sleep(2000); //Hard ward to load tab completely
             expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Article is updated with Published status.');
             await apiHelper.apiLogin('tadmin');
             await apiHelper.updateKnowledgeArticleViewAndHelpFulCounter(articleDetails.id, articleHelpFulCounterData);
             await browser.sleep(2000); //Hard ward to load tab completely
-            await utilityCommon.refresh(); // Refresh needed to reflect API changes.
+            await utilityCommon.refresh();
             await browser.sleep(2000); //Hard ward to load tab completely
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             await editKnowledgePage.selectIsExternalOption('Yes');

@@ -21,6 +21,10 @@ describe('KnowledgeArticlestyle', () => {
         await navigationPage.signOut();
     });
 
+    afterEach(async () => {
+        await utilityCommon.refresh();
+    });
+
     it('[DRDMV-5013]: [Template Styles] Availability of default styles on OOB templates', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Template Styles', 'Template Styles Configuration - Business Workflows');
