@@ -52,3 +52,17 @@ export interface IUpdateCaseAccess {
     security: string;
     username: string;
 }
+
+export interface IReadAccess {
+    category1?:string;
+    category2?:string;
+    category3?:string;
+    category4?:string;
+    company: string;
+    label?:string;
+    priority?:string;
+    businessUnit:string;
+    supportGroup:string;
+    assignedCompany:string;
+    configName:string;
+    }

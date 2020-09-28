@@ -8,7 +8,6 @@ export interface ICaseApprovalMapping {
     company?: string;
 };
 
-
 export interface ITaskApprovalMapping {
     triggerStatus: string,
     approvedStatus: string,

@@ -507,6 +507,7 @@ describe('Case Status Configuration', () => {
             await statusConfigPo.setCompanyDropdown('Pico Systems', 'task');
             await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.addCustomStatus("Staged", "Assigned", "customStatus");
+            await browser.sleep(3000);// Wait To Load the Setting Panel Buttons.
             await statusConfigPo.saveSetting();
         });
         it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
@@ -537,7 +538,7 @@ describe('Case Status Configuration', () => {
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
             await statusConfigPo.clickOnDeleteButton();
             await utilCommon.clickOnWarningOk();
-            expect(await utilCommon.isPopUpMessagePresent("Task with this status are present.")).toBeTruthy();
+            expect(await utilCommon.isPopUpMessagePresent("ERROR (10000): Tasks with this status are present")).toBeTruthy("ERROR (10000): Tasks with this status are present");
         });
 
         it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
@@ -576,6 +577,7 @@ describe('Case Status Configuration', () => {
             await statusConfigPo.setCompanyDropdown("Pico Systems", 'case');
             await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.addCustomStatus("New", "Assigned", "customStatus");
+            await browser.sleep(3000);// Wait To Load the Setting Panel Buttons.
             await statusConfigPo.saveSetting();
 
         });
@@ -596,7 +598,7 @@ describe('Case Status Configuration', () => {
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
             await statusConfigPo.clickOnDeleteButton();
             await utilCommon.clickOnWarningOk();
-            expect(await utilCommon.isPopUpMessagePresent("Case with this status are present.")).toBeTruthy();
+            expect(await utilCommon.isPopUpMessagePresent("ERROR (10000): Cases with this status are present.")).toBeTruthy();
 
         });
         it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
@@ -622,7 +624,7 @@ describe('Case Status Configuration', () => {
             caseId1 = await apiHelper.createCase(caseData);
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId1.displayId);
-            expect(await viewCasePo.getCaseStatusValue()).toBe('Assigned');
+            expect(await viewCasePo.getCaseStatusValue()).toBe('In Progress');
         });
         it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
             await navigationPage.gotoSettingsPage();
@@ -630,6 +632,7 @@ describe('Case Status Configuration', () => {
             await statusConfigPo.setCompanyDropdown('Pico Systems', 'knowledge');
             await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.addCustomStatus("In Progress", "Draft", "Custom");
+            await browser.sleep(3000);// Wait To Load the Setting Panel Buttons.
             await statusConfigPo.saveSetting();
         });
 
@@ -652,7 +655,7 @@ describe('Case Status Configuration', () => {
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
             await statusConfigPo.clickOnDeleteButton();
             await utilCommon.clickOnWarningOk();
-            expect(await utilCommon.isPopUpMessagePresent("Knowledge articles with this status are present.")).toBeTruthy();
+            expect(await utilCommon.isPopUpMessagePresent("ERROR (10000): Knowledge articles with this status are present.")).toBeTruthy();
         });
         it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
             await navigationPage.gotoKnowledgeConsole();
@@ -676,7 +679,6 @@ describe('Case Status Configuration', () => {
             knowldgeId = await apiHelper.createKnowledgeArticle(articleData2);
             await navigationPage.gotoKnowledgeConsole();
             await utilityGrid.searchAndOpenHyperlink(knowldgeId.displayId);
-            await editKnowledgePo.setKnowledgeStatus('Draft');
         });
 
     });
