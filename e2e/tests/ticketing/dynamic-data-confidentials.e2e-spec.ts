@@ -7,7 +7,7 @@ import editCasePo from '../../pageobject/case/edit-case.po';
 import quickCasePo from '../../pageobject/case/quick-case.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePo from "../../pageobject/case/view-case.po";
-import caseAccessTabPo from '../../pageobject/common/case-access-tab.po';
+import accessTabPo from '../../pageobject/common/access-tab.po';
 import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
@@ -77,10 +77,10 @@ describe('Dynamic Confidentials Data', () => {
             await previewCasePo.clickGoToCaseButton();
             caseId = await viewCasePo.getCaseID();
             await viewCasePo.clickOnTab('Case Access');
-            await caseAccessTabPo.clickOnConfidentialSupportGroupAccess();
-            await caseAccessTabPo.selectConfidentialSupportGroup('Facilities');
-            await caseAccessTabPo.selectConfidentialsSupportGroupWriteAccess();
-            await caseAccessTabPo.clickOnConfidentialSupportGroupAdd();
+            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access',"Confidential Group");
+            await accessTabPo.selectAccessEntityDropDown('Facilities','Select Support Group',true);
+            await accessTabPo.clickAssignWriteAccessCheckbox('Support Group');
+            await accessTabPo.clickAccessEntitiyAddButton('Support Group');
         });
         it('[DRDMV-17962]: Validation of Confidential fields in Dynamic Field Group on Case', async () => {
             await navigationPage.gotoCaseConsole();
@@ -200,10 +200,10 @@ describe('Dynamic Confidentials Data', () => {
             await previewCasePo.clickGoToCaseButton();
             caseId = await viewCasePo.getCaseID();
             await viewCasePo.clickOnTab('Case Access');
-            await caseAccessTabPo.clickOnConfidentialSupportGroupAccess();
-            await caseAccessTabPo.selectConfidentialSupportGroup('Facilities');
-            await caseAccessTabPo.selectConfidentialsSupportGroupWriteAccess();
-            await caseAccessTabPo.clickOnConfidentialSupportGroupAdd();
+            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access',"Confidential Group");
+            await accessTabPo.selectAccessEntityDropDown('Facilities','Select Support Group',true);
+            await accessTabPo.clickAssignWriteAccessCheckbox('Support Group');
+            await accessTabPo.clickAccessEntitiyAddButton('Support Group');
         });
         it('[DRDMV-15065]: Validation of Confidential fields in Dynamic Field Group on Case', async () => {
             await navigationPage.gotoCaseConsole();
@@ -353,12 +353,12 @@ describe('Dynamic Confidentials Data', () => {
             await quickCasePo.selectCaseTemplate(caseTemplateData.templateName);
             await quickCasePo.saveCase();
             await previewCasePo.clickGoToCaseButton();
-            caseId = await viewCasePo.getCaseID()
+            caseId = await viewCasePo.getCaseID();
             await viewCasePo.clickOnTab('Case Access');
-            await caseAccessTabPo.clickOnConfidentialSupportGroupAccess();
-            await caseAccessTabPo.selectConfidentialSupportGroup('Facilities');
-            await caseAccessTabPo.selectConfidentialsSupportGroupWriteAccess();
-            await caseAccessTabPo.clickOnConfidentialSupportGroupAdd();
+            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access',"Confidential Group");
+            await accessTabPo.selectAccessEntityDropDown('Facilities','Select Support Group',true);
+            await accessTabPo.clickAssignWriteAccessCheckbox('Support Group');
+            await accessTabPo.clickAccessEntitiyAddButton('Support Group');
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             await viewCasePo.clickEditCaseButton();

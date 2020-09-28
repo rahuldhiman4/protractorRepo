@@ -20,7 +20,7 @@ import utilCommon from '../../utils/util.common';
 import utilityGrid from '../../utils/utility.grid';
 import editCasePo from '../../pageobject/case/edit-case.po';
 import composeMailPo from '../../pageobject/email/compose-mail.po';
-import caseAccessTabPo from '../../pageobject/common/case-access-tab.po';
+import accessTabPo from '../../pageobject/common/access-tab.po';
 import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
 
 describe('Case Activity Multi Logs', () => {
@@ -764,12 +764,10 @@ describe('Case Activity Multi Logs', () => {
 
             autoTaskTemplateData.templateSummary = automatedTaskTemplateSummary;
             automatedTaskTemplateDetails = await apiHelper.createAutomatedTaskTemplate(autoTaskTemplateData);
-
             // Create Manual Task
             tasktemplateData.templateName = 'ManualTaskTemplateNameDRDMV16729' + randomStr;
             tasktemplateData.templateSummary = manualTaskTemplateSummary;
             manualTaskTemplateDetails = await apiHelper.createManualTaskTemplate(tasktemplateData);
-
             // Create External Task
             tasktemplateData.templateName = 'ExternalTaskTemplateNameDRDMV16729' + randomStr;
             tasktemplateData.templateSummary = externalTaskTemplateSummary;
@@ -1064,9 +1062,9 @@ describe('Case Activity Multi Logs', () => {
 
         it('[DRDMV-16729]:Verify social activity with confendial support group', async () => {
             await viewCasePo.clickOnTab('Case Access');
-            await caseAccessTabPo.clickOnConfidentialSupportGroupAccess();
-            await caseAccessTabPo.selectConfidentialSupportGroup(confidentialSupportGroup);
-            await caseAccessTabPo.clickOnConfidentialSupportGroupAdd();
+            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Confidential Group');
+            await accessTabPo.selectAccessEntityDropDown(confidentialSupportGroup, 'Select Support Group', true);
+            await accessTabPo.clickAccessEntitiyAddButton('Support Group');
 
             expect(await activityTabPage.isLogIconDisplayedInActivity('lock_shield', 1)).toBeTruthy('FailureMsg19: log icon is missing');
             expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg20: lock icon missing in activity logs');
@@ -1074,7 +1072,7 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isTextPresentInActivityLog(confidentialSupportGroup)).toBeTruthy(`FailureMsg21: ${confidentialSupportGroup} Text is missing in activity log`);
 
             // Remove Confedential Group
-            await caseAccessTabPo.removeConfidentialGroup(confidentialSupportGroup);
+            await accessTabPo.clickRemoveAccess(confidentialSupportGroup);
             await activityTabPage.clickOnRefreshButton();
             expect(await activityTabPage.isLogIconDisplayedInActivity('lock_shield', 1)).toBeTruthy('FailureMsg19: log icon is missing');
             expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg20: lock icon missing in activity logs');
