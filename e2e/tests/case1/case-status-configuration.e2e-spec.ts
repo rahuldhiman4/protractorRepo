@@ -17,9 +17,11 @@ import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import createAdhocTaskPo from '../../pageobject/task/create-adhoc-task.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import editKnowledgePo from '../../pageobject/knowledge/edit-knowledge.po';
+import { flowsetPhytoFields } from '../../data/ui/flowset/flowset.ui';
+import { cloneDeep } from 'lodash';
+
 describe('Case Status Configuration', () => {
-    let flowsetData;
-    let flowsetName: string;
+    let flowsetPhytoFieldsData = undefined;
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
@@ -54,12 +56,12 @@ describe('Case Status Configuration', () => {
     //asahitya
     describe('[DRDMV-13617]: Verify User not able to delete mandatory status for case', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        
         beforeAll(async () => {
-            flowsetData = require('../../data/ui/case/flowset.ui.json');
-            flowsetName = await flowsetData['flowsetPhytoFields'].flowsetName + randomStr;
-            flowsetData['flowsetPhytoFields'].flowsetName = flowsetName;
+            flowsetPhytoFieldsData = cloneDeep(flowsetPhytoFields);
+            flowsetPhytoFieldsData.flowsetName = flowsetPhytoFieldsData.flowsetName + randomStr;
             await apiHelper.apiLoginWithCredential('tadmin@petramco.com', 'Password_1234');
-            await apiHelper.createNewFlowset(flowsetData['flowsetPhytoFields']);
+            await apiHelper.createNewFlowset(flowsetPhytoFieldsData);
         });
 
         it('[DRDMV-13617]: Verify User not able to delete mandatory status for case', async () => {
@@ -100,7 +102,7 @@ describe('Case Status Configuration', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
             await statusConfigPo.setCompanyDropdown('Phyto', 'case');
-            await statusConfigPo.selectFlowset(flowsetName);
+            await statusConfigPo.selectFlowset(flowsetPhytoFieldsData.flowsetName);
             await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.clickEditStatus("New");
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
@@ -142,8 +144,8 @@ describe('Case Status Configuration', () => {
         expect(await statusConfigPo.getDefaultCompanyValue()).toBe('- Global -');
         expect(await statusConfigPo.getStatusLifeCycle()).toBe('Status Lifecycle for - Global -');
         await statusConfigPo.setCompanyDropdown("Phyto", 'case');
-        await statusConfigPo.selectFlowset(flowsetName);
-        expect(await statusConfigPo.getStatusLifeCycle()).toBe('Status Lifecycle for Phyto - ' + flowsetName);
+        await statusConfigPo.selectFlowset(flowsetPhytoFieldsData.flowsetName);
+        expect(await statusConfigPo.getStatusLifeCycle()).toBe('Status Lifecycle for Phyto - ' + flowsetPhytoFieldsData.flowsetName);
         expect(await statusConfigPo.isEditLifeCycleBtnDisabled()).toBeFalsy('Button is disabled');
         await statusConfigPo.clickEditLifeCycleLink();
         await statusConfigPo.clickEditStatus("Canceled");
@@ -380,7 +382,7 @@ describe('Case Status Configuration', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
             await statusConfigPo.setCompanyDropdown("Phyto", 'case');
-            await statusConfigPo.selectFlowset(flowsetName);
+            await statusConfigPo.selectFlowset(flowsetPhytoFieldsData.flowsetName);
             await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.addCustomStatus("New", "Assigned", "customStatus");
             await statusConfigPo.clickOnBackButton();
