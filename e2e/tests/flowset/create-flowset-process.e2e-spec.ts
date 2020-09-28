@@ -24,7 +24,7 @@ import utilGrid from '../../utils/util.grid';
 import activityTabPage from '../../pageobject/social/activity-tab.po';
 import statusBladePo from '../../pageobject/common/update.status.blade.po';
 import composeEmailPo from '../../pageobject/email/compose-mail.po';
-import { flowsetMandatoryFields } from '../../data/ui/flowset/flowset.ui';
+import { flowsetMandatoryFields,flowsetGlobalFields } from '../../data/ui/flowset/flowset.ui';
 import { cloneDeep } from 'lodash';
 
 describe('Create Process in Flowset', () => {
@@ -263,11 +263,10 @@ describe('Create Process in Flowset', () => {
             let registeredProcessResponse = await apiHelper.createProcessLibConfig(registerProcessData);
 
             //Create new flowset
-            let flowsetData = require('../../data/ui/case/flowset.ui.json');
             let flowsetName: string = `DRDMV-11987 ${randomStr}`;
-            flowsetData['flowsetGlobalFields'].flowsetName = flowsetName;
-            let flowsetResponse = await apiHelper.createNewFlowset(flowsetData['flowsetGlobalFields']);
-
+            let flowsetMandatoryFieldsData = cloneDeep(flowsetGlobalFields);
+            flowsetMandatoryFieldsData.flowsetName = flowsetName;
+            let flowsetResponse = await apiHelper.createNewFlowset(flowsetMandatoryFieldsData);
             //Map Process to Flowset
             let flowsetProcessMappingData = {
                 function: 'Initialization',

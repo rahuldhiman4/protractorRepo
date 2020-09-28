@@ -22,15 +22,3 @@ export interface IDocumentTemplate {
     company?: string;
 }
 
-export interface IReadAccess {
-templateName:string;
-templateStatus:string;
-templateSummary:string;
-caseStatus:string;
-casePriority:string;
-categoryTier1?:string;
-categoryTier2?:string;
-categoryTier3?:string;
-categoryTier4?:string;
-company: string;
-}
