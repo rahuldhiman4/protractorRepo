@@ -291,7 +291,7 @@ class ComposeMail {
         }
     }
 
-    async setToOrCCInputTetxbox(value: String, emailIdForToOrCc: string): Promise<void> {
+    async setToOrCCInputTextbox(value: String, emailIdForToOrCc: string): Promise<void> {
         if (value == 'To') {
             await $$(this.selectors.toCcInput).get(0).clear();
             await $$(this.selectors.toCcInput).get(0).sendKeys(emailIdForToOrCc);

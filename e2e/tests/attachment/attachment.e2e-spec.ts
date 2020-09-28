@@ -100,9 +100,9 @@ describe("Attachment", () => {
             await composeMail.addAttachment(['../../data/ui/attachment/demo.txt']);
             expect(await composeMail.getFileDisplayedFileName()).toContain('demo.txt');
 
-            await composeMail.setToOrCCInputTetxbox('To', 'franz@bwflabs.localdomain');
+            await composeMail.setToOrCCInputTextbox('To', 'franz@bwflabs.localdomain');
             expect(await composeMail.getToEmailPerson()).toContain('Franz Schwarz');
-            await composeMail.setToOrCCInputTetxbox('Cc', 'franz@bwflabs.localdomain');
+            await composeMail.setToOrCCInputTextbox('Cc', 'franz@bwflabs.localdomain');
             expect(await composeMail.getToEmailPerson()).toContain('Franz Schwarz');
             await composeMail.setEmailBody('This is email body');
             await composeMail.clickOnSendButton();
@@ -464,7 +464,7 @@ describe("Attachment", () => {
             await utilityGrid.clearFilter();
             await caseConsole.searchAndOpenCase(newCase.displayId);
             await viewCasePo.clickOnEmailLink();
-            await composeMail.setToOrCCInputTetxbox('To', 'franz@bwflabs.localdomain');
+            await composeMail.setToOrCCInputTextbox('To', 'franz@bwflabs.localdomain');
             await composeMail.setEmailBody("With mutiple attachmnents");
             let filesToUpload: string[] = [];
             for (let i = 0; i <= 20; i++) {

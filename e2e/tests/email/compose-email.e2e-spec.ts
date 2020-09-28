@@ -398,7 +398,7 @@ describe("Compose Email", () => {
             await composeMail.clickOnSelectEmailTemplateLink();
             await selectEmailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateDataForTest.TemplateName);
             await selectEmailTemplateBladePo.clickOnApplyButton();
-            await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+            await composeMail.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
             expect(await composeMail.getEmailBody()).toContain('Hi Team ,\n\nI am taking leave today.\n\nThanks.');
             expect(await composeMail.getSubject()).toContain(caseId);
             expect(await composeMail.getSubjectInputValue()).toContain(emailTemplateDataForTest.EmailMessageSubject);
@@ -450,7 +450,7 @@ describe("Compose Email", () => {
             await utilCommon.waitUntilSpinnerToHide();
             await selectEmailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateDataForTest.TemplateName);
             await selectEmailTemplateBladePo.clickOnApplyButton();
-            await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+            await composeMail.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
             expect(await composeMail.getEmailBody()).toContain('Hi Team ,\n\nI am taking leave today.\n\nThanks.');
             expect(await composeMail.getSubject()).toContain(caseId); ////part of DRDMV-10393
             expect(await composeMail.getSubjectInputValue()).toContain(emailTemplateDataForTest.EmailMessageSubject);
@@ -495,7 +495,7 @@ describe("Compose Email", () => {
             await composeMail.clickOnSelectEmailTemplateLink();
             await selectEmailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateDataForTest.TemplateName);
             await selectEmailTemplateBladePo.clickOnApplyButton();
-            await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+            await composeMail.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
             expect(await composeMail.getEmailBody()).toContain('Hi Team ,\n\nI am taking leave today.\n\nThanks.');
             expect(await composeMail.getSubject()).toContain(caseId);
             expect(await composeMail.getSubjectInputValue()).toContain(emailTemplateDataForTest.EmailMessageSubject);
@@ -550,7 +550,7 @@ describe("Compose Email", () => {
             await utilCommon.waitUntilSpinnerToHide();
             await selectEmailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateDataForTest1.TemplateName);
             await selectEmailTemplateBladePo.clickOnApplyButton();
-            await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+            await composeMail.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
             expect(await composeMail.getEmailBody()).toContain('I am taking leave today.', 'Email Body 1 does not match');
             expect(await composeMail.getSubject()).toContain(caseId);
             expect(await composeMail.getSubjectInputValue()).toContain(emailTemplateDataForTest1.EmailMessageSubject, 'Subject value 1 does not match');
@@ -597,9 +597,9 @@ describe("Compose Email", () => {
             await composeMail.isSelectEmailTemplateButtonPresent();
             expect(await composeMail.isUserPopulatedInToOrCc('To', 'xyxd')).toBeFalsy();
             expect(await composeMail.isUserPopulatedInToOrCc('Cc', 'xyxd')).toBeFalsy();
-            await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+            await composeMail.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
             expect(await composeMail.getToEmailPerson()).toContain('Fritz Schulz');
-            await composeMail.setToOrCCInputTetxbox('Cc', 'fritz.schulz@petramco.com');
+            await composeMail.setToOrCCInputTextbox('Cc', 'fritz.schulz@petramco.com');
             expect(await composeMail.getCcEmailPerson()).toContain('Fritz Schulz');
             await composeMail.clickOnDiscardButton();
             expect(await composeMail.getTextOfDiscardButtonWarningMessage()).toBe('Email not sent. Do you want to continue?'), 'Warning Email message is missing';
@@ -730,7 +730,7 @@ describe("Compose Email", () => {
             await caseConsole.searchAndOpenCase(newCase.displayId);
             expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
             await viewCasePo.clickOnEmailLink();
-            await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+            await composeMail.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
             await composeMail.clickOnSelectEmailTemplateLink();
             await selectEmailTemplateBladePo.searchAndSelectEmailTemplate("templateName" + randomString);
             await selectEmailTemplateBladePo.clickOnApplyButton();
@@ -830,15 +830,18 @@ describe("Compose Email", () => {
             await composeMail.clickOnCenterAlignIcon();
             await composeMail.setDataInTable(1, 6, 'FirstCenterAlign', 'tableSummary');
             //set color
+            await browser.sleep(1000); //wait to set font size in proper table cell
             await composeMail.clickInTableCell(1, 7, 'tableSummary');
             await composeMail.selectColor('Bright Blue');
             await composeMail.setDataInTable(1, 7, 'SettingColor', 'tableSummary');
             //set font
+            await browser.sleep(1000); //wait to set font size in proper table cell
             await composeMail.clickInTableCell(1, 8, 'tableSummary');
             await composeMail.clickOnFontSizeIcon();
             await composeMail.selectFontTypeOrSize('18');
             await composeMail.setDataInTable(1, 8, 'SettingFontSize', 'tableSummary');
             //set fontType
+            await browser.sleep(1000); //wait to set font size in proper table cell
             await composeMail.clickInTableCell(1, 9, 'tableSummary');
             await composeMail.clickOnFontTypeIcon();
             await composeMail.selectFontTypeOrSize('Courier New');
@@ -847,7 +850,7 @@ describe("Compose Email", () => {
             await composeMail.setBulletPointAndNumer('PlusOne');
             await composeMail.setBulletPointAndNumer('PlusTwo');
             await composeMail.setBulletPointAndNumer('PlusThree');
-            await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+            await composeMail.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
             await composeMail.clickOnSendButton();
             await utilityCommon.closePopUpMessage();
         });
@@ -950,7 +953,7 @@ describe("Compose Email", () => {
             await composeMail.clickOnSelectEmailTemplateLink();
             await selectEmailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateName);
             await selectEmailTemplateBladePo.clickOnApplyButton();
-            await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+            await composeMail.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
             expect(await composeMail.getEmailBody()).toContain('Hi Team ,Company Financial Calender will be from March. Thanks.');
             expect(await composeMail.getSubject()).toContain(newCase.displayId);
             expect(await composeMail.getSubjectInputValue()).toContain('Declared Company Holidays');
@@ -1034,7 +1037,7 @@ describe("Compose Email", () => {
             expect(await composeMail.isComposeEmailTitlePresent('Compose Email')).toBeTruthy('Compose email title missing');
             expect(await composeMail.getSubject()).toBe(caseId + ":");
             expect(await composeMail.getToEmailPerson()).toContain('Fritz Schulz');
-            await composeMail.setToOrCCInputTetxbox('Cc', 'qtao@petramco.com');
+            await composeMail.setToOrCCInputTextbox('Cc', 'qtao@petramco.com');
             expect(await composeMail.getCcEmailPerson()).toContain('Qianru Tao');
             await composeMail.setEmailBody('Text added for DRDMV-8388');
             expect(await composeMail.isAttachLinkPresent()).toBeTruthy('Attach Link is  missing');
