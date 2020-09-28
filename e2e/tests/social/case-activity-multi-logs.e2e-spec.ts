@@ -1098,10 +1098,5 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isTextPresentInActivityLog(`${caseId}:${manualTaskId}:${manualTaskTemplateSummary}`)).toBeTruthy(`FailureMsg23: ${manualTaskId}:${manualTaskTemplateSummary} Text is missing in activity log`);
             expect(await activityTabPage.isTextPresentInActivityLog('------ While replying, please do not add information below this line -----')).toBeTruthy('FailureMsg24: ------ While replying, please do not add information below this line ----- Text is missing in activity log');
         });
-
-        afterAll(async () => {
-            await apiHelper.apiLogin('tadmin');
-            // delete self approvals
-        });
     });
 });

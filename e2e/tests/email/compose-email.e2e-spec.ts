@@ -830,18 +830,18 @@ describe("Compose Email", () => {
             await composeMail.clickOnCenterAlignIcon();
             await composeMail.setDataInTable(1, 6, 'FirstCenterAlign', 'tableSummary');
             //set color
-            await browser.sleep(1000); //wait to set font size in proper table cell
+            await browser.sleep(1000); //wait to set data in proper table cell
             await composeMail.clickInTableCell(1, 7, 'tableSummary');
             await composeMail.selectColor('Bright Blue');
             await composeMail.setDataInTable(1, 7, 'SettingColor', 'tableSummary');
             //set font
-            await browser.sleep(1000); //wait to set font size in proper table cell
+            await browser.sleep(1000); //wait to set data in proper table cell
             await composeMail.clickInTableCell(1, 8, 'tableSummary');
             await composeMail.clickOnFontSizeIcon();
             await composeMail.selectFontTypeOrSize('18');
             await composeMail.setDataInTable(1, 8, 'SettingFontSize', 'tableSummary');
             //set fontType
-            await browser.sleep(1000); //wait to set font size in proper table cell
+            await browser.sleep(1000); //wait to set data in proper table cell
             await composeMail.clickInTableCell(1, 9, 'tableSummary');
             await composeMail.clickOnFontTypeIcon();
             await composeMail.selectFontTypeOrSize('Courier New');
