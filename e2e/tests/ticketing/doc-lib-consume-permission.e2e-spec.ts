@@ -8,7 +8,7 @@ import quickCasePo from '../../pageobject/case/quick-case.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
 import attachDocumentBladePo from '../../pageobject/common/attach-document-blade.po';
-import caseAccessTabPo from '../../pageobject/common/case-access-tab.po';
+import accessTabPo from '../../pageobject/common/access-tab.po';
 import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
 import loginPage from '../../pageobject/common/login.po';
 import navigationPage from "../../pageobject/common/navigation.po";
@@ -631,11 +631,13 @@ describe('Document Library Consume Permission', () => {
             expect(await utilityCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailureMsg: bwfXlsx.xlsx File is not downloaded.');
 
             await viewCasePo.clickOnTab('Case Access');
-            await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Agent Access');
-            await caseAccessTabPo.selectAndAddAgent('qstrong');
-            expect(await caseAccessTabPo.isCaseAccessEntityAdded('Quin Strong')).toBeTruthy('Failuer: Quin Strong Agent Name is missing');
-            await caseAccessTabPo.selectAndAddAgent('Fritz');
-            expect(await caseAccessTabPo.isCaseAccessEntityAdded('Fritz Schulz')).toBeTruthy('Failuer: Fritz Schulz Name is missing');
+            await accessTabPo.clickToExpandAccessEntitiySearch('Agent Access','Case');
+            await accessTabPo.selectAgent('qstrong','Agent');
+            await accessTabPo.clickAccessEntitiyAddButton('Agent');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Quin Strong','Read')).toBeTruthy('Failuer: Quin Strong Agent Name is missing');
+            await accessTabPo.selectAgent('Fritz','Agent');
+            await accessTabPo.clickAccessEntitiyAddButton('Agent');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Fritz Schulz','Read')).toBeTruthy('Failuer: Fritz Schulz Name is missing');
         });
         it('[DRDMV-13536]: Attach documents from local drive and document library at the same time', async () => {
             await navigationPage.signOut();

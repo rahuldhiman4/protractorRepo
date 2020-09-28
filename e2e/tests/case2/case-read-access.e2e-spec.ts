@@ -5,7 +5,7 @@ import casePreviewPo from '../../pageobject/case/case-preview.po';
 import createCasePage from "../../pageobject/case/create-case.po";
 import quickCasePo from '../../pageobject/case/quick-case.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
-import caseAccessTabPo from '../../pageobject/common/case-access-tab.po';
+import accessTabPo from '../../pageobject/common/access-tab.po';
 import changeAssignmentPage from '../../pageobject/common/change-assignment-blade.po';
 import changAssignmentOldPage from '../../pageobject/common/change-assignment-old-blade.po';
 import loginPage from "../../pageobject/common/login.po";
@@ -185,10 +185,9 @@ describe("Case Read Access", () => {
         await createCasePage.clickSaveCaseButton();
         await casePreviewPo.clickGoToCaseButton();
         await viewCasePage.clickOnTab('Case Access');
-        expect(await caseAccessTabPo.isCaseAccessEntityAdded(suppGrpData1.orgName)).toBeTruthy('FailuerMsg1: Support Group Name is missing');
-        expect(await caseAccessTabPo.isCaseAccessEntityAdded('Qadim Katawazi')).toBeTruthy('FailuerMsg1: Agent Name is missing');
-        expect(await caseAccessTabPo.isSupportGroupWriteAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have write access');
-        expect(await caseAccessTabPo.isSupportGroupReadAccessDisplayed(suppGrpData1.orgName)).toBeTruthy('Support Group does not have read access');
+        expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Qadim Katawazi', 'Write')).toBeTruthy('FailuerMsg1: Agent Name is missing');
+        expect(await accessTabPo.isAccessTypeOfEntityDisplayed('US Support 3', 'Write')).toBeTruthy('Support Group does not have write access');
+        expect(await accessTabPo.isAccessTypeOfEntityDisplayed(suppGrpData1.orgName, 'Read')).toBeTruthy('Support Group does not have read access');
     });
 
     describe('[DRDMV-11818,DRDMV-11821]: [Global Case Template] Create/Update Case template with company and flowset as Global', async () => {
@@ -297,9 +296,8 @@ describe("Case Read Access", () => {
             await quickCasePo.saveCase();
             await casePreviewPo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Case Access');
-            expect(await caseAccessTabPo.isCaseAccessEntityAdded(suppGrpData1.orgName)).toBeTruthy('FailuerMsg1: Support Group Name is missing');
-            expect(await caseAccessTabPo.isCaseAccessEntityAdded('fnPerson19501 lnPerson19501')).toBeTruthy('FailuerMsg1: Agent Name is missing');
-            expect(await caseAccessTabPo.isSupportGroupReadAccessDisplayed(suppGrpData1.orgName)).toBeTruthy('Support Group does not have read access');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed(suppGrpData1.orgName, 'Read')).toBeTruthy('FailuerMsg1: Agent Name is missing');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('fnPerson19501 lnPerson19501', 'Write')).toBeTruthy('Support Group does not have write access');
         });
         afterAll(async () => {
             await navigationPo.signOut();
@@ -386,23 +384,20 @@ describe("Case Read Access", () => {
             await quickCasePo.selectCaseTemplate(caseTemplateData.templateName);
             await quickCasePo.saveCase();
             await casePreviewPo.clickGoToCaseButton();
-            await viewCasePage.clickOnTab('Case Access');
-            expect(await caseAccessTabPo.isCaseAccessEntityAdded('Compensation and Benefits')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
-            expect(await caseAccessTabPo.isSupportGroupReadAccessDisplayed('Compensation and Benefits')).toBeTruthy('Support Group does not have read access');
+            await viewCasePage.clickOnTab('Case Access');         
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Compensation and Benefits','Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
             await navigationPo.gotoQuickCase();
             await quickCasePo.selectRequesterName('qkatawazi');
             await quickCasePo.setCaseSummary('Read Access');
             await quickCasePo.saveCase();
             await casePreviewPo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Case Access');
-            expect(await caseAccessTabPo.isCaseAccessEntityAdded('Compensation and Benefits')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
-            expect(await caseAccessTabPo.isSupportGroupReadAccessDisplayed('Compensation and Benefits')).toBeTruthy('Support Group does not have read access');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Compensation and Benefits','Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
             await navigationPo.signOut();
             await loginPage.login('fritz');
             await utilityGrid.searchAndOpenHyperlink(newCase1.displayId);
             await viewCasePage.clickOnTab('Case Access');
-            expect(await caseAccessTabPo.isCaseAccessEntityAdded('Compensation and Benefits')).toBeFalsy('FailuerMsg1: Support Group Name is missing');
-            expect(await caseAccessTabPo.isSupportGroupReadAccessDisplayed('Compensation and Benefits')).toBeFalsy('Support Group does not have read access');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Compensation and Benefits','Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
         });
         it('[DRDMV-7026,DRDMV-7033,DRDMV-11986,DRDMV-11857]: [Read Access] Configuring a Default Read Access', async () => {
             await navigationPo.signOut();
@@ -538,8 +533,7 @@ describe("Case Read Access", () => {
             await createCasePage.clickSaveCaseButton();
             await casePreviewPo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Case Access');
-            expect(await caseAccessTabPo.isCaseAccessEntityAdded('Compensation and Benefits')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
-            expect(await caseAccessTabPo.isSupportGroupReadAccessDisplayed('Compensation and Benefits')).toBeTruthy('Support Group does not have read access');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Compensation and Benefits','Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
             await navigationPo.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('set summary');
@@ -548,8 +542,7 @@ describe("Case Read Access", () => {
             await createCasePage.clickSaveCaseButton();
             await casePreviewPo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Case Access');
-            expect(await caseAccessTabPo.isCaseAccessEntityAdded('LA Support 1')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
-            expect(await caseAccessTabPo.isSupportGroupReadAccessDisplayed('LA Support 1')).toBeTruthy('Support Group does not have read access');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('LA Support 1','Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
         });
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
@@ -581,31 +574,36 @@ describe("Case Read Access", () => {
             await utilityGrid.searchAndOpenHyperlink(newCase1.displayId);
             await viewCasePage.clickOnTab('Case Access');
             //Bulk Read Access
-            await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
-            await caseAccessTabPo.selectCompany('Petramco', 'Select Company');
-            await caseAccessTabPo.selectBusinessUnit('United States Support', 'Select Business Unit');
-            await caseAccessTabPo.clickOnReadAccessAddButton('Add Business Unit');
-            await caseAccessTabPo.selectCompany('Petramco', 'Select Company');
-            await caseAccessTabPo.selectBusinessUnit('United States Support', 'Select Business Unit');
-            await caseAccessTabPo.selectSupportGroup('US Support 1', 'Select Support Group');
-            await caseAccessTabPo.clickOnReadAccessAddButton('Add Support Group');
-            await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Agent Access');
-            await caseAccessTabPo.selectAndAddAgent('Adam Warlock');
+            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access','Case');
+            await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
+            await accessTabPo.selectAccessEntityDropDown('United States Support', 'Select Business Unit');
+            await accessTabPo.clickAccessEntitiyAddButton('Business Unit');
+            await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
+            await accessTabPo.selectAccessEntityDropDown('United States Support', 'Select Business Unit');
+            await accessTabPo.selectAccessEntityDropDown('US Support 1', 'Select Support Group');
+            await accessTabPo.clickAccessEntitiyAddButton('Support Group');
+            await accessTabPo.clickToExpandAccessEntitiySearch('Agent Access','Case');
+            await accessTabPo.selectAgent('Adam Warlock','Agent');
+            await accessTabPo.clickAccessEntitiyAddButton('Agent');
             expect(await activityTabPo.getGrantedReadAccessCount('granted read access')).toBe(3);
         });
         it('[DRDMV-22479]: Bulk Case Access update clicking Reset to default.', async () => {
             //Bulk Write Access
-            await caseAccessTabPo.selectCompany('Petramco', 'Select Company');
-            await caseAccessTabPo.selectBusinessUnit('Australia Support', 'Select Business Unit');
-            await caseAccessTabPo.clickOnWriteAccessAddButton('Add Business Unit');
-            await caseAccessTabPo.selectCompany('Petramco', 'Select Company');
-            await caseAccessTabPo.selectBusinessUnit('Australia Support', 'Select Business Unit');
-            await caseAccessTabPo.selectSupportGroup('AU Support 1', 'Select Support Group');
-            await caseAccessTabPo.clickOnWriteAccessAddButton('Add Support Group');
-            await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
-            await caseAccessTabPo.selectAgentWithWriteAccess('Elizabeth Peters');
+            await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
+            await accessTabPo.selectAccessEntityDropDown('Australia Support', 'Select Business Unit');
+            await accessTabPo.clickAssignWriteAccessCheckbox('Business Unit');
+            await accessTabPo.clickAccessEntitiyAddButton('Business Unit');
+            await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
+            await accessTabPo.selectAccessEntityDropDown('Australia Support', 'Select Business Unit');
+            await accessTabPo.selectAccessEntityDropDown('AU Support 1', 'Select Support Group');
+            await accessTabPo.clickAssignWriteAccessCheckbox('Support Group');
+            await accessTabPo.clickAccessEntitiyAddButton('Support Group');
+            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access','Case');
+            await accessTabPo.selectAgent('Elizabeth Peters','Agent');
+            await accessTabPo.clickAssignWriteAccessCheckbox('Agent');
+            await accessTabPo.clickAccessEntitiyAddButton('Agent');
             expect(await activityTabPo.getGrantedReadAccessCount('granted write access')).toBe(3);
-            await caseAccessTabPo.clickOnResetToDefault();
+            await accessTabPo.clickOnResetToDefault();
             await activityTabPo.clickShowMoreLinkInActivity(1);
             expect(await activityTabPo.getRevokedReadAccessCount('revoked read access of')).toBe(3);
             await activityTabPo.clickShowMoreLinkInActivity(1);
@@ -759,8 +757,7 @@ describe("Case Read Access", () => {
             await quickCasePo.saveCase();
             await casePreviewPo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Case Access');
-            expect(await caseAccessTabPo.isCaseAccessEntityAdded('Compensation and Benefits')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
-            expect(await caseAccessTabPo.isSupportGroupReadAccessDisplayed('Compensation and Benefits')).toBeTruthy('Support Group does not have read access');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Compensation and Benefits','Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
         });
         it('[DRDMV-6999]: [Read Access] Editing/Deleting the Read Access Mapping', async () => {
             await navigationPo.signOut();
@@ -787,8 +784,7 @@ describe("Case Read Access", () => {
             await quickCasePo.saveCase();
             await casePreviewPo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Case Access');
-            expect(await caseAccessTabPo.isCaseAccessEntityAdded('US Support 3')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
-            expect(await caseAccessTabPo.isSupportGroupReadAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have read access');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('US Support 3','Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
         });
         it('[DRDMV-6999]: [Read Access] Editing/Deleting the Read Access Mapping', async () => {
             await navigationPo.gotoSettingsPage();
@@ -803,8 +799,7 @@ describe("Case Read Access", () => {
             await quickCasePo.saveCase();
             await casePreviewPo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Case Access');
-            expect(await caseAccessTabPo.isCaseAccessEntityAdded('Compensation and Benefits')).toBeFalsy('FailuerMsg1: Support Group Name is missing');
-            expect(await caseAccessTabPo.isSupportGroupReadAccessDisplayed('Compensation and Benefits')).toBeFalsy('Support Group does not have read access');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Compensation and Benefits','Read')).toBeFalsy('FailuerMsg1: Support Group Name is missing');
         });
         afterAll(async () => {
             await navigationPo.signOut();
@@ -887,8 +882,7 @@ describe("Case Read Access", () => {
             await manageTaskBladePo.addTaskFromTaskTemplate(templateData.templateName);
             await manageTaskBladePo.clickCloseButton();
             await viewCasePage.clickOnTab('Case Access');
-            expect(await caseAccessTabPo.isCaseAccessEntityAdded('Facilities')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
-            expect(await caseAccessTabPo.isSupportGroupReadAccessDisplayed('Facilities')).toBeTruthy('Support Group does not have read access');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Facilities','Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
             await navigationPo.signOut();
             await loginPage.login('fritz');
             await navigationPo.gotoCaseConsole();
@@ -912,8 +906,7 @@ describe("Case Read Access", () => {
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Case Access');
-            expect(await caseAccessTabPo.isCaseAccessEntityAdded('Facilities')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
-            expect(await caseAccessTabPo.isSupportGroupReadAccessDisplayed('Facilities')).toBeTruthy('Support Group does not have read access');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Facilities','Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
             await navigationPo.gotoCreateCase();
             await createCasePage.selectRequester('qtao');
             await createCasePage.setSummary('SummaryWithmapping2');
@@ -924,8 +917,7 @@ describe("Case Read Access", () => {
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Case Access');
-            expect(await caseAccessTabPo.isCaseAccessEntityAdded('Sensitive Personal Data (HR)')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
-            expect(await caseAccessTabPo.isSupportGroupReadAccessDisplayed('Sensitive Personal Data (HR)')).toBeTruthy('Support Group does not have read access');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Sensitive Personal Data (HR)','Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
         });
         it('[DRDMV-7002]: [Read Access] Access to cases that match the Read Access partially - regular mapping', async () => {
             await navigationPo.gotoCreateCase();
@@ -938,8 +930,7 @@ describe("Case Read Access", () => {
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Case Access');
-            expect(await caseAccessTabPo.isCaseAccessEntityAdded('Staffing')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
-            expect(await caseAccessTabPo.isSupportGroupReadAccessDisplayed('Staffing')).toBeTruthy('Support Group does not have read access');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Staffing','Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
             await navigationPo.gotoCreateCase();
             await createCasePage.selectRequester('qtao');
             await createCasePage.setSummary('SummaryWithmapping2');
@@ -950,8 +941,7 @@ describe("Case Read Access", () => {
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Case Access');
-            expect(await caseAccessTabPo.isCaseAccessEntityAdded('Risk Management')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
-            expect(await caseAccessTabPo.isSupportGroupReadAccessDisplayed('Risk Management')).toBeTruthy('Support Group does not have read access');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Risk Management','Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
             await navigationPo.gotoCreateCase();
             await createCasePage.selectRequester('qtao');
             await createCasePage.setSummary('SummaryWithmapping3');
@@ -961,8 +951,7 @@ describe("Case Read Access", () => {
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Case Access');
-            expect(await caseAccessTabPo.isCaseAccessEntityAdded('Risk Management')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
-            expect(await caseAccessTabPo.isSupportGroupReadAccessDisplayed('Risk Management')).toBeTruthy('Support Group does not have read access');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Risk Management','Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
         });
         it('[DRDMV-7002]: [Read Access] Access to cases that match the Read Access partially - regular mapping', async () => {
             await apiHelper.apiLogin('tadmin');
@@ -983,8 +972,7 @@ describe("Case Read Access", () => {
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Case Access');
-            expect(await caseAccessTabPo.isCaseAccessEntityAdded('Sensitive Personal Data (HR)')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
-            expect(await caseAccessTabPo.isSupportGroupReadAccessDisplayed('Sensitive Personal Data (HR)')).toBeTruthy('Support Group does not have read access');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Sensitive Personal Data (HR)','Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
         });
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
