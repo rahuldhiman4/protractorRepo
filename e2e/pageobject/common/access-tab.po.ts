@@ -172,8 +172,9 @@ class AccessTab {
     }
 
     async clickOnResetToDefault(): Promise<void> {
+        await browser.sleep(2000); //hardwait for resetting on UI before click
         await $(this.selectors.resetToDefault).click();
-        await browser.sleep(2000); //hardwait for resetting on UI
+        await browser.sleep(2000); //hardwait for resetting on UI after click
     }
 }
 export default new AccessTab();

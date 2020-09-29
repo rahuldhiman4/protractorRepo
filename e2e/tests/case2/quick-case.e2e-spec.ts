@@ -858,6 +858,11 @@ describe("Quick Case", () => {
             await quickCasePo.clickStartOverButton();
             await quickCasePo.selectRequesterName('fritz');
             await quickCasePo.setCaseSummary(publishedKA_Name);
+            await resourcesPo.clickOnAdvancedSearchOptions();
+            await resourcesPo.enterAdvancedSearchText(publishedKA_Name);
+            await resourcesPo.clickOnAdvancedSearchSettingsIconToOpen();
+            await resourcesPo.clickOnAdvancedSearchFiltersButton("Apply");
+            await resourcesPo.clickOnAdvancedSearchSettingsIconToClose();
             expect(await resourcesPo.isRecommendedKnowledgePresent(publishedKA_Name)).toBeTruthy(`${publishedKA_Name} not disaplyed in Recommended Knowledge`);
             // search published article by keyword, should find.. this is failing keyword based search not working 
             await quickCasePo.clickStartOverButton();
@@ -878,24 +883,26 @@ describe("Quick Case", () => {
             await browser.sleep(3000); // hardwait to reflect KA status as closed
         });
         it('[DRDMV-559]: [Quick Case] Knowledge article search in Resources', async () => {
-            // search In Progress article, should not find
             expect(await apiHelper.updateKnowledgeArticleStatus(unPublishedKA.id, "In Progres")).toBeTruthy("Article with Draft status not updated.");
             await quickCasePo.clickStartOverButton();
             await quickCasePo.selectRequesterName('fritz');
             await quickCasePo.setCaseSummary(unPublishedKA_Name);
             expect(await resourcesPo.isRecommendedKnowledgePresent(unPublishedKA_Name)).toBeFalsy(`${unPublishedKA_Name} In Progress KA not disaplyed in Recommended Knowledge`);
-            // search Canceled article, should not find
             expect(await apiHelper.updateKnowledgeArticleStatus(unPublishedKA.id, "Canceled")).toBeTruthy("Article with Canceled status not updated.");
             await quickCasePo.clickStartOverButton();
             await quickCasePo.selectRequesterName('fritz');
             await quickCasePo.setCaseSummary(unPublishedKA_Name);
             expect(await resourcesPo.isRecommendedKnowledgePresent(unPublishedKA_Name)).toBeFalsy(`${unPublishedKA_Name} Canceled KA not disaplyed in Recommended Knowledge`);
-            // search Closed article, should not find
-            console.log(publishedKA_Name);
             await quickCasePo.clickStartOverButton();
             await quickCasePo.selectRequesterName('fritz');
             await quickCasePo.setCaseSummary(publishedKA_Name);
-            expect(await resourcesPo.isRecommendedKnowledgePresent(publishedKA_Name)).toBeFalsy(`${publishedKA_Name} Closed KA disaplyed in Recommended Knowledge`);
+            await resourcesPo.clickOnBackButton();
+            await resourcesPo.clickOnAdvancedSearchOptions();
+            await resourcesPo.enterAdvancedSearchText(publishedKA_Name);
+            await resourcesPo.clickOnAdvancedSearchSettingsIconToOpen();
+            await resourcesPo.clickOnAdvancedSearchFiltersButton("Apply");
+            await resourcesPo.clickOnAdvancedSearchSettingsIconToClose();
+            expect(await resourcesPo.isRecommendedKnowledgePresent(publishedKA_Name)).toBeTruthy(`${publishedKA_Name} Closed KA disaplyed in Recommended Knowledge`);
         });
         afterAll(async () => {
             await navigationPo.signOut();

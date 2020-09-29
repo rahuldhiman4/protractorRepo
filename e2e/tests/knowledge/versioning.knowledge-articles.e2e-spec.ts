@@ -992,7 +992,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
         it('[DRDMV-20752]: Verify the behavior when the user who does not have access to view current article version and he tries to create or update existing version', async () => {
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
             await browser.sleep(3000); //Hard wait to laod the tab completely
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.clearFilter();
@@ -1043,20 +1042,19 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(updatedArticleTitle);
 
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-            await accessTabPo.clickRemoveAccess('Petramco');
+            await accessTabPo.clickRemoveAccess('Petramco',true);
             await accessTabPo.clickAccessRemoveWarningBtn('Yes');
-            await accessTabPo.clickRemoveAccess('Employee Relations');
+            await accessTabPo.clickRemoveAccess('Employee Relations',true);
             await accessTabPo.clickAccessRemoveWarningBtn('Yes');
             await accessTabPo.clickCloseKnowledgeAccessBlade();
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
-            await navigationPage.signOut();
 
-            await loginPage.login('peter');
-            await navigationPage.gotoKnowledgeConsole();
-            await browser.sleep(2000); //Hard wait to laod the tab completely
+            await navigationPage.switchToApplication(knowledgeManagementApp);
+            await browser.sleep(3000); //Hard wait to laod the tab completely
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.clearFilter();
-            await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
+            await utilityGrid.searchAndOpenHyperlink(articleData.title);
+            
             await viewKnowledgeArticlePo.clickOnEditLink();
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(minorEditOption)).toBeTruthy('Minor Edit Option is displayed for Published Knowledge Article.');
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(majorEditOption)).toBeTruthy('Major Edit Option is displayed for Published Knowledge Article.');
@@ -1068,7 +1066,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await utilityCommon.refresh();
             expect(await viewKnowledgeArticlePo.getArticleVersion()).toBe(expectedVersion);
         });
-
         afterAll(async () => {
             await utilityCommon.refresh();
             await utilCommon.waitUntilSpinnerToHide();

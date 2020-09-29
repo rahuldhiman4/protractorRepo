@@ -345,14 +345,16 @@ describe("Case Read Access", () => {
             let caseData = {
                 "Requester": "apavlik",
                 "Summary": "Test case for Read Access",
+                "Case Template ID": "",
                 "Assigned Company": "Petramco",
                 "Business Unit": "Facilities Support",
                 "Support Group": "Facilities",
                 "Assignee": "Fritz"
             }
             await apiHelper.apiLogin('qkatawazi');
+            let caseTemplateResponse6 = await apiHelper.createCaseTemplate(caseTemplateData);
+            caseData["Case Template ID"] = caseTemplateResponse6.id;
             newCase1 = await apiHelper.createCase(caseData);
-            await apiHelper.createCaseTemplate(caseTemplateData);
             await apiHelper.createReadAccessMapping(readAccessMappingData1);
             await apiHelper.createReadAccessMapping(readAccessMappingData2);
             readAccessMappingData2.configName = randomStr + '3ReadAccessMappingName';
