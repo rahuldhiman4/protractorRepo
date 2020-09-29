@@ -28,6 +28,8 @@ import activityTabPo from '../../pageobject/social/activity-tab.po';
 import editCasePo from '../../pageobject/case/edit-case.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
+import { flowsetGlobalFields } from '../../data/ui/flowset/flowset.ui';
+import { cloneDeep } from 'lodash';
 
 describe("Case Read Access", () => {
     const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
@@ -194,13 +196,12 @@ describe("Case Read Access", () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplate1 = 'Case Template 1' + randomStr;
         let caseTemplateSummary1 = 'Summary 1' + randomStr;
-        let flowsetData = require('../../data/ui/case/flowset.ui.json');
-        let flowsetName: string;
+        let flowsetGlobalFieldsData = undefined;
         beforeAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
-            flowsetName = await flowsetData['flowsetGlobalFields'].flowsetName + randomStr;
-            flowsetData['flowsetGlobalFields'].flowsetName = flowsetName;
-            await apiHelper.createNewFlowset(flowsetData['flowsetGlobalFields']);
+            flowsetGlobalFieldsData = cloneDeep(flowsetGlobalFields);
+            flowsetGlobalFieldsData.flowsetName = flowsetGlobalFieldsData.flowsetName = randomStr;
+            await apiHelper.createNewFlowset(flowsetGlobalFieldsData);
         });
         it('[DRDMV-11818,DRDMV-11821]: [Global Case Template] Create/Update Case template with company and flowset as Global', async () => {
             await navigationPo.gotoSettingsPage();
@@ -209,11 +210,11 @@ describe("Case Read Access", () => {
             await createCaseTemplate.setTemplateName(caseTemplate1);
             await createCaseTemplate.setCompanyName('- Global -');
             await createCaseTemplate.setCaseSummary(caseTemplateSummary1);
-            await createCaseTemplate.setFlowsetValue(flowsetName);
+            await createCaseTemplate.setFlowsetValue(flowsetGlobalFieldsData.flowsetName);
             await createCaseTemplate.setTemplateStatusDropdownValue('Active');
             await createCaseTemplate.clickSaveCaseTemplate();
             expect(await viewCaseTemplate.getCaseCompanyValue()).toBe('- Global -');
-            expect(await viewCaseTemplate.getFlowsetValue()).toBe(flowsetName);
+            expect(await viewCaseTemplate.getFlowsetValue()).toBe(flowsetGlobalFieldsData.flowsetName);
             await viewCaseTemplate.clickOnEditCaseTemplateButton();
             expect(await editCaseTemplate.isCaseCompanyDisabled()).toBeTruthy();
         });
@@ -223,7 +224,7 @@ describe("Case Read Access", () => {
             await consoleReadAcess.clickOnReadAccessConfiguration();
             await addReadAccess.setReadAccessConfigurationName("test");
             await addReadAccess.selectCompany('Global');
-            await addReadAccess.selectFlowset(flowsetName);
+            await addReadAccess.selectFlowset(flowsetGlobalFieldsData.flowsetName);
             await addReadAccess.selectSupportCompany('Petramco');
             await addReadAccess.selectBusinessUnit('Australia Support');
             await addReadAccess.selectSupportGroup('AU Support 2');
