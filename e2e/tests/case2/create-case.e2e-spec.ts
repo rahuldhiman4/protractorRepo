@@ -730,7 +730,7 @@ describe("Create Case", () => {
                 "Support Group": "Psilon Support Group2",
                 "Assignee": "gwixillian"
             }
-            await apiHelper.apiLoginWithCredential(userData.userId + "@petramco.com", 'Password_1234');
+            await apiHelper.apiLogin(userData.userId + "@petramco.com", 'Password_1234');
             let psilonCaseResponse = await apiHelper.createCase(caseDataPsilon);
             await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();

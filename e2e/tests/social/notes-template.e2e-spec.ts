@@ -772,7 +772,7 @@ describe('Notes template', () => {
             await apiHelper.associatePersonToCompany(userData.userId, "Psilon");
             await browser.sleep(15000); //Hard Wait to reflect the new person
 
-            await apiHelper.apiLoginWithCredential('DRDMV-16112_User@petramco.com', 'Password_1234');
+            await apiHelper.apiLogin('DRDMV-16112_User@petramco.com', 'Password_1234');
             let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let petramcoNotesTemplateData = cloneDeep(notesTemplateData.NOTES_TEMPLATE_MANDATORY_FIELD);
             petramcoTemplateName = petramcoNotesTemplateData.templateName + randomStr + 'Petramco';

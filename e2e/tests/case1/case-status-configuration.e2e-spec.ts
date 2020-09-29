@@ -60,7 +60,7 @@ describe('Case Status Configuration', () => {
         beforeAll(async () => {
             flowsetPhytoFieldsData = cloneDeep(flowsetPhytoFields);
             flowsetPhytoFieldsData.flowsetName = flowsetPhytoFieldsData.flowsetName + randomStr;
-            await apiHelper.apiLoginWithCredential('tadmin@petramco.com', 'Password_1234');
+            await apiHelper.apiLogin('tadmin@petramco.com', 'Password_1234');
             await apiHelper.createNewFlowset(flowsetPhytoFieldsData);
         });
 
@@ -499,7 +499,7 @@ describe('Case Status Configuration', () => {
 
             await navigationPage.signOut();
             await loginPage.login(personData1.userId + '@petramco.com', 'Password_1234');
-            await apiHelper.apiLoginWithCredential(personData1.userId + '@petramco.com', 'Password_1234');
+            await apiHelper.apiLogin(personData1.userId + '@petramco.com', 'Password_1234');
         });
         it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
             await navigationPage.gotoSettingsPage();
@@ -509,7 +509,7 @@ describe('Case Status Configuration', () => {
             await statusConfigPo.addCustomStatus("Staged", "Assigned", "customStatus");
         });
         it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
-            await apiHelper.apiLoginWithCredential(personData1.userId + '@petramco.com', 'Password_1234');
+            await apiHelper.apiLogin(personData1.userId + '@petramco.com', 'Password_1234');
             caseId = await apiHelper.createCase(caseDataInProgress);
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId.displayId);
@@ -577,7 +577,7 @@ describe('Case Status Configuration', () => {
             await statusConfigPo.addCustomStatus("New", "Assigned", "customStatus");
         });
         it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
-            await apiHelper.apiLoginWithCredential(personData1.userId + '@petramco.com', 'Password_1234');
+            await apiHelper.apiLogin(personData1.userId + '@petramco.com', 'Password_1234');
             caseId = await apiHelper.createCase(caseData);
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId.displayId);
@@ -615,7 +615,7 @@ describe('Case Status Configuration', () => {
 
         });
         it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
-            await apiHelper.apiLoginWithCredential(personData1.userId + '@petramco.com', 'Password_1234');
+            await apiHelper.apiLogin(personData1.userId + '@petramco.com', 'Password_1234');
             caseId1 = await apiHelper.createCase(caseData);
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId1.displayId);
@@ -629,7 +629,7 @@ describe('Case Status Configuration', () => {
         });
 
         it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
-            await apiHelper.apiLoginWithCredential(personData1.userId + '@petramco.com', 'Password_1234');
+            await apiHelper.apiLogin(personData1.userId + '@petramco.com', 'Password_1234');
             await apiHelper.createKnowledgeSet(knowledgeSetData);
             knowldgeId = await apiHelper.createKnowledgeArticle(articleData1);
             await navigationPage.gotoKnowledgeConsole();
@@ -667,7 +667,7 @@ describe('Case Status Configuration', () => {
         });
 
         it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
-            await apiHelper.apiLoginWithCredential(personData1.userId + '@petramco.com', 'Password_1234');
+            await apiHelper.apiLogin(personData1.userId + '@petramco.com', 'Password_1234');
             knowldgeId = await apiHelper.createKnowledgeArticle(articleData2);
             await navigationPage.gotoKnowledgeConsole();
             await utilityGrid.searchAndOpenHyperlink(knowldgeId.displayId);

@@ -406,7 +406,7 @@ describe('Conditional Task', () => {
     describe('[DRDMV-14898]: [Task] - Task Template availability when adding it into Case Template', () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
-            await apiHelper.apiLoginWithCredential('DRDMV-14898_User@petramco.com', 'Password_1234');
+            await apiHelper.apiLogin('DRDMV-14898_User@petramco.com', 'Password_1234');
 
             //Create Manual Global Draft task
             let globalDraftTask = {
@@ -743,7 +743,7 @@ describe('Conditional Task', () => {
     describe('[DRDMV-14897]: [Task] - Opened Template process when clicking on Add Task Template from Case Template', () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
-            await apiHelper.apiLoginWithCredential('DRDMV-14898_User@petramco.com', 'Password_1234');
+            await apiHelper.apiLogin('DRDMV-14898_User@petramco.com', 'Password_1234');
 
             //Create Global Case Template with Draft status
             let globalDraftCaseTemplateData = {
