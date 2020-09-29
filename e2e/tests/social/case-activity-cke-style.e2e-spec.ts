@@ -161,12 +161,12 @@ describe('Case Activity CKE Styling', () => {
             expect(await activityTabPage.isColorTextDisplayedInCkEditorTextArea('color:#c0392b;', addNoteBodyText)).toBeTruthy('Color is not set In Ck Editor');
             await activityTabPage.clearActivityNote();
             //checking number list
-            await activityTabPage.setInsertRemoveNumberList('PlusOne');
+            await activityTabPage.setNumberList('PlusOne');
             expect(await activityTabPage.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPage.clickOnCenterAlignIcon();
             await activityTabPage.clearActivityNote();
             // checking bullot points
-            await activityTabPage.setInsertRemoveBulletedList('BulletOne');
+            await activityTabPage.setBulletList('BulletOne');
             expect(await activityTabPage.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPage.clearActivityNote();
             // Link added
@@ -238,12 +238,12 @@ describe('Case Activity CKE Styling', () => {
             expect(await activityTabPage.isColorTextDisplayedInCkEditorTextArea('color:#c0392b;', addNoteBodyText)).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPage.clearActivityNote();
             //checking number list
-            await activityTabPage.setInsertRemoveNumberList('PlusOne');
+            await activityTabPage.setNumberList('PlusOne');
             expect(await activityTabPage.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPage.clickOnCenterAlignIcon();
             await activityTabPage.clearActivityNote();
             // checking bullot points
-            await activityTabPage.setInsertRemoveBulletedList('BulletOne');
+            await activityTabPage.setBulletList('BulletOne');
             expect(await activityTabPage.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPage.clearActivityNote();
             // Link added
@@ -314,12 +314,12 @@ describe('Case Activity CKE Styling', () => {
             expect(await activityTabPage.isColorTextDisplayedInCkEditorTextArea('color:#c0392b;', addNoteBodyText)).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPage.clearActivityNote();
             //checking number list
-            await activityTabPage.setInsertRemoveNumberList('PlusOne');
+            await activityTabPage.setNumberList('PlusOne');
             expect(await activityTabPage.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPage.clickOnCenterAlignIcon();
             await activityTabPage.clearActivityNote();
             // checking bullot points
-            await activityTabPage.setInsertRemoveBulletedList('BulletOne');
+            await activityTabPage.setBulletList('BulletOne');
             expect(await activityTabPage.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPage.clearActivityNote();
             // Link added
@@ -390,12 +390,12 @@ describe('Case Activity CKE Styling', () => {
             expect(await activityTabPage.isColorTextDisplayedInCkEditorTextArea('color:#c0392b;', addNoteBodyText)).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPage.clearActivityNote();
             //checking number list
-            await activityTabPage.setInsertRemoveNumberList('PlusOne');
+            await activityTabPage.setNumberList('PlusOne');
             expect(await activityTabPage.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPage.clickOnCenterAlignIcon();
             await activityTabPage.clearActivityNote();
             // checking bullot points
-            await activityTabPage.setInsertRemoveBulletedList('BulletOne');
+            await activityTabPage.setBulletList('BulletOne');
             expect(await activityTabPage.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPage.clearActivityNote();
             // Link added
@@ -474,12 +474,12 @@ describe('Case Activity CKE Styling', () => {
             expect(await activityTabPage.isColorTextDisplayedInCkEditorTextArea('color:#c0392b;', addNoteBodyText)).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPage.clearActivityNote();
             //checking number list
-            await activityTabPage.setInsertRemoveNumberList('PlusOne');
+            await activityTabPage.setNumberList('PlusOne');
             expect(await activityTabPage.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPage.clickOnCenterAlignIcon();
             await activityTabPage.clearActivityNote();
             // checking bullot points
-            await activityTabPage.setInsertRemoveBulletedList('BulletOne');
+            await activityTabPage.setBulletList('BulletOne');
             expect(await activityTabPage.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPage.clearActivityNote();
             // Link added
@@ -552,12 +552,12 @@ describe('Case Activity CKE Styling', () => {
             expect(await activityTabPage.isColorTextDisplayedInCkEditorTextArea('color:#c0392b;', addNoteBodyText)).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPage.clearActivityNote();
             //checking number list
-            await activityTabPage.setInsertRemoveNumberList('PlusOne');
+            await activityTabPage.setNumberList('PlusOne');
             expect(await activityTabPage.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPage.clickOnCenterAlignIcon();
             await activityTabPage.clearActivityNote();
             // checking bullot points
-            await activityTabPage.setInsertRemoveBulletedList('BulletOne');
+            await activityTabPage.setBulletList('BulletOne');
             expect(await activityTabPage.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPage.clearActivityNote();
             // Link added
@@ -629,12 +629,12 @@ describe('Case Activity CKE Styling', () => {
             expect(await activityTabPage.isColorTextDisplayedInCkEditorTextArea('color:#c0392b;', addNoteBodyText)).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPage.clearActivityNote();
             //checking number list
-            await activityTabPage.setInsertRemoveNumberList('PlusOne');
+            await activityTabPage.setNumberList('PlusOne');
             expect(await activityTabPage.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPage.clickOnCenterAlignIcon();
             await activityTabPage.clearActivityNote();
             // checking bullot points
-            await activityTabPage.setInsertRemoveBulletedList('BulletOne');
+            await activityTabPage.setBulletList('BulletOne');
             expect(await activityTabPage.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPage.clearActivityNote();
             // Link added
