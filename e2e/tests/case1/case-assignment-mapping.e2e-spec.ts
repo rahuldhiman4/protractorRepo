@@ -139,6 +139,8 @@ describe("Create Case Assignment Mapping", () => {
     }
 
     afterAll(async () => {
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.disassociatePersonFromCompany('gderuno', 'Petramco');
         await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });

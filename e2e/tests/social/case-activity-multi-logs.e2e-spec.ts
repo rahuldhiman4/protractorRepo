@@ -1073,6 +1073,7 @@ describe('Case Activity Multi Logs', () => {
 
             // Remove Confedential Group
             await accessTabPo.clickRemoveAccess(confidentialSupportGroup);
+            await accessTabPo.clickAccessRemoveWarningBtn("Yes");
             await activityTabPage.clickOnRefreshButton();
             expect(await activityTabPage.isLogIconDisplayedInActivity('lock_shield', 1)).toBeTruthy('FailureMsg19: log icon is missing');
             expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg20: lock icon missing in activity logs');

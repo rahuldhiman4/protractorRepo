@@ -1048,6 +1048,13 @@ class ApiHelper {
         return response.status == 204;
     }
 
+    async disassociatePersonFromCompany(userId: string, company: string): Promise<boolean> {
+        let userGuid = await apiCoreUtil.getPersonGuid(userId);
+        let companyGuid = await apiCoreUtil.getOrganizationGuid(company);
+        let response = await apiCoreUtil.disassociateFoundationElements("com.bmc.arsys.rx.foundation:Agent Supports Primary Organization", userGuid, companyGuid);
+        return response.status == 204;
+    }
+
     async associatePersonToSupportGroup(userId: string, supportGroup: string): Promise<boolean> {
         let userGuid = await apiCoreUtil.getPersonGuid(userId);
         let supportGroupGuid = await apiCoreUtil.getSupportGroupGuid(supportGroup);

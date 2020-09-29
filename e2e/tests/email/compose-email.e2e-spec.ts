@@ -866,6 +866,8 @@ describe("Compose Email", () => {
             expect(await activityTabPo.getColorFontStyleOfText(3, 1, "color:#3498db;")).toContain('SettingColor');
             expect(await activityTabPo.getColorFontStyleOfText(3, 2, "font-size:18px;")).toContain('SettingFontSize');
             expect(await activityTabPo.getColorFontStyleOfText(3, 3, "font-family:Courier New,Courier,monospace;")).toContain('SettingFontType');
+            expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
+            //expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
             await activityTabPo.clickOnHyperlink('http://www.google.com');
             await utilityCommon.switchToNewTab(1);
             await browser.waitForAngularEnabled(false);

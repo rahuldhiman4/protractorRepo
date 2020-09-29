@@ -855,7 +855,7 @@ describe('Global Search Category Validation', () => {
 
         it('[DRDMV-16114]: Verify saerch KA with other company user', async () => {
             await navigationPage.signOut();
-            await loginPage.login('gderuno');
+            await loginPage.login('werusha');
 
             await navigationPage.gotoSearch();
             await searchPo.searchRecord(summary1);
