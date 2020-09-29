@@ -212,6 +212,7 @@ class ComposeMail {
         return await (await $$(this.selectors.toOrCcEmailgetText).last().getText()).trim();
     }
 
+    // input should be a list and this method should be merged with setNumberList from activity tab, finally in ckeditor-ops file
     async setBulletPointAndNumer(value: string): Promise<void> {
         await browser.waitForAngularEnabled(false);
         await browser.switchTo().frame(await $('[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] iframe.cke_wysiwyg_frame').getWebElement());

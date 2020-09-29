@@ -752,6 +752,7 @@ class ActivityTabPage {
         await $(this.selectors.centerAlignIcon).click();
     }
 
+    // input should be a list
     async setNumberList(value: string): Promise<void> {
         await $(this.selectors.activityNoteTextArea).sendKeys(Key.CONTROL, Key.END);
         await $(this.selectors.activityNoteTextArea).sendKeys(Key.ENTER);
@@ -759,6 +760,7 @@ class ActivityTabPage {
         await $(this.selectors.activityNoteTextArea).sendKeys(value);
     }
 
+    // input should be a list
     async setBulletList(value: string): Promise<void> {
         await $(this.selectors.activityNoteTextArea).sendKeys(Key.CONTROL, Key.END);
         await $(this.selectors.activityNoteTextArea).sendKeys(Key.ENTER);
