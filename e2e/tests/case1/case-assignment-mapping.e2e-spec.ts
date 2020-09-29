@@ -139,6 +139,8 @@ describe("Create Case Assignment Mapping", () => {
     }
 
     afterAll(async () => {
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.disassociatePersonFromCompany('gderuno', 'Petramco');
         await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
@@ -638,7 +640,7 @@ describe("Create Case Assignment Mapping", () => {
         });
     });
 
-    describe('[DRDMV-15181]:[Permissions] Location based assignment with multiple companies', async () => {
+    fdescribe('[DRDMV-15181]:[Permissions] Location based assignment with multiple companies', async () => {
         let randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let assignmentMappingName = "DRDMV-15181 " + randomStr;
         beforeAll(async () => {

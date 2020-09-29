@@ -1,4 +1,5 @@
 import { $, $$, browser, by, element, ElementFinder, protractor, ProtractorExpectedConditions } from 'protractor';
+import utilityCommon from './utility.common';
 
 const fs = require('fs');
 
@@ -48,10 +49,9 @@ export class Util {
 
     async selectDropDown(guid: string, value: string): Promise<void> {
         const dropDown = await $(`[rx-view-component-id="${guid}"]`);
-        const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
         const dropDownInputElement = await dropDown.$(this.selectors.dropDownInput);
-        //await browser.wait(this.EC.elementToBeClickable(dropDownBoxElement));
-        await dropDownBoxElement.click();
+        await utilityCommon.scrollToElement(await dropDown.$(this.selectors.dropdownBox)); //required to bring dropdown search in focus e.g. DRDMV-16276
+        await dropDown.$(this.selectors.dropdownBox).click();
         //        await browser.wait(this.EC.visibilityOf(dropDownInputElement));
         await dropDownInputElement.sendKeys(value);
         //        await browser.wait(this.EC.or(async () => {
