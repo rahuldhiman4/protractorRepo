@@ -46,6 +46,12 @@ import slmExpressionBuilder from '../../pageobject/settings/slm/slm-expressionbu
 import approvalConfigurationPage from "../../pageobject/settings/approval/approval-configuration.po";
 import { SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
 import { cloneDeep } from 'lodash';
+import attachDocumentBladePo from '../../pageobject/common/attach-document-blade.po';
+import knowledgeArticlesConsolePo from '../../pageobject/knowledge/knowledge-articles-console.po';
+import editKnowledgePo from '../../pageobject/knowledge/edit-knowledge.po';
+import dynamicFieldsPo from '../../pageobject/common/dynamic-fields.po';
+import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
+import casePreviewPo from '../../pageobject/case/case-preview.po';
 
 describe("Attachment", () => {
     beforeAll(async () => {
@@ -792,4 +798,666 @@ describe("Attachment", () => {
 
         });
     });
+
+
+    //kgaikwad
+    describe('[DRDMV-23413]: Verify Thai Character On Multiple Screens', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseTempateName = 'caseTemplateNameDRDMV23413' +randomStr;
+        let newCase1;
+        let newCase2;
+        let caseData1;
+        let caseTemplateData;
+        let docLibTitle = 'docLibTitleDRDMV15252'+randomStr;
+        let knowledgeArticleData;
+        let newCaseTemplate;
+        let fileName1 = '1!@#$%^&()+_-={}[}.,123.jpg';
+        let fileName2 = '1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf';
+        let fileName3 = '1ทรัพยากรมนุษย์-นโยบายการแพทย์-รายงานการต__รวจสอบ.docx';
+        let fileName4 = '1Google+Translate+เป็นบริการแปลระบบประสาทด้วยเครื่องฟรีหลายภาษาที่พัฒนาโดย+Google.xlsx';
+
+        let fileName5 = '2!@#$%^&()+_-={}[}.,123.jpg';
+        let fileName6 = '2ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf';
+        let fileName7 = '2ทรัพยากรมนุษย์-นโยบายการแพทย์-รายงานการต__รวจสอบ.docx';
+        let fileName8 = '2Google+Translate+เป็นบริการแปลระบบประสาทด้วยเครื่องฟรีหลายภาษาที่พัฒนาโดย+Google.xlsx';
+
+        let fileName9 = '3!@#$%^&()+_-={}[}.,123.jpg';
+        let fileName10 = '3ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf';
+        let fileName11 = '3ทรัพยากรมนุษย์-นโยบายการแพทย์-รายงานการต__รวจสอบ.docx';
+        let fileName12 = '3Google+Translate+เป็นบริการแปลระบบประสาทด้วยเครื่องฟรีหลายภาษาที่พัฒนาโดย+Google.xlsx';
+
+        let addNoteRandomText = 'addNoteDRDMV23413'+randomStr;
+        
+        beforeAll(async () => {
+
+            caseTemplateData = {
+                "templateName": 'caseTemplateName1',
+                "templateSummary": 'Case Template Summary',
+                "categoryTier1": 'Phones',
+                "categoryTier2": 'Infrastructure',
+                "templateStatus": "Draft",
+                "company": "Petramco",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qfeng",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3"
+            };
+
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteDynamicFieldAndGroup();
+
+            await apiHelper.apiLogin('qkatawazi');
+            caseTemplateData.templateName = caseTempateName;
+            newCaseTemplate = await apiHelper.createCaseTemplate(caseTemplateData);
+            await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'MULTIPLE_ATTACHMENTS');
+           
+            //  Create Case
+            caseData1 = {
+                "Requester": "araisin",
+                "Summary": "Test case for DRDMV23413" + randomStr,
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 1",
+                "Assignee": "qtao",
+            }
+            newCase1 = await apiHelper.createCase(caseData1);
+            newCase2 = await apiHelper.createCase(caseData1);
+
+            
+            // Create Document Library
+            let publishDocData = {
+                docLibTitle: 'docLibTitle',
+                company: 'Petramco',
+                businessUnit: "United States Support",
+                ownerGroup: "US Support 1",
+            }
+
+            publishDocData.docLibTitle = docLibTitle+1;
+            let docLib1 = await apiHelper.createDocumentLibrary(publishDocData, `e2e/data/ui/attachment/${fileName9}`);
+            await apiHelper.publishDocumentLibrary(docLib1);
+
+            publishDocData.docLibTitle =docLibTitle+2;
+            let docLib2 = await apiHelper.createDocumentLibrary(publishDocData, `e2e/data/ui/attachment/${fileName10}`);
+            await apiHelper.publishDocumentLibrary(docLib2);
+
+            publishDocData.docLibTitle =docLibTitle+3;
+            let docLib3 = await apiHelper.createDocumentLibrary(publishDocData, `e2e/data/ui/attachment/${fileName11}`);
+            await apiHelper.publishDocumentLibrary(docLib3);
+
+            publishDocData.docLibTitle =docLibTitle+4;
+            let docLib4 = await apiHelper.createDocumentLibrary(publishDocData, `e2e/data/ui/attachment/${fileName12}`);
+            await apiHelper.publishDocumentLibrary(docLib4);
+        
+        // Create Knowledge
+            let articleData = {
+                "knowledgeSet": "HR",
+                "title": "KATitle",
+                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "United States Support",
+                "assigneeSupportGroup": "US Support 1",
+                "assignee": "qtao"
+            }
+            knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
+        });
+
+
+
+        it('[DRDMV-15252]: Verify Attachment With Case Description Attach Button ', async () => {
+            await navigationPage.gotoCaseConsole();
+            await caseConsole.searchAndOpenCase(newCase1.displayId);
+            await viewCasePo.clickEditCaseButton();
+            await editCasePo.addDescriptionAttachment([`../../data/ui/attachment/${fileName1}`,`../../data/ui/attachment/${fileName2}`,`../../data/ui/attachment/${fileName3}`,`../../data/ui/attachment/${fileName4}`]);
+            await editCasePo.clickSaveCase();
+            await viewCasePo.clickShowMoreShowLessLink();
+            
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName1}`)).toBeTruthy(`FailuerMsg: ${fileName1} File is delete sucessfully`);
+            await viewCasePo.clickOnAttachedDocumentFile(`${fileName1}`);
+            expect(await utilityCommon.isFileDownloaded(`${fileName1}`)).toBeTruthy(`FailuerMsg: ${fileName1} File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName2}`)).toBeTruthy(`FailuerMsg: ${fileName2} File is delete sucessfully`);
+            await viewCasePo.clickOnAttachedDocumentFile(`${fileName2}`);
+            expect(await utilityCommon.isFileDownloaded('1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf' File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName3}`)).toBeTruthy(`FailuerMsg: ${fileName3} File is delete sucessfully`);
+            await viewCasePo.clickOnAttachedDocumentFile(`${fileName3}`);
+            expect(await utilityCommon.isFileDownloaded(`${fileName3}`)).toBeTruthy(`FailuerMsg: ${fileName3} File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName4}`)).toBeTruthy(`FailuerMsg: ${fileName4} File is delete sucessfully`);
+            await viewCasePo.clickOnAttachedDocumentFile(`${fileName4}`);
+            expect(await utilityCommon.isFileDownloaded(`${fileName4}`)).toBeTruthy(`FailuerMsg: ${fileName4} File is not downloaded.`);
+
+            await viewCasePo.clickAttachmentsLink();
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName1}`)).toBeTruthy(`FailuerMsg: ${fileName1} File is delete sucessfully`);
+            await attachmentBladePo.selectCheckBox(1);
+            await attachmentBladePo.clickDownloadButton();
+            await attachmentBladePo.selectCheckBox(1);
+            expect(await utilityCommon.isFileDownloaded(`${fileName1}`)).toBeTruthy(`FailuerMsg: ${fileName1} File is not downloaded.`);
+            
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName2}`)).toBeTruthy(`FailuerMsg: ${fileName2} File is delete sucessfully`);
+            await attachmentBladePo.selectCheckBox(2);
+            await attachmentBladePo.clickDownloadButton();
+            await attachmentBladePo.selectCheckBox(2);
+            expect(await utilityCommon.isFileDownloaded('1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf' File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName3}`)).toBeTruthy(`FailuerMsg: ${fileName3} File is delete sucessfully`);
+            await attachmentBladePo.selectCheckBox(3);
+            await attachmentBladePo.clickDownloadButton();
+            await attachmentBladePo.selectCheckBox(3);
+            expect(await utilityCommon.isFileDownloaded(`${fileName3}`)).toBeTruthy(`FailuerMsg: ${fileName3} File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName4}`)).toBeTruthy(`FailuerMsg: ${fileName4} File is delete sucessfully`);
+            await attachmentBladePo.selectCheckBox(4);
+            await attachmentBladePo.clickDownloadButton();
+            await attachmentBladePo.selectCheckBox(4);
+            expect(await utilityCommon.isFileDownloaded(`${fileName4}`)).toBeTruthy(`FailuerMsg: ${fileName4} File is not downloaded.`);
+            await attachmentBladePo.clickCloseButton();
+        });
+
+        it('[DRDMV-15252]: Verify Locally Attachment On Case Activity Tab', async () => {
+            await activityTabPo.addActivityNote(addNoteRandomText);
+            await activityTabPo.addAttachment([`../../data/ui/attachment/${fileName5}`,`../../data/ui/attachment/${fileName6}`,`../../data/ui/attachment/${fileName7}`,`../../data/ui/attachment/${fileName8}`]);
+            await activityTabPo.clickOnPostButton();
+            await activityTabPo.clickShowMoreLinkInAttachmentActivity(1);
+
+            expect(await activityTabPo.isAttachedFileNameDisplayed(fileName5)).toBeTruthy(`${fileName5} Attached file name is missing`);
+            expect(await activityTabPo.isAttachedFileNameDisplayed(fileName6)).toBeTruthy(`${fileName6} Attached file name is missing`);
+            expect(await activityTabPo.isAttachedFileNameDisplayed(fileName7)).toBeTruthy(`${fileName7} Attached file name is missing`);
+            expect(await activityTabPo.isAttachedFileNameDisplayed(fileName8)).toBeTruthy(`${fileName8} Attached file name is missing`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName5}`)).toBeTruthy(`FailuerMsg: ${fileName5} File is delete sucessfully`);
+            await activityTabPo.clickAttachedFile(`${fileName5}`);
+            expect(await utilityCommon.isFileDownloaded(`${fileName5}`)).toBeTruthy(`FailuerMsg: ${fileName5} File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName6}`)).toBeTruthy(`FailuerMsg: ${fileName6} File is delete sucessfully`);
+            await activityTabPo.clickAttachedFile(`${fileName6}`);
+            expect(await utilityCommon.isFileDownloaded('2ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf' File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName7}`)).toBeTruthy(`FailuerMsg: ${fileName7} File is delete sucessfully`);
+            await activityTabPo.clickAttachedFile(`${fileName7}`);
+            expect(await utilityCommon.isFileDownloaded(`${fileName7}`)).toBeTruthy(`FailuerMsg: ${fileName7} File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName8}`)).toBeTruthy(`FailuerMsg: ${fileName8} File is delete sucessfully`);
+            await activityTabPo.clickAttachedFile(`${fileName8}`);
+            expect(await utilityCommon.isFileDownloaded(`${fileName8}`)).toBeTruthy(`FailuerMsg: ${fileName8} File is not downloaded.`);
+            
+            await viewCasePo.clickAttachmentsLink();
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName5}`)).toBeTruthy(`FailuerMsg: ${fileName5} File is delete sucessfully`);
+            await attachmentBladePo.selectCheckBox(5);
+            await attachmentBladePo.clickDownloadButton();
+            await attachmentBladePo.selectCheckBox(5);
+            expect(await utilityCommon.isFileDownloaded(`${fileName5}`)).toBeTruthy(`FailuerMsg: ${fileName5} File is not downloaded.`);
+            
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName6}`)).toBeTruthy(`FailuerMsg: ${fileName6} File is delete sucessfully`);
+            await attachmentBladePo.selectCheckBox(6);
+            await attachmentBladePo.clickDownloadButton();
+            await attachmentBladePo.selectCheckBox(6);
+            expect(await utilityCommon.isFileDownloaded('2ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '2ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf' File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName7}`)).toBeTruthy(`FailuerMsg: ${fileName7} File is delete sucessfully`);
+            await attachmentBladePo.selectCheckBox(7);
+            await attachmentBladePo.clickDownloadButton();
+            await attachmentBladePo.selectCheckBox(7);
+            expect(await utilityCommon.isFileDownloaded(`${fileName7}`)).toBeTruthy(`FailuerMsg: ${fileName7} File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName8}`)).toBeTruthy(`FailuerMsg: ${fileName8} File is delete sucessfully`);
+            await attachmentBladePo.selectCheckBox(8);
+            await attachmentBladePo.clickDownloadButton();
+            await attachmentBladePo.selectCheckBox(8);
+            expect(await utilityCommon.isFileDownloaded(`${fileName8}`)).toBeTruthy(`FailuerMsg: ${fileName8} File is not downloaded.`);
+            await attachmentBladePo.clickCloseButton();
+        });
+
+        it('[DRDMV-15252]: Verify Document Libaray Attachment On Case Activity Tab ', async () => {
+            await activityTabPo.addActivityNote(addNoteRandomText);
+            await activityTabPo.clickOnAttachLink();
+            await attachDocumentBladePo.searchAndAttachDocument(docLibTitle+1);
+            await activityTabPo.clickOnAttachLink();
+            await attachDocumentBladePo.searchAndAttachDocument(docLibTitle+2);
+            await activityTabPo.clickOnAttachLink();
+            await attachDocumentBladePo.searchAndAttachDocument(docLibTitle+3);
+            await activityTabPo.clickOnAttachLink();
+            await attachDocumentBladePo.searchAndAttachDocument(docLibTitle+4);
+            await activityTabPo.clickOnPostButton();
+            await activityTabPo.clickShowMoreLinkInAttachmentActivity(1);
+
+
+            expect(await activityTabPo.isAttachedFileNameDisplayed(fileName9)).toBeTruthy(`${fileName9} Attached file name is missing`);
+            expect(await activityTabPo.isAttachedFileNameDisplayed(fileName10)).toBeTruthy(`${fileName10} Attached file name is missing`);
+            expect(await activityTabPo.isAttachedFileNameDisplayed(fileName11)).toBeTruthy(`${fileName11} Attached file name is missing`);
+            expect(await activityTabPo.isAttachedFileNameDisplayed(fileName12)).toBeTruthy(`${fileName12} Attached file name is missing`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName9}`)).toBeTruthy(`FailuerMsg: ${fileName9} File is delete sucessfully`);
+            await activityTabPo.clickAttachedFile(`${fileName9}`);
+            expect(await utilityCommon.isFileDownloaded(`${fileName9}`)).toBeTruthy(`FailuerMsg: ${fileName9} File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName10}`)).toBeTruthy(`FailuerMsg: ${fileName10} File is delete sucessfully`);
+            await activityTabPo.clickAttachedFile(`${fileName10}`);
+            expect(await utilityCommon.isFileDownloaded('3ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf' File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName11}`)).toBeTruthy(`FailuerMsg: ${fileName11} File is delete sucessfully`);
+            await activityTabPo.clickAttachedFile(`${fileName11}`);
+            expect(await utilityCommon.isFileDownloaded(`${fileName11}`)).toBeTruthy(`FailuerMsg: ${fileName11} File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName12}`)).toBeTruthy(`FailuerMsg: ${fileName12} File is delete sucessfully`);
+            await activityTabPo.clickAttachedFile(`${fileName12}`);
+            expect(await utilityCommon.isFileDownloaded(`${fileName12}`)).toBeTruthy(`FailuerMsg: ${fileName12} File is not downloaded.`);
+            
+            await viewCasePo.clickAttachmentsLink();
+            expect(await attachmentBladePo.isCheckBoxSelected(fileName12)).toBeFalsy(`${fileName12} CheckBox is selected`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName9}`)).toBeTruthy(`FailuerMsg: ${fileName9} File is delete sucessfully`);
+            await attachmentBladePo.selectCheckBox(9);
+            await attachmentBladePo.clickDownloadButton();
+            await attachmentBladePo.selectCheckBox(9);
+            expect(await utilityCommon.isFileDownloaded(`${fileName9}`)).toBeTruthy(`FailuerMsg: ${fileName9} File is not downloaded.`);
+            
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName10}`)).toBeTruthy(`FailuerMsg: ${fileName10} File is delete sucessfully`);
+            await attachmentBladePo.selectCheckBox(10);
+            await attachmentBladePo.clickDownloadButton();
+            await attachmentBladePo.selectCheckBox(10);
+            expect(await utilityCommon.isFileDownloaded('3ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '3ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf' File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName11}`)).toBeTruthy(`FailuerMsg: ${fileName11} File is delete sucessfully`);
+            await attachmentBladePo.selectCheckBox(11);
+            await attachmentBladePo.clickDownloadButton();
+            await attachmentBladePo.selectCheckBox(11);
+            expect(await utilityCommon.isFileDownloaded(`${fileName11}`)).toBeTruthy(`FailuerMsg: ${fileName11} File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName12}`)).toBeTruthy(`FailuerMsg: ${fileName12} File is delete sucessfully`);
+            await attachmentBladePo.selectCheckBox(12);
+            await attachmentBladePo.clickDownloadButton();
+            await attachmentBladePo.selectCheckBox(12);
+            expect(await utilityCommon.isFileDownloaded(`${fileName12}`)).toBeTruthy(`FailuerMsg: ${fileName12} File is not downloaded.`);
+            await attachmentBladePo.clickCloseButton();
+        });
+
+        it('[DRDMV-15252]: Verify Attachment With Task Description Attach Button ', async () => {
+            await navigationPage.gotoCaseConsole();
+            await caseConsole.searchAndOpenCase(newCase2.displayId);
+            await viewCasePo.clickAddTaskButton();
+            await manageTaskPo.clickAddAdhocTaskButton();
+            await adhoctaskTemplate.setSummary('AdhocTaskSummaryDRDMV15252');
+            await adhoctaskTemplate.clickSaveAdhoctask();
+            await manageTaskPo.clickTaskLink('AdhocTaskSummaryDRDMV15252');
+
+            await viewTaskPo.clickOnEditTask();
+            await editTaskPo.addAttachment([`../../data/ui/attachment/${fileName1}`,`../../data/ui/attachment/${fileName2}`,`../../data/ui/attachment/${fileName3}`,`../../data/ui/attachment/${fileName4}`]);
+            await editTaskPo.clickOnSaveButton();
+            await viewCasePo.clickShowMoreShowLessLink();
+            
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName1}`)).toBeTruthy(`FailuerMsg: ${fileName1} File is delete sucessfully`);
+            await viewTaskPo.isAttachedFileNamePresent(fileName1);
+            await viewTaskPo.clickOnAttachedDocumentFile(`${fileName1}`);
+            expect(await utilityCommon.isFileDownloaded(`${fileName1}`)).toBeTruthy(`FailuerMsg: ${fileName1} File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName2}`)).toBeTruthy(`FailuerMsg: ${fileName2} File is delete sucessfully`);
+            await viewTaskPo.isAttachedFileNamePresent(fileName2);
+            await viewTaskPo.clickOnAttachedDocumentFile(`${fileName2}`);
+            expect(await utilityCommon.isFileDownloaded('1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf' File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName3}`)).toBeTruthy(`FailuerMsg: ${fileName3} File is delete sucessfully`);
+            await viewTaskPo.isAttachedFileNamePresent(fileName3);
+            await viewTaskPo.clickOnAttachedDocumentFile(`${fileName3}`);
+            expect(await utilityCommon.isFileDownloaded(`${fileName3}`)).toBeTruthy(`FailuerMsg: ${fileName3} File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName4}`)).toBeTruthy(`FailuerMsg: ${fileName4} File is delete sucessfully`);
+            await viewTaskPo.isAttachedFileNamePresent(fileName4);
+            await viewTaskPo.clickOnAttachedDocumentFile(`${fileName4}`);
+            expect(await utilityCommon.isFileDownloaded(`${fileName4}`)).toBeTruthy(`FailuerMsg: ${fileName4} File is not downloaded.`);
+        });
+
+        it('[DRDMV-15252]: Verify Locally Attachment On Task Activity Tab', async () => {
+            await activityTabPo.addActivityNote(addNoteRandomText);
+            await activityTabPo.addAttachment([`../../data/ui/attachment/${fileName5}`,`../../data/ui/attachment/${fileName6}`,`../../data/ui/attachment/${fileName7}`,`../../data/ui/attachment/${fileName8}`]);
+            await activityTabPo.clickOnPostButton();
+            await activityTabPo.clickShowMoreLinkInAttachmentActivity(1);
+
+            expect(await activityTabPo.isAttachedFileNameDisplayed(fileName5)).toBeTruthy(`${fileName5} Attached file name is missing`);
+            expect(await activityTabPo.isAttachedFileNameDisplayed(fileName6)).toBeTruthy(`${fileName6} Attached file name is missing`);
+            expect(await activityTabPo.isAttachedFileNameDisplayed(fileName7)).toBeTruthy(`${fileName7} Attached file name is missing`);
+            expect(await activityTabPo.isAttachedFileNameDisplayed(fileName8)).toBeTruthy(`${fileName8} Attached file name is missing`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName5}`)).toBeTruthy(`FailuerMsg: ${fileName5} File is delete sucessfully`);
+            await activityTabPo.clickAttachedFile(`${fileName5}`);
+            expect(await utilityCommon.isFileDownloaded(`${fileName5}`)).toBeTruthy(`FailuerMsg: ${fileName5} File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName6}`)).toBeTruthy(`FailuerMsg: ${fileName6} File is delete sucessfully`);
+            await activityTabPo.clickAttachedFile(`${fileName6}`);
+            expect(await utilityCommon.isFileDownloaded('2ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf' File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName7}`)).toBeTruthy(`FailuerMsg: ${fileName7} File is delete sucessfully`);
+            await activityTabPo.clickAttachedFile(`${fileName7}`);
+            expect(await utilityCommon.isFileDownloaded(`${fileName7}`)).toBeTruthy(`FailuerMsg: ${fileName7} File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName8}`)).toBeTruthy(`FailuerMsg: ${fileName8} File is delete sucessfully`);
+            await activityTabPo.clickAttachedFile(`${fileName8}`);
+            expect(await utilityCommon.isFileDownloaded(`${fileName8}`)).toBeTruthy(`FailuerMsg: ${fileName8} File is not downloaded.`);
+        });
+
+        it('[DRDMV-15252]: Verify Document Libaray Attachment On Task Activity Tab ', async () => {
+            await activityTabPo.addActivityNote(addNoteRandomText);
+            await activityTabPo.clickOnAttachLink();
+            await attachDocumentBladePo.searchAndAttachDocument(docLibTitle+1);
+            await activityTabPo.clickOnAttachLink();
+            await attachDocumentBladePo.searchAndAttachDocument(docLibTitle+2);
+            await activityTabPo.clickOnAttachLink();
+            await attachDocumentBladePo.searchAndAttachDocument(docLibTitle+3);
+            await activityTabPo.clickOnAttachLink();
+            await attachDocumentBladePo.searchAndAttachDocument(docLibTitle+4);
+            await activityTabPo.clickOnPostButton();
+            await activityTabPo.clickShowMoreLinkInAttachmentActivity(1);
+
+            expect(await activityTabPo.isAttachedFileNameDisplayed(fileName9)).toBeTruthy(`${fileName9} Attached file name is missing`);
+            expect(await activityTabPo.isAttachedFileNameDisplayed(fileName10)).toBeTruthy(`${fileName10} Attached file name is missing`);
+            expect(await activityTabPo.isAttachedFileNameDisplayed(fileName11)).toBeTruthy(`${fileName11} Attached file name is missing`);
+            expect(await activityTabPo.isAttachedFileNameDisplayed(fileName12)).toBeTruthy(`${fileName12} Attached file name is missing`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName9}`)).toBeTruthy(`FailuerMsg: ${fileName9} File is delete sucessfully`);
+            await activityTabPo.clickAttachedFile(`${fileName9}`);
+            expect(await utilityCommon.isFileDownloaded(`${fileName9}`)).toBeTruthy(`FailuerMsg: ${fileName9} File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName10}`)).toBeTruthy(`FailuerMsg: ${fileName10} File is delete sucessfully`);
+            await activityTabPo.clickAttachedFile(`${fileName10}`);
+            expect(await utilityCommon.isFileDownloaded('3ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf' File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName11}`)).toBeTruthy(`FailuerMsg: ${fileName11} File is delete sucessfully`);
+            await activityTabPo.clickAttachedFile(`${fileName11}`);
+            expect(await utilityCommon.isFileDownloaded(`${fileName11}`)).toBeTruthy(`FailuerMsg: ${fileName11} File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName12}`)).toBeTruthy(`FailuerMsg: ${fileName12} File is delete sucessfully`);
+            await activityTabPo.clickAttachedFile(`${fileName12}`);
+            expect(await utilityCommon.isFileDownloaded(`${fileName12}`)).toBeTruthy(`FailuerMsg: ${fileName12} File is not downloaded.`);
+        });
+
+        it('[DRDMV-15252]: Verify Files On Attachment Blade ', async () => {
+            await viewTaskPo.clickOnViewCase();
+            await viewCasePo.clickAttachmentsLink();
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName1}`)).toBeTruthy(`FailuerMsg: ${fileName1} File is delete sucessfully`);
+            await attachmentBladePo.selectCheckBox(1);
+            await attachmentBladePo.clickDownloadButton();
+            await attachmentBladePo.selectCheckBox(1);
+            expect(await utilityCommon.isFileDownloaded(`${fileName1}`)).toBeTruthy(`FailuerMsg: ${fileName1} File is not downloaded.`);
+            
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName2}`)).toBeTruthy(`FailuerMsg: ${fileName2} File is delete sucessfully`);
+            await attachmentBladePo.selectCheckBox(2);
+            await attachmentBladePo.clickDownloadButton();
+            await attachmentBladePo.selectCheckBox(2);
+            expect(await utilityCommon.isFileDownloaded('1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf' File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName3}`)).toBeTruthy(`FailuerMsg: ${fileName3} File is delete sucessfully`);
+            await attachmentBladePo.selectCheckBox(3);
+            await attachmentBladePo.clickDownloadButton();
+            await attachmentBladePo.selectCheckBox(3);
+            expect(await utilityCommon.isFileDownloaded(`${fileName3}`)).toBeTruthy(`FailuerMsg: ${fileName3} File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName4}`)).toBeTruthy(`FailuerMsg: ${fileName4} File is delete sucessfully`);
+            await attachmentBladePo.selectCheckBox(4);
+            await attachmentBladePo.clickDownloadButton();
+            await attachmentBladePo.selectCheckBox(4);
+            expect(await utilityCommon.isFileDownloaded(`${fileName4}`)).toBeTruthy(`FailuerMsg: ${fileName4} File is not downloaded.`);
+       
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName5}`)).toBeTruthy(`FailuerMsg: ${fileName5} File is delete sucessfully`);
+            await attachmentBladePo.selectCheckBox(5);
+            await attachmentBladePo.clickDownloadButton();
+            await attachmentBladePo.selectCheckBox(5);
+            expect(await utilityCommon.isFileDownloaded(`${fileName5}`)).toBeTruthy(`FailuerMsg: ${fileName5} File is not downloaded.`);
+            
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName6}`)).toBeTruthy(`FailuerMsg: ${fileName6} File is delete sucessfully`);
+            await attachmentBladePo.selectCheckBox(6);
+            await attachmentBladePo.clickDownloadButton();
+            await attachmentBladePo.selectCheckBox(6);
+            expect(await utilityCommon.isFileDownloaded('2ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf' File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName7}`)).toBeTruthy(`FailuerMsg: ${fileName7} File is delete sucessfully`);
+            await attachmentBladePo.selectCheckBox(7);
+            await attachmentBladePo.clickDownloadButton();
+            await attachmentBladePo.selectCheckBox(7);
+            expect(await utilityCommon.isFileDownloaded(`${fileName7}`)).toBeTruthy(`FailuerMsg: ${fileName7} File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName8}`)).toBeTruthy(`FailuerMsg: ${fileName8} File is delete sucessfully`);
+            await attachmentBladePo.selectCheckBox(8);
+            await attachmentBladePo.clickDownloadButton();
+            await attachmentBladePo.selectCheckBox(8);
+            expect(await utilityCommon.isFileDownloaded(`${fileName8}`)).toBeTruthy(`FailuerMsg: ${fileName8} File is not downloaded.`);
+       
+            expect(await attachmentBladePo.isCheckBoxSelected(fileName12)).toBeFalsy(`${fileName12} CheckBox is selected`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName9}`)).toBeTruthy(`FailuerMsg: ${fileName9} File is delete sucessfully`);
+            await attachmentBladePo.selectCheckBox(9);
+            await attachmentBladePo.clickDownloadButton();
+            await attachmentBladePo.selectCheckBox(9);
+            expect(await utilityCommon.isFileDownloaded(`${fileName9}`)).toBeTruthy(`FailuerMsg: ${fileName9} File is not downloaded.`);
+            
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName10}`)).toBeTruthy(`FailuerMsg: ${fileName10} File is delete sucessfully`);
+            await attachmentBladePo.selectCheckBox(10);
+            await attachmentBladePo.clickDownloadButton();
+            await attachmentBladePo.selectCheckBox(10);
+            expect(await utilityCommon.isFileDownloaded('3ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '3ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf' File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName11}`)).toBeTruthy(`FailuerMsg: ${fileName11} File is delete sucessfully`);
+            await attachmentBladePo.selectCheckBox(11);
+            await attachmentBladePo.clickDownloadButton();
+            await attachmentBladePo.selectCheckBox(11);
+            expect(await utilityCommon.isFileDownloaded(`${fileName11}`)).toBeTruthy(`FailuerMsg: ${fileName11} File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName12}`)).toBeTruthy(`FailuerMsg: ${fileName12} File is delete sucessfully`);
+            await attachmentBladePo.selectCheckBox(12);
+            await attachmentBladePo.clickDownloadButton();
+            await attachmentBladePo.selectCheckBox(12);
+            expect(await utilityCommon.isFileDownloaded(`${fileName12}`)).toBeTruthy(`FailuerMsg: ${fileName12} File is not downloaded.`);
+            await attachmentBladePo.clickCloseButton();
+        });
+        
+        it('[DRDMV-15252]: Verify Files On Edit Knowledge MetaData', async () => {
+            await navigationPage.gotoKnowledgeConsole();
+            await knowledgeArticlesConsolePo.searchAndOpenKnowledgeArticle(knowledgeArticleData.displayId);
+            await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
+            await editKnowledgePo.setCategoryTier1('Employee Relations');
+            await editKnowledgePo.addAttachment([`../../data/ui/attachment/${fileName1}`,`../../data/ui/attachment/${fileName2}`,`../../data/ui/attachment/${fileName3}`,`../../data/ui/attachment/${fileName4}`]);
+            await editKnowledgePo.clickSaveKnowledgeMetadata();
+
+            await viewKnowledgeArticlePo.clickShowMoreButton();
+
+            expect(await viewKnowledgeArticlePo.isAttachedFileNamePresent(fileName1)).toBeTruthy(`${fileName1}File is missing`);
+            expect(await viewKnowledgeArticlePo.isAttachedFileNamePresent(fileName2)).toBeTruthy(`${fileName2}File is missing`);
+            expect(await viewKnowledgeArticlePo.isAttachedFileNamePresent(fileName3)).toBeTruthy(`${fileName3}File is missing`);
+            expect(await viewKnowledgeArticlePo.isAttachedFileNamePresent(fileName4)).toBeTruthy(`${fileName4}File is missing`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName1}`)).toBeTruthy(`FailuerMsg: ${fileName1} File is delete sucessfully`);
+            await viewKnowledgeArticlePo.clickOnAttachment(`${fileName1}`);
+            expect(await utilityCommon.isFileDownloaded(`${fileName1}`)).toBeTruthy(`FailuerMsg: ${fileName1} File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName2}`)).toBeTruthy(`FailuerMsg: ${fileName2} File is delete sucessfully`);
+            await viewKnowledgeArticlePo.clickOnAttachment(`${fileName2}`);
+            expect(await utilityCommon.isFileDownloaded('1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf' File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName3}`)).toBeTruthy(`FailuerMsg: ${fileName3} File is delete sucessfully`);
+            await viewKnowledgeArticlePo.clickOnAttachment(`${fileName3}`);
+            expect(await utilityCommon.isFileDownloaded(`${fileName3}`)).toBeTruthy(`FailuerMsg: ${fileName3} File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName4}`)).toBeTruthy(`FailuerMsg: ${fileName4} File is delete sucessfully`);
+            await viewKnowledgeArticlePo.clickOnAttachment(`${fileName4}`);
+            expect(await utilityCommon.isFileDownloaded(`${fileName4}`)).toBeTruthy(`FailuerMsg: ${fileName4} File is not downloaded.`);
+        });
+
+        it('[DRDMV-15252]: Verify Locally Attachment On Case Activity Tab ', async () => {
+            await viewKnowledgeArticlePo.clickOnActivityTab();
+
+            await activityTabPo.addActivityNote(addNoteRandomText);
+            await activityTabPo.addAttachment([`../../data/ui/attachment/${fileName5}`,`../../data/ui/attachment/${fileName6}`,`../../data/ui/attachment/${fileName7}`,`../../data/ui/attachment/${fileName8}`]);
+            await activityTabPo.clickOnPostButton();
+            await activityTabPo.clickShowMoreLinkInAttachmentActivity(1);
+
+            expect(await activityTabPo.isAttachedFileNameDisplayed(fileName5)).toBeTruthy(`${fileName5} Attached file name is missing`);
+            expect(await activityTabPo.isAttachedFileNameDisplayed(fileName6)).toBeTruthy(`${fileName6} Attached file name is missing`);
+            expect(await activityTabPo.isAttachedFileNameDisplayed(fileName7)).toBeTruthy(`${fileName7} Attached file name is missing`);
+            expect(await activityTabPo.isAttachedFileNameDisplayed(fileName8)).toBeTruthy(`${fileName8} Attached file name is missing`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName5}`)).toBeTruthy(`FailuerMsg: ${fileName5} File is delete sucessfully`);
+            await activityTabPo.clickAttachedFile(`${fileName5}`);
+            expect(await utilityCommon.isFileDownloaded(`${fileName5}`)).toBeTruthy(`FailuerMsg: ${fileName5} File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName6}`)).toBeTruthy(`FailuerMsg: ${fileName6} File is delete sucessfully`);
+            await activityTabPo.clickAttachedFile(`${fileName6}`);
+            expect(await utilityCommon.isFileDownloaded('2ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf' File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName7}`)).toBeTruthy(`FailuerMsg: ${fileName7} File is delete sucessfully`);
+            await activityTabPo.clickAttachedFile(`${fileName7}`);
+            expect(await utilityCommon.isFileDownloaded(`${fileName7}`)).toBeTruthy(`FailuerMsg: ${fileName7} File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName8}`)).toBeTruthy(`FailuerMsg: ${fileName8} File is delete sucessfully`);
+            await activityTabPo.clickAttachedFile(`${fileName8}`);
+            expect(await utilityCommon.isFileDownloaded(`${fileName8}`)).toBeTruthy(`FailuerMsg: ${fileName8} File is not downloaded.`);
+        });
+       
+        it('[DRDMV-15252]: Verify Document Libaray Attachment On Knowledge Activity Tab ', async () => {
+            await activityTabPo.addActivityNote(addNoteRandomText);
+            await activityTabPo.clickOnAttachLink();
+            await attachDocumentBladePo.searchAndAttachDocument(docLibTitle+1);
+            await activityTabPo.clickOnAttachLink();
+            await attachDocumentBladePo.searchAndAttachDocument(docLibTitle+2);
+            await activityTabPo.clickOnAttachLink();
+            await attachDocumentBladePo.searchAndAttachDocument(docLibTitle+3);
+            await activityTabPo.clickOnAttachLink();
+            await attachDocumentBladePo.searchAndAttachDocument(docLibTitle+4);
+            await activityTabPo.clickOnPostButton();
+            await activityTabPo.clickShowMoreLinkInAttachmentActivity(1);
+
+            expect(await activityTabPo.isAttachedFileNameDisplayed(fileName9)).toBeTruthy(`${fileName9} Attached file name is missing`);
+            expect(await activityTabPo.isAttachedFileNameDisplayed(fileName10)).toBeTruthy(`${fileName10} Attached file name is missing`);
+            expect(await activityTabPo.isAttachedFileNameDisplayed(fileName11)).toBeTruthy(`${fileName11} Attached file name is missing`);
+            expect(await activityTabPo.isAttachedFileNameDisplayed(fileName12)).toBeTruthy(`${fileName12} Attached file name is missing`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName9}`)).toBeTruthy(`FailuerMsg: ${fileName9} File is delete sucessfully`);
+            await activityTabPo.clickAttachedFile(`${fileName9}`);
+            expect(await utilityCommon.isFileDownloaded(`${fileName9}`)).toBeTruthy(`FailuerMsg: ${fileName9} File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName10}`)).toBeTruthy(`FailuerMsg: ${fileName10} File is delete sucessfully`);
+            await activityTabPo.clickAttachedFile(`${fileName10}`);
+            expect(await utilityCommon.isFileDownloaded('3ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf' File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName11}`)).toBeTruthy(`FailuerMsg: ${fileName11} File is delete sucessfully`);
+            await activityTabPo.clickAttachedFile(`${fileName11}`);
+            expect(await utilityCommon.isFileDownloaded(`${fileName11}`)).toBeTruthy(`FailuerMsg: ${fileName11} File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName12}`)).toBeTruthy(`FailuerMsg: ${fileName12} File is delete sucessfully`);
+            await activityTabPo.clickAttachedFile(`${fileName12}`);
+            expect(await utilityCommon.isFileDownloaded(`${fileName12}`)).toBeTruthy(`FailuerMsg: ${fileName12} File is not downloaded.`);
+        });
+
+        fit('[DRDMV-15252]: Attach Files From UI Dynamic Field And Create Case', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(caseTempateName);
+            await viewCasetemplatePo.clickOnEditCaseTemplateButton();
+            await editCasetemplatePo.clickOnMangeDyanmicLink();
+            await dynamicFieldsPo.addAttachment([`../../data/ui/attachment/${fileName1}`], 1);
+            await dynamicFieldsPo.addAttachment([`../../data/ui/attachment/${fileName2}`], 2);
+            await dynamicFieldsPo.addAttachment([`../../data/ui/attachment/${fileName3}`], 3);
+            await dynamicFieldsPo.addAttachment([`../../data/ui/attachment/${fileName4}`], 4);
+            await dynamicFieldsPo.clickSaveButton();
+            await editCasetemplatePo.clickOnEditCaseTemplateMetadata();
+            await editCasetemplatePo.changeTemplateStatusDropdownValue('Active');
+            await editCasetemplatePo.changeOwnerGroupDropdownValue('US Support 1');
+            await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
+            //Create Case
+            await navigationPage.gotoCaseConsole();
+            await navigationPage.gotoCreateCase();
+            await createCasePo.selectRequester('Elizabeth Peters');
+            await createCasePo.setSummary('caseSummary');
+            await createCasePo.clickSelectCaseTemplateButton()
+            await selectCasetemplateBladePo.selectCaseTemplate(caseTempateName);
+            await createCasePo.clickAssignToMeButton();
+            await createCasePo.clickSaveCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
+            await viewCasePo.clickEditCaseButton();
+        });
+        fit('[DRDMV-15252]: Verify Dynamic Fields On Case', async () => {
+            await browser.sleep(15000);//Wait untile download icon displayed.
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName1}`)).toBeTruthy(`FailuerMsg: ${fileName1} File is delete sucessfully`);
+            await editCasePo.clickDownloadDynamicFile(1);
+            expect(await utilityCommon.isFileDownloaded(`${fileName1}`)).toBeTruthy(`FailuerMsg: ${fileName1} File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName2}`)).toBeTruthy(`FailuerMsg: ${fileName2} File is delete sucessfully`);
+            await editCasePo.clickDownloadDynamicFile(2);
+            expect(await utilityCommon.isFileDownloaded('1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf' File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName3}`)).toBeTruthy(`FailuerMsg: ${fileName3} File is delete sucessfully`);
+            await editCasePo.clickDownloadDynamicFile(3);
+            expect(await utilityCommon.isFileDownloaded(`${fileName3}`)).toBeTruthy(`FailuerMsg: ${fileName3} File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName4}`)).toBeTruthy(`FailuerMsg: ${fileName4} File is delete sucessfully`);
+            await editCasePo.clickDownloadDynamicFile(4);
+            expect(await utilityCommon.isFileDownloaded(`${fileName4}`)).toBeTruthy(`FailuerMsg: ${fileName4} File is not downloaded.`);
+
+            await editCasePo.addAttachment('attachmentFirst', [`../../data/ui/attachment/${fileName1}`]);
+            await editCasePo.addAttachment('attachmentSecond', [`../../data/ui/attachment/${fileName2}`]);
+            await editCasePo.addAttachment('attachmentThird', [`../../data/ui/attachment/${fileName3}`]);
+            await editCasePo.addAttachment('attachmentFour', [`../../data/ui/attachment/${fileName4}`]);
+            await editCasePo.clickSaveCase();
+        });
+        fit('[DRDMV-15252]: Verify Dynamic Fields On View Case & Activity', async () => {
+            await activityTabPo.clickShowMoreLinkInActivity(1);
+            await activityTabPo.isTextPresentInActivityLog('1Google+Translate+เป็นบริการแปลระบบประสาทด้วยเครื่องฟรีหลายภาษาที่พัฒนาโดย+Google.xlsx(+)')
+            await activityTabPo.isTextPresentInActivityLog('1ทรัพยากรมนุษย์-นโยบายการแพทย์-รายงานการต__รวจสอบ.docx(+)');
+            await activityTabPo.isTextPresentInActivityLog('1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf(+)');
+            await activityTabPo.isTextPresentInActivityLog('1!@#$%^&()+_-={}[}.');
+            await activityTabPo.isTextPresentInActivityLog('123.jpg(+)');
+             
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName1}`)).toBeTruthy(`FailuerMsg: ${fileName1} File is delete sucessfully`);
+            await viewCasePo.clickDynamicAttachmentValue(fileName1);
+            expect(await utilityCommon.isFileDownloaded(`${fileName1}`)).toBeTruthy(`FailuerMsg: ${fileName1} File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName2}`)).toBeTruthy(`FailuerMsg: ${fileName2} File is delete sucessfully`);
+            await viewCasePo.clickDynamicAttachmentValue(fileName2);
+            expect(await utilityCommon.isFileDownloaded('1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf' File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName3}`)).toBeTruthy(`FailuerMsg: ${fileName3} File is delete sucessfully`);
+            await viewCasePo.clickDynamicAttachmentValue(fileName3);
+            expect(await utilityCommon.isFileDownloaded(`${fileName3}`)).toBeTruthy(`FailuerMsg: ${fileName3} File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName4}`)).toBeTruthy(`FailuerMsg: ${fileName4} File is delete sucessfully`);
+            await viewCasePo.clickDynamicAttachmentValue(fileName4);
+            expect(await utilityCommon.isFileDownloaded(`${fileName4}`)).toBeTruthy(`FailuerMsg: ${fileName4} File is not downloaded.`);
+        });
+        fit('[DRDMV-15252]: Verify Dynamic Fields On Attachment', async () => {
+            await viewCasePo.clickAttachmentsLink();
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName1}`)).toBeTruthy(`FailuerMsg: ${fileName1} File is delete sucessfully`);
+            await attachmentBladePo.selectCheckBox(1);
+            await attachmentBladePo.clickDownloadButton();
+            await attachmentBladePo.selectCheckBox(1);
+            expect(await utilityCommon.isFileDownloaded(`${fileName1}`)).toBeTruthy(`FailuerMsg: ${fileName1} File is not downloaded.`);
+            
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName2}`)).toBeTruthy(`FailuerMsg: ${fileName2} File is delete sucessfully`);
+            await attachmentBladePo.selectCheckBox(2);
+            await attachmentBladePo.clickDownloadButton();
+            await attachmentBladePo.selectCheckBox(2);
+            expect(await utilityCommon.isFileDownloaded('1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf' File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName3}`)).toBeTruthy(`FailuerMsg: ${fileName3} File is delete sucessfully`);
+            await attachmentBladePo.selectCheckBox(3);
+            await attachmentBladePo.clickDownloadButton();
+            await attachmentBladePo.selectCheckBox(3);
+            expect(await utilityCommon.isFileDownloaded(`${fileName3}`)).toBeTruthy(`FailuerMsg: ${fileName3} File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName4}`)).toBeTruthy(`FailuerMsg: ${fileName4} File is delete sucessfully`);
+            await attachmentBladePo.selectCheckBox(4);
+            await attachmentBladePo.clickDownloadButton();
+            await attachmentBladePo.selectCheckBox(4);
+            expect(await utilityCommon.isFileDownloaded(`${fileName4}`)).toBeTruthy(`FailuerMsg: ${fileName4} File is not downloaded.`);
+            await attachmentBladePo.clickCloseButton();
+
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+            await navigationPage.signOut();
+            await loginPage.login('qtao');
+        });
+    });
+
 });

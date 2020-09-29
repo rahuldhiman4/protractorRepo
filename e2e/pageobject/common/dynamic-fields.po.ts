@@ -1,3 +1,4 @@
+import { resolve } from "path";
 import { $, $$, Key, By, element, protractor, ProtractorExpectedConditions } from "protractor";
 
 class DynamicField {
@@ -26,6 +27,7 @@ class DynamicField {
         downArrow: '.d-icon-right-angle_down',
         searchField: '.ac-input-search-fields',
         deleteButton: '[class="d-icon-left-cross header-icon"]',
+        attachmentField: 'input[type="file"]'
     }
 
     async clickOnDynamicField(): Promise<void> {
@@ -173,6 +175,12 @@ class DynamicField {
     async searchField(value: string): Promise<void> {
         await $(this.selectors.searchField).clear();
         await $(this.selectors.searchField).sendKeys(value + Key.ENTER);
+    }
+
+    async addAttachment(fileToUpload: string[], attachmentNumber:number): Promise<void> {
+        const absPathArray = fileToUpload.map((curStr) => { return resolve(__dirname, curStr) });
+        console.log(absPathArray);
+        await $$(this.selectors.attachmentField).get(attachmentNumber -1).sendKeys(absPathArray.join('\n'));
     }
 }
 

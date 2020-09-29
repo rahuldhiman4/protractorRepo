@@ -67,6 +67,7 @@ class CaseEditPage {
         dynamicFieldInput: '[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] input',
         dynamicAttachmentField: '[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .bwf-attachment-button input',
         tabText: '.nav-link-wrapper',
+        dynamciFieldDownLoadIcon: '.bwf-text-color-active',
     }
 
     async removeAttachment(): Promise<void> {
@@ -355,10 +356,10 @@ class CaseEditPage {
         }
     }
 
-    async addDescriptionAttachment(fileToUpload: string): Promise<void> {
-        const absolutePath = resolve(__dirname, fileToUpload);
-        console.log(absolutePath);
-        await $(this.selectors.attachmentField).sendKeys(absolutePath);
+    async addDescriptionAttachment(fileToUpload: string[]): Promise<void> {
+        const absPathArray = fileToUpload.map((curStr) => { return resolve(__dirname, curStr) });
+        console.log(absPathArray);
+        await $(this.selectors.attachmentField).sendKeys(absPathArray.join('\n'));
     }
 
     async setDynamicFieldValue(fieldName: string, fieldValue: string): Promise<void> {
@@ -401,7 +402,9 @@ class CaseEditPage {
         return await $(`[rx-view-component-id="${this.selectors.categoryTier4Guid}"] button`).getText();
     }
 
-    
+    async clickDownloadDynamicFile(downloadButtonNumber:number): Promise<void> {
+        await $$(this.selectors.dynamciFieldDownLoadIcon).get(downloadButtonNumber -1).click();
+    }
 }
 
 export default new CaseEditPage();

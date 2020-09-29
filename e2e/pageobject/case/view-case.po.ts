@@ -79,6 +79,10 @@ class ViewCasePage {
         return await $(this.selectors.dynamicAttachmentValue).getText();
     }
 
+    async clickDynamicAttachmentValue(fileName:string): Promise<void> {
+        await element(by.cssContainingText(this.selectors.dynamicAttachmentValue, fileName)).click();
+    }
+
     async isImageDisplayed(value: string): Promise<boolean> {
         return await $(`.bwf-description-read-state img[src="${value}"]`).isDisplayed();
     }

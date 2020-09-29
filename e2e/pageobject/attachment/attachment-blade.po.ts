@@ -143,6 +143,10 @@ class AttachmentBlade {
     async isCloseButtonDisplayed(): Promise<boolean> {
         return await $(this.selectors.close).isDisplayed();
     }
+
+    async selectCheckBox(numberCheckbox:number): Promise<void> {
+        await $$(this.selectors.selectCheckbox).get(numberCheckbox - 1).click();
+    }
 }
 
 export default new AttachmentBlade();
