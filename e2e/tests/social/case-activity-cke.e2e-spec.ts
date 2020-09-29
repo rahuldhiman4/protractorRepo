@@ -174,13 +174,13 @@ describe('Case Activity CKE', () => {
             expect(await activityTabPage.isColorTextDisplayedInActivity('color:#c0392b;', addNoteBodyText, 1)).toBeTruthy('FailureMsg Color Text is missing in Activity');
             //checking number list
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.setInsertRemoveNumberList('PlusOne');
+            await activityTabPage.setNumberList('PlusOne');
             expect(await activityTabPage.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('FailureMsg Number list is missing in Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
             // checking bullot points
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.setInsertRemoveBulletedList('BulletOne');
+            await activityTabPage.setBulletList('BulletOne');
             expect(await activityTabPage.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('FailureMsg Text is not center Align In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
@@ -256,13 +256,13 @@ describe('Case Activity CKE', () => {
             expect(await activityTabPage.isColorTextDisplayedInActivity('color:#c0392b;', addNoteBodyText, 1)).toBeTruthy('FailureMsg Color Text is missing in Activity');
             //checking number list
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.setInsertRemoveNumberList('PlusOne');
+            await activityTabPage.setNumberList('PlusOne');
             expect(await activityTabPage.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('FailureMsg Number list is missing in Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
             // checking bullot points
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.setInsertRemoveBulletedList('BulletOne');
+            await activityTabPage.setBulletList('BulletOne');
             expect(await activityTabPage.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('FailureMsg Text is not center Align In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
@@ -340,13 +340,13 @@ describe('Case Activity CKE', () => {
             expect(await activityTabPage.isColorTextDisplayedInActivity('color:#c0392b;', addNoteBodyText, 1)).toBeTruthy('FailureMsg Color Text is missing in Activity');
             //checking number list
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.setInsertRemoveNumberList('PlusOne');
+            await activityTabPage.setNumberList('PlusOne');
             expect(await activityTabPage.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('FailureMsg Number list is missing in Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
             // checking bullot points
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.setInsertRemoveBulletedList('BulletOne');
+            await activityTabPage.setBulletList('BulletOne');
             expect(await activityTabPage.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('FailureMsg Text is not center Align In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
@@ -423,13 +423,13 @@ describe('Case Activity CKE', () => {
             expect(await activityTabPage.isColorTextDisplayedInActivity('color:#c0392b;', addNoteBodyText, 1)).toBeTruthy('FailureMsg Color Text is missing in Activity');
             //checking number list
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.setInsertRemoveNumberList('PlusOne');
+            await activityTabPage.setNumberList('PlusOne');
             expect(await activityTabPage.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('FailureMsg Number list is missing in Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
             // checking bullot points
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.setInsertRemoveBulletedList('BulletOne');
+            await activityTabPage.setBulletList('BulletOne');
             expect(await activityTabPage.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('FailureMsg Text is not center Align In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
@@ -514,13 +514,13 @@ describe('Case Activity CKE', () => {
             expect(await activityTabPage.isColorTextDisplayedInActivity('color:#c0392b;', addNoteBodyText, 1)).toBeTruthy('FailureMsg Color Text is missing in Activity');
             //checking number list
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.setInsertRemoveNumberList('PlusOne');
+            await activityTabPage.setNumberList('PlusOne');
             expect(await activityTabPage.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('FailureMsg Number list is missing in Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
             // checking bullot points
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.setInsertRemoveBulletedList('BulletOne');
+            await activityTabPage.setBulletList('BulletOne');
             expect(await activityTabPage.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('FailureMsg Text is not center Align In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
@@ -599,13 +599,13 @@ describe('Case Activity CKE', () => {
             expect(await activityTabPage.isColorTextDisplayedInActivity('color:#c0392b;', addNoteBodyText, 1)).toBeTruthy('FailureMsg Color Text is missing in Activity');
             //checking number list
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.setInsertRemoveNumberList('PlusOne');
+            await activityTabPage.setNumberList('PlusOne');
             expect(await activityTabPage.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('FailureMsg Number list is missing in Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
             // checking bullot points
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.setInsertRemoveBulletedList('BulletOne');
+            await activityTabPage.setBulletList('BulletOne');
             expect(await activityTabPage.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('FailureMsg Text is not center Align In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
@@ -688,13 +688,13 @@ describe('Case Activity CKE', () => {
             expect(await activityTabPage.isColorTextDisplayedInActivity('color:#c0392b;', addNoteBodyText, 1)).toBeTruthy('FailureMsg Color Text is missing in Activity');
             //checking number list
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.setInsertRemoveNumberList('PlusOne');
+            await activityTabPage.setNumberList('PlusOne');
             expect(await activityTabPage.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('FailureMsg Number list is missing in Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
             // checking bullot points
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.setInsertRemoveBulletedList('BulletOne');
+            await activityTabPage.setBulletList('BulletOne');
             expect(await activityTabPage.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('FailureMsg Text is not center Align In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');

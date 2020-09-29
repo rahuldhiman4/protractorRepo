@@ -798,8 +798,8 @@ describe("Compose Email", () => {
             await linkPropertiesPo.clickOnOkBtn();
             await composeMail.setEmailBody("Table: ");
             await composeMail.clickOnTableIcon();
-            await tablePropertiesPo.setValueOfTableProperties('4', tableRowFieldIndex);
-            await tablePropertiesPo.setValueOfTableProperties('9', tableColumnFieldIndex);
+            await tablePropertiesPo.setValueOfTableProperties('3', tableRowFieldIndex);
+            await tablePropertiesPo.setValueOfTableProperties('3', tableColumnFieldIndex);
             await tablePropertiesPo.setValueOfTableProperties('500', tableWidthFieldIndex);
             await tablePropertiesPo.setValueOfTableProperties('200', tableHeightFieldIndex);
             await tablePropertiesPo.setValueOfTableProperties('new' + randomString, cellCaption);
@@ -818,34 +818,31 @@ describe("Compose Email", () => {
             await composeMail.clickOnUnderLineIcon();
             await composeMail.setDataInTable(1, 3, 'FirstUnderLine', 'tableSummary');
             //left Align
-            await composeMail.clickInTableCell(1, 4, 'tableSummary');
+            await composeMail.clickInTableCell(2, 1, 'tableSummary');
             await composeMail.clickOnLeftAlignIcon();
-            await composeMail.setDataInTable(1, 4, 'FirstLeftAlign', 'tableSummary');
+            await composeMail.setDataInTable(2, 1, 'FirstLeftAlign', 'tableSummary');
             //Right Align
-            await composeMail.clickInTableCell(1, 5, 'tableSummary');
+            await composeMail.clickInTableCell(2, 2, 'tableSummary');
             await composeMail.clickOnRightAlignIcon();
-            await composeMail.setDataInTable(1, 5, 'FirstRightAlign', 'tableSummary');
+            await composeMail.setDataInTable(2, 2, 'FirstRightAlign', 'tableSummary');
             //Center Align
-            await composeMail.clickInTableCell(1, 6, 'tableSummary');
+            await composeMail.clickInTableCell(2, 3, 'tableSummary');
             await composeMail.clickOnCenterAlignIcon();
-            await composeMail.setDataInTable(1, 6, 'FirstCenterAlign', 'tableSummary');
+            await composeMail.setDataInTable(2, 3, 'FirstCenterAlign', 'tableSummary');
             //set color
-            await browser.sleep(1000); //wait to set data in proper table cell
-            await composeMail.clickInTableCell(1, 7, 'tableSummary');
+            await composeMail.clickInTableCell(3, 1, 'tableSummary');
             await composeMail.selectColor('Bright Blue');
-            await composeMail.setDataInTable(1, 7, 'SettingColor', 'tableSummary');
+            await composeMail.setDataInTable(3, 1, 'SettingColor', 'tableSummary');
             //set font
-            await browser.sleep(1000); //wait to set data in proper table cell
-            await composeMail.clickInTableCell(1, 8, 'tableSummary');
+            await composeMail.clickInTableCell(3, 2, 'tableSummary');
             await composeMail.clickOnFontSizeIcon();
             await composeMail.selectFontTypeOrSize('18');
-            await composeMail.setDataInTable(1, 8, 'SettingFontSize', 'tableSummary');
+            await composeMail.setDataInTable(3, 2, 'SettingFontSize', 'tableSummary');
             //set fontType
-            await browser.sleep(1000); //wait to set data in proper table cell
-            await composeMail.clickInTableCell(1, 9, 'tableSummary');
+            await composeMail.clickInTableCell(3,3, 'tableSummary');
             await composeMail.clickOnFontTypeIcon();
             await composeMail.selectFontTypeOrSize('Courier New');
-            await composeMail.setDataInTable(1, 9, 'SettingFontType', 'tableSummary');
+            await composeMail.setDataInTable(3, 3, 'SettingFontType', 'tableSummary');
             //checking number and bullot points and setting values for them
             await composeMail.setBulletPointAndNumer('PlusOne');
             await composeMail.setBulletPointAndNumer('PlusTwo');
@@ -863,12 +860,12 @@ describe("Compose Email", () => {
             expect(await activityTabPo.getTextOfTD('strong')).toContain('FirstBold');
             expect(await activityTabPo.getTextOfTD('em')).toContain('FirstItalic');
             expect(await activityTabPo.getTextOfTD('u')).toContain('FirstUnderLine');
-            expect(await activityTabPo.getTextOnActivityTable(1, 4)).toContain('FirstLeftAlign');
-            expect(await activityTabPo.getTextOnActivityTable(1, 5)).toContain('FirstRightAlign');
-            expect(await activityTabPo.getTextOnActivityTable(1, 6)).toContain('FirstCenterAlign');
-            expect(await activityTabPo.getColorFontStyleOfText(1, 7, "color:#3498db;")).toContain('SettingColor');
-            expect(await activityTabPo.getColorFontStyleOfText(1, 8, "font-size:18px;")).toContain('SettingFontSize');
-            expect(await activityTabPo.getColorFontStyleOfText(1, 9, "font-family:Courier New,Courier,monospace;")).toContain('SettingFontType');
+            expect(await activityTabPo.getTextOnActivityTable(2, 1)).toContain('FirstLeftAlign');
+            expect(await activityTabPo.getTextOnActivityTable(2, 2)).toContain('FirstRightAlign');
+            expect(await activityTabPo.getTextOnActivityTable(2, 3)).toContain('FirstCenterAlign');
+            expect(await activityTabPo.getColorFontStyleOfText(3, 1, "color:#3498db;")).toContain('SettingColor');
+            expect(await activityTabPo.getColorFontStyleOfText(3, 2, "font-size:18px;")).toContain('SettingFontSize');
+            expect(await activityTabPo.getColorFontStyleOfText(3, 3, "font-family:Courier New,Courier,monospace;")).toContain('SettingFontType');
             await activityTabPo.clickOnHyperlink('http://www.google.com');
             await utilityCommon.switchToNewTab(1);
             await browser.waitForAngularEnabled(false);
