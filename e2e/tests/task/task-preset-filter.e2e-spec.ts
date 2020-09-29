@@ -16,7 +16,6 @@ describe('Task Console Preset Filter', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteServiceTargets();
         await apiHelper.deleteApprovalMapping(caseModule);
         const personDataFile = require('../../data/ui/foundation/person.ui.json');
         let personData1 = personDataFile['PhylumCaseAgent1'];
