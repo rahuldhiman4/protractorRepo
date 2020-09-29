@@ -8,7 +8,7 @@ import editCasePo from '../../pageobject/case/edit-case.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
 import attachDocumentBladePo from '../../pageobject/common/attach-document-blade.po';
-import caseAccessTabPo from '../../pageobject/common/case-access-tab.po';
+import accessTabPo from '../../pageobject/common/access-tab.po';
 import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
@@ -364,12 +364,12 @@ describe('Create Task Template', () => {
             await previewCasePo.clickGoToCaseButton();
             CaseId = await viewCasePage.getCaseID();
             await viewCasePage.clickOnTab('Case Access');
-            await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
-            await caseAccessTabPo.selectCompany('Petramco', 'Select Company');
-            await caseAccessTabPo.selectBusinessUnit('United States Support', 'Select Business Unit');
-            await caseAccessTabPo.selectSupportGroup('US Support 1', 'Select Support Group');
-            await caseAccessTabPo.selectSupportGroupWriteAccess();
-            await caseAccessTabPo.clickOnReadAccessAddButton('Add Support Group');
+            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access','Case');
+            await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
+            await accessTabPo.selectAccessEntityDropDown('United States Support', 'Select Business Unit');
+            await accessTabPo.selectAccessEntityDropDown('US Support 1', 'Select Support Group');
+            await accessTabPo.clickAssignWriteAccessCheckbox('Support Group');
+            await accessTabPo.clickAccessEntitiyAddButton('Support Group');
         });
         it('[DRDMV-5326]: Create case with different Assignment and added task on it', async () => {
             await viewCasePage.clickOnTab('Tasks');

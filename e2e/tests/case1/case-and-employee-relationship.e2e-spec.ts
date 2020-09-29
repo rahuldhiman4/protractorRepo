@@ -277,22 +277,19 @@ describe('Case And Employee Relationship', () => {
             "Summary": randomStr
         }
         await apiHelper.apiLogin('qtao');
-        let caseId2 = await (await apiHelper.createCase(caseData2)).displayId;
+        let caseId2 = (await apiHelper.createCase(caseData2)).displayId;
 
         //Create case 2
-        await apiHelper.apiLogin("qyuan");
-        let caseData = require('../../data/ui/case/case.ui.json');
-        let response = await apiHelper.createCase(caseData['simpleCase']);
-        let caseGuid = await response.id;
-
-        //Write access to qtao
-        let caseAccessDataQtao = {
-            "operation": operation['addAccess'],
-            "type": type['user'],
-            "security": security['witeAccess'],
-            "username": 'qtao'
+        const caseData1 = {
+            "Description": "Simple test case desc",
+            "Requester": "qfeng",
+            "Summary": "Simple test case summary",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 1"
         }
-        await apiHelper.updateCaseAccess(caseGuid, caseAccessDataQtao);
+        await apiHelper.createCase(caseData1);
+
         await browser.sleep(5000); // required for indexing, case will appear in recommended case section
         await navigationPage.gotoQuickCase();
         await quickCase.selectRequesterName('adam');

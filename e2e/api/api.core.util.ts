@@ -313,7 +313,6 @@ class ApiCoreUtil {
                 "nodeBRecordInstanceIds": [entity2]
             }
         );
-
     }
 
     async disassociateFoundationElements(disassociationName: string, entity1: string, entity2: string): Promise<AxiosResponse> {

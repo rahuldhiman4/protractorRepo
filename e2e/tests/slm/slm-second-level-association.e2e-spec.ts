@@ -374,7 +374,6 @@ describe('Service Target - Second Level Association Tests', () => {
         });
 
         it('[DRDMV-19663]:Verify different SVT statuses attached to the case', async () => {
-            await browser.sleep(40000);
             await navigationPage.gotoCaseConsole();
             await caseConsolePage.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green

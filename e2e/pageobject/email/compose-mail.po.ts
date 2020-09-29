@@ -60,8 +60,8 @@ class ComposeMail {
     async clickInTableCell(row: number, column: number, summary: string): Promise<void> {
         let locator = `table[summary='${summary}'] tr`;
         await browser.waitForAngularEnabled(false);
-        await browser.sleep(1000); // sleep required for proper frame switch
         await browser.switchTo().frame(element(by.css('[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] iframe.cke_wysiwyg_frame')).getWebElement());
+        await browser.sleep(1000); // sleep required for proper frame switch
         let rowLocator = await $$(locator).get(row - 1);
         await rowLocator.$$('td').get(column - 1).click();
         await browser.switchTo().defaultContent();
@@ -212,6 +212,7 @@ class ComposeMail {
         return await (await $$(this.selectors.toOrCcEmailgetText).last().getText()).trim();
     }
 
+    // input should be a list and this method should be merged with setNumberList from activity tab, finally in ckeditor-ops file
     async setBulletPointAndNumer(value: string): Promise<void> {
         await browser.waitForAngularEnabled(false);
         await browser.switchTo().frame(await $('[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] iframe.cke_wysiwyg_frame').getWebElement());
@@ -291,7 +292,7 @@ class ComposeMail {
         }
     }
 
-    async setToOrCCInputTetxbox(value: String, emailIdForToOrCc: string): Promise<void> {
+    async setToOrCCInputTextbox(value: String, emailIdForToOrCc: string): Promise<void> {
         if (value == 'To') {
             await $$(this.selectors.toCcInput).get(0).clear();
             await $$(this.selectors.toCcInput).get(0).sendKeys(emailIdForToOrCc);

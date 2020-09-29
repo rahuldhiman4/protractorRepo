@@ -57,7 +57,6 @@ describe('Case Console Preset Filter', () => {
 
     afterAll(async () => {
         await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteServiceTargets();
         await apiHelper.updateFoundationEntity('Person', 'idphylum2', { vipStatus: 'No' });
         await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
@@ -65,7 +64,7 @@ describe('Case Console Preset Filter', () => {
 
     it('[DRDMV-20843]: Validate the My Open Cases filter after applying and removing the filter', async () => {
         let caseId: string[] = [];
-        await apiHelper.apiLoginWithCredential(userId1, "Password_1234");
+        await apiHelper.apiLogin(userId1, "Password_1234");
         let response1 = await apiHelper.createCase(caseData.ASSIGNED_NONVIP_DRDMV_20843_1);
         caseId.push(response1.displayId);
 
@@ -135,7 +134,7 @@ describe('Case Console Preset Filter', () => {
 
     it('[DRDMV-20850]: Validate the VIP Open Cases filter after applying and removing the filter', async () => {
         let caseId: string[] = [];
-        await apiHelper.apiLoginWithCredential(userId1, "Password_1234");
+        await apiHelper.apiLogin(userId1, "Password_1234");
 
         let response1 = await apiHelper.createCase(caseData.NEW_VIP_DRDMV_20850_1);
         caseId.push(response1.displayId);
@@ -197,7 +196,7 @@ describe('Case Console Preset Filter', () => {
 
     it('[DRDMV-20874]: Validate the All Open Cases filter after applying and removing the filter', async () => {
         let caseId: string[] = [];
-        await apiHelper.apiLoginWithCredential(userId1, "Password_1234");
+        await apiHelper.apiLogin(userId1, "Password_1234");
 
         let response1 = await apiHelper.createCase(caseData.NEW_NONVIP_DRDMV_20874_1);
         caseId.push(response1.displayId);
@@ -257,7 +256,7 @@ describe('Case Console Preset Filter', () => {
 
     it('[DRDMV-20875]: Validate the High Priority Open Cases filter after applying and removing the filter', async () => {
         let caseId: string[] = [];
-        await apiHelper.apiLoginWithCredential(userId1, "Password_1234");
+        await apiHelper.apiLogin(userId1, "Password_1234");
 
         let response1 = await apiHelper.createCase(caseData.ASSIGNED_LOWPRIORITY_DRDMV_20875_1);
         caseId.push(response1.displayId);
@@ -323,7 +322,7 @@ describe('Case Console Preset Filter', () => {
 
     it('[DRDMV-20878]: Validate the Critical Priority Open Cases filter after applying and removing the filter', async () => {
         let caseId: string[] = [];
-        await apiHelper.apiLoginWithCredential(userId1, "Password_1234");
+        await apiHelper.apiLogin(userId1, "Password_1234");
 
         let response1 = await apiHelper.createCase(caseData.ASSIGNED_LOWPRIORITY_DRDMV_20878_1);
         caseId.push(response1.displayId);
@@ -390,7 +389,7 @@ describe('Case Console Preset Filter', () => {
 
     it('[DRDMV-20879]: Validate the All Unassigned Cases filter after applying and removing the filter', async () => {
         let caseId: string[] = [];
-        await apiHelper.apiLoginWithCredential(userId1, "Password_1234");
+        await apiHelper.apiLogin(userId1, "Password_1234");
 
         let response1 = await apiHelper.createCase(caseData.RESOLVED_ASSIGNEDTOLOGGEDINUSER_DRDMV_20879_1);
         caseId.push(response1.displayId);
@@ -420,7 +419,7 @@ describe('Case Console Preset Filter', () => {
     describe('[DRDMV-20881]: Validate the All Open Breached Cases filter after applying and removing the filter', () => {
         let caseId: string[] = [];
         beforeAll(async () => {
-            await apiHelper.apiLoginWithCredential(userId1, "Password_1234");
+            await apiHelper.apiLogin(userId1, "Password_1234");
             await apiHelper.createSVT(caseData.SERVICE_TARGET_ASSIGNED);
             await apiHelper.createSVT(caseData.SERVICE_TARGET_INPROGRESS);
             await apiHelper.createSVT(caseData.SERVICE_TARGET_PENDING);
@@ -475,7 +474,7 @@ describe('Case Console Preset Filter', () => {
     describe('[DRDMV-22214]: Validate the My Open Breached Cases filter after applying and removing the filter', () => {
         let caseId: string[] = [];
         beforeAll(async () => {
-            await apiHelper.apiLoginWithCredential(userId1, "Password_1234");
+            await apiHelper.apiLogin(userId1, "Password_1234");
             await apiHelper.createSVT(caseData.SERVICE_TARGET_NEW);
             await apiHelper.createSVT(caseData.SERVICE_TARGET_ASSIGNED);
             await apiHelper.createSVT(caseData.SERVICE_TARGET_INPROGRESS);
@@ -541,7 +540,7 @@ describe('Case Console Preset Filter', () => {
     it('[DRDMV-20880]: Validate the All Cases In Last 1 month filter after applying and removing the filter', async () => {
         let dbConnectVar = await dbConnectObj.dbConnect();
         let caseId: string[] = [];
-        await apiHelper.apiLoginWithCredential(userId1, "Password_1234");
+        await apiHelper.apiLogin(userId1, "Password_1234");
 
         let response1 = await apiHelper.createCase(caseData.ASSIGNED_NONVIP_DRDMV_20843_5);
         caseId.push(response1.displayId);
@@ -598,7 +597,7 @@ describe('Case Console Preset Filter', () => {
     it('[DRDMV-20900]: Validate the All Cases In Last 3 months filter after applying and removing the filter', async () => {
         let dbConnectVar = await dbConnectObj.dbConnect();
         let caseId: string[] = [];
-        await apiHelper.apiLoginWithCredential(userId1, "Password_1234");
+        await apiHelper.apiLogin(userId1, "Password_1234");
 
         let response1 = await apiHelper.createCase(caseData.RESOLVED_ASSIGNEDTOANOTHERUSER_DRDMV_20879_3);
         caseId.push(response1.displayId);
@@ -644,7 +643,7 @@ describe('Case Console Preset Filter', () => {
     it('[DRDMV-22035]: Validate the All Cases In Last 6 months filter after applying and removing the filter', async () => {
         let dbConnectVar = await dbConnectObj.dbConnect();
         let caseId: string[] = [];
-        await apiHelper.apiLoginWithCredential(userId1, "Password_1234");
+        await apiHelper.apiLogin(userId1, "Password_1234");
 
         let response1 = await apiHelper.createCase(caseData.RESOLVED_ASSIGNEDTOANOTHERUSER_DRDMV_20879_3);
         caseId.push(response1.displayId);

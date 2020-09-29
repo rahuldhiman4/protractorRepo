@@ -191,7 +191,7 @@ describe('Email Task', () => {
             // await expect(await emailPo.getEmailBody()).toContain('fritz.schulz@petramco.com');
             expect(await emailPo.searchPerson('To', 'fri')).toBe(3);
             expect(await emailPo.searchPerson('Cc', 'fri')).toBe(3);
-            await emailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+            await emailPo.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
             expect(await emailPo.getSubject()).toContain(displayId + ':' + ManualtaskID);
             //verify activity email post
             await emailPo.clickOnSendButton();
@@ -218,7 +218,7 @@ describe('Email Task', () => {
             // await expect(await emailPo.getEmailBody()).toContain('fritz.schulz@petramco.com');
             expect(await emailPo.searchPerson('To', 'fri')).toBe(3);
             expect(await emailPo.searchPerson('Cc', 'fri')).toBe(3);
-            await emailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+            await emailPo.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
             expect(await emailPo.getSubject()).toContain(displayId + ':' + ExternaltaskID);
             //verify activity email post
             await emailPo.clickOnSendButton();
@@ -434,8 +434,8 @@ describe('Email Task', () => {
             await composeMailPo.clickOnSelectEmailTemplateLink();
             await selectEmailTemplateBladePo.clickOnCancelButton();
             await emailPo.setEmailBody('this is new email sending frist time to the user');
-            await emailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
-            await emailPo.setToOrCCInputTetxbox('Cc', 'qkatawazi@petramco.com');
+            await emailPo.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
+            await emailPo.setToOrCCInputTextbox('Cc', 'qkatawazi@petramco.com');
             await emailPo.addAttachment(['../../data/ui/attachment/demo.txt']);
             await emailPo.clickOnSendButton();
         });
@@ -468,8 +468,8 @@ describe('Email Task', () => {
             let externaltaskID = await viewTaskPo.getTaskID();
             await viewTaskPo.clickEmailLink();
             await emailPo.addAttachment(['../../data/ui/attachment/demo.txt']);
-            await emailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
-            await emailPo.setToOrCCInputTetxbox('Cc', 'qkatawazi@petramco.com')
+            await emailPo.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
+            await emailPo.setToOrCCInputTextbox('Cc', 'qkatawazi@petramco.com')
             await emailPo.setEmailBody('this is new email sending frist time to the user');
             await emailPo.clickOnSendButton();
             expect(await activityTabPo.getEmailTitle()).toContain('Fritz Schulz sent an email');
@@ -519,8 +519,8 @@ describe('Email Task', () => {
         await viewCasePo.clickOnEmailLink();
         await composeMailPo.clickOnSelectEmailTemplateLink();
         await selectEmailTemplateBladePo.clickOnCancelButton();
-        await emailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
-        await emailPo.setToOrCCInputTetxbox('Cc', 'qkatawazi@petramco.com');
+        await emailPo.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
+        await emailPo.setToOrCCInputTextbox('Cc', 'qkatawazi@petramco.com');
         await emailPo.setEmailBody('this is new email sending frist time to the user');
         await emailPo.addAttachment(['../../data/ui/attachment/demo.txt']);
         await emailPo.clickOnSendButton();
@@ -640,7 +640,7 @@ describe('Email Task', () => {
         });
         it('[DRDMV-19555]: In Case of Reply/Reply All if we select new Email template then previous contents should not be erased.', async () => {
             await viewTaskPo.clickOnRequesterEmail();
-            await emailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+            await emailPo.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
             await emailPo.clickOnSelectTempalteButton();
             await emailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateDataForTest1.TemplateName);
             await emailTemplateBladePo.clickOnApplyButton();

@@ -238,7 +238,7 @@ class QuickCasePage {
         let success: boolean = false;
         for (let i: number = 0; i <= 3; i++) {
             await $(this.selectors.smartSearchTextBox).sendKeys(caseSummary);
-            browser.sleep(1000); // Wait For Populate Recommanded Case Pin.
+            browser.sleep(2000); // Wait For Populate Recommanded Case Pin.
             success = await $(`div[title=${caseID}]`).isPresent().then(async (result) => {
                 if (result) {
                     await $(this.selectors.pinFirstRecommendedCase).click();

@@ -753,14 +753,16 @@ class ActivityTabPage {
         await $(this.selectors.centerAlignIcon).click();
     }
 
-    async setInsertRemoveNumberList(value: string): Promise<void> {
+    // input should be a list
+    async setNumberList(value: string): Promise<void> {
         await $(this.selectors.activityNoteTextArea).sendKeys(Key.CONTROL, Key.END);
         await $(this.selectors.activityNoteTextArea).sendKeys(Key.ENTER);
         await $(this.selectors.numberIcon).click();
         await $(this.selectors.activityNoteTextArea).sendKeys(value);
     }
 
-    async setInsertRemoveBulletedList(value: string): Promise<void> {
+    // input should be a list
+    async setBulletList(value: string): Promise<void> {
         await $(this.selectors.activityNoteTextArea).sendKeys(Key.CONTROL, Key.END);
         await $(this.selectors.activityNoteTextArea).sendKeys(Key.ENTER);
         await $(this.selectors.bulletIcon).click();

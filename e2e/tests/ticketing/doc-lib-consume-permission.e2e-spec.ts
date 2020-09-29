@@ -8,7 +8,7 @@ import quickCasePo from '../../pageobject/case/quick-case.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
 import attachDocumentBladePo from '../../pageobject/common/attach-document-blade.po';
-import caseAccessTabPo from '../../pageobject/common/case-access-tab.po';
+import accessTabPo from '../../pageobject/common/access-tab.po';
 import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
 import loginPage from '../../pageobject/common/login.po';
 import navigationPage from "../../pageobject/common/navigation.po";
@@ -389,7 +389,7 @@ describe('Document Library Consume Permission', () => {
                 }
                 await apiHelper.apiLogin('tadmin');
                 await apiHelper.deleteDocumentLibrary(publishDocLibData2.docLibTitle);
-                await apiHelper.apiLoginWithCredential(username, password);
+                await apiHelper.apiLogin(username, password);
                 let getFilePath1 = files1[i];
                 let docLib = await apiHelper.createDocumentLibrary(publishDocLibData2, getFilePath1);
                 await apiHelper.publishDocumentLibrary(docLib);
@@ -403,7 +403,7 @@ describe('Document Library Consume Permission', () => {
             }
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDocumentLibrary(draftDocLibData.docLibTitle);
-            await apiHelper.apiLoginWithCredential(username, password);
+            await apiHelper.apiLogin(username, password);
             await apiHelper.createDocumentLibrary(draftDocLibData, filePath4);
         });
         it('[DRDMV-13508]: Compose Email - Case manager attaches published document from document library where case manager is author of the document', async () => {
@@ -427,7 +427,7 @@ describe('Document Library Consume Permission', () => {
             await attachDocumentBladePo.searchRecord(publish[0]);
             await attachDocumentBladePo.selectDocument(publish[0]);
             await attachDocumentBladePo.clickOnAttachButton();
-            await composeMailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+            await composeMailPo.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
             await composeMailPo.clickOnSendButton();
 
             expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg Attached Document is missing');
@@ -441,7 +441,7 @@ describe('Document Library Consume Permission', () => {
             await attachDocumentBladePo.searchAndAttachDocument(publish[1]);
             await composeMailPo.clickOnAttachmentLink();
             await attachDocumentBladePo.searchAndAttachDocument(publish[2]);
-            await composeMailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+            await composeMailPo.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
             await composeMailPo.clickOnSendButton();
         });
         it('[DRDMV-13508]: Compose Email - Case manager attaches published document from document library where case manager is author of the document', async () => {
@@ -631,11 +631,13 @@ describe('Document Library Consume Permission', () => {
             expect(await utilityCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailureMsg: bwfXlsx.xlsx File is not downloaded.');
 
             await viewCasePo.clickOnTab('Case Access');
-            await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Agent Access');
-            await caseAccessTabPo.selectAndAddAgent('qstrong');
-            expect(await caseAccessTabPo.isCaseAccessEntityAdded('Quin Strong')).toBeTruthy('Failuer: Quin Strong Agent Name is missing');
-            await caseAccessTabPo.selectAndAddAgent('Fritz');
-            expect(await caseAccessTabPo.isCaseAccessEntityAdded('Fritz Schulz')).toBeTruthy('Failuer: Fritz Schulz Name is missing');
+            await accessTabPo.clickToExpandAccessEntitiySearch('Agent Access','Case');
+            await accessTabPo.selectAgent('qstrong','Agent');
+            await accessTabPo.clickAccessEntitiyAddButton('Agent');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Quin Strong','Read')).toBeTruthy('Failuer: Quin Strong Agent Name is missing');
+            await accessTabPo.selectAgent('Fritz','Agent');
+            await accessTabPo.clickAccessEntitiyAddButton('Agent');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Fritz Schulz','Read')).toBeTruthy('Failuer: Fritz Schulz Name is missing');
         });
         it('[DRDMV-13536]: Attach documents from local drive and document library at the same time', async () => {
             await navigationPage.signOut();

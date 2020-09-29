@@ -26,8 +26,7 @@ import linkPropertiesPo from '../../pageobject/common/ck-editor/link-properties.
 import ckeditorValidationPo from '../../pageobject/common/ck-editor/ckeditor-validation.po';
 import createCasePo from '../../pageobject/case/create-case.po';
 import casePreviewPo from '../../pageobject/case/case-preview.po';
-import caseAccessTabPo from '../../pageobject/common/case-access-tab.po';
-import editKnowledgeAccessPo from '../../pageobject/knowledge/knowledge-access-tab.po';
+import accessTabPo from '../../pageobject/common/access-tab.po';
 import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
 import knowledgeArticlesConsolePo from '../../pageobject/knowledge/knowledge-articles-console.po';
 import quickCasePo from '../../pageobject/case/quick-case.po';
@@ -773,7 +772,7 @@ describe('Notes template', () => {
             await apiHelper.associatePersonToCompany(userData.userId, "Psilon");
             await browser.sleep(15000); //Hard Wait to reflect the new person
 
-            await apiHelper.apiLoginWithCredential('DRDMV-16112_User@petramco.com', 'Password_1234');
+            await apiHelper.apiLogin('DRDMV-16112_User@petramco.com', 'Password_1234');
             let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let petramcoNotesTemplateData = cloneDeep(notesTemplateData.NOTES_TEMPLATE_MANDATORY_FIELD);
             petramcoTemplateName = petramcoNotesTemplateData.templateName + randomStr + 'Petramco';
@@ -935,11 +934,11 @@ describe('Notes template', () => {
             expect(await ckeditorOpsPo.isColorTextDisplayedInCkEditorTextArea(redColorText, 'color:#c0392b;')).toBeTruthy('Color is not set In Ck Editor');
             //checking number list
             await ckeditorOpsPo.enterNewLineInCKE();
-            await activityTabPo.setInsertRemoveNumberList('PlusOne');
+            await activityTabPo.setNumberList('PlusOne');
             expect(await ckeditorOpsPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Number List is not In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             // checking bullot points
-            await activityTabPo.setInsertRemoveBulletedList('BulletOne');
+            await activityTabPo.setBulletList('BulletOne');
             expect(await activityTabPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Bulleted List is not In Ck Editor');
             expect(await ckeditorOpsPo.getTextCkEditorMinimizeOrMiximize()).toBe('Maximize');
             await ckeditorOpsPo.clickMaximizeMinimizeIcon();
@@ -1030,12 +1029,11 @@ describe('Notes template', () => {
             await createCasePo.clickSaveCaseButton();
             await casePreviewPo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Case Access');
-            expect(await caseAccessTabPo.isCaseAccessEntityAdded('Facilities')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Facilities','Read')).toBeTruthy('Support Group does not have read access');
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(templateName);
             await activityTabPo.addActivityNote(randomString);
             await activityTabPo.clickOnPostButton();
             await activityTabPo.clickShowMoreLinkInActivity(1);
-            expect(await caseAccessTabPo.isSupportGroupReadAccessDisplayed('Facilities')).toBeTruthy('Support Group does not have read access');
             expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
             expect(await activityTabPo.isItalicTextDisplayedInActivity(italicText, 1)).toBeTruthy('FailureMsg Italic Text is missing In Activity');
             expect(await activityTabPo.isUnderlineTextDisplayedInActivity(underLineText, 1)).toBeTruthy('FailureMsg Underline Text is missing In Activity');
@@ -1151,11 +1149,11 @@ describe('Notes template', () => {
             expect(await ckeditorOpsPo.isColorTextDisplayedInCkEditorTextArea(redColorText, 'color:#c0392b;')).toBeTruthy('Color is not set In Ck Editor');
             //checking number list
             await ckeditorOpsPo.enterNewLineInCKE();
-            await activityTabPo.setInsertRemoveNumberList('PlusOne');
+            await activityTabPo.setNumberList('PlusOne');
             expect(await ckeditorOpsPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Number List is not In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             // checking bullot points
-            await activityTabPo.setInsertRemoveBulletedList('BulletOne');
+            await activityTabPo.setBulletList('BulletOne');
             expect(await activityTabPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Bulleted List is not In Ck Editor');
             expect(await ckeditorOpsPo.getTextCkEditorMinimizeOrMiximize()).toBe('Maximize');
             await ckeditorOpsPo.clickMaximizeMinimizeIcon();
@@ -1227,12 +1225,12 @@ describe('Notes template', () => {
             await createKnowlegePo.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-            await editKnowledgeAccessPo.clickOnAccessButton('Support Group Access');
-            await editKnowledgeAccessPo.selectCompany('Petramco');
-            await editKnowledgeAccessPo.selectBusinessUnit('Facilities Support');
-            await editKnowledgeAccessPo.selectSupportGroup('Facilities');
-            await editKnowledgeAccessPo.clickAddSupportGroupAccessButton();
-            await editKnowledgeAccessPo.clickCloseKnowledgeAccessBlade();
+            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access','Knowledge');
+            await accessTabPo.selectAccessEntityDropDown('Petramco','Select Company');
+            await accessTabPo.selectAccessEntityDropDown('Facilities Support','Select Business Unit');
+            await accessTabPo.selectAccessEntityDropDown('Facilities','Select Support Group');
+            await accessTabPo.clickAccessEntitiyAddButton('Support Group');
+            await accessTabPo.clickCloseKnowledgeAccessBlade();
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(templateName);
             expect(await activityTabPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
@@ -1379,11 +1377,11 @@ describe('Notes template', () => {
             expect(await ckeditorOpsPo.isColorTextDisplayedInCkEditorTextArea(redColorText, 'color:#c0392b;')).toBeTruthy('Color is not set In Ck Editor');
             //checking number list
             await ckeditorOpsPo.enterNewLineInCKE();
-            await activityTabPo.setInsertRemoveNumberList('PlusOne');
+            await activityTabPo.setNumberList('PlusOne');
             expect(await ckeditorOpsPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Number List is not In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             // checking bullot points
-            await activityTabPo.setInsertRemoveBulletedList('BulletOne');
+            await activityTabPo.setBulletList('BulletOne');
             expect(await activityTabPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Bulleted List is not In Ck Editor');
             expect(await ckeditorOpsPo.getTextCkEditorMinimizeOrMiximize()).toBe('Maximize');
             await ckeditorOpsPo.clickMaximizeMinimizeIcon();
@@ -1578,11 +1576,11 @@ describe('Notes template', () => {
             expect(await ckeditorOpsPo.isColorTextDisplayedInCkEditorTextArea(redColorText, 'color:#c0392b;')).toBeTruthy('Color is not set In Ck Editor');
             //checking number list
             await ckeditorOpsPo.enterNewLineInCKE();
-            await activityTabPo.setInsertRemoveNumberList('PlusOne');
+            await activityTabPo.setNumberList('PlusOne');
             expect(await ckeditorOpsPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Number List is not In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             // checking bullot points
-            await activityTabPo.setInsertRemoveBulletedList('BulletOne');
+            await activityTabPo.setBulletList('BulletOne');
             expect(await activityTabPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Bulleted List is not In Ck Editor');
             expect(await ckeditorOpsPo.getTextCkEditorMinimizeOrMiximize()).toBe('Maximize');
             await ckeditorOpsPo.clickMaximizeMinimizeIcon();
@@ -1706,11 +1704,11 @@ describe('Notes template', () => {
             expect(await ckeditorOpsPo.isColorTextDisplayedInCkEditorTextArea(redColorText, 'color:#c0392b;')).toBeTruthy('Color is not set In Ck Editor');
             //checking number list
             await ckeditorOpsPo.enterNewLineInCKE();
-            await activityTabPo.setInsertRemoveNumberList('PlusOne');
+            await activityTabPo.setNumberList('PlusOne');
             expect(await ckeditorOpsPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Number List is not In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             // checking bullot points
-            await activityTabPo.setInsertRemoveBulletedList('BulletOne');
+            await activityTabPo.setBulletList('BulletOne');
             expect(await activityTabPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Bulleted List is not In Ck Editor');
             expect(await ckeditorOpsPo.getTextCkEditorMinimizeOrMiximize()).toBe('Maximize');
             await ckeditorOpsPo.clickMaximizeMinimizeIcon();
@@ -1833,11 +1831,11 @@ describe('Notes template', () => {
             expect(await ckeditorOpsPo.isColorTextDisplayedInCkEditorTextArea(redColorText, 'color:#c0392b;')).toBeTruthy('Color is not set In Ck Editor');
             //checking number list
             await ckeditorOpsPo.enterNewLineInCKE();
-            await activityTabPo.setInsertRemoveNumberList('PlusOne');
+            await activityTabPo.setNumberList('PlusOne');
             expect(await ckeditorOpsPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Number List is not In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             // checking bullot points
-            await activityTabPo.setInsertRemoveBulletedList('BulletOne');
+            await activityTabPo.setBulletList('BulletOne');
             expect(await activityTabPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Bulleted List is not In Ck Editor');
             expect(await ckeditorOpsPo.getTextCkEditorMinimizeOrMiximize()).toBe('Maximize');
             await ckeditorOpsPo.clickMaximizeMinimizeIcon();
@@ -1953,11 +1951,11 @@ describe('Notes template', () => {
             expect(await ckeditorOpsPo.isColorTextDisplayedInCkEditorTextArea(redColorText, 'color:#c0392b;')).toBeTruthy('Color is not set In Ck Editor');
             //checking number list
             await ckeditorOpsPo.enterNewLineInCKE();
-            await activityTabPo.setInsertRemoveNumberList('PlusOne');
+            await activityTabPo.setNumberList('PlusOne');
             expect(await ckeditorOpsPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Number List is not In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             // checking bullot points
-            await activityTabPo.setInsertRemoveBulletedList('BulletOne');
+            await activityTabPo.setBulletList('BulletOne');
             expect(await activityTabPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Bulleted List is not In Ck Editor');
             expect(await ckeditorOpsPo.getTextCkEditorMinimizeOrMiximize()).toBe('Maximize');
             await ckeditorOpsPo.clickMaximizeMinimizeIcon();
@@ -2190,11 +2188,11 @@ describe('Notes template', () => {
             expect(await ckeditorOpsPo.isColorTextDisplayedInCkEditorTextArea(redColorText, 'color:#c0392b;')).toBeTruthy('Color is not set In Ck Editor');
             //checking number list
             await ckeditorOpsPo.enterNewLineInCKE();
-            await activityTabPo.setInsertRemoveNumberList('PlusOne');
+            await activityTabPo.setNumberList('PlusOne');
             expect(await ckeditorOpsPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Number List is not In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             // checking bullot points
-            await activityTabPo.setInsertRemoveBulletedList('BulletOne');
+            await activityTabPo.setBulletList('BulletOne');
             expect(await activityTabPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Bulleted List is not In Ck Editor');
             expect(await ckeditorOpsPo.getTextCkEditorMinimizeOrMiximize()).toBe('Maximize');
             await ckeditorOpsPo.clickMaximizeMinimizeIcon();
@@ -2256,7 +2254,7 @@ describe('Notes template', () => {
             await quickCasePo.saveCase();
             await quickCasePo.gotoCaseButton();
             await viewCasePage.clickOnTab('Case Access');
-            expect(await caseAccessTabPo.isCaseAccessEntityAdded('Facilities')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Facilities','Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
             await viewCasePage.clickOnTab('Tasks');
             await viewCasePage.clickOnTaskLink(templateData.templateName);
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate('taskNotesTemplate87163');

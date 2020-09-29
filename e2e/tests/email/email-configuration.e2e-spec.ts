@@ -674,7 +674,7 @@ describe('Email Configuration', () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId.displayId);
             await viewCasePo.clickOnEmailLink();
-            await composeMailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+            await composeMailPo.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
             await composeMailPo.clickOnSendButton();
             expect(await activityTabPo.isTitleTextDisplayedInActivity('Fritz created the task', 3)).toBeTruthy('FailureMsg4: log title is missing');
             let subject = `Fritz Schulz changed the status of `;
@@ -696,7 +696,7 @@ describe('Email Configuration', () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId.displayId);
             await viewCasePo.clickOnEmailLink();
-            await composeMailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+            await composeMailPo.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
             await composeMailPo.clickOnSendButton();
 
             await navigationPage.gotoSettingsPage();
@@ -710,7 +710,7 @@ describe('Email Configuration', () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId.displayId);
             await viewCasePo.clickOnEmailLink();
-            await composeMailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+            await composeMailPo.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
             await composeMailPo.clickOnSendButton();
         });
     });

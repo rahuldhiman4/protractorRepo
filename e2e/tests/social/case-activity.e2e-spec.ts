@@ -1,3 +1,4 @@
+import { access } from 'fs';
 import { browser } from "protractor";
 import apiHelper from "../../api/api.helper";
 import { ITaskTemplate } from '../../data/api/interface/task.template.interface.api';
@@ -7,7 +8,7 @@ import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCase from '../../pageobject/case/create-case.po';
 import quickCasePo from '../../pageobject/case/quick-case.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
-import caseAccessTabPo from '../../pageobject/common/case-access-tab.po';
+import accessTabPo from '../../pageobject/common/access-tab.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import personProfilePo from '../../pageobject/common/person-profile.po';
@@ -1099,14 +1100,15 @@ describe('Case Activity', () => {
             await caseConsolePo.searchAndOpenCase(caseId);
             await viewCasePo.clickOnTab('Case Access');
             //Read Access Agent
-            await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Agent Access');
-            await caseAccessTabPo.selectAndAddAgent('Fabian');
-            await expect(await caseAccessTabPo.isCaseAccessEntityAdded('Fabian Krause')).toBeTruthy('Failuer:Fabian Krause Agent Name is missing');
+            await accessTabPo.clickToExpandAccessEntitiySearch('Agent Access','Case');
+            await accessTabPo.selectAgent('Fabian','Agent');
+            await accessTabPo.clickAccessEntitiyAddButton('Agent');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Fabian Krause','Read')).toBeTruthy('Failuer:Fabian Krause Agent Name is missing');
             //Login with Read Permission User
             await navigationPage.signOut();
             await loginPage.login('fabian');
             await caseConsolePo.searchAndOpenCase(caseId);
-            await expect(await viewCasePo.getCaseID()).toBe(caseId, 'FailureMsg: CaseId is missing with Fabian User');
+            expect(await viewCasePo.getCaseID()).toBe(caseId, 'FailureMsg: CaseId is missing with Fabian User');
         });
         it('[DRDMV-16591]: Login with Write User and check read user count', async () => {
             await navigationPage.signOut();

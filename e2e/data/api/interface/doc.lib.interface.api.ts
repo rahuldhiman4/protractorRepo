@@ -14,3 +14,11 @@ export interface IDocumentLib {
     category3?: string,
     category4?: string
 }
+
+export interface IDocumentTemplate {
+    templateName: string;
+    description: string;
+    messageBody: string;
+    company?: string;
+}
+

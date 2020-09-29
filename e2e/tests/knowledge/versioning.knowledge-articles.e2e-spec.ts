@@ -9,7 +9,7 @@ import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import resources from '../../pageobject/common/resources-tab.po';
 import createKnowledgePage from "../../pageobject/knowledge/create-knowlege.po";
-import knowledgeAccessPage from '../../pageobject/knowledge/knowledge-access-tab.po';
+import accessTabPo from '../../pageobject/common/access-tab.po';
 import editKnowledgePage from '../../pageobject/knowledge/edit-knowledge.po';
 import flagUnflagKnowledgePo from '../../pageobject/knowledge/flag-unflag-knowledge.po';
 import knowledgeConsole from '../../pageobject/knowledge/knowledge-articles-console.po';
@@ -987,7 +987,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
         it('[DRDMV-20752]: Verify the behavior when the user who does not have access to view current article version and he tries to create or update existing version', async () => {
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilCommon.switchToNewWidnow(1);
             await browser.sleep(3000); //Hard wait to laod the tab completely
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.clearFilter();
@@ -1018,13 +1017,12 @@ describe('Knowledge Articles - Versioning Tests', () => {
         });
         it('[DRDMV-20752]: Verify the behavior when the user who does not have access to view current article version and he tries to create or update existing version', async () => {
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-            await knowledgeAccessPage.clickOnAccessButton('Support Group Access');
-            await knowledgeAccessPage.selectCompany('Petramco');
-            await knowledgeAccessPage.selectBusinessUnit('HR Support');
-            await knowledgeAccessPage.selectSupportGroup('Employee Relations');
-            await knowledgeAccessPage.selectSupportGroupWriteAccess();
-            await knowledgeAccessPage.clickAddSupportGroupAccessButton();
-            await knowledgeAccessPage.clickCloseKnowledgeAccessBlade();
+            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access','Knowledge');
+            await accessTabPo.selectAccessEntityDropDown('Petramco','Select Company');
+            await accessTabPo.selectAccessEntityDropDown('HR Support','Select Business Unit');
+            await accessTabPo.selectAccessEntityDropDown('Employee Relations','Select Support Group');
+            await accessTabPo.clickAccessEntitiyAddButton('Support Group');
+            await accessTabPo.clickCloseKnowledgeAccessBlade();
             await viewKnowledgeArticlePo.clickOnEditLink();
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(minorEditOption)).toBeTruthy('Minor Edit Option is displayed for Published Knowledge Article.');
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(majorEditOption)).toBeTruthy('Major Edit Option is displayed for Published Knowledge Article.');
@@ -1039,20 +1037,19 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(updatedArticleTitle);
 
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-            await knowledgeAccessPage.clickRemoveKnowledgeAccess('Petramco');
-            await knowledgeAccessPage.clickKnowledgeAccessYesOption();
-            await knowledgeAccessPage.clickRemoveKnowledgeAccess('Employee Relations');
-            await knowledgeAccessPage.clickKnowledgeAccessYesOption();
-            await knowledgeAccessPage.clickCloseKnowledgeAccessBlade();
+            await accessTabPo.clickRemoveAccess('Petramco',true);
+            await accessTabPo.clickAccessRemoveWarningBtn('Yes');
+            await accessTabPo.clickRemoveAccess('Employee Relations',true);
+            await accessTabPo.clickAccessRemoveWarningBtn('Yes');
+            await accessTabPo.clickCloseKnowledgeAccessBlade();
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
-            await navigationPage.signOut();
 
-            await loginPage.login('peter');
-            await navigationPage.gotoKnowledgeConsole();
-            await browser.sleep(2000); //Hard wait to laod the tab completely
+            await navigationPage.switchToApplication(knowledgeManagementApp);
+            await browser.sleep(3000); //Hard wait to laod the tab completely
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.clearFilter();
-            await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
+            await utilityGrid.searchAndOpenHyperlink(articleData.title);
+            
             await viewKnowledgeArticlePo.clickOnEditLink();
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(minorEditOption)).toBeTruthy('Minor Edit Option is displayed for Published Knowledge Article.');
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(majorEditOption)).toBeTruthy('Major Edit Option is displayed for Published Knowledge Article.');
@@ -1064,7 +1061,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await utilityCommon.refresh(); // Refresh needed to reflect version updates.
             expect(await viewKnowledgeArticlePo.getArticleVersion()).toBe(expectedVersion);
         });
-
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
@@ -1366,13 +1362,12 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await viewKnowledgeArticlePo.getArticleVersion()).toBe(updatedVersion);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(updatedArticleTitle);
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-            await knowledgeAccessPage.clickOnAccessButton('Support Group Access');
-            await knowledgeAccessPage.selectCompany('Petramco');
-            await knowledgeAccessPage.selectBusinessUnit('HR Support');
-            await knowledgeAccessPage.selectSupportGroup('Employee Relations');
-            await knowledgeAccessPage.selectSupportGroupWriteAccess();
-            await knowledgeAccessPage.clickAddSupportGroupAccessButton();
-            await knowledgeAccessPage.clickCloseKnowledgeAccessBlade();
+            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access','Knowledge');
+            await accessTabPo.selectAccessEntityDropDown('Petramco','Select Company');
+            await accessTabPo.selectAccessEntityDropDown('HR Support','Select Business Unit');
+            await accessTabPo.selectAccessEntityDropDown('Employee Relations','Select Support Group');
+            await accessTabPo.clickAccessEntitiyAddButton('Support Group');
+            await accessTabPo.clickCloseKnowledgeAccessBlade();
             await browser.sleep(2000);
             await utilityCommon.refresh(); // Refresh needed to reflect article updates.
             await browser.sleep(2000);
@@ -1525,38 +1520,35 @@ describe('Knowledge Articles - Versioning Tests', () => {
         });
         it('[DRDMV-20748]:  Verify whether the user with appropriate knowledge permission roles can able to update the article with updated / new version', async () => {
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-            await knowledgeAccessPage.clickOnAccessButton('Support Group Access');
-            await knowledgeAccessPage.selectCompany('Petramco');
-            await knowledgeAccessPage.selectBusinessUnit('Australia Support');
-            await knowledgeAccessPage.selectSupportGroup('AU Support 1');
-            await knowledgeAccessPage.selectSupportGroupWriteAccess();
-            await knowledgeAccessPage.clickAddSupportGroupAccessButton();
-            await knowledgeAccessPage.clickCloseKnowledgeAccessBlade();
+            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access','Knowledge');
+            await accessTabPo.selectAccessEntityDropDown('Petramco','Select Company');
+            await accessTabPo.selectAccessEntityDropDown('Australia Support','Select Business Unit');
+            await accessTabPo.selectAccessEntityDropDown('AU Support 1','Select Support Group');
+            await accessTabPo.clickAccessEntitiyAddButton('Support Group');
+            await accessTabPo.clickCloseKnowledgeAccessBlade();
         });
         it('[DRDMV-20748]:  Verify whether the user with appropriate knowledge permission roles can able to update the article with updated / new version', async () => {
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-            await knowledgeAccessPage.clickOnAccessButton('Support Group Access');
-            await knowledgeAccessPage.selectCompany('Petramco');
-            await knowledgeAccessPage.selectBusinessUnit('India Support');
-            await knowledgeAccessPage.selectSupportGroup('IN Support 2');
-            await knowledgeAccessPage.clickAddSupportGroupAccessButton();
-            await knowledgeAccessPage.clickCloseKnowledgeAccessBlade();
+             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access','Knowledge');
+            await accessTabPo.selectAccessEntityDropDown('Petramco','Select Company');
+            await accessTabPo.selectAccessEntityDropDown('India Support','Select Business Unit');
+            await accessTabPo.selectAccessEntityDropDown('IN Support 2','Select Support Group');
+            await accessTabPo.clickAccessEntitiyAddButton('Support Group');
+            await accessTabPo.clickCloseKnowledgeAccessBlade();
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-            await knowledgeAccessPage.clickOnAccessButton('Support Group Access');
-            await knowledgeAccessPage.selectCompany('Petramco');
-            await knowledgeAccessPage.selectBusinessUnit('India Support');
-            await knowledgeAccessPage.selectSupportGroup('IN Support 3');
-            await knowledgeAccessPage.clickAddSupportGroupAccessButton();
-            await knowledgeAccessPage.clickCloseKnowledgeAccessBlade();
-
+             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access','Knowledge');
+            await accessTabPo.selectAccessEntityDropDown('Petramco','Select Company');
+            await accessTabPo.selectAccessEntityDropDown('India Support','Select Business Unit');
+            await accessTabPo.selectAccessEntityDropDown('IN Support 3','Select Support Group');
+            await accessTabPo.clickAccessEntitiyAddButton('Support Group');
+            await accessTabPo.clickCloseKnowledgeAccessBlade();
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-            await knowledgeAccessPage.clickOnAccessButton('Support Group Access');
-            await knowledgeAccessPage.selectCompany('Petramco');
-            await knowledgeAccessPage.selectBusinessUnit('United States Support');
-            await knowledgeAccessPage.selectSupportGroup('US Support 1');
-            await knowledgeAccessPage.clickAddSupportGroupAccessButton();
-            await knowledgeAccessPage.clickCloseKnowledgeAccessBlade();
-
+             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access','Knowledge');
+            await accessTabPo.selectAccessEntityDropDown('Petramco','Select Company');
+            await accessTabPo.selectAccessEntityDropDown('United States Support','Select Business Unit');
+            await accessTabPo.selectAccessEntityDropDown('US Support 1','Select Support Group');
+            await accessTabPo.clickAccessEntitiyAddButton('Support Group');
+            await accessTabPo.clickCloseKnowledgeAccessBlade();
             await viewKnowledgeArticlePo.clickOnEditLink();
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(minorEditOption)).toBeFalsy('Minor Edit Option is displayed for Draft Knowledge Article.');
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(majorEditOption)).toBeFalsy('Major Edit Option is displayed for Draft Knowledge Article.');

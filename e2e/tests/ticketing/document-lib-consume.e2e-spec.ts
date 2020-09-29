@@ -8,7 +8,7 @@ import editCasePo from '../../pageobject/case/edit-case.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
 import attachDocumentBladePo from '../../pageobject/common/attach-document-blade.po';
-import caseAccessTabPo from '../../pageobject/common/case-access-tab.po';
+import accessTabPo from '../../pageobject/common/access-tab.po';
 import loginPage from '../../pageobject/common/login.po';
 import navigationPage from "../../pageobject/common/navigation.po";
 import composeMailPo from '../../pageobject/email/compose-mail.po';
@@ -169,9 +169,10 @@ describe('Document Library Consume UI', () => {
             await attachDocumentBladePo.searchAndAttachDocument(publishDocLibData2.docLibTitle);
             await editCasePo.clickSaveCase();
             await viewCasePo.clickOnTab('Case Access');
-            await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Agent Access');
-            await caseAccessTabPo.selectAndAddAgent('qstrong');
-            expect(await caseAccessTabPo.isCaseAccessEntityAdded('Quin Strong')).toBeTruthy('FailuerMsg1: Quanah George Agent Name is missing');
+            await accessTabPo.clickToExpandAccessEntitiySearch('Agent Access','Case');
+            await accessTabPo.selectAgent('qstrong','Agent');
+            await accessTabPo.clickAccessEntitiyAddButton('Agent');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Quin Strong','Read')).toBeTruthy('FailuerMsg1: Quanah George Agent Name is missing');
             await navigationPage.gotoCaseConsole();
         });
         it('[DRDMV-13533]: Verify the case with different user', async () => {
@@ -389,7 +390,7 @@ describe('Document Library Consume UI', () => {
             await attachDocumentBladePo.searchRecord(publish[0]);
             await attachDocumentBladePo.selectDocument(publish[0]);
             await attachDocumentBladePo.clickOnAttachButton();
-            await composeMailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+            await composeMailPo.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
             await composeMailPo.clickOnSendButton();
             expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg Attached Document is missing');
             expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is delete sucessfully');
@@ -402,7 +403,7 @@ describe('Document Library Consume UI', () => {
             await attachDocumentBladePo.searchAndAttachDocument(publish[1]);
             await composeMailPo.clickOnAttachmentLink();
             await attachDocumentBladePo.searchAndAttachDocument(publish[2]);
-            await composeMailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+            await composeMailPo.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
             await composeMailPo.clickOnSendButton();
         });
         it('[DRDMV-13507]: Create a case and add task on it', async () => {
@@ -878,7 +879,7 @@ describe('Document Library Consume UI', () => {
             await attachDocumentBladePo.searchRecord(publish[0]);
             await attachDocumentBladePo.selectDocument(publish[0]);
             await attachDocumentBladePo.clickOnAttachButton();
-            await composeMailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+            await composeMailPo.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
             await composeMailPo.clickOnSendButton();
         });
         it('[DRDMV-13506]: Verify the document', async () => {
@@ -891,7 +892,7 @@ describe('Document Library Consume UI', () => {
             await attachDocumentBladePo.searchAndAttachDocument(publish[1]);
             await composeMailPo.clickOnAttachmentLink();
             await attachDocumentBladePo.searchAndAttachDocument(publish[2]);
-            await composeMailPo.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+            await composeMailPo.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
             await composeMailPo.clickOnSendButton();
         });
         it('[DRDMV-13506]: validate document present in activity', async () => {

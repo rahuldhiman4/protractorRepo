@@ -129,11 +129,11 @@ describe('CKE Description', () => {
             expect(await ckeditorOpsPo.isColorTextDisplayedInCkEditorTextArea(redColorText, 'color:#c0392b;')).toBeTruthy('Color is not set In Ck Editor');
             //checking number list
             await ckeditorOpsPo.enterNewLineInCKE();
-            await activityTabPo.setInsertRemoveNumberList('PlusOne');
+            await activityTabPo.setNumberList('PlusOne');
             expect(await ckeditorOpsPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Text is not center Align In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             // checking bullot points
-            await activityTabPo.setInsertRemoveBulletedList('BulletOne');
+            await activityTabPo.setBulletList('BulletOne');
             expect(await activityTabPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Text is not center Align In Ck Editor');
             expect(await ckeditorOpsPo.getTextCkEditorMinimizeOrMiximize()).toBe('Maximize');
             await ckeditorOpsPo.clickMaximizeMinimizeIcon();
@@ -391,11 +391,11 @@ describe('CKE Description', () => {
             expect(await ckeditorOpsPo.isColorTextDisplayedInCkEditorTextArea(redColorText, 'color:#c0392b;')).toBeTruthy('Color is not set In Ck Editor');
             //checking number list
             await ckeditorOpsPo.enterNewLineInCKE();
-            await activityTabPo.setInsertRemoveNumberList('PlusOne');
+            await activityTabPo.setNumberList('PlusOne');
             expect(await ckeditorOpsPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Text is not center Align In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             // checking bullot points
-            await activityTabPo.setInsertRemoveBulletedList('BulletOne');
+            await activityTabPo.setBulletList('BulletOne');
             expect(await activityTabPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Text is not center Align In Ck Editor');
             expect(await ckeditorOpsPo.getTextCkEditorMinimizeOrMiximize()).toBe('Maximize');
             await ckeditorOpsPo.clickMaximizeMinimizeIcon();
@@ -633,11 +633,11 @@ describe('CKE Description', () => {
             expect(await ckeditorOpsPo.isColorTextDisplayedInCkEditorTextArea(redColorText, 'color:#c0392b;')).toBeTruthy('Color is not set In Ck Editor');
             //checking number list
             await ckeditorOpsPo.enterNewLineInCKE();
-            await activityTabPo.setInsertRemoveNumberList('PlusOne');
+            await activityTabPo.setNumberList('PlusOne');
             expect(await ckeditorOpsPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Text is not center Align In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             // checking bullot points
-            await activityTabPo.setInsertRemoveBulletedList('BulletOne');
+            await activityTabPo.setBulletList('BulletOne');
             expect(await activityTabPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Text is not center Align In Ck Editor');
             expect(await ckeditorOpsPo.getTextCkEditorMinimizeOrMiximize()).toBe('Maximize');
             await ckeditorOpsPo.clickMaximizeMinimizeIcon();

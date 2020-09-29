@@ -1,6 +1,6 @@
 export interface IFlowset {
     flowsetName: string;
-    flowsetStatus: string;
+    flowsetStatus: number;
     company: string;
     description: string;
 }

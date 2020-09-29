@@ -6,7 +6,7 @@ import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePage from "../../pageobject/case/create-case.po";
 import QuickCasePage from "../../pageobject/case/quick-case.po";
 import viewCasePo from "../../pageobject/case/view-case.po";
-import caseAccessTabPo from '../../pageobject/common/case-access-tab.po';
+import accessTabPo from '../../pageobject/common/access-tab.po';
 import changeAssignmentPage from '../../pageobject/common/change-assignment-blade.po';
 import changeAssignmentOldPage from '../../pageobject/common/change-assignment-old-blade.po';
 import loginPage from "../../pageobject/common/login.po";
@@ -139,6 +139,8 @@ describe("Create Case Assignment Mapping", () => {
     }
 
     afterAll(async () => {
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.disassociatePersonFromCompany('gderuno', 'Petramco');
         await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
@@ -543,22 +545,23 @@ describe("Create Case Assignment Mapping", () => {
             await viewCasePo.clickOnTab('Case Access');
         });
         it('[DRDMV-12080]:Verify Company, Business Unit , Department and Support group selection hierarchy in Case  Access.', async () => {
-            await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Support Group Access');
-            await caseAccessTabPo.selectCompany('Petramco', 'Select Company');
-            await caseAccessTabPo.selectBusinessUnit(businessData.orgName, 'Select Business Unit');
-            await caseAccessTabPo.clickOnReadAccessAddButton('Add Business Unit');
-            await caseAccessTabPo.selectCompany('Petramco', 'Select Company');
-            await caseAccessTabPo.selectBusinessUnit(businessData.orgName, 'Select Business Unit');
-            await caseAccessTabPo.selectDepartment(departmentData.orgName, 'Select Department');
-            await caseAccessTabPo.clickOnReadAccessAddButton('Add Support Department');
-            await caseAccessTabPo.selectCompany('Petramco', 'Select Company');
-            await caseAccessTabPo.selectBusinessUnit(businessData.orgName, 'Select Business Unit');
-            await caseAccessTabPo.selectDepartment(departmentData.orgName, 'Select Department');
-            await caseAccessTabPo.selectSupportGroup(suppGrpData.orgName, 'Select Support Group');
-            await caseAccessTabPo.clickOnReadAccessAddButton('Add Support Group');
-            await caseAccessTabPo.clickOnSupportGroupAccessORAgentAccessButton('Agent Access');
-            await caseAccessTabPo.selectAndAddAgent('fnPerson11825 lnPerson11825');
-            expect(await caseAccessTabPo.isCaseAccessEntityAdded('fnPerson11825 lnPerson11825')).toBeTruthy('Failuer: Agent Name is missing');
+            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access','Case');
+            await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
+            await accessTabPo.selectAccessEntityDropDown(businessData.orgName, 'Select Business Unit');
+            await accessTabPo.clickAccessEntitiyAddButton('Business Unit');
+            await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
+            await accessTabPo.selectAccessEntityDropDown(businessData.orgName, 'Select Business Unit');
+            await accessTabPo.selectAccessEntityDropDown(departmentData.orgName, 'Select Department');
+            await accessTabPo.clickAccessEntitiyAddButton('Department');
+            await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
+            await accessTabPo.selectAccessEntityDropDown(businessData.orgName, 'Select Business Unit');
+            await accessTabPo.selectAccessEntityDropDown(departmentData.orgName, 'Select Department');
+            await accessTabPo.selectAccessEntityDropDown(suppGrpData.orgName, 'Select Support Group');
+            await accessTabPo.clickAccessEntitiyAddButton('Support Group');
+            await accessTabPo.clickToExpandAccessEntitiySearch('Agent Access','Case');
+            await accessTabPo.selectAgent('fnPerson11825 lnPerson11825','Agent');
+            await accessTabPo.clickAccessEntitiyAddButton('Agent');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('fnPerson11825 lnPerson11825','Read')).toBeTruthy('Failuer: Agent Name is missing');
         });
     });
 
@@ -807,7 +810,7 @@ describe("Create Case Assignment Mapping", () => {
                 "site": "Phylum Site2",
                 "label": label
             }
-            await apiHelper.apiLoginWithCredential(userId1, "Password_1234");
+            await apiHelper.apiLogin(userId1, "Password_1234");
             await apiHelper.createNewMenuItem(menuItemData);
             assignmentMapping1 = await apiHelper.createCaseAssignmentMapping(assignmentData1);
             await apiHelper.createCaseAssignmentMapping(assignmentData2);
@@ -1014,7 +1017,7 @@ describe("Create Case Assignment Mapping", () => {
                 "ownerBU": "Phylum Support Org1",
                 "ownerGroup": "Phylum Support Group1"
             }
-            await apiHelper.apiLoginWithCredential(userId1, "Password_1234");
+            await apiHelper.apiLogin(userId1, "Password_1234");
             await apiHelper.createCaseTemplate(caseTemplateData);
         });
         it('[DRDMV-9103]:[Assignment Mapping] Partially matching Assignment mapping with Flowset', async () => {
@@ -1138,7 +1141,7 @@ describe("Create Case Assignment Mapping", () => {
             }          
         });
         it('[DRDMV-1206,DRDMV-1208]:[Assignment Mapping] Applying Assignment Mappings to cases with partial match', async () => {
-            await apiHelper.apiLoginWithCredential(userId1, "Password_1234");
+            await apiHelper.apiLogin(userId1, "Password_1234");
             await apiHelper.createCaseAssignmentMapping(assignmentData);
             await apiHelper.createCaseTemplate(caseTemplateData);
             await apiHelper.createCaseTemplate(caseTemplateData1); 

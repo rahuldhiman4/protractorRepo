@@ -20,7 +20,7 @@ import utilCommon from '../../utils/util.common';
 import utilityGrid from '../../utils/utility.grid';
 import editCasePo from '../../pageobject/case/edit-case.po';
 import composeMailPo from '../../pageobject/email/compose-mail.po';
-import caseAccessTabPo from '../../pageobject/common/case-access-tab.po';
+import accessTabPo from '../../pageobject/common/access-tab.po';
 import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
 
 describe('Case Activity Multi Logs', () => {
@@ -675,67 +675,66 @@ describe('Case Activity Multi Logs', () => {
 
     //kgaikwad
     describe('[DRDMV-16729]: All type of social activities are displayed correctly in Case Activity tab', async () => {
-        let  randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let approvalFlowName = 'Approval Flow' + randomStr;
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseData = undefined;
         let caseId: string;
         let caseTemplateDataWithMatchingSummary;
         let caseModule = 'Case';
-        let automatedTaskTemplateSummary = 'AutomatedTaskTemplateSummaryDRDMV16729'+ randomStr;
-        let manualTaskTemplateSummary = 'ManualTaskTemplateSummaryDRDMV16729'+ randomStr;
-        let externalTaskTemplateSummary = 'ExternalTaskTemplateSummaryDRDMV16729'+ randomStr;
+        let automatedTaskTemplateSummary = 'AutomatedTaskTemplateSummaryDRDMV16729' + randomStr;
+        let manualTaskTemplateSummary = 'ManualTaskTemplateSummaryDRDMV16729' + randomStr;
+        let externalTaskTemplateSummary = 'ExternalTaskTemplateSummaryDRDMV16729' + randomStr;
         let automatedTaskTemplateDetails;
         let manualTaskTemplateDetails;
         let externalTaskTemplateDetails;
         let caseApprovalRecordDefinition = 'com.bmc.dsm.case-lib:Case';
         let caseResponseDetails;
-        let categName1 = 'DemoCateg1DRDMV15252';
-        let categName2 = 'DemoCateg2DRDMV15252';
-        let categName3 = 'DemoCateg3DRDMV15252';
-        let categName4 = 'DemoCateg4DRDMV15252';
+        let categName1 = 'DemoCateg1';
+        let categName2 = 'DemoCateg2';
+        let categName3 = 'DemoCateg3';
+        let categName4 = 'DemoCateg4';
         let manualTaskId;
-        let summary = '"' + "Automated Self Approval without process" + '"';
-
+        let approvalStr = "Automated Self Approval without process " + randomStr;
+        let confidentialSupportGroup = "Employee Relations Sensitive Data Access";
 
         beforeAll(async () => {
-        // Create Case Template through API
-        caseTemplateDataWithMatchingSummary = {
-            "templateName": 'caseTemplateForSelfApprovalWithoutProcessWithCriticalPriority' + randomStr,
-            "templateSummary": 'Automated Self Approval without process',
-            "categoryTier1": 'Applications',
-            "categoryTier2": 'Social',
-            "categoryTier3": 'Chatter',
-            "casePriority": "Medium",
-            "templateStatus": "Active",
-            "company": "Petramco",
-            "businessUnit": "United States Support",
-            "supportGroup": "US Support 3",
-            "assignee": "qfeng",
-            "ownerBU": "United States Support",
-            "ownerGroup": "US Support 3"
-    }
+            // Create Case Template through API
+            caseTemplateDataWithMatchingSummary = {
+                "templateName": 'caseTemplateForSelfApprovalWithoutProcessWithCriticalPriority' + randomStr,
+                "templateSummary": approvalStr,
+                "categoryTier1": 'Applications',
+                "categoryTier2": 'Social',
+                "categoryTier3": 'Chatter',
+                "casePriority": "Medium",
+                "templateStatus": "Active",
+                "company": "Petramco",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qfeng",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3"
+            }
 
-        await apiHelper.apiLogin('qkatawazi');
-        let caseTemplateWithMatchingSummaryResponse = await apiHelper.createCaseTemplate(caseTemplateDataWithMatchingSummary);
-        let caseTemplateDisplayId = caseTemplateWithMatchingSummaryResponse.displayId;
+            await apiHelper.apiLogin('qkatawazi');
+            let caseTemplateWithMatchingSummaryResponse = await apiHelper.createCaseTemplate(caseTemplateDataWithMatchingSummary);
+            let caseTemplateDisplayId = caseTemplateWithMatchingSummaryResponse.displayId;
 
-        //Create Approval Mapping through API
-        let approvalMappingData = {
-            "triggerStatus": "Assigned",
-            "errorStatus": "New",
-            "approvedStatus": "InProgress",
-            "noApprovalFoundStatus": "Assigned",
-            "rejectStatus": "Canceled",
-            "company": "Petramco",
-            "mappingName": "Approval Mapping for Self Approval"
-        }
-        await apiHelper.deleteApprovalMapping(caseModule);
-        let approvalMappingId = await apiHelper.createApprovalMapping(caseModule,approvalMappingData);
-        await apiHelper.associateTemplateWithApprovalMapping(caseModule,caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
+            //Create Approval Mapping through API
+            let approvalMappingData = {
+                "triggerStatus": "Assigned",
+                "errorStatus": "New",
+                "approvedStatus": "InProgress",
+                "noApprovalFoundStatus": "Assigned",
+                "rejectStatus": "Canceled",
+                "company": "Petramco",
+                "mappingName": "Approval Mapping for Self Approval"
+            }
+            await apiHelper.deleteApprovalMapping(caseModule);
+            let approvalMappingId = await apiHelper.createApprovalMapping(caseModule, approvalMappingData);
+            await apiHelper.associateTemplateWithApprovalMapping(caseModule, caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
 
 
             let autoTaskTemplateData = {
-                "templateName": `AutomatedTaskTemplateActive`+ randomStr,
+                "templateName": `AutomatedTaskTemplateActive` + randomStr,
                 "templateSummary": `Automated Approval for task`,
                 "templateStatus": "Active",
                 "category1": 'Facilities',
@@ -765,14 +764,12 @@ describe('Case Activity Multi Logs', () => {
 
             autoTaskTemplateData.templateSummary = automatedTaskTemplateSummary;
             automatedTaskTemplateDetails = await apiHelper.createAutomatedTaskTemplate(autoTaskTemplateData);
-            
             // Create Manual Task
-            tasktemplateData.templateName= 'ManualTaskTemplateNameDRDMV16729'+ randomStr;
+            tasktemplateData.templateName = 'ManualTaskTemplateNameDRDMV16729' + randomStr;
             tasktemplateData.templateSummary = manualTaskTemplateSummary;
             manualTaskTemplateDetails = await apiHelper.createManualTaskTemplate(tasktemplateData);
-            
             // Create External Task
-            tasktemplateData.templateName= 'ExternalTaskTemplateNameDRDMV16729'+ randomStr;
+            tasktemplateData.templateName = 'ExternalTaskTemplateNameDRDMV16729' + randomStr;
             tasktemplateData.templateSummary = externalTaskTemplateSummary;
             externalTaskTemplateDetails = await apiHelper.createExternalTaskTemplate(tasktemplateData);
 
@@ -781,16 +778,13 @@ describe('Case Activity Multi Logs', () => {
             // create case json
             caseData = {
                 "Requester": "qdu",
-                "Summary": "Automated Self Approval without process",
+                "Summary": approvalStr,
                 "Origin": "Agent",
                 "Case Template ID": caseTemplateDisplayId
             }
 
-            // Create condential support group as a true
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.updateFoundationEntity('SupportGroup', 'Facilities', { confidential: 'true' });
-        
             // Create category tier 4
+            await apiHelper.apiLogin('tadmin');
             await apiHelper.createOperationalCategory(categName1);
             await apiHelper.createOperationalCategory(categName2);
             await apiHelper.createOperationalCategory(categName3);
@@ -800,7 +794,6 @@ describe('Case Activity Multi Logs', () => {
             await apiHelper.associateCategoryToCategory(categName2, categName3);
             await apiHelper.associateCategoryToCategory(categName3, categName4);
             await apiHelper.associateCategoryToOrganization(categName1, '- Global -');
-
         });
 
         it('[DRDMV-16729]:Create Self Approval Flow Without Process', async () => {
@@ -821,7 +814,7 @@ describe('Case Activity Multi Logs', () => {
             await browser.sleep(1000); //sleep added for expression builder loading
             await approvalConfigurationPage.selectExpressionOperator('=');
             await browser.sleep(1000); //sleep added for expression builder loading
-            await approvalConfigurationPage.setExpressionValueForParameter(summary);
+            await approvalConfigurationPage.setExpressionValueForParameter(`"${approvalStr}"`);
             await approvalConfigurationPage.clickNextbuttonOnSelfApproval();
             await approvalConfigurationPage.setAuditInformationValue('test self approval');
             await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
@@ -834,7 +827,6 @@ describe('Case Activity Multi Logs', () => {
             caseId = caseResponseDetails.displayId;
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("In Progress");
             expect(await activityTabPage.isLogIconDisplayedInActivity('check_circle', 4)).toBeTruthy('FailureMsg11: log icon is missing');
@@ -842,11 +834,11 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isLockIconDisplayedInActivity(5)).toBeFalsy('FailureMsg12: lock icon displayed on activity logs');
         });
 
-        it('[DRDMV-16729]: Verify case creation', async () => {
+        it('[DRDMV-16729]:Verify case creation', async () => {
             await activityTabPage.clickOnShowMore();
             expect(await activityTabPage.isLogIconDisplayedInActivity('filePlus', 3)).toBeTruthy('FailureMsg11: log icon is missing');
             expect(await activityTabPage.isLockIconDisplayedInActivity(3)).toBeTruthy('FailureMsg12: lock icon missing in activity logs');
-            expect(await activityTabPage.isTextPresentInActivityLog('Automated Self Approval without process ')).toBeTruthy('FailureMsg23: Automated Self Approval without process Text is missing in activity log');
+            expect(await activityTabPage.isTextPresentInActivityLog(approvalStr)).toBeTruthy(`FailureMsg23: ${approvalStr} Text is missing in activity log`);
             expect(await activityTabPage.isTextPresentInActivityLog('Status ')).toBeTruthy('FailureMsg23: Status  Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Assigned ')).toBeTruthy('FailureMsg23: Assigned  Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Assignee ')).toBeTruthy('FailureMsg23: Assignee  Text is missing in activity log');
@@ -884,7 +876,7 @@ describe('Case Activity Multi Logs', () => {
             await updateStatusBladePo.clickSaveStatus();
 
             await viewTaskPo.clickOnViewCase();
-            
+
             expect(await activityTabPage.isLogIconDisplayedInActivity('note_pencil', 1)).toBeTruthy('FailureMsg19: log icon is missing');
             expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg20: lock icon missing in activity logs');
             expect(await activityTabPage.isTextPresentInActivityLog(`Qiao Feng added a note to ${manualTaskId}`)).toBeTruthy(`FailureMsg21: Qiao Feng added a note to ${manualTaskTemplateDetails.displayId} log title is missing`);
@@ -892,7 +884,7 @@ describe('Case Activity Multi Logs', () => {
 
             // Verify External Task on case activity
             await viewCasePo.clickOnTaskLink(externalTaskTemplateSummary);
-            let externalTaskId = await viewTaskPo.getTaskID(); 
+            let externalTaskId = await viewTaskPo.getTaskID();
             await activityTabPage.addActivityNote('externalTaskActivityNote');
             await activityTabPage.clickOnPostButton();
 
@@ -900,9 +892,9 @@ describe('Case Activity Multi Logs', () => {
             await viewTaskPo.changeTaskStatus('Completed');
             await updateStatusBladePo.setStatusReason('Successful');
             await updateStatusBladePo.clickSaveStatus();
-            
+
             await viewTaskPo.clickOnViewCase();
-            
+
             expect(await activityTabPage.isLogIconDisplayedInActivity('note_pencil', 1)).toBeTruthy('FailureMsg19: log icon is missing');
             expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg20: lock icon missing in activity logs');
             expect(await activityTabPage.isTextPresentInActivityLog(`Qiao Feng added a note to ${externalTaskId}`)).toBeTruthy(`FailureMsg21: Qiao Feng added a note to ${externalTaskId} log title is missing`);
@@ -910,12 +902,12 @@ describe('Case Activity Multi Logs', () => {
 
             // Verify Automated Task on case activity
             await viewCasePo.clickOnTaskLink(automatedTaskTemplateSummary);
-            let automatedTaskId = await viewTaskPo.getTaskID(); 
+            let automatedTaskId = await viewTaskPo.getTaskID();
             await activityTabPage.addActivityNote('automatedTaskActivityNote');
             await activityTabPage.clickOnPostButton();
-            
+
             await viewTaskPo.clickOnViewCase();
-            
+
             expect(await activityTabPage.isLogIconDisplayedInActivity('note_pencil', 1)).toBeTruthy('FailureMsg19: log icon is missing');
             expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg20: lock icon missing in activity logs');
             expect(await activityTabPage.isTextPresentInActivityLog(`Qiao Feng added a note to ${automatedTaskId}`)).toBeTruthy(`FailureMsg21: Qiao Feng added a note to ${automatedTaskId} log title is missing`);
@@ -926,7 +918,7 @@ describe('Case Activity Multi Logs', () => {
             await updateStatusBladePo.changeCaseStatus('Resolved');
             await updateStatusBladePo.setStatusReason('Auto Resolved');
             await updateStatusBladePo.clickSaveStatus('Resolved');
-            expect(await viewCasePo.getCaseStatusValue()).toBe('Resolved','FailureMsg19: Case status not displayed');
+            expect(await viewCasePo.getCaseStatusValue()).toBe('Resolved', 'FailureMsg19: Case status not displayed');
 
             expect(await activityTabPage.isLogIconDisplayedInActivity('arrow_squares', 1)).toBeTruthy('FailureMsg19: log icon is missing');
             expect(await activityTabPage.isTextPresentInActivityLog('Qiao Feng changed the case status')).toBeTruthy('FailureMsg23: Qiao Feng changed the case status Text is missing in activity log');
@@ -935,7 +927,7 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isTextPresentInActivityLog('Auto Resolved')).toBeTruthy('FailureMsg23: Auto Resolved Text is missing in activity log');
 
             await viewCasePo.clickOnReopenCaseLink();
-            
+
             expect(await activityTabPage.isLogIconDisplayedInActivity('right-refresh', 1)).toBeTruthy('FailureMsg19: log icon is missing');
             expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg20: lock icon missing in activity logs');
             expect(await activityTabPage.isTitleTextDisplayedInActivity('Qiao Feng reopened the case', 1)).toBeTruthy('FailureMsg21: log title is missing');
@@ -943,11 +935,12 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isTextPresentInActivityLog('In Progress')).toBeTruthy('FailureMsg23: In Progress Text is missing in activity log');
         });
 
+        // add defect for error in following it block
         it('[DRDMV-16729]:Verify social activity with change priority', async () => {
             let updatePriority = { "casePriority": "Low" };
             await apiHelper.updateCase(caseResponseDetails.id, updatePriority);
             await activityTabPage.clickOnRefreshButton();
-            
+
             expect(await activityTabPage.isLogIconDisplayedInActivity('arrow_exclamation_circle', 1)).toBeTruthy('FailureMsg19: log icon is missing');
             expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg20: lock icon missing in activity logs');
             expect(await activityTabPage.isTextPresentInActivityLog('Qiao Feng changed the case priority')).toBeTruthy('FailureMsg21: log title is missing');
@@ -964,7 +957,6 @@ describe('Case Activity Multi Logs', () => {
             await changeAssignmentBladePo.clickOnAssignButton();
             await editCasePo.clickSaveCase();
             await activityTabPage.clickOnShowMore();
-                
             expect(await activityTabPage.isLogIconDisplayedInActivity('files_change', 1)).toBeTruthy('FailureMsg19: log icon is missing');
             expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg20: lock icon missing in activity logs');
             expect(await activityTabPage.isTextPresentInActivityLog('Qiao Feng changed the following case fields')).toBeTruthy('FailureMsg23: Qiao Feng changed the following case fields Text is missing in activity log');
@@ -975,7 +967,7 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isTextPresentInActivityLog('Assigned Group')).toBeTruthy('FailureMsg23: Assigned Group Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Facilities')).toBeTruthy('FailureMsg23: Facilities  Text is missing in activity log');
         });
-        
+
         it('[DRDMV-16729]:Verify social activity with status change activity', async () => {
             await viewCasePo.clickEditCaseButton();
             await editCasePo.updateCaseCategoryTier1(categName1);
@@ -1009,10 +1001,10 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isLogIconDisplayedInActivity('files_change', 1)).toBeTruthy('FailureMsg19: log icon is missing');
             expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg20: lock icon missing in activity logs');
             expect(await activityTabPage.isTextPresentInActivityLog('Qiao Feng changed the following case fields')).toBeTruthy('FailureMsg23: Qiao Feng changed the following case fields Text is missing in activity log');
-            
+
             expect(await activityTabPage.isTextPresentInActivityLog('Summary')).toBeTruthy('FailureMsg23: Summary  Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('caseSummary')).toBeTruthy('FailureMsg23: caseSummary  Text is missing in activity log');
-            
+
             expect(await activityTabPage.isTextPresentInActivityLog('caseDescription')).toBeTruthy('FailureMsg23: caseDescription  Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Priority')).toBeTruthy('FailureMsg23: Priority  Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('High')).toBeTruthy('FailureMsg23: High Text is missing in activity log');
@@ -1020,7 +1012,8 @@ describe('Case Activity Multi Logs', () => {
 
         it('[DRDMV-16729]:Verify social activity with sendimg email to requester', async () => {
             await viewCasePo.clickOnEmailLink();
-            await composeMailPo.setToOrCCInputTetxbox('To', 'apavlik@petramco.com');
+            await browser.sleep(1000); // Sleep till open conmpose email pop up
+            await composeMailPo.setToOrCCInputTextbox('To', 'apavlik@petramco.com');
             await composeMailPo.clickOnSendButton();
             await activityTabPage.clickOnRefreshButton();
 
@@ -1033,7 +1026,6 @@ describe('Case Activity Multi Logs', () => {
         });
 
         it('[DRDMV-16729]:Verify social activity with public private and private comment', async () => {
-        
             // private activity note
             await activityTabPage.addActivityNote('privateActivityNote');
             await activityTabPage.clickOnPostButton();
@@ -1041,7 +1033,7 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg20: lock icon missing in activity logs');
             expect(await activityTabPage.isTextPresentInActivityLog('Qiao Feng added a note')).toBeTruthy('FailureMsg21: Qiao Feng added a note Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('privateActivityNote')).toBeTruthy('FailureMsg22: privateActivityNote Text is missing in activity log');
-            
+
             // Private activity note
             await activityTabPage.addActivityNote('publicActivityNote');
             await activityTabPage.clickPublicCheckbox();
@@ -1051,12 +1043,12 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeFalsy('FailureMsg20: lock icon displayed in activity logs');
             expect(await activityTabPage.isTextPresentInActivityLog('Qiao Feng added a note')).toBeTruthy('FailureMsg21: Qiao Feng added a note Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('publicActivityNote')).toBeTruthy('FailureMsg22: publicActivityNote Text is missing in activity log');
-
         });
 
         it('[DRDMV-16729]:Verify social activity with sendimg email to other than requester', async () => {
             await viewCasePo.clickOnEmailLink();
-            await composeMailPo.setToOrCCInputTetxbox('To', 'fritz');
+            await browser.sleep(1000); // Sleep till open conmpose email pop up
+            await composeMailPo.setToOrCCInputTextbox('To', 'fritz');
             await composeMailPo.clickOnSendButton();
             await activityTabPage.clickOnRefreshButton();
 
@@ -1070,31 +1062,32 @@ describe('Case Activity Multi Logs', () => {
 
         it('[DRDMV-16729]:Verify social activity with confendial support group', async () => {
             await viewCasePo.clickOnTab('Case Access');
-            await caseAccessTabPo.clickOnConfidentialSupportGroupAccess();
-            await caseAccessTabPo.selectConfidentialSupportGroup('Facilities');
-            await caseAccessTabPo.clickOnConfidentialSupportGroupAdd();
+            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Confidential Group');
+            await accessTabPo.selectAccessEntityDropDown(confidentialSupportGroup, 'Select Support Group', true);
+            await accessTabPo.clickAccessEntitiyAddButton('Support Group');
 
             expect(await activityTabPage.isLogIconDisplayedInActivity('lock_shield', 1)).toBeTruthy('FailureMsg19: log icon is missing');
             expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg20: lock icon missing in activity logs');
             expect(await activityTabPage.isTextPresentInActivityLog('Qiao Feng added the confidential support group')).toBeTruthy('FailureMsg21: Qiao Feng added the confidential support group Text is missing in activity log');
-            expect(await activityTabPage.isTextPresentInActivityLog('Facilities')).toBeTruthy('FailureMsg21: Facilities Text is missing in activity log');
+            expect(await activityTabPage.isTextPresentInActivityLog(confidentialSupportGroup)).toBeTruthy(`FailureMsg21: ${confidentialSupportGroup} Text is missing in activity log`);
 
             // Remove Confedential Group
-            await caseAccessTabPo.removeConfidentialGroup('Facilities');
+            await accessTabPo.clickRemoveAccess(confidentialSupportGroup);
+            await accessTabPo.clickAccessRemoveWarningBtn("Yes");
             await activityTabPage.clickOnRefreshButton();
             expect(await activityTabPage.isLogIconDisplayedInActivity('lock_shield', 1)).toBeTruthy('FailureMsg19: log icon is missing');
             expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg20: lock icon missing in activity logs');
             expect(await activityTabPage.isTextPresentInActivityLog('Qiao Feng removed the confidential support group')).toBeTruthy('FailureMsg21: Qiao Feng removed the confidential support group Text is missing in activity log');
-            expect(await activityTabPage.isTextPresentInActivityLog('Facilities')).toBeTruthy('FailureMsg21: Facilities Text is missing in activity log');
+            expect(await activityTabPage.isTextPresentInActivityLog(confidentialSupportGroup)).toBeTruthy(`FailureMsg21: ${confidentialSupportGroup} Text is missing in activity log`);
         });
-    
+
         it('[DRDMV-16729]:Verify social activity with task email activity', async () => {
             await viewCasePo.clickOnTab('Tasks');
             await viewCasePo.clickOnTaskLink(manualTaskTemplateSummary);
             await activityTabPage.clickOnRefreshButton();
             await viewTaskPo.clickEmailLink();
             await browser.sleep(2000); // Need this sleep till open conmpose email pop up
-            await composeMailPo.setToOrCCInputTetxbox('To', 'qkatawazi');
+            await composeMailPo.setToOrCCInputTextbox('To', 'qkatawazi');
             await composeMailPo.clickOnSendButton();
             await viewTaskPo.clickOnViewCase()
             await activityTabPage.clickOnRefreshButton();

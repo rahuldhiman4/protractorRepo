@@ -7,27 +7,31 @@ import * as constants from "../api/constant.api";
 import { APPROVAL_ACTION, MORE_INFO_RETURN_ACTION } from "../data/api/approval/approval.action.api";
 import { CASE_APPROVAL_FLOW, MULTI_APPROVAL_FLOW, TASK_APPROVAL_FLOW } from '../data/api/approval/approval.flow.api';
 import { CASE_APPROVAL_MAPPING, TASK_APPROVAL_MAPPING } from '../data/api/approval/approval.mapping.api';
+import { CASE_ASSIGNMENT_PAYLOAD, CASE_FROM_DWP } from '../data/api/case/case.config.api';
 import { CASE_READ_ACCESS } from '../data/api/case/case.read.access.api';
 import { CASE_REOPEN } from '../data/api/case/case.reopen.api';
-import { CASE_TEMPLATE_PAYLOAD, CASE_TEMPLATE_STATUS_UPDATE_PAYLOAD, CASE_TEMPLATE_IDENTITY_UPDATE_PAYLOAD } from '../data/api/case/case.template.data.api';
+import { CASE_TEMPLATE_IDENTITY_UPDATE_PAYLOAD, CASE_TEMPLATE_PAYLOAD, CASE_TEMPLATE_STATUS_UPDATE_PAYLOAD } from '../data/api/case/case.template.data.api';
 import { ADD_TO_WATCHLIST } from '../data/api/case/case.watchlist.api';
+import * as COMPLEX_SURVEY from '../data/api/case/complex-survey.api';
 import { CASE_STATUS_CHANGE, UPDATE_CASE, UPDATE_CASE_ASSIGNMENT } from '../data/api/case/update.case.api';
 import { COGNITIVE_CATEGORY_DATASET, COGNITIVE_CATEGORY_DATASET_MAPPING, COGNITIVE_LICENSE, COGNITIVE_TEMPLATE_DATASET, COGNITIVE_TEMPLATE_DATASET_MAPPING } from '../data/api/cognitive/cognitive.config.api';
 import { EMAILCONFIG_DEFAULT, INCOMINGMAIL_DEFAULT, OUTGOINGEMAIL_DEFAULT } from '../data/api/email/email.configuration.data.api';
 import { EMAIL_WHITELIST } from '../data/api/email/email.whitelist.data.api';
 import { NEW_PROCESS_LIB, PROCESS_FLOWSET_MAPPING } from '../data/api/flowset/create-process-lib';
-import { UPDATE_PERSON, UPDATE_SUPPORT_GROUP, UPDATE_ORGANIZATION } from '../data/api/foundation/update-foundation-entity.data.api';
+import { ENABLE_USER, NEW_USER } from '../data/api/foundation/create-foundation-entity.api';
+import { UPDATE_ORGANIZATION, UPDATE_PERSON, UPDATE_SUPPORT_GROUP } from '../data/api/foundation/update-foundation-entity.data.api';
+import { ICaseApprovalMapping, IKnowledgeApprovalMapping, ITaskApprovalMapping } from "../data/api/interface/approval.mapping.interface.api";
 import { IBusinessUnit } from '../data/api/interface/business.unit.interface.api';
-import { ICaseAssignmentMapping, ICaseCreate } from "../data/api/interface/case.assignment.mapping.interface.api";
+import { ICaseAssignmentMapping, ICreateCase, ICreateCaseDWP, IUpdateCaseAccess , IReadAccess } from "../data/api/interface/case.assignment.mapping.interface.api";
 import { ICaseTemplate } from "../data/api/interface/case.template.interface.api";
 import { ICognitiveDataSet, ICognitiveDataSetMapping } from '../data/api/interface/cognitive.interface.api';
 import { IDepartment } from '../data/api/interface/department.interface.api';
-import { IDocumentLib } from '../data/api/interface/doc.lib.interface.api';
-import { IDomainTag } from '../data/api/interface/domain.tag.interface.api';
+import { IDocumentLib, IDocumentTemplate} from '../data/api/interface/doc.lib.interface.api';
+import { IDomainTag, IUpdateKnowledgeArticle } from '../data/api/interface/domain.tag.interface.api';
 import { IEmailTemplate } from '../data/api/interface/email.template.interface.api';
-import { IFlowset, IProcessLibConfig, IProcessFlowsetMapping } from '../data/api/interface/flowset.interface.api';
+import { IFlowset, IProcessFlowsetMapping, IProcessLibConfig } from '../data/api/interface/flowset.interface.api';
 import { IFoundationEntity, IPerson } from '../data/api/interface/foundation-entity-attributes.api';
-import { IKnowledgeSet } from '../data/api/interface/knowledge-set.interface.api';
+import { IKnowledgeArticleTemplate, IKnowledgeSet } from '../data/api/interface/knowledge-set.interface.api';
 import { IknowledgeSetPermissions } from '../data/api/interface/knowledge-set.permissions.interface.api';
 import { IKnowledgeArticles } from '../data/api/interface/knowledge.articles.interface.api';
 import { IMenuItem } from '../data/api/interface/menu.Items.interface.api';
@@ -35,6 +39,7 @@ import { INotesTemplate } from '../data/api/interface/notes.template.interface.a
 import { INOTIFICATIONEVENT, INOTIFICATIONTEMPLATE } from '../data/api/interface/notification.config.interface.api';
 import { ICase, ITask } from '../data/api/interface/record-update.interface.api';
 import { ISupportGroup } from '../data/api/interface/support.group.interface.api';
+import { ISvt } from "../data/api/interface/svt.interface.api";
 import { IAdhocTask, ITaskTemplate } from '../data/api/interface/task.template.interface.api';
 import { FLAG_UNFLAG_KA } from '../data/api/knowledge/flag-unflag.data.api';
 import { KNOWLEDGE_APPROVAL_CONFIG, KNOWLEDGE_APPROVAL_FLOW_CONFIG } from '../data/api/knowledge/knowledge-approvals-config.api';
@@ -42,25 +47,22 @@ import { KNOWLEDGE_ARTICLE_EXTERNAL_FLAG } from "../data/api/knowledge/knowledge
 import { KNOWLEDGEARTICLE_HELPFULCOUNTER, KNOWLEDGEARTICLE_TEMPLATE } from '../data/api/knowledge/knowledge-article.template.api';
 import { KNOWLEDEGESET_ASSOCIATION, KNOWLEDGESET_PERMISSION, KNOWLEDGE_SET } from '../data/api/knowledge/knowledge-set.data.api';
 import { KNOWLEDGE_ARTICLE_PAYLOAD, UPDATE_KNOWLEDGE_ARTICLE_PAYLOAD } from '../data/api/knowledge/knowledge.article.api';
-import { EMAIL_ALERT_SUBJECT_BODY, NOTIFICATION_EVENT_ACTIVE, NOTIFICATION_TEMPLATE, ARTCILE_DUE_DATE } from '../data/api/notification/notification-config.api';
+import * as actionableNotificationPayloads from '../data/api/notification/actionable.notification.supporting.api';
+import { ARTCILE_DUE_DATE, EMAIL_ALERT_SUBJECT_BODY, NOTIFICATION_EVENT_ACTIVE, NOTIFICATION_TEMPLATE } from '../data/api/notification/notification-config.api';
 import { COMMON_CONFIG_PAYLOAD } from '../data/api/shared-services/common.configurations.api';
+import * as processes from '../data/api/shared-services/create-new-process.api';
 import { ACTIONABLE_NOTIFICATIONS_ENABLEMENT_SETTING, NOTIFICATIONS_EVENT_STATUS_CHANGE } from '../data/api/shared-services/enabling.actionable.notifications.api';
+import { MENU_ITEM } from '../data/api/shared-services/menu.item.api';
 import { AUTOMATED_CASE_STATUS_TRANSITION, ENABLE_DISABLE_PROCESS } from '../data/api/shared-services/process.data.api';
-import { SERVICE_TARGET_PAYLOAD, BUSINESS_TIME_SEGMENT, BUSINESS_TIME_SHARED_ENTITY, SERVICE_TARGET_GROUP, CASE_MILESTONE, TASK_MILESTONE } from '../data/api/slm/serviceTarget.api';
+import { BUSINESS_TIME_SEGMENT, BUSINESS_TIME_SHARED_ENTITY, CASE_MILESTONE, SERVICE_TARGET_GROUP, SERVICE_TARGET_PAYLOAD, TASK_MILESTONE } from '../data/api/slm/serviceTarget.api';
 import { POST_ACTIVITY, POST_ACTIVITY_WITH_ATTACHMENT } from '../data/api/social/post.activity.api';
 import { ADHOC_TASK_PAYLOAD, REGISTER_ADHOC_TASK, TASK_CREATION_FROM_TEMPLATE, UPDATE_TASK, UPDATE_TASK_STATUS } from '../data/api/task/task.creation.api';
 import { AUTO_TASK_TEMPLATE_PAYLOAD, DOC_FOR_AUTO_TASK_TEMPLATE, EXTERNAL_TASK_TEMPLATE_PAYLOAD, MANUAL_TASK_TEMPLATE_PAYLOAD, PROCESS_FOR_AUTO_TASK_TEMPLATE } from '../data/api/task/task.template.api';
-import { ONE_TASKFLOW, PROCESS_DOCUMENT, THREE_TASKFLOW_SEQUENTIAL, TWO_TASKFLOW_PARALLEL, TWO_TASKFLOW_SEQUENTIAL, DRDMV_15000, THREE_TASKFLOW_SEQUENTIAL_PARALLEL } from '../data/api/task/taskflow.process.data.api';
+import { DRDMV_15000, ONE_TASKFLOW, PROCESS_DOCUMENT, THREE_TASKFLOW_SEQUENTIAL, THREE_TASKFLOW_SEQUENTIAL_PARALLEL, TWO_TASKFLOW_PARALLEL, TWO_TASKFLOW_SEQUENTIAL } from '../data/api/task/taskflow.process.data.api';
 import { DOC_LIB_DRAFT, DOC_LIB_PUBLISH, DOC_LIB_READ_ACCESS } from '../data/api/ticketing/document-library.data.api';
 import { DOCUMENT_TEMPLATE } from '../data/api/ticketing/document-template.data.api';
 import * as DYNAMIC from '../data/api/ticketing/dynamic.data.api';
-import { NEW_USER, ENABLE_USER } from '../data/api/foundation/create-foundation-entity.api';
-import { CASE_ASSIGNMENT_PAYLOAD, CASE_FROM_DWP } from '../data/api/case/case.config.api';
-import * as actionableNotificationPayloads from '../data/api/notification/actionable.notification.supporting.api';
-import * as processes from '../data/api/shared-services/create-new-process.api';
-import { MENU_ITEM } from '../data/api/shared-services/menu.item.api';
-import * as COMPLEX_SURVEY from '../data/api/case/complex-survey.api';
-
+import loginPage from "../pageobject/common/login.po";
 let fs = require('fs');
 
 axios.defaults.baseURL = browser.baseUrl;
@@ -80,31 +82,19 @@ export interface EmailGUIDs {
     outGoingMailGUID: string;
     emailConfigurationEmailGUID: String;
 }
-
 class ApiHelper {
 
-    async apiLogin(user: string): Promise<void> {
-        let loginJson = await require('../data/userdata.json');
-        let username: string = await loginJson[user].userName;
-        let password: string = await loginJson[user].userPassword;
+    async apiLogin(userName: string, password?: string): Promise<void> {
+        let credentials = await loginPage.getCredentials(userName, password);
         let response = await axios.post(
             "api/rx/authentication/loginrequest",
-            { "userName": username, "password": password },
+            { "userName": credentials.user, "password": credentials.pass },
         )
-        console.log('Login API Status of ' + user + ' =============>', response.status);
+        console.log('Login API Status of ' + credentials.user + ' =============>', response.status);
         axios.defaults.headers.common['Cookie'] = `AR-JWT=${response.data}`;
     }
 
-    async apiLoginWithCredential(user: string, password: string): Promise<void> {
-        let response = await axios.post(
-            "api/rx/authentication/loginrequest",
-            { "userName": user, "password": password },
-        )
-        console.log('Login API Status =============>', response.status);
-        axios.defaults.headers.common['Cookie'] = `AR-JWT=${response.data}`;
-    }
-
-    async createCase(data: any): Promise<IIDs> {
+    async createCase(data: ICreateCase): Promise<IIDs> {
         let caseData = cloneDeep(data);
         const newCase = await axios.post(
             "api/com.bmc.dsm.case-lib/cases",
@@ -122,7 +112,7 @@ class ApiHelper {
         };
     }
 
-    async createCaseFromDwp(data: ICaseCreate): Promise<IIDs> {
+    async createCaseFromDwp(data: ICreateCaseDWP): Promise<IIDs> {
         let caseData = cloneDeep(CASE_FROM_DWP);
         caseData.processInputValues.Requester = await apiCoreUtil.getPersonGuid(data.requester);
         caseData.processInputValues.Summary = data.summary;
@@ -158,8 +148,8 @@ class ApiHelper {
     async createDomainTag(data: IDomainTag): Promise<string> {
         let domainTagGuid = await apiCoreUtil.getDomainTagGuid(data.domainTagName);
         if (domainTagGuid == null) {
-            let domainTagFile = await require('../data/api/foundation/domainTag.api.json');
-            let domainTagData = await domainTagFile.DomainTag;
+            let domainTagFile = await require('../data/api/foundation/domain.tag.api.json');
+            let domainTagData = await domainTagFile.CreateDomainTag;
 
             domainTagData.fieldInstances[8].value = data.domainTagName;
             let newDomainTag: AxiosResponse = await apiCoreUtil.createRecordInstance(domainTagData);
@@ -1046,6 +1036,13 @@ class ApiHelper {
         return response.status == 204;
     }
 
+    async disassociatePersonFromCompany(userId: string, company: string): Promise<boolean> {
+        let userGuid = await apiCoreUtil.getPersonGuid(userId);
+        let companyGuid = await apiCoreUtil.getOrganizationGuid(company);
+        let response = await apiCoreUtil.disassociateFoundationElements("com.bmc.arsys.rx.foundation:Agent Supports Primary Organization", userGuid, companyGuid);
+        return response.status == 204;
+    }
+
     async associatePersonToSupportGroup(userId: string, supportGroup: string): Promise<boolean> {
         let userGuid = await apiCoreUtil.getPersonGuid(userId);
         let supportGroupGuid = await apiCoreUtil.getSupportGroupGuid(supportGroup);
@@ -1191,7 +1188,7 @@ class ApiHelper {
         return associateCaseTemplateWithTwoTaskTemplateResponse.status == 204;
     }
 
-    async associateCaseTemplateWithThreeTaskTemplate(caseTemplateId: string, taskTemplateId1: string, taskTemplateId2: string, taskTemplateId3: string, structure?: any): Promise<boolean> {
+    async associateCaseTemplateWithThreeTaskTemplate(caseTemplateId: string, taskTemplateId1: string, taskTemplateId2: string, taskTemplateId3: string, structure?: string): Promise<boolean> {
         let threeTaskFlowProcess: any = cloneDeep(THREE_TASKFLOW_SEQUENTIAL);
         if (structure == 'DRDMV_15000') {
             threeTaskFlowProcess = cloneDeep(DRDMV_15000);
@@ -1666,8 +1663,8 @@ class ApiHelper {
     async createComplexSurvey(serviceReqId: string, payloadName: string): Promise<boolean> {
         let complexSurveyData = cloneDeep(COMPLEX_SURVEY[payloadName]);
         complexSurveyData['serviceRequestId'] = serviceReqId;
-        
-            const complexSurvey = await axios.post(
+
+        const complexSurvey = await axios.post(
             "api/com.bmc.dsm.catalog-lib/surveys",
             complexSurveyData
         );
@@ -1745,7 +1742,7 @@ class ApiHelper {
         return updatedOrgData.status == 204;
     }
 
-    async updateCaseAccess(caseGuid: string, data: any): Promise<number> {
+    async updateCaseAccess(caseGuid: string, data: IUpdateCaseAccess): Promise<number> {
         let accessFile = await require('../data/api/case/case.access.api.json');
         let caseAccessData = await accessFile.CaseAccess;
         caseAccessData.processInputValues['Record Instance ID'] = caseGuid;
@@ -2029,7 +2026,7 @@ class ApiHelper {
         return updateKnowledgeSetAccess.status === 201;
     }
 
-    async createKnowledgeArticleTemplate(knowledgeSetTitle: string, knowledgeSetId: string, data: any): Promise<boolean> {
+    async createKnowledgeArticleTemplate(knowledgeSetTitle: string, knowledgeSetId: string, data: IKnowledgeArticleTemplate): Promise<boolean> {
         let knowledgeSetTemplateData = cloneDeep(KNOWLEDGEARTICLE_TEMPLATE);
         knowledgeSetTemplateData.sections[0].title = data.title;
         knowledgeSetTemplateData.templateName = data.templateName;
@@ -2046,7 +2043,7 @@ class ApiHelper {
         return articleTemplateResponse.status === 200;
     }
 
-    async updateKnowledgeArticleViewAndHelpFulCounter(knowledgeArticleGuid: string, data: any): Promise<boolean> {
+    async updateKnowledgeArticleViewAndHelpFulCounter(knowledgeArticleGuid: string, data: IUpdateKnowledgeArticle): Promise<boolean> {
         let knowledgeArticleHelpfulCounterData = cloneDeep(KNOWLEDGEARTICLE_HELPFULCOUNTER);
         knowledgeArticleHelpfulCounterData.id = knowledgeArticleGuid;
         knowledgeArticleHelpfulCounterData.fieldInstances[302299521].value = data.linkedCounter;
@@ -2134,7 +2131,7 @@ class ApiHelper {
         return updateFoundationEntityResponse.status == 204;
     }
 
-    async createSVT(svtData: any): Promise<IIDs> {
+    async createSVT(svtData: ISvt): Promise<IIDs> {
         let serviceTargetPayload = cloneDeep(SERVICE_TARGET_PAYLOAD);
         serviceTargetPayload.fieldInstances[300271400].value = svtData.terms;
         serviceTargetPayload.fieldInstances[304412691].value = svtData.readableTerms;
@@ -2552,7 +2549,7 @@ class ApiHelper {
         return response.status == 204;
     }
 
-    async createReadAccessMapping(data: any): Promise<boolean> {
+    async createReadAccessMapping(data: IReadAccess): Promise<boolean> {
         let caseReadAccess = cloneDeep(CASE_READ_ACCESS);
         caseReadAccess.fieldInstances[450000381].value = await apiCoreUtil.getBusinessUnitGuid(data.businessUnit);
         caseReadAccess.fieldInstances[1000000217].value = await apiCoreUtil.getSupportGroupGuid(data.supportGroup);
@@ -2684,7 +2681,7 @@ class ApiHelper {
         return svtGroupCreateResponse.status == 201;
     }
 
-    async createDocumentTemplate(data: any): Promise<boolean> {
+    async createDocumentTemplate(data: IDocumentTemplate): Promise<boolean> {
         DOCUMENT_TEMPLATE.processInputValues.Company = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : DOCUMENT_TEMPLATE.processInputValues.Company;
         DOCUMENT_TEMPLATE.processInputValues["Template Name"] = data.templateName;
         DOCUMENT_TEMPLATE.processInputValues.Description = data.description;
@@ -2854,15 +2851,16 @@ class ApiHelper {
         let approvalMapping;
         switch (approvalModule) {
             case "Case": {
+                let approvalData: ICaseApprovalMapping = cloneDeep(data);
                 let caseApprovalMapping = cloneDeep(CASE_APPROVAL_MAPPING);
-                caseApprovalMapping.fieldInstances[303715900].value = await apiCoreUtil.getStatusGuid('com.bmc.dsm.case-lib', constants.CaseStatus[data.triggerStatus]);
-                caseApprovalMapping.fieldInstances[450000152].value = constants.CaseStatus[data.triggerStatus];
-                caseApprovalMapping.fieldInstances[450000153].value = constants.CaseStatus[data.approvedStatus];
-                caseApprovalMapping.fieldInstances[450000154].value = constants.CaseStatus[data.rejectStatus];
-                caseApprovalMapping.fieldInstances[450000155].value = constants.CaseStatus[data.errorStatus];
-                caseApprovalMapping.fieldInstances[450000158].value = constants.CaseStatus[data.noApprovalFoundStatus];
-                caseApprovalMapping.fieldInstances[1000001437].value = data.mappingName;
-                if (data.company) caseApprovalMapping.fieldInstances[1000000001].value = await apiCoreUtil.getOrganizationGuid(data.company);
+                caseApprovalMapping.fieldInstances[303715900].value = await apiCoreUtil.getStatusGuid('com.bmc.dsm.case-lib', constants.CaseStatus[approvalData.triggerStatus]);
+                caseApprovalMapping.fieldInstances[450000152].value = constants.CaseStatus[approvalData.triggerStatus];
+                caseApprovalMapping.fieldInstances[450000153].value = constants.CaseStatus[approvalData.approvedStatus];
+                caseApprovalMapping.fieldInstances[450000154].value = constants.CaseStatus[approvalData.rejectStatus];
+                caseApprovalMapping.fieldInstances[450000155].value = constants.CaseStatus[approvalData.errorStatus];
+                caseApprovalMapping.fieldInstances[450000158].value = constants.CaseStatus[approvalData.noApprovalFoundStatus];
+                caseApprovalMapping.fieldInstances[1000001437].value = approvalData.mappingName;
+                if (approvalData.company) caseApprovalMapping.fieldInstances[1000000001].value = await apiCoreUtil.getOrganizationGuid(approvalData.company);
                 let response = await apiCoreUtil.createRecordInstance(caseApprovalMapping);
                 console.log('Case Approval Mapping API Status =============>', response.status);
 
@@ -2873,15 +2871,16 @@ class ApiHelper {
             };
 
             case "Knowledge": {
+                let approvalData: IKnowledgeApprovalMapping = cloneDeep(data);
                 let knowledgeApprovalConfig = cloneDeep(KNOWLEDGE_APPROVAL_CONFIG);
-                knowledgeApprovalConfig.fieldInstances[1000000001].value = await apiCoreUtil.getOrganizationGuid(data.company);
-                knowledgeApprovalConfig.fieldInstances[1000001437].value = data.mappingName;
-                knowledgeApprovalConfig.fieldInstances[302300500].value = constants.Knowledge[data.publishApproval];
-                if (data.requestCancelation) {
-                    knowledgeApprovalConfig.fieldInstances[302300500].value = knowledgeApprovalConfig.fieldInstances[302300500].value + ';' + constants.Knowledge[data.requestCancelation];
+                knowledgeApprovalConfig.fieldInstances[1000000001].value = await apiCoreUtil.getOrganizationGuid(approvalData.company);
+                knowledgeApprovalConfig.fieldInstances[1000001437].value = approvalData.mappingName;
+                knowledgeApprovalConfig.fieldInstances[302300500].value = constants.Knowledge[approvalData.publishApproval];
+                if (approvalData.requestCancelation) {
+                    knowledgeApprovalConfig.fieldInstances[302300500].value = knowledgeApprovalConfig.fieldInstances[302300500].value + ';' + constants.Knowledge[approvalData.requestCancelation];
                 }
-                if (data.retireApproval) {
-                    knowledgeApprovalConfig.fieldInstances[302300500].value = knowledgeApprovalConfig.fieldInstances[302300500].value + ';' + constants.Knowledge[data.retireApproval];
+                if (approvalData.retireApproval) {
+                    knowledgeApprovalConfig.fieldInstances[302300500].value = knowledgeApprovalConfig.fieldInstances[302300500].value + ';' + constants.Knowledge[approvalData.retireApproval];
                 }
 
                 let knowledgeApproval: AxiosResponse = await apiCoreUtil.createRecordInstance(knowledgeApprovalConfig);
@@ -2894,14 +2893,15 @@ class ApiHelper {
 
             };
             case "Task": {
+                let approvalData: ITaskApprovalMapping = cloneDeep(data);
                 let taskApprovalMapping = cloneDeep(TASK_APPROVAL_MAPPING);
-                taskApprovalMapping.fieldInstances[450000154].value = constants.TaskStatus[data.triggerStatus];
-                taskApprovalMapping.fieldInstances[450000156].value = constants.TaskStatus[data.approvedStatus];
-                taskApprovalMapping.fieldInstances[450000158].value = constants.TaskStatus[data.rejectStatus];
-                taskApprovalMapping.fieldInstances[450000162].value = constants.TaskStatus[data.errorStatus];
-                taskApprovalMapping.fieldInstances[450000160].value = constants.TaskStatus[data.noApprovalFoundStatus];
-                taskApprovalMapping.fieldInstances[450000152].value = data.mappingName;
-                if (data.company) taskApprovalMapping.fieldInstances[450000153].value = await apiCoreUtil.getOrganizationGuid(data.company);
+                taskApprovalMapping.fieldInstances[450000154].value = constants.TaskStatus[approvalData.triggerStatus];
+                taskApprovalMapping.fieldInstances[450000156].value = constants.TaskStatus[approvalData.approvedStatus];
+                taskApprovalMapping.fieldInstances[450000158].value = constants.TaskStatus[approvalData.rejectStatus];
+                taskApprovalMapping.fieldInstances[450000162].value = constants.TaskStatus[approvalData.errorStatus];
+                taskApprovalMapping.fieldInstances[450000160].value = constants.TaskStatus[approvalData.noApprovalFoundStatus];
+                taskApprovalMapping.fieldInstances[450000152].value = approvalData.mappingName;
+                if (approvalData.company) taskApprovalMapping.fieldInstances[450000153].value = await apiCoreUtil.getOrganizationGuid(approvalData.company);
                 let response = await apiCoreUtil.createRecordInstance(taskApprovalMapping);
                 console.log('Task Approval Mapping API Status =============>', response.status);
 

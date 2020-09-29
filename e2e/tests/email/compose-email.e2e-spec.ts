@@ -398,7 +398,7 @@ describe("Compose Email", () => {
             await composeMail.clickOnSelectEmailTemplateLink();
             await selectEmailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateDataForTest.TemplateName);
             await selectEmailTemplateBladePo.clickOnApplyButton();
-            await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+            await composeMail.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
             expect(await composeMail.getEmailBody()).toContain('Hi Team ,\n\nI am taking leave today.\n\nThanks.');
             expect(await composeMail.getSubject()).toContain(caseId);
             expect(await composeMail.getSubjectInputValue()).toContain(emailTemplateDataForTest.EmailMessageSubject);
@@ -450,7 +450,7 @@ describe("Compose Email", () => {
             await utilCommon.waitUntilSpinnerToHide();
             await selectEmailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateDataForTest.TemplateName);
             await selectEmailTemplateBladePo.clickOnApplyButton();
-            await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+            await composeMail.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
             expect(await composeMail.getEmailBody()).toContain('Hi Team ,\n\nI am taking leave today.\n\nThanks.');
             expect(await composeMail.getSubject()).toContain(caseId); ////part of DRDMV-10393
             expect(await composeMail.getSubjectInputValue()).toContain(emailTemplateDataForTest.EmailMessageSubject);
@@ -495,7 +495,7 @@ describe("Compose Email", () => {
             await composeMail.clickOnSelectEmailTemplateLink();
             await selectEmailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateDataForTest.TemplateName);
             await selectEmailTemplateBladePo.clickOnApplyButton();
-            await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+            await composeMail.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
             expect(await composeMail.getEmailBody()).toContain('Hi Team ,\n\nI am taking leave today.\n\nThanks.');
             expect(await composeMail.getSubject()).toContain(caseId);
             expect(await composeMail.getSubjectInputValue()).toContain(emailTemplateDataForTest.EmailMessageSubject);
@@ -550,7 +550,7 @@ describe("Compose Email", () => {
             await utilCommon.waitUntilSpinnerToHide();
             await selectEmailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateDataForTest1.TemplateName);
             await selectEmailTemplateBladePo.clickOnApplyButton();
-            await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+            await composeMail.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
             expect(await composeMail.getEmailBody()).toContain('I am taking leave today.', 'Email Body 1 does not match');
             expect(await composeMail.getSubject()).toContain(caseId);
             expect(await composeMail.getSubjectInputValue()).toContain(emailTemplateDataForTest1.EmailMessageSubject, 'Subject value 1 does not match');
@@ -597,9 +597,9 @@ describe("Compose Email", () => {
             await composeMail.isSelectEmailTemplateButtonPresent();
             expect(await composeMail.isUserPopulatedInToOrCc('To', 'xyxd')).toBeFalsy();
             expect(await composeMail.isUserPopulatedInToOrCc('Cc', 'xyxd')).toBeFalsy();
-            await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+            await composeMail.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
             expect(await composeMail.getToEmailPerson()).toContain('Fritz Schulz');
-            await composeMail.setToOrCCInputTetxbox('Cc', 'fritz.schulz@petramco.com');
+            await composeMail.setToOrCCInputTextbox('Cc', 'fritz.schulz@petramco.com');
             expect(await composeMail.getCcEmailPerson()).toContain('Fritz Schulz');
             await composeMail.clickOnDiscardButton();
             expect(await composeMail.getTextOfDiscardButtonWarningMessage()).toBe('Email not sent. Do you want to continue?'), 'Warning Email message is missing';
@@ -730,7 +730,7 @@ describe("Compose Email", () => {
             await caseConsole.searchAndOpenCase(newCase.displayId);
             expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
             await viewCasePo.clickOnEmailLink();
-            await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+            await composeMail.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
             await composeMail.clickOnSelectEmailTemplateLink();
             await selectEmailTemplateBladePo.searchAndSelectEmailTemplate("templateName" + randomString);
             await selectEmailTemplateBladePo.clickOnApplyButton();
@@ -798,8 +798,8 @@ describe("Compose Email", () => {
             await linkPropertiesPo.clickOnOkBtn();
             await composeMail.setEmailBody("Table: ");
             await composeMail.clickOnTableIcon();
-            await tablePropertiesPo.setValueOfTableProperties('4', tableRowFieldIndex);
-            await tablePropertiesPo.setValueOfTableProperties('9', tableColumnFieldIndex);
+            await tablePropertiesPo.setValueOfTableProperties('3', tableRowFieldIndex);
+            await tablePropertiesPo.setValueOfTableProperties('3', tableColumnFieldIndex);
             await tablePropertiesPo.setValueOfTableProperties('500', tableWidthFieldIndex);
             await tablePropertiesPo.setValueOfTableProperties('200', tableHeightFieldIndex);
             await tablePropertiesPo.setValueOfTableProperties('new' + randomString, cellCaption);
@@ -818,36 +818,36 @@ describe("Compose Email", () => {
             await composeMail.clickOnUnderLineIcon();
             await composeMail.setDataInTable(1, 3, 'FirstUnderLine', 'tableSummary');
             //left Align
-            await composeMail.clickInTableCell(1, 4, 'tableSummary');
+            await composeMail.clickInTableCell(2, 1, 'tableSummary');
             await composeMail.clickOnLeftAlignIcon();
-            await composeMail.setDataInTable(1, 4, 'FirstLeftAlign', 'tableSummary');
+            await composeMail.setDataInTable(2, 1, 'FirstLeftAlign', 'tableSummary');
             //Right Align
-            await composeMail.clickInTableCell(1, 5, 'tableSummary');
+            await composeMail.clickInTableCell(2, 2, 'tableSummary');
             await composeMail.clickOnRightAlignIcon();
-            await composeMail.setDataInTable(1, 5, 'FirstRightAlign', 'tableSummary');
+            await composeMail.setDataInTable(2, 2, 'FirstRightAlign', 'tableSummary');
             //Center Align
-            await composeMail.clickInTableCell(1, 6, 'tableSummary');
+            await composeMail.clickInTableCell(2, 3, 'tableSummary');
             await composeMail.clickOnCenterAlignIcon();
-            await composeMail.setDataInTable(1, 6, 'FirstCenterAlign', 'tableSummary');
+            await composeMail.setDataInTable(2, 3, 'FirstCenterAlign', 'tableSummary');
             //set color
-            await composeMail.clickInTableCell(1, 7, 'tableSummary');
+            await composeMail.clickInTableCell(3, 1, 'tableSummary');
             await composeMail.selectColor('Bright Blue');
-            await composeMail.setDataInTable(1, 7, 'SettingColor', 'tableSummary');
+            await composeMail.setDataInTable(3, 1, 'SettingColor', 'tableSummary');
             //set font
-            await composeMail.clickInTableCell(1, 8, 'tableSummary');
+            await composeMail.clickInTableCell(3, 2, 'tableSummary');
             await composeMail.clickOnFontSizeIcon();
             await composeMail.selectFontTypeOrSize('18');
-            await composeMail.setDataInTable(1, 8, 'SettingFontSize', 'tableSummary');
+            await composeMail.setDataInTable(3, 2, 'SettingFontSize', 'tableSummary');
             //set fontType
-            await composeMail.clickInTableCell(1, 9, 'tableSummary');
+            await composeMail.clickInTableCell(3,3, 'tableSummary');
             await composeMail.clickOnFontTypeIcon();
             await composeMail.selectFontTypeOrSize('Courier New');
-            await composeMail.setDataInTable(1, 9, 'SettingFontType', 'tableSummary');
+            await composeMail.setDataInTable(3, 3, 'SettingFontType', 'tableSummary');
             //checking number and bullot points and setting values for them
             await composeMail.setBulletPointAndNumer('PlusOne');
             await composeMail.setBulletPointAndNumer('PlusTwo');
             await composeMail.setBulletPointAndNumer('PlusThree');
-            await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+            await composeMail.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
             await composeMail.clickOnSendButton();
             await utilityCommon.closePopUpMessage();
         });
@@ -860,12 +860,14 @@ describe("Compose Email", () => {
             expect(await activityTabPo.getTextOfTD('strong')).toContain('FirstBold');
             expect(await activityTabPo.getTextOfTD('em')).toContain('FirstItalic');
             expect(await activityTabPo.getTextOfTD('u')).toContain('FirstUnderLine');
-            expect(await activityTabPo.getTextOnActivityTable(1, 4)).toContain('FirstLeftAlign');
-            expect(await activityTabPo.getTextOnActivityTable(1, 5)).toContain('FirstRightAlign');
-            expect(await activityTabPo.getTextOnActivityTable(1, 6)).toContain('FirstCenterAlign');
-            expect(await activityTabPo.getColorFontStyleOfText(1, 7, "color:#3498db;")).toContain('SettingColor');
-            expect(await activityTabPo.getColorFontStyleOfText(1, 8, "font-size:18px;")).toContain('SettingFontSize');
-            expect(await activityTabPo.getColorFontStyleOfText(1, 9, "font-family:Courier New,Courier,monospace;")).toContain('SettingFontType');
+            expect(await activityTabPo.getTextOnActivityTable(2, 1)).toContain('FirstLeftAlign');
+            expect(await activityTabPo.getTextOnActivityTable(2, 2)).toContain('FirstRightAlign');
+            expect(await activityTabPo.getTextOnActivityTable(2, 3)).toContain('FirstCenterAlign');
+            expect(await activityTabPo.getColorFontStyleOfText(3, 1, "color:#3498db;")).toContain('SettingColor');
+            expect(await activityTabPo.getColorFontStyleOfText(3, 2, "font-size:18px;")).toContain('SettingFontSize');
+            expect(await activityTabPo.getColorFontStyleOfText(3, 3, "font-family:Courier New,Courier,monospace;")).toContain('SettingFontType');
+            expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
+            //expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
             await activityTabPo.clickOnHyperlink('http://www.google.com');
             await utilityCommon.switchToNewTab(1);
             await browser.waitForAngularEnabled(false);
@@ -950,7 +952,7 @@ describe("Compose Email", () => {
             await composeMail.clickOnSelectEmailTemplateLink();
             await selectEmailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateName);
             await selectEmailTemplateBladePo.clickOnApplyButton();
-            await composeMail.setToOrCCInputTetxbox('To', 'fritz.schulz@petramco.com');
+            await composeMail.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
             expect(await composeMail.getEmailBody()).toContain('Hi Team ,Company Financial Calender will be from March. Thanks.');
             expect(await composeMail.getSubject()).toContain(newCase.displayId);
             expect(await composeMail.getSubjectInputValue()).toContain('Declared Company Holidays');
@@ -1034,7 +1036,7 @@ describe("Compose Email", () => {
             expect(await composeMail.isComposeEmailTitlePresent('Compose Email')).toBeTruthy('Compose email title missing');
             expect(await composeMail.getSubject()).toBe(caseId + ":");
             expect(await composeMail.getToEmailPerson()).toContain('Fritz Schulz');
-            await composeMail.setToOrCCInputTetxbox('Cc', 'qtao@petramco.com');
+            await composeMail.setToOrCCInputTextbox('Cc', 'qtao@petramco.com');
             expect(await composeMail.getCcEmailPerson()).toContain('Qianru Tao');
             await composeMail.setEmailBody('Text added for DRDMV-8388');
             expect(await composeMail.isAttachLinkPresent()).toBeTruthy('Attach Link is  missing');

@@ -316,7 +316,7 @@ describe('Case Bulk Operation', () => {
         beforeAll(async () => {
             caseDataForTest = caseData['bulkCaseAssigneeWithAllAssigneeFields'];
             caseDataForTest.Summary = "DRDMV-16110 Bulk Case Assignee";
-            await apiHelper.apiLoginWithCredential(personData.userId + '@petramco.com', "Password_1234");
+            await apiHelper.apiLogin(personData.userId + '@petramco.com', "Password_1234");
             for (let i: number = 0; i < 3; i++) {
                 let response = await apiHelper.createCase(caseDataForTest);
                 caseId[i] = response.displayId;
