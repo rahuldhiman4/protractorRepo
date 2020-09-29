@@ -68,7 +68,7 @@ describe('Knowledge Console Preset Filter', () => {
         let title = 'KnowledgeArticle';
         let knowledgeId: string[] = [];
         it('[DRDMV-20894]: Article data creation with multiple status 1', async () => {
-            await apiHelper.apiLoginWithCredential(userIdKnowledgeCoach, passwordKnowledgeCoach);
+            await apiHelper.apiLogin(userIdKnowledgeCoach, passwordKnowledgeCoach);
 
             ARTICLE_DATA_ASSIGNTOME.knowledgeSet = knowledgeSetTitle;
             ARTICLE_DATA_ASSIGNTOGROUP.knowledgeSet = knowledgeSetTitle;
@@ -213,7 +213,7 @@ describe('Knowledge Console Preset Filter', () => {
         let title = 'KnowledgeArticle';
 
         it('[DRDMV-20890]: Article data creation for different status 1', async () => {
-            await apiHelper.apiLoginWithCredential(userIdKnowledgeCoach, passwordKnowledgeCoach);
+            await apiHelper.apiLogin(userIdKnowledgeCoach, passwordKnowledgeCoach);
             ARTICLE_DATA_ASSIGNTOME.knowledgeSet = knowledgeSetTitle;
             ARTICLE_DATA_ASSIGNTOGROUP.knowledgeSet = knowledgeSetTitle;
             ARTICLE_DATA_ASSIGNTOANOTHERUSER.knowledgeSet = knowledgeSetTitle;
@@ -357,7 +357,7 @@ describe('Knowledge Console Preset Filter', () => {
     });
 
     it('[DRDMV-20893]: Validate the All Externally Published Articles filter after applying and removing the filter', async () => {
-        await apiHelper.apiLoginWithCredential(userIdKnowledgeCoach, passwordKnowledgeCoach);
+        await apiHelper.apiLogin(userIdKnowledgeCoach, passwordKnowledgeCoach);
         let knowledgeId: string[] = [];
         let title = 'KnowledgeArticle';
         ARTICLE_DATA_ASSIGNTOME.knowledgeSet = knowledgeSetTitle;
@@ -394,7 +394,7 @@ describe('Knowledge Console Preset Filter', () => {
 
     it('[DRDMV-20895]: Validate the All Articles In Last 1 month filter after applying and removing the filter', async () => {
         let dbConnectVar = await dbConnectObj.dbConnect();
-        await apiHelper.apiLoginWithCredential(userIdKnowledgeCoach, passwordKnowledgeCoach);
+        await apiHelper.apiLogin(userIdKnowledgeCoach, passwordKnowledgeCoach);
         let knowledgeId: string[] = [];
         let title = 'KnowledgeArticle';
         ARTICLE_DATA_ASSIGNTOME.knowledgeSet = knowledgeSetTitle;
@@ -464,7 +464,7 @@ describe('Knowledge Console Preset Filter', () => {
 
     it('[DRDMV-20902]: Validate the All Articles In Last 3 months filter after applying and removing the filter	', async () => {
         let dbConnectVar = await dbConnectObj.dbConnect();
-        await apiHelper.apiLoginWithCredential(userIdKnowledgeCoach, passwordKnowledgeCoach);
+        await apiHelper.apiLogin(userIdKnowledgeCoach, passwordKnowledgeCoach);
         let knowledgeId: string[] = [];
         let title = 'KnowledgeArticle';
         ARTICLE_DATA_ASSIGNTOME.knowledgeSet = knowledgeSetTitle;
@@ -518,7 +518,7 @@ describe('Knowledge Console Preset Filter', () => {
 
     it('[DRDMV-22112]: Validate the All Articles In Last 6 months filter after applying and removing the filter	', async () => {
         let dbConnectVar = await dbConnectObj.dbConnect();
-        await apiHelper.apiLoginWithCredential(userIdKnowledgeCoach, passwordKnowledgeCoach);
+        await apiHelper.apiLogin(userIdKnowledgeCoach, passwordKnowledgeCoach);
         let knowledgeId: string[] = [];
         let title = 'KnowledgeArticle';
         ARTICLE_DATA_ASSIGNTOME.knowledgeSet = knowledgeSetTitle;

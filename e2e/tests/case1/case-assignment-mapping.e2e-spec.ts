@@ -810,7 +810,7 @@ describe("Create Case Assignment Mapping", () => {
                 "site": "Phylum Site2",
                 "label": label
             }
-            await apiHelper.apiLoginWithCredential(userId1, "Password_1234");
+            await apiHelper.apiLogin(userId1, "Password_1234");
             await apiHelper.createNewMenuItem(menuItemData);
             assignmentMapping1 = await apiHelper.createCaseAssignmentMapping(assignmentData1);
             await apiHelper.createCaseAssignmentMapping(assignmentData2);
@@ -1017,7 +1017,7 @@ describe("Create Case Assignment Mapping", () => {
                 "ownerBU": "Phylum Support Org1",
                 "ownerGroup": "Phylum Support Group1"
             }
-            await apiHelper.apiLoginWithCredential(userId1, "Password_1234");
+            await apiHelper.apiLogin(userId1, "Password_1234");
             await apiHelper.createCaseTemplate(caseTemplateData);
         });
         it('[DRDMV-9103]:[Assignment Mapping] Partially matching Assignment mapping with Flowset', async () => {
@@ -1141,7 +1141,7 @@ describe("Create Case Assignment Mapping", () => {
             }          
         });
         it('[DRDMV-1206,DRDMV-1208]:[Assignment Mapping] Applying Assignment Mappings to cases with partial match', async () => {
-            await apiHelper.apiLoginWithCredential(userId1, "Password_1234");
+            await apiHelper.apiLogin(userId1, "Password_1234");
             await apiHelper.createCaseAssignmentMapping(assignmentData);
             await apiHelper.createCaseTemplate(caseTemplateData);
             await apiHelper.createCaseTemplate(caseTemplateData1); 

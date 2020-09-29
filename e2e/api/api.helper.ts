@@ -62,7 +62,7 @@ import { DRDMV_15000, ONE_TASKFLOW, PROCESS_DOCUMENT, THREE_TASKFLOW_SEQUENTIAL,
 import { DOC_LIB_DRAFT, DOC_LIB_PUBLISH, DOC_LIB_READ_ACCESS } from '../data/api/ticketing/document-library.data.api';
 import { DOCUMENT_TEMPLATE } from '../data/api/ticketing/document-template.data.api';
 import * as DYNAMIC from '../data/api/ticketing/dynamic.data.api';
-
+import loginPage from "../pageobject/common/login.po";
 let fs = require('fs');
 
 axios.defaults.baseURL = browser.baseUrl;
@@ -82,27 +82,15 @@ export interface EmailGUIDs {
     outGoingMailGUID: string;
     emailConfigurationEmailGUID: String;
 }
-
 class ApiHelper {
 
-    async apiLogin(user: string): Promise<void> {
-        let loginJson = await require('../data/userdata.json');
-        let username: string = await loginJson[user].userName;
-        let password: string = await loginJson[user].userPassword;
+    async apiLogin(userName: string, password?: string): Promise<void> {
+        let credentials = await loginPage.getCredentials(userName, password);
         let response = await axios.post(
             "api/rx/authentication/loginrequest",
-            { "userName": username, "password": password },
+            { "userName": credentials.user, "password": credentials.pass },
         )
-        console.log('Login API Status of ' + user + ' =============>', response.status);
-        axios.defaults.headers.common['Cookie'] = `AR-JWT=${response.data}`;
-    }
-
-    async apiLoginWithCredential(user: string, password: string): Promise<void> {
-        let response = await axios.post(
-            "api/rx/authentication/loginrequest",
-            { "userName": user, "password": password },
-        )
-        console.log('Login API Status =============>', response.status);
+        console.log('Login API Status of ' + credentials.user + ' =============>', response.status);
         axios.defaults.headers.common['Cookie'] = `AR-JWT=${response.data}`;
     }
 
@@ -160,8 +148,8 @@ class ApiHelper {
     async createDomainTag(data: IDomainTag): Promise<string> {
         let domainTagGuid = await apiCoreUtil.getDomainTagGuid(data.domainTagName);
         if (domainTagGuid == null) {
-            let domainTagFile = await require('../data/api/foundation/domainTag.api.json');
-            let domainTagData = await domainTagFile.DomainTag;
+            let domainTagFile = await require('../data/api/foundation/domain.tag.api.json');
+            let domainTagData = await domainTagFile.CreateDomainTag;
 
             domainTagData.fieldInstances[8].value = data.domainTagName;
             let newDomainTag: AxiosResponse = await apiCoreUtil.createRecordInstance(domainTagData);

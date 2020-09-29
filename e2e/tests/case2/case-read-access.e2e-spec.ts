@@ -641,7 +641,7 @@ describe("Case Read Access", () => {
                 "supportGroup": 'Psilon Support Group1',
                 "company": 'Psilon',
             }
-            await apiHelper.apiLoginWithCredential('analyst@petramco.com', 'Password_1234');
+            await apiHelper.apiLogin('analyst@petramco.com', 'Password_1234');
             await apiHelper.createReadAccessMapping(readAccessMappingData);
             await apiHelper.apiLogin('gderuno');
             await apiHelper.createReadAccessMapping(readAccessMappingDataWithDiffrentCompany);

@@ -55,7 +55,7 @@ describe("Notifications", () => {
         });
 
         it('[DRDMV-16036]: Verify that Case Agent is notified for status(Customized one) change in Case life cycle once Case Agent follow the case status change', async () => {
-            await apiHelper.apiLoginWithCredential('idphylum2@petramco.com', "Password_1234");
+            await apiHelper.apiLogin('idphylum2@petramco.com', "Password_1234");
             let caseData = {
                 "Description": "DRDMV-16036-Desc",
                 "Requester": "idphylum2",
@@ -69,9 +69,9 @@ describe("Notifications", () => {
             let response = await apiHelper.createCase(caseData);
             await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
-            await apiHelper.apiLoginWithCredential('idphylum1@petramco.com', "Password_1234");
+            await apiHelper.apiLogin('idphylum1@petramco.com', "Password_1234");
             await apiHelper.addCaseToWatchlistAllEvents(response.id);
-            await apiHelper.apiLoginWithCredential('idphylum2@petramco.com', "Password_1234");
+            await apiHelper.apiLogin('idphylum2@petramco.com', "Password_1234");
             await apiHelper.updateCaseStatus(response.id, 'InProgress');
             await apiHelper.updateCaseStatus(response.id, 'Pending', 'Customer Response');
             await apiHelper.updateCaseStatus(response.id, 'Resolved', 'Auto Resolved');
