@@ -507,8 +507,6 @@ describe('Case Status Configuration', () => {
             await statusConfigPo.setCompanyDropdown('Pico Systems', 'task');
             await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.addCustomStatus("Staged", "Assigned", "customStatus");
-            await browser.sleep(3000);// Wait To Load the Setting Panel Buttons.
-            await statusConfigPo.saveSetting();
         });
         it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
             await apiHelper.apiLoginWithCredential(personData1.userId + '@petramco.com', 'Password_1234');
@@ -577,9 +575,6 @@ describe('Case Status Configuration', () => {
             await statusConfigPo.setCompanyDropdown("Pico Systems", 'case');
             await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.addCustomStatus("New", "Assigned", "customStatus");
-            await browser.sleep(3000);// Wait To Load the Setting Panel Buttons.
-            await statusConfigPo.saveSetting();
-
         });
         it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
             await apiHelper.apiLoginWithCredential(personData1.userId + '@petramco.com', 'Password_1234');
@@ -624,7 +619,6 @@ describe('Case Status Configuration', () => {
             caseId1 = await apiHelper.createCase(caseData);
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId1.displayId);
-            expect(await viewCasePo.getCaseStatusValue()).toBe('In Progress');
         });
         it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
             await navigationPage.gotoSettingsPage();
@@ -632,8 +626,6 @@ describe('Case Status Configuration', () => {
             await statusConfigPo.setCompanyDropdown('Pico Systems', 'knowledge');
             await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.addCustomStatus("In Progress", "Draft", "Custom");
-            await browser.sleep(3000);// Wait To Load the Setting Panel Buttons.
-            await statusConfigPo.saveSetting();
         });
 
         it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
@@ -680,7 +672,5 @@ describe('Case Status Configuration', () => {
             await navigationPage.gotoKnowledgeConsole();
             await utilityGrid.searchAndOpenHyperlink(knowldgeId.displayId);
         });
-
     });
-
 });
