@@ -632,6 +632,7 @@ class ActivityTabPage {
 
     async openSurveyReport(): Promise<void> {
         await $(this.selectors.viewSurveyBtn).click();
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.closeButton)), 6000);
     }
 
     async isViewSurveyInformationLinkPresent(): Promise<boolean> {
