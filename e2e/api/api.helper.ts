@@ -20,27 +20,6 @@ import { EMAIL_WHITELIST } from '../data/api/email/email.whitelist.data.api';
 import { NEW_PROCESS_LIB, PROCESS_FLOWSET_MAPPING } from '../data/api/flowset/create-process-lib';
 import { ENABLE_USER, NEW_USER } from '../data/api/foundation/create-foundation-entity.api';
 import { UPDATE_ORGANIZATION, UPDATE_PERSON, UPDATE_SUPPORT_GROUP } from '../data/api/foundation/update-foundation-entity.data.api';
-import { ICaseApprovalMapping, IKnowledgeApprovalMapping, ITaskApprovalMapping } from "../data/api/interface/approval.mapping.interface.api";
-import { IBusinessUnit } from '../data/api/interface/business.unit.interface.api';
-import { ICaseAssignmentMapping, ICreateCase, ICreateCaseDWP, IUpdateCaseAccess , IReadAccess } from "../data/api/interface/case.assignment.mapping.interface.api";
-import { ICaseTemplate } from "../data/api/interface/case.template.interface.api";
-import { ICognitiveDataSet, ICognitiveDataSetMapping } from '../data/api/interface/cognitive.interface.api';
-import { IDepartment } from '../data/api/interface/department.interface.api';
-import { IDocumentLib, IDocumentTemplate} from '../data/api/interface/doc.lib.interface.api';
-import { IDomainTag, IUpdateKnowledgeArticle } from '../data/api/interface/domain.tag.interface.api';
-import { IEmailTemplate } from '../data/api/interface/email.template.interface.api';
-import { IFlowset, IProcessFlowsetMapping, IProcessLibConfig } from '../data/api/interface/flowset.interface.api';
-import { IFoundationEntity, IPerson } from '../data/api/interface/foundation-entity-attributes.api';
-import { IKnowledgeArticleTemplate, IKnowledgeSet } from '../data/api/interface/knowledge-set.interface.api';
-import { IknowledgeSetPermissions } from '../data/api/interface/knowledge-set.permissions.interface.api';
-import { IKnowledgeArticles } from '../data/api/interface/knowledge.articles.interface.api';
-import { IMenuItem } from '../data/api/interface/menu.Items.interface.api';
-import { INotesTemplate } from '../data/api/interface/notes.template.interface.api';
-import { INOTIFICATIONEVENT, INOTIFICATIONTEMPLATE } from '../data/api/interface/notification.config.interface.api';
-import { ICase, ITask } from '../data/api/interface/record-update.interface.api';
-import { ISupportGroup } from '../data/api/interface/support.group.interface.api';
-import { ISvt } from "../data/api/interface/svt.interface.api";
-import { IAdhocTask, ITaskTemplate } from '../data/api/interface/task.template.interface.api';
 import { FLAG_UNFLAG_KA } from '../data/api/knowledge/flag-unflag.data.api';
 import { KNOWLEDGE_APPROVAL_CONFIG, KNOWLEDGE_APPROVAL_FLOW_CONFIG } from '../data/api/knowledge/knowledge-approvals-config.api';
 import { KNOWLEDGE_ARTICLE_EXTERNAL_FLAG } from "../data/api/knowledge/knowledge-article-external.api";
@@ -62,6 +41,16 @@ import { DRDMV_15000, ONE_TASKFLOW, PROCESS_DOCUMENT, THREE_TASKFLOW_SEQUENTIAL,
 import { DOC_LIB_DRAFT, DOC_LIB_PUBLISH, DOC_LIB_READ_ACCESS } from '../data/api/ticketing/document-library.data.api';
 import { DOCUMENT_TEMPLATE } from '../data/api/ticketing/document-template.data.api';
 import * as DYNAMIC from '../data/api/ticketing/dynamic.data.api';
+import { ICaseApprovalMapping, IKnowledgeApprovalMapping, ITaskApprovalMapping } from "../data/interface/approval.interface";
+import { ICaseAssignmentMapping, ICaseUpdate, ICreateCase, ICreateCaseDWP, IReadAccess, IUpdateCaseAccess } from '../data/interface/case.interface';
+import { ICognitiveDataSet, ICognitiveDataSetMapping } from '../data/interface/cognitive.interface';
+import { IFlowset, IFlowsetProcess, IFlowsetProcessMapping } from '../data/interface/flowset.interface';
+import { IBusinessUnit, IDepartment, IDomainTag, IFoundationEntity, IMenuItem, IPerson, ISupportGroup } from '../data/interface/foundation.interface';
+import { IDocumentLib, IDocumentTemplate, IKnowledgeArticles, IKnowledgeArticleTemplate, IKnowledgeSet, IknowledgeSetPermissions, IUpdateKnowledgeArticle } from '../data/interface/knowledge.interface';
+import { INotificationEvent, INotificationTemplate } from '../data/interface/notification.interface';
+import { ICreateSVT } from '../data/interface/svt.interface';
+import { IAdhocTask, ITaskUpdate } from '../data/interface/task.interface';
+import { ICaseTemplate, IEmailTemplate, INotesTemplate, ITaskTemplate } from '../data/interface/template.interface';
 import loginPage from "../pageobject/common/login.po";
 let fs = require('fs');
 
@@ -279,7 +268,7 @@ class ApiHelper {
         return updateEmail.status == 204;
     }
 
-    async updateTask(taskGuid: string, data: ITask): Promise<number> {
+    async updateTask(taskGuid: string, data: ITaskUpdate): Promise<number> {
         let taskData = cloneDeep(UPDATE_TASK);
         taskData.id = taskGuid;
 
@@ -312,7 +301,7 @@ class ApiHelper {
         return updateTaskStatus.status;
     }
 
-    async updateCase(caseGuid: string, data: ICase): Promise<boolean> {
+    async updateCase(caseGuid: string, data: ICaseUpdate): Promise<boolean> {
         let caseData = cloneDeep(UPDATE_CASE);
         caseData.id = caseGuid;
 
@@ -1778,7 +1767,7 @@ class ApiHelper {
         return updateCaseStatus.status;
     }
 
-    async createProcessLibConfig(data: IProcessLibConfig): Promise<IIDs> {
+    async createProcessLibConfig(data: IFlowsetProcess): Promise<IIDs> {
         let newProcessConfig = cloneDeep(NEW_PROCESS_LIB);
         newProcessConfig.fieldInstances[61001]["value"] = data.applicationServicesLib;
         newProcessConfig.fieldInstances[450000002]["value"] = data.processName;
@@ -2131,7 +2120,7 @@ class ApiHelper {
         return updateFoundationEntityResponse.status == 204;
     }
 
-    async createSVT(svtData: ISvt): Promise<IIDs> {
+    async createSVT(svtData: ICreateSVT): Promise<IIDs> {
         let serviceTargetPayload = cloneDeep(SERVICE_TARGET_PAYLOAD);
         serviceTargetPayload.fieldInstances[300271400].value = svtData.terms;
         serviceTargetPayload.fieldInstances[304412691].value = svtData.readableTerms;
@@ -2803,7 +2792,7 @@ class ApiHelper {
         return addCommonConfigResponse.status == 201;
     }
 
-    async createNotificationEvent(data: INOTIFICATIONEVENT): Promise<IIDs> {
+    async createNotificationEvent(data: INotificationEvent): Promise<IIDs> {
         let notificationEventPayload = cloneDeep(NOTIFICATION_EVENT_ACTIVE);
         notificationEventPayload.fieldInstances[450000152].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : notificationEventPayload.fieldInstances[450000152].value;
         notificationEventPayload.fieldInstances[301718200].value = data.eventName;
@@ -2820,7 +2809,7 @@ class ApiHelper {
         };
     }
 
-    async createNotificationTemplate(data: INOTIFICATIONTEMPLATE): Promise<boolean> {
+    async createNotificationTemplate(data: INotificationTemplate): Promise<boolean> {
         let notificationTemplatePayload = cloneDeep(NOTIFICATION_TEMPLATE);
         let subjectBodyPayload = cloneDeep(EMAIL_ALERT_SUBJECT_BODY);
         notificationTemplatePayload.fieldInstances[8].value = data.description;
@@ -3199,7 +3188,7 @@ class ApiHelper {
         return processGuid.length > 0;
     }
 
-    async mapProcessToFlowset(mappingData: IProcessFlowsetMapping): Promise<boolean> {
+    async mapProcessToFlowset(mappingData: IFlowsetProcessMapping): Promise<boolean> {
         let mappingPayload = cloneDeep(PROCESS_FLOWSET_MAPPING);
         mappingPayload.fieldInstances[7].value = constants.ProcessFlowsetMappingStatus[mappingData.status];
         mappingPayload.fieldInstances[8].value = mappingData.registeredProcessId;

@@ -1,4 +1,4 @@
-import { ICaseTemplate } from 'e2e/data/ui/interface/caseTemplate.interface';
+import { ICaseTemplateUI } from '../../../data/interface/template.interface';
 import { $, $$, browser, protractor, ProtractorExpectedConditions, element, by } from "protractor";
 import utilCommon from '../../../utils/util.common';
 
@@ -115,7 +115,7 @@ class EditCaseTemplate {
         await $(this.selectors.clearButton).click();
     }
 
-    async updateCategoriesValues(caseTemplate: ICaseTemplate): Promise<void> {
+    async updateCategoriesValues(caseTemplate: ICaseTemplateUI): Promise<void> {
         await this.changeCategoryTier1(caseTemplate.categoryTier1);
         await this.changeCategoryTier2(caseTemplate.categoryTier2);
         await this.changeCategoryTier3(caseTemplate.categoryTier3);

@@ -1,6 +1,6 @@
 import { $, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../../utils/util.common';
-import { IAutomatedStatusTransitionConfig } from '../../../data/ui/interface/automatedStatusTransition.interface';
+import { IAutomatedStatusTransitionConfigUI } from '../../../data/interface/template.interface';
 
 class AutomatedStatusTransitionConfigCreatePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -104,7 +104,7 @@ class AutomatedStatusTransitionConfigCreatePage {
         //        await utilCommon.waitUntilSpinnerToHide();
     }
 
-    async createAutomatedStatusTransition(data: IAutomatedStatusTransitionConfig): Promise<void> {
+    async createAutomatedStatusTransition(data: IAutomatedStatusTransitionConfigUI): Promise<void> {
         await this.setName(data.name);
         await this.setCompany(data.company);
         await this.setFromStatus(data.fromStatus);
