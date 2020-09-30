@@ -707,6 +707,7 @@ describe("Quick Case", () => {
             await previewCaseTemplateCasesPo.clickOnBackButton();
         });
         it('[DRDMV-796]: [Quick Case] Resources preview', async () => {
+            await browser.sleep(5000); //Hard wait for KA Indexing
             await resourcesPo.clickOnAdvancedSearchOptions();
             await resourcesPo.enterAdvancedSearchText(caseTemplateData.templateName);
             await resourcesPo.clickOnAdvancedSearchSettingsIconToOpen();
@@ -893,10 +894,13 @@ describe("Quick Case", () => {
             await quickCasePo.selectRequesterName('fritz');
             await quickCasePo.setCaseSummary(unPublishedKA_Name);
             expect(await resourcesPo.isRecommendedKnowledgePresent(unPublishedKA_Name)).toBeFalsy(`${unPublishedKA_Name} Canceled KA not disaplyed in Recommended Knowledge`);
-            await quickCasePo.clickStartOverButton();
+        });
+        it('[DRDMV-559]: [Quick Case] Knowledge article search in Resources', async () => {  
+            await navigationPo.gotoCaseConsole();
+            await navigationPo.gotoQuickCase();
             await quickCasePo.selectRequesterName('fritz');
             await quickCasePo.setCaseSummary(publishedKA_Name);
-            await resourcesPo.clickOnBackButton();
+            expect(await resourcesPo.isRecommendedKnowledgePresent(publishedKA_Name)).toBeFalsy(`${publishedKA_Name} Closed KA disaplyed in Recommended Knowledge`);
             await resourcesPo.clickOnAdvancedSearchOptions();
             await resourcesPo.enterAdvancedSearchText(publishedKA_Name);
             await resourcesPo.clickOnAdvancedSearchSettingsIconToOpen();

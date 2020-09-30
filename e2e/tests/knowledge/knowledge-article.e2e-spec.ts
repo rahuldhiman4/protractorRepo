@@ -2546,7 +2546,7 @@ describe('Knowledge Article', () => {
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID6, 'PublishApproval')).toBeTruthy('Status Not Set');            
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID7, 'Draft')).toBeTruthy('Status Not Set');
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID7, 'PublishApproval')).toBeTruthy('Status Not Set');            
-            await browser.sleep(2000); // hardwait to populate resource tab data
+            await browser.sleep(15000); //Hard wait for KA Indexing
         });
         it('[DRDMV-753]:[Advanced Search] [Pin/Unpin] Relate Knowledge Article on Knowledge Edit view from Advanced search', async () => {
             await navigationPage.signOut();
