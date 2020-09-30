@@ -33,16 +33,16 @@ class TemplateAccessTab {
     async selectSupportGroup(SupportValue: string, dropDownList: string): Promise<void> {
         await element(by.cssContainingText(this.selectors.dropDownType, dropDownList)).click();
         await $(this.selectors.searchSupportGroup).sendKeys(SupportValue);
-        await element(by.cssContainingText("li[ng-repeat*='option']", SupportValue)).isPresent().then(async () => {
-            await element(by.cssContainingText(".is-open li[ng-repeat*='option']", SupportValue)).click();
+        await element(by.cssContainingText("li[ng-repeat*='option']", SupportValue)).isDisplayed().then(async (displayed) => {
+            if (displayed) await element(by.cssContainingText(".is-open li[ng-repeat*='option']", SupportValue)).click();
         });
     }
     
     async selectBusinessUnit(businessUnitValue: string, dropDownList: string): Promise<void> {
         await element(by.cssContainingText(this.selectors.dropDownType, dropDownList)).click();
         await $(this.selectors.searchBuisnessUnit).sendKeys(businessUnitValue);
-        await element(by.cssContainingText("li[ng-repeat*='option']", businessUnitValue)).isPresent().then(async () => {
-            await element(by.cssContainingText(".is-open li[ng-repeat*='option']", businessUnitValue)).click();
+        await element(by.cssContainingText("li[ng-repeat*='option']", businessUnitValue)).isDisplayed().then(async (displayed) => {
+            if (displayed) await element(by.cssContainingText(".is-open li[ng-repeat*='option']", businessUnitValue)).click();
         });
     }
     
