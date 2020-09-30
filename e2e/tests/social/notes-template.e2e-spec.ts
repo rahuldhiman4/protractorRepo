@@ -37,6 +37,9 @@ import consoleNotestemplatePo from '../../pageobject/settings/common/console-not
 import relatedTabPage from '../../pageobject/common/related-person-tab.po';
 import addRelatedPopupPage from '../../pageobject/case/add-relation-pop.po';
 import { cloneDeep } from 'lodash';
+import createAdhocTaskPo from '../../pageobject/task/create-adhoc-task.po';
+import activityPage from '../../pageobject/social/activity-tab.po';
+
 
 let tableRowFieldIndex = 0;
 let tableColumnFieldIndex = 1;
@@ -74,7 +77,7 @@ describe('Notes template', () => {
             "firstName": "Petramco",
             "lastName": "SGUser1",
             "userId": "22653User",
-            "userPermission": ["Case Business Analyst","Foundation Read","Knowledge Coach","Knowledge Publisher","Knowledge Contributor","Knowledge Candidate","Case Catalog Administrator","Person Activity Read"]
+            "userPermission": ["Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read"]
         }
         await apiHelper.createNewUser(userData);
         await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
@@ -435,59 +438,327 @@ describe('Notes template', () => {
     });
 
     //ptidke
-    it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
+    describe('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
         let randomStr: string = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        try {
+        let tempNotesTemplateData, templateManualData, templateManualData1, templateAutomatedData, templateAutomatedData1, templateExternalData, caseResponse1, caseResponse2, caseData, adhocTaskData, notesTemplateGlobalData, notesTemplatePsilonlData, templateExternalData1, caseData1;
+        beforeAll(async () => {
+
             // create task notes template
-            let tempNotesTemplateData = cloneDeep(notesTemplateData.NOTES_TEMPLATE_MANDATORY_FIELD);
-            tempNotesTemplateData.templateName = tempNotesTemplateData.templateName + randomStr;
-            tempNotesTemplateData.body = tempNotesTemplateData.body + randomStr;
+            tempNotesTemplateData = cloneDeep(notesTemplateData.NOTES_TEMPLATE_MANDATORY_FIELD);
+            tempNotesTemplateData.templateName = tempNotesTemplateData.templateName + randomStr + '123';
+            tempNotesTemplateData.body = tempNotesTemplateData.body + randomStr + '123';
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createNotesTemplate("Task", tempNotesTemplateData);
+
+
+            //Creating Global task notes Template
+            notesTemplateGlobalData = cloneDeep(notesTemplateData.NOTES_TEMPLATE_MANDATORY_FIELD_GLOBAL);
+            notesTemplateGlobalData.templateName = notesTemplateGlobalData.templateName + randomStr + '456';
+            notesTemplateGlobalData.body = notesTemplateGlobalData.body + randomStr + '456';
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createNotesTemplate("Task", notesTemplateGlobalData);
+
+            //Creating Global task notes Template
+            notesTemplatePsilonlData = cloneDeep(notesTemplateData.NOTES_TEMPLATE_PSILON);
+            notesTemplatePsilonlData.templateName = notesTemplatePsilonlData.templateName + randomStr + '789';
+            notesTemplatePsilonlData.body = notesTemplatePsilonlData.body + randomStr + '789';
+            await apiHelper.apiLogin('gderuno');
+            await apiHelper.createNotesTemplate("Task", notesTemplatePsilonlData);
+
+            await apiHelper.apiLogin('fritz');
+
             // create manual task template
-            let templateData = {
+            templateManualData = {
                 "templateName": 'ManualTask' + randomStr,
-                "templateSummary": 'TaskSummary' + randomStr,
+                "templateSummary": 'Manualtask Summary' + randomStr,
                 "templateStatus": "Active",
-                "taskCompany": 'Petramco',
+                "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
-            };
-            await apiHelper.apiLogin('fritz');
-            await apiHelper.createManualTaskTemplate(templateData);
-            // create case
-            let caseData = {
+                "ownerGroup": "Facilities",
+                "businessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
+                "assignee": "Fritz",
+            }
+            await apiHelper.createManualTaskTemplate(templateManualData);
+
+            templateManualData1 = {
+                "templateName": 'ManualTask1' + randomStr,
+                "templateSummary": 'Manualtask Summary1' + randomStr,
+                "templateStatus": "Active",
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities",
+            }
+            await apiHelper.createManualTaskTemplate(templateManualData1);
+
+            // create Automated task template
+            templateAutomatedData = {
+                "templateName": 'AutomatedTask' + randomStr,
+                "templateSummary": 'AutomatedTask Summary' + randomStr,
+                "templateStatus": "Active",
+                "processBundle": "com.bmc.dsm.case-lib",
+                "processName": 'Auto Proces' + randomStr,
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities",
+                "businessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
+                "assignee": "Fritz",
+            }
+            await apiHelper.createAutomatedTaskTemplate(templateAutomatedData);
+
+            templateAutomatedData1 = {
+                "templateName": 'AutomatedTask1' + randomStr,
+                "templateSummary": 'AutomatedTask Summary1' + randomStr,
+                "templateStatus": "Active",
+                "processBundle": "com.bmc.dsm.case-lib",
+                "processName": 'Auto Process1' + randomStr,
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities",
+            }
+            await apiHelper.createAutomatedTaskTemplate(templateAutomatedData1);
+
+            // create External task template
+            templateExternalData = {
+                "templateName": 'ExternalTask' + randomStr,
+                "templateSummary": 'ExternalTask Summary' + randomStr,
+                "templateStatus": "Active",
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities",
+                "businessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
+                "assignee": "Fritz",
+            }
+            await apiHelper.createExternalTaskTemplate(templateExternalData);
+
+            templateExternalData1 = {
+                "templateName": 'ExternalTask1' + randomStr,
+                "templateSummary": 'ExternalTask Summary1' + randomStr,
+                "templateStatus": "Active",
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities",
+            }
+            await apiHelper.createExternalTaskTemplate(templateExternalData1);
+
+
+            caseData = {
                 "Requester": "qtao",
                 "Company": "Petramco",
                 "Summary": "Create case for me postman1",
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
-                "Assignee": "Qadim Katawazi"
-            };
-            await apiHelper.apiLogin('fritz');
-            let newCase = await apiHelper.createCase(caseData);
+                "Assignee": "qkatawazi"
+            }
+            caseResponse1 = await apiHelper.createCase(caseData);
+
+            caseData1 = {
+                "Requester": "qtao",
+                "Company": "Petramco",
+                "Summary": "Create case for me postman1",
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
+                "Assignee": "qkatawazi"
+            }
+            caseResponse2 = await apiHelper.createCase(caseData1);
+
+            const automatedTaskData = {
+                "company": "Petramco",
+                "requesterId": "qtao",
+                "templateName": templateAutomatedData.templateName
+            }
+            await apiHelper.addTaskToCase(automatedTaskData, caseResponse1.id);
+
+
+            const manualTaskData = {
+                "company": "Petramco",
+                "requesterId": "qtao",
+                "templateName": templateManualData.templateName
+            }
+            await apiHelper.addTaskToCase(manualTaskData, caseResponse1.id);
+
+            const externalTaskData = {
+                "company": "Petramco",
+                "requesterId": "qtao",
+                "templateName": templateExternalData.templateName
+            }
+
+            await apiHelper.addTaskToCase(externalTaskData, caseResponse1.id);
+
+            const automatedTaskData1 = {
+                "company": "Petramco",
+                "requesterId": "qtao",
+                "templateName": templateAutomatedData1.templateName
+            }
+            await apiHelper.addTaskToCase(automatedTaskData1, caseResponse2.id);
+
+
+            const manualTaskData1 = {
+                "company": "Petramco",
+                "requesterId": "qtao",
+                "templateName": templateManualData1.templateName
+            }
+            await apiHelper.addTaskToCase(manualTaskData1, caseResponse2.id);
+
+
+            const externalTaskData1 = {
+                "company": "Petramco",
+                "requesterId": "qtao",
+                "templateName": templateExternalData1.templateName
+            }
+            await apiHelper.addTaskToCase(externalTaskData1, caseResponse2.id);
+
+            await apiHelper.updateCaseStatus(caseResponse1.id, 'InProgress');
+
+
+        });
+
+        it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await utilityGrid.clearFilter();
-            await utilityGrid.searchAndOpenHyperlink(newCase.displayId);
-            await viewCasePage.clickAddTaskButton();
-            await manageTask.addTaskFromTaskTemplate(templateData.templateName);
-            await viewCasePage.clickOnTaskLink(templateData.templateSummary);
-            await viewTask.clickOnEditTask();
-            await editTask.clickOnAssignToMe();
-            await editTask.clickOnSaveButton();
+            await utilityGrid.searchAndOpenHyperlink(caseResponse2.displayId);
+            await viewCasePage.openTaskCard(1);
+            await manageTask.clickTaskLink(templateManualData1.templateSummary);
+            await activityTabPo.clickActivityNoteTextBox();
+            await activityTabPo.clickOnNotesTemplate();
+            expect(await notesTemplateUsage.isTemplatePresent(tempNotesTemplateData.templateName)).toBeFalsy(); // Notes Template of Petramco not visible
+            expect(await notesTemplateUsage.isTemplatePresent(notesTemplateGlobalData.templateName)).toBeTruthy();
+            expect(await notesTemplateUsage.isTemplatePresent(notesTemplatePsilonlData.templateName)).toBeFalsy();//Notes Template of Psilon not visible
+            await notesTemplateUsage.clickOnCancelBtn();
+            await activityTabPo.clickOnCancelButton();
+
+            await viewTaskPo.clickOnViewCase();
+            await viewCasePage.openTaskCard(1);
+            await manageTask.clickTaskLink(templateExternalData1.templateSummary);
+            await activityTabPo.clickActivityNoteTextBox();
+            await activityTabPo.clickOnNotesTemplate();
+            expect(await notesTemplateUsage.isTemplatePresent(tempNotesTemplateData.templateName)).toBeFalsy(); // Notes Template of Petramco not visible
+            expect(await notesTemplateUsage.isTemplatePresent(notesTemplateGlobalData.templateName)).toBeTruthy();
+            expect(await notesTemplateUsage.isTemplatePresent(notesTemplatePsilonlData.templateName)).toBeFalsy();//Notes Template of Psilon not visible
+            await notesTemplateUsage.clickOnCancelBtn();
+            await activityTabPo.clickOnCancelButton();
+
+            await viewTaskPo.clickOnViewCase();
+            await viewCasePage.openTaskCard(1);
+            await manageTask.clickTaskLink(templateAutomatedData1.templateSummary);
+            await activityTabPo.clickActivityNoteTextBox();
+            await activityTabPo.clickOnNotesTemplate();
+            expect(await notesTemplateUsage.isTemplatePresent(tempNotesTemplateData.templateName)).toBeFalsy(); // Notes Template of Petramco not visible
+            expect(await notesTemplateUsage.isTemplatePresent(notesTemplateGlobalData.templateName)).toBeTruthy();
+            expect(await notesTemplateUsage.isTemplatePresent(notesTemplatePsilonlData.templateName)).toBeFalsy();//Notes Template of Psilon not visible
+            await notesTemplateUsage.clickOnCancelBtn();
+            await activityTabPo.clickOnCancelButton();
+
+            await apiHelper.updateCaseStatus(caseResponse2.id, 'InProgress');
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(caseResponse2.displayId);
+            await viewCasePage.openTaskCard(1);
+            await manageTask.clickTaskLink(templateManualData1.templateSummary);
+            await activityTabPo.clickActivityNoteTextBox();
+            await activityTabPo.clickOnNotesTemplate();
+            expect(await notesTemplateUsage.isTemplatePresent(tempNotesTemplateData.templateName)).toBeTruthy(); // Notes Template of Petramco not visible
+            expect(await notesTemplateUsage.isTemplatePresent(notesTemplateGlobalData.templateName)).toBeTruthy();
+            expect(await notesTemplateUsage.isTemplatePresent(notesTemplatePsilonlData.templateName)).toBeFalsy();
+            await notesTemplateUsage.clickOnCancelBtn();
+            await activityTabPo.clickOnCancelButton();
+
+            await viewTaskPo.clickOnViewCase();
+            await viewCasePage.openTaskCard(1);
+            await manageTask.clickTaskLink(templateAutomatedData1.templateSummary);
+            await activityTabPo.clickActivityNoteTextBox();
+            await activityTabPo.clickOnNotesTemplate();
+            expect(await notesTemplateUsage.isTemplatePresent(tempNotesTemplateData.templateName)).toBeTruthy(); // Notes Template of Petramco not visible
+            expect(await notesTemplateUsage.isTemplatePresent(notesTemplateGlobalData.templateName)).toBeTruthy();
+            expect(await notesTemplateUsage.isTemplatePresent(notesTemplatePsilonlData.templateName)).toBeFalsy();//Notes Template of Psilon not visible
+            await notesTemplateUsage.clickOnCancelBtn();
+            await activityTabPo.clickOnCancelButton();
+
+            await viewTaskPo.clickOnViewCase();
+            await viewCasePage.openTaskCard(1);
+            await manageTask.clickTaskLink(templateExternalData1.templateSummary);
+            await activityTabPo.clickActivityNoteTextBox();
+            await activityTabPo.clickOnNotesTemplate();
+            expect(await notesTemplateUsage.isTemplatePresent(tempNotesTemplateData.templateName)).toBeFalsy(); // Notes Template of Petramco not visible
+            expect(await notesTemplateUsage.isTemplatePresent(notesTemplateGlobalData.templateName)).toBeTruthy();
+            expect(await notesTemplateUsage.isTemplatePresent(notesTemplatePsilonlData.templateName)).toBeFalsy();//Notes Template of Psilon not visible
+            await notesTemplateUsage.clickOnCancelBtn();
+            await activityTabPo.clickOnCancelButton();
+
+        });
+
+        it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(caseResponse1.displayId);
+            await viewCasePage.openTaskCard(1);
+            await manageTask.clickTaskLink(templateManualData.templateSummary);
+            await activityTabPo.clickActivityNoteTextBox();
+            await activityTabPo.clickOnNotesTemplate();
+            expect(await notesTemplateUsage.isTemplatePresent(tempNotesTemplateData.templateName)).toBeTruthy();
+            expect(await notesTemplateUsage.isTemplatePresent(notesTemplateGlobalData.templateName)).toBeTruthy();
+            expect(await notesTemplateUsage.isTemplatePresent(notesTemplatePsilonlData.templateName)).toBeFalsy();
+            await notesTemplateUsage.clickOnCancelBtn();
+            await activityTabPo.clickOnCancelButton();
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(tempNotesTemplateData.templateName);// notes template not shown
+            await activityTabPo.addActivityNote('ManualTemplateData');
             await activityTabPo.clickOnPostButton();
-            expect(await activityTabPo.isTextPresentInActivityLog(tempNotesTemplateData.body)).toBeTruthy();
-        } catch (e) {
-            throw e;
-        }
-        finally {
+            expect(await activityTabPo.isTextPresentInActivityLog('ManualTemplateData'+tempNotesTemplateData.body)).toBeTruthy();
+
+
+            await viewTaskPo.clickOnViewCase();
+            await viewCasePage.openTaskCard(1);
+            await manageTask.clickTaskLink(templateAutomatedData.templateSummary);
+            await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(tempNotesTemplateData.templateName);// notes template not shown
+            await activityTabPo.addActivityNote('AutomatedTemplateData');
+            await activityTabPo.clickOnPostButton();
+            expect(await activityTabPo.isTextPresentInActivityLog('AutomatedTemplateData'+tempNotesTemplateData.body)).toBeTruthy();
+
+            await viewTaskPo.clickOnViewCase();
+            await viewCasePage.openTaskCard(1);
+            await manageTask.clickTaskLink(templateExternalData.templateSummary);
+            await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(tempNotesTemplateData.templateName);// notes template not shown
+            await activityTabPo.addActivityNote('ExternalTemplateData');
+            await activityTabPo.clickOnPostButton();
+            expect(await activityTabPo.isTextPresentInActivityLog('ExternalTemplateData'+tempNotesTemplateData.body)).toBeTruthy();
+        });
+        it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
+            await viewTaskPo.clickOnViewCase();
+            await viewCasePage.clickAddTaskButton();
+            await manageTask.clickAddAdhocTaskButton();
+            await createAdhocTaskPo.setSummary('AdhocTask_DRDMV_16045');
+            await createAdhocTaskPo.setDescription("Description");
+            await createAdhocTaskPo.selectPriority('Low');
+            await createAdhocTaskPo.clickSaveAdhoctask();
+            await utilityCommon.closePopUpMessage();
+            await utilityCommon.closeAllBlades();
+            await viewCasePage.openTaskCard(1);
+            await manageTask.clickTaskLink('AdhocTask_DRDMV_16045');
+            await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(tempNotesTemplateData.templateName);// notes template not shown
+            await activityTabPo.addActivityNote('AdhocTemplateData');
+            await activityTabPo.clickOnPostButton();
+            expect(await activityTabPo.isTextPresentInActivityLog('AdhocTemplateData'+tempNotesTemplateData.body)).toBeTruthy();
+        });
+        it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
+            await navigationPage.gotoPersonProfile();
+            expect(await activityTabPo.isTextPresentInActivityLog('AdhocTemplateData'+tempNotesTemplateData.body)).toBeTruthy();
+            expect(await activityTabPo.isTextPresentInActivityLog('AutomatedTemplateData'+tempNotesTemplateData.body)).toBeTruthy();
+            expect(await activityTabPo.isTextPresentInActivityLog('ManualTemplateData'+tempNotesTemplateData.body)).toBeTruthy();
+            expect(await activityTabPo.isTextPresentInActivityLog('ExternalTemplateData'+tempNotesTemplateData.body)).toBeTruthy();
+        });
+            afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
-        }
+        });
     });
 
     //ptidke
@@ -1029,7 +1300,7 @@ describe('Notes template', () => {
             await createCasePo.clickSaveCaseButton();
             await casePreviewPo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Case Access');
-            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Facilities','Read')).toBeTruthy('Support Group does not have read access');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Facilities', 'Read')).toBeTruthy('Support Group does not have read access');
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(templateName);
             await activityTabPo.addActivityNote(randomString);
             await activityTabPo.clickOnPostButton();
@@ -1225,10 +1496,10 @@ describe('Notes template', () => {
             await createKnowlegePo.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access','Knowledge');
-            await accessTabPo.selectAccessEntityDropDown('Petramco','Select Company');
-            await accessTabPo.selectAccessEntityDropDown('Facilities Support','Select Business Unit');
-            await accessTabPo.selectAccessEntityDropDown('Facilities','Select Support Group');
+            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Knowledge');
+            await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
+            await accessTabPo.selectAccessEntityDropDown('Facilities Support', 'Select Business Unit');
+            await accessTabPo.selectAccessEntityDropDown('Facilities', 'Select Support Group');
             await accessTabPo.clickAccessEntitiyAddButton('Support Group');
             await accessTabPo.clickCloseKnowledgeAccessBlade();
             await viewKnowledgeArticlePo.clickOnTab('Activity');
@@ -2254,7 +2525,7 @@ describe('Notes template', () => {
             await quickCasePo.saveCase();
             await quickCasePo.gotoCaseButton();
             await viewCasePage.clickOnTab('Case Access');
-            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Facilities','Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Facilities', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
             await viewCasePage.clickOnTab('Tasks');
             await viewCasePage.clickOnTaskLink(templateData.templateName);
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate('taskNotesTemplate87163');
