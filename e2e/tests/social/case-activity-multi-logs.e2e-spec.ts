@@ -829,15 +829,15 @@ describe('Case Activity Multi Logs', () => {
             await loginPage.login('qfeng');
             await caseConsolePo.searchAndOpenCase(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("In Progress");
-            expect(await activityTabPage.isLogIconDisplayedInActivity('check_circle', 4)).toBeTruthy('FailureMsg11: log icon is missing');
+            expect(await activityTabPage.isLogIconDisplayedInActivity('check_circle', 1)).toBeTruthy('FailureMsg11: log icon is missing');
             expect(await activityTabPage.isTextPresentInActivityLog('Case was auto-approved')).toBeTruthy('FailureMsg23: In Progress Text is missing in activity log');
             expect(await activityTabPage.isLockIconDisplayedInActivity(5)).toBeFalsy('FailureMsg12: lock icon displayed on activity logs');
         });
 
         it('[DRDMV-16729]:Verify case creation', async () => {
             await activityTabPage.clickOnShowMore();
-            expect(await activityTabPage.isLogIconDisplayedInActivity('filePlus', 3)).toBeTruthy('FailureMsg11: log icon is missing');
-            expect(await activityTabPage.isLockIconDisplayedInActivity(3)).toBeTruthy('FailureMsg12: lock icon missing in activity logs');
+            expect(await activityTabPage.isLogIconDisplayedInActivity('filePlus', 4)).toBeTruthy('FailureMsg11: log icon is missing');
+            expect(await activityTabPage.isLockIconDisplayedInActivity(4)).toBeTruthy('FailureMsg12: lock icon missing in activity logs');
             expect(await activityTabPage.isTextPresentInActivityLog(approvalStr)).toBeTruthy(`FailureMsg23: ${approvalStr} Text is missing in activity log`);
             expect(await activityTabPage.isTextPresentInActivityLog('Status ')).toBeTruthy('FailureMsg23: Status  Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Assigned ')).toBeTruthy('FailureMsg23: Assigned  Text is missing in activity log');
@@ -1012,7 +1012,7 @@ describe('Case Activity Multi Logs', () => {
 
         it('[DRDMV-16729]:Verify social activity with sendimg email to requester', async () => {
             await viewCasePo.clickOnEmailLink();
-            await browser.sleep(1000); // Sleep till open conmpose email pop up
+            await browser.sleep(2000); // Sleep till open conmpose email pop up
             await composeMailPo.setToOrCCInputTextbox('To', 'apavlik@petramco.com');
             await composeMailPo.clickOnSendButton();
             await activityTabPage.clickOnRefreshButton();
@@ -1047,7 +1047,7 @@ describe('Case Activity Multi Logs', () => {
 
         it('[DRDMV-16729]:Verify social activity with sendimg email to other than requester', async () => {
             await viewCasePo.clickOnEmailLink();
-            await browser.sleep(1000); // Sleep till open conmpose email pop up
+            await browser.sleep(2000); // Sleep till open conmpose email pop up
             await composeMailPo.setToOrCCInputTextbox('To', 'fritz');
             await composeMailPo.clickOnSendButton();
             await activityTabPage.clickOnRefreshButton();

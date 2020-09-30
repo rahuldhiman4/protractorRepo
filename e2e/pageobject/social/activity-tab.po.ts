@@ -119,67 +119,65 @@ class ActivityTabPage {
     }
 
     async isLogIconDisplayedInActivity(iconName: string, activityNumber: number): Promise<boolean> {
+        await browser.wait(this.EC.or(async () => {
+            let count = await $$(this.selectors.activityLogList).count();
+            return count >= activityNumber;
+        }), 5000);
         switch (iconName) {
             case "note_pencil": {
                 return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-note_pencil').isDisplayed();
-                break;
             }
 
             case "pencil": {
                 return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-pencil').isDisplayed();
-                break;
             }
 
             case "comments": {
                 return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-comments').isDisplayed();
-                break;
             }
 
             case "unflag": {
                 return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-flag_o').isDisplayed();
-                break;
             }
 
             case "flag": {
                 return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-flag').isDisplayed();
-                break;
             }
 
             case "filePlus": {
-                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-file_plus_o').isPresent();
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-file_plus_o').isDisplayed();
             }
 
             case "arrow_exclamation_circle": {
-                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-list_arrow_exclamation_circle').isPresent();
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-list_arrow_exclamation_circle').isDisplayed();
             }
 
             case "squares_arrows": {
-                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-squares_arrows').isPresent();
-                break;
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-squares_arrows').isDisplayed();
             }
 
             case "files_change": {
-                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-files_change_o').isPresent();
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-files_change_o').isDisplayed();
             }
 
             case "check_circle": {
-                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-check_circle').isPresent();
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-check_circle').isDisplayed();
             }
 
             case "right-refresh": {
-                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-right-refresh').isPresent();
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-right-refresh').isDisplayed();
             }
 
             case "arrow_squares": {
-                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-arrow_squares').isPresent();
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-arrow_squares').isDisplayed();
             }
 
             case "envelope": {
-                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-envelope_o').isPresent();
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-envelope_o').isDisplayed();
             }
 
             case "lock_shield": {
-                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-lock_shield').isPresent();
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-lock_shield').isDisplayed();
             }
 
             default: {
