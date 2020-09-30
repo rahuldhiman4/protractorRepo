@@ -1,7 +1,6 @@
-import { access } from 'fs';
 import { browser } from "protractor";
 import apiHelper from "../../api/api.helper";
-import { ITaskTemplate } from '../../data/api/interface/task.template.interface.api';
+import { ITaskTemplate } from '../../data/interface/template.interface';
 import addRelatedPopupPage from '../../pageobject/case/add-relation-pop.po';
 import caseConsolePo from '../../pageobject/case/case-console.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';

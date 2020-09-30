@@ -43,7 +43,7 @@ export interface ICreateCase {
     "Category Tier 1"?: string;
     "Category Tier 2"?: string;
     "Category Tier 3"?: string;
-    "Category Tier 4"?: string; 
+    "Category Tier 4"?: string;
 }
 
 export interface IUpdateCaseAccess {
@@ -54,15 +54,22 @@ export interface IUpdateCaseAccess {
 }
 
 export interface IReadAccess {
-    category1?:string;
-    category2?:string;
-    category3?:string;
-    category4?:string;
+    category1?: string;
+    category2?: string;
+    category3?: string;
+    category4?: string;
     company: string;
-    label?:string;
-    priority?:string;
-    businessUnit:string;
-    supportGroup:string;
-    assignedCompany:string;
-    configName:string;
-    }
+    label?: string;
+    priority?: string;
+    businessUnit: string;
+    supportGroup: string;
+    assignedCompany: string;
+    configName: string;
+};
+
+export interface ICaseUpdate {
+    summary?: string;
+    description?: string;
+    statusChangedDate?: string;
+    casePriority?: string;
+};
