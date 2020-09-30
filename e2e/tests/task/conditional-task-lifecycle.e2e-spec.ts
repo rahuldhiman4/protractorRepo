@@ -650,6 +650,7 @@ describe('Conditional Task Life Cycle', () => {
 
             await apiHelper.apiLogin('fritz');
             await apiHelper.updateTaskStatus(manualTaskGuid, 'Completed', 'Successful');
+            await browser.sleep(1000); //Need time to update the Task status
             await apiHelper.updateTaskStatus(externalTaskGuid, 'Completed', 'Successful');
 
             await navigationPage.gotoCaseConsole();
