@@ -1,3 +1,4 @@
+import utilityCommon from '../../../utils/utility.common';
 import { $, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../../utils/util.common';
 
@@ -165,7 +166,7 @@ class CreateTaskTemplatePage {
     }
 
     async isCreateNewProcessRequiredText(): Promise<boolean> {
-        let value: string = await browser.executeScript('return window.getComputedStyle(arguments[0], ":after").content;', $(this.selectors.toggleBoxRequiredText));
+        let value: string = await utilCommon.getTextFromAfterTagElement($(this.selectors.toggleBoxRequiredText));
         return value.trim().substring(3, value.length - 2) === 'required';
     }
 

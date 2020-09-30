@@ -84,7 +84,6 @@ class CreateFlowset {
     }
 
     async selectStatus(status: string): Promise<void> {
-        await utilityCommon.scrollToElement(await $(this.selectors.status));
         await utilCommon.selectDropDown(this.selectors.statusGuid, status);
     }
 

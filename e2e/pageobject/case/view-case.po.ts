@@ -201,7 +201,7 @@ class ViewCasePage {
     async clickAddTaskButton(): Promise<void> {
         await $(this.selectors.addTaskButton).isPresent().then(async (link) => {
             if (link) {
-                await utilityCommon.scrollUpOrDownTillElement(this.selectors.addTaskButton);
+                await utilityCommon.scrollToElement($(this.selectors.addTaskButton));
                 await $(this.selectors.addTaskButton).click();
             } else console.log('Add Task button not found');
         });
@@ -213,7 +213,7 @@ class ViewCasePage {
     }
 
     async openTaskCard(taskCardNumber: number): Promise<void> {
-        await utilityCommon.scrollUpOrDownTillElement(this.selectors.taskCardArrow);
+        await utilityCommon.scrollToElement($(this.selectors.taskCardArrow));
         await $$(this.selectors.taskCardArrow).get(taskCardNumber - 1).click();
     }
 

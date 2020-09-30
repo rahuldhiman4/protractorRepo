@@ -272,13 +272,13 @@ export class Util {
 
     async isRequiredTagToField(guid: string): Promise<boolean> {
         let nameElement = await $(`[rx-view-component-id="${guid}"] span`);
-        let value: string = await browser.executeScript('return window.getComputedStyle(arguments[0], ":after").content;', nameElement);
+        let value: string = await this.getTextFromAfterTag(nameElement);
         return value.trim().substring(3, value.length - 2) === 'required';
     }
 
     async isRequiredTagToFieldElement(element: ElementFinder): Promise<boolean> {
         let nameElement = element;
-        let value: string = await browser.executeScript('return window.getComputedStyle(arguments[0], ":after").content;', nameElement);
+        let value: string = await this.getTextFromAfterTagElement(nameElement);
         return value.trim().substring(3, value.length - 2) === 'required';
     }
 
@@ -454,6 +454,15 @@ export class Util {
         );
     }
 
+    async getTextFromAfterTag(nameElement:string): Promise<string>{
+        let textAfterTag:string = await browser.executeScript('return window.getComputedStyle(arguments[0], ":after").content;', nameElement);
+        return textAfterTag;
+    }
+
+    async getTextFromAfterTagElement(nameElement: ElementFinder): Promise<string>{
+        let textAfterTag:string = await browser.executeScript('return window.getComputedStyle(arguments[0], ":after").content;', nameElement.getWebElement());
+        return textAfterTag;
+    }
 }
 
 export default new Util();

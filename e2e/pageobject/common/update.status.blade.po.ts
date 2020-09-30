@@ -18,8 +18,8 @@ class UpdateStatus {
         statusChange: '.status-transition',
         searchInput: 'input[type="search"]',
         resolutionDescriptionTextBox: '.bwf-text-area-edit .bwf-description-textarea-edit',
-        resolutionDescriptionGuid: '486a9101-526f-4058-a0e2-3c9e5fab1a36',
-        validationMessage: '[rx-view-component-id="a1072f99-4036-4e2e-8e62-e72b2ba22344"] p'
+        resolutionDescriptionGuid: 'd98df37c-7a96-43c3-bf69-2e6e735031ae',
+        validationMessage: '[rx-view-component-id="a1072f99-4036-4e2e-8e62-e72b2ba22344"] p',
     }
 
     async allStatusReasonOptionsPresent(list: string[]): Promise<boolean> {
@@ -72,7 +72,7 @@ class UpdateStatus {
     }
 
     async isStatusReasonRequiredTextPresent(): Promise<boolean> {
-        return await utilityCommon.isRequiredTagToFieldElement($(this.selectors.caseStatusReasonRequired));
+        return await utilityCommon.isRequiredTagToField(this.selectors.caseStatusReasonDropDownGuid);
     }
 
     async isChangeStatusFieldPresent(): Promise<boolean> {
@@ -118,8 +118,7 @@ class UpdateStatus {
     }
 
     async isRequiredTagToResolutionDescription(): Promise<boolean> {
-        let resolutionDescriptionrequired = await $('[rx-view-component-id="486a9101-526f-4058-a0e2-3c9e5fab1a36"] label span');
-        return await utilityCommon.isRequiredTagToFieldElement(resolutionDescriptionrequired);
+        return await utilityCommon.isRequiredTagToField(this.selectors.resolutionDescriptionGuid);
     }
 
     async getValidationMessage(): Promise<string> {

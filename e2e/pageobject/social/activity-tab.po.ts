@@ -1,3 +1,4 @@
+import utilityCommon from '../../utils/utility.common';
 import { resolve } from "path";
 import { $, $$, browser, by, element, ElementFinder, Key, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../utils/util.common';
@@ -599,8 +600,8 @@ class ActivityTabPage {
         await $$(this.selectors.activityLogList).get(activityNumber - 1).element(by.cssContainingText('.activity__wrapper div a', linkText)).click();
     }
 
-    async scrollToActivity(activityNumber: number): Promise<void> { //Operates on activity scroll bar.
-        await browser.executeScript("arguments[0].scrollIntoView();", $$('.activity .activity__wrapper').get(activityNumber - 1).getWebElement());
+    async scrollToActivity(activityNumber: number): Promise<void> {
+        await utilityCommon.scrollToElement(($$('.activity .activity__wrapper').get(activityNumber - 1)));  //Operates on activity scroll bar.
     }
 
     async isHyperlinkOfActivityDisplay(bodyText: string, authorText: string): Promise<boolean> {

@@ -121,7 +121,6 @@ class AccessTab {
     }
 
     async clickCloseKnowledgeAccessBlade(): Promise<void> {
-        await utilityCommon.scrollToElement(await $(this.selectors.closeKnowledgeAccessBlade));
         await $(this.selectors.closeKnowledgeAccessBlade).click();
     }
 

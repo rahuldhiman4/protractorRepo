@@ -1,7 +1,6 @@
 import { $, protractor, ProtractorExpectedConditions, browser } from "protractor";
 import utilityGrid from '../../utils/utility.grid';
 import activityTab from './activity-tab.po';
-import utilityCommon from 'e2e/utils/utility.common';
 
 class notesTemplateUsage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
