@@ -51,7 +51,6 @@ class EditFlowsetPage {
         await element(by.cssContainingText(this.selectors.dropdownElement, supportGroup)).isPresent().then(async (result) => {
             if (result) {
                 await browser.sleep(1000); // Wait Until Confidential Support Group Ready To Click.
-                await utilityCommon.scrollToElement(element(by.cssContainingText(this.selectors.dropdownElement, supportGroup)));
                 await element(by.cssContainingText(this.selectors.dropdownElement, supportGroup)).click()
             } else {
                 console.log(supportGroup," this confidential support group not present");

@@ -396,7 +396,7 @@ describe('Case Status Change', () => {
             expect(await updateStatusBladePo.allStatusOptionsPresent(statusOptions)).toBeTruthy("Status Options is not present");
             await updateStatusBladePo.clickCancelButton();
             await updateStatusBladePo.changeCaseStatus('Pending');
-            await updateStatusBladePo.isStatusReasonRequiredTextPresent();
+            expect(await updateStatusBladePo.isStatusReasonRequiredTextPresent()).toBeTruthy();
             await updateStatusBladePo.setStatusReason('Third Party');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Pending');
@@ -671,7 +671,7 @@ describe('Case Status Change', () => {
             expect(await updateStatusBladePo.allStatusOptionsPresent(statusOptions)).toBeTruthy("Status Options is not present");
             await updateStatusBladePo.clickCancelButton();
             await updateStatusBladePo.changeCaseStatus('Resolved');
-            await updateStatusBladePo.isStatusReasonRequiredTextPresent();
+            expect(await updateStatusBladePo.isStatusReasonRequiredTextPresent()).toBeTruthy();
             await updateStatusBladePo.setStatusReason('Auto Resolved');
             await updateStatusBladePo.clickSaveStatus();
             await expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
@@ -699,7 +699,7 @@ describe('Case Status Change', () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId5);
             await updateStatusBladePo.changeCaseStatus('Canceled');
-            await updateStatusBladePo.isStatusReasonRequiredTextPresent();
+            expect(await updateStatusBladePo.isStatusReasonRequiredTextPresent()).toBeTruthy();
             await updateStatusBladePo.setStatusReason('Customer Canceled');
             await updateStatusBladePo.clickSaveStatus();
             await expect(await viewCasePage.getTextOfStatus()).toBe('Canceled');
@@ -759,7 +759,7 @@ describe('Case Status Change', () => {
         });
         it('[DRDMV-4680]: [Status Blade] Case Status Blade view', async () => {
             await updateStatusBladePo.changeCaseStatus('Resolved');
-            await updateStatusBladePo.isStatusReasonRequiredTextPresent();
+            expect(await updateStatusBladePo.isStatusReasonRequiredTextPresent()).toBeTruthy();
             await updateStatusBladePo.setStatusReason('Auto Resolved');
             expect(await updateStatusBladePo.isSaveUpdateStatusButtonEnabled()).toBeTruthy("Save Button is enabled");
             await updateStatusBladePo.clickSaveStatus();

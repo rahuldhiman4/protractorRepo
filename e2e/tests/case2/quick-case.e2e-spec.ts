@@ -550,7 +550,6 @@ describe("Quick Case", () => {
             expect(await viewCasePo.getCaseTemplateText()).toBe(caseTemplateData.templateName);
             expect(await activityPo.isTextPresentInActivityLog("created the case")).toBeTruthy("Text is not present in activiy tab1");
             expect(await activityPo.isTextPresentInActivityLog("created the case")).toBeTruthy("Text is not present in activiy tab1");
-            await utilityCommon.scrollUpOrDownTillElement(viewCasePo.selectors.addedTaskFromCaseTemplate);
             expect(await viewCasePo.isCoreTaskPresent(tasktemplateData.templateSummary)).toBeTruthy("Task Is not added from Case Template");
             await viewCasePo.clickOnTab('Resources');
             await resourcesPo.clickOnAdvancedSearchOptions();

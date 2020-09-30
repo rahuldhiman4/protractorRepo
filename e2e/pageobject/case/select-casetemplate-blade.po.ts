@@ -84,7 +84,6 @@ class SelectCaseTemplateBlade {
     }
 
     async selectFirstRecommendedTemplate(): Promise<void> {
-        await utilityCommon.scrollUpOrDownTillElement('h2.bwf-search-result__title');
         await $$('div[role="checkbox"]').get(0).click();
     }
 
