@@ -732,7 +732,6 @@ describe('Case Activity Multi Logs', () => {
             let approvalMappingId = await apiHelper.createApprovalMapping(caseModule, approvalMappingData);
             await apiHelper.associateTemplateWithApprovalMapping(caseModule, caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
 
-
             let autoTaskTemplateData = {
                 "templateName": `AutomatedTaskTemplateActive` + randomStr,
                 "templateSummary": `Automated Approval for task`,
@@ -829,15 +828,19 @@ describe('Case Activity Multi Logs', () => {
             await loginPage.login('qfeng');
             await caseConsolePo.searchAndOpenCase(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("In Progress");
+            await activityTabPage.applyActivityFilter('Approvals');
             expect(await activityTabPage.isLogIconDisplayedInActivity('check_circle', 1)).toBeTruthy('FailureMsg11: log icon is missing');
             expect(await activityTabPage.isTextPresentInActivityLog('Case was auto-approved')).toBeTruthy('FailureMsg23: In Progress Text is missing in activity log');
+            await activityTabPage.removeFilterList();
             expect(await activityTabPage.isLockIconDisplayedInActivity(5)).toBeFalsy('FailureMsg12: lock icon displayed on activity logs');
         });
 
         it('[DRDMV-16729]:Verify case creation', async () => {
+            await activityTabPage.applyActivityFilter('Category Change');
+            expect(await activityTabPage.isLogIconDisplayedInActivity('filePlus', 1)).toBeTruthy('FailureMsg11: log icon is missing');
+            expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg12: lock icon missing in activity logs');
+            await activityTabPage.removeFilterList();
             await activityTabPage.clickOnShowMore();
-            expect(await activityTabPage.isLogIconDisplayedInActivity('filePlus', 4)).toBeTruthy('FailureMsg11: log icon is missing');
-            expect(await activityTabPage.isLockIconDisplayedInActivity(4)).toBeTruthy('FailureMsg12: lock icon missing in activity logs');
             expect(await activityTabPage.isTextPresentInActivityLog(approvalStr)).toBeTruthy(`FailureMsg23: ${approvalStr} Text is missing in activity log`);
             expect(await activityTabPage.isTextPresentInActivityLog('Status ')).toBeTruthy('FailureMsg23: Status  Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Assigned ')).toBeTruthy('FailureMsg23: Assigned  Text is missing in activity log');
