@@ -192,13 +192,15 @@ export class Utility {
     }
 
     async isRequiredTagToField(guid: string): Promise<boolean> {
+        let nameElement;
         let isRequired: boolean = await $(`[rx-view-component-id="${guid}"] .form-control-required`).isPresent();
-        if (!isRequired) {
-            let nameElement = await $(`[rx-view-component-id="${guid}"] .form-control-label`);
-            let value: string = await this.getTextFromAfterTag(nameElement);
-            isRequired = value.trim().substring(3, value.length - 2) === 'required';
-        }
-        return isRequired;
+        if (!isRequired) nameElement = await $(`[rx-view-component-id="${guid}"] .form-control-label`);
+        return await nameElement.isPresent().then(async (result) => {
+            if (result) {
+                let value: string = await this.getTextFromAfterTag(nameElement);
+                return value.trim().substring(3, value.length - 2) === 'required';
+            } else return false;
+        });
     }
 
     async deleteAlreadyDownloadedFile(fileName: string): Promise<boolean> {
