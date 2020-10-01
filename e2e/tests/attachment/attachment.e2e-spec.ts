@@ -46,12 +46,6 @@ import slmExpressionBuilder from '../../pageobject/settings/slm/slm-expressionbu
 import approvalConfigurationPage from "../../pageobject/settings/approval/approval-configuration.po";
 import { SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
 import { cloneDeep } from 'lodash';
-import attachDocumentBladePo from '../../pageobject/common/attach-document-blade.po';
-import knowledgeArticlesConsolePo from '../../pageobject/knowledge/knowledge-articles-console.po';
-import editKnowledgePo from '../../pageobject/knowledge/edit-knowledge.po';
-import dynamicFieldsPo from '../../pageobject/common/dynamic-fields.po';
-import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
-import casePreviewPo from '../../pageobject/case/case-preview.po';
 
 describe("Attachment", () => {
     beforeAll(async () => {
@@ -798,5 +792,4 @@ describe("Attachment", () => {
 
         });
     });
-
-   });
+});
