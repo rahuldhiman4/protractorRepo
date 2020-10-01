@@ -2286,34 +2286,3 @@ export const TASK_TEMPLATE__DYNAMIC_FIELDS_DRDMV_13948 =
         }
     ]
 };
-
-export const MULTIPLE_ATTACHMENTS = {
-    "name": "case template",
-    "templateRecordDefinition": "com.bmc.dsm.task-lib:Task Template",
-    "templateId": "nnn",
-    "attributeDefinitions": [{
-        "name": "attachment1",
-        "description": "attachmentFirst",
-        "dataType": "ATTACHMENT",
-        "dataProviderUserRole": "Agent",
-    },
-    {
-        "name": "attachment2",
-        "description": "attachmentSecond",
-        "dataType": "ATTACHMENT",
-        "dataProviderUserRole": "Agent",
-    },
-    {
-        "name": "attachment3",
-        "description": "attachmentThird",
-        "dataType": "ATTACHMENT",
-        "dataProviderUserRole": "Agent",
-    },
-    {
-        "name": "attachment4",
-        "description": "attachmentFour",
-        "dataType": "ATTACHMENT",
-        "dataProviderUserRole": "Agent",
-    }
-]
-};
