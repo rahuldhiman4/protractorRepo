@@ -313,7 +313,6 @@ describe('Document Library Consume Permission', () => {
             expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is delete sucessfully');
             await viewTaskPo.clickOnAttachedDocumentFile('bwfJpg.jpg');
             expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is not downloaded.');
-            await utilityCommon.scrollUpOrDownTillElement(viewTaskPo.selectors.viewCaseLink);
         });
         it('[DRDMV-13517]: Add Task - Case agent attaches published document from document library where case agent is author of the document', async () => {
             await viewTaskPo.clickOnViewCase();

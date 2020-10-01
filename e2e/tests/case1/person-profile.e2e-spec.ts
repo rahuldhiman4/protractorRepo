@@ -27,11 +27,6 @@ describe('Person Profile test', () => {
     });
 
     //asahitya
-    it('[DRDMV-14085]: Verify Profile picture of logged in user on My profile page', async () => {
-        expect(await personProfile.isPersonProfileImageDisplayed()).toBeTruthy("Person Profile image is not displayed");
-    });
-
-    //asahitya
     it('[DRDMV-17018]: Check agent can not add notes to own Person profile in agent work history tab', async () => {
         expect(await personProfile.isActivityNotesDisplayed()).toBeFalsy("Activity Notes are available");
     });
@@ -62,7 +57,7 @@ describe('Person Profile test', () => {
     });
 
     //asahitya
-    it('[DRDMV-14023,DRDMV-16812]: Verify My Profile Console', async () => {
+    it('[DRDMV-14023,DRDMV-16812,DRDMV-14085]: Verify My Profile Console', async () => {
         await navigationPage.gotoCaseConsole();
         await navigationPage.gotoPersonProfile();
         expect(await personProfile.getPersonType()).toBe('Employee', 'Person type does not match');
@@ -76,6 +71,7 @@ describe('Person Profile test', () => {
         expect(await personProfile.getContactNumber()).toBe("+19255553456", "Phone number mismatch");
         expect(await personProfile.getEmail()).toBe("elizabeth@bwflabs.localdomain", "Email mismatch");
         expect(await personProfile.getSite()).toBe("Rochester\n70 Linden Oaks, Rochester, New York, 14625, United States ", "Site mismatch");
+        expect(await personProfile.isPersonProfileImageDisplayed()).toBeTruthy("Person Profile image is not displayed");
         await personProfile.clickOnTab("Requested Cases");
         await personProfile.clickOnTab("Assigned Cases");
         await personProfile.clickOnTab("Support Groups");

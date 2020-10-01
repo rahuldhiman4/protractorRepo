@@ -1,11 +1,11 @@
-export interface INOTIFICATIONEVENT {
+export interface INotificationEvent {
     eventName: string;
     status?: number;
     company?: string;
     eventDescription?: string;
 }
 
-export interface INOTIFICATIONTEMPLATE {
+export interface INotificationTemplate {
     description: string;
     module: string;
     eventName: string;

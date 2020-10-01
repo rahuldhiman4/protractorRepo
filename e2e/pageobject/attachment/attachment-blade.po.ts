@@ -1,3 +1,4 @@
+import utilityCommon from '../../utils/utility.common';
 import { $, $$, browser, by, element, ElementFinder, protractor, ProtractorExpectedConditions } from "protractor";
 import utilGrid from '../../utils/util.grid';
 import utilityGrid from '../../utils/utility.grid';
@@ -88,7 +89,6 @@ class AttachmentBlade {
         for (let i: number = 0; i < allAttachmentRows.length; i++) {
             let attachmentName: ElementFinder = await allAttachmentRows[i].$('.attachment-view-thumbnail__title-text');
             if ((await attachmentName.getText()).trim() === record) {
-                await browser.executeScript("arguments[0].scrollIntoView();", await allAttachmentRows[i].$('.ui-chkbox-box').getWebElement());
                 return await allAttachmentRows[i].$('.ui-chkbox-box').isSelected();
             }
         }

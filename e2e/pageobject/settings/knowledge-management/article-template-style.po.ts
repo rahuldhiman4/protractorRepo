@@ -1,3 +1,4 @@
+import utilityCommon from '../../../utils/utility.common';
 import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 
 class ArticleTemplateStyle {
@@ -55,7 +56,7 @@ class ArticleTemplateStyle {
 
     async getStyleNameFieldRequiredValue():Promise<string>{
         let nameElement =   await element.all(by.cssContainingText(this.selectors.styleNameRequired,'Style Name')).first();
-        let value:string = await browser.executeScript('return window.getComputedStyle(arguments[0], ":after").content;', nameElement);
+        let value:string = await utilityCommon.getTextFromAfterTag(nameElement);
         return await value.trim().substring(3,value.length-2);
        }
 

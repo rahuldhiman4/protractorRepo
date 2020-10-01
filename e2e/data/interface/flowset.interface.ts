@@ -5,7 +5,7 @@ export interface IFlowset {
     description: string;
 }
 
-export interface IProcessLibConfig {
+export interface IFlowsetProcess {
     applicationServicesLib: string;
     processName: string;
     processAliasName: string;
@@ -14,7 +14,7 @@ export interface IProcessLibConfig {
     status?: string;
 }
 
-export interface IProcessFlowsetMapping {
+export interface IFlowsetProcessMapping {
     function: string;
     registeredProcessId: string;
     status: string;

@@ -101,10 +101,6 @@ export class Utility {
         );
     }
 
-    async scrollUpOrDownTillElement(element: string): Promise<void> {
-        await browser.executeScript("arguments[0].scrollIntoView();", $(`${element}`).getWebElement());
-    }
-
     async isPopUpMessagePresent(expectedMsg: string, actualNumberOfPopups?: number): Promise<boolean> {
         let arr: string[] = await this.getAllPopupMsg(actualNumberOfPopups);
         return arr.includes(expectedMsg);
@@ -199,19 +195,10 @@ export class Utility {
         let isRequired: boolean = await $(`[rx-view-component-id="${guid}"] .form-control-required`).isPresent();
         if (!isRequired) {
             let nameElement = await $(`[rx-view-component-id="${guid}"] .form-control-label`);
-            let value: string = await browser.executeScript('return window.getComputedStyle(arguments[0], ":after").content;', nameElement);
+            let value: string = await this.getTextFromAfterTag(nameElement);
             isRequired = value.trim().substring(3, value.length - 2) === 'required';
         }
         return isRequired;
-    }
-
-    async isRequiredTagToFieldElement(nameElement: ElementFinder): Promise<boolean> {
-        return await nameElement.isPresent().then(async (result) => {
-            if (result) {
-                let value: string = await browser.executeScript('return window.getComputedStyle(arguments[0], ":after").content;', nameElement);
-                return value.trim().substring(3, value.length - 2) === 'required';
-            } else return false;
-        });
     }
 
     async deleteAlreadyDownloadedFile(fileName: string): Promise<boolean> {
@@ -489,6 +476,11 @@ export class Utility {
             }
         }
         return fieldValue;
+    }
+
+    async getTextFromAfterTag(nameElement:string): Promise<string>{
+        let textAfterTag:string = await browser.executeScript('return window.getComputedStyle(arguments[0], ":after").content;', nameElement);
+        return textAfterTag;
     }
 }
 

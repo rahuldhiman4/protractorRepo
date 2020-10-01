@@ -1,4 +1,4 @@
-export interface ISvt {
+export interface ICreateSVT {
     "terms": string,
     "readableTerms": string,
     "startWhen": string,

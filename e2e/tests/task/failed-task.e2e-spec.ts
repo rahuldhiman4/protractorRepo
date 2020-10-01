@@ -457,6 +457,7 @@ describe('Failed Task', () => {
             expect(await manageTaskBlade.getTaskStatus(manualTaskTemplateData2.templateSummary)).toBe('Staged');
 
             await manageTaskBlade.clickTaskLink(automatedTaskTemplateData.templateSummary);
+            await activityTabPo.clickOnRefreshButton();
             expect(await taskViewPage.getTaskStatusValue()).toBe('Failed');
             expect(await taskViewPage.getStatusReason()).toBe('Error');
         });

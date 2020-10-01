@@ -152,6 +152,7 @@ describe("Task Self Approval Tests", () => {
             await manageTask.clickTaskLink(manualTaskTemplateData.templateSummary);
             let taskId = await viewTask.getTaskID();
             await navigationPage.gotoTaskConsole();
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(taskId);
             expect(await viewTask.getTaskStatusValue()).toBe("In Progress");
             expect(await activityTabPage.getApprovalActivityText('Task was auto-approved')).toBeTruthy();

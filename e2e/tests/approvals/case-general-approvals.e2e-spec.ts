@@ -1,6 +1,6 @@
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
-import { ICaseTemplate } from '../../data/api/interface/case.template.interface.api';
+import { ICaseTemplate } from '../../data/interface/template.interface';
 import approvalConsolePage from "../../pageobject/approval/approvals-console.po";
 import editCasePo from '../../pageobject/case/edit-case.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';

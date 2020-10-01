@@ -121,7 +121,6 @@ class AccessTab {
     }
 
     async clickCloseKnowledgeAccessBlade(): Promise<void> {
-        await utilityCommon.scrollToElement(await $(this.selectors.closeKnowledgeAccessBlade));
         await $(this.selectors.closeKnowledgeAccessBlade).click();
     }
 
@@ -172,9 +171,7 @@ class AccessTab {
     }
 
     async clickOnResetToDefault(): Promise<void> {
-        await browser.sleep(2000); //hardwait for resetting on UI before click
         await $(this.selectors.resetToDefault).click();
-        await browser.sleep(2000); //hardwait for resetting on UI after click
     }
 }
 export default new AccessTab();

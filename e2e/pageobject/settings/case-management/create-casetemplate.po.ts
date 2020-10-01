@@ -1,9 +1,8 @@
-import { $, browser, protractor, ProtractorExpectedConditions, element, by, ElementFinder, Key } from "protractor";
-import { ICaseTemplate } from "../../../data/ui/interface/caseTemplate.interface";
+import { $, protractor, ProtractorExpectedConditions } from "protractor";
+import { ICaseTemplateUI } from "../../../data/interface/template.interface";
 import caseTemplateGrid from "../../../pageobject/settings/case-management/console-casetemplate.po";
-import changeAssignemetOldBlade from '../../common/change-assignment-old-blade.po';
-import viewCaseTemplate from "../../../pageobject/settings/case-management/view-casetemplate.po";
 import utilCommon from '../../../utils/util.common';
+import changeAssignemetOldBlade from '../../common/change-assignment-old-blade.po';
 
 class CreateCaseTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -65,9 +64,9 @@ class CreateCaseTemplate {
 
     async setCategoryTier1(tier1Value: string): Promise<void> {
         let flowsetgetText = await $(this.selectors.flowsetVal).getText();
-        if(flowsetgetText == ''){
+        if (flowsetgetText == '') {
             await utilCommon.selectDropDown('57b0a78a-b91a-46c3-8800-04acc0d81108', tier1Value);
-        }else{
+        } else {
             await utilCommon.selectDropDown2($(this.selectors.caseCategoryTier1), tier1Value);
         }
     }
@@ -169,7 +168,7 @@ class CreateCaseTemplate {
                     else await $(this.selectors.clearButton).click();
                 });
         });
-        
+
     }
 
     async isResolutionCodeRequired(values: boolean): Promise<void> {
@@ -196,7 +195,7 @@ class CreateCaseTemplate {
         await utilCommon.setCKEditor(caseDescription, this.selectors.caseDescriptionGuid);
     }
 
-    async createCaseTemplateWithMandatoryFields(caseTemplate: ICaseTemplate): Promise<void> {
+    async createCaseTemplateWithMandatoryFields(caseTemplate: ICaseTemplateUI): Promise<void> {
         await caseTemplateGrid.clickOnCreateCaseTemplateButton();
         await this.setTemplateName(caseTemplate.templateName);
         await this.setCaseSummary(caseTemplate.templateSummary);
@@ -219,7 +218,7 @@ class CreateCaseTemplate {
         await this.clickSaveCaseTemplate();
     }
 
-    async createCaseTemplateWithAllFields(caseTemplate: ICaseTemplate): Promise<void> {
+    async createCaseTemplateWithAllFields(caseTemplate: ICaseTemplateUI): Promise<void> {
         await caseTemplateGrid.clickOnCreateCaseTemplateButton();
         await this.setTemplateName(caseTemplate.templateName);
         await this.setCaseSummary(caseTemplate.templateSummary);
