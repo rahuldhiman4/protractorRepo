@@ -192,15 +192,17 @@ export class Utility {
     }
 
     async isRequiredTagToField(guid: string): Promise<boolean> {
-        let nameElement;
         let isRequired: boolean = await $(`[rx-view-component-id="${guid}"] .form-control-required`).isPresent();
-        if (!isRequired) nameElement = await $(`[rx-view-component-id="${guid}"] .form-control-label`);
-        return await nameElement.isPresent().then(async (result) => {
-            if (result) {
-                let value: string = await this.getTextFromAfterTag(nameElement);
-                return value.trim().substring(3, value.length - 2) === 'required';
-            } else return false;
-        });
+        if (!isRequired) {
+            let nameElement = `[rx-view-component-id="${guid}"] .form-control-label`;
+            return await element(by.css(nameElement)).isPresent().then(async (result) => {
+                if (result) {
+                    let value: string = await this.getTextFromAfterTag($(nameElement));
+                    return value.trim().substring(3, value.length - 2) === 'required';
+                } else return false;
+            });
+        }
+        return isRequired;
     }
 
     async deleteAlreadyDownloadedFile(fileName: string): Promise<boolean> {
@@ -480,8 +482,8 @@ export class Utility {
         return fieldValue;
     }
 
-    async getTextFromAfterTag(nameElement:string): Promise<string>{
-        let textAfterTag:string = await browser.executeScript('return window.getComputedStyle(arguments[0], ":after").content;', nameElement);
+    async getTextFromAfterTag(nameElement:ElementFinder): Promise<string>{
+        let textAfterTag:string = await browser.executeScript('return window.getComputedStyle(arguments[0], ":after").content;', nameElement.getWebElement());
         return textAfterTag;
     }
 }
