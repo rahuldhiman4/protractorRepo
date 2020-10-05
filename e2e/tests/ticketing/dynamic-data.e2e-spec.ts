@@ -540,7 +540,7 @@ describe('Dynamic data', () => {
         await editTaskPo.addAttachmentInDynamicField('attachment1', filesToUpload2);
         await editTaskPo.clickOnSaveButton();
         await utilCommon.closePopUpMessage();
-        await editTaskPo.clickOnRefreshActivity();
+        await viewCasePo.clickOnRefreshTaskList();
         //verify show more and show less button
         expect(await viewTaskPo.getShowMoreLessAttachmentsLinkText('attachment1')).toContain('more');
         await viewTaskPo.clickShowMoreShowLessLink('attachment1');

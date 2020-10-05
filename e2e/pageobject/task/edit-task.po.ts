@@ -27,7 +27,6 @@ class EditTask {
         taskSummary: '[rx-view-component-id="1261e01e-00fb-4e2c-b2ac-72e837f9fcea"] input',
         dynamicFieldName: '[rx-view-component-id="4c988a95-b148-475f-b91c-9788d8e6c0cb"] label',
         ckeditorGuid: '6053a7e8-5194-420b-965a-1c3bfe3ad0a1',
-        refreshActivity: '.d-icon-left-refresh',
         categoryTier1Value: '[rx-view-component-id="909ad3ad-6706-4d46-bb5a-bc48fa6ca98e"] .dropdown-toggle',
         categoryTier2Value: '[rx-view-component-id="49d231d9-ee81-4d7c-90af-d7ca785a32d4"] .dropdown-toggle',
         categoryTier3Value: '[rx-view-component-id="c8858fb5-5b21-4e0d-a947-c0130a72b51a"] .dropdown-toggle',
@@ -99,9 +98,6 @@ class EditTask {
         await $(this.selectors.assignToMe).click();
     }
 
-    async clickOnRefreshActivity() {
-        await $(this.selectors.refreshActivity).click();
-    }
 
     async clickOnChangeAssignementButton() {
         await $(this.selectors.changesAssignmentButton).click();

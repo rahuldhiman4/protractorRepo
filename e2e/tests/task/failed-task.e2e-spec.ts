@@ -217,7 +217,7 @@ describe('Failed Task', () => {
             await viewCasePage.openTaskCard(1);
             expect(await manageTaskBlade.getTaskStatus(automatedTaskTemplateSummary2)).toContain('Failed');
             await utilityCommon.closeAllBlades();
-            await editTaskPo.clickOnRefreshActivity();
+            await viewCasePage.clickOnRefreshTaskList();
             await viewCasePage.openTaskCard(2);
             expect(await manageTaskBlade.getTaskStatus(manualTaskTemplateData.templateSummary)).toContain('Staged');
             await utilityCommon.closeAllBlades();
@@ -292,7 +292,7 @@ describe('Failed Task', () => {
             await utilityCommon.closePopUpMessage();
             expect(await manageTaskBlade.getTaskStatus(automatedTaskTemplateData.templateSummary)).toBe('Completed');
             await utilityCommon.closeAllBlades();
-            await editTaskPo.clickOnRefreshActivity();
+            await viewCasePage.clickOnRefreshTaskList();
             expect(await viewCasePage.isAllTaskUnderStatusTitleMatches('Completed Tasks', [automatedTaskTemplateData.templateSummary])).toBeTruthy();
             await viewCasePage.clickOnTaskLink(automatedTaskTemplateData.templateSummary);
             expect(await taskViewPage.getTaskStatusValue()).toBe('Completed');
@@ -449,8 +449,8 @@ describe('Failed Task', () => {
             await utilityCommon.closeAllBlades();
 
             await apiHelper.updateTaskStatus(manualTaskGuid1, 'Completed', 'Successful');
-            await editTaskPo.clickOnRefreshActivity();
-
+            await viewCasePage.clickOnRefreshTaskList();
+            await browser.sleep(1000); //Wait to reflect task status on Manage Task Blade
             await viewCasePage.openTaskCard(1);
             expect(await manageTaskBlade.getTaskStatus(manualTaskTemplateData1.templateSummary)).toBe('Completed');
             expect(await manageTaskBlade.getTaskStatus(automatedTaskTemplateData.templateSummary)).toBe('Failed');

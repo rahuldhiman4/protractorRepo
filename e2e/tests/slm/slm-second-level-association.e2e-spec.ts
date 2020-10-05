@@ -378,7 +378,7 @@ describe('Service Target - Second Level Association Tests', () => {
             await caseConsolePage.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
             expect(await viewCasePage.getSlaBarColor()).toBe('rgba(241, 181, 33, 1)'); //orange
-            await browser.sleep(40000);
+            await browser.sleep(65000);
             await navigationPage.gotoCaseConsole();
             await caseConsolePage.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
@@ -433,7 +433,7 @@ describe('Service Target - Second Level Association Tests', () => {
             await caseConsolePage.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
             expect(await viewCasePage.getSlaBarColor()).toBe('rgba(241, 181, 33, 1)'); //orange
-            await browser.sleep(30000);
+            await browser.sleep(40000);
             await navigationPage.gotoCaseConsole();
             await caseConsolePage.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
