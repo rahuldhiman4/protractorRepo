@@ -75,7 +75,10 @@ class ServiceTargetMilestoneConfig {
     }
 
     async selectMileStoneActionCondition(fieldValue:string):Promise<void>{
-        await element(by.cssContainingText(this.selectors.selectMilestoneAction, fieldValue)).click();
+        let option = await element(by.cssContainingText(this.selectors.selectMilestoneAction, fieldValue));
+        await browser.wait(this.EC.elementToBeClickable(option), 3000).then(async () => {
+            await option.click();
+        });
     }
 
 

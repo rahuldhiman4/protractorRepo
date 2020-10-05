@@ -371,10 +371,10 @@ describe('Service Target Tests for Tasks', () => {
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickOnTaskLink(summary);
             taskId = await viewTask.getTaskID();
-            await browser.sleep(70000);
+            await browser.sleep(70000);  // sleep added to track SVT bar progress
         })
         it('[DRDMV-13029,DRDMV-13035,DRDMV-13065]: Verify Task SLM Status "Warning" on Task Console', async () => {
-            await browser.sleep(70000);
+            await browser.sleep(80000); // sleep added to track SVT bar progress
             await navigationPage.gotoTaskConsole();
             await taskConsolePage.searchAndOpenTask(taskId);
             expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true);
@@ -397,7 +397,7 @@ describe('Service Target Tests for Tasks', () => {
             await viewTask.clickOnChangeStatus();
             await viewTask.changeTaskStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
-            await browser.sleep(90000);
+            await browser.sleep(80000);  // sleep added to track SVT bar progress
             await navigationPage.gotoTaskConsole();
             await taskConsolePage.searchAndOpenTask(taskId);
             expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true);
