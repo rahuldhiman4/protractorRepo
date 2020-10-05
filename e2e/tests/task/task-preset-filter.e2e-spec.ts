@@ -104,6 +104,7 @@ describe('Task Console Preset Filter', () => {
             let response10 = await apiHelper.createAdhocTask(response9.id, taskData.TASK_DATA_ASSIGNEDTOLOGGEDINUSER);
             taskId.push(response10.displayId)
             await apiHelper.updateCaseStatus(response9.id, 'InProgress');
+            await browser.sleep(1000); //Wait to update the task to Assigned status
             await apiHelper.updateTaskStatus(response10.id, 'Completed', 'Successful');
 
             //Creating the task 7 and updating it to Canceled state
@@ -127,7 +128,7 @@ describe('Task Console Preset Filter', () => {
 
             let response16 = await apiHelper.addTaskToCase(create_task_from_task_template, response15.id);
             await apiHelper.apiLogin('tadmin');
-            taskId.push(await (await apiHelper.getCreatedTaskIds(response16)).displayId);
+            taskId.push((await apiHelper.getCreatedTaskIds(response16)).displayId);
             await apiHelper.apiLogin('idphylum1@petramco.com', 'Password_1234');
             await apiHelper.updateCaseStatus(response15.id, 'InProgress');
 
