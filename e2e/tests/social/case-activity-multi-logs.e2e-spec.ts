@@ -832,7 +832,6 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isLogIconDisplayedInActivity('check_circle', 1)).toBeTruthy('FailureMsg11: log icon is missing');
             expect(await activityTabPage.isTextPresentInActivityLog('Case was auto-approved')).toBeTruthy('FailureMsg23: In Progress Text is missing in activity log');
             await activityTabPage.removeFilterList();
-            expect(await activityTabPage.isLockIconDisplayedInActivity(5)).toBeFalsy('FailureMsg12: lock icon displayed on activity logs');
         });
 
         it('[DRDMV-16729]:Verify case creation', async () => {
