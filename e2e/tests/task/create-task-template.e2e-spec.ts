@@ -743,13 +743,13 @@ describe('Create Task Template', () => {
         let newCase1, tempIdLow, tempIdMedium, tempIdHigh, tempIdCritical, exactDate;
         let createdDate = new Date();
         let month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-        let dateFormateValue: string = month[createdDate.getMonth()];
+        let dateFormateValue: string = month[createdDate.getUTCMonth()];
         let dateFormateNew: string = dateFormateValue.substring(0, 3);
-        let time1 = createdDate.toLocaleTimeString();
+        let time1 = createdDate.toUTCString();
         let diffTime1 = time1.split(" ");
         let newTime1 = diffTime1[0].split(":");
         let exactTime1 = newTime1[0] + ":" + newTime1[1] + " " + diffTime1[1];
-        let dateFormate: string = dateFormateNew + " " + createdDate.getDate() + ", " + createdDate.getFullYear() + " " + exactTime1;
+        let dateFormate: string = dateFormateNew + " " + createdDate.getUTCMonth() + ", " + createdDate.getUTCFullYear() + " " + exactTime1;
         beforeAll(async () => {
             let adhocTaskData = {
                 "taskName": 'manualTaskTemplate' + randomStr,
@@ -797,13 +797,13 @@ describe('Create Task Template', () => {
             await editCasePo.clickOnAssignToMe();
             await editCasePo.clickSaveCase();
             let modifiedDate = new Date();
-            let monthValue: string = month[modifiedDate.getMonth()];
+            let monthValue: string = month[modifiedDate.getUTCMonth()];
             let modifiedMonthValue = monthValue.substring(0, 3);
-            let time = modifiedDate.toLocaleTimeString();
+            let time = modifiedDate.toUTCString();
             let diffTime = time.split(" ");
             let newTime = diffTime[0].split(":");
             let exactTime = newTime[0] + ":" + newTime[1] + " " + diffTime[1];
-            let modifiedDateFormate = modifiedMonthValue + " " + modifiedDate.getDate() + ", " + modifiedDate.getFullYear() + " " + exactTime;
+            let modifiedDateFormate = modifiedMonthValue + " " + modifiedDate.getUTCDate() + ", " + modifiedDate.getUTCFullYear() + " " + exactTime;
             exactDate = dateFormate + "-" + modifiedDateFormate;
         });
         it('[DRDMV-3830]: Verify filter with Case ID values', async () => {
