@@ -39,7 +39,7 @@ class ActivityTabPage {
         emailReply: '.bwf-button-link[aria-label="Reply"]',
         emailReplyAll: '.bwf-button-link[aria-label="Reply All"]',
         dwpRatingText: 'bwf-activity-dwp-survey .activity-title',
-        dwpSurveyText: '.dwp-answer strong, .dwp-answer div, .dwp-answer',
+        dwpSurveyText: '.dwp-answer strong, .dwp-answer div, .dwp-answer, .dwp-answer .ng-star-inserted',
         viewSurveyBtn: '.dwp-survey-list button',
         dwpQuestions: '.list-of-questions strong',
         dwpAnswers: '.dwp-survey-details .types-of-answers',
@@ -644,7 +644,7 @@ class ActivityTabPage {
         let dwpActivityText = "";
         for (let i: number = 0; i < allText; i++) {
             let ele = await $$(this.selectors.dwpSurveyText).get(i);
-            dwpActivityText = dwpActivityText + await ele.getText();
+            dwpActivityText = dwpActivityText + await ele.getAttribute('innerText');
         }
         return dwpActivityText;
     }
