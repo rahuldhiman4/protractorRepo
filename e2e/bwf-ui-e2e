@@ -1,24 +1,13 @@
 def NODE = 'AutoUI'
 def user = 'dsm-bot'
 
-node("node2"){
-    stage('Checkout') { git branch: 'master', credentialsId: user, url: 'https://github.bmc.com/DSM-Apps/bwf-qa-deployment' }
-    stage('Build BWF Deployment Docker') {
-    	echo "Stack: ${STACK}"
-    	echo "APP_IMAGE_TAG: ${APP_IMAGE_TAG}"
-    	sh "./create-inventory.sh ${STACK}"
-        sh "ansible-playbook -i ${STACK} bwfondemand.yml -e APP_IMAGE_TAG=${APP_IMAGE_TAG} -e reboot=true"
-    	sleep(240)
-    }
-}
-
 node("${NODE}"){
     def suiteNameList = [];
     stage('Clone & Build'){
         bat """if exist "./artefact" RMDIR /S /Q "./artefact" """
         bat "IF EXIST e2e\\reports RMDIR /S /Q e2e\\reports"
 
-        git branch: 'master',
+        git branch: '20.08.00',
             credentialsId: user,
             url: 'https://github.bmc.com/DSM-Apps/bwf-e2e-protractor.git'
         bat "npm install"
@@ -149,7 +138,7 @@ node("${NODE}"){
                     [asciiMode: false, cleanRemote: false, excludes: '', flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: "UIAutoParallel_Build${env.BUILD_NUMBER}", remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'artefact/*.zip']
                 ], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true]
             ]
-            
+
             def total = 0
             def failed = 0
             def passed = 0
