@@ -55,10 +55,6 @@ describe("Create Case", () => {
         await navigationPage.signOut();
     });
 
-    afterEach(async () => {
-        await utilityCommon.refresh();
-    });
-
     async function createCategoryAssociation() {
         categName1 = 'DemoCateg1';
         categName2 = 'DemoCateg2';
@@ -531,7 +527,6 @@ describe("Create Case", () => {
             await expect(navigationPage.isCaseConsoleDisplayed()).toBeTruthy("Case Console is not displayed ");
             await expect(navigationPage.isTaskConsoleDisplayed()).toBeTruthy("task Console is not displayed ");
             await expect(navigationPage.isKnowledgeConsoleDisplayed()).toBeTruthy("Knowledge Console is not displayed ");
-            await utilityCommon.refresh();
             await expect((await caseConsolePage.getCaseTitle()).trim()).toBe('Cases', "Case title is not displayed in Case Console Page");
             await expect(navigationPage.isCreateCaseDisplayed()).toBeTruthy("Create Case is not displayed ");
             await expect(navigationPage.isCreateKnowledgeDisplayed()).toBeTruthy("Create knowledge is not displayed ");
@@ -543,7 +538,6 @@ describe("Create Case", () => {
             await expect(navigationPage.isCaseConsoleDisplayed()).toBeTruthy("Case Console is not displayed ");
             await expect(navigationPage.isTaskConsoleDisplayed()).toBeTruthy("task Console is not displayed ");
             await expect(navigationPage.isKnowledgeConsoleDisplayed()).toBeTruthy("Knowledge Console is not displayed ");
-            await utilityCommon.refresh();
             await expect(navigationPage.isCreateCaseDisplayed()).toBeTruthy("Create Case is not displayed ");
             await expect(navigationPage.isCreateKnowledgeDisplayed()).toBeTruthy("Create knowledge is not displayed ");
             await expect(navigationPage.isQuickCaseDisplayed()).toBeTruthy('Quick case is not displayed');
@@ -556,7 +550,6 @@ describe("Create Case", () => {
             await expect(navigationPage.isCaseConsoleDisplayed()).toBeTruthy("Case Console is not displayed ");
             await expect(navigationPage.isTaskConsoleDisplayed()).toBeTruthy("task Console is not displayed ");
             await expect(navigationPage.isKnowledgeConsoleDisplayed()).toBeTruthy("Knowledge Console is not displayed ");
-            await utilityCommon.refresh();
             await expect(navigationPage.isCreateCaseDisplayed()).toBeTruthy("Create Case is not displayed ");
             await expect(navigationPage.isCreateKnowledgeDisplayed()).toBeTruthy("Create knowledge is not displayed ");
             await expect(navigationPage.isQuickCaseDisplayed()).toBeTruthy('Quick case is not displayed');

@@ -386,7 +386,6 @@ describe('Knowledge Articles - Categorization Tests', () => {
 
         afterAll(async () => {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
-            await utilityCommon.refresh();
             await utilCommon.waitUntilSpinnerToHide();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);

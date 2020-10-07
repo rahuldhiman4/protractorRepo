@@ -58,10 +58,6 @@ describe('Knowledge Article', () => {
         await navigationPage.signOut();
     });
 
-    afterEach(async () => {
-        await utilityCommon.refresh();
-    });
-
     async function foundationData(company: string) {
         await apiHelper.apiLogin('tadmin');
         let businessData = businessDataFile['BusinessUnitData'];
@@ -434,7 +430,7 @@ describe('Knowledge Article', () => {
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
             await editKnowledgePage.setKnowledgeStatus('Request Cancelation');
-            await utilityCommon.refresh();
+            await utilityCommon.refresh();  // Refresh needed to reflect status changes.
             expect(await editKnowledgePage.getStatusValue()).toContain('Canceled', 'Status not Set');
             await navigationPage.signOut();
             //login with contributor
@@ -456,7 +452,7 @@ describe('Knowledge Article', () => {
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(kkohriId.displayId);
             await editKnowledgePage.setKnowledgeStatus('Request Cancelation');
-            await utilityCommon.refresh();
+            await utilityCommon.refresh(); // Refresh needed to reflect status changes.
             expect(await editKnowledgePage.getStatusValue()).toContain('Canceled', 'Status Not set');
             await navigationPage.signOut();
         });
@@ -481,7 +477,7 @@ describe('Knowledge Article', () => {
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(kmillsId.displayId);
             await editKnowledgePage.setKnowledgeStatus('Request Cancelation');
-            await utilityCommon.refresh();
+            await utilityCommon.refresh(); // Refresh needed to reflect status changes.
             expect(await editKnowledgePage.getStatusValue()).toContain('Canceled', 'Status not set');
             await navigationPage.signOut();
             //login with publisher
@@ -503,7 +499,7 @@ describe('Knowledge Article', () => {
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(kWilliamsonId.displayId);
             await editKnowledgePage.setKnowledgeStatus('Request Cancelation');
-            await utilityCommon.refresh();
+            await utilityCommon.refresh(); // Refresh needed to reflect status changes.
             expect(await editKnowledgePage.getStatusValue()).toContain('Canceled', 'Status not set');
         });
 

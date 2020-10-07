@@ -675,7 +675,6 @@ describe('Document Library', () => {
             await previewKnowledgePo.clickGoToArticleButton();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgeMetaDataPo.isAttachDocumentBladeDisplayed()).toBeFalsy('Attach Document Blade is displayed');
-            await utilityCommon.refresh();
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
     });
