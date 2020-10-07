@@ -1,5 +1,6 @@
 def NODE = 'AutoUI'
 def user = 'dsm-bot'
+def APP_IMAGE_TAG = 20.08.00
 
 node("node2"){
     stage('Checkout') { git branch: 'master', credentialsId: user, url: 'https://github.bmc.com/DSM-Apps/bwf-qa-deployment' }
@@ -18,7 +19,7 @@ node("${NODE}"){
         bat """if exist "./artefact" RMDIR /S /Q "./artefact" """
         bat "IF EXIST e2e\\reports RMDIR /S /Q e2e\\reports"
 
-        git branch: 'master',
+        git branch: '20.08.00',
             credentialsId: user,
             url: 'https://github.bmc.com/DSM-Apps/bwf-e2e-protractor.git'
         bat "npm install"
@@ -149,7 +150,7 @@ node("${NODE}"){
                     [asciiMode: false, cleanRemote: false, excludes: '', flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: "UIAutoParallel_Build${env.BUILD_NUMBER}", remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'artefact/*.zip']
                 ], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true]
             ]
-            
+
             def total = 0
             def failed = 0
             def passed = 0
