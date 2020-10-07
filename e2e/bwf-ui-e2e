@@ -1,6 +1,5 @@
 def NODE = 'AutoUI'
 def user = 'dsm-bot'
-def APP_IMAGE_TAG = 20.08.00
 
 node("node2"){
     stage('Checkout') { git branch: 'master', credentialsId: user, url: 'https://github.bmc.com/DSM-Apps/bwf-qa-deployment' }
@@ -19,7 +18,7 @@ node("${NODE}"){
         bat """if exist "./artefact" RMDIR /S /Q "./artefact" """
         bat "IF EXIST e2e\\reports RMDIR /S /Q e2e\\reports"
 
-        git branch: '20.08.00',
+        git branch: 'master',
             credentialsId: user,
             url: 'https://github.bmc.com/DSM-Apps/bwf-e2e-protractor.git'
         bat "npm install"
@@ -171,7 +170,7 @@ node("${NODE}"){
             if (matcher.matches()) total = matcher.group(1).toInteger()
 
             currentBuild.description = "Tests:" + total + " Passed:" + passed + " Failed:" + failed + " Skipped:" + skipped
-            if (percent < 95) currentBuild.result = 'FAILURE';
+            if (percent < 100) currentBuild.result = 'FAILURE';
 
             // PMO Dashboard per component
             if("${PMO}" == "true") {

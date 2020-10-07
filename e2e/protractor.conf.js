@@ -37,6 +37,7 @@ exports.config = {
     case2: ["./tests/case2/*.e2e-spec.ts"],
     cognitive: ["./tests/cognitive/*.e2e-spec.ts"],
     email: ["./tests/email/*.e2e-spec.ts"],
+    filter: ["./tests/filter/*.e2e-spec.ts"],
     flowset: ["./tests/flowset/*.e2e-spec.ts"],
     knowledge: ["./tests/knowledge/*.e2e-spec.ts"],
     notification: ["./tests/notification/*.e2e-spec.ts"],
