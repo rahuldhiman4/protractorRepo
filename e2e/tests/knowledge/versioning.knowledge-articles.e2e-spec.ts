@@ -787,7 +787,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
 
         afterAll(async () => {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
-            await utilCommon.waitUntilSpinnerToHide();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });

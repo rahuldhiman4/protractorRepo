@@ -447,7 +447,6 @@ describe("Compose Email", () => {
             await viewCasePo.clickOnEmailLink();
             expect(await composeMail.getSubject()).toContain(caseId);
             await composeMail.clickOnSelectEmailTemplateLink();
-            await utilCommon.waitUntilSpinnerToHide();
             await selectEmailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateDataForTest.TemplateName);
             await selectEmailTemplateBladePo.clickOnApplyButton();
             await composeMail.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
@@ -547,7 +546,6 @@ describe("Compose Email", () => {
             await viewCasePo.clickOnEmailLink();
             expect(await composeMail.getSubject()).toContain(caseId);
             await composeMail.clickOnSelectEmailTemplateLink();
-            await utilCommon.waitUntilSpinnerToHide();
             await selectEmailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateDataForTest1.TemplateName);
             await selectEmailTemplateBladePo.clickOnApplyButton();
             await composeMail.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');

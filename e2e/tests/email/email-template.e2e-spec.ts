@@ -136,7 +136,6 @@ describe('Email Template', () => {
             await createEmailTemplatePo.setSubject(subject1);
             await createEmailTemplatePo.setBody(body1);
             await createEmailTemplatePo.clickOnSaveButton();
-            await utilCommon.waitUntilSpinnerToHide();
             await consoleEmailTemplatePo.clearGridFilter();
         });
         it('[DRDMV-10801,DRDMV-10805,DRDMV-10786,DRDMV-11092,DRDMV-11093,DRDMV-11091,DRDMV-10798]: User Is able to delete Email Template2', async () => {
@@ -192,7 +191,6 @@ describe('Email Template', () => {
             await editEmailTemplatePo.clickOnGridEditButton();
             await editEmailTemplatePo.updateEditMessageTextBladeSubject(subject2);
             await editEmailTemplatePo.clickEditSubjectSaveButton();
-            await utilCommon.waitUntilSpinnerToHide();
             await consoleEmailTemplatePo.searchOnGridConsole('body');
             expect(await editEmailTemplatePo.getSelectedGridRecordValue('Message')).toContain(body2, 'body not updated correctly');
             await consoleEmailTemplatePo.searchOnGridConsole('subject');
@@ -207,7 +205,6 @@ describe('Email Template', () => {
             expect(await utilCommon.isPopUpMessagePresent('ERROR (10000): Message already exists with given locale.')).toBeTruthy('Localize already exist error message missing');
             await utilCommon.closePopUpMessage();
             await editEmailTemplatePo.clickOnCancelButton();
-            await utilCommon.waitUntilSpinnerToHide();
             await editEmailTemplatePo.clickOnSaveButton();
             await utilCommon.closePopUpMessage();
             // DRDMV-11091
@@ -220,7 +217,6 @@ describe('Email Template', () => {
             //DRDMV-10801
             await consoleEmailTemplatePo.searchAndSelectGridRecord(templateName1);
             await consoleEmailTemplatePo.clickOnDeleteButton();
-            await utilCommon.waitUntilSpinnerToHide();
             expect(await consoleEmailTemplatePo.isGridRecordPresent(templateName1)).toBeFalsy('Public template name is preset on grid')
         });
     });

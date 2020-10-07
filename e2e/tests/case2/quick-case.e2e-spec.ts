@@ -529,7 +529,6 @@ describe("Quick Case", () => {
             await quickCasePo.clickStartOverButton();
             await quickCasePo.selectRequesterName("chetan");
             await quickCasePo.setCaseSummary(caseTemplateData.templateName);
-            await utilCommon.waitUntilSpinnerToHide();
             await quickCasePo.pinRecommendedCases(0);
             await resourcesPo.clickOnAdvancedSearchOptions();
             await resourcesPo.enterAdvancedSearchText(caseTemplateData.templateName);

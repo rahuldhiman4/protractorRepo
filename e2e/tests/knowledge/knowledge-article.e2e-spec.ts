@@ -2076,7 +2076,6 @@ describe('Knowledge Article', () => {
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName("fritz");
             await quickCasePo.setCaseSummary(articleData.title);
-            await utilCommon.waitUntilSpinnerToHide();
             await resources.clickOnAdvancedSearchOptions();
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             expect(await resources.isFilterAvailable('Status')).toBeTruthy();
@@ -2091,7 +2090,6 @@ describe('Knowledge Article', () => {
         it('[DRDMV-624]: Advanced Search UI verification on the Quick Case view', async () => {
             await quickCasePo.selectRequesterName("fritz");
             await quickCasePo.setCaseSummary(articleData.title);
-            await utilCommon.waitUntilSpinnerToHide();
             await resources.clickOnAdvancedSearchOptions();
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption('Status', 'In Progress');

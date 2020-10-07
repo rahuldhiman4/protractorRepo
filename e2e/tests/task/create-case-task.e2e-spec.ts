@@ -604,10 +604,8 @@ describe('Create Case Task', () => {
         expect(await selectTaskTemplate.isTaskTypeFilterValue('Manual')).toBeTruthy();
         await utilGrid.clearFilter();
         await selectTaskTemplate.clickOnApplyFilter('Task Type', 'Automated');
-        //await utilCommon.waitUntilSpinnerToHide();
         expect(await selectTaskTemplate.isTaskTypeFilterValue('Automated')).toBeTruthy();
         await utilGrid.clearFilter();
-        await utilCommon.waitUntilSpinnerToHide();
     });
 
     //ankagraw

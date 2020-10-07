@@ -108,12 +108,10 @@ describe('Acknowledgment Template', () => {
             await consoleAcknowledgmentTemplatePo.clearGridSearchBox();
             await consoleAcknowledgmentTemplatePo.searchAndSelectGridRecord(templateName);
             await consoleAcknowledgmentTemplatePo.clickOnDeleteButton();
-            await utilCommon.waitUntilSpinnerToHide();
             expect(await consoleAcknowledgmentTemplatePo.isGridRecordPresent(templateName)).toBeFalsy('Private template name is preset on grid')
             await consoleAcknowledgmentTemplatePo.clearGridSearchBox();
             await consoleAcknowledgmentTemplatePo.searchAndSelectGridRecord(templateName2);
             await consoleAcknowledgmentTemplatePo.clickOnDeleteButton();
-            await utilCommon.waitUntilSpinnerToHide();
             expect(await consoleAcknowledgmentTemplatePo.isGridRecordPresent(templateName2)).toBeFalsy('Public template name is preset on grid')
         });
     });
@@ -159,7 +157,6 @@ describe('Acknowledgment Template', () => {
             // DRDMV-10900
             await utilGrid.clearFilter();
             await consoleAcknowledgmentTemplatePo.searchAndOpenAcknowledgmentTemplate(templateName);
-            await utilCommon.waitUntilSpinnerToHide();
             expect(await editAcknowledgmentTemplatePo.isModuleNameDisabled()).toBeTruthy('Module Name is enabled');
             expect(await editAcknowledgmentTemplatePo.isCompanyDropDownDisabled()).toBeTruthy('Company drop down is enabled');
             await editAcknowledgmentTemplatePo.updateDescription(description2);
