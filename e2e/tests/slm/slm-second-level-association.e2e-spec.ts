@@ -117,12 +117,12 @@ describe('Service Target - Second Level Association Tests', () => {
         });
 
         it('[DRDMV-19667]:Verify SVT with different SVT statuses', async () => {
-            await browser.sleep(40000);
+            await browser.sleep(15000);
             await navigationPage.gotoCaseConsole();
             await caseConsolePage.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
             expect(await viewCasePage.getSlaBarColor()).toBe('rgba(241, 181, 33, 1)'); //orange
-            await browser.sleep(30000);
+            await browser.sleep(40000);
             await navigationPage.gotoCaseConsole();
             await caseConsolePage.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
@@ -178,12 +178,12 @@ describe('Service Target - Second Level Association Tests', () => {
         });
 
         it('[DRDMV-19667]:Create a Case and check if second svt is attached', async () => {
-            await browser.sleep(40000);
+            await browser.sleep(15000);
             await navigationPage.gotoCaseConsole();
             await caseConsolePage.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
             expect(await viewCasePage.getSlaBarColor()).toBe('rgba(241, 181, 33, 1)'); //orange
-            await browser.sleep(30000);
+            await browser.sleep(40000);
             await navigationPage.gotoCaseConsole();
             await caseConsolePage.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
@@ -249,7 +249,7 @@ describe('Service Target - Second Level Association Tests', () => {
         });
 
         it('[DRDMV-19660]:verify different SVT statuses to the case', async () => {
-            await browser.sleep(40000);
+            await browser.sleep(15000);
             await navigationPage.gotoCaseConsole();
             await caseConsolePage.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green

@@ -731,7 +731,7 @@ describe('Service Target Tests', () => {
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoalType('Case Resolution Time');
             await serviceTargetConfig.enterSVTDescription('SVT with all fields Desc' + randomStr);
-            await serviceTargetConfig.selectGoal("2");
+            await serviceTargetConfig.selectGoal("3");
             await serviceTargetConfig.selectMeasurement();
             await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
             await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
