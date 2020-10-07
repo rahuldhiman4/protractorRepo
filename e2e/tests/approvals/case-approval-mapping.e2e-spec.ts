@@ -317,7 +317,7 @@ describe("Approval Mapping Tests", () => {
         it('[DRDMV-10703,DRDMV-1303]: Case approval mapping access Case BA', async () => {
             let newApprovalName = "Test2 " + approvalMappingName;
             await navigationPage.signOut();
-            await loginPage.login(twoCompanyUser.emailId, 'Password_1234');
+            await loginPage.login(twoCompanyUser.userId+"@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', 'Configure Case Approvals - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(approvalMappingName);

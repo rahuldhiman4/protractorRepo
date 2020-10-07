@@ -634,14 +634,14 @@ describe("Case Read Access", () => {
                 "supportGroup": 'Psilon Support Group1',
                 "company": 'Psilon',
             }
-            await apiHelper.apiLogin('analyst@petramco.com', 'Password_1234');
+            await apiHelper.apiLogin(userData2.userId+'@petramco.com', 'Password_1234');
             await apiHelper.createReadAccessMapping(readAccessMappingData);
             await apiHelper.apiLogin('gderuno');
             await apiHelper.createReadAccessMapping(readAccessMappingDataWithDiffrentCompany);
         });
         it('[DRDMV-7605]: [Permissions] Case Read Access visibility', async () => {
             await navigationPo.signOut();
-            await loginPage.login(userData2.emailId, 'Password_1234');
+            await loginPage.login(userData2.userId+"@petramco.com", 'Password_1234');
             await navigationPo.gotoSettingsPage();
             await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
             await utilGrid.searchOnGridConsole(readAccessMappingData.configName);
@@ -655,7 +655,7 @@ describe("Case Read Access", () => {
         });
         it('[DRDMV-7605]: [Permissions] Case Read Access visibility', async () => {
             await navigationPo.signOut();
-            await loginPage.login(userData2.emailId, 'Password_1234');
+            await loginPage.login(userData2.userId+"@petramco.com", 'Password_1234');
             await navigationPo.gotoSettingsPage();
             await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
             await utilGrid.searchAndSelectGridRecord(readAccessMappingData.configName);
