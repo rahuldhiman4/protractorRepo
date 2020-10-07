@@ -65,7 +65,7 @@ let justifyAlignText = "this is text Justify align";
 let strikeThroughText = "this is text strikeThrough";
 let imageSource, imageSource1, imageSource2;
 let uploadURL = "https://www.google.com/homepage/images/hero-dhp-chrome-win.jpg?mmfb=90bec8294f441f5c41987596ca1b8cff";
-let userData = undefined;
+let userData,userData1 = undefined;
 describe('Notes template', () => {
     beforeAll(async () => {
         const caseModule = 'Case';
@@ -1031,19 +1031,19 @@ describe('Notes template', () => {
 
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
-            let userData = {
+             userData1 = {
                 "firstName": "Multiple Companies",
                 "lastName": "Access",
                 "userId": "DRDMV-16112_User",
                 "emailId": "DRDMV-16112_User@petramco.com",
                 "userPermission": ["Case Agent", "Foundation Read", "Document Manager", "Case Business Analyst"]
             }
-            await apiHelper.createNewUser(userData);
-            await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
-            await apiHelper.associatePersonToCompany(userData.userId, "Psilon");
+            await apiHelper.createNewUser(userData1);
+            await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
+            await apiHelper.associatePersonToCompany(userData1.userId, "Psilon");
             await browser.sleep(15000); //Hard Wait to reflect the new person
 
-            await apiHelper.apiLogin('DRDMV-16112_User@petramco.com', 'Password_1234');
+            await apiHelper.apiLogin(userData1.userId+'@petramco.com', 'Password_1234');
             let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let petramcoNotesTemplateData = cloneDeep(notesTemplateData.NOTES_TEMPLATE_MANDATORY_FIELD);
             petramcoTemplateName = petramcoNotesTemplateData.templateName + randomStr + 'Petramco';
@@ -1085,7 +1085,7 @@ describe('Notes template', () => {
 
         it('[DRDMV-16112]: Verify Case Notes template is displayed as per to be assignee company(operating organisation)', async () => {
             await navigationPage.signOut();
-            await loginPage.login('DRDMV-16112_User@petramco.com', 'Password_1234');
+            await loginPage.login(userData1.userId+"@petramco.com", 'Password_1234');
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(petramcoCaseResponse.displayId);
             await activityTabPo.clickActivityNoteTextBox();
@@ -1569,7 +1569,7 @@ describe('Notes template', () => {
     });
 
     //Covered DefectID-DRDMV-22228
-    describe('[DRDMV-22637,DRDMV-22643,DRDMV-22653]: Verify CKE functionality on Create and Edit People Notes template', async () => {
+   describe('[DRDMV-22637,DRDMV-22643,DRDMV-22653]: Verify CKE functionality on Create and Edit People Notes template', async () => {
         let templateName: string, caseData, newCase, randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             await apiHelper.apiLogin('elizabeth');
@@ -1756,7 +1756,7 @@ describe('Notes template', () => {
         });
         it('[DRDMV-22637,DRDMV-22643,DRDMV-22653]: Verify CKE functionality on Create and Edit People Notes template', async () => {
             await navigationPage.signOut();
-            await loginPage.login('22653User@petramco.com', 'Password_1234');
+            await loginPage.login(userData.userId+"@petramco.com", 'Password_1234');
             await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(newCase.displayId);
@@ -2280,7 +2280,7 @@ describe('Notes template', () => {
         });
         it('[DRDMV-22659]: Verify access of notes template to Case BA of Support group 2 which is created by other SG case BA', async () => {
             await navigationPage.signOut();
-            await loginPage.login('22653User@petramco.com', 'Password_1234');
+            await loginPage.login(userData.userId+"@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', 'Activity Notes Template Console - Task - Business Workflows');
             await consoleNotesTemplate.searchAndClickOnNotesTemplate(taskTemplateName);

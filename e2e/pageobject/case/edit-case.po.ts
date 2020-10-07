@@ -359,7 +359,7 @@ class CaseEditPage {
         const absolutePath = resolve(__dirname, fileToUpload);
         console.log(absolutePath);
         await $(this.selectors.attachmentField).sendKeys(absolutePath);
-    }
+     }
 
     async setDynamicFieldValue(fieldName: string, fieldValue: string): Promise<void> {
         let dynamicTextFields: number = await $$('bwf-text-field').count();
@@ -400,8 +400,6 @@ class CaseEditPage {
     async getCategoryTier4(): Promise<string> {
         return await $(`[rx-view-component-id="${this.selectors.categoryTier4Guid}"] button`).getText();
     }
-
-    
 }
 
 export default new CaseEditPage();
