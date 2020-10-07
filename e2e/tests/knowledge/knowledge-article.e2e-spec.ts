@@ -1554,7 +1554,7 @@ describe('Knowledge Article', () => {
             await apiHelper.createApprovalMapping(knowledgeModule,knowledgeApprovalMappingData);
             articleData = {
                 "knowledgeSet": "HR",
-                "title": "KnowledgeArticle",
+                "title": "DRDMV-20944KnowledgeArticle_"+ randomStr,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
                 "categoryTier1": "Applications",
                 "categoryTier2": "Help Desk",
@@ -1704,7 +1704,7 @@ describe('Knowledge Article', () => {
                 "Case Template ID": caseTemplateDisplayId
             }
             createCaseResponse = await apiHelper.createCase(caseData);
-            await browser.sleep(2000); // hardwait to populate resource tab data
+            await browser.sleep(5000); // hardwait to populate resource tab data
         });
         it('[DRDMV-1249,DRDMV-1250,DRDMV-1225,DRDMV-2695]:[Knowledge Article Search] Knowledge Articles are searched based on Case Summary and  in the Resources tab', async () => {
             await navigationPage.signOut();
@@ -1713,7 +1713,7 @@ describe('Knowledge Article', () => {
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(createCaseResponse.displayId);
             await viewCasePage.clickOnTab('Resources');
-            await browser.sleep(3000); // hardwait to populate resource tab data
+            await browser.sleep(5000); // hardwait to populate resource tab data
             expect(await resources.getAdvancedSearchResultForParticularSection(caseData.Summary)).toEqual(caseData.Summary);
             await resources.pinRecommendedKnowledgeArticles(1);
             expect(await resources.isFirstPinnedArticleDisplayed()).toBeTruthy();
@@ -2542,7 +2542,7 @@ describe('Knowledge Article', () => {
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID6, 'PublishApproval')).toBeTruthy('Status Not Set');            
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID7, 'Draft')).toBeTruthy('Status Not Set');
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID7, 'PublishApproval')).toBeTruthy('Status Not Set');            
-            await browser.sleep(30000); //Hard wait for KA Indexing
+            await browser.sleep(10000); //Hard wait for KA Indexing
         });
         it('[DRDMV-753]:[Advanced Search] [Pin/Unpin] Relate Knowledge Article on Knowledge Edit view from Advanced search', async () => {
             await navigationPage.signOut();

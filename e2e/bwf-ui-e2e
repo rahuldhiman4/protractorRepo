@@ -149,7 +149,7 @@ node("${NODE}"){
                     [asciiMode: false, cleanRemote: false, excludes: '', flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: "UIAutoParallel_Build${env.BUILD_NUMBER}", remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'artefact/*.zip']
                 ], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true]
             ]
-            
+
             def total = 0
             def failed = 0
             def passed = 0
@@ -170,7 +170,7 @@ node("${NODE}"){
             if (matcher.matches()) total = matcher.group(1).toInteger()
 
             currentBuild.description = "Tests:" + total + " Passed:" + passed + " Failed:" + failed + " Skipped:" + skipped
-            if (percent < 95) currentBuild.result = 'FAILURE';
+            if (percent < 100) currentBuild.result = 'FAILURE';
 
             // PMO Dashboard per component
             if("${PMO}" == "true") {
