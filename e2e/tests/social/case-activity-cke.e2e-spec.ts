@@ -17,6 +17,8 @@ import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import ckeditorValidationPo from '../../pageobject/common/ck-editor/ckeditor-validation.po';
+import ckeditorOpsPo from '../../pageobject/common/ck-editor/ckeditor-ops.po';
 
 describe('Case Activity CKE', () => {
 
@@ -120,77 +122,77 @@ describe('Case Activity CKE', () => {
             await manageTaskBladePo.addTaskFromTaskTemplate(externalTemplateData.templateSummary);
             await manageTaskBladePo.clickCloseButton();
         });
-
+        
         it('[DRDMV-21619]: Verify Comment Posted In Activity For Case', async () => {
             await activityTabPage.addActivityNote(addNoteBodyText);
             await activityTabPage.clearActivityNote();
             //bold
-            await activityTabPage.clickOnBoldIcon();
+            await ckeditorOpsPo.clickOnBoldIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isBoldTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Bold Text is not get Bold In Ck Editor');
+            expect(await ckeditorValidationPo.isBoldTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Bold Text is not get Bold In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isBoldTextDisplayedInActivity(addNoteBodyText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
             //italic
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.clickOnItalicIcon();
+            await ckeditorOpsPo.clickOnItalicIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isItalicTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not Italic In Ck Editor');
+            expect(await ckeditorValidationPo.isItalicTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not Italic In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isItalicTextDisplayedInActivity(addNoteBodyText, 1)).toBeTruthy('FailureMsg Italic Text is missing In Activity');
             //underline
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.clickOnUnderLineIcon();
+            await ckeditorOpsPo.clickOnUnderLineIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isUnderlineTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not Underline In Ck Editor');
+            expect(await ckeditorValidationPo.isUnderlineTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not Underline In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isUnderlineTextDisplayedInActivity(addNoteBodyText, 1)).toBeTruthy('FailureMsg Underline Text is missing In Activity');
             // left Align
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.clickOnLeftAlignIcon();
+            await ckeditorOpsPo.clickOnLeftAlignIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isTextLeftAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not Left Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextLeftAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not Left Align In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isLeftAlignTextDisplayedInActivity(addNoteBodyText, 1)).toBeTruthy('FailureMsg Lefit Align Text is missing In Activity');
             //Right Align
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.clickOnRightAlignIcon();
+            await ckeditorOpsPo.clickOnRightAlignIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isTextRightAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not right Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextRightAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not right Align In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isRightAlignTextDisplayedInActivity(addNoteBodyText, 1)).toBeTruthy('FailureMsg Right Align Text is missing In Activity');
             //Center Align
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.clickOnCenterAlignIcon();
+            await ckeditorOpsPo.clickOnCenterAlignIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isTextCenterAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not center Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextCenterAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not center Align In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isCenterAlignTextDisplayedInActivity(addNoteBodyText, 1)).toBeTruthy('FailureMsg Center Align is missing In Activity');
             //set color
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.selectColor('Strong Red');
+            await ckeditorOpsPo.selectColor('Strong Red');
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isColorTextDisplayedInCkEditorTextArea('color:#c0392b;', addNoteBodyText)).toBeTruthy('FailureMsg Color Text is missing in Ck Editor');
+            expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(addNoteBodyText,'color:#c0392b;')).toBeTruthy('FailureMsg Color Text is missing in Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isColorTextDisplayedInActivity('color:#c0392b;', addNoteBodyText, 1)).toBeTruthy('FailureMsg Color Text is missing in Activity');
             //checking number list
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.setNumberList('PlusOne');
-            expect(await activityTabPage.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('FailureMsg Number list is missing in Ck Editor');
+            await ckeditorOpsPo.setNumberList(['PlusOne']);
+            expect(await ckeditorValidationPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('FailureMsg Number list is missing in Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
             // checking bullot points
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.setBulletList('BulletOne');
-            expect(await activityTabPage.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('FailureMsg Text is not center Align In Ck Editor');
+            await ckeditorOpsPo.setBulletList(['BulletOne']);
+            expect(await ckeditorValidationPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('FailureMsg Text is not center Align In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
             // Link added
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.clickOnLinkIcon();
+            await ckeditorOpsPo.clickOnLinkIcon();
             await linkPropertiesPo.setValueOfLinkProperties('Google', 0);
             await linkPropertiesPo.setValueOfLinkProperties('www.google.com', 1);
             await linkPropertiesPo.clickOnOkBtn();
-            expect(await activityTabPage.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('FailureMsg Link is missing in Ck Editor');
+            expect(await ckeditorValidationPo.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('FailureMsg Link is missing in Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
             // Attach Image
@@ -207,72 +209,72 @@ describe('Case Activity CKE', () => {
             await activityTabPage.addActivityNote(addNoteBodyText);
             await activityTabPage.clearActivityNote();
             //bold
-            await activityTabPage.clickOnBoldIcon();
+            await ckeditorOpsPo.clickOnBoldIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isBoldTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Bold Text is not get Bold In Ck Editor');
+            expect(await ckeditorValidationPo.isBoldTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Bold Text is not get Bold In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isBoldTextDisplayedInActivity(addNoteBodyText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
             //italic
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.clickOnItalicIcon();
+            await ckeditorOpsPo.clickOnItalicIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isItalicTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not Italic In Ck Editor');
+            expect(await ckeditorValidationPo.isItalicTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not Italic In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isItalicTextDisplayedInActivity(addNoteBodyText, 1)).toBeTruthy('FailureMsg Italic Text is missing In Activity');
             //underline
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.clickOnUnderLineIcon();
+            await ckeditorOpsPo.clickOnUnderLineIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isUnderlineTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not Underline In Ck Editor');
+            expect(await ckeditorValidationPo.isUnderlineTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not Underline In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isUnderlineTextDisplayedInActivity(addNoteBodyText, 1)).toBeTruthy('FailureMsg Underline Text is missing In Activity');
             // left Align
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.clickOnLeftAlignIcon();
+            await ckeditorOpsPo.clickOnLeftAlignIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isTextLeftAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not Left Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextLeftAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not Left Align In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isLeftAlignTextDisplayedInActivity(addNoteBodyText, 1)).toBeTruthy('FailureMsg Lefit Align Text is missing In Activity');
             //Right Align
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.clickOnRightAlignIcon();
+            await ckeditorOpsPo.clickOnRightAlignIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isTextRightAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not right Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextRightAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not right Align In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isRightAlignTextDisplayedInActivity(addNoteBodyText, 1)).toBeTruthy('FailureMsg Right Align Text is missing In Activity');
             //Center Align
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.clickOnCenterAlignIcon();
+            await ckeditorOpsPo.clickOnCenterAlignIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isTextCenterAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not center Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextCenterAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not center Align In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isCenterAlignTextDisplayedInActivity(addNoteBodyText, 1)).toBeTruthy('FailureMsg Center Align is missing In Activity');
             //set color
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.selectColor('Strong Red');
+            await ckeditorOpsPo.selectColor('Strong Red');
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isColorTextDisplayedInCkEditorTextArea('color:#c0392b;', addNoteBodyText)).toBeTruthy('FailureMsg Color Text is missing in Ck Editor');
+            expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(addNoteBodyText,'color:#c0392b;')).toBeTruthy('FailureMsg Color Text is missing in Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isColorTextDisplayedInActivity('color:#c0392b;', addNoteBodyText, 1)).toBeTruthy('FailureMsg Color Text is missing in Activity');
             //checking number list
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.setNumberList('PlusOne');
-            expect(await activityTabPage.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('FailureMsg Number list is missing in Ck Editor');
+            await ckeditorOpsPo.setNumberList(['PlusOne']);
+            expect(await ckeditorValidationPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('FailureMsg Number list is missing in Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
             // checking bullot points
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.setBulletList('BulletOne');
-            expect(await activityTabPage.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('FailureMsg Text is not center Align In Ck Editor');
+            await ckeditorOpsPo.setBulletList(['BulletOne']);
+            expect(await ckeditorValidationPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('FailureMsg Text is not center Align In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
             // Link added
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.clickOnLinkIcon();
+            await ckeditorOpsPo.clickOnLinkIcon();
             await linkPropertiesPo.setValueOfLinkProperties('Google', 0);
             await linkPropertiesPo.setValueOfLinkProperties('www.google.com', 1);
             await linkPropertiesPo.clickOnOkBtn();
-            expect(await activityTabPage.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('FailureMsg Link is missing in Ck Editor');
+            expect(await ckeditorValidationPo.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('FailureMsg Link is missing in Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
             // Attach Image
@@ -288,75 +290,75 @@ describe('Case Activity CKE', () => {
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLink(autoTemplateData.templateSummary);
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isCkEditorDisplayed()).toBeTruthy('FailureMsg CkEditor is missing');
+            expect(await ckeditorValidationPo.isCkEditorDisplayed()).toBeTruthy('FailureMsg CkEditor is missing');
             await activityTabPage.clearActivityNote();
             //bold
-            await activityTabPage.clickOnBoldIcon();
+            await ckeditorOpsPo.clickOnBoldIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isBoldTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Bold Text is not get Bold In Ck Editor');
+            expect(await ckeditorValidationPo.isBoldTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Bold Text is not get Bold In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isBoldTextDisplayedInActivity(addNoteBodyText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
             //italic
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.clickOnItalicIcon();
+            await ckeditorOpsPo.clickOnItalicIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isItalicTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not Italic In Ck Editor');
+            expect(await ckeditorValidationPo.isItalicTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not Italic In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isItalicTextDisplayedInActivity(addNoteBodyText, 1)).toBeTruthy('FailureMsg Italic Text is missing In Activity');
             //underline
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.clickOnUnderLineIcon();
+            await ckeditorOpsPo.clickOnUnderLineIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isUnderlineTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not Underline In Ck Editor');
+            expect(await ckeditorValidationPo.isUnderlineTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not Underline In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isUnderlineTextDisplayedInActivity(addNoteBodyText, 1)).toBeTruthy('FailureMsg Underline Text is missing In Activity');
             // left Align
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.clickOnLeftAlignIcon();
+            await ckeditorOpsPo.clickOnLeftAlignIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isTextLeftAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not Left Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextLeftAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not Left Align In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isLeftAlignTextDisplayedInActivity(addNoteBodyText, 1)).toBeTruthy('FailureMsg Lefit Align Text is missing In Activity');
             //Right Align
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.clickOnRightAlignIcon();
+            await ckeditorOpsPo.clickOnRightAlignIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isTextRightAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not right Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextRightAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not right Align In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isRightAlignTextDisplayedInActivity(addNoteBodyText, 1)).toBeTruthy('FailureMsg Right Align Text is missing In Activity');
             //Center Align
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.clickOnCenterAlignIcon();
+            await ckeditorOpsPo.clickOnCenterAlignIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isTextCenterAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not center Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextCenterAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not center Align In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isCenterAlignTextDisplayedInActivity(addNoteBodyText, 1)).toBeTruthy('FailureMsg Center Align is missing In Activity');
             //set color
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.selectColor('Strong Red');
+            await ckeditorOpsPo.selectColor('Strong Red');
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isColorTextDisplayedInCkEditorTextArea('color:#c0392b;', addNoteBodyText)).toBeTruthy('FailureMsg Color Text is missing in Ck Editor');
+            expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(addNoteBodyText,'color:#c0392b;')).toBeTruthy('FailureMsg Color Text is missing in Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isColorTextDisplayedInActivity('color:#c0392b;', addNoteBodyText, 1)).toBeTruthy('FailureMsg Color Text is missing in Activity');
             //checking number list
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.setNumberList('PlusOne');
-            expect(await activityTabPage.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('FailureMsg Number list is missing in Ck Editor');
+            await ckeditorOpsPo.setNumberList(['PlusOne']);
+            expect(await ckeditorValidationPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('FailureMsg Number list is missing in Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
             // checking bullot points
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.setBulletList('BulletOne');
-            expect(await activityTabPage.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('FailureMsg Text is not center Align In Ck Editor');
+            await ckeditorOpsPo.setBulletList(['BulletOne']);
+            expect(await ckeditorValidationPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('FailureMsg Text is not center Align In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
             // Link added
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.clickOnLinkIcon();
+            await ckeditorOpsPo.clickOnLinkIcon();
             await linkPropertiesPo.setValueOfLinkProperties('Google', 0);
             await linkPropertiesPo.setValueOfLinkProperties('www.google.com', 1);
             await linkPropertiesPo.clickOnOkBtn();
-            expect(await activityTabPage.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('FailureMsg Link is missing in Ck Editor');
+            expect(await ckeditorValidationPo.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('FailureMsg Link is missing in Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
             // Attach Image
@@ -374,72 +376,72 @@ describe('Case Activity CKE', () => {
             await activityTabPage.addActivityNote(addNoteBodyText);
             await activityTabPage.clearActivityNote();
             //bold
-            await activityTabPage.clickOnBoldIcon();
+            await ckeditorOpsPo.clickOnBoldIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isBoldTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Bold Text is not get Bold In Ck Editor');
+            expect(await ckeditorValidationPo.isBoldTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Bold Text is not get Bold In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isBoldTextDisplayedInActivity(addNoteBodyText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
             //italic
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.clickOnItalicIcon();
+            await ckeditorOpsPo.clickOnItalicIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isItalicTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not Italic In Ck Editor');
+            expect(await ckeditorValidationPo.isItalicTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not Italic In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isItalicTextDisplayedInActivity(addNoteBodyText, 1)).toBeTruthy('FailureMsg Italic Text is missing In Activity');
             //underline
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.clickOnUnderLineIcon();
+            await ckeditorOpsPo.clickOnUnderLineIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isUnderlineTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not Underline In Ck Editor');
+            expect(await ckeditorValidationPo.isUnderlineTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not Underline In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isUnderlineTextDisplayedInActivity(addNoteBodyText, 1)).toBeTruthy('FailureMsg Underline Text is missing In Activity');
             // left Align
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.clickOnLeftAlignIcon();
+            await ckeditorOpsPo.clickOnLeftAlignIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isTextLeftAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not Left Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextLeftAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not Left Align In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isLeftAlignTextDisplayedInActivity(addNoteBodyText, 1)).toBeTruthy('FailureMsg Lefit Align Text is missing In Activity');
             //Right Align
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.clickOnRightAlignIcon();
+            await ckeditorOpsPo.clickOnRightAlignIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isTextRightAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not right Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextRightAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not right Align In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isRightAlignTextDisplayedInActivity(addNoteBodyText, 1)).toBeTruthy('FailureMsg Right Align Text is missing In Activity');
             //Center Align
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.clickOnCenterAlignIcon();
+            await ckeditorOpsPo.clickOnCenterAlignIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isTextCenterAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not center Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextCenterAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not center Align In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isCenterAlignTextDisplayedInActivity(addNoteBodyText, 1)).toBeTruthy('FailureMsg Center Align is missing In Activity');
             //set color
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.selectColor('Strong Red');
+            await ckeditorOpsPo.selectColor('Strong Red');
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isColorTextDisplayedInCkEditorTextArea('color:#c0392b;', addNoteBodyText)).toBeTruthy('FailureMsg Color Text is missing in Ck Editor');
+            expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(addNoteBodyText,'color:#c0392b;')).toBeTruthy('FailureMsg Color Text is missing in Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isColorTextDisplayedInActivity('color:#c0392b;', addNoteBodyText, 1)).toBeTruthy('FailureMsg Color Text is missing in Activity');
             //checking number list
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.setNumberList('PlusOne');
-            expect(await activityTabPage.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('FailureMsg Number list is missing in Ck Editor');
+            await ckeditorOpsPo.setNumberList(['PlusOne']);
+            expect(await ckeditorValidationPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('FailureMsg Number list is missing in Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
             // checking bullot points
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.setBulletList('BulletOne');
-            expect(await activityTabPage.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('FailureMsg Text is not center Align In Ck Editor');
+            await ckeditorOpsPo.setBulletList(['BulletOne']);
+            expect(await ckeditorValidationPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('FailureMsg Text is not center Align In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
             // Link added
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.clickOnLinkIcon();
+            await ckeditorOpsPo.clickOnLinkIcon();
             await linkPropertiesPo.setValueOfLinkProperties('Google', 0);
             await linkPropertiesPo.setValueOfLinkProperties('www.google.com', 1);
             await linkPropertiesPo.clickOnOkBtn();
-            expect(await activityTabPage.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('FailureMsg Link is missing in Ck Editor');
+            expect(await ckeditorValidationPo.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('FailureMsg Link is missing in Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
             // Attach Image
@@ -465,72 +467,72 @@ describe('Case Activity CKE', () => {
             await activityTabPage.addActivityNote(addNoteBodyText);
             await activityTabPage.clearActivityNote();
             //bold
-            await activityTabPage.clickOnBoldIcon();
+            await ckeditorOpsPo.clickOnBoldIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isBoldTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Bold Text is not get Bold In Ck Editor');
+            expect(await ckeditorValidationPo.isBoldTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Bold Text is not get Bold In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isBoldTextDisplayedInActivity(addNoteBodyText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
             //italic
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.clickOnItalicIcon();
+            await ckeditorOpsPo.clickOnItalicIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isItalicTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not Italic In Ck Editor');
+            expect(await ckeditorValidationPo.isItalicTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not Italic In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isItalicTextDisplayedInActivity(addNoteBodyText, 1)).toBeTruthy('FailureMsg Italic Text is missing In Activity');
             //underline
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.clickOnUnderLineIcon();
+            await ckeditorOpsPo.clickOnUnderLineIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isUnderlineTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not Underline In Ck Editor');
+            expect(await ckeditorValidationPo.isUnderlineTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not Underline In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isUnderlineTextDisplayedInActivity(addNoteBodyText, 1)).toBeTruthy('FailureMsg Underline Text is missing In Activity');
             // left Align
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.clickOnLeftAlignIcon();
+            await ckeditorOpsPo.clickOnLeftAlignIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isTextLeftAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not Left Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextLeftAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not Left Align In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isLeftAlignTextDisplayedInActivity(addNoteBodyText, 1)).toBeTruthy('FailureMsg Lefit Align Text is missing In Activity');
             //Right Align
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.clickOnRightAlignIcon();
+            await ckeditorOpsPo.clickOnRightAlignIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isTextRightAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not right Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextRightAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not right Align In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isRightAlignTextDisplayedInActivity(addNoteBodyText, 1)).toBeTruthy('FailureMsg Right Align Text is missing In Activity');
             //Center Align
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.clickOnCenterAlignIcon();
+            await ckeditorOpsPo.clickOnCenterAlignIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isTextCenterAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not center Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextCenterAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not center Align In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isCenterAlignTextDisplayedInActivity(addNoteBodyText, 1)).toBeTruthy('FailureMsg Center Align is missing In Activity');
             //set color
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.selectColor('Strong Red');
+            await ckeditorOpsPo.selectColor('Strong Red');
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isColorTextDisplayedInCkEditorTextArea('color:#c0392b;', addNoteBodyText)).toBeTruthy('FailureMsg Color Text is missing in Ck Editor');
+            expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(addNoteBodyText,'color:#c0392b;')).toBeTruthy('FailureMsg Color Text is missing in Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isColorTextDisplayedInActivity('color:#c0392b;', addNoteBodyText, 1)).toBeTruthy('FailureMsg Color Text is missing in Activity');
             //checking number list
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.setNumberList('PlusOne');
-            expect(await activityTabPage.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('FailureMsg Number list is missing in Ck Editor');
+            await ckeditorOpsPo.setNumberList(['PlusOne']);
+            expect(await ckeditorValidationPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('FailureMsg Number list is missing in Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
             // checking bullot points
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.setBulletList('BulletOne');
-            expect(await activityTabPage.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('FailureMsg Text is not center Align In Ck Editor');
+            await ckeditorOpsPo.setBulletList(['BulletOne']);
+            expect(await ckeditorValidationPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('FailureMsg Text is not center Align In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
             // Link added
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.clickOnLinkIcon();
+            await ckeditorOpsPo.clickOnLinkIcon();
             await linkPropertiesPo.setValueOfLinkProperties('Google', 0);
             await linkPropertiesPo.setValueOfLinkProperties('www.google.com', 1);
             await linkPropertiesPo.clickOnOkBtn();
-            expect(await activityTabPage.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('FailureMsg Link is missing in Ck Editor');
+            expect(await ckeditorValidationPo.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('FailureMsg Link is missing in Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
             // Attach Image
@@ -550,72 +552,72 @@ describe('Case Activity CKE', () => {
             await activityTabPage.addActivityNote(addNoteBodyText);
             await activityTabPage.clearActivityNote();
             //bold
-            await activityTabPage.clickOnBoldIcon();
+            await ckeditorOpsPo.clickOnBoldIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isBoldTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Bold Text is not get Bold In Ck Editor');
+            expect(await ckeditorValidationPo.isBoldTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Bold Text is not get Bold In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isBoldTextDisplayedInActivity(addNoteBodyText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
             //italic
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.clickOnItalicIcon();
+            await ckeditorOpsPo.clickOnItalicIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isItalicTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not Italic In Ck Editor');
+            expect(await ckeditorValidationPo.isItalicTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not Italic In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isItalicTextDisplayedInActivity(addNoteBodyText, 1)).toBeTruthy('FailureMsg Italic Text is missing In Activity');
             //underline
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.clickOnUnderLineIcon();
+            await ckeditorOpsPo.clickOnUnderLineIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isUnderlineTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not Underline In Ck Editor');
+            expect(await ckeditorValidationPo.isUnderlineTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not Underline In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isUnderlineTextDisplayedInActivity(addNoteBodyText, 1)).toBeTruthy('FailureMsg Underline Text is missing In Activity');
             // left Align
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.clickOnLeftAlignIcon();
+            await ckeditorOpsPo.clickOnLeftAlignIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isTextLeftAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not Left Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextLeftAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not Left Align In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isLeftAlignTextDisplayedInActivity(addNoteBodyText, 1)).toBeTruthy('FailureMsg Lefit Align Text is missing In Activity');
             //Right Align
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.clickOnRightAlignIcon();
+            await ckeditorOpsPo.clickOnRightAlignIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isTextRightAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not right Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextRightAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not right Align In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isRightAlignTextDisplayedInActivity(addNoteBodyText, 1)).toBeTruthy('FailureMsg Right Align Text is missing In Activity');
             //Center Align
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.clickOnCenterAlignIcon();
+            await ckeditorOpsPo.clickOnCenterAlignIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isTextCenterAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not center Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextCenterAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not center Align In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isCenterAlignTextDisplayedInActivity(addNoteBodyText, 1)).toBeTruthy('FailureMsg Center Align is missing In Activity');
             //set color
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.selectColor('Strong Red');
+            await ckeditorOpsPo.selectColor('Strong Red');
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isColorTextDisplayedInCkEditorTextArea('color:#c0392b;', addNoteBodyText)).toBeTruthy('FailureMsg Color Text is missing in Ck Editor');
+            expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(addNoteBodyText,'color:#c0392b;')).toBeTruthy('FailureMsg Color Text is missing in Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isColorTextDisplayedInActivity('color:#c0392b;', addNoteBodyText, 1)).toBeTruthy('FailureMsg Color Text is missing in Activity');
             //checking number list
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.setNumberList('PlusOne');
-            expect(await activityTabPage.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('FailureMsg Number list is missing in Ck Editor');
+            await ckeditorOpsPo.setNumberList(['PlusOne']);
+            expect(await ckeditorValidationPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('FailureMsg Number list is missing in Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
             // checking bullot points
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.setBulletList('BulletOne');
-            expect(await activityTabPage.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('FailureMsg Text is not center Align In Ck Editor');
+            await ckeditorOpsPo.setBulletList(['BulletOne']);
+            expect(await ckeditorValidationPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('FailureMsg Text is not center Align In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
             // Link added
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.clickOnLinkIcon();
+            await ckeditorOpsPo.clickOnLinkIcon();
             await linkPropertiesPo.setValueOfLinkProperties('Google', 0);
             await linkPropertiesPo.setValueOfLinkProperties('www.google.com', 1);
             await linkPropertiesPo.clickOnOkBtn();
-            expect(await activityTabPage.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('FailureMsg Link is missing in Ck Editor');
+            expect(await ckeditorValidationPo.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('FailureMsg Link is missing in Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
             // Attach Image
@@ -639,72 +641,72 @@ describe('Case Activity CKE', () => {
             await activityTabPage.addActivityNote(addNoteBodyText);
             await activityTabPage.clearActivityNote();
             //bold
-            await activityTabPage.clickOnBoldIcon();
+            await ckeditorOpsPo.clickOnBoldIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isBoldTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Bold Text is not get Bold In Ck Editor');
+            expect(await ckeditorValidationPo.isBoldTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Bold Text is not get Bold In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isBoldTextDisplayedInActivity(addNoteBodyText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
             //italic
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.clickOnItalicIcon();
+            await ckeditorOpsPo.clickOnItalicIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isItalicTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not Italic In Ck Editor');
+            expect(await ckeditorValidationPo.isItalicTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not Italic In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isItalicTextDisplayedInActivity(addNoteBodyText, 1)).toBeTruthy('FailureMsg Italic Text is missing In Activity');
             //underline
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.clickOnUnderLineIcon();
+            await ckeditorOpsPo.clickOnUnderLineIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isUnderlineTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not Underline In Ck Editor');
+            expect(await ckeditorValidationPo.isUnderlineTextDisplayedInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not Underline In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isUnderlineTextDisplayedInActivity(addNoteBodyText, 1)).toBeTruthy('FailureMsg Underline Text is missing In Activity');
             // left Align
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.clickOnLeftAlignIcon();
+            await ckeditorOpsPo.clickOnLeftAlignIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isTextLeftAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not Left Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextLeftAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not Left Align In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isLeftAlignTextDisplayedInActivity(addNoteBodyText, 1)).toBeTruthy('FailureMsg Lefit Align Text is missing In Activity');
             //Right Align
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.clickOnRightAlignIcon();
+            await ckeditorOpsPo.clickOnRightAlignIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isTextRightAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not right Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextRightAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not right Align In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isRightAlignTextDisplayedInActivity(addNoteBodyText, 1)).toBeTruthy('FailureMsg Right Align Text is missing In Activity');
             //Center Align
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.clickOnCenterAlignIcon();
+            await ckeditorOpsPo.clickOnCenterAlignIcon();
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isTextCenterAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not center Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextCenterAlignInCkEditorTextArea(addNoteBodyText)).toBeTruthy('FailureMsg Text is not center Align In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isCenterAlignTextDisplayedInActivity(addNoteBodyText, 1)).toBeTruthy('FailureMsg Center Align is missing In Activity');
             //set color
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.selectColor('Strong Red');
+            await ckeditorOpsPo.selectColor('Strong Red');
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await activityTabPage.isColorTextDisplayedInCkEditorTextArea('color:#c0392b;', addNoteBodyText)).toBeTruthy('FailureMsg Color Text is missing in Ck Editor');
+            expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(addNoteBodyText,'color:#c0392b;')).toBeTruthy('FailureMsg Color Text is missing in Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isColorTextDisplayedInActivity('color:#c0392b;', addNoteBodyText, 1)).toBeTruthy('FailureMsg Color Text is missing in Activity');
             //checking number list
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.setNumberList('PlusOne');
-            expect(await activityTabPage.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('FailureMsg Number list is missing in Ck Editor');
+            await ckeditorOpsPo.setNumberList(['PlusOne']);
+            expect(await ckeditorValidationPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('FailureMsg Number list is missing in Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
             // checking bullot points
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.setBulletList('BulletOne');
-            expect(await activityTabPage.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('FailureMsg Text is not center Align In Ck Editor');
+            await ckeditorOpsPo.setBulletList(['BulletOne']);
+            expect(await ckeditorValidationPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('FailureMsg Text is not center Align In Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
             // Link added
             await activityTabPage.clickActivityNoteTextBox();
-            await activityTabPage.clickOnLinkIcon();
+            await ckeditorOpsPo.clickOnLinkIcon();
             await linkPropertiesPo.setValueOfLinkProperties('Google', 0);
             await linkPropertiesPo.setValueOfLinkProperties('www.google.com', 1);
             await linkPropertiesPo.clickOnOkBtn();
-            expect(await activityTabPage.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('FailureMsg Link is missing in Ck Editor');
+            expect(await ckeditorValidationPo.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('FailureMsg Link is missing in Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
             // Attach Image
@@ -845,7 +847,7 @@ describe('Case Activity CKE', () => {
         it('[DRDMV-21620]: Verify the Comments posted in activity with notes template For Case ', async () => {
             // Verify Case Notes Template
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(notesTemplateCaseData.templateName);
-            expect(await activityTabPage.getTextCkEditorTextArea()).toContain(notesTemplateCaseData.body)
+            expect(await ckeditorValidationPo.getTextCkEditorTextArea()).toContain(notesTemplateCaseData.body)
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isTextPresentInNote(notesTemplateCaseData.body)).toBeTruthy('FailureMsg Note Template is missing in activity');
         });
@@ -858,7 +860,7 @@ describe('Case Activity CKE', () => {
             await activityTabPage.clickOnRefreshButton();
             await activityTabPage.clickOnHyperlinkFromActivity(2, 'Qadim Katawazi');
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(notesTemplatePeopleData.templateName);
-            expect(await activityTabPage.getTextCkEditorTextArea()).toContain(notesTemplatePeopleData.body)
+            expect(await ckeditorValidationPo.getTextCkEditorTextArea()).toContain(notesTemplatePeopleData.body)
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isTextPresentInNote(notesTemplatePeopleData.body)).toBeTruthy('FailureMsg Note Template is missing in activity');
         });
@@ -873,7 +875,7 @@ describe('Case Activity CKE', () => {
             await updateStatusBladePo.setStatusReason('Successful');
             await updateStatusBladePo.clickSaveStatus();
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(notesTemplateTaskData.templateName);
-            expect(await activityTabPage.getTextCkEditorTextArea()).toContain(notesTemplateTaskData.body)
+            expect(await ckeditorValidationPo.getTextCkEditorTextArea()).toContain(notesTemplateTaskData.body)
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isTextPresentInNote(notesTemplateTaskData.body)).toBeTruthy('FailureMsg Note Template is missing in activity');
             await viewTaskPo.clickOnViewCase();
@@ -883,7 +885,7 @@ describe('Case Activity CKE', () => {
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLink(autoTemplateData.templateSummary);
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(notesTemplateTaskData.templateName);
-            expect(await activityTabPage.getTextCkEditorTextArea()).toContain(notesTemplateTaskData.body)
+            expect(await ckeditorValidationPo.getTextCkEditorTextArea()).toContain(notesTemplateTaskData.body)
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isTextPresentInNote(notesTemplateTaskData.body)).toBeTruthy('FailureMsg Note Template is missing in activity');
             await viewTaskPo.clickOnViewCase();
@@ -893,7 +895,7 @@ describe('Case Activity CKE', () => {
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLink(externalTemplateData.templateSummary);
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(notesTemplateTaskData.templateName);
-            expect(await activityTabPage.getTextCkEditorTextArea()).toContain(notesTemplateTaskData.body)
+            expect(await ckeditorValidationPo.getTextCkEditorTextArea()).toContain(notesTemplateTaskData.body)
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isTextPresentInNote(notesTemplateTaskData.body)).toBeTruthy('FailureMsg Note Template is missing in activity');
             await viewTaskPo.clickOnViewCase();
@@ -912,7 +914,7 @@ describe('Case Activity CKE', () => {
             await manageTaskBladePo.clickTaskLink(adhocTaskSummary);
 
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(notesTemplateTaskData.templateName);
-            expect(await activityTabPage.getTextCkEditorTextArea()).toContain(notesTemplateTaskData.body)
+            expect(await ckeditorValidationPo.getTextCkEditorTextArea()).toContain(notesTemplateTaskData.body)
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isTextPresentInNote(notesTemplateTaskData.body)).toBeTruthy('FailureMsg Note Template is missing in activity');
         });
@@ -925,7 +927,7 @@ describe('Case Activity CKE', () => {
             await viewKnowledgeArticlePo.clickOnActivityTab();
 
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(notesTemplateKnowledgeData.templateName);
-            expect(await activityTabPage.getTextCkEditorTextArea()).toContain(notesTemplateKnowledgeData.body)
+            expect(await ckeditorValidationPo.getTextCkEditorTextArea()).toContain(notesTemplateKnowledgeData.body)
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isTextPresentInNote(notesTemplateKnowledgeData.body)).toBeTruthy('FailureMsg Note Template is missing in activity');
         });

@@ -1154,22 +1154,22 @@ describe('Notes template', () => {
             await ckeditorOpsPo.updateDescription("this is text ");
             await ckeditorOpsPo.clickOnBoldIcon();
             await ckeditorOpsPo.updateDescription(boldText);
-            expect(await ckeditorOpsPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
+            expect(await ckeditorValidationPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
             await ckeditorOpsPo.clickOnBoldIcon();
             //italic
             await ckeditorOpsPo.clickOnItalicIcon();
             await ckeditorOpsPo.updateDescription(italicText);
-            expect(await ckeditorOpsPo.isItalicTextDisplayedInCkEditorTextArea(italicText)).toBeTruthy('Text is not Italic In Ck Editor');
+            expect(await ckeditorValidationPo.isItalicTextDisplayedInCkEditorTextArea(italicText)).toBeTruthy('Text is not Italic In Ck Editor');
             await ckeditorOpsPo.clickOnItalicIcon();
             //StrikeThrough
             await ckeditorOpsPo.clickOnStrikeThroughIcon();
             await ckeditorOpsPo.updateDescription(strikeThroughText);
-            expect(await ckeditorOpsPo.isStrikeThroughTextDisplayedInCkEditorTextArea(strikeThroughText)).toBeTruthy('Text is not Strike Through In Ck Editor');
+            expect(await ckeditorValidationPo.isStrikeThroughTextDisplayedInCkEditorTextArea(strikeThroughText)).toBeTruthy('Text is not Strike Through In Ck Editor');
             await ckeditorOpsPo.clickOnStrikeThroughIcon();
             //underline
             await ckeditorOpsPo.clickOnUnderLineIcon();
             await ckeditorOpsPo.updateDescription(underLineText);
-            expect(await ckeditorOpsPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
+            expect(await ckeditorValidationPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnUnderLineIcon();
         });
@@ -1177,43 +1177,43 @@ describe('Notes template', () => {
             //left Align
             await ckeditorOpsPo.clickOnLeftAlignIcon();
             await ckeditorOpsPo.updateDescription(lefAlignText);
-            expect(await ckeditorOpsPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnLeftAlignIcon();
             //Right Align
             await ckeditorOpsPo.clickOnRightAlignIcon();
             await ckeditorOpsPo.updateDescription(rightAlignText);
-            expect(await ckeditorOpsPo.isTextRightAlignInCkEditorTextArea(rightAlignText)).toBeTruthy('Text is not right Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextRightAlignInCkEditorTextArea(rightAlignText)).toBeTruthy('Text is not right Align In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnRightAlignIcon();
             //Center Align
             await ckeditorOpsPo.clickOnCenterAlignIcon();
             await ckeditorOpsPo.updateDescription(centerAlignText);
-            expect(await ckeditorOpsPo.isTextCenterAlignInCkEditorTextArea(centerAlignText)).toBeTruthy('Text is not center Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextCenterAlignInCkEditorTextArea(centerAlignText)).toBeTruthy('Text is not center Align In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnCenterAlignIcon();
             //Justify Align
             await ckeditorOpsPo.clickOnJustifyAlignIcon();
             await ckeditorOpsPo.updateDescription(justifyAlignText);
-            expect(await ckeditorOpsPo.isTextJustifyAlignInCkEditorTextArea(justifyAlignText)).toBeTruthy('Text is not justify Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextJustifyAlignInCkEditorTextArea(justifyAlignText)).toBeTruthy('Text is not justify Align In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnJustifyAlignIcon();
             //set color
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.selectColor('Strong Red');
             await ckeditorOpsPo.updateDescription(redColorText);
-            expect(await ckeditorOpsPo.isColorTextDisplayedInCkEditorTextArea(redColorText, 'color:#c0392b;')).toBeTruthy('Color is not set In Ck Editor');
+            expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(redColorText, 'color:#c0392b;')).toBeTruthy('Color is not set In Ck Editor');
             //checking number list
             await ckeditorOpsPo.enterNewLineInCKE();
-            await activityTabPo.setNumberList('PlusOne');
-            expect(await ckeditorOpsPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Number List is not In Ck Editor');
+            await ckeditorOpsPo.setNumberList(['PlusOne']);
+            expect(await ckeditorValidationPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Number List is not In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             // checking bullot points
-            await activityTabPo.setBulletList('BulletOne');
-            expect(await activityTabPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Bulleted List is not In Ck Editor');
-            expect(await ckeditorOpsPo.getTextCkEditorMinimizeOrMiximize()).toBe('Maximize');
+            await ckeditorOpsPo.setBulletList(['BulletOne']);
+            expect(await ckeditorValidationPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Bulleted List is not In Ck Editor');
+            expect(await ckeditorValidationPo.getTextCkEditorMinimizeOrMiximize()).toBe('Maximize');
             await ckeditorOpsPo.clickMaximizeMinimizeIcon();
-            expect(await ckeditorOpsPo.getTextCkEditorMinimizeOrMiximize()).toBe('Minimize');
+            expect(await ckeditorValidationPo.getTextCkEditorMinimizeOrMiximize()).toBe('Minimize');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickMaximizeMinimizeIcon();
         });
@@ -1222,22 +1222,22 @@ describe('Notes template', () => {
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.updateDescription(formatText);
             await ckeditorOpsPo.selectStyles('Heading 2');
-            expect(await ckeditorOpsPo.isStyleApplied(formatText, 'h2')).toBeTruthy('Heading not set');
+            expect(await ckeditorValidationPo.isStyleApplied(formatText, 'h2')).toBeTruthy('Heading not set');
             //add Font Size 
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.updateDescription(fontText);
             await ckeditorOpsPo.selectFont('11');
-            expect(await ckeditorOpsPo.isFontApplied(11, 'span')).toBeTruthy('Font not set');
+            expect(await ckeditorValidationPo.isFontApplied(11, 'span')).toBeTruthy('Font not set');
             //upload image with URL
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnImageIcon();
             await ckeditorOpsPo.imageUploadWithURL(uploadURL, imageUrlFieldIndex, imageWidthFieldIndex, '100');
-            expect(await ckeditorOpsPo.isImageDisplayedInCKE(uploadURL)).toBeTruthy('Image with URL not uploaded');
+            expect(await ckeditorValidationPo.isImageDisplayedInCKE(uploadURL)).toBeTruthy('Image with URL not uploaded');
             //upload image with Local
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnImageIcon();
             imageSource = await ckeditorOpsPo.uploadImageFromLocal('Upload', '../../../data/ui/attachment/articleStatus.png', imageWidthFieldIndex, imageUrlFieldIndex, '50');
-            expect(await ckeditorOpsPo.isImageDisplayedInCKE(imageSource)).toBeTruthy();
+            expect(await ckeditorValidationPo.isImageDisplayedInCKE(imageSource)).toBeTruthy();
             // Link added
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnLinkIcon();
@@ -1246,7 +1246,7 @@ describe('Notes template', () => {
             await linkPropertiesPo.clickOnTargetTab();
             await linkPropertiesPo.selectDropDown('_blank', linkTargetDropDownIndex);
             await linkPropertiesPo.clickOnOkBtn();
-            expect(await ckeditorOpsPo.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('Link is not In Ck Editor');
+            expect(await ckeditorValidationPo.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('Link is not In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             //add table
             await ckeditorOpsPo.clickOnTableIcon();
@@ -1263,7 +1263,7 @@ describe('Notes template', () => {
             await ckeditorOpsPo.clickInTableCell(1, 2, 'tableSummary');
             await ckeditorOpsPo.clickOnRightAlignIcon();
             await ckeditorOpsPo.setDataInTable(1, 2, randomString, 'tableSummary');
-            expect(await ckeditorOpsPo.getTableCellAlignText("text-align: center;")).toContain(randomString);
+            expect(await ckeditorValidationPo.getTableCellAlignText("text-align: center;")).toContain(randomString);
             await createNotesTemplate.clickOnSaveButton();
             await utilCommon.closePopUpMessage();
         });
@@ -1274,13 +1274,13 @@ describe('Notes template', () => {
             await utilityGrid.searchAndOpenHyperlink(newCase.displayId);
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(templateName);
             await activityTabPo.addActivityNote(randomString);
-            expect(await activityTabPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
-            expect(await activityTabPo.isItalicTextDisplayedInCkEditorTextArea(italicText)).toBeTruthy('Text is not Italic In Ck Editor');
-            expect(await activityTabPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
-            expect(await activityTabPo.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('Text is not center Align In Ck Editor');
-            expect(await activityTabPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
-            expect(await activityTabPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Text is not center Align In Ck Editor');
-            expect(await activityTabPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Text is not center Align In Ck Editor');
+            expect(await ckeditorValidationPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
+            expect(await ckeditorValidationPo.isItalicTextDisplayedInCkEditorTextArea(italicText)).toBeTruthy('Text is not Italic In Ck Editor');
+            expect(await ckeditorValidationPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
+            expect(await ckeditorValidationPo.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('Text is not center Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
+            expect(await ckeditorValidationPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Text is not center Align In Ck Editor');
+            expect(await ckeditorValidationPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPo.clickOnPostButton();
             await activityTabPo.clickShowMoreLinkInActivity(1);
             expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
@@ -1290,8 +1290,8 @@ describe('Notes template', () => {
             expect(await activityTabPo.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
             expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
             expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
-            expect(await activityTabPo.isTableCaptionDisplayedInCkEditorTextArea('tableSummary', 'new' + randomString)).toBeTruthy('Text is not Left Align In Ck Editor');
-            expect(await activityTabPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('Text is not Left Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTableCaptionDisplayedInCkEditorTextArea('tableSummary', 'new' + randomString)).toBeTruthy('Text is not Left Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('Text is not Left Align In Ck Editor');
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary('NotesTemplateCase1' + randomString);
@@ -1312,8 +1312,8 @@ describe('Notes template', () => {
             expect(await activityTabPo.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
             expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
             expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
-            expect(await activityTabPo.isTableCaptionDisplayedInCkEditorTextArea('tableSummary', 'new' + randomString)).toBeTruthy('Text is not Left Align In Ck Editor');
-            expect(await activityTabPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('Text is not Left Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTableCaptionDisplayedInCkEditorTextArea('tableSummary', 'new' + randomString)).toBeTruthy('Text is not Left Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('Text is not Left Align In Ck Editor');
         });
         it('[DRDMV-22642,DRDMV-22646,DRDMV-22657]: Verify CKE functionality on Create and Edit Case Notes template', async () => {
             await navigationPage.signOut();
@@ -1328,8 +1328,8 @@ describe('Notes template', () => {
             expect(await activityTabPo.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
             expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
             expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
-            expect(await activityTabPo.isTableCaptionDisplayedInCkEditorTextArea('tableSummary', 'new' + randomString)).toBeTruthy('Text is not Left Align In Ck Editor');
-            expect(await activityTabPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('Text is not Left Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTableCaptionDisplayedInCkEditorTextArea('tableSummary', 'new' + randomString)).toBeTruthy('Text is not Left Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('Text is not Left Align In Ck Editor');
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await utilityGrid.clearFilter();
@@ -1342,8 +1342,8 @@ describe('Notes template', () => {
             expect(await activityTabPo.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
             expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
             expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
-            expect(await activityTabPo.isTableCaptionDisplayedInCkEditorTextArea('tableSummary', 'new' + randomString)).toBeTruthy('Text is not Left Align In Ck Editor');
-            expect(await activityTabPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('Text is not Left Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTableCaptionDisplayedInCkEditorTextArea('tableSummary', 'new' + randomString)).toBeTruthy('Text is not Left Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('Text is not Left Align In Ck Editor');
         });
         afterAll(async () => {
             await navigationPage.signOut();
@@ -1368,23 +1368,23 @@ describe('Notes template', () => {
             await ckeditorOpsPo.updateDescription("this is text ");
             await ckeditorOpsPo.clickOnBoldIcon();
             await ckeditorOpsPo.updateDescription(boldText);
-            expect(await ckeditorOpsPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
+            expect(await ckeditorValidationPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
             await ckeditorOpsPo.clickOnBoldIcon();
             //italic
             await ckeditorOpsPo.clickOnItalicIcon();
             await ckeditorOpsPo.updateDescription(italicText);
-            expect(await ckeditorOpsPo.isItalicTextDisplayedInCkEditorTextArea(italicText)).toBeTruthy('Text is not Italic In Ck Editor');
+            expect(await ckeditorValidationPo.isItalicTextDisplayedInCkEditorTextArea(italicText)).toBeTruthy('Text is not Italic In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnItalicIcon();
             //strikethrough
             await ckeditorOpsPo.clickOnStrikeThroughIcon();
             await ckeditorOpsPo.updateDescription(strikeThroughText);
-            expect(await ckeditorOpsPo.isStrikeThroughTextDisplayedInCkEditorTextArea(strikeThroughText)).toBeTruthy('Text is not Strike Through In Ck Editor');
+            expect(await ckeditorValidationPo.isStrikeThroughTextDisplayedInCkEditorTextArea(strikeThroughText)).toBeTruthy('Text is not Strike Through In Ck Editor');
             await ckeditorOpsPo.clickOnStrikeThroughIcon();
             //underline
             await ckeditorOpsPo.clickOnUnderLineIcon();
             await ckeditorOpsPo.updateDescription(underLineText);
-            expect(await ckeditorOpsPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
+            expect(await ckeditorValidationPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnUnderLineIcon();
         });
@@ -1392,43 +1392,43 @@ describe('Notes template', () => {
             //left Align
             await ckeditorOpsPo.clickOnLeftAlignIcon();
             await ckeditorOpsPo.updateDescription(lefAlignText);
-            expect(await ckeditorOpsPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnLeftAlignIcon();
             //Right Align
             await ckeditorOpsPo.clickOnRightAlignIcon();
             await ckeditorOpsPo.updateDescription(rightAlignText);
-            expect(await ckeditorOpsPo.isTextRightAlignInCkEditorTextArea(rightAlignText)).toBeTruthy('Text is not right Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextRightAlignInCkEditorTextArea(rightAlignText)).toBeTruthy('Text is not right Align In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnRightAlignIcon();
             //Center Align
             await ckeditorOpsPo.clickOnCenterAlignIcon();
             await ckeditorOpsPo.updateDescription(centerAlignText);
-            expect(await ckeditorOpsPo.isTextCenterAlignInCkEditorTextArea(centerAlignText)).toBeTruthy('Text is not center Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextCenterAlignInCkEditorTextArea(centerAlignText)).toBeTruthy('Text is not center Align In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnCenterAlignIcon();
             //Justify Align
             await ckeditorOpsPo.clickOnJustifyAlignIcon();
             await ckeditorOpsPo.updateDescription(justifyAlignText);
-            expect(await ckeditorOpsPo.isTextJustifyAlignInCkEditorTextArea(justifyAlignText)).toBeTruthy('Text is not justify Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextJustifyAlignInCkEditorTextArea(justifyAlignText)).toBeTruthy('Text is not justify Align In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnJustifyAlignIcon();
             //set color
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.selectColor('Strong Red');
             await ckeditorOpsPo.updateDescription(redColorText);
-            expect(await ckeditorOpsPo.isColorTextDisplayedInCkEditorTextArea(redColorText, 'color:#c0392b;')).toBeTruthy('Color is not set In Ck Editor');
+            expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(redColorText, 'color:#c0392b;')).toBeTruthy('Color is not set In Ck Editor');
             //checking number list
             await ckeditorOpsPo.enterNewLineInCKE();
-            await activityTabPo.setNumberList('PlusOne');
-            expect(await ckeditorOpsPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Number List is not In Ck Editor');
+            await ckeditorOpsPo.setNumberList(['PlusOne']);
+            expect(await ckeditorValidationPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Number List is not In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             // checking bullot points
-            await activityTabPo.setBulletList('BulletOne');
-            expect(await activityTabPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Bulleted List is not In Ck Editor');
-            expect(await ckeditorOpsPo.getTextCkEditorMinimizeOrMiximize()).toBe('Maximize');
+            await ckeditorOpsPo.setBulletList(['BulletOne']);
+            expect(await ckeditorValidationPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Bulleted List is not In Ck Editor');
+            expect(await ckeditorValidationPo.getTextCkEditorMinimizeOrMiximize()).toBe('Maximize');
             await ckeditorOpsPo.clickMaximizeMinimizeIcon();
-            expect(await ckeditorOpsPo.getTextCkEditorMinimizeOrMiximize()).toBe('Minimize');
+            expect(await ckeditorValidationPo.getTextCkEditorMinimizeOrMiximize()).toBe('Minimize');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickMaximizeMinimizeIcon();
         });
@@ -1437,22 +1437,22 @@ describe('Notes template', () => {
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.updateDescription(formatText);
             await ckeditorOpsPo.selectStyles('Heading 2');
-            expect(await ckeditorOpsPo.isStyleApplied(formatText, 'h2')).toBeTruthy('Heading not set');
+            expect(await ckeditorValidationPo.isStyleApplied(formatText, 'h2')).toBeTruthy('Heading not set');
             //add Font Size 
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.selectFont("11");
             await ckeditorOpsPo.updateDescription(fontText);
-            expect(await ckeditorOpsPo.isFontApplied(11, 'span')).toBeTruthy('Font not set');
+            expect(await ckeditorValidationPo.isFontApplied(11, 'span')).toBeTruthy('Font not set');
             //upload image with URL
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnImageIcon();
             await ckeditorOpsPo.imageUploadWithURL(uploadURL, imageUrlFieldIndex, imageWidthFieldIndex, '100');
-            expect(await ckeditorOpsPo.isImageDisplayedInCKE(uploadURL)).toBeTruthy('Image with URL not uploaded');
+            expect(await ckeditorValidationPo.isImageDisplayedInCKE(uploadURL)).toBeTruthy('Image with URL not uploaded');
             //upload image with Local
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnImageIcon();
             imageSource = await ckeditorOpsPo.uploadImageFromLocal('Upload', '../../../data/ui/attachment/articleStatus.png', imageWidthFieldIndex, imageUrlFieldIndex, '50');
-            expect(await ckeditorOpsPo.isImageDisplayedInCKE(imageSource)).toBeTruthy();
+            expect(await ckeditorValidationPo.isImageDisplayedInCKE(imageSource)).toBeTruthy();
             // Link added
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnLinkIcon();
@@ -1461,7 +1461,7 @@ describe('Notes template', () => {
             await linkPropertiesPo.clickOnTargetTab();
             await linkPropertiesPo.selectDropDown('_blank', linkTargetDropDownIndex);
             await linkPropertiesPo.clickOnOkBtn();
-            expect(await ckeditorOpsPo.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('Link is not In Ck Editor');
+            expect(await ckeditorValidationPo.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('Link is not In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             //add table
             await ckeditorOpsPo.clickOnTableIcon();
@@ -1504,13 +1504,13 @@ describe('Notes template', () => {
             await accessTabPo.clickCloseKnowledgeAccessBlade();
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(templateName);
-            expect(await activityTabPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
-            expect(await activityTabPo.isItalicTextDisplayedInCkEditorTextArea(italicText)).toBeTruthy('Text is not Italic In Ck Editor');
-            expect(await activityTabPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
-            expect(await activityTabPo.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('Text is not center Align In Ck Editor');
-            expect(await activityTabPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
-            expect(await activityTabPo.isTableCaptionDisplayedInCkEditorTextArea('tableSummary', 'new' + randomString)).toBeTruthy('Text is not Left Align In Ck Editor');
-            expect(await activityTabPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('Text is not Left Align In Ck Editor');
+            expect(await ckeditorValidationPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
+            expect(await ckeditorValidationPo.isItalicTextDisplayedInCkEditorTextArea(italicText)).toBeTruthy('Text is not Italic In Ck Editor');
+            expect(await ckeditorValidationPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
+            expect(await ckeditorValidationPo.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('Text is not center Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTableCaptionDisplayedInCkEditorTextArea('tableSummary', 'new' + randomString)).toBeTruthy('Text is not Left Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('Text is not Left Align In Ck Editor');
             await activityTabPo.clickOnPostButton();
             await navigationPage.gotoKnowledgeConsole();
             await utilityGrid.clearFilter();
@@ -1524,8 +1524,8 @@ describe('Notes template', () => {
             expect(await activityTabPo.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
             expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
             expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
-            expect(await activityTabPo.isTableCaptionDisplayedInCkEditorTextArea('tableSummary', 'new' + randomString)).toBeTruthy('Text is not Left Align In Ck Editor');
-            expect(await activityTabPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('Text is not Left Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTableCaptionDisplayedInCkEditorTextArea('tableSummary', 'new' + randomString)).toBeTruthy('Text is not Left Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('Text is not Left Align In Ck Editor');
         });
         it('[DRDMV-22638,DRDMV-22644,DRDMV-22654]: Verify CKE functionality on Create and Edit Knowledge Notes template', async () => {
             await navigationPage.signOut();
@@ -1543,8 +1543,8 @@ describe('Notes template', () => {
             expect(await activityTabPo.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
             expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
             expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
-            expect(await activityTabPo.isTableCaptionDisplayedInCkEditorTextArea('tableSummary', 'new' + randomString)).toBeTruthy('Text is not Left Align In Ck Editor');
-            expect(await activityTabPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('Text is not Left Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTableCaptionDisplayedInCkEditorTextArea('tableSummary', 'new' + randomString)).toBeTruthy('Text is not Left Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('Text is not Left Align In Ck Editor');
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoKnowledgeConsole();
@@ -1559,8 +1559,8 @@ describe('Notes template', () => {
             expect(await activityTabPo.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
             expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
             expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
-            expect(await activityTabPo.isTableCaptionDisplayedInCkEditorTextArea('tableSummary', 'new' + randomString)).toBeTruthy('Text is not Left Align In Ck Editor');
-            expect(await activityTabPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('Text is not Left Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTableCaptionDisplayedInCkEditorTextArea('tableSummary', 'new' + randomString)).toBeTruthy('Text is not Left Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('Text is not Left Align In Ck Editor');
         });
         afterAll(async () => {
             await navigationPage.signOut();
@@ -1596,23 +1596,23 @@ describe('Notes template', () => {
             await ckeditorOpsPo.updateDescription("this is text ");
             await ckeditorOpsPo.clickOnBoldIcon();
             await ckeditorOpsPo.updateDescription(boldText);
-            expect(await ckeditorOpsPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
+            expect(await ckeditorValidationPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
             await ckeditorOpsPo.clickOnBoldIcon();
             //italic
             await ckeditorOpsPo.clickOnItalicIcon();
             await ckeditorOpsPo.updateDescription(italicText);
-            expect(await ckeditorOpsPo.isItalicTextDisplayedInCkEditorTextArea(italicText)).toBeTruthy('Text is not Italic In Ck Editor');
+            expect(await ckeditorValidationPo.isItalicTextDisplayedInCkEditorTextArea(italicText)).toBeTruthy('Text is not Italic In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnItalicIcon();
             //strikethrough
             await ckeditorOpsPo.clickOnStrikeThroughIcon();
             await ckeditorOpsPo.updateDescription(strikeThroughText);
-            expect(await ckeditorOpsPo.isStrikeThroughTextDisplayedInCkEditorTextArea(strikeThroughText)).toBeTruthy('Text is not Strike Through In Ck Editor');
+            expect(await ckeditorValidationPo.isStrikeThroughTextDisplayedInCkEditorTextArea(strikeThroughText)).toBeTruthy('Text is not Strike Through In Ck Editor');
             await ckeditorOpsPo.clickOnStrikeThroughIcon();
             //underline
             await ckeditorOpsPo.clickOnUnderLineIcon();
             await ckeditorOpsPo.updateDescription(underLineText);
-            expect(await ckeditorOpsPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
+            expect(await ckeditorValidationPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnUnderLineIcon();
         });
@@ -1620,43 +1620,43 @@ describe('Notes template', () => {
             //left Align
             await ckeditorOpsPo.clickOnLeftAlignIcon();
             await ckeditorOpsPo.updateDescription(lefAlignText);
-            expect(await ckeditorOpsPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnLeftAlignIcon();
             //Right Align
             await ckeditorOpsPo.clickOnRightAlignIcon();
             await ckeditorOpsPo.updateDescription(rightAlignText);
-            expect(await ckeditorOpsPo.isTextRightAlignInCkEditorTextArea(rightAlignText)).toBeTruthy('Text is not right Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextRightAlignInCkEditorTextArea(rightAlignText)).toBeTruthy('Text is not right Align In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnRightAlignIcon();
             //Center Align
             await ckeditorOpsPo.clickOnCenterAlignIcon();
             await ckeditorOpsPo.updateDescription(centerAlignText);
-            expect(await ckeditorOpsPo.isTextCenterAlignInCkEditorTextArea(centerAlignText)).toBeTruthy('Text is not center Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextCenterAlignInCkEditorTextArea(centerAlignText)).toBeTruthy('Text is not center Align In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnCenterAlignIcon();
             //Justify Align
             await ckeditorOpsPo.clickOnJustifyAlignIcon();
             await ckeditorOpsPo.updateDescription(justifyAlignText);
-            expect(await ckeditorOpsPo.isTextJustifyAlignInCkEditorTextArea(justifyAlignText)).toBeTruthy('Text is not justify Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextJustifyAlignInCkEditorTextArea(justifyAlignText)).toBeTruthy('Text is not justify Align In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnJustifyAlignIcon();
             //set color
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.selectColor('Strong Red');
             await ckeditorOpsPo.updateDescription(redColorText);
-            expect(await ckeditorOpsPo.isColorTextDisplayedInCkEditorTextArea(redColorText, 'color:#c0392b;')).toBeTruthy('Color is not set In Ck Editor');
+            expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(redColorText, 'color:#c0392b;')).toBeTruthy('Color is not set In Ck Editor');
             //checking number list
             await ckeditorOpsPo.enterNewLineInCKE();
-            await activityTabPo.setNumberList('PlusOne');
-            expect(await ckeditorOpsPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Number List is not In Ck Editor');
+            await ckeditorOpsPo.setNumberList(['PlusOne']);
+            expect(await ckeditorValidationPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Number List is not In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             // checking bullot points
-            await activityTabPo.setBulletList('BulletOne');
-            expect(await activityTabPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Bulleted List is not In Ck Editor');
-            expect(await ckeditorOpsPo.getTextCkEditorMinimizeOrMiximize()).toBe('Maximize');
+            await ckeditorOpsPo.setBulletList(['BulletOne']);
+            expect(await ckeditorValidationPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Bulleted List is not In Ck Editor');
+            expect(await ckeditorValidationPo.getTextCkEditorMinimizeOrMiximize()).toBe('Maximize');
             await ckeditorOpsPo.clickMaximizeMinimizeIcon();
-            expect(await ckeditorOpsPo.getTextCkEditorMinimizeOrMiximize()).toBe('Minimize');
+            expect(await ckeditorValidationPo.getTextCkEditorMinimizeOrMiximize()).toBe('Minimize');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickMaximizeMinimizeIcon();
         });
@@ -1665,22 +1665,22 @@ describe('Notes template', () => {
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.updateDescription(formatText);
             await ckeditorOpsPo.selectStyles('Heading 2');
-            expect(await ckeditorOpsPo.isStyleApplied(formatText, 'h2')).toBeTruthy('Heading not set');
+            expect(await ckeditorValidationPo.isStyleApplied(formatText, 'h2')).toBeTruthy('Heading not set');
             //add Font Size 
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.selectFont("11");
             await ckeditorOpsPo.updateDescription(fontText);
-            expect(await ckeditorOpsPo.isFontApplied(11, 'span')).toBeTruthy('Font not set');
+            expect(await ckeditorValidationPo.isFontApplied(11, 'span')).toBeTruthy('Font not set');
             //upload image with URL
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnImageIcon();
             await ckeditorOpsPo.imageUploadWithURL(uploadURL, imageUrlFieldIndex, imageWidthFieldIndex, '100');
-            expect(await ckeditorOpsPo.isImageDisplayedInCKE(uploadURL)).toBeTruthy('Image with URL not uploaded');
+            expect(await ckeditorValidationPo.isImageDisplayedInCKE(uploadURL)).toBeTruthy('Image with URL not uploaded');
             //upload image with Local
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnImageIcon();
             imageSource1 = await ckeditorOpsPo.uploadImageFromLocal('Upload', '../../../data/ui/attachment/articleStatus.png', imageWidthFieldIndex, imageUrlFieldIndex, '50');
-            expect(await ckeditorOpsPo.isImageDisplayedInCKE(imageSource1)).toBeTruthy();
+            expect(await ckeditorValidationPo.isImageDisplayedInCKE(imageSource1)).toBeTruthy();
             // Link added
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnLinkIcon();
@@ -1689,7 +1689,7 @@ describe('Notes template', () => {
             await linkPropertiesPo.clickOnTargetTab();
             await linkPropertiesPo.selectDropDown('_blank', linkTargetDropDownIndex);
             await linkPropertiesPo.clickOnOkBtn();
-            expect(await ckeditorOpsPo.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('Link is not In Ck Editor');
+            expect(await ckeditorValidationPo.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('Link is not In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             //add table
             await ckeditorOpsPo.clickOnTableIcon();
@@ -1710,17 +1710,17 @@ describe('Notes template', () => {
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnImageIcon();
             imageSource2 = await ckeditorOpsPo.uploadImageFromLocal('Upload', '../../../data/ui/attachment/bwfJpg.jpg', imageWidthFieldIndex, imageUrlFieldIndex, '50');
-            expect(await ckeditorOpsPo.isImageDisplayedInCKE(imageSource2)).toBeTruthy();
+            expect(await ckeditorValidationPo.isImageDisplayedInCKE(imageSource2)).toBeTruthy();
             //upload image with URL
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnImageIcon();
             await ckeditorOpsPo.imageUploadWithURL(uploadURL, imageUrlFieldIndex, imageWidthFieldIndex, '100');
-            expect(await ckeditorOpsPo.isImageDisplayedInCKE(uploadURL)).toBeTruthy('Image with URL not uploaded');
+            expect(await ckeditorValidationPo.isImageDisplayedInCKE(uploadURL)).toBeTruthy('Image with URL not uploaded');
             //upload image with Local
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnImageIcon();
             imageSource1 = await ckeditorOpsPo.uploadImageFromLocal('Upload', '../../../data/ui/attachment/articleStatus.png', imageWidthFieldIndex, imageUrlFieldIndex, '50');
-            expect(await ckeditorOpsPo.isImageDisplayedInCKE(imageSource1)).toBeTruthy();
+            expect(await ckeditorValidationPo.isImageDisplayedInCKE(imageSource1)).toBeTruthy();
             await createNotesTemplate.clickOnSaveButton();
             await utilCommon.closePopUpMessage();
         });
@@ -1734,12 +1734,12 @@ describe('Notes template', () => {
             await utilityCommon.switchToNewTab(1);
             await personProfilePo.clickOnTab('Related Cases');
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(templateName);
-            expect(await activityTabPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
-            expect(await activityTabPo.isItalicTextDisplayedInCkEditorTextArea(italicText)).toBeTruthy('Text is not Italic In Ck Editor');
-            expect(await activityTabPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
-            expect(await activityTabPo.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('Text is not center Align In Ck Editor');
-            expect(await activityTabPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
-            expect(await activityTabPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('Text is not Left Align In Ck Editor');
+            expect(await ckeditorValidationPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
+            expect(await ckeditorValidationPo.isItalicTextDisplayedInCkEditorTextArea(italicText)).toBeTruthy('Text is not Italic In Ck Editor');
+            expect(await ckeditorValidationPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
+            expect(await ckeditorValidationPo.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('Text is not center Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('Text is not Left Align In Ck Editor');
             await activityTabPo.clickOnPostButton();
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
@@ -1749,14 +1749,14 @@ describe('Notes template', () => {
             expect(await activityTabPo.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
             expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
             expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
-            expect(await activityTabPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('Text is not Left Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('Text is not Left Align In Ck Editor');
             expect(await activityTabPo.isCKImageDisplayedInActivity(imageSource1)).toBeTruthy('Image is not displayed');
             expect(await activityTabPo.isCKImageDisplayedInActivity(imageSource2)).toBeTruthy('Image is not displayed');
             expect(await activityTabPo.isCKImageDisplayedInActivity(uploadURL)).toBeTruthy('Image is not displayed');
         });
         it('[DRDMV-22637,DRDMV-22643,DRDMV-22653]: Verify CKE functionality on Create and Edit People Notes template', async () => {
             await navigationPage.signOut();
-            await loginPage.login(userData.userId+"@petramco.com", 'Password_1234');
+            await loginPage.login('22653User@petramco.com', 'Password_1234');
             await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(newCase.displayId);
@@ -1770,7 +1770,7 @@ describe('Notes template', () => {
             expect(await activityTabPo.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
             expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
             expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
-            expect(await activityTabPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('Text is not Left Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('Text is not Left Align In Ck Editor');
             expect(await activityTabPo.isCKImageDisplayedInActivity(imageSource1)).toBeTruthy('Image is not displayed');
             expect(await activityTabPo.isCKImageDisplayedInActivity(uploadURL)).toBeTruthy('Image is not displayed');
         });
@@ -1796,22 +1796,22 @@ describe('Notes template', () => {
             await ckeditorOpsPo.updateDescription("this is text ");
             await ckeditorOpsPo.clickOnBoldIcon();
             await ckeditorOpsPo.updateDescription(boldText);
-            expect(await ckeditorOpsPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
+            expect(await ckeditorValidationPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
             await ckeditorOpsPo.clickOnBoldIcon();
             //italic
             await ckeditorOpsPo.clickOnItalicIcon();
             await ckeditorOpsPo.updateDescription(italicText);
-            expect(await ckeditorOpsPo.isItalicTextDisplayedInCkEditorTextArea(italicText)).toBeTruthy('Text is not Italic In Ck Editor');
+            expect(await ckeditorValidationPo.isItalicTextDisplayedInCkEditorTextArea(italicText)).toBeTruthy('Text is not Italic In Ck Editor');
             await ckeditorOpsPo.clickOnItalicIcon();
             //StrikeThrough
             await ckeditorOpsPo.clickOnStrikeThroughIcon();
             await ckeditorOpsPo.updateDescription(strikeThroughText);
-            expect(await ckeditorOpsPo.isStrikeThroughTextDisplayedInCkEditorTextArea(strikeThroughText)).toBeTruthy('Text is not Strike Through In Ck Editor');
+            expect(await ckeditorValidationPo.isStrikeThroughTextDisplayedInCkEditorTextArea(strikeThroughText)).toBeTruthy('Text is not Strike Through In Ck Editor');
             await ckeditorOpsPo.clickOnStrikeThroughIcon();
             //underline
             await ckeditorOpsPo.clickOnUnderLineIcon();
             await ckeditorOpsPo.updateDescription(underLineText);
-            expect(await ckeditorOpsPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
+            expect(await ckeditorValidationPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnUnderLineIcon();
         });
@@ -1819,43 +1819,43 @@ describe('Notes template', () => {
             //left Align
             await ckeditorOpsPo.clickOnLeftAlignIcon();
             await ckeditorOpsPo.updateDescription(lefAlignText);
-            expect(await ckeditorOpsPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnLeftAlignIcon();
             //Right Align
             await ckeditorOpsPo.clickOnRightAlignIcon();
             await ckeditorOpsPo.updateDescription(rightAlignText);
-            expect(await ckeditorOpsPo.isTextRightAlignInCkEditorTextArea(rightAlignText)).toBeTruthy('Text is not right Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextRightAlignInCkEditorTextArea(rightAlignText)).toBeTruthy('Text is not right Align In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnRightAlignIcon();
             //Center Align
             await ckeditorOpsPo.clickOnCenterAlignIcon();
             await ckeditorOpsPo.updateDescription(centerAlignText);
-            expect(await ckeditorOpsPo.isTextCenterAlignInCkEditorTextArea(centerAlignText)).toBeTruthy('Text is not center Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextCenterAlignInCkEditorTextArea(centerAlignText)).toBeTruthy('Text is not center Align In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnCenterAlignIcon();
             //Justify Align
             await ckeditorOpsPo.clickOnJustifyAlignIcon();
             await ckeditorOpsPo.updateDescription(justifyAlignText);
-            expect(await ckeditorOpsPo.isTextJustifyAlignInCkEditorTextArea(justifyAlignText)).toBeTruthy('Text is not justify Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextJustifyAlignInCkEditorTextArea(justifyAlignText)).toBeTruthy('Text is not justify Align In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnJustifyAlignIcon();
             //set color
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.selectColor('Strong Red');
             await ckeditorOpsPo.updateDescription(redColorText);
-            expect(await ckeditorOpsPo.isColorTextDisplayedInCkEditorTextArea(redColorText, 'color:#c0392b;')).toBeTruthy('Color is not set In Ck Editor');
+            expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(redColorText, 'color:#c0392b;')).toBeTruthy('Color is not set In Ck Editor');
             //checking number list
             await ckeditorOpsPo.enterNewLineInCKE();
-            await activityTabPo.setNumberList('PlusOne');
-            expect(await ckeditorOpsPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Number List is not In Ck Editor');
+            await ckeditorOpsPo.setNumberList(['PlusOne']);
+            expect(await ckeditorValidationPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Number List is not In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             // checking bullot points
-            await activityTabPo.setBulletList('BulletOne');
-            expect(await activityTabPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Bulleted List is not In Ck Editor');
-            expect(await ckeditorOpsPo.getTextCkEditorMinimizeOrMiximize()).toBe('Maximize');
+            await ckeditorOpsPo.setBulletList(['BulletOne']);
+            expect(await ckeditorValidationPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Bulleted List is not In Ck Editor');
+            expect(await ckeditorValidationPo.getTextCkEditorMinimizeOrMiximize()).toBe('Maximize');
             await ckeditorOpsPo.clickMaximizeMinimizeIcon();
-            expect(await ckeditorOpsPo.getTextCkEditorMinimizeOrMiximize()).toBe('Minimize');
+            expect(await ckeditorValidationPo.getTextCkEditorMinimizeOrMiximize()).toBe('Minimize');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickMaximizeMinimizeIcon();
         });
@@ -1864,22 +1864,22 @@ describe('Notes template', () => {
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.updateDescription(formatText);
             await ckeditorOpsPo.selectStyles('Heading 2');
-            expect(await ckeditorOpsPo.isStyleApplied(formatText, 'h2')).toBeTruthy('Heading not set');
+            expect(await ckeditorValidationPo.isStyleApplied(formatText, 'h2')).toBeTruthy('Heading not set');
             //add Font Size 
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.updateDescription(fontText);
             await ckeditorOpsPo.selectFont('11');
-            expect(await ckeditorOpsPo.isFontApplied(11, 'span')).toBeTruthy('Font not set');
+            expect(await ckeditorValidationPo.isFontApplied(11, 'span')).toBeTruthy('Font not set');
             //upload image with URL
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnImageIcon();
             await ckeditorOpsPo.imageUploadWithURL(uploadURL, imageUrlFieldIndex, imageWidthFieldIndex, '100');
-            expect(await ckeditorOpsPo.isImageDisplayedInCKE(uploadURL)).toBeTruthy('Image with URL not uploaded');
+            expect(await ckeditorValidationPo.isImageDisplayedInCKE(uploadURL)).toBeTruthy('Image with URL not uploaded');
             //upload image with Local
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnImageIcon();
             imageSource = await ckeditorOpsPo.uploadImageFromLocal('Upload', '../../../data/ui/attachment/articleStatus.png', imageWidthFieldIndex, imageUrlFieldIndex, '50');
-            expect(await ckeditorOpsPo.isImageDisplayedInCKE(imageSource)).toBeTruthy();
+            expect(await ckeditorValidationPo.isImageDisplayedInCKE(imageSource)).toBeTruthy();
             // Link added
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnLinkIcon();
@@ -1888,7 +1888,7 @@ describe('Notes template', () => {
             await linkPropertiesPo.clickOnTargetTab();
             await linkPropertiesPo.selectDropDown('_blank', linkTargetDropDownIndex);
             await linkPropertiesPo.clickOnOkBtn();
-            expect(await ckeditorOpsPo.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('Link is not In Ck Editor');
+            expect(await ckeditorValidationPo.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('Link is not In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             //add table
             await ckeditorOpsPo.clickOnTableIcon();
@@ -1905,7 +1905,7 @@ describe('Notes template', () => {
             await ckeditorOpsPo.clickInTableCell(1, 2, 'tableSummary');
             await ckeditorOpsPo.clickOnRightAlignIcon();
             await ckeditorOpsPo.setDataInTable(1, 2, randomString, 'tableSummary');
-            expect(await ckeditorOpsPo.getTableCellAlignText("text-align: center;")).toContain(randomString);
+            expect(await ckeditorValidationPo.getTableCellAlignText("text-align: center;")).toContain(randomString);
             await createNotesTemplate.clickOnSaveButton();
             await utilCommon.closePopUpMessage();
         });
@@ -1923,23 +1923,23 @@ describe('Notes template', () => {
             await ckeditorOpsPo.updateDescription("this is text ");
             await ckeditorOpsPo.clickOnBoldIcon();
             await ckeditorOpsPo.updateDescription(boldText);
-            expect(await ckeditorOpsPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
+            expect(await ckeditorValidationPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
             await ckeditorOpsPo.clickOnBoldIcon();
             //italic
             await ckeditorOpsPo.clickOnItalicIcon();
             await ckeditorOpsPo.updateDescription(italicText);
-            expect(await ckeditorOpsPo.isItalicTextDisplayedInCkEditorTextArea(italicText)).toBeTruthy('Text is not Italic In Ck Editor');
+            expect(await ckeditorValidationPo.isItalicTextDisplayedInCkEditorTextArea(italicText)).toBeTruthy('Text is not Italic In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnItalicIcon();
             //strikethrough
             await ckeditorOpsPo.clickOnStrikeThroughIcon();
             await ckeditorOpsPo.updateDescription(strikeThroughText);
-            expect(await ckeditorOpsPo.isStrikeThroughTextDisplayedInCkEditorTextArea(strikeThroughText)).toBeTruthy('Text is not Strike Through In Ck Editor');
+            expect(await ckeditorValidationPo.isStrikeThroughTextDisplayedInCkEditorTextArea(strikeThroughText)).toBeTruthy('Text is not Strike Through In Ck Editor');
             await ckeditorOpsPo.clickOnStrikeThroughIcon();
             //underline
             await ckeditorOpsPo.clickOnUnderLineIcon();
             await ckeditorOpsPo.updateDescription(underLineText);
-            expect(await ckeditorOpsPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
+            expect(await ckeditorValidationPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnUnderLineIcon();
         });
@@ -1947,43 +1947,43 @@ describe('Notes template', () => {
             //left Align
             await ckeditorOpsPo.clickOnLeftAlignIcon();
             await ckeditorOpsPo.updateDescription(lefAlignText);
-            expect(await ckeditorOpsPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnLeftAlignIcon();
             //Right Align
             await ckeditorOpsPo.clickOnRightAlignIcon();
             await ckeditorOpsPo.updateDescription(rightAlignText);
-            expect(await ckeditorOpsPo.isTextRightAlignInCkEditorTextArea(rightAlignText)).toBeTruthy('Text is not right Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextRightAlignInCkEditorTextArea(rightAlignText)).toBeTruthy('Text is not right Align In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnRightAlignIcon();
             //Center Align
             await ckeditorOpsPo.clickOnCenterAlignIcon();
             await ckeditorOpsPo.updateDescription(centerAlignText);
-            expect(await ckeditorOpsPo.isTextCenterAlignInCkEditorTextArea(centerAlignText)).toBeTruthy('Text is not center Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextCenterAlignInCkEditorTextArea(centerAlignText)).toBeTruthy('Text is not center Align In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnCenterAlignIcon();
             //Justify Align
             await ckeditorOpsPo.clickOnJustifyAlignIcon();
             await ckeditorOpsPo.updateDescription(justifyAlignText);
-            expect(await ckeditorOpsPo.isTextJustifyAlignInCkEditorTextArea(justifyAlignText)).toBeTruthy('Text is not justify Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextJustifyAlignInCkEditorTextArea(justifyAlignText)).toBeTruthy('Text is not justify Align In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnJustifyAlignIcon();
             //set color
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.selectColor('Strong Red');
             await ckeditorOpsPo.updateDescription(redColorText);
-            expect(await ckeditorOpsPo.isColorTextDisplayedInCkEditorTextArea(redColorText, 'color:#c0392b;')).toBeTruthy('Color is not set In Ck Editor');
+            expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(redColorText, 'color:#c0392b;')).toBeTruthy('Color is not set In Ck Editor');
             //checking number list
             await ckeditorOpsPo.enterNewLineInCKE();
-            await activityTabPo.setNumberList('PlusOne');
-            expect(await ckeditorOpsPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Number List is not In Ck Editor');
+            await ckeditorOpsPo.setNumberList(['PlusOne']);
+            expect(await ckeditorValidationPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Number List is not In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             // checking bullot points
-            await activityTabPo.setBulletList('BulletOne');
-            expect(await activityTabPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Bulleted List is not In Ck Editor');
-            expect(await ckeditorOpsPo.getTextCkEditorMinimizeOrMiximize()).toBe('Maximize');
+            await ckeditorOpsPo.setBulletList(['BulletOne']);
+            expect(await ckeditorValidationPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Bulleted List is not In Ck Editor');
+            expect(await ckeditorValidationPo.getTextCkEditorMinimizeOrMiximize()).toBe('Maximize');
             await ckeditorOpsPo.clickMaximizeMinimizeIcon();
-            expect(await ckeditorOpsPo.getTextCkEditorMinimizeOrMiximize()).toBe('Minimize');
+            expect(await ckeditorValidationPo.getTextCkEditorMinimizeOrMiximize()).toBe('Minimize');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickMaximizeMinimizeIcon();
         });
@@ -1992,22 +1992,22 @@ describe('Notes template', () => {
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.updateDescription(formatText);
             await ckeditorOpsPo.selectStyles('Heading 2');
-            expect(await ckeditorOpsPo.isStyleApplied(formatText, 'h2')).toBeTruthy('Heading not set');
+            expect(await ckeditorValidationPo.isStyleApplied(formatText, 'h2')).toBeTruthy('Heading not set');
             //add Font Size 
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.selectFont("11");
             await ckeditorOpsPo.updateDescription(fontText);
-            expect(await ckeditorOpsPo.isFontApplied(11, 'span')).toBeTruthy('Font not set');
+            expect(await ckeditorValidationPo.isFontApplied(11, 'span')).toBeTruthy('Font not set');
             //upload image with URL
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnImageIcon();
             await ckeditorOpsPo.imageUploadWithURL(uploadURL, imageUrlFieldIndex, imageWidthFieldIndex, '100');
-            expect(await ckeditorOpsPo.isImageDisplayedInCKE(uploadURL)).toBeTruthy('Image with URL not uploaded');
+            expect(await ckeditorValidationPo.isImageDisplayedInCKE(uploadURL)).toBeTruthy('Image with URL not uploaded');
             //upload image with Local
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnImageIcon();
             imageSource = await ckeditorOpsPo.uploadImageFromLocal('Upload', '../../../data/ui/attachment/articleStatus.png', imageWidthFieldIndex, imageUrlFieldIndex, '50');
-            expect(await ckeditorOpsPo.isImageDisplayedInCKE(imageSource)).toBeTruthy();
+            expect(await ckeditorValidationPo.isImageDisplayedInCKE(imageSource)).toBeTruthy();
             // Link added
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnLinkIcon();
@@ -2016,7 +2016,7 @@ describe('Notes template', () => {
             await linkPropertiesPo.clickOnTargetTab();
             await linkPropertiesPo.selectDropDown('_blank', linkTargetDropDownIndex);
             await linkPropertiesPo.clickOnOkBtn();
-            expect(await ckeditorOpsPo.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('Link is not In Ck Editor');
+            expect(await ckeditorValidationPo.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('Link is not In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             //add table
             await ckeditorOpsPo.clickOnTableIcon();
@@ -2050,23 +2050,23 @@ describe('Notes template', () => {
             await ckeditorOpsPo.updateDescription("this is text ");
             await ckeditorOpsPo.clickOnBoldIcon();
             await ckeditorOpsPo.updateDescription(boldText);
-            expect(await ckeditorOpsPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
+            expect(await ckeditorValidationPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
             await ckeditorOpsPo.clickOnBoldIcon();
             //italic
             await ckeditorOpsPo.clickOnItalicIcon();
             await ckeditorOpsPo.updateDescription(italicText);
-            expect(await ckeditorOpsPo.isItalicTextDisplayedInCkEditorTextArea(italicText)).toBeTruthy('Text is not Italic In Ck Editor');
+            expect(await ckeditorValidationPo.isItalicTextDisplayedInCkEditorTextArea(italicText)).toBeTruthy('Text is not Italic In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnItalicIcon();
             //strikethrough
             await ckeditorOpsPo.clickOnStrikeThroughIcon();
             await ckeditorOpsPo.updateDescription(strikeThroughText);
-            expect(await ckeditorOpsPo.isStrikeThroughTextDisplayedInCkEditorTextArea(strikeThroughText)).toBeTruthy('Text is not Strike Through In Ck Editor');
+            expect(await ckeditorValidationPo.isStrikeThroughTextDisplayedInCkEditorTextArea(strikeThroughText)).toBeTruthy('Text is not Strike Through In Ck Editor');
             await ckeditorOpsPo.clickOnStrikeThroughIcon();
             //underline
             await ckeditorOpsPo.clickOnUnderLineIcon();
             await ckeditorOpsPo.updateDescription(underLineText);
-            expect(await ckeditorOpsPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
+            expect(await ckeditorValidationPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnUnderLineIcon();
         });
@@ -2074,43 +2074,43 @@ describe('Notes template', () => {
             //left Align
             await ckeditorOpsPo.clickOnLeftAlignIcon();
             await ckeditorOpsPo.updateDescription(lefAlignText);
-            expect(await ckeditorOpsPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnLeftAlignIcon();
             //Right Align
             await ckeditorOpsPo.clickOnRightAlignIcon();
             await ckeditorOpsPo.updateDescription(rightAlignText);
-            expect(await ckeditorOpsPo.isTextRightAlignInCkEditorTextArea(rightAlignText)).toBeTruthy('Text is not right Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextRightAlignInCkEditorTextArea(rightAlignText)).toBeTruthy('Text is not right Align In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnRightAlignIcon();
             //Center Align
             await ckeditorOpsPo.clickOnCenterAlignIcon();
             await ckeditorOpsPo.updateDescription(centerAlignText);
-            expect(await ckeditorOpsPo.isTextCenterAlignInCkEditorTextArea(centerAlignText)).toBeTruthy('Text is not center Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextCenterAlignInCkEditorTextArea(centerAlignText)).toBeTruthy('Text is not center Align In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnCenterAlignIcon();
             //Justify Align
             await ckeditorOpsPo.clickOnJustifyAlignIcon();
             await ckeditorOpsPo.updateDescription(justifyAlignText);
-            expect(await ckeditorOpsPo.isTextJustifyAlignInCkEditorTextArea(justifyAlignText)).toBeTruthy('Text is not justify Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextJustifyAlignInCkEditorTextArea(justifyAlignText)).toBeTruthy('Text is not justify Align In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnJustifyAlignIcon();
             //set color
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.selectColor('Strong Red');
             await ckeditorOpsPo.updateDescription(redColorText);
-            expect(await ckeditorOpsPo.isColorTextDisplayedInCkEditorTextArea(redColorText, 'color:#c0392b;')).toBeTruthy('Color is not set In Ck Editor');
+            expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(redColorText, 'color:#c0392b;')).toBeTruthy('Color is not set In Ck Editor');
             //checking number list
             await ckeditorOpsPo.enterNewLineInCKE();
-            await activityTabPo.setNumberList('PlusOne');
-            expect(await ckeditorOpsPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Number List is not In Ck Editor');
+            await ckeditorOpsPo.setNumberList(['PlusOne']);
+            expect(await ckeditorValidationPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Number List is not In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             // checking bullot points
-            await activityTabPo.setBulletList('BulletOne');
-            expect(await activityTabPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Bulleted List is not In Ck Editor');
-            expect(await ckeditorOpsPo.getTextCkEditorMinimizeOrMiximize()).toBe('Maximize');
+            await ckeditorOpsPo.setBulletList(['BulletOne']);
+            expect(await ckeditorValidationPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Bulleted List is not In Ck Editor');
+            expect(await ckeditorValidationPo.getTextCkEditorMinimizeOrMiximize()).toBe('Maximize');
             await ckeditorOpsPo.clickMaximizeMinimizeIcon();
-            expect(await ckeditorOpsPo.getTextCkEditorMinimizeOrMiximize()).toBe('Minimize');
+            expect(await ckeditorValidationPo.getTextCkEditorMinimizeOrMiximize()).toBe('Minimize');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickMaximizeMinimizeIcon();
         });
@@ -2119,22 +2119,22 @@ describe('Notes template', () => {
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.updateDescription(formatText);
             await ckeditorOpsPo.selectStyles('Heading 2');
-            expect(await ckeditorOpsPo.isStyleApplied(formatText, 'h2')).toBeTruthy('Heading not set');
+            expect(await ckeditorValidationPo.isStyleApplied(formatText, 'h2')).toBeTruthy('Heading not set');
             //add Font Size 
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.selectFont("11");
             await ckeditorOpsPo.updateDescription(fontText);
-            expect(await ckeditorOpsPo.isFontApplied(11, 'span')).toBeTruthy('Font not set');
+            expect(await ckeditorValidationPo.isFontApplied(11, 'span')).toBeTruthy('Font not set');
             //upload image with URL
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnImageIcon();
             await ckeditorOpsPo.imageUploadWithURL(uploadURL, imageUrlFieldIndex, imageWidthFieldIndex, '100');
-            expect(await ckeditorOpsPo.isImageDisplayedInCKE(uploadURL)).toBeTruthy('Image with URL not uploaded');
+            expect(await ckeditorValidationPo.isImageDisplayedInCKE(uploadURL)).toBeTruthy('Image with URL not uploaded');
             //upload image with Local
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnImageIcon();
             imageSource1 = await ckeditorOpsPo.uploadImageFromLocal('Upload', '../../../data/ui/attachment/articleStatus.png', imageWidthFieldIndex, imageUrlFieldIndex, '50');
-            expect(await ckeditorOpsPo.isImageDisplayedInCKE(imageSource1)).toBeTruthy();
+            expect(await ckeditorValidationPo.isImageDisplayedInCKE(imageSource1)).toBeTruthy();
             // Link added
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnLinkIcon();
@@ -2143,7 +2143,7 @@ describe('Notes template', () => {
             await linkPropertiesPo.clickOnTargetTab();
             await linkPropertiesPo.selectDropDown('_blank', linkTargetDropDownIndex);
             await linkPropertiesPo.clickOnOkBtn();
-            expect(await ckeditorOpsPo.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('Link is not In Ck Editor');
+            expect(await ckeditorValidationPo.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('Link is not In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             //add table
             await ckeditorOpsPo.clickOnTableIcon();
@@ -2164,7 +2164,7 @@ describe('Notes template', () => {
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnImageIcon();
             imageSource2 = await ckeditorOpsPo.uploadImageFromLocal('Upload', '../../../data/ui/attachment/bwfJpg.jpg', imageWidthFieldIndex, imageUrlFieldIndex, '50');
-            expect(await ckeditorOpsPo.isImageDisplayedInCKE(imageSource2)).toBeTruthy();
+            expect(await ckeditorValidationPo.isImageDisplayedInCKE(imageSource2)).toBeTruthy();
             await createNotesTemplate.clickOnSaveButton();
             await utilCommon.closePopUpMessage();
         });
@@ -2182,17 +2182,17 @@ describe('Notes template', () => {
             await ckeditorOpsPo.updateDescription("this is text ");
             await ckeditorOpsPo.clickOnBoldIcon();
             await ckeditorOpsPo.updateDescription(boldText);
-            expect(await ckeditorOpsPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
+            expect(await ckeditorValidationPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
             await ckeditorOpsPo.clickOnBoldIcon();
             //italic
             await ckeditorOpsPo.clickOnItalicIcon();
             await ckeditorOpsPo.updateDescription(italicText);
-            expect(await ckeditorOpsPo.isItalicTextDisplayedInCkEditorTextArea(italicText)).toBeTruthy('Text is not Italic In Ck Editor');
+            expect(await ckeditorValidationPo.isItalicTextDisplayedInCkEditorTextArea(italicText)).toBeTruthy('Text is not Italic In Ck Editor');
             await ckeditorOpsPo.clickOnItalicIcon();
             //underline
             await ckeditorOpsPo.clickOnUnderLineIcon();
             await ckeditorOpsPo.updateDescription(underLineText);
-            expect(await ckeditorOpsPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
+            expect(await ckeditorValidationPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
         });
         it('[DRDMV-22659]: Verify access of notes template to Case BA of Support group 2 which is created by other SG case BA', async () => {
             await ckeditorOpsPo.enterNewLineInCKE();
@@ -2200,37 +2200,37 @@ describe('Notes template', () => {
             //left Align
             await ckeditorOpsPo.clickOnLeftAlignIcon();
             await ckeditorOpsPo.updateDescription(lefAlignText);
-            expect(await ckeditorOpsPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnLeftAlignIcon();
             //Right Align
             await ckeditorOpsPo.clickOnRightAlignIcon();
             await ckeditorOpsPo.updateDescription(rightAlignText);
-            expect(await ckeditorOpsPo.isTextRightAlignInCkEditorTextArea(rightAlignText)).toBeTruthy('Text is not right Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextRightAlignInCkEditorTextArea(rightAlignText)).toBeTruthy('Text is not right Align In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnRightAlignIcon();
             //Center Align
             await ckeditorOpsPo.clickOnCenterAlignIcon();
             await ckeditorOpsPo.updateDescription(centerAlignText);
-            expect(await ckeditorOpsPo.isTextCenterAlignInCkEditorTextArea(centerAlignText)).toBeTruthy('Text is not center Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextCenterAlignInCkEditorTextArea(centerAlignText)).toBeTruthy('Text is not center Align In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnCenterAlignIcon();
             //set color
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.selectColor('Strong Red');
             await ckeditorOpsPo.updateDescription(redColorText);
-            expect(await ckeditorOpsPo.isColorTextDisplayedInCkEditorTextArea(redColorText, 'color:#c0392b;')).toBeTruthy('Color is not set In Ck Editor');
+            expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(redColorText, 'color:#c0392b;')).toBeTruthy('Color is not set In Ck Editor');
             //checking number list
             await ckeditorOpsPo.enterNewLineInCKE();
-            await activityTabPo.setNumberList('PlusOne');
-            expect(await ckeditorOpsPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Number List is not In Ck Editor');
+            await ckeditorOpsPo.setNumberList(['PlusOne']);
+            expect(await ckeditorValidationPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Number List is not In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             // checking bullot points
-            await activityTabPo.setBulletList('BulletOne');
-            expect(await activityTabPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Bulleted List is not In Ck Editor');
-            expect(await ckeditorOpsPo.getTextCkEditorMinimizeOrMiximize()).toBe('Maximize');
+            await ckeditorOpsPo.setBulletList(['BulletOne']);
+            expect(await ckeditorValidationPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Bulleted List is not In Ck Editor');
+            expect(await ckeditorValidationPo.getTextCkEditorMinimizeOrMiximize()).toBe('Maximize');
             await ckeditorOpsPo.clickMaximizeMinimizeIcon();
-            expect(await ckeditorOpsPo.getTextCkEditorMinimizeOrMiximize()).toBe('Minimize');
+            expect(await ckeditorValidationPo.getTextCkEditorMinimizeOrMiximize()).toBe('Minimize');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickMaximizeMinimizeIcon();
         });
@@ -2239,17 +2239,17 @@ describe('Notes template', () => {
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.updateDescription(formatText);
             await ckeditorOpsPo.selectStyles('Heading 2');
-            expect(await ckeditorOpsPo.isStyleApplied(formatText, 'h2')).toBeTruthy('Heading not set');
+            expect(await ckeditorValidationPo.isStyleApplied(formatText, 'h2')).toBeTruthy('Heading not set');
             //upload image with URL
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnImageIcon();
             await ckeditorOpsPo.imageUploadWithURL(uploadURL, imageUrlFieldIndex, imageWidthFieldIndex, '100');
-            expect(await ckeditorOpsPo.isImageDisplayedInCKE(uploadURL)).toBeTruthy('Image with URL not uploaded');
+            expect(await ckeditorValidationPo.isImageDisplayedInCKE(uploadURL)).toBeTruthy('Image with URL not uploaded');
             //upload image with Local
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnImageIcon();
             imageSource = await ckeditorOpsPo.uploadImageFromLocal('Upload', '../../../data/ui/attachment/articleStatus.png', imageWidthFieldIndex, imageUrlFieldIndex, '50');
-            expect(await ckeditorOpsPo.isImageDisplayedInCKE(imageSource)).toBeTruthy();
+            expect(await ckeditorValidationPo.isImageDisplayedInCKE(imageSource)).toBeTruthy();
             // Link added
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnLinkIcon();
@@ -2258,7 +2258,7 @@ describe('Notes template', () => {
             await linkPropertiesPo.clickOnTargetTab();
             await linkPropertiesPo.selectDropDown('_blank', linkTargetDropDownIndex);
             await linkPropertiesPo.clickOnOkBtn();
-            expect(await ckeditorOpsPo.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('Link is not In Ck Editor');
+            expect(await ckeditorValidationPo.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('Link is not In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             //add table
             await ckeditorOpsPo.clickOnTableIcon();
@@ -2280,7 +2280,7 @@ describe('Notes template', () => {
         });
         it('[DRDMV-22659]: Verify access of notes template to Case BA of Support group 2 which is created by other SG case BA', async () => {
             await navigationPage.signOut();
-            await loginPage.login(userData.userId+"@petramco.com", 'Password_1234');
+            await loginPage.login('22653User@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', 'Activity Notes Template Console - Task - Business Workflows');
             await consoleNotesTemplate.searchAndClickOnNotesTemplate(taskTemplateName);
@@ -2419,17 +2419,17 @@ describe('Notes template', () => {
             await ckeditorOpsPo.updateDescription("this is text ");
             await ckeditorOpsPo.clickOnBoldIcon();
             await ckeditorOpsPo.updateDescription(boldText);
-            expect(await ckeditorOpsPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
+            expect(await ckeditorValidationPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
             await ckeditorOpsPo.clickOnBoldIcon();
             //italic
             await ckeditorOpsPo.clickOnItalicIcon();
             await ckeditorOpsPo.updateDescription(italicText);
-            expect(await ckeditorOpsPo.isItalicTextDisplayedInCkEditorTextArea(italicText)).toBeTruthy('Text is not Italic In Ck Editor');
+            expect(await ckeditorValidationPo.isItalicTextDisplayedInCkEditorTextArea(italicText)).toBeTruthy('Text is not Italic In Ck Editor');
             await ckeditorOpsPo.clickOnItalicIcon();
             //underline
             await ckeditorOpsPo.clickOnUnderLineIcon();
             await ckeditorOpsPo.updateDescription(underLineText);
-            expect(await ckeditorOpsPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
+            expect(await ckeditorValidationPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
         });
         it('[DRDMV-22641,DRDMV-22645,DRDMV-22656]: Verify CKE functionality on Create and Edit Task Notes template', async () => {
             await ckeditorOpsPo.enterNewLineInCKE();
@@ -2437,37 +2437,37 @@ describe('Notes template', () => {
             //left Align
             await ckeditorOpsPo.clickOnLeftAlignIcon();
             await ckeditorOpsPo.updateDescription(lefAlignText);
-            expect(await ckeditorOpsPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnLeftAlignIcon();
             //Right Align
             await ckeditorOpsPo.clickOnRightAlignIcon();
             await ckeditorOpsPo.updateDescription(rightAlignText);
-            expect(await ckeditorOpsPo.isTextRightAlignInCkEditorTextArea(rightAlignText)).toBeTruthy('Text is not right Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextRightAlignInCkEditorTextArea(rightAlignText)).toBeTruthy('Text is not right Align In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnRightAlignIcon();
             //Center Align
             await ckeditorOpsPo.clickOnCenterAlignIcon();
             await ckeditorOpsPo.updateDescription(centerAlignText);
-            expect(await ckeditorOpsPo.isTextCenterAlignInCkEditorTextArea(centerAlignText)).toBeTruthy('Text is not center Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextCenterAlignInCkEditorTextArea(centerAlignText)).toBeTruthy('Text is not center Align In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnCenterAlignIcon();
             //set color
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.selectColor('Strong Red');
             await ckeditorOpsPo.updateDescription(redColorText);
-            expect(await ckeditorOpsPo.isColorTextDisplayedInCkEditorTextArea(redColorText, 'color:#c0392b;')).toBeTruthy('Color is not set In Ck Editor');
+            expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(redColorText, 'color:#c0392b;')).toBeTruthy('Color is not set In Ck Editor');
             //checking number list
             await ckeditorOpsPo.enterNewLineInCKE();
-            await activityTabPo.setNumberList('PlusOne');
-            expect(await ckeditorOpsPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Number List is not In Ck Editor');
+            await ckeditorOpsPo.setNumberList(['PlusOne']);
+            expect(await ckeditorValidationPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Number List is not In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             // checking bullot points
-            await activityTabPo.setBulletList('BulletOne');
-            expect(await activityTabPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Bulleted List is not In Ck Editor');
-            expect(await ckeditorOpsPo.getTextCkEditorMinimizeOrMiximize()).toBe('Maximize');
+            await ckeditorOpsPo.setBulletList(['BulletOne']);
+            expect(await ckeditorValidationPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Bulleted List is not In Ck Editor');
+            expect(await ckeditorValidationPo.getTextCkEditorMinimizeOrMiximize()).toBe('Maximize');
             await ckeditorOpsPo.clickMaximizeMinimizeIcon();
-            expect(await ckeditorOpsPo.getTextCkEditorMinimizeOrMiximize()).toBe('Minimize');
+            expect(await ckeditorValidationPo.getTextCkEditorMinimizeOrMiximize()).toBe('Minimize');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickMaximizeMinimizeIcon();
         });
@@ -2476,17 +2476,17 @@ describe('Notes template', () => {
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.updateDescription(formatText);
             await ckeditorOpsPo.selectStyles('Heading 2');
-            expect(await ckeditorOpsPo.isStyleApplied(formatText, 'h2')).toBeTruthy('Heading not set');
+            expect(await ckeditorValidationPo.isStyleApplied(formatText, 'h2')).toBeTruthy('Heading not set');
             //upload image with URL
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnImageIcon();
             await ckeditorOpsPo.imageUploadWithURL(uploadURL, imageUrlFieldIndex, imageWidthFieldIndex, '100');
-            expect(await ckeditorOpsPo.isImageDisplayedInCKE(uploadURL)).toBeTruthy('Image with URL not uploaded');
+            expect(await ckeditorValidationPo.isImageDisplayedInCKE(uploadURL)).toBeTruthy('Image with URL not uploaded');
             //upload image with Local
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnImageIcon();
             imageSource = await ckeditorOpsPo.uploadImageFromLocal('Upload', '../../../data/ui/attachment/articleStatus.png', imageWidthFieldIndex, imageUrlFieldIndex, '50');
-            expect(await ckeditorOpsPo.isImageDisplayedInCKE(imageSource)).toBeTruthy();
+            expect(await ckeditorValidationPo.isImageDisplayedInCKE(imageSource)).toBeTruthy();
             // Link added
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnLinkIcon();
@@ -2495,7 +2495,7 @@ describe('Notes template', () => {
             await linkPropertiesPo.clickOnTargetTab();
             await linkPropertiesPo.selectDropDown('_blank', linkTargetDropDownIndex);
             await linkPropertiesPo.clickOnOkBtn();
-            expect(await ckeditorOpsPo.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('Link is not In Ck Editor');
+            expect(await ckeditorValidationPo.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('Link is not In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             //add table
             await ckeditorOpsPo.clickOnTableIcon();
@@ -2530,13 +2530,13 @@ describe('Notes template', () => {
             await viewCasePage.clickOnTaskLink(templateData.templateName);
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate('taskNotesTemplate87163');
             await activityTabPo.addActivityNote(randomString);
-            expect(await activityTabPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
-            expect(await activityTabPo.isItalicTextDisplayedInCkEditorTextArea(italicText)).toBeTruthy('Text is not Italic In Ck Editor');
-            expect(await activityTabPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
-            expect(await activityTabPo.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('Text is not center Align In Ck Editor');
-            expect(await activityTabPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
-            expect(await activityTabPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Text is not center Align In Ck Editor');
-            expect(await activityTabPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Text is not center Align In Ck Editor');
+            expect(await ckeditorValidationPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
+            expect(await ckeditorValidationPo.isItalicTextDisplayedInCkEditorTextArea(italicText)).toBeTruthy('Text is not Italic In Ck Editor');
+            expect(await ckeditorValidationPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
+            expect(await ckeditorValidationPo.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('Text is not center Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
+            expect(await ckeditorValidationPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Text is not center Align In Ck Editor');
+            expect(await ckeditorValidationPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPo.clickOnPostButton();
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
@@ -2552,13 +2552,13 @@ describe('Notes template', () => {
             await viewCasePage.clickOnTaskLink(externaltemplateData.templateName);
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate('taskNotesTemplate87163');
             await activityTabPo.addActivityNote(randomString);
-            expect(await activityTabPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
-            expect(await activityTabPo.isItalicTextDisplayedInCkEditorTextArea(italicText)).toBeTruthy('Text is not Italic In Ck Editor');
-            expect(await activityTabPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
-            expect(await activityTabPo.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('Text is not center Align In Ck Editor');
-            expect(await activityTabPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
-            expect(await activityTabPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Text is not center Align In Ck Editor');
-            expect(await activityTabPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Text is not center Align In Ck Editor');
+            expect(await ckeditorValidationPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
+            expect(await ckeditorValidationPo.isItalicTextDisplayedInCkEditorTextArea(italicText)).toBeTruthy('Text is not Italic In Ck Editor');
+            expect(await ckeditorValidationPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
+            expect(await ckeditorValidationPo.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('Text is not center Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
+            expect(await ckeditorValidationPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Text is not center Align In Ck Editor');
+            expect(await ckeditorValidationPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPo.clickOnPostButton();
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
@@ -2575,13 +2575,13 @@ describe('Notes template', () => {
             await viewCasePage.clickOnTaskLink(automatedtemplateData.templateName);
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate('taskNotesTemplate87163');
             await activityTabPo.addActivityNote(randomString);
-            expect(await activityTabPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
-            expect(await activityTabPo.isItalicTextDisplayedInCkEditorTextArea(italicText)).toBeTruthy('Text is not Italic In Ck Editor');
-            expect(await activityTabPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
-            expect(await activityTabPo.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('Text is not center Align In Ck Editor');
-            expect(await activityTabPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
-            expect(await activityTabPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Text is not center Align In Ck Editor');
-            expect(await activityTabPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Text is not center Align In Ck Editor');
+            expect(await ckeditorValidationPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
+            expect(await ckeditorValidationPo.isItalicTextDisplayedInCkEditorTextArea(italicText)).toBeTruthy('Text is not Italic In Ck Editor');
+            expect(await ckeditorValidationPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
+            expect(await ckeditorValidationPo.isLinkDisplayedInCkEditorTextArea('Google')).toBeTruthy('Text is not center Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
+            expect(await ckeditorValidationPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Text is not center Align In Ck Editor');
+            expect(await ckeditorValidationPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPo.clickOnPostButton();
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
