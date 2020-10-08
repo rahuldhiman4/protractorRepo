@@ -69,6 +69,7 @@ class ViewCasePage {
         description: '9d3ef0fc-c49f-425f-a9e1-52422ba87f4f',
         dynamicAttachmentValue: '[class="text-default bwf-attachment-container__file-name"]',
         text: 'p',
+        refreshActivity: '.d-icon-left-refresh'
     }
 
     async clickDescriptionShowMore(): Promise<void> {
@@ -542,8 +543,8 @@ class ViewCasePage {
         return displayIds;
     }
 
-    async getTableCellAlignText(value: string): Promise<string> {
-        return await ckeditorValidationPo.getTableCellAlignText(value, this.selectors.description);
+    async clickOnRefreshTaskList() {
+        await $(this.selectors.refreshActivity).click();
     }
 }
 

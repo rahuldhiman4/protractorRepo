@@ -62,7 +62,6 @@ describe('Document Library', () => {
         await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
-        await utilCommon.waitUntilSpinnerToHide();
         await createDocumentLibraryPo.openAddNewDocumentBlade();
         await createDocumentLibraryPo.addAttachment(filePath);
         await createDocumentLibraryPo.setTitle(titleRandVal);
@@ -97,7 +96,6 @@ describe('Document Library', () => {
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
-        await utilCommon.waitUntilSpinnerToHide();
         await createDocumentLibraryPo.openAddNewDocumentBlade();
         await createDocumentLibraryPo.addAttachment(filePath);
         await createDocumentLibraryPo.setTitle(titleRandVal);
@@ -123,7 +121,6 @@ describe('Document Library', () => {
     it('[DRDMV-13074]: Verify Document Managment Grid Console', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
-        await utilCommon.waitUntilSpinnerToHide();
         let columns1: string[] = ["Title", "Status", "Owner Group", "Company", "Last Modified"];
         expect(await documentLibraryConsolePo.areGridColumnHeaderMatches(columns1)).toBeTruthy('column headers does not match 1');
         let columns2: string[] = ["Author", "Category Tier 1", "Category Tier 2", "Category Tier 3", "GUID", "Region"];
@@ -141,7 +138,6 @@ describe('Document Library', () => {
         it('[DRDMV-13075,DRDMV-13038]: Verify document can be publish And Verify Search on Document Managment Console ', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
-            await utilCommon.waitUntilSpinnerToHide();
             await createDocumentLibraryPo.openAddNewDocumentBlade();
             await createDocumentLibraryPo.addAttachment(filePath);
             await createDocumentLibraryPo.setTitle(titleRandVal);
@@ -201,7 +197,6 @@ describe('Document Library', () => {
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
-        await utilCommon.waitUntilSpinnerToHide();
         await createDocumentLibraryPo.openAddNewDocumentBlade();
         await createDocumentLibraryPo.addAttachment(filePath);
         await createDocumentLibraryPo.setTitle(titleRandVal);
@@ -211,7 +206,6 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.clickOnSaveButton();
         await utilCommon.closePopUpMessage();
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
-        await utilCommon.waitUntilSpinnerToHide();
         expect(await editDocumentLibraryPo.isDeleteButtonDisplayed()).toBeTruthy('Delete button is not displayed');
         expect(await editDocumentLibraryPo.isSaveButtonDisplayed()).toBeTruthy('Save button is not displayed');
         expect(await editDocumentLibraryPo.isCancelButtonDisplayed()).toBeTruthy('Cancel button is not displayed');
@@ -262,7 +256,6 @@ describe('Document Library', () => {
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
-        await utilCommon.waitUntilSpinnerToHide();
         await createDocumentLibraryPo.openAddNewDocumentBlade();
         await createDocumentLibraryPo.addAttachment(filePath);
         await createDocumentLibraryPo.setTitle(titleRandVal);
@@ -283,7 +276,6 @@ describe('Document Library', () => {
         it('[DRDMV-13041]: Verify Support Group Level Read access of Document	', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
-            await utilCommon.waitUntilSpinnerToHide();
             await createDocumentLibraryPo.openAddNewDocumentBlade();
             await createDocumentLibraryPo.addAttachment(filePath);
             await createDocumentLibraryPo.setTitle(titleRandVal);
@@ -375,7 +367,6 @@ describe('Document Library', () => {
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
-        await utilCommon.waitUntilSpinnerToHide();
         await createDocumentLibraryPo.openAddNewDocumentBlade();
         await createDocumentLibraryPo.addAttachment(filePath);
         await createDocumentLibraryPo.setTitle(titleRandVal);
@@ -401,7 +392,6 @@ describe('Document Library', () => {
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
-        await utilCommon.waitUntilSpinnerToHide();
         await createDocumentLibraryPo.openAddNewDocumentBlade();
         expect(await createDocumentLibraryPo.attachmentRequiredText()).toBeTruthy();
         expect(await createDocumentLibraryPo.titleRequiredText()).toBeTruthy();
@@ -436,7 +426,6 @@ describe('Document Library', () => {
         it('[DRDMV-13040,DRDMV-13078]: Verify document can be Edited in draft status', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
-            await utilCommon.waitUntilSpinnerToHide();
             await createDocumentLibraryPo.openAddNewDocumentBlade();
             await createDocumentLibraryPo.addAttachment(filePath);
             await createDocumentLibraryPo.setTitle(titleRandVal);
@@ -537,7 +526,6 @@ describe('Document Library', () => {
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
-        await utilCommon.waitUntilSpinnerToHide();
         await createDocumentLibraryPo.openAddNewDocumentBlade();
         await createDocumentLibraryPo.setTitle(titleRandVal);
         await createDocumentLibraryPo.selectCompany('Petramco');
@@ -649,7 +637,6 @@ describe('Document Library', () => {
         it('[DRDMV-13079]: Verify document will not appear in knowledge article searches', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
-            await utilCommon.waitUntilSpinnerToHide();
             await createDocumentLibraryPo.openAddNewDocumentBlade();
             await createDocumentLibraryPo.addAttachment(filePath);
             await createDocumentLibraryPo.setTitle(titleRandVal);

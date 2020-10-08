@@ -19,11 +19,12 @@ import previewTaskTemplatePo from '../../pageobject/settings/task-management/pre
 import taskTemplateConsolePage from '../../pageobject/settings/task-management/console-tasktemplate.po';
 
 describe('Conditional Task', () => {
+    let userData;
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         //Create new user with Psilon and Petramco access
         await apiHelper.apiLogin('tadmin');
-        let userData = {
+        userData = {
             "firstName": "Multiple Company",
             "lastName": "Access",
             "userId": "DRDMV-14898_User",
@@ -406,7 +407,7 @@ describe('Conditional Task', () => {
     describe('[DRDMV-14898]: [Task] - Task Template availability when adding it into Case Template', () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
-            await apiHelper.apiLogin('DRDMV-14898_User@petramco.com', 'Password_1234');
+            await apiHelper.apiLogin(userData.userId+'@petramco.com', 'Password_1234');
 
             //Create Manual Global Draft task
             let globalDraftTask = {
@@ -646,7 +647,7 @@ describe('Conditional Task', () => {
             }
             await apiHelper.createCaseTemplate(psilonCaseTemplateData);
             await navigationPage.signOut();
-            await loginPage.login('DRDMV-14898_User@petramco.com', 'Password_1234');
+            await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
         });
 
         it('[DRDMV-14898]: [Task] - Task Template availability when adding it into Case Template', async () => {
@@ -743,7 +744,7 @@ describe('Conditional Task', () => {
     describe('[DRDMV-14897]: [Task] - Opened Template process when clicking on Add Task Template from Case Template', () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
-            await apiHelper.apiLogin('DRDMV-14898_User@petramco.com', 'Password_1234');
+            await apiHelper.apiLogin(userData.userId+'@petramco.com', 'Password_1234');
 
             //Create Global Case Template with Draft status
             let globalDraftCaseTemplateData = {
@@ -813,7 +814,7 @@ describe('Conditional Task', () => {
 
         it('[DRDMV-14897]: [Task] - Opened Template process when clicking on Add Task Template from Case Template', async () => {
             await navigationPage.signOut();
-            await loginPage.login('DRDMV-14898_User@petramco.com', 'Password_1234');
+            await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
 
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
@@ -898,7 +899,7 @@ describe('Conditional Task', () => {
 
         it('[DRDMV-15002]: [Task] Copy Case Template', async () => {
             await navigationPage.signOut();
-            await loginPage.login('DRDMV-14898_User@petramco.com', 'Password_1234');
+            await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(caseTemplatePetramcoData.templateName);

@@ -1534,7 +1534,7 @@ describe('Knowledge Article', () => {
             let knowledgeApprovalFlowData = {
                 "flowName": "Preset Filter",
                 "approver": "KMills",
-                "qualification": "'Operational Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.cddc9f6098ac421a1aa40ec9be503abb0fda61530bc9dbb22e7049cba9c5839018ba7205a392cd9f37141091bbe33e28405caff795929e4d805fa787dfea2c0c.304405421}"
+                "qualification": "'Operational Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.cddc9f6098ac421a1aa40ec9be503abb0fda61530bc9dbb22e7049cba9c5839018ba7205a392cd9f37141091bbe33e28405caff795929e4d805fa787dfea2c0c.304405421} AND 'Operational Category Tier 2' =${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.a1390bbfc100bd7ad0fbe10210092865d8d968ff75c6fc7c68cc9b3cb727b6b9d0fff90f7a2f85aeb5d0d7903ac2b08002e172bfec02e807e4a863dce4716dea.304405421}"
             }
             let knowledgeApprovalMappingData = {
                 "mappingName": "Approval Config Name",
@@ -1554,7 +1554,7 @@ describe('Knowledge Article', () => {
             await apiHelper.createApprovalMapping(knowledgeModule,knowledgeApprovalMappingData);
             articleData = {
                 "knowledgeSet": "HR",
-                "title": "KnowledgeArticle",
+                "title": "DRDMV-20944KnowledgeArticle_"+ randomStr,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
                 "categoryTier1": "Applications",
                 "categoryTier2": "Help Desk",
@@ -1704,7 +1704,7 @@ describe('Knowledge Article', () => {
                 "Case Template ID": caseTemplateDisplayId
             }
             createCaseResponse = await apiHelper.createCase(caseData);
-            await browser.sleep(2000); // hardwait to populate resource tab data
+            await browser.sleep(5000); // hardwait to populate resource tab data
         });
         it('[DRDMV-1249,DRDMV-1250,DRDMV-1225,DRDMV-2695]:[Knowledge Article Search] Knowledge Articles are searched based on Case Summary and  in the Resources tab', async () => {
             await navigationPage.signOut();
@@ -1713,7 +1713,7 @@ describe('Knowledge Article', () => {
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(createCaseResponse.displayId);
             await viewCasePage.clickOnTab('Resources');
-            await browser.sleep(2000); // hardwait to populate resource tab data
+            await browser.sleep(5000); // hardwait to populate resource tab data
             expect(await resources.getAdvancedSearchResultForParticularSection(caseData.Summary)).toEqual(caseData.Summary);
             await resources.pinRecommendedKnowledgeArticles(1);
             expect(await resources.isFirstPinnedArticleDisplayed()).toBeTruthy();
@@ -2076,7 +2076,6 @@ describe('Knowledge Article', () => {
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName("fritz");
             await quickCasePo.setCaseSummary(articleData.title);
-            await utilCommon.waitUntilSpinnerToHide();
             await resources.clickOnAdvancedSearchOptions();
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             expect(await resources.isFilterAvailable('Status')).toBeTruthy();
@@ -2091,7 +2090,6 @@ describe('Knowledge Article', () => {
         it('[DRDMV-624]: Advanced Search UI verification on the Quick Case view', async () => {
             await quickCasePo.selectRequesterName("fritz");
             await quickCasePo.setCaseSummary(articleData.title);
-            await utilCommon.waitUntilSpinnerToHide();
             await resources.clickOnAdvancedSearchOptions();
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption('Status', 'In Progress');
@@ -2542,7 +2540,7 @@ describe('Knowledge Article', () => {
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID6, 'PublishApproval')).toBeTruthy('Status Not Set');            
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID7, 'Draft')).toBeTruthy('Status Not Set');
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID7, 'PublishApproval')).toBeTruthy('Status Not Set');            
-            await browser.sleep(15000); //Hard wait for KA Indexing
+            await browser.sleep(10000); //Hard wait for KA Indexing
         });
         it('[DRDMV-753]:[Advanced Search] [Pin/Unpin] Relate Knowledge Article on Knowledge Edit view from Advanced search', async () => {
             await navigationPage.signOut();

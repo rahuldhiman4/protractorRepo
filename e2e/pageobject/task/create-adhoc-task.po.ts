@@ -3,6 +3,7 @@ import { $, by, element, Key, protractor, ProtractorExpectedConditions } from "p
 import utilityCommon from '../../utils/utility.common';
 import CreateTaskTemplatePage from "../settings/task-management/create-tasktemplate.po";
 import ckeditorOpsPo from '../common/ck-editor/ckeditor-ops.po';
+import ckeditorValidationPo from '../../pageobject/common/ck-editor/ckeditor-validation.po';
 
 class CreateAdhocTaskTemplatePage {
 
@@ -270,7 +271,7 @@ class CreateAdhocTaskTemplatePage {
 
     async isTextLeftAlignInCkEditorTextArea(bodyText: string): Promise<boolean> {
         let leftAlignemntElement = await element(by.css('[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] div.cke_enable_context_menu div'));
-        return await ckeditorOpsPo.isTextLeftAlignInCkEditorTextArea(bodyText, leftAlignemntElement)
+        return await ckeditorValidationPo.isTextLeftAlignInCkEditorTextArea(bodyText, leftAlignemntElement)
     }
 
     async setInsertRemoveNumberList(value: string): Promise<void> {

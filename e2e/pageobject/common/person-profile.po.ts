@@ -1,12 +1,13 @@
 import { $, by, element, protractor, ProtractorExpectedConditions, browser } from "protractor";
 import utilityGrid from '../../utils/utility.grid';
 import utilityCommon from '../../utils/utility.common';
+import navigationPage from '../../pageobject/common/navigation.po';
 
 class PersonProfilePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         personName: '[rx-view-component-id="bfa03a3b-cc7c-4d33-95d5-2c63a882aaeb"] .ac-person-full-name, .ac-person-full-name',
-        personImage: 'button[aria-label="Profile menu"] span.a-profile__avatar',
+        personImage: 'button[aria-label="Profile menu"] span.a-profile__avatar, span.a-profile__avatar.a-profile__avatar--big',
         managerImage: '[rx-view-component-id="6f4a19be-2c96-4c58-b9c7-a49e2beb0c7b"] img',
         companyName: '[rx-view-component-id="bfa03a3b-cc7c-4d33-95d5-2c63a882aaeb"] .person-organization, .person-organization .text-secondary',
         phone: '[rx-view-component-id="d8be57c9-ee7c-4b08-84af-90c9a552b919"] .person-phone-link',
@@ -42,8 +43,9 @@ class PersonProfilePage {
     }
 
     async isPersonProfileImageDisplayed(): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf(await $(this.selectors.personImage)), 6000);
+        if (await navigationPage.isHambergerIconPresent()) await $(navigationPage.selectors.hamburgerIcon).click();
         let len: string = await $(this.selectors.personImage).getAttribute("style");
+        await utilityCommon.closeAllBlades();
         return len.includes('url');
     }
 

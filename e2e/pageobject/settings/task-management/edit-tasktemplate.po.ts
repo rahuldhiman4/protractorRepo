@@ -1,6 +1,6 @@
 import { $, browser, protractor, ProtractorExpectedConditions, element, by, $$ } from "protractor";
 import utilCommon from '../../../utils/util.common';
-import ckeditorOpsPo from '../../../pageobject/common/ck-editor/ckeditor-ops.po';
+import ckeditorValidationPo from '../../../pageobject/common/ck-editor/ckeditor-validation.po';
 
 class EditTaskTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -163,7 +163,7 @@ class EditTaskTemplate {
     }
 
     async isImageDisplayedInCKE(value: string): Promise<boolean> {
-        return await ckeditorOpsPo.isImageDisplayedInCKE(value, this.selectors.taskDescription);
+        return await ckeditorValidationPo.isImageDisplayedInCKE(value, this.selectors.taskDescription);
     }
 
     async isTaskSummaryFieldDisabled(): Promise<boolean> {

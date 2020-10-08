@@ -273,7 +273,6 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         it('[DRDMV-19565,DRDMV-19567,DRDMV-19568]:Verify the Save functionality of Region and Site fields on Knowledge Articles Create / Edit screen', async () => {
             //* Check the Availability of Region with Case Business Analyst
             await navigationPage.gotoKnowledgeConsole();
-            await utilCommon.waitUntilSpinnerToHide();
             await navigationPage.gotoCreateKnowledge();
             await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
@@ -318,7 +317,6 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             //Create Knowledge article by Case Agent
             await loginPage.login(caseAgentUser);
             await navigationPage.gotoKnowledgeConsole();
-            await utilCommon.waitUntilSpinnerToHide();
             await navigationPage.gotoCreateKnowledge();
             await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
@@ -340,7 +338,6 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             //Login with Knowledge Candidate
             await loginPage.login(knowledgeCandidateUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilCommon.waitUntilSpinnerToHide();
             await navigationPage.gotoCreateKnowledge();
             await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
@@ -364,7 +361,6 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             //Login with Knowledge Contributor
             await loginPage.login(knowledgeContributorUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilCommon.waitUntilSpinnerToHide();
             await navigationPage.gotoCreateKnowledge();
             await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
@@ -387,7 +383,6 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             //Login with Knowledge Publisher
             await loginPage.login(knowledgePublisherUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilCommon.waitUntilSpinnerToHide();
             await navigationPage.gotoCreateKnowledge();
             await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
@@ -411,7 +406,6 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             //Login with Knowledge Coach
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
-            await utilCommon.waitUntilSpinnerToHide();
             await navigationPage.gotoCreateKnowledge();
             await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
@@ -541,7 +535,6 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         afterAll(async () => {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await utilityCommon.refresh();
-            await utilCommon.waitUntilSpinnerToHide();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });

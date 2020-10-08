@@ -1,3 +1,4 @@
+import ckeditorOpsPo from '../../pageobject/common/ck-editor/ckeditor-ops.po';
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
 import caseConsole from '../../pageobject/case/case-console.po';
@@ -26,6 +27,7 @@ import utilCommon from "../../utils/util.common";
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import ckeditorValidationPo from '../../pageobject/common/ck-editor/ckeditor-validation.po';
 let emailTemplateData = require('../../data/ui/email/email.template.api.json');
 const manageNotificationTempNavigation = 'Notification Configuration--Manage Templates';
 const notifTempGridPageTitle = 'Manage Notification Template - Business Workflows';
@@ -447,7 +449,6 @@ describe("Compose Email", () => {
             await viewCasePo.clickOnEmailLink();
             expect(await composeMail.getSubject()).toContain(caseId);
             await composeMail.clickOnSelectEmailTemplateLink();
-            await utilCommon.waitUntilSpinnerToHide();
             await selectEmailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateDataForTest.TemplateName);
             await selectEmailTemplateBladePo.clickOnApplyButton();
             await composeMail.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
@@ -547,7 +548,6 @@ describe("Compose Email", () => {
             await viewCasePo.clickOnEmailLink();
             expect(await composeMail.getSubject()).toContain(caseId);
             await composeMail.clickOnSelectEmailTemplateLink();
-            await utilCommon.waitUntilSpinnerToHide();
             await selectEmailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateDataForTest1.TemplateName);
             await selectEmailTemplateBladePo.clickOnApplyButton();
             await composeMail.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
@@ -806,47 +806,43 @@ describe("Compose Email", () => {
             await tablePropertiesPo.setValueOfTableProperties('tableSummary', cellSummary);
             await tablePropertiesPo.clickOnOkButton();
             //bold
-            await composeMail.clickInTableCell(1, 1, 'tableSummary');
+            await ckeditorOpsPo.clickInTableCell(1, 1, 'tableSummary');
             await composeMail.clickOnBoldIcon();
-            await composeMail.setDataInTable(1, 1, 'FirstBold', 'tableSummary');
+            await ckeditorOpsPo.setDataInTable(1, 1, 'FirstBold', 'tableSummary');
             //italic
-            await composeMail.clickInTableCell(1, 2, 'tableSummary');
+            await ckeditorOpsPo.clickInTableCell(1, 2, 'tableSummary');
             await composeMail.clickOnItalicIcon();
-            await composeMail.setDataInTable(1, 2, 'FirstItalic', 'tableSummary');
+            await ckeditorOpsPo.setDataInTable(1, 2, 'FirstItalic', 'tableSummary');
             //underline
-            await composeMail.clickInTableCell(1, 3, 'tableSummary');
+            await ckeditorOpsPo.clickInTableCell(1, 3, 'tableSummary');
             await composeMail.clickOnUnderLineIcon();
-            await composeMail.setDataInTable(1, 3, 'FirstUnderLine', 'tableSummary');
+            await ckeditorOpsPo.setDataInTable(1, 3, 'FirstUnderLine', 'tableSummary');
             //left Align
-            await composeMail.clickInTableCell(2, 1, 'tableSummary');
+            await ckeditorOpsPo.clickInTableCell(2, 1, 'tableSummary');
             await composeMail.clickOnLeftAlignIcon();
-            await composeMail.setDataInTable(2, 1, 'FirstLeftAlign', 'tableSummary');
+            await ckeditorOpsPo.setDataInTable(2, 1, 'FirstLeftAlign', 'tableSummary');
             //Right Align
-            await composeMail.clickInTableCell(2, 2, 'tableSummary');
+            await ckeditorOpsPo.clickInTableCell(2, 2, 'tableSummary');
             await composeMail.clickOnRightAlignIcon();
-            await composeMail.setDataInTable(2, 2, 'FirstRightAlign', 'tableSummary');
+            await ckeditorOpsPo.setDataInTable(2, 2, 'FirstRightAlign', 'tableSummary');
             //Center Align
-            await composeMail.clickInTableCell(2, 3, 'tableSummary');
+            await ckeditorOpsPo.clickInTableCell(2, 3, 'tableSummary');
             await composeMail.clickOnCenterAlignIcon();
-            await composeMail.setDataInTable(2, 3, 'FirstCenterAlign', 'tableSummary');
+            await ckeditorOpsPo.setDataInTable(2, 3, 'FirstCenterAlign', 'tableSummary');
             //set color
-            await composeMail.clickInTableCell(3, 1, 'tableSummary');
-            await composeMail.selectColor('Bright Blue');
-            await composeMail.setDataInTable(3, 1, 'SettingColor', 'tableSummary');
+            await ckeditorOpsPo.clickInTableCell(3, 1, 'tableSummary');
+            await ckeditorOpsPo.selectColor('Bright Blue');
+            await ckeditorOpsPo.setDataInTable(3, 1, 'SettingColor', 'tableSummary');
             //set font
-            await composeMail.clickInTableCell(3, 2, 'tableSummary');
-            await composeMail.clickOnFontSizeIcon();
-            await composeMail.selectFontTypeOrSize('18');
-            await composeMail.setDataInTable(3, 2, 'SettingFontSize', 'tableSummary');
+            await ckeditorOpsPo.clickInTableCell(3, 2, 'tableSummary');
+            await ckeditorOpsPo.selectFontTypeOrSize('18','FontSize');
+            await ckeditorOpsPo.setDataInTable(3, 2, 'SettingFontSize', 'tableSummary');
             //set fontType
-            await composeMail.clickInTableCell(3,3, 'tableSummary');
-            await composeMail.clickOnFontTypeIcon();
-            await composeMail.selectFontTypeOrSize('Courier New');
-            await composeMail.setDataInTable(3, 3, 'SettingFontType', 'tableSummary');
+            await ckeditorOpsPo.clickInTableCell(3,3, 'tableSummary');
+            await ckeditorOpsPo.selectFontTypeOrSize('Courier New','FontType');
+            await ckeditorOpsPo.setDataInTable(3, 3, 'SettingFontType', 'tableSummary');
             //checking number and bullot points and setting values for them
-            await composeMail.setBulletPointAndNumer('PlusOne');
-            await composeMail.setBulletPointAndNumer('PlusTwo');
-            await composeMail.setBulletPointAndNumer('PlusThree');
+            await ckeditorOpsPo.setNumberList(['PlusOne,PlusTwo,PlusThree']);
             await composeMail.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
             await composeMail.clickOnSendButton();
             await utilityCommon.closePopUpMessage();
@@ -877,13 +873,13 @@ describe("Compose Email", () => {
             expect(await browser.getTitle()).toContain('Business Workflows');
             await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickOnReplyAll();
-            expect(await composeMail.isImageDisplayedComposeEmail(uploadURL)).toBeTruthy('Image is not displayed');
-            expect(await composeMail.isLinkDisplayedComposeEmail('http://www.google.com')).toBeTruthy('Image is not displayed');
-            expect(await composeMail.getColorOrFontOfTextComposeEmail('font-family:Courier New,Courier,monospace;')).toContain('SettingFontType');
-            expect(await composeMail.getColorOrFontOfTextComposeEmail('font-size:18px;')).toContain('SettingFontSize');
+            expect(await ckeditorValidationPo.isImageDisplayedInCKE(uploadURL)).toBeTruthy('Image is not displayed');
+            expect(await ckeditorValidationPo.isHyperLinkDisplayedInCkEditorTextArea('http://www.google.com')).toBeTruthy('Image is not displayed');
+            expect(await ckeditorValidationPo.getColorFontStyleOfText('font-family:Courier New,Courier,monospace;')).toContain('SettingFontType');
+            expect(await ckeditorValidationPo.getColorFontStyleOfText('font-size:18px;')).toContain('SettingFontSize');
             await composeMail.clickOnImageIcon();
             let sourceValue2 = await imagePropertiesPo.addImageOnEmail('Upload', '../../../data/ui/attachment/articleStatus.png', imageWidthFieldIndex, imageUrlFieldIndex);
-            expect(await composeMail.isImageDisplayedComposeEmail(sourceValue2)).toBeTruthy('Image is not displayed');
+            expect(await ckeditorValidationPo.isImageDisplayedInCKE(sourceValue2)).toBeTruthy('Image is not displayed');
             await composeMail.clickOnSendButton();
             await utilityCommon.closePopUpMessage();
             await activityTabPo.clickOnRefreshButton();

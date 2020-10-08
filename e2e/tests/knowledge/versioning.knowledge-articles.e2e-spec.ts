@@ -787,7 +787,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
 
         afterAll(async () => {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
-            await utilCommon.waitUntilSpinnerToHide();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });
@@ -1056,7 +1055,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await editKnowledgePage.selectArticleEditOption(majorEditOption);
             await editKnowledgePage.updateKnowledgeArticleTitle(updatedArticleTitle + "_updated version");
             await editKnowledgePage.clickArticleMajorEditSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent('Draft version already created.')).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent('Draft version already created.',1)).toBeTruthy();
             await browser.sleep(4000); // To Wait Until Edit Knowledge Changes Gets Saved KA Version Gets Change.
             await utilityCommon.refresh(); // Refresh needed to reflect version updates.
             expect(await viewKnowledgeArticlePo.getArticleVersion()).toBe(expectedVersion);

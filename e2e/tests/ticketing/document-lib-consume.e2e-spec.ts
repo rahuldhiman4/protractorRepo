@@ -7,8 +7,8 @@ import createCasePo from '../../pageobject/case/create-case.po';
 import editCasePo from '../../pageobject/case/edit-case.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
-import attachDocumentBladePo from '../../pageobject/common/attach-document-blade.po';
 import accessTabPo from '../../pageobject/common/access-tab.po';
+import attachDocumentBladePo from '../../pageobject/common/attach-document-blade.po';
 import loginPage from '../../pageobject/common/login.po';
 import navigationPage from "../../pageobject/common/navigation.po";
 import composeMailPo from '../../pageobject/email/compose-mail.po';
@@ -269,7 +269,7 @@ describe('Document Library Consume UI', () => {
         });
         it('[DRDMV-13524]: Create a case and click task link ', async () => {
             await navigationPage.signOut();
-            await loginPage.login(caseAgentuserData.userId);
+            await loginPage.login(caseAgentuserData.userId+"@petramco.com","Password_1234");
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(randomStr);
@@ -568,7 +568,7 @@ describe('Document Library Consume UI', () => {
         });
         it('[DRDMV-13480]: Create a case ', async () => {
             await navigationPage.signOut();
-            await loginPage.login(caseAgentuserData.userId);
+            await loginPage.login(caseAgentuserData.userId+"@petramco.com","Password_1234");
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(randomStr);

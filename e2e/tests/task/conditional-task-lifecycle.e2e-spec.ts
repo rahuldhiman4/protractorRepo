@@ -232,7 +232,7 @@ describe('Conditional Task Life Cycle', () => {
             //Update Adhoc task to Completed and check manual task status(CASE 2)
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(responseCaseNT.displayId);
-            await editTaskPo.clickOnRefreshActivity();
+            await viewCasePage.clickOnRefreshTaskList();
             await viewCasePage.openTaskCard(1);
             expect(await manageTaskBlade.getTaskStatus(adhocTaskData.taskName)).toContain(completedStr);
             expect(await manageTaskBlade.getTaskStatus(manualTaskTemplateData.templateName)).toContain(assignedStr);
@@ -242,7 +242,7 @@ describe('Conditional Task Life Cycle', () => {
             await apiHelper.updateTaskStatus(manualTaskNTId, 'Completed', 'Successful');
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(responseCaseNT.displayId);
-            await editTaskPo.clickOnRefreshActivity();
+            await viewCasePage.clickOnRefreshTaskList();
             await viewCasePage.openTaskCard(1);
             expect(await manageTaskBlade.getTaskStatus(manualTaskTemplateData.templateName)).toContain(completedStr);
             expect(await manageTaskBlade.getTaskStatus(automatedTaskTemplateData.templateName)).toContain('Failed');

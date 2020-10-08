@@ -540,7 +540,7 @@ describe('Dynamic data', () => {
         await editTaskPo.addAttachmentInDynamicField('attachment1', filesToUpload2);
         await editTaskPo.clickOnSaveButton();
         await utilCommon.closePopUpMessage();
-        await editTaskPo.clickOnRefreshActivity();
+        await viewCasePo.clickOnRefreshTaskList();
         //verify show more and show less button
         expect(await viewTaskPo.getShowMoreLessAttachmentsLinkText('attachment1')).toContain('more');
         await viewTaskPo.clickShowMoreShowLessLink('attachment1');
@@ -832,7 +832,6 @@ describe('Dynamic data', () => {
             await quickCasePo.selectCaseTemplate(caseTemplateName);
             await quickCasePo.createCaseButton();
             await quickCasePo.gotoCaseButton();
-            await utilCommon.waitUntilSpinnerToHide();
             await viewCasePo.clickEditCaseButton();
             await editTaskPo.setDateTimeDynamicFieldValue('2020-03-04');
             await editCasePo.setDynamicFieldValue('temp', 'newtemp');

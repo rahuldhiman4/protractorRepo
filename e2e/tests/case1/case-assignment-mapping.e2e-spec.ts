@@ -649,7 +649,7 @@ describe("Create Case Assignment Mapping", () => {
         });
         it('[DRDMV-15181]:[Permissions] Location based assignment with multiple companies', async () => {
             await navigationPage.signOut();
-            await loginPage.login(userData.emailId, 'Password_1234');
+            await loginPage.login(userData.userId+"@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
             await assignmentConfigConsolePage.clickOnCreateAssignmentConfiguration();
@@ -699,7 +699,7 @@ describe("Create Case Assignment Mapping", () => {
         });
         it('[DRDMV-15181]:[Permissions] Location based assignment with multiple companies', async () => {
             await navigationPage.signOut();
-            await loginPage.login('13550User1@petramco.com', 'Password_1234');
+            await loginPage.login(userData1.userId+"@petramco.com", 'Password_1234');
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary("DRDMV-8968 Case Summary1");

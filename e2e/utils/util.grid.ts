@@ -193,7 +193,6 @@ export class GridOperation {
             if (result) {
                 await $(this.selectors.filterPreset).click();
                 await $(this.selectors.clearFilterButton).click();
-                await utilCommon.waitUntilSpinnerToHide();
             } else {
                 console.log("Filters are already cleared");
             }
@@ -293,7 +292,6 @@ export class GridOperation {
 
     async searchAndSelectGridRecord(searchValue: string, guid?: string): Promise<void> {
         await this.searchOnGridConsole(searchValue);
-        await utilCommon.waitUntilSpinnerToHide();
         await browser.sleep(1000);
         let checkboxRows: ElementFinder[];
 

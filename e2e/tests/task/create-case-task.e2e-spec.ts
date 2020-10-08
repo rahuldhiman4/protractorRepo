@@ -428,10 +428,11 @@ describe('Create Case Task', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let TaskTemplate = 'Manual task' + randomStr;
         let TaskSummary = 'Summary' + randomStr;
-        let description = 'description' + randomStr;
+        let userData, description = 'description' + randomStr;
+      
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
-            let userData = {
+             userData = {
                 "firstName": "Petramco",
                 "lastName": "Psilon",
                 "userId": "DRDMV-12558",
@@ -443,7 +444,7 @@ describe('Create Case Task', () => {
         });
         it('[DRDMV-12558]: Login with Psilon user', async () => {
             await navigationPage.signOut();
-            await loginPage.login("DRDMV-12558" + "@petramco.com", 'Password_1234');
+            await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.clickOnManualTaskTemplateButton();
@@ -479,14 +480,14 @@ describe('Create Case Task', () => {
     });
 
     //ankagraw
-    describe('[DRDMV-12582]: Task Template access when owner group from different company is applied', async () => {
+    fdescribe('[DRDMV-12582]: Task Template access when owner group from different company is applied', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let TaskTemplate = 'Manual task' + randomStr;
         let TaskSummary = 'Summary' + randomStr;
-        let description = 'description' + randomStr;
+        let userData,description = 'description' + randomStr;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
-            let userData = {
+             userData = {
                 "firstName": "Petramco",
                 "lastName": "Psilon",
                 "userId": "DRDMV-12582",
@@ -512,7 +513,7 @@ describe('Create Case Task', () => {
         //search above template
         it('[DRDMV-12582]: Login with psilon user and update the task template', async () => {
             await navigationPage.signOut();
-            await loginPage.login("DRDMV-12582" + "@petramco.com", 'Password_1234');
+            await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(TaskTemplate);
@@ -603,10 +604,8 @@ describe('Create Case Task', () => {
         expect(await selectTaskTemplate.isTaskTypeFilterValue('Manual')).toBeTruthy();
         await utilGrid.clearFilter();
         await selectTaskTemplate.clickOnApplyFilter('Task Type', 'Automated');
-        //await utilCommon.waitUntilSpinnerToHide();
         expect(await selectTaskTemplate.isTaskTypeFilterValue('Automated')).toBeTruthy();
         await utilGrid.clearFilter();
-        await utilCommon.waitUntilSpinnerToHide();
     });
 
     //ankagraw
@@ -854,7 +853,7 @@ describe('Create Case Task', () => {
             await quickCase.createCaseButton();
             await quickCase.gotoCaseButton();
             await utilityCommon.closePopUpMessage();
-            await editTask.clickOnRefreshActivity();
+            await viewCasePage.clickOnRefreshTaskList();
             await viewCasePage.clickOnTaskLink(`AutomatedTaskTemplateActive ${randomStr}`);
             expect(await viewTask.getTaskStatusValue()).toBe("Completed");
         });

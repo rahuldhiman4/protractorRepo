@@ -583,7 +583,7 @@ describe('Person Profile test', () => {
 
             //Check the Person Profile Menu of New User
             await navigationPage.signOut();
-            await loginPage.login('userData1@petramco.com', 'Password_1234');
+            await loginPage.login(userData.userId+"@petramco.com", 'Password_1234');
             await navigationPage.gotoPersonProfile();
         });
 

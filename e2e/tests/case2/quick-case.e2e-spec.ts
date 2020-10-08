@@ -529,7 +529,6 @@ describe("Quick Case", () => {
             await quickCasePo.clickStartOverButton();
             await quickCasePo.selectRequesterName("chetan");
             await quickCasePo.setCaseSummary(caseTemplateData.templateName);
-            await utilCommon.waitUntilSpinnerToHide();
             await quickCasePo.pinRecommendedCases(0);
             await resourcesPo.clickOnAdvancedSearchOptions();
             await resourcesPo.enterAdvancedSearchText(caseTemplateData.templateName);
@@ -854,17 +853,14 @@ describe("Quick Case", () => {
             await quickCasePo.selectRequesterName('fritz');
             await quickCasePo.setCaseSummary(unPublishedKA_Name);
             expect(await resourcesPo.isRecommendedKnowledgePresent(unPublishedKA_Name)).toBeFalsy(`${unPublishedKA_Name} Draft KA not disaplyed in Recommended Knowledge`);
-            // search published article by name, should find
+        });
+        it('[DRDMV-559]: [Quick Case] Knowledge article search in Resources', async () => {    
             await quickCasePo.clickStartOverButton();
             await quickCasePo.selectRequesterName('fritz');
             await quickCasePo.setCaseSummary(publishedKA_Name);
-            await resourcesPo.clickOnAdvancedSearchOptions();
-            await resourcesPo.enterAdvancedSearchText(publishedKA_Name);
-            await resourcesPo.clickOnAdvancedSearchSettingsIconToOpen();
-            await resourcesPo.clickOnAdvancedSearchFiltersButton("Apply");
-            await resourcesPo.clickOnAdvancedSearchSettingsIconToClose();
             expect(await resourcesPo.isRecommendedKnowledgePresent(publishedKA_Name)).toBeTruthy(`${publishedKA_Name} not disaplyed in Recommended Knowledge`);
-            // search published article by keyword, should find.. this is failing keyword based search not working 
+        });
+        it('[DRDMV-559]: [Quick Case] Knowledge article search in Resources', async () => {     
             await quickCasePo.clickStartOverButton();
             await quickCasePo.selectRequesterName('fritz');
             await quickCasePo.setCaseSummary(articleData.keyword);
