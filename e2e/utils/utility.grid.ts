@@ -12,7 +12,7 @@ export class GridOperations {
         gridCheckbox: '.ui-chkbox-box',
         appliedPresetFilter: '.a-tag-active span',
         filterPresetBtn: 'button.d-icon-left-filter',
-        clearBtn: '.advanced-filter__actions-buttons button',
+        clearOrSaveFilterBtn: '.advanced-filter__actions-buttons button',
         addVisibleColumnsIcon: 'button.d-icon-left-lines_vertical',
         gridColumnSelect: '.dropdown-item .checkbox__input',
         gridHeaders: '.c-header-container .c-header-name',
@@ -23,7 +23,10 @@ export class GridOperations {
         visibleColumnButton: '.d-icon-left-lines_vertical',
         refreshIcon: 'button[rx-id="refresh-button"]',
         filterSearchValueBox: '.adapt-mt-input-container input',
-        filterCounterInput: 'input.adapt-counter-input'
+        filterCounterInput: 'input.adapt-counter-input',
+        savePresetInput: '.advanced-filter-name-editor__input',
+        saveOrCancelPresetFilterButton: 'button.custom-action-btn__right',
+        filterName: '.radio__item span',
     }
 
     async searchRecord(searchValue: string, guid?: string): Promise<void> {
@@ -70,7 +73,7 @@ export class GridOperations {
     async clearFilter(guid?: string): Promise<void> {
         let appliedPresetFilter = this.selectors.appliedPresetFilter;
         let filterPresetBtn = this.selectors.filterPresetBtn;
-        let clearBtn = this.selectors.clearBtn;
+        let clearBtn = this.selectors.clearOrSaveFilterBtn;
         let refreshIcon = this.selectors.refreshIcon;
         if (guid) {
             let gridGuid = `[rx-view-component-id="${guid}"] `;
@@ -251,6 +254,7 @@ export class GridOperations {
             refreshIcon = `[rx-view-component-id="${guid}"] ` + refreshIcon;
         }
         await $(guidId + this.selectors.filterPresetBtn).click();
+        await $$(this.selectors.filterTab).get(0).click();
         let filterCount = await $$(this.selectors.filterItems);
         for (let i = 0; i < await filterCount.length; i++) {
             let tempLocator = await $$(this.selectors.filterItems).get(i);
@@ -337,8 +341,70 @@ export class GridOperations {
         return allEqual(allValues) && allValues[0] === value;
     }
 
+    async saveFilter(filterName: string, guid?: string): Promise<void> {
+        let refreshIcon = 'button[rx-id="refresh-button"]';
+        let guidId: string = "";
+        if (guid) guidId = `[rx-view-component-id="${guid}"] `;
+        await $(guidId + this.selectors.filterPresetBtn).click();
+        await $$(this.selectors.filterTab).get(1).click().then(async () => {
+            await $$(this.selectors.clearOrSaveFilterBtn).get(1).click();
+            await $(this.selectors.savePresetInput).sendKeys(filterName);
+            await $$(this.selectors.saveOrCancelPresetFilterButton).get(1).click();
+        });
+        await $(guidId + refreshIcon).click();
+    }
+
+    async deleteCustomPresetFilter(filterName: string, guid?: string): Promise<void> {
+        let refreshIcon = 'button[rx-id="refresh-button"]';
+        let guidId: string = "";
+        if (guid) guidId = `[rx-view-component-id="${guid}"] `;
+        await $(guidId + this.selectors.filterPresetBtn).click();
+        await $$(this.selectors.filterTab).get(1).click().then(async () => {
+            let countFilterName = await $$(this.selectors.filterName).count();
+            for (let i = 0; i < countFilterName; i++) {
+                let filterValue = await $$(this.selectors.filterName).get(i).getText();
+                if (filterValue == filterName) {
+                    await $$('.d-icon-trash').get(i).click();
+                    break;
+                } else {
+                    console.log('No Preset Filter Found');
+                }
+            }
+        });
+        await $(guidId + refreshIcon).click();
+    }
+
+    async isPresetFilterNameDisplayed(filterName: string, guid?: string): Promise<boolean> {
+        let guidId: string = "";
+        if (guid) guidId = `[rx-view-component-id="${guid}"] `;
+        await $(this.selectors.refreshIcon).click();
+        await $(guidId + this.selectors.filterPresetBtn).click();
+        await $$(this.selectors.filterTab).get(1).click();
+        return await element(by.cssContainingText(this.selectors.filterName, filterName)).isPresent().then(async (result) => {
+            if (result) {
+                let booleanVal = await element(by.cssContainingText(this.selectors.filterName, filterName)).isDisplayed();
+                if (booleanVal == true) {
+                    await $(this.selectors.refreshIcon).click();
+                    return booleanVal;
+                }
+            }
+            else {
+                await $(this.selectors.refreshIcon).click();
+                return false;
+            }
+        });
+    }
+
+    async isAppliedFilterDisplayed(appliedFilterName: string, guid?: string): Promise<boolean> {
+        let guidId: string = "";
+        if (guid) guidId = `[rx-view-component-id="${guid}"] `;
+        return await await element(by.cssContainingText(guidId + this.selectors.appliedPresetFilter, appliedFilterName)).isPresent().then(async (result) => {
+            if (result)
+                return await element(by.cssContainingText(guidId + this.selectors.appliedPresetFilter, appliedFilterName)).isDisplayed();
+            else return false;
+        });
+    }
+
 }
-
-
 
 export default new GridOperations();
