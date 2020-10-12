@@ -6,9 +6,9 @@ node("node2"){
     stage('Build BWF Deployment Docker') {
     	echo "Stack: ${STACK}"
     	echo "APP_IMAGE_TAG: ${APP_IMAGE_TAG}"
-    	sh "./create-inventory.sh ${STACK}"
-        sh "ansible-playbook -i ${STACK} bwfondemand.yml -e APP_IMAGE_TAG=${APP_IMAGE_TAG} -e reboot=true"
-    	sleep(240)
+//        sh "./create-inventory.sh ${STACK}"
+//        sh "ansible-playbook -i ${STACK} bwfondemand.yml -e APP_IMAGE_TAG=${APP_IMAGE_TAG} -e reboot=true"
+//    	sleep(240)
     }
 }
 
