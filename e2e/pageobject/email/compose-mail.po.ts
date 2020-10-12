@@ -1,10 +1,12 @@
 import { resolve } from 'path';
 import { $, $$, browser, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
+import ckeditorOpsPo from '../common/ck-editor/ckeditor-ops.po';
 
 class ComposeMail {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         title: '.modal-title',
+        commonGuid: 'c13d2848-2fe9-4e6d-adc0-79bb13e1f965',
         commonId: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"]',
         selectEmailTemplateLink: '.select-template-button',
         attachLink: '.attachment-button button',
@@ -22,18 +24,7 @@ class ComposeMail {
         templateNameHeader: '.select-email-container .template-seperator',
         recipientRemoveIcon: '.adapt-mt-wrapper .adapt-mt-item-close',
         messageBodyFontPannelBar: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] .cke_inner .cke_reset_all',
-        tableIcon: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] .cke_toolbar .cke_button__table_icon',
-        imageIcon: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] .cke_toolbar .cke_button__image_icon',
-        linkIcon: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] .cke_toolbar .cke_button__link_icon',
-        boldIcon: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] .cke_button__bold_icon',
-        italicIcon: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] .cke_button__italic_icon',
-        underLineIcon: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] .cke_button__underline_icon',
-        leftAlignIcon: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] .cke_button__justifyleft_icon',
-        centerAlignIcon: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] .cke_button__justifycenter_icon',
-        rightAlignIcon: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] .cke_button__justifyright_icon',
         colorIcon: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] .cke_button__textcolor',
-        fontType: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] .cke_combo__font',
-        fontSize: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] .cke_combo__fontsize',
         attachmentField: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] .attachment-button input[type="file"]',
         numberIcon: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] .cke_button__numberedlist_icon',
         attachmentView: 'span.bwf-attachment-container__file-name',
@@ -42,93 +33,50 @@ class ComposeMail {
     }
 
     async clickOnTableIcon(): Promise<void> {
-        await $(this.selectors.tableIcon).click();
+        await ckeditorOpsPo.clickOnTableIcon(this.selectors.commonGuid);
         await browser.sleep(2000); // Wait For Table Pop Up Gets Open.
     }
 
     async clickOnImageIcon(): Promise<void> {
-        await $(this.selectors.imageIcon).click();
+        await ckeditorOpsPo.clickOnImageIcon(this.selectors.commonGuid);
         await browser.sleep(2000); // Wait For Image Icon Popup Gets Open.
     }
 
     async clickOnLinkIcon(): Promise<void> {
-        await $(this.selectors.linkIcon).click();
+        await ckeditorOpsPo.clickOnLinkIcon(this.selectors.commonGuid);
         await browser.sleep(2000); // Wait For Link Pop up Gets Open.
     }
 
-
-    async clickInTableCell(row: number, column: number, summary: string): Promise<void> {
-        let locator = `table[summary='${summary}'] tr`;
-        await browser.waitForAngularEnabled(false);
-        await browser.switchTo().frame(element(by.css('[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] iframe.cke_wysiwyg_frame')).getWebElement());
-        await browser.sleep(1000); // sleep required for proper frame switch
-        let rowLocator = await $$(locator).get(row - 1);
-        await rowLocator.$$('td').get(column - 1).click();
-        await browser.switchTo().defaultContent();
-        await browser.waitForAngularEnabled(true);
-    }
-
-    async setDataInTable(row: number, column: number, value: string, summary: string): Promise<void> {
-        await browser.waitForAngularEnabled(false);
-        let locator = `table[summary='${summary}'] tr`;
-        await browser.switchTo().frame(element(by.css('[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] iframe.cke_wysiwyg_frame')).getWebElement());
-        let rowLocator = await $$(locator).get(row - 1);
-        await rowLocator.$$('td').get(column - 1).sendKeys(value);
-        await browser.switchTo().defaultContent();
-        await browser.waitForAngularEnabled(true);
-    }
-
     async clickOnBoldIcon(): Promise<void> {
-        await $(this.selectors.boldIcon).click();
+        await ckeditorOpsPo.clickOnBoldIcon(this.selectors.commonGuid);
     }
 
     async clickOnItalicIcon(): Promise<void> {
-        await $(this.selectors.italicIcon).click();
+        await ckeditorOpsPo.clickOnItalicIcon(this.selectors.commonGuid);
     }
 
     async clickOnUnderLineIcon(): Promise<void> {
-        await $(this.selectors.underLineIcon).click();
+        await ckeditorOpsPo.clickOnUnderLineIcon(this.selectors.commonGuid);
     }
 
     async clickOnLeftAlignIcon(): Promise<void> {
-        await $(this.selectors.leftAlignIcon).click();
+        await ckeditorOpsPo.clickOnLeftAlignIcon(this.selectors.commonGuid);
     }
 
     async clickOnRightAlignIcon(): Promise<void> {
-        await $(this.selectors.rightAlignIcon).click();
+        await ckeditorOpsPo.clickOnRightAlignIcon(this.selectors.commonGuid);
     }
 
     async clickOnCenterAlignIcon(): Promise<void> {
-        await $(this.selectors.centerAlignIcon).click();
-    }
-
-    async selectColor(colorValue: string): Promise<void> {
-        await $(this.selectors.colorIcon).click();
-        await browser.waitForAngularEnabled(false);
-        await browser.switchTo().frame(await $('iframe.cke_panel_frame').getWebElement());
-        let locator: string = `a[title="${colorValue}"]`;
-        await browser.wait(this.EC.elementToBeClickable($(locator)), 2000);
-        await $(locator).click();
-        await browser.switchTo().defaultContent();
-        await browser.waitForAngularEnabled(true);
+        await ckeditorOpsPo.clickOnCenterAlignIcon(this.selectors.commonGuid);
     }
 
     async clickOnFontTypeIcon(): Promise<void> {
-        await $(this.selectors.fontType).click();
+        await ckeditorOpsPo.clickOnFontTypeIcon(this.selectors.commonGuid);
     }
 
     async clickOnFontSizeIcon(): Promise<void> {
-        await $(this.selectors.fontSize).click();
-    }
-
-    async selectFontTypeOrSize(value: string): Promise<void> {
-        await browser.waitForAngularEnabled(false);
-        await browser.switchTo().frame($('.cke_panel.cke_combopanel iframe.cke_panel_frame').getWebElement());
-        let locator = `a[title="${value}"]`;
-        await browser.wait(this.EC.elementToBeClickable($(locator)), 4000);
-        await $(locator).click();
-        await browser.switchTo().defaultContent();
-        await browser.waitForAngularEnabled(true);
+        await ckeditorOpsPo.clickOnFontSizeIcon(this.selectors.commonGuid);
     }
 
     async isUserPopulatedInToOrCc(value: string, emailToOrCCValue): Promise<boolean> {
@@ -210,22 +158,6 @@ class ComposeMail {
 
     async getCcEmailPerson(): Promise<string> {
         return await (await $$(this.selectors.toOrCcEmailgetText).last().getText()).trim();
-    }
-
-    // input should be a list and this method should be merged with setNumberList from activity tab, finally in ckeditor-ops file
-    async setBulletPointAndNumer(value: string): Promise<void> {
-        await browser.waitForAngularEnabled(false);
-        await browser.switchTo().frame(await $('[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] iframe.cke_wysiwyg_frame').getWebElement());
-        await $(this.selectors.emailBody).sendKeys(Key.CONTROL, Key.END);
-        await $(this.selectors.emailBody).sendKeys(Key.ENTER);
-        await browser.switchTo().defaultContent();
-        await browser.waitForAngularEnabled(true);
-        await $(this.selectors.numberIcon).click();
-        await browser.waitForAngularEnabled(false);
-        await browser.switchTo().frame(await $('[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] iframe.cke_wysiwyg_frame').getWebElement());
-        await $(this.selectors.emailBody).sendKeys(value);
-        await browser.switchTo().defaultContent();
-        await browser.waitForAngularEnabled(true);
     }
 
     async setEmailBody(value: string): Promise<void> {
@@ -346,37 +278,7 @@ class ComposeMail {
             return values;
         }
     }
-    async isImageDisplayedComposeEmail(value: string): Promise<boolean> {
-        await browser.waitForAngularEnabled(false);
-        await browser.switchTo().frame(await $('[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] iframe.cke_wysiwyg_frame').getWebElement());
-        let locator = `img[src='${value}']`;
-        let imageIsDisplayed: boolean = await $$(locator).last().isDisplayed();
-        await browser.switchTo().defaultContent();
-        await browser.waitForAngularEnabled(true);
-        return imageIsDisplayed;
-    }
-
-    async isLinkDisplayedComposeEmail(value: string): Promise<boolean> {
-        await browser.waitForAngularEnabled(false);
-        await browser.switchTo().frame(await $('[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] iframe.cke_wysiwyg_frame').getWebElement());
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailBody)), 3000);
-        let locator = `[href='${value}']`;
-        let islinkDisplayed: boolean = await $(locator).isDisplayed();
-        await browser.switchTo().defaultContent();
-        await browser.waitForAngularEnabled(true);
-        return islinkDisplayed;
-    }
-
-    async getColorOrFontOfTextComposeEmail(value: string): Promise<string> {
-        await browser.waitForAngularEnabled(false);
-        await browser.switchTo().frame(await $('[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] iframe.cke_wysiwyg_frame').getWebElement());
-        let locator = `td span[style='${value}']`;
-        let isColorDisplayed = await $(locator).getText();
-        await browser.switchTo().defaultContent();
-        await browser.waitForAngularEnabled(true);
-        return isColorDisplayed;
-    }
-
+    
     async setSubject(value: string): Promise<void> {
         await $(this.selectors.subjectInput).clear();
         await $(this.selectors.subjectInput).sendKeys(value);

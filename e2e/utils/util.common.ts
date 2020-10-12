@@ -217,19 +217,6 @@ export class Util {
         });
     }
 
-    async waitUntilSpinnerToHide(): Promise<void> {
-        try {
-            await browser.wait(this.EC.presenceOf($('.d-preloader')), 5000);
-            await browser.wait(this.EC.or(async () => {
-                await $$('.d-preloader').each(async function (element) {
-                    await element.getAttribute('innerHTML') == null;
-                });
-            }), 7000);
-        } catch (error) {
-            console.log('Spinner not present on the page');
-        }
-    }
-
     /*Work as same as String.format i.e. first parameter is a string with multiple variables embedded and other parameters will replace the embedded variables of first string
     Example: 
     let str1 = "This is {0} best {1}.";

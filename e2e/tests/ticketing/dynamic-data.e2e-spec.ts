@@ -832,7 +832,6 @@ describe('Dynamic data', () => {
             await quickCasePo.selectCaseTemplate(caseTemplateName);
             await quickCasePo.createCaseButton();
             await quickCasePo.gotoCaseButton();
-            await utilCommon.waitUntilSpinnerToHide();
             await viewCasePo.clickEditCaseButton();
             await editTaskPo.setDateTimeDynamicFieldValue('2020-03-04');
             await editCasePo.setDynamicFieldValue('temp', 'newtemp');

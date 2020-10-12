@@ -543,10 +543,6 @@ class ViewCasePage {
         return displayIds;
     }
 
-    async getTableCellAlignText(value: string): Promise<string> {
-        return await ckeditorValidationPo.getTableCellAlignText(value, this.selectors.description);
-    }
-
     async clickOnRefreshTaskList() {
         await $(this.selectors.refreshActivity).click();
     }

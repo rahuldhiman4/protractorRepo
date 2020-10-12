@@ -559,7 +559,6 @@ describe('Case Data Store', () => {
                 expect(await requesterResponseBladePo.isDynamicFieldDisplayed(dynamicFieldsReqester[i])).toBeTruthy(dynamicFieldsReqester[i] + 'field not present');
             }
             await requesterResponseBladePo.clickOkButton();
-            await utilCommon.waitUntilSpinnerToHide();
             //requester case preview
             expect(await casePreviewPo.isGroupDisplayed('GroupTwo')).toBeTruthy('group is not present');
             expect(await casePreviewPo.isGroupDisplayed('GroupOne')).toBeTruthy('group is not present');
@@ -589,7 +588,6 @@ describe('Case Data Store', () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
         await utilGrid.searchAndOpenHyperlink(casetemplateData.templateName);
-        await utilCommon.waitUntilSpinnerToHide();
         await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
         await dynamicFieldsPo.clickOnDynamicField();
         await dynamicFieldsPo.setFieldName('news16' + randomStr);
