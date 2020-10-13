@@ -363,9 +363,13 @@ export class GridOperations {
             let countFilterName = await $$(this.selectors.filterName).count();
             for (let i = 0; i < countFilterName; i++) {
                 let filterValue = await $$(this.selectors.filterName).get(i).getText();
+                
                 if (filterValue == filterName) {
-                    await $$('.d-icon-trash').get(i).click();
-                    break;
+                    let filterdeleteButton = await $$('.d-icon-trash').get(i).isPresent();
+                        if(filterdeleteButton==true){
+                            await $$('.d-icon-trash').get(i).click();
+                            break;
+                     }
                 } else {
                     console.log('No Preset Filter Found');
                 }
@@ -396,15 +400,31 @@ export class GridOperations {
     }
 
     async isAppliedFilterDisplayed(appliedFilterName: string, guid?: string): Promise<boolean> {
+        let showmorelink:boolean;
         let guidId: string = "";
         if (guid) guidId = `[rx-view-component-id="${guid}"] `;
-        return await await element(by.cssContainingText(guidId + this.selectors.appliedPresetFilter, appliedFilterName)).isPresent().then(async (result) => {
-            if (result)
-                return await element(by.cssContainingText(guidId + this.selectors.appliedPresetFilter, appliedFilterName)).isDisplayed();
-            else return false;
+        let showMoreElement:ElementFinder = await $('.dropdown  .filter-tags__dropdown-toggle');
+        let moreLabeLink = await showMoreElement.isPresent();
+        if(moreLabeLink==true){
+            await showMoreElement.click();
+        }
+        
+        return await element(by.cssContainingText(guidId + this.selectors.appliedPresetFilter, appliedFilterName)).isPresent().then(async (result) => {
+            if (result){
+                showmorelink= await element(by.cssContainingText(guidId + this.selectors.appliedPresetFilter, appliedFilterName)).isDisplayed();
+                if(moreLabeLink==true){
+                    await showMoreElement.click();
+                }
+                return showmorelink;
+            }else {
+                if(moreLabeLink==true){
+                    await showMoreElement.click();
+                }
+                return false;
+            }
         });
     }
-
 }
+
 
 export default new GridOperations();
