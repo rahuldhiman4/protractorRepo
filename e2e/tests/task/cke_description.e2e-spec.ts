@@ -36,6 +36,7 @@ import composeMailPo from '../../pageobject/email/compose-mail.po';
 import editCasetemplatePo from '../../pageobject/settings/case-management/edit-casetemplate.po';
 import editTasktemplatePo from '../../pageobject/settings/task-management/edit-tasktemplate.po';
 import createCasePo from '../../pageobject/case/create-case.po';
+import changAssignmentOldPage from '../../pageobject/common/change-assignment-old-blade.po';
 let uploadURL = "https://www.google.com/homepage/images/hero-dhp-chrome-win.jpg?mmfb=90bec8294f441f5c41987596ca1b8cff";
 let caseTemplateAllFields = ALL_FIELD;
 let caseTemplateRequiredFields = MANDATORY_FIELD;
@@ -183,8 +184,8 @@ describe('CKE Description', () => {
             await ckeditorOpsPo.clickOnRightAlignIcon();
             await ckeditorOpsPo.setDataInTable(1, 2, randomString, 'tableSummary');
             await createCaseTemplate.setPriorityValue(caseTemplateAllFields.casePriority);
-            await createCaseTemplate.setBusinessUnitDropdownValue(caseTemplateAllFields.ownerBusinessUnit);
-            await createCaseTemplate.setOwnerGroupDropdownValue(caseTemplateAllFields.ownerGroup);
+            await createCaseTemplate.setBusinessUnitDropdownValue("United States Support");
+            await createCaseTemplate.setOwnerGroupDropdownValue("US Support 3");
             await createCaseTemplate.setTemplateStatusDropdownValue(caseTemplateAllFields.templateStatus);
             await createCaseTemplate.clickSaveCaseTemplate();
         });
@@ -458,7 +459,7 @@ describe('CKE Description', () => {
             expect(await viewTasktemplatePo.isImageDisplayed(imageSource)).toBeTruthy('image not displayed');
             expect(await viewTasktemplatePo.isFormatedTextDisplayed(formatText, "h2")).toBeTruthy('heading h2 not set');
             expect(await viewTasktemplatePo.getColorFontStyleOfText("text-align: right;")).toContain(rightAlignText);
-            expect(await viewTasktemplatePo.getColorFontStyleOfText("text-align: center;")).toContain(rightAlignText);
+            expect(await viewTasktemplatePo.getColorFontStyleOfText("text-align: center;")).toContain(centerAlignText);
             expect(await viewTasktemplatePo.getTableCellAlignText("text-align: center;")).toContain(randomString);
             await ckeditorValidationPo.clickLinkInCKE('www.google.com');
             await browser.waitForAngularEnabled(false);

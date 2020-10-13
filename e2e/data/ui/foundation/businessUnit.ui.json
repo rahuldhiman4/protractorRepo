@@ -1,11 +1,13 @@
 {
     "BusinessUnitData": {
         "orgName": "UI-BusinessUnit",
-        "relatedOrgId": null
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
     },
     "BusinessUnitData19501": {
         "orgName": "UI-BusinessUnit-19501",
-        "relatedOrgId": null
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
     },
     "BusinessUnitData19082": {
         "orgName": "UI-BusinessUnit-19082",

@@ -64,7 +64,7 @@ class ActivityTabPage {
         lockIcon: '.d-icon-lock',
         activityLogList: '.activity .activity__wrapper',
         alignmentTextCkEditorTextArea: '.cke_enable_context_menu',
-        activityLogBody: '.activity__wrapper .collapse-block div div[style="position: relative;"]',
+        activityLogBody: '.activity__wrapper .collapse-block div div[style="position: relative;"],.activity__body',
         showApproversLink: '.activity__wrapper button.btn-sm',
         alertTooltipMessage: '.alert-content',
         alertTooltipIcon: '.d-icon-info_circle',

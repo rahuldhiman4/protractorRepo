@@ -1,11 +1,13 @@
 {
     "DepartmentData": {
         "orgName": "UI-Department",
-        "relatedOrgId": null
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
     },
     "DepartmentData19501": {
         "orgName": "UI-Department-19501",
-        "relatedOrgId": null
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
     },
     "DepartmentData19082": {
         "orgName": "UI-Department-19082",
