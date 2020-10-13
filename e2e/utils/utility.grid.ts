@@ -4,6 +4,7 @@ import utilityCommon from '../utils/utility.common';
 export class GridOperations {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
+        noFilterAppliedError: '.has-danger .form-control-feedback',
         searchTextBox: '.adapt-search-triggerable input',
         clearSearchBoxButton: '.adapt-search-triggerable .adapt-search-clear',
         gridRowLinks: '.at-data-row .btn-link',
@@ -24,6 +25,7 @@ export class GridOperations {
         refreshIcon: 'button[rx-id="refresh-button"]',
         filterSearchValueBox: '.adapt-mt-input-container input',
         filterCounterInput: 'input.adapt-counter-input',
+        filterValue: '[class="filter-tags__tag-text"]',
         filterName: '.radio__item span',
         editPresetFilterSaveButton: '.advanced-filter__editing-footer .btn-primary',
         savePresetInput: '.advanced-filter-name-editor__input',
@@ -56,6 +58,10 @@ export class GridOperations {
         return await $(gridRowLinks).isPresent();
     }
 
+    async getFilterValue(filterNumber?:number): Promise<string> {
+        return await $$(this.selectors.filterValue).get(0+filterNumber).getText();
+    }
+
     async clickCheckBoxOfValueInGrid(value: string, guid?: string): Promise<void> {
         let gridGuid: string = '';
         if (guid) { gridGuid = `[rx-view-component-id="${guid}"] `; }
@@ -66,6 +72,28 @@ export class GridOperations {
             let linkText: string = await tempRowLocator.$(this.selectors.gridRowHyperLinks).getText();
             if (linkText.trim() == value) {
                 await tempRowLocator.$(this.selectors.gridCheckbox).click();
+                break;
+            }
+        }
+    }
+
+    async isNoFilterAppliedError(): Promise<boolean> {
+        return  await $(this.selectors.noFilterAppliedError).isDisplayed();
+      }
+
+    async clickFilterField(fieldName: string, guid?: string): Promise<void> {
+        let guidId: string = "";
+        let refreshIcon = this.selectors.refreshIcon;
+        if (guid) {
+            guidId = `[rx-view-component-id="${guid}"] `;
+            refreshIcon = `[rx-view-component-id="${guid}"] ` + refreshIcon;
+        }
+        await $(guidId + this.selectors.filterPresetBtn).click();
+        let filterCount = await $$(this.selectors.filterItems);
+        for (let i = 0; i < await filterCount.length; i++) {
+            let tempLocator = await $$(this.selectors.filterItems).get(i);
+            if (await tempLocator.getText() == fieldName) {
+                await tempLocator.click();
                 break;
             }
         }
