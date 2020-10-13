@@ -12,7 +12,7 @@ export class GridOperations {
         gridCheckbox: '.ui-chkbox-box',
         appliedPresetFilter: '.a-tag-active span',
         filterPresetBtn: 'button.d-icon-left-filter',
-        clearOrSaveFilterBtn: '.advanced-filter__actions-buttons button',
+        clearSaveFilterBtn: '.advanced-filter__actions-buttons button',
         addVisibleColumnsIcon: 'button.d-icon-left-lines_vertical',
         gridColumnSelect: '.dropdown-item .checkbox__input',
         gridHeaders: '.c-header-container .c-header-name',
@@ -73,7 +73,7 @@ export class GridOperations {
     async clearFilter(guid?: string): Promise<void> {
         let appliedPresetFilter = this.selectors.appliedPresetFilter;
         let filterPresetBtn = this.selectors.filterPresetBtn;
-        let clearBtn = this.selectors.clearOrSaveFilterBtn;
+        let clearBtn = this.selectors.clearSaveFilterBtn;
         let refreshIcon = this.selectors.refreshIcon;
         if (guid) {
             let gridGuid = `[rx-view-component-id="${guid}"] `;
@@ -347,7 +347,7 @@ export class GridOperations {
         if (guid) guidId = `[rx-view-component-id="${guid}"] `;
         await $(guidId + this.selectors.filterPresetBtn).click();
         await $$(this.selectors.filterTab).get(1).click().then(async () => {
-            await $$(this.selectors.clearOrSaveFilterBtn).get(1).click();
+            await $$(this.selectors.clearSaveFilterBtn).get(1).click();
             await $(this.selectors.savePresetInput).sendKeys(filterName);
             await $$(this.selectors.saveOrCancelPresetFilterButton).get(1).click();
         });
