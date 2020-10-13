@@ -363,7 +363,7 @@ export class GridOperations {
             let countFilterName = await $$(this.selectors.filterName).count();
             for (let i = 0; i < countFilterName; i++) {
                 let filterValue = await $$(this.selectors.filterName).get(i).getText();
-                
+
                 if (filterValue == filterName) {
                     let filterdeleteButton = await $$('.d-icon-trash').get(i).isPresent();
                         if(filterdeleteButton==true){
@@ -400,7 +400,7 @@ export class GridOperations {
     }
 
     async isAppliedFilterDisplayed(appliedFilterName: string, guid?: string): Promise<boolean> {
-        let showmorelink:boolean;
+        let appliedFilter:boolean = false;
         let guidId: string = "";
         if (guid) guidId = `[rx-view-component-id="${guid}"] `;
         let showMoreElement:ElementFinder = await $('.dropdown  .filter-tags__dropdown-toggle');
@@ -411,17 +411,15 @@ export class GridOperations {
         
         return await element(by.cssContainingText(guidId + this.selectors.appliedPresetFilter, appliedFilterName)).isPresent().then(async (result) => {
             if (result){
-                showmorelink= await element(by.cssContainingText(guidId + this.selectors.appliedPresetFilter, appliedFilterName)).isDisplayed();
-                if(moreLabeLink==true){
-                    await showMoreElement.click();
-                }
-                return showmorelink;
-            }else {
-                if(moreLabeLink==true){
-                    await showMoreElement.click();
-                }
-                return false;
+                let appliedFilterDisplay= await element(by.cssContainingText(guidId + this.selectors.appliedPresetFilter, appliedFilterName)).isDisplayed();
+                appliedFilter = appliedFilterDisplay;
+            } else {
+                appliedFilter = false;
             }
+            if(moreLabeLink==true){
+                await showMoreElement.click();
+            }
+             return appliedFilter;
         });
     }
 }
