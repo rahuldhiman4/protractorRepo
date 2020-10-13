@@ -2171,6 +2171,30 @@ class ApiHelper {
             }
             adhocTaskPayload.fieldInstances["1000000063"] = taskCategory1;
         }
+        if (taskData.category2) {
+            let category2Guid = await apiCoreUtil.getCategoryGuid(taskData.category2);
+            let taskCategory2 = {
+                "id": "1000000064",
+                "value": category2Guid
+            }
+            adhocTaskPayload.fieldInstances["1000000064"] = taskCategory2;
+        }
+        if (taskData.category3) {
+            let category3Guid = await apiCoreUtil.getCategoryGuid(taskData.category3);
+            let taskCategory3 = {
+                "id": "1000000065",
+                "value": category3Guid
+            }
+            adhocTaskPayload.fieldInstances["1000000065"] = taskCategory3;
+        }
+        if (taskData.label) {
+            let labelGuid = await apiCoreUtil.getLabelGuid(taskData.label);
+            let taskLabel = {
+                "id": "450000173",
+                "value": labelGuid
+            }
+            adhocTaskPayload.fieldInstances["450000173"] = taskLabel;
+        }
 
         let createTaskResponse = await apiCoreUtil.createRecordInstance(adhocTaskPayload);
         console.log('Create Task API Status =============>', createTaskResponse.status);
