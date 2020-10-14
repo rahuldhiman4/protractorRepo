@@ -746,14 +746,14 @@ describe('Notes template', () => {
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(tempNotesTemplateData.templateName);// notes template not shown
             await activityTabPo.addActivityNote('AdhocTemplateData');
             await activityTabPo.clickOnPostButton();
-            expect(await activityTabPo.isTextPresentInActivityLog('AdhocTemplateData'+tempNotesTemplateData.body)).toBeTruthy();
+            expect(await activityTabPo.isTextPresentInActivityLog('AdhocTemplateData' + tempNotesTemplateData.body)).toBeTruthy();
         });
         it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             await navigationPage.gotoPersonProfile();
-            expect(await activityTabPo.isTextPresentInActivityLog('AdhocTemplateData'+tempNotesTemplateData.body)).toBeTruthy();
-            expect(await activityTabPo.isTextPresentInActivityLog('AutomatedTemplateData'+tempNotesTemplateData.body)).toBeTruthy();
-            expect(await activityTabPo.isTextPresentInActivityLog('ManualTemplateData'+tempNotesTemplateData.body)).toBeTruthy();
-            expect(await activityTabPo.isTextPresentInActivityLog('ExternalTemplateData'+tempNotesTemplateData.body)).toBeTruthy();
+            expect(await activityTabPo.isTextPresentInActivityLog('AdhocTemplateData' + tempNotesTemplateData.body)).toBeTruthy();
+            expect(await activityTabPo.isTextPresentInActivityLog('AutomatedTemplateData' + tempNotesTemplateData.body)).toBeTruthy();
+            expect(await activityTabPo.isTextPresentInActivityLog('ManualTemplateData' + tempNotesTemplateData.body)).toBeTruthy();
+            expect(await activityTabPo.isTextPresentInActivityLog('ExternalTemplateData' + tempNotesTemplateData.body)).toBeTruthy();
         });
             afterAll(async () => {
             await navigationPage.signOut();
@@ -1043,7 +1043,7 @@ describe('Notes template', () => {
             await apiHelper.associatePersonToCompany(userData1.userId, "Psilon");
             await browser.sleep(15000); //Hard Wait to reflect the new person
 
-            await apiHelper.apiLogin(userData1.userId+'@petramco.com', 'Password_1234');
+            await apiHelper.apiLogin(userData1.userId + '@petramco.com', 'Password_1234');
             let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let petramcoNotesTemplateData = cloneDeep(notesTemplateData.NOTES_TEMPLATE_MANDATORY_FIELD);
             petramcoTemplateName = petramcoNotesTemplateData.templateName + randomStr + 'Petramco';
@@ -1085,7 +1085,7 @@ describe('Notes template', () => {
 
         it('[DRDMV-16112]: Verify Case Notes template is displayed as per to be assignee company(operating organisation)', async () => {
             await navigationPage.signOut();
-            await loginPage.login(userData1.userId+"@petramco.com", 'Password_1234');
+            await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(petramcoCaseResponse.displayId);
             await activityTabPo.clickActivityNoteTextBox();
@@ -1132,8 +1132,8 @@ describe('Notes template', () => {
             readAccessMappingData = {
                 "configName": randomString + '1ReadAccessMappingName',
                 "assignedCompany": 'Petramco',
-                "businessUnit": 'Facilities Support',
-                "supportGroup": 'Facilities',
+                "businessUnit": 'United States Support',
+                "supportGroup": 'US Support 3',
                 "company": 'Petramco',
                 "priority": "Low",
             }
@@ -1282,6 +1282,7 @@ describe('Notes template', () => {
             expect(await ckeditorValidationPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Text is not center Align In Ck Editor');
             expect(await ckeditorValidationPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPo.clickOnPostButton();
+            await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickShowMoreLinkInActivity(1);
             expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
             expect(await activityTabPo.isItalicTextDisplayedInActivity(italicText, 1)).toBeTruthy('FailureMsg Italic Text is missing In Activity');
@@ -1300,10 +1301,11 @@ describe('Notes template', () => {
             await createCasePo.clickSaveCaseButton();
             await casePreviewPo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Case Access');
-            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Facilities', 'Read')).toBeTruthy('Support Group does not have read access');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('US Support 3', 'Write')).toBeTruthy('Support Group does not have read access');
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(templateName);
             await activityTabPo.addActivityNote(randomString);
             await activityTabPo.clickOnPostButton();
+            await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickShowMoreLinkInActivity(1);
             expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
             expect(await activityTabPo.isItalicTextDisplayedInActivity(italicText, 1)).toBeTruthy('FailureMsg Italic Text is missing In Activity');
@@ -1320,6 +1322,7 @@ describe('Notes template', () => {
             await loginPage.login('qfeng');
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink('NotesTemplateCase1' + randomString);
+            await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickShowMoreLinkInActivity(1);
             expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
             expect(await activityTabPo.isItalicTextDisplayedInActivity(italicText, 1)).toBeTruthy('FailureMsg Italic Text is missing In Activity');
@@ -1331,9 +1334,10 @@ describe('Notes template', () => {
             expect(await ckeditorValidationPo.isTableCaptionDisplayedInCkEditorTextArea('tableSummary', 'new' + randomString)).toBeTruthy('Text is not Left Align In Ck Editor');
             expect(await ckeditorValidationPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('Text is not Left Align In Ck Editor');
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('qtao');
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink('NotesTemplateCase1' + randomString);
+            await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
             expect(await activityTabPo.isItalicTextDisplayedInActivity(italicText, 1)).toBeTruthy('FailureMsg Italic Text is missing In Activity');
@@ -1366,22 +1370,25 @@ describe('Notes template', () => {
             await createNotesTemplate.setBody("this is new actiivty notes template");
             // bold
             await ckeditorOpsPo.updateDescription("this is text ");
+            await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnBoldIcon();
             await ckeditorOpsPo.updateDescription(boldText);
             expect(await ckeditorValidationPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
             await ckeditorOpsPo.clickOnBoldIcon();
             //italic
+            await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnItalicIcon();
             await ckeditorOpsPo.updateDescription(italicText);
             expect(await ckeditorValidationPo.isItalicTextDisplayedInCkEditorTextArea(italicText)).toBeTruthy('Text is not Italic In Ck Editor');
-            await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnItalicIcon();
             //strikethrough
+            await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnStrikeThroughIcon();
             await ckeditorOpsPo.updateDescription(strikeThroughText);
             expect(await ckeditorValidationPo.isStrikeThroughTextDisplayedInCkEditorTextArea(strikeThroughText)).toBeTruthy('Text is not Strike Through In Ck Editor');
             await ckeditorOpsPo.clickOnStrikeThroughIcon();
             //underline
+            await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnUnderLineIcon();
             await ckeditorOpsPo.updateDescription(underLineText);
             expect(await ckeditorValidationPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
@@ -1572,14 +1579,14 @@ describe('Notes template', () => {
    describe('[DRDMV-22637,DRDMV-22643,DRDMV-22653]: Verify CKE functionality on Create and Edit People Notes template', async () => {
         let templateName: string, caseData, newCase, randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
-            await apiHelper.apiLogin('elizabeth');
+            await apiHelper.apiLogin('qkatawazi');
             caseData = {
-                "Requester": "araisin",
-                "Summary": "Test case for DRDMV-16803",
+                "Requester": "qtao",
+                "Summary": "Test case for inProgress task",
                 "Assigned Company": "Petramco",
-                "Business Unit": "Facilities Support",
-                "Support Group": "Facilities",
-                "Assignee": "Fritz"
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
+                "Assignee": "qfeng"
             };
             newCase = await apiHelper.createCase(caseData);
         });
@@ -1594,22 +1601,26 @@ describe('Notes template', () => {
             await createNotesTemplate.setBody("this is new actiivty notes template");
             // bold
             await ckeditorOpsPo.updateDescription("this is text ");
+            await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnBoldIcon();
             await ckeditorOpsPo.updateDescription(boldText);
             expect(await ckeditorValidationPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
             await ckeditorOpsPo.clickOnBoldIcon();
             //italic
+            await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnItalicIcon();
             await ckeditorOpsPo.updateDescription(italicText);
             expect(await ckeditorValidationPo.isItalicTextDisplayedInCkEditorTextArea(italicText)).toBeTruthy('Text is not Italic In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnItalicIcon();
             //strikethrough
+            await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnStrikeThroughIcon();
             await ckeditorOpsPo.updateDescription(strikeThroughText);
             expect(await ckeditorValidationPo.isStrikeThroughTextDisplayedInCkEditorTextArea(strikeThroughText)).toBeTruthy('Text is not Strike Through In Ck Editor');
             await ckeditorOpsPo.clickOnStrikeThroughIcon();
             //underline
+            await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnUnderLineIcon();
             await ckeditorOpsPo.updateDescription(underLineText);
             expect(await ckeditorValidationPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
@@ -1741,6 +1752,7 @@ describe('Notes template', () => {
             expect(await ckeditorValidationPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
             expect(await ckeditorValidationPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('Text is not Left Align In Ck Editor');
             await activityTabPo.clickOnPostButton();
+            await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
             expect(await activityTabPo.isItalicTextDisplayedInActivity(italicText, 1)).toBeTruthy('FailureMsg Italic Text is missing In Activity');
@@ -1762,6 +1774,7 @@ describe('Notes template', () => {
             await utilityGrid.searchAndOpenHyperlink(newCase.displayId);
             await viewCasePage.clickAssigneeLink();
             await utilityCommon.switchToNewTab(1);
+            await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
             expect(await activityTabPo.isItalicTextDisplayedInActivity(italicText, 1)).toBeTruthy('FailureMsg Italic Text is missing In Activity');

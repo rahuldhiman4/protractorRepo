@@ -44,6 +44,8 @@ export interface ICreateCase {
     "Category Tier 2"?: string;
     "Category Tier 3"?: string;
     "Category Tier 4"?: string;
+    "Target Date"?:string;
+    "Label"?: string;
 }
 
 export interface IUpdateCaseAccess {

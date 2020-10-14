@@ -1,4 +1,4 @@
-import { browser } from "protractor";
+import { browser,protractor,$ } from "protractor";
 import apiHelper from "../../api/api.helper";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
@@ -13,6 +13,8 @@ import casePreviewPo from '../../pageobject/case/case-preview.po';
 import taskPreviewPo from '../../pageobject/task/task-preview.po';
 import knowledgeArticlePreview from '../../pageobject/knowledge/preview-knowledge.po';
 import personProfilePo from '../../pageobject/common/person-profile.po';
+import dateTimeSelectorPo from '../../pageobject/settings/common/date-time-selector.po';
+import utilityGrid from '../../utils/utility.grid';
 
 export interface IIDs {
     id: string;
@@ -197,7 +199,7 @@ describe('Global Search All Category', () => {
             "lastName": lastName,
             "userId": loginId,
             "emailId": emailId,
-            "userPermission": ["Case Agent","Document Manager"]
+            "userPermission": ["Case Agent", "Document Manager"]
         }
         if (company) {
             await apiHelper.createNewUser(caseAgentuserData);
@@ -378,7 +380,7 @@ describe('Global Search All Category', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId1[2], KAModule)).toBeTruthy(`FailureMsg7: ${kaDisplayId1[2]} Knowledge Article id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId1[3], KAModule)).toBeTruthy(`FailureMsg8: ${kaDisplayId1[3]} Knowledge Article id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId1[4], KAModule)).toBeTruthy(`FailureMsg9: ${kaDisplayId1[4]} Knowledge Article id  is missing`);
-        
+
             await searchPo.clickOnLeftPannelRecord(kaDisplayId1[0], KAModule);
         });
 
@@ -587,22 +589,22 @@ describe('Global Search All Category', () => {
             if (date1 <= 9) date = '0' + date1.toString();
             else date = date1.toString();
             currentfinalDate = date + '/' + month + '/' + year;
-            createdDate =`Created Date: ${currentfinalDate} 12:01:00 AM - ${currentfinalDate} 11:59:00 PM`;
-            modifiedDate =`Modified Date: ${currentfinalDate} 12:01:00 AM - ${currentfinalDate} 11:59:00 PM`;
+            createdDate = `Created Date: ${currentfinalDate} 12:01:00 AM - ${currentfinalDate} 11:59:00 PM`;
+            modifiedDate = `Modified Date: ${currentfinalDate} 12:01:00 AM - ${currentfinalDate} 11:59:00 PM`;
 
             await apiHelper.apiLogin('elizabeth');
             // Create Case
-                caseDetails = await createCase(caseSummary, caseDescription);
-                caseDisplayId = caseDetails.displayId;
+            caseDetails = await createCase(caseSummary, caseDescription);
+            caseDisplayId = caseDetails.displayId;
 
             // Create Task
             taskDisplayId = await createTask(taskSummary, caseDetails.id, taskDescription);
-            
+
             // Create Case Template
-            caseTemplateDisplayId = await createCaseTemplate(caseTemplateName , caseTemplateSummary, 'Active', 'Petramco');
-            
+            caseTemplateDisplayId = await createCaseTemplate(caseTemplateName, caseTemplateSummary, 'Active', 'Petramco');
+
             // Create Task Template
-            taskTemplateDisplayId = await createTaskTemplate(taskTemplateName , 'Active', 'Petramco');
+            taskTemplateDisplayId = await createTaskTemplate(taskTemplateName, 'Active', 'Petramco');
 
             // Create Knowledge Article
             kaDisplayId = await createKnowledgeArticleWithPublish(knowledgeTitle);
@@ -618,10 +620,18 @@ describe('Global Search All Category', () => {
         it('[DRDMV-16881]: Verify Recent With Case Summary And Descripiton And Check Is Duplicates Case Summary', async () => {
             await navigationPage.gotoSearch();
             expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
+            await utilityGrid.clickFilterField("Created Date");
+            await dateTimeSelectorPo.selectTimeToggle();
+            await dateTimeSelectorPo.setHour('6');
+            await dateTimeSelectorPo.setMinute(31);
+            await dateTimeSelectorPo.clickMeridianValue("AM");
 
-            await searchPo.selectTime('Created Date','Start', '12', '01', 'AM');
-            await searchPo.selectTime('Created Date','End', '11', '59', 'PM');
-            expect (await searchPo.getDate()).toBe(createdDate,'Created Date is missing');
+            await dateTimeSelectorPo.clickEndDateTab();
+            await dateTimeSelectorPo.setHour('11');
+            await dateTimeSelectorPo.setMinute(59);
+            await dateTimeSelectorPo.clickMeridianValue("PM");
+            await $('body').sendKeys(protractor.Key.ESCAPE);
+            expect(await searchPo.getDate()).toBe(createdDate, 'Created Date is missing');
         });
 
         it('[DRDMV-16881]: Verify Modules With Created Date', async () => {
@@ -650,7 +660,7 @@ describe('Global Search All Category', () => {
             await searchPo.searchRecord(knowledgeTitle);
             expect(await searchPo.isModuleTitleDisplayed(knowledgeTitle, 'Knowledge Articles (1)', KAModule)).toBeTruthy('FailureMsg2: KA module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId, KAModule)).toBeTruthy(`FailureMsg4: ${kaDisplayId} Knowledge Article id  is missing`);
-        
+
             // Verify Document Stored
             await searchPo.searchRecord(documentName);
             expect(await searchPo.isModuleTitleDisplayed(documentName, 'Documents (1)', documentModule)).toBeTruthy('FailureMsg2: Document module title is missing');
@@ -665,9 +675,19 @@ describe('Global Search All Category', () => {
 
         it('[DRDMV-16881]: Verify Modules With Change to Modified Date', async () => {
             await searchPo.closeFilterDateLabel();
-            await searchPo.selectTime('Modified Date','Start', '12', '01', 'AM');
-            await searchPo.selectTime('Modified Date','End', '11', '59', 'PM');
-            expect (await searchPo.getDate()).toBe(modifiedDate,'Created Date is missing');
+            await utilityGrid.clickFilterField("Modified Date");
+            await dateTimeSelectorPo.selectTimeToggle();
+            await dateTimeSelectorPo.setHour('12');
+            await dateTimeSelectorPo.setMinute(1);
+            await dateTimeSelectorPo.clickMeridianValue("AM");
+
+            await dateTimeSelectorPo.clickEndDateTab();
+            await dateTimeSelectorPo.setHour('11');
+            await dateTimeSelectorPo.setMinute(59);
+            await dateTimeSelectorPo.clickMeridianValue("PM");
+            await $('body').sendKeys(protractor.Key.ESCAPE);
+            expect(await searchPo.getDate()).toBe(modifiedDate, 'Modified Date is missing');
+
             // Verify Case
             await searchPo.searchRecord(caseSummary);
             expect(await searchPo.isModuleTitleDisplayed(caseSummary, 'Cases (1)', caseModule)).toBeTruthy('FailureMsg2: Cases module title is missing');
@@ -693,7 +713,7 @@ describe('Global Search All Category', () => {
             await searchPo.searchRecord(knowledgeTitle);
             expect(await searchPo.isModuleTitleDisplayed(knowledgeTitle, 'Knowledge Articles (1)', KAModule)).toBeTruthy('FailureMsg2: KA module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId, KAModule)).toBeTruthy(`FailureMsg4: ${kaDisplayId} Knowledge Article id  is missing`);
-        
+
             // Verify Document Stored
             await searchPo.searchRecord(documentName);
             expect(await searchPo.isModuleTitleDisplayed(documentName, 'Documents (1)', documentModule)).toBeTruthy('FailureMsg2: Document module title is missing');

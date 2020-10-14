@@ -1,11 +1,13 @@
 {
     "SuppGrpData": {
         "orgName": "UI-SupportGroup",
-        "relatedOrgId": null
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
     },
     "SuppGrpData19501": {
         "orgName": "UI-SupportGroup-19501",
-        "relatedOrgId": null
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
     },
     "SuppGrpData19082": {
         "orgName": "UI-SupportGroup-19082",

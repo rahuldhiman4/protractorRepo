@@ -770,17 +770,19 @@ describe("Compose Email", () => {
                 "Support Group": "US Support 3",
                 "Assignee": "qkatawazi"
             }
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             newCase = await apiHelper.createCase(caseData);
         });
         it('[DRDMV-20365,DRDMV-20366]: Verify Able to insert table,hyperlink, images (All images) and Copy paste images in compose email and its send successfully', async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('qkatawazi');
             await utilityGrid.clearFilter();
             await caseConsole.searchAndOpenCase(newCase.displayId);
             await viewCasePo.clickOnEmailLink();
             await composeMail.clickOnSelectEmailTemplateLink();
             await selectEmailTemplateBladePo.clickOnCancelButton();
+            let values: string[] = ["PlusOne", "PlusTwo", "PlusThree"];
+            await composeMail.setNumberList(values);
             await composeMail.setEmailBody('Uploading Image through Browsing');
             await composeMail.clickOnImageIcon();
             sourceValue = await imagePropertiesPo.addImageOnEmail('Upload', '../../../data/ui/attachment/articleStatus.png', imageWidthFieldIndex, imageUrlFieldIndex);
@@ -831,7 +833,7 @@ describe("Compose Email", () => {
             await ckeditorOpsPo.setDataInTable(2, 3, 'FirstCenterAlign', 'tableSummary');
             //set color
             await ckeditorOpsPo.clickInTableCell(3, 1, 'tableSummary');
-            await ckeditorOpsPo.selectColor('Bright Blue');
+            await composeMail.selectColor('Bright Blue');
             await ckeditorOpsPo.setDataInTable(3, 1, 'SettingColor', 'tableSummary');
             //set font
             await ckeditorOpsPo.clickInTableCell(3, 2, 'tableSummary');
@@ -842,8 +844,7 @@ describe("Compose Email", () => {
             await ckeditorOpsPo.selectFontTypeOrSize('Courier New','FontType');
             await ckeditorOpsPo.setDataInTable(3, 3, 'SettingFontType', 'tableSummary');
             //checking number and bullot points and setting values for them
-            await ckeditorOpsPo.setNumberList(['PlusOne,PlusTwo,PlusThree']);
-            await composeMail.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
+            await composeMail.setToOrCCInputTextbox('To', 'qkatawazi@petramco.com');
             await composeMail.clickOnSendButton();
             await utilityCommon.closePopUpMessage();
         });
