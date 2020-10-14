@@ -18,7 +18,6 @@ describe('Preset Filter Funcational Verification', () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
 
-        
         // Create User and assigned Document Manager Permission to agent
         await apiHelper.apiLogin('tadmin');
         caseAgentuserData = {
@@ -56,7 +55,6 @@ describe('Preset Filter Funcational Verification', () => {
                     "Support Group": "US Support 3",
                     "Assignee": caseAgentUserId
                 }
-                console.log('randomStr>>>>>>>>>.',randomStr);
                 
                 await apiHelper.apiLogin(caseAgentuserData.userId+"@petramco.com","Password_1234");
                 newCase = await apiHelper.createCase(caseData1);
@@ -127,14 +125,15 @@ describe('Preset Filter Funcational Verification', () => {
                 expect(await utilityGrid.getFirstGridRecordColumnValue('Article ID')).toBe(knowledgeArticleData.displayId, " Article ID NOT displayed in Task console");
             });
             it('[DRDMV-23481]: Clear Filter with logout login in and verify same filter again able to applied or not', async () => {
-                await navigationPage.gotoCaseConsole();
+                await navigationPage.gotoKnowledgeConsole();
                 await utilityGrid.clearFilter();
                 await navigationPage.signOut();
                 await loginPage.login(caseAgentuserData.userId+"@petramco.com","Password_1234");
+                await navigationPage.gotoKnowledgeConsole();
                 expect (await utilityGrid.isAppliedFilterDisplayed('My Open Articles')).toBeFalsy('My Open Articles is displayed');
                 await utilityGrid.applyPresetFilter('My Open Articles');
                 expect (await utilityGrid.isAppliedFilterDisplayed('My Open Articles')).toBeTruthy('My Open Articles is missing');
-                await utilityGrid.searchRecord(newCase.displayId);
+                await utilityGrid.searchRecord(knowledgeArticleData.displayId);
                 expect(await utilityGrid.getFirstGridRecordColumnValue('Article ID')).toBe(knowledgeArticleData.displayId, " Article ID NOT displayed in Task console");
             });
             afterAll(async () => {
