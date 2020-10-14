@@ -79,6 +79,14 @@ class ComposeMail {
         await ckeditorOpsPo.clickOnFontSizeIcon(this.selectors.commonGuid);
     }
 
+    async selectColor(colorValue: string): Promise<void> {
+        await ckeditorOpsPo.selectColor(colorValue,this.selectors.commonGuid);
+    }
+
+    async setNumberList(values: string[]): Promise<void> {
+        await ckeditorOpsPo.setNumberList(values,this.selectors.commonGuid);
+    }
+
     async isUserPopulatedInToOrCc(value: string, emailToOrCCValue): Promise<boolean> {
         if (value == 'To') {
             await $$(this.selectors.toCcInput).get(0).clear();

@@ -2171,26 +2171,58 @@ class ApiHelper {
             }
             adhocTaskPayload.fieldInstances["1000000063"] = taskCategory1;
         }
+        if (taskData.category2) {
+            let category2Guid = await apiCoreUtil.getCategoryGuid(taskData.category2);
+            let taskCategory2 = {
+                "id": "1000000064",
+                "value": category2Guid
+            }
+            adhocTaskPayload.fieldInstances["1000000064"] = taskCategory2;
+        }
+        if (taskData.category3) {
+            let category3Guid = await apiCoreUtil.getCategoryGuid(taskData.category3);
+            let taskCategory3 = {
+                "id": "1000000065",
+                "value": category3Guid
+            }
+            adhocTaskPayload.fieldInstances["1000000065"] = taskCategory3;
+        }
 
-        let createTaskResponse = await apiCoreUtil.createRecordInstance(adhocTaskPayload);
-        console.log('Create Task API Status =============>', createTaskResponse.status);
-        const taskDetails = await axios.get(
-            await createTaskResponse.headers.location
-        );
-        console.log('New Task Details API Status =============>', taskDetails.status);
+        if (taskData.targetDate) {
+            let tasktargetDate = {
+                "id": "1000005261",
+                "value": taskData.targetDate
+            }
+            adhocTaskPayload.fieldInstances["1000005261"] = tasktargetDate;
+            if (taskData.label) {
+                let labelGuid = await apiCoreUtil.getLabelGuid(taskData.label);
+                let taskLabel = {
+                    "id": "450000173",
+                    "value": labelGuid
+                }
+                adhocTaskPayload.fieldInstances["450000173"] = taskLabel;
+            }
 
-        let registerAdhocTask = cloneDeep(REGISTER_ADHOC_TASK);
-        registerAdhocTask.processInputValues["Task Id"] = taskDetails.data.id;
-        const registerAdhocTaskResponse = await axios.post(
-            commandUri,
-            registerAdhocTask
-        );
-        console.log('Register Adhoc Task API Status =============>', registerAdhocTaskResponse.status);
+            let createTaskResponse = await apiCoreUtil.createRecordInstance(adhocTaskPayload);
+            console.log('Create Task API Status =============>', createTaskResponse.status);
+            const taskDetails = await axios.get(
+                await createTaskResponse.headers.location
+            );
+            console.log('New Task Details API Status =============>', taskDetails.status);
 
-        return {
-            id: taskDetails.data.id,
-            displayId: taskDetails.data.displayId
-        };
+            let registerAdhocTask = cloneDeep(REGISTER_ADHOC_TASK);
+            registerAdhocTask.processInputValues["Task Id"] = taskDetails.data.id;
+            const registerAdhocTaskResponse = await axios.post(
+                commandUri,
+                registerAdhocTask
+            );
+            console.log('Register Adhoc Task API Status =============>', registerAdhocTaskResponse.status);
+
+            return {
+                id: taskDetails.data.id,
+                displayId: taskDetails.data.displayId
+            };
+        }
     }
 
     async updateTaskStatus(taskGuid: string, status: string, statusReason?: string): Promise<number> {

@@ -4,6 +4,7 @@ import utilityCommon from '../utils/utility.common';
 export class GridOperations {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
+        noFilterAppliedError: '.has-danger .form-control-feedback',
         searchTextBox: '.adapt-search-triggerable input',
         clearSearchBoxButton: '.adapt-search-triggerable .adapt-search-clear',
         gridRowLinks: '.at-data-row .btn-link',
@@ -23,7 +24,12 @@ export class GridOperations {
         visibleColumnButton: '.d-icon-left-lines_vertical',
         refreshIcon: 'button[rx-id="refresh-button"]',
         filterSearchValueBox: '.adapt-mt-input-container input',
-        filterCounterInput: 'input.adapt-counter-input'
+        filterCounterInput: 'input.adapt-counter-input',
+        filterValue: '[class="filter-tags__tag-text"]',
+        filterName: '.radio__item span',
+        editPresetFilterSaveButton: '.advanced-filter__editing-footer .btn-primary',
+        savePresetInput: '.advanced-filter-name-editor__input',
+        saveOrCancelPresetFilterButton: 'button.custom-action-btn__right',
     }
 
     async searchRecord(searchValue: string, guid?: string): Promise<void> {
@@ -52,6 +58,10 @@ export class GridOperations {
         return await $(gridRowLinks).isPresent();
     }
 
+    async getFilterValue(filterNumber?:number): Promise<string> {
+        return await $$(this.selectors.filterValue).get(0+filterNumber).getText();
+    }
+
     async clickCheckBoxOfValueInGrid(value: string, guid?: string): Promise<void> {
         let gridGuid: string = '';
         if (guid) { gridGuid = `[rx-view-component-id="${guid}"] `; }
@@ -62,6 +72,28 @@ export class GridOperations {
             let linkText: string = await tempRowLocator.$(this.selectors.gridRowHyperLinks).getText();
             if (linkText.trim() == value) {
                 await tempRowLocator.$(this.selectors.gridCheckbox).click();
+                break;
+            }
+        }
+    }
+
+    async isNoFilterAppliedError(): Promise<boolean> {
+        return  await $(this.selectors.noFilterAppliedError).isDisplayed();
+      }
+
+    async clickFilterField(fieldName: string, guid?: string): Promise<void> {
+        let guidId: string = "";
+        let refreshIcon = this.selectors.refreshIcon;
+        if (guid) {
+            guidId = `[rx-view-component-id="${guid}"] `;
+            refreshIcon = `[rx-view-component-id="${guid}"] ` + refreshIcon;
+        }
+        await $(guidId + this.selectors.filterPresetBtn).click();
+        let filterCount = await $$(this.selectors.filterItems);
+        for (let i = 0; i < await filterCount.length; i++) {
+            let tempLocator = await $$(this.selectors.filterItems).get(i);
+            if (await tempLocator.getText() == fieldName) {
+                await tempLocator.click();
                 break;
             }
         }
@@ -252,7 +284,7 @@ export class GridOperations {
         }
         await $(guidId + this.selectors.filterPresetBtn).click();
         let filterCount = await $$(this.selectors.filterItems);
-        for (let i = 0; i < await filterCount.length; i++) {
+        for (let i = 0; i < filterCount.length; i++) {
             let tempLocator = await $$(this.selectors.filterItems).get(i);
             if (await tempLocator.getText() == fieldName) {
                 await tempLocator.click();
@@ -336,9 +368,43 @@ export class GridOperations {
         const allEqual = arr => arr.every(v => v === arr[0])
         return allEqual(allValues) && allValues[0] === value;
     }
-
+    async isAppliedFilterNameDisplayed(appliedFilterName: string, guid?: string): Promise<boolean> {
+        let guidId: string = "";
+        if (guid) guidId = `[rx-view-component-id="${guid}"] `;
+        return await element(by.cssContainingText(guidId + this.selectors.appliedPresetFilter, appliedFilterName)).isPresent().then(async (result) => {
+            if (result)
+                return await element(by.cssContainingText(guidId + this.selectors.appliedPresetFilter, appliedFilterName)).isDisplayed();
+            else return false;
+        });
+    }
+    async saveFilter(filterName: string, guid?: string): Promise<void> {
+        let refreshIcon = 'button[rx-id="refresh-button"]';
+        let guidId: string = "";
+        if (guid) guidId = `[rx-view-component-id="${guid}"] `;
+        await $(guidId + this.selectors.filterPresetBtn).click();
+        await $$(this.selectors.filterTab).get(1).click().then(async () => {
+            await $$(this.selectors.clearBtn).get(1).click();
+            await $(this.selectors.savePresetInput).sendKeys(filterName);
+            await $$(this.selectors.saveOrCancelPresetFilterButton).get(1).click();
+        });
+        await $(guidId + refreshIcon).click();
+    }
+    async appliedFilterMatches(expetcedFilters: string[], guid?: string): Promise<boolean> {
+        let csslocator: string = undefined;
+        if (guid) csslocator = `[rx-view-component-id='${guid}'] .a-tag-active `;
+        else csslocator = ".a-tag-active ";
+        let actualFilters = await element.all(by.css(csslocator))
+            .map(async function (header) {
+                return await header.getAttribute('innerText');
+            });
+        actualFilters.sort();
+        expetcedFilters.sort();
+        return actualFilters.length === expetcedFilters.length && actualFilters.every(
+            (value, index) => (value === expetcedFilters[index])
+        );
+    }
+    async clearSearchBox(): Promise<void> {
+        await $(this.selectors.clearSearchBoxButton).click();
+    }
 }
-
-
-
 export default new GridOperations();

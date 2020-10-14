@@ -13,15 +13,15 @@ class CKEValidation {
         activityNoteCKEditor: '[rx-view-component-id="76b9d8a2-54ef-4b24-a086-fc6ff745449d"] bwf-rich-text-editor[style="display: block;"]',
         numberIcon: '.cke_button__numberedlist_icon',
         bulletIcon: '.cke_button__bulletedlist_icon',
-        boldTextCkEditorTextArea: '.cke_enable_context_menu strong',
-        italicTextCkEditorTextArea: '.cke_enable_context_menu em',
-        underlineTextCkEditorTextArea: '.cke_enable_context_menu u',
+        boldTextCkEditorTextArea: '.cke_enable_context_menu strong,.activity__body strong',
+        italicTextCkEditorTextArea: '.cke_enable_context_menu em,.activity__body em',
+        underlineTextCkEditorTextArea: '.cke_enable_context_menu u,.activity__body u',
         colorTextCkEditorTextArea: '.cke_enable_context_menu span',
         alignmentTextCkEditorTextArea: 'div.cke_enable_context_menu , div.cke_enable_context_menu div',
         strikeThroughTextCkEditorTextArea: '.cke_enable_context_menu s',
         justifyAlignText: '.cke_enable_context_menu [style="text-align: justify;"]',
         deletedTextInCKE: '.cke_editable_themed del',
-        rightAlignText: '.cke_enable_context_menu div,.cke_enable_context_menu p',
+        rightAlignText: '.cke_enable_context_menu div,.cke_enable_context_menu p,.cke_enable_context_menu',
         centerAlignText: '.cke_enable_context_menu [style="text-align: center;"]',
         numberListCkEditorTextArea: '.cke_enable_context_menu ol li',
         bulletListTextCkEditorTextArea: '.cke_enable_context_menu ul li',
@@ -394,8 +394,8 @@ class CKEValidation {
     }
 
     async getColorFontStyleOfText(value: string, guid?: string): Promise<string> {
-        let alignColorFontStyle = `span[style="${value}"]`;
-        if (guid) alignColorFontStyle = `[rx-view-component-id="${guid}"] span[style="${value}"]`;
+        let alignColorFontStyle = `div[style="${value}"]`;
+        if (guid) alignColorFontStyle = `[rx-view-component-id="${guid}"] div[style="${value}"]`;
         let framePresent = await $(this.selectors.frame).isPresent();
         let elementText: string;
         let styleElementCount = (await $$(alignColorFontStyle)).length;

@@ -14,11 +14,11 @@ class CKEditor {
         centerAlignIcon: '.cke_button__justifycenter_icon',
         rightAlignIcon: '.cke_button__justifyright_icon',
         colorIcon: '.cke_button__textcolor',
-        styleDropDown: 'a.cke_combo_button',        
+        styleDropDown: 'a.cke_combo_button',
         maximizeMinimizeicon: '.cke_button__maximize_icon',
         fontType: '.cke_combo__font',
         fontSize: '.cke_combo__fontsize',
-        frame: 'iframe.cke_wysiwyg_frame',
+        frame: 'iframe.cke_wysiwyg_frame,[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] iframe.cke_wysiwyg_frame',
         tableIcon: '.cke_toolbar .cke_button__table_icon',
         imageIcon: '.cke_toolbar .cke_button__image_icon',
         ckEditor: '.cke_inner',
@@ -275,13 +275,36 @@ class CKEditor {
     }
 
     // input should be a list
-    async setNumberList(values: string[]): Promise<void> {
-        await $(this.selectors.bodyTextArea).sendKeys(Key.CONTROL, Key.END);
-        await $(this.selectors.bodyTextArea).sendKeys(Key.ENTER);
-        await $(this.selectors.numberIcon).click();
-        for (let i = 0; i < values.length; i++) {
-            await $(this.selectors.bodyTextArea).sendKeys(values[i]);
+    async setNumberList(values: string[], guidId?: string): Promise<void> {
+        let locator: string;
+        if (guidId) { console.log("1"); locator = `[rx-view-component-id="${guidId}"] .cke_button__numberedlist_icon` }
+        else { locator = await $(this.selectors.numberIcon) }
+        let framePresent = await $(this.selectors.frame).isPresent();
+        if (framePresent == true) {
+            await browser.waitForAngularEnabled(false);
+            await browser.switchTo().frame($(this.selectors.frame).getWebElement());
+            await $(this.selectors.bodyTextArea).sendKeys(Key.CONTROL, Key.END);
             await $(this.selectors.bodyTextArea).sendKeys(Key.ENTER);
+            await browser.switchTo().defaultContent();
+            await browser.waitForAngularEnabled(true);
+            await $(locator).click();
+            await browser.waitForAngularEnabled(false);
+            await browser.switchTo().frame($(this.selectors.frame).getWebElement());
+            for (let i = 0; i < values.length; i++) {
+                await $(this.selectors.bodyTextArea).sendKeys(values[i]);
+                await $(this.selectors.bodyTextArea).sendKeys(Key.ENTER);
+            }
+            await browser.switchTo().defaultContent();
+            await browser.waitForAngularEnabled(true);
+        }
+        else {
+            await $(this.selectors.bodyTextArea).sendKeys(Key.CONTROL, Key.END);
+            await $(this.selectors.bodyTextArea).sendKeys(Key.ENTER);
+            await $(locator).click();
+            for (let i = 0; i < values.length; i++) {
+                await $(this.selectors.bodyTextArea).sendKeys(values[i]);
+                await $(this.selectors.bodyTextArea).sendKeys(Key.ENTER);
+            }
         }
     }
 

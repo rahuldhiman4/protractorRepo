@@ -165,7 +165,7 @@ describe("Case Read Access", () => {
         await addReadAccess.setReadAccessConfigurationName("ReadAccess" + randVal);
         await addReadAccess.selectCompany('Global');
         await addReadAccess.selectPriority('Critical');
-        await addReadAccess.selectCategoryTier1('Purchasing Card');
+        await addReadAccess.selectCategoryTier1('Employee Relations');
         await addReadAccess.selectSupportCompany('Petramco');
         await addReadAccess.selectBusinessUnit(businessData1.orgName);
         await addReadAccess.selectDepartment(departmentData1.orgName);
@@ -176,7 +176,7 @@ describe("Case Read Access", () => {
         await navigationPo.gotoCreateCase();
         await createCasePage.selectRequester('adam');
         await createCasePage.setSummary('set summary');
-        await createCasePage.selectCategoryTier1('Purchasing Card');
+        await createCasePage.selectCategoryTier1('Employee Relations');
         await createCasePage.setPriority('Critical');
         await createCasePage.clickChangeAssignmentButton();
         await changeAssignmentPage.selectCompany('Petramco');
@@ -186,6 +186,7 @@ describe("Case Read Access", () => {
         await changeAssignmentPage.clickOnAssignButton();
         await createCasePage.clickSaveCaseButton();
         await casePreviewPo.clickGoToCaseButton();
+        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         await viewCasePage.clickOnTab('Case Access');
         expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Qadim Katawazi', 'Write')).toBeTruthy('FailuerMsg1: Agent Name is missing');
         expect(await accessTabPo.isAccessTypeOfEntityDisplayed('US Support 3', 'Write')).toBeTruthy('Support Group does not have write access');
@@ -256,7 +257,7 @@ describe("Case Read Access", () => {
                 "templateSummary": `${randomStr}Summary`,
                 "caseStatus": "New",
                 "casePriority": "Critical",
-                "categoryTier1": 'Purchasing Card',
+                "categoryTier1": 'Employee Relations',
                 "company": "Petramco",
                 "businessUnit": businessData2.orgName,
                 "department": departmentData2.orgName,
@@ -272,7 +273,7 @@ describe("Case Read Access", () => {
             await addReadAccess.setReadAccessConfigurationName("ReadAccess" + randomStr);
             await addReadAccess.selectCompany('Petramco');
             await addReadAccess.selectPriority('Critical');
-            await addReadAccess.selectCategoryTier1('Purchasing Card');
+            await addReadAccess.selectCategoryTier1('Employee Relations');
             await addReadAccess.selectSupportCompany('Petramco');
             await addReadAccess.selectBusinessUnit(businessData1.orgName);
             await addReadAccess.selectDepartment(departmentData1.orgName);
