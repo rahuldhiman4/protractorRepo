@@ -22,17 +22,17 @@ describe("Case Preview", () => {
         let templateData = {
             "templateName": caseTemplateName,
             "templateSummary": 'My legal name has changed and I need it updated.',
-            "categoryTier1": "Workforce Administration",
-            "categoryTier2": "HR Operations",
-            "categoryTier3": "Adjustments",
+            "categoryTier1": "Employee Relations",
+            "categoryTier2": "Compensation",
+            "categoryTier3": "Bonus",
             "casePriority": "Medium",
             "templateStatus": "Active",
             "company": "Petramco",
-            "businessUnit": "HR Support",
-            "supportGroup": "Workforce Administration",
-            "assignee": "aallbrook",
-            "ownerBU": "Facilities Support",
-            "ownerGroup": "Facilities"
+            "businessUnit": "United States Support",
+            "supportGroup": "US Support 3",
+            "assignee": "qkatawazi",
+            "ownerBU": "United States Support",
+            "ownerGroup": "US Support 3"
         }
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createCaseTemplate(templateData);
@@ -61,11 +61,11 @@ describe("Case Preview", () => {
         expect(await casePreviewPo.isRequesterEmailIdDisplayed('qkatawazi@petramco.com')).toBeTruthy('Requester email id is missing');
         expect(await casePreviewPo.isCaseTemplateDisplayed(caseTemplateName)).toBeTruthy('Case Template is missing');
         expect(await casePreviewPo.isDescriptionDisplayed('Qadim Katawazi ' + caseTemplateName + ' ' + caseSummary)).toBeTruthy('Description is missing');
-        expect(await casePreviewPo.isCategoryTier1Displayed('Workforce Administration')).toBeTruthy('CategoryTier1 is missing');
-        expect(await casePreviewPo.isCategoryTier2Displayed('HR Operations')).toBeTruthy('CategoryTier2 is missing');
-        expect(await casePreviewPo.isCategoryTier3Displayed('Adjustments')).toBeTruthy('CategoryTier3 is missing');
-        expect(await casePreviewPo.isAssigneeDisplayed('Al Allbrook')).toBeTruthy('Assignee name is missing');
-        expect(await casePreviewPo.isAssignedGroupDisplayed('Workforce Administration')).toBeTruthy('Assigned group name is missing');
+        expect(await casePreviewPo.isCategoryTier1Displayed('Employee Relations')).toBeTruthy('CategoryTier1 is missing');
+        expect(await casePreviewPo.isCategoryTier2Displayed('Compensation')).toBeTruthy('CategoryTier2 is missing');
+        expect(await casePreviewPo.isCategoryTier3Displayed('Bonus')).toBeTruthy('CategoryTier3 is missing');
+        expect(await casePreviewPo.isAssigneeDisplayed('Qadim Katawazi')).toBeTruthy('Assignee name is missing');
+        expect(await casePreviewPo.isAssignedGroupDisplayed('US Support 3')).toBeTruthy('Assigned group name is missing');
         expect(await casePreviewPo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy('Assigned company name is missing');
         expect(await casePreviewPo.isCreateNewCaseButtonDisplayed()).toBeTruthy('Create New Case button is missing');
         await casePreviewPo.clickGoToCaseButton();
@@ -91,7 +91,7 @@ describe("Case Preview", () => {
         expect(await casePreviewPo.isCategoryTier2Displayed('-')).toBeTruthy('CategoryTier2 is missing');
         expect(await casePreviewPo.isCategoryTier3Displayed('-')).toBeTruthy('CategoryTier3 is missing');
         expect(await casePreviewPo.isAssigneeDisplayed('None')).toBeTruthy('Assignee name is missing');
-        expect(await casePreviewPo.isAssignedGroupDisplayed('Workforce Administration')).toBeTruthy('Assigned group name is missing');
+        expect(await casePreviewPo.isAssignedGroupDisplayed('US Support 3')).toBeTruthy('Assigned group name is missing');
         expect(await casePreviewPo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy('Assigned company name is missing');
         expect(await casePreviewPo.isCreateNewCaseButtonDisplayed()).toBeTruthy('Create New Case button is missing');
         await casePreviewPo.clickGoToCaseButton();
@@ -150,12 +150,12 @@ describe("Case Preview", () => {
 
         await navigationPage.gotoCreateCase();
         await createCasePo.selectRequester('Elizabeth Peters');
-        await createCasePo.setLabel(label);
         await createCasePo.setSummary(caseSummary);
         await createCasePo.setContactName('qtao');
         await createCasePo.setDescription(description);
         await createCasePo.clickSelectCaseTemplateButton();
         await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
+        await createCasePo.setLabel(label);
         await createCasePo.clickAssignToMeButton();
         await createCasePo.clickSaveCaseButton();
         expect(await casePreviewPo.isCaseSummaryDisplayed(caseSummary)).toBeTruthy('Summary is missing');
@@ -170,11 +170,11 @@ describe("Case Preview", () => {
         expect(await casePreviewPo.isCaseSiteDisplayed('Rochester')).toBeTruthy('Case site is missing');
         expect(await casePreviewPo.isCaseTemplateDisplayed(caseTemplateName)).toBeTruthy('Case Template is missing');
         expect(await casePreviewPo.isDescriptionDisplayed(description)).toBeTruthy('Description is missing');
-        expect(await casePreviewPo.isCategoryTier1Displayed('Workforce Administration')).toBeTruthy('CategoryTier1 is missing');
-        expect(await casePreviewPo.isCategoryTier2Displayed('HR Operations')).toBeTruthy('CategoryTier2 is missing');
-        expect(await casePreviewPo.isCategoryTier3Displayed('Adjustments')).toBeTruthy('CategoryTier3 is missing');
+        expect(await casePreviewPo.isCategoryTier1Displayed('Employee Relations')).toBeTruthy('CategoryTier1 is missing');
+        expect(await casePreviewPo.isCategoryTier2Displayed('Compensation')).toBeTruthy('CategoryTier2 is missing');
+        expect(await casePreviewPo.isCategoryTier3Displayed('Bonus')).toBeTruthy('CategoryTier3 is missing');
         expect(await casePreviewPo.isAssigneeDisplayed('Qianru Tao')).toBeTruthy('Assignee name is missing');
-        expect(await casePreviewPo.isAssignedGroupDisplayed('US Support 1')).toBeTruthy('Assigned group name is missing');
+        expect(await casePreviewPo.isAssignedGroupDisplayed('US Support 3')).toBeTruthy('Assigned group name is missing');
         expect(await casePreviewPo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy('Assigned company name is missing');
         expect(await casePreviewPo.isCreateNewCaseButtonDisplayed()).toBeTruthy('Create New Case button is missing');
         expect(await casePreviewPo.isTitleDisplayed()).toBeTruthy('Case Preview Title is missing');
@@ -192,8 +192,8 @@ describe("Case Preview", () => {
             "templateSummary": `${caseTemplateName}`,
             "templateStatus": "Active",
             "company": "Petramco",
-            "categoryTier1": "Purchasing Card",
-            "categoryTier2": "Policies",
+            "categoryTier1": "Employee Relations",
+            "categoryTier2": "Compensation",
             "categoryTier3": "Card Issuance",
             "casePriority": "Low",
             "businessUnit": "United States Support",
