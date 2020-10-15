@@ -177,15 +177,17 @@ class ApiHelper {
 
     async createEmailConfiguration(data?: IEmailConfig): Promise<IIDs> {
         let mailBoxConfig = cloneDeep(MAILBOX_CONFIG);
-        mailBoxConfig.fieldInstances[450000156].value = data.email;
-        if (data.lineOfBusiness) {
-            mailBoxConfig.fieldInstances[450000420].value = await constants.LOB[data.lineOfBusiness];
-        }
-        if (data.company) {
-            mailBoxConfig.fieldInstances[1000000001].value = await apiCoreUtil.getOrganizationGuid(data.company);
-        }
-        if (data.description) {
-            mailBoxConfig.fieldInstances[8].value = data.description;
+        if (data) {
+            mailBoxConfig.fieldInstances[450000156].value = data.email;
+            if (data.lineOfBusiness) {
+                mailBoxConfig.fieldInstances[450000420].value = await constants.LOB[data.lineOfBusiness];
+            }
+            if (data.company) {
+                mailBoxConfig.fieldInstances[1000000001].value = await apiCoreUtil.getOrganizationGuid(data.company);
+            }
+            if (data.description) {
+                mailBoxConfig.fieldInstances[8].value = data.description;
+            }
         }
         let emailConfigCreateResponse: AxiosResponse = await apiCoreUtil.createRecordInstance(mailBoxConfig);
         console.log('Configure Email API Status =============>', emailConfigCreateResponse.status);
