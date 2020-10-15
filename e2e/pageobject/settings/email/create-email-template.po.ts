@@ -31,7 +31,7 @@ class CreateEmailTemplate {
         fontSize: '[rx-view-component-id="d898362f-92bb-495f-8d98-03f480c4864b"] .cke_combo__fontsize',
         saveButton: '[rx-view-component-id="093a0eeb-c1e0-4ed8-945f-da46d9bbde88"] button',
         cancelButton: '[rx-view-component-id="9aeef4d7-1a10-4ffd-aa3a-22665c32883c"] button',
-        lineOfBuisnessGuid: '14c47289-52da-433a-b297-de2e8a7402a0',
+        lineOfBusinessGuid: '14c47289-52da-433a-b297-de2e8a7402a0',
     }
 
     async setTemplateName(value: string): Promise<void> {
@@ -50,8 +50,8 @@ class CreateEmailTemplate {
         return await utilCommon.isRequiredTagToField(this.selectors.templateGuid);
     }
 
-    async isLineOfBuisnessRequiredTextPresent(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.lineOfBuisnessGuid);
+    async islineOfBusinessRequiredTextPresent(): Promise<boolean> {
+        return await utilCommon.isRequiredTagToField(this.selectors.lineOfBusinessGuid);
     }
 
     async isStatusRequiredTextPresent(): Promise<boolean> {

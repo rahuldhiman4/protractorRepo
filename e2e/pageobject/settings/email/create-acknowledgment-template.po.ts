@@ -15,7 +15,7 @@ class CreateAcknowledgmentTemplateBlade {
         body: '.cke_wysiwyg_div',
         saveButton: '[rx-view-component-id="093a0eeb-c1e0-4ed8-945f-da46d9bbde88"] button',
         cancelButton: '[rx-view-component-id="9aeef4d7-1a10-4ffd-aa3a-22665c32883c"] button',
-        lineOfBuisness: '[rx-view-component-id="14c47289-52da-433a-b297-de2e8a7402a0"] input',
+        lineOfBusiness: '[rx-view-component-id="14c47289-52da-433a-b297-de2e8a7402a0"] input',
         locale: '[rx-view-component-id="62a33fa8-7786-46e6-aa43-ce75e06a3338"] .btn-default',
     }
 
@@ -27,8 +27,8 @@ class CreateAcknowledgmentTemplateBlade {
         await utilCommon.selectDropDown(this.selectors.companyGuid, value);
     }
 
-    async isLineOfBuisnessDisabled(): Promise<string> {
-       return await $(this.selectors.lineOfBuisness).getAttribute("disabled");
+    async islineOfBusinessDisabled(): Promise<string> {
+       return await $(this.selectors.lineOfBusiness).getAttribute("disabled");
     }
 
     async isLocaleDisabled(): Promise<string> {

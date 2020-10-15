@@ -19,7 +19,7 @@ export interface ITaskTemplate {
     supportGroup?: string;
     assignee?: string;
     label?: string;
-    lineOfBuisness?: string;
+    lineOfBusiness?: string;
 };
 
 export interface ICaseTemplate {
@@ -51,7 +51,7 @@ export interface ICaseTemplate {
     allowCaseReopen?: boolean,
     resolveCaseonLastTaskCompletion?: string,
     label?: string;
-    lineOfBuisness?: string;
+    lineOfBusiness?: string;
 };
 
 export interface IEmailTemplate {
@@ -62,7 +62,7 @@ export interface IEmailTemplate {
     Description: string,
     EmailMessageSubject: string,
     EmailMessageBody: string,
-    lineOfBuisness: string,
+    lineOfBusiness: string,
 };
 
 export interface INotesTemplate {

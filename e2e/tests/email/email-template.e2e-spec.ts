@@ -283,7 +283,7 @@ describe('Email Template', () => {
         await consoleEmailTemplatePo.clickOnAddEmailTemplateButton();
         expect(await createEmailTemplatePo.isTemplateRequiredTextPresent()).toBeTruthy();
         expect(await createEmailTemplatePo.isCompanyRequiredTextPresent()).toBeTruthy();
-        expect(await createEmailTemplatePo.isLineOfBuisnessRequiredTextPresent()).toBeTruthy();
+        expect(await createEmailTemplatePo.islineOfBusinessRequiredTextPresent()).toBeTruthy();
         expect(await createEmailTemplatePo.isStatusRequiredTextPresent()).toBeTruthy();
         expect(await createEmailTemplatePo.isDescriptionRequiredTextPresent()).toBeTruthy();
         expect(await createEmailTemplatePo.isSubjectRequiredTextPresent()).toBeTruthy();

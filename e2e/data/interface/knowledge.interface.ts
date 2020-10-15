@@ -53,7 +53,7 @@ export interface IDocumentLib {
     category2?: string,
     category3?: string,
     category4?: string,
-    lineOfBuisness?: string
+    lineOfBusiness?: string
 };
 
 export interface IDocumentTemplate {
