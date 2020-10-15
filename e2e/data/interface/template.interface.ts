@@ -59,7 +59,8 @@ export interface IEmailTemplate {
     Module: string,
     Description: string,
     EmailMessageSubject: string,
-    EmailMessageBody: string
+    EmailMessageBody: string,
+    lineOfBuisness: string,
 };
 
 export interface INotesTemplate {

@@ -9,8 +9,8 @@ class CreateNewMenuOptionPage {
 
     selectors = {
         menuOptionLink: '[rx-view-component-id="306a51e0-cb89-45db-9270-c40b4ec3b149"] button',
-        menuNameDropDown: '[rx-view-component-id="da9b9818-7b4c-43ec-9c4b-41e0cda49b8d"] .ui-select-match .btn-default',
-        menuNameDropDownGuid: "da9b9818-7b4c-43ec-9c4b-41e0cda49b8d",
+        menuNameDropDown: '[rx-view-component-id="5ed046bf-8801-4f76-aa9b-017a944c62a2"] .ui-select-match .btn-default',
+        menuNameDropDownGuid: "5ed046bf-8801-4f76-aa9b-017a944c62a2",
         menuOptionId: '[rx-view-component-id="d40aa6f2-090d-4641-9779-ae724673575c"]',
         menuOption: '.d-textfield__label .d-textfield__input[aria-label]',
         statusDropDown: '[rx-view-component-id="a548d907-8c6b-46ab-bc83-88a5310e04b7"] .ui-select-match-text',

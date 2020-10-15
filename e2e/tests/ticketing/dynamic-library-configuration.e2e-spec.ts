@@ -73,7 +73,7 @@ describe('Dynamic Library Configuration', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', 'Field Management Console - Business Workflows');
             let headers: string[] = ["Field Description", "Field Name", "Field Value Type", "Status"];
-            let updatedHeaders: string[] = ["Field Description", "Field Name", "Field Value Type", "Status", "Confidential", "Information Source"];
+            let updatedHeaders: string[] = ["Field Description", "Field Name", "Field Value Type", "Status", "Information Source", "Confidential" ];
             let header: string[] = ["InformationSource", "Confidential"]
             //field Text type    
             expect(await dynamicFieldLibraryConfigConsolePo.areRequestedColumnMatches(headers)).toBeTruthy();

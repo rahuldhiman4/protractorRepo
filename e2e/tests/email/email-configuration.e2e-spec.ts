@@ -1,5 +1,3 @@
-
-
 import { browser } from "protractor";
 import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from '../../api/api.helper';
@@ -71,15 +69,14 @@ describe('Email Configuration', () => {
         it('[DRDMV-8528,DRDMV-8527]: Verify Email configuration header', async () => {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
-            let emailHeaders: string[] = ["Email ID", "Company", "Default Email", "Status"];
-            let add: string[] = ["ID"];
-            let newEmailHeaders: string[] = ["Email ID", "ID", "Company", "Default Email", "Status"];
+            let emailHeaders: string[] = ["Email ID", "Alternate Email IDs","Company", "Status"];
+            let add: string[] = ["Company ID","Display ID", "ID"];
+            let newEmailHeaders: string[] = ["Email ID", "Alternate Email IDs", "Company","Company ID","Status","Display ID", "ID"];
             expect(await consoleEmailConfig.coloumnHeaderMatches(emailHeaders)).toBeTruthy();
             await consoleEmailConfig.addHeader(add);
             expect(await consoleEmailConfig.coloumnHeaderMatches(newEmailHeaders)).toBeTruthy();
             await consoleEmailConfig.removeHeader(add);
             expect(await consoleEmailConfig.coloumnHeaderMatches(emailHeaders)).toBeTruthy();
-
         });
         it('[DRDMV-8528,DRDMV-8527]: Verify Email configuration header', async () => {
             let msg: string = "ERROR (10000): One Email Id for the company needs to be marked as default. If another email configurations for the company exist, please mark one of them as default instead";

@@ -52,7 +52,8 @@ export interface IDocumentLib {
     category1?: string,
     category2?: string,
     category3?: string,
-    category4?: string
+    category4?: string,
+    lineOfBuisness?: string
 };
 
 export interface IDocumentTemplate {

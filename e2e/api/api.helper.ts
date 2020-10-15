@@ -1236,6 +1236,9 @@ class ApiHelper {
         let companyGuid = await apiCoreUtil.getOrganizationGuid(data.Company);
         templateData.processInputValues["Company"] = companyGuid;
         templateData.processInputValues["TemplateName"] = data.TemplateName;
+        if (data.lineOfBuisness) {
+            templateData.processInputValues["Line of Business"] = await constants.LOB[data.lineOfBuisness];
+        }
         templateData.processInputValues["Status"] = data.Status;
         templateData.processInputValues["Description"] = data.Description;
         templateData.processInputValues["EmailMessageSubject"] = data.EmailMessageSubject;
@@ -1629,6 +1632,9 @@ class ApiHelper {
         menuItemData.fieldInstances[450000152].value = data.menuItemName;
         menuItemData.fieldInstances[7].value = constants.MenuItemStatus[data.menuItemStatus];
         menuItemData.fieldInstances[450000154].value = randomStr;
+        if (data.lineOfBuisness) {
+            menuItemData.fieldInstances[450000420] = await constants.LOB[data.lineOfBuisness];
+        }
         if (data.uiVisible) {
             let valueOfVisiable = data.uiVisible;
             let uiVisiablePayload = {
@@ -1914,7 +1920,9 @@ class ApiHelper {
         documentLibRecordInstanceJson.fieldInstances[1000000064].value = docLibDetails.category2 ? await apiCoreUtil.getCategoryGuid(docLibDetails.category2) : documentLibRecordInstanceJson.fieldInstances[1000000064].value;
         documentLibRecordInstanceJson.fieldInstances[1000000065].value = docLibDetails.category3 ? await apiCoreUtil.getCategoryGuid(docLibDetails.category3) : documentLibRecordInstanceJson.fieldInstances[1000000065].value;
         documentLibRecordInstanceJson.fieldInstances[450000167].value = docLibDetails.category4 ? await apiCoreUtil.getCategoryGuid(docLibDetails.category4) : documentLibRecordInstanceJson.fieldInstances[450000167].value;
-
+        if (docLibDetails.lineOfBuisness) {
+            documentLibRecordInstanceJson.fieldInstances[450000420] = await constants.LOB[docLibDetails.lineOfBuisness];
+        }
         let data = {
             recordInstance: documentLibRecordInstanceJson,
             1000000351: filePath

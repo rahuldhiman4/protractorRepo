@@ -134,3 +134,7 @@ export enum FlowsetFunctions {
 export enum ProcessFlowsetMappingStatus {
     Active = 10
 }
+
+export enum LOB {
+    "Human Resource" = "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+}
