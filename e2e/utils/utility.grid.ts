@@ -454,5 +454,199 @@ export class GridOperations {
         });
     }
 
+    async updateCustomPresetFilter(fieldName: string, textValue: string, type: string, filterName: string, newFilterName?: string, guid?: string): Promise<void> {
+        let guidId: string = "";
+        let refreshIcon = this.selectors.refreshIcon;
+        if (guid) {
+            guidId = `[rx-view-component-id="${guid}"] `;
+            refreshIcon = `[rx-view-component-id="${guid}"] ` + refreshIcon;
+        }
+        
+        await $(refreshIcon).click();
+        await $(guidId + this.selectors.filterPresetBtn).click();
+        await $$(this.selectors.filterTab).get(1).click().then(async () => {
+            let countFilterName = await $$(this.selectors.filterName).count();
+            for (let i = 0; i < countFilterName; i++) {
+                let filterValue = await $$(this.selectors.filterName).get(i).getText();
+                if (filterValue == filterName) {
+                    await $$('.d-icon-pencil_adapt').get(i).click();
+                    break;
+                } else {
+                    console.log('No Preset Filter Found');
+                }
+            }
+        });
+
+        if (newFilterName){
+            await $('.textfield-padding-transition').clear();
+            await $('.textfield-padding-transition').sendKeys(newFilterName);
+        }
+
+        let filterCount = await $$(this.selectors.filterItems);
+        for (let i = 0; i < await filterCount.length; i++) {
+            let tempLocator = await $$(this.selectors.filterItems).get(i);
+            if (await tempLocator.getText() == fieldName) {
+                await tempLocator.click();
+                break;
+            }
+        }
+        switch (type) {
+            case "checkbox": {
+                await element(by.cssContainingText(this.selectors.filterCheckboxOptions, textValue)).click();
+                await $(this.selectors.editPresetFilterSaveButton).click();
+                break;
+            }
+            case "date": {
+                await utilityCommon.setDateField(guid, textValue);
+                await $(this.selectors.editPresetFilterSaveButton).click();
+                break;
+            }
+            case "counter": {
+                if (textValue.includes('-')) {
+                    let counterValues = (textValue.split('-'));
+                    await $$(this.selectors.filterCounterInput).first().sendKeys(counterValues[0]);
+                    await browser.wait(this.EC.elementToBeClickable($$(this.selectors.filterCounterInput).last()), 5000);
+                    await $$(this.selectors.filterCounterInput).last().sendKeys(counterValues[1]);
+                    await $(this.selectors.editPresetFilterSaveButton).click();
+                }
+                else await $$(this.selectors.filterCounterInput).first().sendKeys(textValue);
+                await $(this.selectors.editPresetFilterSaveButton).click();
+                break;
+            }
+            default: {
+                await $('.card[aria-selected="true"] .adapt-mt input').sendKeys(textValue + protractor.Key.ENTER);
+                await $(this.selectors.editPresetFilterSaveButton).click();
+                break;
+            }
+        }
+        await $(refreshIcon).click();
+    }
+
+    async getAllPresetFilterName(): Promise<string[]> {
+        let filterNameText:string[] =[];
+        let filterNameElement:ElementFinder[] = await $$(this.selectors.filterName);
+        for (let i: number = 0; i < filterNameElement.length; i++) {
+            filterNameText[i]= await filterNameElement[i].getText();
+        }
+        return filterNameText;
+    }
+
+    async clickOnFilterButton(guid?: string): Promise<void> {
+        let guidId: string = "";
+        if (guid) guidId = `[rx-view-component-id="${guid}"] `;
+        await $(guidId + this.selectors.filterPresetBtn).click();
+    }
+
+    async clickOnFilterTab(filterTabName: string): Promise<void> {
+        await element(by.cssContainingText(this.selectors.filterTab, filterTabName)).click();
+    }
+
+    async clickOnClearOrSaveButton(clearOrSaveFilterBtnName: string): Promise<boolean> {
+        return await element(by.cssContainingText(this.selectors.clearSaveFilterBtn, clearOrSaveFilterBtnName)).isPresent().then(async (result) => {
+            if (result) {
+                return await element(by.cssContainingText(this.selectors.clearSaveFilterBtn, clearOrSaveFilterBtnName)).isDisplayed();
+            } else return false;
+        });
+    }
+
+    async isFieldLabelDisplayed(labelName: string): Promise<boolean> {
+       let  guid= 'd628a20f-e852-4a84-87e6-f5191f77ddf6,9e02c1c1-6544-4d92-9114-823a9ff9fdcd,0df18e99-4315-457c-aef0-3abc96fb08ee'
+        return await utilityCommon.isFieldLabelDisplayed(guid, labelName);
+    }
+
+    async getAllDynamicFilterName(): Promise<string[]> {
+        let filterNameText:string[] =[];
+        let filterItemElement:ElementFinder[] = await $$('.form-control-feedback .ellipsis');
+        for (let i: number = 0; i < filterItemElement.length; i++) {
+                filterNameText[i] = await filterItemElement[i].getText();
+        }
+        return filterNameText;
+    }
+
+    async clickEditPresetFilterButton(filterName: string): Promise<void> {
+            let countFilterName = await $$(this.selectors.filterName).count();
+            for (let i = 0; i < countFilterName; i++) {
+                let filterValue = await $$(this.selectors.filterName).get(i).getText();
+                if (filterValue == filterName) {
+                    await $$('.d-icon-pencil_adapt').get(i).click();
+                    break;
+                } else {
+                    console.log('No Preset Filter Found');
+                }
+            }
+    }
+
+    async clickBackButtonOnEditCustomPresetFilter(): Promise<void> {
+        await $('.advanced-filter__back-btn').click();
+    }
+
+    async getHeaderOnEditCustomPresetFilter(): Promise<string> {
+        return await $('.advanced-filter__editing-title').getText();
+    }
+
+    async clickEditFilterSaveButton(): Promise<void> {
+        await $(this.selectors.editPresetFilterSaveButton).click();
+    }
+
+    async clickEditFilterCancelButton(): Promise<void> {
+        await $('.advanced-filter__editing-footer .btn-secondary').click();
+    }
+
+    async isRequiredLabelDisplayedOnEditFilter(fieldName: string): Promise<boolean> {
+         return await element(by.cssContainingText('.form-control-label', fieldName)).isPresent().then(async (result) => {
+            if (result) {
+                return await element(by.cssContainingText('.form-control-label', fieldName)).isDisplayed();
+            } else return false;
+        });
+    }
+
+    async isAppliedFilterInputBoxDisplayedOnPresetFilter(): Promise<boolean> {
+        return await $('.adapt-mt-wrapper .adapt-mt').isPresent().then(async (result) => {
+           if (result) {
+               return await $('.adapt-mt-wrapper .adapt-mt').isDisplayed();
+           } else return false;
+       });
+   }
+
+    async IsEditPresetFilterSaveButtonEnabled(): Promise<boolean> {
+            return await $(this.selectors.editPresetFilterSaveButton).isPresent().then(async (result) => {
+            if (result) {
+                return await $(this.selectors.editPresetFilterSaveButton).isEnabled();
+            } else return false;
+        });
+    }
+
+    async removeFilterValue(fieldName:string, fiterValue: string): Promise<void> {
+        let filterCount = await $$(this.selectors.filterItems);
+        for (let i = 0; i < await filterCount.length; i++) {
+            let tempLocator = await $$(this.selectors.filterItems).get(i);
+            if (await tempLocator.getText() == fieldName) {
+                await tempLocator.click();
+                break;
+            }
+        }
+        let countFilterValue = await $$('.adapt-mt-item-wrapper .adapt-mt-text').count();
+        for (let i = 0; i < countFilterValue; i++) {
+            let filterValueText = await $$('.adapt-mt-item-wrapper .adapt-mt-text').get(i).getText();
+            if (filterValueText == fiterValue) {
+                await $$('.adapt-mt-item-wrapper .adapt-mt-item-close').get(i).click();
+                break;
+            } else {
+                console.log('No Filter Value Found');
+            }
+        }
+    }
+
+    async clearFilterNameOnEditPresetFilter(): Promise<void> {
+        await $('.textfield-padding-transition').clear();
+    }
+
+    async isValidationMessageDisplayedOnEditPresetFilter(validationMessage): Promise<boolean> {
+        return await element(by.cssContainingText('.advanced-filter__editing-fields .form-control-feedback', validationMessage)).isPresent().then(async (result) => {
+            if (result) {
+                return await element(by.cssContainingText('.advanced-filter__editing-fields .form-control-feedback', validationMessage)).isDisplayed();
+            } else return false;
+        });
+    }
 }
 export default new GridOperations();
