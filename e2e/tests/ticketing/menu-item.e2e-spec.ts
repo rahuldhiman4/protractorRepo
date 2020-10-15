@@ -482,7 +482,7 @@ describe('Menu Item', () => {
     });
 
     //kgaikwad
-    fdescribe('[DRDMV-16276]: [Menu Items] - Only Active Label and Sources are available for consumption', async () => {
+    describe('[DRDMV-16276]: [Menu Items] - Only Active Label and Sources are available for consumption', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseId;
         let title = 'titleDRDMV16276' + randomStr;
