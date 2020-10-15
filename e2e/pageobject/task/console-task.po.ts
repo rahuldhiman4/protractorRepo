@@ -8,16 +8,16 @@ class TaskGridPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         searchTemplate: '.adapt-search-triggerable input[type="search"]',
-        recommendedTemplateLink: '.ui-grid__link',
+        recommendedTemplateLink: '.at-data-row .btn-link',
         recommendedTemplateCheckBox: '.ui-grid-icon-ok',
-        filter: '.rx-search-filter__trigger',
-        availableFilterDrpDown: '.d-accordion__title',
+        filter: 'button.d-icon-left-filter',
+        availableFilterDrpDown: '.advanced-filter__container .advanced-filter__accordion-tab .text-direction span',
         applyFilter: '.rx-search-filter-heading__apply',
-        removeFilter: '.d-tag-remove-button',
-        tableValue: '.ui-grid-cell-contents',
+        removeFilter: '.close',
+        tableValue: '.at-data-row .at-data-cell',
         taskTitle: '[rx-view-component-id="3ebf9e95-a77a-47f7-a531-c4c549e42333"] span',
         taskGuid: '9e02c1c1-6544-4d92-9114-823a9ff9fdcd',
-        columnHeaders: '.ui-grid-header-cell-label',
+        columnHeaders: '.c-header-container .c-header-name',
     }
 
     async getSortedValueFromColumn(columnHeader: string): Promise<string> {
@@ -62,7 +62,7 @@ class TaskGridPage {
         await utilGrid.clearFilter()
     }
 
-    async searchAndOpenTask(taskId:string):Promise<void>{
+    async searchAndOpenTask(taskId: string): Promise<void> {
         await this.clearFilter();
         await utilityGrid.searchAndOpenHyperlink(taskId);
     }
