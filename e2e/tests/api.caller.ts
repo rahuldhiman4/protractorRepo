@@ -11,7 +11,7 @@ describe('Login and create case from API', () => {
             "Requester": "qtao",
             "Summary": "Testing case creation with minimal input data"
         }
-        await apiHelper.apiLogin('qtao');
+        await apiHelper.apiLogin('qkatawazi');
         let newCaseTemplate = await apiHelper.createCase(caseData);
         console.log("case is created===", newCaseTemplate.id);
         console.log("case is created===", newCaseTemplate.displayId);
@@ -370,5 +370,29 @@ describe('Login and create case from API', () => {
         }
         let categoryDataSetMappingStatus = await apiHelper.createCognitiveDataSetMapping("category", categoryDataSetMapping);
         console.log("Category DataSet Mapping Created ==> ", categoryDataSetMappingStatus);
+    });
+
+    it('Create adhoc task', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await apiHelper.apiLogin('qkatawazi');
+            let caseData = {
+                "Requester": "qdu",
+                "Summary": "Toggle False, case without template" + "_" + randomStr,
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
+                "Assignee": "qfeng",
+            }
+            let taskData = {
+                "taskName": "Toggle False, task created without template" + "_" + randomStr,
+                "company": "Petramco",
+                "priority": "Low",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 1",
+                "assignee": "qtao",
+            }
+            let newCase1 = await apiHelper.createCase(caseData);
+            newCase1.displayId;
+            await apiHelper.createAdhocTask(newCase1.id, taskData);
     });
 });
