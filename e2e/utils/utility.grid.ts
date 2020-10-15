@@ -21,7 +21,7 @@ export class GridOperations {
         filterItems: '.advanced-filter__container .advanced-filter__accordion-tab .text-direction span',
         filterCheckboxOptions: '.a-select-inline__list .a-select-inline__item .checkbox__label',
         filterTab: '.nav-item button',
-        visibleColumnButton: '.d-icon-left-lines_vertical',
+        visibleColumnButton: '.d-icon-eye_closed',
         refreshIcon: 'button[rx-id="refresh-button"]',
         filterSearchValueBox: '.adapt-mt-input-container input',
         filterCounterInput: 'input.adapt-counter-input',
