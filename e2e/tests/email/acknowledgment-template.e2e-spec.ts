@@ -34,7 +34,7 @@ describe('Acknowledgment Template', () => {
         expect(await createAcknowledgmentTemplatesPo.isCompanyRequired()).toBeTruthy();
         expect(await createAcknowledgmentTemplatesPo.isStatusRequired()).toBeTruthy();
         expect(await createAcknowledgmentTemplatesPo.isSubjectRequired()).toBeTruthy();
-        expect(await createAcknowledgmentTemplatesPo.isLineOfBuisnessDisabled()).toBeTruthy();
+        expect(await createAcknowledgmentTemplatesPo.islineOfBusinessDisabled()).toBeTruthy();
         expect(await createAcknowledgmentTemplatesPo.isLocaleDisabled()).toBeTruthy();
         await createAcknowledgmentTemplatesPo.clickOnCancelButton();
         await utilCommon.clickOnWarningOk();

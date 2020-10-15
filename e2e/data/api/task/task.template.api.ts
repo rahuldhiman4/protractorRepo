@@ -20,7 +20,11 @@ export const MANUAL_TASK_TEMPLATE_PAYLOAD = {
     },
     "450000401": {
       "id": 450000401,
-      "value": "7a43792e5089ffffa6127619a0ba2de6595e9aa640aa685eed76dd3570c148598bb3e182784006d7d7a55da25f2df496bee90679e06044237e451a0d0fc9e093",
+      "value": "7a43792e5089ffffa6127619a0ba2de6595e9aa640aa685eed76dd3570c148598bb3e182784006d7d7a55da25f2df496bee90679e06044237e451a0d0fc9e093"
+    },
+    "450000420": {
+      "id": 450000420,
+      "value": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
     },
     "1000000001": {
       "id": 1000000001,
@@ -68,6 +72,10 @@ export const AUTO_TASK_TEMPLATE_PAYLOAD = {
     "450000154": {
       "id": 450000154,
       "value": "com.bmc.arsys.rx.approval"
+    },
+    "450000420": {
+      "id": 450000420,
+      "value": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
     },
     "1000000001": {
       "id": 1000000001,
@@ -122,6 +130,10 @@ export const EXTERNAL_TASK_TEMPLATE_PAYLOAD = {
     "450000131": {
       "id": 450000131,
       "value": 10
+    },
+    "450000420": {
+      "id": 450000420,
+      "value": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
     },
     "1000000001": {
       "id": 1000000001,

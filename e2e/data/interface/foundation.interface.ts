@@ -49,5 +49,5 @@ export interface IMenuItem {
     menuItemStatus: string;
     menuType: string;
     uiVisible?:string;
-    lineOfBuisness?:string;
+    lineOfBusiness?:string;
 } 

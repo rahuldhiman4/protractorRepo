@@ -67,15 +67,15 @@ describe('Login and create case from API', () => {
             "templateStatus": "Active",
             "company": "Petramco",
             "ownerCompany": "Petramco",
-            "ownerBU": "Facilities Support",
-            "ownerGroup": "Facilities",
+            "ownerBU": "United States Support",
+            "ownerGroup": "US Support 1",
             "assigneeCompany": "Petramco",
-            "assigneeBU": "Facilities Support",
-            "assigneeSupportGroup": "Facilities",
-            "assignee": "Floretta",
+            "assigneeBU": "United States Support",
+            "assigneeSupportGroup": "US Support 1",
+            "assignee": "qtao",
         }
 
-        await apiHelper.apiLogin('fritz');
+        await apiHelper.apiLogin('qkatawazi');
         let newCaseTemplate = await apiHelper.createCaseTemplate(templateData2);
         console.log("active case Template is created===", newCaseTemplate.id);
         console.log("active case Template is created===", newCaseTemplate.displayId);
@@ -85,13 +85,13 @@ describe('Login and create case from API', () => {
 
     it('create manual task template', async () => {
         let templateData = {
-            "templateName": "task template 1",
-            "templateSummary": "task template summary 1",
+            "templateName": "task template 2",
+            "templateSummary": "task template summary 2",
             "templateStatus": "Active",
             "taskCompany": "Petramco",
             "ownerCompany": "Petramco",
-            "ownerBusinessUnit": "Facilities Support",
-            "ownerGroup": "Facilities"
+            "ownerBusinessUnit": "United States Support",
+            "ownerGroup": "US Support 3"
         }
 
         await apiHelper.apiLogin('qkatawazi');
@@ -186,8 +186,8 @@ describe('Login and create case from API', () => {
             "templateStatus": "Active",
             "taskCompany": "Petramco",
             "ownerCompany": "Petramco",
-            "ownerBusinessUnit": "Facilities Support",
-            "ownerGroup": "Facilities"
+            "ownerBusinessUnit": "United States Support",
+            "ownerGroup": "US Support 3"
         }
         let manualTaskTemplate = await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
 
@@ -197,8 +197,8 @@ describe('Login and create case from API', () => {
             "templateStatus": "Active",
             "taskCompany": "Petramco",
             "ownerCompany": "Petramco",
-            "ownerBusinessUnit": "Facilities Support",
-            "ownerGroup": "Facilities"
+            "ownerBusinessUnit": "United States Support",
+            "ownerGroup": "US Support 3"
         }
         let externalTaskTemplate = await apiHelper.createExternalTaskTemplate(externalTaskTemplateData);
 
@@ -210,8 +210,8 @@ describe('Login and create case from API', () => {
             "processName": "Case Process " + randomStr,
             "taskCompany": "Petramco",
             "ownerCompany": "Petramco",
-            "ownerBusinessUnit": "Facilities Support",
-            "ownerGroup": "Facilities"
+            "ownerBusinessUnit": "United States Support",
+            "ownerGroup": "US Support 3"
         }
         let autoTaskTemplate = await apiHelper.createAutomatedTaskTemplate(autoTaskTemplateData);
 

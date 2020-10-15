@@ -356,7 +356,9 @@ class ApiHelper {
         templateData.fieldInstances[1000000064].value = data.categoryTier2 ? await apiCoreUtil.getCategoryGuid(data.categoryTier2) : templateData.fieldInstances[1000000064].value;
         templateData.fieldInstances[1000000065].value = data.categoryTier3 ? await apiCoreUtil.getCategoryGuid(data.categoryTier3) : templateData.fieldInstances[1000000065].value;
         templateData.fieldInstances[450000061].value = data.description ? data.description : templateData.fieldInstances[450000061].value;
-
+        if (data.lineOfBusiness) {
+            templateData.fieldInstances[450000420] = await constants.LOB[data.lineOfBusiness];
+        }
         if (data.caseStatus) {
             let statusValue = constants.CaseStatus[data.caseStatus];
             let caseTemplateStatus = {
@@ -605,6 +607,9 @@ class ApiHelper {
         templateData.fieldInstances[1000000001].value = data.taskCompany ? await apiCoreUtil.getOrganizationGuid(data.taskCompany) : templateData.fieldInstances[1000000001].value;
         templateData.fieldInstances[300287900].value = data.ownerGroup ? await apiCoreUtil.getSupportGroupGuid(data.ownerGroup) : templateData.fieldInstances[300287900].value;
         templateData.fieldInstances[450000401].value = data.ownerBusinessUnit ? await apiCoreUtil.getBusinessUnitGuid(data.ownerBusinessUnit) : templateData.fieldInstances[450000401].value;
+        if (data.lineOfBusiness) {
+            templateData.fieldInstances[450000420] = await constants.LOB[data.lineOfBusiness];
+        }
         if (data.assignee) {
             let assignee = await apiCoreUtil.getPersonGuid(data.assignee);
             let templateDataAssignee = {
@@ -713,7 +718,9 @@ class ApiHelper {
         templateData.fieldInstances[1000000001].value = data.taskCompany ? await apiCoreUtil.getOrganizationGuid(data.taskCompany) : templateData.fieldInstances[1000000001].value;
         templateData.fieldInstances[300287900].value = data.ownerGroup ? await apiCoreUtil.getSupportGroupGuid(data.ownerGroup) : templateData.fieldInstances[300287900].value;
         templateData.fieldInstances[450000401].value = data.ownerBusinessUnit ? await apiCoreUtil.getBusinessUnitGuid(data.ownerBusinessUnit) : templateData.fieldInstances[450000401].value;
-
+        if (data.lineOfBusiness) {
+            templateData.fieldInstances[450000420] = await constants.LOB[data.lineOfBusiness];
+        }
         if (data.assignee) {
             let assignee = await apiCoreUtil.getPersonGuid(data.assignee);
             let templateDataAssignee = {
@@ -803,6 +810,9 @@ class ApiHelper {
         templateData.fieldInstances[1000000001].value = data.taskCompany ? await apiCoreUtil.getOrganizationGuid(data.taskCompany) : templateData.fieldInstances[1000000001].value;
         templateData.fieldInstances[300287900].value = data.ownerGroup ? await apiCoreUtil.getSupportGroupGuid(data.ownerGroup) : templateData.fieldInstances[300287900].value;
         templateData.fieldInstances[450000401].value = data.ownerBusinessUnit ? await apiCoreUtil.getBusinessUnitGuid(data.ownerBusinessUnit) : templateData.fieldInstances[450000401].value;
+        if (data.lineOfBusiness) {
+            templateData.fieldInstances[450000420] = await constants.LOB[data.lineOfBusiness];
+        }
         if (data.priority) {
             let priority = constants.CasePriority[data.priority];
             let taskTemplateDataPriority = {
@@ -1236,8 +1246,8 @@ class ApiHelper {
         let companyGuid = await apiCoreUtil.getOrganizationGuid(data.Company);
         templateData.processInputValues["Company"] = companyGuid;
         templateData.processInputValues["TemplateName"] = data.TemplateName;
-        if (data.lineOfBuisness) {
-            templateData.processInputValues["Line of Business"] = await constants.LOB[data.lineOfBuisness];
+        if (data.lineOfBusiness) {
+            templateData.processInputValues["Line of Business"] = await constants.LOB[data.lineOfBusiness];
         }
         templateData.processInputValues["Status"] = data.Status;
         templateData.processInputValues["Description"] = data.Description;
@@ -1632,8 +1642,8 @@ class ApiHelper {
         menuItemData.fieldInstances[450000152].value = data.menuItemName;
         menuItemData.fieldInstances[7].value = constants.MenuItemStatus[data.menuItemStatus];
         menuItemData.fieldInstances[450000154].value = randomStr;
-        if (data.lineOfBuisness) {
-            menuItemData.fieldInstances[450000420] = await constants.LOB[data.lineOfBuisness];
+        if (data.lineOfBusiness) {
+            menuItemData.fieldInstances[450000420] = await constants.LOB[data.lineOfBusiness];
         }
         if (data.uiVisible) {
             let valueOfVisiable = data.uiVisible;
@@ -1920,8 +1930,8 @@ class ApiHelper {
         documentLibRecordInstanceJson.fieldInstances[1000000064].value = docLibDetails.category2 ? await apiCoreUtil.getCategoryGuid(docLibDetails.category2) : documentLibRecordInstanceJson.fieldInstances[1000000064].value;
         documentLibRecordInstanceJson.fieldInstances[1000000065].value = docLibDetails.category3 ? await apiCoreUtil.getCategoryGuid(docLibDetails.category3) : documentLibRecordInstanceJson.fieldInstances[1000000065].value;
         documentLibRecordInstanceJson.fieldInstances[450000167].value = docLibDetails.category4 ? await apiCoreUtil.getCategoryGuid(docLibDetails.category4) : documentLibRecordInstanceJson.fieldInstances[450000167].value;
-        if (docLibDetails.lineOfBuisness) {
-            documentLibRecordInstanceJson.fieldInstances[450000420] = await constants.LOB[docLibDetails.lineOfBuisness];
+        if (docLibDetails.lineOfBusiness) {
+            documentLibRecordInstanceJson.fieldInstances[450000420] = await constants.LOB[docLibDetails.lineOfBusiness];
         }
         let data = {
             recordInstance: documentLibRecordInstanceJson,

@@ -19,6 +19,7 @@ export interface ITaskTemplate {
     supportGroup?: string;
     assignee?: string;
     label?: string;
+    lineOfBusiness?: string;
 };
 
 export interface ICaseTemplate {
@@ -49,7 +50,8 @@ export interface ICaseTemplate {
     taskFailureConfiguration?: string,
     allowCaseReopen?: boolean,
     resolveCaseonLastTaskCompletion?: string,
-    label?: string
+    label?: string;
+    lineOfBusiness?: string;
 };
 
 export interface IEmailTemplate {
@@ -60,7 +62,7 @@ export interface IEmailTemplate {
     Description: string,
     EmailMessageSubject: string,
     EmailMessageBody: string,
-    lineOfBuisness: string,
+    lineOfBusiness: string,
 };
 
 export interface INotesTemplate {
@@ -78,13 +80,13 @@ export interface ICaseTemplateUI {
     company: string;
     templateStatus: string;
     ownerCompany: string;
-    ownerBusinessUnit:string;
+    ownerBusinessUnit: string;
     ownerGroup: string;
     flowset: string;
     categoryTier1: string;
     categoryTier2: string;
     categoryTier3: string;
-    businessUnit:string;
+    businessUnit: string;
     supportGroup: string;
     assignee: string;
     resolutionCode: boolean;
