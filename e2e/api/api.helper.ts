@@ -15,7 +15,7 @@ import { ADD_TO_WATCHLIST } from '../data/api/case/case.watchlist.api';
 import * as COMPLEX_SURVEY from '../data/api/case/complex-survey.api';
 import { CASE_STATUS_CHANGE, UPDATE_CASE, UPDATE_CASE_ASSIGNMENT } from '../data/api/case/update.case.api';
 import { COGNITIVE_CATEGORY_DATASET, COGNITIVE_CATEGORY_DATASET_MAPPING, COGNITIVE_LICENSE, COGNITIVE_TEMPLATE_DATASET, COGNITIVE_TEMPLATE_DATASET_MAPPING } from '../data/api/cognitive/cognitive.config.api';
-import { MAILBOX_CONFIG} from '../data/api/email/email.configuration.data.api';
+import { MAILBOX_CONFIG } from '../data/api/email/email.configuration.data.api';
 import { EMAIL_WHITELIST } from '../data/api/email/email.whitelist.data.api';
 import { NEW_PROCESS_LIB, PROCESS_FLOWSET_MAPPING } from '../data/api/flowset/create-process-lib';
 import { ENABLE_USER, NEW_USER } from '../data/api/foundation/create-foundation-entity.api';
@@ -1896,7 +1896,6 @@ class ApiHelper {
         }
     }
 
-
     async runAutomatedCaseTransitionProcess(): Promise<number> {
         let automatedCaseTransition = cloneDeep(AUTOMATED_CASE_STATUS_TRANSITION);
         let response = await axios.post(
@@ -2166,6 +2165,9 @@ class ApiHelper {
         adhocTaskPayload.fieldInstances[450000381].value = await apiCoreUtil.getBusinessUnitGuid(taskData.businessUnit);
         adhocTaskPayload.fieldInstances[1000000217].value = await apiCoreUtil.getSupportGroupGuid(taskData.supportGroup);
         taskData.priority ? adhocTaskPayload.fieldInstances[1000000164].value = constants.CasePriority[taskData.priority] : adhocTaskPayload.fieldInstances[1000000164].value;
+        if (taskData.lineOfBusiness) {
+            adhocTaskPayload.fieldInstances[450000411].value = await constants.LOB[taskData.lineOfBusiness];
+        }
         if (taskData.description) {
             let taskDescription = {
                 "id": "1000000000",
@@ -2197,42 +2199,40 @@ class ApiHelper {
             }
             adhocTaskPayload.fieldInstances["1000000065"] = taskCategory3;
         }
-
         if (taskData.targetDate) {
             let tasktargetDate = {
                 "id": "1000005261",
                 "value": taskData.targetDate
             }
             adhocTaskPayload.fieldInstances["1000005261"] = tasktargetDate;
-            if (taskData.label) {
-                let labelGuid = await apiCoreUtil.getLabelGuid(taskData.label);
-                let taskLabel = {
-                    "id": "450000173",
-                    "value": labelGuid
-                }
-                adhocTaskPayload.fieldInstances["450000173"] = taskLabel;
-            }
-
-            let createTaskResponse = await apiCoreUtil.createRecordInstance(adhocTaskPayload);
-            console.log('Create Task API Status =============>', createTaskResponse.status);
-            const taskDetails = await axios.get(
-                await createTaskResponse.headers.location
-            );
-            console.log('New Task Details API Status =============>', taskDetails.status);
-
-            let registerAdhocTask = cloneDeep(REGISTER_ADHOC_TASK);
-            registerAdhocTask.processInputValues["Task Id"] = taskDetails.data.id;
-            const registerAdhocTaskResponse = await axios.post(
-                commandUri,
-                registerAdhocTask
-            );
-            console.log('Register Adhoc Task API Status =============>', registerAdhocTaskResponse.status);
-
-            return {
-                id: taskDetails.data.id,
-                displayId: taskDetails.data.displayId
-            };
         }
+        if (taskData.label) {
+            let labelGuid = await apiCoreUtil.getLabelGuid(taskData.label);
+            let taskLabel = {
+                "id": "450000173",
+                "value": labelGuid
+            }
+            adhocTaskPayload.fieldInstances["450000173"] = taskLabel;
+        }
+        let createTaskResponse = await apiCoreUtil.createRecordInstance(adhocTaskPayload);
+        console.log('Create Task API Status =============>', createTaskResponse.status);
+        const taskDetails = await axios.get(
+            await createTaskResponse.headers.location
+        );
+        console.log('New Task Details API Status =============>', taskDetails.status);
+
+        let registerAdhocTask = cloneDeep(REGISTER_ADHOC_TASK);
+        registerAdhocTask.processInputValues["Task Id"] = taskDetails.data.id;
+        const registerAdhocTaskResponse = await axios.post(
+            commandUri,
+            registerAdhocTask
+        );
+        console.log('Register Adhoc Task API Status =============>', registerAdhocTaskResponse.status);
+
+        return {
+            id: taskDetails.data.id,
+            displayId: taskDetails.data.displayId
+        };
     }
 
     async updateTaskStatus(taskGuid: string, status: string, statusReason?: string): Promise<number> {
@@ -2299,7 +2299,6 @@ class ApiHelper {
             displayId: taskDisplayId
         };
     }
-
 
     async approverAction(recordGuid: string, action: string, assignee?: string): Promise<boolean> {
         let approvalAction = cloneDeep(APPROVAL_ACTION);
@@ -2534,7 +2533,6 @@ class ApiHelper {
         console.log('Association API Status =============>', response.status);
         return response.status == 204;
     }
-
 
     async disassociateCaseTemplateFromApprovalMapping(templatedId: string, approvalMappingId: string): Promise<boolean> {
         let response = await apiCoreUtil.disassociateFoundationElements("com.bmc.dsm.case-lib:Case Approval Mapping to Case Template", approvalMappingId, templatedId);
