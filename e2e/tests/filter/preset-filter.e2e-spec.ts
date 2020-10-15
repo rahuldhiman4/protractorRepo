@@ -13,7 +13,7 @@ import viewTaskPo from '../../pageobject/task/view-task.po';
 describe('Preset Filter Funcational Verification', () => {
     let randomStr1 = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
     let caseAgentuserData;
-    let caseAgentUserId = "caseAgent1"+randomStr1;
+    let caseAgentUserId = "caseAgent1" + randomStr1;
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
@@ -26,7 +26,7 @@ describe('Preset Filter Funcational Verification', () => {
             "userId": caseAgentUserId,
             "userPermission": ["Case Agent", "Document Manager"]
         }
-        
+
         await apiHelper.createNewUser(caseAgentuserData);
         await apiHelper.associatePersonToCompany(caseAgentuserData.userId, "Petramco");
         await apiHelper.associatePersonToSupportGroup(caseAgentuserData.userId, 'US Support 3');
@@ -39,119 +39,119 @@ describe('Preset Filter Funcational Verification', () => {
 
     //kgaikwad
     describe('[DRDMV-23481]: Verify Preset Filter Retain Same After Logout And Login In', async () => {
-            let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            let newCase;
-            let taskId;
-            let knowledgeArticleData;
-            let knowledgeTitle = 'knowledgeTitle'+randomStr;
-            
-            beforeAll(async () => {
-                //  Create Case
-                let caseData1 = {
-                    "Requester": "qdu",
-                    "Summary": "Test case for DRDMV23413" + randomStr,
-                    "Assigned Company": "Petramco",
-                    "Business Unit": "United States Support",
-                    "Support Group": "US Support 3",
-                    "Assignee": caseAgentUserId
-                }
-                
-                await apiHelper.apiLogin(caseAgentuserData.userId+"@petramco.com","Password_1234");
-                newCase = await apiHelper.createCase(caseData1);
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let newCase;
+        let taskId;
+        let knowledgeArticleData;
+        let knowledgeTitle = 'knowledgeTitle' + randomStr;
 
-                let articleData = {
-                    "knowledgeSet": "HR",
-                    "title": "KATitle",
-                    "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-                    "assignedCompany": "Petramco",
-                    "assigneeBusinessUnit": "United States Support",
-                    "assigneeSupportGroup": "US Support 3",
-                    "assignee": caseAgentUserId
-                }
-                articleData.title = knowledgeTitle;
-                knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
-                
-                // login in with created user.
-                await navigationPage.signOut(); 
-                await loginPage.login(caseAgentuserData.userId+"@petramco.com","Password_1234");
-            });
-    
-            it('[DRDMV-23481]: Verify default preset filter on case console', async () => {
-               expect(await utilityGrid.appliedFilterMatches(['My Open Cases'])).toBeTruthy('My Open Cases is missing');
-               await utilityGrid.searchRecord(newCase.displayId);
-               expect(await utilityGrid.getFirstGridRecordColumnValue('Case ID')).toBe(newCase.displayId, " Case Id NOT displayed in Task console");
-            });
-            
-            it('[DRDMV-23481]: Add task in case', async () => {
-                await utilityGrid.searchAndOpenHyperlink(newCase.displayId);
-                await viewCasePo.clickAddTaskButton();
-                await manageTaskBladePo.clickAddAdhocTaskButton();
-                await createAdhocTaskPo.setSummary('adhocTaskSummary');
-                await createAdhocTaskPo.clickSaveAdhoctask();
-                await manageTaskBladePo.clickTaskLink('adhocTaskSummary');
-                taskId = await viewTaskPo.getTaskID();
-                await navigationPage.gotoTaskConsole();
-            });
+        beforeAll(async () => {
+            //  Create Case
+            let caseData1 = {
+                "Requester": "qdu",
+                "Summary": "Test case for DRDMV23413" + randomStr,
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
+                "Assignee": caseAgentUserId
+            }
 
-            it('[DRDMV-23481]: Verify default preset filter on task console', async () => {
-               expect(await utilityGrid.appliedFilterMatches(['My Open Tasks'])).toBeTruthy('My Open Tasks is missing');
-               await utilityGrid.searchRecord(taskId);
-               expect(await utilityGrid.getFirstGridRecordColumnValue('Task ID')).toBe(taskId, " Task ID NOT displayed in Task console");
-            });
+            await apiHelper.apiLogin(caseAgentuserData.userId + "@petramco.com", "Password_1234");
+            newCase = await apiHelper.createCase(caseData1);
 
-            it('[DRDMV-23481]: Verify default preset filter on knowledge console', async () => {
-                await navigationPage.gotoKnowledgeConsole();
-               expect(await utilityGrid.appliedFilterMatches(['My Open Articles'])).toBeTruthy('My Open Articles is missing');
-               await utilityGrid.searchRecord(knowledgeArticleData.displayId);
-               expect(await utilityGrid.getFirstGridRecordColumnValue('Article ID')).toBe(knowledgeArticleData.displayId, " Article ID NOT displayed in Task console");
-            });
-            it('[DRDMV-23481]: Verify retain same case filter after logout and login in', async () => {
-                await navigationPage.signOut();
-                await loginPage.login(caseAgentuserData.userId+"@petramco.com","Password_1234");
-                expect(await utilityGrid.appliedFilterMatches(['My Open Cases'])).toBeTruthy('My Open Cases is missing');
+            let articleData = {
+                "knowledgeSet": "HR",
+                "title": "KATitle",
+                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "United States Support",
+                "assigneeSupportGroup": "US Support 3",
+                "assignee": caseAgentUserId
+            }
+            articleData.title = knowledgeTitle;
+            knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
 
-                await utilityGrid.searchRecord(newCase.displayId);
-                expect(await utilityGrid.getFirstGridRecordColumnValue('Case ID')).toBe(newCase.displayId, " Case Id NOT displayed in Task console");
-            });
-            it('[DRDMV-23481]: Verify retain same task filter after logout and login in', async () => {
-                await navigationPage.gotoTaskConsole();
-                expect(await utilityGrid.appliedFilterMatches(['My Open Tasks'])).toBeTruthy('My Open Tasks is missing');
-                await utilityGrid.searchRecord(taskId);
-                expect(await utilityGrid.getFirstGridRecordColumnValue('Task ID')).toBe(taskId, " Task ID NOT displayed in Task console");
-            });
-            it('[DRDMV-23481]: Verify retain same article filter after logout and login in', async () => {
-                await navigationPage.gotoKnowledgeConsole();
-                expect(await utilityGrid.appliedFilterMatches(['My Open Articles'])).toBeTruthy('My Open Tasks is missing');
-                await utilityGrid.searchRecord(knowledgeArticleData.displayId);
-                expect(await utilityGrid.getFirstGridRecordColumnValue('Article ID')).toBe(knowledgeArticleData.displayId, " Article ID NOT displayed in Task console");
-            });
-            it('[DRDMV-23481]: Clear Filter with logout login in and verify same filter again able to applied or not', async () => {
-                await navigationPage.gotoKnowledgeConsole();
-                await utilityGrid.clearFilter();
-                await navigationPage.signOut();
-                await loginPage.login(caseAgentuserData.userId+"@petramco.com","Password_1234");
-                await navigationPage.gotoKnowledgeConsole();
-                expect(await utilityGrid.appliedFilterMatches(['My Open Articles'])).toBeFalsy('My Open Tasks is missing');
-                
-                await utilityGrid.applyPresetFilter('My Open Articles');
-                expect(await utilityGrid.appliedFilterMatches(['My Open Articles'])).toBeTruthy('My Open Tasks is missing');
-                await utilityGrid.searchRecord(knowledgeArticleData.displayId);
-                expect(await utilityGrid.getFirstGridRecordColumnValue('Article ID')).toBe(knowledgeArticleData.displayId, " Article ID NOT displayed in Task console");
-            });
-            afterAll(async () => {
-                await utilityCommon.closeAllBlades();
-                await navigationPage.signOut();
-                await loginPage.login('qkatawazi');
-            });
-        
+            // login in with created user.
+            await navigationPage.signOut();
+            await loginPage.login(caseAgentuserData.userId + "@petramco.com", "Password_1234");
         });
+
+        it('[DRDMV-23481]: Verify default preset filter on case console', async () => {
+            expect(await utilityGrid.isAppliedFilterMatches(['My Open Cases'])).toBeTruthy('My Open Cases is missing');
+            await utilityGrid.searchRecord(newCase.displayId);
+            expect(await utilityGrid.getFirstGridRecordColumnValue('Case ID')).toBe(newCase.displayId, " Case Id NOT displayed in Task console");
+        });
+
+        it('[DRDMV-23481]: Add task in case', async () => {
+            await utilityGrid.searchAndOpenHyperlink(newCase.displayId);
+            await viewCasePo.clickAddTaskButton();
+            await manageTaskBladePo.clickAddAdhocTaskButton();
+            await createAdhocTaskPo.setSummary('adhocTaskSummary');
+            await createAdhocTaskPo.clickSaveAdhoctask();
+            await manageTaskBladePo.clickTaskLink('adhocTaskSummary');
+            taskId = await viewTaskPo.getTaskID();
+            await navigationPage.gotoTaskConsole();
+        });
+
+        it('[DRDMV-23481]: Verify default preset filter on task console', async () => {
+            expect(await utilityGrid.isAppliedFilterMatches(['My Open Tasks'])).toBeTruthy('My Open Tasks is missing');
+            await utilityGrid.searchRecord(taskId);
+            expect(await utilityGrid.getFirstGridRecordColumnValue('Task ID')).toBe(taskId, " Task ID NOT displayed in Task console");
+        });
+
+        it('[DRDMV-23481]: Verify default preset filter on knowledge console', async () => {
+            await navigationPage.gotoKnowledgeConsole();
+            expect(await utilityGrid.isAppliedFilterMatches(['My Open Articles'])).toBeTruthy('My Open Articles is missing');
+            await utilityGrid.searchRecord(knowledgeArticleData.displayId);
+            expect(await utilityGrid.getFirstGridRecordColumnValue('Article ID')).toBe(knowledgeArticleData.displayId, " Article ID NOT displayed in Task console");
+        });
+        it('[DRDMV-23481]: Verify retain same case filter after logout and login in', async () => {
+            await navigationPage.signOut();
+            await loginPage.login(caseAgentuserData.userId + "@petramco.com", "Password_1234");
+            expect(await utilityGrid.isAppliedFilterMatches(['My Open Cases'])).toBeTruthy('My Open Cases is missing');
+
+            await utilityGrid.searchRecord(newCase.displayId);
+            expect(await utilityGrid.getFirstGridRecordColumnValue('Case ID')).toBe(newCase.displayId, " Case Id NOT displayed in Task console");
+        });
+        it('[DRDMV-23481]: Verify retain same task filter after logout and login in', async () => {
+            await navigationPage.gotoTaskConsole();
+            expect(await utilityGrid.isAppliedFilterMatches(['My Open Tasks'])).toBeTruthy('My Open Tasks is missing');
+            await utilityGrid.searchRecord(taskId);
+            expect(await utilityGrid.getFirstGridRecordColumnValue('Task ID')).toBe(taskId, " Task ID NOT displayed in Task console");
+        });
+        it('[DRDMV-23481]: Verify retain same article filter after logout and login in', async () => {
+            await navigationPage.gotoKnowledgeConsole();
+            expect(await utilityGrid.isAppliedFilterMatches(['My Open Articles'])).toBeTruthy('My Open Tasks is missing');
+            await utilityGrid.searchRecord(knowledgeArticleData.displayId);
+            expect(await utilityGrid.getFirstGridRecordColumnValue('Article ID')).toBe(knowledgeArticleData.displayId, " Article ID NOT displayed in Task console");
+        });
+        it('[DRDMV-23481]: Clear Filter with logout login in and verify same filter again able to applied or not', async () => {
+            await navigationPage.gotoKnowledgeConsole();
+            await utilityGrid.clearFilter();
+            await navigationPage.signOut();
+            await loginPage.login(caseAgentuserData.userId + "@petramco.com", "Password_1234");
+            await navigationPage.gotoKnowledgeConsole();
+            expect(await utilityGrid.isAppliedFilterMatches(['My Open Articles'])).toBeFalsy('My Open Tasks is missing');
+
+            await utilityGrid.applyPresetFilter('My Open Articles');
+            expect(await utilityGrid.isAppliedFilterMatches(['My Open Articles'])).toBeTruthy('My Open Tasks is missing');
+            await utilityGrid.searchRecord(knowledgeArticleData.displayId);
+            expect(await utilityGrid.getFirstGridRecordColumnValue('Article ID')).toBe(knowledgeArticleData.displayId, " Article ID NOT displayed in Task console");
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+
+    });
 
     //kgaikwad
     describe('[DRDMV-23484]: Verify custom preset filter permission and add new dynamic filter in already saved applied filter', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase;
         let filtername1 = 'filtername1' + randomStr;
-        let filtername2 = 'filtername2'+ randomStr;
+        let filtername2 = 'filtername2' + randomStr;
 
         beforeAll(async () => {
             //  Create Case
@@ -170,30 +170,32 @@ describe('Preset Filter Funcational Verification', () => {
         it('[DRDMV-23484]: Add filter on already applied filter', async () => {
             await utilityGrid.clearFilterPreset();
             await utilityGrid.addFilter("Case ID", newCase.displayId, "default");
-            expect (await utilityGrid.getAppliedFilterName()).toBe(`Case ID: ${newCase.displayId}`, 'Missing filter name');
+            let openArticle: string[] = [`Case ID: ${newCase.displayId}`];
+            expect(await utilityGrid.isAppliedFilterMatches(openArticle)).toBeTruthy();
             await utilityGrid.saveFilter(filtername1);
-            expect (await utilityGrid.getAppliedFilterName()).toBe(`Case ID: ${newCase.displayId}`, 'Missing filter name');
+            let openArticle1: string[] = [`Case ID: ${newCase.displayId}`];
+            expect(await utilityGrid.isAppliedFilterMatches(openArticle1)).toBeTruthy();
             expect(await utilityGrid.getFirstGridRecordColumnValue('Case ID')).toBe(newCase.displayId, " Case Id NOT displayed in Task console");
 
             await utilityGrid.addFilter("Requester", 'Qiang Du', "default");
-            expect(await utilityGrid.appliedFilterMatches([`Case ID: ${newCase.displayId}`,'Requester: Qiang Du'])).toBeTruthy('Applied filter is missing');
+            expect(await utilityGrid.isAppliedFilterMatches([`Case ID: ${newCase.displayId}`, 'Requester: Qiang Du'])).toBeTruthy('Applied filter is missing');
 
             await utilityGrid.saveFilter(filtername2);
-            expect(await utilityGrid.appliedFilterMatches([`Case ID: ${newCase.displayId}`, 'Requester: Qiang Du'])).toBeTruthy('Requester: Qiang Du Missing filter name');
+            expect(await utilityGrid.isAppliedFilterMatches([`Case ID: ${newCase.displayId}`, 'Requester: Qiang Du'])).toBeTruthy('Requester: Qiang Du Missing filter name');
             expect(await utilityGrid.getFirstGridRecordColumnValue('Case ID')).toBe(newCase.displayId, " Case Id NOT displayed in Task console");
-         
+
         });
 
-         it('[DRDMV-23484]: Verify permission of custom preset filter', async () => {
+        it('[DRDMV-23484]: Verify permission of custom preset filter', async () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
-            expect (await utilityGrid.isPresetFilterNameDisplayed(filtername1)).toBeFalsy('FailureMsg: Preset filter is displayed');
-            expect (await utilityGrid.isPresetFilterNameDisplayed(filtername2)).toBeFalsy('FailureMsg: Preset filter is displayed');
+            expect(await utilityGrid.isPresetFilterNameDisplayed(filtername1)).toBeFalsy('FailureMsg: Preset filter is displayed');
+            expect(await utilityGrid.isPresetFilterNameDisplayed(filtername2)).toBeFalsy('FailureMsg: Preset filter is displayed');
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
-            expect (await utilityGrid.isPresetFilterNameDisplayed(filtername1)).toBeTruthy('FailureMsg: Preset filter is missing');
-            expect (await utilityGrid.isPresetFilterNameDisplayed(filtername2)).toBeTruthy('FailureMsg: Preset filter is missing');
-            expect(await utilityGrid.appliedFilterMatches([`Case ID: ${newCase.displayId}`,'Requester: Qiang Du'])).toBeTruthy('Applied filter is missing');
+            expect(await utilityGrid.isPresetFilterNameDisplayed(filtername1)).toBeTruthy('FailureMsg: Preset filter is missing');
+            expect(await utilityGrid.isPresetFilterNameDisplayed(filtername2)).toBeTruthy('FailureMsg: Preset filter is missing');
+            expect(await utilityGrid.isAppliedFilterMatches([`Case ID: ${newCase.displayId}`, 'Requester: Qiang Du'])).toBeTruthy('Applied filter is missing');
             expect(await utilityGrid.getFirstGridRecordColumnValue('Case ID')).toBe(newCase.displayId, " Case Id NOT displayed in Task console");
         });
 
@@ -211,7 +213,7 @@ describe('Preset Filter Funcational Verification', () => {
         let newCase2;
         let adhoctaskId;
         let knowledgeArticleData;
-        let knowledgeTitle ='knowledgeTitle'+randomStr;
+        let knowledgeTitle = 'knowledgeTitle' + randomStr;
         let filtername1 = 'filtername1' + randomStr;
         let filtername2 = 'filtername2' + randomStr;
 
@@ -227,7 +229,7 @@ describe('Preset Filter Funcational Verification', () => {
             }
             await apiHelper.apiLogin('qkatawazi');
             newCase = await apiHelper.createCase(caseData1);
-            
+
             // Knowledge Article
             let articleData = {
                 "knowledgeSet": "HR",
@@ -250,16 +252,16 @@ describe('Preset Filter Funcational Verification', () => {
         it('[DRDMV-23485]: Custom filter should retain on case console after delete custom preset filter', async () => {
             await utilityGrid.clearFilterPreset();
             await utilityGrid.addFilter("Summary", `Summary DRDMV23485${randomStr}`, "default");
-            await utilityGrid.addFilter('Case ID',newCase.displayId, "default");
-            
+            await utilityGrid.addFilter('Case ID', newCase.displayId, "default");
+
             await utilityGrid.saveFilter(filtername1);
-            expect(await utilityGrid.appliedFilterMatches([`Summary: Summary DRDMV23485${randomStr}`,`Case ID: ${newCase.displayId}`])).toBeTruthy('Requester: Qiang Du, Summary Missing filter name');
+            expect(await utilityGrid.isAppliedFilterMatches([`Summary: Summary DRDMV23485${randomStr}`, `Case ID: ${newCase.displayId}`])).toBeTruthy('Requester: Qiang Du, Summary Missing filter name');
             expect(await utilityGrid.getFirstGridRecordColumnValue('Case ID')).toBe(newCase.displayId, " Case Id NOT displayed in case console");
             expect(await utilityGrid.getFirstGridRecordColumnValue('Summary')).toBe(`Summary DRDMV23485${randomStr}`, " Case Id NOT displayed in case console");
 
             await utilityGrid.deleteCustomPresetFilter(filtername1);
-            expect (await utilityGrid.isPresetFilterNameDisplayed(filtername1)).toBeFalsy('FailureMsg: Preset filter is displayed');
-            expect(await utilityGrid.appliedFilterMatches([`Summary: Summary DRDMV23485${randomStr}`,`Case ID: ${newCase.displayId}`])).toBeTruthy('Requester: Qiang Du, Summary Missing filter name');
+            expect(await utilityGrid.isPresetFilterNameDisplayed(filtername1)).toBeFalsy('FailureMsg: Preset filter is displayed');
+            expect(await utilityGrid.isAppliedFilterMatches([`Summary: Summary DRDMV23485${randomStr}`, `Case ID: ${newCase.displayId}`])).toBeTruthy('Requester: Qiang Du, Summary Missing filter name');
 
             expect(await utilityGrid.getFirstGridRecordColumnValue('Case ID')).toBe(newCase.displayId, " Case Id NOT displayed in case console");
             expect(await utilityGrid.getFirstGridRecordColumnValue('Summary')).toBe(`Summary DRDMV23485${randomStr}`, " Case Id NOT displayed in case console");
@@ -272,24 +274,24 @@ describe('Preset Filter Funcational Verification', () => {
             await createAdhocTaskPo.setSummary(`Summary DRDMV23485${randomStr}`);
             await createAdhocTaskPo.clickSaveAdhoctask();
             await manageTaskBladePo.clickTaskLink(`Summary DRDMV23485${randomStr}`);
-            adhoctaskId = await viewTaskPo.getTaskID(); 
+            adhoctaskId = await viewTaskPo.getTaskID();
             await navigationPage.gotoTaskConsole();
         });
 
         it('[DRDMV-23485]: Custom filter should retain on task console after delete custom preset filter', async () => {
             await utilityGrid.clearFilterPreset();
             await utilityGrid.addFilter("Summary", `Summary DRDMV23485${randomStr}`, "default");
-            await utilityGrid.addFilter('Status','Staged', "default");
-            
+            await utilityGrid.addFilter('Status', 'Staged', "default");
+
             await utilityGrid.saveFilter(filtername1);
-            expect(await utilityGrid.appliedFilterMatches([`Summary: Summary DRDMV23485${randomStr}`,'Status: Staged'])).toBeTruthy('Summary, Status: Staged Missing filter name');
+            expect(await utilityGrid.isAppliedFilterMatches([`Summary: Summary DRDMV23485${randomStr}`, 'Status: Staged'])).toBeTruthy('Summary, Status: Staged Missing filter name');
 
             expect(await utilityGrid.getFirstGridRecordColumnValue('Task ID')).toBe(adhoctaskId, " adhoctaskId NOT displayed in task console");
             expect(await utilityGrid.getFirstGridRecordColumnValue('Summary')).toBe(`Summary DRDMV23485${randomStr}`, " task Summary NOT displayed in case console");
 
             await utilityGrid.deleteCustomPresetFilter(filtername1);
-            expect (await utilityGrid.isPresetFilterNameDisplayed(filtername1)).toBeFalsy('FailureMsg: Preset filter is displayed');
-            expect(await utilityGrid.appliedFilterMatches([`Summary: Summary DRDMV23485${randomStr}`,'Status: Staged'])).toBeTruthy('Summary, Status: Staged Missing filter name');
+            expect(await utilityGrid.isPresetFilterNameDisplayed(filtername1)).toBeFalsy('FailureMsg: Preset filter is displayed');
+            expect(await utilityGrid.isAppliedFilterMatches([`Summary: Summary DRDMV23485${randomStr}`, 'Status: Staged'])).toBeTruthy('Summary, Status: Staged Missing filter name');
 
             expect(await utilityGrid.getFirstGridRecordColumnValue('Task ID')).toBe(adhoctaskId, " adhoctaskId NOT displayed in task console");
             expect(await utilityGrid.getFirstGridRecordColumnValue('Status')).toBe(`Staged`, " Status NOT displayed on task console");
@@ -299,17 +301,17 @@ describe('Preset Filter Funcational Verification', () => {
             await navigationPage.gotoKnowledgeConsole();
             await utilityGrid.clearFilterPreset();
             await utilityGrid.addFilter("Knowledge Set", 'HR', "default");
-            await utilityGrid.addFilter('Modified By','qkatawazi', "default");
-            await utilityGrid.addFilter('Article ID',knowledgeArticleData.displayId, "default");
-            
+            await utilityGrid.addFilter('Modified By', 'qkatawazi', "default");
+            await utilityGrid.addFilter('Article ID', knowledgeArticleData.displayId, "default");
+
             await utilityGrid.saveFilter(filtername1);
-            expect(await utilityGrid.appliedFilterMatches(['Knowledge Set: HR','Modified By: qkatawazi',`Article ID: ${knowledgeArticleData.displayId}`])).toBeTruthy('Knowledge Set, Modified By Article ID Missing from applied filter name');
+            expect(await utilityGrid.isAppliedFilterMatches(['Knowledge Set: HR', 'Modified By: qkatawazi', `Article ID: ${knowledgeArticleData.displayId}`])).toBeTruthy('Knowledge Set, Modified By Article ID Missing from applied filter name');
 
             expect(await utilityGrid.getFirstGridRecordColumnValue('Article ID')).toBe(knowledgeArticleData.displayId, " knowledgeArticleData.displayId NOT displayed in knowledge article console");
 
             await utilityGrid.deleteCustomPresetFilter(filtername1);
-            expect (await utilityGrid.isPresetFilterNameDisplayed(filtername1)).toBeFalsy('FailureMsg: Preset filter is displayed');
-            expect(await utilityGrid.appliedFilterMatches(['Knowledge Set: HR','Modified By: qkatawazi',`Article ID: ${knowledgeArticleData.displayId}`])).toBeTruthy('Knowledge Set, Modified By Article ID Missing from applied filter name');
+            expect(await utilityGrid.isPresetFilterNameDisplayed(filtername1)).toBeFalsy('FailureMsg: Preset filter is displayed');
+            expect(await utilityGrid.isAppliedFilterMatches(['Knowledge Set: HR', 'Modified By: qkatawazi', `Article ID: ${knowledgeArticleData.displayId}`])).toBeTruthy('Knowledge Set, Modified By Article ID Missing from applied filter name');
 
             expect(await utilityGrid.getFirstGridRecordColumnValue('Article ID')).toBe(knowledgeArticleData.displayId, " knowledgeArticleData.displayId NOT displayed in knowledge article console");
         });
@@ -317,8 +319,8 @@ describe('Preset Filter Funcational Verification', () => {
         it('[DRDMV-23485]: Case Custom filter should stay deleted after logout and login in', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
-            expect (await utilityGrid.isPresetFilterNameDisplayed(filtername1)).toBeFalsy('FailureMsg: Preset filter is displayed');
-            expect(await utilityGrid.appliedFilterMatches([`Summary: Summary DRDMV23485${randomStr}`,`Case ID: ${newCase.displayId}`])).toBeTruthy('Summary, Case ID By Article ID Missing from applied filter name');
+            expect(await utilityGrid.isPresetFilterNameDisplayed(filtername1)).toBeFalsy('FailureMsg: Preset filter is displayed');
+            expect(await utilityGrid.isAppliedFilterMatches([`Summary: Summary DRDMV23485${randomStr}`, `Case ID: ${newCase.displayId}`])).toBeTruthy('Summary, Case ID By Article ID Missing from applied filter name');
 
             expect(await utilityGrid.getFirstGridRecordColumnValue('Case ID')).toBe(newCase.displayId, " Case Id NOT displayed in case console");
             expect(await utilityGrid.getFirstGridRecordColumnValue('Summary')).toBe(`Summary DRDMV23485${randomStr}`, " Case Id NOT displayed in case console");
@@ -326,8 +328,8 @@ describe('Preset Filter Funcational Verification', () => {
 
         it('[DRDMV-23485]: Task Custom filter should stay deleted after logout and login in', async () => {
             await navigationPage.gotoTaskConsole();
-            expect (await utilityGrid.isPresetFilterNameDisplayed(filtername1)).toBeFalsy('FailureMsg: Preset filter is displayed');
-            expect(await utilityGrid.appliedFilterMatches([`Summary: Summary DRDMV23485${randomStr}`,`Status: Staged`])).toBeTruthy('Summary, Status By Article ID Missing from applied filter name');
+            expect(await utilityGrid.isPresetFilterNameDisplayed(filtername1)).toBeFalsy('FailureMsg: Preset filter is displayed');
+            expect(await utilityGrid.isAppliedFilterMatches([`Summary: Summary DRDMV23485${randomStr}`, `Status: Staged`])).toBeTruthy('Summary, Status By Article ID Missing from applied filter name');
 
             expect(await utilityGrid.getFirstGridRecordColumnValue('Task ID')).toBe(adhoctaskId, " adhoctaskId NOT displayed in task console");
             expect(await utilityGrid.getFirstGridRecordColumnValue('Summary')).toBe(`Summary DRDMV23485${randomStr}`, " task Summary NOT displayed in case console");
@@ -335,8 +337,8 @@ describe('Preset Filter Funcational Verification', () => {
 
         it('[DRDMV-23485]: Knowledge Aeticle Custom filter should stay deleted after logout and login in', async () => {
             await navigationPage.gotoKnowledgeConsole();
-            expect (await utilityGrid.isPresetFilterNameDisplayed(filtername1)).toBeFalsy('FailureMsg: Preset filter is displayed');
-            expect(await utilityGrid.appliedFilterMatches(['Knowledge Set: HR','Modified By: qkatawazi',`Article ID: ${knowledgeArticleData.displayId}`])).toBeTruthy('Knowledge Set, Modified By Article ID Missing from applied filter name');
+            expect(await utilityGrid.isPresetFilterNameDisplayed(filtername1)).toBeFalsy('FailureMsg: Preset filter is displayed');
+            expect(await utilityGrid.isAppliedFilterMatches(['Knowledge Set: HR', 'Modified By: qkatawazi', `Article ID: ${knowledgeArticleData.displayId}`])).toBeTruthy('Knowledge Set, Modified By Article ID Missing from applied filter name');
 
             expect(await utilityGrid.getFirstGridRecordColumnValue('Article ID')).toBe(knowledgeArticleData.displayId, " knowledgeArticleData.displayId NOT displayed in knowledge article console");
         });
@@ -347,9 +349,9 @@ describe('Preset Filter Funcational Verification', () => {
             await utilityGrid.addFilter("Summary", `Summary DRDMV23485${randomStr}`, "default");
             await utilityGrid.addFilter('Company', 'Petramco', "default");
             await utilityGrid.addFilter('Case ID', newCase.displayId, "default");
-            
+
             await utilityGrid.saveFilter(filtername2);
-            expect(await utilityGrid.appliedFilterMatches([`Summary: Summary DRDMV23485${randomStr}`,`Company: Petramco`,`Case ID: ${newCase.displayId}`])).toBeTruthy('Requester: Qiang Du, Company, Summary Missing filter name');
+            expect(await utilityGrid.isAppliedFilterMatches([`Summary: Summary DRDMV23485${randomStr}`, `Company: Petramco`, `Case ID: ${newCase.displayId}`])).toBeTruthy('Requester: Qiang Du, Company, Summary Missing filter name');
 
             expect(await utilityGrid.getFirstGridRecordColumnValue('Case ID')).toBe(newCase.displayId, " Case Id NOT displayed in case console");
             expect(await utilityGrid.getFirstGridRecordColumnValue('Summary')).toBe(`Summary DRDMV23485${randomStr}`, " Case Id NOT displayed in case console");
@@ -358,14 +360,14 @@ describe('Preset Filter Funcational Verification', () => {
             await loginPage.login('qdu');
             await utilityGrid.clearFilterPreset();
             await utilityGrid.addFilter("Summary", `Summary DRDMV23485${randomStr}`, "default");
-            await utilityGrid.addFilter('Company','Petramco', "default");
+            await utilityGrid.addFilter('Company', 'Petramco', "default");
             await utilityGrid.addFilter('Case ID', newCase2.displayId, "default");
-            
+
             await utilityGrid.saveFilter(filtername2);
-            expect(await utilityGrid.appliedFilterMatches([`Summary: Summary DRDMV23485${randomStr}`,`Company: Petramco`,`Case ID: ${newCase.displayId}`])).toBeTruthy('Requester: Qiang Du, Company, Summary Missing filter name');
+            expect(await utilityGrid.isAppliedFilterMatches([`Summary: Summary DRDMV23485${randomStr}`, `Company: Petramco`, `Case ID: ${newCase.displayId}`])).toBeTruthy('Requester: Qiang Du, Company, Summary Missing filter name');
             expect(await utilityGrid.getFirstGridRecordColumnValue('Case ID')).toBe(newCase2.displayId, " Case Id NOT displayed in case console");
             expect(await utilityGrid.getFirstGridRecordColumnValue('Summary')).toBe(`Summary DRDMV23485${randomStr}`, " Case Id NOT displayed in case console");
-    });
+        });
 
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
@@ -373,6 +375,6 @@ describe('Preset Filter Funcational Verification', () => {
             await loginPage.login('qkatawazi');
         });
 
-});
+    });
 
 });

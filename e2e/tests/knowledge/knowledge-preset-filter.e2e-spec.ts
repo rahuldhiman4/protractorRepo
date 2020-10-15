@@ -40,9 +40,9 @@ describe('Knowledge Console Preset Filter', () => {
 
         let approvalConfigGlobalTitle = KNOWLEDGE_APPROVAL_FLOW_DATA.flowName + randomStr;
         KNOWLEDGE_APPROVAL_FLOW_DATA.flowName = approvalConfigGlobalTitle;
-        await apiHelper.createApprovalFlow(KNOWLEDGE_APPROVAL_FLOW_DATA,knowledgeModule);
+        await apiHelper.createApprovalFlow(KNOWLEDGE_APPROVAL_FLOW_DATA, knowledgeModule);
         await apiHelper.deleteApprovalMapping(knowledgeModule);
-        await apiHelper.createApprovalMapping(knowledgeModule,KNOWLEDGE_APPROVAL_MAPPING_DATA);
+        await apiHelper.createApprovalMapping(knowledgeModule, KNOWLEDGE_APPROVAL_MAPPING_DATA);
         //Update the sleep time to 9000 later
         await browser.sleep(20000); //New user is created above, waiting for its backend access preperation
         await loginPage.login(userIdKnowledgeCoach, passwordKnowledgeCoach);
@@ -191,7 +191,8 @@ describe('Knowledge Console Preset Filter', () => {
         });
         it('[DRDMV-20894]: Validate the My Open Articles filter after applying and removing the filter', async () => {
             await utilityGrid.applyPresetFilter('My Open Articles');
-            expect(await utilityGrid.getAppliedFilterName()).toBe('My Open Articles');
+            let openArticle: string[] = ['My Open Articles'];
+            expect(await utilityGrid.isAppliedFilterMatches(openArticle)).toBeTruthy();
 
             for (let i: number = 0; i < 5; i++) {
                 expect(await utilityGrid.isGridRecordPresent(knowledgeId[i])).toBeTruthy(knowledgeId[i] + ' :Record is not available');
@@ -339,7 +340,8 @@ describe('Knowledge Console Preset Filter', () => {
         it('[DRDMV-20890]: Validate the All Published Articles filter after applying and removing the filter', async () => {
             await utilityGrid.clearFilter();
             await utilityGrid.applyPresetFilter('All Published Articles');
-            expect(await utilityGrid.getAppliedFilterName()).toBe('All Published Articles');
+            let allPublishedArticle: string[] = ['All Published Articles'];
+            expect(await utilityGrid.isAppliedFilterMatches(allPublishedArticle)).toBeTruthy();
 
             for (let i: number = 11; i < 13; i++) {
                 expect(await utilityGrid.isGridRecordPresent(knowledgeId[i])).toBeTruthy(knowledgeId[i] + ' :Record is not available');
@@ -381,7 +383,8 @@ describe('Knowledge Console Preset Filter', () => {
         await apiHelper.updateKnowledgeArticleExternalFlag(knowledgeArticleData2.id, true);
 
         await utilityGrid.applyPresetFilter('All Externally Published Articles');
-        expect(await utilityGrid.getAppliedFilterName()).toBe('All Externally Published Articles');
+        let externalPublishedArticle: string[] = ['All Externally Published Articles'];
+        expect(await utilityGrid.isAppliedFilterMatches(externalPublishedArticle)).toBeTruthy();
 
         expect(await utilityGrid.isGridRecordPresent(knowledgeId[0])).toBeTruthy(knowledgeId[0] + ' :Record is not available');
         expect(await utilityGrid.isGridRecordPresent(knowledgeId[1])).toBeFalsy(knowledgeId[1] + ' :Record is available');
@@ -448,7 +451,8 @@ describe('Knowledge Console Preset Filter', () => {
         await dbConnectVar.query(`UPDATE t685 SET c3 = '${dateEpochValueArticle4}' WHERE c302300507 = '${displayId4}'`);
 
         await utilityGrid.applyPresetFilter('All Articles In Last 1 month');
-        expect(await utilityGrid.getAppliedFilterName()).toBe('All Articles In Last 1 month');
+        let allTaskFilter: string[] = ['All Articles In Last 1 month'];
+        expect(await utilityGrid.isAppliedFilterMatches(allTaskFilter)).toBeTruthy();
 
         for (let i = 0; i < 2; i++) {
             expect(await utilityGrid.isGridRecordPresent(knowledgeId[i])).toBeTruthy(knowledgeId[i] + ' :Record is not available');
@@ -503,8 +507,8 @@ describe('Knowledge Console Preset Filter', () => {
         await dbConnectVar.query(`UPDATE t685 SET c3 = '${dateEpochValueArticle3}' WHERE c302300507 = '${displayId3}'`);
 
         await utilityGrid.applyPresetFilter('All Articles In Last 3 months');
-        expect(await utilityGrid.getAppliedFilterName()).toBe('All Articles In Last 3 months');
-
+        let allTaskFilter: string[] = ['All Articles In Last 3 months'];
+        expect(await utilityGrid.isAppliedFilterMatches(allTaskFilter)).toBeTruthy();
         for (let i = 0; i < 2; i++) {
             expect(await utilityGrid.isGridRecordPresent(knowledgeId[i])).toBeTruthy(knowledgeId[i] + ' :Record is not available');
         }
@@ -568,7 +572,8 @@ describe('Knowledge Console Preset Filter', () => {
         await dbConnectVar.query(`UPDATE t685 SET c3 = '${dateEpochValueArticle4}' WHERE c302300507 = '${displayId4}'`);
 
         await utilityGrid.applyPresetFilter('All Articles In Last 6 months');
-        expect(await utilityGrid.getAppliedFilterName()).toBe('All Articles In Last 6 months');
+        let allTaskFilter: string[] = ['All Articles In Last 6 months'];
+        expect(await utilityGrid.isAppliedFilterMatches(allTaskFilter)).toBeTruthy();
 
         for (let i = 0; i < 3; i++) {
             expect(await utilityGrid.isGridRecordPresent(knowledgeId[i])).toBeTruthy(knowledgeId[i] + ' :Record is not available');
