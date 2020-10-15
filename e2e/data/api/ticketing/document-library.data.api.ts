@@ -69,6 +69,12 @@ export const DOC_LIB_DRAFT = {
         "450000167": {
             "id": 450000167,
             "value": null
+        },
+        "450000420":{
+           "resourceType":"com.bmc.arsys.rx.services.record.domain.FieldInstance",
+           "id":450000420,
+           "value":"AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
+           "permissionType":"CHANGE"
         }
     }
 };

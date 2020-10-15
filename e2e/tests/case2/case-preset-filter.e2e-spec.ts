@@ -114,7 +114,8 @@ describe('Case Console Preset Filter', () => {
         }
 
         await utilityGrid.applyPresetFilter('My Open Cases');
-        expect(await utilityGrid.getAppliedFilterName()).toBe('My Open Cases');
+        let openCase: string[] = ['My Open Cases'];
+        expect(await utilityGrid.isAppliedFilterMatches(openCase)).toBeTruthy();
 
         for (let i: number = 0; i < 5; i++) {
             expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeTruthy(caseId[i] + ' :Record is not available');
@@ -176,7 +177,8 @@ describe('Case Console Preset Filter', () => {
         caseId.push(response10.displayId);
 
         await utilityGrid.applyPresetFilter('VIP Open Cases');
-        expect(await utilityGrid.getAppliedFilterName()).toBe('VIP Open Cases');
+        let openCase: string[] = ['VIP Open Cases'];
+        expect(await utilityGrid.isAppliedFilterMatches(openCase)).toBeTruthy();
 
         for (let i: number = 0; i < 5; i++) {
             expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeTruthy(caseId[i] + ' :Record is not available');
@@ -237,7 +239,8 @@ describe('Case Console Preset Filter', () => {
         caseId.push(response10.displayId);
 
         await utilityGrid.applyPresetFilter('All Open Cases');
-        expect(await utilityGrid.getAppliedFilterName()).toBe('All Open Cases');
+        let openCase: string[] = ['All Open Cases'];
+        expect(await utilityGrid.isAppliedFilterMatches(openCase)).toBeTruthy();
 
         for (let i: number = 0; i < 6; i++) {
             expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeTruthy(caseId[i] + ' :Record is not available');
@@ -303,7 +306,8 @@ describe('Case Console Preset Filter', () => {
         caseId.push(response11.displayId);
 
         await utilityGrid.applyPresetFilter('High Priority Open Cases');
-        expect(await utilityGrid.getAppliedFilterName()).toBe('High Priority Open Cases');
+        let highPriorityOpenCase: string[] = ['High Priority Open Cases'];
+        expect(await utilityGrid.isAppliedFilterMatches(highPriorityOpenCase)).toBeTruthy();
 
         for (let i: number = 7; i < 12; i++) {
             expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeTruthy(caseId[i] + ' :Record is not available');
@@ -369,7 +373,8 @@ describe('Case Console Preset Filter', () => {
         caseId.push(response11.displayId);
 
         await utilityGrid.applyPresetFilter('Critical Priority Open Cases');
-        expect(await utilityGrid.getAppliedFilterName()).toBe('Critical Priority Open Cases');
+        let criticalPriorityOpenCase: string[] = ['Critical Priority Open Cases'];
+        expect(await utilityGrid.isAppliedFilterMatches(criticalPriorityOpenCase)).toBeTruthy();
 
         for (let i: number = 7; i < 12; i++) {
             expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeTruthy(caseId[i] + ' :Record is not available');
@@ -401,7 +406,8 @@ describe('Case Console Preset Filter', () => {
         caseId.push(response2.displayId);
 
         await utilityGrid.applyPresetFilter('All Unassigned Cases');
-        expect(await utilityGrid.getAppliedFilterName()).toBe('All Unassigned Cases');
+        let unassignedCase: string[] = ['All Unassigned Cases'];
+        expect(await utilityGrid.isAppliedFilterMatches(unassignedCase)).toBeTruthy();
 
         expect(await utilityGrid.isGridRecordPresent(caseId[2])).toBeTruthy(caseId[2] + ' :Record is not available');
 
@@ -457,7 +463,8 @@ describe('Case Console Preset Filter', () => {
 
         it('[DRDMV-20881]: Validate the All Open Breached Cases filter after applying and removing the filter', async () => {
             await utilityGrid.applyPresetFilter('All Open Breached Cases');
-            expect(await utilityGrid.getAppliedFilterName()).toBe('All Open Breached Cases');
+            let allOpenCase: string[] = ['All Open Breached Cases'];
+            expect(await utilityGrid.isAppliedFilterMatches(allOpenCase)).toBeTruthy();
             expect(await utilityGrid.isGridRecordPresent(caseId[5])).toBeFalsy(caseId[5] + ' :Record is available');
 
             //Waiting for SVT to Breached
@@ -522,7 +529,8 @@ describe('Case Console Preset Filter', () => {
             //Waiting for SVT to Breached
             await browser.sleep(160000);
             await utilityGrid.applyPresetFilter('My Open Breached Cases');
-            expect(await utilityGrid.getAppliedFilterName()).toBe('My Open Breached Cases');
+            let allOpenCase: string[] = ['My Open Breached Cases'];
+            expect(await utilityGrid.isAppliedFilterMatches(allOpenCase)).toBeTruthy();
             
             for (let i: number = 0; i < 4; i++) {
                 expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeTruthy(caseId[i] + ' :Record is not available');
@@ -578,7 +586,8 @@ describe('Case Console Preset Filter', () => {
 
         await utilityGrid.clearFilter();
         await utilityGrid.applyPresetFilter('All Cases In Last 1 month');
-        expect(await utilityGrid.getAppliedFilterName()).toBe('All Cases In Last 1 month');
+        let allOpenCase: string[] = ['All Cases In Last 1 month'];
+        expect(await utilityGrid.isAppliedFilterMatches(allOpenCase)).toBeTruthy();
 
         for (let i: number = 0; i < 2; i++) {
             expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeTruthy(caseId[i] + ' :Record is not available');
@@ -627,7 +636,8 @@ describe('Case Console Preset Filter', () => {
 
         await utilityGrid.clearFilter();
         await utilityGrid.applyPresetFilter('All Cases  In Last 3 months');
-        expect(await utilityGrid.getAppliedFilterName()).toBe('All Cases In Last 3 months');
+        let allOpenCase: string[] = ['All Cases  In Last 3 months'];
+        expect(await utilityGrid.isAppliedFilterMatches(allOpenCase)).toBeTruthy();
 
         for (let i: number = 0; i < 2; i++) {
             expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeTruthy(caseId[i] + ' :Record is not available');
@@ -681,7 +691,8 @@ describe('Case Console Preset Filter', () => {
 
         await utilityGrid.clearFilter();
         await utilityGrid.applyPresetFilter('All Cases  In Last 6 months');
-        expect(await utilityGrid.getAppliedFilterName()).toBe('All Cases In Last 6 months');
+        let allOpenCase: string[] = ['All Cases  In Last 6 months'];
+        expect(await utilityGrid.isAppliedFilterMatches(allOpenCase)).toBeTruthy();
 
         for (let i: number = 0; i < 3; i++) {
             expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeTruthy(caseId[i] + ' :Record is not available');

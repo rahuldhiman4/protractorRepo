@@ -7,9 +7,9 @@ class CreateEmailTemplate {
     selectors = {
         templateName: '[rx-view-component-id="310bbc87-54ee-4994-9a1e-93b1982155f2"] input',
         templateGuid: '310bbc87-54ee-4994-9a1e-93b1982155f2',
-        companyGuid: 'd240380a-1de2-4b28-9082-81e96fc21415',
+        companyGuid: '92c503a8-8b80-49bc-88f1-8a2626b3f594',
         statusGuid: '3cfbfd34-19ff-4ddb-818b-23b19c859dbe',
-        labelGuid: 'a0774e28-42c2-4132-9da4-0063545e791f',
+        labelGuid: '44510e3a-6542-432a-82b1-433dd0cbf49f',
         descriptionGuid: '0fab6085-678b-442a-851d-25085b0bde8c',
         description: '[rx-view-component-id="0fab6085-678b-442a-851d-25085b0bde8c"] input',
         subjectGuid: '187510cc-9804-46e2-bbda-0cdba1d6c83c',
@@ -31,7 +31,7 @@ class CreateEmailTemplate {
         fontSize: '[rx-view-component-id="d898362f-92bb-495f-8d98-03f480c4864b"] .cke_combo__fontsize',
         saveButton: '[rx-view-component-id="093a0eeb-c1e0-4ed8-945f-da46d9bbde88"] button',
         cancelButton: '[rx-view-component-id="9aeef4d7-1a10-4ffd-aa3a-22665c32883c"] button',
-        moduleGuid: '4514a92a-336f-47f7-9b17-02831428d9a8',
+        lineOfBusinessGuid: '14c47289-52da-433a-b297-de2e8a7402a0',
     }
 
     async setTemplateName(value: string): Promise<void> {
@@ -50,8 +50,8 @@ class CreateEmailTemplate {
         return await utilCommon.isRequiredTagToField(this.selectors.templateGuid);
     }
 
-    async isModuleRequiredTextPresent(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.moduleGuid);
+    async islineOfBusinessRequiredTextPresent(): Promise<boolean> {
+        return await utilCommon.isRequiredTagToField(this.selectors.lineOfBusinessGuid);
     }
 
     async isStatusRequiredTextPresent(): Promise<boolean> {

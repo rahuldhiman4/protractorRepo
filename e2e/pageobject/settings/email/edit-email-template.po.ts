@@ -9,7 +9,7 @@ class CreateEmailTemplateBlade {
         company: '[rx-view-component-id="af048482-fdf7-4650-ab4b-75e262e00445"] .ui-select-toggle',
         moduleName: '[rx-view-component-id="8107085d-334f-4d50-beb9-ad10d8911144"] .ui-select-toggle',
         statusGuid: 'a1e0042f-41e7-4c80-9cd8-014786f346e6',
-        labelGuid: '38ba050c-eb47-44a7-9efc-c724302560bf',
+        labelGuid: '73d1ec34-830a-4e9b-9d7a-484ff73bbdb4',
         description: '[rx-view-component-id="f7437c9e-1ed7-4aac-974a-e4d4a643ee35"] input',
         localeGuid: '71db023a-4979-4f58-a026-6aeda2edd96b',
         localizeMessage: '[rx-view-component-id="88ea24dd-ddad-489f-904a-89e43f80f5e6"] button',

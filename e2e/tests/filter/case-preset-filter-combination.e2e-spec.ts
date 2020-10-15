@@ -65,7 +65,7 @@ describe('Case Console Filter Combinations', () => {
             await utilityGrid.addFilter('Assignee', 'Elizabeth Peters', 'text');
             await utilityGrid.addFilter('Assigned Group', 'Employee Relations', 'text');
             await utilityGrid.addFilter('Status', 'Assigned', 'text');
-            expect(await utilityGrid.appliedFilterMatches(['Assignee: Elizabeth Peters', 'Assigned Group: Employee Relations', 'Status: Assigned'])).toBeTruthy();
+            expect(await utilityGrid.isAppliedFilterMatches(['Assignee: Elizabeth Peters', 'Assigned Group: Employee Relations', 'Status: Assigned'])).toBeTruthy();
             await utilityGrid.saveFilter('Filter1');
             await utilityGrid.clickRefreshIcon();
 

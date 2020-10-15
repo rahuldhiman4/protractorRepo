@@ -1,8 +1,11 @@
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
+import viewCasePo from '../../pageobject/case/view-case.po';
 import attachDocumentBladePo from '../../pageobject/common/attach-document-blade.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
+import composeMailPo from '../../pageobject/email/compose-mail.po';
+import selectEmailTemplateBladePo from '../../pageobject/email/select-email-template-blade.po';
 import consoleEmailTemplatePo from '../../pageobject/settings/email/console-email-template.po';
 import createEmailTemplatePo from '../../pageobject/settings/email/create-email-template.po';
 import editEmailTemplatePo from '../../pageobject/settings/email/edit-email-template.po';
@@ -10,24 +13,13 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-import viewCasePo from '../../pageobject/case/view-case.po';
-import composeMailPo from '../../pageobject/email/compose-mail.po';
-import selectEmailTemplateBladePo from '../../pageobject/email/select-email-template-blade.po';
-import { SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
-import { cloneDeep } from 'lodash';
 
 describe('Email Template', () => {
     const emailTemplateData = require('../../data/ui/email/email.template.api.json');
-    let label = undefined;
+    let label = "POSH";
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
-        await apiHelper.apiLogin('qkatawazi');
-        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let menuItemData = cloneDeep(SAMPLE_MENU_ITEM);
-        label = menuItemData.menuItemName + randomStr;
-        menuItemData.menuItemName = label;
-        await apiHelper.createNewMenuItem(menuItemData);
     });
 
     afterAll(async () => {
@@ -76,7 +68,7 @@ describe('Email Template', () => {
             await consoleEmailTemplatePo.searchOnGridConsole(templateName2);
             expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Template Name')).toBe(templateName2, 'Template Name for Petramco compnay is missing')
             expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Subject')).toBe(subject, 'Subject for Petramco compnay is missing')
-            expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Company')).toBe('- Global -', 'Petramco for Petramco compnay is missing')
+            expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Company')).toBe('- Global -', 'Global compnay is missing')
             expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Status')).toBe('Active', 'Active for Petramco compnay is missing')
         });
         it('[DRDMV-10813,DRDMV-10796,DRDMV-10787,DRDMV-10804,DRDMV-10789]: Create Duplicate Email Template4', async () => {
@@ -282,12 +274,16 @@ describe('Email Template', () => {
 
     //ankagraw
     it('[DRDMV-10799,DRDMV-10800]: Email Template : If user goes away from both edit and create view warning should be appeared	', async () => {
+       let emailTemplateName, randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        await apiHelper.apiLogin('qkatawazi');
+        emailTemplateName = emailTemplateData['emailTemplateWithMandatoryField'].TemplateName = await emailTemplateData['emailTemplateWithMandatoryField'].TemplateName + randomStr;
+        await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateWithMandatoryField']);
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
         await consoleEmailTemplatePo.clickOnAddEmailTemplateButton();
         expect(await createEmailTemplatePo.isTemplateRequiredTextPresent()).toBeTruthy();
         expect(await createEmailTemplatePo.isCompanyRequiredTextPresent()).toBeTruthy();
-        expect(await createEmailTemplatePo.isModuleRequiredTextPresent()).toBeTruthy();
+        expect(await createEmailTemplatePo.islineOfBusinessRequiredTextPresent()).toBeTruthy();
         expect(await createEmailTemplatePo.isStatusRequiredTextPresent()).toBeTruthy();
         expect(await createEmailTemplatePo.isDescriptionRequiredTextPresent()).toBeTruthy();
         expect(await createEmailTemplatePo.isSubjectRequiredTextPresent()).toBeTruthy();
@@ -295,7 +291,7 @@ describe('Email Template', () => {
         await createEmailTemplatePo.clickOnCancelButton();
         expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue without saving?');
         await utilCommon.clickOnWarningOk();
-        await consoleEmailTemplatePo.searchAndOpenEmailTemplate("Request Marriage Certificate for Name Change");
+        await consoleEmailTemplatePo.searchAndOpenEmailTemplate(emailTemplateName);
         await editEmailTemplatePo.updateDescription("test");
         await editEmailTemplatePo.clickOnCancelButton();
         expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue without saving?');

@@ -58,9 +58,7 @@ export class GridOperations {
         return await $(gridRowLinks).isPresent();
     }
 
-    async getFilterValue(filterNumber?:number): Promise<string> {
-        return await $$(this.selectors.filterValue).get(0+filterNumber).getText();
-    }
+   
 
     async clickCheckBoxOfValueInGrid(value: string, guid?: string): Promise<void> {
         let gridGuid: string = '';
@@ -330,10 +328,7 @@ export class GridOperations {
         await $(guidId + refreshIcon).click();
     }
 
-    async getAppliedFilterName(guid?: string): Promise<string> {
-        if (guid) return $(`[rx-view-component-id="${guid}"] ` + this.selectors.appliedPresetFilter)
-        else return await $(this.selectors.appliedPresetFilter).getText();
-    }
+   
 
     async searchAndSelectGridRecord(recordName: string, guid?: string): Promise<void> {
         let selectCheckbox = '.ui-chkbox-box';
@@ -382,7 +377,7 @@ export class GridOperations {
         });
         await $(guidId + refreshIcon).click();
     }
-    async appliedFilterMatches(expetcedFilters: string[], guid?: string): Promise<boolean> {
+    async isAppliedFilterMatches(expetcedFilters: string[], guid?: string): Promise<boolean> {
         let csslocator: string = undefined;
         let showMoreElement:ElementFinder = await $('.dropdown  .filter-tags__dropdown-toggle');
         let moreLabeLink = await showMoreElement.isPresent();

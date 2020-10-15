@@ -13,16 +13,11 @@ import { SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
 import { cloneDeep } from 'lodash';
 
 describe('Acknowledgment Template', () => {
-    let label: string;
+    let label = "POSH";
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
         await apiHelper.apiLogin('qkatawazi');
-        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let menuItemData = cloneDeep(SAMPLE_MENU_ITEM);
-        label = menuItemData.menuItemName + randomStr;
-        menuItemData.menuItemName = label;
-        await apiHelper.createNewMenuItem(menuItemData);
     });
 
     afterAll(async () => {
@@ -39,7 +34,7 @@ describe('Acknowledgment Template', () => {
         expect(await createAcknowledgmentTemplatesPo.isCompanyRequired()).toBeTruthy();
         expect(await createAcknowledgmentTemplatesPo.isStatusRequired()).toBeTruthy();
         expect(await createAcknowledgmentTemplatesPo.isSubjectRequired()).toBeTruthy();
-        expect(await createAcknowledgmentTemplatesPo.isModuleDisabled()).toBeTruthy();
+        expect(await createAcknowledgmentTemplatesPo.islineOfBusinessDisabled()).toBeTruthy();
         expect(await createAcknowledgmentTemplatesPo.isLocaleDisabled()).toBeTruthy();
         await createAcknowledgmentTemplatesPo.clickOnCancelButton();
         await utilCommon.clickOnWarningOk();
@@ -54,13 +49,6 @@ describe('Acknowledgment Template', () => {
         let body = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let arr: string[] = ["Label"];
-        beforeAll(async () => {
-            await apiHelper.apiLogin('qkatawazi');
-            let menuItemData = cloneDeep(SAMPLE_MENU_ITEM);
-            let label: string = await menuItemData.menuItemName + randomStr;
-            menuItemData.menuItemName = label;
-            await apiHelper.createNewMenuItem(menuItemData);
-        });
 
         it('[DRDMV-10896,DRDMV-10901,DRDMV-10922,DRDMV-10895]: Acknowledgment Template : Acknowledgment Template creation', async () => {
             await navigationPage.gotoSettingsPage();
