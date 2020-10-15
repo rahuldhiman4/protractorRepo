@@ -107,8 +107,6 @@ describe('Edit Case', () => {
     it('[DRDMV-7063]: [Case Edit] [Assignment] Changing the Assignment when editing the case by the member of one Support Group', async () => {
         let Summary = 'Summary' + Math.floor(Math.random() * 1000000);
 
-        await navigationPage.signOut();
-        await loginPage.login('franz');
         await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester("adam");
         await createCasePage.setSummary('Summary ' + Summary);
@@ -120,12 +118,12 @@ describe('Edit Case', () => {
         await editCasePage.clickChangeAssignmentButton();
         expect(await changeAssignmentPage.isAssignToMeCheckBoxSelected()).toBeFalsy("Checkbox is selected");
         expect(await changeAssignmentPage.getCompanyDefaultValue()).toBe('Petramco');
-        expect(await changeAssignmentPage.getSupportGroupDefaultValue()).toBe('Facilities');
+        expect(await changeAssignmentPage.getSupportGroupDefaultValue()).toBe('US Support 3');
         expect(await changeAssignmentPage.isSupportGroupDrpDwnDisplayed()).toBeTruthy();
-        await changeAssignmentPage.selectAssignee('Fritz Schulz');
+        await changeAssignmentPage.selectAssignee('Adam Pavlik');
         await changeAssignmentPage.clickOnAssignButton();
         await editCasePage.clickSaveCase();
-        expect(await viewCasePage.getAssigneeText()).toBe('Fritz Schulz');
+        expect(await viewCasePage.getAssigneeText()).toBe('Adam Pavlik');
 
         await viewCasePage.clickEditCaseButton();
         await editCasePage.clickChangeAssignmentButton();
@@ -148,11 +146,12 @@ describe('Edit Case', () => {
         await viewCasePage.clickEditCaseButton();
         await editCasePage.clickOnAssignToMe();
         await editCasePage.clickSaveCase();
-        expect(await activityTabPo.isTextPresentInActivityLog('Facilities')).toBeTruthy();
+        await activityTabPo.clickShowMoreLinkInActivity(1);
+        expect(await activityTabPo.isTextPresentInActivityLog('US Support 3')).toBeTruthy();
         await viewCasePage.clickEditCaseButton();
         await editCasePage.clickChangeAssignmentButton();
-        await changeAssignmentPage.selectBusinessUnit('Facilities Support');
-        await changeAssignmentPage.selectSupportGroup('Facilities');
+        await changeAssignmentPage.selectBusinessUnit('HR Support');
+        await changeAssignmentPage.selectSupportGroup('Compensation and Benefits');
         await changeAssignmentPage.selectAssignToSupportGroup();
         await changeAssignmentPage.clickOnAssignButton();
         await editCasePage.clickSaveCase();

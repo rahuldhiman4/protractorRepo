@@ -118,7 +118,8 @@ export enum FunctionalRoleGuid {
     'Foundation Read' = 'AGGAA5V0GEON8AOZHHGIOY0UZNXGOR',
     'Knowledge Contributor' = 'AGGAA5V0H3XY6AOTLLLEOSP8PI7YDM',
     'Knowledge Candidate' = 'AGGAA5V0H3XY6AOTLLPTOSP8TY7YDT',
-    'Case Catalog Administrator' = 'AGGADG1AANVNMAP1JE54P02183EGA9'
+    'Case Catalog Administrator' = 'AGGADG1AANVNMAP1JE54P02183EGA9',
+    'Human Resource' = 'AGGADGG8ECDC0AQ8GNQUQ7I1EPFJ7D'
 };
 
 export enum TaskFailConfiguration {
