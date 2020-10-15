@@ -1,6 +1,5 @@
 import { resolve } from "path";
-import { $, protractor, ProtractorExpectedConditions, $$, element, by } from "protractor";
-import utilCommon from '../../utils/util.common';
+import { $, $$, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilityCommon from '../../utils/utility.common';
 import ckeditorOpsPo from '../common/ck-editor/ckeditor-ops.po';
 
@@ -15,7 +14,7 @@ class EditTask {
         changesAssignmentButton: '[rx-view-component-id="c423242c-28ca-4fd2-a81c-4495bf2fffb7"] button',
         attachmentField: '[rx-view-component-id="6053a7e8-5194-420b-965a-1c3bfe3ad0a1"] input[type="file"]',
         attachButton: '[rx-view-component-id="6053a7e8-5194-420b-965a-1c3bfe3ad0a1"] button',
-        categoryTier1: '909ad3ad-6706-4d46-bb5a-bc48fa6ca98e',
+        categoryTier1: 'd65d1a03-7f77-494c-97d7-bd12e5a8c60e',
         categoryTier2: '49d231d9-ee81-4d7c-90af-d7ca785a32d4',
         categoryTier3: 'c8858fb5-5b21-4e0d-a947-c0130a72b51a',
         categoryTier4: 'ff1636f8-4efe-4447-9c04-f32799904f2b',
@@ -27,7 +26,7 @@ class EditTask {
         taskSummary: '[rx-view-component-id="1261e01e-00fb-4e2c-b2ac-72e837f9fcea"] input',
         dynamicFieldName: '[rx-view-component-id="4c988a95-b148-475f-b91c-9788d8e6c0cb"] label',
         ckeditorGuid: '6053a7e8-5194-420b-965a-1c3bfe3ad0a1',
-        categoryTier1Value: '[rx-view-component-id="909ad3ad-6706-4d46-bb5a-bc48fa6ca98e"] .dropdown-toggle',
+        categoryTier1Value: '[rx-view-component-id="d65d1a03-7f77-494c-97d7-bd12e5a8c60e"] .dropdown-toggle',
         categoryTier2Value: '[rx-view-component-id="49d231d9-ee81-4d7c-90af-d7ca785a32d4"] .dropdown-toggle',
         categoryTier3Value: '[rx-view-component-id="c8858fb5-5b21-4e0d-a947-c0130a72b51a"] .dropdown-toggle',
         requesterName: '[rx-view-component-id="4860ff6b-01b4-49b3-b257-c043ae1ab232"] .person-name .person-link',
@@ -38,11 +37,10 @@ class EditTask {
         taskSummaryRequiredText: '1261e01e-00fb-4e2c-b2ac-72e837f9fcea',  
         assignedCompanyRequiredText: 'f1c5abf8-7093-4d14-9f51-f4ba888c6607',
         assignedGroupRequiredText: '60b50604-dfc9-42ef-9688-1db148b00809',
-        priorityRequiredText: 'e638927a-e1e1-46e7-bfe3-8fe9904a5c5a',
         taskTypeRequiredText: '057f2521-313b-40c9-be56-829827512abf',
-        taskLabel: '[rx-view-component-id="4c2784af-c080-4630-8f16-d9e6b07e87a2"] .btn-secondary',
+        taskLabel: '[rx-view-component-id="75acc4ad-2ffe-4cbc-8fa2-efc227b7d7c9"] .btn-secondary',
         errorMsgOnDynamicFiled: '.form-control-feedback strong',
-        labelGuid: '4c2784af-c080-4630-8f16-d9e6b07e87a2'
+        labelGuid: '75acc4ad-2ffe-4cbc-8fa2-efc227b7d7c9'
     }
 
     async isAutomatedTaskTypeDisabled(): Promise<boolean> {
@@ -255,7 +253,7 @@ class EditTask {
                 break;
             }
             case "Priority": {
-                locator = this.selectors.priorityRequiredText;
+                locator = this.selectors.priority;
                 break;
             }
             case "Assigned Company": {
