@@ -1,25 +1,24 @@
 import { browser } from "protractor";
 import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from '../../api/api.helper';
-import { EMAILCONFIG_COMPANY_ONE, EMAILCONFIG_COMPANY_PSILON, EMAILCONFIG_COMPANY_TWO, INCOMINGMAIL_COMPANY_ONE, INCOMINGMAIL_COMPANY_PSILON, INCOMINGMAIL_COMPANY_TWO, OUTGOINGEMAIL_COMPANY_ONE, OUTGOINGEMAIL_COMPANY_PSILON, OUTGOINGEMAIL_COMPANY_TWO } from '../../data/api/email/email.configuration.data.api';
+import viewCasePo from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
+import composeMailPo from '../../pageobject/email/compose-mail.po';
+import consoleAcknowledgmentTemplatePo from '../../pageobject/settings/email/console-acknowledgment-template.po';
 import consoleEmailConfig from '../../pageobject/settings/email/console-email-configuration.po';
+import createAcknowledgmentTemplatesPo from '../../pageobject/settings/email/create-acknowledgment-template.po';
 import createEmailConfigPo from '../../pageobject/settings/email/create-email-config.po';
+import editAcknowledgmentTemplatePo from '../../pageobject/settings/email/edit-acknowledgment-template.po';
 import editEmailConfigPo from '../../pageobject/settings/email/edit-email-config.po';
 import editExclusiveSubjectPo from '../../pageobject/settings/email/edit-exclusive-subject.po';
 import newExclusiveSubjectPo from '../../pageobject/settings/email/new-exclusive-subject.po';
+import activityTabPo from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
-import consoleAcknowledgmentTemplatePo from '../../pageobject/settings/email/console-acknowledgment-template.po';
-import editAcknowledgmentTemplatePo from '../../pageobject/settings/email/edit-acknowledgment-template.po';
-import createAcknowledgmentTemplatesPo from '../../pageobject/settings/email/create-acknowledgment-template.po';
-import viewCasePo from '../../pageobject/case/view-case.po';
-import composeMailPo from '../../pageobject/email/compose-mail.po';
 import utilityGrid from '../../utils/utility.grid';
-import activityTabPo from '../../pageobject/social/activity-tab.po';
 
 describe('Email Configuration', () => {
     let offlineSupportGroup, emailID = "bmctemptestemail@gmail.com";
@@ -27,6 +26,7 @@ describe('Email Configuration', () => {
     const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
 
     beforeAll(async () => {
+       
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
         await apiHelper.apiLogin('tadmin');
@@ -202,7 +202,7 @@ describe('Email Configuration', () => {
     describe('[DRDMV-10410,DRDMV-10418,DRDMV-10428,DRDMV-10433,DRDMV-10434,DRDMV-10435,DRDMV-10415]: Support Group: Associate Support group tab in Email Configuration.', async () => {
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.createEmailConfiguration(INCOMINGMAIL_COMPANY_ONE, OUTGOINGEMAIL_COMPANY_ONE, EMAILCONFIG_COMPANY_ONE);
+            await apiHelper.createEmailConfiguration({"email":"bwfqa2019@gmail.com"});
         });
         it('[DRDMV-10410,DRDMV-10418,DRDMV-10428,DRDMV-10433,DRDMV-10434,DRDMV-10435,DRDMV-10415]: Associate Support group tab in General Email Configuration.', async () => {
             await navigationPage.gotoSettingsPage();
@@ -241,7 +241,7 @@ describe('Email Configuration', () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.createEmailConfiguration(INCOMINGMAIL_COMPANY_PSILON, OUTGOINGEMAIL_COMPANY_PSILON, EMAILCONFIG_COMPANY_PSILON);
+            await apiHelper.createEmailConfiguration({"email":"psilon@gmail.com","company":"Psilon"});
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
             expect(await utilGrid.isGridRecordPresent(emailID)).toBeFalsy();
@@ -418,7 +418,7 @@ describe('Email Configuration', () => {
             await editEmailConfigPo.closedAssociatePublicExclusionSubjects();
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteAllEmailConfiguration();
-            await apiHelper.createEmailConfiguration(INCOMINGMAIL_COMPANY_PSILON, OUTGOINGEMAIL_COMPANY_PSILON, EMAILCONFIG_COMPANY_PSILON);
+            await apiHelper.createEmailConfiguration({"email":"psilon@gmail.com","company":"Psilon"});
             await navigationPage.signOut();
             await loginPage.login('gwixillian')
             await navigationPage.gotoSettingsPage();
@@ -445,9 +445,9 @@ describe('Email Configuration', () => {
         it('[DRDMV-10454, DRDMV-10424]: create email configurations', async () => {
             await apiHelper.apiLogin('tadmin');
             await browser.sleep(2000); // required to remove flackyness
-            await apiHelper.createEmailConfiguration(INCOMINGMAIL_COMPANY_ONE, OUTGOINGEMAIL_COMPANY_ONE, EMAILCONFIG_COMPANY_ONE);
+            await apiHelper.createEmailConfiguration({"email":"bwfqa2019@gmail.com"});
             await browser.sleep(2000); // required to remove flackyness
-            await apiHelper.createEmailConfiguration(INCOMINGMAIL_COMPANY_TWO, OUTGOINGEMAIL_COMPANY_TWO, EMAILCONFIG_COMPANY_TWO);
+            await apiHelper.createEmailConfiguration({"email":"bwfqa2018@gmail.com"});
         });
         it('[DRDMV-10454, DRDMV-10424]: change the default mail to false', async () => {
             await navigationPage.gotoSettingsPage();

@@ -15,7 +15,7 @@ import { ADD_TO_WATCHLIST } from '../data/api/case/case.watchlist.api';
 import * as COMPLEX_SURVEY from '../data/api/case/complex-survey.api';
 import { CASE_STATUS_CHANGE, UPDATE_CASE, UPDATE_CASE_ASSIGNMENT } from '../data/api/case/update.case.api';
 import { COGNITIVE_CATEGORY_DATASET, COGNITIVE_CATEGORY_DATASET_MAPPING, COGNITIVE_LICENSE, COGNITIVE_TEMPLATE_DATASET, COGNITIVE_TEMPLATE_DATASET_MAPPING } from '../data/api/cognitive/cognitive.config.api';
-import { EMAILCONFIG_DEFAULT, INCOMINGMAIL_DEFAULT, OUTGOINGEMAIL_DEFAULT } from '../data/api/email/email.configuration.data.api';
+import { MAILBOX_CONFIG} from '../data/api/email/email.configuration.data.api';
 import { EMAIL_WHITELIST } from '../data/api/email/email.whitelist.data.api';
 import { NEW_PROCESS_LIB, PROCESS_FLOWSET_MAPPING } from '../data/api/flowset/create-process-lib';
 import { ENABLE_USER, NEW_USER } from '../data/api/foundation/create-foundation-entity.api';
@@ -47,7 +47,7 @@ import { ICognitiveDataSet, ICognitiveDataSetMapping } from '../data/interface/c
 import { IFlowset, IFlowsetProcess, IFlowsetProcessMapping } from '../data/interface/flowset.interface';
 import { IBusinessUnit, IDepartment, IDomainTag, IFoundationEntity, IMenuItem, IPerson, ISupportGroup } from '../data/interface/foundation.interface';
 import { IDocumentLib, IDocumentTemplate, IKnowledgeArticles, IKnowledgeArticleTemplate, IKnowledgeSet, IknowledgeSetPermissions, IUpdateKnowledgeArticle } from '../data/interface/knowledge.interface';
-import { INotificationEvent, INotificationTemplate } from '../data/interface/notification.interface';
+import { IEmailConfig, INotificationEvent, INotificationTemplate } from '../data/interface/notification.interface';
 import { ICreateSVT } from '../data/interface/svt.interface';
 import { IAdhocTask, ITaskUpdate } from '../data/interface/task.interface';
 import { ICaseTemplate, IEmailTemplate, INotesTemplate, ITaskTemplate } from '../data/interface/template.interface';
@@ -66,11 +66,6 @@ export interface IIDs {
     displayId: string;
 }
 
-export interface EmailGUIDs {
-    incomingMailGUID: string;
-    outGoingMailGUID: string;
-    emailConfigurationEmailGUID: String;
-}
 class ApiHelper {
 
     async apiLogin(userName: string, password?: string): Promise<void> {
@@ -180,29 +175,26 @@ class ApiHelper {
         console.log('Create Dynamic on Template API Status =============>', newCaseTemplate.status);
     }
 
-    async createEmailConfiguration(incomingMailBox?: any, outGoingMailBox?: any, emailMailBox?: any): Promise<EmailGUIDs> {
-        if (!incomingMailBox) incomingMailBox = cloneDeep(INCOMINGMAIL_DEFAULT);
-        if (!emailMailBox) emailMailBox = cloneDeep(EMAILCONFIG_DEFAULT);
-        if (!outGoingMailBox) outGoingMailBox = cloneDeep(OUTGOINGEMAIL_DEFAULT);
-        let incomingMail: AxiosResponse = await apiCoreUtil.createRecordInstance(incomingMailBox);
-        console.log('Configure Incoming Email API Status =============>', incomingMail.status);
-        let outgoing: AxiosResponse = await apiCoreUtil.createRecordInstance(outGoingMailBox);
-        console.log('Configure Outgoing Email API Status =============>', outgoing.status);
-        let emailConfiguration: AxiosResponse = await apiCoreUtil.createRecordInstance(emailMailBox);
-        console.log('Configure Email Configuration API Status =============>', emailConfiguration.status);
-        const incomingEmailGUID = await axios.get(
-            await incomingMail.headers.location
-        );
-        const outGoingGUID = await axios.get(
-            await outgoing.headers.location
-        );
-        const emailConfigurationGUID = await axios.get(
-            await emailConfiguration.headers.location
+    async createEmailConfiguration(data?: IEmailConfig): Promise<IIDs> {
+        let mailBoxConfig = cloneDeep(MAILBOX_CONFIG);
+        mailBoxConfig.fieldInstances[450000156].value = data.email;
+        if (data.lineOfBusiness) {
+            mailBoxConfig.fieldInstances[450000420].value = await constants.LOB[data.lineOfBusiness];
+        }
+        if (data.company) {
+            mailBoxConfig.fieldInstances[1000000001].value = await apiCoreUtil.getOrganizationGuid(data.company);
+        }
+        if (data.description) {
+            mailBoxConfig.fieldInstances[8].value = data.description;
+        }
+        let emailConfigCreateResponse: AxiosResponse = await apiCoreUtil.createRecordInstance(mailBoxConfig);
+        console.log('Configure Email API Status =============>', emailConfigCreateResponse.status);
+        const emailConfigDetails = await axios.get(
+            await emailConfigCreateResponse.headers.location
         );
         return {
-            incomingMailGUID: incomingEmailGUID.data.id,
-            outGoingMailGUID: outGoingGUID.data.id,
-            emailConfigurationEmailGUID: emailConfigurationGUID.data.id
+            id: emailConfigDetails.data.id,
+            displayId: emailConfigDetails.data.displayId
         };
     }
 
@@ -357,7 +349,7 @@ class ApiHelper {
         templateData.fieldInstances[1000000065].value = data.categoryTier3 ? await apiCoreUtil.getCategoryGuid(data.categoryTier3) : templateData.fieldInstances[1000000065].value;
         templateData.fieldInstances[450000061].value = data.description ? data.description : templateData.fieldInstances[450000061].value;
         if (data.lineOfBusiness) {
-            templateData.fieldInstances[450000420] = await constants.LOB[data.lineOfBusiness];
+            templateData.fieldInstances[450000420].value = await constants.LOB[data.lineOfBusiness];
         }
         if (data.caseStatus) {
             let statusValue = constants.CaseStatus[data.caseStatus];
@@ -608,7 +600,7 @@ class ApiHelper {
         templateData.fieldInstances[300287900].value = data.ownerGroup ? await apiCoreUtil.getSupportGroupGuid(data.ownerGroup) : templateData.fieldInstances[300287900].value;
         templateData.fieldInstances[450000401].value = data.ownerBusinessUnit ? await apiCoreUtil.getBusinessUnitGuid(data.ownerBusinessUnit) : templateData.fieldInstances[450000401].value;
         if (data.lineOfBusiness) {
-            templateData.fieldInstances[450000420] = await constants.LOB[data.lineOfBusiness];
+            templateData.fieldInstances[450000420].value = await constants.LOB[data.lineOfBusiness];
         }
         if (data.assignee) {
             let assignee = await apiCoreUtil.getPersonGuid(data.assignee);
@@ -719,7 +711,7 @@ class ApiHelper {
         templateData.fieldInstances[300287900].value = data.ownerGroup ? await apiCoreUtil.getSupportGroupGuid(data.ownerGroup) : templateData.fieldInstances[300287900].value;
         templateData.fieldInstances[450000401].value = data.ownerBusinessUnit ? await apiCoreUtil.getBusinessUnitGuid(data.ownerBusinessUnit) : templateData.fieldInstances[450000401].value;
         if (data.lineOfBusiness) {
-            templateData.fieldInstances[450000420] = await constants.LOB[data.lineOfBusiness];
+            templateData.fieldInstances[450000420].value = await constants.LOB[data.lineOfBusiness];
         }
         if (data.assignee) {
             let assignee = await apiCoreUtil.getPersonGuid(data.assignee);
@@ -811,7 +803,7 @@ class ApiHelper {
         templateData.fieldInstances[300287900].value = data.ownerGroup ? await apiCoreUtil.getSupportGroupGuid(data.ownerGroup) : templateData.fieldInstances[300287900].value;
         templateData.fieldInstances[450000401].value = data.ownerBusinessUnit ? await apiCoreUtil.getBusinessUnitGuid(data.ownerBusinessUnit) : templateData.fieldInstances[450000401].value;
         if (data.lineOfBusiness) {
-            templateData.fieldInstances[450000420] = await constants.LOB[data.lineOfBusiness];
+            templateData.fieldInstances[450000420].value = await constants.LOB[data.lineOfBusiness];
         }
         if (data.priority) {
             let priority = constants.CasePriority[data.priority];
@@ -1643,7 +1635,7 @@ class ApiHelper {
         menuItemData.fieldInstances[7].value = constants.MenuItemStatus[data.menuItemStatus];
         menuItemData.fieldInstances[450000154].value = randomStr;
         if (data.lineOfBusiness) {
-            menuItemData.fieldInstances[450000420] = await constants.LOB[data.lineOfBusiness];
+            menuItemData.fieldInstances[450000420].value = await constants.LOB[data.lineOfBusiness];
         }
         if (data.uiVisible) {
             let valueOfVisiable = data.uiVisible;
@@ -1931,7 +1923,7 @@ class ApiHelper {
         documentLibRecordInstanceJson.fieldInstances[1000000065].value = docLibDetails.category3 ? await apiCoreUtil.getCategoryGuid(docLibDetails.category3) : documentLibRecordInstanceJson.fieldInstances[1000000065].value;
         documentLibRecordInstanceJson.fieldInstances[450000167].value = docLibDetails.category4 ? await apiCoreUtil.getCategoryGuid(docLibDetails.category4) : documentLibRecordInstanceJson.fieldInstances[450000167].value;
         if (docLibDetails.lineOfBusiness) {
-            documentLibRecordInstanceJson.fieldInstances[450000420] = await constants.LOB[docLibDetails.lineOfBusiness];
+            documentLibRecordInstanceJson.fieldInstances[450000420].value = await constants.LOB[docLibDetails.lineOfBusiness];
         }
         let data = {
             recordInstance: documentLibRecordInstanceJson,
