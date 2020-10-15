@@ -154,7 +154,8 @@ describe('Task Console Preset Filter', () => {
         });
         it('[DRDMV-20883]: Validate the My Open Tasks filter after applying and removing the filter', async () => {
             await utilityGrid.applyPresetFilter('My Open Tasks');
-            expect(await utilityGrid.getAppliedFilterName()).toBe('My Open Tasks');
+            let openTaskFilter: string[] = ['My Open Tasks'];
+            expect(await utilityGrid.isAppliedFilterMatches(openTaskFilter)).toBeTruthy();
 
             for (let i: number = 0; i < 5; i++) {
                 expect(await utilityGrid.isGridRecordPresent(taskId[i])).toBeTruthy(taskId[i] + ' :Record is not available');
@@ -253,7 +254,8 @@ describe('Task Console Preset Filter', () => {
         });
         it('[DRDMV-20884]: Validate the All Open Tasks filter after applying and removing the filter', async () => {
             await utilityGrid.applyPresetFilter('All Open Tasks');
-            expect(await utilityGrid.getAppliedFilterName()).toBe('All Open Tasks');
+            let allOpenTaskFilter: string[] = ['All Open Tasks'];
+            expect(await utilityGrid.isAppliedFilterMatches(allOpenTaskFilter)).toBeTruthy();
 
             for (let i: number = 0; i < 5; i++) {
                 expect(await utilityGrid.isGridRecordPresent(taskId[i])).toBeTruthy(taskId[i] + ' :Record is not available');
@@ -374,7 +376,8 @@ describe('Task Console Preset Filter', () => {
         });
         it('[DRDMV-20885]: Validate the High Priority Open Tasks filter after applying and removing the filter', async () => {
             await utilityGrid.applyPresetFilter('High Priority Open Tasks');
-            expect(await utilityGrid.getAppliedFilterName()).toBe('High Priority Open Tasks');
+            let HighPriorityTaskFilter: string[] = ['High Priority Open Tasks'];
+            expect(await utilityGrid.isAppliedFilterMatches(HighPriorityTaskFilter)).toBeTruthy();
 
             for (let i: number = 8; i < 13; i++) {
                 expect(await utilityGrid.isGridRecordPresent(taskId[i])).toBeTruthy(taskId[i] + ' :Record is not available');
@@ -497,7 +500,8 @@ describe('Task Console Preset Filter', () => {
         });
         it('[DRDMV-20886]: Validate the Critical Priority Open Tasks filter after applying and removing the filter', async () => {
             await utilityGrid.applyPresetFilter('Critical Priority Open Tasks');
-            expect(await utilityGrid.getAppliedFilterName()).toBe('Critical Priority Open Tasks');
+            let criticalPriorityTaskFilter: string[] = ['Critical Priority Open Tasks'];
+            expect(await utilityGrid.isAppliedFilterMatches(criticalPriorityTaskFilter)).toBeTruthy();
 
             for (let i: number = 8; i < 13; i++) {
                 expect(await utilityGrid.isGridRecordPresent(taskId[i])).toBeTruthy(taskId[i] + ' :Record is not available');
@@ -539,7 +543,8 @@ describe('Task Console Preset Filter', () => {
         taskId.push(response6.displayId);
 
         await utilityGrid.applyPresetFilter('All Unassigned Tasks');
-        expect(await utilityGrid.getAppliedFilterName()).toBe('All Unassigned Tasks');
+        let unassignedTaskFilter: string[] = ['All Unassigned Tasks'];
+        expect(await utilityGrid.isAppliedFilterMatches(unassignedTaskFilter)).toBeTruthy();
 
         expect(await utilityGrid.isGridRecordPresent(taskId[2])).toBeTruthy(taskId[2] + ' :Record is not available');
 
@@ -630,7 +635,8 @@ describe('Task Console Preset Filter', () => {
         });
         it('[DRDMV-20889]: Verification with 50 percent SVT warning Task', async () => {
             await utilityGrid.applyPresetFilter('All Open Breached Tasks');
-            expect(await utilityGrid.getAppliedFilterName()).toBe('All Open Breached Tasks');
+            let openBreachedTaskFilter: string[] = ['All Open Breached Tasks'];
+            expect(await utilityGrid.isAppliedFilterMatches(openBreachedTaskFilter)).toBeTruthy();
 
             await browser.sleep(150000); // required to breach SLA
             expect(await utilityGrid.isGridRecordPresent(taskId[7])).toBeFalsy(taskId[7] + ' :Record is available');
@@ -735,8 +741,9 @@ describe('Task Console Preset Filter', () => {
         it('[DRDMV-22433]: Applying the Filter', async () => {
             await browser.sleep(150000); // required to breach SLA
             await utilityGrid.applyPresetFilter('My Open Breached Tasks');
-            expect(await utilityGrid.getAppliedFilterName()).toBe('My Open Breached Tasks');
-            
+            let openBreachedTaskFilter: string[] = ['My Open Breached Tasks'];
+            expect(await utilityGrid.isAppliedFilterMatches(openBreachedTaskFilter)).toBeTruthy();
+
         });
         it('[DRDMV-22433]: Validate the My Open Breached Tasks filter after applying and removing the filter', async () => {
             await browser.sleep(140000); // required to breach SLA
@@ -807,7 +814,8 @@ describe('Task Console Preset Filter', () => {
         await dbConnectVar.query(`UPDATE com_bmc_dsm_task_lib_Task SET created_date = '${dateEpochValueCase4}' WHERE display_id='${displayId4}'`);
 
         await utilityGrid.applyPresetFilter('All Tasks In Last 1 month');
-        expect(await utilityGrid.getAppliedFilterName()).toBe('All Tasks In Last 1 month');
+        let allTaskFilter: string[] = ['All Tasks In Last 1 month'];
+        expect(await utilityGrid.isAppliedFilterMatches(allTaskFilter)).toBeTruthy();
 
         for (let i = 0; i < 2; i++) {
             expect(await utilityGrid.isGridRecordPresent(taskId[i])).toBeTruthy(taskId[i] + ' :Record is not available');
@@ -859,7 +867,8 @@ describe('Task Console Preset Filter', () => {
         await dbConnectVar.query(`UPDATE com_bmc_dsm_task_lib_Task SET created_date = '${dateEpochValueCase3}' WHERE display_id='${displayId3}'`);
 
         await utilityGrid.applyPresetFilter('All Tasks In Last 3 months');
-        expect(await utilityGrid.getAppliedFilterName()).toBe('All Tasks In Last 3 months');
+        let allTaskFilter: string[] = ['All Tasks In Last 3 months'];
+        expect(await utilityGrid.isAppliedFilterMatches(allTaskFilter)).toBeTruthy();
 
         for (let i = 0; i < 2; i++) {
             expect(await utilityGrid.isGridRecordPresent(taskId[i])).toBeTruthy(taskId[i] + ' :Record is not available');
@@ -919,7 +928,8 @@ describe('Task Console Preset Filter', () => {
         await dbConnectVar.query(`UPDATE com_bmc_dsm_task_lib_Task SET created_date = '${dateEpochValueTask4}' WHERE display_id='${displayId4}'`);
 
         await utilityGrid.applyPresetFilter('All Tasks In Last 6 months');
-        expect(await utilityGrid.getAppliedFilterName()).toBe('All Tasks In Last 6 months');
+        let allTaskFilter: string[] = ['All Tasks In Last 6 months'];
+        expect(await utilityGrid.isAppliedFilterMatches(allTaskFilter)).toBeTruthy();
 
         for (let i = 0; i < 3; i++) {
             expect(await utilityGrid.isGridRecordPresent(taskId[i])).toBeTruthy(taskId[i] + ' :Record is not available');

@@ -59,7 +59,7 @@ describe('Task and Knowledge Console Filter Combinations', () => {
             await utilityGrid.addFilter('Assignee', 'Kita Williams', 'text');
             await utilityGrid.addFilter('Assigned Group', 'AU Support 1', 'text');
             await utilityGrid.addFilter('Status', 'Assigned', 'text');
-            expect(await utilityGrid.appliedFilterMatches(['Assignee: Kita Williams', 'Assigned Group: AU Support 1', 'Status: Assigned'])).toBeTruthy();
+            expect(await utilityGrid.isAppliedFilterMatches(['Assignee: Kita Williams', 'Assigned Group: AU Support 1', 'Status: Assigned'])).toBeTruthy();
             await utilityGrid.saveFilter('Filter1');
             await utilityGrid.clickRefreshIcon();
 

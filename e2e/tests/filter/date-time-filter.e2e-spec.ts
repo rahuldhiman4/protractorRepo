@@ -47,7 +47,8 @@ describe('Date and Time Preset Filter', () => {
             let exactTime1 = newTime1[0] + ":" + newTime1[1] + " " + diffTime1[1];
             let dateFormate: string = "Created Date: " + dateFormateNew + " " + systemDate.getDate() + ", " + systemDate.getFullYear() + " " + exactTime1;
             await $('body').sendKeys(protractor.Key.ESCAPE);
-            expect(await utilityGrid.getFilterValue()).toBe(dateFormate);
+            let date:string[]=[dateFormate];
+            expect(await utilityGrid.isAppliedFilterMatches(date)).toBeTruthy();
 
             //2nd Validation for differnt date with current time
             await utilityGrid.clearFilter();
@@ -63,7 +64,8 @@ describe('Date and Time Preset Filter', () => {
             let endDateTime1 = endDatetimediffTime[0].split(":");
             let endDateexactTime = endDateTime1[0] + ":" + endDateTime1[1] + " " + endDatetimediffTime[1];
             let completeEndDate = 'Created Date: Aug 23, 2017 ' + endDateexactTime;
-            expect(await utilityGrid.getFilterValue()).toBe(completeEndDate);
+            let date1:string[]=[completeEndDate];
+            expect(await utilityGrid.isAppliedFilterMatches(date1)).toBeTruthy();
         });
         it('[DRDMV-23499,DRDMV-23511]: Validation for modified date, created date and target date', async () => {
             await navigationPage.gotoCaseConsole();
@@ -90,7 +92,8 @@ describe('Date and Time Preset Filter', () => {
             let endDateTime11 = endDatetimediffTime1[0].split(":");
             let endDateexactTime1 = endDateTime1[0] + ":" + endDateTime11[1] + " " + endDatetimediffTime1[1];
             let completeEndDate1 = ' - Sep 11, 2017 ' + endDateexactTime1;
-            expect(await utilityGrid.getFilterValue()).toBe(completeEndDate + completeEndDate1);
+            let date2:string[]=[completeEndDate + completeEndDate1];
+            expect(await utilityGrid.isAppliedFilterMatches(date2)).toBeTruthy();
 
         });
         it('[DRDMV-23499,DRDMV-23511]: Validation for modified date, created date and target date', async () => {
@@ -107,8 +110,8 @@ describe('Date and Time Preset Filter', () => {
             await dateTimeSelectorPo.setMinute(23);
             await dateTimeSelectorPo.clickMeridianValue("AM");
             await $('body').sendKeys(protractor.Key.ESCAPE);
-            expect(await utilityGrid.getFilterValue()).toBe("Target Date: Sep 17, 2015 8:23 AM");
-
+            let date2:string[]=["Target Date: Sep 17, 2015 8:23 AM"];
+            expect(await utilityGrid.isAppliedFilterMatches(date2)).toBeTruthy();
             // Validate end date with Time
             await utilityGrid.clearFilter();
             await utilityGrid.clickFilterField("Target Date");
@@ -122,7 +125,8 @@ describe('Date and Time Preset Filter', () => {
             await dateTimeSelectorPo.setMinute(28);
             await dateTimeSelectorPo.clickMeridianValue("AM");
             await $('body').sendKeys(protractor.Key.ESCAPE);
-            expect(await utilityGrid.getFilterValue()).toBe("Target Date: Feb 21, 2016 3:28 AM");
+            let date3:string[]=["Target Date: Feb 21, 2016 3:28 AM"];
+            expect(await utilityGrid.isAppliedFilterMatches(date3)).toBeTruthy();
         });
         it('[DRDMV-23499,DRDMV-23511]: Validation for modified date, created date and target date', async () => {
             await navigationPage.gotoCaseConsole();
@@ -148,7 +152,8 @@ describe('Date and Time Preset Filter', () => {
             await dateTimeSelectorPo.setMinute(28);
             await dateTimeSelectorPo.clickMeridianValue("AM");
             await $('body').sendKeys(protractor.Key.ESCAPE);
-            expect(await utilityGrid.getFilterValue()).toBe("Created Date: Sep 17, 2015 8:23 AM - Feb 17, 2016 3:28 AM");
+            let date4:string[]=["Created Date: Sep 17, 2015 8:23 AM - Feb 17, 2016 3:28 AM"];
+            expect(await utilityGrid.isAppliedFilterMatches(date4)).toBeTruthy();
         });
         it('[DRDMV-23499,DRDMV-23511]: Validation for modified date, created date and target date', async () => {
             await navigationPage.gotoCaseConsole();
