@@ -90,7 +90,7 @@ class CreateDocumentTemplate {
                 break;
             }
             case "Description": {
-                guid = '933dd491-7d55-4735-b30a-f2826afe1461';
+                guid = 'e976be62-48e8-4b2a-8db5-713843068652';
                 break;
             }
             case "Document Body": {
@@ -98,7 +98,7 @@ class CreateDocumentTemplate {
                 break;
             }
             case "Label": {
-                guid = '02d4e346-ca1c-4eeb-a80e-322eab42ad02';
+                guid = '93d439ff-ca35-4a86-a6b3-d45e705be23d';
                 break;
             }
             default: {

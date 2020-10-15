@@ -79,20 +79,19 @@ describe('Email Configuration', () => {
             expect(await consoleEmailConfig.coloumnHeaderMatches(emailHeaders)).toBeTruthy();
         });
         it('[DRDMV-8528,DRDMV-8527]: Verify Email configuration header', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
             let msg: string = "ERROR (10000): One Email Id for the company needs to be marked as default. If another email configurations for the company exist, please mark one of them as default instead";
             await consoleEmailConfig.searchAndSelectCheckbox(emailID);
             await consoleEmailConfig.deleteConfigurationEmail();
             await utilCommon.clickOnWarningOk();
             await consoleEmailConfig.clickNewEmailConfiguration();
-            await createEmailConfigPo.selectEmailID(emailID);
+            await createEmailConfigPo.setEmailID(emailID);
             await createEmailConfigPo.selectCompany("Petramco");
             await createEmailConfigPo.setDescription("test ");
             await createEmailConfigPo.selectStatus("Active");
-            await createEmailConfigPo.selectDefaultEmail("False");
             await createEmailConfigPo.clickSave();
-            await expect(utilCommon.isPopUpMessagePresent(msg)).toBeTruthy();
-            await createEmailConfigPo.selectDefaultEmail("True");
-            await createEmailConfigPo.clickSave();
+            expect(await utilityCommon.isPopUpMessagePresent("Saved successfully.")).toBeTruthy();
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades(); // escape is working on these settings pages
