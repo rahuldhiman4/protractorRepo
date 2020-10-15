@@ -7,7 +7,7 @@ class ViewCasePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        categoryTier1Value: '[rx-view-component-id="593784cc-6bce-4bfd-82e1-7ca55aa28517"] .read-only-content',
+        categoryTier1Value: '[rx-view-component-id="3c587e17-abb1-4154-b801-dd5930cef79a"] .read-only-content',
         categoryTier2Value: '[rx-view-component-id="7beae951-8345-4f97-9cac-48933083928f"] .read-only-content',
         categoryTier3Value: '[rx-view-component-id="68d56b74-b9ad-444e-8dfc-ddec1e16897f"] .read-only-content',
         categoryTier4Value: '[rx-view-component-id="aa75da42-eeb4-4a6f-946b-74d5316b7641"] .read-only-content',
@@ -37,7 +37,7 @@ class ViewCasePage {
         caseSummary: '[rx-view-component-id="8ebc1637-af05-4a08-b873-4f810c4981b9"] p span',
         caseSite: '[rx-view-component-id="4a58cc3b-e699-4357-a68a-482163d6cbbe"] .read-only-content',
         inprogressErrorMsg: '[rx-view-component-id="dd40ce76-9d16-4c6a-b1a1-16fe6aa6721f"] p',
-        label: '[rx-view-component-id="2415f5bb-1b76-4359-a034-ff16f8e26f7b"] .read-only-content',
+        label: '[rx-view-component-id="ce9c82aa-471f-4436-9595-daef07e93869"] .read-only-content',
         resolutionCodeText: '[rx-view-component-id="32eeffe4-f5c1-4fc8-9c91-25946cc86d66"] label',
         resolutionCodeValue: '[rx-view-component-id="32eeffe4-f5c1-4fc8-9c91-25946cc86d66"] .read-only-content',
         resolutionDescriptionLabel: '[rx-view-component-id="923de542-50b0-482f-a370-3823d0c07645"] label',
