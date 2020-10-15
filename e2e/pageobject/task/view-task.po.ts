@@ -13,11 +13,11 @@ class ViewTask {
         updateStatusDropDown: '[rx-view-component-id="8b4cef48-0a4c-4ec1-bc4c-cce47179c964"] button',
         taskTypeValue: '[rx-view-component-id="057f2521-313b-40c9-be56-829827512abf"] .read-only-content',
         editButton: '[rx-view-component-id="14e8cc41-ae6a-41e1-8932-850fbeec57d0"] [btn-type="tertiary"]',
-        categoryTier1Value: '[rx-view-component-id="909ad3ad-6706-4d46-bb5a-bc48fa6ca98e"] .read-only-content',
+        categoryTier1Value: '[rx-view-component-id="d65d1a03-7f77-494c-97d7-bd12e5a8c60e"] .read-only-content',
         categoryTier2Value: '[rx-view-component-id="49d231d9-ee81-4d7c-90af-d7ca785a32d4"] .read-only-content',
         categoryTier3Value: '[rx-view-component-id="c8858fb5-5b21-4e0d-a947-c0130a72b51a"] .read-only-content',
         categoryTier4Value: '[rx-view-component-id="ff1636f8-4efe-4447-9c04-f32799904f2b"] .read-only-content',
-        labelValue: '[rx-view-component-id="4c2784af-c080-4630-8f16-d9e6b07e87a2"] .read-only-content',
+        labelValue: '[rx-view-component-id="75acc4ad-2ffe-4cbc-8fa2-efc227b7d7c9"] .read-only-content',
         descriptionValue: '[rx-view-component-id="6053a7e8-5194-420b-965a-1c3bfe3ad0a1"] .collapse-block div [style="position: relative;"]',
         processnameValue: '[rx-view-component-id="7260c238-9e41-4d31-90de-2d46443117b4"] .read-only-content',
         statusReason: '[rx-view-component-id="7cdf9e18-c230-4098-8872-ddce9f005373"] .read-only-content',
@@ -53,7 +53,7 @@ class ViewTask {
         manageDynamicField: '[rx-view-component-id="7ac78e56-c471-4e50-bca8-53568ad6e4af"] button',
         emailLink: '[rx-view-component-id="b721ed87-8e6b-4279-9e21-d4348c6a4599"] button',
         tab: 'button[role="tab"] span.nav-link-wrapper',
-        showMoreTaskDescription:'.bwf-description-read-state button',
+        showMoreTaskDescription: '.bwf-description-read-state button',
         showApproversBanner: '.rx-runtime-view-canvas-item-margin [rx-view-component-id="f9c9f21d-b80d-42d5-af13-131965888afc"]',
         pendingApprovalsInfo: '[rx-view-component-id="c64c5d07-86a0-46bb-a085-181a760a756c"] span[aria-label="Status of case approvals"] span',
         showApproversLink: '.show-approvers-button-container',
@@ -66,7 +66,7 @@ class ViewTask {
         statusDropdown: '[rx-view-component-id="1437179f-34be-4cb3-8f85-cf0ac6a83394"] button',
     }
 
-    async clickShowMoreTaskDescription():Promise<void>{
+    async clickShowMoreTaskDescription(): Promise<void> {
         await $(this.selectors.showMoreTaskDescription).click();
     }
 
@@ -440,7 +440,7 @@ class ViewTask {
         return await $(this.selectors.contactPersonName).getText();
     }
 
-    async clickOnEmailAddress(emailAddress:string): Promise<void> {
+    async clickOnEmailAddress(emailAddress: string): Promise<void> {
         await element(by.css(`button[aria-label*="${emailAddress}"]`)).click();
     }
 

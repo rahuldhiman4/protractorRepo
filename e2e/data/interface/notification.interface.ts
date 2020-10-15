@@ -15,3 +15,10 @@ export interface INotificationTemplate {
     emailBody: string;
     emailSubject: string;
 }
+
+export interface IEmailConfig {
+    email: string;
+    description?: string;
+    company?: string;
+    lineOfBusiness?: string;
+}
