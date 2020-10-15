@@ -36,7 +36,7 @@ let businessData, departmentData, suppGrpData;
 describe('Copy Case Template', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
-        await loginPage.login("fritz");
+        await loginPage.login("qkatawazi");
         await createNewUsers();
     });
 
@@ -51,14 +51,14 @@ describe('Copy Case Template', () => {
             "firstName": "Petramco",
             "lastName": "SGUser1",
             "userId": "13550User1",
-            "userPermission": ["Case Business Analyst"]
+            "userPermission": ["Case Business Analyst","Human Resource"]
         }
         await apiHelper.createNewUser(userData1);
         userData2 = {
             "firstName": "Petramco",
             "lastName": "SGUser2",
             "userId": "13550User2",
-            "userPermission": ["Case Business Analyst"]
+            "userPermission": ["Case Business Analyst","Human Resource"]
         }
         await apiHelper.createNewUser(userData2);
         await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
@@ -178,7 +178,7 @@ describe('Copy Case Template', () => {
             expect(await copyCaseTemplate.getValueOfFlowset()).toBe(caseTemplateRequiredFields.flowset);
             expect(await copyCaseTemplate.getValueOfCaseCompany()).toBe(caseTemplateRequiredFields.company);
             expect(await copyCaseTemplate.getValueOfOwnerCompany()).toBe(caseTemplateRequiredFields.ownerCompany);
-            expect(await copyCaseTemplate.getValueOfOwnerGroup()).toContain('Facilities');
+            expect(await copyCaseTemplate.getValueOfOwnerGroup()).toContain('US Support 3');
             expect(await copyCaseTemplate.getValueOfAssignementMethod()).toBe(caseTemplateRequiredFields.assignmentMethod);
             expect(await copyCaseTemplate.getValueOfTaskFailureConfiguration()).toBe(caseTemplateRequiredFields.taskFailureConfiguration);
             expect(await copyCaseTemplate.getValueOfTemplateStatus()).toBe('Draft');
@@ -235,7 +235,7 @@ describe('Copy Case Template', () => {
         });
         afterAll(async () => {
             await navigationPage.signOut();
-            await loginPage.login("fritz");
+            await loginPage.login("qkatawazi");
         });
     });
 
@@ -267,17 +267,17 @@ describe('Copy Case Template', () => {
             "templateName": caseTemplateName1,
             "templateSummary": caseTemplateName1,
             "templateStatus": "Active",
-            "categoryTier1": "Purchasing Card",
-            "categoryTier2": "Policies",
-            "categoryTier3": "Card Issuance",
+            "categoryTier1": "Employee Relations",
+            "categoryTier2": "Compensation",
+            "categoryTier3": "Bonus",
+            "businessUnit": "United States Support",
+            "supportGroup": "US Support 3",
+            "assignee": "qkatawazi",
             "casePriority": "Low",
             "caseStatus": "New",
             "company": "Petramco",
-            "businessUnit": "Facilities Support",
-            "supportGroup": "Facilities",
-            "assignee": "Fritz",
-            "ownerBU": "Facilities Support",
-            "ownerGroup": "Facilities"
+            "ownerGroup": "US Support 3",
+            "ownerBusinessUnit": "United States Support",
         }
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createCaseTemplate(casetemplatePetramco1);
@@ -288,9 +288,9 @@ describe('Copy Case Template', () => {
         let copyCaseTemplateName: string = "copycasetemplate" + Math.floor(Math.random() * 10000000);
         await copyCaseTemplate.setTemplateName(copyCaseTemplateName);
         expect(await copyCaseTemplate.getValueOfTemplateStatus()).toBe('Draft');
-        expect(await copyCaseTemplate.getValueOfAssignee()).toBe('Fritz Schulz');
-        expect(await copyCaseTemplate.getValueOfSupportGroup()).toBe('Facilities');
-        expect(await copyCaseTemplate.getValueOfBuisnessUnit()).toBe('Facilities Support');
+        expect(await copyCaseTemplate.getValueOfAssignee()).toBe('Qadim Katawazi');
+        expect(await copyCaseTemplate.getValueOfSupportGroup()).toBe('US Support 3');
+        expect(await copyCaseTemplate.getValueOfBuisnessUnit()).toBe('United States Support');
     });
 
     describe('[DRDMV-13589]: Create a Copy of Case template where Support Group belongs to Department', async () => {
@@ -336,30 +336,31 @@ describe('Copy Case Template', () => {
                 "templateSummary": 'taskTemplateSummary' + randomStr,
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
-                "buisnessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "buisnessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             casetemplatePetramco = {
                 "templateName": 'caseTemplateName' + randomStr,
                 "templateSummary": 'caseTemplateSummary' + randomStr,
                 "templateStatus": "Active",
-                "categoryTier1": "Purchasing Card",
-                "categoryTier2": "Policies",
-                "categoryTier3": "Card Issuance",
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
                 "casePriority": "Low",
                 "caseStatus": "Assigned",
                 "company": "Petramco",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
-                "ownerBU": "Facilities Support",
-                "ownerGroup": "Facilities",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3",
+                "lineOfBuisness": "US Support 3"
             }
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             newCaseTemplate1 = await apiHelper.createCaseTemplate(casetemplatePetramco);
             manualTaskTemplate = await apiHelper.createManualTaskTemplate(taskTemplateDataSet);
             await browser.sleep(3000); // hardwait to reflect manual task template
@@ -477,7 +478,7 @@ describe('Copy Case Template', () => {
         });
         afterAll(async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('qkatawazi');
         });
     });
 
@@ -490,19 +491,19 @@ describe('Copy Case Template', () => {
                 "templateName": caseTemplateName1,
                 "templateSummary": caseTemplateName1,
                 "templateStatus": "Draft",
-                "categoryTier1": "Purchasing Card",
-                "categoryTier2": "Policies",
-                "categoryTier3": "Card Issuance",
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
                 "casePriority": "Low",
                 "caseStatus": "New",
                 "company": "Petramco",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
-                "ownerBU": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3"
             }
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createCaseTemplate(casetemplatePetramco);
         });
         it('[DRDMV-13570]: Add Dynamic Field', async () => {
@@ -557,22 +558,22 @@ describe('Copy Case Template', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let casetemplatePetramco, newCaseTemplate, templateData, externaltemplateData, automatedtemplateData, copyCaseTemplateName: string = "copycaseTemplateName" + randomStr;
         beforeAll(async () => {
-            await apiHelper.apiLogin(userData1.userId+'@petramco.com', 'Password_1234');
+            await apiHelper.apiLogin(userData1.userId + '@petramco.com', 'Password_1234');
             casetemplatePetramco = {
                 "templateName": 'caseTemplateName' + randomStr,
                 "templateSummary": 'caseTemplateName' + randomStr,
                 "templateStatus": "Draft",
-                "categoryTier1": "Purchasing Card",
-                "categoryTier2": "Policies",
-                "categoryTier3": "Card Issuance",
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
                 "casePriority": "Low",
                 "caseStatus": "New",
                 "company": "Petramco",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
-                "ownerBU": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             newCaseTemplate = await apiHelper.createCaseTemplate(casetemplatePetramco);
             templateData = {
@@ -581,11 +582,11 @@ describe('Copy Case Template', () => {
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
             }
             let manualTaskTemplate = await apiHelper.createManualTaskTemplate(templateData);
             externaltemplateData = {
@@ -594,11 +595,11 @@ describe('Copy Case Template', () => {
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
             }
             let externalTaskTemplate = await apiHelper.createExternalTaskTemplate(externaltemplateData);
             automatedtemplateData = {
@@ -609,11 +610,11 @@ describe('Copy Case Template', () => {
                 "processName": 'Auto Proces' + randomStr,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
             }
             let automatedTaskTemplate = await apiHelper.createAutomatedTaskTemplate(automatedtemplateData);
             await apiHelper.associateCaseTemplateWithThreeTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId, externalTaskTemplate.displayId, automatedTaskTemplate.displayId);
@@ -671,7 +672,7 @@ describe('Copy Case Template', () => {
         });
         afterAll(async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('qkatawazi');
         });
     });
 
@@ -680,22 +681,22 @@ describe('Copy Case Template', () => {
         let caseTemplatePetramco, manualTemplateData, automatedTemplateData, externalTemplateData;
         let copyCaseTemplateName: string = "copycaseTemplateName" + randomStr;
         beforeAll(async () => {
-            await apiHelper.apiLogin(userData1.userId+'@petramco.com', 'Password_1234');
+            await apiHelper.apiLogin(userData1.userId + '@petramco.com', 'Password_1234');
             caseTemplatePetramco = {
                 "templateName": 'caseTemplateName' + randomStr,
                 "templateSummary": 'caseTemplateName' + randomStr,
                 "templateStatus": "Draft",
-                "categoryTier1": "Purchasing Card",
-                "categoryTier2": "Policies",
-                "categoryTier3": "Card Issuance",
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
                 "casePriority": "Low",
                 "caseStatus": "New",
                 "company": "Petramco",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
-                "ownerBU": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             let newCaseTemplate = await apiHelper.createCaseTemplate(caseTemplatePetramco);
             manualTemplateData = {
@@ -704,11 +705,11 @@ describe('Copy Case Template', () => {
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
             }
             let manualTaskTemplate = await apiHelper.createManualTaskTemplate(manualTemplateData);
             externalTemplateData = {
@@ -781,7 +782,7 @@ describe('Copy Case Template', () => {
         });
         afterAll(async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('qkatawazi');
         });
     });
 
@@ -790,22 +791,22 @@ describe('Copy Case Template', () => {
         let casetemplatePetramco, templateData, externaltemplateData, automatedtemplateData;
         let copyCaseTemplateName: string = "copycasetemplate" + Math.floor(Math.random() * 10000000);
         beforeAll(async () => {
-            await apiHelper.apiLogin(userData1.userId+'@petramco.com', 'Password_1234');
+            await apiHelper.apiLogin(userData1.userId + '@petramco.com', 'Password_1234');
             casetemplatePetramco = {
                 "templateName": 'caseTemplateName' + randomStr,
                 "templateSummary": 'caseTemplateName' + randomStr,
                 "templateStatus": "Draft",
-                "categoryTier1": "Purchasing Card",
-                "categoryTier2": "Policies",
-                "categoryTier3": "Card Issuance",
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
                 "casePriority": "Low",
                 "caseStatus": "New",
                 "company": "Petramco",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
-                "ownerBU": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplatePetramco);
             templateData = {
@@ -814,11 +815,11 @@ describe('Copy Case Template', () => {
                 "templateStatus": "Active",
                 "taskCompany": "- Global -",
                 "ownerCompany": "- Global -",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
             }
             let manualTaskTemplate = await apiHelper.createManualTaskTemplate(templateData);
             externaltemplateData = {
@@ -890,7 +891,7 @@ describe('Copy Case Template', () => {
         });
         afterAll(async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('qkatawazi');
         });
     });
 
@@ -903,17 +904,17 @@ describe('Copy Case Template', () => {
                 "templateName": 'caseTemplateName' + randomStr,
                 "templateSummary": 'caseTemplateName' + randomStr,
                 "templateStatus": "Draft",
-                "categoryTier1": "Purchasing Card",
-                "categoryTier2": "Policies",
-                "categoryTier3": "Card Issuance",
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
                 "casePriority": "Low",
                 "caseStatus": "New",
                 "company": "Petramco",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
-                "ownerBU": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             automatedtemplateData = {
                 "templateName": 'Automated DRDMV13847' + randomStr,
@@ -923,10 +924,10 @@ describe('Copy Case Template', () => {
                 "processName": 'Auto Proces' + randomStr,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
-            await apiHelper.apiLogin(userData1.userId+'@petramco.com', 'Password_1234');
+            await apiHelper.apiLogin(userData1.userId + '@petramco.com', 'Password_1234');
             let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplatePetramco);
             let automatedTaskTemplate = await apiHelper.createAutomatedTaskTemplate(automatedtemplateData);
             await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, automatedTaskTemplate.displayId);
@@ -960,7 +961,7 @@ describe('Copy Case Template', () => {
         });
         afterAll(async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('qkatawazi');
         });
     });
 
@@ -1003,8 +1004,8 @@ describe('Copy Case Template', () => {
                 "category4": categName4,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
                 "label": label
             }
             await apiHelper.createManualTaskTemplate(taskTemplateData)

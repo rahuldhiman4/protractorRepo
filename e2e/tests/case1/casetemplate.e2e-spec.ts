@@ -38,7 +38,7 @@ describe('Case Template', () => {
             "lastName": "Company",
             "userId": "nosg",
             "emailId": "nosg@petramco.com",
-            "userPermission": ["Case Agent","Foundation Read","Document Manager","Case Business Analyst"]
+            "userPermission": ["Case Agent", "Foundation Read", "Document Manager", "Case Business Analyst"]
         }
         await apiHelper.createNewUser(userData);
         await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
@@ -206,11 +206,11 @@ describe('Case Template', () => {
             "caseStatus": "InProgress",
             "templateStatus": "Active",
             "company": "Petramco",
-            "businessUnit": "Facilities Support",
-            "supportGroup": "Facilities",
-            "assignee": "Fritz",
-            "ownerBU": 'Facilities Support',
-            "ownerGroup": "Facilities",
+            "businessUnit": "United States Support",
+            "supportGroup": "US Support 3",
+            "assignee": "qkatawazi",
+            "ownerBU": 'United States Support',
+            "ownerGroup": "US Support 3",
         }
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createCaseTemplate(templateData);
@@ -250,10 +250,10 @@ describe('Case Template', () => {
             "templateSummary": 'CaseSummaryName' + randomStr,
             "templateStatus": "Active",
             "ownerCompany": "Petramco",
-            "ownerBU": "Facilities Support",
-            "ownerGroup": "Facilities",
+            "ownerBU": "United States Support",
+            "ownerGroup": "US Support 3",
         }
-        await apiHelper.apiLogin('fritz');
+        await apiHelper.apiLogin('qkatawazi');
         let newCaseTemplate = await apiHelper.createCaseTemplate(templateData);
         let column1: string[] = ["Display ID"];
         await consoleCasetemplatePo.addColumnOnGrid(column1);
@@ -280,11 +280,11 @@ describe('Case Template', () => {
                 "caseStatus": "InProgress",
                 "templateStatus": "Active",
                 "company": "Petramco",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
-                "ownerBU": 'Facilities Support',
-                "ownerGroup": "Facilities",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3",
                 "description": 'description' + randomStr
             }
             await apiHelper.apiLogin('qkatawazi');
@@ -292,7 +292,7 @@ describe('Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qtao');
             await navigationPage.gotoCreateCase();
-            await createCasePo.selectRequester('fritz');
+            await createCasePo.selectRequester('qkatawazi');
             await createCasePo.setSummary('Summary');
             await createCasePo.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectCaseTemplate(templateData.templateSummary);
@@ -301,7 +301,7 @@ describe('Case Template', () => {
             await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePo.isEditLinkDisplay()).toBeTruthy();
             await navigationPage.gotoQuickCase();
-            await quickCasePo.selectRequesterName('fritz');
+            await quickCasePo.selectRequesterName('qkatawazi');
             await quickCasePo.selectCaseTemplate(templateData.templateName);
             await quickCasePo.saveCase();
             await previewCasePo.clickGoToCaseButton();
@@ -324,13 +324,13 @@ describe('Case Template', () => {
             "resolveCaseonLastTaskCompletion": "1",
             "templateStatus": "Draft",
             "company": "Petramco",
-            "businessUnit": "Facilities Support",
-            "supportGroup": "Facilities",
-            "assignee": "Fritz",
-            "ownerBU": 'Facilities Support',
-            "ownerGroup": "Facilities"
+            "businessUnit": "United States Support",
+            "supportGroup": "US Support 3",
+            "assignee": 'qkatawazi',
+            "ownerBU": "United States Support",
+            "ownerGroup": "US Support 3"
         }
-        await apiHelper.apiLogin('fritz');
+        await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createCaseTemplate(templateData);
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
@@ -381,20 +381,20 @@ describe('Case Template', () => {
                 "resolveCaseonLastTaskCompletion": "1",
                 "templateStatus": "Active",
                 "company": "Petramco",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
-                "ownerBU": 'Facilities Support',
-                "ownerGroup": "Facilities",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": 'qkatawazi',
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3",
                 "caseStatus": "Assigned",
                 "description": 'description' + randomStr,
             }
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createCaseTemplate(templateData);
         });
         it('[DRDMV-9003]: Checking change case template button for In Progress', async () => {
             await navigationPage.gotoCreateCase();
-            await createCasePo.selectRequester('fritz');
+            await createCasePo.selectRequester('qkatawazi');
             await createCasePo.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectCaseTemplate(templateData.templateName);
             await createCasePo.clickSaveCaseButton();
@@ -429,7 +429,7 @@ describe('Case Template', () => {
         });
         it('[DRDMV-9003]: Checking change case template button for Pending', async () => {
             await navigationPage.gotoCreateCase();
-            await createCasePo.selectRequester('fritz');
+            await createCasePo.selectRequester('qkatawazi');
             await createCasePo.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectCaseTemplate(templateData.templateName);
             await createCasePo.clickSaveCaseButton();
@@ -456,7 +456,7 @@ describe('Case Template', () => {
         });
         afterAll(async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('qkatawazi');
         });
     });
 
@@ -468,20 +468,20 @@ describe('Case Template', () => {
                 "templateName": 'caseTemplateName' + randomStr,
                 "templateSummary": 'caseTemplateSummary' + randomStr,
                 "templateStatus": "Active",
-                "categoryTier1": "Purchasing Card",
-                "categoryTier2": "Policies",
-                "categoryTier3": "Card Issuance",
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
                 "casePriority": "Low",
                 "caseStatus": "New",
                 "company": "Petramco",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
-                "ownerBU": "Facilities Support",
-                "ownerGroup": "Facilities",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": 'qkatawazi',
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3",
                 "description": 'description' + randomStr,
             }
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createCaseTemplate(casetemplatePetramco);
             casetemplatePsilon = {
                 "templateName": randomStr + 'caseTemplatePsilonDRDMV773',
@@ -493,22 +493,24 @@ describe('Case Template', () => {
                 "supportGroup": "Psilon Support Group1",
                 "assignee": "gderuno",
                 "description": 'description' + randomStr,
+                "ownerBU": "Psilon Support Org1",
+                "ownerGroup":"Psilon Support Group1",
             }
             await apiHelper.apiLogin('gderuno');
             await apiHelper.createCaseTemplate(casetemplatePsilon);
         });
-        it('[DRDMV-769]: Applying a Template to a Case with Franz', async () => {
+        it('[DRDMV-769]: Applying a Template to a Case with qkatawazi', async () => {
             await navigationPage.gotoCreateCase();
-            await createCasePo.selectRequester('Franz');
+            await createCasePo.selectRequester('qkatawazi');
             await createCasePo.setSummary(casetemplatePetramco.templateName);
             await createCasePo.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectCaseTemplate(casetemplatePetramco.templateName);
             await createCasePo.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePo.getPriorityValue()).toBe('Low');
-            expect(await viewCasePo.getCategoryTier1Value()).toBe('Purchasing Card');
-            expect(await viewCasePo.getCategoryTier2Value()).toBe('Policies');
-            expect(await viewCasePo.getCategoryTier3Value()).toBe('Card Issuance');
+            expect(await viewCasePo.getCategoryTier1Value()).toBe("Employee Relations");
+            expect(await viewCasePo.getCategoryTier2Value()).toBe("Compensation");
+            expect(await viewCasePo.getCategoryTier3Value()).toBe("Bonus");
             expect(await viewCasePo.getAssignedCompanyText()).toBe('Petramco');
         });
         it('[DRDMV-769]: Applying a Template to a Case with qdu', async () => {
@@ -534,7 +536,7 @@ describe('Case Template', () => {
         });
         afterAll(async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('qkatawazi');
         });
     });
 
@@ -548,18 +550,18 @@ describe('Case Template', () => {
                 "resolveCaseonLastTaskCompletion": "1",
                 "templateStatus": "Active",
                 "company": "Petramco",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
-                "ownerBU": 'Facilities Support',
-                "ownerGroup": "Facilities",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": 'qkatawazi',
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3",
             }
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createCaseTemplate(casetemplateData);
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
             await navigationPage.gotoCreateCase();
-            await createCasePo.selectRequester('fritz');
+            await createCasePo.selectRequester('qkatawazi');
             await createCasePo.setSummary(casetemplateData.templateSummary);
             await createCasePo.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectCaseTemplate(casetemplateData.templateName);
@@ -589,54 +591,54 @@ describe('Case Template', () => {
                 "templateName": 'caseTemplateName' + randomStr,
                 "templateSummary": 'caseTemplateSummaryName' + randomStr,
                 "templateStatus": "Active",
-                "categoryTier1": "Purchasing Card",
-                "categoryTier2": "Policies",
-                "categoryTier3": "Card Issuance",
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
                 "casePriority": "Low",
                 "caseStatus": "New",
                 "company": "Petramco",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
-                "ownerBU": "Facilities Support",
-                "ownerGroup": "Facilities",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": 'qkatawazi',
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3",
                 "description": 'description' + randomStr,
             }
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createCaseTemplate(casetemplatePetramco);
         });
         it('[DRDMV-1216]: Create Case Template with all fields', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(casetemplatePetramco.templateName);
-            expect(await viewCaseTemplate.getAssigneeText()).toBe("Fritz Schulz");
+            expect(await viewCaseTemplate.getAssigneeText()).toBe('Qadim Katawazi');
             expect(await viewCaseTemplate.getCaseCompanyValue()).toBe("Petramco");
             expect(await viewCaseTemplate.getCaseTemplateNameValue()).toBe(casetemplatePetramco.templateName);
             expect(await viewCaseTemplate.getPriorityValue()).toBe("Low");
             expect(await viewCaseTemplate.getTemplateStatusValue()).toBe("Active");
-            expect(await viewCaseTemplate.getOwnerGroupValue()).toBe("Facilities");
-            expect(await viewCaseTemplate.getCategoryTier2()).toBe("Policies");
-            expect(await viewCaseTemplate.getCategoryTier3()).toBe("Card Issuance");
-            expect(await viewCaseTemplate.getCategoryTier1()).toBe("Purchasing Card");
+            expect(await viewCaseTemplate.getOwnerGroupValue()).toBe("US Support 3");
+            expect(await viewCaseTemplate.getCategoryTier2()).toBe("Compensation");
+            expect(await viewCaseTemplate.getCategoryTier3()).toBe("Bonus");
+            expect(await viewCaseTemplate.getCategoryTier1()).toBe("Employee Relations");
             expect(await viewCaseTemplate.getOwnerCompanyValue()).toBe("Petramco");
         });
         it('[DRDMV-1216]: [Case Template] Create Case Template with all fields data populated', async () => {
             await navigationPage.gotoCreateCase();
-            await createCasePo.selectRequester('fritz');
+            await createCasePo.selectRequester('qkatawazi');
             await createCasePo.setSummary(casetemplatePetramco.templateName);
             await createCasePo.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectCaseTemplate(casetemplatePetramco.templateName);
             await createCasePo.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePo.getPriorityValue()).toBe('Low');
-            expect(await viewCasePo.getCategoryTier1Value()).toBe('Purchasing Card');
-            expect(await viewCasePo.getCategoryTier2Value()).toBe('Policies');
-            expect(await viewCasePo.getCategoryTier3Value()).toBe('Card Issuance');
+            expect(await viewCasePo.getCategoryTier1Value()).toBe("Employee Relations");
+            expect(await viewCasePo.getCategoryTier2Value()).toBe("Compensation");
+            expect(await viewCasePo.getCategoryTier3Value()).toBe("Bonus");
             expect(await viewCasePo.getAssignedCompanyText()).toBe('Petramco');
         });
         afterAll(async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('qkatawazi');
         });
     });
 
@@ -651,23 +653,23 @@ describe('Case Template', () => {
                 "company": "Petramco",
                 "resolveCaseonLastTaskCompletion": "1",
                 "ownerCompany": "Petramco",
-                "ownerBU": "Facilities Support",
-                "ownerGroup": "Facilities",
-                "buisnessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
-                "categoryTier1": "Purchasing Card",
-                "categoryTier2": "Policies",
-                "categoryTier3": "Card Issuance",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3",
+                "buisnessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": 'qkatawazi',
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
                 "casePriority": "Low",
                 "caseStatus": "New",
             }
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createCaseTemplate(casetemplatePetramco);
         });
         it('[DRDMV-1215]: Checking change case template button for In Progress', async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(caseTemplateName);
@@ -690,17 +692,17 @@ describe('Case Template', () => {
         });
         it('[DRDMV-1215]: [Case Template] Case Status, Template status, Priority, Case Company, Owner population', async () => {
             expect(await viewCaseTemplate.getCaseTemplateNameValue()).toContain(caseTemplateName);
-            expect(await viewCaseTemplate.getCategoryTier1()).toContain("Purchasing Card");
-            expect(await viewCaseTemplate.getCategoryTier2()).toContain("Policies");
-            expect(await viewCaseTemplate.getCategoryTier3()).toContain("Card Issuance");
+            expect(await viewCaseTemplate.getCategoryTier1()).toContain("Employee Relations");
+            expect(await viewCaseTemplate.getCategoryTier2()).toContain("Compensation");
+            expect(await viewCaseTemplate.getCategoryTier3()).toContain("Bonus");
             expect(await viewCaseTemplate.getCaseCompanyValue()).toContain("Petramco");
             expect(await viewCaseTemplate.getTemplateStatusValue()).toContain("Draft");
-            expect(await viewCaseTemplate.getAssigneeText()).toContain('Fritz Schulz');
+            expect(await viewCaseTemplate.getAssigneeText()).toContain('Qadim Katawazi');
             expect(await viewCaseTemplate.getOwnerGroupValue()).toContain('AU Support 1');
         });
         afterAll(async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('qkatawazi');
         });
     });
 
@@ -713,27 +715,27 @@ describe('Case Template', () => {
                 "templateName": 'caseTemplateName' + randomStr,
                 "templateSummary": 'caseTemplateSummaryName' + randomStr,
                 "templateStatus": "Active",
-                "categoryTier1": "Purchasing Card",
-                "categoryTier2": "Policies",
-                "categoryTier3": "Card Issuance",
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
                 "casePriority": "Low",
                 "caseStatus": "New",
                 "company": "Petramco",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
-                "ownerBU": "Facilities Support",
-                "ownerGroup": "Facilities",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": 'qkatawazi',
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3",
                 "description": 'description' + randomStr,
             }
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createCaseTemplate(casetemplatePetramco);
             casetemplatePetramco.templateName = updatedCaseTemplateName;
             await apiHelper.createCaseTemplate(casetemplatePetramco);
         });
         it('[DRDMV-8965,DRDMV-8990]: Changing case template for new case status', async () => {
             await navigationPage.gotoCreateCase();
-            await createCasePo.selectRequester('Franz');
+            await createCasePo.selectRequester('qkatawazi');
             await createCasePo.setSummary(caseTemplateName);
             await createCasePo.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
@@ -750,9 +752,9 @@ describe('Case Template', () => {
             await utilityCommon.closePopUpMessage();
             expect(await viewCasePo.getPriorityValue()).toBe('Low');
             expect(await viewCasePo.getCaseStatusValue()).toContain('New');
-            expect(await viewCasePo.getCategoryTier1Value()).toBe('Purchasing Card');
-            expect(await viewCasePo.getCategoryTier2Value()).toBe('Policies');
-            expect(await viewCasePo.getCategoryTier3Value()).toBe('Card Issuance');
+            expect(await viewCasePo.getCategoryTier1Value()).toBe("Employee Relations");
+            expect(await viewCasePo.getCategoryTier2Value()).toBe("Compensation");
+            expect(await viewCasePo.getCategoryTier3Value()).toBe("Bonus");
             expect(await viewCasePo.getAssignedCompanyText()).toBe('Petramco');
             await viewCasePo.clickOnTab('Activity');
             await activityTabPo.clickOnRefreshButton();
@@ -773,34 +775,34 @@ describe('Case Template', () => {
                 "templateName": caseTemplateName,
                 "templateSummary": caseTemplateName,
                 "templateStatus": "Active",
-                "categoryTier1": "Purchasing Card",
-                "categoryTier2": "Policies",
-                "categoryTier3": "Card Issuance",
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
                 "casePriority": "Low",
                 "caseStatus": "Assigned",
                 "company": "Petramco",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
-                "ownerBU": "Facilities Support",
-                "ownerGroup": "Facilities",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": 'qkatawazi',
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3",
                 "description": 'description' + randomStr,
             }
             let casetemplatePetramco2 = {
                 "templateName": updatedCaseTemplateName,
                 "templateSummary": updatedCaseTemplateName,
                 "templateStatus": "Active",
-                "categoryTier1": "Purchasing Card",
-                "categoryTier2": "Policies",
-                "categoryTier3": "Card Issuance",
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
                 "casePriority": "Low",
                 "caseStatus": "Assigned",
                 "company": "Petramco",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
-                "ownerBU": "Facilities Support",
-                "ownerGroup": "Facilities",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": 'qkatawazi',
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3",
                 "description": 'description' + randomStr,
             }
             let taskTemplateDataSet = {
@@ -808,14 +810,14 @@ describe('Case Template', () => {
                 "templateSummary": taskTemplateName,
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
-                "buisnessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "buisnessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": 'qkatawazi',
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             let newCaseTemplate1 = await apiHelper.createCaseTemplate(casetemplatePetramco1);
             let newCaseTemplate2 = await apiHelper.createCaseTemplate(casetemplatePetramco2);
             let manualTaskTemplate = await apiHelper.createManualTaskTemplate(taskTemplateDataSet);
@@ -823,10 +825,8 @@ describe('Case Template', () => {
             await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate2.displayId, manualTaskTemplate.displayId);
         });
         it('[DRDMV-9019]: Changing case template for the case in Assigned Status', async () => {
-            // await navigationPage.signOut();
-            // await loginPage.login('fritz');
             await navigationPage.gotoCreateCase();
-            await createCasePo.selectRequester('Franz');
+            await createCasePo.selectRequester('qkatawazi');
             await createCasePo.setSummary(caseTemplateName);
             await createCasePo.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
@@ -845,12 +845,12 @@ describe('Case Template', () => {
             await utilityCommon.closePopUpMessage();
             expect(await viewCasePo.getPriorityValue()).toBe('Low');
             expect(await viewCasePo.getCaseStatusValue()).toContain('Assigned');
-            expect(await viewCasePo.getCategoryTier1Value()).toBe('Purchasing Card');
-            expect(await viewCasePo.getCategoryTier2Value()).toBe('Policies');
-            expect(await viewCasePo.getCategoryTier3Value()).toBe('Card Issuance');
+            expect(await viewCasePo.getCategoryTier1Value()).toBe("Employee Relations");
+            expect(await viewCasePo.getCategoryTier2Value()).toBe("Compensation");
+            expect(await viewCasePo.getCategoryTier3Value()).toBe("Bonus");
             expect(await viewCasePo.getAssignedCompanyText()).toBe('Petramco');
-            expect(await viewCasePo.getAssigneeText()).toBe('Fritz Schulz');
-            expect(await viewCasePo.getAssignedGroupText()).toBe('Facilities');
+            expect(await viewCasePo.getAssigneeText()).toBe('Qadim Katawazi');
+            expect(await viewCasePo.getAssignedGroupText()).toBe('US Support 3');
             await viewCasePo.clickOnTab('Activity');
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog(updatedCaseTemplateName)).toBeTruthy('TemplateText is not available');
@@ -873,24 +873,24 @@ describe('Case Template', () => {
                 "company": "Petramco",
                 "resolveCaseonLastTaskCompletion": "1",
                 "ownerCompany": "Petramco",
-                "ownerBU": "Facilities Support",
-                "ownerGroup": "Facilities",
-                "buisnessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
-                "categoryTier1": "Purchasing Card",
-                "categoryTier2": "Policies",
-                "categoryTier3": "Card Issuance",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3",
+                "buisnessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": 'qkatawazi',
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
                 "casePriority": "Low",
                 "caseStatus": "Assigned",
                 "description": 'description' + randomStr,
             }
-            await apiHelper.apiLogin('franz');
+            await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createCaseTemplate(casetemplatePetramco);
         });
         it('[DRDMV-9129]: Creating the Case with case template', async () => {
             await navigationPage.signOut();
-            await loginPage.login('franz');
+            await loginPage.login('qkatawazi');
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('adam');
             await createCasePo.setSummary(caseTemplateName);
@@ -903,7 +903,7 @@ describe('Case Template', () => {
         });
         it('[DRDMV-9129]: Login to CM with diffrent support group', async () => {
             await navigationPage.signOut();
-            await loginPage.login('qdu');
+            await loginPage.login('franz');
             await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
             await caseConsolePo.searchCase(caseTemplateName);
@@ -927,7 +927,7 @@ describe('Case Template', () => {
         let caseTemplateName: string = "TemplateName" + Math.floor(Math.random() * 100000);
         it('[DRDMV-12581,DRDMV-12554]: Checking change case template button for In Progress', async () => {
             await navigationPage.signOut();
-            await loginPage.login(userData.userId+"@petramco.com", 'Password_1234');
+            await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
@@ -936,8 +936,8 @@ describe('Case Template', () => {
             await createCaseTemplate.setCompanyName('Petramco');
             await createCaseTemplate.setPriorityValue('Low');
             await createCaseTemplate.setOwnerCompanyValue('Petramco');
-            await createCaseTemplate.setBusinessUnitDropdownValue('Facilities Support');
-            await createCaseTemplate.setOwnerGroupDropdownValue('Facilities');
+            await createCaseTemplate.setBusinessUnitDropdownValue("United States Support");
+            await createCaseTemplate.setOwnerGroupDropdownValue("US Support 3");
             await createCaseTemplate.setTemplateStatusDropdownValue('Draft');
             await createCaseTemplate.clickSaveCaseTemplate();
         });
@@ -953,7 +953,7 @@ describe('Case Template', () => {
         });
         it('[DRDMV-12581,DRDMV-12554]: Case Template access when owner group from different company is applied', async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(caseTemplateName);
@@ -963,12 +963,12 @@ describe('Case Template', () => {
         });
         afterAll(async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('qkatawazi');
         });
     });
 
     describe('[DRDMV-1245]: [Case Template] Template status lifecycle', async () => {
-        let templateDataDraft,randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let templateDataDraft, randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateName = randomStr + 'Draft';
         beforeAll(async () => {
             templateDataDraft = {
@@ -976,24 +976,26 @@ describe('Case Template', () => {
                 "templateSummary": caseTemplateName,
                 "templateStatus": "Active",
                 "company": "Petramco",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
-                "ownerBU": "Facilities Support",
-                "ownerGroup": "Facilities",
-                "categoryTier1": "Purchasing Card",
-                "categoryTier2": "Policies",
-                "categoryTier3": "Card Issuance",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": 'qkatawazi',
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3",
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
                 "casePriority": "Low",
                 "caseStatus": "Assigned",
                 "description": 'description' + randomStr,
+                "lineOfBuisness": "Human Resource"
             }
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createCaseTemplate(templateDataDraft);
+            console.log(templateDataDraft.templateName);           
         });
         it('[DRDMV-1245]: Case Agent checks for Active template & Consume it', async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('qkatawazi');
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('adam');
             await quickCasePo.selectCaseTemplate(templateDataDraft.templateName);
@@ -1043,26 +1045,26 @@ describe('Case Template', () => {
                 "templateSummary": caseTemplateName,
                 "templateStatus": "Active",
                 "company": "Petramco",
-                "resolveCaseonLastTaskCompletion": "1",
                 "ownerCompany": "Petramco",
-                "ownerBU": "Facilities Support",
-                "ownerGroup": "Facilities",
-                "buisnessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
-                "categoryTier1": "Purchasing Card",
-                "categoryTier2": "Policies",
-                "categoryTier3": "Card Issuance",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3",
+                "buisnessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": 'qkatawazi',
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
                 "casePriority": "Low",
                 "caseStatus": "Assigned",
                 "description": 'description' + randomStr,
             }
-            await apiHelper.apiLogin('franz');
+            await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createCaseTemplate(casetemplatePetramco);
+            console.log(caseTemplateName);           
         });
         it('[DRDMV-9130,DRDMV-9127]: Creating the Case with case template', async () => {
             await navigationPage.signOut();
-            await loginPage.login('franz');
+            await loginPage.login('qkatawazi');
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('adam');
             await createCasePo.setSummary(caseTemplateName);
@@ -1091,7 +1093,7 @@ describe('Case Template', () => {
         });
         it('[DRDMV-9130,DRDMV-9127]: [Negative Testing] - Verify permission for Case Manager from a different/same support group to edit case template.', async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('qkatawazi');
             await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
             await caseConsolePo.searchAndOpenCase(caseTemplateName);
@@ -1106,7 +1108,7 @@ describe('Case Template', () => {
     it('[DRDMV-12556]:Case Template submitter from different company than owner group company can edit the template', async () => {
         try {
             await navigationPage.signOut();
-            await loginPage.login(userData.userId+"@petramco.com", 'Password_1234');
+            await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             let caseTemplateName: string = "TemplateName" + Math.floor(Math.random() * 100000);
@@ -1181,58 +1183,58 @@ describe('Case Template', () => {
                 "templateName": caseTemplateName1,
                 "templateSummary": caseTemplateName1,
                 "templateStatus": "Draft",
-                "categoryTier1": "Purchasing Card",
-                "categoryTier2": "Policies",
-                "categoryTier3": "Card Issuance",
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
                 "casePriority": "Low",
                 "caseStatus": "New",
                 "company": "Petramco",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "ownerBU": "Facilities Support",
-                "ownerGroup": "Facilities",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3",
                 "description": 'description' + randomStr,
             }
             let casetemplatePetramco2 = {
                 "templateName": caseTemplateName2,
                 "templateSummary": caseTemplateName2,
                 "templateStatus": "Draft",
-                "categoryTier1": "Purchasing Card",
-                "categoryTier2": "Policies",
-                "categoryTier3": "Card Issuance",
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
                 "casePriority": "Low",
                 "caseStatus": "New",
                 "company": "Petramco",
                 "businessUnit": "HR Support",
                 "supportGroup": "Workforce Administration",
-                "ownerBU": "Facilities Support",
-                "ownerGroup": "Facilities",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3",
                 "description": 'description' + randomStr,
             }
             let casetemplatePetramco3 = {
                 "templateName": caseTemplateName3,
                 "templateSummary": caseTemplateName3,
                 "templateStatus": "Active",
-                "categoryTier1": "Purchasing Card",
-                "categoryTier2": "Policies",
-                "categoryTier3": "Card Issuance",
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
                 "casePriority": "Low",
                 "caseStatus": "New",
                 "company": "Petramco",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
-                "ownerBU": "Facilities Support",
-                "ownerGroup": "Facilities",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": 'qkatawazi',
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3",
                 "description": 'description' + randomStr,
             }
             let caseData =
             {
                 "Requester": "qtao",
                 "Summary": caseName,
-                "categoryTier1": "Purchasing Card",
-                "categoryTier2": "Policies",
-                "categoryTier3": "Card Issuance",
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
@@ -1277,8 +1279,8 @@ describe('Case Template', () => {
             await utilityCommon.closePopUpMessage();
             // verify support Group w.r.t template1 should be applied any assignee, as round robin assignement method
             expect(await viewCasePo.isAssigneeNameDisplayed()).toBeTruthy();
-            expect(await viewCasePo.getAssignedGroupText()).toBe('Facilities');
-            expect(await viewCasePo.getBusinessUnitText()).toBe('Facilities Support');
+            expect(await viewCasePo.getAssignedGroupText()).toBe("US Support 3");
+            expect(await viewCasePo.getBusinessUnitText()).toBe("United States Support");
         });
         it('[DRDMV-15245]: Verify case assignment method is not applicable if user changes the case template', async () => {
             await navigationPage.gotoCaseConsole();
@@ -1289,8 +1291,8 @@ describe('Case Template', () => {
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName1);
             await editCasePo.clickSaveCase();
             expect(await viewCasePo.isAssigneeNameDisplayed()).toBeTruthy();
-            expect(await viewCasePo.getAssignedGroupText()).toBe('Facilities');
-            expect(await viewCasePo.getBusinessUnitText()).toBe('Facilities Support');
+            expect(await viewCasePo.getAssignedGroupText()).toBe("US Support 3");
+            expect(await viewCasePo.getBusinessUnitText()).toBe("United States Support");
             await viewCasePo.clickEditCaseButton();
             await editCasePo.clickOnChangeCaseTemplate();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName2);
@@ -1318,9 +1320,9 @@ describe('Case Template', () => {
             await editCasePo.clickSaveCase();
             await utilityCommon.closePopUpMessage();
             // verify support Group w.r.t template3 should be applied assignee, as none assignement method
-            expect(await viewCasePo.getAssigneeText()).toBe('Fritz Schulz');
-            expect(await viewCasePo.getAssignedGroupText()).toBe('Facilities');
-            expect(await viewCasePo.getBusinessUnitText()).toBe('Facilities Support');
+            expect(await viewCasePo.getAssigneeText()).toBe('Qadim Katawazi');
+            expect(await viewCasePo.getAssignedGroupText()).toBe("US Support 3");
+            expect(await viewCasePo.getBusinessUnitText()).toBe("United States Support");
         });
         it('[DRDMV-15245]: Verify case assignment method is not applicable if user changes the case template', async () => {
             await navigationPage.gotoCaseConsole();
@@ -1330,9 +1332,9 @@ describe('Case Template', () => {
             await editCasePo.clickOnSelectCaseTemplate();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName3);
             await editCasePo.clickSaveCase();
-            expect(await viewCasePo.getAssigneeText()).toBe('Fritz Schulz');
-            expect(await viewCasePo.getAssignedGroupText()).toBe('Facilities');
-            expect(await viewCasePo.getBusinessUnitText()).toBe('Facilities Support');
+            expect(await viewCasePo.getAssigneeText()).toBe('Qadim Katawazi');
+            expect(await viewCasePo.getAssignedGroupText()).toBe("US Support 3");
+            expect(await viewCasePo.getBusinessUnitText()).toBe("United States Support");
             await viewCasePo.clickEditCaseButton();
             await editCasePo.clickOnChangeCaseTemplate();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName2);
@@ -1346,12 +1348,12 @@ describe('Case Template', () => {
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('qkatawazi');
         });
     });
 
     describe('[DRDMV-19741]: [RESOLVE_CASE_ON_LAST_TASK_COMPLETION] - Case behavior when Case Template is changed', async () => {
-        let caseId,caseId1, randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseId, caseId1, randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateName = 'caseTemplateName' + randomStr;
         let casTemplateSummary = 'CaseSummaryName' + randomStr;
         let caseTemplateNameWithNoValue = 'caseTemplateWithNoResolve' + randomStr;
@@ -1365,11 +1367,11 @@ describe('Case Template', () => {
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "resolveCaseonLastTaskCompletion": "1",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": 'qkatawazi',
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             let templateDataSetNO = {
                 "templateName": `${caseTemplateNameWithNoValue}`,
@@ -1377,11 +1379,11 @@ describe('Case Template', () => {
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "resolveCaseonLastTaskCompletion": "0",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": 'qkatawazi',
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             let taskTemplateData = {
                 "templateName": `${manualTask}`,
@@ -1389,12 +1391,12 @@ describe('Case Template', () => {
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+                "supportGroup": "US Support 3",
+                "assignee": 'qkatawazi'
             }
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             let manualTaskTemplateOne = await apiHelper.createManualTaskTemplate(taskTemplateData);
 
             let newCaseTemplate1 = await apiHelper.createCaseTemplate(templateDataSetYes);
@@ -1414,8 +1416,8 @@ describe('Case Template', () => {
                 "Origin": "Agent",
                 "Case Template ID": newCaseTemplate2.displayId,
             }
-           caseId= await apiHelper.createCase(caseData);
-           caseId1= await apiHelper.createCase(caseData1);
+            caseId = await apiHelper.createCase(caseData);
+            caseId1 = await apiHelper.createCase(caseData1);
         });
         it('[DRDMV-19741]: Case behavior when Case Template is changed', async () => {
             await navigationPage.gotoCaseConsole();
