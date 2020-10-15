@@ -480,7 +480,7 @@ describe('Create Case Task', () => {
     });
 
     //ankagraw
-    fdescribe('[DRDMV-12582]: Task Template access when owner group from different company is applied', async () => {
+    describe('[DRDMV-12582]: Task Template access when owner group from different company is applied', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let TaskTemplate = 'Manual task' + randomStr;
         let TaskSummary = 'Summary' + randomStr;
