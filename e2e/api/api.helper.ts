@@ -2587,7 +2587,9 @@ class ApiHelper {
         caseReadAccess.fieldInstances[450000153].value = await apiCoreUtil.getOrganizationGuid(data.assignedCompany);
         caseReadAccess.fieldInstances[1000001437].value = data.configName;
         caseReadAccess.fieldInstances[1000000001].value = await apiCoreUtil.getOrganizationGuid(data.company);
-
+        if (data.lineOfBusiness) {
+            caseReadAccess.fieldInstances[450000420].value = await constants.LOB[data.lineOfBusiness];
+        }
         if (data.category1) {
             let categoryTier1 = await apiCoreUtil.getCategoryGuid(data.category1);
             let category1Data = {

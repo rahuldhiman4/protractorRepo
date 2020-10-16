@@ -63,9 +63,9 @@ describe('Create Adhoc task', () => {
         await adhoctaskTemplate.setSummary(summary);
         await adhoctaskTemplate.setDescription("Description");
         await adhoctaskTemplate.selectPriority('High');
-        await adhoctaskTemplate.selectCategoryTier1('Applications');
-        await adhoctaskTemplate.selectCategoryTier2('Social');
-        await adhoctaskTemplate.selectCategoryTier3('Chatter');
+        await adhoctaskTemplate.selectCategoryTier1('Employee Relations');
+        await adhoctaskTemplate.selectCategoryTier2('Compensation');
+        await adhoctaskTemplate.selectCategoryTier3('Bonus');
         await adhoctaskTemplate.clickSaveAdhoctask();
         await utilityCommon.closePopUpMessage();
         expect(await manageTask.isTaskLinkPresent(summary)).toBeTruthy();
@@ -93,9 +93,9 @@ describe('Create Adhoc task', () => {
             await adhoctaskTemplate.setSummary(summary);
             await adhoctaskTemplate.setDescription("Description");
             await adhoctaskTemplate.selectPriority('High');
-            await adhoctaskTemplate.selectCategoryTier1('Applications');
-            await adhoctaskTemplate.selectCategoryTier2('Social');
-            await adhoctaskTemplate.selectCategoryTier3('Chatter');
+            await adhoctaskTemplate.selectCategoryTier1('Employee Relations');
+            await adhoctaskTemplate.selectCategoryTier2('Compensation');
+            await adhoctaskTemplate.selectCategoryTier3('Bonus');
             await adhoctaskTemplate.clickAssignToMeButton();
             await adhoctaskTemplate.clickSaveAdhoctask();
             await utilityCommon.closePopUpMessage();

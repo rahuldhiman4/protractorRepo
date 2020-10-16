@@ -277,8 +277,8 @@ class CKEditor {
     // input should be a list
     async setNumberList(values: string[], guidId?: string): Promise<void> {
         let locator: string;
-        if (guidId) { console.log("1"); locator = `[rx-view-component-id="${guidId}"] .cke_button__numberedlist_icon` }
-        else { locator = await $(this.selectors.numberIcon) }
+        if (guidId) { locator = `[rx-view-component-id="${guidId}"] .cke_button__numberedlist_icon` }
+        else { locator = await this.selectors.numberIcon }
         let framePresent = await $(this.selectors.frame).isPresent();
         if (framePresent == true) {
             await browser.waitForAngularEnabled(false);
