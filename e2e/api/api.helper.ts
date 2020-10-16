@@ -987,12 +987,16 @@ class ApiHelper {
             let functionalRolesGuidArray: string[] = [];
             let functionalRolesGuid: string;
             if (data.userPermission) {
-                for (let i = 0; i < data.userPermission.length; i++) { functionalRolesGuidArray[i] = constants.FunctionalRoleGuid[data.userPermission[i]]; }
+                for (let i = 0; i < data.userPermission.length; i++) {
+                    // functionalRolesGuidArray[i] = constants.FunctionalRoleGuid[data.userPermission[i]];
+                    functionalRolesGuidArray[i] = await apiCoreUtil.getFunctionalRoleGuid(data.userPermission[i]);
+                }
                 functionalRolesGuid = functionalRolesGuidArray.join(';');
             }
 
             userData.fieldInstances[430000002].value = data.userPermission ? functionalRolesGuid : userData.fieldInstances[430000002].value;
             userData.fieldInstances[1000000048].value = data.emailId ? data.emailId : userData.fieldInstances[1000000048].value;
+
             const newUser = await apiCoreUtil.createRecordInstance(userData);
             console.log('Create New User Details API Status =============>', newUser.status);
 
@@ -1594,6 +1598,9 @@ class ApiHelper {
         flowsetData.fieldInstances[450000002].value = data.flowsetName;
         flowsetData.fieldInstances[8].value = data.description;
         flowsetData.fieldInstances[7].value = data.flowsetStatus;
+        if (data.lineOfBusiness) {
+            flowsetData.fieldInstances[450000420].value = await constants.LOB[data.lineOfBusiness];
+        }
         const flowset = await apiCoreUtil.createRecordInstance(flowsetData);
         const flowsetDetails = await axios.get(
             flowset.headers.location

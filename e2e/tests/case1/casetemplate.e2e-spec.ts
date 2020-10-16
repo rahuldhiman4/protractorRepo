@@ -38,7 +38,7 @@ describe('Case Template', () => {
             "lastName": "Company",
             "userId": "nosg",
             "emailId": "nosg@petramco.com",
-            "userPermission": ["Case Agent", "Foundation Read", "Document Manager", "Case Business Analyst"]
+            "userPermission": ["Case Agent", "Foundation Read", "Document Manager", "Case Business Analyst","Human Resource"]
         }
         await apiHelper.createNewUser(userData);
         await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
@@ -332,6 +332,8 @@ describe('Case Template', () => {
         }
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createCaseTemplate(templateData);
+        await navigationPage.signOut();
+        await loginPage.login('elizabeth');
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
         await utilGrid.searchAndOpenHyperlink(templateData.templateName);
@@ -991,7 +993,6 @@ describe('Case Template', () => {
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createCaseTemplate(templateDataDraft);
-            console.log(templateDataDraft.templateName);           
         });
         it('[DRDMV-1245]: Case Agent checks for Active template & Consume it', async () => {
             await navigationPage.signOut();
@@ -1060,7 +1061,6 @@ describe('Case Template', () => {
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createCaseTemplate(casetemplatePetramco);
-            console.log(caseTemplateName);           
         });
         it('[DRDMV-9130,DRDMV-9127]: Creating the Case with case template', async () => {
             await navigationPage.signOut();

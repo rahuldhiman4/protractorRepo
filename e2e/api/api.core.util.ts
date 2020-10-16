@@ -182,15 +182,15 @@ class ApiCoreUtil {
     }
 
     async getFunctionalRoleGuid(functionalRole: string): Promise<string> {
-        let dataPageUri = "rx/application/datapage?dataPageType=com.bmc.arsys.rx.application.functionalrole.datapage.FunctionalRoleDataPageQuery"
-            + "&pageSize=50&startIndex=0"
-        let allRecords = await axios.get(
+        let dataPageUri = "api/rx/application/datapage?dataPageType=com.bmc.arsys.rx.application.functionalrole.datapage.FunctionalRoleDataPageQuery"
+            + "&pageSize=50&startIndex=0"        
+            let allRecords = await axios.get(
             dataPageUri
-        );
-        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
-            obj[0] === functionalRole;
+        );        
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {           
+            return obj['name'] === functionalRole;       
         });
-        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+        return entityObj.length >= 1 ? entityObj[0]['id'] || null : null;
     }
 
     async getBusinessUnitGuid(orgName: string): Promise<string> {

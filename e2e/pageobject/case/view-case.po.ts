@@ -195,7 +195,8 @@ class ViewCasePage {
         });
     }
 
-    async clickEditCaseButton(): Promise<void> {        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editLink)));
+    async clickEditCaseButton(): Promise<void> { 
+        await utilityCommon.scrollToElement($(this.selectors.editLink));
         await $(this.selectors.editLink).click();
     }
 
