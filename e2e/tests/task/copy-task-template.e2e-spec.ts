@@ -20,7 +20,7 @@ describe('Copy Task Template', () => {
     let twoCompanyUser, userData13548;
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
-        await loginPage.login('fritz');
+        await loginPage.login('qkatawazi');
         // user for DRDMV-13548
         userData13548 = {
             "firstName": "Fname13548",
@@ -41,7 +41,7 @@ describe('Copy Task Template', () => {
         await apiHelper.createNewUser(twoCompanyUser);
         await apiHelper.associatePersonToCompany(twoCompanyUser.userId, "Petramco");
         await apiHelper.associatePersonToCompany(twoCompanyUser.userId, "Psilon");
-        await apiHelper.associatePersonToSupportGroup(twoCompanyUser.userId, "Facilities");
+        await apiHelper.associatePersonToSupportGroup(twoCompanyUser.userId, "US Support 1");
     });
 
     afterAll(async () => {
@@ -62,8 +62,8 @@ describe('Copy Task Template', () => {
                 "processName": 'DRDMV14214ProcessName' + randomStr,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 1"
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createAutomatedTaskTemplate(templateData);
@@ -99,6 +99,8 @@ describe('Copy Task Template', () => {
             await viewCasePage.clickAddTaskButton();
             await manageTask.addTaskFromTaskTemplate(templateData.templateSummary);
             await manageTask.clickCloseButton();
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(newCase.displayId);
             await updateStatusBladePo.changeCaseStatus("In Progress");
             await updateStatusBladePo.clickSaveStatus('In Progress');
             await utilityCommon.closePopUpMessage();
@@ -109,7 +111,7 @@ describe('Copy Task Template', () => {
         });
         afterAll(async () => {
             await navigationPage.signOut();
-            await loginPage.login("fritz");
+            await loginPage.login("qkatawazi");
         });
     });
 
@@ -124,15 +126,16 @@ describe('Copy Task Template', () => {
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 1",
+                "lineOfBusiness": "Human Resource"
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createManualTaskTemplate(templateData);
         });
         it('[DRDMV-13548]: Create a Copy of Task template where Submitter do not belong to any Support Groups', async () => {
             await navigationPage.signOut();
-            await loginPage.login(userData13548.userId+"@petramco.com", 'Password_1234');
+            await loginPage.login(userData13548.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
@@ -145,7 +148,7 @@ describe('Copy Task Template', () => {
         });
         afterAll(async () => {
             await navigationPage.signOut();
-            await loginPage.login("fritz");
+            await loginPage.login("qkatawazi");
         });
     });
 
@@ -195,7 +198,7 @@ describe('Copy Task Template', () => {
         });
         it('[DRDMV-14218,DRDMV-13573]: User having Petramco and Psilon access', async () => {
             await navigationPage.signOut();
-            await loginPage.login(twoCompanyUser.userId+"@petramco.com", 'Password_1234');
+            await loginPage.login(twoCompanyUser.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
@@ -250,7 +253,7 @@ describe('Copy Task Template', () => {
             await apiHelper.createAutomatedTaskTemplate(templateData);
 
             await navigationPage.signOut();
-            await loginPage.login(twoCompanyUser.userId+"@petramco.com", 'Password_1234');
+            await loginPage.login(twoCompanyUser.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
