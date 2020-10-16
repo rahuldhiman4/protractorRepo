@@ -37,11 +37,11 @@ describe('Document Library Consume Permission', () => {
         await loginPage.login('qkatawazi');
         // Create User and assigned Document Manager Permission to agent
         await apiHelper.apiLogin('tadmin');
-        let caseAgentuserData = {
-            "firstName": "caseAgent2",
-            "lastName": "user2",
-            "userId": "caseagentbwf",
-            "userPermission": ["Case Agent", "Document Manager"]
+         caseAgentuserData = {
+            "firstName": "caseAgent231",
+            "lastName": "user231",
+            "userId": "caseagentbwf231",
+            "userPermission": ["Case Agent", "Document Manager",,"Human Resource"],
         }
         await apiHelper.createNewUser(caseAgentuserData);
         await apiHelper.associatePersonToCompany(caseAgentuserData.userId, "Petramco");
@@ -227,12 +227,12 @@ describe('Document Library Consume Permission', () => {
                 "templateName": `${caseTemplateName}`,
                 "templateSummary": `${casTemplateSummary}`,
                 "templateStatus": "Active",
-                "assignee": caseAgentuserData.userId+"@petramco.com",
+                "assignee": caseAgentuserData.userId,
                 "company": "Petramco",
                 "businessUnit": "United States Support",
-                "ownerBU": "Facilities Support",
+                "ownerBU": "United States Support",
                 "supportGroup": "US Support 3",
-                "ownerGroup": "Facilities"
+                "ownerGroup": "US Support 3"
             }
             await apiHelper.apiLogin('qkatawazi');
             let newCaseTemplate = await apiHelper.createCaseTemplate(templateData);
@@ -244,12 +244,12 @@ describe('Document Library Consume Permission', () => {
                 "templateSummary": `${taskTemplateSummaryYesValue}`,
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
-                "assignee": caseAgentuserData.userId+"@petramco.com",
+                "assignee": caseAgentuserData.userId,
                 "businessUnit": "United States Support",
                 "supportGroup": "US Support 3",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             let manualTaskTemplate = await apiHelper.createManualTaskTemplate(taskTemplateDataSet);
             await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId);
@@ -357,7 +357,7 @@ describe('Document Library Consume Permission', () => {
                 "firstName": "CaseManager",
                 "lastName": "WithDocManager",
                 "userId": loginId2,
-                "userPermission": ["Case Manager", "Foundation Read", "Document Manager"]
+                "userPermission": ["Case Manager", "Foundation Read", "Document Manager","Human Resource"]
             }
             await apiHelper.createNewUser(caseAgentuserData1);
             await apiHelper.associatePersonToCompany(caseAgentuserData1.userId, "Petramco");
