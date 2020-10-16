@@ -8,7 +8,7 @@ class Copytaskpage {
         toggleBox: '[rx-view-component-id="6c10fd9d-675a-44ec-abbf-bf9f694099a8"] .d-icon-circle_slash_o',
         toggleBox1: '6c10fd9d-675a-44ec-abbf-bf9f694099a8',
         processName: '[ng-model="process.name"] .rx-input',
-        newProcessName: '[rx-view-component-id="85c0b484-4b35-4c68-955b-73f6949b56d2"] input',
+        newProcessName: '[rx-view-component-id="e8a2406c-6991-4ea1-bfdf-bde29abe2ef7"] input',
         templateStatus: '09db292a-212a-433e-8c20-a92f8c4e5168',
         saveCopyTemplate: '[rx-view-component-id="5001f6ea-4438-4485-bdd2-c952a12a1a34"] button',
         cancelCopyTemplate: '[rx-view-component-id="3f760e5f-70e9-4fbf-8b05-cd7d460f8818"] button',
