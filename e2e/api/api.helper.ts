@@ -987,12 +987,17 @@ class ApiHelper {
             let functionalRolesGuidArray: string[] = [];
             let functionalRolesGuid: string;
             if (data.userPermission) {
-                for (let i = 0; i < data.userPermission.length; i++) { functionalRolesGuidArray[i] = constants.FunctionalRoleGuid[data.userPermission[i]]; }
+                for (let i = 0; i < data.userPermission.length; i++) {
+                    // functionalRolesGuidArray[i] = constants.FunctionalRoleGuid[data.userPermission[i]];
+                    functionalRolesGuidArray[i] = await apiCoreUtil.getFunctionalRoleGuid(data.userPermission[i]);
+                }
                 functionalRolesGuid = functionalRolesGuidArray.join(';');
             }
 
             userData.fieldInstances[430000002].value = data.userPermission ? functionalRolesGuid : userData.fieldInstances[430000002].value;
             userData.fieldInstances[1000000048].value = data.emailId ? data.emailId : userData.fieldInstances[1000000048].value;
+            console.log(userData);
+
             const newUser = await apiCoreUtil.createRecordInstance(userData);
             console.log('Create New User Details API Status =============>', newUser.status);
 
