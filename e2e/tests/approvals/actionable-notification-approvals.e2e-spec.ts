@@ -63,8 +63,8 @@ describe("Actionable Notification Approval", () => {
             "company": "Petramco",
             "mappingName": "Bulk Operation Mapping"
         }
-        let approvalMappingId = await apiHelper.createApprovalMapping(caseModule,approvalMappingData);
-        await apiHelper.associateTemplateWithApprovalMapping(caseModule,caseTemplateResponse.id, approvalMappingId.id);
+        let approvalMappingId = await apiHelper.createApprovalMapping(caseModule, approvalMappingData);
+        await apiHelper.associateTemplateWithApprovalMapping(caseModule, caseTemplateResponse.id, approvalMappingId.id);
 
         //Create Approval Flow. Category 1 = Applications, Category 2 = Social and Category 3 = Chatter
         let approvalFlowData = {
@@ -72,7 +72,7 @@ describe("Actionable Notification Approval", () => {
             "approver": "qkatawazi",
             "qualification": "'Category Tier 3' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.3191c35b400e44f4d4713ae358a43839d9bc9871fcabf0457ea0e73b477a86ab9f90c3f495aa7868bf1bb98b3077c6af56e114c89234f179071b03d05665ec32.304405421}"
         }
-        await apiHelper.createApprovalFlow(approvalFlowData,caseModule);
+        await apiHelper.createApprovalFlow(approvalFlowData, caseModule);
 
         caseData = {
             "Requester": "qkatawazi",
