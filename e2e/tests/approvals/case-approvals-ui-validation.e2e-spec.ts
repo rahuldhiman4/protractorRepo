@@ -599,10 +599,10 @@ describe("Case Approval UI Validations", () => {
             await showApproversBladePo.clickApproversTab('Approval Decision');
             expect(await showApproversBladePo.getApproversCount()).toBe(0);
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
-            await navigationPage.signOut();
         });
 
         it('[DRDMV-10828]:Approve the case and verify the case details', async () => {
+            await navigationPage.signOut();
             await loginPage.login('elizabeth');
             await navigationPage.switchToJSApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(caseSummary, 'Approve');
@@ -635,7 +635,6 @@ describe("Case Approval UI Validations", () => {
             await showApproversBladePo.clickApproversTabFromActivity('Pending Approval');
             expect(await showApproversBladePo.getApproversCountFromActivity()).toBe(0);
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
-            await navigationPage.signOut();
         });
 
         afterAll(async () => {

@@ -25,6 +25,7 @@ describe("Actionable Notification Approval", () => {
         await loginPage.login("qkatawazi");
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
+        await utilGrid.clearFilter();
         await utilGrid.addFilter('Company', '- Global -', 'text');
         await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         await apiHelper.setDefaultNotificationForUser('qkatawazi', "Alert");
