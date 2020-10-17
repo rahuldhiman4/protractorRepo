@@ -2903,13 +2903,11 @@ class ApiHelper {
                 if (approvalData.company) caseApprovalMapping.fieldInstances[1000000001].value = await apiCoreUtil.getOrganizationGuid(approvalData.company);
                 let response = await apiCoreUtil.createRecordInstance(caseApprovalMapping);
                 console.log('Case Approval Mapping API Status =============>', response.status);
-
                 approvalMapping = await axios.get(
                     response.headers.location
                 );
                 break;
             };
-
             case "Knowledge": {
                 let approvalData: IKnowledgeApprovalMapping = cloneDeep(data);
                 let knowledgeApprovalConfig = cloneDeep(KNOWLEDGE_APPROVAL_CONFIG);
