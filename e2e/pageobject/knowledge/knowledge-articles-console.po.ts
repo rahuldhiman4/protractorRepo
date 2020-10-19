@@ -1,3 +1,4 @@
+import utilityCommon from '../../utils/utility.common';
 import { $, by, element, Key, protractor, ProtractorExpectedConditions, browser } from "protractor";
 import utilGrid from "../../utils/util.grid";
 import utilityGrid from '../../utils/utility.grid';
@@ -112,6 +113,11 @@ class KnowledgeArticlesGridConsole {
     async applyFilter(fieldName: string, textValue: string, type: string): Promise<void> {
         await utilityGrid.addFilter(fieldName, textValue, type);
     }
+
+    async isFieldLabelDisplayed(labelName: string): Promise<boolean> {
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.knowledgeArticleGridConsoleGuid, labelName);
+    }
+
 }
 
 export default new KnowledgeArticlesGridConsole();
