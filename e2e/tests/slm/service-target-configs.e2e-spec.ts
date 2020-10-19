@@ -28,7 +28,7 @@ import viewTaskPo from '../../pageobject/task/view-task.po';
 
 let caseBAUser = 'qkatawazi';
 
-describe('Service Target Tests', () => {
+describe('Service Target Configs', () => {
     const caseModule = 'Case';
 
     beforeAll(async () => {

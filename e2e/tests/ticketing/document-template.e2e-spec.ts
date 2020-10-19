@@ -230,7 +230,7 @@ describe('Document Template', () => {
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate2.id, 'ALL_DATA_TYPE');
         });
 
-        it('[14973]: Verify Document Template With Case Dynamic Field ', async () => {
+        it('[DRDMV-14973]: Verify Document Template With Case Dynamic Field ', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Templates', 'Document Templates - Business Workflows');
 
@@ -314,7 +314,7 @@ describe('Document Template', () => {
             await utilCommon.clickOnWarningOk();
         });
 
-        it('[14973]: Verify Document Template With Add Case Template Dynamic Field  ', async () => {
+        it('[DRDMV-14973]: Verify Document Template With Add Case Template Dynamic Field  ', async () => {
             await createDocumentTemplatePo.clickOnAddTemplate();
             await createDocumentTemplatePo.setTemplateName(documentName2);
             await createDocumentTemplatePo.setCompany("Petramco");
@@ -343,7 +343,7 @@ describe('Document Template', () => {
             await utilCommon.clickOnWarningOk();
         });
 
-        it('[14973]: Verify Document Template With Confidential, Non Confidential Required and Hidden ', async () => {
+        it('[DRDMV-14973]: Verify Document Template With Confidential, Non Confidential Required and Hidden ', async () => {
             await createDocumentTemplatePo.clickOnAddTemplate();
             await createDocumentTemplatePo.setTemplateName(documentName2);
             await createDocumentTemplatePo.setCompany("Petramco");
@@ -357,7 +357,7 @@ describe('Document Template', () => {
             await utilCommon.clickOnWarningOk();
         });
 
-        it('[14973]: Verify Document Template With Case Template Without Dynamic Field  ', async () => {
+        it('[DRDMV-14973]: Verify Document Template With Case Template Without Dynamic Field  ', async () => {
             await createDocumentTemplatePo.clickOnAddTemplate();
             await createDocumentTemplatePo.setTemplateName(documentName3);
             await createDocumentTemplatePo.setCompany("Petramco");
