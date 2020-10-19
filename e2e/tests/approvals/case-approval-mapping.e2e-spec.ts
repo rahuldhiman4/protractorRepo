@@ -807,7 +807,7 @@ describe("Case Approval Mapping Tests", () => {
         });
     });
     
-    fdescribe('[DRDMV-10704]:Approval Mapping - Console', async () => {
+    describe('[DRDMV-10704]:Approval Mapping - Console', async () => {
         beforeAll(async () => {
             //Create Approval Mapping through API
             let approvalMappingData = undefined;
