@@ -12,7 +12,7 @@ import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 import viewCasePo from '../../pageobject/case/view-case.po';
 
-describe("Approval Mapping Tests", () => {
+describe("Case Approval Mapping Tests", () => {
     const approvalMappingNameStr = "Approval Mapping Name";
     const companyStr = "Company";
     const flowsetStr = "Flowset";
