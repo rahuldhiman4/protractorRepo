@@ -18,23 +18,10 @@ import { SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
 import { cloneDeep } from 'lodash';
 
 describe('Case Console', () => {
-    let categName1 = 'DemoCateg1';
-    let categName2 = 'DemoCateg2';
-    let categName3 = 'DemoCateg3';
-    let categName4 = 'DemoCateg4';
-
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qfeng');
         await apiHelper.apiLogin('tadmin');
-        await apiHelper.createOperationalCategory(categName1);
-        await apiHelper.createOperationalCategory(categName2);
-        await apiHelper.createOperationalCategory(categName3);
-        await apiHelper.createOperationalCategory(categName4);
-        await apiHelper.associateCategoryToOrganization(categName1, 'Petramco');
-        await apiHelper.associateCategoryToCategory(categName1, categName2);
-        await apiHelper.associateCategoryToCategory(categName2, categName3);
-        await apiHelper.associateCategoryToCategory(categName3, categName4);
     });
 
     afterAll(async () => {
@@ -92,10 +79,10 @@ describe('Case Console', () => {
             caseTemplateData = {
                 "templateName": 'caseTemplateName' + randomStr,
                 "templateSummary": 'caseTemplateSummary' + randomStr,
-                "categoryTier1": categName1,
-                "categoryTier2": categName2,
-                "categoryTier3": categName3,
-                "categoryTier4": categName4,
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
+                "categoryTier4": "Failure",
                 "casePriority": "Low",
                 "templateStatus": "Active",
                 "company": "Petramco",
@@ -111,14 +98,14 @@ describe('Case Console', () => {
                 "templateName": 'task template name ' + randomStr,
                 "templateSummary": `task template summary ${randomStr}`,
                 "templateStatus": "Active",
-                "category1": categName1,
-                "category2": categName2,
-                "category3": categName3,
-                "category4": categName4,
+                "category1": "Employee Relations",
+                "category2": "Compensation",
+                "category3": "Bonus",
+                "category4": "Failure",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
                 "label": label
             }
 
@@ -126,12 +113,13 @@ describe('Case Console', () => {
                 "assignmentMappingName": "Assignment mapping name" + randomStr,
                 "company": "Petramco",
                 "supportCompany": "Petramco",
-                "supportGroup": "Employee Relations",
-                "assignee": "qliu",
-                "categoryTier1": categName1,
-                "categoryTier2": categName2,
-                "categoryTier3": categName3,
-                "categoryTier4": categName4,
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qfeng",
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
+                "categoryTier4": "Failure",
                 "label": label
             }
 
@@ -141,10 +129,10 @@ describe('Case Console', () => {
                 "businessUnit": 'HR Support',
                 "supportGroup": 'Compensation and Benefits',
                 "company": 'Petramco',
-                "category1": categName1,
-                "category2": categName2,
-                "category3": categName3,
-                "category4": categName4,
+                "category1": "Employee Relations",
+                "category2": "Compensation",
+                "category3": "Bonus",
+                "category4": "Failure",
                 "label": label
             }
 
@@ -160,7 +148,7 @@ describe('Case Console', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await caseTemplateConsolePO.addColumnOnGrid([labelStr, caseCategoryTier4Str]);
-            await utilGrid.searchOnGridConsole('caseTemplateName' + randomStr);
+            await utilGrid.searchOnGridConsole(caseTemplateData.templateName);
             expect(await caseTemplateConsolePO.getFirstRecordValue(caseCategoryTier4Str)).toContain(caseTemplateData.categoryTier4);
             expect(await caseTemplateConsolePO.getFirstRecordValue(labelStr)).toContain(label);
             await caseTemplateConsolePO.removeColumnFromGrid([labelStr, caseCategoryTier4Str]);
@@ -215,9 +203,9 @@ describe('Case Console', () => {
                 "templateSummary": `${randomStr}Summary`,
                 "caseStatus": "New",
                 "casePriority": "Low",
-                "categoryTier1": "Facilities",
-                "categoryTier2": "Conference Room",
-                "categoryTier3": "Furniture",
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
                 "company": "Petramco",
                 "ownerBU": "United States Support",
                 "ownerGroup": "US Support 3",
@@ -225,34 +213,28 @@ describe('Case Console', () => {
                 "supportGroup": "US Support 3",
                 "assignee": "qkatawazi",
             }
-            caseData2 = {
-                "Requester": "apavlik",
-                "Summary": "CaseFilter2" + randomStr,
-                "Assigned Company": "Petramco",
-                "Business Unit": "Facilities Support",
-                "Support Group": "Facilities",
-                "Assignee": "Fritz",
-            }
             caseTemplateData2 = {
                 "templateName": `${randomStr}2Casetemplate`,
                 "templateStatus": "Active",
                 "templateSummary": `${randomStr}2Summary`,
                 "caseStatus": "New",
                 "casePriority": "High",
-                "categoryTier1": "Accounts Payable",
-                "categoryTier2": "Invoices",
-                "categoryTier3": "Payment",
+                "categoryTier1": "Payroll",
+                "categoryTier2": "Finance",
+                "categoryTier3": "Cost Centers",
                 "company": "Petramco",
                 "ownerBU": "United States Support",
                 "ownerGroup": "US Support 3",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 1",
+                "assignee": "qtao",
             }
             await apiHelper.apiLogin('qkatawazi');
             newCase1 = await apiHelper.createCase(caseData1);
             await apiHelper.createCaseTemplate(caseTemplateData1);
-            newCase2 = await apiHelper.createCase(caseData2);
+            caseData1.Requester = "apavlik",
+            caseData1.Summary =  "CaseFilter2" + randomStr,
+            newCase2 = await apiHelper.createCase(caseData1);
             await apiHelper.createCaseTemplate(caseTemplateData2);
             month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
             let menuItemData = cloneDeep(SAMPLE_MENU_ITEM);
@@ -265,6 +247,7 @@ describe('Case Console', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(newCase1.displayId);
             await viewCasePo.clickEditCaseButton();
             await editCasePo.clickOnSelectCaseTemplate();
@@ -283,6 +266,7 @@ describe('Case Console', () => {
             let exactTime = newTime[0] + ":" + newTime[1] + " " + diffTime[1];
             modifiedDateFormate = modifiedMonthValue + " " + modifiedDate.getDate() + ", " + modifiedDate.getFullYear() + " " + exactTime;
             await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(newCase2.displayId);
             await viewCasePo.clickEditCaseButton();
             await editCasePo.clickOnSelectCaseTemplate();
@@ -309,24 +293,25 @@ describe('Case Console', () => {
             await utilityGrid.searchRecord(newCase1.displayId);
             expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy(newCase1.displayId);
             await utilityGrid.clearFilter();
-            await utilityGrid.addFilter('Summary', caseData2.Summary, 'text');
+            await utilityGrid.addFilter('Summary', "CaseFilter2" + randomStr, 'text');
             await utilityGrid.searchRecord(newCase2.displayId);
             expect(await utilityGrid.isGridRecordPresent(newCase2.displayId)).toBeTruthy(newCase2.displayId);
             expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeFalsy(newCase1.displayId);
         });
         it('[DRDMV-8280]:[Case Workspace] Cases search using filters', async () => {
+            await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
-            await utilityGrid.addFilter('Category Tier 1','Facilities', 'text');
+            await utilityGrid.addFilter('Category Tier 1',"Employee Relations", 'text');
             await utilityGrid.searchRecord(newCase1.displayId);
             expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy(newCase1.displayId);
             expect(await utilityGrid.isGridRecordPresent(newCase2.displayId)).toBeFalsy(newCase2.displayId);
             await utilityGrid.clearFilter();
-            await utilityGrid.addFilter('Category Tier 2', 'Invoices', 'text');
+            await utilityGrid.addFilter('Category Tier 2', "Finance", 'text');
             await utilityGrid.searchRecord(newCase2.displayId);
             expect(await utilityGrid.isGridRecordPresent(newCase2.displayId)).toBeTruthy(newCase2.displayId);
             expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeFalsy(newCase1.displayId);
             await utilityGrid.clearFilter();
-            await utilityGrid.addFilter('Category Tier 3', 'Furniture', 'text');
+            await utilityGrid.addFilter('Category Tier 3', "Bonus", 'text');
             await utilityGrid.searchRecord(newCase1.displayId);
             expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy(newCase1.displayId);
             expect(await utilityGrid.isGridRecordPresent(newCase2.displayId)).toBeFalsy(newCase2.displayId);
@@ -338,7 +323,7 @@ describe('Case Console', () => {
             expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy(newCase1.displayId);
             expect(await utilityGrid.isGridRecordPresent(newCase2.displayId)).toBeFalsy(newCase2.displayId);
             await utilityGrid.clearFilter();
-            await utilityGrid.addFilter('Assigned Group', 'Facilities', 'text');
+            await utilityGrid.addFilter('Assigned Group', "US Support 1", 'text');
             await utilityGrid.searchRecord(newCase2.displayId);
             expect(await utilityGrid.isGridRecordPresent(newCase2.displayId)).toBeTruthy(newCase2.displayId);
             expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeFalsy(newCase1.displayId);

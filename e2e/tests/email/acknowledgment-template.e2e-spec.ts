@@ -12,7 +12,7 @@ import utilityCommon from '../../utils/utility.common';
 import { SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
 import { cloneDeep } from 'lodash';
 
-describe('Acknowledgment Template', () => {
+describe('Email Acknowledgment Template', () => {
     let label = "POSH";
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);

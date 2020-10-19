@@ -79,20 +79,16 @@ describe('Email Configuration', () => {
             expect(await consoleEmailConfig.coloumnHeaderMatches(emailHeaders)).toBeTruthy();
         });
         it('[DRDMV-8528,DRDMV-8527]: Verify Email configuration header', async () => {
-            let msg: string = "ERROR (10000): One Email Id for the company needs to be marked as default. If another email configurations for the company exist, please mark one of them as default instead";
             await consoleEmailConfig.searchAndSelectCheckbox(emailID);
             await consoleEmailConfig.deleteConfigurationEmail();
             await utilCommon.clickOnWarningOk();
             await consoleEmailConfig.clickNewEmailConfiguration();
-            await createEmailConfigPo.selectEmailID(emailID);
+            await createEmailConfigPo.setEmailID(emailID);
             await createEmailConfigPo.selectCompany("Petramco");
             await createEmailConfigPo.setDescription("test ");
             await createEmailConfigPo.selectStatus("Active");
-            await createEmailConfigPo.selectDefaultEmail("False");
             await createEmailConfigPo.clickSave();
-            await expect(utilCommon.isPopUpMessagePresent(msg)).toBeTruthy();
-            await createEmailConfigPo.selectDefaultEmail("True");
-            await createEmailConfigPo.clickSave();
+            expect(await utilCommon.isPopUpMessagePresent("Saved successfully.")).toBeTruthy();
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades(); // escape is working on these settings pages
@@ -158,20 +154,6 @@ describe('Email Configuration', () => {
     });
 
     //ankagraw
-    it('[DRDMV-10419]: Support Group: Default Email checkbox', async () => {
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
-        await utilGrid.searchAndOpenHyperlink(emailID);
-        await editEmailConfigPo.clickDefaultMailIdCheckbox("False");
-        await editEmailConfigPo.clickSaveButton();
-        expect(await utilCommon.isPopUpMessagePresent("ERROR (10000): One Email Id for the company needs to be marked as default. If another email configurations for the company exist, please mark one of them as default instead")).toBeTruthy("Popup message not matched");
-        await editEmailConfigPo.clickDefaultMailIdCheckbox("False");
-        expect(await editEmailConfigPo.isSaveButtonEnabled()).toBeFalsy();
-        await editEmailConfigPo.clickDefaultMailIdCheckbox("True");
-        await editEmailConfigPo.clickSaveButton();
-    });
-
-    //ankagraw
     describe('[DRDMV-10438,DRDMV-10437,DRDMV-10436,DRDMV-10552]: [Email Configuration] Verify Email configuration Grid view', async () => {
         let acknowledgementTemplateHeaders: string[] = ["Type", "Operation Type", "Ticket Status", "Template Name"];
         it('[DRDMV-10438,DRDMV-10437,DRDMV-10436,DRDMV-10552]: Verify all templates', async () => {
@@ -195,70 +177,6 @@ describe('Email Configuration', () => {
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades(); // escape is working on these settings pages
-        });
-    });
-
-    //ankagraw
-    describe('[DRDMV-10410,DRDMV-10418,DRDMV-10428,DRDMV-10433,DRDMV-10434,DRDMV-10435,DRDMV-10415]: Support Group: Associate Support group tab in Email Configuration.', async () => {
-        beforeAll(async () => {
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.createEmailConfiguration({"email":"bwfqa2019@gmail.com"});
-        });
-        it('[DRDMV-10410,DRDMV-10418,DRDMV-10428,DRDMV-10433,DRDMV-10434,DRDMV-10435,DRDMV-10415]: Associate Support group tab in General Email Configuration.', async () => {
-            await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
-            await utilGrid.searchAndOpenHyperlink(emailID);
-            await editEmailConfigPo.selectTab("Associated Support Group");
-            expect(await editEmailConfigPo.isSupportGroupListHeaderPresentInAssociatedSupportGroupTab()).toBeTruthy();
-            expect(await editEmailConfigPo.isAssociatedSupportGroupListHeaderPresentInAssociatedSupportGroupTab()).toBeTruthy();
-            await editEmailConfigPo.selectBusinessUnitInAssociatedSupportGroupTab("Facilities Support");
-            await editEmailConfigPo.searchAvailableEntitiesToBeAssociated("Facilities");
-            expect(await editEmailConfigPo.getSupportGroupFromSupportGroupListInAssociatedSupportGroupTab()).toBe("Facilities");
-            await editEmailConfigPo.selectBusinessUnitInAssociatedSupportGroupTab("UI-BusinessUnit-10410");
-            await editEmailConfigPo.searchAvailableEntitiesToBeAssociated("UI-SupportGroup-10410");
-            expect(await editEmailConfigPo.getSupportGroupFromSupportGroupListInAssociatedSupportGroupTab()).toBe("UI-SupportGroup-10410");
-            await editEmailConfigPo.clickSupportGroup();
-            await editEmailConfigPo.clickAssociatedSupportGroupRightArrow();
-            await editEmailConfigPo.searchAssociatedEntitiesToBeRemoveAssociation("UI-SupportGroup-10410");
-            expect(await editEmailConfigPo.getAssociatedSupportGroupFromAssociatedSupportGroupListInAssociatedSupportGroupTab()).toBe("UI-SupportGroup-10410");
-            await editEmailConfigPo.cancelEditEmailConfig();
-        });
-        it('[DRDMV-10410,DRDMV-10418,DRDMV-10428,DRDMV-10433,DRDMV-10434,DRDMV-10435,DRDMV-10415]: Support Group: Associate Support group tab in Email Configuration.', async () => {
-            await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
-            await utilGrid.searchAndOpenHyperlink("bwfqa2019@gmail.com");
-            await editEmailConfigPo.selectTab("Associated Support Group");
-            await editEmailConfigPo.selectBusinessUnitInAssociatedSupportGroupTab("UI-BusinessUnit-10410");
-            await editEmailConfigPo.searchAvailableEntitiesToBeAssociated(offlineSupportGroup.orgName);
-            expect(await editEmailConfigPo.getSupportGroupFromSupportGroupListInAssociatedSupportGroupTab()).toBeNull();
-            await editEmailConfigPo.searchAvailableEntitiesToBeAssociated("UI-SupportGroup-10410");
-            expect(await editEmailConfigPo.getSupportGroupFromSupportGroupListInAssociatedSupportGroupTab()).toBe("UI-SupportGroup-10410");
-            await editEmailConfigPo.clickSupportGroup();
-            await editEmailConfigPo.clickAssociatedSupportGroupRightArrow();
-            expect(await utilCommon.isErrorMsgPresent()).toBeTruthy();
-        });
-        it('[DRDMV-10410,DRDMV-10418,DRDMV-10428,DRDMV-10433,DRDMV-10434,DRDMV-10435,DRDMV-10415]: Support Group: Associate Support group tab in Email Configuration.', async () => {
-            await navigationPage.signOut();
-            await loginPage.login('gwixillian');
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.createEmailConfiguration({"email":"psilon@gmail.com","company":"Psilon"});
-            await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
-            expect(await utilGrid.isGridRecordPresent(emailID)).toBeFalsy();
-            expect(await utilGrid.isGridRecordPresent("psilon@gmail.com")).toBeTruthy();
-            await utilGrid.searchAndOpenHyperlink("psilon@gmail.com");
-            await editEmailConfigPo.selectTab("Associated Support Group");
-            await editEmailConfigPo.selectBusinessUnitInAssociatedSupportGroupTab("UI-BusinessUnit-Psilon");
-            expect(await editEmailConfigPo.getSupportGroupFromSupportGroupListInAssociatedSupportGroupTab()).toBe("UI-SupportGroup-Psilon");
-            await editEmailConfigPo.clickSupportGroup();
-            await editEmailConfigPo.clickAssociatedSupportGroupRightArrow();
-            expect(await editEmailConfigPo.getAssociatedSupportGroupFromAssociatedSupportGroupListInAssociatedSupportGroupTab()).toBe("UI-SupportGroup-Psilon");
-            await editEmailConfigPo.cancelEditEmailConfig();
-        });
-        afterAll(async () => {
-            await utilityCommon.closeAllBlades();
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
         });
     });
 
@@ -434,65 +352,6 @@ describe('Email Configuration', () => {
     });
 
     //ankagraw
-    describe('[DRDMV-10454, DRDMV-10424]: Support Group: Delete default email id for multiple email configurations', async () => {
-        beforeAll(async () => {
-            await navigationPage.signOut();
-            await loginPage.login("qkatawazi");
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteAllEmailConfiguration();
-            await apiHelper.createEmailConfiguration();
-        });
-        it('[DRDMV-10454, DRDMV-10424]: create email configurations', async () => {
-            await apiHelper.apiLogin('tadmin');
-            await browser.sleep(2000); // required to remove flackyness
-            await apiHelper.createEmailConfiguration({"email":"bwfqa2019@gmail.com"});
-            await browser.sleep(2000); // required to remove flackyness
-            await apiHelper.createEmailConfiguration({"email":"bwfqa2018@gmail.com"});
-        });
-        it('[DRDMV-10454, DRDMV-10424]: change the default mail to false', async () => {
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
-            await utilGrid.searchAndOpenHyperlink(emailID);
-            await editEmailConfigPo.clickDefaultMailIdCheckbox("False");
-            await editEmailConfigPo.clickSaveButton();
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
-            await utilGrid.searchAndOpenHyperlink("bwfqa2018@gmail.com");
-            await editEmailConfigPo.clickDefaultMailIdCheckbox("False");
-            await editEmailConfigPo.clickSaveButton();
-        });
-        it('[DRDMV-10454, DRDMV-10424]: Delete default email id', async () => {
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
-            await utilGrid.clickCheckBoxOfValueInGrid("bwfqa2019@gmail.com");
-            await consoleEmailConfig.deleteConfigurationEmail();
-            expect(await utilCommon.isPopUpMessagePresent("ERROR (10005): There are 2 other email-id configurations with Default email as false. Please set one of them set to true before de-activiating or deleting this record")).toBeTruthy();
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
-            await utilGrid.searchAndOpenHyperlink("bwfqa2018@gmail.com");
-            await editEmailConfigPo.clickDefaultMailIdCheckbox("True");
-            await editEmailConfigPo.clickSaveButton();
-        });
-        it('[DRDMV-10454, DRDMV-10424]: Support Group: Delete default email id for multiple email configurations', async () => {
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
-            await utilGrid.clickCheckBoxOfValueInGrid("bwfqa2019@gmail.com");
-            await consoleEmailConfig.deleteConfigurationEmail();
-            expect(await utilCommon.getWarningDialogMsg()).toBe('Are you sure you want to delete the selected record?');
-            await utilCommon.clickOnWarningOk();
-            expect(await utilGrid.isGridRecordPresent("bwfqa2019@gmail.com")).toBeFalsy();
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
-            await utilGrid.clickCheckBoxOfValueInGrid("bwfqa2018@gmail.com");
-            await consoleEmailConfig.deleteConfigurationEmail();
-            await utilCommon.clickOnWarningOk();
-            expect(await utilGrid.isGridRecordPresent("bwfqa2018@gmail.com")).toBeFalsy();
-            await utilGrid.searchRecord(emailID);
-            expect(await consoleEmailConfig.getColumnHeaderValue("Default Email")).toBe("True");
-        });
-    });
-
-    //ankagraw
     describe('[DRDMV-10930,DRDMV-10457,DRDMV-10802,DRDMV-10997,,DRDMV-9037]: Acknowledgment Template: Deletion & status update shouldnt allow when Acknowledgment Template associated with email id', async () => {
         let caseTemplateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
@@ -649,66 +508,5 @@ describe('Email Configuration', () => {
         });
     });
 
-    //this test get failed and will refactor on 1 foundation
-    //ankagraw
-    describe('[DRDMV-10426]: Support Group: Disassociate Support group', async () => {
-        let caseData, caseId, randomStr = Math.floor(Math.random() * 1000000);
-        beforeAll(async () => {
-            caseData =
-            {
-                "Requester": "apavlik",
-                "Summary": randomStr,
-                "Assigned Company": "Petramco",
-                "Business Unit": "United States Support",
-                "Support Group": "US Support 1",
-                "Assignee": "qtao",
-                "Status": "3000",
-            }
-            await apiHelper.apiLogin('qtao');
-            caseId = await apiHelper.createCase(caseData);
-        });
-        it('[DRDMV-10426]: Support Group: Disassociate Support group', async () => {
-            await navigationPage.gotoCaseConsole();
-            await utilityGrid.searchAndOpenHyperlink(caseId.displayId);
-            await viewCasePo.clickOnEmailLink();
-            await composeMailPo.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
-            await composeMailPo.clickOnSendButton();
-            expect(await activityTabPo.isTitleTextDisplayedInActivity('Fritz created the task', 3)).toBeTruthy('FailureMsg4: log title is missing');
-            let subject = `Fritz Schulz changed the status of `;
-            console.log("Subject of the email: ", subject);
-            await browser.sleep(5000); // hardwait to appear email message in "AR System Email Messages"
-            await apiHelper.apiLogin('tadmin');
-            let body = await apiHelper.getHTMLBodyOfEmail(subject);
-            await expect(body.includes('<td><u>FirstUnderLine</u></td>')).toBeTruthy();
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
-            await utilGrid.searchAndOpenHyperlink(emailID);
-            await editEmailConfigPo.selectTab("Associated Support Group");
-            await editEmailConfigPo.selectBusinessUnitInAssociatedSupportGroupTab("Facilities Support");
-            await editEmailConfigPo.searchAvailableEntitiesToBeAssociated("Facilities");
-            await editEmailConfigPo.clickSupportGroup();
-            await editEmailConfigPo.clickAssociatedSupportGroupRightArrow();
-            await editEmailConfigPo.clickSaveButton();
 
-            await navigationPage.gotoCaseConsole();
-            await utilityGrid.searchAndOpenHyperlink(caseId.displayId);
-            await viewCasePo.clickOnEmailLink();
-            await composeMailPo.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
-            await composeMailPo.clickOnSendButton();
-
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
-            await utilGrid.searchAndOpenHyperlink(emailID);
-            await editEmailConfigPo.selectTab("Associated Support Group");
-            await editEmailConfigPo.clickSupportGroup();
-            await editEmailConfigPo.clickAssociatedSupportGroupLeftArrow();
-            await editEmailConfigPo.clickSaveButton();
-
-            await navigationPage.gotoCaseConsole();
-            await utilityGrid.searchAndOpenHyperlink(caseId.displayId);
-            await viewCasePo.clickOnEmailLink();
-            await composeMailPo.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
-            await composeMailPo.clickOnSendButton();
-        });
-    });
 });

@@ -102,6 +102,12 @@ describe('CKE Description', () => {
             await ckeditorOpsPo.updateDescription(underLineText);
             expect(await ckeditorValidationPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
+            //Center Align
+            await ckeditorOpsPo.clickOnCenterAlignIcon();
+            await ckeditorOpsPo.updateDescription(centerAlignText);
+            expect(await ckeditorValidationPo.isTextCenterAlignInCkEditorTextArea(centerAlignText)).toBeTruthy('Text is not center Align In Ck Editor');
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await ckeditorOpsPo.clickOnCenterAlignIcon();
         });
         it('[DRDMV-22089,DRDMV-22090,DRDMV-22094,DRDMV-22102,DRDMV-22097,DRDMV-22101] Alignment,Bullet Point and Maximum / Minimum with CKE', async () => {
             //left Align
@@ -117,12 +123,6 @@ describe('CKE Description', () => {
             expect(await ckeditorValidationPo.isTextRightAlignInCkEditorTextArea(rightAlignText)).toBeTruthy('Text is not right Align In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnRightAlignIcon();
-            //Center Align
-            await ckeditorOpsPo.clickOnCenterAlignIcon();
-            await ckeditorOpsPo.updateDescription(centerAlignText);
-            expect(await ckeditorValidationPo.isTextCenterAlignInCkEditorTextArea(centerAlignText)).toBeTruthy('Text is not center Align In Ck Editor');
-            await ckeditorOpsPo.enterNewLineInCKE();
-            await ckeditorOpsPo.clickOnCenterAlignIcon();
             //set color
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.selectColor('Strong Red');
@@ -364,6 +364,12 @@ describe('CKE Description', () => {
             await createTasktemplatePo.updateTaskDescription(underLineText);
             expect(await ckeditorValidationPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
+            //Center Align
+            await ckeditorOpsPo.clickOnCenterAlignIcon();
+            await createTasktemplatePo.updateTaskDescription(centerAlignText);
+            expect(await ckeditorValidationPo.isTextCenterAlignInCkEditorTextArea(centerAlignText)).toBeTruthy('Text is not center Align In Ck Editor');
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await ckeditorOpsPo.clickOnCenterAlignIcon();
         });
         it('[DRDMV-22091,DRDMV-22092,DRDMV-22093,DRDMV-22103] Alignment,Bullet Point and Maximum / Minimum with CKE', async () => {
             //left Align
@@ -379,12 +385,6 @@ describe('CKE Description', () => {
             expect(await ckeditorValidationPo.isTextRightAlignInCkEditorTextArea(rightAlignText)).toBeTruthy('Text is not right Align In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnRightAlignIcon();
-            //Center Align
-            await ckeditorOpsPo.clickOnCenterAlignIcon();
-            await createTasktemplatePo.updateTaskDescription(centerAlignText);
-            expect(await ckeditorValidationPo.isTextCenterAlignInCkEditorTextArea(centerAlignText)).toBeTruthy('Text is not center Align In Ck Editor');
-            await ckeditorOpsPo.enterNewLineInCKE();
-            await ckeditorOpsPo.clickOnCenterAlignIcon();
             //set color
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.selectColor('Strong Red');

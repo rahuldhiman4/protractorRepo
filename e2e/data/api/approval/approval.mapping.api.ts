@@ -27,6 +27,10 @@ export const CASE_APPROVAL_MAPPING = {
         "value": "4000",
         "permissionType": "CHANGE"
       },
+      "450000420": {
+        "id": 450000420,
+        "value": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+      },
       "1000000001": {
         "id": 1000000001,
         "value": "Petramco"
@@ -69,6 +73,10 @@ export const CASE_APPROVAL_MAPPING = {
       "450000162": {
         "id": 450000162,
         "value": "6000"
+      },
+      "450000420": {
+        "id": 450000420,
+        "value": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
       }
     }
   }

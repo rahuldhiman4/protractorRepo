@@ -224,10 +224,7 @@ export class GridOperation {
         let columnValue = undefined;
         for (let i: number = 0; i < gridColumnHeaderList.length; i++) {
             if (await gridColumnHeaderList[i].getAttribute('innerText') == columnHeader) {
-                columnValue = await $$(`[rx-view-component-id='${guid}'] .ui-grid-cell[role='gridcell'] .ui-grid-cell-contents`).then(async (result: ElementFinder[]) => {
-                    await browser.sleep(1000);
-                    return await result[i].getAttribute('innerText');
-                });
+                columnValue = await $$(`[rx-view-component-id='${guid}'] .ui-grid-cell[role='gridcell'] .ui-grid-cell-contents`).getText();
                 return columnValue;
             }
         }

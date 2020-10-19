@@ -29,7 +29,7 @@ describe('Document Template', () => {
     //kgaikwad
     describe('[DRDMV-14970,DRDMV-14974,DRDMV-14971,DRDMV-14972]: Verify Document template creation with Case business analyst', async () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let templateRandVal1 = 'templateRandVal1' + randomStr;
+        let   templateRandVal1 = 'templateRandVal1' + randomStr;
         let templateRandVal2 = 'templateRakndVal2' + randomStr;
         let description1 = 'description1' + randomStr;
         let description2 = 'description2' + randomStr;
@@ -141,22 +141,12 @@ describe('Document Template', () => {
         let documentName = "DocumentTemplate" + randomStr;
         let documentDescription = "description" + randomStr;
         let documentBody = "documentBody" + randomStr;
-        let label1, label2;
+        let label1="POSH";
+        let label2="Payroll";
 
         beforeAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
-            // Create Menu item Lables with API
-            await apiHelper.apiLogin('qkatawazi');
-            let menuItemData1 = cloneDeep(SAMPLE_MENU_ITEM);
-            label1 = menuItemData1.menuItemName + "lable1" + randomStr;
-            menuItemData1.menuItemName = label1;
-            await apiHelper.createNewMenuItem(menuItemData1);
-
-            let menuItemData2 = cloneDeep(SAMPLE_MENU_ITEM);
-            label2 = menuItemData2.menuItemName + "lable2" + randomStr;
-            menuItemData2.menuItemName = label2;
-            await apiHelper.createNewMenuItem(menuItemData2);
         });
 
         it('[DRDMV-14977]: Verify Create Document Template UI', async () => {
@@ -240,7 +230,7 @@ describe('Document Template', () => {
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate2.id, 'ALL_DATA_TYPE');
         });
 
-        it('[14973]: Verify Document Template With Case Dynamic Field ', async () => {
+        it('[DRDMV-14973]: Verify Document Template With Case Dynamic Field ', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Templates', 'Document Templates - Business Workflows');
 
@@ -324,7 +314,7 @@ describe('Document Template', () => {
             await utilCommon.clickOnWarningOk();
         });
 
-        it('[14973]: Verify Document Template With Add Case Template Dynamic Field  ', async () => {
+        it('[DRDMV-14973]: Verify Document Template With Add Case Template Dynamic Field  ', async () => {
             await createDocumentTemplatePo.clickOnAddTemplate();
             await createDocumentTemplatePo.setTemplateName(documentName2);
             await createDocumentTemplatePo.setCompany("Petramco");
@@ -353,7 +343,7 @@ describe('Document Template', () => {
             await utilCommon.clickOnWarningOk();
         });
 
-        it('[14973]: Verify Document Template With Confidential, Non Confidential Required and Hidden ', async () => {
+        it('[DRDMV-14973]: Verify Document Template With Confidential, Non Confidential Required and Hidden ', async () => {
             await createDocumentTemplatePo.clickOnAddTemplate();
             await createDocumentTemplatePo.setTemplateName(documentName2);
             await createDocumentTemplatePo.setCompany("Petramco");
@@ -367,7 +357,7 @@ describe('Document Template', () => {
             await utilCommon.clickOnWarningOk();
         });
 
-        it('[14973]: Verify Document Template With Case Template Without Dynamic Field  ', async () => {
+        it('[DRDMV-14973]: Verify Document Template With Case Template Without Dynamic Field  ', async () => {
             await createDocumentTemplatePo.clickOnAddTemplate();
             await createDocumentTemplatePo.setTemplateName(documentName3);
             await createDocumentTemplatePo.setCompany("Petramco");

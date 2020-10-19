@@ -67,6 +67,7 @@ export interface IReadAccess {
     supportGroup: string;
     assignedCompany: string;
     configName: string;
+    lineOfBusiness?: string;
 };
 
 export interface ICaseUpdate {

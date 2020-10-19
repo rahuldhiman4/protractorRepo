@@ -30,18 +30,18 @@ describe('Document Library Consume Permission', () => {
     let filePath3 = 'e2e/data/ui/attachment/bwfJpg1.jpg';
     let filePath4 = 'e2e/data/ui/attachment/bwfJpg2.jpg';
     let filePath5 = 'e2e/data/ui/attachment/bwfXlsx.xlsx';
-    let caseAgentuserData,caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-    
+    let caseAgentuserData, caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
         // Create User and assigned Document Manager Permission to agent
         await apiHelper.apiLogin('tadmin');
-        let caseAgentuserData = {
-            "firstName": "caseAgent2",
-            "lastName": "user2",
-            "userId": "caseagentbwf",
-            "userPermission": ["Case Agent", "Document Manager"]
+        caseAgentuserData = {
+            "firstName": "caseAgent231",
+            "lastName": "user231",
+            "userId": "caseagentbwf231",
+            "userPermission": ["Case Agent", "Document Manager", "Human Resource"],
         }
         await apiHelper.createNewUser(caseAgentuserData);
         await apiHelper.associatePersonToCompany(caseAgentuserData.userId, "Petramco");
@@ -168,11 +168,11 @@ describe('Document Library Consume Permission', () => {
             }
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDocumentLibrary(publishDocLibData1.docLibTitle);
-            await apiHelper.apiLogin(caseAgentuserData.userId+"@petramco.com","Password_1234");
+            await apiHelper.apiLogin(caseAgentuserData.userId + "@petramco.com", "Password_1234");
             docLib1 = await apiHelper.createDocumentLibrary(publishDocLibData1, filePath1);
             await apiHelper.publishDocumentLibrary(docLib1);
             await navigationPage.signOut();
-            await loginPage.login(caseAgentuserData.userId+"@petramco.com","Password_1234");
+            await loginPage.login(caseAgentuserData.userId + "@petramco.com", "Password_1234");
         });
         it('[DRDMV-13537]: Availability of documents on knowledge search under Quick case, Resources tab', async () => {
             await navigationPage.gotoQuickCase();
@@ -182,7 +182,7 @@ describe('Document Library Consume Permission', () => {
             await navigationPage.gotoCaseConsole();
         });
         it('[DRDMV-13537]: Availability of documents on knowledge search under Quick case, Resources tab', async () => {
-            await apiHelper.apiLogin(caseAgentuserData.userId+"@petramco.com","Password_1234");
+            await apiHelper.apiLogin(caseAgentuserData.userId + "@petramco.com", "Password_1234");
             let newCase = await apiHelper.createCase(caseData);
             let caseId: string = newCase.displayId;
             await caseConsolePo.searchAndOpenCase(caseId);
@@ -216,23 +216,23 @@ describe('Document Library Consume Permission', () => {
             }
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDocumentLibrary(publishDocLibData1.docLibTitle);
-            await apiHelper.apiLogin(caseAgentuserData.userId+"@petramco.com","Password_1234");
+            await apiHelper.apiLogin(caseAgentuserData.userId + "@petramco.com", "Password_1234");
             let docLib3 = await apiHelper.createDocumentLibrary(publishDocLibData1, filePath3);
             await apiHelper.publishDocumentLibrary(docLib3);
 
             await navigationPage.signOut();
-            await loginPage.login(caseAgentuserData.userId+"@petramco.com","Password_1234");
+            await loginPage.login(caseAgentuserData.userId + "@petramco.com", "Password_1234");
 
             templateData = {
                 "templateName": `${caseTemplateName}`,
                 "templateSummary": `${casTemplateSummary}`,
                 "templateStatus": "Active",
-                "assignee": caseAgentuserData.userId+"@petramco.com",
+                "assignee": caseAgentuserData.userId,
                 "company": "Petramco",
                 "businessUnit": "United States Support",
-                "ownerBU": "Facilities Support",
+                "ownerBU": "United States Support",
                 "supportGroup": "US Support 3",
-                "ownerGroup": "Facilities"
+                "ownerGroup": "US Support 3"
             }
             await apiHelper.apiLogin('qkatawazi');
             let newCaseTemplate = await apiHelper.createCaseTemplate(templateData);
@@ -244,12 +244,12 @@ describe('Document Library Consume Permission', () => {
                 "templateSummary": `${taskTemplateSummaryYesValue}`,
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
-                "assignee": caseAgentuserData.userId+"@petramco.com",
+                "assignee": caseAgentuserData.userId,
                 "businessUnit": "United States Support",
                 "supportGroup": "US Support 3",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             let manualTaskTemplate = await apiHelper.createManualTaskTemplate(taskTemplateDataSet);
             await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId);
@@ -265,7 +265,7 @@ describe('Document Library Consume Permission', () => {
                 }
                 await apiHelper.apiLogin('tadmin');
                 await apiHelper.deleteDocumentLibrary(publishDocLibData2.docLibTitle);
-                await apiHelper.apiLogin(caseAgentuserData.userId+"@petramco.com","Password_1234");
+                await apiHelper.apiLogin(caseAgentuserData.userId + "@petramco.com", "Password_1234");
                 let getFilePath1 = files1[i];
                 let docLib = await apiHelper.createDocumentLibrary(publishDocLibData2, getFilePath1);
                 await apiHelper.publishDocumentLibrary(docLib);
@@ -279,7 +279,7 @@ describe('Document Library Consume Permission', () => {
             }
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDocumentLibrary(draftDocLibData.docLibTitle);
-            await apiHelper.apiLogin(caseAgentuserData.userId+"@petramco.com","Password_1234");
+            await apiHelper.apiLogin(caseAgentuserData.userId + "@petramco.com", "Password_1234");
             await apiHelper.createDocumentLibrary(draftDocLibData, filePath4);
         });
         it('[DRDMV-13517]: Add Task - Case agent attaches published document from document library where case agent is author of the document', async () => {
@@ -357,7 +357,7 @@ describe('Document Library Consume Permission', () => {
                 "firstName": "CaseManager",
                 "lastName": "WithDocManager",
                 "userId": loginId2,
-                "userPermission": ["Case Manager", "Foundation Read", "Document Manager"]
+                "userPermission": ["Case Manager", "Foundation Read", "Document Manager", "Human Resource"]
             }
             await apiHelper.createNewUser(caseAgentuserData1);
             await apiHelper.associatePersonToCompany(caseAgentuserData1.userId, "Petramco");
@@ -475,7 +475,7 @@ describe('Document Library Consume Permission', () => {
                 }
                 await apiHelper.apiLogin('tadmin');
                 await apiHelper.deleteDocumentLibrary(publishDocLibData1.docLibTitle);
-                await apiHelper.apiLogin(caseAgentuserData.userId+"@petramco.com","Password_1234");
+                await apiHelper.apiLogin(caseAgentuserData.userId + "@petramco.com", "Password_1234");
                 let getFilePath1 = files[i];
                 let docLib = await apiHelper.createDocumentLibrary(publishDocLibData1, getFilePath1);
                 await apiHelper.publishDocumentLibrary(docLib);
@@ -585,17 +585,17 @@ describe('Document Library Consume Permission', () => {
                 }
                 await apiHelper.apiLogin('tadmin');
                 await apiHelper.deleteDocumentLibrary(publishDocLibData1.docLibTitle);
-                await apiHelper.apiLogin(caseAgentuserData.userId+"@petramco.com","Password_1234");
+                await apiHelper.apiLogin(caseAgentuserData.userId + "@petramco.com", "Password_1234");
                 let getFilePath1 = files[i];
                 let docLib = await apiHelper.createDocumentLibrary(publishDocLibData1, getFilePath1);
-                await apiHelper.apiLogin(caseAgentuserData.userId+"@petramco.com","Password_1234");
+                await apiHelper.apiLogin(caseAgentuserData.userId + "@petramco.com", "Password_1234");
                 await apiHelper.giveReadAccessToDocLib(docLib, "GB Support 2");
                 await apiHelper.publishDocumentLibrary(docLib);
             }
         });
         it('[DRDMV-13536]: Attach documents from local drive and document library at the same time', async () => {
             await navigationPage.signOut();
-            await loginPage.login(caseAgentuserData.userId+"@petramco.com","Password_1234");
+            await loginPage.login(caseAgentuserData.userId + "@petramco.com", "Password_1234");
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary('drdmv-13536' + caseSummary);
@@ -686,7 +686,7 @@ describe('Document Library Consume Permission', () => {
             }
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDocumentLibrary(publishDocLibData1.docLibTitle);
-            await apiHelper.apiLogin(caseAgentuserData.userId+"@petramco.com","Password_1234");
+            await apiHelper.apiLogin(caseAgentuserData.userId + "@petramco.com", "Password_1234");
             let docLib1 = await apiHelper.createDocumentLibrary(publishDocLibData1, filePath1);
             await apiHelper.giveReadAccessToDocLib(docLib1, "GB Support 2");
             await apiHelper.publishDocumentLibrary(docLib1);
@@ -699,13 +699,13 @@ describe('Document Library Consume Permission', () => {
             }
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDocumentLibrary(publishDocLibData2.docLibTitle);
-            await apiHelper.apiLogin(caseAgentuserData.userId+"@petramco.com","Password_1234");
+            await apiHelper.apiLogin(caseAgentuserData.userId + "@petramco.com", "Password_1234");
             let docLib2 = await apiHelper.createDocumentLibrary(publishDocLibData2, filePath2);
             await apiHelper.publishDocumentLibrary(docLib2);
         });
         it('[DRDMV-13528]: Access to the documents attached on case when case is re-assigned to some other support group', async () => {
             await navigationPage.signOut();
-            await loginPage.login(caseAgentuserData.userId+"@petramco.com","Password_1234");
+            await loginPage.login(caseAgentuserData.userId + "@petramco.com", "Password_1234");
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(caseSummary);
@@ -748,7 +748,7 @@ describe('Document Library Consume Permission', () => {
         });
         it('[DRDMV-13528]: Access to the documents attached on case when case is re-assigned to some other support group', async () => {
             await navigationPage.signOut();
-            await loginPage.login(caseAgentuserData.userId+"@petramco.com","Password_1234");
+            await loginPage.login(caseAgentuserData.userId + "@petramco.com", "Password_1234");
             await caseConsolePo.searchAndOpenCase(caseId);
             await viewCasePo.clickEditCaseButton();
             await editCasePo.clickChangeAssignmentButton();

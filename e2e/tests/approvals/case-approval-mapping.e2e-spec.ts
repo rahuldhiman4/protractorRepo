@@ -12,7 +12,7 @@ import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 import viewCasePo from '../../pageobject/case/view-case.po';
 
-describe("Approval Mapping Tests", () => {
+describe("Case Approval Mapping Tests", () => {
     const approvalMappingNameStr = "Approval Mapping Name";
     const companyStr = "Company";
     const flowsetStr = "Flowset";
@@ -261,7 +261,7 @@ describe("Approval Mapping Tests", () => {
             await createApprovalMappingPage.selectStatusMappingError('New');
             expect(await createApprovalMappingPage.isSaveApprovalMappingBtnEnabled()).toBeFalsy();
             await createApprovalMappingPage.clickSaveApprovalMappingBtn();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (222099): The combination of Company, Flowset and Status to trigger already exists for this record definition. Please enter unique values for these fields.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (222099): The combination of Company, Line of Business, Flowset and Status to trigger already exists for this record definition. Please enter unique values for these fields.')).toBeTruthy('Invalid error message');
         });
         it('[DRDMV-10703,DRDMV-1303]: [Approval Mapping] - Create/Update another mapping record with Same Name / Mappings and same trigger status', async () => {
             expect(await createApprovalMappingPage.getCreateApprovalMappingHeaderText()).toBe('Add Approval Mapping');
@@ -285,7 +285,7 @@ describe("Approval Mapping Tests", () => {
             await editApprovalMappingPage.selectStatusMappingRejected('Canceled');
             await editApprovalMappingPage.selectStatusMappingError('New');
             await editApprovalMappingPage.clickSaveApprovalMappingBtn();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (222099): The combination of Company, Flowset and Status to trigger already exists for this record definition. Please enter unique values for these fields.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (222099): The combination of Company, Line of Business, Flowset and Status to trigger already exists for this record definition. Please enter unique values for these fields.')).toBeTruthy('Invalid error message');
             await editApprovalMappingPage.clickCancelApprovalMappingBtn();
             await utilCommon.clickOnWarningOk();
         });
@@ -425,7 +425,6 @@ describe("Approval Mapping Tests", () => {
             await utilGrid.searchAndOpenHyperlink("Test " + approvalMappingName);
             await editApprovalMappingPage.clickCancelApprovalMappingBtn();
         });
-
         it('[DRDMV-10702,DRDMV-11882,DRDMV-16524]: Delete approval mapping', async () => {
             await utilGrid.searchAndSelectGridRecord("Test " + approvalMappingName);
             await approvalMappingConsolePage.clickDeleteApprovalMapping();
@@ -433,7 +432,6 @@ describe("Approval Mapping Tests", () => {
             await utilGrid.searchRecord("Test " + approvalMappingName);
             await expect(utilGrid.isGridRecordPresent("Test " + approvalMappingName)).toBeFalsy('Grid record displayed on grid console after deletion.');
         });
-
         afterAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.deleteApprovalMapping(caseModule);

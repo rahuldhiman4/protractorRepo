@@ -8,7 +8,7 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 
-describe('KnowledgeArticlestyle', () => {
+describe('Knowledge article template style', () => {
     const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
     let knowledgeCoachUser = 'kWilliamson';
     beforeAll(async () => {
