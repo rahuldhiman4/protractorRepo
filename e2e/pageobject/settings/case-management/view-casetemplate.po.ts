@@ -14,7 +14,7 @@ class ViewCaseTemplate {
         templateName: '[rx-view-component-id="08a1650a-ac21-405a-8362-ddd780425a75"] span',
         caseTemplateId: '.text-field',
         CaseCompanyvalue: '[rx-view-component-id="39db6cc5-79ae-4934-a4bc-74765278fcda"] p',
-        flowsetValue: '[rx-view-component-id="2fe19a48-630b-4380-8b17-cbff70023a89"] p',
+        flowsetValue: '[rx-view-component-id="12abf0f1-146b-4c94-bd9b-d7a55200153d"] p',
         editButton: '[rx-view-component-id="672c4706-9ce0-46be-9a3a-a639ded79b23"] .rx-record-editor-edit',
         ownerGroup: '[rx-view-component-id="80799a06-c36d-4638-819a-2633a42a89e1"] p',
         ownerCompany: '[rx-view-component-id="5c445c06-0bdc-4995-a226-05da344dcf30"] p',

@@ -248,9 +248,9 @@ describe('Case Status Verification', () => {
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Case1_Summary');
             await createCasePage.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.selectBusinessUnit('Facilities Support');
-            await changeAssignmentBladePo.selectSupportGroup('Facilities');
-            await changeAssignmentBladePo.selectAssignee('Fritz');
+            await changeAssignmentBladePo.selectBusinessUnit('Canada Support');
+            await changeAssignmentBladePo.selectSupportGroup('CA Support 3');
+            await changeAssignmentBladePo.selectAssignee('Quigley Heroux');
             await changeAssignmentBladePo.clickOnAssignButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
@@ -282,9 +282,9 @@ describe('Case Status Verification', () => {
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Case2_Summary');
             await createCasePage.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.selectBusinessUnit('Facilities Support');
-            await changeAssignmentBladePo.selectSupportGroup('Facilities');
-            await changeAssignmentBladePo.selectAssignee('Fritz');
+            await changeAssignmentBladePo.selectBusinessUnit('Canada Support');
+            await changeAssignmentBladePo.selectSupportGroup('CA Support 3');
+            await changeAssignmentBladePo.selectAssignee('Quigley Heroux');
             await changeAssignmentBladePo.clickOnAssignButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
@@ -363,7 +363,7 @@ describe('Case Status Verification', () => {
 
         it('[DRDMV-22361]: Verify Reopen Button With Assignee Users1', async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz')
+            await loginPage.login('qheroux')
             await caseConsolePo.searchAndOpenCase(case1);
 
             expect(await viewCasePage.isCaseReopenLinkPresent()).toBeTruthy('FailureMsg1: reopen button is missing');

@@ -1,3 +1,4 @@
+import utilityCommon from '../../utils/utility.common';
 import { $, $$, browser, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
 import utilGrid from '../../utils/util.grid'
 import utilityGrid from '../../utils/utility.grid';
@@ -67,5 +68,8 @@ class TaskGridPage {
         await utilityGrid.searchAndOpenHyperlink(taskId);
     }
 
+    async isFieldLabelDisplayed(labelName: string): Promise<boolean> {
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.taskGuid, labelName);
+    }
 }
 export default new TaskGridPage();

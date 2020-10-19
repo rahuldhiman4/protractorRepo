@@ -229,10 +229,10 @@ describe('Document Library Consume Permission', () => {
                 "templateStatus": "Active",
                 "assignee": caseAgentuserData.userId,
                 "company": "Petramco",
-                "businessUnit": "United States Support",
-                "ownerBU": "United States Support",
-                "supportGroup": "US Support 3",
-                "ownerGroup": "US Support 3"
+                "businessUnit": "Canada Support",
+                "ownerBU": "Canada Support",
+                "supportGroup": "CA Support 3",
+                "ownerGroup": "CA Support 3"
             }
             await apiHelper.apiLogin('qkatawazi');
             let newCaseTemplate = await apiHelper.createCaseTemplate(templateData);
@@ -290,7 +290,6 @@ describe('Document Library Consume Permission', () => {
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
             await createCasePo.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-
             await viewCasePo.clickAddTaskButton();
             await manageTask.clickAddAdhocTaskButton();
             await adhoctaskTemplate.setSummary(adhocTaskSummary1);
@@ -307,8 +306,7 @@ describe('Document Library Consume Permission', () => {
             await attachDocumentBladePo.clickOnAttachButton();
             await adhoctaskTemplate.clickSaveAdhoctask();
             await utilityCommon.closePopUpMessage();
-            await manageTask.clickCloseButton();
-            await viewCasePo.clickOnTaskLink(adhocTaskSummary1);
+            await manageTask.clickTaskLink(adhocTaskSummary1);
             expect(await viewTaskPo.isAttachedDocumentPresent('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg Attached Document is missing');
             expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is delete sucessfully');
             await viewTaskPo.clickOnAttachedDocumentFile('bwfJpg.jpg');
@@ -599,6 +597,7 @@ describe('Document Library Consume Permission', () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary('drdmv-13536' + caseSummary);
+            await createCasePo.clickAssignToMeButton();
             await createCasePo.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             caseId = await viewCasePo.getCaseID();
@@ -633,9 +632,9 @@ describe('Document Library Consume Permission', () => {
             await accessTabPo.selectAgent('qstrong', 'Agent');
             await accessTabPo.clickAccessEntitiyAddButton('Agent');
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Quin Strong', 'Read')).toBeTruthy('Failuer: Quin Strong Agent Name is missing');
-            await accessTabPo.selectAgent('Fritz', 'Agent');
+            await accessTabPo.selectAgent('Quigley Heroux', 'Agent');
             await accessTabPo.clickAccessEntitiyAddButton('Agent');
-            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Fritz Schulz', 'Read')).toBeTruthy('Failuer: Fritz Schulz Name is missing');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Quigley Heroux', 'Read')).toBeTruthy('Failuer: Fritz Schulz Name is missing');
         });
         it('[DRDMV-13536]: Attach documents from local drive and document library at the same time', async () => {
             await navigationPage.signOut();
@@ -658,7 +657,7 @@ describe('Document Library Consume Permission', () => {
         });
         it('[DRDMV-13536]: Attach documents from local drive and document library at the same time', async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('qheroux');
             await caseConsolePo.searchAndOpenCase(caseId);
             await activityTabPo.applyActivityFilter('General Notes');
             expect(await activityTabPo.isAttachedFileNameDisplayed('bwfXlsx.xlsx')).toBeTruthy('FailureMsg:bwfXlsx.xlsx Attached Document is missing');

@@ -17,7 +17,7 @@ class EditTaskTemplate {
         saveButton: '[rx-view-component-id="6649c51c-e27e-4026-ab4a-de5f40216ea9"] button',
         descriptionGuid: 'd8841534-3cc3-464c-b05e-5200d668d859',
         summary: '[rx-view-component-id="e1aaa2da-51a0-41a0-a806-6a935fa27d94"] input',
-        taskCategoryDrpDown1: 'cab2e62d-090e-4281-985d-2f021bb01a9f',
+        taskCategoryDrpDown1: '2dc6f484-b0ed-4ac4-8047-2c688f008be7',
         taskCategoryDrpDown2: '27a4fb75-0d9c-417b-9638-698f371ec4ec',
         taskCategoryDrpDown3: '414723be-a5c7-4271-b9b0-d76f07023682',
         taskCategoryDrpDown4: 'f1703efa-79e9-4e74-b38f-782272b803af',
