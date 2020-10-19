@@ -328,8 +328,6 @@ export class GridOperations {
         await $(guidId + refreshIcon).click();
     }
 
-   
-
     async searchAndSelectGridRecord(recordName: string, guid?: string): Promise<void> {
         let selectCheckbox = '.ui-chkbox-box';
         let selectRadioButton = '.radio__label input';
@@ -517,13 +515,14 @@ export class GridOperations {
         await $(refreshIcon).click();
     }
 
-    async getAllPresetFilterName(): Promise<string[]> {
-        let filterNameText:string[] =[];
-        let filterNameElement:ElementFinder[] = await $$(this.selectors.filterName);
-        for (let i: number = 0; i < filterNameElement.length; i++) {
-            filterNameText[i]= await filterNameElement[i].getText();
-        }
-        return filterNameText;
+    async getCountPresetFilter(presetFilterName: string): Promise<number> {
+        let guidId: string = "";
+        await this.clickRefreshIcon;
+        await $(guidId + this.selectors.filterPresetBtn).click();
+        await $$(this.selectors.filterTab).get(1).click();
+        let getCountPresetFilter = await element.all(by.cssContainingText(this.selectors.filterName, presetFilterName)).count();
+        await this.clickRefreshIcon;
+        return getCountPresetFilter;
     }
 
     async clickOnFilterButton(guid?: string): Promise<void> {
@@ -534,19 +533,6 @@ export class GridOperations {
 
     async clickOnFilterTab(filterTabName: string): Promise<void> {
         await element(by.cssContainingText(this.selectors.filterTab, filterTabName)).click();
-    }
-
-    async clickOnClearOrSaveButton(clearOrSaveFilterBtnName: string): Promise<boolean> {
-        return await element(by.cssContainingText(this.selectors.clearSaveFilterBtn, clearOrSaveFilterBtnName)).isPresent().then(async (result) => {
-            if (result) {
-                return await element(by.cssContainingText(this.selectors.clearSaveFilterBtn, clearOrSaveFilterBtnName)).isDisplayed();
-            } else return false;
-        });
-    }
-
-    async isFieldLabelDisplayed(labelName: string): Promise<boolean> {
-       let  guid= 'd628a20f-e852-4a84-87e6-f5191f77ddf6,9e02c1c1-6544-4d92-9114-823a9ff9fdcd,0df18e99-4315-457c-aef0-3abc96fb08ee'
-        return await utilityCommon.isFieldLabelDisplayed(guid, labelName);
     }
 
     async getAllDynamicFilterName(): Promise<string[]> {

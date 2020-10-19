@@ -10,6 +10,9 @@ import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import createAdhocTaskPo from '../../pageobject/task/create-adhoc-task.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import caseConsolePo from '../../pageobject/case/case-console.po';
+import taskConsolePo from '../../pageobject/task/console-task.po';
+import knowledgeConsolePo from '../../pageobject/knowledge/knowledge-articles-console.po';
+
 
 describe('Preset Filter Funcational Verification', () => {
     let randomStr1 = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -397,7 +400,7 @@ describe('Preset Filter Funcational Verification', () => {
             newCase = await apiHelper.createCase(caseData1);
         });
 
-        it('[DRDMV-23481]: Update custom preset filter with adding more qualifications', async () => {
+        it('[DRDMV-23489]: Update custom preset filter with adding more qualifications', async () => {
             await utilityGrid.clearFilterPreset();
             await utilityGrid.addFilter('Case ID', newCase.displayId, "default");
             await utilityGrid.saveFilter(filtername1);
@@ -412,7 +415,7 @@ describe('Preset Filter Funcational Verification', () => {
             expect(await utilityGrid.getFirstGridRecordColumnValue('Case ID')).toBe(newCase.displayId, " Case Id NOT displayed in Task console");
 
         });
-        it('[DRDMV-23481]: Add multiple custom preset filter with same name', async () => {
+        it('[DRDMV-23489]: Add multiple custom preset filter with same name', async () => {
             await utilityGrid.clearFilterPreset();
             await utilityGrid.addFilter("Case ID", newCase.displayId, "default");
             expect(await utilityGrid.isPresetFilterNameDisplayed(filtername1)).toBeTruthy('FailureMsg: Preset filter is missing');
@@ -461,14 +464,9 @@ describe('Preset Filter Funcational Verification', () => {
             await utilityGrid.deleteCustomPresetFilter('My Open Cases');
             await utilityGrid.applyPresetFilter('My Open Cases');
             expect(await utilityGrid.isAppliedFilterMatches(['My Open Cases'])).toBeTruthy('Applied filter is missing');
-            await utilityGrid.clickOnFilterButton();
-            await utilityGrid.clickOnFilterTab('Saved filters');
-            let getPresetFilterName1 = await utilityGrid.getAllPresetFilterName();
-            let count1 = {};
-            getPresetFilterName1.forEach(function (i) { count1[i] = (count1[i] || 0) + 1; });
-            expect(count1['My Open Cases']).toEqual(1);
-            expect(getPresetFilterName1.includes('My Open Cases')).toBeTruthy('My Open Cases is missing');
-            await utilityGrid.clickRefreshIcon();
+            expect (await utilityGrid.getCountPresetFilter('My Open Cases')).toEqual(1);
+            expect (await utilityGrid.isPresetFilterNameDisplayed('My Open Cases')).toBeTruthy('My Open Cases preset filter is missing')
+
             await utilityGrid.searchRecord(newCase.displayId);
             expect(await utilityGrid.getFirstGridRecordColumnValue('Case ID')).toBe(newCase.displayId, " Case Id NOT displayed in Task console");
 
@@ -477,14 +475,7 @@ describe('Preset Filter Funcational Verification', () => {
             await utilityGrid.saveFilter('My Open Cases');
             expect(await utilityGrid.isAppliedFilterMatches([`Case ID: ${newCase.displayId}`])).toBeTruthy('Applied filter is missing');
             expect(await utilityGrid.getFirstGridRecordColumnValue('Case ID')).toBe(newCase.displayId, " Case Id NOT displayed in Task console");
-            await utilityGrid.clickOnFilterButton();
-            await utilityGrid.clickOnFilterTab('Saved filters');
-            let getPresetFilterName2 = await utilityGrid.getAllPresetFilterName();
-
-            let count2 = {};
-            getPresetFilterName2.forEach(function (i) { count2[i] = (count2[i] || 0) + 1; });
-            expect(count2['My Open Cases']).toEqual(2);
-            await utilityGrid.clickRefreshIcon();
+            expect (await utilityGrid.getCountPresetFilter('My Open Cases')).toEqual(2);
         });
         it('[DRDMV-23490]: Verify if a user updates the name of the existing filter', async () => {
             await utilityGrid.clearFilterPreset();
@@ -505,12 +496,9 @@ describe('Preset Filter Funcational Verification', () => {
         it('[DRDMV-23490]: Verify user can update the new filter name and qualifications in existing custom preset filter.', async () => {
             await utilityGrid.updateCustomPresetFilter('Requester', 'Qiang Du', 'default', filtername1, filtername3);
             await utilityGrid.updateCustomPresetFilter('Assignee', 'Qadim Katawazi', 'default', filtername3);
-            await utilityGrid.clickOnFilterButton();
-            await utilityGrid.clickOnFilterTab('Saved filters');
-            let getPresetFilterName3 = await utilityGrid.getAllPresetFilterName();
-            expect(getPresetFilterName3.includes('filtername1')).toBeFalsy(`${filtername1} is displayed`);
-            expect(getPresetFilterName3.includes(filtername3)).toBeTruthy(`${filtername3} is missing`);
-            await utilityGrid.clickRefreshIcon();
+            expect (await utilityGrid.isPresetFilterNameDisplayed(filtername1)).toBeFalsy('filtername1 preset filter is displayed')
+            expect (await utilityGrid.isPresetFilterNameDisplayed(filtername3)).toBeTruthy('filtername3 preset filter is missing')
+
             expect(await utilityGrid.isAppliedFilterMatches([`Case ID: ${newCase.displayId}`, 'Assignee: Qadim Katawazi', 'Requester: Qiang Du'])).toBeTruthy('Applied filter is missing');
             expect(await utilityGrid.getFirstGridRecordColumnValue('Case ID')).toBe(newCase.displayId, " Case Id NOT displayed in Task console");
         });
@@ -561,7 +549,7 @@ describe('Preset Filter Funcational Verification', () => {
 
             await utilityGrid.clickOnFilterTab('Filters');
 
-            expect(await utilityGrid.isFieldLabelDisplayed('Applied filters')).toBeTruthy('Applied filter label is missing');
+            expect(await caseConsolePo.isFieldLabelDisplayed('Applied filters')).toBeTruthy('Applied filter label is missing');
             expect(await utilityGrid.isAppliedFilterInputBoxDisplayedOnPresetFilter).toBeTruthy(`AppliedFilterInputBox is missing`);
 
             let dynamicFilterArr1: string[] = await utilityGrid.getAllDynamicFilterName();
@@ -590,22 +578,24 @@ describe('Preset Filter Funcational Verification', () => {
             expect(dynamicFilterArr1.includes('Target Date')).toBeTruthy(`Target Date is missing`);
 
             await utilityGrid.clickOnFilterTab('Saved filters');
-            expect(await utilityGrid.isFieldLabelDisplayed('Created by me')).toBeTruthy('Created by me label is missing');
-            expect(await utilityGrid.isFieldLabelDisplayed('Shared with me')).toBeTruthy('Shared with me label is missing');
+            expect(await caseConsolePo.isFieldLabelDisplayed('Created by me')).toBeTruthy('Created by me label is missing');
+            expect(await caseConsolePo.isFieldLabelDisplayed('Shared with me')).toBeTruthy('Shared with me label is missing');
 
-            let presetFilterName: string[] = await utilityGrid.getAllPresetFilterName();
-            expect(presetFilterName.includes('My Open Cases')).toBeTruthy(`My Open Cases is missing`);
-            expect(presetFilterName.includes('My Open Breached Cases')).toBeTruthy(`My Open Breached Cases is missing`);
-            expect(presetFilterName.includes('All Unassigned Cases')).toBeTruthy(`All Unassigned Cases is missing`);
-            expect(presetFilterName.includes('VIP Open Cases')).toBeTruthy(`VIP Open Cases is missing`);
-            expect(presetFilterName.includes('All Open Breached Cases')).toBeTruthy(`All Open Breached Cases is missing`);
-            expect(presetFilterName.includes('All Open Cases')).toBeTruthy(`All Open Cases is missing`);
-            expect(presetFilterName.includes('Critical Priority Open Cases')).toBeTruthy(`Critical Priority Open Cases is missing`);
-            expect(presetFilterName.includes('High Priority Open Cases')).toBeTruthy(`High Priority Open Cases is missing`);
-            expect(presetFilterName.includes('All Cases In Last 1 month')).toBeTruthy(`All Cases In Last 1 month is missing`);
-            expect(presetFilterName.includes('All Cases In Last 3 months')).toBeTruthy(`All Cases In Last 3 months is missing`);
-            expect(presetFilterName.includes('All Cases In Last 6 months')).toBeTruthy(`All Cases In Last 6 months is missing`);
+            await utilityGrid.clickRefreshIcon();
+            expect(await utilityGrid.isPresetFilterNameDisplayed('My Open Cases')).toBeTruthy(`My Open Cases is missing`);
+            expect(await utilityGrid.isPresetFilterNameDisplayed('My Open Breached Cases')).toBeTruthy(`My Open Breached Cases is missing`);
+            expect(await utilityGrid.isPresetFilterNameDisplayed('All Unassigned Cases')).toBeTruthy(`All Unassigned Cases is missing`);
+            expect(await utilityGrid.isPresetFilterNameDisplayed('VIP Open Cases')).toBeTruthy(`VIP Open Cases is missing`);
+            expect(await utilityGrid.isPresetFilterNameDisplayed('All Open Breached Cases')).toBeTruthy(`All Open Breached Cases is missing`);
+            expect(await utilityGrid.isPresetFilterNameDisplayed('All Open Cases')).toBeTruthy(`All Open Cases is missing`);
+            expect(await utilityGrid.isPresetFilterNameDisplayed('Critical Priority Open Cases')).toBeTruthy(`Critical Priority Open Cases is missing`);
+            expect(await utilityGrid.isPresetFilterNameDisplayed('High Priority Open Cases')).toBeTruthy(`High Priority Open Cases is missing`);
+            expect(await utilityGrid.isPresetFilterNameDisplayed('All Cases In Last 1 month')).toBeTruthy(`All Cases In Last 1 month is missing`);
+            expect(await utilityGrid.isPresetFilterNameDisplayed('All Cases  In Last 3 months')).toBeTruthy(`All Cases  In Last 3 months is missing`);
+            expect(await utilityGrid.isPresetFilterNameDisplayed('All Cases  In Last 6 months')).toBeTruthy(`All Cases  In Last 6 months is missing`);
 
+            await utilityGrid.clickOnFilterButton();
+            await utilityGrid.clickOnFilterTab('Saved filters');
             await utilityGrid.clickEditPresetFilterButton(filtername1);
 
             expect(await utilityGrid.isRequiredLabelDisplayedOnEditFilter('Filter name(required)')).toBeTruthy('Filter name label is missing');
@@ -667,10 +657,9 @@ describe('Preset Filter Funcational Verification', () => {
             await utilityGrid.clickOnFilterButton();
 
             await utilityGrid.clickOnFilterTab('Filters');
-
-            expect(await utilityGrid.isFieldLabelDisplayed('Applied filters')).toBeTruthy('Applied filter label is missing');
+            expect(await taskConsolePo.isFieldLabelDisplayed('Applied filters')).toBeTruthy('Applied filter label is missing');
             expect(await utilityGrid.isAppliedFilterInputBoxDisplayedOnPresetFilter).toBeTruthy(`AppliedFilterInputBox is missing`);
-
+            
             let dynamicFilterArr1: string[] = await utilityGrid.getAllDynamicFilterName();
             expect(dynamicFilterArr1.includes('Assigned Group')).toBeTruthy(`Assigned Group is missing`);
             expect(dynamicFilterArr1.includes('Assignee')).toBeTruthy(`Assignee  is missing`);
@@ -693,21 +682,23 @@ describe('Preset Filter Funcational Verification', () => {
             expect(dynamicFilterArr1.includes('Task Type')).toBeTruthy(`Task Type is missing`);
 
             await utilityGrid.clickOnFilterTab('Saved filters');
-            expect(await utilityGrid.isFieldLabelDisplayed('Created by me')).toBeTruthy('Created by me label is missing');
-            expect(await utilityGrid.isFieldLabelDisplayed('Shared with me')).toBeTruthy('Shared with me label is missing');
+            expect(await taskConsolePo.isFieldLabelDisplayed('Created by me')).toBeTruthy('Created by me label is missing');
+            expect(await taskConsolePo.isFieldLabelDisplayed('Shared with me')).toBeTruthy('Shared with me label is missing');
 
-            let presetFilterName: string[] = await utilityGrid.getAllPresetFilterName();
-            expect(presetFilterName.includes('My Open Tasks')).toBeTruthy(`My Open Tasks is missing`);
-            expect(presetFilterName.includes('My Open Breached Tasks')).toBeTruthy(`My Open Breached Tasks is missing`);
-            expect(presetFilterName.includes('All Unassigned Tasks')).toBeTruthy(`All Unassigned Tasks is missing`);
-            expect(presetFilterName.includes('All Open Breached Tasks')).toBeTruthy(`All Open Breached Tasks is missing`);
-            expect(presetFilterName.includes('All Open Tasks')).toBeTruthy(`All Open Tasks is missing`);
-            expect(presetFilterName.includes('Critical Priority Open Tasks')).toBeTruthy(`Critical Priority Open Tasks is missing`);
-            expect(presetFilterName.includes('High Priority Open Tasks')).toBeTruthy(`High Priority Open Tasks is missing`);
-            expect(presetFilterName.includes('All Tasks In Last 1 month')).toBeTruthy(`All Tasks In Last 1 month is missing`);
-            expect(presetFilterName.includes('All Tasks In Last 3 months')).toBeTruthy(`All Tasks In Last 3 months is missing`);
-            expect(presetFilterName.includes('All Tasks In Last 6 months')).toBeTruthy(`All Tasks In Last 6 months is missing`);
+            await utilityGrid.clickRefreshIcon();
+            expect(await utilityGrid.isPresetFilterNameDisplayed('My Open Tasks')).toBeTruthy(`My Open Tasks is missing`);
+            expect(await utilityGrid.isPresetFilterNameDisplayed('My Open Breached Tasks')).toBeTruthy(`My Open Breached Tasks is missing`);
+            expect(await utilityGrid.isPresetFilterNameDisplayed('All Unassigned Tasks')).toBeTruthy(`All Unassigned Tasks is missing`);
+            expect(await utilityGrid.isPresetFilterNameDisplayed('All Open Breached Tasks')).toBeTruthy(`All Open Breached Tasks is missing`);
+            expect(await utilityGrid.isPresetFilterNameDisplayed('All Open Tasks')).toBeTruthy(`All Open Tasks is missing`);
+            expect(await utilityGrid.isPresetFilterNameDisplayed('Critical Priority Open Tasks')).toBeTruthy(`Critical Priority Open Tasks is missing`);
+            expect(await utilityGrid.isPresetFilterNameDisplayed('High Priority Open Tasks')).toBeTruthy(`High Priority Open Tasks is missing`);
+            expect(await utilityGrid.isPresetFilterNameDisplayed('All Tasks In Last 1 month')).toBeTruthy(`All Tasks In Last 1 month is missing`);
+            expect(await utilityGrid.isPresetFilterNameDisplayed('All Tasks In Last 3 months')).toBeTruthy(`All Tasks In Last 3 months is missing`);
+            expect(await utilityGrid.isPresetFilterNameDisplayed('All Tasks In Last 6 months')).toBeTruthy(`All Tasks In Last 6 months is missing`);
 
+            await utilityGrid.clickOnFilterButton();
+            await utilityGrid.clickOnFilterTab('Saved filters');
             await utilityGrid.clickEditPresetFilterButton(filtername1);
 
             expect(await utilityGrid.isRequiredLabelDisplayedOnEditFilter('Filter name(required)')).toBeTruthy('Filter name label is missing');
@@ -756,7 +747,7 @@ describe('Preset Filter Funcational Verification', () => {
 
             await utilityGrid.clickOnFilterTab('Filters');
 
-            expect(await utilityGrid.isFieldLabelDisplayed('Applied filters')).toBeTruthy('Applied filter label is missing');
+            expect(await knowledgeConsolePo.isFieldLabelDisplayed('Applied filters')).toBeTruthy('Applied filter label is missing');
             expect(await utilityGrid.isAppliedFilterInputBoxDisplayedOnPresetFilter).toBeTruthy(`AppliedFilterInputBox is missing`);
 
             let dynamicFilterArr1: string[] = await utilityGrid.getAllDynamicFilterName();
@@ -786,17 +777,19 @@ describe('Preset Filter Funcational Verification', () => {
             expect(dynamicFilterArr1.includes('Version')).toBeTruthy(`Version is missing`);
 
             await utilityGrid.clickOnFilterTab('Saved filters');
-            expect(await utilityGrid.isFieldLabelDisplayed('Created by me')).toBeTruthy('Created by me label is missing');
-            expect(await utilityGrid.isFieldLabelDisplayed('Shared with me')).toBeTruthy('Shared with me label is missing');
+            expect(await knowledgeConsolePo.isFieldLabelDisplayed('Created by me')).toBeTruthy('Created by me label is missing');
+            expect(await knowledgeConsolePo.isFieldLabelDisplayed('Shared with me')).toBeTruthy('Shared with me label is missing');
 
-            let presetFilterName: string[] = await utilityGrid.getAllPresetFilterName();
-            expect(presetFilterName.includes('My Open Articles')).toBeTruthy(`My Open Articles is missing`);
-            expect(presetFilterName.includes('All Published Articles')).toBeTruthy(`All Published Articles is missing`);
-            expect(presetFilterName.includes('All Externally Published Articles')).toBeTruthy(`All Externally Published Articles is missing`);
-            expect(presetFilterName.includes('All Articles In Last 1 month')).toBeTruthy(`All Articles In Last 1 month is missing`);
-            expect(presetFilterName.includes('All Articles In Last 3 months')).toBeTruthy(`All Articles In Last 3 months is missing`);
-            expect(presetFilterName.includes('All Articles In Last 6 months')).toBeTruthy(`All Articles In Last 6 months is missing`);
 
+            expect(await utilityGrid.isPresetFilterNameDisplayed('My Open Articles')).toBeTruthy(`My Open Articles is missing`);
+            expect(await utilityGrid.isPresetFilterNameDisplayed('All Published Articles')).toBeTruthy(`All Published Articles is missing`);
+            expect(await utilityGrid.isPresetFilterNameDisplayed('All Externally Published Articles')).toBeTruthy(`All Externally Published Articles is missing`);
+            expect(await utilityGrid.isPresetFilterNameDisplayed('All Articles In Last 1 month')).toBeTruthy(`All Articles In Last 1 month is missing`);
+            expect(await utilityGrid.isPresetFilterNameDisplayed('All Articles In Last 3 months')).toBeTruthy(`All Articles In Last 3 months is missing`);
+            expect(await utilityGrid.isPresetFilterNameDisplayed('All Articles In Last 6 months')).toBeTruthy(`All Articles In Last 6 months is missing`);
+
+            await utilityGrid.clickOnFilterButton();
+            await utilityGrid.clickOnFilterTab('Saved filters');
             await utilityGrid.clickEditPresetFilterButton(filtername1);
 
             expect(await utilityGrid.isRequiredLabelDisplayedOnEditFilter('Filter name(required)')).toBeTruthy('Filter name label is missing');
@@ -883,13 +876,8 @@ describe('Preset Filter Funcational Verification', () => {
             await utilityGrid.clickRefreshIcon();
             await utilityGrid.updateCustomPresetFilter('Requester', 'Qiang Du', 'default', filtername1, filtername2);
 
-            await utilityGrid.clickOnFilterButton();
-            await utilityGrid.clickOnFilterTab('Saved filters');
-            let presetFilterName: string[] = await utilityGrid.getAllPresetFilterName();
-            expect(presetFilterName.includes(filtername1)).toBeFalsy(`${filtername1} filter name is displayed`);
-            expect(presetFilterName.includes(filtername2)).toBeTruthy(`${filtername2} filter name is missing`);
-
-            await utilityGrid.clickRefreshIcon();
+            expect (await utilityGrid.isPresetFilterNameDisplayed(filtername1)).toBeTruthy('Preset filter name is missing');
+            expect (await utilityGrid.isPresetFilterNameDisplayed(filtername1)).toBeFalsy('Preset filter name is displayed');
             expect(await utilityGrid.isAppliedFilterMatches([`Case ID: ${newCase.displayId}`, 'Requester: Qiang Du'])).toBeTruthy('Applied filter is missing');
             expect(await utilityGrid.getFirstGridRecordColumnValue('Case ID')).toBe(newCase.displayId, " Case Id NOT displayed in Task console");
         });
@@ -1054,4 +1042,5 @@ describe('Preset Filter Funcational Verification', () => {
             expect(dynamicFilterArr2.includes('Article ID')).toBeFalsy(`Article ID is displayed`);
         });
     });
+
 });

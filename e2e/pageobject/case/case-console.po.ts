@@ -1,3 +1,4 @@
+import utilityCommon from '../../utils/utility.common';
 import { $, $$, protractor, ProtractorExpectedConditions } from "protractor";
 import gridUtil from '../../utils/util.grid';
 import utilityGrid from '../../utils/utility.grid';
@@ -130,6 +131,10 @@ class CaseConsolePage {
 
     async addColumns(columnNames: string[]): Promise<void> {
         await utilityGrid.addGridColumn(columnNames,this.selectors.guid);
+    }
+
+    async isFieldLabelDisplayed(labelName: string): Promise<boolean> {
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.guid, labelName);
     }
 }
 
