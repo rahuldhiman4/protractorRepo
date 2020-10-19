@@ -37,7 +37,7 @@ describe('Document Library Consume UI', () => {
             "firstName": "caseAgent2",
             "lastName": "user2",
             "userId": 'caseagentbwf',
-            "userPermission": ["Case Agent", "Document Manager"]
+            "userPermission": ["Case Agent", "Document Manager","Human Resource"]
         }
         await apiHelper.createNewUser(caseAgentuserData);
         await apiHelper.associatePersonToCompany(caseAgentuserData.userId, "Petramco");
@@ -264,7 +264,7 @@ describe('Document Library Consume UI', () => {
             }
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDocumentLibrary(draftDocLibData.docLibTitle);
-            await apiHelper.apiLogin(caseAgentuserData.userId);
+            await apiHelper.apiLogin(caseAgentuserData.userId+"@petramco.com","Password_1234");
             await apiHelper.createDocumentLibrary(draftDocLibData, filePath4);
         });
         it('[DRDMV-13524]: Create a case and click task link ', async () => {
