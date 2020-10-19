@@ -362,20 +362,9 @@ describe('Create Case Task', () => {
     //ankagraw
     describe('[DRDMV-12039,DRDMV-12040,DRDMV-12009,DRDMV-12084]: [ Task ] - Verify Associated menu for Task will show global configuration values as well	 ', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        //let globalCategName = 'Employee Relations';
-        //let categName2 = 'Compensation';
-        //let categName3 = 'Bonus';
         let TaskTemplate = 'Manual task' + randomStr;
         let TaskSummary = 'Summary' + randomStr;
         let manualSummary = 'Summary' + randomStr;
-        beforeAll(async () => {
-            await apiHelper.apiLogin('tadmin');
-            // await apiHelper.createOperationalCategory(globalCategName, true);
-            // await apiHelper.createOperationalCategory(categName2);
-            // await apiHelper.createOperationalCategory(categName3);
-            // await apiHelper.associateCategoryToCategory(globalCategName, categName2);
-            // await apiHelper.associateCategoryToCategory(categName2, categName3);
-        });
         it('[DRDMV-12039,DRDMV-12040,DRDMV-12009,DRDMV-12084]: Create Manual task with global category ', async () => {
             //manual Task template
             await navigationPage.gotoSettingsPage();

@@ -37,6 +37,7 @@ describe("Case Approval Mapping Tests", () => {
             "lastName": "Psilon",
             "userId": "copytask",
             "emailId": "copytask@petramco.com",
+            "userPermission": ["Case Business Analyst","Human Resource"]
         }
         await apiHelper.apiLogin("tadmin");
         await apiHelper.createNewUser(twoCompanyUser);
@@ -74,7 +75,7 @@ describe("Case Approval Mapping Tests", () => {
         let statusMappingNoApprovalFoundWhenStatusTriggerCanceled: string[] = ["Canceled", "Pending"];
         let statusMappingRejectedWhenStatusTriggerCanceled: string[] = ["New", "Assigned", "In Progress", "Pending", "Resolved", "Canceled", "Approval Rejected"];
         let statusMappingErrorWhenStatusTriggerCanceled: string[] = ["New", "Assigned", "In Progress", "Resolved", "Canceled"];
-        let flowsetValues: string[] = ["Human Resources", "Facilities Management"]
+        let flowsetValues: string[] = ["Human Resources"]
 
         beforeAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
@@ -161,12 +162,13 @@ describe("Case Approval Mapping Tests", () => {
             await editApprovalMappingPage.clickCancelApprovalMappingBtn();
         });
         it('[DRDMV-10698,DRDMV-10710,DRDMV-10700,DRDMV-10701]: [Approval Mapping] - Create a new Approval Mapping with all fields', async () => {
+            let approvalMappingName2 = 'Approval Mapping2' + randomStr;
             await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
-            await createApprovalMappingPage.setApprovalMappingName(approvalMappingName);
+            await createApprovalMappingPage.setApprovalMappingName(approvalMappingName2);
             await createApprovalMappingPage.selectCompany('Petramco');
             await createApprovalMappingPage.isSelectFlowsetDropDownOptionsMatches(flowsetValues);
-            await createApprovalMappingPage.selectStatusTrigger('Assigned');
-            await createApprovalMappingPage.selectFlowset('Facilities Management');
+            await createApprovalMappingPage.selectStatusTrigger('In Progress');
+            await createApprovalMappingPage.selectFlowset('Human Resources');
             await createApprovalMappingPage.selectStatusMappingApproved('In Progress');
             await createApprovalMappingPage.selectStatusMappingRejected('Canceled');
             await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Pending');
@@ -174,10 +176,10 @@ describe("Case Approval Mapping Tests", () => {
             expect(await createApprovalMappingPage.isSaveApprovalMappingBtnEnabled()).toBeFalsy();
             await createApprovalMappingPage.clickSaveApprovalMappingBtn();
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
-            expect(await editApprovalMappingPage.getApprovalMappingName()).toBe(approvalMappingName);
+            expect(await editApprovalMappingPage.getApprovalMappingName()).toBe(approvalMappingName2);
             expect(await editApprovalMappingPage.getSelectedCompany()).toBe('Petramco');
-            expect(await editApprovalMappingPage.getSelectedFlowset()).toBe('Facilities Management');
-            expect(await editApprovalMappingPage.getSelectedStatusTriggerOption()).toBe('Assigned');
+            expect(await editApprovalMappingPage.getSelectedFlowset()).toBe('Human Resources');
+            expect(await editApprovalMappingPage.getSelectedStatusTriggerOption()).toBe('In Progress');
             expect(await editApprovalMappingPage.getStatusMappingApprovedOption()).toBe('In Progress');
             expect(await editApprovalMappingPage.getSatusMappingNoApprovalFoundOption()).toBe('Pending');
             expect(await editApprovalMappingPage.getStatusMappingRejectedOption()).toBe('Canceled');
@@ -185,8 +187,8 @@ describe("Case Approval Mapping Tests", () => {
             await editApprovalMappingPage.clickCancelApprovalMappingBtn();
             //Below are the validation for [DRDMV-10704]
             await approvalMappingConsolePage.addColumnOnGrid(['ID', 'Flowset']);
-            await approvalMappingConsolePage.searchValueOnGrid('Facilities Management');
-            expect(await approvalMappingConsolePage.isRecordPresent('Facilities Management')).toBeTruthy();
+            await approvalMappingConsolePage.searchValueOnGrid('Human Resources');
+            expect(await approvalMappingConsolePage.isRecordPresent('Human Resources')).toBeTruthy();
             await approvalMappingConsolePage.removeColumnFromGrid(['ID', 'Flowset']);
         });
         afterAll(async () => {
@@ -294,7 +296,7 @@ describe("Case Approval Mapping Tests", () => {
             await loginPage.login("gwixillian");
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', 'Configure Case Approvals - Business Workflows');
-            expect(await utilGrid.isGridRecordPresent(approvalMappingName)).toBeFalsy('Petramco approval mapping is visible in Psilon');
+            expect(await utilGrid.isGridRecordPresent(approvalMappingName)).toBeTruthy('Human Resources LOB approval mapping is not visible in Psilon-Human Resources');
             await navigationPage.signOut();
             await loginPage.login("qdu");
             await navigationPage.gotoSettingsPage();
@@ -342,7 +344,7 @@ describe("Case Approval Mapping Tests", () => {
     describe('[DRDMV-11881,DRDMV-22947]:[Approval Mapping] - Create Global Approval Mapping with all fields, Toggle button status', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let approvalMappingName = 'Approval Mapping' + randomStr;
-        let flowsetValues: string[] = ["Facilities Management"];
+        let flowsetValues: string[] = ["Human Resources"];
 
         it('[DRDMV-11881,DRDMV-22947]: Create Global Approval Mapping with all fields', async () => {
             await navigationPage.gotoSettingsPage();
@@ -353,7 +355,7 @@ describe("Case Approval Mapping Tests", () => {
             await createApprovalMappingPage.selectCompany('- Global -');
             await createApprovalMappingPage.isSelectFlowsetDropDownOptionsMatches(flowsetValues);
             await createApprovalMappingPage.selectStatusTrigger('Assigned');
-            await createApprovalMappingPage.selectFlowset('Facilities Management');
+            await createApprovalMappingPage.selectFlowset('Human Resources');
             await createApprovalMappingPage.selectStatusMappingApproved('In Progress');
             await createApprovalMappingPage.selectStatusMappingRejected('Canceled');
             await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Pending');
@@ -395,7 +397,7 @@ describe("Case Approval Mapping Tests", () => {
             await createApprovalMappingPage.setApprovalMappingName(approvalMappingName);
             await createApprovalMappingPage.selectCompany('Petramco');
             await createApprovalMappingPage.selectStatusTrigger('Assigned');
-            await createApprovalMappingPage.selectFlowset('Facilities Management');
+            await createApprovalMappingPage.selectFlowset('Human Resources');
             await createApprovalMappingPage.selectStatusMappingApproved('In Progress');
             await createApprovalMappingPage.selectStatusMappingRejected('Canceled');
             await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Pending');
@@ -503,7 +505,6 @@ describe("Case Approval Mapping Tests", () => {
             }
             await apiHelper.apiLogin('gderuno');
             await apiHelper.createCaseTemplate(psilonCaseTemplate);
-
         });
 
         it('[DRDMV-22195]: Create Apporval Mapping', async () => {
@@ -584,9 +585,10 @@ describe("Case Approval Mapping Tests", () => {
         });
 
         it('[DRDMV-22195]: Create Apporval Mapping for Global Company', async () => {
+            let approvalMappingName2 = 'Approval Mapping2' + randomStr;
             await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
             expect(await createApprovalMappingPage.getCreateApprovalMappingHeaderText()).toBe('Add Approval Mapping');
-            await createApprovalMappingPage.setApprovalMappingName(approvalMappingName);
+            await createApprovalMappingPage.setApprovalMappingName(approvalMappingName2);
             await createApprovalMappingPage.selectCompany('Global');
             await createApprovalMappingPage.selectStatusTrigger('Assigned');
             await createApprovalMappingPage.selectStatusMappingApproved('In Progress');
@@ -596,7 +598,7 @@ describe("Case Approval Mapping Tests", () => {
             expect(await createApprovalMappingPage.isSaveApprovalMappingBtnEnabled()).toBeFalsy();
             await createApprovalMappingPage.clickSaveApprovalMappingBtn();
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
-            expect(await editApprovalMappingPage.getApprovalMappingName()).toBe(approvalMappingName);
+            expect(await editApprovalMappingPage.getApprovalMappingName()).toBe(approvalMappingName2);
         });
 
         it('[DRDMV-22195]: Verify case template selection for approval mapping with global organization', async () => {
@@ -655,7 +657,7 @@ describe("Case Approval Mapping Tests", () => {
         let caseTemplateName2 = 'CaseTemplate2_' + randomStr;
         let caseTemplate1, caseTemplate2, approvalMappingData;
         beforeAll(async () => {
-            //Create Approval Flow. Category 1 = Phones, Category 2 = Infrastructure
+            //Create Approval Flow. Category 1 = Workforce Administration, Category 2 = HR Operations
             let approvalFlowData = {
                 "flowName": `Approval FLow ${randomStr}`,
                 "approver": "qliu;qkatawazi",
@@ -668,8 +670,8 @@ describe("Case Approval Mapping Tests", () => {
             let caseTemplateData = {
                 "templateName": caseTemplateName1,
                 "templateSummary": 'Case Template Summary',
-                "categoryTier1": 'Phones',
-                "categoryTier2": 'Infrastructure',
+                "categoryTier1": 'Workforce Administration',
+                "categoryTier2": 'HR Operations',
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "businessUnit": "United States Support",
@@ -716,8 +718,8 @@ describe("Case Approval Mapping Tests", () => {
             let caseData = {
                 "Requester": "qdu",
                 "Summary": "Toggle False, case without template" + "_" + randomStr,
-                "Category Tier 1": "Phones",
-                "Category Tier 2": "Infrastructure",
+                "Category Tier 1": "Workforce Administration",
+                "Category Tier 2": "HR Operations",
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
@@ -771,8 +773,8 @@ describe("Case Approval Mapping Tests", () => {
             let caseData = {
                 "Requester": "qdu",
                 "Summary": "Toggle True, case without template" + "_" + randomStr,
-                "Category Tier 1": "Phones",
-                "Category Tier 2": "Infrastructure",
+                "Category Tier 1": "Workforce Administration",
+                "Category Tier 2": "HR Operations",
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
@@ -804,9 +806,8 @@ describe("Case Approval Mapping Tests", () => {
             await loginPage.login("qkatawazi");
         });
     });
-    describe('[DRDMV-10704]:Approval Mapping - Console', async () => {
-
-
+    
+    fdescribe('[DRDMV-10704]:Approval Mapping - Console', async () => {
         beforeAll(async () => {
             //Create Approval Mapping through API
             let approvalMappingData = undefined;

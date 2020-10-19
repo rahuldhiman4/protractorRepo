@@ -31,7 +31,7 @@ import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import { flowsetGlobalFields } from '../../data/ui/flowset/flowset.ui';
 import { cloneDeep } from 'lodash';
 let flowsetGlobalFieldsData = undefined;
-let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+
 describe("Case Read Access", () => {
     const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
     const departmentDataFile = require('../../data/ui/foundation/department.ui.json');
@@ -40,6 +40,7 @@ describe("Case Read Access", () => {
     let businessData1, departmentData1, suppGrpData1, businessData2, departmentData2, suppGrpData2;
     let userData1 = undefined, userData2 = undefined;
     beforeAll(async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
         await foundationData1("Petramco");
@@ -104,7 +105,7 @@ describe("Case Read Access", () => {
             "firstName": "7605",
             "lastName": "User1",
             "userId": "manager",
-            "userPermission": ["Case Manager","Human Resource"],
+            "userPermission": ["Case Manager", "Human Resource"],
             "emailId": "manager@petramco.com",
         }
         await apiHelper.createNewUser(userData1);
@@ -112,7 +113,7 @@ describe("Case Read Access", () => {
             "firstName": "7605",
             "lastName": "User2",
             "userId": "analyst",
-            "userPermission": ["Case Business Analyst","Human Resource"],
+            "userPermission": ["Case Business Analyst", "Human Resource"],
             "emailId": "analyst@petramco.com"
         }
         await apiHelper.createNewUser(userData2);
