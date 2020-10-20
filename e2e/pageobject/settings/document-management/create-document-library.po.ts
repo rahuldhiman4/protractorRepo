@@ -29,7 +29,7 @@ class DocumentLibraryPage {
         gridCellLink: '.ui-grid__link',
         alert: '.rx-growl-item__message',
         busyLoading: '.ui-grid .cg-busy__cover',
-        category1: '23ea94b1-228c-4910-93f2-2fb23cdf6e31',
+        category1: 'eb123d84-c686-445e-92cd-841a755b8452',
         category2: 'cfcfaa56-d45a-4216-a26b-5584d4411121',
         category3: '04175b81-40f9-4112-a521-6ab4a9c8160b',
         category4: 'b74fd509-d489-4ccb-bf89-41307f794df7',
