@@ -30,8 +30,8 @@ describe('Task and Knowledge Console Filter Combinations', () => {
         beforeAll(async () => {
 
             await apiHelper.apiLogin('elizabeth');
-
             let response1 = await apiHelper.createCase(taskData.Case_InProgres_FILTER_3);
+            await apiHelper.updateCaseStatus(response1.id, "InProgress");
             let response2 = await apiHelper.createAdhocTask(response1.id, taskData.TASK_DATA_Combination_1);
             taskId.push(response2.displayId);
 
@@ -40,6 +40,7 @@ describe('Task and Knowledge Console Filter Combinations', () => {
             taskId.push(response4.displayId);
 
             let response5 = await apiHelper.createCase(taskData.Case_InProgres_FILTER_3);
+            await apiHelper.updateCaseStatus(response5.id, "InProgress");
             let response6 = await apiHelper.createAdhocTask(response5.id, taskData.TASK_DATA_Combination_3);
             taskId.push(response6.displayId);
 
@@ -48,6 +49,7 @@ describe('Task and Knowledge Console Filter Combinations', () => {
             taskId.push(response8.displayId);
 
             let response9 = await apiHelper.createCase(taskData.Case_InProgres_FILTER_3);
+            await apiHelper.updateCaseStatus(response9.id, "InProgress");
             let response10 = await apiHelper.createAdhocTask(response9.id, taskData.TASK_DATA_Combination_5);
             taskId.push(response10.displayId);
             await apiHelper.updateTaskStatus(response10.id, 'Pending');
@@ -66,7 +68,6 @@ describe('Task and Knowledge Console Filter Combinations', () => {
             for (let i: number = 0; i < 1; i++) {
                 expect(await utilityGrid.isGridRecordPresent(taskId[i])).toBeTruthy(taskId[i] + ' :Record is not available');
             }
-
             for (let i: number = 1; i < 5; i++) {
                 expect(await utilityGrid.isGridRecordPresent(taskId[i])).toBeFalsy(taskId[i] + ' :Record is available');
             }
