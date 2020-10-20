@@ -29,7 +29,8 @@
     },
     "BusinessUnitData11825":{
         "orgName": "UI-BusinessUnit-11825",
-        "relatedOrgId": null
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
     },
     "BusinessUnitData12080":{
         "orgName": "UI-BusinessUnit-12080",
@@ -45,7 +46,8 @@
     },
     "BusinessUnitDataPhylum1":{
         "orgName": "UI-Phylum-BUnit1",
-        "relatedOrgId": null
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
     },
     "BusinessUnitDataPhylum2":{
         "orgName": "UI-Phylum-BUnit2",
@@ -53,18 +55,22 @@
     },
     "BusinessUnitDataPhylum3":{
         "orgName": "UI-Phylum-BUnit3",
-        "relatedOrgId": null
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
     },
     "BusinessUnitDataPhylum4":{
         "orgName": "UI-Phylum-BUnit4",
-        "relatedOrgId": null
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
     },
     "BusinessUnitDataPhylum5":{
         "orgName": "UI-Phylum-BUnit5",
-        "relatedOrgId": null
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
     },
     "BusinessUnitDataPhylum6":{
         "orgName": "UI-Phylum-BUnit6",
-        "relatedOrgId": null
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
     }
 }
