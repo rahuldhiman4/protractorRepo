@@ -71,6 +71,7 @@ export interface INotesTemplate {
     company: string;
     body: string;
     label?: string;
+    lineOfBusiness?: string,
 };
 
 export interface ICaseTemplateUI {

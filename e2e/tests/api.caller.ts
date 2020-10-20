@@ -1,6 +1,7 @@
 import { protractor, ProtractorExpectedConditions } from "protractor";
 import apiCoreUtil from '../api/api.core.util';
 import apiHelper from "../api/api.helper";
+import { NOTES_TEMPLATE_MANDATORY_FIELD } from '../data/ui/Social/notesTemplate.api';
 
 describe('Login and create case from API', () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -126,8 +127,8 @@ describe('Login and create case from API', () => {
             "processName": "Task Process new 1",
             "taskCompany": "Petramco",
             "ownerCompany": "Petramco",
-            "ownerBusinessUnit": "Facilities Support",
-            "ownerGroup": "Facilities"
+            "ownerBusinessUnit": "United States Support",
+            "ownerGroup": "US Support 3"
         }
 
         await apiHelper.apiLogin('qkatawazi');
@@ -236,10 +237,8 @@ describe('Login and create case from API', () => {
 
     it('create notes template', async () => {
         await apiHelper.apiLogin('tadmin');
-        let notesTemplateData = require('../data/ui/social/notesTemplate.ui.json');
-        let notesTemplateName: string = await notesTemplateData['notesTemplateWithMandatoryField'].templateName + randomStr;
-        notesTemplateData['notesTemplateWithMandatoryField'].templateName = notesTemplateName;
-        await apiHelper.createNotesTemplate("People", notesTemplateData['notesTemplateWithMandatoryField']);
+        NOTES_TEMPLATE_MANDATORY_FIELD.templateName = NOTES_TEMPLATE_MANDATORY_FIELD.templateName + randomStr;
+        await apiHelper.createNotesTemplate("People", NOTES_TEMPLATE_MANDATORY_FIELD);
     });
 
     it('associate categories', async () => {
