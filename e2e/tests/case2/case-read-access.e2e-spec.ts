@@ -31,7 +31,6 @@ import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import { flowsetGlobalFields } from '../../data/ui/flowset/flowset.ui';
 import { cloneDeep } from 'lodash';
 let flowsetGlobalFieldsData = undefined;
-
 describe("Case Read Access", () => {
     const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
     const departmentDataFile = require('../../data/ui/foundation/department.ui.json');
@@ -864,8 +863,11 @@ describe("Case Read Access", () => {
             await manageTaskBladePo.clickCloseButton();
             await viewCasePage.clickOnTab('Case Access');
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('US Support 3', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+            await accessTabPo.clickToExpandAccessEntitiySearch('Agent Access', 'Case');
+            await accessTabPo.selectAgent('elizabeth', 'Agent');
+            await accessTabPo.clickAccessEntitiyAddButton('Agent');
             await navigationPo.signOut();
-            await loginPage.login('qkatawazi');
+            await loginPage.login('elizabeth');
             await navigationPo.gotoCaseConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink('ReadAccessCase' + randomStr);
@@ -948,7 +950,7 @@ describe("Case Read Access", () => {
             await navigationPo.gotoCreateCase();
             await createCasePage.selectRequester('qtao');
             await createCasePage.setSummary('SummaryWithmapping2');
-            await createCasePage.selectCategoryTier1('Payroll');
+            await createCasePage.selectCategoryTier1('Talent Management');
             await createCasePage.setPriority('Low');
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
