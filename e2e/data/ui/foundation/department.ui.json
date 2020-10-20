@@ -29,7 +29,8 @@
     },
     "DepartmentData11825":{
         "orgName": "UI-Department-11825",
-        "relatedOrgId": null
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
     },
     "DepartmentData12080":{
         "orgName": "UI-Department-12080",
@@ -37,26 +38,32 @@
     },
     "DepartmentDataPhylum1":{
         "orgName": "UI-Phylum-Deprt1",
-        "relatedOrgId": null
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
     },
     "DepartmentDataPhylum2":{
         "orgName": "UI-Phylum-Deprt2",
-        "relatedOrgId": null
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
     },
     "DepartmentDataPhylum3":{
         "orgName": "UI-Phylum-Deprt3",
-        "relatedOrgId": null
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
     },
     "DepartmentDataPhylum4":{
         "orgName": "UI-Phylum-Deprt4",
-        "relatedOrgId": null
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
     },
     "DepartmentDataPhylum5":{
         "orgName": "UI-Phylum-Deprt5",
-        "relatedOrgId": null
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
     },
     "DepartmentDataPhylum6":{
         "orgName": "UI-Phylum-Deprt6",
-        "relatedOrgId": null
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
     }
 }
