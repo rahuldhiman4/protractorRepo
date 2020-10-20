@@ -981,70 +981,72 @@ describe('Case Activity', () => {
 
     //kgaikwad
     describe('[DRDMV-16589]: Check case view count is not increased by opening same case by different places', async () => {
-        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let summary = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseId;
         let manualTaskTemplateData;
         let caseData;
 
         beforeAll(async () => {
+ 
+            // Create Case
+            caseData = {
+                "Requester": "qdu",
+                "Summary": "DRDMV16589TC"+randomString,
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 1",
+                "Assignee": "qtao"
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            let newCase = await apiHelper.createCase(caseData);
+            caseId = newCase.displayId;
+            
             // Create Task Template
             manualTaskTemplateData = {
-                "templateName": "DRDMV-16589_tempname_" + randomString,
-                "templateSummary": "DRDMV-16589_tempSummary_" + randomString,
+                "templateName": "DRDMV-16589_task template" + summary,
+                "templateSummary": "DRDMV-16589_Manual_task template summary" + summary,
                 "templateStatus": "Active",
-                "taskCompany": "Petramco",
+                "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "Canada Support",
+                "ownerGroup": "CA Support 1"
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
-
-            // Create Case
-            caseData = {
-                "Requester": "Fritz",
-                "Summary": summary,
-                "Assigned Company": "Petramco",
-                "Business Unit": "United States Support",
-                "Support Group": "US Support 3",
-                "Assignee": "qfeng"
-            }
-            let newCase = await apiHelper.createCase(caseData);
-            caseId = newCase.displayId;
         });
         it('[DRDMV-16589]: Verify View Case Count Thorght Task ', async () => {
             await navigationPage.signOut();
-            await loginPage.login('qfeng');
+            await loginPage.login('qtao');
             await caseConsolePo.searchAndOpenCase(caseId);
             // // Open Task
-            expect(await viewCasePo.getCaseID()).toBe(caseId, 'CaseId is missing in qfreng user');
+            expect(await viewCasePo.getCaseID()).toBe(caseId, 'CaseId is missing in qtao user');
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskTemplateData.templateName);
             await manageTaskBladePo.clickTaskLink(manualTaskTemplateData.templateSummary);
             await viewTaskPo.clickOnViewCase();
             // Goto case   
             await activityTabPage.clickOnRefreshButton();
-            await expect(await activityTabPage.getCaseViewCount('Qiao Feng  viewed the case. ')).toEqual(1);
+            await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
         });
         it('[DRDMV-16589]: Verify View Case Count Thorght Quick Case ', async () => {
             // Goto Quick Case
             await navigationPage.gotoQuickCase();
-            await quickCasePo.selectRequesterName('Fritz');
+            await quickCasePo.selectRequesterName('qdu');
             await quickCasePo.setCaseSummary(caseData.Summary);
             await quickCasePo.clickOnCaseSummaryInRecommendedCases(caseData.Summary);
             await quickCasePo.gotoCaseButton();
             await activityTabPage.clickOnRefreshButton();
-            await expect(await activityTabPage.getCaseViewCount('Qiao Feng  viewed the case. ')).toEqual(1);
+            await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
             await navigationPage.gotoQuickCase();
-            await quickCasePo.selectRequesterName('Fritz');
+            await quickCasePo.selectRequesterName('qdu');
             await quickCasePo.setCaseSummary(caseData.Summary);
             await quickCasePo.saveCase();
             await quickCasePo.gotoCaseButton();
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
             await expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('FailuerMsg: Email Link is not present');
-            await expect(await activityTabPage.getCaseViewCount('Qiao Feng  viewed the case. ')).toEqual(1);
+            await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
         });
         it('[DRDMV-16589]: Add Related Person', async () => {
             await viewCasePo.clickOnTab('Related Persons');
@@ -1062,7 +1064,7 @@ describe('Case Activity', () => {
             await expect(await viewCasePo.getCaseID()).toBe(caseId, 'FailureMsg: CaseId is missing');
             await activityTabPage.clickOnRefreshButton();
             await expect(await activityTabPage.getCaseViewCount('Qadim Katawazi  viewed the case. ')).toEqual(1);
-            await expect(await activityTabPage.getCaseViewCount('Qiao Feng  viewed the case. ')).toEqual(1);
+            await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
         });
         afterAll(async () => {
             await navigationPage.signOut();
@@ -1082,14 +1084,14 @@ describe('Case Activity', () => {
         beforeAll(async () => {
             // Create Case
             let caseData = {
-                "Requester": "Fritz",
+                "Requester": "elizabeth",
                 "Summary": "DRDMV-16591_TC" + summary,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
                 "Assignee": "qfeng"
             }
-            //Create a case with qfeng as Write Permission, qtao has no permission and Fabian as Read Permission
+            //Create a case with qfeng as Write Permission, qtao has no permission and qstrong as Read Permission
             await apiHelper.apiLogin('qkatawazi');
             newCase = await apiHelper.createCase(caseData);
             caseId = newCase.displayId;
@@ -1100,26 +1102,26 @@ describe('Case Activity', () => {
             await viewCasePo.clickOnTab('Case Access');
             //Read Access Agent
             await accessTabPo.clickToExpandAccessEntitiySearch('Agent Access','Case');
-            await accessTabPo.selectAgent('Fabian','Agent');
+            await accessTabPo.selectAgent('qstrong','Agent');
             await accessTabPo.clickAccessEntitiyAddButton('Agent');
-            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Fabian Krause','Read')).toBeTruthy('Failuer:Fabian Krause Agent Name is missing');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Quin Strong','Read')).toBeTruthy('Failuer:Quin Strong Agent Name is missing');
             //Login with Read Permission User
             await navigationPage.signOut();
-            await loginPage.login('fabian');
+            await loginPage.login('qstrong');
             await caseConsolePo.searchAndOpenCase(caseId);
-            expect(await viewCasePo.getCaseID()).toBe(caseId, 'FailureMsg: CaseId is missing with Fabian User');
+            expect(await viewCasePo.getCaseID()).toBe(caseId, 'FailureMsg: CaseId is missing with qstrong User');
         });
         it('[DRDMV-16591]: Login with Write User and check read user count', async () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await caseConsolePo.searchAndOpenCase(caseId);
             await expect(await viewCasePo.getCaseID()).toBe(caseId, 'FailureMsg: CaseId is missing with qyuan User');
-            await expect(await activityTabPage.getCaseViewCount('Fabian Krause  viewed the case. ')).toEqual(1);
+            await expect(await activityTabPage.getCaseViewCount('Quin Strong  viewed the case. ')).toEqual(1);
         });
         it('[DRDMV-16591]: Login with Read user and check user count', async () => {
             //Login with Read user and check write user count
             await navigationPage.signOut();
-            await loginPage.login('fabian');
+            await loginPage.login('qstrong');
             await caseConsolePo.searchAndOpenCase(caseId);
             await expect(await viewCasePo.getCaseID()).toBe(caseId, 'FailureMsg: CaseId is missing with qyuan User');
             await expect(await activityTabPage.getCaseViewCount('Qiao Feng  viewed the case. ')).toEqual(1);
@@ -1204,7 +1206,7 @@ describe('Case Activity', () => {
         beforeAll(async () => {
             // Create Case
             let caseData = {
-                "Requester": "Fritz",
+                "Requester": "qdu",
                 "Summary": "DRDMV-16730_TC" + summary,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
