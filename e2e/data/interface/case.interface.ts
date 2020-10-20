@@ -21,6 +21,7 @@ export interface ICaseAssignmentMapping {
 export interface ICreateCaseDWP {
     requester: string;
     summary: string;
+    "Line of Business"?: string;
 }
 
 export interface ICreateCase {
@@ -46,6 +47,7 @@ export interface ICreateCase {
     "Category Tier 4"?: string;
     "Target Date"?:string;
     "Label"?: string;
+    "Line of Business"?: string;
 }
 
 export interface IUpdateCaseAccess {

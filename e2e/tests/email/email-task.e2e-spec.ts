@@ -21,7 +21,7 @@ import selectEmailTemplateBladePo from '../../pageobject/email/select-email-temp
 describe('Email Task', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
-        await loginPage.login("fritz");
+        await loginPage.login("qkatawazi");
     });
 
     afterAll(async () => {
@@ -46,10 +46,10 @@ describe('Email Task', () => {
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createManualTaskTemplate(templateData);
             let externaltemplateData = {
                 "templateName": `${externalTaskTemplateName}`,
@@ -57,8 +57,8 @@ describe('Email Task', () => {
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             await apiHelper.createExternalTaskTemplate(externaltemplateData);
             let automatedtemplateData = {
@@ -69,8 +69,8 @@ describe('Email Task', () => {
                 "processName": `${automatedTaskProcess}`,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             await apiHelper.createAutomatedTaskTemplate(automatedtemplateData);
 
@@ -83,7 +83,7 @@ describe('Email Task', () => {
                 "Support Group": "US Support 3",
                 "Assignee": "Qadim Katawazi"
             }
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             let newCaseTemplate = await apiHelper.createCase(caseData);
             displayId = newCaseTemplate.displayId;
         });
@@ -133,10 +133,10 @@ describe('Email Task', () => {
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createManualTaskTemplate(templateData);
             let externaltemplateData = {
                 "templateName": `${externalTaskTemplateName}`,
@@ -144,8 +144,8 @@ describe('Email Task', () => {
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             await apiHelper.createExternalTaskTemplate(externaltemplateData);
             let caseData = {
@@ -157,7 +157,7 @@ describe('Email Task', () => {
                 "Support Group": "US Support 3",
                 "Assignee": "Qadim Katawazi"
             }
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             let newCaseTemplate = await apiHelper.createCase(caseData);
             displayId = newCaseTemplate.displayId;
         });
@@ -226,7 +226,7 @@ describe('Email Task', () => {
         });
     });
 
-    it('[DRDMV-19009]: Verify Subject of Email from Task Compose email', async () => {
+    describe('[DRDMV-19009]: Verify Subject of Email from Task Compose email', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let displayId;
         let taskTemplateName = 'Manual  task19009' + randomStr;
@@ -234,18 +234,16 @@ describe('Email Task', () => {
         let ManualtaskID, externalTaskTemplateName = 'External  task19009' + randomStr;
         let ExternaltaskID, externalTaskSummary = 'ExternalSummary19009' + randomStr;
         beforeAll(async () => {
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
             let templateData = {
                 "templateName": `${taskTemplateName}`,
                 "templateSummary": `${manualTaskSummary}`,
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createManualTaskTemplate(templateData);
             let externaltemplateData = {
                 "templateName": `${externalTaskTemplateName}`,
@@ -253,8 +251,8 @@ describe('Email Task', () => {
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             await apiHelper.createExternalTaskTemplate(externaltemplateData);
             let caseData = {
@@ -280,9 +278,9 @@ describe('Email Task', () => {
             await browser.sleep(2000); // To wait until view task page gets load corrrectly.
             await viewTaskPo.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
-            await changeAssignmentBladePo.selectBusinessUnit('Facilities Support');
-            await changeAssignmentBladePo.selectSupportGroup('Facilities');
-            await changeAssignmentBladePo.selectAssignee('Fritz Schulz');
+            await changeAssignmentBladePo.selectBusinessUnit('Canada Support');
+            await changeAssignmentBladePo.selectSupportGroup('CA Support 3');
+            await changeAssignmentBladePo.selectAssignee('Quigley Heroux');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
             await expect(emailPo.isEmailIconLinkPresent()).toBeTruthy();
@@ -299,9 +297,9 @@ describe('Email Task', () => {
             await manageTaskBladePo.clickTaskLink(externalTaskSummary);
             await viewTaskPo.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
-            await changeAssignmentBladePo.selectBusinessUnit('Facilities Support');
-            await changeAssignmentBladePo.selectSupportGroup('Facilities');
-            await changeAssignmentBladePo.selectAssignee('Fritz Schulz');
+            await changeAssignmentBladePo.selectBusinessUnit('Canada Support');
+            await changeAssignmentBladePo.selectSupportGroup('CA Support 3');
+            await changeAssignmentBladePo.selectAssignee('Quigley Heroux');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
             await expect(emailPo.isEmailIconLinkPresent()).toBeTruthy();
@@ -313,7 +311,7 @@ describe('Email Task', () => {
         });
         it('[DRDMV-19009]: Verify Subject of Email from Task Compose email', async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('qheroux');
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(ExternaltaskID);
@@ -330,24 +328,24 @@ describe('Email Task', () => {
         });
         afterAll(async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('qkatawazi');
         });
     });
 
     it('[DRDMV-19558]: Verify social notes other than email should not have reply and reply all options', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let taskTemplateName = 'Manual  task' + randomStr;
-        let manualTaskSummary = 'ManualSummary' + randomStr;
+        let taskTemplateName = 'Manual  task123' + randomStr;
+        let manualTaskSummary = 'ManualSummary123' + randomStr;
         let templateData = {
             "templateName": `${taskTemplateName}`,
             "templateSummary": `${manualTaskSummary}`,
             "templateStatus": "Active",
             "taskCompany": "Petramco",
             "ownerCompany": "Petramco",
-            "ownerBusinessUnit": "Facilities Support",
-            "ownerGroup": "Facilities"
+            "ownerBusinessUnit": "United States Support",
+            "ownerGroup": "US Support 3"
         }
-        await apiHelper.apiLogin('fritz');
+        await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createManualTaskTemplate(templateData);
         let caseData = {
             "Requester": "qtao",
@@ -358,9 +356,8 @@ describe('Email Task', () => {
             "Support Group": "US Support 3",
             "Assignee": "Qadim Katawazi"
         }
-        await apiHelper.apiLogin('fritz');
-        let newCaseTemplate = await apiHelper.createCase(caseData);
-        let displayId: string = newCaseTemplate.displayId;
+        let newCase = await apiHelper.createCase(caseData);
+        let displayId: string = newCase.displayId;
         await navigationPage.gotoCaseConsole();
         await utilityGrid.clearFilter();
         await utilityGrid.searchAndOpenHyperlink(displayId);
@@ -369,7 +366,7 @@ describe('Email Task', () => {
         await expect(activityTabPo.getActivityReplyNotesText('Reply')).toBeFalsy();
         await expect(activityTabPo.getActivityReplyAllNotesText('Reply all')).toBeFalsy();
         await viewCasePo.clickAddTaskButton();
-        await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary);
+        await manageTaskBladePo.addTaskFromTaskTemplate(taskTemplateName);
         await manageTaskBladePo.clickTaskLink(manualTaskSummary);
         await activityTabPo.addActivityNote('This is case notes templates');
         await activityTabPo.clickOnPostButton();
@@ -391,10 +388,10 @@ describe('Email Task', () => {
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createManualTaskTemplate(templateData);
             let externaltemplateData = {
                 "templateName": `${externalTaskTemplateName}`,
@@ -402,8 +399,8 @@ describe('Email Task', () => {
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             await apiHelper.createExternalTaskTemplate(externaltemplateData);
             let caseData = {
@@ -415,7 +412,7 @@ describe('Email Task', () => {
                 "Support Group": "US Support 3",
                 "Assignee": "Qadim Katawazi"
             }
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             let newCaseTemplate = await apiHelper.createCase(caseData);
             displayId = newCaseTemplate.displayId;
         });
@@ -510,7 +507,7 @@ describe('Email Task', () => {
             "Support Group": "US Support 3",
             "Assignee": "Qadim Katawazi"
         }
-        await apiHelper.apiLogin('fritz');
+        await apiHelper.apiLogin('qkatawazi');
         let newCaseTemplate = await apiHelper.createCase(caseData);
         let displayId: string = newCaseTemplate.displayId;
         await navigationPage.gotoCaseConsole();
@@ -565,8 +562,8 @@ describe('Email Task', () => {
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
 
             let externaltemplateData = {
@@ -575,8 +572,8 @@ describe('Email Task', () => {
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             let caseData = {
                 "Requester": "qdu",
@@ -587,7 +584,7 @@ describe('Email Task', () => {
                 "Support Group": "US Support 3",
                 "Assignee": "Qadim Katawazi"
             }
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createEmailTemplate(emailTemplateDataForTest1);
             await apiHelper.createEmailTemplate(emailTemplateDataForTest2);
             await apiHelper.createManualTaskTemplate(templateData);
@@ -605,9 +602,9 @@ describe('Email Task', () => {
             await manageTaskBladePo.clickTaskLink(manualTaskSummary);
             await viewTaskPo.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
-            await changeAssignmentBladePo.selectBusinessUnit('Facilities Support');
-            await changeAssignmentBladePo.selectSupportGroup('Facilities');
-            await changeAssignmentBladePo.selectAssignee('Fritz Schulz');
+            await changeAssignmentBladePo.selectBusinessUnit('United States Support');
+            await changeAssignmentBladePo.selectSupportGroup('US Support 3');
+            await changeAssignmentBladePo.selectAssignee("Qadim Katawazi");
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
             await viewTaskPo.clickOnRequesterEmail();
@@ -617,10 +614,10 @@ describe('Email Task', () => {
             await emailPo.clickOnSendButton();
         });
         it('[DRDMV-19555]: In Case of Reply/Reply All if we select new Email template then previous contents should not be erased.', async () => {
-            expect(await activityTabPo.getEmailTitle()).toContain('Fritz Schulz sent an email');
+            expect(await activityTabPo.getEmailTitle()).toContain('"Qadim Katawazi" sent an email');
             expect(await activityTabPo.getRecipientInTo()).toContain('To: Qiang Du');
             await activityTabPo.clickOnReply();
-            expect(await emailPo.getToEmailPerson()).toContain('Fritz Schulz');
+            expect(await emailPo.getToEmailPerson()).toContain("Qadim Katawazi");
             expect(await emailPo.getEmailBody()).toContain('Hi Team ,\n\nI am taking leave today.\n\nThanks.');
             await emailPo.clickOnSelectTempalteButton();
             await emailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateDataForTest2.TemplateName);
@@ -632,9 +629,9 @@ describe('Email Task', () => {
             await manageTaskBladePo.clickTaskLink(externalTaskSummary);
             await viewTaskPo.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
-            await changeAssignmentBladePo.selectBusinessUnit('Facilities Support');
-            await changeAssignmentBladePo.selectSupportGroup('Facilities');
-            await changeAssignmentBladePo.selectAssignee('Fritz Schulz');
+            await changeAssignmentBladePo.selectBusinessUnit('United States Support');
+            await changeAssignmentBladePo.selectSupportGroup('US Support 3');
+            await changeAssignmentBladePo.selectAssignee('Qadim Katawazi');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
         });
@@ -683,20 +680,21 @@ describe('Email Task', () => {
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
-            await apiHelper.apiLogin('fritz');
-            await apiHelper.createManualTaskTemplate(templateData);
+            
             let externaltemplateData = {
                 "templateName": `${externalTaskTemplateName}`,
                 "templateSummary": `${externalTaskSummary}`,
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createManualTaskTemplate(templateData);
             await apiHelper.createExternalTaskTemplate(externaltemplateData);
             let caseData = {
                 "Requester": "qtao",
@@ -712,8 +710,6 @@ describe('Email Task', () => {
             displayId = newCaseTemplate.displayId;
         });
         it('[DRDMV-19550]: Email Templates option driven by Task assignee permission for case', async () => {
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
             await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(displayId);
@@ -723,9 +719,9 @@ describe('Email Task', () => {
             await manageTaskBladePo.clickTaskLink(manualTaskSummary);
             await viewTaskPo.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
-            await changeAssignmentBladePo.selectBusinessUnit('Facilities Support');
-            await changeAssignmentBladePo.selectSupportGroup('Facilities');
-            await changeAssignmentBladePo.selectAssignee('Fritz Schulz');
+            await changeAssignmentBladePo.selectBusinessUnit('Canada Support');
+            await changeAssignmentBladePo.selectSupportGroup('CA Support 3');
+            await changeAssignmentBladePo.selectAssignee('Quigley Heroux');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
             ManualtaskID = await viewTaskPo.getTaskID();
@@ -737,9 +733,9 @@ describe('Email Task', () => {
             await manageTaskBladePo.clickTaskLink(externalTaskSummary);
             await viewTaskPo.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
-            await changeAssignmentBladePo.selectBusinessUnit('United States Support');
-            await changeAssignmentBladePo.selectSupportGroup('US Support 3');
-            await changeAssignmentBladePo.selectAssignee('Qadim Katawazi');
+            await changeAssignmentBladePo.selectBusinessUnit('Canada Support');
+            await changeAssignmentBladePo.selectSupportGroup('CA Support 3');
+            await changeAssignmentBladePo.selectAssignee('Quigley Heroux');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
             await viewTaskPo.clickOnRequesterEmail();
@@ -749,7 +745,7 @@ describe('Email Task', () => {
         });
         it('[DRDMV-19550]: Email Templates option driven by Task assignee permission for case', async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('qheroux');
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(ManualtaskID);
@@ -758,10 +754,6 @@ describe('Email Task', () => {
             expect(await emailPo.isSelectEmailTemplateButtonPresent()).toBeFalsy("Email template button visible to task assignee having no case access");
             await emailPo.clickOnDiscardButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
-        });
-        afterAll(async () => {
-            await navigationPage.signOut();
-            await loginPage.login('elizabeth');
         });
     });
 });

@@ -41,7 +41,7 @@ describe('Create Case Task', () => {
         await navigationPage.signOut();
     });
 
-    //ankagraw
+    //ankagraw-done
     describe('[DRDMV-7165,DRDMV-7147]: Update Task Type field for any task', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let manualTaskTemplateData, autoTaskTemplateData, caseID = "";
@@ -52,8 +52,8 @@ describe('Create Case Task', () => {
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 1"
             }
             autoTaskTemplateData = {
                 "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
@@ -63,11 +63,11 @@ describe('Create Case Task', () => {
                 "processName": `Case Process 1 ${randomStr}`,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 1"
             }
             let caseData1 = {
-                "Requester": "Fritz",
+                "Requester": "apavlik",
                 "Summary": "Test case for inProgress task",
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
@@ -133,7 +133,6 @@ describe('Create Case Task', () => {
             menuItem = cloneDeep(SAMPLE_MENU_ITEM);
             menuItem.menuItemName = "TestMenuItemName" + randomStr;
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.associateCategoryToCategory('Chatter', 'Failure');
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createNewMenuItem(menuItem);
         });
@@ -148,6 +147,8 @@ describe('Create Case Task', () => {
             await taskTemplate.selectCompanyByName('Petramco')
             await taskTemplate.setNewProcessName('Business Workflows', `Get Request Status Data1 ${randomStr}`);
             await taskTemplate.selectTemplateStatus('Active');
+            await taskTemplate.selectBuisnessUnit('United States Support');
+            await taskTemplate.selectOwnerGroup('US SUpport 1');
             await taskTemplate.clickOnSaveTaskTemplate();
             expect(await viewTasktemplatePo.getTaskCompanyNameValue()).toBe("Petramco");
             //await utilCommon.closePopUpMessage();
@@ -163,11 +164,13 @@ describe('Create Case Task', () => {
             await taskTemplate.selectCompanyByName('Petramco');
             await taskTemplate.setNewProcessName('Business Workflows', `Get Request Status Data2 ${randomStr}`);
             await taskTemplate.selectLabel(menuItem.menuItemName);
-            await taskTemplate.selectTaskCategoryTier1('Applications');
-            await taskTemplate.selectTaskCategoryTier2('Social');
-            await taskTemplate.selectTaskCategoryTier3('Chatter');
-            await taskTemplate.selectTaskCategoryTier4('Failure');
+            await taskTemplate.selectTaskCategoryTier1('Employee Relations');
+            await taskTemplate.selectTaskCategoryTier2('Compensation');
+            await taskTemplate.selectTaskCategoryTier3('Bonus');
+            await taskTemplate.selectTaskCategoryTier4('Retention Bonus');
             await taskTemplate.selectTemplateStatus('Active');
+            await taskTemplate.selectBuisnessUnit('United States Support');
+            await taskTemplate.selectOwnerGroup('US SUpport 1');
             await taskTemplate.clickOnSaveTaskTemplate();
             expect(await viewTasktemplatePo.getTaskCompanyNameValue()).toBe("Petramco");
             await utilityCommon.closePopUpMessage();
@@ -191,16 +194,16 @@ describe('Create Case Task', () => {
             expect(await manageTask.isTaskLinkPresent(automationTaskSummaryWithallField)).toBeTruthy(automationTaskTemplateWithallField + ' Task is not added to case');
         });
         it('[DRDMV-7148,DRDMV-7140,DRDMV-745,DRDMV-793]: Validate manual task', async () => {
- 
+
             await manageTask.clickTaskLink(automationTaskSummaryWithallField);
             expect(await viewTask.getTaskTypeValue()).toBe('Automated');
             expect(await viewTask.getProcessNameValue()).toBe(`com.bmc.dsm.bwfa:Get Request Status Data2 ${randomStr}`);
             expect((await viewTask.getDescriptionValue()).trim()).toBe('All field get added in this task template');
             expect(await viewTask.getLabelValue()).toBe(menuItem.menuItemName);
-            expect(await viewTask.getCategoryTier1Value()).toBe('Applications');
-            expect(await viewTask.getCategoryTier2Value()).toBe('Social');
-            expect(await viewTask.getCategoryTier3Value()).toBe('Chatter');
-            expect(await viewTask.getCategoryTier4Value()).toBe('Failure');
+            expect(await viewTask.getCategoryTier1Value()).toBe('Employee Relations');
+            expect(await viewTask.getCategoryTier2Value()).toBe('Compensation');
+            expect(await viewTask.getCategoryTier3Value()).toBe('Bonus');
+            expect(await viewTask.getCategoryTier4Value()).toBe('Retention Bonus');
         });
         it('[DRDMV-7148,DRDMV-7140,DRDMV-745,DRDMV-793]: Automatic Task data validation once Task is created', async () => {
             //validate Automation Template
@@ -230,61 +233,61 @@ describe('Create Case Task', () => {
                 "templateName": `manualTaskTemplateActive ${randomStr}`,
                 "templateSummary": `manualTaskTemplateActive ${randomStr}`,
                 "templateStatus": "Active",
-                "taskCompany": 'Petramco',
+                "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 1"
             }
             let templateData1 = {
                 "templateName": `manualTaskTemplateInActive ${randomStr}`,
                 "templateSummary": `manualTaskTemplateInActive ${randomStr}`,
                 "templateStatus": "Inactive",
-                "taskCompany": 'Petramco',
+                "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 1"
             }
             let templateData2 = {
                 "templateName": `manualTaskTemplateDraft ${randomStr}`,
                 "templateSummary": `manualTaskTemplateDraft ${randomStr}`,
                 "templateStatus": "Draft",
-                "taskCompany": 'Petramco',
+                "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 1"
             }
             let templateData4 = {
                 "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
                 "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
                 "templateStatus": "Active",
-                "processBundle": "com.bmc.dsm.case-lib",
+                "processBundle": "com.petramco.human-resource",
                 "processName": `Case Process 1 ${randomStr}`,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US SUpport 1"
             }
             let templateData5 = {
                 "templateName": `AutomatedTaskTemplateInActive ${randomStr}`,
                 "templateSummary": `AutomatedTaskTemplateInActive ${randomStr}`,
                 "templateStatus": "Inactive",
-                "processBundle": "com.bmc.dsm.case-lib",
+                "processBundle": "com.petramco.human-resource",
                 "processName": `Case Process 2 ${randomStr}`,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US SUpport 1"
             }
             let templateData6 = {
                 "templateName": `AutomatedTaskTemplateDraft ${randomStr}`,
                 "templateSummary": `AutomatedTaskTemplateDraft ${randomStr}`,
                 "templateStatus": "Draft",
-                "processBundle": "com.bmc.dsm.case-lib",
+                "processBundle": "com.petramco.human-resource",
                 "processName": `Case Process 3 ${randomStr}`,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 1"
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createAutomatedTaskTemplate(templateData4);
@@ -359,20 +362,9 @@ describe('Create Case Task', () => {
     //ankagraw
     describe('[DRDMV-12039,DRDMV-12040,DRDMV-12009,DRDMV-12084]: [ Task ] - Verify Associated menu for Task will show global configuration values as well	 ', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let globalCategName = 'MyDemoCateg1';
-        let categName2 = 'MyDemoCateg2';
-        let categName3 = 'MyDemoCateg3';
         let TaskTemplate = 'Manual task' + randomStr;
         let TaskSummary = 'Summary' + randomStr;
         let manualSummary = 'Summary' + randomStr;
-        beforeAll(async () => {
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.createOperationalCategory(globalCategName, true);
-            await apiHelper.createOperationalCategory(categName2);
-            await apiHelper.createOperationalCategory(categName3);
-            await apiHelper.associateCategoryToCategory(globalCategName, categName2);
-            await apiHelper.associateCategoryToCategory(categName2, categName3);
-        });
         it('[DRDMV-12039,DRDMV-12040,DRDMV-12009,DRDMV-12084]: Create Manual task with global category ', async () => {
             //manual Task template
             await navigationPage.gotoSettingsPage();
@@ -382,15 +374,17 @@ describe('Create Case Task', () => {
             await taskTemplate.setTaskSummary(TaskSummary);
             await taskTemplate.setTaskDescription('Description');
             await taskTemplate.selectCompanyByName('Global');
-            await taskTemplate.selectTaskCategoryTier1(globalCategName);
-            await taskTemplate.selectTaskCategoryTier2(categName2);
-            await taskTemplate.selectTaskCategoryTier3(categName3);
+            await taskTemplate.selectTaskCategoryTier1('Employee Relations');
+            await taskTemplate.selectTaskCategoryTier2('Compensation');
+            await taskTemplate.selectTaskCategoryTier3('Bonus');
             await taskTemplate.selectTemplateStatus('Active');
+            await taskTemplate.selectBuisnessUnit('United States Support');
+            await taskTemplate.selectOwnerGroup('US Support 1');
             await taskTemplate.clickOnSaveTaskTemplate();
             await utilCommon.closePopUpMessage();
-            expect(await viewTasktemplatePo.getCategoryTier1Value()).toBe(globalCategName);
-            expect(await viewTasktemplatePo.getCategoryTier2Value()).toBe(categName2);
-            expect(await viewTasktemplatePo.getCategoryTier3Value()).toBe(categName3);
+            expect(await viewTasktemplatePo.getCategoryTier1Value()).toBe('Employee Relations');
+            expect(await viewTasktemplatePo.getCategoryTier2Value()).toBe('Compensation');
+            expect(await viewTasktemplatePo.getCategoryTier3Value()).toBe('Bonus');
             expect(await viewTasktemplatePo.getTaskCompanyNameValue()).toBe('- Global -')
         });
         it('[DRDMV-12039,DRDMV-12040,DRDMV-12009,DRDMV-12084]: Create case with above task template ', async () => {
@@ -401,21 +395,21 @@ describe('Create Case Task', () => {
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary('Summary ' + manualSummary);
             await createCasePage.clickAssignToMeButton();
-            await createCasePage.selectCategoryTier1(globalCategName);
+            await createCasePage.selectCategoryTier1('Employee Relations');
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await utilityCommon.closePopUpMessage();
-            expect(await viewCasePage.getCategoryTier1Value()).toBe(globalCategName, "Global Category Not Present");
+            expect(await viewCasePage.getCategoryTier1Value()).toBe('Employee Relations', "Employee Category Not Present");
         });
         it('[DRDMV-12039,DRDMV-12040,DRDMV-12009,DRDMV-12084]: [ Task ] - Verify Associated menu for Task will show global configuration values as well', async () => {
             //Got To Another Case
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary('Summary 123 ' + manualSummary);
-            await createCasePage.selectCategoryTier1('Applications');
+            await createCasePage.selectCategoryTier1('Employee Relations');
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            expect(await viewCasePage.getCategoryTier1Value()).toBe('Applications', "Applications Category Not Present");
+            expect(await viewCasePage.getCategoryTier1Value()).toBe('Employee Relations', "Applications Category Not Present");
         });
         afterAll(async () => {
             await navigationPage.signOut();
@@ -429,13 +423,14 @@ describe('Create Case Task', () => {
         let TaskTemplate = 'Manual task' + randomStr;
         let TaskSummary = 'Summary' + randomStr;
         let userData, description = 'description' + randomStr;
-      
+
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
-             userData = {
+            userData = {
                 "firstName": "Petramco",
                 "lastName": "Psilon",
                 "userId": "DRDMV-12558",
+                "userPermission": ["Case Business Analyst", "Human Resource"]
             }
             await apiHelper.createNewUser(userData);
             await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
@@ -452,6 +447,8 @@ describe('Create Case Task', () => {
             await taskTemplate.setTaskSummary(TaskSummary);
             await taskTemplate.selectCompanyByName('Psilon');
             await taskTemplate.selectOwnerCompany('Psilon');
+            await taskTemplate.selectBuisnessUnit('Psilon Support Org1');
+            await taskTemplate.selectOwnerGroup('Psilon Support Group1');
             await taskTemplate.clickOnSaveTaskTemplate();
             expect(await viewTasktemplatePo.getTaskTypeValue()).toBe('Manual');
             await utilCommon.closePopUpMessage();
@@ -462,16 +459,16 @@ describe('Create Case Task', () => {
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(TaskTemplate);
             await viewTasktemplatePo.clickOnEditLink();
-            await editTaskTemplate.selectTaskCategoryTier1('Applications');
-            await editTaskTemplate.selectTaskCategoryTier2('Social');
-            await editTaskTemplate.selectTaskCategoryTier3('Chatter');
+            await editTaskTemplate.selectTaskCategoryTier1('Employee Relations');
+            await editTaskTemplate.selectTaskCategoryTier2('Compensation');
+            await editTaskTemplate.selectTaskCategoryTier3('Bonus');
             await editTaskTemplate.setDescription(description);
             await editTaskTemplate.clickOnSaveButton();
             await utilCommon.closePopUpMessage();
             expect(await viewTasktemplatePo.getTaskDescriptionNameValue()).toBe(description, 'description is not present');
-            expect(await viewTasktemplatePo.getCategoryTier1Value()).toBe('Applications', 'Applications is not present');
-            expect(await viewTasktemplatePo.getCategoryTier2Value()).toBe('Social', 'Social is not present');
-            expect(await viewTasktemplatePo.getCategoryTier3Value()).toBe('Chatter', 'Chatter is not present');
+            expect(await viewTasktemplatePo.getCategoryTier1Value()).toBe('Employee Relations', 'Employee Relations is not present');
+            expect(await viewTasktemplatePo.getCategoryTier2Value()).toBe('Compensation', 'Compensation is not present');
+            expect(await viewTasktemplatePo.getCategoryTier3Value()).toBe('Bonus', 'Bonus is not present');
         });
         afterAll(async () => {
             await navigationPage.signOut();
@@ -484,18 +481,19 @@ describe('Create Case Task', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let TaskTemplate = 'Manual task' + randomStr;
         let TaskSummary = 'Summary' + randomStr;
-        let userData,description = 'description' + randomStr;
+        let userData, description = 'description' + randomStr;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
-             userData = {
+            userData = {
                 "firstName": "Petramco",
                 "lastName": "Psilon",
                 "userId": "DRDMV-12582",
+                "userPermission": ["Case Business Analyst", "Human Resource"]
             }
             await apiHelper.createNewUser(userData);
             await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
             await apiHelper.associatePersonToCompany(userData.userId, "Psilon");
-            await apiHelper.associatePersonToSupportGroup(userData.userId, "Facilities");
+            await apiHelper.associatePersonToSupportGroup(userData.userId, "US Support 1");
             await apiHelper.associatePersonToSupportGroup(userData.userId, "Psilon Support Group2");
 
             let templateData1 = {
@@ -504,8 +502,8 @@ describe('Create Case Task', () => {
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 1"
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createManualTaskTemplate(templateData1);
@@ -548,8 +546,8 @@ describe('Create Case Task', () => {
                 "processName": processName,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 1"
             }
             //Automation Task template
             await apiHelper.apiLogin('qkatawazi');
@@ -570,6 +568,7 @@ describe('Create Case Task', () => {
             await manageTask.clickCloseButton();
         });
         it('[DRDMV-7149]: Verify the task status', async () => {
+            await viewCasePage.clickOnRefreshTaskList();
             await updateStatusBladePo.changeCaseStatus("In Progress");
             await updateStatusBladePo.clickSaveStatus();
             //validate Automation Template With Required Field
@@ -645,8 +644,8 @@ describe('Create Case Task', () => {
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 1"
             }
             let templateData2 = {
                 "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
@@ -656,8 +655,8 @@ describe('Create Case Task', () => {
                 "processName": `Case Process 1 ${randomStr}`,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 1"
             }
 
             await apiHelper.apiLogin('qkatawazi');
@@ -680,10 +679,10 @@ describe('Create Case Task', () => {
             expect(await utilityGrid.isGridColumnSorted('Display ID', 'asc')).toBeTruthy('Ascendigly not sorted');
             expect(await utilityGrid.isGridColumnSorted('Display ID', 'desc')).toBeTruthy('Descendigly not sorted');
             await utilityGrid.removeGridColumn(['Display ID']);
-            await utilityGrid.addFilter('Task Type', 'Manual', 'checkbox');
+            await utilityGrid.addFilter('Task Type', 'Manual', "checkbox");
             expect(await manageTask.getFilterValue('Manual')).toBeTruthy();
             await utilityGrid.clearFilter();
-            await utilityGrid.addFilter('Task Type', 'Automated', 'checkbox');
+            await utilityGrid.addFilter('Task Type', 'Automated', "checkbox");
             expect(await manageTask.getFilterValue('Automated')).toBeTruthy();
             await utilityGrid.clearFilter();
         });
@@ -742,8 +741,8 @@ describe('Create Case Task', () => {
                 "templateStatus": "Draft",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 1"
             }
             let templateDataActive = {
                 "templateName": `manualTaskTemplateActive ${randomStr}`,
@@ -751,8 +750,8 @@ describe('Create Case Task', () => {
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 1"
             }
 
             await apiHelper.apiLogin('qkatawazi');
@@ -810,31 +809,31 @@ describe('Create Case Task', () => {
                 "processBundle": "com.bmc.dsm.case-lib",
                 "processName": `Case Process 1 ${randomStr}`,
                 "taskCompany": "Petramco",
-                "assignee": "Fritz",
+                "assignee": "qtao",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 1"
             }
             let caseTemplateData = {
                 "templateName": caseTemplateName,
                 "templateSummary": casTemplateSummary,
                 "caseStatus": "InProgress",
                 "templateStatus": "Active",
-                "assignee": "Fritz",
+                "assignee": "qtao",
                 "ownerCompany": "Petramco",
-                "ownerBU": "Facilities Support",
-                "ownerGroup": "Facilities",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 1",
             }
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qtao');
             let newCaseTemplate = await apiHelper.createCaseTemplate(caseTemplateData);
             let automationTaskTemplate = await apiHelper.createAutomatedTaskTemplate(templateData);
             await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, automationTaskTemplate.displayId);
         });
         it('[DRDMV-7254]: Create case and add task on it', async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('qtao');
             await navigationPage.gotoCreateCase();
-            await createCasePage.selectRequester('fritz');
+            await createCasePage.selectRequester('qtao');
             await createCasePage.setSummary('Summary');
             await createCasePage.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
@@ -874,13 +873,13 @@ describe('Create Case Task', () => {
             "processName": `Case Process 1 ${randomStr}`,
             "taskCompany": "Petramco",
             "ownerCompany": "Petramco",
-            "ownerBusinessUnit": "Facilities Support",
-            "ownerGroup": "Facilities"
+            "ownerBusinessUnit": "United States Support",
+            "ownerGroup": "US Support 1"
         }
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createAutomatedTaskTemplate(templateData);
         await navigationPage.gotoCreateCase();
-        await createCasePage.selectRequester('fritz');
+        await createCasePage.selectRequester('qtao');
         await createCasePage.setSummary('Summary' + randomStr);
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
@@ -888,6 +887,7 @@ describe('Create Case Task', () => {
         await viewCasePage.clickAddTaskButton();
         await manageTask.addTaskFromTaskTemplate(templateData.templateSummary);
         await manageTask.clickCloseButton();
+        await viewCasePage.clickOnRefreshTaskList();
         await updateStatusBladePo.changeCaseStatus('Pending');
         await updateStatusBladePo.setStatusReason('Customer Response');
         await updateStatusBladePo.clickSaveStatus();
@@ -911,8 +911,8 @@ describe('Create Case Task', () => {
                 "processName": 'case_Management_Process' + randomStr,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 1"
             }
             let templateData1 = {
                 "templateName": `SecondAutomatedTaskTemplateActive1 ${randomStr}`,
@@ -922,8 +922,8 @@ describe('Create Case Task', () => {
                 "processName": 'case_Management_Process123' + randomStr,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 1"
             }
 
             await apiHelper.apiLogin('qkatawazi');
@@ -932,7 +932,7 @@ describe('Create Case Task', () => {
         });
         it('[DRDMV-7154,DRDMV-7153]: Create a case and assign task on it', async () => {
             await navigationPage.gotoCreateCase();
-            await createCasePage.selectRequester('fritz');
+            await createCasePage.selectRequester('qtao');
             await createCasePage.setSummary('Summary' + randomStr);
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
@@ -942,6 +942,7 @@ describe('Create Case Task', () => {
             await manageTask.addTaskFromTaskTemplate(`FirstAutomatedTaskTemplateActive ${randomStr}`);
             await manageTask.addTaskFromTaskTemplate(`SecondAutomatedTaskTemplateActive1 ${randomStr}`);
             await manageTask.clickCloseButton();
+            await viewCasePage.clickOnRefreshTaskList();
             await viewCasePage.openTaskCard(1);
             await manageTask.clickTaskLink(`AutomatedTaskTemplateSummaryActive ${randomStr}`);
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
@@ -978,8 +979,8 @@ describe('Create Case Task', () => {
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 1"
             }
 
             let templateData2 = {
@@ -988,8 +989,8 @@ describe('Create Case Task', () => {
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 1"
             }
 
             let templateData3 = {
@@ -998,8 +999,8 @@ describe('Create Case Task', () => {
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 1"
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createManualTaskTemplate(templateData1);
@@ -1008,7 +1009,7 @@ describe('Create Case Task', () => {
         });
         it('[DRDMV-7145]: Create a case add task on it', async () => {
             await navigationPage.gotoCreateCase();
-            await createCasePage.selectRequester('fritz');
+            await createCasePage.selectRequester('qtao');
             await createCasePage.setSummary('Summary' + randomStr);
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
@@ -1019,6 +1020,7 @@ describe('Create Case Task', () => {
             await manageTask.addTaskFromTaskTemplate(`manualTaskTemplate2 ${randomStr}`);
             await manageTask.addTaskFromTaskTemplate(`manualTaskTemplate3 ${randomStr}`);
             await manageTask.clickCloseButton();
+            await viewCasePage.clickOnRefreshTaskList();
         });
         it('[DRDMV-7145]: Verify primary status of task', async () => {
             await viewCasePage.openTaskCard(1);
@@ -1072,10 +1074,10 @@ describe('Create Case Task', () => {
                 "processName": 'case_Management_Process' + randomStr,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 1"
             }
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qtao');
             await apiHelper.createAutomatedTaskTemplate(templateData);
             let caseWithInprogressStatus = {
                 "Status": "3000",
@@ -1161,6 +1163,7 @@ describe('Create Case Task', () => {
             await viewCasePage.clickAddTaskButton();
             await manageTask.addTaskFromTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
             await manageTask.clickCloseButton();
+            await viewCasePage.clickOnRefreshTaskList();
             await viewCasePage.openTaskCard(1);
             await manageTask.clickTaskLink(`AutomatedTaskTemplateActive ${randomStr}`);
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
@@ -1178,6 +1181,7 @@ describe('Create Case Task', () => {
             await viewCasePage.clickAddTaskButton();
             await manageTask.addTaskFromTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
             await manageTask.clickCloseButton();
+            await viewCasePage.clickOnRefreshTaskList();
             await viewCasePage.openTaskCard(1);
             await manageTask.clickTaskLink(`AutomatedTaskTemplateActive ${randomStr}`);
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
@@ -1191,6 +1195,7 @@ describe('Create Case Task', () => {
             await viewCasePage.clickAddTaskButton();
             await manageTask.addTaskFromTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
             await manageTask.clickCloseButton();
+            await viewCasePage.clickOnRefreshTaskList();
             await viewCasePage.openTaskCard(1);
             await manageTask.clickTaskLink(`AutomatedTaskTemplateActive ${randomStr}`);
             expect(await viewTask.getTaskStatusValue()).toBe("Completed");
@@ -1204,6 +1209,7 @@ describe('Create Case Task', () => {
             await viewCasePage.clickAddTaskButton();
             await manageTask.addTaskFromTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
             await manageTask.clickCloseButton();
+            await viewCasePage.clickOnRefreshTaskList();
             await viewCasePage.openTaskCard(1);
             await manageTask.clickTaskLink(`AutomatedTaskTemplateActive ${randomStr}`);
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
@@ -1231,7 +1237,7 @@ describe('Create Case Task', () => {
     });
 
     describe('[DRDMV-3880,DRDMV-5320]: [Task Status] Task Status change from Completed', async () => {
-        let templateData3,casetemplatePetramco, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let templateData3, casetemplatePetramco, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let statusDropdown1: string[] = ["Completed", "Canceled", "Closed"];
         beforeAll(async () => {
             let templateData1 = {
@@ -1240,8 +1246,8 @@ describe('Create Case Task', () => {
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 1"
             }
             let templateData2 = {
                 "templateName": `manualTaskTemplate2 ${randomStr}`,
@@ -1249,8 +1255,8 @@ describe('Create Case Task', () => {
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 1"
             }
             templateData3 = {
                 "templateName": `manualTaskTemplate3 ${randomStr}`,
@@ -1258,8 +1264,8 @@ describe('Create Case Task', () => {
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 1"
             }
             await apiHelper.apiLogin('qkatawazi');
             let template1 = await apiHelper.createManualTaskTemplate(templateData1);
@@ -1275,23 +1281,23 @@ describe('Create Case Task', () => {
                 "casePriority": "Low",
                 "caseStatus": "New",
                 "company": "Petramco",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
-                "ownerBU": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 1",
+                "assignee": "qtao",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 1"
             }
             console.log('caseTemplateName' + randomStr);
-            
+
             let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplatePetramco);
             await apiHelper.associateCaseTemplateWithTwoTaskTemplate(newCaseTemplate.displayId, template1.displayId, template2.displayId, "parallel");
         });
         it('[DRDMV-3880,DRDMV-5320]: [Task Status] Task Status change from Completed', async () => {
             await navigationPage.gotoCreateCase();
-            await createCasePage.selectRequester('fritz');
+            await createCasePage.selectRequester('qtao');
             await createCasePage.setSummary('DRDMV3880Summary' + randomStr);
             await createCasePage.clickSelectCaseTemplateButton();
-            await selectCasetemplateBladePo.selectCaseTemplate(casetemplatePetramco.templateName);          
+            await selectCasetemplateBladePo.selectCaseTemplate(casetemplatePetramco.templateName);
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
         });
@@ -1303,13 +1309,14 @@ describe('Create Case Task', () => {
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(`manualTaskTemplateSummary2 ${randomStr}`);
-            expect(await viewTask.getTaskStatusValue()).toBe("Staged"); 
+            expect(await viewTask.getTaskStatusValue()).toBe("Staged");
             await viewTask.clickOnViewCase();
         });
         it('[DRDMV-3880,DRDMV-5320]: [Task Status] Task Status change from Completed', async () => {
             await viewCasePage.clickAddTaskButton();
             await manageTask.addTaskFromTaskTemplate(`manualTaskTemplate3 ${randomStr}`);
             await manageTask.clickCloseButton();
+            await viewCasePage.clickOnRefreshTaskList();
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
@@ -1326,7 +1333,7 @@ describe('Create Case Task', () => {
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
             await viewTask.clickOnViewCase();
         });
-        it('[DRDMV-3880,DRDMV-5320]: [Task Status] Task Status change from Completed', async () => {  
+        it('[DRDMV-3880,DRDMV-5320]: [Task Status] Task Status change from Completed', async () => {
             await viewCasePage.clickOnTaskLink(`manualTaskTemplateSummary1 ${randomStr}`);
             await viewTask.clickOnChangeStatus();
             await updateStatusBladePo.allStatusOptionsPresent(statusDropdown1);
@@ -1344,7 +1351,7 @@ describe('Create Case Task', () => {
             expect(await viewTask.isChangeStatusButtonDisabled()).toBeTruthy("Button is Enabled");
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
-            await utilityGrid.addFilter("Status", 'Canceled', "text");
+            await utilityGrid.addFilter("Status", "Canceled", "text");
             expect(await utilityGrid.isGridRecordPresent(`manualTaskTemplateSummary1 ${randomStr}`)).toBeTruthy(`manualTaskTemplateSummary1 ${randomStr}`);
         });
         it('[DRDMV-3880,DRDMV-5320]: [Task Status] Task Status change from Completed', async () => {
@@ -1363,7 +1370,7 @@ describe('Create Case Task', () => {
             expect(await viewTask.isChangeStatusButtonDisabled()).toBeTruthy("Button is Enabled");
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
-            await utilityGrid.addFilter("Status", 'Closed', "text");
+            await utilityGrid.addFilter("Status", "Closed", "text");
             expect(await utilityGrid.isGridRecordPresent(`manualTaskTemplateSummary2 ${randomStr}`)).toBeTruthy(`manualTaskTemplateSummary2 ${randomStr}`);
         });
     });
@@ -1377,17 +1384,17 @@ describe('Create Case Task', () => {
                 "templateName": 'caseTemplateName' + randomStr,
                 "templateSummary": 'caseTemplateName' + randomStr,
                 "templateStatus": "Active",
-                "categoryTier1": "Purchasing Card",
-                "categoryTier2": "Policies",
-                "categoryTier3": "Card Issuance",
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
                 "casePriority": "Low",
                 "caseStatus": "New",
                 "company": "Petramco",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
-                "ownerBU": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 1",
+                "assignee": "qtao",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 1"
             }
             await apiHelper.createCaseTemplate(casetemplatePetramco);
         });
@@ -1405,12 +1412,13 @@ describe('Create Case Task', () => {
             await adhoctaskTemplate.setSummary("Summary1" + randomStr);
             await adhoctaskTemplate.setDescription("Description");
             await adhoctaskTemplate.selectPriority('High');
-            await adhoctaskTemplate.selectCategoryTier1('Applications');
-            await adhoctaskTemplate.selectCategoryTier2('Social');
-            await adhoctaskTemplate.selectCategoryTier3('Chatter');
+            await adhoctaskTemplate.selectCategoryTier1('Employee Relations');
+            await adhoctaskTemplate.selectCategoryTier2('Compensation');
+            await adhoctaskTemplate.selectCategoryTier3('Bonus');
             await adhoctaskTemplate.clickAssignToMeButton();
             await adhoctaskTemplate.clickSaveAdhoctask();
             await utilityCommon.closePopUpMessage();
+            await viewCasePage.clickOnRefreshTaskList();
             await manageTask.clickTaskLink("Summary1" + randomStr);
             expect(await viewTask.getAssignedGroupText()).toBe('US Support 3');
             expect(await viewTask.getAssigneeText()).toBe('Qadim Katawazi');
@@ -1418,14 +1426,14 @@ describe('Create Case Task', () => {
         it('[DRDMV-7066]:[Add Adhoc Task] [Assignment] Changing the Assignment on Add Adhoc Task by the member of one Support Group', async () => {
             await viewTask.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
-            await changeAssignmentBladePo.selectBusinessUnit('HR Support');
-            await changeAssignmentBladePo.selectSupportGroup('Workforce Administration');
-            await changeAssignmentBladePo.selectAssignee('Peter Kahn');
+            await changeAssignmentBladePo.selectBusinessUnit('United States Support');
+            await changeAssignmentBladePo.selectSupportGroup('US Support 1');
+            await changeAssignmentBladePo.selectAssignee('Qiao Feng');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
-            expect(await viewTask.getAssignedGroupText()).toBe('Workforce Administration');
-            expect(await viewTask.getAssigneeText()).toBe('Peter Kahn');
+            expect(await viewTask.getAssignedGroupText()).toBe('US Support 1');
+            expect(await viewTask.getAssigneeText()).toBe('Qiao Feng');
             await viewTask.clickOnViewCase();
         });
         it('[DRDMV-7066]:[Add Adhoc Task] [Assignment] Changing the Assignment on Add Adhoc Task by the member of one Support Group', async () => {
@@ -1435,23 +1443,23 @@ describe('Create Case Task', () => {
             await changeAssignmentBladePo.clickOnAssignButton();
             await editCasePo.clickSaveCase();
             await utilityCommon.closePopUpMessage();
-            expect(await viewCasePage.getAssignedGroupText()).toBe('Facilities');
-            expect(await viewCasePage.getAssigneeText()).toBe('None','Assignee name is missing');
+            expect(await viewCasePage.getAssignedGroupText()).toBe('US Support 1');
+            expect(await viewCasePage.getAssigneeText()).toBe('None', 'Assignee name is missing');
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickAddAdhocTaskButton();
             await adhoctaskTemplate.setSummary("Summary2" + randomStr);
             await adhoctaskTemplate.setDescription("Description");
             await adhoctaskTemplate.selectPriority('High');
-            await adhoctaskTemplate.selectCategoryTier1('Applications');
-            await adhoctaskTemplate.selectCategoryTier2('Social');
-            await adhoctaskTemplate.selectCategoryTier3('Chatter');
+            await adhoctaskTemplate.selectCategoryTier1('Employee Relations');
+            await adhoctaskTemplate.selectCategoryTier2('Compensation');
+            await adhoctaskTemplate.selectCategoryTier3('Bonus');
             await adhoctaskTemplate.clickChangeAssignmentButton();
             await changeAssignmentBladePo.selectAssignToSupportGroup();
             await changeAssignmentBladePo.clickOnAssignButton();
             await adhoctaskTemplate.clickSaveAdhoctask();
             await utilityCommon.closePopUpMessage();
             await manageTask.clickTaskLink("Summary2" + randomStr);
-            expect(await viewTask.getAssignedGroupText()).toBe('Facilities');
+            expect(await viewTask.getAssignedGroupText()).toBe('US Support 1');
             expect(await viewTask.getAssigneeText()).toBe('None', 'None assignee Text is missing');
         });
         afterAll(async () => {
@@ -1476,11 +1484,11 @@ describe('Create Case Task', () => {
                 "casePriority": "Low",
                 "caseStatus": "New",
                 "company": "Petramco",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
-                "ownerBU": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 1",
+                "assignee": "qtao",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 1"
             }
             let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplatePetramco);
             templateData = {
@@ -1593,7 +1601,7 @@ describe('Create Case Task', () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePage.searchAndOpenCase('DRDMV1579Summary' + randomStr);
             await viewCasePage.clickAddTaskButton();
-            await manageTask.clickTaskLink("Summary" + randomStr);            
+            await manageTask.clickTaskLink("Summary" + randomStr);
             expect((await viewTask.getDescriptionValue()).trim()).toBe("Description");
             expect(await viewTask.getCategoryTier1Value()).toBe('Applications');
             expect(await viewTask.getCategoryTier2Value()).toBe('Social');
@@ -1665,15 +1673,15 @@ describe('Create Case Task', () => {
             await viewTask.clickOnRequesterName();
             await utilityCommon.switchToNewTab(1);
             await expect(personProfilePo.getPersonName()).toBe('Fritz Schulz');
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();      
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
         it('[DRDMV-1579]: [Edit Task] Update summary, status, description and assignment', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePage.searchAndOpenCase('DRDMV1579Summary' + randomStr);
             await updateStatusBladePo.changeCaseStatus("In Progress");
             await updateStatusBladePo.clickSaveStatus();
-            await utilCommon.closePopUpMessage(); 
-            await navigationPage.gotoTaskConsole();          
+            await utilCommon.closePopUpMessage();
+            await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(templateData.templateName);
             await viewTask.clickOnContactName();
@@ -1691,19 +1699,19 @@ describe('Create Case Task', () => {
             await viewTask.clickOnChangeStatus();
             await viewTask.changeTaskStatus('In Progress');
             expect(await viewTask.getErrorMsgOfInprogressStatus()).toBe('Assignee is required for this task status.  Please select an assignee. ');
-            await updateStatusBladePo.clickCancelButton();  
+            await updateStatusBladePo.clickCancelButton();
         });
-        it('[DRDMV-1579]: [Edit Task] Update summary, status, description and assignment', async () => {    
+        it('[DRDMV-1579]: [Edit Task] Update summary, status, description and assignment', async () => {
             await navigationPage.signOut();
             await loginPage.login('franz');
-            await navigationPage.gotoTaskConsole();          
+            await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(externaltemplateData.templateName);
             await viewTask.clickOnEditTask();
             expect(await editTask.isRequesterNameDisplayed('Fritz Schulz')).toBeTruthy();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await navigationPage.gotoTaskConsole();          
+            await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink("AdHocSummary" + randomStr);
             await viewTask.clickOnEditTask();

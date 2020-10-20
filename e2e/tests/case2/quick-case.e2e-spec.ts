@@ -446,29 +446,29 @@ describe("Quick Case", () => {
                 "templateStatus": "Active",
                 "processBundle": "com.bmc.dsm.case-lib",
                 "processName": `Case Process 1 ${randomStr}`,
-                "categoryTier1": "Purchasing Card",
-                "categoryTier2": "Policies",
-                "categoryTier3": "Card Issuance",
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             caseTemplateData = {
                 "templateName": commonName,
                 "templateSummary": randomStr + "Summary DRDMV767",
                 "caseStatus": "InProgress",
                 "templateStatus": "Active",
-                "assignee": "Fritz",
                 "company": "Petramco",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "ownerBU": "Facilities Support",
-                "ownerGroup": "Facilities",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": 'qkatawazi',
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3",
                 "supportCompany": "Petramco",
-                "categoryTier1": "Purchasing Card",
-                "categoryTier2": "Policies",
-                "categoryTier3": "Card Issuance",
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
                 "priority": "Low",
             }
             let caseData = {
@@ -477,29 +477,30 @@ describe("Quick Case", () => {
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
-                "categoryTier1": "Purchasing Card",
-                "categoryTier2": "Policies",
-                "categoryTier3": "Card Issuance",
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
                 "Assignee": "qkatawazi"
             }
             let assignmentData = {
                 "assignmentMappingName": commonName,
                 "company": "Petramco",
                 "supportCompany": "Petramco",
+                "businessUnit": "HR Support",
                 "supportGroup": "Employee Relations",
-                "assignee": "qliu",
-                "categoryTier1": "Purchasing Card",
-                "categoryTier2": "Policies",
-                "categoryTier3": "Card Issuance",
+                "assignee": "Elizabeth",
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
                 "priority": "Low",
             }
             let articleData1 = {
                 "knowledgeSet": "HR",
                 "title": commonName,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-                "categoryTier1": "Applications",
-                "categoryTier2": "Help Desk",
-                "categoryTier3": "Incident",
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
                 "region": "Australia",
                 "site": "Canberra",
                 "assignedCompany": "Petramco",
@@ -507,7 +508,7 @@ describe("Quick Case", () => {
                 "assigneeSupportGroup": "AU Support 3",
                 "assignee": "KWilliamson"
             }
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             let automationTaskTemplate = await apiHelper.createAutomatedTaskTemplate(tasktemplateData);
             let newCaseTemplate = await apiHelper.createCaseTemplate(caseTemplateData);
             await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, automationTaskTemplate.displayId);
@@ -516,15 +517,13 @@ describe("Quick Case", () => {
             await apiHelper.createKnowledgeArticle(articleData1);
         });
         it('[DRDMV-767]: Case creation with template', async () => {
-            await navigationPo.signOut();
-            await loginPo.login('fritz');
             await navigationPo.gotoQuickCase();
             await quickCasePo.selectRequesterName("adam");
             await quickCasePo.selectCaseTemplate(caseTemplateData.templateName);
         });
         it('[DRDMV-767]: Case creation with template', async () => {
             await quickCasePo.clickStartOverButton();
-            await quickCasePo.selectRequesterName("fritz");
+            await quickCasePo.selectRequesterName("adam");
             await quickCasePo.selectDrpDownValueByIndex('Another person contacting on behalf of the requester', 1);
             await quickCasePo.clickStartOverButton();
             await quickCasePo.selectRequesterName("chetan");
@@ -540,11 +539,11 @@ describe("Quick Case", () => {
         });
         it('[DRDMV-767]: [Quick Case] Case creation with template (end-to-end)', async () => {
             expect(await viewCasePo.getCaseSummary()).toBe(caseTemplateData.templateName, "Template is not Found");
-            expect(await viewCasePo.getCategoryTier1Value()).toBe('Purchasing Card', "Category is not displaying");
-            expect(await viewCasePo.getCategoryTier2Value()).toBe('Policies', "Category is not displaying");
-            expect(await viewCasePo.getCategoryTier3Value()).toBe('Card Issuance', "Category is not displaying");
+            expect(await viewCasePo.getCategoryTier1Value()).toBe('Employee Relations', "Category is not displaying");
+            expect(await viewCasePo.getCategoryTier2Value()).toBe('Compensation', "Category is not displaying");
+            expect(await viewCasePo.getCategoryTier3Value()).toBe('Bonus', "Category is not displaying");
             expect(await viewCasePo.getCaseStatusValue()).toBe('In Progress', "Status is not displaying");
-            expect(await viewCasePo.getAssignedGroupText()).toBe('Facilities');
+            expect(await viewCasePo.getAssignedGroupText()).toBe('US Support 3');
             expect(await viewCasePo.getAssignedCompanyText()).toBe('Petramco');
             expect(await viewCasePo.getCaseTemplateText()).toBe(caseTemplateData.templateName);
             expect(await activityPo.isTextPresentInActivityLog("created the case")).toBeTruthy("Text is not present in activiy tab1");
@@ -998,20 +997,20 @@ describe("Quick Case", () => {
                 "templateSummary": randomStr + "Summary1",
                 "templateStatus": "Draft",
                 "company": "- Global -",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
             }
             templateData2 = {
                 "templateName": randomStr + "CaseTemplate2",
                 "templateSummary": randomStr + "Summary2",
                 "templateStatus": "Draft",
                 "company": "Petramco",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
             }
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createCaseTemplate(templateData1);
             await apiHelper.createCaseTemplate(templateData2);
         });
@@ -1089,8 +1088,6 @@ describe("Quick Case", () => {
             await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
             await utilCommon.closePopUpMessage();
             await viewCasetemplatePo.selectTab('Template Access');
-            await templateAccessTabPo.deleteTemplateAccess('Petramco');
-            await templateAccessTabPo.deleteTemplateAccess('- Global -');
             await templateAccessTabPo.deleteTemplateAccess('Employee Relations');
             await utilCommon.clickOnBackArrow();
             await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData2.templateName);
@@ -1099,7 +1096,6 @@ describe("Quick Case", () => {
             await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
             await utilCommon.closePopUpMessage();
             await viewCasetemplatePo.selectTab('Template Access');
-            await templateAccessTabPo.deleteTemplateAccess('Petramco');
             await templateAccessTabPo.deleteTemplateAccess('Employee Relations');
             await utilCommon.clickOnBackArrow();
             await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData1.templateName);

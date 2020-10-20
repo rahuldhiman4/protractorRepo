@@ -14,7 +14,7 @@ class EditCaseTemplate {
         cancelButton: '[rx-view-component-id="a68b0e71-032d-4ecf-9d12-e0cd49f4b652"] button',
         templateStatusReadOnly:'[rx-view-component-id="88cf66ca-8be6-46b2-93e0-52890187dffb"] .ui-select-match',
         companyDropDown: '127214a1-bfc0-4a8c-acb7-cd2be137fa3c',
-        flowset: '2fe19a48-630b-4380-8b17-cbff70023a89',
+        flowset: '12abf0f1-146b-4c94-bd9b-d7a55200153d',
         resolveCaseOnLastTaskCompletion:'e4956197-0230-4272-8fc4-87358bd084bf',
         casePriority: '98327bc1-9ada-48f9-ab88-9787ddecd409',
         caseStatusGuid: '5289a531-7138-4e4f-afdc-ee3f67a2aa64',
