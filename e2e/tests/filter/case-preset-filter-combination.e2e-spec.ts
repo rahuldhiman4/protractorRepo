@@ -60,11 +60,10 @@ describe('Case Console Filter Combinations', () => {
         });
 
         it('[DRDMV-23477]: Verify records are fetched on case console with Assignee, Assigned Group, Status combinations', async () => {
-
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Assignee', 'Elizabeth Peters', 'text');
-            await utilityGrid.addFilter('Assigned Group', 'Employee Relations', 'text');
             await utilityGrid.addFilter('Status', 'Assigned', 'text');
+            await utilityGrid.addFilter('Assigned Group', 'Employee Relations', 'text');
             expect(await utilityGrid.isAppliedFilterMatches(['Assignee: Elizabeth Peters', 'Assigned Group: Employee Relations', 'Status: Assigned'])).toBeTruthy();
             await utilityGrid.saveFilter('Filter1');
             await utilityGrid.clickRefreshIcon();
