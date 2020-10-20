@@ -721,7 +721,7 @@ class ActivityTabPage {
     }
 
     async isLeftAlignTextDisplayedInActivity(bodyText: string, activityNumber: number): Promise<boolean> {
-        let getTextmsg = await $$('.activity__wrapper .collapse-block div div[style="position: relative;"]').get(activityNumber - 1).getText();
+        let getTextmsg = await $$(this.selectors.activityLogBody).get(activityNumber - 1).$$('div[style="position: relative;"]').get(0).getText();
         if (getTextmsg.trim().includes(bodyText)) {
             return true;
         } else return false;
