@@ -123,8 +123,6 @@ class CreateTaskTemplatePage {
     }
 
     async setNewProcessName(bundle: string, inputValue: string): Promise<void> {
-        await utilCommon.selectToggleButton(this.selectors.toggleBox, true);
-        await utilCommon.selectDropDown(this.selectors.processBundleIdDrpDownForNewProcess, bundle);
         await $(this.selectors.newProcessName).clear();
         await $(this.selectors.newProcessName).sendKeys(inputValue);
     }
