@@ -162,12 +162,12 @@ describe('Case Activity Multi Logs', () => {
                 "processName": `Case Process ${randomStr}`,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "Canada Support",
+                "ownerGroup": "CA Support 1"
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createAutomatedTaskTemplate(autoTemplateData);
-
+            
             // Create Manual / External Task Template
             let taskTemplateData = {
                 "templateName": "DRDMV-21619_templateName" + randomStr,
@@ -175,23 +175,22 @@ describe('Case Activity Multi Logs', () => {
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "Canada Support",
+                "ownerGroup": "CA Support 1"
             }
             // Create manual Task Template
-            taskTemplateData.templateName = 'DRDMV-21619_ManualTaskTemplateName' + randomStr;
-            manualTemplateSummary = taskTemplateData.templateSummary = 'DRDMV-21619_ManualTaskTemplateSummary_' + randomStr;
+            taskTemplateData.templateName = 'DRDMV21619ManualTaskTemplateName' + randomStr;
+            manualTemplateSummary = taskTemplateData.templateSummary = 'DRDMV21619ManualTaskTemplateSummary' + randomStr;
             await apiHelper.createManualTaskTemplate(taskTemplateData);
-
             // Create External Task Template
-            taskTemplateData.templateName = 'DRDMV-21619_ExternalTaskTemplateName' + randomStr;
-            externalTemplateSummary = taskTemplateData.templateSummary = 'DRDMV-21619_ExternalTaskTemplateSummary_' + randomStr;
+            taskTemplateData.templateName = 'DRDMV21619ExternalTaskTemplateName' + randomStr;
+            externalTemplateSummary = taskTemplateData.templateSummary = 'DRDMV-21619ExternalTaskTemplateSummary' + randomStr;
             await apiHelper.createExternalTaskTemplate(taskTemplateData);
-
+            
             // Create Case
             let caseData = {
                 "Requester": "qtao",
-                "Summary": "DRDMV-21619_TC",
+                "Summary": "DRDMV21619TC"+randomStr,
                 "Assigned Company": "Petramco",
                 "Business Unit": "Canada Support",
                 "Support Group": "CA Support 1",
@@ -464,7 +463,7 @@ describe('Case Activity Multi Logs', () => {
             // Create Case
             let caseData = {
                 "Requester": "qtao",
-                "Summary": "DRDMV-21619_TC",
+                "Summary": "DRDMV-16737]_TC",
                 "Assigned Company": "Petramco",
                 "Business Unit": "Canada Support",
                 "Support Group": "CA Support 1",
@@ -473,6 +472,7 @@ describe('Case Activity Multi Logs', () => {
 
             await apiHelper.apiLogin('qkatawazi');
             newCase = await apiHelper.createCase(caseData);
+            console.log('DRDMV-16737>>>newCase.displayId>>>>>>>>>>>>>>',newCase.displayId);//keeping this for temporary to check tommarow full run result
 
             // Create General Notes 
             for (let a = 0; a < 100; a++) {
@@ -520,6 +520,7 @@ describe('Case Activity Multi Logs', () => {
         });
 
         it('[DRDMV-16737]: Verify Gerneral Notes 100 Activity', async () => {
+            await activityTabPage.scrollToActivity(1);
             await activityTabPage.clickOnFilterButton();
             await activityTabPage.selectFilterCheckBox('General Notes');
             await activityTabPage.clickOnFilterApplyButton();
