@@ -49,8 +49,8 @@ describe('Case Activity CKE Styling', () => {
                 "templateStatus": "Active",
                 "taskCompany": '- Global -',
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "Canada Support",
+                "ownerGroup": "CA Support 1"
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createManualTaskTemplate(manualTemplateData);
@@ -64,8 +64,8 @@ describe('Case Activity CKE Styling', () => {
                 "processName": `Case Process ${summary}`,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "Canada Support",
+                "ownerGroup": "CA Support 1"
             }
             await apiHelper.createAutomatedTaskTemplate(autoTemplateData);
 
@@ -76,8 +76,8 @@ describe('Case Activity CKE Styling', () => {
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "Canada Support",
+                "ownerGroup": "CA Support 1"
             }
             await apiHelper.createExternalTaskTemplate(externalTemplateData);
 
