@@ -463,7 +463,7 @@ describe('Case Activity Multi Logs', () => {
             // Create Case
             let caseData = {
                 "Requester": "qtao",
-                "Summary": "DRDMV-16737]_TC",
+                "Summary": "DRDMV-16737_TC",
                 "Assigned Company": "Petramco",
                 "Business Unit": "Canada Support",
                 "Support Group": "CA Support 1",
@@ -472,7 +472,6 @@ describe('Case Activity Multi Logs', () => {
 
             await apiHelper.apiLogin('qkatawazi');
             newCase = await apiHelper.createCase(caseData);
-            console.log('DRDMV-16737>>>newCase.displayId>>>>>>>>>>>>>>',newCase.displayId);//keeping this for temporary to check tommarow full run result
 
             // Create General Notes 
             for (let a = 0; a < 100; a++) {
