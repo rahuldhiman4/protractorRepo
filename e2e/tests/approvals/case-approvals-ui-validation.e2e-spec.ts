@@ -730,11 +730,11 @@ describe("Case Approval UI Validations", () => {
             await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
         });
         it('[DRDMV-22395,DRDMV-22398]:Tiggered the Approval on Case and check Case View screen by Approver should show Approval component', async () => {
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qstrong');
             let response = await apiHelper.createCase(caseData);
             caseId = response.displayId;
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('qstrong');
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.isApprovalButtonsPresent("Approve")).toBeFalsy();
@@ -820,6 +820,8 @@ describe("Case Approval UI Validations", () => {
         afterAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.deleteApprovalMapping(caseModule);
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
         });
     });
 
@@ -843,8 +845,6 @@ describe("Case Approval UI Validations", () => {
                 "ownerBU": "United States Support",
                 "ownerGroup": "US Support 3"
             }
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
             await apiHelper.apiLogin('qkatawazi');
             let caseTemplateResponse = await apiHelper.createCaseTemplate(caseTemplateData);
             let caseTemplateDisplayId = caseTemplateResponse.displayId;
