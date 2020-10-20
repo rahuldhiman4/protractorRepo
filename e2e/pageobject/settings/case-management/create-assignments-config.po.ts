@@ -41,6 +41,10 @@ class AssignmentConfigCreatePage {
         await utilCommon.selectDropDown(this.selectors.businessUnitDrpDwn, bu);
     }
 
+    async setDepartement(department:string){
+        await utilCommon.selectDropDown(this.selectors.departmentDrpDwn, department);
+    }
+
     async setFlowset(flowset:string){
         await utilCommon.selectDropDown(this.selectors.flowsetDrpDwn, flowset);
     }
@@ -90,7 +94,7 @@ class AssignmentConfigCreatePage {
             }
             arr = arr.sort();
             arr = arr.filter(v=>v!='');
-            data = data.sort();
+            data = data.sort();          
             return arr.length === data.length && arr.every(
                 (value, index) => (value === data[index])
             );
