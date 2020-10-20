@@ -52,6 +52,7 @@ import { ICreateSVT } from '../data/interface/svt.interface';
 import { IAdhocTask, ITaskUpdate } from '../data/interface/task.interface';
 import { ICaseTemplate, IEmailTemplate, INotesTemplate, ITaskTemplate } from '../data/interface/template.interface';
 import loginPage from "../pageobject/common/login.po";
+import { NOTES_TEMPLATE } from '../data/api/social/notes.template.api';
 let fs = require('fs');
 
 axios.defaults.baseURL = browser.baseUrl;
@@ -1284,17 +1285,17 @@ class ApiHelper {
     }
 
     async createNotesTemplate(module: string, data: INotesTemplate): Promise<boolean> {
-        let notesTemplateFile = await require('../data/api/social/notes.template.api.json');
-        let templateData = await notesTemplateFile.NotesTemplateData;
-        let companyGuid = await apiCoreUtil.getOrganizationGuid(data.company);
-        templateData.processInputValues["Company"] = companyGuid;
+        let templateData = NOTES_TEMPLATE;
+        templateData.processInputValues["Company"] = await apiCoreUtil.getOrganizationGuid(data.company);
         templateData.processInputValues["Template Name"] = data.templateName;
         templateData.processInputValues["Status"] = data.templateStatus;
         templateData.processInputValues["MessageBody"] = data.body;
         if (data.label) {
             templateData.processInputValues["Label"] = await apiCoreUtil.getLabelGuid(data.label);
         }
-
+        if (data.lineOfBusiness) {
+            templateData.processInputValues["Line of Business"] = await constants.LOB[data.lineOfBusiness];
+        }
         switch (module) {
             case "Case": {
                 templateData.processInputValues["Module"] = "Cases";
