@@ -23,6 +23,7 @@ describe('Case Console Filter Combinations', () => {
 
     afterAll(async () => {
         await utilityCommon.closeAllBlades();
+        await utilityGrid.clearFilter();
         await navigationPage.signOut();
     });
 
