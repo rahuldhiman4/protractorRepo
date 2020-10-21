@@ -542,38 +542,17 @@ describe("Attachment", () => {
     //kgaikwad
     describe('[DRDMV-15252]: Verify Category tier 4 and Label field is added on views', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let categName1 = 'DemoCateg1';
-        let categName2 = 'DemoCateg2';
-        let categName3 = 'DemoCateg3';
-        let categName4 = 'DemoCateg4';
-        let label = 'labelDRDMV15252'+randomStr;
+        let categName1 = 'Employee Relations';
+        let categName2 = 'Compensation';
+        let categName3 = 'Bonus';
+        let categName4 = 'Retention Bonus';
+        let label = 'Payroll';
         let summary= 'summaryDRDMV15252'+randomStr;
         let title= 'titleDRDMV15252'+randomStr;
 
         beforeAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
-
-            // Create Label
-            await apiHelper.apiLogin('qkatawazi');
-            let menuItemData = {
-                "menuItemName": "TestMenuItemName",
-                "menuItemStatus": "Active",
-                "menuType": "Label",
-                "uiVisible": "1"
-            }
-            menuItemData.menuItemName = label;
-            await apiHelper.createNewMenuItem(menuItemData);
-            
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.createOperationalCategory(categName1);
-            await apiHelper.createOperationalCategory(categName2);
-            await apiHelper.createOperationalCategory(categName3);
-            await apiHelper.createOperationalCategory(categName4);
-            await apiHelper.associateCategoryToOrganization(categName1, 'Petramco');
-            await apiHelper.associateCategoryToCategory(categName1, categName2);
-            await apiHelper.associateCategoryToCategory(categName2, categName3);
-            await apiHelper.associateCategoryToCategory(categName3, categName4);
         });
 
         it('[DRDMV-15252]: Verify Category Tier 4 With Case ', async () => {
