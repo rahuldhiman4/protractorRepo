@@ -181,6 +181,7 @@ describe('Date and Time Preset Filter', () => {
             await dateTimeSelectorPo.setMinute(11);
             await dateTimeSelectorPo.clickMeridianValue("AM");
             expect(await utilityGrid.isNoFilterAppliedError()).toBeTruthy();
+            await utilityGrid.clearFilter();
         });
     });
 

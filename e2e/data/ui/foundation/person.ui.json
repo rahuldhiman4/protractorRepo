@@ -19,7 +19,7 @@
         "firstName": "BOPerson",
         "lastName": "BOlnPerson",
         "userId": "idPersonBO",
-        "company": "Petramco"
+        "userPermission":  ["Case Business Analyst","Human Resource"]
     },
     "PersonData12111": {
         "firstName": "fnPerson12111",

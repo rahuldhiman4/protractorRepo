@@ -183,6 +183,7 @@ describe('Case Console Filter Combinations', () => {
             expect(await utilityGrid.isGridColumnSorted('Priority', 'desc')).toBeTruthy('Descendigly not sorted');
             expect(await utilityGrid.isGridColumnSorted('Modified Date', 'asc')).toBeTruthy('Ascendigly not sorted');
             expect(await utilityGrid.isGridColumnSorted('Modified Date', 'desc')).toBeTruthy('Descendigly not sorted');
+            await utilityGrid.clearFilter();
         });
     });
     describe('[DRDMV-23479]:Verify records are fetched on case console with case Site, Region, Status combinations', () => {
@@ -257,6 +258,7 @@ describe('Case Console Filter Combinations', () => {
             for (let i: number = 0; i < 4; i++) {
                 expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeFalsy(caseId[i] + ' :Record is available');
             }
+            await utilityGrid.clearFilter();
         });
     });
     describe('[DRDMV-23492]:Verify records are fetched on case console with Label and Assigned group combinations', () => {
@@ -328,6 +330,7 @@ describe('Case Console Filter Combinations', () => {
             for (let i: number = 3; i < 4; i++) {
                 expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeFalsy(caseId[i] + ' :Record is available');
             }
+            await utilityGrid.clearFilter();
         });
     });
     describe('[DRDMV-23480]:Verify records are fetched on case console with Source and Assignee combinations', () => {
@@ -426,6 +429,7 @@ describe('Case Console Filter Combinations', () => {
             for (let i: number = 0; i < 3; i++) {
                 expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeFalsy(caseId[i] + ' :Record is available');
             }
+            await utilityGrid.clearFilter();
         });
     });
 })
