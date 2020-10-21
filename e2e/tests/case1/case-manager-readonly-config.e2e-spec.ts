@@ -3,6 +3,7 @@ import apiHelper from "../../api/api.helper";
 import { NOTES_TEMPLATE_MANDATORY_FIELD } from '../../data/ui/Social/notesTemplate.api';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
+import { CASE_MANAGEMENT_LIB_PROCESS, SOCIAL_SERVICE_PROCESS } from '../../data/ui/flowset/process-for-flowset.data.ui';
 import menuItemEditPage from "../../pageobject/settings/application-config/edit-menu-items-config.po";
 import menuItemsConfigConsole from "../../pageobject/settings/application-config/menu-items-config-console.po";
 import assignmentConfigConsole from "../../pageobject/settings/case-management/assignments-config-console.po";
@@ -51,7 +52,9 @@ import viewTaskTemplatePage from '../../pageobject/settings/task-management/view
 import documentTemplateConsolePo from '../../pageobject/settings/document-management/document-template-console.po';
 import editDocumentTemplatePage from '../../pageobject/settings/document-management/edit-document-template.po';
 import { flowsetMandatoryFields } from '../../data/ui/flowset/flowset.ui';
+import { SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
 import { cloneDeep } from 'lodash';
+import apiCoreUtil from '../../api/api.core.util';
 
 describe('Case Manager Read-only Config', () => {
     let caseModule = 'Case';
@@ -81,46 +84,92 @@ describe('Case Manager Read-only Config', () => {
     });
 
     // asahitya
-    it('[DRDMV-18037]: Check Case manager is not able to perform Create Update Delete operation on Read Access mapping', async () => {
-        await navigationPage.gotoCreateCase();
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
-        expect(await caseReadAccessConfigConsole.isAddButtonDisplayed()).toBeFalsy();
-        await utilGrid.searchAndSelectAllCheckBoxWOGrid("Relocation - Facilities Access Mapping");
-        expect(await caseReadAccessConfigConsole.isDeleteButtonDisplayed()).toBeFalsy();
-        await utilGrid.searchAndOpenHyperlink("Relocation - Facilities Access Mapping");
-        expect(await caseReadAccessConfigEditPage.isAccessMappingNameDisabled()).toBeTruthy();
-        expect(await caseReadAccessConfigEditPage.isDefaultToggleBtnDisabled()).toBeTruthy();
-        expect(await caseReadAccessConfigEditPage.isSaveBtnDisabled()).toBeTruthy();
+    describe('[DRDMV-18037]: Check Case manager is not able to perform Create Update Delete operation on Read Access mapping', async () => {
+        let readAccessMappingData, randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        beforeAll(async () => {
+            readAccessMappingData = {
+                "configName": 'Read Access Mapping Name' + randomStr,
+                "assignedCompany": 'Petramco',
+                "businessUnit": 'HR Support',
+                "supportGroup": 'Compensation and Benefits',
+                "company": 'Petramco',
+                "category1": "Employee Relations"
+            }
+
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createReadAccessMapping(readAccessMappingData);
+        });
+        it('[DRDMV-18037]: Check Case manager is not able to perform Create Update Delete operation on Read Access mapping', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            expect(await caseReadAccessConfigConsole.isAddButtonDisplayed()).toBeFalsy();
+            await utilGrid.searchAndSelectAllCheckBoxWOGrid('Read Access Mapping Name' + randomStr);
+            expect(await caseReadAccessConfigConsole.isDeleteButtonDisplayed()).toBeFalsy();
+            await utilGrid.searchAndOpenHyperlink('Read Access Mapping Name' + randomStr);
+            expect(await caseReadAccessConfigEditPage.isAccessMappingNameDisabled()).toBeTruthy();
+            expect(await caseReadAccessConfigEditPage.isDefaultToggleBtnDisabled()).toBeTruthy();
+            expect(await caseReadAccessConfigEditPage.isSaveBtnDisabled()).toBeTruthy();
+        });
     });
 
     // asahitya
-    it('[DRDMV-18072]: Check Case manager is not able to perform Create Update operation on Process Library configuration', async () => {
-        await navigationPage.gotoCreateCase();
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
-        expect(await processLibraryConfigConsole.isRegisterProcessBtnDisplayed()).toBeFalsy();
-        await utilGrid.searchAndOpenHyperlink("Facilities - Lifecycle Investigation");
-        expect(await processLibraryEditPage.isDescriptionDisabled()).toBeTruthy("Description field is enabled");
-        expect(await processLibraryEditPage.isStatusDisabled()).toBeTruthy("Status field is enabled");
-        expect(await processLibraryEditPage.isSaveButtonDisabled()).toBeTruthy("Save button is enabled");
+    describe('[DRDMV-18072]: Check Case manager is not able to perform Create Update operation on Process Library configuration', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        beforeAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            let social_Service = SOCIAL_SERVICE_PROCESS;
+            let social_Service_Process = social_Service.name + randomStr;
+            social_Service.name = social_Service_Process;
+            await apiCoreUtil.createProcess(social_Service);
+
+            let processLibConfData1 = {
+                applicationServicesLib: "com.bmc.dsm.social-lib",
+                processName: social_Service_Process,
+                processAliasName: `Process${randomStr}`,
+                company: "Petramco",
+                description: `description${randomStr}`,
+                status: "Active"
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createProcessLibConfig(processLibConfData1);
+        });
+        it('[DRDMV-18072]: Check Case manager is not able to perform Create Update operation on Process Library configuration', async () => {
+            await navigationPage.gotoCreateCase();
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
+            expect(await processLibraryConfigConsole.isRegisterProcessBtnDisplayed()).toBeFalsy();
+            await utilGrid.searchAndOpenHyperlink(`Process${randomStr}`);
+            expect(await processLibraryEditPage.isDescriptionDisabled()).toBeTruthy("Description field is enabled");
+            expect(await processLibraryEditPage.isStatusDisabled()).toBeTruthy("Status field is enabled");
+            expect(await processLibraryEditPage.isSaveButtonDisabled()).toBeTruthy("Save button is enabled");
+        });
     });
 
     // asahitya
-    it('[DRDMV-18069]: Check Case manager is not able to perform Create Update operation on Menu Items', async () => {
-        await navigationPage.gotoCreateCase();
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
-        expect(await menuItemsConfigConsole.isAddButtonDisplayed()).toBeFalsy();
-        await utilGrid.searchAndOpenHyperlink("Email");
-        expect(await menuItemEditPage.isMenuItemsStatusDisabled()).toBeTruthy("Status field is enabled");
-        expect(await menuItemEditPage.isDefaultToggleBtnDisabled()).toBeTruthy("Default Toggle is enabled");
-        expect(await menuItemEditPage.isSaveButtonDisabled()).toBeTruthy("Save button is enabled");
+    describe('[DRDMV-18069]: Check Case manager is not able to perform Create Update operation on Menu Items', async () => {
+        let randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let label;
+        beforeAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            let menuItemData = cloneDeep(SAMPLE_MENU_ITEM);
+            label = menuItemData.menuItemName + randomStr;
+            menuItemData.menuItemName = label;
+            await apiHelper.apiLogin('elizabeth');
+            await apiHelper.createNewMenuItem(menuItemData);
+        });
+        it('[DRDMV-18069]: Check Case manager is not able to perform Create Update operation on Menu Items', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
+            expect(await menuItemsConfigConsole.isAddButtonDisplayed()).toBeFalsy();
+            await utilGrid.searchAndOpenHyperlink(label);
+            expect(await menuItemEditPage.isMenuItemsStatusDisabled()).toBeTruthy("Status field is enabled");
+            expect(await menuItemEditPage.isDefaultToggleBtnDisabled()).toBeTruthy("Default Toggle is enabled");
+            expect(await menuItemEditPage.isSaveButtonDisabled()).toBeTruthy("Save button is enabled");
+        });
     });
 
     // asahitya
     it('[DRDMV-18038]: Check Case manager is not able to perform Create Update Delete operation on Case-> Status Configuration', async () => {
-        await navigationPage.gotoCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
         await statusConfig.setCompanyDropdown("Petramco", 'case');
@@ -138,7 +187,6 @@ describe('Case Manager Read-only Config', () => {
 
     // asahitya
     it('[DRDMV-18169]: Check Case manager is not able to perform Create Update operation on Goal Type', async () => {
-        await navigationPage.gotoCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Service Level Management--Goal Type', 'Goal Type - Business Workflows');
         expect(await goalTypeConfigConsole.isAddGoalTypeBtnDisplayed()).toBeFalsy("Add button is enabled");
@@ -149,7 +197,6 @@ describe('Case Manager Read-only Config', () => {
 
     // asahitya
     it('[DRDMV-18095]: Check Case manager is not able to perform Create Update operation on Configure Data Source', async () => {
-        await navigationPage.gotoCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Service Level Management--Configure Data Source', 'Configure Data Source - Administration - Business Workflows');
         console.log("bbb");
@@ -166,7 +213,6 @@ describe('Case Manager Read-only Config', () => {
     it('[DRDMV-18093]: Check Case manager is not able to perform Create Update operation on Business Time Shared Entity', async () => {
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createBusinessTimeSharedEntity('India Business Hours');
-        await navigationPage.gotoCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Service Level Management--Business Time Shared Entity', 'Business Time Shared Entity Console - Business Workflows');
         expect(await businessTimeSharedEntityConfigConsole.isAddBtnDisplayed()).toBeFalsy("Add button is enabled");
@@ -182,7 +228,6 @@ describe('Case Manager Read-only Config', () => {
     it('[DRDMV-18083]: Check Case manager is not able to perform Create Update operation on Business Time Segment', async () => {
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createBusinessTimeSegment('India Available M-F 9AM-5PM');
-        await navigationPage.gotoCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Service Level Management--Business Time Segment', 'Business Time Segment Console - Business Workflows');
         expect(await businessTimeSegmentConfigConsole.isAddBusinessSegmentBtnDisplayed()).toBeFalsy("Add Business Time Segment button is enabled");
@@ -219,7 +264,6 @@ describe('Case Manager Read-only Config', () => {
         NOTES_TEMPLATE_MANDATORY_FIELD.templateName = NOTES_TEMPLATE_MANDATORY_FIELD.templateName + randomStr;
         await apiHelper.createNotesTemplate("Task", NOTES_TEMPLATE_MANDATORY_FIELD);
 
-        await navigationPage.gotoCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', 'Activity Notes Template Console - Task - Business Workflows');
         expect(await notesTemplateConsole.isAddNotesTemplateBtnDisplayed()).toBeFalsy("Add notes template button is enabled");
@@ -238,7 +282,6 @@ describe('Case Manager Read-only Config', () => {
         NOTES_TEMPLATE_MANDATORY_FIELD.templateName = NOTES_TEMPLATE_MANDATORY_FIELD.templateName + randomStr;
         await apiHelper.createNotesTemplate("People", NOTES_TEMPLATE_MANDATORY_FIELD);
 
-        await navigationPage.gotoCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'Activity Notes Template Console - Person - Business Workflows');
         expect(await notesTemplateConsole.isAddNotesTemplateBtnDisplayed()).toBeFalsy("Add notes template button is enabled");
@@ -258,7 +301,6 @@ describe('Case Manager Read-only Config', () => {
         flowsetMandatoryFieldsData.flowsetName = flowsetMandatoryFieldsData.flowsetName + randomStr;
         await apiHelper.createNewFlowset(flowsetMandatoryFieldsData);
 
-        await navigationPage.gotoCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', 'Flowsets - Console - Business Workflows');
         expect(await flowsetConsole.isAddFlowsetButtonDisplayed()).toBeFalsy("Add button is enabled");
@@ -279,7 +321,6 @@ describe('Case Manager Read-only Config', () => {
 
     // asahitya
     it('[DRDMV-18077]: Check Case manager is not able to perform Create Update operation on Case to Case Relationship', async () => {
-        await navigationPage.gotoCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Relationships--Case to Case', 'Case to Case Relationship Console - Business Workflows');
         expect(await relationshipsConfigsPage.isAddRelationButtonEnabled()).toBeFalsy('Add Button is enabled');
@@ -289,7 +330,6 @@ describe('Case Manager Read-only Config', () => {
 
     // asahitya
     it('[DRDMV-18078]: Check Case manager is not able to perform Create Update operation on Case to Person Relationship', async () => {
-        await navigationPage.gotoCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Relationships--Case to Person', 'Case To Person Relationship Console - Business Workflows');
         expect(await relationshipsConfigsPage.isAddRelationButtonEnabled()).toBeFalsy('Add Button is enabled');
@@ -299,7 +339,6 @@ describe('Case Manager Read-only Config', () => {
 
     // asahitya
     it('[DRDMV-18079]: Check Case manager is not able to perform Create Update operation on Person to Person Relationship', async () => {
-        await navigationPage.gotoCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Relationships--Person to Person', 'Person To Person Relationship console - Business Workflows');
         expect(await relationshipsConfigsPage.isAddRelationButtonEnabled()).toBeFalsy('Add Button is enabled');
@@ -316,7 +355,6 @@ describe('Case Manager Read-only Config', () => {
         emailTemplateData['emailTemplateWithMandatoryField'].TemplateName = emailTemplateName;
         await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateWithMandatoryField']);
 
-        await navigationPage.gotoCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
         expect(await emailTemplateConsolePage.isAddEmailTemplateButtonDisplayed()).toBeFalsy('Add Email Template Button is enabled');
@@ -326,11 +364,11 @@ describe('Case Manager Read-only Config', () => {
         await utilGrid.searchAndOpenHyperlink(emailTemplateName);
         expect(await editEmailTemplatePage.isTemplateNameEnabled()).toBeFalsy('Template Name is enabled');
         expect(await editEmailTemplatePage.isStatusFieldEnabled()).toBeFalsy('Status field is enabled');
-        expect(await editEmailTemplatePage.isLocalizedMessageButtonEnabled()).toBeFalsy('Localized Message button is enabled');
+        expect(await editEmailTemplatePage.isLocalizedMessageButtonEnabled()).toBeTruthy('Localized Message button is enabled');
         await editEmailTemplatePage.clickOnBodyCheckbox();
-        expect(await editEmailTemplatePage.isEditButtonEnabled()).toBeFalsy('Edit Body button is enabled');
+        expect(await editEmailTemplatePage.isEditButtonEnabled()).toBeTruthy('Edit Body button is enabled');
         await editEmailTemplatePage.clickOnSubjectCheckbox();
-        expect(await editEmailTemplatePage.isEditButtonEnabled()).toBeFalsy('Edit Subject button is enabled');
+        expect(await editEmailTemplatePage.isEditButtonEnabled()).toBeTruthy('Edit Subject button is enabled');
     });
 
     //asahitya
@@ -342,7 +380,6 @@ describe('Case Manager Read-only Config', () => {
         emailTemplateData['emailTemplateWithMandatoryField'].TemplateName = emailTemplateName;
         await apiHelper.createEmailAcknowledgementTemplate(emailTemplateData['emailTemplateWithMandatoryField']);
 
-        await navigationPage.gotoCreateCase();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
         expect(await acknowledgementTemplateConsolePage.isAddAcknowledgeTemplateButtonDisplayed()).toBeFalsy('Add Email Template Button is enabled');
@@ -352,11 +389,11 @@ describe('Case Manager Read-only Config', () => {
         await utilGrid.searchAndOpenHyperlink(emailTemplateName);
         expect(await editAcknowledementTemplatePage.isTemplateNameEnabled()).toBeFalsy('Template Name is enabled');
         expect(await editAcknowledementTemplatePage.isStatusFieldEnabled()).toBeFalsy('Status field is enabled');
-        expect(await editAcknowledementTemplatePage.isLocalizedMessageButtonEnabled()).toBeFalsy('Localized Message button is enabled');
+        expect(await editAcknowledementTemplatePage.isLocalizedMessageButtonEnabled()).toBeTruthy('Localized Message button is enabled');
         await editAcknowledementTemplatePage.clickOnBodyCheckbox();
-        expect(await editAcknowledementTemplatePage.isEditButtonEnabled()).toBeFalsy('Edit Body button is enabled');
+        expect(await editAcknowledementTemplatePage.isEditButtonEnabled()).toBeTruthy('Edit Body button is enabled');
         await editAcknowledementTemplatePage.clickOnSubjectCheckbox();
-        expect(await editAcknowledementTemplatePage.isEditButtonEnabled()).toBeFalsy('Edit Subject button is enabled');
+        expect(await editAcknowledementTemplatePage.isEditButtonEnabled()).toBeTruthy('Edit Subject button is enabled');
     });
 
     //asahitya
@@ -426,7 +463,7 @@ describe('Case Manager Read-only Config', () => {
         expect(await editServiceTargetGroupPage.isSaveBtnEnabled()).toBeFalsy('Save button is enabled');
         await editServiceTargetGroupPage.clickClose();
         await utilGrid.searchAndSelectGridRecord(svtGrpName);
-        expect(await serviceTargetGroupConsole.isDeleteButtonEnabled()).toBeFalsy('Delete Button is enabled'); 
+        expect(await serviceTargetGroupConsole.isDeleteButtonEnabled()).toBeFalsy('Delete Button is enabled');
     });
 
     //asahitya
@@ -471,7 +508,7 @@ describe('Case Manager Read-only Config', () => {
             "mappingName": "Approval Mapping Name" + randomStr
         }
         await apiHelper.deleteApprovalMapping(caseModule);
-        await apiHelper.createApprovalMapping(caseModule,approvalMappingData);
+        await apiHelper.createApprovalMapping(caseModule, approvalMappingData);
 
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', 'Configure Case Approvals - Business Workflows');
@@ -558,7 +595,7 @@ describe('Case Manager Read-only Config', () => {
 
     //asahitya
     it('[DRDMV-18059]: Check Case manager is not able to perform Create operation on Task template', async () => {
-        let taskTemplateName = 'DRDMV-18059' +  [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let taskTemplateName = 'DRDMV-18059' + [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let taskTemplateData = {
             "templateName": taskTemplateName,
             "templateSummary": taskTemplateName,
@@ -592,12 +629,12 @@ describe('Case Manager Read-only Config', () => {
     });
 
     it('[DRDMV-18076]: Check Case manager is not able to perform Create Update Delete operation on Document Template', async () => {
-        let documentTemplateName = 'DRDMV-18076' +  [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let documentTemplateName = 'DRDMV-18076' + [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let documentTemplateData = {
             "templateName": documentTemplateName,
             "description": documentTemplateName + "desc",
             "messageBody": "Message Body"
-        }        
+        }
 
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createDocumentTemplate(documentTemplateData);

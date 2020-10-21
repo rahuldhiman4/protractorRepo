@@ -15,7 +15,7 @@ class EditNotificationTemplate {
         clickableField: 'div.cke_contents.cke_reset span[contenteditable]',
         cancelAlertMessageTextButton: '[rx-view-component-id="780514cc-7344-44a5-88af-5af509619ab0"] button',
         defaultNotificationMethodGuid: "911e28fd-89bb-4ee0-bea9-1d22e48f1134",
-        description: '[rx-view-component-id="48a3c0ad-103c-4b1b-a8a0-3e0648ff6ab6"] input',
+        description: '[rx-view-component-id="a9a1fe44-a890-4c1d-903d-74674bf4c221"] textarea',
         event: '[rx-view-component-id="15aad4c8-1522-4586-b9d3-6be376cfcaa8"] .ui-select-toggle',
         addRecipientsBtn: '[rx-view-component-id="9c294d12-1577-44fd-950d-fe7021853558"] button',
         addLocalizedMessageBtn: '[rx-view-component-id="a93ae1ed-3ae3-42cc-8f2b-6ce26fcc1f91"] button',

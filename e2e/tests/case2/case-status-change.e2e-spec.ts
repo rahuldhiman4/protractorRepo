@@ -132,16 +132,12 @@ describe('Case Status Change', () => {
             expect(await caseConsole.isCaseStatusPresent(statusPending)).toBeTruthy("Status Pending not matching");
             expect(await caseConsole.isCaseSummaryPresent(summary)).toBeTruthy("Summary not matching");
         });
-        afterAll(async () => {
-            await navigationPage.signOut();
-            await loginPage.login('fritz');
-        });
     });
 
     //kgaikwad
     describe('[DRDMV-1616,DRDMV-22285]: [Case] Fields validation for case In Progress status', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        it('[DRDMV-1616]: Checking change case template button for In Progress', async () => {
+        it('[DRDMV-1616,DRDMV-22285]: Checking change case template button for In Progress', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary('Summary ' + summary);
@@ -234,8 +230,6 @@ describe('Case Status Change', () => {
         let caseId1: string, caseId2: string, caseId3: string;
         let statusOptions: string[] = ["In Progress", "Pending", "Resolved", "Canceled"];
         beforeAll(async () => {
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
             let caseData1 =
             {
                 "Requester": "qtao",
@@ -272,8 +266,8 @@ describe('Case Status Change', () => {
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             await apiHelper.apiLogin('qkatawazi');
             newCase1 = await apiHelper.createCase(caseData1);
@@ -282,7 +276,8 @@ describe('Case Status Change', () => {
             caseId2 = newCase2.displayId;
             newCase3 = await apiHelper.createCase(caseData3);
             caseId3 = newCase3.displayId;
-            let temp1 = await apiHelper.createManualTaskTemplate(templateData1);
+            await apiHelper.createManualTaskTemplate(templateData1);
+           
         });
         it('[DRDMV-1199]: Updating the case status -Pending', async () => {
             await navigationPage.gotoCaseConsole();
@@ -319,10 +314,6 @@ describe('Case Status Change', () => {
             await viewCasePage.openTaskCard(1);
             await manageTask.clickTaskLink(manualSummary);
             expect(await viewTask.getTaskStatusValue()).toBe('Canceled', 'canceled status not found');
-        });
-        afterAll(async () => {
-            await navigationPage.signOut();
-            await loginPage.login('fritz');
         });
     });
 
