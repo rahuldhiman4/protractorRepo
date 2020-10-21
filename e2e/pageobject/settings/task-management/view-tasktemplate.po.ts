@@ -32,7 +32,7 @@ class ViewTaskTemplate {
         taskSummaryGuid: '80087f51-1b1f-4b47-9fde-36aed981db13',
         taskTypeGuid: '27f3842f-613a-4439-a29c-bedd51b0eecd',
         taskCompanyGuid: '2717de6b-2e4e-47d2-a39e-b5ade14ea3e9',
-        taskCategoryTier1Guid: 'd64a99a4-e878-47b7-86f2-b6dfb7cd4652',
+        taskCategoryTier1Guid: 'd49969eb-ffcc-4c7e-98ad-b94d6c3d67cb',
         taskCategoryTier2Guid: 'c427cb37-5018-4bc6-b951-46f31a679d93',
         taskCategoryTier3Guid: '118170eb-e94d-4056-9d0b-cb944ff96ebb',
         taskCategoryTier4Guid: 'd88c4135-b283-4b9a-9909-80f1e83e6087',
