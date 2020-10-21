@@ -23,6 +23,8 @@ describe('Task and Knowledge Console Filter Combinations', () => {
 
     afterAll(async () => {
         await utilityCommon.closeAllBlades();
+        await navigationPage.gotoTaskConsole();
+        await utilityGrid.clearFilter();
         await navigationPage.signOut();
     });
     describe('[DRDMV-23494]: Verify records are fetched on task console with Assignee, Assigned Group, Status combinations', () => {
@@ -289,22 +291,26 @@ describe('Task and Knowledge Console Filter Combinations', () => {
             taskId.push(response2.displayId);
 
             let response3 = await apiHelper.createCase(taskData.Case_InProgres_FILTER_3);
+            await apiHelper.updateCaseStatus(response3.id, "InProgress");
             let response4 = await apiHelper.createAdhocTask(response3.id, taskData.TASK_DATA_Combination_3);
             taskId.push(response4.displayId);
             await apiHelper.updateTaskStatus(response4.id, 'Assigned');
 
             let response5 = await apiHelper.createCase(taskData.Case_InProgres_FILTER_3);
+            await apiHelper.updateCaseStatus(response5.id, "InProgress");
             let response6 = await apiHelper.createAdhocTask(response5.id, taskData.TASK_DATA_Combination_5);
             taskId.push(response6.displayId);
             await apiHelper.updateTaskStatus(response6.id, 'Pending');
 
             let response7 = await apiHelper.createCase(taskData.Case_InProgres_FILTER_3);
+            await apiHelper.updateCaseStatus(response7.id, "InProgress");
             let response8 = await apiHelper.createAdhocTask(response7.id, taskData.TASK_DATA_Combination_8);
             taskId.push(response8.displayId);
             await apiHelper.updateTaskStatus(response8.id, 'InProgress');
 
             taskData.TASK_DATA_Combination_10.label = menuItemData.menuItemName;
             let response9 = await apiHelper.createCase(taskData.Case_InProgres_FILTER_3);
+            await apiHelper.updateCaseStatus(response9.id, "InProgress");
             let response10 = await apiHelper.createAdhocTask(response9.id, taskData.TASK_DATA_Combination_10);
             taskId.push(response10.displayId);
             await apiHelper.updateTaskStatus(response10.id, 'Canceled');
@@ -420,6 +426,9 @@ describe('Task and Knowledge Console Filter Combinations', () => {
                 expect(await utilityGrid.isGridRecordPresent(knowledgeId[i])).toBeFalsy(knowledgeId[i] + ' :Record is not available');
             }
         });
+        afterAll(async () => {
+            await utilityGrid.clearFilter();
+        });
     });
     describe('[DRDMV-23516]: Verify records are fetched on knowledge console Status, Reviewer& Review Status combinations', () => {
         let knowledgeId: string[] = [];
@@ -484,6 +493,9 @@ describe('Task and Knowledge Console Filter Combinations', () => {
             for (let i: number = 0; i < 1; i++) {
                 expect(await utilityGrid.isGridRecordPresent(knowledgeId[i])).toBeFalsy(knowledgeId[i] + ' :Record is not available');
             }
+        });
+        afterAll(async () => {
+            await utilityGrid.clearFilter();
         });
     });
 })

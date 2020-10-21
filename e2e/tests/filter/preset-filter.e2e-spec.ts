@@ -28,7 +28,7 @@ describe('Preset Filter Funcational Verification', () => {
             "firstName": "caseAgent2",
             "lastName": "user2",
             "userId": caseAgentUserId,
-            "userPermission": ["Case Agent", "Document Manager","Human Resource"]
+            "userPermission": ["Case Agent", "Document Manager", "Human Resource"]
         }
         await apiHelper.createNewUser(caseAgentuserData);
         await apiHelper.associatePersonToCompany(caseAgentuserData.userId, "Petramco");
@@ -37,6 +37,12 @@ describe('Preset Filter Funcational Verification', () => {
 
     afterAll(async () => {
         await utilityCommon.closeAllBlades();
+        await navigationPage.gotoCaseConsole();
+        await utilityGrid.clearFilter();
+        await navigationPage.gotoTaskConsole();
+        await utilityGrid.clearFilter();
+        await navigationPage.gotoKnowledgeConsole();
+        await utilityGrid.clearFilter();
         await navigationPage.signOut();
     });
 
@@ -465,8 +471,8 @@ describe('Preset Filter Funcational Verification', () => {
             await utilityGrid.deleteCustomPresetFilter('My Open Cases');
             await utilityGrid.applyPresetFilter('My Open Cases');
             expect(await utilityGrid.isAppliedFilterMatches(['My Open Cases'])).toBeTruthy('Applied filter is missing');
-            expect (await utilityGrid.getCountPresetFilter('My Open Cases')).toEqual(1);
-            expect (await utilityGrid.isPresetFilterNameDisplayed('My Open Cases')).toBeTruthy('My Open Cases preset filter is missing')
+            expect(await utilityGrid.getCountPresetFilter('My Open Cases')).toEqual(1);
+            expect(await utilityGrid.isPresetFilterNameDisplayed('My Open Cases')).toBeTruthy('My Open Cases preset filter is missing')
 
             await utilityGrid.searchRecord(newCase.displayId);
             expect(await utilityGrid.getFirstGridRecordColumnValue('Case ID')).toBe(newCase.displayId, " Case Id NOT displayed in Task console");
@@ -476,7 +482,7 @@ describe('Preset Filter Funcational Verification', () => {
             await utilityGrid.saveFilter('My Open Cases');
             expect(await utilityGrid.isAppliedFilterMatches([`Case ID: ${newCase.displayId}`])).toBeTruthy('Applied filter is missing');
             expect(await utilityGrid.getFirstGridRecordColumnValue('Case ID')).toBe(newCase.displayId, " Case Id NOT displayed in Task console");
-            expect (await utilityGrid.getCountPresetFilter('My Open Cases')).toEqual(2);
+            expect(await utilityGrid.getCountPresetFilter('My Open Cases')).toEqual(2);
         });
         it('[DRDMV-23490]: Verify if a user updates the name of the existing filter', async () => {
             await utilityGrid.clearFilterPreset();
@@ -497,8 +503,8 @@ describe('Preset Filter Funcational Verification', () => {
         it('[DRDMV-23490]: Verify user can update the new filter name and qualifications in existing custom preset filter.', async () => {
             await utilityGrid.updateCustomPresetFilter('Requester', 'Qiang Du', 'default', filtername1, filtername3);
             await utilityGrid.updateCustomPresetFilter('Assignee', 'Qadim Katawazi', 'default', filtername3);
-            expect (await utilityGrid.isPresetFilterNameDisplayed(filtername1)).toBeFalsy('filtername1 preset filter is displayed')
-            expect (await utilityGrid.isPresetFilterNameDisplayed(filtername3)).toBeTruthy('filtername3 preset filter is missing')
+            expect(await utilityGrid.isPresetFilterNameDisplayed(filtername1)).toBeFalsy('filtername1 preset filter is displayed')
+            expect(await utilityGrid.isPresetFilterNameDisplayed(filtername3)).toBeTruthy('filtername3 preset filter is missing')
 
             expect(await utilityGrid.isAppliedFilterMatches([`Case ID: ${newCase.displayId}`, 'Assignee: Qadim Katawazi', 'Requester: Qiang Du'])).toBeTruthy('Applied filter is missing');
             expect(await utilityGrid.getFirstGridRecordColumnValue('Case ID')).toBe(newCase.displayId, " Case Id NOT displayed in Task console");
@@ -877,8 +883,8 @@ describe('Preset Filter Funcational Verification', () => {
             await utilityGrid.clickRefreshIcon();
             await utilityGrid.updateCustomPresetFilter('Requester', 'Qiang Du', 'default', filtername1, filtername2);
 
-            expect (await utilityGrid.isPresetFilterNameDisplayed(filtername2)).toBeTruthy('Preset filter name is missing');
-            expect (await utilityGrid.isPresetFilterNameDisplayed(filtername1)).toBeFalsy('Preset filter name is displayed');
+            expect(await utilityGrid.isPresetFilterNameDisplayed(filtername2)).toBeTruthy('Preset filter name is missing');
+            expect(await utilityGrid.isPresetFilterNameDisplayed(filtername1)).toBeFalsy('Preset filter name is displayed');
             expect(await utilityGrid.isAppliedFilterMatches([`Case ID: ${newCase.displayId}`, 'Requester: Qiang Du'])).toBeTruthy('Applied filter is missing');
             expect(await utilityGrid.getFirstGridRecordColumnValue('Case ID')).toBe(newCase.displayId, " Case Id NOT displayed in Task console");
         });
