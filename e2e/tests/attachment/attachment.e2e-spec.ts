@@ -546,29 +546,18 @@ describe("Attachment", () => {
         let categName2 = 'Compensation';
         let categName3 = 'Bonus';
         let categName4 = 'Retention Bonus';
-        let label = 'labelDRDMV15252'+randomStr;
+        let label = 'Payroll';
         let summary= 'summaryDRDMV15252'+randomStr;
         let title= 'titleDRDMV15252'+randomStr;
 
         beforeAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
-
-            // Create Label
-            await apiHelper.apiLogin('qkatawazi');
-            let menuItemData = {
-                "menuItemName": "TestMenuItemName",
-                "menuItemStatus": "Active",
-                "menuType": "Label",
-                "uiVisible": "1"
-            }
-            menuItemData.menuItemName = label;
-            await apiHelper.createNewMenuItem(menuItemData);
         });
 
         it('[DRDMV-15252]: Verify Category Tier 4 With Case ', async () => {
             await navigationPage.gotoCreateCase();
-            await createCasePo.selectRequester('qtao');
+            await createCasePo.selectRequester('adam');
             await createCasePo.setSummary(summary);
             await createCasePo.setLabel(label);
             await createCasePo.selectCategoryTier1(categName1);
