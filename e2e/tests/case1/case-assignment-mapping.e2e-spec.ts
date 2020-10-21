@@ -752,7 +752,7 @@ describe("Create Case Assignment Mapping", () => {
         });
     });
 
-    describe('[DRDMV-15170]: Assignment mapping search using filters', async () => {
+    xdescribe('[DRDMV-15170]: Assignment mapping search using filters', async () => {
         let assignmentMapping1, id, label, assignmentData1, assignmentData2, randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let arr1: string[] = ["Department", "Flowset", "Business Unit", "Label", "Category Tier 4", "ID"];
         let defaultCaseAssignmentColumns: string[] = ["Case Priority", "Company", "Category Tier 1", "Category Tier 2", "Category Tier 3", "Region", "Site", "Support Company", "Support Group", "Default Mapping"];
@@ -913,7 +913,7 @@ describe("Create Case Assignment Mapping", () => {
         });
     });
 
-    describe('[DRDMV-8968]:[Assignment Mapping] Categories partial match', () => {
+    xdescribe('[DRDMV-8968]:[Assignment Mapping] Categories partial match', () => {
         let randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let businessData = businessDataFile['BusinessUnitDataPhylum1'];
         let departmentData = departmentDataFile['DepartmentDataPhylum1'];
@@ -991,7 +991,7 @@ describe("Create Case Assignment Mapping", () => {
         });
     });
 
-    describe('[DRDMV-9103]:[Assignment Mapping] Partially matching Assignment mapping with Flowset', () => {
+    xdescribe('[DRDMV-9103]:[Assignment Mapping] Partially matching Assignment mapping with Flowset', () => {
         let assignmentData, caseTemplateData, randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let businessData = businessDataFile['BusinessUnitDataPhylum1'];
         let departmentData = departmentDataFile['DepartmentDataPhylum1'];
@@ -1070,7 +1070,7 @@ describe("Create Case Assignment Mapping", () => {
         });
     });
 
-    describe('[DRDMV-1206,DRDMV-1208]:[Assignment Mapping] Applying Assignment Mappings to cases with partial match', () => {
+    xdescribe('[DRDMV-1206,DRDMV-1208]:[Assignment Mapping] Applying Assignment Mappings to cases with partial match', () => {
         let assignmentData, caseTemplateData, caseTemplateData1, randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let businessData1, businessData2, businessData3, businessData4, businessData5, businessData6;
         let departmentData1, departmentData2, departmentData3, departmentData4, departmentData5, departmentData6;

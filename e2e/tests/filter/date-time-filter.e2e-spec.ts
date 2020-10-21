@@ -47,7 +47,7 @@ describe('Date and Time Preset Filter', () => {
             let exactTime1 = newTime1[0] + ":" + newTime1[1] + " " + diffTime1[1];
             let dateFormate: string = "Created Date: " + dateFormateNew + " " + systemDate.getDate() + ", " + systemDate.getFullYear() + " " + exactTime1;
             await $('body').sendKeys(protractor.Key.ESCAPE);
-            let date:string[]=[dateFormate];
+            let date: string[] = [dateFormate];
             expect(await utilityGrid.isAppliedFilterMatches(date)).toBeTruthy();
 
             expect(await utilityGrid.isAppliedFilterMatches(date)).toBeTruthy("Create Date fail");
@@ -66,7 +66,7 @@ describe('Date and Time Preset Filter', () => {
             let endDateTime1 = endDatetimediffTime[0].split(":");
             let endDateexactTime = endDateTime1[0] + ":" + endDateTime1[1] + " " + endDatetimediffTime[1];
             let completeEndDate = 'Created Date: Aug 23, 2017 ' + endDateexactTime;
-            let date1:string[]=[completeEndDate];
+            let date1: string[] = [completeEndDate];
             expect(await utilityGrid.isAppliedFilterMatches(date1)).toBeTruthy(" date1");
         });
         it('[DRDMV-23499,DRDMV-23511]: Validation for modified date, created date and target date', async () => {
@@ -94,7 +94,7 @@ describe('Date and Time Preset Filter', () => {
             let endDateTime11 = endDatetimediffTime1[0].split(":");
             let endDateexactTime1 = endDateTime1[0] + ":" + endDateTime11[1] + " " + endDatetimediffTime1[1];
             let completeEndDate1 = ' - Sep 11, 2017 ' + endDateexactTime1;
-            let date2:string[]=[completeEndDate + completeEndDate1];
+            let date2: string[] = [completeEndDate + completeEndDate1];
             expect(await utilityGrid.isAppliedFilterMatches(date2)).toBeTruthy();
 
         });
@@ -112,7 +112,7 @@ describe('Date and Time Preset Filter', () => {
             await dateTimeSelectorPo.setMinute(23);
             await dateTimeSelectorPo.clickMeridianValue("AM");
             await $('body').sendKeys(protractor.Key.ESCAPE);
-            let date2:string[]=["Target Date: Sep 17, 2015 8:23 AM"];
+            let date2: string[] = ["Target Date: Sep 17, 2015 8:23 AM"];
             expect(await utilityGrid.isAppliedFilterMatches(date2)).toBeTruthy();
             // Validate end date with Time
             await utilityGrid.clearFilter();
@@ -127,7 +127,7 @@ describe('Date and Time Preset Filter', () => {
             await dateTimeSelectorPo.setMinute(28);
             await dateTimeSelectorPo.clickMeridianValue("AM");
             await $('body').sendKeys(protractor.Key.ESCAPE);
-            let date3:string[]=["Target Date: Feb 21, 2016 3:28 AM"];
+            let date3: string[] = ["Target Date: Feb 21, 2016 3:28 AM"];
             expect(await utilityGrid.isAppliedFilterMatches(date3)).toBeTruthy();
         });
         it('[DRDMV-23499,DRDMV-23511]: Validation for modified date, created date and target date', async () => {
@@ -154,7 +154,7 @@ describe('Date and Time Preset Filter', () => {
             await dateTimeSelectorPo.setMinute(28);
             await dateTimeSelectorPo.clickMeridianValue("AM");
             await $('body').sendKeys(protractor.Key.ESCAPE);
-            let date4:string[]=["Created Date: Sep 17, 2015 8:23 AM - Feb 17, 2016 3:28 AM"];
+            let date4: string[] = ["Created Date: Sep 17, 2015 8:23 AM - Feb 17, 2016 3:28 AM"];
             expect(await utilityGrid.isAppliedFilterMatches(date4)).toBeTruthy();
         });
         it('[DRDMV-23499,DRDMV-23511]: Validation for modified date, created date and target date', async () => {
@@ -226,6 +226,9 @@ describe('Date and Time Preset Filter', () => {
             await utilityGrid.addFilter("Status", "Published", 'test');
             expect(await utilityGrid.isGridRecordPresent('KA-000000000016')).toBeTruthy('KA-000000000016');
         });
+        afterAll(async () => {
+            await utilityGrid.clearFilter();
+        });
     });
 
     describe('[DRDMV-23493]: Verify records are fetched on case console Target date and Request ID combinations', async () => {
@@ -258,10 +261,10 @@ describe('Date and Time Preset Filter', () => {
             }
 
             caseDataDWp =
-            {
-                "requester": "qtao",
-                "summary": "Testing case creation with minimal input data, Human Resource"
-            }
+                {
+                    "requester": "qtao",
+                    "summary": "Testing case creation with minimal input data, Human Resource"
+                }
 
             await apiHelper.apiLogin("qkatawazi")
             caseId = await apiHelper.createCase(caseData);
@@ -270,7 +273,7 @@ describe('Date and Time Preset Filter', () => {
         it('[DRDMV-23493]: Verify records are fetched on case console Target date and Request ID combinations', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
-            await utilityGrid.addFilter("Request ID","121","test");
+            await utilityGrid.addFilter("Request ID", "121", "test");
             expect(await utilityGrid.isGridRecordPresent(caseIdForDWP.displayId)).toBeTruthy();
             await utilityGrid.clearFilter();
             await utilityGrid.clickFilterField("Target Date");
@@ -308,6 +311,9 @@ describe('Date and Time Preset Filter', () => {
             await utilityGrid.addFilter("Case Site", "Austin", "test");
             await utilityGrid.addFilter("ID", caseId.id, "test");
             expect(await utilityGrid.isGridRecordPresent(caseId.displayId)).toBeTruthy();
+        });
+        afterAll(async () => {
+            await utilityGrid.clearFilter();
         });
     });
 
@@ -377,6 +383,9 @@ describe('Date and Time Preset Filter', () => {
             await utilityGrid.addFilter("Category Tier 3", "Chatter", "test");
             await utilityGrid.addFilter("Assignee Login Name", "qkatawazi", "test");
             expect(await utilityGrid.isGridRecordPresent(tempIdMedium.displayId)).toBeTruthy();
+        });
+        afterAll(async () => {
+            await utilityGrid.clearFilter();
         });
     });
 });  
