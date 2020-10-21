@@ -7,7 +7,7 @@ import navigationPage from "../../pageobject/common/navigation.po";
 import personProfile from "../../pageobject/common/person-profile.po";
 import relatedTabPage from '../../pageobject/common/related-person-tab.po';
 import relationshipsConfigsPage from '../../pageobject/settings/relationship/relationships-configs.po';
-import { default as activityTabPage, default as caseActivityPage } from '../../pageobject/social/activity-tab.po';
+import activityTabPage from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
@@ -183,9 +183,8 @@ describe('Person Profile test', () => {
         let response = await apiHelper.createCase(caseData);
         await navigationPage.gotoCaseConsole();
         await utilityGrid.searchAndOpenHyperlink(response.displayId);
-        console.log(response.displayId);
-        await caseActivityPage.addPersonInActivityNote('Qiao Feng');
-        await caseActivityPage.clickOnPostButton();
+        await activityTabPage.addPersonInActivityNote('Qiao Feng');
+        await activityTabPage.clickOnPostButton();
         await activityTabPage.clickOnHyperlinkFromActivity(1, 'Qiao Feng');
 
         expect(await personProfile.getPersonType()).toBe('Employee', 'Person type does not match');
@@ -509,7 +508,7 @@ describe('Person Profile test', () => {
             await browser.sleep(3000); //Wait for new tab to load properly
         });
 
-        it('[DRDMV-17021]: Check one agent can view the notes added on other agent in agent work history tab for which he has "Person Profile read access"', async () => {    
+        it('[DRDMV-17021]: Check one agent can view the notes added on other agent in agent work history tab for which he has "Person Profile read access"', async () => {
             await activityTabPage.addActivityNote("DRDMV-17021");
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isInfoTooltipIconDisplayed()).toBeTruthy('Tooltip icon is not displayed');
