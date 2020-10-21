@@ -120,10 +120,10 @@ describe('Edit Case', () => {
         expect(await changeAssignmentPage.getCompanyDefaultValue()).toBe('Petramco');
         expect(await changeAssignmentPage.getSupportGroupDefaultValue()).toBe('US Support 3');
         expect(await changeAssignmentPage.isSupportGroupDrpDwnDisplayed()).toBeTruthy();
-        await changeAssignmentPage.selectAssignee('Adam Pavlik');
+        await changeAssignmentPage.selectAssignee('Qiao Feng');
         await changeAssignmentPage.clickOnAssignButton();
         await editCasePage.clickSaveCase();
-        expect(await viewCasePage.getAssigneeText()).toBe('Adam Pavlik');
+        expect(await viewCasePage.getAssigneeText()).toBe('Qiao Feng');
 
         await viewCasePage.clickEditCaseButton();
         await editCasePage.clickChangeAssignmentButton();
