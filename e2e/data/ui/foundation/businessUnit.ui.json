@@ -16,7 +16,8 @@
     },
     "BusinessUnitData_BulkOperation": {
         "orgName": "BulkOperationBusinessUnit",
-        "relatedOrgId": null
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
     },
     "BusinessUnitData12111": {
         "orgName": "UI-BusinessUnit-12111",

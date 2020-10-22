@@ -197,6 +197,7 @@ describe("Case Read Access", () => {
             await createCaseTemplate.setFlowsetValue(flowsetGlobalFieldsData.flowsetName);
             await createCaseTemplate.setTemplateStatusDropdownValue('Active');
             await createCaseTemplate.clickSaveCaseTemplate();
+            await utilCommon.closePopUpMessage();
             expect(await viewCaseTemplate.getCaseCompanyValue()).toBe('- Global -');
             expect(await viewCaseTemplate.getFlowsetValue()).toBe(flowsetGlobalFieldsData.flowsetName);
             await viewCaseTemplate.clickOnEditCaseTemplateButton();
@@ -307,6 +308,10 @@ describe("Case Read Access", () => {
                 "categoryTier3": "Bonus",
                 "categoryTier4": "Retention Bonus",
                 "company": "Petramco",
+                "businessUnit": 'HR Support',
+                "supportGroup": 'Compensation and Benefits',
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             readAccessMappingData1 = {
                 "configName": randomStr + '1ReadAccessMappingName',
@@ -349,7 +354,7 @@ describe("Case Read Access", () => {
             await utilGrid.searchAndOpenHyperlink(readAccessMappingData2.configName);
             await editReadAccess.setDefaultToggleButton(true);
             await editReadAccess.clickOnSave();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (10000): Only one default record is allowed for a Line of Business. Please change the default flag and save the record.')).toBeTruthy('Message Not Present');
+            expect(await utilCommon.getAllPopupMsg()).toContain('ERROR (10000): Only one default record is allowed for a Line of Business. Please change the default flag and save the record.');
             await editReadAccess.clickOnCancel();
             await utilCommon.clickOnWarningOk();
         });
@@ -362,7 +367,7 @@ describe("Case Read Access", () => {
             await quickCasePo.saveCase();
             await casePreviewPo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Case Access');
-            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Compensation and Benefits', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Compensation and Benefits', 'Write')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
             await navigationPo.gotoQuickCase();
             await quickCasePo.selectRequesterName('qkatawazi');
             await quickCasePo.setCaseSummary('Read Access');

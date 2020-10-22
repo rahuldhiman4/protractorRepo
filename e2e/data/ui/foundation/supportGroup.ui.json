@@ -16,7 +16,8 @@
     },
     "SuppGrpData_BulkOperation": {
         "orgName": "BulkOperationSupportGroup",
-        "relatedOrgId": null
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
     },
     "SuppGrpData12111": {
         "orgName": "UI-SupportGroup-12111",

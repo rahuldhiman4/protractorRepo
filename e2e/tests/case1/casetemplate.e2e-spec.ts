@@ -90,6 +90,7 @@ describe('Case Template', () => {
         await editCasetemplatePo.clickOnEditCaseTemplateMetadata();
         await editCasetemplatePo.changeTemplateStatusDropdownValue('Draft');
         await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
+        await utilCommon.closePopUpMessage();
         await editCasetemplatePo.clickEditCaseTemplate();
         await editCasetemplatePo.changeIdentityValidationValue('Enforced');
         await editCasetemplatePo.clickSaveCaseTemplate();
