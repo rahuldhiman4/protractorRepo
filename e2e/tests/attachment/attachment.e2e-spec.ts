@@ -829,7 +829,6 @@ describe("Attachment", () => {
             await apiHelper.apiLogin('qkatawazi');
             caseTemplateData.templateName = caseTempateName;
             newCaseTemplate = await apiHelper.createCaseTemplate(caseTemplateData);
-            console.log('newCaseTemplate>>>>>>>>>>>>>>>>',newCaseTemplate);
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'MULTIPLE_ATTACHMENTS');
            
             //  Create Case
@@ -843,8 +842,6 @@ describe("Attachment", () => {
             }
             newCase1 = await apiHelper.createCase(caseData1);
             newCase2 = await apiHelper.createCase(caseData1);
-            console.log('newCase1>>>>>>>>>',newCase1);
-            console.log('newCase2>>>>>>>>>',newCase2);
             
             // Create Document Library
             let publishDocData = {
@@ -883,8 +880,7 @@ describe("Attachment", () => {
             knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         });
 
-
-        it('[DRDMV-15252]: Verify Attachment With Case Description Attach Button ', async () => {
+        it('[DRDMV-23413]: Verify Attachment With Case Description Attach Button ', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(newCase1.displayId);
             await viewCasePo.clickEditCaseButton();
@@ -935,7 +931,7 @@ describe("Attachment", () => {
             await attachmentBladePo.clickCloseButton();
         });
 
-        it('[DRDMV-15252]: Verify Locally Attachment On Case Activity Tab', async () => {
+        it('[DRDMV-23413]: Verify Locally Attachment On Case Activity Tab', async () => {
             await activityTabPo.addActivityNote(addNoteRandomText);
             await activityTabPo.addAttachment([`../../data/ui/attachment/${fileName5}`,`../../data/ui/attachment/${fileName6}`,`../../data/ui/attachment/${fileName7}`,`../../data/ui/attachment/${fileName8}`]);
             await activityTabPo.clickOnPostButton();
@@ -989,7 +985,7 @@ describe("Attachment", () => {
             await attachmentBladePo.clickCloseButton();
         });
 
-        it('[DRDMV-15252]: Verify Document Libaray Attachment On Case Activity Tab ', async () => {
+        it('[DRDMV-23413]: Verify Document Libaray Attachment On Case Activity Tab ', async () => {
             await activityTabPo.addActivityNote(addNoteRandomText);
             await activityTabPo.clickOnAttachLink();
             await attachDocumentBladePo.searchAndAttachDocument(docLibTitle+1);
@@ -1053,7 +1049,7 @@ describe("Attachment", () => {
             await attachmentBladePo.clickCloseButton();
         });
 
-        it('[DRDMV-15252]: Verify Attachment With Task Description Attach Button ', async () => {
+        it('[DRDMV-23413]: Verify Attachment With Task Description Attach Button ', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(newCase2.displayId);
             await viewCasePo.clickAddTaskButton();
@@ -1088,7 +1084,7 @@ describe("Attachment", () => {
             expect(await utilityCommon.isFileDownloaded(`${fileName4}`)).toBeTruthy(`FailuerMsg: ${fileName4} File is not downloaded.`);
         });
 
-        it('[DRDMV-15252]: Verify Locally Attachment On Task Activity Tab', async () => {
+        it('[DRDMV-23413]: Verify Locally Attachment On Task Activity Tab', async () => {
             await activityTabPo.addActivityNote(addNoteRandomText);
             await activityTabPo.addAttachment([`../../data/ui/attachment/${fileName5}`,`../../data/ui/attachment/${fileName6}`,`../../data/ui/attachment/${fileName7}`,`../../data/ui/attachment/${fileName8}`]);
             await activityTabPo.clickOnPostButton();
@@ -1116,7 +1112,7 @@ describe("Attachment", () => {
             expect(await utilityCommon.isFileDownloaded(`${fileName8}`)).toBeTruthy(`FailuerMsg: ${fileName8} File is not downloaded.`);
         });
 
-        it('[DRDMV-15252]: Verify Document Libaray Attachment On Task Activity Tab ', async () => {
+        it('[DRDMV-23413]: Verify Document Libaray Attachment On Task Activity Tab ', async () => {
             await activityTabPo.addActivityNote(addNoteRandomText);
             await activityTabPo.clickOnAttachLink();
             await attachDocumentBladePo.searchAndAttachDocument(docLibTitle+1);
@@ -1151,7 +1147,7 @@ describe("Attachment", () => {
             expect(await utilityCommon.isFileDownloaded(`${fileName12}`)).toBeTruthy(`FailuerMsg: ${fileName12} File is not downloaded.`);
         });
 
-        it('[DRDMV-15252]: Verify Files On Attachment Blade ', async () => {
+        it('[DRDMV-23413]: Verify Files On Attachment Blade ', async () => {
             await viewTaskPo.clickOnViewCase();
             await viewCasePo.clickAttachmentsLink();
 
@@ -1231,7 +1227,7 @@ describe("Attachment", () => {
             await attachmentBladePo.clickCloseButton();
         });
         
-        it('[DRDMV-15252]: Verify Files On Edit Knowledge MetaData', async () => {
+        it('[DRDMV-23413]: Verify Files On Edit Knowledge MetaData', async () => {
             await navigationPage.gotoKnowledgeConsole();
             await knowledgeArticlesConsolePo.searchAndOpenKnowledgeArticle(knowledgeArticleData.displayId);
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
@@ -1263,7 +1259,7 @@ describe("Attachment", () => {
             expect(await utilityCommon.isFileDownloaded(`${fileName4}`)).toBeTruthy(`FailuerMsg: ${fileName4} File is not downloaded.`);
         });
 
-        it('[DRDMV-15252]: Verify Locally Attachment On Case Activity Tab ', async () => {
+        it('[DRDMV-23413]: Verify Locally Attachment On Case Activity Tab ', async () => {
             await viewKnowledgeArticlePo.clickOnActivityTab();
 
             await activityTabPo.addActivityNote(addNoteRandomText);
@@ -1293,7 +1289,7 @@ describe("Attachment", () => {
             expect(await utilityCommon.isFileDownloaded(`${fileName8}`)).toBeTruthy(`FailuerMsg: ${fileName8} File is not downloaded.`);
         });
        
-        it('[DRDMV-15252]: Verify Document Libaray Attachment On Knowledge Activity Tab ', async () => {
+        it('[DRDMV-23413]: Verify Document Libaray Attachment On Knowledge Activity Tab ', async () => {
             await activityTabPo.addActivityNote(addNoteRandomText);
             await activityTabPo.clickOnAttachLink();
             await attachDocumentBladePo.searchAndAttachDocument(docLibTitle+1);
@@ -1328,7 +1324,7 @@ describe("Attachment", () => {
             expect(await utilityCommon.isFileDownloaded(`${fileName12}`)).toBeTruthy(`FailuerMsg: ${fileName12} File is not downloaded.`);
         });
 
-        it('[DRDMV-15252]: Attach Files From UI Dynamic Field And Create Case', async () => {
+        it('[DRDMV-23413]: Attach Files From UI Dynamic Field And Create Case', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
@@ -1336,10 +1332,10 @@ describe("Attachment", () => {
             await consoleCasetemplatePo.searchAndClickOnCaseTemplate(caseTempateName);
             await viewCasetemplatePo.clickOnEditCaseTemplateButton();
             await editCasetemplatePo.clickOnMangeDyanmicLink();
-            await dynamicFieldsPo.addAttachment([`../../data/ui/attachment/${fileName1}`], 1);
-            await dynamicFieldsPo.addAttachment([`../../data/ui/attachment/${fileName2}`], 2);
-            await dynamicFieldsPo.addAttachment([`../../data/ui/attachment/${fileName3}`], 3);
-            await dynamicFieldsPo.addAttachment([`../../data/ui/attachment/${fileName4}`], 4);
+            await dynamicFieldsPo.addAttachment([`../../data/ui/attachment/${fileName5}`], 1);
+            await dynamicFieldsPo.addAttachment([`../../data/ui/attachment/${fileName6}`], 2);
+            await dynamicFieldsPo.addAttachment([`../../data/ui/attachment/${fileName7}`], 3);
+            await dynamicFieldsPo.addAttachment([`../../data/ui/attachment/${fileName8}`], 4);
             await dynamicFieldsPo.clickSaveButton();
             await editCasetemplatePo.clickOnEditCaseTemplateMetadata();
             await editCasetemplatePo.changeTemplateStatusDropdownValue('Active');
@@ -1358,23 +1354,23 @@ describe("Attachment", () => {
             await viewCasePo.clickEditCaseButton();
         });
         
-        it('[DRDMV-15252]: Verify Dynamic Fields On Case', async () => {
+        it('[DRDMV-23413]: Verify Dynamic Fields On Case', async () => {
             await browser.sleep(15000);//Wait untile download icon displayed.
-            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName1}`)).toBeTruthy(`FailuerMsg: ${fileName1} File is delete sucessfully`);
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName5}`)).toBeTruthy(`FailuerMsg: ${fileName5} File is delete sucessfully`);
             await editCasePo.clickDownloadDynamicFile(1);
-            expect(await utilityCommon.isFileDownloaded(`${fileName1}`)).toBeTruthy(`FailuerMsg: ${fileName1} File is not downloaded.`);
+            expect(await utilityCommon.isFileDownloaded(`${fileName5}`)).toBeTruthy(`FailuerMsg: ${fileName5} File is not downloaded.`);
 
-            expect(await utilityCommon.deleteAlreadyDownloadedFile('1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: 1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf File is delete sucessfully`);
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('2ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: 2ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf File is delete sucessfully`);
             await editCasePo.clickDownloadDynamicFile(2);
-            expect(await utilityCommon.isFileDownloaded('1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf' File is not downloaded.`);
+            expect(await utilityCommon.isFileDownloaded('2ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '2ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf' File is not downloaded.`);
 
-            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName3}`)).toBeTruthy(`FailuerMsg: ${fileName3} File is delete sucessfully`);
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName7}`)).toBeTruthy(`FailuerMsg: ${fileName7} File is delete sucessfully`);
             await editCasePo.clickDownloadDynamicFile(3);
-            expect(await utilityCommon.isFileDownloaded(`${fileName3}`)).toBeTruthy(`FailuerMsg: ${fileName3} File is not downloaded.`);
+            expect(await utilityCommon.isFileDownloaded(`${fileName7}`)).toBeTruthy(`FailuerMsg: ${fileName7} File is not downloaded.`);
 
-            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName4}`)).toBeTruthy(`FailuerMsg: ${fileName4} File is delete sucessfully`);
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName8}`)).toBeTruthy(`FailuerMsg: ${fileName8} File is delete sucessfully`);
             await editCasePo.clickDownloadDynamicFile(4);
-            expect(await utilityCommon.isFileDownloaded(`${fileName4}`)).toBeTruthy(`FailuerMsg: ${fileName4} File is not downloaded.`);
+            expect(await utilityCommon.isFileDownloaded(`${fileName8}`)).toBeTruthy(`FailuerMsg: ${fileName8} File is not downloaded.`);
 
             await editCasePo.addAttachment('attachmentFirst', [`../../data/ui/attachment/${fileName1}`]);
             await editCasePo.addAttachment('attachmentSecond', [`../../data/ui/attachment/${fileName2}`]);
@@ -1383,7 +1379,7 @@ describe("Attachment", () => {
             await editCasePo.clickSaveCase();
         });
         
-        it('[DRDMV-15252]: Verify Dynamic Fields On View Case & Activity', async () => {
+        it('[DRDMV-23413]: Verify Dynamic Fields On View Case & Activity', async () => {
             await activityTabPo.clickShowMoreLinkInActivity(1);
             await activityTabPo.isTextPresentInActivityLog('1Google+Translate+เป็นบริการแปลระบบประสาทด้วยเครื่องฟรีหลายภาษาที่พัฒนาโดย+Google.xlsx(+)')
             await activityTabPo.isTextPresentInActivityLog('1ทรัพยากรมนุษย์-นโยบายการแพทย์-รายงานการต__รวจสอบ.docx(+)');
@@ -1408,7 +1404,7 @@ describe("Attachment", () => {
             expect(await utilityCommon.isFileDownloaded(`${fileName4}`)).toBeTruthy(`FailuerMsg: ${fileName4} File is not downloaded.`);
         });
         
-        it('[DRDMV-15252]: Verify Dynamic Fields On Attachment', async () => {
+        it('[DRDMV-23413]: Verify Dynamic Fields On Attachment', async () => {
             await viewCasePo.clickAttachmentsLink();
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName1}`)).toBeTruthy(`FailuerMsg: ${fileName1} File is delete sucessfully`);
             await attachmentBladePo.selectCheckBox(1);
@@ -1436,6 +1432,30 @@ describe("Attachment", () => {
             await attachmentBladePo.clickCloseButton();
         });
         
+        it('[DRDMV-23413]: Verify thai character on social', async () => {
+            await viewCasePo.clickOnEmailLink();
+            await composeMail.setToOrCCInputTextbox('To', 'qtao@petramco.com');
+            await composeMail.setEmailBody("With thai attachmnents");
+            await composeMail.addAttachment([`../../data/ui/attachment/${fileName9}`,`../../data/ui/attachment/${fileName10}`,`../../data/ui/attachment/${fileName11}`,`../../data/ui/attachment/${fileName12}`]);
+            await composeMail.clickOnSendButton();
+            
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName9}`)).toBeTruthy(`FailuerMsg: ${fileName9} File is delete sucessfully`);
+            await viewCasePo.clickDynamicAttachmentValue(fileName9);
+            expect(await utilityCommon.isFileDownloaded(`${fileName9}`)).toBeTruthy(`FailuerMsg: ${fileName9} File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('3ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: 3ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf File is delete sucessfully`);
+            await viewCasePo.clickDynamicAttachmentValue(fileName10);
+            expect(await utilityCommon.isFileDownloaded('3ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '3ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf' File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName11}`)).toBeTruthy(`FailuerMsg: ${fileName11} File is delete sucessfully`);
+            await viewCasePo.clickDynamicAttachmentValue(fileName11);
+            expect(await utilityCommon.isFileDownloaded(`${fileName11}`)).toBeTruthy(`FailuerMsg: ${fileName11} File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName12}`)).toBeTruthy(`FailuerMsg: ${fileName12} File is delete sucessfully`);
+            await viewCasePo.clickDynamicAttachmentValue(fileName12);
+            expect(await utilityCommon.isFileDownloaded(`${fileName12}`)).toBeTruthy(`FailuerMsg: ${fileName12} File is not downloaded.`);
+        });
+     
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
             await navigationPage.signOut();

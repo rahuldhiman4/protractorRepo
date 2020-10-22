@@ -178,7 +178,6 @@ class DynamicField {
 
     async addAttachment(fileToUpload: string[], attachmentNumber:number): Promise<void> {
         const absPathArray = fileToUpload.map((curStr) => { return resolve(__dirname, curStr) });
-        console.log(absPathArray);
         await $$(this.selectors.attachmentField).get(attachmentNumber -1).sendKeys(absPathArray.join('\n'));
     }
 }
