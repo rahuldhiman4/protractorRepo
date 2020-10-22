@@ -158,13 +158,13 @@ describe('Case Watchlist', () => {
     it('[DRDMV-16018]: Verify the default columns and total columns available in Watchlist modal', async () => {
         try {
             await caseConsole.clickOnWatchlistIcon();
-            let defaultAssignedCaseColumns: string[] = ["Case ID", "Priority", "Status", "Summary", "Assigned Group", "Assignee"];
-            expect(await caseWatchlist.areWatchlistColumnMatches(defaultAssignedCaseColumns)).toBeTruthy("Default columns are not matching");
-            let remainingColumns: string[] = ["Assigned Company", "ID"];
-            await caseWatchlist.addWatchlistGridColumn(remainingColumns);
             let expectedColumns: string[] = ["Case ID", "Priority", "Status", "Summary", "Assigned Group", "Assignee", "Assigned Company", "ID"];
-            expect(await caseWatchlist.areWatchlistColumnMatches(expectedColumns)).toBeTruthy("All columns are not matching");
+            let defaultAssignedCaseColumns: string[] = ["Case ID", "Priority", "Status", "Summary", "Assigned Group", "Assignee"];
+            expect(await caseWatchlist.areWatchlistColumnMatches(expectedColumns)).toBeTruthy("Default columns are not matching");
+            let remainingColumns: string[] = ["Assigned Company", "ID"];
             await caseWatchlist.removeWatchlistGridColumn(remainingColumns);
+            expect(await caseWatchlist.areWatchlistColumnMatches(defaultAssignedCaseColumns)).toBeTruthy("All columns are not matching");
+            await caseWatchlist.clickOnCloseButton();
         } catch (ex) {
             throw ex;
         }
