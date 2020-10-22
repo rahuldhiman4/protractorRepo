@@ -1,17 +1,17 @@
 import { browser } from "protractor";
+import apiHelper from '../../api/api.helper';
+import caseConsolePo from '../../pageobject/case/case-console.po';
+import viewCasePo from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
+import knowledgeConsolePo from '../../pageobject/knowledge/knowledge-articles-console.po';
+import taskConsolePo from '../../pageobject/task/console-task.po';
+import createAdhocTaskPo from '../../pageobject/task/create-adhoc-task.po';
+import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
+import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
-import apiHelper from '../../api/api.helper';
 import utilityGrid from '../../utils/utility.grid';
-import viewCasePo from '../../pageobject/case/view-case.po';
-import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
-import createAdhocTaskPo from '../../pageobject/task/create-adhoc-task.po';
-import viewTaskPo from '../../pageobject/task/view-task.po';
-import caseConsolePo from '../../pageobject/case/case-console.po';
-import taskConsolePo from '../../pageobject/task/console-task.po';
-import knowledgeConsolePo from '../../pageobject/knowledge/knowledge-articles-console.po';
 
 
 describe('Preset Filter Funcational Verification', () => {
@@ -37,12 +37,6 @@ describe('Preset Filter Funcational Verification', () => {
 
     afterAll(async () => {
         await utilityCommon.closeAllBlades();
-        await navigationPage.gotoCaseConsole();
-        await utilityGrid.clearFilter();
-        await navigationPage.gotoTaskConsole();
-        await utilityGrid.clearFilter();
-        await navigationPage.gotoKnowledgeConsole();
-        await utilityGrid.clearFilter();
         await navigationPage.signOut();
     });
 
@@ -149,6 +143,7 @@ describe('Preset Filter Funcational Verification', () => {
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
+            await utilityGrid.clearFilter();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -209,6 +204,7 @@ describe('Preset Filter Funcational Verification', () => {
 
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
+            await utilityGrid.clearFilter();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -378,11 +374,11 @@ describe('Preset Filter Funcational Verification', () => {
             expect(await utilityGrid.isAppliedFilterMatches([`Summary: Summary DRDMV23485${randomStr}`, `Company: Petramco`, `Case ID: ${newCase.displayId}`])).toBeTruthy('Requester: Qiang Du, Company, Summary Missing filter name');
             expect(await utilityGrid.getFirstGridRecordColumnValue('Case ID')).toBe(newCase2.displayId, " Case Id NOT displayed in case console");
             expect(await utilityGrid.getFirstGridRecordColumnValue('Summary')).toBe(`Summary DRDMV23485${randomStr}`, " Case Id NOT displayed in case console");
-            await utilityGrid.clearFilter();
         });
 
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
+            await utilityGrid.clearFilter();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -444,6 +440,8 @@ describe('Preset Filter Funcational Verification', () => {
             expect(await utilityGrid.isPresetFilterNameDisplayed(`${filtername1}-4`)).toBeTruthy('FailureMsg: Preset filter is missing');
             expect(await utilityGrid.isAppliedFilterMatches([`Case ID: ${newCase.displayId}`, 'Assignee: Qadim Katawazi', 'Requester: Qiang Du'])).toBeTruthy('Applied filter is missing');
             expect(await utilityGrid.getFirstGridRecordColumnValue('Case ID')).toBe(newCase.displayId, " Case Id NOT displayed in Task console");
+        });
+        afterAll(async () => {
             await utilityGrid.clearFilter();
         });
     });
@@ -671,7 +669,7 @@ describe('Preset Filter Funcational Verification', () => {
             await utilityGrid.clickOnFilterTab('Filters');
             expect(await taskConsolePo.isFieldLabelDisplayed('Applied filters')).toBeTruthy('Applied filter label is missing');
             expect(await utilityGrid.isAppliedFilterInputBoxDisplayedOnPresetFilter).toBeTruthy(`AppliedFilterInputBox is missing`);
-            
+
             let dynamicFilterArr1: string[] = await utilityGrid.getAllDynamicFilterName();
             expect(dynamicFilterArr1.includes('Assigned Group')).toBeTruthy(`Assigned Group is missing`);
             expect(dynamicFilterArr1.includes('Assignee')).toBeTruthy(`Assignee  is missing`);
@@ -842,6 +840,8 @@ describe('Preset Filter Funcational Verification', () => {
             await utilityGrid.clickRefreshIcon();
             await utilityGrid.updateCustomPresetFilter('Status', 'In Progress', 'default', filtername1, filtername2);
             await utilityGrid.deleteCustomPresetFilter(filtername1);
+        });
+        afterAll(async () => {
             await utilityGrid.clearFilter();
         });
     });
@@ -894,6 +894,8 @@ describe('Preset Filter Funcational Verification', () => {
             expect(await utilityGrid.isPresetFilterNameDisplayed(filtername1)).toBeFalsy('Preset filter name is displayed');
             expect(await utilityGrid.isAppliedFilterMatches([`Case ID: ${newCase.displayId}`, 'Requester: Qiang Du'])).toBeTruthy('Applied filter is missing');
             expect(await utilityGrid.getFirstGridRecordColumnValue('Case ID')).toBe(newCase.displayId, " Case Id NOT displayed in Task console");
+        });
+        afterAll(async () => {
             await utilityGrid.clearFilter();
         });
     });
@@ -1015,6 +1017,8 @@ describe('Preset Filter Funcational Verification', () => {
             let taskId2 = await utilityGrid.getFirstGridRecordColumnValue('Article ID');
             expect(taskId1).toBe(taskId2);
             expect(await utilityGrid.isGridColumnSorted('Article ID', 'desc')).toBeTruthy('Column not sorted on case console page');
+        });
+        afterAll(async () => {
             await utilityGrid.clearFilter();
         });
     });
@@ -1056,6 +1060,8 @@ describe('Preset Filter Funcational Verification', () => {
             let dynamicFilterArr2: string[] = await utilityGrid.getAllDynamicFilterName();
             expect(dynamicFilterArr2.includes('Case ID')).toBeTruthy(`Case ID is missing`);
             expect(dynamicFilterArr2.includes('Article ID')).toBeFalsy(`Article ID is displayed`);
+        });
+        afterAll(async () => {
             await utilityGrid.clearFilter();
         });
     });
