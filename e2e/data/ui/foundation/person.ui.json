@@ -24,7 +24,8 @@
     "PersonData12111": {
         "firstName": "fnPerson12111",
         "lastName": "lnPerson12111",
-        "userId": "idPerson12111"
+        "userId": "idPerson12111",
+        "userPermission": ["Case Agent","Case Business Analyst","Human Resource"]
     },
     "PersonData2002": {
         "firstName": "fnPerson2004",
