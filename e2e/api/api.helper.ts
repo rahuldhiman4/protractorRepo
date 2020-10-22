@@ -2850,6 +2850,9 @@ class ApiHelper {
         notificationEventPayload.fieldInstances[301718200].value = data.eventName;
         notificationEventPayload.fieldInstances[7].value = data.status ? data.status : notificationEventPayload.fieldInstances[7].value;
         notificationEventPayload.fieldInstances[8].value = data.eventDescription ? data.eventDescription : notificationEventPayload.fieldInstances[8].value;
+        if (data.lineOfBusiness) {
+            notificationEventPayload.fieldInstances[450000420].value = await constants.LOB[data.lineOfBusiness];
+        }
         let notificationEventCreateResponse: AxiosResponse = await apiCoreUtil.createRecordInstance(notificationEventPayload);
         console.log('Create Notification event Status =============>', notificationEventCreateResponse.status);
         const notificationEvent = await axios.get(

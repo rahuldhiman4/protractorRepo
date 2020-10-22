@@ -7,7 +7,7 @@ class createNotificationTemplate {
     selectors = {
         templateName: '[rx-view-component-id="383011ea-6f7d-40c2-bf7d-5bb9d5ab6faa"] input',
         description: '[rx-view-component-id="f2eb8d5f-88a7-4e46-842b-842fba667b08"] input',
-        event: 'a0554358-c226-4dae-9bef-0792a0e32c5f',
+        eventDropDownGuid: '6b65ad98-5a2c-40b9-a45b-62c10a88df86',
         moduleName: 'bbaf88e2-7db2-4be4-858c-950d53ace33c',
         alertInsertField: '[rx-view-component-id="b77c0581-b76e-4c92-a5e1-5c3026b379fa"] .cke_button__expressioneditor',
         emailInsertField: '[rx-view-component-id="cbc9e73f-032f-463a-9c6c-2b5abd5b59e1"] .cke_button__expressioneditor',
@@ -30,7 +30,7 @@ class createNotificationTemplate {
     }
 
     async selectEvent(value: string): Promise<void> {
-        await utilCommon.selectDropDown('a0554358-c226-4dae-9bef-0792a0e32c5f', value);
+        await utilCommon.selectDropDown(this.selectors.eventDropDownGuid, value);
     }
 
     async setTemplateName(value: string): Promise<void> {
@@ -102,12 +102,6 @@ class createNotificationTemplate {
                 return await $(this.selectors.emailBasedApprovalFlag).isDisplayed();
             else return false;
         })
-    }
-
-    async selectSecondEvent(event: string): Promise<void> {
-        await $('[rx-view-component-id="a0554358-c226-4dae-9bef-0792a0e32c5f"] i').click();
-        await $('[rx-view-component-id="a0554358-c226-4dae-9bef-0792a0e32c5f"] input').sendKeys(event);
-        await $$('.ui-select-choices-row-inner').last().click();
     }
 
     async selectEmailBasedApprovalToggle(value: boolean): Promise<void> {
