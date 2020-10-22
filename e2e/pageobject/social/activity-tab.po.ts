@@ -595,9 +595,8 @@ class ActivityTabPage {
     }
 
     async clickOnAttachLink(): Promise<void> {
-        await $(this.selectors.attachmentLink).click();
+        await element(by.cssContainingText(this.selectors.attachmentLink, 'Attach')).click();
     }
-
     async isPersonLinkPresent(): Promise<boolean> {
         return await $(this.selectors.activityLog).isDisplayed();
     }

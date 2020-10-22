@@ -547,6 +547,10 @@ class ViewCasePage {
     async clickOnRefreshTaskList() {
         await $(this.selectors.refreshActivity).click();
     }
+
+    async clickDynamicAttachmentValue(fileName:string): Promise<void> {
+        await element(by.cssContainingText(this.selectors.dynamicAttachmentValue, fileName)).click();
+    }
 }
 
 export default new ViewCasePage();
