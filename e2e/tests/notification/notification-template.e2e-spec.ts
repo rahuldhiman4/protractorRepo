@@ -218,13 +218,12 @@ describe("Notification Template", () => {
     });
 
     describe('[DRDMV-16012,DRDMV-16038,DRDMV-16037]: Verify Able to define Notification template which allow to be used for Email based approval', () => {
-
         it('[DRDMV-16012,DRDMV-16038,DRDMV-16037]: Verify Able to define Notification template which allow to be used for Email based approval', async () => {
             await notificationTempGridPage.clickOnCreateNotificationTemplate();
             expect(await createNotificationTemplatePage.isEmailBasedApprovalFlagDisplayed()).toBeFalsy('Email based approval flag is displayed');
             await createNotificationTemplatePage.setTemplateName('Email Based Approval DRDMV-16012');
             await createNotificationTemplatePage.selectModuleName('Case - Approval');
-            await createNotificationTemplatePage.selectSecondEvent('Email Based Approval');
+            await createNotificationTemplatePage.selectEvent('Email Based Approval');
             await createNotificationTemplatePage.selectEmailBasedApprovalToggle(true);
             expect(await createNotificationTemplatePage.areRecipientsMatches(["Approvers"])).toBeTruthy('Recipient List of Case Approval Module is not matching');
             await createNotificationTemplatePage.setDescription('Description');
@@ -266,7 +265,7 @@ describe("Notification Template", () => {
             await notificationTempGridPage.clickOnCreateNotificationTemplate();
             await createNotificationTemplatePage.setTemplateName('Email Based Approval DRDMV-16012_2');
             await createNotificationTemplatePage.selectModuleName('Case - Approval');
-            await createNotificationTemplatePage.selectSecondEvent('Email Based Approval');
+            await createNotificationTemplatePage.selectEvent('Email Based Approval');
             await createNotificationTemplatePage.selectEmailBasedApprovalToggle(false);
             await createNotificationTemplatePage.setDescription('Description2');
             await createNotificationTemplatePage.setAlertMessage('Sample Alert Text2');
@@ -284,7 +283,7 @@ describe("Notification Template", () => {
             await notificationTempGridPage.clickOnCreateNotificationTemplate();
             await createNotificationTemplatePage.setTemplateName('Email Based Approval DRDMV-16012_3');
             await createNotificationTemplatePage.selectModuleName('Case - Approval');
-            await createNotificationTemplatePage.selectSecondEvent('Email Based Approval');
+            await createNotificationTemplatePage.selectEvent('Email Based Approval');
             await createNotificationTemplatePage.setDescription('Description3');
             await createNotificationTemplatePage.setAlertMessage('Sample Alert Text3');
             await createNotificationTemplatePage.clickOnTab();
@@ -306,13 +305,13 @@ describe("Notification Template", () => {
         });
     });
 
-    it('[DRDMV-16034]: Verify Notification method selected as alert will throw an error on save if Email based approval is selcted', async () => {
+    fit('[DRDMV-16034]: Verify Notification method selected as alert will throw an error on save if Email based approval is selcted', async () => {
         await notificationTempGridPage.clickOnCreateNotificationTemplate();
         expect(await createNotificationTemplatePage.isEmailBasedApprovalFlagDisplayed()).toBeFalsy('Email based approval flag is displayed');
         await createNotificationTemplatePage.setTemplateName('Email Based Approval DRDMV-16034');
         await createNotificationTemplatePage.selectModuleName('Case - Approval');
         await createNotificationTemplatePage.selectDefaultNotificationMethod('Alert');
-        await createNotificationTemplatePage.selectSecondEvent('Email Based Approval');
+        await createNotificationTemplatePage.selectEvent('Email Based Approval');
         await createNotificationTemplatePage.selectEmailBasedApprovalToggle(true);
         expect(await createNotificationTemplatePage.areRecipientsMatches(["Approvers"])).toBeTruthy('Recipient List of Case Approval Module is not matching');
         await createNotificationTemplatePage.setDescription('Description');

@@ -3,6 +3,7 @@ export interface INotificationEvent {
     status?: number;
     company?: string;
     eventDescription?: string;
+    lineOfBusiness?: string
 }
 
 export interface INotificationTemplate {

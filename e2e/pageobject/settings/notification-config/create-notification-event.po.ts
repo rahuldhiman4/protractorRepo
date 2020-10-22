@@ -6,7 +6,7 @@ class NotificationEventCreatePage {
     selectors = {
         eventNameInput: '[rx-view-component-id="3dca5cb2-8539-4713-a3bb-25299b838936"] input',
         companyGuid: '0d3363e1-ee59-4efb-b482-8cb7dbfadf92',
-        descriptionInput: '[rx-view-component-id="e1ac5aae-3afe-4852-865a-1bcbb8bb3601"] input',
+        descriptionInput: '[rx-view-component-id="f9a1586b-c74d-489c-8430-c75b2a87d938"] textarea',
         saveButton: '[rx-view-component-id="69eae4f4-21df-448f-b227-6615d6d16879"] button'
     }
 
