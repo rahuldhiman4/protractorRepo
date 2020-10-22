@@ -92,6 +92,8 @@ describe('Create Task Template', () => {
             await taskTemplate.setTaskDescription('Description in manual task');
             await taskTemplate.selectCompanyByName('Petramco');
             await taskTemplate.selectTemplateStatus('Active');
+            await taskTemplate.selectBuisnessUnit('United States Support');
+            await taskTemplate.selectOwnerGroup('US Support 3');
             await taskTemplate.clickOnSaveTaskTemplate();
         });
         it('[DRDMV-3817,DRDMV-3819]: [Task Template] Task Template Create view (UI verification)', async () => {
@@ -198,14 +200,14 @@ describe('Create Task Template', () => {
             await viewTaskTemplate.clickOnEditLink();
             await editTaskTemplate.setSummary('updateSummary' + randomStr);
             await editTaskTemplate.setDescription('Description' + randomStr);
-            await editTaskTemplate.selectTaskCategoryTier1('Applications');
-            await editTaskTemplate.selectTaskCategoryTier2('Social');
+            await editTaskTemplate.selectTaskCategoryTier1('Employee Relations');
+            await editTaskTemplate.selectTaskCategoryTier2('Compensation');
             await editTaskTemplate.clickOnSaveButton();
             //verify the updated Field
             expect(await viewTaskTemplate.getSummaryValue()).toBe('updateSummary' + randomStr);
             expect(await viewTaskTemplate.getTaskDescriptionNameValue()).toBe('Description' + randomStr);
-            expect(await viewTaskTemplate.getCategoryTier1Value()).toBe("Applications");
-            expect(await viewTaskTemplate.getCategoryTier2Value()).toBe("Social");
+            expect(await viewTaskTemplate.getCategoryTier1Value()).toBe("Employee Relations");
+            expect(await viewTaskTemplate.getCategoryTier2Value()).toBe("Compensation");
         });
     });
 
@@ -230,14 +232,14 @@ describe('Create Task Template', () => {
         await viewTaskTemplate.clickOnEditLink();
         await editTaskTemplate.setSummary('updateSummary' + randomStr);
         await editTaskTemplate.setDescription('Description' + randomStr);
-        await editTaskTemplate.selectTaskCategoryTier1('Applications');
-        await editTaskTemplate.selectTaskCategoryTier2('Social');
+        await editTaskTemplate.selectTaskCategoryTier1('Employee Relations');
+        await editTaskTemplate.selectTaskCategoryTier2('Compensation');
         await editTaskTemplate.clickOnSaveButton();
         //verify the updated Field
         expect(await viewTaskTemplate.getSummaryValue()).toBe('updateSummary' + randomStr);
         expect(await viewTaskTemplate.getTaskDescriptionNameValue()).toBe('Description' + randomStr);
-        expect(await viewTaskTemplate.getCategoryTier1Value()).toBe("Applications");
-        expect(await viewTaskTemplate.getCategoryTier2Value()).toBe("Social");
+        expect(await viewTaskTemplate.getCategoryTier1Value()).toBe("Employee Relations");
+        expect(await viewTaskTemplate.getCategoryTier2Value()).toBe("Compensation");
     });//, 220 * 1000);
 
     //ankagraw

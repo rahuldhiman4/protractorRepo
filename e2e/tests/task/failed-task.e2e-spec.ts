@@ -21,7 +21,7 @@ import statusUpdateBladePo from '../../pageobject/common/update.status.blade.po'
 describe('Failed Task', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
-        await loginPage.login('fritz');
+        await loginPage.login('qkatawazi');
         await apiHelper.apiLogin('tadmin');
         await apiHelper.setDefaultNotificationForUser('Franz', 'Alert');
     });
@@ -34,9 +34,9 @@ describe('Failed Task', () => {
     //asahitya
     describe('[DRDMV-10057]: Task behaviour when 2 of 3 tasks on same sequence and first task is failed(Condition set is Proceed further)', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let caseTemplatePetramco, newCaseTemplate, manualTaskTemplateData, automatedTaskTemplateSummary1, automatedTaskTemplateSummary2, caseDisplayId;
+        let caseTemplatePetramco, newCaseTemplate, manualTaskTemplateData, manualTaskTemplate, automatedTaskTemplateSummary1, automatedTaskTemplateSummary2, caseDisplayId;
         beforeAll(async () => {
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             caseTemplatePetramco = {
                 "templateName": 'caseTemplateName DRDMV-10057' + randomStr,
                 "templateSummary": 'caseTemplateName DRDMV-10057' + randomStr,
@@ -44,12 +44,12 @@ describe('Failed Task', () => {
                 "casePriority": "Low",
                 "caseStatus": "New",
                 "company": "Petramco",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
-                "ownerBU": "Facilities Support",
-                "ownerGroup": "Facilities",
-                "taskFailureConfiguration": "Proceed With Next Task"
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 1",
+                "assignee": "qtao",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3",
+                "taskFailureConfiguration": "Proceed With Next Task",
             }
             newCaseTemplate = await apiHelper.createCaseTemplate(caseTemplatePetramco);
 
@@ -59,13 +59,13 @@ describe('Failed Task', () => {
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 1",
+                "assignee": "qtao",
             }
-            let manualTaskTemplate = await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
+            manualTaskTemplate = await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
 
             let automatedTaskTemplateData = {
                 "templateName": 'Automated1 task10057' + randomStr,
@@ -75,18 +75,18 @@ describe('Failed Task', () => {
                 "processName": 'Auto Proces1' + randomStr,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 1",
+                "assignee": "qtao",
             }
             automatedTaskTemplateSummary1 = automatedTaskTemplateData.templateSummary;
             let automatedTaskTemplate1 = await apiHelper.createAutomatedTaskTemplate(automatedTaskTemplateData);
             automatedTaskTemplateSummary2 = automatedTaskTemplateData.templateSummary = automatedTaskTemplateData.templateName = 'Automated2 task10057' + randomStr;
             automatedTaskTemplateData.processName = 'Auto Proces2' + randomStr;
             let automatedTaskTemplate2 = await apiHelper.createAutomatedTaskTemplate(automatedTaskTemplateData);
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             await apiHelper.enableDisableProcess(`${automatedTaskTemplateData.processBundle}:${automatedTaskTemplateData.processName}`, false);
             await apiHelper.associateCaseTemplateWithThreeTaskTemplate(newCaseTemplate.displayId, automatedTaskTemplate2.displayId, automatedTaskTemplate1.displayId, manualTaskTemplate.displayId, 'THREE_TASKFLOW_SEQUENTIAL_PARALLEL');
 
@@ -119,9 +119,8 @@ describe('Failed Task', () => {
             expect(await manageTaskBlade.getTaskStatus(automatedTaskTemplateSummary1)).toContain('Completed');
             await utilityCommon.closeAllBlades();
 
-            await apiHelper.apiLogin('tadmin');
+            await apiHelper.apiLogin('qkatawazi');
             let manualTaskGuid = await coreApi.getTaskGuid(manualTaskTemplateData.templateSummary);
-            await apiHelper.apiLogin('fritz');
             await apiHelper.updateTaskStatus(manualTaskGuid, 'Completed', 'Successful');
 
             await updateStatusBlade.changeCaseStatus('Resolved');
@@ -148,11 +147,11 @@ describe('Failed Task', () => {
                 "casePriority": "Low",
                 "caseStatus": "New",
                 "company": "Petramco",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
-                "ownerBU": "Facilities Support",
-                "ownerGroup": "Facilities",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 1",
+                "assignee": "qtao",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3",
                 "taskFailureConfiguration": "Do Not Proceed"
             }
             newCaseTemplate = await apiHelper.createCaseTemplate(caseTemplatePetramco);
@@ -164,11 +163,11 @@ describe('Failed Task', () => {
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 1",
+                "assignee": "qtao",
             }
             let manualTaskTemplate = await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
 
@@ -180,18 +179,18 @@ describe('Failed Task', () => {
                 "processName": 'Auto Proces' + randomStr,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 1",
+                "assignee": "qtao",
             }
             automatedTaskTemplateSummary1 = automatedTaskTemplateData.templateSummary;
             let automatedTaskTemplate1 = await apiHelper.createAutomatedTaskTemplate(automatedTaskTemplateData);
             automatedTaskTemplateSummary2 = automatedTaskTemplateData.templateSummary = automatedTaskTemplateData.templateName = 'Automated2 task10057' + randomStr;
             automatedTaskTemplateData.processName = 'Auto Proces2' + randomStr;
             let automatedTaskTemplate2 = await apiHelper.createAutomatedTaskTemplate(automatedTaskTemplateData);
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             await apiHelper.enableDisableProcess(`${automatedTaskTemplateData.processBundle}:${automatedTaskTemplateData.processName}`, false);
             await apiHelper.associateCaseTemplateWithThreeTaskTemplate(newCaseTemplate.displayId, automatedTaskTemplate2.displayId, automatedTaskTemplate1.displayId, manualTaskTemplate.displayId, 'THREE_TASKFLOW_SEQUENTIAL_PARALLEL');
 
@@ -204,7 +203,7 @@ describe('Failed Task', () => {
             await createCasePo.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             caseDisplayId = await viewCasePage.getCaseID();
-            
+
         });
 
         it('[DRDMV-10056]: Task behaviour when 2 of 3 automated tasks on same sequence and first task is failed(Condition set is Do not Proceed)', async () => {
@@ -234,7 +233,7 @@ describe('Failed Task', () => {
         let automatedTaskTemplateData, caseResponse;
         beforeAll(async () => {
             //Creating the Automated Task template and disabling the Process
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             automatedTaskTemplateData = {
                 "templateName": 'Automated task10000' + randomStr,
                 "templateSummary": 'Automated task10000' + randomStr,
@@ -243,23 +242,23 @@ describe('Failed Task', () => {
                 "processName": 'Auto Proces' + randomStr,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "ownerBusinessUnit": "United States Suppport",
+                "ownerGroup": "US Support 3",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 1",
+                "assignee": "qtao",
             }
             await apiHelper.createAutomatedTaskTemplate(automatedTaskTemplateData);
 
             //Creating the Case and Task with the Automated Template and associating them
             const caseData = {
                 "Description": "DRDMV-10000 Desc",
-                "Requester": "qkatawazi",
+                "Requester": "qliu",
                 "Summary": "DRDMV-10000 Summary",
                 "Assigned Company": "Petramco",
-                "Business Unit": "Facilities Support",
-                "Support Group": "Facilities",
-                "Assignee": "Fritz"
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 1",
+                "Assignee": "qtao"
             }
             caseResponse = await apiHelper.createCase(caseData);
 
@@ -298,7 +297,7 @@ describe('Failed Task', () => {
             expect(await taskViewPage.getTaskStatusValue()).toBe('Completed');
             expect(await taskViewPage.getStatusReason()).toBe('Successful');
             await utilityCommon.closeAllBlades();
-            expect(await activityTabPo.isTextPresentInActivityLog('Fritz Schulz')).toBeTruthy();
+            expect(await activityTabPo.isTextPresentInActivityLog('Qadim Katawazi')).toBeTruthy();
             expect(await activityTabPo.isTextPresentInActivityLog('has rerun the task')).toBeTruthy();
         });
     });
@@ -306,29 +305,29 @@ describe('Failed Task', () => {
     //asahitya
     it('[DRDMV-10031]: Verify Manual Tasks can set to Failed Status', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        await apiHelper.apiLogin('fritz');
+        await apiHelper.apiLogin('qkatawazi');
         let manualTaskTemplateData = {
             "templateName": 'Manual task10031' + randomStr,
             "templateSummary": 'Manual task10031' + randomStr,
             "templateStatus": "Active",
             "taskCompany": "Petramco",
             "ownerCompany": "Petramco",
-            "ownerBusinessUnit": "Facilities Support",
-            "ownerGroup": "Facilities",
-            "businessUnit": "Facilities Support",
-            "supportGroup": "Facilities",
-            "assignee": "Fritz",
+            "ownerBusinessUnit": "United States Support",
+            "ownerGroup": "US Support 3",
+            "businessUnit": "United States Support",
+            "supportGroup": "US Support 1",
+            "assignee": "qtao",
         }
         await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
 
         const caseData = {
             "Description": "DRDMV-10031 Desc",
-            "Requester": "qkatawazi",
+            "Requester": "qliu",
             "Summary": "DRDMV-10031 Summary",
             "Assigned Company": "Petramco",
-            "Business Unit": "Facilities Support",
-            "Support Group": "Facilities",
-            "Assignee": "Fritz"
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 1",
+            "Assignee": "qtao"
         }
         let caseResponse = await apiHelper.createCase(caseData);
 
@@ -355,18 +354,18 @@ describe('Failed Task', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let manualTaskTemplateData1, manualTaskTemplateData2, automatedTaskTemplateData, caseResponse, manualTaskGuid1;
         beforeAll(async () => {
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             manualTaskTemplateData1 = {
                 "templateName": 'Manual task10044_1' + randomStr,
                 "templateSummary": 'Manual task10044_1' + randomStr,
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 1",
+                "assignee": "qtao",
             }
             await apiHelper.createManualTaskTemplate(manualTaskTemplateData1);
 
@@ -376,11 +375,11 @@ describe('Failed Task', () => {
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 1",
+                "assignee": "qtao",
             }
             await apiHelper.createManualTaskTemplate(manualTaskTemplateData2);
 
@@ -392,22 +391,22 @@ describe('Failed Task', () => {
                 "processName": 'Auto Proces' + randomStr,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+                "businessUnit": "United States Support",
+                "supportGroup": "US SUpport 1",
+                "assignee": "qtao",
             }
             await apiHelper.createAutomatedTaskTemplate(automatedTaskTemplateData);
 
             const caseData = {
                 "Description": "DRDMV-10000 Desc",
-                "Requester": "qkatawazi",
+                "Requester": "qliu",
                 "Summary": "DRDMV-10000 Summary",
                 "Assigned Company": "Petramco",
-                "Business Unit": "Facilities Support",
-                "Support Group": "Facilities",
-                "Assignee": "Fritz"
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 1",
+                "Assignee": "qtao"
             }
             caseResponse = await apiHelper.createCase(caseData);
 
@@ -434,9 +433,8 @@ describe('Failed Task', () => {
             await apiHelper.addTaskToCase(taskDataManual2, caseResponse.id);
             await apiHelper.enableDisableProcess(`${automatedTaskTemplateData.processBundle}:${automatedTaskTemplateData.processName}`, false);
 
-            await apiHelper.apiLogin('tadmin');
+            await apiHelper.apiLogin('qkatawazi');
             manualTaskGuid1 = await coreApi.getTaskGuid(manualTaskTemplateData1.templateSummary);
-            await apiHelper.apiLogin('fritz');
             await apiHelper.updateCaseStatus(caseResponse.id, 'InProgress');
         });
 
@@ -462,13 +460,13 @@ describe('Failed Task', () => {
             expect(await taskViewPage.getStatusReason()).toBe('Error');
         });
     });
-
+    
     describe('[DRDMV-10045]: Case Status when one automated task got failed and other 2 automated task got passed', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplatePetramco, caseTemplateResponse, automatedTaskTemplateData1, automatedTaskTemplateData2, automatedTaskTemplateData3, caseResponse;
         beforeAll(async () => {
             //Create a case template with Proceed with Next task config
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             caseTemplatePetramco = {
                 "templateName": 'caseTemplateName DRDMV-10045' + randomStr,
                 "templateSummary": 'caseTemplateName DRDMV-10045' + randomStr,
@@ -476,11 +474,11 @@ describe('Failed Task', () => {
                 "casePriority": "Low",
                 "caseStatus": "New",
                 "company": "Petramco",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
-                "ownerBU": "Facilities Support",
-                "ownerGroup": "Facilities",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 1",
+                "assignee": "qtao",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3",
                 "taskFailureConfiguration": "Proceed With Next Task",
                 "resolveCaseonLastTaskCompletion": "1"
             }
@@ -495,11 +493,11 @@ describe('Failed Task', () => {
                 "processName": 'Auto Proces1' + randomStr,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 1",
+                "assignee": "qtao",
             }
             await apiHelper.createAutomatedTaskTemplate(automatedTaskTemplateData1);
             await apiHelper.enableDisableProcess(`${automatedTaskTemplateData1.processBundle}:${automatedTaskTemplateData1.processName}`, false);
@@ -512,11 +510,11 @@ describe('Failed Task', () => {
                 "processName": 'Auto Proces2' + randomStr,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 1",
+                "assignee": "qtao",
             }
             await apiHelper.createAutomatedTaskTemplate(automatedTaskTemplateData2);
 
@@ -528,17 +526,17 @@ describe('Failed Task', () => {
                 "processName": 'Auto Proces3' + randomStr,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 1",
+                "assignee": "qtao",
             }
             await apiHelper.createAutomatedTaskTemplate(automatedTaskTemplateData3);
 
             //Create a case using the above Case Template
             let caseData = {
-                "Requester": "qkatawazi",
+                "Requester": "qliu",
                 "Summary": `DRDMV-10045 Medium Priority ${randomStr}`,
                 "Origin": "Agent",
                 "Case Template ID": caseTemplateResponse.displayId
@@ -591,7 +589,7 @@ describe('Failed Task', () => {
         let caseTemplatePetramco, caseTemplateResponse, automatedTaskTemplateData1, automatedTaskTemplateData2, caseResponse;
         beforeAll(async () => {
             //Create a case template with Do Not Proceed task config
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             caseTemplatePetramco = {
                 "templateName": 'caseTemplateName DRDMV-9997' + randomStr,
                 "templateSummary": 'caseTemplateName DRDMV-9997' + randomStr,
@@ -599,11 +597,11 @@ describe('Failed Task', () => {
                 "casePriority": "Low",
                 "caseStatus": "New",
                 "company": "Petramco",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
-                "ownerBU": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 1",
+                "assignee": "qtao",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             caseTemplateResponse = await apiHelper.createCaseTemplate(caseTemplatePetramco);
 
@@ -616,11 +614,11 @@ describe('Failed Task', () => {
                 "processName": 'Auto Proces1' + randomStr,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 1",
+                "assignee": "qtao",
             }
             await apiHelper.createAutomatedTaskTemplate(automatedTaskTemplateData1);
             await apiHelper.enableDisableProcess(`${automatedTaskTemplateData1.processBundle}:${automatedTaskTemplateData1.processName}`, false);
@@ -633,17 +631,17 @@ describe('Failed Task', () => {
                 "processName": 'Auto Proces2' + randomStr,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 1",
+                "assignee": "qtao",
             }
             await apiHelper.createAutomatedTaskTemplate(automatedTaskTemplateData2);
 
             //Create a case using the above Case Template
             let caseData = {
-                "Requester": "qkatawazi",
+                "Requester": "qliu",
                 "Summary": `DRDMV-9997 Medium Priority ${randomStr}`,
                 "Origin": "Agent",
                 "Case Template ID": caseTemplateResponse.displayId
@@ -651,6 +649,7 @@ describe('Failed Task', () => {
             caseResponse = await apiHelper.createCase(caseData);
 
             //Create task with above created Automated templates
+
             const taskData1 = {
                 "company": "Petramco",
                 "requesterId": "qkatawazi",
@@ -662,7 +661,6 @@ describe('Failed Task', () => {
                 "requesterId": "qkatawazi",
                 "templateName": automatedTaskTemplateData2.templateSummary
             }
-
             await apiHelper.addTaskToCase(taskData1, caseResponse.id);
             await apiHelper.addTaskToCase(taskData2, caseResponse.id);
         });
@@ -686,7 +684,7 @@ describe('Failed Task', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplatePetramco, caseTemplateResponse, automatedTaskTemplateData, caseResponse, taskDisplayId;
         beforeAll(async () => {
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             caseTemplatePetramco = {
                 "templateName": 'caseTemplateName DRDMV-10413' + randomStr,
                 "templateSummary": 'caseTemplateName DRDMV-10413' + randomStr,
@@ -694,8 +692,8 @@ describe('Failed Task', () => {
                 "casePriority": "Low",
                 "caseStatus": "New",
                 "company": "Petramco",
-                "ownerBU": "Facilities Support",
-                "ownerGroup": "Facilities",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3",
                 "taskFailureConfiguration": "Proceed With Next Task"
             }
             caseTemplateResponse = await apiHelper.createCaseTemplate(caseTemplatePetramco);
@@ -708,21 +706,21 @@ describe('Failed Task', () => {
                 "processName": 'Auto Proces' + randomStr,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 1",
             }
             await apiHelper.createAutomatedTaskTemplate(automatedTaskTemplateData);
 
             let caseData = {
-                "Requester": "qkatawazi",
+                "Requester": "qliu",
                 "Summary": `DRDMV-10413 Summary ${randomStr}`,
                 "Origin": "Agent",
                 "Case Template ID": caseTemplateResponse.displayId,
-                "Business Unit": "Facilities Support",
-                "Support Group": "Facilities",
-                "Assignee": "Franz",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 1",
+                "Assignee": "qtao",
             }
             caseResponse = await apiHelper.createCase(caseData);
 
@@ -738,7 +736,7 @@ describe('Failed Task', () => {
         });
 
         it('[DRDMV-10413]: [Alerts] Notification alerts on Task Activation to Task Support Group', async () => {
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             await apiHelper.updateCaseStatus(caseResponse.id, 'InProgress');
             await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
@@ -748,14 +746,14 @@ describe('Failed Task', () => {
             await utilityCommon.closeAllBlades();
 
             await navigationPage.signOut();
-            await loginPage.login('franz');
+            await loginPage.login('qtao');
             await notificationPo.clickOnNotificationIcon();
-            expect(await notificationPo.isAlertPresent(`Fritz Schulz changed status of ${taskDisplayId} to Completed`)).toBeTruthy('Notification is not present');
+            expect(await notificationPo.isAlertPresent(`Qadim Katawazi changed status of ${taskDisplayId} to Completed`)).toBeTruthy('Notification is not present');
         });
 
         afterAll(async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('qkatawazi');
         });
     });
 

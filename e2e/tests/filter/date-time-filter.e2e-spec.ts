@@ -182,6 +182,9 @@ describe('Date and Time Preset Filter', () => {
             await dateTimeSelectorPo.clickMeridianValue("AM");
             expect(await utilityGrid.isNoFilterAppliedError()).toBeTruthy();
         });
+        afterAll(async () => {
+            await utilityGrid.clearFilter();
+        });
     });
 
     describe('[DRDMV-23517,DRDMV-23518]: Verify records are fetched on knowledge console Knowledge set, Version, template Name and Assigned group combinations', async () => {
