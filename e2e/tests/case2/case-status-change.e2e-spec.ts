@@ -437,7 +437,7 @@ describe('Case Status Change', () => {
                 "Summary": summary1,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
-                "Support Group": "US Support 1",
+                "Support Group": "US Support 3",
                 "Assignee": "qkatawazi",
                 "Status": "New",
             }
@@ -447,7 +447,7 @@ describe('Case Status Change', () => {
                 "Summary": summary2,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
-                "Support Group": "US Support 1",
+                "Support Group": "US Support 3",
                 "Assignee": "qkatawazi",
                 "Status": "Assigned",
             }
@@ -457,7 +457,7 @@ describe('Case Status Change', () => {
                 "Summary": summary3,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
-                "Support Group": "US Support 1",
+                "Support Group": "US Support 3",
                 "Assignee": "qkatawazi",
                 "Status": "In Progress",
             }
@@ -467,7 +467,7 @@ describe('Case Status Change', () => {
                 "Summary": summary4,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
-                "Support Group": "US Support 1",
+                "Support Group": "US Support 3",
                 "Assignee": "qkatawazi",
                 "Status": "Pending",
             }
