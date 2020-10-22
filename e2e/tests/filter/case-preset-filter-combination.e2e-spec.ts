@@ -1,18 +1,15 @@
+import { cloneDeep } from 'lodash';
 import { browser } from "protractor";
 import apiHelper from "../../api/api.helper";
 import * as caseData from "../../data/ui/case/filter-combination.data.ui";
+import { SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import statusConfig from "../../pageobject/settings/common/status-config.po";
+import serviceTargetConfig from '../../pageobject/settings/slm/service-target-blade.po';
+import SlmExpressionBuilder from '../../pageobject/settings/slm/slm-expressionbuilder.pop.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
-import dbConnectObj from '../../utils/utility.db-connect';
 import utilityGrid from "../../utils/utility.grid";
-import { SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
-import { cloneDeep } from 'lodash';
-import serviceTargetConfig from '../../pageobject/settings/slm/service-target-blade.po';
-import slmProgressBar from '../../pageobject/slm/slm-progressbar.po';
-import SlmExpressionBuilder from '../../pageobject/settings/slm/slm-expressionbuilder.pop.po';
 
 describe('Case Console Filter Combinations', () => {
     const caseModule = 'Case';
@@ -23,7 +20,6 @@ describe('Case Console Filter Combinations', () => {
 
     afterAll(async () => {
         await utilityCommon.closeAllBlades();
-        await utilityGrid.clearFilter();
         await navigationPage.signOut();
     });
 
@@ -86,7 +82,7 @@ describe('Case Console Filter Combinations', () => {
 
         it('[DRDMV-23477]: Verify records are fetched on case console with Assignee, Assigned Group, Status combinations', async () => {
             //Verify the fetched records with filter Assigned Group = "Employee Relations" and Status = "New"
-            
+
             await navigationPage.gotoCaseConsole();
             await utilityGrid.addFilter('Assigned Group', 'Employee Relations', 'text');
             await utilityGrid.addFilter('Status', 'New', 'text');
@@ -183,6 +179,8 @@ describe('Case Console Filter Combinations', () => {
             expect(await utilityGrid.isGridColumnSorted('Priority', 'desc')).toBeTruthy('Descendigly not sorted');
             expect(await utilityGrid.isGridColumnSorted('Modified Date', 'asc')).toBeTruthy('Ascendigly not sorted');
             expect(await utilityGrid.isGridColumnSorted('Modified Date', 'desc')).toBeTruthy('Descendigly not sorted');
+        });
+        afterAll(async () => {
             await utilityGrid.clearFilter();
         });
     });
@@ -258,6 +256,8 @@ describe('Case Console Filter Combinations', () => {
             for (let i: number = 0; i < 4; i++) {
                 expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeFalsy(caseId[i] + ' :Record is available');
             }
+        });
+        afterAll(async () => {
             await utilityGrid.clearFilter();
         });
     });
@@ -330,6 +330,8 @@ describe('Case Console Filter Combinations', () => {
             for (let i: number = 3; i < 4; i++) {
                 expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeFalsy(caseId[i] + ' :Record is available');
             }
+        });
+        afterAll(async () => {
             await utilityGrid.clearFilter();
         });
     });
@@ -429,6 +431,8 @@ describe('Case Console Filter Combinations', () => {
             for (let i: number = 0; i < 3; i++) {
                 expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeFalsy(caseId[i] + ' :Record is available');
             }
+        });
+        afterAll(async () => {
             await utilityGrid.clearFilter();
         });
     });

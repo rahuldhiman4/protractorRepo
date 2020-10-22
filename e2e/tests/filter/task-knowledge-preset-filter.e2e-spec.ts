@@ -24,7 +24,6 @@ describe('Task and Knowledge Console Filter Combinations', () => {
     afterAll(async () => {
         await utilityCommon.closeAllBlades();
         await navigationPage.gotoTaskConsole();
-        await utilityGrid.clearFilter();
         await navigationPage.signOut();
     });
     describe('[DRDMV-23494]: Verify records are fetched on task console with Assignee, Assigned Group, Status combinations', () => {
@@ -161,6 +160,9 @@ describe('Task and Knowledge Console Filter Combinations', () => {
             expect(await utilityGrid.isGridColumnSorted('Modified Date', 'asc')).toBeTruthy('Ascendigly not sorted');
             expect(await utilityGrid.isGridColumnSorted('Modified Date', 'desc')).toBeTruthy('Descendigly not sorted');
         });
+        afterAll(async () => {
+            await utilityGrid.clearFilter();
+        });
     });
     describe('[DRDMV-23495]: Verify records are fetched on task console with Assignee, Assigned Group, Category combinations', () => {
         let taskId: string[] = [];
@@ -273,6 +275,8 @@ describe('Task and Knowledge Console Filter Combinations', () => {
             for (let i: number = 0; i < 1; i++) {
                 expect(await utilityGrid.isGridRecordPresent(taskId[i])).toBeFalsy(taskId[i] + ' :Record is available');
             }
+        });
+        afterAll(async () => {
             await utilityGrid.clearFilter();
         });
     });
@@ -362,6 +366,8 @@ describe('Task and Knowledge Console Filter Combinations', () => {
             for (let i: number = 0; i < 4; i++) {
                 expect(await utilityGrid.isGridRecordPresent(taskId[i])).toBeFalsy(taskId[i] + ' :Record is not available');
             }
+        });
+        afterAll(async () => {
             await utilityGrid.clearFilter();
         });
     });
