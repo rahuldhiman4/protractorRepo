@@ -9,7 +9,7 @@ class CaseConsolePage {
     selectors = {
         guid: "d628a20f-e852-4a84-87e6-f5191f77ddf6",
         searchCase: '[rx-view-component-id="d628a20f-e852-4a84-87e6-f5191f77ddf6"] .adapt-search-field-ellipsis',
-        recommendedCaseLink: '.ui-table-tbody tr td:nth-of-type(2) button',
+        recommendedCaseLink: '.ui-table-tbody tr td:nth-of-type(2) a',
         recommendedCaseCheckBox: '.ui-chkbox-box',
         filter: '.d-icon-left-filter',
         availableFilterDrpDown: '.card-title',
