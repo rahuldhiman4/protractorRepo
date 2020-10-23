@@ -6,7 +6,7 @@ import { NOTES_TEMPLATE_MANDATORY_FIELD } from '../data/ui/Social/notesTemplate.
 describe('Login and create case from API', () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-    fit('create case', async () => {
+    it('create case', async () => {
         let caseData =
         {
             "Requester": "qtao",
