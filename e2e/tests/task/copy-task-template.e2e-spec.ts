@@ -355,7 +355,6 @@ describe('Copy Task Template', () => {
             expect(await copyTemplatePage.getSourceProcessName()).toBe('com.bmc.dsm.case-lib:' + templateData.processName);
             await copyTemplatePage.setTemplateName(updatedTaskTemplate);
             await copyTemplatePage.setTaskSummary(updatedTaskSummary);
-            await copyTemplatePage.selectBundles("Case Management Service");
             await copyTemplatePage.setNewProcessName(newProcessName);
             await copyTemplatePage.selectTemplateStatus('Active');
             await copyTemplatePage.clickSaveCopytemplate();
