@@ -57,7 +57,6 @@ describe('Menu Item', () => {
         await createMenuItems.clickOnMenuOptionLink();
         await createMenuItems.selectMenuNameDropDown('Label');
         await createMenuItems.selectMenuNameDropDown('Resolution Code');
-        await createMenuItems.selectMenuNameDropDown('Source');
         expect(await createMenuItems.isMenuNameDropDownPresent()).toBeTruthy('MenuName Drop down is missing');
         expect(await createMenuItems.isMenuOptionTextBoxPresent()).toBeTruthy('MenuOption text box is missing');
         expect(await createMenuItems.isStatusDropDownPresent()).toBeTruthy('status Drop down is missing');
@@ -81,9 +80,7 @@ describe('Menu Item', () => {
         let label = 'Legal' + randomStr;
         let label1 = 'legal' + randomStr;
         let label2 = 'leGAL' + randomStr;
-        let source = 'Phone' + randomStr;
-        let source1 = 'phONE' + randomStr;
-        let source2 = 'phone' + randomStr;
+    
         it('[DRDMV-16173]: Create Menu Item label and Source', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
@@ -96,15 +93,7 @@ describe('Menu Item', () => {
             await createMenuItems.selectAvailableOnUiToggleButton(true);
             await createMenuItems.clickOnSaveButton();
             await utilCommon.closePopUpMessage();
-            await createMenuItems.clickOnMenuOptionLink();
-            await createMenuItems.selectMenuNameDropDown('Source');
-            await createMenuItems.clickOnLocalizeLink();
-            await localizeValuePopPo.setLocalizeValue(source);
-            await localizeValuePopPo.clickOnSaveButton();
-            await createMenuItems.selectStatusDropDown('Active');
-            await createMenuItems.selectAvailableOnUiToggleButton(true);
-            await createMenuItems.clickOnSaveButton();
-            await utilCommon.closePopUpMessage();
+
         });
         it('[DRDMV-16173]: Create Duplicate Menu Item Source and Label', async () => {
             await createMenuItems.clickOnMenuOptionLink();
@@ -131,54 +120,23 @@ describe('Menu Item', () => {
             await createMenuItems.clickOnSaveButton();
             expect(await utilCommon.isPopUpMessagePresent('ERROR (382): The value(s) for this entry violate a unique index that has been defined for this record definition.')).toBeTruthy();
             await utilCommon.closePopUpMessage();
-            await createMenuItems.clickOnLocalizeLink();
-            await localizeValuePopPo.clearValueTextBox();
-            await localizeValuePopPo.setLocalizeValue(source);
-            await localizeValuePopPo.clickOnSaveButton();
-            await createMenuItems.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
-            await utilCommon.closePopUpMessage();
+
         });
-        it('[DRDMV-16173]: [Menu Items] - Multiple records with same name and type are not allowed', async () => {
-            await createMenuItems.clickOnMenuOptionLink();
-            await createMenuItems.selectMenuNameDropDown('Source');
-            await createMenuItems.clickOnLocalizeLink();
-            await localizeValuePopPo.setLocalizeValue(source);
-            await localizeValuePopPo.clickOnSaveButton();
-            await createMenuItems.selectStatusDropDown('Active');
-            await createMenuItems.selectAvailableOnUiToggleButton(true);
-            await createMenuItems.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (382): The value(s) for this entry violate a unique index that has been defined for this record definition.')).toBeTruthy();
-            await createMenuItems.clickOnLocalizeLink();
-            await localizeValuePopPo.clearValueTextBox();
-            await localizeValuePopPo.setLocalizeValue(source1);
-            await localizeValuePopPo.clickOnSaveButton();
-            await createMenuItems.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (382): The value(s) for this entry violate a unique index that has been defined for this record definition.')).toBeTruthy();
-            await utilCommon.closePopUpMessage();
-            await createMenuItems.clickOnLocalizeLink();
-            await localizeValuePopPo.clearValueTextBox();
-            await localizeValuePopPo.setLocalizeValue(source2);
-            await localizeValuePopPo.clickOnSaveButton();
-            await createMenuItems.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (382): The value(s) for this entry violate a unique index that has been defined for this record definition.')).toBeTruthy();
-            await utilCommon.closePopUpMessage();
-            await createMenuItems.clickOnLocalizeLink();
-            await localizeValuePopPo.clearValueTextBox();
-            await localizeValuePopPo.setLocalizeValue(label);
-            await localizeValuePopPo.clickOnSaveButton();
-            await createMenuItems.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
-            await utilCommon.closePopUpMessage();
-        });
+
     });
 
     //kgaikwad
     describe('[DRDMV-16105,DRDMV-16106]: Verify Multiple records with same name', async () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let label = 'label' + randomStr;
-        let source = 'source' + randomStr;
+        let sourcesActive = 'source' + randomStr;
         let resolutionCode = 'resolutionCode' + randomStr;
+        beforeAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            let sourceActiveUIFalseData = cloneDeep(SOURCE_MENU_ITEM);
+            sourceActiveUIFalseData.menuItemName = sourcesActive;
+            await apiHelper.createNewMenuItem(sourceActiveUIFalseData);
+        });
         it('[DRDMV-16105,DRDMV-16106]: [Menu Items] - Create Menu Item', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
@@ -191,15 +149,7 @@ describe('Menu Item', () => {
             await createMenuItems.selectAvailableOnUiToggleButton(true);
             await createMenuItems.clickOnSaveButton();
             await utilCommon.closePopUpMessage();
-            await createMenuItems.clickOnMenuOptionLink();
-            await createMenuItems.selectMenuNameDropDown('Source');
-            await createMenuItems.clickOnLocalizeLink();
-            await localizeValuePopPo.setLocalizeValue(source);
-            await localizeValuePopPo.clickOnSaveButton();
-            await createMenuItems.selectStatusDropDown('Inactive');
-            await createMenuItems.selectAvailableOnUiToggleButton(true);
-            await createMenuItems.clickOnSaveButton();
-            await utilCommon.closePopUpMessage();
+
             await createMenuItems.clickOnMenuOptionLink();
             await createMenuItems.selectMenuNameDropDown('Resolution Code');
             await createMenuItems.clickOnLocalizeLink();
@@ -211,18 +161,14 @@ describe('Menu Item', () => {
             await utilCommon.closePopUpMessage();
         });
         it('[DRDMV-16105,DRDMV-16106]: [Menu Items] - Update Menu Item', async () => {
-            await menuItemsConfigConsolePo.searchAndEditMenuOption(source);
-            expect(await editMenuItemsConfigPo.isMenuNameDropDownEnabled()).toBeTruthy('MenuName drop down is editable');
-            await editMenuItemsConfigPo.clickOnLocalizeLink();
-            await localizeValuePopPo.clearValueTextBox();
-            await localizeValuePopPo.setLocalizeValue(source);
-            await localizeValuePopPo.clickOnSaveButton();
-            await utilCommon.closePopUpMessage();
-            let statusdropDown1: string[] = ["Deprecated", "Inactive", "Active"];
-            expect(await editMenuItemsConfigPo.isStatusDropDownValuesMatch(statusdropDown1)).toBeTruthy('wrong column headers');
-            await editMenuItemsConfigPo.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
-            await utilCommon.closePopUpMessage();
+            await menuItemsConfigConsolePo.searchAndEditMenuOption(sourcesActive);
+            expect(await editMenuItemsConfigPo.isSaveButtonDisabled()).toBeTruthy();
+            expect(await editMenuItemsConfigPo.isMenuItemsStatusDisabled()).toBeTruthy();
+            expect(await editMenuItemsConfigPo.getSourceDisabledMessage()).toBe('Note: Source is disabled for editing.');
+            expect(await editMenuItemsConfigPo.isMenuNameDropDownEnabled()).toBeFalsy();
+            expect(await editMenuItemsConfigPo.isLocalizeLinkEnabled()).toBeFalsy();
+            await editMenuItemsConfigPo.clickOnCancelButton();
+
             await menuItemsConfigConsolePo.searchAndEditMenuOption(label);
             expect(await editMenuItemsConfigPo.isMenuNameDropDownEnabled()).toBeTruthy('MenuName drop down is editable');
             await editMenuItemsConfigPo.clickOnLocalizeLink();
@@ -266,9 +212,9 @@ describe('Menu Item', () => {
             expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Menu Options')).toBe(label), 'Menu Option column value is missing for label';
             expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Status')).toBe('Active'), 'Status column value is missing for label';
 
-            await menuItemsConfigConsolePo.searchOnGridConsole(source);
+            await menuItemsConfigConsolePo.searchOnGridConsole(sourcesActive);
             expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Menu Name')).toBe('Source'), 'Menu Name column value is missing for Source';
-            expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Menu Options')).toBe(source), 'Menu Option column value is missing for source';
+            expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Menu Options')).toBe(sourcesActive), 'Menu Option column value is missing for source';
             expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Status')).toBe('Inactive'), 'Status column value is missing for source';
 
             await menuItemsConfigConsolePo.searchOnGridConsole(resolutionCode);
@@ -282,20 +228,21 @@ describe('Menu Item', () => {
     describe('[DRDMV-16104]: [Menu Items] Create new records in Menu Items', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let lableRandVal = 'labelVal' + randomStr;
-        let sourceRandVal = 'sourceVal' + randomStr;
-        let resolutionCodeRandVal = 'resolutionCodeVal' + randomStr;
+        let sourcesActiveUiFalse, resolutionCodeRandVal = 'resolutionCodeVal' + randomStr;
+
         it('[DRDMV-16104]: Verify Create Menu Item UI', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
             await createMenuItems.clickOnMenuOptionLink();
             expect(await createMenuItems.isMenuNameFieldRequired()).toBeTruthy('FailureMsg: Menu Name required label is missing');
             expect(await createMenuItems.isMenuOptionFieldRequired()).toBeTruthy('FailureMsg: Menu Option required label is missing');
             expect(await createMenuItems.isStatusFieldRequired()).toBeTruthy('FailureMsg: Status required label is missing');
-            let menuNameValues: string[] = ['Label', 'Resolution Code', 'Source'];
+            let menuNameValues: string[] = ['Label', 'Resolution Code'];
             expect(await createMenuItems.isMenuNameDropDownValuesMatches(menuNameValues)).toBeTruthy('FailureMsg: Cancel status reason options mismatch');
             let statusValues: string[] = ['Active', 'Inactive', 'Deprecated'];
             expect(await createMenuItems.isStatusDropDownValuesMatches(statusValues)).toBeTruthy('FailureMsg: Cancel status reason options mismatch');
             expect(await createMenuItems.isSaveButtonDisplayed()).toBeTruthy('FailureMsg: save button is missing');
             expect(await createMenuItems.isCancelButtonDisplayed()).toBeTruthy('FailureMsg: Cancel button is missing');
-            await createMenuItems.selectMenuNameDropDown('Source');
             expect(await createMenuItems.isToggleButtonDisplayed()).toBeTruthy('FailureMsg: Available On UI toogle button is missing ')
         });
         it('[DRDMV-16104]: Create Label Menu and verify in in Grid', async () => {
@@ -323,19 +270,6 @@ describe('Menu Item', () => {
             await menuItemsConfigConsolePo.searchOnGridConsole(resolutionCodeRandVal);
             expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Menu Options')).toBe(resolutionCodeRandVal);
         });
-        it('[DRDMV-16104]: Create Source Menu and verify in in Grid', async () => {
-            await createMenuItems.clickOnMenuOptionLink();
-            await createMenuItems.selectMenuNameDropDown('Source');
-            await createMenuItems.clickOnLocalizeLink();
-            await localizeValuePopPo.setLocalizeValue(sourceRandVal);
-            await localizeValuePopPo.clickOnSaveButton();
-            await utilCommon.waitUntilPopUpDisappear();
-            await createMenuItems.selectStatusDropDown('Inactive');
-            await createMenuItems.clickOnSaveButton();
-            await menuItemsConfigConsolePo.clearGridSearchBox();
-            await menuItemsConfigConsolePo.searchOnGridConsole(sourceRandVal);
-            expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Menu Options')).toBe(sourceRandVal);
-        });
     });
 
     //kgaikwad
@@ -357,15 +291,15 @@ describe('Menu Item', () => {
                 "caseStatus": "InProgress",
                 "templateStatus": "Active",
                 "company": "Petramco",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
-                "ownerBU": 'Facilities Support',
-                "ownerGroup": "Facilities",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3",
                 "resolutionCode": "0",
                 "resolutionDescription": "0"
             }
-
+            await apiHelper.apiLogin('qkatawazi');
             caseTemplateName1 = caseTemplateData.templateName = 'DRDMV-17654_caseTemplateName_1' + randomStr;
             caseTemplateData.resolutionCode = "1"
             caseTemplateData.resolutionDescription = "0"
@@ -487,10 +421,7 @@ describe('Menu Item', () => {
         let caseId;
         let title = 'titleDRDMV16276' + randomStr;
         let summary = 'summaryDRDMV16276' + randomStr;
-        let sourcesActiveUiTrue = 'sourcesActiveUiTrueDRDMV16276' + randomStr;
-        let sourcesActiveUiFalse = 'sourcesActiveUifalseDRDMV16276' + randomStr;
-        let sourcesInactiveUiTrue = 'sourcesInactiveUiTrueDRDMV16276' + randomStr;
-        let sourcesDeprecatedUiTrue = 'sourcesInactiveUiTrueDRDMV16276' + randomStr;
+
         let labelActive1 = 'oneLabelActiveDRDMV16276' + randomStr;
         let labelActive2 = 'twoLabelActiveDRDMV16276' + randomStr;
         let labelInactive = 'labelInactiveDRDMV16276' + randomStr;
@@ -498,26 +429,6 @@ describe('Menu Item', () => {
 
         beforeAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
-            // Create SourceActive UI True
-            let sourceMenuItemData = cloneDeep(SOURCE_MENU_ITEM);
-            sourceMenuItemData.menuItemName = sourcesActiveUiTrue;
-            await apiHelper.createNewMenuItem(sourceMenuItemData);
-
-            // Create SourceActive UI False
-            let sourceActiveUIFalseData = cloneDeep(SOURCE_ACTIVE_UI_FALSE);
-            sourceActiveUIFalseData.menuItemName = sourcesActiveUiFalse;
-            await apiHelper.createNewMenuItem(sourceActiveUIFalseData);
-
-            // Create sourcesInactiveUiTrue UI True
-            let sourceInActiveData = cloneDeep(SOURCE_INACTIVE);
-            sourceInActiveData.menuItemName = sourcesInactiveUiTrue;
-            await apiHelper.createNewMenuItem(sourceInActiveData);
-
-            // Create sources Deprecated Ui True
-            let sourceDeprecatedData = cloneDeep(SOURCE_DEPRECATED);
-            sourceDeprecatedData.menuItemName = sourcesDeprecatedUiTrue;
-            sourceDeprecatedData.uiVisible = '1';
-            await apiHelper.createNewMenuItem(sourceDeprecatedData);
 
             // Create Label 1 Active
             let sampleMeniItemData1 = cloneDeep(SAMPLE_MENU_ITEM);
@@ -550,18 +461,7 @@ describe('Menu Item', () => {
             expect(await createCasePage.isValuePresentInDropdown('Label', labelDeprecated)).toBeFalsy('Value is present in  label drop down');
             await createCasePage.clickAssignToMeButton();
             await createCasePage.setLabel(labelActive1);
-
-            expect(await createCasePage.isValuePresentInDropdown('Source', sourcesActiveUiTrue)).toBeTruthy('Value is present in  label drop down');
-            await createCasePage.clickAssignToMeButton();
-            expect(await createCasePage.isValuePresentInDropdown('Source', sourcesActiveUiFalse)).toBeFalsy('Value is present in  label drop down');
-            await createCasePage.clickAssignToMeButton();
-            expect(await createCasePage.isValuePresentInDropdown('Source', sourcesInactiveUiTrue)).toBeFalsy('Value is present in  label drop down');
-            await createCasePage.clickAssignToMeButton();
-            expect(await createCasePage.isValuePresentInDropdown('Source', sourcesDeprecatedUiTrue)).toBeFalsy('Value is present in  label drop down');
-            await createCasePage.clickAssignToMeButton();
-            await createCasePage.setSource(sourcesActiveUiTrue);
             await createCasePage.setSummary(summary);
-
             await createCasePage.clickSaveCaseButton();
             await casePreviewPo.clickGoToCaseButton();
             caseId = await viewCasePo.getCaseID();

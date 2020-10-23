@@ -13,26 +13,31 @@ class MenuItemsConfigEditPage {
         localizeLink: '[rx-view-component-id="7db36dc7-3a4a-4be7-877a-cb44d4c39ecd"] .d-icon-left-pencil',
         statusDropDownGuid: '42deb4bb-67da-4350-b92a-60b620d9d271',
         toggleButtonGuid: 'd2fb228a-e6ca-4906-8b60-80537b45d75f',
+        sourceDisableMessage: '[rx-view-component-id="ecfcd0c5-121a-47c0-ba8f-4e97c8c40483"] span',
     }
 
     async isMenuNameDropDownEnabled(): Promise<boolean> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.menuNameDropDown)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.menuNameDropDown)));
         return await $(this.selectors.menuNameDropDown).isEnabled();
     }
 
     async clickOnSaveButton(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
     }
 
     async clickOnCancelButton(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         await $(this.selectors.cancelButton).click();
     }
 
     async clickOnLocalizeLink(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.localizeLink)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.localizeLink)));
         await $(this.selectors.localizeLink).click();
+    }
+
+    async isLocalizeLinkEnabled(): Promise<void> {
+        await $(this.selectors.localizeLink).isEnabled();
     }
 
     async selectStatusDropDown(value: string): Promise<void> {
@@ -40,7 +45,7 @@ class MenuItemsConfigEditPage {
     }
 
     async isStatusDropDownValuesMatch(value: string[]): Promise<boolean> {
-       return await utilCommon.isDrpDownvalueDisplayed(this.selectors.statusDropDownGuid, value);
+        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.statusDropDownGuid, value);
     }
 
     async selectAvailableOnUIToggleButton(booleanVal: boolean): Promise<void> {
@@ -48,20 +53,24 @@ class MenuItemsConfigEditPage {
     }
 
     async isMenuItemsStatusDisabled(): Promise<boolean> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         return await $(this.selectors.status).getAttribute("readonly") == "true";
     }
 
     async isSaveButtonDisabled(): Promise<boolean> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         return await $(this.selectors.saveButton).getAttribute("disabled") == "true";
     }
 
     async isDefaultToggleBtnDisabled(): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.cancelButton)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.cancelButton)));
         let readProperty1: string = await $$(this.selectors.defaultToggle).get(0).getAttribute("disabled");
         let readProperty2: string = await $$(this.selectors.defaultToggle).get(1).getAttribute("disabled");
         return (readProperty1 == "true" && readProperty2 == "true");
+    }
+
+    async getSourceDisabledMessage(): Promise<string> {
+        return await $(this.selectors.sourceDisableMessage).getText();;
     }
 
 

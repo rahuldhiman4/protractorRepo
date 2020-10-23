@@ -105,7 +105,7 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.clickOnSaveButton();
         await utilCommon.closePopUpMessage();
         await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
-        expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Draft'), 'status is not in draft status';
+         expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Draft'), 'status is not in draft status';
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
         expect(await editDocumentLibraryPo.isDeleteButtonEnabled).toBeTruthy('Delete Button is not enabled');
         await editDocumentLibraryPo.selectStatus('Published');
