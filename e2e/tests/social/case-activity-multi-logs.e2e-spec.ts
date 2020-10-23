@@ -63,8 +63,8 @@ describe('Case Activity Multi Logs', () => {
             "templateStatus": "Active",
             "taskCompany": '- Global -',
             "ownerCompany": "Petramco",
-            "ownerBusinessUnit": "Facilities Support",
-            "ownerGroup": "Facilities"
+            "ownerBusinessUnit": "United States Support",
+            "ownerGroup": "US Support 3"
         }
         await apiHelper.createManualTaskTemplate(manualTemplateData);
 
@@ -208,6 +208,7 @@ describe('Case Activity Multi Logs', () => {
             await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateSummary);
             await manageTaskBladePo.addTaskFromTaskTemplate(externalTemplateSummary);
             await manageTaskBladePo.clickCloseButton();
+            browser.sleep(10000);
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
         });
@@ -688,10 +689,10 @@ describe('Case Activity Multi Logs', () => {
         let externalTaskTemplateDetails;
         let caseApprovalRecordDefinition = 'com.bmc.dsm.case-lib:Case';
         let caseResponseDetails;
-        let categName1 = 'DemoCateg1';
-        let categName2 = 'DemoCateg2';
-        let categName3 = 'DemoCateg3';
-        let categName4 = 'DemoCateg4';
+        let categName1 = 'Emplopyee Relations';
+        let categName2 = 'Compensation';
+        let categName3 = 'Bonus';
+        let categName4 = 'Retentions Bonus';
         let manualTaskId;
         let approvalStr = "Automated Self Approval without process " + randomStr;
         let confidentialSupportGroup = "Employee Relations Sensitive Data Access";
@@ -736,14 +737,14 @@ describe('Case Activity Multi Logs', () => {
                 "templateName": `AutomatedTaskTemplateActive` + randomStr,
                 "templateSummary": `Automated Approval for task`,
                 "templateStatus": "Active",
-                "category1": 'Facilities',
-                "category2": 'Kitchen',
+                "category1": 'Emplopyee Relations',
+                "category2": 'Compensation',
                 "processBundle": "com.bmc.dsm.case-lib",
                 "processName": `Case Process 1 ${randomStr}`,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
+                "ownerBusinessUnit": "Canada Support",
+                "ownerGroup": "CA Support 1",
             }
 
             let tasktemplateData = {
@@ -751,14 +752,14 @@ describe('Case Activity Multi Logs', () => {
                 "templateSummary": 'task Summary task16729',
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
-                "category1": 'Facilities',
-                "category2": 'Kitchen',
+                "category1": 'Emplopyee Relations',
+                "category2": 'Compensation',
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "ownerBusinessUnit": "Canada Support",
+                "ownerGroup": "CA Support 1",
+                "businessUnit": "Canada Support",
+                "supportGroup": "CA Support 1",
+                "assignee": "qdu",
             }
 
             autoTaskTemplateData.templateSummary = automatedTaskTemplateSummary;
@@ -781,18 +782,6 @@ describe('Case Activity Multi Logs', () => {
                 "Origin": "Agent",
                 "Case Template ID": caseTemplateDisplayId
             }
-
-            // Create category tier 4
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.createOperationalCategory(categName1);
-            await apiHelper.createOperationalCategory(categName2);
-            await apiHelper.createOperationalCategory(categName3);
-            await apiHelper.createOperationalCategory(categName4);
-            await apiHelper.associateCategoryToOrganization(categName1, 'Petramco');
-            await apiHelper.associateCategoryToCategory(categName1, categName2);
-            await apiHelper.associateCategoryToCategory(categName2, categName3);
-            await apiHelper.associateCategoryToCategory(categName3, categName4);
-            await apiHelper.associateCategoryToOrganization(categName1, '- Global -');
         });
 
         it('[DRDMV-16729]:Create Self Approval Flow Without Process', async () => {
@@ -953,9 +942,9 @@ describe('Case Activity Multi Logs', () => {
             await viewCasePo.clickEditCaseButton();
             await editCasePo.clickChangeAssignmentButton();
             await changeAssignmentBladePo.selectCompany('Petramco')
-            await changeAssignmentBladePo.selectBusinessUnit('Facilities Support');
-            await changeAssignmentBladePo.selectSupportGroup('Facilities');
-            await changeAssignmentBladePo.selectAssignee('Fritz');
+            await changeAssignmentBladePo.selectBusinessUnit('Canada Support');
+            await changeAssignmentBladePo.selectSupportGroup('CA Support 1');
+            await changeAssignmentBladePo.selectAssignee('qdu');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editCasePo.clickSaveCase();
             await activityTabPage.clickOnShowMore();
@@ -963,11 +952,11 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg20: lock icon missing in activity logs');
             expect(await activityTabPage.isTextPresentInActivityLog('Qiao Feng changed the following case fields')).toBeTruthy('FailureMsg23: Qiao Feng changed the following case fields Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Assignee')).toBeTruthy('FailureMsg23: Assignee Text is missing in activity log');
-            expect(await activityTabPage.isTextPresentInActivityLog('Fritz Schulz ')).toBeTruthy('FailureMsg23: Fritz Schulz  Text is missing in activity log');
+            expect(await activityTabPage.isTextPresentInActivityLog('Qiang Du ')).toBeTruthy('FailureMsg23: Qiang Du  Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Assigned Business Unit')).toBeTruthy('FailureMsg23: Assigned Business Unit Text is missing in activity log');
-            expect(await activityTabPage.isTextPresentInActivityLog('Facilities Support')).toBeTruthy('FailureMsg23: Facilities Support Text is missing in activity log');
+            expect(await activityTabPage.isTextPresentInActivityLog('Canada Support')).toBeTruthy('FailureMsg23: Canada Support Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Assigned Group')).toBeTruthy('FailureMsg23: Assigned Group Text is missing in activity log');
-            expect(await activityTabPage.isTextPresentInActivityLog('Facilities')).toBeTruthy('FailureMsg23: Facilities  Text is missing in activity log');
+            expect(await activityTabPage.isTextPresentInActivityLog('CA Support 1')).toBeTruthy('FailureMsg23: CA Support 1  Text is missing in activity log');
         });
 
         it('[DRDMV-16729]:Verify social activity with status change activity', async () => {
@@ -1050,14 +1039,14 @@ describe('Case Activity Multi Logs', () => {
         it('[DRDMV-16729]:Verify social activity with sendimg email to other than requester', async () => {
             await viewCasePo.clickOnEmailLink();
             await browser.sleep(2000); // Sleep till open conmpose email pop up
-            await composeMailPo.setToOrCCInputTextbox('To', 'fritz');
+            await composeMailPo.setToOrCCInputTextbox('To', 'qdu');
             await composeMailPo.clickOnSendButton();
             await activityTabPage.clickOnRefreshButton();
 
             expect(await activityTabPage.isLogIconDisplayedInActivity('envelope', 1)).toBeTruthy('FailureMsg19: log icon is missing');
             expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg20: lock icon missing in activity logs');
             expect(await activityTabPage.isTextPresentInActivityLog('Qiao Feng sent an email')).toBeTruthy('FailureMsg21: Qiao Feng sent an email Text is missing in activity log');
-            expect(await activityTabPage.isTextPresentInActivityLog('Fritz Schulz')).toBeTruthy('FailureMsg22: Fritz Schulz Text is missing in activity log');
+            expect(await activityTabPage.isTextPresentInActivityLog('Qiang Du')).toBeTruthy('FailureMsg22: Qiang Du Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog(`${caseId}:caseSummary`)).toBeTruthy(`FailureMsg23: ${caseId}:caseSummary Text is missing in activity log`);
             expect(await activityTabPage.isTextPresentInActivityLog('------ While replying, please do not add information below this line -----')).toBeTruthy('FailureMsg24: ------ While replying, please do not add information below this line ----- Text is missing in activity log');
         });

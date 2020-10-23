@@ -71,17 +71,17 @@ describe('Notes template', () => {
         const caseModule = 'Case';
         await browser.get(BWF_BASE_URL);
         await loginPage.login("elizabeth");
-        // await apiHelper.apiLogin('tadmin');
-        // await apiHelper.deleteApprovalMapping(caseModule);
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteApprovalMapping(caseModule);
         userData = {
             "firstName": "Petramco",
             "lastName": "SGUser1",
             "userId": "22653User",
             "userPermission": ["Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read"]
         }
-        // await apiHelper.createNewUser(userData);
-        // await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
-        // await apiHelper.associatePersonToSupportGroup(userData.userId, "Facilities");
+        await apiHelper.createNewUser(userData);
+        await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
+        await apiHelper.associatePersonToSupportGroup(userData.userId, "Facilities");
     });
 
     afterAll(async () => {
@@ -90,7 +90,7 @@ describe('Notes template', () => {
     });
 
     //ptidke
-    fit('[DRDMV-16026]: [Design Time] Verify case Business analyst is able create, edit and delete Knowledge Notes template', async () => {
+    it('[DRDMV-16026]: [Design Time] Verify case Business analyst is able create, edit and delete Knowledge Notes template', async () => {
         let templateName: string = "activityNotesTemplate" + Math.floor(Math.random() * 100000);
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Knowledge Management--Notes Template', 'Activity Notes Template Console - Knowledge - Business Workflows');
@@ -118,6 +118,7 @@ describe('Notes template', () => {
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
         expect(await utilCommon.isPopupMsgsMatches(['Record deleted successfully.'])).toBeTruthy('Record deleted successfully. pop up message missing');
+        await utilityCommon.switchToDefaultWindowClosingOtherTabs();
     });
 
     //ptidke
@@ -149,6 +150,7 @@ describe('Notes template', () => {
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
         expect(await utilCommon.isPopupMsgsMatches(['Record deleted successfully.'])).toBeTruthy('Record deleted successfully. pop up message missing');
+        await utilityCommon.switchToDefaultWindowClosingOtherTabs();
     });
 
     //ptidke
@@ -180,6 +182,7 @@ describe('Notes template', () => {
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
         expect(await utilCommon.isPopupMsgsMatches(['Record deleted successfully.'])).toBeTruthy('Record deleted successfully. pop up message missing');
+        await utilityCommon.switchToDefaultWindowClosingOtherTabs();
     });
 
     //ptidke
@@ -211,6 +214,7 @@ describe('Notes template', () => {
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
         expect(await utilCommon.isPopupMsgsMatches(['Record deleted successfully.'])).toBeTruthy('Record deleted successfully. pop up message missing');
+        await utilityCommon.switchToDefaultWindowClosingOtherTabs();
     });
 
     //ptidke
@@ -250,6 +254,7 @@ describe('Notes template', () => {
             throw e;
         }
         finally {
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login("elizabeth");
         }
@@ -281,6 +286,7 @@ describe('Notes template', () => {
         await consoleNotesTemplate.clickOnCreateNotesTemplate();
         expect(await createNotesTemplate.isSaveButtonDisabled()).toBeFalsy();
         expect(await createNotesTemplate.isCreateNotesTemplateUIPresent()).toBeTruthy();
+        await utilityCommon.switchToDefaultWindowClosingOtherTabs();
     });
 
     //ptidke
@@ -302,6 +308,7 @@ describe('Notes template', () => {
             expect(await editNotetemplate.getLocaleNotPresentMessage()).toContain('Please add the required localized message.')
             await editNotetemplate.clickOnCancelButton();
             await utilCommon.clickOnWarningOk();
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
         it('[DRDMV-16111]: [Design Time] Verify warning Message for locale values if template message is not configured against that locale value', async () => {
             await navigationPage.gotoSettingsPage();
@@ -320,6 +327,7 @@ describe('Notes template', () => {
             expect(await editNotetemplate.getLocaleNotPresentMessage()).toContain('Please add the required localized message.');
             await editNotetemplate.clickOnCancelButton();
             await utilCommon.clickOnWarningOk();
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
     });
 
