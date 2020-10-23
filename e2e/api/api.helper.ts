@@ -1793,6 +1793,9 @@ class ApiHelper {
         newProcessConfig.fieldInstances[7]["value"] = data.status ? constants.ProcessLibConf[data.status] : newProcessConfig.fieldInstances[7].value;
         newProcessConfig.fieldInstances[8]["value"] = data.description ? data.description : newProcessConfig.fieldInstances[8].value;
         newProcessConfig.fieldInstances[1000000001]["value"] = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : newProcessConfig.fieldInstances[1000000001].value;
+        if (data.lineOfBusiness) {
+            newProcessConfig.fieldInstances[450000420].value = await constants.LOB[data.lineOfBusiness];
+        }
 
         let newProcessLibConfRecord: AxiosResponse = await apiCoreUtil.createRecordInstance(newProcessConfig);
 

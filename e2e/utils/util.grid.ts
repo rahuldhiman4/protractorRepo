@@ -223,8 +223,8 @@ export class GridOperation {
         let gridColumnHeaderList = await $$(`[rx-view-component-id='${guid}'] .ui-grid-header-cell-label`);
         let columnValue = undefined;
         for (let i: number = 0; i < gridColumnHeaderList.length; i++) {
-            if (await gridColumnHeaderList[i].getAttribute('innerText') == columnHeader) {
-                columnValue = await $$(`[rx-view-component-id='${guid}'] .ui-grid-cell[role='gridcell'] .ui-grid-cell-contents`).getText();
+            if (await gridColumnHeaderList[i].getText() == columnHeader) {
+                columnValue = await $$(`[rx-view-component-id='${guid}'] .ui-grid-cell[role='gridcell'] .ui-grid-cell-contents`).get(i).getText();
                 return columnValue;
             }
         }
