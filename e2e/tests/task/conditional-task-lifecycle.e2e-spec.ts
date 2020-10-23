@@ -1,18 +1,17 @@
 import { browser } from "protractor";
+import coreApi from '../../api/api.core.util';
 import apiHelper from '../../api/api.helper';
+import editCasePage from '../../pageobject/case/edit-case.po';
+import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
+import viewCasePage from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import { BWF_BASE_URL } from '../../utils/constants';
-import utilityGrid from '../../utils/utility.grid';
-import viewCasePage from '../../pageobject/case/view-case.po';
-import manageTaskBlade from "../../pageobject/task/manage-task-blade.po";
 import updateStatusBlade from '../../pageobject/common/update.status.blade.po';
-import utilityCommon from '../../utils/utility.common';
-import coreApi from '../../api/api.core.util';
 import activityPage from '../../pageobject/social/activity-tab.po';
-import editCasePage from '../../pageobject/case/edit-case.po';
-import editTaskPo from '../../pageobject/task/edit-task.po';
-import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
+import manageTaskBlade from "../../pageobject/task/manage-task-blade.po";
+import { BWF_BASE_URL } from '../../utils/constants';
+import utilityCommon from '../../utils/utility.common';
+import utilityGrid from '../../utils/utility.grid';
 
 describe('Conditional Task Life Cycle', () => {
     beforeAll(async () => {
@@ -33,7 +32,6 @@ describe('Conditional Task Life Cycle', () => {
         let assignedStr: string = 'Assigned';
         beforeAll(async () => {
             await apiHelper.apiLogin('fritz');
-
             //Create Case Templates
             caseTemplateDoNotProceed = {
                 "templateName": 'caseTemplateNameDNP' + randomStr,
@@ -42,6 +40,7 @@ describe('Conditional Task Life Cycle', () => {
                 "casePriority": "Low",
                 "caseStatus": "New",
                 "company": "Petramco",
+                "lineOfBusiness": "Facilities",
                 "businessUnit": "Facilities Support",
                 "supportGroup": "Facilities",
                 "assignee": "Fritz",
@@ -59,6 +58,7 @@ describe('Conditional Task Life Cycle', () => {
                 "casePriority": "Low",
                 "caseStatus": "New",
                 "company": "Petramco",
+                "lineOfBusiness": "Facilities",
                 "businessUnit": "Facilities Support",
                 "supportGroup": "Facilities",
                 "assignee": "Fritz",
@@ -76,6 +76,7 @@ describe('Conditional Task Life Cycle', () => {
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
+                "lineOfBusiness": "Facilities",
                 "ownerBusinessUnit": "Facilities Support",
                 "ownerGroup": "Facilities",
                 "businessUnit": "Facilities Support",
@@ -90,6 +91,7 @@ describe('Conditional Task Life Cycle', () => {
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
+                "lineOfBusiness": "Facilities",
                 "ownerBusinessUnit": "Facilities Support",
                 "ownerGroup": "Facilities",
                 "businessUnit": "Facilities Support",
@@ -106,6 +108,7 @@ describe('Conditional Task Life Cycle', () => {
                 "processName": 'Auto Proces' + randomStr,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
+                "lineOfBusiness": "Facilities",
                 "ownerBusinessUnit": "Facilities Support",
                 "ownerGroup": "Facilities",
                 "businessUnit": "Facilities Support",
@@ -119,6 +122,7 @@ describe('Conditional Task Life Cycle', () => {
             let caseDataDNP = {
                 "Requester": "qkatawazi",
                 "Summary": `DRDMV-14996 Summary DNP ${randomStr}`,
+                "Line of Business": "Facilities",
                 "Origin": "Agent",
                 "Case Template ID": caseTemplateDNPDisplayId
             }
@@ -127,6 +131,7 @@ describe('Conditional Task Life Cycle', () => {
             let caseDataPWNT = {
                 "Requester": "qkatawazi",
                 "Summary": `DRDMV-14996 Summary PWNT ${randomStr}`,
+                "Line of Business": "Facilities",
                 "Origin": "Agent",
                 "Case Template ID": caseTemplatePWNTDisplayId
             }
@@ -136,6 +141,7 @@ describe('Conditional Task Life Cycle', () => {
                 "Requester": "qkatawazi",
                 "Summary": `DRDMV-14996 Summary NT ${randomStr}`,
                 "Assigned Company": "Petramco",
+                "Line of Business": "Facilities",
                 "Business Unit": "Facilities Support",
                 "Support Group": "Facilities",
                 "Assignee": "Fritz"
@@ -146,6 +152,7 @@ describe('Conditional Task Life Cycle', () => {
             adhocTaskData = {
                 "taskName": `DRDMV-14996 ${randomStr}`,
                 "company": "Petramco",
+                "lineOfBusiness": "Facilities",
                 "businessUnit": "Facilities Support",
                 "supportGroup": "Facilities",
                 "assignee": "Fritz"
@@ -207,7 +214,6 @@ describe('Conditional Task Life Cycle', () => {
             await apiHelper.updateCaseStatus(responseCasePWNT.id, 'InProgress');
             await apiHelper.updateTaskStatus(adhocTaskPWNTResponse.id, 'Completed', 'Successful');
         });
-
         it('[DRDMV-14996]: [Task] Case created with CaseTemplate (with no TaskFlow) and without CaseTemplate', async () => {
             //Update Adhoc task to Completed and check manual task status(CASE 1)
             await utilityGrid.clearFilter();
@@ -227,7 +233,6 @@ describe('Conditional Task Life Cycle', () => {
             expect(await manageTaskBlade.getTaskStatus(externalTaskTemplateData.templateName)).toContain('Staged');
             await utilityCommon.closeAllBlades();
         });
-
         it('[DRDMV-14996]: [Task] Case created with CaseTemplate (with no TaskFlow) and without CaseTemplate', async () => {
             //Update Adhoc task to Completed and check manual task status(CASE 2)
             await navigationPage.gotoCaseConsole();
@@ -241,6 +246,7 @@ describe('Conditional Task Life Cycle', () => {
             //Update Manual task to completed and verify Automated Task status(CASE 2)
             await apiHelper.updateTaskStatus(manualTaskNTId, 'Completed', 'Successful');
             await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(responseCaseNT.displayId);
             await viewCasePage.clickOnRefreshTaskList();
             await viewCasePage.openTaskCard(1);
@@ -256,7 +262,6 @@ describe('Conditional Task Life Cycle', () => {
             expect(await utilityCommon.isPopUpMessagePresent('The case contains active tasks. Please close all the tasks and resolve the case.')).toBeTruthy();
             await utilityCommon.closeAllBlades();
         });
-
         it('[DRDMV-14996]: [Task] Case created with CaseTemplate (with no TaskFlow) and without CaseTemplate', async () => {
             //Update Adhoc task to Completed and check manual task status(CASE 3)
             await navigationPage.gotoCaseConsole();
@@ -308,6 +313,7 @@ describe('Conditional Task Life Cycle', () => {
                 "casePriority": "Low",
                 "caseStatus": "New",
                 "company": "Petramco",
+                "lineOfBusiness": "Facilities",
                 "businessUnit": "Facilities Support",
                 "supportGroup": "Facilities",
                 "assignee": "Fritz",
@@ -322,6 +328,7 @@ describe('Conditional Task Life Cycle', () => {
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
+                "lineOfBusiness": "Facilities",
                 "ownerBusinessUnit": "Facilities Support",
                 "ownerGroup": "Facilities",
                 "businessUnit": "Facilities Support",
@@ -329,13 +336,14 @@ describe('Conditional Task Life Cycle', () => {
                 "assignee": "Fritz",
             }
             let manualTaskTemplate = await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
-            
+
             externalTaskTemplateData = {
                 "templateName": 'External task15000' + randomStr,
                 "templateSummary": 'External task15000' + randomStr,
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
+                "lineOfBusiness": "Facilities",
                 "ownerBusinessUnit": "Facilities Support",
                 "ownerGroup": "Facilities",
                 "businessUnit": "Facilities Support",
@@ -343,7 +351,7 @@ describe('Conditional Task Life Cycle', () => {
                 "assignee": "Fritz",
             }
             let externalTaskTemplate = await apiHelper.createExternalTaskTemplate(externalTaskTemplateData);
-            
+
             automatedTaskTemplateData = {
                 "templateName": 'Automated task15000' + randomStr,
                 "templateSummary": 'Automated task15000' + randomStr,
@@ -352,6 +360,7 @@ describe('Conditional Task Life Cycle', () => {
                 "processName": 'Auto Proces' + randomStr,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
+                "lineOfBusiness": "Facilities",
                 "ownerBusinessUnit": "Facilities Support",
                 "ownerGroup": "Facilities",
                 "businessUnit": "Facilities Support",
@@ -364,6 +373,7 @@ describe('Conditional Task Life Cycle', () => {
             let caseDataMediumPriority = {
                 "Requester": "qkatawazi",
                 "Summary": `DRDMV-15000 Medium Priority ${randomStr}`,
+                "Line of Business": "Facilities",
                 "Origin": "Agent",
                 "Case Template ID": caseTemplateDisplayId,
                 "Priority": "3000"
@@ -373,6 +383,7 @@ describe('Conditional Task Life Cycle', () => {
             let caseDataCriticalPriority = {
                 "Requester": "qkatawazi",
                 "Summary": `DRDMV-15000 Medium Priority ${randomStr}`,
+                "Line of Business": "Facilities",
                 "Origin": "Agent",
                 "Case Template ID": caseTemplateDisplayId,
                 "Priority": "1000"
@@ -389,12 +400,13 @@ describe('Conditional Task Life Cycle', () => {
             let adhocTaskData = {
                 "taskName": `DRDMV-15000 ${randomStr}`,
                 "company": "Petramco",
+                "lineOfBusiness": "Facilities",
                 "businessUnit": "Facilities Support",
                 "supportGroup": "Facilities",
                 "assignee": "Fritz"
             }
-            let adhocTaskResponse= await apiHelper.createAdhocTask(caseResponseMeduimPriority.id, adhocTaskData);
-            
+            let adhocTaskResponse = await apiHelper.createAdhocTask(caseResponseMeduimPriority.id, adhocTaskData);
+
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseResponseMeduimPriority.displayId);
             expect(await viewCasePage.isAllTaskUnderStatusTitleMatches('Upcoming Tasks', [adhocTaskData.taskName])).toBeTruthy();
@@ -480,8 +492,8 @@ describe('Conditional Task Life Cycle', () => {
         });
     });
 
-     //asahitya
-     describe('[DRDMV-15001]: [Task] Change Case Template in a Case which already have some tasks', () => {
+    //asahitya
+    describe('[DRDMV-15001]: [Task] Change Case Template in a Case which already have some tasks', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateData1, caseTemplateData2, manualTaskTemplateData1, externalTaskTemplateData1, automatedTaskTemplateData1, manualTaskTemplateData2, externalTaskTemplateData2, caseTemplateResponse1, caseTemplateResponse2, caseResponse1, caseResponse2;
         beforeAll(async () => {
@@ -494,6 +506,7 @@ describe('Conditional Task Life Cycle', () => {
                 "casePriority": "Low",
                 "caseStatus": "New",
                 "company": "Petramco",
+                "lineOfBusiness": "Facilities",
                 "businessUnit": "Facilities Support",
                 "supportGroup": "Facilities",
                 "assignee": "Fritz",
@@ -510,6 +523,7 @@ describe('Conditional Task Life Cycle', () => {
                 "casePriority": "Low",
                 "caseStatus": "New",
                 "company": "Petramco",
+                "lineOfBusiness": "Facilities",
                 "businessUnit": "Facilities Support",
                 "supportGroup": "Facilities",
                 "assignee": "Fritz",
@@ -525,6 +539,7 @@ describe('Conditional Task Life Cycle', () => {
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
+                "lineOfBusiness": "Facilities",
                 "ownerBusinessUnit": "Facilities Support",
                 "ownerGroup": "Facilities",
                 "businessUnit": "Facilities Support",
@@ -539,6 +554,7 @@ describe('Conditional Task Life Cycle', () => {
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
+                "lineOfBusiness": "Facilities",
                 "ownerBusinessUnit": "Facilities Support",
                 "ownerGroup": "Facilities",
                 "businessUnit": "Facilities Support",
@@ -555,6 +571,7 @@ describe('Conditional Task Life Cycle', () => {
                 "processName": 'Auto Proces' + randomStr,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
+                "lineOfBusiness": "Facilities",
                 "ownerBusinessUnit": "Facilities Support",
                 "ownerGroup": "Facilities",
                 "businessUnit": "Facilities Support",
@@ -571,6 +588,7 @@ describe('Conditional Task Life Cycle', () => {
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
+                "lineOfBusiness": "Facilities",
                 "ownerBusinessUnit": "Facilities Support",
                 "ownerGroup": "Facilities",
                 "businessUnit": "Facilities Support",
@@ -585,6 +603,7 @@ describe('Conditional Task Life Cycle', () => {
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
+                "lineOfBusiness": "Facilities",
                 "ownerBusinessUnit": "Facilities Support",
                 "ownerGroup": "Facilities",
                 "businessUnit": "Facilities Support",
@@ -599,6 +618,7 @@ describe('Conditional Task Life Cycle', () => {
                 "Description": "Simple test case desc",
                 "Requester": "qfeng",
                 "Summary": "Simple test case summary",
+                "Line of Business": "Facilities",
                 "Assigned Company": "Petramco",
                 "Business Unit": "Facilities Support",
                 "Support Group": "Facilities",
@@ -610,6 +630,7 @@ describe('Conditional Task Life Cycle', () => {
             let adhocTaskData1 = {
                 "taskName": `DRDMV-15001_1 ${randomStr}`,
                 "company": "Petramco",
+                "lineOfBusiness": "Facilities",
                 "businessUnit": "Facilities Support",
                 "supportGroup": "Facilities",
                 "assignee": "Fritz"
@@ -618,6 +639,7 @@ describe('Conditional Task Life Cycle', () => {
             let adhocTaskData2 = {
                 "taskName": `DRDMV-15001_2 ${randomStr}`,
                 "company": "Petramco",
+                "lineOfBusiness": "Facilities",
                 "businessUnit": "Facilities Support",
                 "supportGroup": "Facilities",
                 "assignee": "Fritz"
@@ -668,6 +690,7 @@ describe('Conditional Task Life Cycle', () => {
             let caseData2 = {
                 "Requester": "qkatawazi",
                 "Summary": `DRDMV-15000 Medium Priority ${randomStr}`,
+                "Line of Business": "Facilities",
                 "Origin": "Agent",
                 "Case Template ID": caseTemplateResponse1.displayId
             }
@@ -681,7 +704,7 @@ describe('Conditional Task Life Cycle', () => {
             await editCasePage.clickSaveCase();
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseResponse2.displayId);
-``
+
             expect(await viewCasePage.isAllTaskUnderStatusTitleMatches('Upcoming Tasks', [manualTaskTemplateData2.templateSummary, externalTaskTemplateData2.templateSummary])).toBeTruthy();
             await apiHelper.updateCaseStatus(caseResponse2.id, 'InProgress');
             await navigationPage.gotoCaseConsole();
