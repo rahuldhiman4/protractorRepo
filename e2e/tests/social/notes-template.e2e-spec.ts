@@ -71,17 +71,17 @@ describe('Notes template', () => {
         const caseModule = 'Case';
         await browser.get(BWF_BASE_URL);
         await loginPage.login("elizabeth");
-        await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteApprovalMapping(caseModule);
+        // await apiHelper.apiLogin('tadmin');
+        // await apiHelper.deleteApprovalMapping(caseModule);
         userData = {
             "firstName": "Petramco",
             "lastName": "SGUser1",
             "userId": "22653User",
             "userPermission": ["Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read"]
         }
-        await apiHelper.createNewUser(userData);
-        await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
-        await apiHelper.associatePersonToSupportGroup(userData.userId, "Facilities");
+        // await apiHelper.createNewUser(userData);
+        // await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
+        // await apiHelper.associatePersonToSupportGroup(userData.userId, "Facilities");
     });
 
     afterAll(async () => {
@@ -90,7 +90,7 @@ describe('Notes template', () => {
     });
 
     //ptidke
-    it('[DRDMV-16026]: [Design Time] Verify case Business analyst is able create, edit and delete Knowledge Notes template', async () => {
+    fit('[DRDMV-16026]: [Design Time] Verify case Business analyst is able create, edit and delete Knowledge Notes template', async () => {
         let templateName: string = "activityNotesTemplate" + Math.floor(Math.random() * 100000);
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Knowledge Management--Notes Template', 'Activity Notes Template Console - Knowledge - Business Workflows');
@@ -117,7 +117,7 @@ describe('Notes template', () => {
         await consoleNotesTemplate.searchAndClickNotesTemplateCheckBox(templateName);
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
-        expect(await utilCommon.isPopUpMessagePresent('Record deleted successfully.')).toBeTruthy();
+        expect(await utilCommon.isPopupMsgsMatches(['Record deleted successfully.'])).toBeTruthy('Record deleted successfully. pop up message missing');
     });
 
     //ptidke
@@ -148,7 +148,7 @@ describe('Notes template', () => {
         await consoleNotesTemplate.searchAndClickNotesTemplateCheckBox(templateName);
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
-        expect(await utilCommon.isPopUpMessagePresent('Record deleted successfully.')).toBeTruthy();
+        expect(await utilCommon.isPopupMsgsMatches(['Record deleted successfully.'])).toBeTruthy('Record deleted successfully. pop up message missing');
     });
 
     //ptidke
@@ -179,7 +179,7 @@ describe('Notes template', () => {
         await consoleNotesTemplate.searchAndClickNotesTemplateCheckBox(templateName);
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
-        expect(await utilCommon.isPopUpMessagePresent('Record deleted successfully.')).toBeTruthy();
+        expect(await utilCommon.isPopupMsgsMatches(['Record deleted successfully.'])).toBeTruthy('Record deleted successfully. pop up message missing');
     });
 
     //ptidke
@@ -210,7 +210,7 @@ describe('Notes template', () => {
         await consoleNotesTemplate.searchAndClickNotesTemplateCheckBox(templateName);
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
-        expect(await utilCommon.isPopUpMessagePresent('Record deleted successfully.')).toBeTruthy();
+        expect(await utilCommon.isPopupMsgsMatches(['Record deleted successfully.'])).toBeTruthy('Record deleted successfully. pop up message missing');
     });
 
     //ptidke
@@ -244,7 +244,7 @@ describe('Notes template', () => {
             await consoleNotesTemplate.searchAndClickNotesTemplateCheckBox(templateName);
             await consoleNotesTemplate.clickOnDeleteButton();
             await utilCommon.clickOnWarningOk();
-            expect(await utilCommon.isPopUpMessagePresent('Record deleted successfully.')).toBeTruthy();
+            expect(await utilCommon.isPopupMsgsMatches(['Record deleted successfully.'])).toBeTruthy('Record deleted successfully. pop up message missing');
         }
         catch (e) {
             throw e;
