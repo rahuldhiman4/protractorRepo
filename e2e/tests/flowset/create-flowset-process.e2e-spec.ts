@@ -654,7 +654,7 @@ describe('Create Process in Flowset', () => {
             await apiHelper.createProcess(processName2, 'EMAIL_ORIGIN');
 
             //Register the Process1
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             const registerProcessData1 = {
                 applicationServicesLib: "com.bmc.dsm.social-lib",
                 processName: 'com.bmc.dsm.social-lib:' + processName1,
@@ -666,7 +666,6 @@ describe('Create Process in Flowset', () => {
             let registeredProcessResponse1 = await apiHelper.createProcessLibConfig(registerProcessData1);
 
             //Register the Process2
-            await apiHelper.apiLogin('fritz');
             const registerProcessData2 = {
                 applicationServicesLib: "com.bmc.dsm.case-lib",
                 processName: 'com.bmc.dsm.case-lib:' + processName2,

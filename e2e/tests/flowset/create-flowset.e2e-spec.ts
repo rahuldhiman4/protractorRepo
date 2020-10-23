@@ -178,13 +178,16 @@ describe('Create Flowset', () => {
 
         beforeAll(async () => {
             //API call to create the flowset
-            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.apiLogin('fritz');
             flowsetMandatoryFieldsData = cloneDeep(flowsetMandatoryFields);
             flowsetMandatoryFieldsData.flowsetName = flowsetMandatoryFieldsData.flowsetName + randomStr;
+            flowsetMandatoryFieldsData["lineOfBusiness"] = "Facilities";
             await apiHelper.createNewFlowset(flowsetMandatoryFieldsData);
         });
 
         it('[DRDMV-1259]: [Permissions] Flowsets access', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', 'Flowsets - Console - Business Workflows');
             await consoleFlowset.searchAndSelectFlowset(flowsetMandatoryFieldsData.flowsetName);
