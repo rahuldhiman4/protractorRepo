@@ -208,7 +208,6 @@ describe('Case Activity Multi Logs', () => {
             await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateSummary);
             await manageTaskBladePo.addTaskFromTaskTemplate(externalTemplateSummary);
             await manageTaskBladePo.clickCloseButton();
-            browser.sleep(10000);
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
         });

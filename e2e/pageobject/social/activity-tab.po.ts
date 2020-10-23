@@ -178,7 +178,7 @@ class ActivityTabPage {
     }
 
     async clickShowLessLinkInActivity(activityNumber: number): Promise<boolean> {
-        return await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.showLessLink).isPresent().then(async (link) => {
+        return await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.showLessLink).isDisplayed().then(async (link) => {
             if (link) {
                 await $$(this.selectors.activityLogList).get(activityNumber - 1).$(this.selectors.showLessLink).click();
                 return true;
