@@ -3,7 +3,7 @@ export interface IFlowset {
     flowsetStatus: number;
     company: string;
     description: string;
-    lineOfBusiness?:string;
+    lineOfBusiness?: string;
 }
 
 export interface IFlowsetProcess {
@@ -13,6 +13,7 @@ export interface IFlowsetProcess {
     company?: string;
     description?: string;
     status?: string;
+    lineOfBusiness?: string;
 }
 
 export interface IFlowsetProcessMapping {

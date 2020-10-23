@@ -305,7 +305,7 @@ describe("Notification Template", () => {
         });
     });
 
-    fit('[DRDMV-16034]: Verify Notification method selected as alert will throw an error on save if Email based approval is selcted', async () => {
+    it('[DRDMV-16034]: Verify Notification method selected as alert will throw an error on save if Email based approval is selcted', async () => {
         await notificationTempGridPage.clickOnCreateNotificationTemplate();
         expect(await createNotificationTemplatePage.isEmailBasedApprovalFlagDisplayed()).toBeFalsy('Email based approval flag is displayed');
         await createNotificationTemplatePage.setTemplateName('Email Based Approval DRDMV-16034');

@@ -144,11 +144,6 @@ class EditFlowsetPage {
     async searchAndOpenProcessMapping(processMappingName: string): Promise<void> {
         await utilGrid.searchAndOpenHyperlink(processMappingName, this.selectors.processMappingConsoleGuid);
     }
-    
-    async navigateToProcessTab(): Promise<void> {
-        let locator = $$(this.selectors.tab).get(1);
-        await locator.click();
-    }
 
     async isAddNewMappingBtnDisabled(): Promise<boolean> {
         return await $(this.selectors.addNewMapping).getAttribute("disabled") == "true";
@@ -169,22 +164,12 @@ class EditFlowsetPage {
         await $(this.selectors.addNewMapping).click();
     }
 
-    async navigateToCaseAccessTab(): Promise<void> {
-        let locator = $$(this.selectors.tab).get(2);
-        await locator.click();
-    }
-
     async isSelectCompanyFldDisabled(): Promise<boolean> {
         return await $(this.selectors.selectCompanyField).getAttribute("disabled") == "true";
     }
 
     async isSelectAgentFldDisabled(): Promise<boolean> {
         return await $(this.selectors.selectAgentField).getAttribute("disabled") == "true";
-    }
-
-    async navigateToResolutionCodesTab(): Promise<void> {
-        let locator = $$(this.selectors.tab).get(3);
-        await locator.click();
     }
 
     async isAssociateResolutionCodeBtnDisabled(): Promise<boolean> {

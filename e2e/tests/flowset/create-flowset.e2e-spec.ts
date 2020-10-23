@@ -142,7 +142,6 @@ describe('Create Flowset', () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', 'Flowsets - Console - Business Workflows');
         await consoleFlowset.searchAndSelectFlowset(flowsetMandatoryFieldsData.flowsetName);
-        await editFlowset.navigateToProcessTab();
         await editFlowset.clickOnAddNewMappingBtn();
         await editFlowset.selectProcessName(`First Process ${randomStr}`);
         await editFlowset.clickSaveBtnOnProcessMapping();
