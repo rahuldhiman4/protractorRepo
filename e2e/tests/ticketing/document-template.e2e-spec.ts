@@ -38,6 +38,8 @@ describe('Document Template', () => {
         let labelRandVal1 = 'labelRandVal1' + randomStr;
         let labelRandVal2 = 'labelRandVal2' + randomStr;
         it('[DRDMV-14970,DRDMV-14974,DRDMV-14971,DRDMV-14972]: Create Menu item label', async () => {
+            await navigationPage.signOut();
+            await loginPage.login("fritz");
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
             await createMenuItemsBladePo.clickOnMenuOptionLink();
