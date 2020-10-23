@@ -7,7 +7,7 @@ export class GridOperations {
         noFilterAppliedError: '.has-danger .form-control-feedback',
         searchTextBox: '.adapt-search-triggerable input',
         clearSearchBoxButton: '.adapt-search-triggerable .adapt-search-clear',
-        gridRowLinks: '.at-data-row .btn-link',
+        gridRowLinks: '.at-data-row a',
         gridRowHyperLinks: '.btn-link',
         gridRows: '.at-data-row',
         gridCheckbox: '.ui-chkbox-box',
