@@ -309,14 +309,7 @@ describe('Case Manager Read-only Config', () => {
         expect(await flowsetEditPage.isFlowsetNameDisabled()).toBeTruthy("Flowset name  is enabled");
         expect(await flowsetEditPage.isStatusFieldDisabled()).toBeTruthy("Add Associate Category button is enabled");
         expect(await flowsetEditPage.isSaveBtnDisabled()).toBeTruthy("Add Associate Category button is enabled");
-        await flowsetEditPage.navigateToProcessTab();
         expect(await flowsetEditPage.isAddNewMappingBtnDisabled()).toBeTruthy("Add Associate Mapping button is enabled");
-        await flowsetEditPage.navigateToCaseAccessTab();
-        expect(await flowsetEditPage.isSelectCompanyFldDisabled()).toBeTruthy("Select company field is enabled");
-        expect(await flowsetEditPage.isSelectAgentFldDisabled()).toBeTruthy("Select Agent field is enabled");
-        await flowsetEditPage.navigateToResolutionCodesTab();
-        expect(await flowsetEditPage.isAddResolutionCodeBtnDisabled()).toBeTruthy("Add Resolution Code button is enabled");
-        expect(await flowsetEditPage.isAssociateResolutionCodeBtnDisabled()).toBeTruthy("Associate Resolution Code button is enabled");
     });
 
     // asahitya

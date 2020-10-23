@@ -7,7 +7,7 @@ export class GridOperations {
         noFilterAppliedError: '.has-danger .form-control-feedback',
         searchTextBox: '.adapt-search-triggerable input',
         clearSearchBoxButton: '.adapt-search-triggerable .adapt-search-clear',
-        gridRowLinks: '.at-data-row .btn-link',
+        gridRowLinks: '.at-data-row a',
         gridRowHyperLinks: '.btn-link',
         gridRows: '.at-data-row',
         gridCheckbox: '.ui-chkbox-box',
@@ -21,7 +21,7 @@ export class GridOperations {
         filterItems: '.advanced-filter__container .advanced-filter__accordion-tab .text-direction span',
         filterCheckboxOptions: '.a-select-inline__list .a-select-inline__item .checkbox__label',
         filterTab: '.nav-item button',
-        visibleColumnButton: '.d-icon-eye_closed',
+        visibleColumnButton: '.d-icon-eye_closed,.d-icon-eye',
         refreshIcon: 'button[rx-id="refresh-button"]',
         filterSearchValueBox: '.adapt-mt-input-container input',
         filterCounterInput: 'input.adapt-counter-input',
@@ -153,8 +153,8 @@ export class GridOperations {
             .map(async function (header) {
                 return await header.getAttribute('innerText');
             });
-        actualHeaders.sort();
-        expetcedHeaders.sort();
+        actualHeaders.sort();        
+        expetcedHeaders.sort();        
         return actualHeaders.length === expetcedHeaders.length && actualHeaders.every(
             (value, index) => (value === expetcedHeaders[index])
         );

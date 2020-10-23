@@ -1097,6 +1097,7 @@ describe("Quick Case", () => {
             await utilCommon.closePopUpMessage();
             await viewCasetemplatePo.selectTab('Template Access');
             await templateAccessTabPo.deleteTemplateAccess('Employee Relations');
+            await templateAccessTabPo.deleteTemplateAccess('Human Resource');
             await utilCommon.clickOnBackArrow();
             await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData1.templateName);
             await viewCasetemplatePo.clickEditTemplateMetaData();

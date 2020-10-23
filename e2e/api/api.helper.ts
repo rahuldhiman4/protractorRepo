@@ -1793,6 +1793,9 @@ class ApiHelper {
         newProcessConfig.fieldInstances[7]["value"] = data.status ? constants.ProcessLibConf[data.status] : newProcessConfig.fieldInstances[7].value;
         newProcessConfig.fieldInstances[8]["value"] = data.description ? data.description : newProcessConfig.fieldInstances[8].value;
         newProcessConfig.fieldInstances[1000000001]["value"] = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : newProcessConfig.fieldInstances[1000000001].value;
+        if (data.lineOfBusiness) {
+            newProcessConfig.fieldInstances[450000420].value = await constants.LOB[data.lineOfBusiness];
+        }
 
         let newProcessLibConfRecord: AxiosResponse = await apiCoreUtil.createRecordInstance(newProcessConfig);
 
@@ -2850,6 +2853,9 @@ class ApiHelper {
         notificationEventPayload.fieldInstances[301718200].value = data.eventName;
         notificationEventPayload.fieldInstances[7].value = data.status ? data.status : notificationEventPayload.fieldInstances[7].value;
         notificationEventPayload.fieldInstances[8].value = data.eventDescription ? data.eventDescription : notificationEventPayload.fieldInstances[8].value;
+        if (data.lineOfBusiness) {
+            notificationEventPayload.fieldInstances[450000420].value = await constants.LOB[data.lineOfBusiness];
+        }
         let notificationEventCreateResponse: AxiosResponse = await apiCoreUtil.createRecordInstance(notificationEventPayload);
         console.log('Create Notification event Status =============>', notificationEventCreateResponse.status);
         const notificationEvent = await axios.get(

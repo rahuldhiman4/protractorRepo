@@ -18,7 +18,7 @@ class EditFlowsetPage {
         processStatusGuid: 'b48823c7-8eb0-4b30-bd9a-b44e53fcc195',
         status: '[rx-view-component-id="046e725c-0b9a-440d-9c96-77a730cf23f3"] .ui-select-toggle',
         addAssociateCategoryBtn: '[rx-view-component-id="88810c80-2be6-4052-bd3c-40dbc782f046"] button',
-        saveButton: '[rx-view-component-id="ec655846-3db8-4072-beef-2dab6438e0e3"] button',
+        saveButton: '[rx-view-component-id="32a85bf4-f0e6-45ef-bb06-9564f9898416"] button',
         tab: '.nav-tabs a',
         addNewMapping: '[rx-view-component-id="1d59b685-ac65-4ac6-a39b-268596c8ae9c"] button',
         selectCompanyField: '[rx-view-component-id="1a170338-889d-47ef-a878-4d174bd88783"] .ac-company-field button',
@@ -144,11 +144,6 @@ class EditFlowsetPage {
     async searchAndOpenProcessMapping(processMappingName: string): Promise<void> {
         await utilGrid.searchAndOpenHyperlink(processMappingName, this.selectors.processMappingConsoleGuid);
     }
-    
-    async navigateToProcessTab(): Promise<void> {
-        let locator = $$(this.selectors.tab).get(1);
-        await locator.click();
-    }
 
     async isAddNewMappingBtnDisabled(): Promise<boolean> {
         return await $(this.selectors.addNewMapping).getAttribute("disabled") == "true";
@@ -169,22 +164,12 @@ class EditFlowsetPage {
         await $(this.selectors.addNewMapping).click();
     }
 
-    async navigateToCaseAccessTab(): Promise<void> {
-        let locator = $$(this.selectors.tab).get(2);
-        await locator.click();
-    }
-
     async isSelectCompanyFldDisabled(): Promise<boolean> {
         return await $(this.selectors.selectCompanyField).getAttribute("disabled") == "true";
     }
 
     async isSelectAgentFldDisabled(): Promise<boolean> {
         return await $(this.selectors.selectAgentField).getAttribute("disabled") == "true";
-    }
-
-    async navigateToResolutionCodesTab(): Promise<void> {
-        let locator = $$(this.selectors.tab).get(3);
-        await locator.click();
     }
 
     async isAssociateResolutionCodeBtnDisabled(): Promise<boolean> {

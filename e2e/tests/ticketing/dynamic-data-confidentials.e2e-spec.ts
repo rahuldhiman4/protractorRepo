@@ -381,51 +381,6 @@ describe('Dynamic Confidentials Data', () => {
     });
 
     //ankagraw
-    describe('[DRDMV-15187]: [DesignTime+Flowset] Add confidential support group on flowset', async () => {
-        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        beforeAll(async () => {
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.updateFoundationEntity('SupportGroup', 'Facilities', { confidential: 'true' });
-            await apiHelper.updateFoundationEntity('SupportGroup', 'AU Support 1', { confidential: 'true' });
-            await navigationPage.signOut();
-            await loginPage.login("fritz");
-        });
-        it('[DRDMV-15187]: [DesignTime+Flowset] Add confidential support group on flowset', async () => {
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', 'Flowsets - Console - Business Workflows');
-            await consoleFlowsetConfigPo.clickOnAddFlowset();
-            await createFlowsetConfigPo.selectCompany('Petramco');
-            await createFlowsetConfigPo.setFlowsetname('Flowset' + randomStr);
-            await createFlowsetConfigPo.setDescription("description" + randomStr);
-            await createFlowsetConfigPo.clickSaveButton();
-            await editFlowsetConfigPo.navigateToCaseAccessTab();
-            await editFlowsetConfigPo.clickConfidentialSupportGroupAccess();
-            await editFlowsetConfigPo.selectConfidentialSupportGroup("Facilities");
-            await editFlowsetConfigPo.clickConfidentialWriteSupportGroupAccess();
-            await editFlowsetConfigPo.clickAddConfidentialSupportGroup();
-            await editFlowsetConfigPo.clickConfidentialSupportGroupAccess();
-            await editFlowsetConfigPo.selectConfidentialSupportGroup("Employee Relations Sensitive Data Access");
-            await editFlowsetConfigPo.clickConfidentialWriteSupportGroupAccess();
-            await editFlowsetConfigPo.clickAddConfidentialSupportGroup();
-        });
-        it('[DRDMV-15187]: [DesignTime+Flowset] Add confidential support group on flowset', async () => {
-            await editFlowsetConfigPo.clickConfidentialSupportGroupAccess();
-            await editFlowsetConfigPo.selectConfidentialSupportGroup("AU Support 1");
-            await editFlowsetConfigPo.clickAddConfidentialSupportGroup();
-            await editFlowsetConfigPo.clickConfidentialSupportGroupAccess();
-            await editFlowsetConfigPo.selectConfidentialSupportGroup("Sensitive Personal Data (HR)");
-            await editFlowsetConfigPo.clickAddConfidentialSupportGroup();
-            await editFlowsetConfigPo.clickConfidentialSupportGroupAccess();
-            await editFlowsetConfigPo.selectConfidentialSupportGroup("AU Support 1");
-            await editFlowsetConfigPo.clickAddConfidentialSupportGroup();
-            expect(await editFlowsetConfigPo.getSupportGroupWarningMessage()).toContain("The group already exists in the access list.");
-        });
-        afterAll(async () => {
-            await navigationPage.gotoCaseConsole();
-        });
-    });
-
-    //ankagraw
     describe('[DRDMV-15032,DRDMV-13106]: [DesignTime] Availability of Confidential checkbox on all types of dynamic fields', async () => {
         let caseTemplateData, templateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let drpValue: string[] = ["TEXT", "NUMBER", "DATE", "BOOLEAN", "LIST", "ATTACHMENT", "DATE_TIME", "TIME"];

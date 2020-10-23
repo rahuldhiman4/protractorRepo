@@ -24,7 +24,8 @@
     "PersonData12111": {
         "firstName": "fnPerson12111",
         "lastName": "lnPerson12111",
-        "userId": "idPerson12111"
+        "userId": "idPerson12111",
+        "userPermission": ["Case Agent","Case Business Analyst","Human Resource"]
     },
     "PersonData2002": {
         "firstName": "fnPerson2004",
@@ -35,19 +36,22 @@
         "firstName": "phylumfn1",
         "lastName": "phylumln1",
         "userId": "idphylum1",
-        "company": "Phylum"
+        "company": "Phylum",
+        "userPermission":  ["Case Business Analyst","Human Resource"]
     },
     "PhylumCaseAgent2": {
         "firstName": "phylumfn2",
         "lastName": "phylumln2",
         "userId": "idphylum2",
-        "company": "Phylum"
+        "company": "Phylum",
+        "userPermission":  ["Case Business Analyst","Human Resource"]
     },
     "PhylumCaseAgent3": {
         "firstName": "phylumfn3",
         "lastName": "phylumln3",
         "userId": "idphylum3",
-        "company": "Phylum"
+        "company": "Phylum",
+        "userPermission":  ["Case Business Analyst","Human Resource"]
     },
     "PhylumCaseAgent4": {
         "firstName": "phylumfn4",

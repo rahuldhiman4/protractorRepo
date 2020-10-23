@@ -156,7 +156,7 @@ describe('Create Task Template', () => {
             await apiHelper.createManualTaskTemplate(templateData1);
 
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('qliu');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate('manualTaskTemplate' + randomStr);
@@ -290,8 +290,8 @@ describe('Create Task Template', () => {
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await utilGrid.clearFilter();
             await selectTaskTemplate.addColumn(addColoumn);
-            await utilGrid.addFilter("Support Group", 'Compensation and Benefits', 'text');
-            expect(await utilGrid.isGridRecordPresent('Compensation and Benefits')).toBeTruthy('Compensation and Benefits not present');
+            await utilGrid.addFilter("Support Group", 'US Support 3', 'text');
+            expect(await utilGrid.isGridRecordPresent('US Support 3')).toBeTruthy('US Support 3 not present');
             await utilGrid.clearFilter();
             await utilGrid.addFilter("Modified Date", dateFormate + "-" + modifiedDateFormate, 'date');
             expect(await utilGrid.isGridRecordPresent(taskTemplateName)).toBeTruthy(taskTemplateName);
@@ -299,8 +299,8 @@ describe('Create Task Template', () => {
             await utilGrid.addFilter("Template Name", 'Code of Conduct', 'text');
             expect(await utilGrid.isGridRecordPresent('Code of Conduct')).toBeTruthy('Code of Conduct not present');
             await utilGrid.clearFilter();
-            await utilGrid.addFilter("Task Category Tier 1", 'Total Rewards', 'text');
-            expect(await utilGrid.isGridRecordPresent('Total Rewards')).toBeTruthy('Total Rewards not present');
+            await utilGrid.addFilter("Task Category Tier 1", 'Employee Relations', 'text');
+            expect(await utilGrid.isGridRecordPresent('Employee Relations')).toBeTruthy('Employee Relations not present');
         });
         it('[DRDMV-3768]: Apply Filter Options and verify remaining fields', async () => {
             await utilGrid.clearFilter();
@@ -335,8 +335,8 @@ describe('Create Task Template', () => {
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
@@ -366,7 +366,7 @@ describe('Create Task Template', () => {
             await previewCasePo.clickGoToCaseButton();
             CaseId = await viewCasePage.getCaseID();
             await viewCasePage.clickOnTab('Case Access');
-            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access','Case');
+            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Case');
             await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
             await accessTabPo.selectAccessEntityDropDown('United States Support', 'Select Business Unit');
             await accessTabPo.selectAccessEntityDropDown('US Support 1', 'Select Support Group');
@@ -564,7 +564,7 @@ describe('Create Task Template', () => {
             expect(await utilityGrid.isGridRecordPresent('Closed')).toBeTruthy('Closed not present');
         });
     });
-
+    
     describe('[DRDMV-5284]: [Tasks] Tasks status when resolving the case', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase, taskName1, taskName2;
@@ -578,7 +578,7 @@ describe('Create Task Template', () => {
                 "assignee": "qkatawazi",
             };
             let caseData1 = {
-                "Requester": "Fritz",
+                "Requester": "qliu",
                 "Summary": "Test case for inProgress task",
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
@@ -591,10 +591,10 @@ describe('Create Task Template', () => {
                 "caseStatus": "Assigned",
                 "resolveCaseonLastTaskCompletion": "1",
                 "templateStatus": "Active",
-                "assignee": "Fritz",
+                "assignee": "qtao",
                 "ownerCompany": "Petramco",
-                "ownerBU": "Facilities Support",
-                "ownerGroup": "Facilities",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3",
             }
             let manualTemplateData = {
                 "templateName": 'manualTaskTemplate' + randomStr,
@@ -698,7 +698,7 @@ describe('Create Task Template', () => {
             expect(await viewCasePage.isAddtaskButtonDisplayed()).toBeFalsy();
         });
     });
-
+    
     describe('[DRDMV-12111,DRDMV-12110,DRDMV-12109]: Verify Company, Business Unit, Department and Support Group selection hierarchy in Change Owner.', async () => {
         let randomStr = 'Manual  task' + Math.floor(Math.random() * 1000000);
         it('[DRDMV-12111,DRDMV-12110,DRDMV-12109]: Create Case tempate template', async () => {
@@ -739,9 +739,9 @@ describe('Create Task Template', () => {
         });
     });
 
-    //ankagraw
+
     describe('[DRDMV-3830]: [Task Workspace] Filter menu verification', async () => {
-        let tempIdClosed,tempIdCanceled,tempIdCompleted,randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let tempIdClosed, tempIdCanceled, tempIdCompleted, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase1, tempIdLow, tempIdMedium, tempIdHigh, tempIdCritical, exactDate;
         let createdDate = new Date();
         let month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -762,7 +762,7 @@ describe('Create Task Template', () => {
                 "priority": "Low"
             };
             let caseData1 = {
-                "Requester": "Fritz",
+                "Requester": "qtao",
                 "Summary": "Test case for inProgress task",
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
@@ -778,11 +778,11 @@ describe('Create Task Template', () => {
             tempIdHigh = await apiHelper.createAdhocTask(newCase1.id, adhocTaskData);
             adhocTaskData.priority = "Critical";
             tempIdCritical = await apiHelper.createAdhocTask(newCase1.id, adhocTaskData);
-            adhocTaskData.taskName = "manualTaskTemplateClosed"+randomStr;
+            adhocTaskData.taskName = "manualTaskTemplateClosed" + randomStr;
             tempIdClosed = await apiHelper.createAdhocTask(newCase1.id, adhocTaskData);
-            adhocTaskData.taskName = "manualTaskTemplateCompleted"+randomStr;
+            adhocTaskData.taskName = "manualTaskTemplateCompleted" + randomStr;
             tempIdCompleted = await apiHelper.createAdhocTask(newCase1.id, adhocTaskData);
-            adhocTaskData.taskName = "manualTaskTemplateCanceled"+randomStr;
+            adhocTaskData.taskName = "manualTaskTemplateCanceled" + randomStr;
             tempIdCanceled = await apiHelper.createAdhocTask(newCase1.id, adhocTaskData);
 
             await apiHelper.updateCaseStatus(newCase1.id, 'InProgress');

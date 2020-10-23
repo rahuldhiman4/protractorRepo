@@ -25,7 +25,7 @@ class SelectCaseTemplateBlade {
     }
 
     async clickOnRecommendedTemplateTab(): Promise<void> {
-        await element(by.cssContainingText(this.selectors.allTemplates, 'Recommended Templates')).click();
+        await element.all(by.cssContainingText(this.selectors.allTemplates, 'Recommended Templates')).first().click();
     }
 
     async clickOnCaseTemplateCheckbox(): Promise<void> {
@@ -37,7 +37,7 @@ class SelectCaseTemplateBlade {
     }
 
     async clickOnAllTemplateTab(): Promise<void> {
-        await element(by.cssContainingText(this.selectors.allTemplates, 'All Templates')).click();
+        await element.all(by.cssContainingText(this.selectors.allTemplates, 'All Templates')).first().click();
     }
 
     async searchAndOpenCaseTemplate(input: string): Promise<void> {

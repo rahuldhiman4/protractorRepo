@@ -82,7 +82,7 @@ describe('Case Console', () => {
                 "categoryTier1": "Employee Relations",
                 "categoryTier2": "Compensation",
                 "categoryTier3": "Bonus",
-                "categoryTier4": "Failure",
+                "categoryTier4": "Retention Bonus",
                 "casePriority": "Low",
                 "templateStatus": "Active",
                 "company": "Petramco",
@@ -101,7 +101,7 @@ describe('Case Console', () => {
                 "category1": "Employee Relations",
                 "category2": "Compensation",
                 "category3": "Bonus",
-                "category4": "Failure",
+                "category4": "Retention Bonus",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "United States Support",
@@ -119,7 +119,7 @@ describe('Case Console', () => {
                 "categoryTier1": "Employee Relations",
                 "categoryTier2": "Compensation",
                 "categoryTier3": "Bonus",
-                "categoryTier4": "Failure",
+                "categoryTier4": "Retention Bonus",
                 "label": label
             }
 
@@ -132,7 +132,7 @@ describe('Case Console', () => {
                 "category1": "Employee Relations",
                 "category2": "Compensation",
                 "category3": "Bonus",
-                "category4": "Failure",
+                "category4": "Retention Bonus",
                 "label": label
             }
 

@@ -40,11 +40,11 @@ describe('Case Status Verification', () => {
             "statusReason": "Auto Resolved",
             "templateStatus": "Active",
             "company": "Petramco",
-            "businessUnit": "Facilities Support",
-            "supportGroup": "Facilities",
+            "businessUnit": "United States Support",
+            "supportGroup": "US Support 3",
             "assignee": "Fritz",
-            "ownerBU": 'Facilities Support',
-            "ownerGroup": "Facilities",
+            "ownerBU": 'United States Support',
+            "ownerGroup": "US Support 3",
             "allowCaseReopen": true
         }
         await apiHelper.apiLogin('qkatawazi');

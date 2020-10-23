@@ -16,11 +16,13 @@
     },
     "DepartmentData_BulkOperation": {
         "orgName": "BulkOperationDepartment",
-        "relatedOrgId": null
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
     },
     "DepartmentData12111": {
         "orgName": "UI-Department-12111",
-        "relatedOrgId": null
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
     },
     "DepartmentData2002": {
         "orgName": "UI-Department-2002",

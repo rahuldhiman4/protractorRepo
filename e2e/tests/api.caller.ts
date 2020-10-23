@@ -10,7 +10,12 @@ describe('Login and create case from API', () => {
         let caseData =
         {
             "Requester": "qtao",
-            "Summary": "Testing case creation with minimal input data"
+            "Summary": "case in progress " + randomStr,
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
+            "Assignee": "qkatawazi",
+            "Status": "In Progress",
         }
         await apiHelper.apiLogin('qkatawazi');
         let newCaseTemplate = await apiHelper.createCase(caseData);
