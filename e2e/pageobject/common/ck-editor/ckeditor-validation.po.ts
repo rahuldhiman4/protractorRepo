@@ -21,7 +21,7 @@ class CKEValidation {
         strikeThroughTextCkEditorTextArea: '.cke_enable_context_menu s',
         justifyAlignText: '.cke_enable_context_menu [style="text-align: justify;"]',
         deletedTextInCKE: '.cke_editable_themed del',
-        rightAlignText: '.cke_enable_context_menu div,.cke_enable_context_menu p,.cke_enable_context_menu',
+        rightAlignText: '.cke_enable_context_menu div[style="text-align: right;"],.cke_enable_context_menu p',
         centerAlignText: '.cke_enable_context_menu [style="text-align: center;"]',
         numberListCkEditorTextArea: '.cke_enable_context_menu ol li',
         bulletListTextCkEditorTextArea: '.cke_enable_context_menu ul li',

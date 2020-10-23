@@ -680,7 +680,7 @@ describe('Create Case Task', () => {
             expect(await utilityGrid.isGridColumnSorted('Display ID', 'asc')).toBeTruthy('Ascendigly not sorted');
             expect(await utilityGrid.isGridColumnSorted('Display ID', 'desc')).toBeTruthy('Descendigly not sorted');
             await utilityGrid.removeGridColumn(['Display ID']);
-            await utilityGrid.addFilter('Task Type', 'Manual', 'checkbox');
+            await utilityGrid.addFilter('Task Type', 'Manual', "checkbox");
             expect(await manageTask.getFilterValue('Manual')).toBeTruthy();
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Task Type', 'Automated', 'checkbox');
@@ -1385,6 +1385,9 @@ describe('Create Case Task', () => {
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter("Status", "Closed", "text");
             expect(await utilityGrid.isGridRecordPresent(`manualTaskTemplateSummary2 ${randomStr}`)).toBeTruthy(`manualTaskTemplateSummary2 ${randomStr}`);
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
         });
     });
     
