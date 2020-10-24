@@ -16,7 +16,7 @@ class ViewTaskTemplate {
         taskTypeValue: '[rx-view-component-id="27f3842f-613a-4439-a29c-bedd51b0eecd"] p',
         taskDescriptionValue: '[rx-view-component-id="cce67ce7-e6a5-4ed6-aa50-c57ea75d2854"] [ux-bind-html]',
         taskCompanyValue: '[rx-view-component-id="2717de6b-2e4e-47d2-a39e-b5ade14ea3e9"] p',
-        categoryTier1Value: '[rx-view-component-id="d49969eb-ffcc-4c7e-98ad-b94d6c3d67cb"] span:nth-of-type(2)',
+        categoryTier1Value: '[rx-view-component-id="d49969eb-ffcc-4c7e-98ad-b94d6c3d67cb"] p',
         categoryTier2Value: '[rx-view-component-id="c427cb37-5018-4bc6-b951-46f31a679d93"] p',
         categoryTier3Value: '[rx-view-component-id="118170eb-e94d-4056-9d0b-cb944ff96ebb"] p',
         categoryTier4Value: '[rx-view-component-id="d88c4135-b283-4b9a-9909-80f1e83e6087"] p',
