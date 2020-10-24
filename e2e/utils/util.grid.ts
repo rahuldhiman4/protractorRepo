@@ -123,22 +123,8 @@ export class GridOperation {
     }
 
     async searchAndOpenHyperlink(id: string, guid?: string) {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.summaryField1)));
-        if (guid) {
-            await $(`[rx-view-component-id='${guid}'] input[role="search"]`).clear();
-            await $(`[rx-view-component-id='${guid}'] input[role="search"]`).sendKeys(id);
-            await $(`[rx-view-component-id='${guid}'] button[rx-id="submit-search-button"]`).click();
-            await element(by.linkText(id)).click();
-        } else {
-            await $(this.selectors.summaryField1).clear();
-            await $(this.selectors.summaryField1).sendKeys(id);
-            await browser.wait(this.EC.elementToBeClickable($(this.selectors.searchButton1)), 2000);
-            await $(this.selectors.searchButton1).click();
-            //          await browser.sleep(3000);
-            await browser.wait(this.EC.elementToBeClickable(element(by.cssContainingText('.ui-grid__link', id))), 3000);
-            await element(by.linkText(id)).click();
-            //          await utilCommon.waitUntilSpinnerToHide();
-        }
+        await this.searchOnGridConsole(id, guid);
+        await element(by.linkText(id)).click();
     }
 
     async clickCheckBoxOfValueInGrid(value: string, guid?: string): Promise<void> {
