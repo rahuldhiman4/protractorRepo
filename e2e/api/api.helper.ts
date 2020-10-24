@@ -53,6 +53,7 @@ import { IAdhocTask, ITaskUpdate } from '../data/interface/task.interface';
 import { ICaseTemplate, IEmailTemplate, INotesTemplate, ITaskTemplate } from '../data/interface/template.interface';
 import loginPage from "../pageobject/common/login.po";
 import { NOTES_TEMPLATE } from '../data/api/social/notes.template.api';
+import { FLOWSET_TEMPLATE } from '../data/api/case/flowset.api';
 let fs = require('fs');
 
 axios.defaults.baseURL = browser.baseUrl;
@@ -1592,8 +1593,7 @@ class ApiHelper {
     }
 
     async createNewFlowset(data: IFlowset): Promise<IIDs> {
-        let flowsetFile = await require('../data/api/case/flowset.api.json');
-        let flowsetData = await flowsetFile.FlowsetData;
+        let flowsetData = cloneDeep(FLOWSET_TEMPLATE);
         let companyGuid = await apiCoreUtil.getOrganizationGuid(data.company);
         flowsetData.fieldInstances[1000000001].value = companyGuid;
         flowsetData.fieldInstances[450000002].value = data.flowsetName;
