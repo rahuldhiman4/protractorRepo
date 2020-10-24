@@ -81,7 +81,7 @@ describe('Email Task', () => {
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
-                "Assignee": "Qadim Katawazi"
+                "Assignee": "qkatawazi"
             }
             await apiHelper.apiLogin('qkatawazi');
             let newCaseTemplate = await apiHelper.createCase(caseData);
@@ -155,7 +155,7 @@ describe('Email Task', () => {
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
-                "Assignee": "Qadim Katawazi"
+                "Assignee": "qkatawazi"
             }
             await apiHelper.apiLogin('qkatawazi');
             let newCaseTemplate = await apiHelper.createCase(caseData);
@@ -195,7 +195,7 @@ describe('Email Task', () => {
             expect(await emailPo.getSubject()).toContain(displayId + ':' + ManualtaskID);
             //verify activity email post
             await emailPo.clickOnSendButton();
-            expect(await activityTabPo.getEmailTitle()).toContain('Fritz Schulz sent an email');
+            expect(await activityTabPo.getEmailTitle()).toContain('Qadim Katawazi sent an email');
             await viewTaskPo.clickOnViewCase();
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLink(externalTaskSummary);
@@ -222,7 +222,7 @@ describe('Email Task', () => {
             expect(await emailPo.getSubject()).toContain(displayId + ':' + ExternaltaskID);
             //verify activity email post
             await emailPo.clickOnSendButton();
-            expect(await activityTabPo.getEmailTitle()).toContain('Fritz Schulz sent an email');
+            expect(await activityTabPo.getEmailTitle()).toContain('Qadim Katawazi sent an email');
         });
     });
 
@@ -262,7 +262,7 @@ describe('Email Task', () => {
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
-                "Assignee": "Qadim Katawazi"
+                "Assignee": "qkatawazi"
             }
             await apiHelper.apiLogin('qkatawazi');
             let newCaseTemplate = await apiHelper.createCase(caseData);
@@ -354,7 +354,7 @@ describe('Email Task', () => {
             "Assigned Company": "Petramco",
             "Business Unit": "United States Support",
             "Support Group": "US Support 3",
-            "Assignee": "Qadim Katawazi"
+            "Assignee": "qkatawazi"
         }
         let newCase = await apiHelper.createCase(caseData);
         let displayId: string = newCase.displayId;
@@ -410,7 +410,7 @@ describe('Email Task', () => {
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
-                "Assignee": "Qadim Katawazi"
+                "Assignee": "qkatawazi"
             }
             await apiHelper.apiLogin('qkatawazi');
             let newCaseTemplate = await apiHelper.createCase(caseData);
@@ -505,7 +505,7 @@ describe('Email Task', () => {
             "Assigned Company": "Petramco",
             "Business Unit": "United States Support",
             "Support Group": "US Support 3",
-            "Assignee": "Qadim Katawazi"
+            "Assignee": "qkatawazi"
         }
         await apiHelper.apiLogin('qkatawazi');
         let newCaseTemplate = await apiHelper.createCase(caseData);
@@ -582,7 +582,7 @@ describe('Email Task', () => {
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
-                "Assignee": "Qadim Katawazi"
+                "Assignee": "qkatawazi"
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createEmailTemplate(emailTemplateDataForTest1);
@@ -703,7 +703,7 @@ describe('Email Task', () => {
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
-                "Assignee": "Qadim Katawazi"
+                "Assignee": "qkatawazi"
             }
             await apiHelper.apiLogin('qkatawazi');
             let newCaseTemplate = await apiHelper.createCase(caseData);
