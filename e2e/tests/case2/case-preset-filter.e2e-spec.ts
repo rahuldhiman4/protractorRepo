@@ -636,7 +636,7 @@ describe('Case Console Preset Filter', () => {
 
         await utilityGrid.clearFilter();
         await utilityGrid.applyPresetFilter('All Cases  In Last 3 months');
-        let allOpenCase: string[] = ['All Cases  In Last 3 months'];
+        let allOpenCase: string[] = ['All Cases In Last 3 months'];
         expect(await utilityGrid.isAppliedFilterMatches(allOpenCase)).toBeTruthy();
 
         for (let i: number = 0; i < 2; i++) {
@@ -691,7 +691,7 @@ describe('Case Console Preset Filter', () => {
 
         await utilityGrid.clearFilter();
         await utilityGrid.applyPresetFilter('All Cases  In Last 6 months');
-        let allOpenCase: string[] = ['All Cases  In Last 6 months'];
+        let allOpenCase: string[] = ['All Cases In Last 6 months'];
         expect(await utilityGrid.isAppliedFilterMatches(allOpenCase)).toBeTruthy();
 
         for (let i: number = 0; i < 3; i++) {
