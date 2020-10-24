@@ -27,7 +27,7 @@ import editCasetemplatePo from '../../pageobject/settings/case-management/edit-c
 describe('Dynamic Library Configuration', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
-        await loginPage.login('fritz');
+        await loginPage.login('qkatawazi');
     });
 
     afterAll(async () => {
@@ -61,7 +61,7 @@ describe('Dynamic Library Configuration', () => {
         await createDynamicFieldLibraryConfigPo.setInformationSourceValueType('Agent');
         await createDynamicFieldLibraryConfigPo.setFieldValueType('NUMBER');
         await createDynamicFieldLibraryConfigPo.clickOnSaveButton();
-        expect(await utilCommon.isPopUpMessagePresent('ERROR (382): The value(s) for this entry violate a unique index that has been defined for this record definition.')).toBeTruthy();
+        expect(await utilCommon.isPopUpMessagePresent('ERROR (12423): Dynamic field with same name and line of business already exists.')).toBeTruthy();
         await utilCommon.closePopUpMessage();
         await createDynamicFieldLibraryConfigPo.clickCancelButton();
         await utilCommon.clickOnWarningOk();
@@ -73,7 +73,7 @@ describe('Dynamic Library Configuration', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', 'Field Management Console - Business Workflows');
             let headers: string[] = ["Field Description", "Field Name", "Field Value Type", "Status"];
-            let updatedHeaders: string[] = ["Field Description", "Field Name", "Field Value Type", "Status", "Information Source", "Confidential" ];
+            let updatedHeaders: string[] = ["Field Description", "Field Name", "Field Value Type", "Status", "InformationSource", "Confidential" ];
             let header: string[] = ["InformationSource", "Confidential"]
             //field Text type    
             expect(await dynamicFieldLibraryConfigConsolePo.areRequestedColumnMatches(headers)).toBeTruthy();
@@ -238,10 +238,11 @@ describe('Dynamic Library Configuration', () => {
                 "templateSummary": 'CaseSummaryName' + randomStr,
                 "caseStatus": "InProgress",
                 "templateStatus": "Draft",
-                "assignee": "Fritz",
-                "company": "Petramco",
-                "supportGroup": "Facilities",
-                "ownerGroup": "Facilities"
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
+                "ownerBU": 'United States Support',
+                "ownerGroup": "US Support 3",
             }
             templateData = {
                 "templateName": `manualTaskTemplate1 ${randomStr}`,
@@ -249,16 +250,16 @@ describe('Dynamic Library Configuration', () => {
                 "templateStatus": "Draft",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
-                "assignee": "Fritz",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+                "assignee": "qkatawazi",
                 "company": "Petramco",
-                "supportGroup": "Facilities",
-                "businessUnit": "Facilities Support",
+                "supportGroup": "US Support 3",
+                "businessUnit": "United States Support",
             }
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createManualTaskTemplate(templateData);
             await apiHelper.createCaseTemplate(caseTemplateData);
         });
@@ -415,10 +416,10 @@ describe('Dynamic Library Configuration', () => {
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             let newCaseTemplate = await apiHelper.createManualTaskTemplate(templateData);
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_DYNAMIC_FIELDS');
         });
@@ -467,12 +468,12 @@ describe('Dynamic Library Configuration', () => {
                 "templateName": randomStr + 'caseTemplateDRDMV-13128',
                 "templateSummary": randomStr + 'caseTemplateDRDMV-13128',
                 "templateStatus": "Active",
-                "assignee": "Fritz",
+                "assignee": "qkatawazi",
                 "company": "Petramco",
-                "businessUnit": "Facilities Support",
-                "ownerBU": "Facilities Support",
-                "supportGroup": "Facilities",
-                "ownerGroup": "Facilities"
+                "businessUnit": "United States Support",
+                "ownerBU": "United States Support",
+                "supportGroup": "US Support 3",
+                "ownerGroup": "US Support 3"
             }
             await apiHelper.apiLogin('fritz');
             await apiHelper.createCaseTemplate(casetemplateData);

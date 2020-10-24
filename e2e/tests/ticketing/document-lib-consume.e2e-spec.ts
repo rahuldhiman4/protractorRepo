@@ -204,8 +204,8 @@ describe('Document Library Consume UI', () => {
             publishDocLibData = {
                 "docLibTitle": "drdmv13524_publish_document3",
                 "company": "Petramco",
-                "Business Unit": "Facilities Support",
-                "ownerGroup": "Facilities",
+                "Business Unit": "United States Support",
+                "ownerGroup": "US Support 3",
             }
 
             caseTemplateData = {
@@ -335,8 +335,8 @@ describe('Document Library Consume UI', () => {
             publishDocLibData = {
                 "docLibTitle": "drdmv13524_publish_document3",
                 "company": "Petramco",
-                "Business Unit": "Facilities Support",
-                "ownerGroup": "Facilities",
+                "Business Unit": "United States Support",
+                "ownerGroup": "US Support 3",
             }
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDocumentLibrary(publishDocLibData.docLibTitle);
@@ -348,8 +348,8 @@ describe('Document Library Consume UI', () => {
                 let publishDocLibData1 = {
                     "docLibTitle": publish[i],
                     "company": "Petramco",
-                    "Business Unit": "Facilities Support",
-                    "ownerGroup": "Facilities",
+                    "Business Unit": "United States Support",
+                    "ownerGroup": "US Support 3",
                     "shareExternally": true,
                 }
                 await apiHelper.apiLogin('tadmin');
@@ -362,8 +362,8 @@ describe('Document Library Consume UI', () => {
             draftDocLibData = {
                 docLibTitle: 'drdmv13507_draft_document',
                 "company": "Petramco",
-                "Business Unit": "Facilities Support",
-                "ownerGroup": "Facilities",
+                "Business Unit": "United States Support",
+                "ownerGroup": "US Support 3",
                 "shareExternally": true,
             }
             await apiHelper.apiLogin('tadmin');
@@ -436,8 +436,8 @@ describe('Document Library Consume UI', () => {
             publishDocLibData2 = {
                 "docLibTitle": "drdmv13449_publish_document3",
                 "company": "Petramco",
-                "Business Unit": "Facilities Support",
-                "ownerGroup": "Facilities",
+                "Business Unit": "United States Support",
+                "ownerGroup": "US Support 3",
             }
             draftDocLibData = {
                 "docLibTitle": "drdmv13449_draft_document",
