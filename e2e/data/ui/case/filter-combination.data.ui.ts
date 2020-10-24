@@ -78,10 +78,10 @@ export const Case_Pending_FILTER_8 = {
     "Requester": "harry",
     "Summary": "DRDMV-caseFilterCombination_8",
     "Assigned Company": "Petramco",
-    "Business Unit": "Facilities Support",
-    "Support Group": "Facilities",
+    "Business Unit": "India Support",
+    "Support Group": "IN Support 1",
     "Origin": "Agent",
-    "Assignee": "Fritz",
+    "Assignee": "ajoshi",
     "Status": "4000"
 };
 
@@ -92,7 +92,6 @@ export const Case_New_FILTER_9 = {
     "Assigned Company": "Petramco",
     "Business Unit": "HR Support",
     "Support Group": "Employee Relations",
-    "Assignee": "elizabeth",
     "Origin": "Live Chat",
     "Status": "1000"
 };
@@ -118,9 +117,9 @@ export const Case_Pending_FILTER_11 = {
     "Support Group": "Workforce Administration",
     "Assignee": "elizabeth",
     "Origin": "Live Chat",
-    "Category Tier 1": "Facilities",
-    "Category Tier 2": "Cleaning",
-    "Category Tier 3": "External",
+    "Category Tier 1": "Employee Relations",
+    "Category Tier 2": "Compensation",
+    "Category Tier 3": "Bonus",
     "Status": "4000"
 };
 
@@ -133,9 +132,9 @@ export const Case_Pending_FILTER_12 = {
     "Support Group": "Compensation and Benefits",
     "Assignee": "elizabeth",
     "Origin": "Live Chat",
-    "Category Tier 1": "Phones",
-    "Category Tier 2": "Infrastructure",
-    "Category Tier 3": "Voice Circuit",
+    "Category Tier 1": "Payroll",
+    "Category Tier 2": "Finance",
+    "Category Tier 3": "Reporting",
     "Status": "4000"
 };
 
