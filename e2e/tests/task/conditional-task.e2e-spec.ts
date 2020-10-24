@@ -29,12 +29,12 @@ describe('Conditional Task', () => {
             "lastName": "Access",
             "userId": "DRDMV-14898_User",
             "emailId": "DRDMV-14898_User@petramco.com",
-            "userPermission": ["Case Agent", "Foundation Read", "Document Manager", "Case Business Analyst"]
+            "userPermission": ["Case Agent", "Foundation Read", "Document Manager", "Case Business Analyst", "Human Resource"]
         }
         await apiHelper.createNewUser(userData);
         await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
         await apiHelper.associatePersonToCompany(userData.userId, "Psilon");
-        await loginPage.login('fritz');
+        await loginPage.login('qkatawazi');
     });
 
     afterAll(async () => {
@@ -54,11 +54,11 @@ describe('Conditional Task', () => {
                 "templateStatus": "Inactive",
                 "casePriority": "Low",
                 "company": "Petramco",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
-                "ownerBU": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             await apiHelper.createCaseTemplate(inactiveCaseTemplatePetramcoData);
 
@@ -66,16 +66,16 @@ describe('Conditional Task', () => {
                 "templateName": `DRDMV-14901 Manual ${randomStr}`,
                 "templateSummary": `DRDMV-14901 Manual${randomStr}`,
                 "templateStatus": "Active",
-                "category1": 'Purchasing Card',
-                "category2": 'Policies',
-                "category3": 'Card Issuance',
+                "category1": 'Applications',
+                "category2": 'Help Desk',
+                "category3": 'Incident',
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
                 "description": randomStr
             }
             let manualTasktemplateResponse = await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
@@ -85,16 +85,16 @@ describe('Conditional Task', () => {
                 "templateName": `DRDMV-14901 External ${randomStr}`,
                 "templateSummary": `DRDMV-14901 External${randomStr}`,
                 "templateStatus": "Active",
-                "category1": 'Purchasing Card',
-                "category2": 'Policies',
-                "category3": 'Card Issuance',
+                "category1": 'Applications',
+                "category2": 'Help Desk',
+                "category3": 'Incident',
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
                 "description": randomStr
             }
             let externalTasktemplateResponse = await apiHelper.createExternalTaskTemplate(externalTaskTemplateData);
@@ -105,17 +105,17 @@ describe('Conditional Task', () => {
                 "templateSummary": `DRDMV-14901 Automated${randomStr}`,
                 "templateStatus": "Active",
                 "processBundle": "com.bmc.dsm.case-lib",
-                "category1": 'Purchasing Card',
-                "category2": 'Policies',
-                "category3": 'Card Issuance',
+                "category1": 'Applications',
+                "category2": 'Help Desk',
+                "category3": 'Incident',
                 "processName": 'Auto Proces' + randomStr,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
                 "description": randomStr
             }
             let automatedTasktemplateResponse = await apiHelper.createAutomatedTaskTemplate(automatedTaskTemplateData);
@@ -166,7 +166,7 @@ describe('Conditional Task', () => {
             expect(await utilityCommon.getFieldValue('Task Category Tier 3')).toBe(manualTaskTemplateData.category3);
             expect(await utilityCommon.getFieldValue('Support Group')).toBe(manualTaskTemplateData.supportGroup);
             expect(await utilityCommon.getFieldValue('Support Company')).toBe(manualTaskTemplateData.ownerCompany);
-            expect(await taskTemplatePreview.getAssigneeFieldValue()).toBe('Fritz Schulz');
+            expect(await taskTemplatePreview.getAssigneeFieldValue()).toBe('Qadim Katawazi');
             await taskTemplatePreview.clickOnBackButton();
 
             //Validate all field labels of External Task Template
@@ -205,7 +205,7 @@ describe('Conditional Task', () => {
             expect(await utilityCommon.getFieldValue('Task Category Tier 3')).toBe(externalTaskTemplateData.category3);
             expect(await utilityCommon.getFieldValue('Support Group')).toBe(externalTaskTemplateData.supportGroup);
             expect(await utilityCommon.getFieldValue('Support Company')).toBe(externalTaskTemplateData.ownerCompany);
-            expect(await taskTemplatePreview.getAssigneeFieldValue()).toBe('Fritz Schulz');
+            expect(await taskTemplatePreview.getAssigneeFieldValue()).toBe('Qadim Katawazi');
             await taskTemplatePreview.clickOnBackButton();
 
             //Validate all field labels of Automated Task Template
@@ -249,18 +249,18 @@ describe('Conditional Task', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let draftCaseTemplatePetramcoData, manualTaskTemplateData, externalTaskTemplateData, automatedTaskTemplateData;
         beforeAll(async () => {
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             draftCaseTemplatePetramcoData = {
                 "templateName": 'caseTemplatePetramcoDraft ' + randomStr,
                 "templateSummary": 'caseTemplatePetramcoDraft' + randomStr,
                 "templateStatus": "Draft",
                 "casePriority": "Low",
                 "company": "Petramco",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
-                "ownerBU": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             await apiHelper.createCaseTemplate(draftCaseTemplatePetramcoData);
 
@@ -270,11 +270,11 @@ describe('Conditional Task', () => {
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
             }
             await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
 
@@ -284,11 +284,11 @@ describe('Conditional Task', () => {
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
             }
             await apiHelper.createExternalTaskTemplate(externalTaskTemplateData);
 
@@ -300,11 +300,11 @@ describe('Conditional Task', () => {
                 "processName": 'Auto Proces' + randomStr,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
             }
             await apiHelper.createAutomatedTaskTemplate(automatedTaskTemplateData);
         });
@@ -349,7 +349,7 @@ describe('Conditional Task', () => {
             await createCasePage.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.clickOnAllTemplateTab();
             await selectCasetemplateBladePo.searchAndOpenCaseTemplate(draftCaseTemplatePetramcoData.templateName);
-            expect(await previewCaseTemplatePage.getReadOnlyFieldCount()).toEqual(10); //Detailed Read only fields are verified in DRDMV-8868 test
+            expect(await previewCaseTemplatePage.getReadOnlyFieldCount()).toEqual(11); //Detailed Read only fields are verified in DRDMV-8868 test
             defaultWidth = (await viewCaseTemplatePage.getHeightAndWidth()).width;
             defaultHeight = (await viewCaseTemplatePage.getHeightAndWidth()).height;
             await previewCaseTemplatePage.zoomOutTaskFlowSection(3);
@@ -368,7 +368,7 @@ describe('Conditional Task', () => {
             await quickCasePage.selectRequesterName('qfeng');
             await quickCasePage.selectCaseTemplate(draftCaseTemplatePetramcoData.templateName);
             await quickCasePage.clickOnCaseTemplate(draftCaseTemplatePetramcoData.templateName);
-            expect(await previewCaseTemplatePage.getReadOnlyFieldCount()).toEqual(10);
+            expect(await previewCaseTemplatePage.getReadOnlyFieldCount()).toEqual(11);
             let defaultWidth = (await viewCaseTemplatePage.getHeightAndWidth()).width;
             let defaultHeight = (await viewCaseTemplatePage.getHeightAndWidth()).height;
             await previewCaseTemplatePage.zoomOutTaskFlowSection(3);
@@ -390,7 +390,7 @@ describe('Conditional Task', () => {
 
             //Validating if Case Manager can access Task Flow link
             await navigationPage.signOut();
-            await loginPage.login('frieda');
+            await loginPage.login('qtao');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(draftCaseTemplatePetramcoData.templateName);
@@ -399,7 +399,7 @@ describe('Conditional Task', () => {
 
         afterAll(async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('qkatawazi');
         });
     });
 
@@ -416,8 +416,8 @@ describe('Conditional Task', () => {
                 "templateStatus": "Draft",
                 "taskCompany": '- Global -',
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             await apiHelper.createManualTaskTemplate(globalDraftTask);
 
@@ -428,8 +428,8 @@ describe('Conditional Task', () => {
                 "templateStatus": "Active",
                 "taskCompany": '- Global -',
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             await apiHelper.createManualTaskTemplate(globalActiveTask);
 
@@ -440,8 +440,8 @@ describe('Conditional Task', () => {
                 "templateStatus": "Inactive",
                 "taskCompany": '- Global -',
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             await apiHelper.createManualTaskTemplate(globalInactiveTask);
 
@@ -452,8 +452,8 @@ describe('Conditional Task', () => {
                 "templateStatus": "Draft",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             await apiHelper.createManualTaskTemplate(petramcoDraftTask);
 
@@ -464,8 +464,8 @@ describe('Conditional Task', () => {
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             await apiHelper.createManualTaskTemplate(petramcoActiveTask);
 
@@ -476,8 +476,8 @@ describe('Conditional Task', () => {
                 "templateStatus": "Inactive",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             await apiHelper.createManualTaskTemplate(petramcoInactiveTask);
 
@@ -526,11 +526,11 @@ describe('Conditional Task', () => {
                 "processName": 'Auto Proces1' + randomStr,
                 "taskCompany": "- Global -",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
             }
             await apiHelper.createAutomatedTaskTemplate(globalActiveAutomatedTask);
 
@@ -543,10 +543,10 @@ describe('Conditional Task', () => {
                 "processName": 'Auto Proces2' + randomStr,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3"
             }
             await apiHelper.createAutomatedTaskTemplate(petramcoActiveAutomatedTask);
 
@@ -573,10 +573,10 @@ describe('Conditional Task', () => {
                 "templateStatus": "Active",
                 "taskCompany": "- Global -",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3"
             }
             await apiHelper.createExternalTaskTemplate(globalActiveExternalTask);
 
@@ -587,10 +587,10 @@ describe('Conditional Task', () => {
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3"
             }
             await apiHelper.createExternalTaskTemplate(petramcoActiveExternalTask);
 
@@ -616,8 +616,8 @@ describe('Conditional Task', () => {
                 "company": "- Global -",
                 "businessUnit": "United States Support",
                 "supportGroup": "US Support 3",
-                "ownerBU": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             await apiHelper.createCaseTemplate(globalCaseTemplateData);
 
@@ -629,8 +629,8 @@ describe('Conditional Task', () => {
                 "company": "Petramco",
                 "businessUnit": "United States Support",
                 "supportGroup": "US Support 3",
-                "ownerBU": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             await apiHelper.createCaseTemplate(petramcoCaseTemplateData);
 
@@ -646,11 +646,11 @@ describe('Conditional Task', () => {
                 "ownerGroup": "Psilon Support Group1"
             }
             await apiHelper.createCaseTemplate(psilonCaseTemplateData);
-            await navigationPage.signOut();
-            await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
         });
 
         it('[DRDMV-14898]: [Task] - Task Template availability when adding it into Case Template', async () => {
+            await navigationPage.signOut();
+            await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
 
@@ -736,7 +736,7 @@ describe('Conditional Task', () => {
 
         afterAll(async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('qkatawazi');
         });
     });
 
@@ -754,8 +754,8 @@ describe('Conditional Task', () => {
                 "company": "- Global -",
                 "businessUnit": "United States Support",
                 "supportGroup": "US Support 3",
-                "ownerBU": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             await apiHelper.createCaseTemplate(globalDraftCaseTemplateData);
 
@@ -767,8 +767,8 @@ describe('Conditional Task', () => {
                 "company": "Petramco",
                 "businessUnit": "United States Support",
                 "supportGroup": "US Support 3",
-                "ownerBU": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             await apiHelper.createCaseTemplate(petramcoDraftCaseTemplateData);
 
@@ -780,8 +780,8 @@ describe('Conditional Task', () => {
                 "company": "Petramco",
                 "businessUnit": "United States Support",
                 "supportGroup": "US Support 3",
-                "ownerBU": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             await apiHelper.createCaseTemplate(petramcoInactiveCaseTemplateData);
 
@@ -793,8 +793,8 @@ describe('Conditional Task', () => {
                 "company": "Petramco",
                 "businessUnit": "United States Support",
                 "supportGroup": "US Support 3",
-                "ownerBU": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             await apiHelper.createCaseTemplate(petramcoActiveCaseTemplateData);
 
@@ -841,7 +841,7 @@ describe('Conditional Task', () => {
 
         afterAll(async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('qkatawazi');
         });
     });
 
@@ -850,22 +850,22 @@ describe('Conditional Task', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplatePetramcoData, newCaseTemplate, manualTaskTemplateData, externalTaskTemplateData;
         beforeAll(async () => {
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             caseTemplatePetramcoData = {
                 "templateName": 'caseTemplateName' + randomStr,
                 "templateSummary": 'caseTemplateName' + randomStr,
                 "templateStatus": "Draft",
-                "categoryTier1": "Purchasing Card",
-                "categoryTier2": "Policies",
-                "categoryTier3": "Card Issuance",
+                "category1": 'Applications',
+                "category2": 'Help Desk',
+                "category3": 'Incident',
                 "casePriority": "Low",
                 "caseStatus": "New",
                 "company": "Petramco",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
-                "ownerBU": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             newCaseTemplate = await apiHelper.createCaseTemplate(caseTemplatePetramcoData);
             manualTaskTemplateData = {
@@ -874,11 +874,11 @@ describe('Conditional Task', () => {
                 "templateStatus": "Active",
                 "taskCompany": "- Global -",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
             }
             let manualTaskTemplate = await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
             externalTaskTemplateData = {
@@ -887,11 +887,11 @@ describe('Conditional Task', () => {
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
             }
             let externalTaskTemplate = await apiHelper.createExternalTaskTemplate(externalTaskTemplateData);
             await apiHelper.associateCaseTemplateWithTwoTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId, externalTaskTemplate.displayId, "parallel");
@@ -925,5 +925,4 @@ describe('Conditional Task', () => {
             expect(await taskTemplateConsolePage.isCompanyColumnValueMatches(['- Global -'])).toBeTruthy('Gloabl task template is copied');
         });
     });
-
 });
