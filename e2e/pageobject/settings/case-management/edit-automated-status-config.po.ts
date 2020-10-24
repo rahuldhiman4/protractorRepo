@@ -14,9 +14,9 @@ class AutomatedStatusTransitionConfigEditPage {
         fromStatusReason: '[rx-view-component-id="8b38b3d9-8cd2-4bb1-ac94-a42f76de75ad"] .ui-select-toggle',
         toStatusReason: '[rx-view-component-id="686f9161-6776-4426-a8f8-1ad05bc7eaac"] .ui-select-toggle',
         changeDaysAfter: '[rx-view-component-id="81484296-7ca4-41b4-bd62-e233986b24fc"] .d-textfield__input',
-        categoryTier1: '[rx-view-component-id="b426bea8-3762-464f-af87-799e85160157"] .ui-select-toggle',
+        categoryTier1: '[rx-view-component-id="1feeb0ae-4921-486b-bcb4-f89458198c06"] .ui-select-toggle',
         categoryTier2: '[rx-view-component-id="b42ab1ca-2403-4c6e-8eae-86755b076207"] .ui-select-toggle',
-        categoryTier3: '[rx-view-component-id="2e6dc4cc-5b91-4ba1-838a-4d3e1e3b0e6b"] .ui-select-toggle',
+        categoryTier3: '[rx-view-component-id="351b5992-11e0-4968-9432-266121ac614d"] .ui-select-toggle',
         categoryTier4: '[rx-view-component-id="0c98faa4-55ed-49c3-9162-d48f92ddff5d"] .ui-select-toggle',
         enableToggleGuid: '2309d963-493b-41b2-8ace-89a9d64281ca'
     }
