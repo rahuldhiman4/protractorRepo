@@ -726,14 +726,16 @@ export const TASK_DATA_ASSIGNEDTOLOGGEDINUSER = {
     "company": "Phylum",
     "businessUnit": "Phylum Support Org1",
     "supportGroup": "Phylum Support Group1",
-    "assignee": "idphylum1"
+    "assignee": "idphylum1",
+    "lineOfBusiness": "Finance"
 };
 
 export const TASK_DATA_ASSIGNTOLOGGEDINUSERGROUP = {
     "taskName": "Sample Name",
     "company": "Phylum",
     "businessUnit": "Phylum Support Org1",
-    "supportGroup": "Phylum Support Group1"
+    "supportGroup": "Phylum Support Group1",
+    "lineOfBusiness": "Finance"
 };
 
 export const TASK_DATA_ASSIGNTOANOTHERUSER = {
@@ -741,7 +743,8 @@ export const TASK_DATA_ASSIGNTOANOTHERUSER = {
     "company": "Phylum",
     "businessUnit": "Phylum Support Org1",
     "supportGroup": "Phylum Support Group1",
-    "assignee": "idphylum3"
+    "assignee": "idphylum3",
+    "lineOfBusiness": "Finance"
 };
 
 export const TASK_DATA_LOW_PRIORITY = {
@@ -750,7 +753,8 @@ export const TASK_DATA_LOW_PRIORITY = {
     "businessUnit": "Phylum Support Org1",
     "supportGroup": "Phylum Support Group1",
     "assignee": "idphylum1",
-    "priority": "Low"
+    "priority": "Low",
+    "lineOfBusiness": "Finance"
 };
 
 export const TASK_DATA_MEDIUM_PRIORITY = {
@@ -759,7 +763,8 @@ export const TASK_DATA_MEDIUM_PRIORITY = {
     "businessUnit": "Phylum Support Org1",
     "supportGroup": "Phylum Support Group1",
     "assignee": "idphylum1",
-    "priority": "Medium"
+    "priority": "Medium",
+    "lineOfBusiness": "Finance"
 };
 
 export const TASK_DATA_HIGH_PRIORITY = {
@@ -768,7 +773,8 @@ export const TASK_DATA_HIGH_PRIORITY = {
     "businessUnit": "Phylum Support Org1",
     "supportGroup": "Phylum Support Group1",
     "assignee": "idphylum1",
-    "priority": "High"
+    "priority": "High",
+    "lineOfBusiness": "Finance"
 };
 
 export const TASK_DATA_CRITICAL_PRIORITY = {
@@ -777,7 +783,8 @@ export const TASK_DATA_CRITICAL_PRIORITY = {
     "businessUnit": "Phylum Support Org1",
     "supportGroup": "Phylum Support Group1",
     "assignee": "idphylum1",
-    "priority": "Critical"
+    "priority": "Critical",
+    "lineOfBusiness": "Finance"
 };
 
 export const TASK_DATA_CRITICAL_PRIORITY_UNASSIGNED = {
@@ -785,13 +792,14 @@ export const TASK_DATA_CRITICAL_PRIORITY_UNASSIGNED = {
     "company": "Phylum",
     "businessUnit": "Phylum Support Org1",
     "supportGroup": "Phylum Support Group1",
-    "priority": "Critical"
+    "priority": "Critical",
+    "lineOfBusiness": "Finance"
 };
 
 export const CREATE_TASK_FROM_TASK_TEMPLATE = {
     "company": "Phylum",
     "requesterId": "idphylum3",
-    "templateName": "Failed Task"
+    "templateName": "Failed Task",
 };
 
 export const FAILED_TASK_TEMPLATE = {
@@ -806,7 +814,8 @@ export const FAILED_TASK_TEMPLATE = {
     "processName": "failing_task",
     "assignee": "idphylum3",
     "supportGroup": "Phylum Support Group1",
-    "assignedCompany": "Phylum"
+    "assignedCompany": "Phylum",
+    "lineOfBusiness": "Finance"
 };
 
 export const FAILED_TASK_TEMPLATE_HIGH_PRIORITY = {
@@ -822,7 +831,8 @@ export const FAILED_TASK_TEMPLATE_HIGH_PRIORITY = {
     "assignee": "idphylum3",
     "supportGroup": "Phylum Support Group1",
     "assignedCompany": "Phylum",
-    "priority": "High"
+    "priority": "High",
+    "lineOfBusiness": "Finance"
 };
 
 export const FAILED_TASK_TEMPLATE_CRITICAL_PRIORITY = {
@@ -838,7 +848,8 @@ export const FAILED_TASK_TEMPLATE_CRITICAL_PRIORITY = {
     "assignee": "idphylum3",
     "supportGroup": "Phylum Support Group1",
     "assignedCompany": "Phylum",
-    "priority": "Critical"
+    "priority": "Critical",
+    "lineOfBusiness": "Finance"
 };
 
 //Test Data for DRDMV-20889
