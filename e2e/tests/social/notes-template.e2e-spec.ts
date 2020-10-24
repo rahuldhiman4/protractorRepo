@@ -118,7 +118,6 @@ describe('Notes template', () => {
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
         expect(await utilCommon.isPopupMsgsMatches(['Record deleted successfully.'])).toBeTruthy('Record deleted successfully. pop up message missing');
-        await utilityCommon.switchToDefaultWindowClosingOtherTabs();
     });
 
     //ptidke
@@ -150,7 +149,6 @@ describe('Notes template', () => {
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
         expect(await utilCommon.isPopupMsgsMatches(['Record deleted successfully.'])).toBeTruthy('Record deleted successfully. pop up message missing');
-        await utilityCommon.switchToDefaultWindowClosingOtherTabs();
     });
 
     //ptidke
@@ -182,7 +180,6 @@ describe('Notes template', () => {
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
         expect(await utilCommon.isPopupMsgsMatches(['Record deleted successfully.'])).toBeTruthy('Record deleted successfully. pop up message missing');
-        await utilityCommon.switchToDefaultWindowClosingOtherTabs();
     });
 
     //ptidke
@@ -214,7 +211,6 @@ describe('Notes template', () => {
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
         expect(await utilCommon.isPopupMsgsMatches(['Record deleted successfully.'])).toBeTruthy('Record deleted successfully. pop up message missing');
-        await utilityCommon.switchToDefaultWindowClosingOtherTabs();
     });
 
     //ptidke
@@ -254,7 +250,6 @@ describe('Notes template', () => {
             throw e;
         }
         finally {
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login("elizabeth");
         }
@@ -286,7 +281,6 @@ describe('Notes template', () => {
         await consoleNotesTemplate.clickOnCreateNotesTemplate();
         expect(await createNotesTemplate.isSaveButtonDisabled()).toBeFalsy();
         expect(await createNotesTemplate.isCreateNotesTemplateUIPresent()).toBeTruthy();
-        await utilityCommon.switchToDefaultWindowClosingOtherTabs();
     });
 
     //ptidke
@@ -308,7 +302,6 @@ describe('Notes template', () => {
             expect(await editNotetemplate.getLocaleNotPresentMessage()).toContain('Please add the required localized message.')
             await editNotetemplate.clickOnCancelButton();
             await utilCommon.clickOnWarningOk();
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
         it('[DRDMV-16111]: [Design Time] Verify warning Message for locale values if template message is not configured against that locale value', async () => {
             await navigationPage.gotoSettingsPage();
