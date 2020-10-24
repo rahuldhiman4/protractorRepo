@@ -117,7 +117,7 @@ describe('Notes template', () => {
         await consoleNotesTemplate.searchAndClickNotesTemplateCheckBox(templateName);
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
-        expect(await utilCommon.isPopUpMessagePresent('Record deleted successfully.')).toBeTruthy();
+        expect(await utilCommon.isPopupMsgsMatches(['Record deleted successfully.'])).toBeTruthy('Record deleted successfully. pop up message missing');
     });
 
     //ptidke
@@ -148,7 +148,7 @@ describe('Notes template', () => {
         await consoleNotesTemplate.searchAndClickNotesTemplateCheckBox(templateName);
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
-        expect(await utilCommon.isPopUpMessagePresent('Record deleted successfully.')).toBeTruthy();
+        expect(await utilCommon.isPopupMsgsMatches(['Record deleted successfully.'])).toBeTruthy('Record deleted successfully. pop up message missing');
     });
 
     //ptidke
@@ -179,7 +179,7 @@ describe('Notes template', () => {
         await consoleNotesTemplate.searchAndClickNotesTemplateCheckBox(templateName);
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
-        expect(await utilCommon.isPopUpMessagePresent('Record deleted successfully.')).toBeTruthy();
+        expect(await utilCommon.isPopupMsgsMatches(['Record deleted successfully.'])).toBeTruthy('Record deleted successfully. pop up message missing');
     });
 
     //ptidke
@@ -210,7 +210,7 @@ describe('Notes template', () => {
         await consoleNotesTemplate.searchAndClickNotesTemplateCheckBox(templateName);
         await consoleNotesTemplate.clickOnDeleteButton();
         await utilCommon.clickOnWarningOk();
-        expect(await utilCommon.isPopUpMessagePresent('Record deleted successfully.')).toBeTruthy();
+        expect(await utilCommon.isPopupMsgsMatches(['Record deleted successfully.'])).toBeTruthy('Record deleted successfully. pop up message missing');
     });
 
     //ptidke
@@ -244,7 +244,7 @@ describe('Notes template', () => {
             await consoleNotesTemplate.searchAndClickNotesTemplateCheckBox(templateName);
             await consoleNotesTemplate.clickOnDeleteButton();
             await utilCommon.clickOnWarningOk();
-            expect(await utilCommon.isPopUpMessagePresent('Record deleted successfully.')).toBeTruthy();
+            expect(await utilCommon.isPopupMsgsMatches(['Record deleted successfully.'])).toBeTruthy('Record deleted successfully. pop up message missing');
         }
         catch (e) {
             throw e;
