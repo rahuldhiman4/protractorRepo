@@ -7,7 +7,8 @@ export const ASSIGNED_NONVIP_DRDMV_20843_1 = {
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
     "Assignee": "idphylum1",
-    "Status": "2000"
+    "Status": "2000",
+    "Line of Business": "Finance"
 };
 
 export const PENDING_NONVIP_DRDMV_20843_2 = {
@@ -18,7 +19,8 @@ export const PENDING_NONVIP_DRDMV_20843_2 = {
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
     "Assignee": "idphylum1",
-    "Status": "4000"
+    "Status": "4000",
+    "Line of Business": "Finance"
 };
 
 export const INPROGRESS_NONVIP_DRDMV_20843_3 = {
@@ -29,7 +31,8 @@ export const INPROGRESS_NONVIP_DRDMV_20843_3 = {
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
     "Assignee": "idphylum1",
-    "Status": "3000"
+    "Status": "3000",
+    "Line of Business": "Finance"
 };
 
 export const ASSIGNED_VIP_DRDMV_20843_4 = {
@@ -40,7 +43,8 @@ export const ASSIGNED_VIP_DRDMV_20843_4 = {
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
     "Assignee": "idphylum1",
-    "Status": "2000"
+    "Status": "2000",
+    "Line of Business": "Finance"
 };
 
 export const ASSIGNED_NONVIP_DRDMV_20843_5 = {
@@ -50,7 +54,8 @@ export const ASSIGNED_NONVIP_DRDMV_20843_5 = {
     "Assigned Company": "Phylum",
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
-    "Status": "2000"
+    "Status": "2000",
+    "Line of Business": "Finance"
 };
 
 export const PENDING_NONVIP_DRDMV_20843_6 = {
@@ -61,7 +66,8 @@ export const PENDING_NONVIP_DRDMV_20843_6 = {
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
     "Assignee": "idphylum3",
-    "Status": "4000"
+    "Status": "4000",
+    "Line of Business": "Finance"
 };
 
 export const BEFORERESOLVED_NONVIP_DRDMV_20843_7 = {
@@ -72,7 +78,8 @@ export const BEFORERESOLVED_NONVIP_DRDMV_20843_7 = {
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
     "Assignee": "idphylum1",
-    "Status": "3500"
+    "Status": "3500",
+    "Line of Business": "Finance"
 };
 
 export const AFTERRESOLVED_NONVIP_DRDMV_20843_8 = {
@@ -83,7 +90,8 @@ export const AFTERRESOLVED_NONVIP_DRDMV_20843_8 = {
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
     "Assignee": "idphylum1",
-    "Status": "5500"
+    "Status": "5500",
+    "Line of Business": "Finance"
 };
 
 
@@ -95,7 +103,8 @@ export const NEW_VIP_DRDMV_20850_1 = {
     "Assigned Company": "Phylum",
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
-    "Status": "1000"
+    "Status": "1000",
+    "Line of Business": "Finance"
 };
 
 export const ASSIGNED_VIP_DRDMV_20850_2 = {
@@ -106,7 +115,8 @@ export const ASSIGNED_VIP_DRDMV_20850_2 = {
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
     "Assignee": "idphylum3",
-    "Status": "2000"
+    "Status": "2000",
+    "Line of Business": "Finance"
 };
 
 export const INPROGRESS_VIP_DRDMV_20850_3 = {
@@ -117,7 +127,8 @@ export const INPROGRESS_VIP_DRDMV_20850_3 = {
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
     "Assignee": "idphylum1",
-    "Status": "3000"
+    "Status": "3000",
+    "Line of Business": "Finance"
 };
 
 export const PENDING_VIP_DRDMV_20850_4 = {
@@ -128,7 +139,8 @@ export const PENDING_VIP_DRDMV_20850_4 = {
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
     "Assignee": "idphylum3",
-    "Status": "4000"
+    "Status": "4000",
+    "Line of Business": "Finance"
 };
 
 export const BEFORERESOLVED_VIP_DRDMV_20850_5 = {
@@ -139,7 +151,8 @@ export const BEFORERESOLVED_VIP_DRDMV_20850_5 = {
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
     "Assignee": "idphylum3",
-    "Status": "3500"
+    "Status": "3500",
+    "Line of Business": "Finance"
 };
 
 export const AFTERRESOLVED_NONVIP_DRDMV_20850_6 = {
@@ -150,7 +163,8 @@ export const AFTERRESOLVED_NONVIP_DRDMV_20850_6 = {
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
     "Assignee": "idphylum1",
-    "Status": "5500"
+    "Status": "5500",
+    "Line of Business": "Finance"
 };
 
 //Test Data for DRDMV-20874
@@ -161,7 +175,8 @@ export const NEW_NONVIP_DRDMV_20874_1 = {
     "Assigned Company": "Phylum",
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
-    "Status": "1000"
+    "Status": "1000",
+    "Line of Business": "Finance"
 };
 
 //Test Data for DRDMV-20875
@@ -174,7 +189,8 @@ export const ASSIGNED_LOWPRIORITY_DRDMV_20875_1 = {
     "Support Group": "Phylum Support Group1",
     "Assignee": "idphylum3",
     "Status": "2000",
-    "Priority": "4000"
+    "Priority": "4000",
+    "Line of Business": "Finance"
 };
 
 export const ASSIGNED_MEDIIUMPRIORITY_DRDMV_20875_2 = {
@@ -186,7 +202,8 @@ export const ASSIGNED_MEDIIUMPRIORITY_DRDMV_20875_2 = {
     "Support Group": "Phylum Support Group1",
     "Assignee": "idphylum3",
     "Status": "2000",
-    "Priority": "3000"
+    "Priority": "3000",
+    "Line of Business": "Finance"
 };
 
 export const ASSIGNED_CRITICALPRIORITY_DRDMV_20875_3 = {
@@ -198,7 +215,8 @@ export const ASSIGNED_CRITICALPRIORITY_DRDMV_20875_3 = {
     "Support Group": "Phylum Support Group1",
     "Assignee": "idphylum3",
     "Status": "2000",
-    "Priority": "1000"
+    "Priority": "1000",
+    "Line of Business": "Finance"
 };
 
 export const ASSIGNED_HIGHPRIORITY_DRDMV_20875_4 = {
@@ -210,7 +228,8 @@ export const ASSIGNED_HIGHPRIORITY_DRDMV_20875_4 = {
     "Support Group": "Phylum Support Group1",
     "Assignee": "idphylum3",
     "Status": "2000",
-    "Priority": "2000"
+    "Priority": "2000",
+    "Line of Business": "Finance"
 };
 
 export const NEW_HIGHPRIORITY_DRDMV_20875_5 = {
@@ -221,7 +240,8 @@ export const NEW_HIGHPRIORITY_DRDMV_20875_5 = {
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
     "Status": "1000",
-    "Priority": "2000"
+    "Priority": "2000",
+    "Line of Business": "Finance"
 };
 
 export const INPROGRESS_HIGHPRIORITY_DRDMV_20875_6 = {

@@ -272,6 +272,7 @@ class ViewCasePage {
     }
 
     async clickAttachmentsLink(): Promise<void> {
+        await utilityCommon.scrollToElement($(this.selectors.attachmentsLink));
         await $(this.selectors.attachmentsLink).click();
     }
 

@@ -308,8 +308,8 @@ describe("Case Read Access", () => {
                 "categoryTier3": "Bonus",
                 "categoryTier4": "Retention Bonus",
                 "company": "Petramco",
-                "businessUnit": 'HR Support',
-                "supportGroup": 'Compensation and Benefits',
+                "businessUnit": 'United States Support',
+                "supportGroup": 'US Support 3',
                 "ownerBU": "United States Support",
                 "ownerGroup": "US Support 3"
             }
@@ -354,7 +354,7 @@ describe("Case Read Access", () => {
             await utilGrid.searchAndOpenHyperlink(readAccessMappingData2.configName);
             await editReadAccess.setDefaultToggleButton(true);
             await editReadAccess.clickOnSave();
-            expect(await utilCommon.getAllPopupMsg()).toContain('ERROR (10000): Only one default record is allowed for a Line of Business. Please change the default flag and save the record.');
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (10000): Only one default record is allowed for a Line of Business. Please change the default flag and save the record.')).toBeTruthy();
             await editReadAccess.clickOnCancel();
             await utilCommon.clickOnWarningOk();
         });
@@ -367,7 +367,7 @@ describe("Case Read Access", () => {
             await quickCasePo.saveCase();
             await casePreviewPo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Case Access');
-            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Compensation and Benefits', 'Write')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Compensation and Benefits', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
             await navigationPo.gotoQuickCase();
             await quickCasePo.selectRequesterName('qkatawazi');
             await quickCasePo.setCaseSummary('Read Access');

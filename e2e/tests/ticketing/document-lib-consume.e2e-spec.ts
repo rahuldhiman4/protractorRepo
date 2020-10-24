@@ -19,6 +19,7 @@ import editTaskPo from '../../pageobject/task/edit-task.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
+import utilityGrid from '../../utils/utility.grid';
 
 describe('Document Library Consume UI', () => {
     let filePath1 = 'e2e/data/ui/attachment/bwfJpg.jpg';
@@ -161,6 +162,7 @@ describe('Document Library Consume UI', () => {
         });
         it('[DRDMV-13533]: Open the case and attach the document', async () => {
             await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
             await caseConsolePo.searchAndOpenCase(caseId);
             await viewCasePo.clickEditCaseButton();
             await editCasePo.clickOnAttachLink();
@@ -178,6 +180,7 @@ describe('Document Library Consume UI', () => {
         it('[DRDMV-13533]: Verify the case with different user', async () => {
             await navigationPage.signOut();
             await loginPage.login('qstrong');
+            await utilityGrid.clearFilter();
             await caseConsolePo.searchAndOpenCase(caseId);
             expect(await viewCasePo.getCaseID()).toBe(caseId, 'Case Id is missing');
             expect(await viewCasePo.isAttachedDocumentPresent(' bwfJpg.jpg')).toBeTruthy('FailuerMsg2: Attached Document is missing');
@@ -225,8 +228,8 @@ describe('Document Library Consume UI', () => {
                 "businessUnit": "United States Support",
                 "supportGroup": "US Support 3",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
 
             await apiHelper.apiLogin('tadmin');
@@ -245,13 +248,13 @@ describe('Document Library Consume UI', () => {
                 let publishDocLibData1 = {
                     "docLibTitle": publish[i],
                     "company": "Petramco",
-                    "Business Unit": "Facilities Support",
-                    "ownerGroup": "Facilities",
+                    "Business Unit": "United States Support",
+                    "ownerGroup": "US Support 3",
                 }
 
                 await apiHelper.apiLogin('tadmin');
                 await apiHelper.deleteDocumentLibrary(publishDocLibData1.docLibTitle);
-                await apiHelper.apiLogin(caseAgentuserData.userId);
+                await apiHelper.apiLogin(caseAgentuserData.userId+'@petramco.com',"Password_1234");
                 let getFilePath1 = files1[i];
                 let docLib = await apiHelper.createDocumentLibrary(publishDocLibData1, getFilePath1);
                 await apiHelper.publishDocumentLibrary(docLib);
@@ -259,8 +262,8 @@ describe('Document Library Consume UI', () => {
             draftDocLibData = {
                 "docLibTitle": "drdmv13524_draft_document",
                 "company": "Petramco",
-                "Business Unit": "Facilities Support",
-                "ownerGroup": "Facilities",
+                "Business Unit": "United States Support",
+                "ownerGroup": "US Support 3",
             }
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDocumentLibrary(draftDocLibData.docLibTitle);
@@ -351,7 +354,7 @@ describe('Document Library Consume UI', () => {
                 }
                 await apiHelper.apiLogin('tadmin');
                 await apiHelper.deleteDocumentLibrary(publishDocLibData1.docLibTitle);
-                await apiHelper.apiLogin(caseAgentuserData.userId);
+                await apiHelper.apiLogin(caseAgentuserData.userId+'@petramco.com',"Password_1234");
                 let getFilePath1 = files1[i];
                 let docLib = await apiHelper.createDocumentLibrary(publishDocLibData1, getFilePath1);
                 await apiHelper.publishDocumentLibrary(docLib);
@@ -365,12 +368,12 @@ describe('Document Library Consume UI', () => {
             }
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDocumentLibrary(draftDocLibData.docLibTitle);
-            await apiHelper.apiLogin(caseAgentuserData.userId);
+            await apiHelper.apiLogin(caseAgentuserData.userId+'@petramco.com',"Password_1234");
             await apiHelper.createDocumentLibrary(draftDocLibData, filePath4);
         });
         it('[DRDMV-13507]: Create a case and add click on email', async () => {
             await navigationPage.signOut();
-            await loginPage.login(caseAgentuserData.userId);
+            await loginPage.login(caseAgentuserData.userId+'@petramco.com',"Password_1234");
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(randomStr);
@@ -469,7 +472,7 @@ describe('Document Library Consume UI', () => {
         });
         it('[DRDMV-13449]: Create a case and add task on it', async () => {
             await navigationPage.signOut();
-            await loginPage.login(caseAgentuserData.userId);
+            await loginPage.login(caseAgentuserData.userId+'@petramco.com',"Password_1234");
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(randomStr);
