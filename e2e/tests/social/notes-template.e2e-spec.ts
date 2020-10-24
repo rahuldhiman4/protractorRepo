@@ -320,7 +320,6 @@ describe('Notes template', () => {
             expect(await editNotetemplate.getLocaleNotPresentMessage()).toContain('Please add the required localized message.');
             await editNotetemplate.clickOnCancelButton();
             await utilCommon.clickOnWarningOk();
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
     });
 
