@@ -82,7 +82,6 @@ describe("Case Read Access", () => {
         departmentData2 = departmentDataFile['DepartmentData19501'];
         suppGrpData2 = supportGrpDataFile['SuppGrpData19501'];
         let personData2 = personDataFile['PersonData19501'];
-        personData2.userPermission = ["Case Business Analyst", "Human Resource"]
         await apiHelper.createNewUser(personData2);
         await apiHelper.associatePersonToCompany(personData2.userId, company);
         let orgId = await apiCoreUtil.getOrganizationGuid(company);
@@ -234,6 +233,7 @@ describe("Case Read Access", () => {
         let caseTemplateData;
         beforeAll(async () => {
             await foundationData2("Petramco");
+            await browser.sleep(5000); // timeout requried to reflect data on UI
             await apiHelper.apiLogin('qkatawazi');
             caseTemplateData = {
                 "templateName": `${randomStr}Case template`,
@@ -367,7 +367,7 @@ describe("Case Read Access", () => {
             await quickCasePo.saveCase();
             await casePreviewPo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Case Access');
-            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Compensation and Benefits', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Workforce Administration', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
             await navigationPo.gotoQuickCase();
             await quickCasePo.selectRequesterName('qkatawazi');
             await quickCasePo.setCaseSummary('Read Access');
@@ -869,10 +869,10 @@ describe("Case Read Access", () => {
             await viewCasePage.clickOnTab('Case Access');
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('US Support 3', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
             await accessTabPo.clickToExpandAccessEntitiySearch('Agent Access', 'Case');
-            await accessTabPo.selectAgent('elizabeth', 'Agent');
+            await accessTabPo.selectAgent('gderuno', 'Agent');
             await accessTabPo.clickAccessEntitiyAddButton('Agent');
             await navigationPo.signOut();
-            await loginPage.login('elizabeth');
+            await loginPage.login('gderuno');
             await navigationPo.gotoCaseConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink('ReadAccessCase' + randomStr);

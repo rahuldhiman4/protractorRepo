@@ -8,7 +8,8 @@
     "PersonData19501": {
         "firstName": "fnPerson19501",
         "lastName": "lnPerson19501",
-        "userId": "idPerson19501"
+        "userId": "idPerson19501",
+        "userPermission": ["Case Business Analyst", "Human Resource"]
     },
     "PersonData19082": {
         "firstName": "fnPerson19082",

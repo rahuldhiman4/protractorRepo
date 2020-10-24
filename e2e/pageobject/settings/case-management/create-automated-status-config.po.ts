@@ -16,7 +16,7 @@ class AutomatedStatusTransitionConfigCreatePage {
         changeStatusAfterGuid: 'ad284e33-4443-43a3-948a-4b3e81f89b08',
         saveButton: '[rx-view-component-id="7ab1dc87-1489-41c8-b910-6ae40b1e5e87"] button',
         label: '[rx-view-component-id="35c243d5-d4a5-46df-aee5-7e7ce2deb445"] .ui-select-toggle',
-        labelGuid: '0db3f64c-6dbf-4410-b6ae-6a8bf58296e6',
+        labelGuid: '158a2242-36ed-4a8e-995e-3a5ad5f4f448',
         cancelButton: '[rx-view-component-id="25d8d454-8a06-423c-aed5-0cfd25e4cbe2"] button',
         flowsetGuid: '0cfddbcb-0905-4c1b-a1a7-2baa548e1a9b',
         fromStatusReasonGuid: '49178f00-fd4d-4bd2-8ce0-f9912af5caf2',
@@ -33,7 +33,7 @@ class AutomatedStatusTransitionConfigCreatePage {
 
     async setCategoryTier1Value(categoryTier1: string): Promise<void> {
         await utilCommon.selectDropDown('d84b98ad-9983-41e2-b6f2-6c5b9d404b7c', categoryTier1).catch(async (error) => {
-            if (error) await utilCommon.selectDropDown('e352fa1a-9440-4a8c-a77d-e2030beec03b', categoryTier1);
+            if (error) await utilCommon.selectDropDown('e4ad048c-8033-4308-9055-2276a140d4df', categoryTier1);
         });
     }
 
