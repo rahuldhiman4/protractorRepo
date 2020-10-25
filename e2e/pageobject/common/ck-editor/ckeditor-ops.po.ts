@@ -290,9 +290,12 @@ class CKEditor {
             await $(locator).click();
             await browser.waitForAngularEnabled(false);
             await browser.switchTo().frame($(this.selectors.frame).getWebElement());
-            for (let i = 0; i < values.length; i++) {
-                await $(this.selectors.bodyTextArea).sendKeys(values[i]);
-                await $(this.selectors.bodyTextArea).sendKeys(Key.ENTER);
+            if (values.length == 1) await $(this.selectors.bodyTextArea).sendKeys(values[0]);
+            else {
+                for (let i = 0; i < values.length; i++) {
+                    await $(this.selectors.bodyTextArea).sendKeys(values[i]);
+                    await $(this.selectors.bodyTextArea).sendKeys(Key.ENTER);
+                }
             }
             await browser.switchTo().defaultContent();
             await browser.waitForAngularEnabled(true);
@@ -301,9 +304,12 @@ class CKEditor {
             await $(this.selectors.bodyTextArea).sendKeys(Key.CONTROL, Key.END);
             await $(this.selectors.bodyTextArea).sendKeys(Key.ENTER);
             await $(locator).click();
-            for (let i = 0; i < values.length; i++) {
-                await $(this.selectors.bodyTextArea).sendKeys(values[i]);
-                await $(this.selectors.bodyTextArea).sendKeys(Key.ENTER);
+            if (values.length == 1) await $(this.selectors.bodyTextArea).sendKeys(values[0]);
+            else {
+                for (let i = 0; i < values.length; i++) {
+                    await $(this.selectors.bodyTextArea).sendKeys(values[i]);
+                    await $(this.selectors.bodyTextArea).sendKeys(Key.ENTER);
+                }
             }
         }
     }
@@ -313,9 +319,12 @@ class CKEditor {
         await $(this.selectors.bodyTextArea).sendKeys(Key.CONTROL, Key.END);
         await $(this.selectors.bodyTextArea).sendKeys(Key.ENTER);
         await $(this.selectors.bulletIcon).click();
-        for (let i = 0; i < values.length; i++) {
-            await $(this.selectors.bodyTextArea).sendKeys(values[i]);
-            await $(this.selectors.bodyTextArea).sendKeys(Key.ENTER);
+        if (values.length == 1) await $(this.selectors.bodyTextArea).sendKeys(values[0]);
+        else {
+            for (let i = 0; i < values.length; i++) {
+                await $(this.selectors.bodyTextArea).sendKeys(values[i]);
+                await $(this.selectors.bodyTextArea).sendKeys(Key.ENTER);
+            }
         }
     }
 }

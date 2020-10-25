@@ -396,6 +396,7 @@ describe('Create Adhoc task', () => {
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssigneeText()).toBe('Qianru Tao');
+            await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.getAllTaskActivity('Qianru Tao')).toBe('Qianru Tao');
             await viewTask.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
@@ -464,6 +465,7 @@ describe('Create Adhoc task', () => {
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssigneeText()).toBe('Qianru Tao');
+            await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.getAllTaskActivity('Qianru Tao')).toBe('Qianru Tao');
             await viewTask.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();

@@ -273,7 +273,7 @@ class ActivityTabPage {
     }
 
     async getAllTaskActivity(fileName: string): Promise<string> {
-        return await (await element(by.cssContainingText(this.selectors.taskActivity, fileName)).getText()).trim();
+        return (await element(by.cssContainingText(this.selectors.taskActivity, fileName)).getText()).trim();
     }
 
     async clickOnReply(): Promise<void> {

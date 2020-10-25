@@ -29,7 +29,7 @@ describe('Document Template', () => {
     //kgaikwad
     describe('[DRDMV-14970,DRDMV-14974,DRDMV-14971,DRDMV-14972]: Verify Document template creation with Case business analyst', async () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let   templateRandVal1 = 'templateRandVal1' + randomStr;
+        let templateRandVal1 = 'templateRandVal1' + randomStr;
         let templateRandVal2 = 'templateRakndVal2' + randomStr;
         let description1 = 'description1' + randomStr;
         let description2 = 'description2' + randomStr;
@@ -135,6 +135,12 @@ describe('Document Template', () => {
             await utilCommon.clickOnWarningOk();
             expect(await documentTemplateConsolePo.isGridRecordPresent(templateRandVal2)).toBeFalsy('template name is preset on grid');
         });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+
     });
 
     //kgaikwad
@@ -143,13 +149,8 @@ describe('Document Template', () => {
         let documentName = "DocumentTemplate" + randomStr;
         let documentDescription = "description" + randomStr;
         let documentBody = "documentBody" + randomStr;
-        let label1="POSH";
-        let label2="Payroll";
-
-        beforeAll(async () => {
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
-        });
+        let label1 = "POSH";
+        let label2 = "Payroll";
 
         it('[DRDMV-14977]: Verify Create Document Template UI', async () => {
             // Goto document template
@@ -192,13 +193,13 @@ describe('Document Template', () => {
     describe('[DRDMV-14973]: Verify document body expression editor will list dynamic fields along with Case fields.', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateData;
-        let documentName1 = '1Document'+ randomStr;
-        let documentName2 = '2Document'+ randomStr;
-        let documentName3 = '3Document'+ randomStr;
-        let caseTempateName1 = '1caseTemplateName' +randomStr;
-        let caseTempateName2 = '2caseTemplateName' +randomStr;
-        let caseTempateName3 = '3caseTemplateName' +randomStr;
-        
+        let documentName1 = '1Document' + randomStr;
+        let documentName2 = '2Document' + randomStr;
+        let documentName3 = '3Document' + randomStr;
+        let caseTempateName1 = '1caseTemplateName' + randomStr;
+        let caseTempateName2 = '2caseTemplateName' + randomStr;
+        let caseTempateName3 = '3caseTemplateName' + randomStr;
+
         let caseTemplateSummary = 'CaseSummaryName' + randomStr;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
@@ -209,10 +210,11 @@ describe('Document Template', () => {
                 "templateSummary": caseTemplateSummary,
                 "caseStatus": "InProgress",
                 "templateStatus": "Active",
-                "assignee": "Fritz",
-                "company": "Petramco",
-                "supportGroup": "Facilities",
-                "ownerGroup": "Facilities"
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
+                "ownerBU": 'United States Support',
+                "ownerGroup": "US Support 3",
             }
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
@@ -227,8 +229,8 @@ describe('Document Template', () => {
             caseTemplateData.templateName = caseTempateName3;
             await apiHelper.createCaseTemplate(caseTemplateData);
 
-            await apiHelper.createDynamicDataOnTemplate(newCaseTemplate1.id, 'DynamicGroupField'); 
-            
+            await apiHelper.createDynamicDataOnTemplate(newCaseTemplate1.id, 'DynamicGroupField');
+
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate2.id, 'ALL_DATA_TYPE');
         });
 
@@ -311,7 +313,7 @@ describe('Document Template', () => {
             expect(await createDocumentTemplatePo.getDynamicFieldOnBody()).toContain('Category Tier 1');
             await createDocumentTemplatePo.clickOnSaveButton();
             await documentTemplateConsolePo.searchAndOpenDocumentTemplate(documentName1);
-            expect(await editDocumentTemplatePo.getDynamicFieldOnBody()).toContain('Category Tier 1');                
+            expect(await editDocumentTemplatePo.getDynamicFieldOnBody()).toContain('Category Tier 1');
             await editDocumentTemplatePo.clickOnCancelButton();
             await utilCommon.clickOnWarningOk();
         });
@@ -334,13 +336,13 @@ describe('Document Template', () => {
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('FieldGroupOutside')).toBeTruthy("FieldGroupOutside is missing");
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('FieldGroupOutside1')).toBeTruthy("FieldGroupOutside1 is missing");
             await addFieldsPopPo.selectDynamicField('FieldGroup1');
-            
+
             await addFieldsPopPo.clickOnOkButtonOfEditor();
             await createDocumentTemplatePo.setDescription("Description");
             expect(await createDocumentTemplatePo.getDynamicFieldOnBody()).toContain('FieldGroup1');
             await createDocumentTemplatePo.clickOnSaveButton();
             await documentTemplateConsolePo.searchAndOpenDocumentTemplate(documentName2);
-            expect(await editDocumentTemplatePo.getDynamicFieldOnBody()).toContain('FieldGroup1');  
+            expect(await editDocumentTemplatePo.getDynamicFieldOnBody()).toContain('FieldGroup1');
             await editDocumentTemplatePo.clickOnCancelButton();
             await utilCommon.clickOnWarningOk();
         });

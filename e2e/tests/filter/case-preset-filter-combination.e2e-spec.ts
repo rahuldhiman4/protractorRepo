@@ -153,7 +153,7 @@ describe('Case Console Filter Combinations', () => {
         it('[DRDMV-23477]: Verify records are fetched on case console with Assignee, Assigned Group, Status combinations', async () => {
 
             await utilityGrid.clearFilter();
-            await utilityGrid.addFilter('Assigned Group', 'Facilities', 'text');
+            await utilityGrid.addFilter('Assigned Group', 'IN Support 1', 'text');
             await utilityGrid.addFilter('Status', 'Pending', 'text');
             await utilityGrid.clickRefreshIcon()
 
@@ -248,7 +248,7 @@ describe('Case Console Filter Combinations', () => {
         it('[DRDMV-23479]:Verify records are fetched on case console with Source and Assignee combinations', async () => {
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Company', 'Petramco', 'text');
-            await utilityGrid.addFilter('Case Site', 'Petramco Site 1', 'text');
+            await utilityGrid.addFilter('Case Site', 'Petramco Site1', 'text');
             for (let i: number = 4; i < 5; i++) {
                 expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeTruthy(caseId[i] + ' :Record is not available');
             }
@@ -316,9 +316,9 @@ describe('Case Console Filter Combinations', () => {
         it('[DRDMV-23492]:Verify records are fetched on case console with Label and Assigned group combinations', async () => {
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Assigned Group', 'Compensation and Benefits', 'text');
-            await utilityGrid.addFilter('Category Tier 1', 'Phones', 'text');
-            await utilityGrid.addFilter('Category Tier 2', 'Cellular Phones', 'text');
-            await utilityGrid.addFilter('Category Tier 3', 'Service', 'text');
+            await utilityGrid.addFilter('Category Tier 1', 'Payroll', 'text');
+            await utilityGrid.addFilter('Category Tier 2', 'Finance', 'text');
+            await utilityGrid.addFilter('Category Tier 3', 'Reporting', 'text');
             await utilityGrid.clickRefreshIcon();
             for (let i: number = 2; i < 3; i++) {
                 expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeTruthy(caseId[i] + ' :Record is not available');
@@ -418,7 +418,7 @@ describe('Case Console Filter Combinations', () => {
         it('[DRDMV-23480]:Verify records are fetched on case console with Source and Assignee combinations', async () => {
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Priority', 'Critical', 'checkbox');
-            await utilityGrid.addFilter('Assignee', 'Fritz Schulz', 'text');
+            await utilityGrid.addFilter('Assignee', 'Anju Joshi', 'text');
             await utilityGrid.addFilter('Assignee', 'Qiao Feng', 'text');
             await utilityGrid.clickRefreshIcon();
             for (let i: number = 3; i < 4; i++) {

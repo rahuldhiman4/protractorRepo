@@ -42,7 +42,7 @@ describe('Case Status Verification', () => {
             "company": "Petramco",
             "businessUnit": "United States Support",
             "supportGroup": "US Support 3",
-            "assignee": "Fritz",
+            "assignee": "qkatawazi",
             "ownerBU": 'United States Support',
             "ownerGroup": "US Support 3",
             "allowCaseReopen": true

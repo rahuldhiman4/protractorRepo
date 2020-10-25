@@ -349,8 +349,8 @@ describe("Create Case Assignment Mapping", () => {
             await assignmentConfigConsolePage.clickOnCreateAssignmentConfiguration();
             await assignmentConfigCreatePage.setAssignmentMapName(assignmentMappingName);
             await assignmentConfigCreatePage.setCompany("- Global -");
-            await assignmentConfigCreatePage.setCategoryTier1("Applications");
-            await assignmentConfigCreatePage.setCategoryTier2("Social");
+            await assignmentConfigCreatePage.setCategoryTier1("Employee Relations");
+            await assignmentConfigCreatePage.setCategoryTier2("Compensation");
             await assignmentConfigCreatePage.setPriority("Medium");
             await assignmentConfigCreatePage.setSupportCompany("Psilon");
             await assignmentConfigCreatePage.setBusinessUnit('Psilon Support Org2')
@@ -364,8 +364,8 @@ describe("Create Case Assignment Mapping", () => {
             await createCasePage.selectRequester("gderuno");
             await createCasePage.setSummary("DRDMV-12033 Case Summary");
             await createCasePage.setPriority("Medium");
-            await createCasePage.selectCategoryTier1("Applications");
-            await createCasePage.selectCategoryTier2("Chatter");
+            await createCasePage.selectCategoryTier1("Employee Relations");
+            await createCasePage.selectCategoryTier2("Compensation");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePo.getAssignedGroupText()).toBe("Psilon Support Group2");
@@ -555,32 +555,14 @@ describe("Create Case Assignment Mapping", () => {
     });
 
     describe('[DRDMV-1495]: [Permissions] Case Assignment Mapping access', () => {
-        let assignmentData, randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-
-        beforeAll(async () => {
-            assignmentData = {
-                "assignmentMappingName": "DRDMV-1495" + randomStr,
-                "company": "Petramco",
-                "supportCompany": "Petramco",
-                "businessUnit": "HR Support",
-                "supportGroup": "Employee Relations",
-                "assignee": "Elizabeth",
-                "categoryTier1": "Employee Relations",
-                "categoryTier2": "Compensation",
-                "categoryTier3": "Bonus",
-                "priority": "Low",
-            }
-            await apiHelper.apiLogin('qkatawazi');
-            await apiHelper.createCaseAssignmentMapping(assignmentData);
-        });
-
+        let randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         it('[DRDMV-1495]: [Permissions] Case Assignment Mapping access', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
 
             //Create Assignment mapping
             await assignmentConfigConsolePage.clickOnCreateAssignmentConfiguration();
-            expect(await assignmentConfigCreatePage.isCompanyDropdownValueMatches(['- Global -', 'Petramco', 'Phyto', 'Oracle'])).toBeTruthy('Dropdown values do not match');
+            expect(await assignmentConfigCreatePage.isCompanyDropdownValueMatches(['- Global -', 'Petramco'])).toBeTruthy('Dropdown values do not match');
             await utilCommon.closeBladeOnSettings();
             await assignmentConfigConsolePage.clickOnCreateAssignmentConfiguration();
             await assignmentConfigCreatePage.setAssignmentMapName('Assignement Mapping' + randomStr);
@@ -608,22 +590,22 @@ describe("Create Case Assignment Mapping", () => {
             //Login with Psilon Case Manager and verify the access
 
             await navigationPage.signOut();
-            await loginPage.login('rscoyfol');
+            await loginPage.login('rrovnitov');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
-            expect(await utilGrid.isGridRecordPresent("DRDMV-1495" + randomStr)).toBeFalsy('Record is available');
+            expect(await utilGrid.isGridRecordPresent("Assignement Mapping_updated " + randomStr)).toBeFalsy('Record is available');
 
             //Login with Psilon Case Admin and verify the access
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
-            expect(await utilGrid.isGridRecordPresent("DRDMV-1495" + randomStr)).toBeFalsy('Record is available');
+            expect(await utilGrid.isGridRecordPresent("Assignement Mapping_updated " + randomStr)).toBeFalsy('Record is available');
         });
 
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteReadAccessOrAssignmentMapping(assignmentData.assignmentMappingName);
+            await apiHelper.deleteReadAccessOrAssignmentMapping("Assignement Mapping_updated " + randomStr);
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });

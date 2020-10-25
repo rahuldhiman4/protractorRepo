@@ -1,6 +1,7 @@
 import { browser } from "protractor";
-import { ALL_FIELD, MANDATORY_FIELD } from '../../data/ui/case/casetemplate.data.ui';
+import { ALL_FIELD } from '../../data/ui/case/casetemplate.data.ui';
 import casePreviewPo from '../../pageobject/case/case-preview.po';
+import createCasePo from '../../pageobject/case/create-case.po';
 import editCasePo from '../../pageobject/case/edit-case.po';
 import quickCasePo from '../../pageobject/case/quick-case.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
@@ -14,33 +15,26 @@ import navigationPage from "../../pageobject/common/navigation.po";
 import consoleCasetemplatePo from '../../pageobject/settings/case-management/console-casetemplate.po';
 import copyCasetemplatePo from '../../pageobject/settings/case-management/copy-casetemplate.po';
 import createCaseTemplate from "../../pageobject/settings/case-management/create-casetemplate.po";
+import editCasetemplatePo from '../../pageobject/settings/case-management/edit-casetemplate.po';
 import previewCaseTemplateCasesPo from '../../pageobject/settings/case-management/preview-case-template.po';
 import viewCaseTemplate from "../../pageobject/settings/case-management/view-casetemplate.po";
-import activityTabPo from '../../pageobject/social/activity-tab.po';
+import consoleTasktemplatePo from '../../pageobject/settings/task-management/console-tasktemplate.po';
+import copyTasktemplatePo from '../../pageobject/settings/task-management/copy-tasktemplate.po';
+import createTasktemplatePo from '../../pageobject/settings/task-management/create-tasktemplate.po';
+import editTasktemplatePo from '../../pageobject/settings/task-management/edit-tasktemplate.po';
+import previewTaskTemplatePo from '../../pageobject/settings/task-management/preview-task-template.po';
+import viewTasktemplatePo from '../../pageobject/settings/task-management/view-tasktemplate.po';
+import createAdhocTaskPo from '../../pageobject/task/create-adhoc-task.po';
+import editTaskPo from '../../pageobject/task/edit-task.po';
+import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
+import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
-import consoleTasktemplatePo from '../../pageobject/settings/task-management/console-tasktemplate.po';
-import createTasktemplatePo from '../../pageobject/settings/task-management/create-tasktemplate.po';
-import viewTasktemplatePo from '../../pageobject/settings/task-management/view-tasktemplate.po';
-import consoleTaskPo from '../../pageobject/task/console-task.po';
-import copyTasktemplatePo from '../../pageobject/settings/task-management/copy-tasktemplate.po';
-import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
-import utilCommon from '../../utils/util.common';
 import utilityGrid from '../../utils/utility.grid';
-import previewTaskTemplatePo from '../../pageobject/settings/task-management/preview-task-template.po';
-import viewTaskPo from '../../pageobject/task/view-task.po';
-import editTaskPo from '../../pageobject/task/edit-task.po';
-import createAdhocTaskPo from '../../pageobject/task/create-adhoc-task.po';
-import composeMailPo from '../../pageobject/email/compose-mail.po';
-import editCasetemplatePo from '../../pageobject/settings/case-management/edit-casetemplate.po';
-import editTasktemplatePo from '../../pageobject/settings/task-management/edit-tasktemplate.po';
-import createCasePo from '../../pageobject/case/create-case.po';
-import changAssignmentOldPage from '../../pageobject/common/change-assignment-old-blade.po';
+
 let uploadURL = "https://www.google.com/homepage/images/hero-dhp-chrome-win.jpg?mmfb=90bec8294f441f5c41987596ca1b8cff";
 let caseTemplateAllFields = ALL_FIELD;
-let caseTemplateRequiredFields = MANDATORY_FIELD;
-let userData;
 let tableRowFieldIndex = 0;
 let tableColumnFieldIndex = 1;
 let tableWidthFieldIndex = 3;
@@ -61,6 +55,7 @@ let underLineText = "this is text underline";
 let redColorText = "this is text red";
 let formatText = "this is text Styles";
 let imageSource;
+
 describe('CKE Description', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
@@ -404,7 +399,6 @@ describe('CKE Description', () => {
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickMaximizeMinimizeIcon();
         });
-
         it('[DDRDMV-22091,DRDMV-22092,DRDMV-22093,DRDMV-22103] Upload image with URL and local , Style text, Insert Link and Table', async () => {
             //upload image with URL
             await ckeditorOpsPo.clickOnImageIcon();
@@ -448,7 +442,6 @@ describe('CKE Description', () => {
             await createTasktemplatePo.selectTemplateStatus('Active')
             await createTasktemplatePo.clickOnSaveTaskTemplate();
         });
-
         it('[DRDMV-22091,DRDMV-22092,DRDMV-22093,DRDMV-22103] Verify detail on view task template', async () => {
             await viewTasktemplatePo.clickShowMoreDescriptionLink();
             expect(await viewTasktemplatePo.isBoldTextDisplayed(boldText)).toBeTruthy('text is not bold');
@@ -468,7 +461,6 @@ describe('CKE Description', () => {
             await browser.waitForAngularEnabled(true);
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
-
         it('[DRDMV-22091,DRDMV-22092,DRDMV-22093,DRDMV-22103] Verify detail on COPY task template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
@@ -498,7 +490,6 @@ describe('CKE Description', () => {
             await copyTasktemplatePo.clickShowMoreDescriptionLink();
             expect(await viewTasktemplatePo.isLinkDisplayedInCKE('http://www.youtube.com')).toBeTruthy('Link Text not present');
         });
-
         it('[DRDMV-22091,DRDMV-22092,DRDMV-22093,DRDMV-22103 Verify task description on task template preview', async () => {
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('qdu');
@@ -529,7 +520,6 @@ describe('CKE Description', () => {
             await manageTaskBladePo.clickTaskGridSaveButton();
             await manageTaskBladePo.clickTaskLink('taskTemplateSummaryDRDMV-22091' + randomString);
         });
-
         it('[[DRDMV-22091,DRDMV-22092,DRDMV-22093,DRDMV-22103] Verify task description field on Task', async () => {
             await viewTaskPo.clickShowMoreTaskDescription();
             expect(await ckeditorValidationPo.isLinkDisplayedInCKE('Google')).toBeTruthy();
@@ -551,7 +541,6 @@ describe('CKE Description', () => {
             await editTaskPo.clickOnAssignToMe();
             await editTaskPo.clickOnSaveButton();
         });
-
         it('[DRDMV-22091,DRDMV-22092,DRDMV-22093,DRDMV-22103] Verify case description with login Case Manger', async () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
@@ -575,7 +564,6 @@ describe('CKE Description', () => {
             await browser.waitForAngularEnabled(true);
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
-
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
@@ -711,6 +699,7 @@ describe('CKE Description', () => {
             await editCasePo.clickSaveCase();
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
