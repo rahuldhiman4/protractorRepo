@@ -465,6 +465,8 @@ describe('Create Case Task', () => {
             await editTaskTemplate.selectTaskCategoryTier3('Bonus');
             await editTaskTemplate.setDescription(description);
             await editTaskTemplate.clickOnSaveButton();
+        });
+        it('[DRDMV-12558]: Edit the above template', async () => {
             await utilCommon.closePopUpMessage();
             expect(await viewTasktemplatePo.getTaskDescriptionNameValue()).toBe(description, 'description is not present');
             expect(await viewTasktemplatePo.getCategoryTier1Value()).toBe('Employee Relations', 'Employee Relations is not present');
@@ -1390,7 +1392,7 @@ describe('Create Case Task', () => {
             await utilityCommon.closeAllBlades();
         });
     });
-    
+
     describe('[DRDMV-7066]:[Add Adhoc Task] [Assignment] Changing the Assignment on Add Adhoc Task by the member of one Support Group', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let casetemplatePetramco;
