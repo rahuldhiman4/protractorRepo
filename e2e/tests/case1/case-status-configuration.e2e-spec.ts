@@ -64,9 +64,7 @@ describe('Case Status Configuration', () => {
             flowsetPhytoFieldsData.flowsetName = flowsetPhytoFieldsData.flowsetName + randomStr;
             await apiHelper.apiLogin('tadmin');
             flowsetPhytoFieldsData["lineOfBusiness"] = "Finance";
-            let kk= await apiHelper.createNewFlowset(flowsetPhytoFieldsData);
-            console.log('kk>>>>>>>>>>>',kk);
-            console.log('flowsetPhytoFieldsData.flowsetName>>>>>>>>>>>',flowsetPhytoFieldsData.flowsetName);
+            await apiHelper.createNewFlowset(flowsetPhytoFieldsData);
             
         });
 
@@ -151,7 +149,7 @@ describe('Case Status Configuration', () => {
         expect(await statusConfigPo.getStatusLifeCycle()).toBe('Status Lifecycle for - Global -');
         await statusConfigPo.setCompanyDropdown("Phylum", 'case');
         await statusConfigPo.selectFlowset(flowsetPhytoFieldsData.flowsetName);
-        expect(await statusConfigPo.getStatusLifeCycle()).toBe('Status Lifecycle for Petramco - ' + flowsetPhytoFieldsData.flowsetName);
+        expect(await statusConfigPo.getStatusLifeCycle()).toBe('Status Lifecycle for Phylum - ' + flowsetPhytoFieldsData.flowsetName);
         expect(await statusConfigPo.isEditLifeCycleBtnDisabled()).toBeFalsy('Button is disabled');
         await statusConfigPo.clickEditLifeCycleLink();
         await statusConfigPo.clickEditStatus("Canceled");
