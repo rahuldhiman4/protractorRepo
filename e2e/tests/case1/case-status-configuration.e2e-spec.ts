@@ -268,7 +268,7 @@ describe('Case Status Configuration', () => {
             await loginPage.login(personData3.userId+"@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Status Configuration', 'Configure Knowledge Status Transition - Business Workflows');
-            await statusConfigPo.setCompanyDropdown('Petramco', 'knowledge');
+            await statusConfigPo.setCompanyDropdown('Phylum', 'knowledge');
             await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.addCustomStatus("In Progress", "Draft", "Custom");
             await statusConfigPo.clickOnBackButton();
