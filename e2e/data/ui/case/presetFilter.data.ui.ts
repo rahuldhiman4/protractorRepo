@@ -863,7 +863,8 @@ export const SERVICE_TARGET_ASSIGNED_TASK = {
     "goalTimeMinutes": "4",
     "dataSource": "Task Management",
     "company": "Phylum",
-    "svtName": "SVT Assigned to Completed"
+    "svtName": "SVT Assigned to Completed",
+    "lineOfBusiness": "Finance"
 };
 
 export const SERVICE_TARGET_NEW_TASK = {
@@ -876,7 +877,8 @@ export const SERVICE_TARGET_NEW_TASK = {
     "goalTimeMinutes": "4",
     "dataSource": "Task Management",
     "company": "Phylum",
-    "svtName": "SVT Assigned to Completed"
+    "svtName": "SVT Assigned to Completed",
+    "lineOfBusiness": "Finance"
 };
 
 export const SERVICE_TARGET_INPROGRESS_TASK = {
@@ -889,7 +891,8 @@ export const SERVICE_TARGET_INPROGRESS_TASK = {
     "goalTimeMinutes": "4",
     "dataSource": "Task Management",
     "company": "Phylum",
-    "svtName": "SVT In Progress to Completed"
+    "svtName": "SVT In Progress to Completed",
+    "lineOfBusiness": "Finance"
 };
 
 export const SERVICE_TARGET_PENDING_TASK = {
@@ -902,7 +905,8 @@ export const SERVICE_TARGET_PENDING_TASK = {
     "goalTimeMinutes": "4",
     "dataSource": "Task Management",
     "company": "Phylum",
-    "svtName": "SVT Pending to Completed"
+    "svtName": "SVT Pending to Completed",
+    "lineOfBusiness": "Finance"
 };
 
 export const SERVICE_TARGET_COMPLETED_TASK = {
@@ -915,7 +919,8 @@ export const SERVICE_TARGET_COMPLETED_TASK = {
     "goalTimeMinutes": "4",
     "dataSource": "Task Management",
     "company": "Phylum",
-    "svtName": "SVT Completed to Closed"
+    "svtName": "SVT Completed to Closed",
+    "lineOfBusiness": "Finance"
 };
 
 export const SERVICE_TARGET_CANCELED_TASK = {
@@ -928,7 +933,8 @@ export const SERVICE_TARGET_CANCELED_TASK = {
     "goalTimeMinutes": "4",
     "dataSource": "Task Management",
     "company": "Phylum",
-    "svtName": "SVT Canceled to Closed"
+    "svtName": "SVT Canceled to Closed",
+    "lineOfBusiness": "Finance"
 };
 
 export const SERVICE_TARGET_FAILED_TASK = {
@@ -941,7 +947,8 @@ export const SERVICE_TARGET_FAILED_TASK = {
     "goalTimeMinutes": "4",
     "dataSource": "Task Management",
     "company": "Phylum",
-    "svtName": "SVT Failed to Closed"
+    "svtName": "SVT Failed to Closed",
+    "lineOfBusiness": "Finance"
 };
 
 export const SERVICE_TARGET_BEFORECOMPLETED_TASK = {
@@ -954,7 +961,8 @@ export const SERVICE_TARGET_BEFORECOMPLETED_TASK = {
     "goalTimeMinutes": "4",
     "dataSource": "Task Management",
     "company": "Phylum",
-    "svtName": "SVT BeforeCompleted to Closed"
+    "svtName": "SVT BeforeCompleted to Closed",
+    "lineOfBusiness": "Finance"
 };
 
 export const SERVICE_TARGET_AFTERCOMPLETED_TASK = {
@@ -967,7 +975,8 @@ export const SERVICE_TARGET_AFTERCOMPLETED_TASK = {
     "goalTimeMinutes": "4",
     "dataSource": "Task Management",
     "company": "Phylum",
-    "svtName": "SVT AfterCompleted to Closed"
+    "svtName": "SVT AfterCompleted to Closed",
+    "lineOfBusiness": "Finance"
 };
 
 export const ARTICLE_DATA_ASSIGNTOME = {
