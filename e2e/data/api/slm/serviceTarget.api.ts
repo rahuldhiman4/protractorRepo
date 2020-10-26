@@ -42,6 +42,10 @@ export const SERVICE_TARGET_PAYLOAD = {
       "id": 304412961,
       "value": "04be8c4405fe327b812c4ebd1d7de81ab87166e59c9e50c29be65706115d2e4575aa17d92fa2d53c7abc1a85c62d514b62a70125ce13a2bcea17eab7b05e8158"
     },
+    "450000420": {
+      "id": 450000420,
+      "value": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+    },
     "490000400": {
       "id": 490000400,
       "value": "SVT In Progress to Resolved"
