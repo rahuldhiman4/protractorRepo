@@ -161,6 +161,7 @@ export class GridOperations {
     }
 
     async searchAndOpenHyperlink(id: string, guid?: string): Promise<void> {
+        await browser.sleep(15000); // workaround for performance issue
         await this.searchRecord(id, guid);
         if (guid) await $$(`[rx-view-component-id='${guid}'] ` + this.selectors.gridRowLinks).first().click();
         else await $$(this.selectors.gridRowLinks).first().click();
