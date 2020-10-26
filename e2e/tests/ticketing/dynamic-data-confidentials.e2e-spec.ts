@@ -51,11 +51,11 @@ describe('Dynamic Confidentials Data', () => {
                 "templateSummary": 'CaseSummaryName' + randomStr,
                 "caseStatus": "InProgress",
                 "templateStatus": "Active",
-                "assignee": "qkatawazi",
+              //  "assignee": "qkatawazi",
                 "company": "Petramco",
-                "businessUnit": "United States Support",
+                //"businessUnit": "United States Support",
                 "ownerBU": "United States Support",
-                "supportGroup": "US Support 3",
+                //"supportGroup": "US Support 3",
                 "ownerGroup": "US Support 3"
             }
             await apiHelper.apiLogin('tadmin');
@@ -64,7 +64,7 @@ describe('Dynamic Confidentials Data', () => {
             let newCaseTemplate = await apiHelper.createCaseTemplate(caseTemplateData);
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_WITH_CONFIDENTIAL');
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.updateFoundationEntity('SupportGroup', 'Facilities', { confidential: 'true' });
+            await apiHelper.updateFoundationEntity('SupportGroup', 'US Support 3', { confidential: 'true' });
         });
         it('[DRDMV-17962]: Validation of Confidential fields in Dynamic Field Group on Case', async () => {
             await navigationPage.gotoCreateCase();
@@ -132,6 +132,8 @@ describe('Dynamic Confidentials Data', () => {
             await apiHelper.deleteDynamicFieldAndGroup();
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createCaseTemplate(caseTemplateData);
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.updateFoundationEntity('SupportGroup', 'US Support 3', { confidential: 'true' });
         });
         it('[DRDMV-15006,DRDMV-15024,DRDMV-15025]: [DesignTime] Add confidential support group on case template', async () => {
             await navigationPage.gotoSettingsPage();
@@ -379,8 +381,13 @@ describe('Dynamic Confidentials Data', () => {
             await quickCasePo.saveCase();
             await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePo.getValueOfDynamicFields("FieldGroup1")).toBe("******");
-
         });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+            await navigationPage.signOut();
+            await loginPage.login("qkatawazi");
+        });
+    
     });
 
     //ankagraw
