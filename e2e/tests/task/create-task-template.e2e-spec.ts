@@ -253,6 +253,7 @@ describe('Create Task Template', () => {
         let dateFormateNew: string = dateFormateValue.substring(0, 3);
         let dateFormate: string = dateFormateNew + " " + createdDate.getDate() + ", " + createdDate.getFullYear() + " " + createdDate.toLocaleTimeString();
         let taskTemplateId = '';
+        let addColoumn: string[] = ['Display ID'];
         it('[DRDMV-3768]: Create task template ', async () => {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'))
@@ -280,7 +281,6 @@ describe('Create Task Template', () => {
             await editTaskTemplate.selectTemplateStatus('Inactive');
             await editTaskTemplate.clickOnSaveMetadata();
         });
-        let addColoumn: string[] = ['Display ID'];
         it('[DRDMV-3768]: Apply Filter Options', async () => {
             let modifiedDate = new Date();
             let monthValue: string = month[modifiedDate.getMonth()];

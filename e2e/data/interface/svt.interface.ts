@@ -9,4 +9,5 @@ export interface ICreateSVT {
     "dataSource": string,
     "company": string,
     "svtName": string,
+    "lineOfBusiness"?: string
 };

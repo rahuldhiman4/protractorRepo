@@ -138,5 +138,6 @@ export enum ProcessFlowsetMappingStatus {
 
 export enum LOB {
     "Human Resource" = "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
-    "Facilities" = "AGGADGG8ECDC0AQ7BR1ZQ6D6IRXB4E"
+    "Facilities" = "AGGADGG8ECDC0AQ7BR1ZQ6D6IRXB4E",
+    "Finance" = "AGGADGG8ECDC0AQ7BR1OQ6D6I7XB2O"
 }

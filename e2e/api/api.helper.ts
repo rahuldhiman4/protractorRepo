@@ -2155,7 +2155,9 @@ class ApiHelper {
         serviceTargetPayload.fieldInstances[300523400].value = await apiCoreUtil.getDataSourceGuid(svtData.dataSource);
         serviceTargetPayload.fieldInstances[304412961].value = await apiCoreUtil.getOrganizationGuid(svtData.company);
         //SERVICE_TARGET.fieldInstances[300272100].value = -1
-
+        if (svtData.lineOfBusiness) {
+            serviceTargetPayload.fieldInstances[450000420].value = await constants.LOB[svtData.lineOfBusiness];
+        }
         let slmResponse: AxiosResponse = await apiCoreUtil.createRecordInstance(serviceTargetPayload);
         console.log('Create Service Target API Status =============>', slmResponse.status);
         const slmDetails = await axios.get(
