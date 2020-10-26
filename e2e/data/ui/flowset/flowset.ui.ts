@@ -18,3 +18,10 @@ export const flowsetPhytoFields = {
     "company": "Phyto",
     "description": "test description for Phyto"
 };
+
+export const flowsetPhylumFields = {
+    "flowsetName": "Test Flowset Phylum name",
+    "flowsetStatus": 10,
+    "company": "Phylum",
+    "description": "test description for Phylum"
+};
