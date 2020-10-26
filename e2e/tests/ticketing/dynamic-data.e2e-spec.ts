@@ -37,7 +37,7 @@ describe('Dynamic data', () => {
     const notifTempGridPageTitle = 'Manage Notification Template - Business Workflows';
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
-        await loginPage.login('fritz');
+        await loginPage.login('qkatawazi');
     });
 
     afterAll(async () => {
@@ -54,16 +54,16 @@ describe('Dynamic data', () => {
                 "templateName": `${caseTemplateName}`,
                 "templateSummary": `${caseTemaplateSummary}`,
                 "templateStatus": "Active",
-                "assignee": "Fritz",
+                "assignee": "qkatawazi",
                 "company": "Petramco",
-                "businessUnit": "Facilities Support",
-                "ownerBU": "Facilities Support",
-                "supportGroup": "Facilities",
-                "ownerGroup": "Facilities"
+                "businessUnit": "United States Support",
+                "ownerBU": "United States Support",
+                "supportGroup": "US Support 3",
+                "ownerGroup": "US Support 3"
             }
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'SAVE_EXISTING_AND_NEW_CASE_DYNAMIC_DATA_DEFINITION');
             globalcaseTemplateName = 'globalcasetempalte' + randomStr;
@@ -85,8 +85,8 @@ describe('Dynamic data', () => {
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             let tasktemplate = await apiHelper.createManualTaskTemplate(templateData);
             await apiHelper.createDynamicDataOnTemplate(tasktemplate.id, 'DYNAMIC_DATA_FOR_TASK_TEMPLATE');
@@ -98,8 +98,8 @@ describe('Dynamic data', () => {
                 "templateStatus": "Active",
                 "taskCompany": '- Global -',
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             let globalTasktemplate = await apiHelper.createManualTaskTemplate(gloabalTaskData);
             await apiHelper.createDynamicDataOnTemplate(globalTasktemplate.id, 'GLOBAL_TASK_TEMPLATE');
@@ -186,7 +186,7 @@ describe('Dynamic data', () => {
 
     describe('[DRDMV-19270]: Associated and Dynamic fields usage on Notification/Email/Activity Templates', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-       
+
         let caseTemplateName = 'caseTempRDMV-192700lp3ir' + randomStr;
         let caseTemaplateSummary = 'caseTempRDMV-19270Template' + randomStr;
         let taskTemplateName = 'ManualtaskDRDMV-19270' + randomStr;
@@ -196,16 +196,16 @@ describe('Dynamic data', () => {
                 "templateName": `${caseTemplateName}`,
                 "templateSummary": `${caseTemaplateSummary}`,
                 "templateStatus": "Active",
-                "assignee": "Fritz",
+                "assignee": "qkatawazi",
                 "company": "Petramco",
-                "businessUnit": "Facilities Support",
-                "ownerBU": "Facilities Support",
-                "supportGroup": "Facilities",
-                "ownerGroup": "Facilities"
+                "businessUnit": "United States Support",
+                "ownerBU": "United States Support",
+                "supportGroup": "US Support 3",
+                "ownerGroup": "US Support 3"
             }
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_WITH_CONFIDENTIAL');
 
@@ -215,9 +215,10 @@ describe('Dynamic data', () => {
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
+            await apiHelper.apiLogin('qkatawazi');
             let tasktemplate = await apiHelper.createManualTaskTemplate(templateData);
             await apiHelper.createDynamicDataOnTemplate(tasktemplate.id, 'TASK_TEMPLATE_WITH_CONFIDENTIAL');
         });
@@ -439,20 +440,20 @@ describe('Dynamic data', () => {
                 "templateName": `${caseTemplateName}`,
                 "templateSummary": `${caseTemaplateSummary}`,
                 "templateStatus": "Active",
-                "assignee": "Fritz",
+                "assignee": "qkatawazi",
                 "company": "Petramco",
-                "businessUnit": "Facilities Support",
-                "ownerBU": "Facilities Support",
-                "supportGroup": "Facilities",
-                "ownerGroup": "Facilities"
+                "businessUnit": "United States Support",
+                "ownerBU": "United States Support",
+                "supportGroup": "US Support 3",
+                "ownerGroup": "US Support 3"
             }
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_DYNAMIC_FIELDS');
         });
         it('[DRDMV-13567]: [Dynamic Data] [Attachment] - Case UI when it has Dynamic Fields including Attachment', async () => {
             await navigationPage.gotoCreateCase();
-            await createCasePo.selectRequester('qkatawazi');
+            await createCasePo.selectRequester('adam');
             await createCasePo.setSummary('new cases');
             await createCasePo.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
@@ -504,9 +505,10 @@ describe('Dynamic data', () => {
             "templateStatus": "Active",
             "taskCompany": 'Petramco',
             "ownerCompany": "Petramco",
-            "ownerBusinessUnit": "Facilities Support",
-            "ownerGroup": "Facilities"
+            "ownerBusinessUnit": "United States Support",
+            "ownerGroup": "US Support 3"
         }
+        await apiHelper.apiLogin('qkatawazi');
         let tasktemplate = await apiHelper.createManualTaskTemplate(templateData);
         await apiHelper.createDynamicDataOnTemplate(tasktemplate.id, 'TASK_TEMPLATE__DYNAMIC_FIELDS');
         await navigationPage.gotoCreateCase();
@@ -577,14 +579,14 @@ describe('Dynamic data', () => {
                 "templateName": `${caseTemplateName}`,
                 "templateSummary": `${caseTemaplateSummary}`,
                 "templateStatus": "Active",
-                "assignee": "Fritz",
+                "assignee": "qkatawazi",
                 "company": "Petramco",
-                "businessUnit": "Facilities Support",
-                "ownerBU": "Facilities Support",
-                "supportGroup": "Facilities",
-                "ownerGroup": "Facilities"
+                "businessUnit": "United States Support",
+                "ownerBU": "United States Support",
+                "supportGroup": "US Support 3",
+                "ownerGroup": "US Support 3"
             }
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_DYNAMIC_FIELDS');
         });
@@ -636,9 +638,10 @@ describe('Dynamic data', () => {
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
+            await apiHelper.apiLogin('qkatawazi');
             let tasktemplate = await apiHelper.createManualTaskTemplate(templateData);
             await apiHelper.createDynamicDataOnTemplate(tasktemplate.id, 'TASK_TEMPLATE__DYNAMIC_FIELDS_DRDMV_13948');
         });
@@ -681,7 +684,7 @@ describe('Dynamic data', () => {
         let dynamicfield2 = 'theSecondDynamicFieldsIsgettingMouseOveredMouseOvered';
         let dynamicfield3 = 'theThirdDynamicFieldsIsgettingMouseOveredMouseOvered';
         let dynamicfield4 = 'temp1theNewDynamicFieldsIsgettingMouseOveredMouseOvered';
-       
+
         let taskTemplateName = 'ManualtaskDRDMV-13161' + randomStr;
         let manualTaskSummary = 'ManualSummaryDRDMV-13161' + randomStr;
         let externalTask = 'externalTaskDRDMV-13161' + randomStr;
@@ -697,8 +700,8 @@ describe('Dynamic data', () => {
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
@@ -710,8 +713,8 @@ describe('Dynamic data', () => {
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             await apiHelper.apiLogin('qkatawazi');
             let externalTaskTemplate = await apiHelper.createExternalTaskTemplate(externalTemplateData);
@@ -724,8 +727,8 @@ describe('Dynamic data', () => {
                 "processName": `${processName}`,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             await apiHelper.apiLogin('qkatawazi');
             let autoTaskTemplate = await apiHelper.createAutomatedTaskTemplate(automationTemplateData);
@@ -733,7 +736,7 @@ describe('Dynamic data', () => {
         });
         it('[DRDMV-13161]: [-ve] [Dynamic Data] - Task UI with dynamic data having long description/labels with large data in different fields', async () => {
             await navigationPage.gotoCreateCase();
-            await createCasePo.selectRequester('qkatawazi');
+            await createCasePo.selectRequester('adam');
             await createCasePo.clickAssignToMeButton();
             await createCasePo.setSummary('new cases');
             await createCasePo.clickSaveCaseButton();
@@ -813,12 +816,12 @@ describe('Dynamic data', () => {
                 "templateName": `${caseTemplateName}`,
                 "templateSummary": `${caseTemaplateSummary}`,
                 "templateStatus": "Active",
-                "assignee": "Fritz",
+                "assignee": "qkatawazi",
                 "company": "Petramco",
-                "businessUnit": "Facilities Support",
-                "ownerBU": "Facilities Support",
-                "supportGroup": "Facilities",
-                "ownerGroup": "Facilities"
+                "businessUnit": "United States Support",
+                "ownerBU": "United States Support",
+                "supportGroup": "US Support 3",
+                "ownerGroup": "US Support 3"
             }
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
@@ -828,7 +831,7 @@ describe('Dynamic data', () => {
         });
         it('[DRDMV-13128]: [Dynamic Data] - Create Case with Case Template having dynamic fields and Update dynamic fields data in Case', async () => {
             await navigationPage.gotoQuickCase();
-            await quickCasePo.selectRequesterName('qkatawazi');
+            await quickCasePo.selectRequesterName('adam');
             await quickCasePo.selectCaseTemplate(caseTemplateName);
             await quickCasePo.createCaseButton();
             await quickCasePo.gotoCaseButton();
@@ -867,22 +870,22 @@ describe('Dynamic data', () => {
                 "templateName": `${caseTemplateName}`,
                 "templateSummary": `${caseTemaplateSummary}`,
                 "templateStatus": "Active",
-                "assignee": "Fritz",
+                "assignee": "qkatawazi",
                 "company": "Petramco",
-                "businessUnit": "Facilities Support",
-                "ownerBU": "Facilities Support",
-                "supportGroup": "Facilities",
-                "ownerGroup": "Facilities"
+                "businessUnit": "United States Support",
+                "ownerBU": "United States Support",
+                "supportGroup": "US Support 3",
+                "ownerGroup": "US Support 3"
             }
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_REQUESTER_DYNAMIC_FIELDS');
         });
         it('[DRDMV-13127]: [Dynamic Data] - Create Case from Create Case with Template having dynamic fields and also have field with source as Requester', async () => {
             await navigationPage.gotoCreateCase();
-            await createCasePo.selectRequester('qkatawazi');
+            await createCasePo.selectRequester('adam');
             await createCasePo.setSummary('Summary');
             await createCasePo.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
@@ -925,9 +928,10 @@ describe('Dynamic data', () => {
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
+            await apiHelper.apiLogin('qkatawazi');
             let tasktemplate = await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
             await apiHelper.createDynamicDataOnTemplate(tasktemplate.id, 'TASK_TEMPLATE__DYNAMIC_FIELDS');
             await apiHelper.apiLogin('tadmin');
@@ -938,8 +942,8 @@ describe('Dynamic data', () => {
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             await apiHelper.apiLogin('qkatawazi');
             let externalTaskTemplate = await apiHelper.createExternalTaskTemplate(externalTaskTemplateData);
@@ -954,8 +958,8 @@ describe('Dynamic data', () => {
                 "processName": "Case Process " + randomStr,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
 
             await apiHelper.apiLogin('qkatawazi');
@@ -964,7 +968,7 @@ describe('Dynamic data', () => {
         });
         it('[DRDMV-13158]: [-ve] [UI] [Dynamic Data] - Update Task dynamic fields with invalid data', async () => {
             await navigationPage.gotoCreateCase();
-            await createCasePo.selectRequester('qkatawazi');
+            await createCasePo.selectRequester('adam');
             await createCasePo.setSummary('new cases');
             await createCasePo.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
@@ -981,7 +985,6 @@ describe('Dynamic data', () => {
             await manageTaskBladePo.clickTaskLink(manualTaskTemplateData.templateSummary);
             //verify dynamic field
             await viewTaskPo.clickOnEditTask();
-
             await editTaskPo.setDynamicFieldValue('temp1', 'eee');
             let msg: string[] = ["Number is invalid"];
             expect(await utilityCommon.isPopupMsgsMatches(msg)).toBeTruthy();
@@ -1058,14 +1061,14 @@ describe('Dynamic data', () => {
             "templateName": 'CaseTemplateName13116' + randomStr,
             "templateSummary": 'CaseSummarySummary13116' + randomStr,
             "templateStatus": "Draft",
-            "assignee": "Fritz",
+            "assignee": "qkatawazi",
             "company": "Petramco",
-            "businessUnit": "Facilities Support",
-            "ownerBU": "Facilities Support",
-            "supportGroup": "Facilities",
-            "ownerGroup": "Facilities"
+            "businessUnit": "United States Support",
+            "ownerBU": "United States Support",
+            "supportGroup": "US Support 3",
+            "ownerGroup": "US Support 3"
         }
-        await apiHelper.apiLogin('fritz');
+        await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createCaseTemplate(templateData);
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
@@ -1117,13 +1120,13 @@ describe('Dynamic data', () => {
             }
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_DYNAMIC_FIELDS');
         });
         it('[DRDMV-13132,DRDMV-13124]:[-ve] [Dynamic Data] [UI] - Update Case dynamic fields with invalid data', async () => {
             await navigationPage.gotoQuickCase();
-            await quickCasePo.selectRequesterName('qkatawazi');
+            await quickCasePo.selectRequesterName('adam');
             await quickCasePo.selectCaseTemplate(caseTemplateName);
             await quickCasePo.createCaseButton();
             await quickCasePo.gotoCaseButton();
@@ -1167,14 +1170,14 @@ describe('Dynamic data', () => {
             "templateName": `${caseTemplateName}`,
             "templateSummary": `${caseTemaplateSummary}`,
             "templateStatus": "Active",
-            "assignee": "Fritz",
+            "assignee": "qkatawazi",
             "company": "Petramco",
-            "businessUnit": "Facilities Support",
-            "ownerBU": "Facilities Support",
-            "supportGroup": "Facilities",
-            "ownerGroup": "Facilities"
+            "businessUnit": "United States Support",
+            "ownerBU": "United States Support",
+            "supportGroup": "US Support 3",
+            "ownerGroup": "US Support 3"
         }
-        await apiHelper.apiLogin('fritz');
+        await apiHelper.apiLogin('qkatawazi');
         let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
         await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_DYNAMIC_FIELDS');
         await navigationPage.gotoCreateCase();
