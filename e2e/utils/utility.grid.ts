@@ -20,7 +20,7 @@ export class GridOperations {
         gridCellData: '.at-data-row .at-data-cell',
         filterItems: '.advanced-filter__container .advanced-filter__accordion-tab .text-direction span',
         filterCheckboxOptions: '.a-select-inline__list .a-select-inline__item .checkbox__label',
-        filterTab: '.nav-item button',
+        filterTab: '.dropdown-menu [role="tablist"] .nav-item button',
         visibleColumnButton: '.d-icon-eye_closed,.d-icon-eye',
         refreshIcon: 'button[rx-id="refresh-button"]',
         filterSearchValueBox: '.adapt-mt-input-container input',

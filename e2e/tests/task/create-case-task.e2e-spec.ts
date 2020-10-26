@@ -1571,9 +1571,9 @@ describe('Create Case Task', () => {
             await adhoctaskTemplate.setSummary("Summary" + randomStr);
             await adhoctaskTemplate.setDescription("Description");
             await adhoctaskTemplate.selectPriority('High');
-            await adhoctaskTemplate.selectCategoryTier1('Employee Relations');
-            await adhoctaskTemplate.selectCategoryTier2('Compensation');
-            await adhoctaskTemplate.selectCategoryTier3('Bonus');
+            await adhoctaskTemplate.selectCategoryTier1(casetemplatePetramco.categoryTier1);
+            await adhoctaskTemplate.selectCategoryTier2(casetemplatePetramco.categoryTier2);
+            await adhoctaskTemplate.selectCategoryTier3(casetemplatePetramco.categoryTier3);
             await adhoctaskTemplate.clickAssignToMeButton();
             await adhoctaskTemplate.clickSaveAdhoctask();
             await utilityCommon.closePopUpMessage();
@@ -1620,11 +1620,11 @@ describe('Create Case Task', () => {
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickTaskLink("Summary" + randomStr);
             expect((await viewTask.getDescriptionValue()).trim()).toBe("Description");
-            expect(await viewTask.getCategoryTier1Value()).toBe('Employee Relations');
-            expect(await viewTask.getCategoryTier2Value()).toBe('Compensation');
-            expect(await viewTask.getCategoryTier3Value()).toBe('Bonus');
+            expect(await viewTask.getCategoryTier1Value()).toBe(casetemplatePetramco.categoryTier1);
+            expect(await viewTask.getCategoryTier2Value()).toBe(casetemplatePetramco.categoryTier2);
+            expect(await viewTask.getCategoryTier3Value()).toBe(casetemplatePetramco.categoryTier3);
             expect(await viewTask.getTaskSummaryValue()).toBe('Summary' + randomStr);
-            expect(await viewTask.getAssignedGroupText()).toBe('US Support 3');
+            expect(await viewTask.getAssignedGroupText()).toBe(casetemplatePetramco.ownerGroup);
             expect(await viewTask.getAssigneeText()).toBe('Qadim Katawazi');
         });
         it('[DRDMV-1579]: [Edit Task] Update summary, status, description and assignment', async () => {
@@ -1712,7 +1712,7 @@ describe('Create Case Task', () => {
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
-            expect(await viewTask.getAssignedGroupText()).toBe('Facilities');
+            expect(await viewTask.getAssignedGroupText()).toBe(templateData.supportGroup);
             expect(await viewTask.getAssigneeText()).toBe('None', 'None assignee Text is missing');
             await viewTask.clickOnChangeStatus();
             await viewTask.changeTaskStatus('In Progress');
