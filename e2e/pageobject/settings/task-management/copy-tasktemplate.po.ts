@@ -1,4 +1,4 @@
-import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, protractor, ProtractorExpectedConditions } from "protractor";
 import util from "../../../utils/util.common";
 
 class Copytaskpage {
@@ -16,8 +16,6 @@ class Copytaskpage {
         taskSummary: '[rx-view-component-id="c19d336e-7339-4970-b69a-100108d672fd"] input',
         sourceProcessNameValue: '[rx-view-component-id="9f29e10e-dedf-4bab-8372-5b40002d999a"] input',
         companyGiud: 'f62bd26b-c464-4dff-ab7b-e4446d1cbf99',
-        clearProcessBundleId: '[title="Process Bundle ID"] [rx-id="clear-selection-button"] i',
-        processBundle: '5f30b3d4-caa2-4c28-8af6-cebf094bc2e8',
         ownerGuid: '61278673-8106-419c-83e4-a9e00f12f835',
         ownerGroupValueOnCopy: '[rx-view-component-id="61278673-8106-419c-83e4-a9e00f12f835"] .ui-select-match-text',
         buisnessUnitGuid: 'a81cc2df-7b89-4367-81f7-f0ad5e786ca2',
@@ -70,10 +68,6 @@ class Copytaskpage {
 
     async selectTemplateStatus(status: string): Promise<void> {
         await util.selectDropDown(this.selectors.templateStatus, status);
-    }
-
-    async selectBundles(value: string): Promise<void> {
-        await util.selectDropDown(this.selectors.processBundle, value);
     }
 
     async selectTaskCompany(companyName: string): Promise<void> {
