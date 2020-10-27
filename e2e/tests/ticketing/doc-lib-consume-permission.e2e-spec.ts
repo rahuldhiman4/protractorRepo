@@ -526,7 +526,7 @@ describe('Document Library Consume Permission', () => {
             expect(await attachDocumentBladePo.isPaginationPresent()).toBeTruthy('Failure: Pagination is missing');
             await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
 
-            expect(await resourcesTabPo.isValuePresentInDropdown('Operational Category 1', 'DemoCateg1')).toBeTruthy('Failure: Operational Category 1 is missing');
+            expect(await resourcesTabPo.isValuePresentInDropdown('Operational Category 1', 'Payroll')).toBeTruthy('Failure: Operational Category 1 is missing');
             await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
             await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
             expect(await resourcesTabPo.isValuePresentInDropdown('Operational Category 1', 'DemoCateg2')).toBeFalsy('Failure: Operational Category 2 is displayed');
@@ -539,12 +539,12 @@ describe('Document Library Consume Permission', () => {
             await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
             await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
             // Verify Category Tier 1/2/3/4  on UI
-            expect(await resourcesTabPo.isAdvancedSearchFilterDropDownLabelDisplayed('Operational Category 1')).toBeTruthy('Failure: Operational Category 1 is missing');
+            expect(await resourcesTabPo.isAdvancedSearchFilterDropDownLabelDisplayed('Operational Category 1')).toBeTruthy('Failure: Operational Category 1 is missing2');
             expect(await resourcesTabPo.isAdvancedSearchFilterDropDownLabelDisplayed('Operational Category 2')).toBeFalsy('Failure: Operational Category 2 is missing');
             expect(await resourcesTabPo.isAdvancedSearchFilterDropDownLabelDisplayed('Operational Category 3')).toBeFalsy('Failure: Operational Category 3 is missing');
             expect(await resourcesTabPo.isAdvancedSearchFilterDropDownLabelDisplayed('Operational Category 4')).toBeFalsy('Failure: Operational Category 4 is missing');
 
-            await resourcesTabPo.selectAdvancedSearchFilterOption('Operational Category Tier 1', 'Employee Relations');
+            await resourcesTabPo.selectAdvancedSearchFilterOption('Operational Category Tier 1', 'Payroll');
             await resourcesTabPo.selectAdvancedSearchFilterOption('Region', 'Australia');
             await resourcesTabPo.selectAdvancedSearchFilterOption('Site', 'Canberra');
             await resourcesTabPo.clickOnAdvancedSearchFiltersButton('Apply');

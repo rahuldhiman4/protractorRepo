@@ -1,6 +1,8 @@
-import viewTasktemplatePo from '../../pageobject/settings/task-management/view-tasktemplate.po';
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
+import casePreviewPo from '../../pageobject/case/case-preview.po';
+import createCasePo from '../../pageobject/case/create-case.po';
+import viewCasePo from '../../pageobject/case/view-case.po';
 import dynamicFieldsPage from '../../pageobject/common/dynamic-fields.po';
 import localizeValuePopPo from '../../pageobject/common/localize-value-pop.po';
 import loginPage from "../../pageobject/common/login.po";
@@ -8,20 +10,17 @@ import navigationPage from "../../pageobject/common/navigation.po";
 import createDynamicFieldLibraryConfigPo from '../../pageobject/settings/application-config/create-dynamic-field-library-config.po';
 import dynamicFieldLibraryConfigConsolePo from '../../pageobject/settings/application-config/dynamic-field-library-config-console.po';
 import editDynamicFieldLibraryConfigPo from '../../pageobject/settings/application-config/edit-dynamic-field-library-config.po';
+import consoleCasetemplatePo from '../../pageobject/settings/case-management/console-casetemplate.po';
+import viewCasetemplatePo from '../../pageobject/settings/case-management/view-casetemplate.po';
 import selectTaskTemplate from "../../pageobject/settings/task-management/console-tasktemplate.po";
+import viewTasktemplatePo from '../../pageobject/settings/task-management/view-tasktemplate.po';
+import editTaskPo from '../../pageobject/task/edit-task.po';
+import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
+import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
-import consoleCasetemplatePo from '../../pageobject/settings/case-management/console-casetemplate.po';
-import viewCasetemplatePo from '../../pageobject/settings/case-management/view-casetemplate.po';
-import viewCasePo from '../../pageobject/case/view-case.po';
-import createCasePo from '../../pageobject/case/create-case.po';
-import casePreviewPo from '../../pageobject/case/case-preview.po';
-import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
-import editTaskPo from '../../pageobject/task/edit-task.po';
-import viewTaskPo from '../../pageobject/task/view-task.po';
-import editCasetemplatePo from '../../pageobject/settings/case-management/edit-casetemplate.po';
 
 
 describe('Dynamic Library Configuration', () => {
@@ -231,16 +230,11 @@ describe('Dynamic Library Configuration', () => {
     describe('[DRDMV-13105]: [-ve] [Dynamic Data] - Add fields with different format of field names (ID)', async () => {
         let caseTemplateData, templateData, randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteDynamicFieldAndGroup();
             caseTemplateData = {
                 "templateName": randomStr + 'caseTemplateName',
                 "templateSummary": 'CaseSummaryName' + randomStr,
                 "caseStatus": "InProgress",
                 "templateStatus": "Draft",
-                "businessUnit": "United States Support",
-                "supportGroup": "US Support 3",
-                "assignee": "qkatawazi",
                 "ownerBU": 'United States Support',
                 "ownerGroup": "US Support 3",
             }
@@ -248,14 +242,10 @@ describe('Dynamic Library Configuration', () => {
                 "templateName": `manualTaskTemplate1 ${randomStr}`,
                 "templateSummary": `manualTaskTemplateSummary1 ${randomStr}`,
                 "templateStatus": "Draft",
-                "taskCompany": 'Petramco',
+                "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "United States Support",
-                "ownerGroup": "US Support 3",
-                "assignee": "qkatawazi",
-                "company": "Petramco",
-                "supportGroup": "US Support 3",
-                "businessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
@@ -425,7 +415,7 @@ describe('Dynamic Library Configuration', () => {
         });
         it('[DRDMV-13150]: [Dynamic Data] [UI] - Behavior of different dynamic fields from Task Edit view', async () => {
             await navigationPage.gotoCreateCase();
-            await createCasePo.selectRequester('fritz');
+            await createCasePo.selectRequester('adam');
             await createCasePo.setSummary('Summary' + randomStr);
             await createCasePo.clickAssignToMeButton();
             await createCasePo.clickSaveCaseButton();
@@ -475,7 +465,7 @@ describe('Dynamic Library Configuration', () => {
                 "supportGroup": "US Support 3",
                 "ownerGroup": "US Support 3"
             }
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createCaseTemplate(casetemplateData);
             casetemplateData.templateName = randomStr + 'caseTemplateInactive';
             casetemplateData.templateStatus = 'Inactive';

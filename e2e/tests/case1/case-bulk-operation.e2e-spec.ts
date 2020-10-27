@@ -82,16 +82,19 @@ describe('Case Bulk Operation', () => {
         await changeAssignmentBladePo.setAssignee(petramcoStr, 'United States Support', 'US Support 3', "Qiao Feng");
         expect(await utilityCommon.isPopUpMessagePresent('The selected case(s) have been successfully assigned.', 1)).toBeTruthy();
         await utilityCommon.closePopUpMessage();
+        await utilityGrid.clearFilter();
         for (let i: number = 0; i < 3; i++) {
             await utilityGrid.searchAndOpenHyperlink(caseId[i]);
             expect(await viewCasePage.getAssigneeText()).toBe("Qiao Feng");
             await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
         }
     });
 
     it('[DRDMV-15954]: Verify if Case Agent can select and un-select all the Cases using checkbox beside Case column', async () => {
         await navigationPage.gotoQuickCase(); // navigation requried if above test failes
         await navigationPage.gotoCaseConsole(); // navigation requried if above test failes
+        await utilityGrid.clearFilter();
         await caseConsolePage.selectAllCases();
         expect(await caseConsolePage.isAllCasesSelected()).toBeTruthy("All cases are not selected");
         await caseConsolePage.selectAllCases();
@@ -216,6 +219,7 @@ describe('Case Bulk Operation', () => {
             expect(await utilityCommon.isPopUpMessagePresent('The selected case(s) have been successfully assigned.', 3)).toBeTruthy();
             await utilityCommon.closePopUpMessage();
             await utilityCommon.closePopUpMessage();
+            await utilityGrid.clearFilter();
             for (let i: number = 0; i < 1; i++) {
                 await utilityGrid.searchAndOpenHyperlink(caseId[i]);
                 expect(await activityPo.isTextPresentInActivityLog("Qiao Feng")).toBeTruthy("Text is not present in activiy tab1");
@@ -227,6 +231,7 @@ describe('Case Bulk Operation', () => {
                 expect(await activityPo.isTextPresentInActivityLog("Assigned Group")).toBeTruthy("Text is not present in activiy tab5");
                 expect(await activityPo.isTextPresentInActivityLog("Facilities")).toBeTruthy("Text is not present in activiy tab6");
                 await navigationPage.gotoCaseConsole();
+                await utilityGrid.clearFilter();
             }
         });
     });
@@ -249,10 +254,12 @@ describe('Case Bulk Operation', () => {
         expect(await utilityCommon.isPopUpMessagePresent('The selected case(s) have been successfully assigned.', 1)).toBeTruthy();
 
         await utilityCommon.closePopUpMessage();
+        await utilityGrid.clearFilter();
         for (let i: number = 0; i < 3; i++) {
             await utilityGrid.searchAndOpenHyperlink(caseId[i]);
             expect(await viewCasePage.getAssigneeText()).toBe("Qadim Katawazi");
             await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
         }
 
     });
@@ -295,6 +302,7 @@ describe('Case Bulk Operation', () => {
             expect(await utilityCommon.isPopUpMessagePresent('The selected case(s) have been successfully assigned.', 3)).toBeTruthy();
             await utilityCommon.closePopUpMessage();
             await utilityCommon.closePopUpMessage();
+            await utilityGrid.clearFilter();
             for (let i: number = 0; i < 3; i++) {
                 await utilityGrid.searchAndOpenHyperlink(caseId[i]);
                 expect(await viewCasePage.getBusinessUnitText()).toBe(businessData.orgName, `Business unit details are not matching for ${caseId[i]}`);
@@ -303,6 +311,7 @@ describe('Case Bulk Operation', () => {
                 expect(await viewCasePage.getAssignedGroupText()).toBe(suppGrpData.orgName, `Assigned Group details are not matching for ${caseId[i]}`);
                 expect(await viewCasePage.getAssigneeText()).toBe(`${personData.firstName} ${personData.lastName}`, `Assignee details are not matching for ${caseId[i]}`);
                 await navigationPage.gotoCaseConsole();
+                await utilityGrid.clearFilter();
             }
         });
         afterAll(async () => {
@@ -335,7 +344,7 @@ describe('Case Bulk Operation', () => {
             await caseConsolePage.clickOnChangeAssignmentButton();
             await changeAssignmentBladePo.setAssignee(petramcoStr, 'United States Support', "US Support 3", 'Qadim Katawazi');
             expect(await utilityCommon.isPopUpMessagePresent('The selected case(s) have been successfully assigned.', 1)).toBeTruthy();
-
+            await utilityGrid.clearFilter();
             for (let i: number = 0; i < 3; i++) {
                 await utilityGrid.searchAndOpenHyperlink(caseId[i]);
                 expect(await viewCasePage.isTextPresent('BulkOperationBusinessUnit')).toBeFalsy("BulkOperationBusinessUnit is present");
@@ -344,6 +353,7 @@ describe('Case Bulk Operation', () => {
                 expect(await viewCasePage.getAssignedGroupText()).toBe(usSupportGroup3Str);
                 expect(await viewCasePage.getAssigneeText()).toBe('Qadim Katawazi');
                 await navigationPage.gotoCaseConsole();
+                await utilityGrid.clearFilter();
             }
         });
         afterAll(async () => {

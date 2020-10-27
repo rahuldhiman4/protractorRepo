@@ -112,21 +112,21 @@
         "lastName": "lnPerson12080",
         "userId": "idphylum312080"
     },
-    "PhytoCaseAdmin1": {
+    "PhylumCaseAdmin1": {
         "firstName": "Ashish",
         "lastName": "Nehra",
         "userId": "anehra",
         "company": "Phylum",
         "userPermission": ["Case Business Analyst","Knowledge Coach","Finance"]
     },
-    "PhytoCaseAdmin2": {
+    "PhylumCaseAdmin2": {
         "firstName": "Zaheer",
         "lastName": "Khan",
         "userId": "zkhan",
         "company": "Phylum",
         "userPermission": ["Case Business Analyst","Knowledge Coach","Finance"]
     },
-    "PhytoKnowledgeUser": {
+    "PhylumKnowledgeUser": {
         "firstName": "Sachin",
         "lastName": "Tendulkar",
         "userId": "stendulkar",
