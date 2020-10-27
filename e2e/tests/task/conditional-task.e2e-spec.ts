@@ -738,7 +738,7 @@ describe('Conditional Task', () => {
     });
 
     //asahitya
-    fdescribe('[DRDMV-14897]: [Task] - Opened Template process when clicking on Add Task Template from Case Template', () => {
+    describe('[DRDMV-14897]: [Task] - Opened Template process when clicking on Add Task Template from Case Template', () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             await apiHelper.apiLogin(userData.userId+'@petramco.com', 'Password_1234');
