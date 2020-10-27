@@ -308,7 +308,6 @@ describe('Conditional Task', () => {
             }
             await apiHelper.createAutomatedTaskTemplate(automatedTaskTemplateData);
         });
-
         it('[DRDMV-14902,DRDMV-14903]: [Task] [UI]- Task Flow Process display in Case Template > Task section', async () => {
             //Validating task flow creation with all type of task templates
             await navigationPage.gotoSettingsPage();
@@ -361,7 +360,6 @@ describe('Conditional Task', () => {
             await previewCaseTemplatePage.clickOnBackButton();
             await utilityCommon.closeAllBlades();
         });
-
         it('[DRDMV-14902,DRDMV-14903]: [Task] [UI]- Task Flow Process display in Case Template > Task section', async () => {
             //Validate the Case Template Preview from Quick Case
             await navigationPage.gotoQuickCase();
@@ -390,13 +388,12 @@ describe('Conditional Task', () => {
 
             //Validating if Case Manager can access Task Flow link
             await navigationPage.signOut();
-            await loginPage.login('qtao');
+            await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(draftCaseTemplatePetramcoData.templateName);
             expect(await viewCaseTemplatePage.isTaskFlowBtnEnabled()).toBeTruthy('Task Flow button is enabled for Case Manager'); //Defect
         });
-
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
@@ -741,7 +738,7 @@ describe('Conditional Task', () => {
     });
 
     //asahitya
-    describe('[DRDMV-14897]: [Task] - Opened Template process when clicking on Add Task Template from Case Template', () => {
+    fdescribe('[DRDMV-14897]: [Task] - Opened Template process when clicking on Add Task Template from Case Template', () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             await apiHelper.apiLogin(userData.userId+'@petramco.com', 'Password_1234');

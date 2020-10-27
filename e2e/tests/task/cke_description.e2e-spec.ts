@@ -68,7 +68,7 @@ describe('CKE Description', () => {
     });
 
     //ptidke
-    describe('[DRDMV-22089,DRDMV-22090,DRDMV-22094,DRDMV-22102,DRDMV-22097,DRDMV-22101 ]: Verify case description field after Copy case template', async () => {
+    describe('[DRDMV-22089,DRDMV-22090,DRDMV-22094,DRDMV-22102,DRDMV-22097,DRDMV-22101]: Verify case description field after Copy case template', async () => {
         let randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateName;
         let copyCasetemplate = 'copyCaseTemplate' + randomString;
@@ -565,6 +565,7 @@ describe('CKE Description', () => {
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });

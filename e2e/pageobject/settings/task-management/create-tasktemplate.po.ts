@@ -1,5 +1,4 @@
-import utilityCommon from '../../../utils/utility.common';
-import { $, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../../utils/util.common';
 
 class CreateTaskTemplatePage {
@@ -26,7 +25,6 @@ class CreateTaskTemplatePage {
         ownerGroup: '61278673-8106-419c-83e4-a9e00f12f835',
         saveButton: '[rx-view-component-id="5001f6ea-4438-4485-bdd2-c952a12a1a34"] button',
         cancelButton: '[rx-view-component-id="3f760e5f-70e9-4fbf-8b05-cd7d460f8818"] button',
-        processBundleIdDrpDownForNewProcess: 'e8a2406c-6991-4ea1-bfdf-bde29abe2ef7',
         processBundleIdDrpDownForExistingProcess: '[rx-view-component-id="71e09acc-0077-4e55-9c24-7f6bdc90ce5d"] .d-icon-right-angle_down',
         toggleBox: '0ef8534e-a8bf-40c3-bdc1-a91edde177c4',
         toggleBoxRequiredText: '[rx-view-component-id="0ef8534e-a8bf-40c3-bdc1-a91edde177c4"] label',
@@ -122,7 +120,7 @@ class CreateTaskTemplatePage {
         await utilCommon.selectDropDown(this.selectors.ownerGroup, ownergroup);
     }
 
-    async setNewProcessName(bundle: string, inputValue: string): Promise<void> {
+    async setNewProcessName(inputValue: string): Promise<void> {
         await $(this.selectors.newProcessName).clear();
         await $(this.selectors.newProcessName).sendKeys(inputValue);
     }

@@ -145,7 +145,7 @@ describe('Create Case Task', () => {
             await taskTemplate.setTemplateName(autmationTaskTemplateWithRequiredData);
             await taskTemplate.setTaskSummary(autmationTaskSummaryWithRequiredData);
             await taskTemplate.selectCompanyByName('Petramco')
-            await taskTemplate.setNewProcessName('Business Workflows', `Get Request Status Data1 ${randomStr}`);
+            await taskTemplate.setNewProcessName(`Get Request Status Data1 ${randomStr}`);
             await taskTemplate.selectTemplateStatus('Active');
             await taskTemplate.selectBuisnessUnit('United States Support');
             await taskTemplate.selectOwnerGroup('US Support 1');
@@ -162,7 +162,7 @@ describe('Create Case Task', () => {
             await taskTemplate.setTaskSummary(automationTaskSummaryWithallField);
             await taskTemplate.setTaskDescription('All field get added in this task template');
             await taskTemplate.selectCompanyByName('Petramco');
-            await taskTemplate.setNewProcessName('Business Workflows', `Get Request Status Data2 ${randomStr}`);
+            await taskTemplate.setNewProcessName(`Get Request Status Data2 ${randomStr}`);
             await taskTemplate.selectLabel(menuItem.menuItemName);
             await taskTemplate.selectTaskCategoryTier1('Employee Relations');
             await taskTemplate.selectTaskCategoryTier2('Compensation');
@@ -197,7 +197,7 @@ describe('Create Case Task', () => {
 
             await manageTask.clickTaskLink(automationTaskSummaryWithallField);
             expect(await viewTask.getTaskTypeValue()).toBe('Automated');
-            expect(await viewTask.getProcessNameValue()).toBe(`com.petramco.human-resource:Get Request Status Data2 ${randomStr}`);
+            expect(await viewTask.getProcessNameValue()).toBe(`com.petramco.human resource:Get Request Status Data2 ${randomStr}`);
             expect((await viewTask.getDescriptionValue()).trim()).toBe('All field get added in this task template');
             expect(await viewTask.getLabelValue()).toBe(menuItem.menuItemName);
             expect(await viewTask.getCategoryTier1Value()).toBe('Employee Relations');
@@ -211,7 +211,7 @@ describe('Create Case Task', () => {
             await viewCasePage.openTaskCard(1);
             await manageTask.clickTaskLink(autmationTaskSummaryWithRequiredData);
             expect(await viewTask.getTaskTypeValue()).toBe('Automated');
-            expect(await viewTask.getProcessNameValue()).toBe(`com.petramco.human-resource:Get Request Status Data1 ${randomStr}`);
+            expect(await viewTask.getProcessNameValue()).toBe(`com.petramco.human resource:Get Request Status Data1 ${randomStr}`);
             expect(await viewTask.getDescriptionValue()).toBe('-', "getDescriptionValue");
             expect(await viewTask.getLabelValue()).toBe('-', "getLabelValue");
             expect(await viewTask.getCategoryTier1Value()).toBe('-', "getCategoryTier1Value");
@@ -260,7 +260,7 @@ describe('Create Case Task', () => {
                 "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
                 "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
                 "templateStatus": "Active",
-                "processBundle": "com.petramco.human-resource",
+                "processBundle": "com.petramco.human resource",
                 "processName": `Case Process 1 ${randomStr}`,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
@@ -271,7 +271,7 @@ describe('Create Case Task', () => {
                 "templateName": `AutomatedTaskTemplateInActive ${randomStr}`,
                 "templateSummary": `AutomatedTaskTemplateInActive ${randomStr}`,
                 "templateStatus": "Inactive",
-                "processBundle": "com.petramco.human-resource",
+                "processBundle": "com.petramco.human resource",
                 "processName": `Case Process 2 ${randomStr}`,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
@@ -282,7 +282,7 @@ describe('Create Case Task', () => {
                 "templateName": `AutomatedTaskTemplateDraft ${randomStr}`,
                 "templateSummary": `AutomatedTaskTemplateDraft ${randomStr}`,
                 "templateStatus": "Draft",
-                "processBundle": "com.petramco.human-resource",
+                "processBundle": "com.petramco.human resource",
                 "processName": `Case Process 3 ${randomStr}`,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
@@ -360,7 +360,7 @@ describe('Create Case Task', () => {
     });
 
     //ankagraw
-    describe('[DRDMV-12039,DRDMV-12040,DRDMV-12009,DRDMV-12084]: [ Task ] - Verify Associated menu for Task will show global configuration values as well	 ', async () => {
+    describe('[DRDMV-12039,DRDMV-12040,DRDMV-12009,DRDMV-12084]: [ Task ] - Verify Associated menu for Task will show global configuration values as well', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let TaskTemplate = 'Manual task' + randomStr;
         let TaskSummary = 'Summary' + randomStr;
@@ -809,7 +809,7 @@ describe('Create Case Task', () => {
                 "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
                 "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
                 "templateStatus": "Active",
-                "processBundle": "com.petramco.human-resource",
+                "processBundle": "com.petramco.human resource",
                 "processName": `Case Process 1 ${randomStr}`,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
@@ -1485,7 +1485,7 @@ describe('Create Case Task', () => {
         });
     });
 
-    describe('[DRDMV-1579]: [Edit Task] Update summary, status, description and assignment', async () => {
+    fdescribe('[DRDMV-1579]: [Edit Task] Update summary, status, description and assignment', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let casetemplatePetramco, templateData, externaltemplateData, automatedtemplateData;
         let month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];

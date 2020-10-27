@@ -83,7 +83,7 @@ describe('Dynamic Hidden Data', () => {
             await createTaskTemplate.setTaskSummary(automatedTaskSummary1);
             await createTaskTemplate.setTaskDescription('Description in manual task');
             await createTaskTemplate.selectCompanyByName('Petramco');
-            await createTaskTemplate.setNewProcessName('Business Workflows', processName);
+            await createTaskTemplate.setNewProcessName(processName);
             await createTaskTemplate.clickOnSaveTaskTemplate();
             await utilCommon.closePopUpMessage();
         });

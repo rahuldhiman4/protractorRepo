@@ -901,7 +901,7 @@ describe('Preset Filter Funcational Verification', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-23502]: After back to screen custom filter values retain same and also sorting retain same', async () => {
+    fdescribe('[DRDMV-23502]: After back to screen custom filter values retain same and also sorting retain same', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase;
         let adhoctaskId;
@@ -920,7 +920,7 @@ describe('Preset Filter Funcational Verification', () => {
                 "Assignee": "qkatawazi",
             }
             await apiHelper.apiLogin('qkatawazi');
-            newCase = await apiHelper.createCase(caseData);
+            //newCase = await apiHelper.createCase(caseData);
 
             // Create Knowledge
             let articleData = {
@@ -933,13 +933,14 @@ describe('Preset Filter Funcational Verification', () => {
                 "assignee": "qkatawazi"
             }
             articleData.title = knowledgeTitle;
-            knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
+            //knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         });
 
         it('[DRDMV-23502]: Verify that Applied Custom Preset filter and sorting is retained when the user navigates back to Case Console from any other page.', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilterPreset();
+            await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Company', 'Petramco', "default");
+            await utilityGrid.clearFilter();
             await utilityGrid.saveFilter(filtername1);
             expect(await utilityGrid.isAppliedFilterMatches(['Company: Petramco'])).toBeTruthy('Applied filter is missing');
 
