@@ -123,7 +123,6 @@ export class GridOperation {
     }
 
     async searchAndOpenHyperlink(id: string, guid?: string) {
-        await browser.sleep(30000); // workaround for performance issue
         await this.searchOnGridConsole(id, guid);
         await element(by.linkText(id)).click();
     }
@@ -260,6 +259,7 @@ export class GridOperation {
     }
 
     async searchOnGridConsole(searchValue: string, guid?: string): Promise<void> {
+        await browser.sleep(30000); // workaround for performance issue
         let searchBoxInput: string = this.selectors.searchInput;
         let gridRefreshButton: string = this.selectors.refreshButton;
         let gridSearchIcon: string = this.selectors.searchIcon;
