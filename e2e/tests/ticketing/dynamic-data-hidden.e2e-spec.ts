@@ -252,6 +252,9 @@ describe('Dynamic Hidden Data', () => {
             await updateStatusBladePo.clickCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
     });
 
     describe('[DRDMV-21452]: Verify the behaviour when add confidential dynamic field and hidden dynamic field', async () => {
@@ -316,12 +319,14 @@ describe('Dynamic Hidden Data', () => {
             await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePo.isDynamicFieldDisplayed('Field1OutsideDRDMV21452')).toBeFalsy();
         });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
     });
 
     //ankagraw
     describe('[DRDMV-21422,DRDMV-21414]: create a case with task template having hidden fields, if the field is later updated to show field, then cases created earlier should not show up earlier the hidden fields.', async () => {
         let caseId, templateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-
         beforeAll(async () => {
             templateData = {
                 "templateName": `manualTaskTemplate ${randomStr}`,
@@ -340,7 +345,7 @@ describe('Dynamic Hidden Data', () => {
         });
         it('[DRDMV-21422,DRDMV-21414]: Create a case and add task on it', async () => {
             await navigationPage.gotoCreateCase();
-            await createCasePage.selectRequester('fritz');
+            await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Summary' + randomStr);
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
@@ -379,6 +384,9 @@ describe('Dynamic Hidden Data', () => {
             await editCasePo.setDynamicFieldValue('Field1OutsideDRDMV21415', 'test 1');
             await editCasePo.clickSaveCase();
             expect(await viewCasePo.getValueOfDynamicFields('Field1OutsideDRDMV21415')).toBe('test 1');
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
         });
     });
 
@@ -445,6 +453,9 @@ describe('Dynamic Hidden Data', () => {
             await editCasePo.clickSaveCase();
             expect(await viewCasePo.getValueOfDynamicFields('Field1OutsideDRDMV21415')).toBe('test 1');
         });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
     });
 
     //ankagraw
@@ -508,6 +519,9 @@ describe('Dynamic Hidden Data', () => {
             await editCasePo.clickOnAssignToMe();
             await editCasePo.clickSaveCase();
             expect(await viewCasePo.getValueOfDynamicFields('FieldGroup1')).toBe('test 1');
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
         });
     });
     //ankagraw
@@ -573,6 +587,9 @@ describe('Dynamic Hidden Data', () => {
             await editCasePo.clickSaveCase();
             expect(await viewCasePo.getValueOfDynamicFields('FieldGroup1')).toBe('test 1');
         });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
     });
 
     //ankagraw
@@ -622,6 +639,9 @@ describe('Dynamic Hidden Data', () => {
             expect(await viewCasePo.isDynamicFieldDisplayed('Attachment1 Field')).toBeTruthy();
             expect(await viewCasePo.isDynamicFieldDisplayed('Date1 and time1')).toBeTruthy();
             expect(await viewCasePo.isDynamicFieldDisplayed('time1')).toBeTruthy();
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
         });
     });
 
@@ -679,6 +699,9 @@ describe('Dynamic Hidden Data', () => {
             await viewTaskPo.clickOnViewCase();
             await viewCasePo.getCaseID();
             expect(await viewCasePo.isDynamicFieldDisplayed('Field1OutsideDRDMV21415')).toBeTruthy();
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
         });
     });
 
@@ -779,6 +802,9 @@ describe('Dynamic Hidden Data', () => {
             expect(await activityTabPo.isTextPresentInActivityLog("5555555")).toBeTruthy();
             expect(await activityTabPo.isTextPresentInActivityLog("FieldGroupOutside1")).toBeFalsy();
 
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
         });
     });
 
@@ -882,6 +908,9 @@ describe('Dynamic Hidden Data', () => {
             expect(await viewCasePo.isDynamicFieldDisplayed('externalTime')).toBeTruthy();
             expect(await viewCasePo.isDynamicFieldDisplayed('dynamicList')).toBeTruthy();
             expect(await viewCasePo.isDynamicFieldDisplayed('externalAttachment1')).toBeTruthy();
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
         });
     });
 
@@ -1095,16 +1124,16 @@ describe('Dynamic Hidden Data', () => {
         });
         it('[DRDMV-13136]: Validate the dymaic field with values', async () => {
             //verify fields shoule be empty values on case view
-            let arr: string[] = ['text1', 'text2', 'text3', 'text3', 'text4', 'text5', 'text6', 'text7', 'text8', 'text9', 'text10', 'text11', 'text12', 'text13', 'text14','text15', 'attachment1', 'attachment2', 'attachment3', 'attachment4', 'attachment5', 'attachment6', 'attachment7', 'attachment8', 'attachment9', 'attachment10'];
+            let arr: string[] = ['text1', 'text2', 'text3', 'text3', 'text4', 'text5', 'text6', 'text7', 'text8', 'text9', 'text10', 'text11', 'text12', 'text13', 'text14', 'text15', 'attachment1', 'attachment2', 'attachment3', 'attachment4', 'attachment5', 'attachment6', 'attachment7', 'attachment8', 'attachment9', 'attachment10'];
             for (let i = 0; i < arr.length; i++) {
                 expect(await viewCasePo.isDynamicFieldDisplayed(arr[i])).toBeTruthy('field not present');
             }
         });
         it('[DRDMV-13136]: Validate the dymaic field with values', async () => {
             //verify fields shoule be empty values on case view
-            let arr: string[] = ['boolean1', 'boolean2', 'boolean3', 'boolean4', 'boolean4', 'boolean5', 'boolean6', 'boolean7', 'boolean8', 'boolean9', 'boolean10','boolean12','boolean12','boolean13','boolean14','boolean15', 'time1', 'time2', 'time3', 'time4', 'time5', 'time6', 'time7', 'time8', 'time9', 'time10'];
+            let arr: string[] = ['boolean1', 'boolean2', 'boolean3', 'boolean4', 'boolean4', 'boolean5', 'boolean6', 'boolean7', 'boolean8', 'boolean9', 'boolean10', 'boolean12', 'boolean12', 'boolean13', 'boolean14', 'boolean15', 'time1', 'time2', 'time3', 'time4', 'time5', 'time6', 'time7', 'time8', 'time9', 'time10'];
             for (let i = 0; i < arr.length; i++) {
-                expect(await viewCasePo.isDynamicFieldDisplayed(arr[i])).toBeTruthy(arr[i]+'field not present');
+                expect(await viewCasePo.isDynamicFieldDisplayed(arr[i])).toBeTruthy(arr[i] + 'field not present');
             }
 
         });
@@ -1126,14 +1155,14 @@ describe('Dynamic Hidden Data', () => {
             //verify fields shoule be empty values on case view
             let arr: string[] = ['date1', 'date2', 'date3', 'date4', 'date5', 'date6', 'date7', 'date8', 'date9', 'date10', 'date11', 'date12', 'date13', 'date14', 'date15', 'datetime1', 'datetime2', 'datetime3', 'datetime4', 'datetime5', 'datetime6', 'datetime7', 'datetime8', 'datetime9', 'datetime10', 'datetime11', 'datetime12', 'datetime13', 'datetime14', 'datetime15'];
             for (let i = 0; i < arr.length; i++) {
-                expect(await viewCasePo.isDynamicFieldDisplayed(arr[i])).toBeTruthy(arr[i]+'field not present');
+                expect(await viewCasePo.isDynamicFieldDisplayed(arr[i])).toBeTruthy(arr[i] + 'field not present');
             }
         });
         it('[DRDMV-13136]: Validate the dymaic field with values', async () => {
             //verify fields shoule be empty values on case view
             let arr: string[] = ['number1', 'number2', 'number3', 'number4', 'number5', 'number6', 'number7', 'number8', 'number9', 'number10', 'number11', 'number12', 'number13', 'number14', 'number15'];
             for (let i = 0; i < arr.length; i++) {
-                expect(await viewCasePo.isDynamicFieldDisplayed(arr[i])).toBeTruthy(arr[i]+'field not present');
+                expect(await viewCasePo.isDynamicFieldDisplayed(arr[i])).toBeTruthy(arr[i] + 'field not present');
             }
         });
         it('[DRDMV-13136]: Validate the dymaic field with values', async () => {

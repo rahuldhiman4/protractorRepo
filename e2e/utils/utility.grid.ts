@@ -33,6 +33,7 @@ export class GridOperations {
     }
 
     async searchRecord(searchValue: string, guid?: string): Promise<void> {
+        await browser.sleep(30000); // workaround for performance issue
         let searchTextBoxLocator: string = this.selectors.searchTextBox;
         if (guid) { searchTextBoxLocator = `[rx-view-component-id="${guid}"] ` + searchTextBoxLocator; }
         await $(searchTextBoxLocator).clear();
