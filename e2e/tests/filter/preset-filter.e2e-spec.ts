@@ -172,7 +172,7 @@ describe('Preset Filter Funcational Verification', () => {
         });
 
         it('[DRDMV-23484]: Add filter on already applied filter', async () => {
-            await utilityGrid.clearFilterPreset();
+            await utilityGrid.clearFilter();
             await utilityGrid.addFilter("Case ID", newCase.displayId, "default");
             let openArticle: string[] = [`Case ID: ${newCase.displayId}`];
             expect(await utilityGrid.isAppliedFilterMatches(openArticle)).toBeTruthy();
@@ -254,7 +254,7 @@ describe('Preset Filter Funcational Verification', () => {
         });
 
         it('[DRDMV-23485]: Custom filter should retain on case console after delete custom preset filter', async () => {
-            await utilityGrid.clearFilterPreset();
+            await utilityGrid.clearFilter();
             await utilityGrid.addFilter("Summary", `Summary DRDMV23485${randomStr}`, "default");
             await utilityGrid.addFilter('Case ID', newCase.displayId, "default");
 
@@ -284,7 +284,7 @@ describe('Preset Filter Funcational Verification', () => {
         });
 
         it('[DRDMV-23485]: Custom filter should retain on task console after delete custom preset filter', async () => {
-            await utilityGrid.clearFilterPreset();
+            await utilityGrid.clearFilter();
             await utilityGrid.addFilter("Summary", `Summary DRDMV23485${randomStr}`, "default");
             await utilityGrid.addFilter('Status', 'Staged', "default");
 
@@ -305,7 +305,7 @@ describe('Preset Filter Funcational Verification', () => {
 
         it('[DRDMV-23485]: Custom filter should retain on knowledge article console after delete custom preset filter', async () => {
             await navigationPage.gotoKnowledgeConsole();
-            await utilityGrid.clearFilterPreset();
+            await utilityGrid.clearFilter();
             await utilityGrid.addFilter("Knowledge Set", 'HR', "default");
             await utilityGrid.addFilter('Modified By', 'qkatawazi', "default");
             await utilityGrid.addFilter('Article ID', knowledgeArticleData.displayId, "default");
@@ -352,7 +352,7 @@ describe('Preset Filter Funcational Verification', () => {
 
         it('[DRDMV-23485]: Try adding the same filter with same qualification but with different users.', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilterPreset();
+            await utilityGrid.clearFilter();
             await utilityGrid.addFilter("Summary", `Summary DRDMV23485${randomStr}`, "default");
             await utilityGrid.addFilter('Company', 'Petramco', "default");
             await utilityGrid.addFilter('Case ID', newCase.displayId, "default");
@@ -365,7 +365,7 @@ describe('Preset Filter Funcational Verification', () => {
             await utilityGrid.clearFilter();
             await navigationPage.signOut();
             await loginPage.login('qdu');
-            await utilityGrid.clearFilterPreset();
+            await utilityGrid.clearFilter();
             await utilityGrid.addFilter("Summary", `Summary DRDMV23485${randomStr}`, "default");
             await utilityGrid.addFilter('Company', 'Petramco', "default");
             await utilityGrid.addFilter('Case ID', newCase2.displayId, "default");
@@ -407,7 +407,7 @@ describe('Preset Filter Funcational Verification', () => {
 
         it('[DRDMV-23489]: Update custom preset filter with adding more qualifications', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilterPreset();
+            await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Case ID', newCase.displayId, "default");
             await utilityGrid.saveFilter(filtername1);
             expect(await utilityGrid.isAppliedFilterMatches([`Case ID: ${newCase.displayId}`])).toBeTruthy('Applied filter is missing');
@@ -422,7 +422,7 @@ describe('Preset Filter Funcational Verification', () => {
 
         });
         it('[DRDMV-23489]: Add multiple custom preset filter with same name', async () => {
-            await utilityGrid.clearFilterPreset();
+            await utilityGrid.clearFilter();
             await utilityGrid.addFilter("Case ID", newCase.displayId, "default");
             expect(await utilityGrid.isPresetFilterNameDisplayed(filtername1)).toBeTruthy('FailureMsg: Preset filter is missing');
             expect(await utilityGrid.isAppliedFilterMatches([`Case ID: ${newCase.displayId}`])).toBeTruthy('Applied filter is missing');
@@ -469,7 +469,7 @@ describe('Preset Filter Funcational Verification', () => {
         });
 
         it('[DRDMV-23490]: Verify that users can create shared Preset filters and Custom Preset filters with the same name.', async () => {
-            await utilityGrid.clearFilterPreset();
+            await utilityGrid.clearFilter();
             await utilityGrid.deleteCustomPresetFilter('My Open Cases');
             await utilityGrid.applyPresetFilter('My Open Cases');
             expect(await utilityGrid.isAppliedFilterMatches(['My Open Cases'])).toBeTruthy('Applied filter is missing');
@@ -487,7 +487,7 @@ describe('Preset Filter Funcational Verification', () => {
             expect(await utilityGrid.getCountPresetFilter('My Open Cases')).toEqual(2);
         });
         it('[DRDMV-23490]: Verify if a user updates the name of the existing filter', async () => {
-            await utilityGrid.clearFilterPreset();
+            await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Case ID', newCase.displayId, "default");
             await utilityGrid.saveFilter(filtername1);
 
@@ -552,7 +552,7 @@ describe('Preset Filter Funcational Verification', () => {
         });
 
         it('[DRDMV-23491]: Verify all the Captions and Dynamic filters available on Case Console', async () => {
-            await utilityGrid.clearFilterPreset();
+            await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Case ID', newCase.displayId, "default");
             await utilityGrid.saveFilter(filtername1);
             await utilityGrid.clickOnFilterButton();
@@ -661,7 +661,7 @@ describe('Preset Filter Funcational Verification', () => {
         });
 
         it('[DRDMV-23491]: Verify all the Captions and Dynamic filters available on Task Console', async () => {
-            await utilityGrid.clearFilterPreset();
+            await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Task ID', adhoctaskId, "default");
             await utilityGrid.saveFilter(filtername1);
             await utilityGrid.clickOnFilterButton();
@@ -751,7 +751,7 @@ describe('Preset Filter Funcational Verification', () => {
 
         it('[DRDMV-23491]: Verify all the Captions and Dynamic filters available on the Knowledge Article Console.', async () => {
             await navigationPage.gotoKnowledgeConsole();
-            await utilityGrid.clearFilterPreset();
+            await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Article ID', knowledgeArticleData.displayId, "default");
             await utilityGrid.saveFilter(filtername1);
             await utilityGrid.clickOnFilterButton();
@@ -869,7 +869,7 @@ describe('Preset Filter Funcational Verification', () => {
 
         it('[DRDMV-23498]: Verify mandatary fields with verify validation on edit custom fields', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilterPreset();
+            await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Case ID', newCase.displayId, "default");
             await utilityGrid.saveFilter(filtername1);
             await utilityGrid.clickOnFilterButton();
@@ -910,7 +910,7 @@ describe('Preset Filter Funcational Verification', () => {
         let filtername1 = 'filtername1' + randomStr;
 
         beforeAll(async () => {
-            //  Create Case1
+            //Create Case1
             let caseData = {
                 "Requester": "qdu",
                 "Summary": "Test case for DRDMV23498" + randomStr,
@@ -938,11 +938,10 @@ describe('Preset Filter Funcational Verification', () => {
 
         it('[DRDMV-23502]: Verify that Applied Custom Preset filter and sorting is retained when the user navigates back to Case Console from any other page.', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilterPreset();
+            await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Company', 'Petramco', "default");
             await utilityGrid.saveFilter(filtername1);
             expect(await utilityGrid.isAppliedFilterMatches(['Company: Petramco'])).toBeTruthy('Applied filter is missing');
-
             await utilityGrid.updateCustomPresetFilter('Assignee', 'Qadim Katawazi', 'default', filtername1);
             await utilityGrid.updateCustomPresetFilter('Assigned Group', 'US Support 3', 'default', filtername1);
             await utilityGrid.updateCustomPresetFilter('Requester', 'Qiang Du', 'default', filtername1);
@@ -972,7 +971,7 @@ describe('Preset Filter Funcational Verification', () => {
         });
 
         it('[DRDMV-23502]: Verify that Applied Custom Preset filter and sorting is retained when the user navigates back to Task Console from any other page', async () => {
-            await utilityGrid.clearFilterPreset();
+            await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Status', 'Staged', "default");
             expect(await utilityGrid.isAppliedFilterMatches(['Status: Staged'])).toBeTruthy('Applied filter is missing');
             await utilityGrid.saveFilter(filtername1);
@@ -986,7 +985,6 @@ describe('Preset Filter Funcational Verification', () => {
             expect(await utilityGrid.isGridColumnSorted('Task ID', 'desc')).toBeTruthy('Column not sorted on case console page');
             let taskId1 = await utilityGrid.getFirstGridRecordColumnValue('Task ID');
 
-            await navigationPage.gotoCaseConsole();
             await navigationPage.gotoTaskConsole();
             expect(await utilityGrid.isAppliedFilterMatches(['Company: Petramco', 'Assignee: Qadim Katawazi', `Assigned Group: US Support 3`, 'Requester: Qiang Du', 'Task Type: Manual'])).toBeTruthy('Applied filter is missing');
 
@@ -998,7 +996,7 @@ describe('Preset Filter Funcational Verification', () => {
         it('[DRDMV-23502]: Verify that Applied Custom Preset filter and sorting is retained when the user navigates back to Knowledge Article Console from any other page', async () => {
             await navigationPage.gotoKnowledgeConsole();
 
-            await utilityGrid.clearFilterPreset();
+            await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Company', 'Petramco', "default");
             await utilityGrid.saveFilter(filtername1);
             expect(await utilityGrid.isAppliedFilterMatches(['Company: Petramco'])).toBeTruthy('Applied filter is missing');
@@ -1045,7 +1043,7 @@ describe('Preset Filter Funcational Verification', () => {
 
         it('[DRDMV-23506]: Verify user unable to filter on case console of knowledge article properties', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilterPreset();
+            await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Case ID', newCase.displayId, "default");
             await utilityGrid.saveFilter(filtername1);
             expect(await utilityGrid.isAppliedFilterMatches([`Case ID: ${newCase.displayId}`])).toBeTruthy('Applied filter is missing');
