@@ -116,20 +116,22 @@
         "firstName": "Ashish",
         "lastName": "Nehra",
         "userId": "anehra",
-        "company": "Phyto",
-        "userPermission": ["Case Agent","Case Business Analyst","Knowledge Coach"]
+        "company": "Phylum",
+        "userPermission": ["Case Business Analyst","Knowledge Coach","Finance"]
     },
     "PhytoCaseAdmin2": {
         "firstName": "Zaheer",
         "lastName": "Khan",
         "userId": "zkhan",
-        "company": "Phyto"
+        "company": "Phylum",
+        "userPermission": ["Case Business Analyst","Knowledge Coach","Finance"]
     },
     "PhytoKnowledgeUser": {
         "firstName": "Sachin",
         "lastName": "Tendulkar",
         "userId": "stendulkar",
-        "userPermission": ["Case Agent","Knowledge Coach"]
+        "company": "Phylum",
+        "userPermission": ["Case Agent","Knowledge Coach","Finance"]
     },
 
     "AlienwareCaseAdmin1": {
