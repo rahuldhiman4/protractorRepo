@@ -123,7 +123,7 @@ export class GridOperation {
     }
 
     async searchAndOpenHyperlink(id: string, guid?: string) {
-        await browser.sleep(15000); // workaround for performance issue
+        await browser.sleep(30000); // workaround for performance issue
         await this.searchOnGridConsole(id, guid);
         await element(by.linkText(id)).click();
     }
