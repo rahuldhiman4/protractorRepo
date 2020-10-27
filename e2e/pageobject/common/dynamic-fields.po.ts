@@ -26,7 +26,8 @@ class DynamicField {
         downArrow: '.d-icon-right-angle_down',
         searchField: '.ac-input-search-fields',
         deleteButton: '[class="d-icon-left-cross header-icon"]',
-        attachmentField: 'input[type="file"]'
+        attachmentField: 'input[type="file"]',
+        columnValue: '.column-name',
     }
 
     async clickOnDynamicField(): Promise<void> {
@@ -102,7 +103,7 @@ class DynamicField {
     }
 
     async isFieldDisplayedInFieldSection(fieldName: string): Promise<boolean> {
-        return await $(`.column-pill span[title=${fieldName}]`).isDisplayed();
+       return await element(By.cssContainingText(this.selectors.columnValue,fieldName)).isDisplayed();
     }
 
     async removeField(fieldName: string): Promise<void> {
