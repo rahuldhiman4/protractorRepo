@@ -28,7 +28,7 @@ describe('Date and Time Preset Filter', () => {
             expect(await dateTimeSelectorPo.getSelectedStartDateTimestamp()).toBe('Not selected');
             expect(await dateTimeSelectorPo.getSelectedEndDateTimestamp()).toBe('Not selected');
             let createdDate = new Date();
-            let month = ["Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "September", "Oct", "Nov", "Dec"];
+            let month = ["Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"];
             let monthValue: string = month[createdDate.getMonth()];
             expect(await dateTimeSelectorPo.getMonthFromCaleder()).toBe(monthValue);
             expect(await dateTimeSelectorPo.isAllDaysPresentInWeek()).toBeTruthy();
@@ -56,7 +56,7 @@ describe('Date and Time Preset Filter', () => {
             await utilityGrid.clearFilter();
             await utilityGrid.clickFilterField("Created Date");
             await dateTimeSelectorPo.clickEndDateTab();
-            await dateTimeSelectorPo.selectPreviousMonthUsingAngularIcon("August");
+            await dateTimeSelectorPo.selectPreviousMonthUsingAngularIcon("Aug");
             await dateTimeSelectorPo.selectPreviousYearUsingAngularIcon(2017);
             await dateTimeSelectorPo.selectDateOnCalender(23);
             await $('body').sendKeys(protractor.Key.ESCAPE);
@@ -74,7 +74,7 @@ describe('Date and Time Preset Filter', () => {
             // Validate start and End date
             await utilityGrid.clearFilter();
             await utilityGrid.clickFilterField("Modified Date");
-            await dateTimeSelectorPo.selectPreviousMonthUsingAngularIcon("September");
+            await dateTimeSelectorPo.selectPreviousMonthUsingAngularIcon("Sep");
             await dateTimeSelectorPo.selectPreviousYearUsingAngularIcon(2015);
             await dateTimeSelectorPo.selectDateOnCalender(26);
             let endDate = new Date();
@@ -84,7 +84,7 @@ describe('Date and Time Preset Filter', () => {
             let endDateexactTime = endDateTime1[0] + ":" + endDateTime1[1] + " " + endDatetimediffTime[1];
             let completeEndDate = 'Modified Date: Sep 26, 2015 ' + endDateexactTime;
             await dateTimeSelectorPo.clickEndDateTab();
-            await dateTimeSelectorPo.selectNextMonthUsingAngularIcon("September");
+            await dateTimeSelectorPo.selectNextMonthUsingAngularIcon("Sep");
             await dateTimeSelectorPo.selectNextYearUsingAngularIcon(2017);
             await dateTimeSelectorPo.selectDateOnCalender(11);
             await $('body').sendKeys(protractor.Key.ESCAPE);
@@ -103,7 +103,7 @@ describe('Date and Time Preset Filter', () => {
             // Validate start date with Time
             await utilityGrid.clearFilter();
             await utilityGrid.clickFilterField("Target Date");
-            await dateTimeSelectorPo.selectPreviousMonthUsingAngularIcon("September");
+            await dateTimeSelectorPo.selectPreviousMonthUsingAngularIcon("Sep");
             await dateTimeSelectorPo.selectPreviousYearUsingAngularIcon(2015);
             await dateTimeSelectorPo.selectDateOnCalender(17);
             await dateTimeSelectorPo.selectTimeToggle();
@@ -118,7 +118,7 @@ describe('Date and Time Preset Filter', () => {
             await utilityGrid.clearFilter();
             await utilityGrid.clickFilterField("Target Date");
             await dateTimeSelectorPo.clickEndDateTab();
-            await dateTimeSelectorPo.selectPreviousMonthUsingAngularIcon("February");
+            await dateTimeSelectorPo.selectPreviousMonthUsingAngularIcon("Feb");
             await dateTimeSelectorPo.selectPreviousYearUsingAngularIcon(2016);
             await dateTimeSelectorPo.selectDateOnCalender(21);
             await dateTimeSelectorPo.selectTimeToggle();
@@ -135,7 +135,7 @@ describe('Date and Time Preset Filter', () => {
             // Validate start and End date with Time
             await utilityGrid.clearFilter();
             await utilityGrid.clickFilterField("Created Date");
-            await dateTimeSelectorPo.selectPreviousMonthUsingAngularIcon("September");
+            await dateTimeSelectorPo.selectPreviousMonthUsingAngularIcon("Sep");
             await dateTimeSelectorPo.selectPreviousYearUsingAngularIcon(2015);
             await dateTimeSelectorPo.selectDateOnCalender(17);
             await dateTimeSelectorPo.selectTimeToggle();
@@ -145,7 +145,7 @@ describe('Date and Time Preset Filter', () => {
             await dateTimeSelectorPo.clickMeridianValue("AM");
             await dateTimeSelectorPo.selectTimeToggle();
             await await dateTimeSelectorPo.clickEndDateTab();
-            await dateTimeSelectorPo.selectPreviousMonthUsingAngularIcon("February");
+            await dateTimeSelectorPo.selectPreviousMonthUsingAngularIcon("Feb");
             await dateTimeSelectorPo.selectNextYearUsingAngularIcon(2016);
             await dateTimeSelectorPo.selectDateOnCalender(17);
             await dateTimeSelectorPo.selectTimeToggle();
@@ -162,7 +162,7 @@ describe('Date and Time Preset Filter', () => {
             // Validate start and End date with Time
             await utilityGrid.clearFilter();
             await utilityGrid.clickFilterField("Created Date");
-            await dateTimeSelectorPo.selectPreviousMonthUsingAngularIcon("September");
+            await dateTimeSelectorPo.selectPreviousMonthUsingAngularIcon("Sep");
             await dateTimeSelectorPo.selectPreviousYearUsingAngularIcon(2015);
             await dateTimeSelectorPo.selectDateOnCalender(17);
             await dateTimeSelectorPo.selectTimeToggle();
@@ -172,7 +172,7 @@ describe('Date and Time Preset Filter', () => {
             await dateTimeSelectorPo.clickMeridianValue("AM");
             await dateTimeSelectorPo.selectTimeToggle();
             await await dateTimeSelectorPo.clickEndDateTab();
-            await dateTimeSelectorPo.selectPreviousMonthUsingAngularIcon("September");
+            await dateTimeSelectorPo.selectPreviousMonthUsingAngularIcon("Sep");
             await dateTimeSelectorPo.selectPreviousYearUsingAngularIcon(2015);
             await dateTimeSelectorPo.selectDateOnCalender(17);
             await dateTimeSelectorPo.selectTimeToggle();
@@ -186,7 +186,7 @@ describe('Date and Time Preset Filter', () => {
             await utilityGrid.clearFilter();
         });
     });
-
+    //contains KA
     describe('[DRDMV-23517,DRDMV-23518]: Verify records are fetched on knowledge console Knowledge set, Version, template Name and Assigned group combinations', async () => {
         it('[DRDMV-23517,DRDMV-23518]: Verify records are fetched on knowledge console Knowledge set, Version, template Name and Assigned group combinations', async () => {
             await navigationPage.gotoKnowledgeConsole();
@@ -251,9 +251,9 @@ describe('Date and Time Preset Filter', () => {
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
                 "Assignee": "qkatawazi",
-                "Category Tier 1": "Applications",
-                "Category Tier 2": "Social",
-                "Category Tier 3": "Chatter",
+                "Category Tier 1": "Employee Relations",
+                "Category Tier 2": "Compensation",
+                "Category Tier 3": "Bonus",
                 "Priority": "Low",
                 "Contact": "qfeng",
                 "Status": "2000",
@@ -264,10 +264,10 @@ describe('Date and Time Preset Filter', () => {
             }
 
             caseDataDWp =
-                {
-                    "requester": "qtao",
-                    "summary": "Testing case creation with minimal input data, Human Resource"
-                }
+            {
+                "requester": "qtao",
+                "summary": "Testing case creation with minimal input data, Human Resource"
+            }
 
             await apiHelper.apiLogin("qkatawazi")
             caseId = await apiHelper.createCase(caseData);
@@ -280,7 +280,7 @@ describe('Date and Time Preset Filter', () => {
             expect(await utilityGrid.isGridRecordPresent(caseIdForDWP.displayId)).toBeTruthy();
             await utilityGrid.clearFilter();
             await utilityGrid.clickFilterField("Target Date");
-            await dateTimeSelectorPo.selectPreviousMonthUsingAngularIcon("october");
+            await dateTimeSelectorPo.selectPreviousMonthUsingAngularIcon("Aug");
             await dateTimeSelectorPo.selectPreviousYearUsingAngularIcon(2020);
             await dateTimeSelectorPo.selectDateOnCalender(13);
             await dateTimeSelectorPo.selectTimeToggle();
@@ -288,30 +288,31 @@ describe('Date and Time Preset Filter', () => {
             await dateTimeSelectorPo.setMinute(14);
             await dateTimeSelectorPo.clickMeridianValue("PM");
             await $('body').sendKeys(protractor.Key.ESCAPE);
-            await utilityGrid.addFilter("Priority", "Low", "test");
+            await utilityGrid.clickRefreshIcon();
+            await utilityGrid.addFilter("Priority", "Low", "checkbox");
             expect(await utilityGrid.isGridRecordPresent(caseId.displayId)).toBeTruthy();
         });
         it('[DRDMV-23493]: Verify records are fetched on case console Target date and Request ID combinations', async () => {
             await utilityGrid.clearFilter();
-            await utilityGrid.addFilter("Category Tier 1", "Applications", "test");
-            await utilityGrid.addFilter("Category Tier 2", "Social", "test");
-            await utilityGrid.addFilter("Category Tier 3", "Chatter", "test");
-            await utilityGrid.addFilter("Company", "Petramco", "test");
-            await utilityGrid.addFilter("Status", "Assigned", "test");
+            await utilityGrid.addFilter("Category Tier 1", "Employee Relations", "text");
+            await utilityGrid.addFilter("Category Tier 2", "Compensation", "text");
+            await utilityGrid.addFilter("Category Tier 3", "Bonus", "text");
+            await utilityGrid.addFilter("Company", "Petramco", "text");
+            await utilityGrid.addFilter("Status", "Assigned", "text");
             await utilityGrid.addFilter("Priority", "Low", "checkbox");
             await utilityGrid.addFilter("Summary", "Test123", "test");
-            await utilityGrid.addFilter("Assigned Group", "US Support 3", "test");
-            await utilityGrid.addFilter("Assignee", "Qadim Katawazi", "test");
+            await utilityGrid.addFilter("Assigned Group", "US Support 3", "text");
+            await utilityGrid.addFilter("Assignee", "Qadim Katawazi", "text");
 
         });
         it('[DRDMV-23493]: Verify records are fetched on case console Target date and Request ID combinations', async () => {
-            await utilityGrid.addFilter("Requester", "Qianru Tao", "test");
-            await utilityGrid.addFilter("Source", "Agent", "test");
-            await utilityGrid.addFilter("Label", menuItemName, "test");
+            await utilityGrid.addFilter("Requester", "Qianru Tao", "text");
+            await utilityGrid.addFilter("Source", "Agent", "text");
+            await utilityGrid.addFilter("Label", menuItemName, "text");
             await utilityGrid.addFilter("SLM Status", "Service Targets Not Attached", "checkbox");
-            await utilityGrid.addFilter("Assignee Login Name", "qkatawazi", "test");
-            await utilityGrid.addFilter("Region", "North America", "test");
-            await utilityGrid.addFilter("Case Site", "Austin", "test");
+            await utilityGrid.addFilter("Assignee Login Name", "qkatawazi", "text");
+            await utilityGrid.addFilter("Region", "North America", "text");
+            await utilityGrid.addFilter("Case Site", "Austin", "text");
             await utilityGrid.addFilter("ID", caseId.id, "test");
             expect(await utilityGrid.isGridRecordPresent(caseId.displayId)).toBeTruthy();
         });
@@ -319,7 +320,7 @@ describe('Date and Time Preset Filter', () => {
             await utilityGrid.clearFilter();
         });
     });
-
+    //Pass
     describe('[DRDMV-23496]: Verify records are fetched on task console with Targeted Date, Priority and status combinations', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase1, tempIdLow, tempIdMedium;
@@ -332,9 +333,9 @@ describe('Date and Time Preset Filter', () => {
                 "supportGroup": "US Support 3",
                 "assignee": "qkatawazi",
                 "priority": "Low",
-                "category1": "Applications",
-                "category2": "Social",
-                "category3": "Chatter",
+                "category1": "Employee Relations",
+                "category2": "Compensation",
+                "category3": "Bonus",
                 "targetDate": "2020-10-13T11:44:00.000Z",
             };
             let caseData1 = {

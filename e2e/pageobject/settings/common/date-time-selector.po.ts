@@ -6,7 +6,7 @@ class DateTimeSelector {
         previousMonthSelector: 'button[data-testid*="prevMonth"]',
         invalidData: '.has-danger .form-control-feedback',
         nextMonthSelector: 'button[data-testid*="nextMonth"]',
-        monthLabel: '[aria-label="Select month"].a3t-calendar--controls-info',
+        monthLabel: '[aria-label="Select month"].a3t-calendar--controls-info div',
         previousYearSelector: 'button[data-testid*="prevYear"]',
         nextYearSelector: 'button[data-testid*="nextYear"]',
         yearLabel: '[aria-label="Select year"].a3t-calendar--controls-info div',
@@ -28,27 +28,30 @@ class DateTimeSelector {
     //Month name should be full month name starting with Caps
     async selectPreviousMonthUsingAngularIcon(monthName: string): Promise<void> {
         for (let i: number = 0; i < 12; i++) {
-            if (await $(this.selectors.monthLabel).getAttribute('aria-valuetext') == monthName) break;
+            if (await $(this.selectors.monthLabel).getText() == monthName) 
+            break;
             else await $(this.selectors.previousMonthSelector).click();
+            await browser.sleep(500);
         }
     }
 
     //Month name should be full month name starting with Caps
     async selectNextMonthUsingAngularIcon(monthName: string): Promise<void> {
         for (let i: number = 0; i < 12; i++) {
-            if (await $(this.selectors.monthLabel).getAttribute('aria-valuetext') == monthName) break;
+            if (await $(this.selectors.monthLabel).getText() == monthName) break;
             else await $(this.selectors.nextMonthSelector).click();
         }
     }
 
     async selectDateOnCalender(day: number): Promise<void> {
-        await $(`.a3t-calendar--table-day button[data-testid*="day_${day.toString()}"]`).click();
+           await $(`.a3t-calendar--table-day[aria-hidden="false"] button[data-testid*="day_${day.toString()}"]`).click();
     }
 
     async selectPreviousYearUsingAngularIcon(yearName: number): Promise<void> {
         for (let i: number = 0; i < 15; i++) {
             if (await $(this.selectors.yearLabel).getText() == yearName.toString()) break;
             else await $(this.selectors.previousYearSelector).click();
+            await browser.sleep(500);
         }
     }
 
@@ -85,7 +88,6 @@ class DateTimeSelector {
     async getMonthFromCaleder(): Promise<string> {
         return await $(this.selectors.monthLabel).getText();
     }
-
     async getYearFromCaleder(): Promise<string> {
         return await $(this.selectors.yearLabel).getText();
     }
