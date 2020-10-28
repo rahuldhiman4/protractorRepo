@@ -73,6 +73,8 @@ describe('Case Bulk Operation', () => {
             let response = await apiHelper.createCase(caseDataForTest);
             caseId[i] = response.displayId;
         }
+        await navigationPage.gotoCaseConsole();
+        await utilityGrid.clearFilter();
         await utilityGrid.clickRefreshIcon();
         await utilityGrid.searchRecord(caseDataForTest.Summary);
         for (let i: number = 0; i < 3; i++) {
@@ -197,9 +199,11 @@ describe('Case Bulk Operation', () => {
                 caseId[i] = response.displayId;
                 caseGuid[i] = response.id;
             }
-            await utilityGrid.clickRefreshIcon();
         });
         it('[DRDMV-15980]: Verify that Assignment change information is visible in Actvity section', async () => {
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
+            await utilityGrid.clickRefreshIcon();
             await utilityGrid.searchRecord(caseDataForTest.Summary);
             for (let i: number = 0; i < 1; i++) {
                 await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
@@ -244,7 +248,9 @@ describe('Case Bulk Operation', () => {
         caseId[0] = (await apiHelper.createCase(caseDataForTest)).displayId;
         caseId[1] = (await apiHelper.createCase(caseDataForTest)).displayId;
         caseId[2] = (await apiHelper.createCase(caseDataForTest)).displayId;
-        await utilityGrid.clickRefreshIcon();
+        await navigationPage.gotoCaseConsole();
+        await utilityGrid.clearFilter();
+        await utilityGrid.clickRefreshIcon();        
         await utilityGrid.searchRecord(caseDataForTest.Summary);
         for (let i: number = 0; i < 3; i++) {
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
@@ -276,9 +282,11 @@ describe('Case Bulk Operation', () => {
                 caseId[i] = response.displayId;
                 caseGuid[i] = response.id;
             }
-            await utilityGrid.clickRefreshIcon();
         });
         it('[DRDMV-16109]: Verify that Agent creates the Case with BU, Org, Support Group, Department and while Bulk Assignment select only Org and Support Group', async () => {
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
+            await utilityGrid.clickRefreshIcon();
             await utilityGrid.searchRecord(caseDataForTest.Summary);
             for (let i: number = 0; i < 3; i++) {
                 await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
@@ -334,6 +342,7 @@ describe('Case Bulk Operation', () => {
         it('[DRDMV-16110]: Verify that Agent creates the Case with Org, Support Group and while Bulk Assignment select BU, Org, Support Group, Department', async () => {
             await navigationPage.signOut();
             await loginPage.login(personData.userId + '@petramco.com', "Password_1234");
+            await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.clickRefreshIcon();
             await utilityGrid.searchRecord(caseDataForTest.Summary);
@@ -380,7 +389,9 @@ describe('Case Bulk Operation', () => {
         await apiHelper.updateCaseStatus(caseGuid, "Resolved", "Customer Follow-Up Required");
         await apiHelper.updateCaseStatus(caseGuid, "Closed");
         await utilityGrid.sortGridColumn('Case ID', 'desc');
-        await utilityGrid.clickRefreshIcon();
+        await navigationPage.gotoCaseConsole();
+        await utilityGrid.clearFilter();
+        await utilityGrid.clickRefreshIcon();        
         await utilityGrid.searchRecord(caseDataForTest.Summary);
         for (let i: number = 0; i < 3; i++) {
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
@@ -453,7 +464,9 @@ describe('Case Bulk Operation', () => {
 
         await apiHelper.updateCaseStatus(caseGuid[0], 'InProgress');
         await apiHelper.updateCaseStatus(caseGuid[1], 'Canceled', 'Customer Canceled');
-        await utilityGrid.clickRefreshIcon();
+        await navigationPage.gotoCaseConsole();
+        await utilityGrid.clearFilter();
+        await utilityGrid.clickRefreshIcon();        
         await utilityGrid.searchRecord(caseId[0]);
         await utilityGrid.clickCheckBoxOfValueInGrid(caseId[0]);
         await caseConsolePage.clickOnChangeAssignmentButton();
