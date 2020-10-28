@@ -756,7 +756,7 @@ describe('Case Data Store', () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
             templateData.templateName = 'externalTaskDRDMV-13154' + randomStr;
-            externalTaskTemplateSummary = templateData.templateSummary = 'externalTaskSummaryDRDMV-13154' + randomStr,
+            templateData.templateSummary = 'externalTaskDRDMV-13154' + randomStr,
             await apiHelper.apiLogin('qkatawazi');
             let externalTaskTemplate = await apiHelper.createExternalTaskTemplate(templateData);
             await apiHelper.createDynamicDataOnTemplate(externalTaskTemplate.id, 'EXTERNAL_TASK_TEMPLATE__DYNAMIC_FIELDS');
@@ -770,7 +770,7 @@ describe('Case Data Store', () => {
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskTemplateSummary);
             await manageTaskBladePo.waitUntilNumberOfTaskLinkAppear(1);
-            await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskTemplateSummary);
+            await manageTaskBladePo.addTaskFromTaskTemplate(templateData.templateSummary);
             await manageTaskBladePo.waitUntilNumberOfTaskLinkAppear(2);
             await manageTaskBladePo.clickTaskLink(manualTaskTemplateSummary);
             // manual task view case
@@ -788,7 +788,7 @@ describe('Case Data Store', () => {
         it('[DRDMV-13154]: [Dynamic Data] [UI] - Dynamic Fields display on Task Edit view UI', async () => {
             await viewTaskPo.clickOnViewCase();
             await viewCasePo.clickAddTaskButton();
-            await manageTaskBladePo.clickTaskLink(externalTaskTemplateSummary);
+            await manageTaskBladePo.clickTaskLink(templateData.templateSummary);
             // external task view case
             let dynamicFields1: string[] = ['externalText', 'externalNumber', 'externalDate', 'externalBoolean', 'externalDateTime', 'externalTime', 'externalAttachment1'];
             for (let i = 0; i < dynamicFields1.length; i++) {
@@ -803,6 +803,7 @@ describe('Case Data Store', () => {
         });
         afterAll(async () => {
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         });
@@ -814,8 +815,8 @@ describe('Case Data Store', () => {
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteDynamicFieldAndGroup();
        let casetemplateData = {
-            "templateName": randomStr + 'caseTemplateDRDMV-13123',
-            "templateSummary": randomStr + 'caseTemplateDRDMV-13123',
+            "templateName": randomStr + 'caseTemplateDRDMV-13120',
+            "templateSummary": randomStr + 'caseTemplateDRDMV-13120',
             "templateStatus": "Active",
             "assignee": "qkatawazi",
             "company": "Petramco",

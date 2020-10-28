@@ -305,7 +305,6 @@ describe('Case Manager Read-only Config', () => {
         await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', 'Flowsets - Console - Business Workflows');
         expect(await flowsetConsole.isAddFlowsetButtonDisplayed()).toBeFalsy("Add button is enabled");
         await utilGrid.searchAndOpenHyperlink(flowsetMandatoryFieldsData.flowsetName);
-        expect(await flowsetEditPage.isAddAssociationBtnDisabled()).toBeTruthy("Add Associate Category button is enabled");
         expect(await flowsetEditPage.isFlowsetNameDisabled()).toBeTruthy("Flowset name  is enabled");
         expect(await flowsetEditPage.isStatusFieldDisabled()).toBeTruthy("Add Associate Category button is enabled");
         expect(await flowsetEditPage.isSaveBtnDisabled()).toBeTruthy("Add Associate Category button is enabled");
@@ -444,9 +443,13 @@ describe('Case Manager Read-only Config', () => {
             "company": "Petramco",
             "svtName": "DRDMV-18171"
         }
-        svtData.svtName = "DRDMV-18170" + randomStr;
+        let svtGropuData = {
+            "svtGroupName": svtGrpName,
+            "dataSource": "Case Management",
+        }
+        svtData.svtName = "DRDMV-18171" + randomStr;
         await apiHelper.createSVT(svtData);
-        await apiHelper.createServiceTargetGroup(svtGrpName, 'Case Management');
+        await apiHelper.createServiceTargetGroup(svtGropuData);
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target Group', 'Service Target Group - Administration - Business Workflows');
         expect(await serviceTargetGroupConsole.isAddServiceTargetGroupBtnEnabled()).toBeFalsy('Add Button is enabled');
@@ -594,11 +597,11 @@ describe('Case Manager Read-only Config', () => {
             "templateSummary": taskTemplateName,
             "templateStatus": "Draft",
             "taskCompany": "Petramco",
-            "buisnessUnit": "Facilities Support",
-            "supportGroup": "Facilities",
+            "buisnessUnit": "HR Support",
+            "supportGroup": "Compensation and Benefits",
             "ownerCompany": "Petramco",
-            "ownerBusinessUnit": "Facilities Support",
-            "ownerGroup": "Facilities"
+            "ownerBusinessUnit": "HR Support",
+            "ownerGroup": "Compensation and Benefits"
         }
 
         await apiHelper.apiLogin('qkatawazi');
@@ -620,7 +623,7 @@ describe('Case Manager Read-only Config', () => {
         expect(await editTaskTemplatePage.isTemplateStatusDisabled()).toBeTruthy('Template status field is enabled');
         expect(await editTaskTemplatePage.isSaveTemplateMetadataBtnEnabled()).toBeFalsy('Task template metadata save button is enabled');
     });
-
+    
     it('[DRDMV-18076]: Check Case manager is not able to perform Create Update Delete operation on Document Template', async () => {
         let documentTemplateName = 'DRDMV-18076' + [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let documentTemplateData = {

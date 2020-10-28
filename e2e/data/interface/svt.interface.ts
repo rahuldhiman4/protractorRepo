@@ -11,3 +11,12 @@ export interface ICreateSVT {
     "svtName": string,
     "lineOfBusiness"?: string
 };
+
+export interface ICreateSVTGroup {​​
+    "svtGroupName": string,
+    "company"?: string,
+    "dataSource": string,
+    "goalType"?: string,
+    "lineOfBusiness"?: string
+}​​;
+
