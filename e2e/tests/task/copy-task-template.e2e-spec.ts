@@ -15,7 +15,6 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-import { async } from 'q';
 
 describe('Copy Task Template', () => {
     let twoCompanyUser, userData13548;
@@ -513,7 +512,6 @@ describe('Copy Task Template', () => {
         }
     });
 
-    // Since Dynamic Field data is not deleivered it is kept on hold
     describe('[DRDMV-13569,DRDMV-14220]: Dynamic Field get copied upon creating copy of Task Template', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let dynamicFieldName1 = 'DRDMV14220FieldName1' + randomStr;
