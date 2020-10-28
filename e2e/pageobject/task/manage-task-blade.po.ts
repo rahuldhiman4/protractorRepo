@@ -1,5 +1,6 @@
 import { $, $$, by, element, Key, protractor, ProtractorExpectedConditions, browser } from "protractor";
 import utilityGrid from '../../utils/utility.grid';
+import utilityCommon from 'e2e/utils/utility.common';
 
 class ManageTaskBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -87,6 +88,7 @@ class ManageTaskBlade {
 
     async clickCloseButton(): Promise<void> {
         await $(this.selectors.closeButton).click();
+        await browser.navigate().refresh();
     }
 
     async isTaskLinkPresent(taskSummary: string): Promise<boolean> {
