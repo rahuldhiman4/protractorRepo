@@ -210,7 +210,7 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.setNewProcessName(taskProcess1);
             await copyTemplatePage.clickSaveCopytemplate();
             await utilCommon.closePopUpMessage();
-            expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.petramco.human-resource:' + taskProcess1);
+            expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.petramco.human resource:' + taskProcess1);
         });
         it('[DRDMV-14218,DRDMV-13573]: Login through only Petramco User', async () => {
             await navigationPage.signOut();
@@ -218,7 +218,7 @@ describe('Copy Task Template', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(autoTemplate1);
-            expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.petramco.human-resource:' + taskProcess1);
+            expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.petramco.human resource:' + taskProcess1);
         });
         it('[DRDMV-14218,DRDMV-13573]: The copy of Automated Task template is created across company and check the way to Edit the existing linked Process', async () => {
             //Login through only Psilon User
@@ -227,7 +227,7 @@ describe('Copy Task Template', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(autoTemplate1);
-            expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.petramco.human-resource:' + taskProcess1);
+            expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.petramco.human resource:' + taskProcess1);
         });
         afterAll(async () => {
             await navigationPage.signOut();
@@ -235,16 +235,15 @@ describe('Copy Task Template', () => {
         });
     });
 
-    it('[DRDMV-14217,DRDMV-13737]: Copy of Automated task template created across company and no new Process is created', async () => {
-        try {
-            const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            //let automationTaskTemplate = 'DRDMV14217Automationtask' + randomStr;
-            let newAutomationTaskTemplate = 'NewAutomationtaskDRDMV14217' + randomStr;
-            let templateData = {
+    describe('[DRDMV-14217,DRDMV-13737]: Copy of Automated task template created across company and no new Process is created', async () => {
+        const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let templateData, newAutomationTaskTemplate = 'NewAutomationtaskDRDMV14217' + randomStr;
+        beforeAll(async () => {
+            templateData = {
                 "templateName": 'DRDMV14217Automationtask' + randomStr,
                 "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
                 "templateStatus": "Active",
-                "processBundle": "com.petramco.human-resource",
+                "processBundle": "com.petramco.human resource",
                 "processName": `Case Process ${randomStr}`,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
@@ -253,7 +252,8 @@ describe('Copy Task Template', () => {
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createAutomatedTaskTemplate(templateData);
-
+        });
+        it('[DRDMV-14217,DRDMV-13737]: Copy of Automated task template created across company and no new Process is created', async () => {
             await navigationPage.signOut();
             await loginPage.login(twoCompanyUser.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -269,13 +269,12 @@ describe('Copy Task Template', () => {
             await utilCommon.clickOnWarningOk();
             await utilCommon.clickOnBackArrow();
             await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
-            expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.petramco.human-resource:' + templateData.processName);
-        } catch (e) {
-            throw e;
-        } finally {
+            expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.petramco.human resource:' + templateData.processName);
+        });
+        afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
-        }
+        });
     });
 
     describe('[DRDMV-13540,DRDMV-13556]: Case Business Analyst can create a copy of Task Template type Manual', () => {
@@ -387,7 +386,7 @@ describe('Copy Task Template', () => {
                 "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
                 "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
                 "templateStatus": "Active",
-                "processBundle": "com.petramco.human-resource",
+                "processBundle": "com.petramco.human resource",
                 "processName": 'DRDMV14221Process' + randomStr,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
@@ -408,7 +407,7 @@ describe('Copy Task Template', () => {
             await utilCommon.closePopUpMessage();
         });
         it('[DRDMV-14221]: Check Error Message when trying to edit a process, where process is linked to Active Automated Task template', async () => {
-            await copyTemplatePage.clickCancelCopytemplate(); 
+            await copyTemplatePage.clickCancelCopytemplate();
             await utilCommon.clickOnWarningOk();
             await utilCommon.clickOnBackArrow();
             await selectTaskTemplate.searchAndOpenTaskTemplate(updatedTaskTemplate);
@@ -513,7 +512,6 @@ describe('Copy Task Template', () => {
         }
     });
 
-    // Since Dynamic FIled data is not deleivered it is kept on hold
     describe('[DRDMV-13569,DRDMV-14220]: Dynamic Field get copied upon creating copy of Task Template', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let dynamicFieldName1 = 'DRDMV14220FieldName1' + randomStr;
@@ -534,7 +532,7 @@ describe('Copy Task Template', () => {
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "United States Support",
-                "ownerGroup": "US SUpport 1"
+                "ownerGroup": "US Support 1"
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createAutomatedTaskTemplate(templateData);
@@ -556,7 +554,6 @@ describe('Copy Task Template', () => {
             await viewTaskTemplate.clickOnCopyTemplate();
             await copyTemplatePage.setTemplateName(updatedTaskTemplate);
             await copyTemplatePage.setTaskSummary(updatedTaskSummary);
-            await copyTemplatePage.selectBundles("Case Management Service");
             await copyTemplatePage.setNewProcessName(updateProcessName);
             await copyTemplatePage.clickSaveCopytemplate();
             await utilCommon.closePopUpMessage();

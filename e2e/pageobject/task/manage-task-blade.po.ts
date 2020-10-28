@@ -87,6 +87,7 @@ class ManageTaskBlade {
 
     async clickCloseButton(): Promise<void> {
         await $(this.selectors.closeButton).click();
+        await browser.navigate().refresh();
     }
 
     async isTaskLinkPresent(taskSummary: string): Promise<boolean> {

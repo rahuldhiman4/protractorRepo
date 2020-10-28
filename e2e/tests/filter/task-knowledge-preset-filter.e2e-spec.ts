@@ -133,7 +133,7 @@ describe('Task and Knowledge Console Filter Combinations', () => {
         it('[DRDMV-23494]: Verify records are fetched on task console with Assignee, Assigned Group, Status combinations', async () => {
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
-            await utilityGrid.addFilter('Assigned Group', 'Facilities', 'text');
+            await utilityGrid.addFilter('Assigned Group', 'IN Support 1', 'text');
             await utilityGrid.addFilter('Status', 'Pending', 'text');
             await utilityGrid.clickRefreshIcon();
             for (let i: number = 4; i < 5; i++) {
@@ -261,9 +261,9 @@ describe('Task and Knowledge Console Filter Combinations', () => {
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Assigned Group', 'Compensation and Benefits', 'text');
-            await utilityGrid.addFilter('Category Tier 1', 'IT', 'text');
-            await utilityGrid.addFilter('Category Tier 2', 'Service', 'text');
-            await utilityGrid.addFilter('Category Tier 3', 'Email', 'text');
+            await utilityGrid.addFilter('Category Tier 1', 'Payroll', 'text');
+            await utilityGrid.addFilter('Category Tier 2', 'Finance', 'text');
+            await utilityGrid.addFilter('Category Tier 3', 'Reproting', 'text');
             await utilityGrid.clickRefreshIcon();
             for (let i: number = 1; i < 2; i++) {
                 expect(await utilityGrid.isGridRecordPresent(taskId[i])).toBeTruthy(taskId[i] + ' :Record is not available');

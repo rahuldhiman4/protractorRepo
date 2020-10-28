@@ -556,7 +556,10 @@ describe("Create Case Assignment Mapping", () => {
 
     describe('[DRDMV-1495]: [Permissions] Case Assignment Mapping access', () => {
         let randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let personData = personDataFile['PersonData11825'];
         it('[DRDMV-1495]: [Permissions] Case Assignment Mapping access', async () => {
+            await navigationPage.signOut();
+            await loginPage.login(personData.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
 

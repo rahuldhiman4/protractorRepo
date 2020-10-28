@@ -189,9 +189,9 @@ export const TASK_DATA_Combination_4 = {
 export const TASK_DATA_Combination_5 = {
     "taskName": "DRDMV-23494_5",
     "company": "Petramco",
-    "businessUnit": "Facilities Support",
-    "supportGroup": "Facilities",
-    "assignee": "Fritz",
+    "businessUnit": "India Support",
+    "supportGroup": "IN Support 1",
+    "assignee": "ajoshi",
 };
 export const TASK_DATA_Combination_6 = {
     "taskName": "DRDMV-23495_6",
@@ -199,9 +199,9 @@ export const TASK_DATA_Combination_6 = {
     "businessUnit": "HR Support",
     "supportGroup": "Compensation and Benefits",
     "assignee": "elizabeth",
-    "category1": "IT",
-    "category2": "Service",
-    "category3": "Email",
+    "category1": "Payroll",
+    "category2": "Finance",
+    "category3": "Reporting",
 
 };
 export const TASK_DATA_Combination_7 = {
@@ -210,9 +210,9 @@ export const TASK_DATA_Combination_7 = {
     "businessUnit": "HR Support",
     "supportGroup": "Workforce Administration",
     "assignee": "elizabeth",
-    "category1": "Facilities",
-    "category2": "Cleaning",
-    "category3": "External",
+    "category1": "Employee Relations",
+    "category2": "Compensation",
+    "category3": "Bonus",
 
 };
 export const TASK_DATA_Combination_8 = {

@@ -1,3 +1,4 @@
+import { link } from 'fs';
 import { $, $$, Key, element, by, ElementFinder, browser, protractor, ProtractorExpectedConditions } from 'protractor';
 import utilityCommon from '../utils/utility.common';
 
@@ -8,10 +9,11 @@ export class GridOperations {
         searchTextBox: '.adapt-search-triggerable input',
         clearSearchBoxButton: '.adapt-search-triggerable .adapt-search-clear',
         gridRowLinks: '.at-data-row a',
-        gridRowHyperLinks: '.btn-link',
+        gridRowHyperLinks: '.at-data-row a',
         gridRows: '.at-data-row',
         gridCheckbox: '.ui-chkbox-box',
-        appliedPresetFilter: '.a-tag-active span',
+        appliedPresetFilter: '.a-tag-active span, adapt-table-toolbar span.btn-link',
+        activeFilter: 'adapt-table-toolbar span.btn-link',
         filterPresetBtn: 'button.d-icon-left-filter',
         clearSaveFilterBtn: '.advanced-filter__actions-buttons button',
         addVisibleColumnsIcon: 'button.d-icon-left-lines_vertical',
@@ -59,7 +61,7 @@ export class GridOperations {
         return await $(gridRowLinks).isPresent();
     }
 
-   
+
 
     async clickCheckBoxOfValueInGrid(value: string, guid?: string): Promise<void> {
         let gridGuid: string = '';
@@ -77,8 +79,8 @@ export class GridOperations {
     }
 
     async isNoFilterAppliedError(): Promise<boolean> {
-        return  await $(this.selectors.noFilterAppliedError).isDisplayed();
-      }
+        return await $(this.selectors.noFilterAppliedError).isDisplayed();
+    }
 
     async clickFilterField(fieldName: string, guid?: string): Promise<void> {
         let guidId: string = "";
@@ -154,8 +156,8 @@ export class GridOperations {
             .map(async function (header) {
                 return await header.getAttribute('innerText');
             });
-        actualHeaders.sort();        
-        expetcedHeaders.sort();        
+        actualHeaders.sort();
+        expetcedHeaders.sort();
         return actualHeaders.length === expetcedHeaders.length && actualHeaders.every(
             (value, index) => (value === expetcedHeaders[index])
         );
@@ -344,13 +346,6 @@ export class GridOperations {
         else await radioButtonLocator.click();
     }
 
-    async clearFilterPreset(): Promise<void> {
-        await $(this.selectors.filterPresetBtn).click();
-        await $$('button.nav-link').first().click();
-        await $(this.selectors.refreshIcon).click();
-        await this.clearFilter();
-    }
-
     async clickRefreshIcon(guidId?: string): Promise<void> {
         if (guidId) await $(`[rx-view-component-id="${guidId}"] ` + this.selectors.refreshIcon).click();
         else await $(this.selectors.refreshIcon).click();
@@ -378,12 +373,11 @@ export class GridOperations {
     }
     async isAppliedFilterMatches(expetcedFilters: string[], guid?: string): Promise<boolean> {
         let csslocator: string = undefined;
-        let showMoreElement:ElementFinder = await $('.dropdown  .filter-tags__dropdown-toggle');
+        let showMoreElement: ElementFinder = await $('.dropdown  .filter-tags__dropdown-toggle');
         let moreLabeLink = await showMoreElement.isPresent();
-        if(moreLabeLink==true){
+        if (moreLabeLink == true) {
             await showMoreElement.click();
         }
-
         if (guid) csslocator = `[rx-view-component-id='${guid}'] .a-tag-active `;
         else csslocator = ".a-tag-active ";
         let actualFilters = await element.all(by.css(csslocator))
@@ -392,9 +386,6 @@ export class GridOperations {
             });
         actualFilters.sort();
         expetcedFilters.sort();
-        if(moreLabeLink==true){
-            await showMoreElement.click();
-        }
         return actualFilters.length === expetcedFilters.length && actualFilters.every(
             (value, index) => (value === expetcedFilters[index])
         );
@@ -415,10 +406,10 @@ export class GridOperations {
 
                 if (filterValue == filterName) {
                     let filterdeleteButton = await $$('.d-icon-trash').get(i).isPresent();
-                        if(filterdeleteButton==true){
-                            await $$('.d-icon-trash').get(i).click();
-                            break;
-                     }
+                    if (filterdeleteButton == true) {
+                        await $$('.d-icon-trash').get(i).click();
+                        break;
+                    }
                 } else {
                     console.log('No Preset Filter Found');
                 }
@@ -455,7 +446,7 @@ export class GridOperations {
             guidId = `[rx-view-component-id="${guid}"] `;
             refreshIcon = `[rx-view-component-id="${guid}"] ` + refreshIcon;
         }
-        
+
         await $(refreshIcon).click();
         await $(guidId + this.selectors.filterPresetBtn).click();
         await $$(this.selectors.filterTab).get(1).click().then(async () => {
@@ -471,7 +462,7 @@ export class GridOperations {
             }
         });
 
-        if (newFilterName){
+        if (newFilterName) {
             await $('.textfield-padding-transition').clear();
             await $('.textfield-padding-transition').sendKeys(newFilterName);
         }
@@ -537,25 +528,25 @@ export class GridOperations {
     }
 
     async getAllDynamicFilterName(): Promise<string[]> {
-        let filterNameText:string[] =[];
-        let filterItemElement:ElementFinder[] = await $$('.form-control-feedback .ellipsis');
+        let filterNameText: string[] = [];
+        let filterItemElement: ElementFinder[] = await $$('.form-control-feedback .ellipsis');
         for (let i: number = 0; i < filterItemElement.length; i++) {
-                filterNameText[i] = await filterItemElement[i].getText();
+            filterNameText[i] = await filterItemElement[i].getText();
         }
         return filterNameText;
     }
 
     async clickEditPresetFilterButton(filterName: string): Promise<void> {
-            let countFilterName = await $$(this.selectors.filterName).count();
-            for (let i = 0; i < countFilterName; i++) {
-                let filterValue = await $$(this.selectors.filterName).get(i).getText();
-                if (filterValue == filterName) {
-                    await $$('.d-icon-pencil_adapt').get(i).click();
-                    break;
-                } else {
-                    console.log('No Preset Filter Found');
-                }
+        let countFilterName = await $$(this.selectors.filterName).count();
+        for (let i = 0; i < countFilterName; i++) {
+            let filterValue = await $$(this.selectors.filterName).get(i).getText();
+            if (filterValue == filterName) {
+                await $$('.d-icon-pencil_adapt').get(i).click();
+                break;
+            } else {
+                console.log('No Preset Filter Found');
             }
+        }
     }
 
     async clickBackButtonOnEditCustomPresetFilter(): Promise<void> {
@@ -575,7 +566,7 @@ export class GridOperations {
     }
 
     async isRequiredLabelDisplayedOnEditFilter(fieldName: string): Promise<boolean> {
-         return await element(by.cssContainingText('.form-control-label', fieldName)).isPresent().then(async (result) => {
+        return await element(by.cssContainingText('.form-control-label', fieldName)).isPresent().then(async (result) => {
             if (result) {
                 return await element(by.cssContainingText('.form-control-label', fieldName)).isDisplayed();
             } else return false;
@@ -584,21 +575,21 @@ export class GridOperations {
 
     async isAppliedFilterInputBoxDisplayedOnPresetFilter(): Promise<boolean> {
         return await $('.adapt-mt-wrapper .adapt-mt').isPresent().then(async (result) => {
-           if (result) {
-               return await $('.adapt-mt-wrapper .adapt-mt').isDisplayed();
-           } else return false;
-       });
-   }
+            if (result) {
+                return await $('.adapt-mt-wrapper .adapt-mt').isDisplayed();
+            } else return false;
+        });
+    }
 
     async IsEditPresetFilterSaveButtonEnabled(): Promise<boolean> {
-            return await $(this.selectors.editPresetFilterSaveButton).isPresent().then(async (result) => {
+        return await $(this.selectors.editPresetFilterSaveButton).isPresent().then(async (result) => {
             if (result) {
                 return await $(this.selectors.editPresetFilterSaveButton).isEnabled();
             } else return false;
         });
     }
 
-    async removeFilterValue(fieldName:string, fiterValue: string): Promise<void> {
+    async removeFilterValue(fieldName: string, fiterValue: string): Promise<void> {
         let filterCount = await $$(this.selectors.filterItems);
         for (let i = 0; i < await filterCount.length; i++) {
             let tempLocator = await $$(this.selectors.filterItems).get(i);
