@@ -48,7 +48,7 @@ import { IFlowset, IFlowsetProcess, IFlowsetProcessMapping } from '../data/inter
 import { IBusinessUnit, IDepartment, IDomainTag, IFoundationEntity, IMenuItem, IPerson, ISupportGroup } from '../data/interface/foundation.interface';
 import { IDocumentLib, IDocumentTemplate, IKnowledgeArticles, IKnowledgeArticleTemplate, IKnowledgeSet, IknowledgeSetPermissions, IUpdateKnowledgeArticle } from '../data/interface/knowledge.interface';
 import { IEmailConfig, INotificationEvent, INotificationTemplate } from '../data/interface/notification.interface';
-import { ICreateSVT } from '../data/interface/svt.interface';
+import { ICreateSVT, ICreateSVTGroup } from '../data/interface/svt.interface';
 import { IAdhocTask, ITaskUpdate } from '../data/interface/task.interface';
 import { ICaseTemplate, IEmailTemplate, INotesTemplate, ITaskTemplate } from '../data/interface/template.interface';
 import loginPage from "../pageobject/common/login.po";
@@ -2717,15 +2717,18 @@ class ApiHelper {
         }
     }
 
-    async createServiceTargetGroup(svtGroupName: string, dataSource: string, company?: string): Promise<boolean> {
+    async createServiceTargetGroup(svtGroupData: ICreateSVTGroup): Promise<boolean> {​​
         let svtGroup = cloneDeep(SERVICE_TARGET_GROUP);
-        svtGroup.fieldInstances[8].value = svtGroupName;
-        svtGroup.fieldInstances[300523400].value = await apiCoreUtil.getDataSourceGuid(dataSource);
-        svtGroup.fieldInstances[1000000001].value = company ? await apiCoreUtil.getOrganizationGuid(company) : svtGroup.fieldInstances[1000000001].value;
+        svtGroup.fieldInstances[8].value = svtGroupData.svtGroupName;
+        svtGroup.fieldInstances[300523400].value = await apiCoreUtil.getDataSourceGuid(svtGroupData.dataSource);
+        svtGroup.fieldInstances[1000000001].value = svtGroupData.company ? await apiCoreUtil.getOrganizationGuid(svtGroupData.company) : svtGroup.fieldInstances[1000000001].value;
+        if (svtGroupData.lineOfBusiness) {​​
+            svtGroup.fieldInstances[450000420].value = await constants.LOB[svtGroupData.lineOfBusiness];
+        }​​
         let svtGroupCreateResponse: AxiosResponse = await apiCoreUtil.createRecordInstance(svtGroup);
         console.log('Create SVT Group Status =============>', svtGroupCreateResponse.status);
         return svtGroupCreateResponse.status == 201;
-    }
+    }​​
 
     async createDocumentTemplate(data: IDocumentTemplate): Promise<boolean> {
         DOCUMENT_TEMPLATE.processInputValues.Company = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : DOCUMENT_TEMPLATE.processInputValues.Company;
