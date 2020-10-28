@@ -130,6 +130,11 @@ describe("Create Case", () => {
             await utilityCommon.closePopUpMessage();
             expect(await viewCasePage.getTextOfStatus()).toBe('Closed');
         });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades(); 
+            await navigationPage.signOut();
+            await loginPage.login("qkatawazi");
+        });
     });
 
     //kgaikwad
@@ -588,9 +593,9 @@ describe("Create Case", () => {
             expect(await viewCasePage.getTextOfStatus()).toBe('In Progress');
             await viewCasePage.clickEditCaseButton();
             await editCasePage.clickChangeAssignmentButton();
-            await changeAssignmentPage.setAssignee(petramcoStr, 'Australia Support', aUsupportStr, kasiaOstlunsStr);
+            await changeAssignmentPage.setAssignee(petramcoStr, 'Australia Support', aUsupportStr, "RA3 Liu");
             await editCasePage.clickSaveCase();
-            expect(await activityTabPo.isTextPresentInActivityLog("Kasia Ostlun")).toBeTruthy("Text is not present in activiy tab1");
+            expect(await activityTabPo.isTextPresentInActivityLog("RA3 Liu")).toBeTruthy("Text is not present in activiy tab1");
             await activityTabPo.clickShowMoreLinkInActivity(1);
             expect(await activityTabPo.isTextPresentInActivityLog("changed the following case fields")).toBeTruthy("Text is not present in activiy tab2");
             expect(await activityTabPo.isTextPresentInActivityLog("Assignee")).toBeTruthy("Text is not present in activiy tab3");
@@ -850,6 +855,7 @@ describe("Create Case", () => {
             await apiHelper.deleteCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY', 'Petramco');
             await apiHelper.deleteCommonConfig('RESOLUTION_CODE_MANDATORY', '- Global -');
             await apiHelper.deleteCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY', '- Global -');
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });

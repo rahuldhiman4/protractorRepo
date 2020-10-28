@@ -249,9 +249,13 @@ describe('Case Template', () => {
         let templateData = {
             "templateName": 'caseTemplateName' + randomStr,
             "templateSummary": 'CaseSummaryName' + randomStr,
+            "caseStatus": "InProgress",
             "templateStatus": "Active",
-            "ownerCompany": "Petramco",
-            "ownerBU": "United States Support",
+            "company": "Petramco",
+            "businessUnit": "United States Support",
+            "supportGroup": "US Support 3",
+            "assignee": "qkatawazi",
+            "ownerBU": 'United States Support',
             "ownerGroup": "US Support 3",
         }
         await apiHelper.apiLogin('qkatawazi');
@@ -753,6 +757,9 @@ describe('Case Template', () => {
             await editCasePo.clickSaveCase();
             await utilityCommon.closePopUpMessage();
             await utilityCommon.closePopUpMessage();
+            await navigationPage.gotoCreateCase();
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(caseTemplateName);
             expect(await viewCasePo.getPriorityValue()).toBe('Low');
             expect(await viewCasePo.getCaseStatusValue()).toContain('New');
             expect(await viewCasePo.getCategoryTier1Value()).toBe("Employee Relations");
@@ -846,6 +853,9 @@ describe('Case Template', () => {
             await editCasePo.clickSaveCase();
             await utilityCommon.closePopUpMessage();
             await utilityCommon.closePopUpMessage();
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(caseTemplateName);
             expect(await viewCasePo.getPriorityValue()).toBe('Low');
             expect(await viewCasePo.getCaseStatusValue()).toContain('Assigned');
             expect(await viewCasePo.getCategoryTier1Value()).toBe("Employee Relations");
@@ -1116,24 +1126,24 @@ describe('Case Template', () => {
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
             await createCaseTemplate.setTemplateName(caseTemplateName);
             await createCaseTemplate.setCaseSummary(caseTemplateName);
-            await createCaseTemplate.setCompanyName('Psilon');
+            await createCaseTemplate.setCompanyName('Phylum');
             await createCaseTemplate.setPriorityValue('Low');
-            await createCaseTemplate.setOwnerCompanyValue('Phylum');
-            await createCaseTemplate.setBusinessUnitDropdownValue('Phylum Support Org1');
-            await createCaseTemplate.setOwnerGroupDropdownValue('Phylum Support Group1');
+            await createCaseTemplate.setOwnerCompanyValue('Psilon');
+            await createCaseTemplate.setBusinessUnitDropdownValue('Psilon Support Org1');
+            await createCaseTemplate.setOwnerGroupDropdownValue('Psilon Support Group1');
             await createCaseTemplate.setTemplateStatusDropdownValue('Draft')
             await createCaseTemplate.clickSaveCaseTemplate();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(caseTemplateName);
             await editCasetemplatePo.clickOnEditCaseTemplateMetadata();
-            await editCasetemplatePo.changeOwnerCompanyValue('Psilon');
-            await editCasetemplatePo.changeBusinessUnitDropdownValue("Psilon Support Org1");
-            await editCasetemplatePo.changeOwnerGroupDropdownValue("Psilon Support Group1");
+            await editCasetemplatePo.changeOwnerCompanyValue('Petramco');
+            await editCasetemplatePo.changeBusinessUnitDropdownValue("Petramco Support Org1");
+            await editCasetemplatePo.changeOwnerGroupDropdownValue("Petramco Support Group1");
             await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
-            expect(await viewCaseTemplate.getBuisnessUnitValue()).toContain("Psilon Support Org1");
-            expect(await viewCaseTemplate.getOwnerGroupValue()).toContain("Psilon Support Group1");
-            expect(await viewCaseTemplate.getOwnerCompanyValue()).toContain('Psilon');
+            expect(await viewCaseTemplate.getBuisnessUnitValue()).toContain("Petramco Support Org1");
+            expect(await viewCaseTemplate.getOwnerGroupValue()).toContain("Petramco Support Group1");
+            expect(await viewCaseTemplate.getOwnerCompanyValue()).toContain('Petramco');
         }
         catch (ex) { throw ex; }
         finally {
@@ -1271,6 +1281,7 @@ describe('Case Template', () => {
         });
         it('[DRDMV-15245]: Verify case assignment method is not applicable if user changes the case template', async () => {
             await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
             await caseConsolePo.searchAndOpenCase(newCase1.displayId);
             expect(await viewCasePo.getAssigneeText()).toBe("Qadim Katawazi");
             await viewCasePo.clickEditCaseButton();
@@ -1285,6 +1296,7 @@ describe('Case Template', () => {
         });
         it('[DRDMV-15245]: Verify case assignment method is not applicable if user changes the case template', async () => {
             await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
             await caseConsolePo.searchAndOpenCase(newCase2.displayId);
             expect(await viewCasePo.getAssigneeText()).toBe("Qadim Katawazi");
             await viewCasePo.clickEditCaseButton();
@@ -1306,6 +1318,7 @@ describe('Case Template', () => {
         });
         it('[DRDMV-15245]: Verify case assignment method is not applicable if user changes the case template', async () => {
             await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
             await caseConsolePo.searchAndOpenCase(newCase3.displayId);
             expect(await viewCasePo.getAssigneeText()).toBe("Qadim Katawazi");
             await viewCasePo.clickEditCaseButton();
@@ -1327,6 +1340,7 @@ describe('Case Template', () => {
         });
         it('[DRDMV-15245]: Verify case assignment method is not applicable if user changes the case template', async () => {
             await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
             await caseConsolePo.searchAndOpenCase(newCase4.displayId);
             expect(await viewCasePo.getAssigneeText()).toBe("Qadim Katawazi");
             await viewCasePo.clickEditCaseButton();
@@ -1422,6 +1436,7 @@ describe('Case Template', () => {
         });
         it('[DRDMV-19741]: Case behavior when Case Template is changed', async () => {
             await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId1.displayId);
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus('In Progress');
@@ -1439,6 +1454,7 @@ describe('Case Template', () => {
         });
         it('[DRDMV-19741]: Case behavior when Case Template is changed', async () => {
             await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId.displayId);
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus('In Progress');

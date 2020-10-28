@@ -30,29 +30,33 @@ describe('Case And Employee Relationship', () => {
     });
 
     //asahitya
-    it('[DRDMV-16241,DRDMV-16242,DRDMV-16240]: Add person with different relations', async () => {
-        await navigationPage.gotoCreateCase();
-        await createCasePage.selectRequester("Allen");
-        await createCasePage.setSummary("DRDMV-16241");
-        await createCasePage.clickAssignToMeButton();
-        await createCasePage.clickSaveCaseButton();
-        await previewCasePo.clickGoToCaseButton();
-        await viewCasePo.clickOnTab('Related Persons');
-        await relatedTabPage.addRelatedPerson();
-        await addRelatedPopupPage.addPerson('Qianru Tao', 'Inspector');
-        expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Qianru Tao', 'Inspector')).toBeTruthy();
-        await relatedTabPage.addRelatedPerson();
-        await addRelatedPopupPage.addPerson('Harry Potter', 'Related to');
-        expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Harry Potter', 'Related to')).toBeTruthy();
-        await relatedTabPage.addRelatedPerson();
-        await addRelatedPopupPage.addPerson('Lily Anthony', 'Target');
-        expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Lily Anthony', 'Target')).toBeTruthy();
-        await relatedTabPage.addRelatedPerson();
-        await addRelatedPopupPage.addPerson('Demi Moore', 'Victim');
-        expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Demi Moore', 'Victim')).toBeTruthy();
-        await relatedTabPage.addRelatedPerson();
-        await addRelatedPopupPage.addPerson('Brain Adams', 'Witness');
-        expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Brain Adams', 'Witness')).toBeTruthy();
+    describe('[DRDMV-16241,DRDMV-16242,DRDMV-16240]: Add person with different relations', async () => {
+        it('[DRDMV-16241,DRDMV-16242,DRDMV-16240]: Add person with different relations', async () => {
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester("Allen");
+            await createCasePage.setSummary("DRDMV-16241");
+            await createCasePage.clickAssignToMeButton();
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            await viewCasePo.clickOnTab('Related Persons');
+            await relatedTabPage.addRelatedPerson();
+            await addRelatedPopupPage.addPerson('Qianru Tao', 'Inspector');
+            expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Qianru Tao', 'Inspector')).toBeTruthy();
+        });
+        it('[DRDMV-16241,DRDMV-16242,DRDMV-16240]: Add person with different relations', async () => {
+            await relatedTabPage.addRelatedPerson();
+            await addRelatedPopupPage.addPerson('Harry Potter', 'Related to');
+            expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Harry Potter', 'Related to')).toBeTruthy();
+            await relatedTabPage.addRelatedPerson();
+            await addRelatedPopupPage.addPerson('Lily Anthony', 'Target');
+            expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Lily Anthony', 'Target')).toBeTruthy();
+            await relatedTabPage.addRelatedPerson();
+            await addRelatedPopupPage.addPerson('Demi Moore', 'Victim');
+            expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Demi Moore', 'Victim')).toBeTruthy();
+            await relatedTabPage.addRelatedPerson();
+            await addRelatedPopupPage.addPerson('Brain Adams', 'Witness');
+            expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Brain Adams', 'Witness')).toBeTruthy();
+        });
     });
 
     //asahitya

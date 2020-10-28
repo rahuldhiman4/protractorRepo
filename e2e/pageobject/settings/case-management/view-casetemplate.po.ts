@@ -31,7 +31,7 @@ class ViewCaseTemplate {
         assigneeNameValue: '[rx-view-component-id="b4f3f0e5-70ca-44e8-8e75-75d573167901"] .person-main a',
         assigneeBusinessUnitValue: '[rx-view-component-id="8019eb00-be2e-462f-8fd4-49d116fc167e"] .d-textfield__rx-value',
         assigneeDepartmentValue: '[rx-view-component-id="1a3d3085-da94-4981-986c-18be12795e3d"] .d-textfield__rx-value',
-        categoryTier1: '[rx-view-component-id="0a2d5f30-cd03-46c8-ae57-88d066680890"] label span:nth-last-child(1)',
+        categoryTier1: '[rx-view-component-id="0a2d5f30-cd03-46c8-ae57-88d066680890"] p',
         categoryTier2: '[rx-view-component-id="4f950be7-d968-41a4-8bb9-018674e53f88"] p',
         categoryTier3: '[rx-view-component-id="a7fbc4bc-23c6-4f92-818a-5554107d04c0"] p',
         oneTask: '[rx-view-component-id="36ca22f7-98f8-423a-bf39-28361ef29eeb"] .rotatable path',
