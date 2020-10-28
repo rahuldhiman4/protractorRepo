@@ -196,12 +196,13 @@ describe('Dynamic data', () => {
                 "templateName": `${caseTemplateName}`,
                 "templateSummary": `${caseTemaplateSummary}`,
                 "templateStatus": "Active",
+                "caseStatus": "InProgress",
+                "ownerBU": 'United States Support',
+                "ownerGroup": "US Support 3",
                 "assignee": "qkatawazi",
                 "company": "Petramco",
                 "businessUnit": "United States Support",
-                "ownerBU": "United States Support",
                 "supportGroup": "US Support 3",
-                "ownerGroup": "US Support 3"
             }
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
@@ -213,7 +214,7 @@ describe('Dynamic data', () => {
                 "templateName": `${taskTemplateName}`,
                 "templateSummary": `${manualTaskSummary}`,
                 "templateStatus": "Active",
-                "taskCompany": 'Petramco',
+                "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "United States Support",
                 "ownerGroup": "US Support 3"
@@ -493,15 +494,16 @@ describe('Dynamic data', () => {
             expect(await viewCasePo.getShowMoreLessAttachmentsLinkText('attachment1')).toContain('Show less');
         });
     });
+
     it('[DRDMV-13947]: [Dynamic Data] [Attachment] - Task UI when it has Dynamic Fields including Attachment', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteDynamicFieldAndGroup();
-        let taskTemplateName = 'ManualtaskDRDMV-13947' + randomStr;
-        let manualTaskSummary = 'ManualSummaryDRDMV-13947' + randomStr;
+        let taskTemplateName = 'ManualtaskDRDMV13947' + randomStr;
+        let manualTaskSummary = 'ManualSummaryDRDMV13947' + randomStr;
         let templateData = {
-            "templateName": `${taskTemplateName}`,
-            "templateSummary": `${manualTaskSummary}`,
+            "templateName": taskTemplateName,
+            "templateSummary": manualTaskSummary,
             "templateStatus": "Active",
             "taskCompany": 'Petramco',
             "ownerCompany": "Petramco",
@@ -512,7 +514,7 @@ describe('Dynamic data', () => {
         let tasktemplate = await apiHelper.createManualTaskTemplate(templateData);
         await apiHelper.createDynamicDataOnTemplate(tasktemplate.id, 'TASK_TEMPLATE__DYNAMIC_FIELDS');
         await navigationPage.gotoCreateCase();
-        await createCasePo.selectRequester('qkatawazi');
+        await createCasePo.selectRequester('adam');
         await createCasePo.setSummary('new cases');
         await createCasePo.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
@@ -561,10 +563,10 @@ describe('Dynamic data', () => {
         const filesToUpload1 = fileName1.map((file) => { return `../../data/ui/attachment/${file}` });
         let fileName2: string[] = ['bwfJpg.jpg', 'bwfPdf.pdf', 'bwfWord2.rtf'];
         const filesToUpload2 = fileName2.map((file) => { return `../../data/ui/attachment/${file}` });
-        let caseTemplateName = 'caseTemplateDRDMV-13948' + randomStr;
-        let caseTemaplateSummary = 'caseTemplateDRDMV-13948' + randomStr;
-        let taskTemplateName = 'ManualtaskDRDMV-13948' + randomStr;
-        let manualTaskSummary = 'ManualSummaryDRDMV-13948' + randomStr;
+        let caseTemplateName = 'caseTemplateDRDMV13948' + randomStr;
+        let caseTemaplateSummary = 'caseTemplateDRDMV13948' + randomStr;
+        let taskTemplateName = 'ManualtaskDRDMV13948' + randomStr;
+        let manualTaskSummary = 'ManualSummaryDRDMV13948' + randomStr;
         //delete existing files
         beforeAll(async () => {
             for (let i: number = 0; i <= fileName1.length; i++) {
@@ -685,12 +687,12 @@ describe('Dynamic data', () => {
         let dynamicfield3 = 'theThirdDynamicFieldsIsgettingMouseOveredMouseOvered';
         let dynamicfield4 = 'temp1theNewDynamicFieldsIsgettingMouseOveredMouseOvered';
 
-        let taskTemplateName = 'ManualtaskDRDMV-13161' + randomStr;
-        let manualTaskSummary = 'ManualSummaryDRDMV-13161' + randomStr;
-        let externalTask = 'externalTaskDRDMV-13161' + randomStr;
-        let externalTaskSummary = 'externalSummaryDRDMV-13161' + randomStr;
-        let automatedTask = 'automatedTaskDRDMV-13161' + randomStr;
-        let automatedTaskSummary = 'automatedSummaryDRDMV-13161' + randomStr;
+        let taskTemplateName = 'ManualtaskDRDMV13161' + randomStr;
+        let manualTaskSummary = 'ManualSummaryDRDMV13161' + randomStr;
+        let externalTask = 'externalTaskDRDMV13161' + randomStr;
+        let externalTaskSummary = 'externalSummaryDRDMV13161' + randomStr;
+        let automatedTask = 'automatedTaskDRDMV13161' + randomStr;
+        let automatedTaskSummary = 'automatedSummaryDRDMV13161' + randomStr;
         let caseId, processName = 'automated process' + randomStr;
 
         beforeAll(async () => {
@@ -809,8 +811,8 @@ describe('Dynamic data', () => {
     // ptidke
     describe('[DRDMV-13128]: [Dynamic Data] - Create Case with Case Template having dynamic fields and Update dynamic fields data in Case', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let caseTemplateName = randomStr + 'caseTemplateDRDMV-13128';
-        let caseTemaplateSummary = randomStr + 'caseTemplateDRDMV-13128';
+        let caseTemplateName = randomStr + 'caseTemplateDRDMV13128';
+        let caseTemaplateSummary = randomStr + 'caseTemplateDRDMV13128';
         beforeAll(async () => {
             let casetemplateData = {
                 "templateName": `${caseTemplateName}`,
@@ -863,8 +865,8 @@ describe('Dynamic data', () => {
     // ptidke
     describe('[DRDMV-13127]: [Dynamic Data] - Create Case from Create Case with Template having dynamic fields and also have field with source as Requester', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let caseTemplateName = randomStr + 'caseTemplateDRDMV-13127';
-        let caseTemaplateSummary = randomStr + 'caseTemplateDRDMV-13127';
+        let caseTemplateName = randomStr + 'caseTemplateDRDMV13127';
+        let caseTemaplateSummary = randomStr + 'caseTemplateDRDMV13127';
         beforeAll(async () => {
             let casetemplateData = {
                 "templateName": `${caseTemplateName}`,
@@ -923,8 +925,8 @@ describe('Dynamic data', () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
             manualTaskTemplateData = {
-                "templateName": 'ManualtaskDRDMV-13158' + randomStr,
-                "templateSummary": 'ManualSummaryDRDMV-13158' + randomStr,
+                "templateName": 'ManualtaskDRDMV13158' + randomStr,
+                "templateSummary": 'ManualSummaryDRDMV13158' + randomStr,
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
@@ -937,8 +939,8 @@ describe('Dynamic data', () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
             externalTaskTemplateData = {
-                "templateName": 'ExternalTaskDRDMV-13158' + randomStr,
-                "templateSummary": 'ExternalSummaryDRDMV-13158' + randomStr,
+                "templateName": 'ExternalTaskDRDMV13158' + randomStr,
+                "templateSummary": 'ExternalSummaryDRDMV13158' + randomStr,
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
@@ -951,8 +953,8 @@ describe('Dynamic data', () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
             automationTaskTemplateData = {
-                "templateName": 'AutomatedTaskDRDMV-13158' + randomStr,
-                "templateSummary": 'AutomatedSummaryDRDMV-13158' + randomStr,
+                "templateName": 'AutomatedTaskDRDMV13158' + randomStr,
+                "templateSummary": 'AutomatedSummaryDRDMV13158' + randomStr,
                 "templateStatus": "Active",
                 "processBundle": "com.bmc.dsm.case-lib",
                 "processName": "Case Process " + randomStr,
@@ -1110,8 +1112,8 @@ describe('Dynamic data', () => {
     //ptidke
     describe('[DRDMV-13132,DRDMV-13124]:[-ve] [Dynamic Data] [UI] - Update Case dynamic fields with invalid data', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let caseTemplateName = randomStr + 'caseTemplateDRDMV-13132';
-        let caseTemaplateSummary = randomStr + 'caseTemplateDRDMV-13132';
+        let caseTemplateName = randomStr + 'caseTemplateDRDMV13132';
+        let caseTemaplateSummary = randomStr + 'caseTemplateDRDMV13132';
         beforeAll(async () => {
             let casetemplateData = {
                 "templateName": `${caseTemplateName}`,
@@ -1164,8 +1166,8 @@ describe('Dynamic data', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteDynamicFieldAndGroup();
-        let caseTemplateName = randomStr + 'caseTemplateDRDMV-13125';
-        let caseTemaplateSummary = randomStr + 'caseTemplateDRDMV-13125';
+        let caseTemplateName = randomStr + 'caseTemplateDRDMV13125';
+        let caseTemaplateSummary = randomStr + 'caseTemplateDRDMV13125';
         let casetemplateData = {
             "templateName": `${caseTemplateName}`,
             "templateSummary": `${caseTemaplateSummary}`,
