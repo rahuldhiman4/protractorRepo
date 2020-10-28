@@ -15,6 +15,7 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import { async } from 'q';
 
 describe('Copy Task Template', () => {
     let twoCompanyUser, userData13548;
@@ -235,16 +236,15 @@ describe('Copy Task Template', () => {
         });
     });
 
-    it('[DRDMV-14217,DRDMV-13737]: Copy of Automated task template created across company and no new Process is created', async () => {
-        try {
-            const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            //let automationTaskTemplate = 'DRDMV14217Automationtask' + randomStr;
-            let newAutomationTaskTemplate = 'NewAutomationtaskDRDMV14217' + randomStr;
-            let templateData = {
+    describe('[DRDMV-14217,DRDMV-13737]: Copy of Automated task template created across company and no new Process is created', async () => {
+        const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let templateData, newAutomationTaskTemplate = 'NewAutomationtaskDRDMV14217' + randomStr;
+        beforeAll(async () => {
+            templateData = {
                 "templateName": 'DRDMV14217Automationtask' + randomStr,
                 "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
                 "templateStatus": "Active",
-                "processBundle": "com.bmc.dsm.case-lib",
+                "processBundle": "com.petramco.human resource",
                 "processName": `Case Process ${randomStr}`,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
@@ -253,7 +253,8 @@ describe('Copy Task Template', () => {
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createAutomatedTaskTemplate(templateData);
-
+        });
+        it('[DRDMV-14217,DRDMV-13737]: Copy of Automated task template created across company and no new Process is created', async () => {
             await navigationPage.signOut();
             await loginPage.login(twoCompanyUser.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -270,12 +271,11 @@ describe('Copy Task Template', () => {
             await utilCommon.clickOnBackArrow();
             await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
             expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.petramco.human resource:' + templateData.processName);
-        } catch (e) {
-            throw e;
-        } finally {
+        });
+        afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
-        }
+        });
     });
 
     describe('[DRDMV-13540,DRDMV-13556]: Case Business Analyst can create a copy of Task Template type Manual', () => {
@@ -408,7 +408,7 @@ describe('Copy Task Template', () => {
             await utilCommon.closePopUpMessage();
         });
         it('[DRDMV-14221]: Check Error Message when trying to edit a process, where process is linked to Active Automated Task template', async () => {
-            await copyTemplatePage.clickCancelCopytemplate(); 
+            await copyTemplatePage.clickCancelCopytemplate();
             await utilCommon.clickOnWarningOk();
             await utilCommon.clickOnBackArrow();
             await selectTaskTemplate.searchAndOpenTaskTemplate(updatedTaskTemplate);
@@ -513,7 +513,7 @@ describe('Copy Task Template', () => {
         }
     });
 
-    // Since Dynamic FIled data is not deleivered it is kept on hold
+    // Since Dynamic Field data is not deleivered it is kept on hold
     describe('[DRDMV-13569,DRDMV-14220]: Dynamic Field get copied upon creating copy of Task Template', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let dynamicFieldName1 = 'DRDMV14220FieldName1' + randomStr;
