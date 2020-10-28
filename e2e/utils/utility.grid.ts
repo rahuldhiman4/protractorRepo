@@ -378,8 +378,13 @@ export class GridOperations {
         if (moreLabeLink == true) {
             await showMoreElement.click();
         }
+        await $(this.selectors.activeFilter).isPresent().then(async (linkPresent) => {
+            if (linkPresent) {
+                await $$(this.selectors.filterPresetBtn).click();
+            }
+        });
         if (guid) csslocator = `[rx-view-component-id='${guid}'] .a-tag-active `;
-        else csslocator = ".a-tag-active ";
+        else csslocator = ".a-tag-active, .advanced-filter__expression-tag-field .adapt-mt-text";
         let actualFilters = await element.all(by.css(csslocator))
             .map(async function (header) {
                 return await header.getAttribute('innerText');
