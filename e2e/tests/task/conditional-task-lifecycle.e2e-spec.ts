@@ -221,7 +221,7 @@ describe('Conditional Task Life Cycle', () => {
             await viewCasePage.openTaskCard(1);
             expect(await manageTaskBlade.getTaskStatus(adhocTaskData.taskName)).toContain(completedStr);
             expect(await manageTaskBlade.getTaskStatus(manualTaskTemplateData.templateName)).toContain(assignedStr);
-            await utilityCommon.closeAllBlades();
+            await manageTaskBlade.clickCloseButton();
 
             //Update Manual task to completed and verify Automated Task status(CASE 1)
             await apiHelper.updateTaskStatus(manualTaskDNPId, 'Completed', 'Successful');
@@ -231,7 +231,7 @@ describe('Conditional Task Life Cycle', () => {
             expect(await manageTaskBlade.getTaskStatus(manualTaskTemplateData.templateName)).toContain(completedStr);
             expect(await manageTaskBlade.getTaskStatus(automatedTaskTemplateData.templateName)).toContain('Failed');
             expect(await manageTaskBlade.getTaskStatus(externalTaskTemplateData.templateName)).toContain('Staged');
-            await utilityCommon.closeAllBlades();
+            await manageTaskBlade.clickCloseButton();
         });
         it('[DRDMV-14996]: [Task] Case created with CaseTemplate (with no TaskFlow) and without CaseTemplate', async () => {
             //Update Adhoc task to Completed and check manual task status(CASE 2)
@@ -241,7 +241,7 @@ describe('Conditional Task Life Cycle', () => {
             await viewCasePage.openTaskCard(1);
             expect(await manageTaskBlade.getTaskStatus(adhocTaskData.taskName)).toContain(completedStr);
             expect(await manageTaskBlade.getTaskStatus(manualTaskTemplateData.templateName)).toContain(assignedStr);
-            await utilityCommon.closeAllBlades();
+            await manageTaskBlade.clickCloseButton();
 
             //Update Manual task to completed and verify Automated Task status(CASE 2)
             await apiHelper.updateTaskStatus(manualTaskNTId, 'Completed', 'Successful');
@@ -253,14 +253,14 @@ describe('Conditional Task Life Cycle', () => {
             expect(await manageTaskBlade.getTaskStatus(manualTaskTemplateData.templateName)).toContain(completedStr);
             expect(await manageTaskBlade.getTaskStatus(automatedTaskTemplateData.templateName)).toContain('Failed');
             expect(await manageTaskBlade.getTaskStatus(externalTaskTemplateData.templateName)).toContain('Staged');
-            await utilityCommon.closeAllBlades();
+            await manageTaskBlade.clickCloseButton();
 
             //Verify Case 2 can be Resolved
             await updateStatusBlade.changeCaseStatus('Resolved');
             await updateStatusBlade.setStatusReason('Auto Resolved');
             await updateStatusBlade.clickSaveStatus();
             expect(await utilityCommon.isPopUpMessagePresent('The case contains active tasks. Please close all the tasks and resolve the case.')).toBeTruthy();
-            await utilityCommon.closeAllBlades();
+            await manageTaskBlade.clickCloseButton();
         });
         it('[DRDMV-14996]: [Task] Case created with CaseTemplate (with no TaskFlow) and without CaseTemplate', async () => {
             //Update Adhoc task to Completed and check manual task status(CASE 3)
@@ -269,7 +269,7 @@ describe('Conditional Task Life Cycle', () => {
             await viewCasePage.openTaskCard(1);
             expect(await manageTaskBlade.getTaskStatus(adhocTaskData.taskName)).toContain(completedStr);
             expect(await manageTaskBlade.getTaskStatus(manualTaskTemplateData.templateName)).toContain(assignedStr);
-            await utilityCommon.closeAllBlades();
+            await manageTaskBlade.clickCloseButton();
 
             //Update Manual task to completed and verify Automated Task status(CASE 3)
             await apiHelper.updateTaskStatus(manualTaskPWNTId, 'Completed', 'Successful');
@@ -279,7 +279,7 @@ describe('Conditional Task Life Cycle', () => {
             expect(await manageTaskBlade.getTaskStatus(manualTaskTemplateData.templateName)).toContain(completedStr);
             expect(await manageTaskBlade.getTaskStatus(automatedTaskTemplateData.templateName)).toContain('Failed');
             expect(await manageTaskBlade.getTaskStatus(externalTaskTemplateData.templateName)).toContain('Assigned');
-            await utilityCommon.closeAllBlades();
+            await manageTaskBlade.clickCloseButton();
 
             //Update External task to completed and verify External Task status(CASE 3)
             await apiHelper.updateTaskStatus(externalTaskPWNTId, 'Completed', 'Successful');
@@ -287,7 +287,7 @@ describe('Conditional Task Life Cycle', () => {
             await utilityGrid.searchAndOpenHyperlink(responseCasePWNT.displayId);
             await viewCasePage.openTaskCard(1);
             expect(await manageTaskBlade.getTaskStatus(externalTaskTemplateData.templateName)).toContain(completedStr);
-            await utilityCommon.closeAllBlades();
+            await manageTaskBlade.clickCloseButton();
 
             //Verify Case 2 can be Resolved
             await updateStatusBlade.changeCaseStatus('Resolved');
@@ -431,10 +431,10 @@ describe('Conditional Task Life Cycle', () => {
             await utilityGrid.searchAndOpenHyperlink(caseResponseCriticalPriority.displayId);
             await viewCasePage.openTaskCard(1);
             expect(await manageTaskBlade.getTaskStatus(manualTaskTemplateData.templateSummary)).toContain('Assigned');
-            await utilityCommon.closeAllBlades();
+            await manageTaskBlade.clickCloseButton();
             await viewCasePage.openTaskCard(2);
             expect(await manageTaskBlade.getTaskStatus(externalTaskTemplateData.templateSummary)).toContain('Assigned');
-            await utilityCommon.closeAllBlades();
+            await manageTaskBlade.clickCloseButton();
             expect(await viewCasePage.isTaskCountPresentOnAnyTaskCard()).toBeFalsy();
             expect(await viewCasePage.isTaskCardPresent(manualTaskTemplateData.templateSummary)).toBeTruthy('Template Name not present');
             expect(await viewCasePage.isTaskCardPresent(externalTaskTemplateData.templateSummary)).toBeTruthy('Template Name not present');
@@ -453,10 +453,10 @@ describe('Conditional Task Life Cycle', () => {
             await utilityGrid.searchAndOpenHyperlink(caseResponseCriticalPriority.displayId);
             await viewCasePage.openTaskCard(2);
             expect(await manageTaskBlade.getTaskStatus(manualTaskTemplateData.templateSummary)).toContain('Completed');
-            await utilityCommon.closeAllBlades();
+            await manageTaskBlade.clickCloseButton();
             await viewCasePage.openTaskCard(1);
             expect(await manageTaskBlade.getTaskStatus(externalTaskTemplateData.templateSummary)).toContain('Assigned');
-            await utilityCommon.closeAllBlades();
+            await manageTaskBlade.clickCloseButton();
 
             expect(await viewCasePage.isAllTaskUnderStatusTitleMatches('In Progress Tasks', [externalTaskTemplateData.templateSummary])).toBeTruthy('External task is missing from In Progress Task section');
             expect(await viewCasePage.isAllTaskUnderStatusTitleMatches('Completed Tasks', [manualTaskTemplateData.templateSummary])).toBeTruthy('Manual task is missing from Completed Task section');
@@ -655,7 +655,7 @@ describe('Conditional Task Life Cycle', () => {
             await viewCasePage.openTaskCard(1);
             expect(await manageTaskBlade.getTaskStatus(`DRDMV-15001_1 ${randomStr}`)).toContain('Staged');
             expect(await manageTaskBlade.getTaskStatus(`DRDMV-15001_2 ${randomStr}`)).toContain('Staged');
-            await utilityCommon.closeAllBlades();
+            await manageTaskBlade.clickCloseButton();
 
             await viewCasePage.clickEditCaseButton();
             await editCasePage.clickOnSelectCaseTemplate();

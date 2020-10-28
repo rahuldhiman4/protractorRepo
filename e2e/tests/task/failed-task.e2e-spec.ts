@@ -1,22 +1,20 @@
 import { browser } from "protractor";
+import coreApi from '../../api/api.core.util';
 import apiHelper from '../../api/api.helper';
+import previewCasePo from '../../pageobject/case/case-preview.po';
+import createCasePo from '../../pageobject/case/create-case.po';
+import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
+import viewCasePage from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import { BWF_BASE_URL } from '../../utils/constants';
-import utilityGrid from '../../utils/utility.grid';
-import viewCasePage from '../../pageobject/case/view-case.po';
-import manageTaskBlade from "../../pageobject/task/manage-task-blade.po";
-import utilityCommon from '../../utils/utility.common';
-import coreApi from '../../api/api.core.util';
-import updateStatusBlade from '../../pageobject/common/update.status.blade.po';
-import taskViewPage from '../../pageobject/task/view-task.po';
-import editTaskPo from '../../pageobject/task/edit-task.po';
+import statusUpdateBladePo from '../../pageobject/common/update.status.blade.po';
 import notificationPo from '../../pageobject/notification/notification.po';
 import activityTabPo from '../../pageobject/social/activity-tab.po';
-import createCasePo from '../../pageobject/case/create-case.po';
-import previewCasePo from '../../pageobject/case/case-preview.po';
-import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
-import statusUpdateBladePo from '../../pageobject/common/update.status.blade.po';
+import manageTaskBlade from "../../pageobject/task/manage-task-blade.po";
+import taskViewPage from '../../pageobject/task/view-task.po';
+import { BWF_BASE_URL } from '../../utils/constants';
+import utilityCommon from '../../utils/utility.common';
+import utilityGrid from '../../utils/utility.grid';
 
 describe('Failed Task', () => {
     beforeAll(async () => {
@@ -89,7 +87,9 @@ describe('Failed Task', () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.enableDisableProcess(`${automatedTaskTemplateData.processBundle}:${automatedTaskTemplateData.processName}`, false);
             await apiHelper.associateCaseTemplateWithThreeTaskTemplate(newCaseTemplate.displayId, automatedTaskTemplate2.displayId, automatedTaskTemplate1.displayId, manualTaskTemplate.displayId, 'THREE_TASKFLOW_SEQUENTIAL_PARALLEL');
+        });
 
+        it('[DRDMV-10057]: Task behaviour when 2 of 3 tasks on same sequence and first task is failed(Condition set is Proceed further)', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary('Summary');
@@ -109,23 +109,23 @@ describe('Failed Task', () => {
             await utilityGrid.searchAndOpenHyperlink(caseDisplayId);
             await viewCasePage.openTaskCard(1);
             expect(await manageTaskBlade.getTaskStatus(manualTaskTemplateData.templateSummary)).toContain('Assigned');
-            await utilityCommon.closeAllBlades();
+            await manageTaskBlade.clickCloseButton();
 
             await viewCasePage.openTaskCard(2);
             expect(await manageTaskBlade.getTaskStatus(automatedTaskTemplateSummary2)).toContain('Failed');
-            await utilityCommon.closeAllBlades();
+            await manageTaskBlade.clickCloseButton();
 
             await viewCasePage.openTaskCard(3);
             expect(await manageTaskBlade.getTaskStatus(automatedTaskTemplateSummary1)).toContain('Completed');
-            await utilityCommon.closeAllBlades();
+            await manageTaskBlade.clickCloseButton();
 
             await apiHelper.apiLogin('qkatawazi');
             let manualTaskGuid = await coreApi.getTaskGuid(manualTaskTemplateData.templateSummary);
             await apiHelper.updateTaskStatus(manualTaskGuid, 'Completed', 'Successful');
 
-            await updateStatusBlade.changeCaseStatus('Resolved');
-            await updateStatusBlade.setStatusReason('Auto Resolved');
-            await updateStatusBlade.clickSaveStatus('Resolved');
+            await statusUpdateBladePo.changeCaseStatus('Resolved');
+            await statusUpdateBladePo.setStatusReason('Auto Resolved');
+            await statusUpdateBladePo.clickSaveStatus('Resolved');
             expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
         });
 
@@ -215,15 +215,15 @@ describe('Failed Task', () => {
 
             await viewCasePage.openTaskCard(1);
             expect(await manageTaskBlade.getTaskStatus(automatedTaskTemplateSummary2)).toContain('Failed');
-            await utilityCommon.closeAllBlades();
+            await manageTaskBlade.clickCloseButton();
             await viewCasePage.clickOnRefreshTaskList();
             await viewCasePage.openTaskCard(2);
             expect(await manageTaskBlade.getTaskStatus(manualTaskTemplateData.templateSummary)).toContain('Staged');
-            await utilityCommon.closeAllBlades();
+            await manageTaskBlade.clickCloseButton();
 
             await viewCasePage.openTaskCard(3);
             expect(await manageTaskBlade.getTaskStatus(automatedTaskTemplateSummary1)).toContain('Staged');
-            await utilityCommon.closeAllBlades();
+            await manageTaskBlade.clickCloseButton();
         });
     });
 
@@ -273,7 +273,6 @@ describe('Failed Task', () => {
             //Update the Case to In Progress status
             await apiHelper.updateCaseStatus(caseResponse.id, 'InProgress');
         });
-
         it('[DRDMV-10000]: "ReRun"action of failed Automated task', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
@@ -290,13 +289,12 @@ describe('Failed Task', () => {
             expect(await utilityCommon.isPopUpMessagePresent('Task rerun completed successfully')).toBeTruthy();
             await utilityCommon.closePopUpMessage();
             expect(await manageTaskBlade.getTaskStatus(automatedTaskTemplateData.templateSummary)).toBe('Completed');
-            await utilityCommon.closeAllBlades();
+            await manageTaskBlade.clickCloseButton();
             await viewCasePage.clickOnRefreshTaskList();
             expect(await viewCasePage.isAllTaskUnderStatusTitleMatches('Completed Tasks', [automatedTaskTemplateData.templateSummary])).toBeTruthy();
             await viewCasePage.clickOnTaskLink(automatedTaskTemplateData.templateSummary);
             expect(await taskViewPage.getTaskStatusValue()).toBe('Completed');
             expect(await taskViewPage.getStatusReason()).toBe('Successful');
-            await utilityCommon.closeAllBlades();
             expect(await activityTabPo.isTextPresentInActivityLog('Qadim Katawazi')).toBeTruthy();
             expect(await activityTabPo.isTextPresentInActivityLog('has rerun the task')).toBeTruthy();
         });
@@ -344,8 +342,8 @@ describe('Failed Task', () => {
         await viewCasePage.clickOnTaskLink(manualTaskTemplateData.templateSummary);
         await taskViewPage.clickOnChangeStatus();
         await taskViewPage.changeTaskStatus('Completed');
-        await updateStatusBlade.setStatusReason('Failed');
-        await updateStatusBlade.clickSaveStatus();
+        await statusUpdateBladePo.setStatusReason('Failed');
+        await statusUpdateBladePo.clickSaveStatus();
         expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
     });
 
@@ -444,7 +442,7 @@ describe('Failed Task', () => {
             await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
             await viewCasePage.openTaskCard(1);
             expect(await manageTaskBlade.getTaskStatus(manualTaskTemplateData1.templateSummary)).toBe('Assigned');
-            await utilityCommon.closeAllBlades();
+            await manageTaskBlade.clickCloseButton();
 
             await apiHelper.updateTaskStatus(manualTaskGuid1, 'Completed', 'Successful');
             await viewCasePage.clickOnRefreshTaskList();
@@ -460,7 +458,7 @@ describe('Failed Task', () => {
             expect(await taskViewPage.getStatusReason()).toBe('Error');
         });
     });
-    
+
     describe('[DRDMV-10045]: Case Status when one automated task got failed and other 2 automated task got passed', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplatePetramco, caseTemplateResponse, automatedTaskTemplateData1, automatedTaskTemplateData2, automatedTaskTemplateData3, caseResponse;
@@ -578,7 +576,7 @@ describe('Failed Task', () => {
             expect(await manageTaskBlade.getTaskStatus(automatedTaskTemplateData1.templateSummary)).toBe('Failed');
             expect(await manageTaskBlade.getTaskStatus(automatedTaskTemplateData2.templateSummary)).toBe('Completed');
             expect(await manageTaskBlade.getTaskStatus(automatedTaskTemplateData3.templateSummary)).toBe('Completed');
-            await utilityCommon.closeAllBlades();
+            await manageTaskBlade.clickCloseButton();
             expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
         });
     });
@@ -743,7 +741,7 @@ describe('Failed Task', () => {
             await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
             await viewCasePage.openTaskCard(1);
             expect(await manageTaskBlade.getTaskStatus(automatedTaskTemplateData.templateSummary)).toBe('Completed');
-            await utilityCommon.closeAllBlades();
+            await manageTaskBlade.clickCloseButton();
 
             await navigationPage.signOut();
             await loginPage.login('qtao');
@@ -756,5 +754,4 @@ describe('Failed Task', () => {
             await loginPage.login('qkatawazi');
         });
     });
-
 });
