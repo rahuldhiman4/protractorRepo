@@ -154,7 +154,7 @@ describe('Login and create case from API', () => {
         await apiHelper.associatePersonToCompany(userData.userId, "Psilon");
     });
 
-    fit('Associate task template to case template', async () => {
+    it('Associate task template to case template', async () => {
         await apiHelper.apiLogin('qkatawazi');
 
         let caseTemplateData1 = {
