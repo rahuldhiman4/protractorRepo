@@ -15,6 +15,7 @@ export interface INotificationTemplate {
     alertMessage: string;
     emailBody: string;
     emailSubject: string;
+    lineOfBusiness?:string;
 }
 
 export interface IEmailConfig {

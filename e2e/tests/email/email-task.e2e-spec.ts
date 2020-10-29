@@ -338,7 +338,7 @@ describe('Email Task', () => {
         let manualTaskSummary = 'ManualSummary123' + randomStr;
         let templateData = {
             "templateName": `${taskTemplateName}`,
-            "templateSummary": `${manualTaskSummary}`,
+            "templateSummary": `${taskTemplateName}`,
             "templateStatus": "Active",
             "taskCompany": "Petramco",
             "ownerCompany": "Petramco",
@@ -367,7 +367,7 @@ describe('Email Task', () => {
         await expect(activityTabPo.getActivityReplyAllNotesText('Reply all')).toBeFalsy();
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate(taskTemplateName);
-        await manageTaskBladePo.clickTaskLink(manualTaskSummary);
+        await manageTaskBladePo.clickTaskLink(taskTemplateName);
         await activityTabPo.addActivityNote('This is case notes templates');
         await activityTabPo.clickOnPostButton();
         await expect(activityTabPo.getActivityReplyNotesText('Reply')).toBeFalsy();
@@ -437,7 +437,7 @@ describe('Email Task', () => {
             await emailPo.clickOnSendButton();
         });
         it('[DRDMV-19556]: Reply / Reply All earlier email context should be copied as part of email composition on Task', async () => {
-            expect(await activityTabPo.getEmailTitle()).toContain('Fritz Schulz sent an email');
+            expect(await activityTabPo.getEmailTitle()).toContain('Qadim Katawazi sent an email');
             expect(await activityTabPo.getRecipientInTo()).toContain('To: Fritz Schulz');
             expect(await activityTabPo.getEmailSubject()).toContain(displayId + ':' + ManualtaskID + ':' + manualTaskSummary);
             await activityTabPo.clickShowMoreLinkInActivity(1);
@@ -447,13 +447,13 @@ describe('Email Task', () => {
             expect(await emailPo.getToEmailPerson()).toContain('Fritz Schulz');
             expect(await emailPo.getCcEmailPerson()).toContain('Qadim Katawazi');
             expect(await emailPo.getEmailBody()).toContain('this is new email sending frist time to the user');
-            expect(await emailPo.getEmailBody()).toContain('While replying, please do not add information below this line');
+            expect(await emailPo.getEmailBody()).toContain('------ While replying, please do not add information below this line -----');
             await emailPo.setEmailBody('this is second reply to all');
             await emailPo.clickOnSendButton();
             await activityTabPo.clickShowMoreLinkInActivity(1);
             expect(await activityTabPo.getEmailBody()).toContain('this is second reply to all');
             await activityTabPo.clickOnReply();
-            expect(await emailPo.getToEmailPerson()).toContain('Fritz Schulz');
+            expect(await emailPo.getToEmailPerson()).toContain('Qadim Katawazi');
             expect(await activityTabPo.getEmailBody()).toContain('this is second reply to all');
             await emailPo.setEmailBody('this is third reply');
             await emailPo.clickOnSendButton();
@@ -469,7 +469,7 @@ describe('Email Task', () => {
             await emailPo.setToOrCCInputTextbox('Cc', 'qkatawazi@petramco.com')
             await emailPo.setEmailBody('this is new email sending frist time to the user');
             await emailPo.clickOnSendButton();
-            expect(await activityTabPo.getEmailTitle()).toContain('Fritz Schulz sent an email');
+            expect(await activityTabPo.getEmailTitle()).toContain('Qadim Katawazi sent an email');
             expect(await activityTabPo.getRecipientInTo()).toContain('To: Fritz Schulz');
             expect(await activityTabPo.getEmailSubject()).toContain(displayId + ':' + externaltaskID + ':' + externalTaskSummary);
             await activityTabPo.clickShowMoreLinkInActivity(1);
@@ -481,7 +481,7 @@ describe('Email Task', () => {
         it('[DRDMV-19556]: Reply / Reply All earlier email context should be copied as part of email composition on Task', async () => {
             expect(await emailPo.getToEmailPerson()).toContain('Fritz Schulz');
             expect(await emailPo.getCcEmailPerson()).toContain('Qadim Katawazi');
-            expect(await emailPo.getEmailBody()).toContain('While replying, please do not add information below this line');
+            expect(await emailPo.getEmailBody()).toContain('------ While replying, please do not add information below this line -----');
             expect(await emailPo.getEmailBody()).toContain('this is new email sending frist time to the user');
             await emailPo.setEmailBody('this is second reply to all');
             await emailPo.clickOnSendButton();
@@ -652,6 +652,10 @@ describe('Email Task', () => {
             expect(await emailPo.getEmailBody()).toContain('Hi Team ,\n\nI am taking leave today.\n\nThanks.');
             await emailPo.clickOnSendButton();
         });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
+    
     });
 
     it('[DRDMV-19552]: Verify task acknowledgement template are listed in Email Acknowledgement template and In Email Configuration', async () => {
