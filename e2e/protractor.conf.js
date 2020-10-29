@@ -11,8 +11,8 @@ const specJsonReporter = require("./reporters/spec-json-reporter/jasmine-spec-js
  */
 
 exports.config = {
-  allScriptsTimeout: 70 * 1000,
-  getPageTimeout: 90 * 1000,
+  allScriptsTimeout: 40 * 1000,
+  getPageTimeout: 60 * 1000,
 
   capabilities: {
     browserName: "chrome",
