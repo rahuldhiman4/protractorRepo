@@ -181,15 +181,9 @@ class ApiHelper {
         let mailBoxConfig = cloneDeep(MAILBOX_CONFIG);
         if (data) {
             mailBoxConfig.fieldInstances[450000156].value = data.email;
-            if (data.lineOfBusiness) {
-                mailBoxConfig.fieldInstances[450000420].value = await constants.LOB[data.lineOfBusiness];
-            }
-            if (data.company) {
-                mailBoxConfig.fieldInstances[1000000001].value = await apiCoreUtil.getOrganizationGuid(data.company);
-            }
-            if (data.description) {
-                mailBoxConfig.fieldInstances[8].value = data.description;
-            }
+            mailBoxConfig.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : mailBoxConfig.fieldInstances[450000420].value;
+            mailBoxConfig.fieldInstances[1000000001].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : mailBoxConfig.fieldInstances[1000000001].value;
+            mailBoxConfig.fieldInstances[8].value = data.description ? data.description : mailBoxConfig.fieldInstances[8].value;
         }
         let emailConfigCreateResponse: AxiosResponse = await apiCoreUtil.createRecordInstance(mailBoxConfig);
         console.log('Configure Email API Status =============>', emailConfigCreateResponse.status);
@@ -352,9 +346,7 @@ class ApiHelper {
         templateData.fieldInstances[1000000064].value = data.categoryTier2 ? await apiCoreUtil.getCategoryGuid(data.categoryTier2) : templateData.fieldInstances[1000000064].value;
         templateData.fieldInstances[1000000065].value = data.categoryTier3 ? await apiCoreUtil.getCategoryGuid(data.categoryTier3) : templateData.fieldInstances[1000000065].value;
         templateData.fieldInstances[450000061].value = data.description ? data.description : templateData.fieldInstances[450000061].value;
-        if (data.lineOfBusiness) {
-            templateData.fieldInstances[450000420].value = await constants.LOB[data.lineOfBusiness];
-        }
+        templateData.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : templateData.fieldInstances[450000420].value;
         if (data.caseStatus) {
             let statusValue = constants.CaseStatus[data.caseStatus];
             let caseTemplateStatus = {
@@ -528,58 +520,19 @@ class ApiHelper {
         assignmentMappingData.fieldInstances[1000000001].value = await apiCoreUtil.getOrganizationGuid(data.company);
         assignmentMappingData.fieldInstances[450000153].value = await apiCoreUtil.getOrganizationGuid(data.supportCompany);
         assignmentMappingData.fieldInstances[1000000217].value = await apiCoreUtil.getSupportGroupGuid(data.supportGroup);
-        if (data.flowset) {
-            let flowsetGuid = await apiCoreUtil.getFlowsetGuid(data.flowset);
-            assignmentMappingData.fieldInstances[450000121].value = flowsetGuid;
-        }
-        if (data.categoryTier1) {
-            let category1Guid = await apiCoreUtil.getCategoryGuid(data.categoryTier1);
-            assignmentMappingData.fieldInstances[1000000063].value = category1Guid;
-        }
-        if (data.categoryTier2) {
-            let category2Guid = await apiCoreUtil.getCategoryGuid(data.categoryTier2);
-            assignmentMappingData.fieldInstances[1000000064].value = category2Guid;
-        }
-        if (data.categoryTier3) {
-            let category3Guid = await apiCoreUtil.getCategoryGuid(data.categoryTier3);
-            assignmentMappingData.fieldInstances[1000000065].value = category3Guid;
-        }
-        if (data.categoryTier4) {
-            let category4Guid = await apiCoreUtil.getCategoryGuid(data.categoryTier4);
-            assignmentMappingData.fieldInstances[450000158].value = category4Guid;
-        }
-        if (data.label) {
-            let labelGuid = await apiCoreUtil.getLabelGuid(data.label);
-            assignmentMappingData.fieldInstances[450000159].value = labelGuid;
-        }
-        if (data.region) {
-            let regionGuid = await apiCoreUtil.getRegionGuid(data.region);
-            assignmentMappingData.fieldInstances[450000157].value = regionGuid;
-        }
-        if (data.site) {
-            let siteGuid = await apiCoreUtil.getSiteGuid(data.site);
-            assignmentMappingData.fieldInstances[450000156].value = siteGuid;
-        }
-        if (data.businessUnit) {
-            let businessUnitGuid = await apiCoreUtil.getBusinessUnitGuid(data.businessUnit);
-            assignmentMappingData.fieldInstances[450000381].value = businessUnitGuid;
-        }
-        if (data.department) {
-            let departmentGuid = await apiCoreUtil.getDepartmentGuid(data.department);
-            assignmentMappingData.fieldInstances[450000371].value = departmentGuid;
-        }
-        if (data.assignee) {
-            let assigneeGuid = await apiCoreUtil.getPersonGuid(data.assignee);
-            assignmentMappingData.fieldInstances[450000152].value = assigneeGuid;
-        }
-        if (data.priority) {
-            let priorityValue = constants.CasePriority[data.priority];
-            assignmentMappingData.fieldInstances["1000000164"].value = priorityValue;
-        }
-        if (data.useAsDefault) {
-            let defaultValue = data.useAsDefault ? "1" : "0";
-            assignmentMappingData.fieldInstances["450000001"].value = defaultValue;
-        }
+        assignmentMappingData.fieldInstances[450000121].value = data.flowset ? await apiCoreUtil.getFlowsetGuid(data.flowset) : assignmentMappingData.fieldInstances[450000121].value;
+        assignmentMappingData.fieldInstances[1000000063].value = data.categoryTier1 ? await apiCoreUtil.getCategoryGuid(data.categoryTier1) : assignmentMappingData.fieldInstances[1000000063].value;
+        assignmentMappingData.fieldInstances[1000000064].value = data.categoryTier2 ? await apiCoreUtil.getCategoryGuid(data.categoryTier2) : assignmentMappingData.fieldInstances[1000000064].value;
+        assignmentMappingData.fieldInstances[1000000065].value = data.categoryTier3 ? await apiCoreUtil.getCategoryGuid(data.categoryTier3) : assignmentMappingData.fieldInstances[1000000065].value;
+        assignmentMappingData.fieldInstances[450000158].value = data.categoryTier4 ? await apiCoreUtil.getCategoryGuid(data.categoryTier4) : assignmentMappingData.fieldInstances[450000158].value;
+        assignmentMappingData.fieldInstances[450000159].value = data.label ? await apiCoreUtil.getLabelGuid(data.label) : assignmentMappingData.fieldInstances[450000159].value;
+        assignmentMappingData.fieldInstances[450000157].value = data.region ? await apiCoreUtil.getRegionGuid(data.region) : assignmentMappingData.fieldInstances[450000157].value;
+        assignmentMappingData.fieldInstances[450000156].value = data.site ? await apiCoreUtil.getSiteGuid(data.site) : assignmentMappingData.fieldInstances[450000156].value;
+        assignmentMappingData.fieldInstances[450000381].value = data.businessUnit ? await apiCoreUtil.getBusinessUnitGuid(data.businessUnit) : assignmentMappingData.fieldInstances[450000381].value;
+        assignmentMappingData.fieldInstances[450000371].value = data.department ? await apiCoreUtil.getDepartmentGuid(data.department) : assignmentMappingData.fieldInstances[450000371].value;
+        assignmentMappingData.fieldInstances[450000152].value = data.assignee ? await apiCoreUtil.getPersonGuid(data.assignee) : assignmentMappingData.fieldInstances[450000152].value;
+        assignmentMappingData.fieldInstances[1000000164].value = data.priority ? constants.CasePriority[data.priority] : assignmentMappingData.fieldInstances[1000000164].value;
+        if (data.useAsDefault) assignmentMappingData.fieldInstances[450000001].value = data.useAsDefault ? "1" : "0";
 
         let newCaseAssignmentMapping: AxiosResponse = await apiCoreUtil.createRecordInstance(assignmentMappingData);
         console.log('Create Case Assignment Mapping API Status =============>', newCaseAssignmentMapping.status);
@@ -603,9 +556,7 @@ class ApiHelper {
         templateData.fieldInstances[1000000001].value = data.taskCompany ? await apiCoreUtil.getOrganizationGuid(data.taskCompany) : templateData.fieldInstances[1000000001].value;
         templateData.fieldInstances[300287900].value = data.ownerGroup ? await apiCoreUtil.getSupportGroupGuid(data.ownerGroup) : templateData.fieldInstances[300287900].value;
         templateData.fieldInstances[450000401].value = data.ownerBusinessUnit ? await apiCoreUtil.getBusinessUnitGuid(data.ownerBusinessUnit) : templateData.fieldInstances[450000401].value;
-        if (data.lineOfBusiness) {
-            templateData.fieldInstances[450000420].value = await constants.LOB[data.lineOfBusiness];
-        }
+        templateData.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : templateData.fieldInstances[450000420].value;
         if (data.assignee) {
             let assignee = await apiCoreUtil.getPersonGuid(data.assignee);
             let templateDataAssignee = {
@@ -714,9 +665,7 @@ class ApiHelper {
         templateData.fieldInstances[1000000001].value = data.taskCompany ? await apiCoreUtil.getOrganizationGuid(data.taskCompany) : templateData.fieldInstances[1000000001].value;
         templateData.fieldInstances[300287900].value = data.ownerGroup ? await apiCoreUtil.getSupportGroupGuid(data.ownerGroup) : templateData.fieldInstances[300287900].value;
         templateData.fieldInstances[450000401].value = data.ownerBusinessUnit ? await apiCoreUtil.getBusinessUnitGuid(data.ownerBusinessUnit) : templateData.fieldInstances[450000401].value;
-        if (data.lineOfBusiness) {
-            templateData.fieldInstances[450000420].value = await constants.LOB[data.lineOfBusiness];
-        }
+        templateData.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : templateData.fieldInstances[450000420].value;
         if (data.assignee) {
             let assignee = await apiCoreUtil.getPersonGuid(data.assignee);
             let templateDataAssignee = {
@@ -806,9 +755,7 @@ class ApiHelper {
         templateData.fieldInstances[1000000001].value = data.taskCompany ? await apiCoreUtil.getOrganizationGuid(data.taskCompany) : templateData.fieldInstances[1000000001].value;
         templateData.fieldInstances[300287900].value = data.ownerGroup ? await apiCoreUtil.getSupportGroupGuid(data.ownerGroup) : templateData.fieldInstances[300287900].value;
         templateData.fieldInstances[450000401].value = data.ownerBusinessUnit ? await apiCoreUtil.getBusinessUnitGuid(data.ownerBusinessUnit) : templateData.fieldInstances[450000401].value;
-        if (data.lineOfBusiness) {
-            templateData.fieldInstances[450000420].value = await constants.LOB[data.lineOfBusiness];
-        }
+        templateData.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : templateData.fieldInstances[450000420].value;
         if (data.priority) {
             let priority = constants.CasePriority[data.priority];
             let taskTemplateDataPriority = {
@@ -882,13 +829,8 @@ class ApiHelper {
             let businessUnitDataFile = await require('../data/api/foundation/business.unit.api.json');
             let businessData = await businessUnitDataFile.NewBusinessUnit;
             businessData.fieldInstances[1000000010].value = data.orgName;
-            if (data.relatedOrgId != null) {
-                businessData.fieldInstances[304411161].value = data.relatedOrgId;
-            }
-            if (data.domainTag != null) {
-                let domainGuid = await apiCoreUtil.getDomainTagGuid(data.domainTag);
-                businessData.fieldInstances[304417331].value = domainGuid;
-            }
+            businessData.fieldInstances[304411161].value = data.relatedOrgId ? data.relatedOrgId : businessData.fieldInstances[304411161].value;
+            businessData.fieldInstances[304417331].value = data.domainTag ? await apiCoreUtil.getDomainTagGuid(data.domainTag) : businessData.fieldInstances[304417331].value;
 
             const newBusinessUnit = await apiCoreUtil.createRecordInstance(businessData);
             console.log('Create New Business Unit API Status =============>', newBusinessUnit.status);
@@ -914,14 +856,8 @@ class ApiHelper {
             let departmentDataFile = await require('../data/api/foundation/department.api.json');
             let departmentData = await departmentDataFile.NewDepartment;
             departmentData.fieldInstances[1000000010].value = data.orgName;
-            if (data.relatedOrgId != null) {
-                departmentData.fieldInstances[304411161].value = data.relatedOrgId;
-            }
-
-            if (data.domainTag != null) {
-                let domainGuid = await apiCoreUtil.getDomainTagGuid(data.domainTag);
-                departmentData.fieldInstances[304417331].value = domainGuid;
-            }
+            departmentData.fieldInstances[304411161].value = data.relatedOrgId ? data.relatedOrgId : departmentData.fieldInstances[304411161].value;
+            departmentData.fieldInstances[304417331].value = data.domainTag ? await apiCoreUtil.getDomainTagGuid(data.domainTag) : departmentData.fieldInstances[304417331].value;
 
             const newDepartment = await apiCoreUtil.createRecordInstance(departmentData);
             console.log('Create New Department API Status =============>', newDepartment.status);
@@ -945,14 +881,8 @@ class ApiHelper {
             let suppGrpDataFile = await require('../data/api/foundation/support.group.api.json');
             let suppGrpData = await suppGrpDataFile.NewSupportGroup;
             suppGrpData.fieldInstances[1000000010].value = data.orgName;
-            if (data.relatedOrgId != null) {
-                suppGrpData.fieldInstances[304411161].value = data.relatedOrgId;
-            }
-
-            if (data.domainTag != null) {
-                let domainGuid = await apiCoreUtil.getDomainTagGuid(data.domainTag);
-                suppGrpData.fieldInstances[304417331].value = domainGuid;
-            }
+            suppGrpData.fieldInstances[304411161].value = data.relatedOrgId ? data.relatedOrgId : suppGrpData.fieldInstances[304411161].value;
+            suppGrpData.fieldInstances[304417331].value = data.domainTag ? await apiCoreUtil.getDomainTagGuid(data.domainTag) : suppGrpData.fieldInstances[304417331].value;
 
             if (data.status != null) {
                 let statusValue = constants.SupportGroup[data.status];
@@ -1246,9 +1176,7 @@ class ApiHelper {
         let companyGuid = await apiCoreUtil.getOrganizationGuid(data.Company);
         templateData.processInputValues["Company"] = companyGuid;
         templateData.processInputValues["TemplateName"] = data.TemplateName;
-        if (data.lineOfBusiness) {
-            templateData.processInputValues["Line of Business"] = await constants.LOB[data.lineOfBusiness];
-        }
+        templateData.processInputValues["Line of Business"] = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : templateData.processInputValues["Line of Business"];
         templateData.processInputValues["Status"] = data.Status;
         templateData.processInputValues["Description"] = data.Description;
         templateData.processInputValues["EmailMessageSubject"] = data.EmailMessageSubject;
@@ -1291,12 +1219,8 @@ class ApiHelper {
         templateData.processInputValues["Template Name"] = data.templateName;
         templateData.processInputValues["Status"] = data.templateStatus;
         templateData.processInputValues["MessageBody"] = data.body;
-        if (data.label) {
-            templateData.processInputValues["Label"] = await apiCoreUtil.getLabelGuid(data.label);
-        }
-        if (data.lineOfBusiness) {
-            templateData.processInputValues["Line of Business"] = await constants.LOB[data.lineOfBusiness];
-        }
+        templateData.processInputValues["Label"] = data.label ? await apiCoreUtil.getLabelGuid(data.label) : templateData.processInputValues["Label"];
+        templateData.processInputValues["Line of Business"] = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : templateData.processInputValues["Line of Business"];
         switch (module) {
             case "Case": {
                 templateData.processInputValues["Module"] = "Cases";
@@ -1347,9 +1271,7 @@ class ApiHelper {
             knowledgeArticleData.fieldInstances[1000000001].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : knowledgeArticleData.fieldInstances[1000000001].value;
             knowledgeArticleData.fieldInstances[302301262].value = data.keyword ? data.keyword : knowledgeArticleData.fieldInstances[302301262].value;
             knowledgeArticleData.fieldInstances[302311201].value = data.articleDesc ? data.articleDesc : knowledgeArticleData.fieldInstances[302311201].value;
-            if (data.lineOfBusiness) {
-                knowledgeArticleData.fieldInstances[450000411].value = await constants.LOB[data.lineOfBusiness];
-            }
+            knowledgeArticleData.fieldInstances[450000411].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : knowledgeArticleData.fieldInstances[450000411].value;
             if (data.assignedCompany) {
                 let companyGuid = await apiCoreUtil.getOrganizationGuid(data.assignedCompany);
                 let assignedCompanyData = {
@@ -1601,15 +1523,12 @@ class ApiHelper {
         flowsetData.fieldInstances[450000002].value = data.flowsetName;
         flowsetData.fieldInstances[8].value = data.description;
         flowsetData.fieldInstances[7].value = data.flowsetStatus;
-        if (data.lineOfBusiness) {
-            flowsetData.fieldInstances[450000420].value = await constants.LOB[data.lineOfBusiness];
-        }
+        flowsetData.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : flowsetData.fieldInstances[450000420].value;
         const flowset = await apiCoreUtil.createRecordInstance(flowsetData);
         const flowsetDetails = await axios.get(
             flowset.headers.location
         );
         console.log('New Flowset Details API Status =============>', flowsetDetails.status);
-
         return {
             id: flowsetDetails.data.id,
             displayId: flowsetDetails.data.displayId
@@ -1646,9 +1565,7 @@ class ApiHelper {
         menuItemData.fieldInstances[450000152].value = data.menuItemName;
         menuItemData.fieldInstances[7].value = constants.MenuItemStatus[data.menuItemStatus];
         menuItemData.fieldInstances[450000154].value = randomStr;
-        if (data.lineOfBusiness) {
-            menuItemData.fieldInstances[450000420].value = await constants.LOB[data.lineOfBusiness];
-        }
+        menuItemData.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : menuItemData.fieldInstances[450000420].value;
         if (data.uiVisible) {
             let valueOfVisiable = data.uiVisible;
             let uiVisiablePayload = {
@@ -1795,9 +1712,7 @@ class ApiHelper {
         newProcessConfig.fieldInstances[7]["value"] = data.status ? constants.ProcessLibConf[data.status] : newProcessConfig.fieldInstances[7].value;
         newProcessConfig.fieldInstances[8]["value"] = data.description ? data.description : newProcessConfig.fieldInstances[8].value;
         newProcessConfig.fieldInstances[1000000001]["value"] = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : newProcessConfig.fieldInstances[1000000001].value;
-        if (data.lineOfBusiness) {
-            newProcessConfig.fieldInstances[450000420].value = await constants.LOB[data.lineOfBusiness];
-        }
+        newProcessConfig.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : newProcessConfig.fieldInstances[450000420].value;
 
         let newProcessLibConfRecord: AxiosResponse = await apiCoreUtil.createRecordInstance(newProcessConfig);
 
@@ -1936,9 +1851,7 @@ class ApiHelper {
         documentLibRecordInstanceJson.fieldInstances[1000000064].value = docLibDetails.category2 ? await apiCoreUtil.getCategoryGuid(docLibDetails.category2) : documentLibRecordInstanceJson.fieldInstances[1000000064].value;
         documentLibRecordInstanceJson.fieldInstances[1000000065].value = docLibDetails.category3 ? await apiCoreUtil.getCategoryGuid(docLibDetails.category3) : documentLibRecordInstanceJson.fieldInstances[1000000065].value;
         documentLibRecordInstanceJson.fieldInstances[450000167].value = docLibDetails.category4 ? await apiCoreUtil.getCategoryGuid(docLibDetails.category4) : documentLibRecordInstanceJson.fieldInstances[450000167].value;
-        if (docLibDetails.lineOfBusiness) {
-            documentLibRecordInstanceJson.fieldInstances[450000420].value = await constants.LOB[docLibDetails.lineOfBusiness];
-        }
+        documentLibRecordInstanceJson.fieldInstances[450000420].value = docLibDetails.lineOfBusiness ? await constants.LOB[docLibDetails.lineOfBusiness] : documentLibRecordInstanceJson.fieldInstances[450000420].value;
         let data = {
             recordInstance: documentLibRecordInstanceJson,
             1000000351: filePath
@@ -1999,9 +1912,8 @@ class ApiHelper {
         knowledgeSetData.fieldInstances[8].value = knowledgeSetDetails.knowledgeSetDesc;
         knowledgeSetData.fieldInstances[301820700].value = knowledgeSetDetails.knowledgeSetTitle;
         knowledgeSetData.fieldInstances[1000000001].value = await apiCoreUtil.getOrganizationGuid(knowledgeSetDetails.company);
-        if (knowledgeSetDetails.lineOfBusiness) {
-            knowledgeSetData.fieldInstances[450000420].value = await constants.LOB[knowledgeSetDetails.lineOfBusiness];
-        }
+        knowledgeSetData.fieldInstances[450000420].value = knowledgeSetDetails.lineOfBusiness ? await constants.LOB[knowledgeSetDetails.lineOfBusiness] : knowledgeSetData.fieldInstances[450000420].value;
+
         let recordInstanceKSetAssociationJson = cloneDeep(KNOWLEDEGESET_ASSOCIATION);
         let data = {
             recordInstance: knowledgeSetData,
@@ -2041,13 +1953,12 @@ class ApiHelper {
         return updateKnowledgeSetAccess.status === 201;
     }
 
-    async createKnowledgeArticleTemplate(knowledgeSetTitle: string, knowledgeSetId: string, data: IKnowledgeArticleTemplate): Promise<boolean> {
+    async createKnowledgeArticleTemplate(data: IKnowledgeArticleTemplate): Promise<boolean> {
         let knowledgeSetTemplateData = cloneDeep(KNOWLEDGEARTICLE_TEMPLATE);
-        knowledgeSetTemplateData.sections[0].title = data.title;
         knowledgeSetTemplateData.templateName = data.templateName;
-        knowledgeSetTemplateData.knowledgeSet = knowledgeSetTitle;
-        knowledgeSetTemplateData.company = await apiCoreUtil.getOrganizationGuid(data.company);
-        knowledgeSetTemplateData.knowledgeSetId = knowledgeSetId;
+        knowledgeSetTemplateData.sections[0].title = data.sectionTitle;
+        knowledgeSetTemplateData.templateDescription = data.templateDescription ? data.templateDescription : knowledgeSetTemplateData.lobId;
+        knowledgeSetTemplateData.lobId = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : knowledgeSetTemplateData.lobId;
 
         const articleTemplateResponse = await axios.post(
             articleTemplateUri,
@@ -2158,10 +2069,7 @@ class ApiHelper {
         serviceTargetPayload.fieldInstances[490000400].value = svtData.svtName;
         serviceTargetPayload.fieldInstances[300523400].value = await apiCoreUtil.getDataSourceGuid(svtData.dataSource);
         serviceTargetPayload.fieldInstances[304412961].value = await apiCoreUtil.getOrganizationGuid(svtData.company);
-        //SERVICE_TARGET.fieldInstances[300272100].value = -1
-        if (svtData.lineOfBusiness) {
-            serviceTargetPayload.fieldInstances[450000420].value = await constants.LOB[svtData.lineOfBusiness];
-        }
+        serviceTargetPayload.fieldInstances[450000420].value = svtData.lineOfBusiness ? await constants.LOB[svtData.lineOfBusiness] : serviceTargetPayload.fieldInstances[450000420].value;
         let slmResponse: AxiosResponse = await apiCoreUtil.createRecordInstance(serviceTargetPayload);
         console.log('Create Service Target API Status =============>', slmResponse.status);
         const slmDetails = await axios.get(
@@ -2184,9 +2092,7 @@ class ApiHelper {
         adhocTaskPayload.fieldInstances[450000381].value = await apiCoreUtil.getBusinessUnitGuid(taskData.businessUnit);
         adhocTaskPayload.fieldInstances[1000000217].value = await apiCoreUtil.getSupportGroupGuid(taskData.supportGroup);
         taskData.priority ? adhocTaskPayload.fieldInstances[1000000164].value = constants.CasePriority[taskData.priority] : adhocTaskPayload.fieldInstances[1000000164].value;
-        if (taskData.lineOfBusiness) {
-            adhocTaskPayload.fieldInstances[450000411].value = await constants.LOB[taskData.lineOfBusiness];
-        }
+        adhocTaskPayload.fieldInstances[450000411].value = taskData.lineOfBusiness ? await constants.LOB[taskData.lineOfBusiness] : adhocTaskPayload.fieldInstances[450000411].value;
         if (taskData.description) {
             let taskDescription = {
                 "id": "1000000000",
@@ -2604,9 +2510,7 @@ class ApiHelper {
         caseReadAccess.fieldInstances[450000153].value = await apiCoreUtil.getOrganizationGuid(data.assignedCompany);
         caseReadAccess.fieldInstances[1000001437].value = data.configName;
         caseReadAccess.fieldInstances[1000000001].value = await apiCoreUtil.getOrganizationGuid(data.company);
-        if (data.lineOfBusiness) {
-            caseReadAccess.fieldInstances[450000420].value = await constants.LOB[data.lineOfBusiness];
-        }
+        caseReadAccess.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : caseReadAccess.fieldInstances[450000420].value;
         if (data.category1) {
             let categoryTier1 = await apiCoreUtil.getCategoryGuid(data.category1);
             let category1Data = {
@@ -2721,18 +2625,16 @@ class ApiHelper {
         }
     }
 
-    async createServiceTargetGroup(svtGroupData: ICreateSVTGroup): Promise<boolean> {​​
+    async createServiceTargetGroup(svtGroupData: ICreateSVTGroup): Promise<boolean> {
         let svtGroup = cloneDeep(SERVICE_TARGET_GROUP);
         svtGroup.fieldInstances[8].value = svtGroupData.svtGroupName;
         svtGroup.fieldInstances[300523400].value = await apiCoreUtil.getDataSourceGuid(svtGroupData.dataSource);
         svtGroup.fieldInstances[1000000001].value = svtGroupData.company ? await apiCoreUtil.getOrganizationGuid(svtGroupData.company) : svtGroup.fieldInstances[1000000001].value;
-        if (svtGroupData.lineOfBusiness) {​​
-            svtGroup.fieldInstances[450000420].value = await constants.LOB[svtGroupData.lineOfBusiness];
-        }​​
+        svtGroup.fieldInstances[450000420].value = svtGroupData.lineOfBusiness ? await constants.LOB[svtGroupData.lineOfBusiness] : svtGroup.fieldInstances[450000420].value;
         let svtGroupCreateResponse: AxiosResponse = await apiCoreUtil.createRecordInstance(svtGroup);
         console.log('Create SVT Group Status =============>', svtGroupCreateResponse.status);
         return svtGroupCreateResponse.status == 201;
-    }​​
+    }
 
     async createDocumentTemplate(data: IDocumentTemplate): Promise<boolean> {
         DOCUMENT_TEMPLATE.processInputValues.Company = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : DOCUMENT_TEMPLATE.processInputValues.Company;
@@ -2862,9 +2764,7 @@ class ApiHelper {
         notificationEventPayload.fieldInstances[301718200].value = data.eventName;
         notificationEventPayload.fieldInstances[7].value = data.status ? data.status : notificationEventPayload.fieldInstances[7].value;
         notificationEventPayload.fieldInstances[8].value = data.eventDescription ? data.eventDescription : notificationEventPayload.fieldInstances[8].value;
-        if (data.lineOfBusiness) {
-            notificationEventPayload.fieldInstances[450000420].value = await constants.LOB[data.lineOfBusiness];
-        }
+        notificationEventPayload.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : notificationEventPayload.fieldInstances[450000420].value;
         let notificationEventCreateResponse: AxiosResponse = await apiCoreUtil.createRecordInstance(notificationEventPayload);
         console.log('Create Notification event Status =============>', notificationEventCreateResponse.status);
         const notificationEvent = await axios.get(

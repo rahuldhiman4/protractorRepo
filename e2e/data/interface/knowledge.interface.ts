@@ -2,35 +2,36 @@ export interface IKnowledgeSet {
     knowledgeSetTitle: string,
     knowledgeSetDesc: string,
     company: string,
-    lineOfBusiness?:string
+    lineOfBusiness?: string
 };
 
 export interface IKnowledgeArticleTemplate {
-templateName: string;
-company: string;
-knowledgeSetId: string;
-title: string;
+    templateName: string,
+    sectionTitle: string,
+    templateDescription?: string,
+    lineOfBusiness?: string,
+    global?: string
 };
 
-export interface IKnowledgeArticles{
-    knowledgeSet:string;
-    title:string;
-    templateId:string;
-    company?:string;
-    keyword?:string;
-    categoryTier1?:string;
-    categoryTier2?:string;
-    categoryTier3?:string;
-    region?:string;
-    site?:string;
-    articleId?:string;
-    status?:string;
-    assignedCompany?:string;
-    assigneeBusinessUnit?:string;
-    assigneeSupportGroup?:string;
-    assignee?:string;
-    articleDesc?:string;
-    lineOfBusiness?: string;
+export interface IKnowledgeArticles {
+    knowledgeSet: string,
+    title: string,
+    templateId: string,
+    company?: string,
+    keyword?: string,
+    categoryTier1?: string,
+    categoryTier2?: string,
+    categoryTier3?: string,
+    region?: string,
+    site?: string,
+    articleId?: string,
+    status?: string,
+    assignedCompany?: string,
+    assigneeBusinessUnit?: string,
+    assigneeSupportGroup?: string,
+    assignee?: string,
+    articleDesc?: string,
+    lineOfBusiness?: string
 };
 
 export interface IknowledgeSetPermissions {
@@ -59,16 +60,16 @@ export interface IDocumentLib {
 };
 
 export interface IDocumentTemplate {
-    templateName: string;
-    description: string;
-    messageBody: string;
-    company?: string;
+    templateName: string,
+    description: string,
+    messageBody: string,
+    company?: string
 };
 
 export interface IUpdateKnowledgeArticle {
-    linkedCounter: number;
-    helpfulPercentage: number;
-    helpfulCounter: number;
-    viewCounter: number;
-    notHelpfulCounter: number;
+    linkedCounter: number,
+    helpfulPercentage: number,
+    helpfulCounter: number,
+    viewCounter: number,
+    notHelpfulCounter: number
 };
