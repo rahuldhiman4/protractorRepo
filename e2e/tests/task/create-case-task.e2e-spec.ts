@@ -1,34 +1,34 @@
+import { cloneDeep } from 'lodash';
 import { browser } from "protractor";
 import apiHelper from "../../api/api.helper";
+import { SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
 import caseConsolePage from '../../pageobject/case/case-console.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePage from '../../pageobject/case/create-case.po';
+import editCasePo from '../../pageobject/case/edit-case.po';
 import quickCase from "../../pageobject/case/quick-case.po";
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
+import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
+import personProfilePo from '../../pageobject/common/person-profile.po';
 import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
+import composeMailPo from '../../pageobject/email/compose-mail.po';
 import selectTaskTemplate from "../../pageobject/settings/task-management/console-tasktemplate.po";
 import taskTemplate from "../../pageobject/settings/task-management/create-tasktemplate.po";
 import editTaskTemplate from "../../pageobject/settings/task-management/edit-tasktemplate.po";
 import viewTasktemplatePo from "../../pageobject/settings/task-management/view-tasktemplate.po";
 import consoleTask from "../../pageobject/task/console-task.po";
+import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
 import editTask from "../../pageobject/task/edit-task.po";
-import { default as manageTask, default as manageTaskBladePo } from "../../pageobject/task/manage-task-blade.po";
+import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
-import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
-import editCasePo from '../../pageobject/case/edit-case.po';
-import composeMailPo from '../../pageobject/email/compose-mail.po';
-import personProfilePo from '../../pageobject/common/person-profile.po';
-import { SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
-import { cloneDeep } from 'lodash';
 
 describe('Create Case Task', () => {
     beforeAll(async () => {
@@ -197,7 +197,7 @@ describe('Create Case Task', () => {
 
             await manageTask.clickTaskLink(automationTaskSummaryWithallField);
             expect(await viewTask.getTaskTypeValue()).toBe('Automated');
-            expect(await viewTask.getProcessNameValue()).toBe(`com.petramco.human resource:Get Request Status Data2 ${randomStr}`);
+            expect(await viewTask.getProcessNameValue()).toBe(`com.petramco.human-resource:Get Request Status Data2 ${randomStr}`);
             expect((await viewTask.getDescriptionValue()).trim()).toBe('All field get added in this task template');
             expect(await viewTask.getLabelValue()).toBe(menuItem.menuItemName);
             expect(await viewTask.getCategoryTier1Value()).toBe('Employee Relations');
@@ -211,7 +211,7 @@ describe('Create Case Task', () => {
             await viewCasePage.openTaskCard(1);
             await manageTask.clickTaskLink(autmationTaskSummaryWithRequiredData);
             expect(await viewTask.getTaskTypeValue()).toBe('Automated');
-            expect(await viewTask.getProcessNameValue()).toBe(`com.petramco.human resource:Get Request Status Data1 ${randomStr}`);
+            expect(await viewTask.getProcessNameValue()).toBe(`com.petramco.human-resource:Get Request Status Data1 ${randomStr}`);
             expect(await viewTask.getDescriptionValue()).toBe('-', "getDescriptionValue");
             expect(await viewTask.getLabelValue()).toBe('-', "getLabelValue");
             expect(await viewTask.getCategoryTier1Value()).toBe('-', "getCategoryTier1Value");
@@ -260,7 +260,7 @@ describe('Create Case Task', () => {
                 "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
                 "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
                 "templateStatus": "Active",
-                "processBundle": "com.petramco.human resource",
+                "processBundle": "com.petramco.human-resource",
                 "processName": `Case Process 1 ${randomStr}`,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
@@ -271,7 +271,7 @@ describe('Create Case Task', () => {
                 "templateName": `AutomatedTaskTemplateInActive ${randomStr}`,
                 "templateSummary": `AutomatedTaskTemplateInActive ${randomStr}`,
                 "templateStatus": "Inactive",
-                "processBundle": "com.petramco.human resource",
+                "processBundle": "com.petramco.human-resource",
                 "processName": `Case Process 2 ${randomStr}`,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
@@ -282,7 +282,7 @@ describe('Create Case Task', () => {
                 "templateName": `AutomatedTaskTemplateDraft ${randomStr}`,
                 "templateSummary": `AutomatedTaskTemplateDraft ${randomStr}`,
                 "templateStatus": "Draft",
-                "processBundle": "com.petramco.human resource",
+                "processBundle": "com.petramco.human-resource",
                 "processName": `Case Process 3 ${randomStr}`,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
@@ -809,7 +809,7 @@ describe('Create Case Task', () => {
                 "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
                 "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
                 "templateStatus": "Active",
-                "processBundle": "com.petramco.human resource",
+                "processBundle": "com.petramco.human-resource",
                 "processName": `Case Process 1 ${randomStr}`,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
