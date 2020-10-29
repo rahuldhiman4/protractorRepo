@@ -1,7 +1,8 @@
 export interface IKnowledgeSet {
     knowledgeSetTitle: string,
     knowledgeSetDesc: string,
-    company: string
+    company: string,
+    lineOfBusiness?:string
 };
 
 export interface IKnowledgeArticleTemplate {
@@ -29,6 +30,7 @@ export interface IKnowledgeArticles{
     assigneeSupportGroup?:string;
     assignee?:string;
     articleDesc?:string;
+    lineOfBusiness?: string;
 };
 
 export interface IknowledgeSetPermissions {
