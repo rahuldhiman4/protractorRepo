@@ -2041,7 +2041,6 @@ class ApiHelper {
         return updateKnowledgeSetAccess.status === 201;
     }
 
-    //    async createKnowledgeArticleTemplate(knowledgeSetTitle: string, knowledgeSetId: string, data: IKnowledgeArticleTemplate): Promise<boolean> {
     async createKnowledgeArticleTemplate(data: IKnowledgeArticleTemplate): Promise<boolean> {
         let knowledgeSetTemplateData = cloneDeep(KNOWLEDGEARTICLE_TEMPLATE);
         knowledgeSetTemplateData.sections[0].title = data.title;
