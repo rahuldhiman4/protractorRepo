@@ -90,12 +90,10 @@ describe('Knowledge Article Set', () => {
                 company: 'Petramco'
             }
             await apiHelper.apiLogin('elizabeth');
-            let knowledgeSet = await apiHelper.createKnowledgeSet(knowledgeSetData);
+            await apiHelper.createKnowledgeSet(knowledgeSetData);
             let knowledgeArticleTemplateData = {
-                title: "articleSection",
                 templateName: knowledgeTemplateStr,
-                knowledgeSetTitle: knowledgeSetData.knowledgeSetTitle,
-                knowledgeSetId: knowledgeSet.id
+                sectionTitle: "articleSection"
             }
             await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateData);
             let knowledgeTemplateId = await apiCoreUtil.getKnowledgeTemplateGuid(knowledgeTemplateStr);

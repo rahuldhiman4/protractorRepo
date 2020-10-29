@@ -5,11 +5,12 @@ import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePage from '../../pageobject/case/create-case.po';
 import quickCase from '../../pageobject/case/quick-case.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
+import accessTabPo from '../../pageobject/common/access-tab.po';
+import changeAssignmentBlade from "../../pageobject/common/change-assignment-blade.po";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import resources from '../../pageobject/common/resources-tab.po';
 import createKnowledgePage from "../../pageobject/knowledge/create-knowlege.po";
-import accessTabPo from '../../pageobject/common/access-tab.po';
 import editKnowledgePage from '../../pageobject/knowledge/edit-knowledge.po';
 import flagUnflagKnowledgePo from '../../pageobject/knowledge/flag-unflag-knowledge.po';
 import knowledgeConsole from '../../pageobject/knowledge/knowledge-articles-console.po';
@@ -17,13 +18,12 @@ import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po'
 import reviewCommentsPo from '../../pageobject/knowledge/review-comments.po';
 import statusBladeKnowledgeArticlePo from '../../pageobject/knowledge/status-blade-knowledge-article.po';
 import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
+import statusConfigPO from '../../pageobject/settings/common/status-config.po';
 import activityTabPo from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from "../../utils/utility.grid";
-import statusConfigPO from '../../pageobject/settings/common/status-config.po';
-import changeAssignmentBlade from "../../pageobject/common/change-assignment-blade.po";
 
 let caseBAUser = 'qkatawazi';
 let caseAgentUser = 'qtao';
@@ -72,12 +72,10 @@ describe('Knowledge Articles - Versioning Tests', () => {
         await apiHelper.createKnowledgeSet(knowledgeSetDataPsilon);
 
         await apiHelper.apiLogin('elizabeth');
-        let knowledgeSet = await apiHelper.createKnowledgeSet(knowledgeSetData);
+        await apiHelper.createKnowledgeSet(knowledgeSetData);
         let knowledgeArticleTemplateData = {
-            title: "articleSection",
             templateName: knowledgeTemplateStr,
-            knowledgeSetTitle: knowledgeSetData.knowledgeSetTitle,
-            knowledgeSetId: knowledgeSet.id,
+            sectionTitle: "articleSection"
         }
         await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateData);
     });

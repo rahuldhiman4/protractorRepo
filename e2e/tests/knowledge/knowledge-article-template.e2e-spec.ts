@@ -44,9 +44,7 @@ describe('Knowledge Article Template', () => {
         //Creating an Article Template from API
         let knowledgeArticleTemplateData = {
             templateName: templateName,
-            title: "articleSection",
-            knowledgeSetTitle: "Policy",
-            knowledgeSetId: 'AGGAA5V0GENSZAOO2YJBON6YXXU1R6'
+            sectionTitle: "articleSection"
         }
         await apiHelper.apiLogin('kWilliamson');
         await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateData);
@@ -86,14 +84,11 @@ describe('Knowledge Article Template', () => {
             await apiHelper.deleteArticleTemplate('DRDMV-619');
             await apiHelper.deleteArticleTemplate('Article Template Name Psilon');
             await apiHelper.deleteKnowledgeSet('Knowledge Set Psilon Title');
+            await apiHelper.createKnowledgeSet(knowledgeSetData);
 
-            let knowledgeSet = await apiHelper.createKnowledgeSet(knowledgeSetData);
             let knowledgeArticleTemplateData = {
                 templateName: 'Article Template Name Psilon',
-                title: "articleSection",
-                knowledgeSetId: knowledgeSet.id,
-                knowledgeSetTitle: knowledgeSetData.knowledgeSetTitle,
-                company: "Psilon"
+                sectionTitle: "articleSection"
             }
             await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateData);
         });

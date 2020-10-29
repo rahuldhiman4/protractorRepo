@@ -7,11 +7,10 @@ export interface IKnowledgeSet {
 
 export interface IKnowledgeArticleTemplate {
     templateName: string,
-    title: string,
-    knowledgeSetTitle: string,
-    knowledgeSetId: string,
-    company?: string,
-    lineOfBusiness?: string
+    sectionTitle: string,
+    templateDescription?: string,
+    lineOfBusiness?: string,
+    global?: string
 };
 
 export interface IKnowledgeArticles {

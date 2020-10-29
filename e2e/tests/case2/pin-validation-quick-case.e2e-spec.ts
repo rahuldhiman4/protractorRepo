@@ -1,23 +1,22 @@
 import { browser } from "protractor";
 import apiHelper from "../../api/api.helper";
+import { IKnowledgeArticleTemplate } from '../../data/interface/knowledge.interface';
+import previewCasePo from '../../pageobject/case/case-preview.po';
+import editCasePo from '../../pageobject/case/edit-case.po';
+import pinValidationPo from '../../pageobject/case/pin-validation.po';
+import quickCasePo from '../../pageobject/case/quick-case.po';
+import viewCasePo from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
+import { default as resourcesPo, default as resourcesTabPo } from '../../pageobject/common/resources-tab.po';
+import createKnowledgePage from "../../pageobject/knowledge/create-knowlege.po";
+import editKnowledgePage from "../../pageobject/knowledge/edit-knowledge.po";
+import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
+import activityTabPo from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
-import previewCasePo from '../../pageobject/case/case-preview.po';
-import quickCasePo from '../../pageobject/case/quick-case.po';
-import activityTabPo from '../../pageobject/social/activity-tab.po';
-import viewCasePo from '../../pageobject/case/view-case.po';
-import editCasePo from '../../pageobject/case/edit-case.po';
-import resourcesTabPo from '../../pageobject/common/resources-tab.po';
-import createKnowledgePage from "../../pageobject/knowledge/create-knowlege.po";
-import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
-import resourcesPo from '../../pageobject/common/resources-tab.po';
-import pinValidationPo from '../../pageobject/case/pin-validation.po';
-import editKnowledgePage from "../../pageobject/knowledge/edit-knowledge.po";
 
 describe('PIN Validation Quick Case', () => {
-
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('gderuno');
@@ -259,7 +258,7 @@ describe('PIN Validation Quick Case', () => {
     });
 
     describe('[DRDMV-10663,DRDMV-10471,DRDMV-10616,DRDMV-10618]:Case creation via Quick Case ,Template validation is OPTIONAL and NONE', async () => {
-        let assignmentData, casetemplatePsilon1, newCaseTemplate, knowledgeArticleTemplateData, knowledgeSetData;
+        let assignmentData, casetemplatePsilon1, newCaseTemplate, knowledgeArticleTemplateData: IKnowledgeArticleTemplate, knowledgeSetData;
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             casetemplatePsilon1 = {
@@ -299,10 +298,7 @@ describe('PIN Validation Quick Case', () => {
             await apiHelper.createKnowledgeSet(knowledgeSetData);
             knowledgeArticleTemplateData = {
                 templateName: 'KATemplatePsilon' + randomStr,
-                title: "articleSection",
-                knowledgeSetTitle: knowledgeSetData.knowledgeSetTitle,
-                knowledgeSetId: 'AGGADGG8ECDC0AQ6ETV4Q5G9YKNX5W',
-                company: "Psilon"
+                sectionTitle: "articleSection"
             }
             await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateData);
             apiHelper.deleteApprovalMapping('Knowledge');
@@ -408,7 +404,7 @@ describe('PIN Validation Quick Case', () => {
     });
 
     describe('[DRDMV-10554,DRDMV-10557,DRDMV-10617,DRDMV-10561]:Case creation via Quick Case,Template validation is OPTIONAL & NONE & ENFORCED', async () => {
-        let assignmentData, casetemplatePsilon1, newCaseTemplate, knowledgeArticleTemplateData, knowledgeSetData;
+        let assignmentData, casetemplatePsilon1, newCaseTemplate, knowledgeArticleTemplateData: IKnowledgeArticleTemplate, knowledgeSetData;
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             casetemplatePsilon1 = {
@@ -446,10 +442,7 @@ describe('PIN Validation Quick Case', () => {
             await apiHelper.createKnowledgeSet(knowledgeSetData);
             knowledgeArticleTemplateData = {
                 templateName: 'KATemplatePsilon' + randomStr,
-                title: "articleSection",
-                knowledgeSetTitle: knowledgeSetData.knowledgeSetTitle,
-                knowledgeSetId: 'AGGADGG8ECDC0AQ6ETV4Q5G9YKNX5W',
-                company: "Psilon"
+                sectionTitle: "articleSection"
             }
             await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateData);
             apiHelper.deleteApprovalMapping('Knowledge');
