@@ -89,15 +89,15 @@ describe('Knowledge Article Set', () => {
                 knowledgeSetDesc: `${knowledgeSetTitle}_Desc`,
                 company: 'Petramco'
             }
-            let knowledgeArticleTemplateData = {
-                templateName: `${knowledgeTemplateStr}`,
-                company: "Petramco",
-                knowledgeSetId: "AGGADGG8ECDC0AQGPUJ1QFRW9RZH4E",
-                title: "articleSection"
-            }
             await apiHelper.apiLogin('elizabeth');
             let knowledgeSet = await apiHelper.createKnowledgeSet(knowledgeSetData);
-            await apiHelper.createKnowledgeArticleTemplate(knowledgeSetData.knowledgeSetTitle, knowledgeSet.id, knowledgeArticleTemplateData);
+            let knowledgeArticleTemplateData = {
+                title: "articleSection",
+                templateName: knowledgeTemplateStr,
+                knowledgeSetTitle: knowledgeSetData.knowledgeSetTitle,
+                knowledgeSetId: knowledgeSet.id
+            }
+            await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateData);
             let knowledgeTemplateId = await apiCoreUtil.getKnowledgeTemplateGuid(knowledgeTemplateStr);
             articleData = {
                 "knowledgeSet": `${knowledgeSetTitle}`,
@@ -133,7 +133,7 @@ describe('Knowledge Article Set', () => {
             await navigationPage.gotoCreateKnowledge();
             await createKnowledgePage.clickOnTemplate(knowledgeTemplateStr);
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
-            await createKnowledgePage.addTextInKnowlegeTitleField("knowledgeTitle" +randomStr);
+            await createKnowledgePage.addTextInKnowlegeTitleField("knowledgeTitle" + randomStr);
             await createKnowledgePage.selectKnowledgeSet(knowledgeSetTitle);
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
@@ -171,9 +171,9 @@ describe('Knowledge Article Set', () => {
             await navigationPage.gotoCreateKnowledge();
             expect(await createKnowledgePage.isTemplatePresent(knowledgeTemplateStr)).toBeFalsy(`Template ${knowledgeTemplateStr} is not present`);
         });
-        afterAll(async () => {            
+        afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
-        });       
+        });
     });
 });

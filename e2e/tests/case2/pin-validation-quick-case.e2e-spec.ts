@@ -10,7 +10,7 @@ import activityTabPo from '../../pageobject/social/activity-tab.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
 import editCasePo from '../../pageobject/case/edit-case.po';
 import resourcesTabPo from '../../pageobject/common/resources-tab.po';
-import createKnowledgePage  from "../../pageobject/knowledge/create-knowlege.po";
+import createKnowledgePage from "../../pageobject/knowledge/create-knowlege.po";
 import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
 import resourcesPo from '../../pageobject/common/resources-tab.po';
 import pinValidationPo from '../../pageobject/case/pin-validation.po';
@@ -259,7 +259,7 @@ describe('PIN Validation Quick Case', () => {
     });
 
     describe('[DRDMV-10663,DRDMV-10471,DRDMV-10616,DRDMV-10618]:Case creation via Quick Case ,Template validation is OPTIONAL and NONE', async () => {
-        let assignmentData,casetemplatePsilon1, newCaseTemplate,knowledgeArticleTemplateData,knowledgeSetData;
+        let assignmentData, casetemplatePsilon1, newCaseTemplate, knowledgeArticleTemplateData, knowledgeSetData;
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             casetemplatePsilon1 = {
@@ -288,22 +288,23 @@ describe('PIN Validation Quick Case', () => {
                 knowledgeSetDesc: 'KAPsilon_Desc' + randomStr,
                 company: 'Psilon'
             }
-            knowledgeArticleTemplateData = {
-                templateName: 'KATemplatePsilon' + randomStr,
-                company: "Psilon",
-                knowledgeSetId: 'AGGADGG8ECDC0AQ6ETV4Q5G9YKNX5W',
-                title: "articleSection"
-            }
             assignmentData = {
                 "assignmentMappingName": randomStr + "AssignmentMapping",
                 "company": "Psilon",
                 "supportCompany": "Psilon",
                 "businessUnit": "Psilon Support Org1",
-                "supportGroup":"Psilon Support Group1",
+                "supportGroup": "Psilon Support Group1",
             }
             await apiHelper.createCaseAssignmentMapping(assignmentData);
-            let knowledgeSet = await apiHelper.createKnowledgeSet(knowledgeSetData);
-            await apiHelper.createKnowledgeArticleTemplate(knowledgeSetData.knowledgeSetTitle, knowledgeSet.id, knowledgeArticleTemplateData);
+            await apiHelper.createKnowledgeSet(knowledgeSetData);
+            knowledgeArticleTemplateData = {
+                templateName: 'KATemplatePsilon' + randomStr,
+                title: "articleSection",
+                knowledgeSetTitle: knowledgeSetData.knowledgeSetTitle,
+                knowledgeSetId: 'AGGADGG8ECDC0AQ6ETV4Q5G9YKNX5W',
+                company: "Psilon"
+            }
+            await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateData);
             apiHelper.deleteApprovalMapping('Knowledge');
         });
         it('[DRDMV-10663,DRDMV-10471,DRDMV-10616,DRDMV-10618]:Case creation via Quick Case ,Template validation is OPTIONAL and NONE', async () => {
@@ -323,15 +324,15 @@ describe('PIN Validation Quick Case', () => {
             await editKnowledgePage.setKnowledgeStatus('Draft');
             await utilityCommon.closePopUpMessage();
             await editKnowledgePage.setKnowledgeStatus('Publish Approval');
-            await utilityCommon.closePopUpMessage();         
+            await utilityCommon.closePopUpMessage();
         });
-        it('[DRDMV-10663,DRDMV-10471,DRDMV-10616,DRDMV-10618]:Case creation via Quick Case ,Template validation is OPTIONAL and NONE', async () => {     
+        it('[DRDMV-10663,DRDMV-10471,DRDMV-10616,DRDMV-10618]:Case creation via Quick Case ,Template validation is OPTIONAL and NONE', async () => {
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName("gwixillian");
             await quickCasePo.selectCaseTemplate(casetemplatePsilon1.templateName);
             expect(await quickCasePo.isCreateButtonDisabled()).toBeFalsy('Save button Enabled');
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Please validate the requester.')).toBeFalsy();
-            await quickCasePo.setCaseSummary('PINValidation'+randomStr);
+            await quickCasePo.setCaseSummary('PINValidation' + randomStr);
             expect(await resourcesTabPo.isSectionTitleDisplayed('Recommended Cases')).toBeTruthy('Section is Present');
             expect(await resourcesTabPo.isSectionTitleDisplayed('Recommended Knowledge')).toBeTruthy('Section is Present');
             await quickCasePo.createCaseButton();
@@ -343,7 +344,7 @@ describe('PIN Validation Quick Case', () => {
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Requester is not validated for this case.')).toBeFalsy();
             await editCasePo.clickOnCancelCaseButton();
         });
-        it('[DRDMV-10663,DRDMV-10471,DRDMV-10616,DRDMV-10618]:Case creation via Quick Case ,Template validation is OPTIONAL and NONE', async () => {        
+        it('[DRDMV-10663,DRDMV-10471,DRDMV-10616,DRDMV-10618]:Case creation via Quick Case ,Template validation is OPTIONAL and NONE', async () => {
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName("gwixillian");
             await quickCasePo.selectCaseTemplate(casetemplatePsilon1.templateName);
@@ -356,13 +357,13 @@ describe('PIN Validation Quick Case', () => {
             await resourcesPo.clickOnAdvancedSearchSettingsIconToOpen();
             await resourcesPo.clickOnAdvancedSearchFiltersButton("Apply");
             await resourcesPo.clickOnAdvancedSearchSettingsIconToClose();
-            expect(await resourcesPo.getAdvancedSearchResultForParticularSection(casetemplatePsilon1.templateName)).toEqual(casetemplatePsilon1.templateName);  
+            expect(await resourcesPo.getAdvancedSearchResultForParticularSection(casetemplatePsilon1.templateName)).toEqual(casetemplatePsilon1.templateName);
             await quickCasePo.createCaseButton();
             await quickCasePo.gotoCaseButton();
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog('validated the PIN of the requester')).toBeFalsy();
         });
-        it('[DRDMV-10663,DRDMV-10471,DRDMV-10616,DRDMV-10618]:Case creation via Quick Case ,Template validation is OPTIONAL and NONE', async () => {        
+        it('[DRDMV-10663,DRDMV-10471,DRDMV-10616,DRDMV-10618]:Case creation via Quick Case ,Template validation is OPTIONAL and NONE', async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteCommonConfig('IDENTITY_VALIDATION', 'Psilon');
             await apiHelper.addCommonConfig('IDENTITY_VALIDATION', ['OPTIONAL'], 'Psilon');
@@ -407,7 +408,7 @@ describe('PIN Validation Quick Case', () => {
     });
 
     describe('[DRDMV-10554,DRDMV-10557,DRDMV-10617,DRDMV-10561]:Case creation via Quick Case,Template validation is OPTIONAL & NONE & ENFORCED', async () => {
-        let assignmentData,casetemplatePsilon1, newCaseTemplate,knowledgeArticleTemplateData,knowledgeSetData;
+        let assignmentData, casetemplatePsilon1, newCaseTemplate, knowledgeArticleTemplateData, knowledgeSetData;
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             casetemplatePsilon1 = {
@@ -435,21 +436,22 @@ describe('PIN Validation Quick Case', () => {
                 knowledgeSetDesc: 'KAPsilon_Desc' + randomStr,
                 company: 'Psilon'
             }
-            knowledgeArticleTemplateData = {
-                templateName: 'KATemplatePsilon' + randomStr,
-                company: "Psilon",
-                knowledgeSetId: 'AGGADGG8ECDC0AQ6ETV4Q5G9YKNX5W',
-                title: "articleSection"
-            }
             assignmentData = {
                 "assignmentMappingName": randomStr + "AssignmentMapping",
                 "company": "Psilon",
                 "supportCompany": "Psilon",
                 "businessUnit": "Psilon Support Org1",
-                "supportGroup":"Psilon Support Group1",
+                "supportGroup": "Psilon Support Group1",
             }
-            let knowledgeSet = await apiHelper.createKnowledgeSet(knowledgeSetData);
-            await apiHelper.createKnowledgeArticleTemplate(knowledgeSetData.knowledgeSetTitle, knowledgeSet.id, knowledgeArticleTemplateData);
+            await apiHelper.createKnowledgeSet(knowledgeSetData);
+            knowledgeArticleTemplateData = {
+                templateName: 'KATemplatePsilon' + randomStr,
+                title: "articleSection",
+                knowledgeSetTitle: knowledgeSetData.knowledgeSetTitle,
+                knowledgeSetId: 'AGGADGG8ECDC0AQ6ETV4Q5G9YKNX5W',
+                company: "Psilon"
+            }
+            await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateData);
             apiHelper.deleteApprovalMapping('Knowledge');
         });
         it('[DRDMV-10554,DRDMV-10557,DRDMV-10617,DRDMV-10561]:Case creation via Quick Case,Template validation is OPTIONAL & NONE & ENFORCED', async () => {
@@ -479,7 +481,7 @@ describe('PIN Validation Quick Case', () => {
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Please validate the requester.')).toBeTruthy();
             expect(await resourcesTabPo.isSectionTitleDisplayed('Recommended Cases')).toBeFalsy('Section is Present');
             expect(await resourcesTabPo.isSectionTitleDisplayed('Recommended Knowledge')).toBeFalsy('Section is Present');
-            await quickCasePo.setCaseSummary('PINValidation'+randomStr);
+            await quickCasePo.setCaseSummary('PINValidation' + randomStr);
             await quickCasePo.createCaseButton();
             await quickCasePo.gotoCaseButton();
             await browser.sleep(2000); // requird to populate "did not validate the PIN of the requester" in case activity
@@ -490,13 +492,13 @@ describe('PIN Validation Quick Case', () => {
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Requester is not validated for this case.')).toBeTruthy();
             await editCasePo.clickOnCancelCaseButton();
         });
-        it('[DRDMV-10554,DRDMV-10557,DRDMV-10617,DRDMV-10561]:Case creation via Quick Case,Template validation is OPTIONAL and NONE', async () => {        
+        it('[DRDMV-10554,DRDMV-10557,DRDMV-10617,DRDMV-10561]:Case creation via Quick Case,Template validation is OPTIONAL and NONE', async () => {
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName("gwixillian");
             await quickCasePo.selectCaseTemplate(casetemplatePsilon1.templateName);
             expect(await quickCasePo.isCreateButtonDisabled()).toBeFalsy('Save button Enabled');
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Please validate the requester.')).toBeTruthy();
-            await quickCasePo.setCaseSummary('PINValidation'+randomStr);
+            await quickCasePo.setCaseSummary('PINValidation' + randomStr);
             expect(await resourcesTabPo.isSectionTitleDisplayed('Recommended Cases')).toBeFalsy('Section is Present');
             expect(await resourcesTabPo.isSectionTitleDisplayed('Recommended Knowledge')).toBeFalsy('Section is Present');
             await pinValidationPo.validatePin("12345");
@@ -509,7 +511,7 @@ describe('PIN Validation Quick Case', () => {
             await resourcesPo.clickOnAdvancedSearchSettingsIconToOpen();
             await resourcesPo.clickOnAdvancedSearchFiltersButton("Apply");
             await resourcesPo.clickOnAdvancedSearchSettingsIconToClose();
-            expect(await resourcesPo.getAdvancedSearchResultForParticularSection(casetemplatePsilon1.templateName)).toEqual(casetemplatePsilon1.templateName);  
+            expect(await resourcesPo.getAdvancedSearchResultForParticularSection(casetemplatePsilon1.templateName)).toEqual(casetemplatePsilon1.templateName);
             await quickCasePo.createCaseButton();
             await quickCasePo.gotoCaseButton();
             await activityTabPo.clickOnRefreshButton();

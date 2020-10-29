@@ -2041,14 +2041,17 @@ class ApiHelper {
         return updateKnowledgeSetAccess.status === 201;
     }
 
-    async createKnowledgeArticleTemplate(knowledgeSetTitle: string, knowledgeSetId: string, data: IKnowledgeArticleTemplate): Promise<boolean> {
+    //    async createKnowledgeArticleTemplate(knowledgeSetTitle: string, knowledgeSetId: string, data: IKnowledgeArticleTemplate): Promise<boolean> {
+    async createKnowledgeArticleTemplate(data: IKnowledgeArticleTemplate): Promise<boolean> {
         let knowledgeSetTemplateData = cloneDeep(KNOWLEDGEARTICLE_TEMPLATE);
         knowledgeSetTemplateData.sections[0].title = data.title;
         knowledgeSetTemplateData.templateName = data.templateName;
-        knowledgeSetTemplateData.knowledgeSet = knowledgeSetTitle;
+        knowledgeSetTemplateData.knowledgeSet = data.knowledgeSetTitle;
         knowledgeSetTemplateData.company = await apiCoreUtil.getOrganizationGuid(data.company);
-        knowledgeSetTemplateData.knowledgeSetId = knowledgeSetId;
-
+        knowledgeSetTemplateData.knowledgeSetId = data.knowledgeSetId;
+        if (data.lineOfBusiness) {
+            knowledgeSetTemplateData.lobId = await constants.LOB[data.lineOfBusiness];
+        }
         const articleTemplateResponse = await axios.post(
             articleTemplateUri,
             knowledgeSetTemplateData
@@ -2721,18 +2724,18 @@ class ApiHelper {
         }
     }
 
-    async createServiceTargetGroup(svtGroupData: ICreateSVTGroup): Promise<boolean> {​​
+    async createServiceTargetGroup(svtGroupData: ICreateSVTGroup): Promise<boolean> {
         let svtGroup = cloneDeep(SERVICE_TARGET_GROUP);
         svtGroup.fieldInstances[8].value = svtGroupData.svtGroupName;
         svtGroup.fieldInstances[300523400].value = await apiCoreUtil.getDataSourceGuid(svtGroupData.dataSource);
         svtGroup.fieldInstances[1000000001].value = svtGroupData.company ? await apiCoreUtil.getOrganizationGuid(svtGroupData.company) : svtGroup.fieldInstances[1000000001].value;
-        if (svtGroupData.lineOfBusiness) {​​
+        if (svtGroupData.lineOfBusiness) {
             svtGroup.fieldInstances[450000420].value = await constants.LOB[svtGroupData.lineOfBusiness];
-        }​​
+        }
         let svtGroupCreateResponse: AxiosResponse = await apiCoreUtil.createRecordInstance(svtGroup);
         console.log('Create SVT Group Status =============>', svtGroupCreateResponse.status);
         return svtGroupCreateResponse.status == 201;
-    }​​
+    }
 
     async createDocumentTemplate(data: IDocumentTemplate): Promise<boolean> {
         DOCUMENT_TEMPLATE.processInputValues.Company = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : DOCUMENT_TEMPLATE.processInputValues.Company;
