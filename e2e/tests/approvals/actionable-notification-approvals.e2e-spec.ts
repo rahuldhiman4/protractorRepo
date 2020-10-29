@@ -75,7 +75,7 @@ describe("Actionable Notification Approval", () => {
         await apiHelper.createApprovalFlow(approvalFlowData, caseModule);
 
         caseData = {
-            "Requester": "qkatawazi",
+            "Requester": "apavlik",
             "Summary": "All Categories selected",
             "Origin": "Agent",
             "Case Template ID": caseTemplateDisplayId

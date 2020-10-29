@@ -2779,14 +2779,12 @@ class ApiHelper {
     async createNotificationTemplate(data: INotificationTemplate): Promise<boolean> {
         let notificationTemplatePayload = cloneDeep(NOTIFICATION_TEMPLATE);
         let subjectBodyPayload = cloneDeep(EMAIL_ALERT_SUBJECT_BODY);
-        if (data.lineOfBusiness) {
-            notificationTemplatePayload.fieldInstances[450000420].value = await constants.LOB[data.lineOfBusiness];
-        }
         notificationTemplatePayload.fieldInstances[8].value = data.description;
         notificationTemplatePayload.fieldInstances[301233800].value = data.module;
         notificationTemplatePayload.fieldInstances[301718200].value = await apiCoreUtil.getNotificationEventGuid(data.eventName);
         notificationTemplatePayload.fieldInstances[304412071].value = data.templateName;
         notificationTemplatePayload.fieldInstances[450000153].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : notificationTemplatePayload.fieldInstances[450000153].value;
+        notificationTemplatePayload.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : notificationTemplatePayload.fieldInstances[450000420].value;
         let notificationTemplateResponse: AxiosResponse = await apiCoreUtil.createRecordInstance(notificationTemplatePayload);
         console.log('Create Notification Template Status =============>', notificationTemplateResponse.status);
         const notificationTemplate = await axios.get(
