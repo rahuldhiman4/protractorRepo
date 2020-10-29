@@ -64,7 +64,6 @@ describe('Dynamic Hidden Data', () => {
             expect(await createTaskTemplate.isTemplateNameRequiredText()).toBeTruthy("Template Name Required text Not Present");
             expect(await createTaskTemplate.isCreateNewProcessRequiredText()).toBeTruthy("CreateNewProcess Required text Not Present");
             expect(await createTaskTemplate.isNewProcessNameRequiredText()).toBeTruthy("NewProcessName Required text Not Present");
-            expect(await createTaskTemplate.isProcessBundleIdRequiredText()).toBeTruthy("ProcessBundleId Required text Not Present");
             expect(await createTaskTemplate.isTaskSummaryRequiredText()).toBeTruthy("Task Summary Required text Not Present");
             expect(await createTaskTemplate.isTaskPriorityRequiredText()).toBeTruthy("Task Priority Required text Not Present");
             expect(await createTaskTemplate.isTemplateStatusRequiredText()).toBeTruthy('Template Status Required text Not Present');
@@ -75,16 +74,18 @@ describe('Dynamic Hidden Data', () => {
             expect(await createTaskTemplate.isTaskCategoryTier2TitlePresent('Task Category Tier 2')).toBeTruthy('Task Category Tier 2 not present');
             expect(await createTaskTemplate.isTaskCategoryTier3TitlePresent('Task Category Tier 3')).toBeTruthy('Task Category Tier 3 not present');
             expect(await createTaskTemplate.isTaskCategoryTier4TitlePresent('Task Category Tier 4')).toBeTruthy('Task Category Tier 4 not present');
-            await createTaskTemplate.setcreateNewProcess(false);
-            expect(await createTaskTemplate.isProcessTitlePresent("New Process Name")).toBeFalsy("New Process Title Present");
         });
         it('[DRDMV-13168]: Create a template', async () => {
             await createTaskTemplate.setTemplateName(automatedTaskTemplate1);
             await createTaskTemplate.setTaskSummary(automatedTaskSummary1);
             await createTaskTemplate.setTaskDescription('Description in manual task');
             await createTaskTemplate.selectCompanyByName('Petramco');
-            await createTaskTemplate.setNewProcessName(processName);
+            await createTaskTemplate.setExistingProcessName('A Failing Process');
+            expect(await createTaskTemplate.isProcessTitlePresent("New Process Name")).toBeFalsy("New Process Title Present");
+            await createTaskTemplate.selectBuisnessUnit('United States Support');
+            await createTaskTemplate.selectOwnerGroup('US Support 3');
             await createTaskTemplate.clickOnSaveTaskTemplate();
+            await utilCommon.clickOnWarningOk();
             await utilCommon.closePopUpMessage();
         });
         it('[DRDMV-13168]: [Dynamic Data] [UI] - Automated Task Template UI on create and on Edit', async () => {

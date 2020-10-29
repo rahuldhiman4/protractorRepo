@@ -739,7 +739,6 @@ describe('Create Task Template', () => {
         });
     });
 
-
     describe('[DRDMV-3830]: [Task Workspace] Filter menu verification', async () => {
         let tempIdClosed, tempIdCanceled, tempIdCompleted, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase1, tempIdLow, tempIdMedium, tempIdHigh, tempIdCritical, exactDate;

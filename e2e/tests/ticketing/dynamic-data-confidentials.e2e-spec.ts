@@ -51,11 +51,11 @@ describe('Dynamic Confidentials Data', () => {
                 "templateSummary": 'CaseSummaryName' + randomStr,
                 "caseStatus": "InProgress",
                 "templateStatus": "Active",
-              //  "assignee": "qkatawazi",
+                "assignee": "qkatawazi",
                 "company": "Petramco",
-                //"businessUnit": "United States Support",
+                "businessUnit": "United States Support",
                 "ownerBU": "United States Support",
-                //"supportGroup": "US Support 3",
+                "supportGroup": "US Support 3",
                 "ownerGroup": "US Support 3"
             }
             await apiHelper.apiLogin('tadmin');
@@ -102,6 +102,7 @@ describe('Dynamic Confidentials Data', () => {
             await navigationPage.signOut();
             await loginPage.login('qstrong');
             await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getValueOfDynamicFields("LocalNonConfidentialDesc")).toBe("Test 1");
             expect(await viewCasePo.getValueOfDynamicFields("LocalConfidentialDesc")).toBe("******");
@@ -142,7 +143,7 @@ describe('Dynamic Confidentials Data', () => {
             await viewCasetemplatePo.selectTab('Case Access');
             await caseAccessTabOldPo.clickConfidentialSupportGroupAccess();
             expect(await caseAccessTabOldPo.isConfidentialSupportGroupDropDownPresent("Facilities")).toBeFalsy();
-            await caseAccessTabOldPo.selectConfidentialSupportGroupDropDown("United Support 3");
+            await caseAccessTabOldPo.selectConfidentialSupportGroupDropDown("US Support 3");
             await caseAccessTabOldPo.clickConfidentialWriteSupportGroupAccess();
             await caseAccessTabOldPo.clickAddConfidentialSupportGroup();
             await caseAccessTabOldPo.clickConfidentialSupportGroupAccess();
@@ -151,11 +152,11 @@ describe('Dynamic Confidentials Data', () => {
             await caseAccessTabOldPo.clickAddConfidentialSupportGroup();
         });
         it('[DRDMV-15006,DRDMV-15024,DRDMV-15025]: [DesignTime] Add confidential support group on case template', async () => {
-            expect(await caseAccessTabOldPo.isConfidentialSupportGroupValueTextDisplayed("United Support 3")).toBeTruthy();
+            expect(await caseAccessTabOldPo.isConfidentialSupportGroupValueTextDisplayed("US Support 3")).toBeTruthy();
             expect(await caseAccessTabOldPo.isConfidentialSupportGroupValueTextDisplayed("Sensitive Personal Data (HR)")).toBeTruthy();
             await caseAccessTabOldPo.clickDeleteConfidentialSupportGroup();
             await caseAccessTabOldPo.clickDeleteConfidentialSupportGroup();
-            expect(await caseAccessTabOldPo.isConfidentialSupportGroupValueTextDisplayed("United Support 3")).toBeFalsy();
+            expect(await caseAccessTabOldPo.isConfidentialSupportGroupValueTextDisplayed("US Support 3")).toBeFalsy();
             expect(await caseAccessTabOldPo.isConfidentialSupportGroupValueTextDisplayed("Sensitive Personal Data (HR)")).toBeFalsy();
             await caseAccessTabOldPo.clickConfidentialSupportGroupAccess();
             expect(await caseAccessTabOldPo.isConfidentialSupportGroupDropDownPresent("Sensitive Personal Data (HR)")).toBeTruthy();
