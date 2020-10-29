@@ -1347,7 +1347,9 @@ class ApiHelper {
             knowledgeArticleData.fieldInstances[1000000001].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : knowledgeArticleData.fieldInstances[1000000001].value;
             knowledgeArticleData.fieldInstances[302301262].value = data.keyword ? data.keyword : knowledgeArticleData.fieldInstances[302301262].value;
             knowledgeArticleData.fieldInstances[302311201].value = data.articleDesc ? data.articleDesc : knowledgeArticleData.fieldInstances[302311201].value;
-
+            if (data.lineOfBusiness) {
+                knowledgeArticleData.fieldInstances[450000411].value = await constants.LOB[data.lineOfBusiness];
+            }
             if (data.assignedCompany) {
                 let companyGuid = await apiCoreUtil.getOrganizationGuid(data.assignedCompany);
                 let assignedCompanyData = {
@@ -1997,7 +1999,9 @@ class ApiHelper {
         knowledgeSetData.fieldInstances[8].value = knowledgeSetDetails.knowledgeSetDesc;
         knowledgeSetData.fieldInstances[301820700].value = knowledgeSetDetails.knowledgeSetTitle;
         knowledgeSetData.fieldInstances[1000000001].value = await apiCoreUtil.getOrganizationGuid(knowledgeSetDetails.company);
-
+        if (knowledgeSetDetails.lineOfBusiness) {
+            knowledgeSetData.fieldInstances[450000420].value = await constants.LOB[knowledgeSetDetails.lineOfBusiness];
+        }
         let recordInstanceKSetAssociationJson = cloneDeep(KNOWLEDEGESET_ASSOCIATION);
         let data = {
             recordInstance: knowledgeSetData,
