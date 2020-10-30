@@ -43,7 +43,7 @@ class EditKnowledgePage {
         selectIsExternalGUID: '660f2cd8-9439-4954-9638-0064fbcb0e28',
         keywordValue: '[rx-view-component-id="51e52d59-3acd-49b3-8291-e10558985fa1"] input',
         attachmentField: '[rx-view-component-id="1f42f6d7-99cc-4c07-9249-94172d98d526"] .d-icon-paperclip',
-        categoryTier1Guid: '2e629e99-f2fa-48a2-910b-0652a6bf032f',
+        categoryTier1Guid: '254ef6b1-74fe-47ae-ab5f-701acbcb1fd5',
         categoryTier2Guid: '7e8a318c-2948-4b54-a8b6-049146bdf6c9',
         categoryTier3Guid: 'f2703b24-f357-46f7-83bc-e216f6d33cb0',
         regionGuid: '6c3548bc-bd52-4da6-b365-f546ca7bd744',
