@@ -596,22 +596,21 @@ describe('Global Search All Category', () => {
             // Create Case
             caseDetails = await createCase(caseSummary, caseDescription);
             caseDisplayId = caseDetails.displayId;
-
+            
             // Create Task
             taskDisplayId = await createTask(taskSummary, caseDetails.id, taskDescription);
-
+            
             // Create Case Template
             caseTemplateDisplayId = await createCaseTemplate(caseTemplateName, caseTemplateSummary, 'Active', 'Petramco');
-
+            
             // Create Task Template
             taskTemplateDisplayId = await createTaskTemplate(taskTemplateName, 'Active', 'Petramco');
-
+           
             // Create Knowledge Article
             kaDisplayId = await createKnowledgeArticleWithPublish(knowledgeTitle);
 
             // Create Document Library
             await createPublishDocumentLibrary(documentName, attachmentFilePath);
-
             // Create New User
             await apiHelper.apiLogin('tadmin');
             await createNewUser(firstName, lastName, loginId, 'DRDMV16881@petramco.com', 'Petramco');
@@ -622,8 +621,9 @@ describe('Global Search All Category', () => {
             expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
             await utilityGrid.clickFilterField("Created Date");
             await dateTimeSelectorPo.selectTimeToggle();
-            await dateTimeSelectorPo.setHour('6');
-            await dateTimeSelectorPo.setMinute(31);
+
+            await dateTimeSelectorPo.setHour('12');
+            await dateTimeSelectorPo.setMinute(1);
             await dateTimeSelectorPo.clickMeridianValue("AM");
 
             await dateTimeSelectorPo.clickEndDateTab();
@@ -631,6 +631,7 @@ describe('Global Search All Category', () => {
             await dateTimeSelectorPo.setMinute(59);
             await dateTimeSelectorPo.clickMeridianValue("PM");
             await $('body').sendKeys(protractor.Key.ESCAPE);
+
             expect(await searchPo.getDate()).toBe(createdDate, 'Created Date is missing');
         });
 
@@ -671,7 +672,6 @@ describe('Global Search All Category', () => {
             expect(await searchPo.isModuleTitleDisplayed(firstName, 'People (1)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName} 1 Person Name is missing`);
         });
-
 
         it('[DRDMV-16881]: Verify Modules With Change to Modified Date', async () => {
             await searchPo.closeFilterDateLabel();

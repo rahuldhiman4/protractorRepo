@@ -338,7 +338,7 @@ describe('Global Search Template', () => {
 
         it('[DRDMV-16116]: Verify search case by other group user  ', async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz')
+            await loginPage.login('qheroux');
             await navigationPage.gotoSearch();
             // Verify with case template title
             await searchPo.searchRecord(templateName + '1');
@@ -390,11 +390,11 @@ describe('Global Search Template', () => {
         it('[DRDMV-16116]: Verify non acess case Template with petramco and global company', async () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
-
+            
             await navigationPage.gotoSearch();
             await searchPo.searchRecord(summary1);
-            expect(await searchPo.isModuleTitleDisplayed(summary1, 'Case Templates (0)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is displayed');
-            expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(caseTemplateModule)).toBeTruthy(`FailureMsg66: No result found validation is missing`);
+            expect(await searchPo.isModuleTitleDisplayed(summary1, 'Case Templates (3)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is displayed');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId1[1], caseTemplateModule)).toBeTruthy(`FailureMsg4: ${caseTemplateDisplayId1[0]} case id  is missing`);
 
             // Verify Global Template
             await searchPo.searchRecord(summary4);
@@ -578,7 +578,7 @@ describe('Global Search Template', () => {
 
         it('[DRDMV-16118]: Verify search task by other group user  ', async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz')
+            await loginPage.login('qheroux')
             await navigationPage.gotoSearch();
             // Verify with task template title
             await searchPo.searchRecord(templateName + '1');
@@ -620,14 +620,14 @@ describe('Global Search Template', () => {
             await loginPage.login('gwixillian');
 
             await navigationPage.gotoSearch();
-            await searchPo.searchRecord(templateName + 1);
-            expect(await searchPo.isModuleTitleDisplayed(templateName + 1, 'Task Templates (0)', taskTemplateModule)).toBeTruthy('FailureMsg2: Task module title is displayed');
-            expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(taskTemplateModule)).toBeTruthy(`FailureMsg66: No result found validation is missing`);
+            await searchPo.searchRecord(templateName + '1');
+            expect(await searchPo.isModuleTitleDisplayed(templateName + '1', 'Task Templates (1)', taskTemplateModule)).toBeTruthy('FailureMsg2: Task module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId1[1], taskTemplateModule)).toBeTruthy(`FailureMsg4: ${taskTemplateDisplayId1[0]} task id  is missing`);
 
             // Verify Global Template
             await searchPo.searchRecord(templateName + 9);
-            expect(await searchPo.isModuleTitleDisplayed(templateName + 9, 'Task Templates (1)', taskTemplateModule)).toBeTruthy('FailureMsg2: Task module title is missing');
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId5, taskTemplateModule)).toBeTruthy(`FailureMsg4: ${taskTemplateDisplayId5} task id  is missing`);
+            expect(await searchPo.isModuleTitleDisplayed(templateName + 9, 'Task Templates (1)', taskTemplateModule)).toBeTruthy('FailureMsg5: Task module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId5, taskTemplateModule)).toBeTruthy(`FailureMsg6: ${taskTemplateDisplayId5} task id  is missing`);
         });
 
         afterAll(async () => {
@@ -641,7 +641,7 @@ describe('Global Search Template', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let attachmentFilePath = 'e2e/data/ui/search/globalsearch3.jpg';
         let attachmentFilePath2 = 'e2e/data/ui/search/globalsearch2.json';
-
+        
         let docName1 = '1docNameDRDMV16123' + randomStr;
         let docName2 = '2docNameDRDMV16123' + randomStr;
         let keywordStr = '1keywordDRDMV16123' + randomStr;
@@ -660,11 +660,11 @@ describe('Global Search Template', () => {
 
             //  Create Document with Draft
             await createDraftDocumentLibrary(docName2, attachmentFilePath);
-
+            
             // Non maching Document 
             let nonMatchingKeyword = '2keywordDRDMV16123' + randomStr;
             await createPublishDocumentLibrary(nonMatchingDocName, attachmentFilePath2, nonMatchingKeyword);
-
+            
             // Non access Document
             await apiHelper.apiLogin('elizabeth');
             await createPublishDocumentLibrary(nonAccessDocName, attachmentFilePath2);
@@ -808,7 +808,7 @@ describe('Global Search Template', () => {
 
         it('[DRDMV-16123]: Verify search Document with other group user', async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz')
+            await loginPage.login('qheroux');
             await navigationPage.gotoSearch();
             await searchPo.searchRecord(docName1);
             expect(await searchPo.isModuleTitleDisplayed(docName1, 'Documents (0)', documentModule)).toBeTruthy('FailureMsg63: Document module title is missing');
