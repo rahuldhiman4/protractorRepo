@@ -17,7 +17,7 @@ import { cloneDeep } from 'lodash';
 describe('Automated Case Status Transition', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
-        await loginPage.login('qkatawazi');
+        await loginPage.login('jbarnes');
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', 'Configure Automated Status Transitions - Business Workflows');
     });
@@ -31,7 +31,7 @@ describe('Automated Case Status Transition', () => {
     describe('[DRDMV-17551]: Case business analyst - automatic case status transtion rule console', async () => {
         let configName1, configName2, randomStr = [...Array(7)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         it('[DRDMV-17551]: Create two records', async () => {
-            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.apiLogin('jbarnes');
             await apiHelper.deleteAutomatedCaseStatusTransition();
 
             //Create first Record
@@ -43,6 +43,7 @@ describe('Automated Case Status Transition', () => {
             //Create Second Record
             configName2 = AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.name = 'ConfigName2' + randomStr;
             AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.changeStatusAfter = Math.floor(Math.random() * 180) + 1;
+            await utilGrid.selectLineOfBusiness("Facilities");
             await automatedStatusTransitionConsole.clickAddAutomatedStatusTransitionBtn();
             await automatedStatusTransitionCreatePage.createAutomatedStatusTransition(AUTO_STATUS_TRANSITION_MANDATORY_FIELDS);
             expect(await utilGrid.isGridRecordPresent(configName1)).toBeTruthy();
@@ -76,6 +77,8 @@ describe('Automated Case Status Transition', () => {
         });
         afterAll(async () => {
             await utilCommon.closeBladeOnSettings();
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
         });
     });
 

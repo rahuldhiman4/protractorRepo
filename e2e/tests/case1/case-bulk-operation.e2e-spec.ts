@@ -73,7 +73,6 @@ describe('Case Bulk Operation', () => {
             let response = await apiHelper.createCase(caseDataForTest);
             caseId[i] = response.displayId;
         }
-        await navigationPage.gotoCaseConsole();
         await utilityGrid.clearFilter();
         await utilityGrid.clickRefreshIcon();
         await utilityGrid.searchRecord(caseDataForTest.Summary);
@@ -250,7 +249,7 @@ describe('Case Bulk Operation', () => {
         caseId[2] = (await apiHelper.createCase(caseDataForTest)).displayId;
         await navigationPage.gotoCaseConsole();
         await utilityGrid.clearFilter();
-        await utilityGrid.clickRefreshIcon();        
+        await utilityGrid.clickRefreshIcon();
         await utilityGrid.searchRecord(caseDataForTest.Summary);
         for (let i: number = 0; i < 3; i++) {
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
@@ -391,7 +390,7 @@ describe('Case Bulk Operation', () => {
         await utilityGrid.sortGridColumn('Case ID', 'desc');
         await navigationPage.gotoCaseConsole();
         await utilityGrid.clearFilter();
-        await utilityGrid.clickRefreshIcon();        
+        await utilityGrid.clickRefreshIcon();
         await utilityGrid.searchRecord(caseDataForTest.Summary);
         for (let i: number = 0; i < 3; i++) {
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
@@ -466,7 +465,7 @@ describe('Case Bulk Operation', () => {
         await apiHelper.updateCaseStatus(caseGuid[1], 'Canceled', 'Customer Canceled');
         await navigationPage.gotoCaseConsole();
         await utilityGrid.clearFilter();
-        await utilityGrid.clickRefreshIcon();        
+        await utilityGrid.clickRefreshIcon();
         await utilityGrid.searchRecord(caseId[0]);
         await utilityGrid.clickCheckBoxOfValueInGrid(caseId[0]);
         await caseConsolePage.clickOnChangeAssignmentButton();

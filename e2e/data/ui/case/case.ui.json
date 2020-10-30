@@ -113,7 +113,7 @@
     },
     "bulkCaseAssignee_New": {
         "Description": "My Bulk Case Assignee",
-        "Requester": "qfeng",
+        "Requester": "apavlik",
         "Priority": "4000",
         "Summary": "Bulk Case Assignee",
         "Assigned Company": "Petramco",
@@ -124,7 +124,7 @@
     },
     "bulkCaseAssignee_Assigned": {
         "Description": "My Bulk Case Assignee",
-        "Requester": "qfeng",
+        "Requester": "apavlik",
         "Priority": "4000",
         "Summary": "Bulk Case Assignee",
         "Assigned Company": "Petramco",
@@ -133,31 +133,9 @@
         "Assignee": "qkatawazi",
         "Status": "2000"
     },
-    "bulkCaseAssignee_InProgress": {
-        "Description": "My Bulk Case Assignee",
-        "Requester": "qfeng",
-        "Priority": "4000",
-        "Summary": "Bulk Case Assignee",
-        "Assigned Company": "Petramco",
-        "Business Unit": "United States Support",
-        "Support Group": "US Support 3",
-        "Assignee": "qkatawazi",
-        "Status": "3000"
-    },
-    "bulkCaseAssignee_Resolved": {
-        "Description": "My Bulk Case Assignee",
-        "Requester": "qfeng",
-        "Priority": "4000",
-        "Summary": "Bulk Case Assignee",
-        "Assigned Company": "Petramco",
-        "Business Unit": "United States Support",
-        "Support Group": "US Support 3",
-        "Assignee": "qkatawazi",
-        "Status": "5000"
-    },
     "bulkCaseAssigneeWithAllAssigneeFields": {
         "Description": "My Bulk Case Assignee",
-        "Requester": "qfeng",
+        "Requester": "apavlik",
         "Priority": "4000",
         "Summary": "Bulk Case Assignee",
         "Assigned Company": "Petramco",
