@@ -5,11 +5,12 @@ import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePage from '../../pageobject/case/create-case.po';
 import quickCase from '../../pageobject/case/quick-case.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
+import accessTabPo from '../../pageobject/common/access-tab.po';
+import changeAssignmentBlade from "../../pageobject/common/change-assignment-blade.po";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import resources from '../../pageobject/common/resources-tab.po';
 import createKnowledgePage from "../../pageobject/knowledge/create-knowlege.po";
-import accessTabPo from '../../pageobject/common/access-tab.po';
 import editKnowledgePage from '../../pageobject/knowledge/edit-knowledge.po';
 import flagUnflagKnowledgePo from '../../pageobject/knowledge/flag-unflag-knowledge.po';
 import knowledgeConsole from '../../pageobject/knowledge/knowledge-articles-console.po';
@@ -17,13 +18,12 @@ import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po'
 import reviewCommentsPo from '../../pageobject/knowledge/review-comments.po';
 import statusBladeKnowledgeArticlePo from '../../pageobject/knowledge/status-blade-knowledge-article.po';
 import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
+import statusConfigPO from '../../pageobject/settings/common/status-config.po';
 import activityTabPo from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from "../../utils/utility.grid";
-import statusConfigPO from '../../pageobject/settings/common/status-config.po';
-import changeAssignmentBlade from "../../pageobject/common/change-assignment-blade.po";
 
 let caseBAUser = 'qkatawazi';
 let caseAgentUser = 'qtao';
@@ -64,12 +64,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             knowledgeSetDesc: `${knowledgeSetTitleStr}_Desc`,
             company: 'Petramco'
         }
-        let knowledgeArticleTemplateData = {
-            templateName: `${knowledgeTemplateStr}`,
-            company: "Petramco",
-            knowledgeSetId: "AGGADGG8ECDC0AQGPUJ1QFRW9RZH4E",
-            title: "articleSection"
-        }
         let knowledgeSetDataPsilon = {
             knowledgeSetTitle: `${knowledgeSetTitleStr}`,
             knowledgeSetDesc: `${knowledgeSetTitleStr}_Desc`,
@@ -78,8 +72,12 @@ describe('Knowledge Articles - Versioning Tests', () => {
         await apiHelper.createKnowledgeSet(knowledgeSetDataPsilon);
 
         await apiHelper.apiLogin('elizabeth');
-        let knowledgeSet = await apiHelper.createKnowledgeSet(knowledgeSetData);
-        await apiHelper.createKnowledgeArticleTemplate(knowledgeSetData.knowledgeSetTitle, knowledgeSet.id, knowledgeArticleTemplateData);
+        await apiHelper.createKnowledgeSet(knowledgeSetData);
+        let knowledgeArticleTemplateData = {
+            templateName: knowledgeTemplateStr,
+            sectionTitle: "articleSection"
+        }
+        await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateData);
     });
 
     afterAll(async () => {
@@ -1016,10 +1014,10 @@ describe('Knowledge Articles - Versioning Tests', () => {
         });
         it('[DRDMV-20752]: Verify the behavior when the user who does not have access to view current article version and he tries to create or update existing version', async () => {
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access','Knowledge');
-            await accessTabPo.selectAccessEntityDropDown('Petramco','Select Company');
-            await accessTabPo.selectAccessEntityDropDown('HR Support','Select Business Unit');
-            await accessTabPo.selectAccessEntityDropDown('Employee Relations','Select Support Group');
+            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Knowledge');
+            await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
+            await accessTabPo.selectAccessEntityDropDown('HR Support', 'Select Business Unit');
+            await accessTabPo.selectAccessEntityDropDown('Employee Relations', 'Select Support Group');
             await accessTabPo.clickAccessEntitiyAddButton('Support Group');
             await accessTabPo.clickCloseKnowledgeAccessBlade();
             await viewKnowledgeArticlePo.clickOnEditLink();
@@ -1036,9 +1034,9 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(updatedArticleTitle);
 
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-            await accessTabPo.clickRemoveAccess('Petramco',true);
+            await accessTabPo.clickRemoveAccess('Petramco', true);
             await accessTabPo.clickAccessRemoveWarningBtn('Yes');
-            await accessTabPo.clickRemoveAccess('Employee Relations',true);
+            await accessTabPo.clickRemoveAccess('Employee Relations', true);
             await accessTabPo.clickAccessRemoveWarningBtn('Yes');
             await accessTabPo.clickCloseKnowledgeAccessBlade();
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
@@ -1048,14 +1046,14 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(articleData.title);
-            
+
             await viewKnowledgeArticlePo.clickOnEditLink();
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(minorEditOption)).toBeTruthy('Minor Edit Option is displayed for Published Knowledge Article.');
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(majorEditOption)).toBeTruthy('Major Edit Option is displayed for Published Knowledge Article.');
             await editKnowledgePage.selectArticleEditOption(majorEditOption);
             await editKnowledgePage.updateKnowledgeArticleTitle(updatedArticleTitle + "_updated version");
             await editKnowledgePage.clickArticleMajorEditSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent('Draft version already created.',1)).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent('Draft version already created.', 1)).toBeTruthy();
             await browser.sleep(4000); // To Wait Until Edit Knowledge Changes Gets Saved KA Version Gets Change.
             await utilityCommon.refresh(); // Refresh needed to reflect version updates.
             expect(await viewKnowledgeArticlePo.getArticleVersion()).toBe(expectedVersion);
@@ -1351,7 +1349,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await editKnowledgePage.clickArticleMajorEditSaveButton();
         });
         it('[DRDMV-20753]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', async () => {
-            await navigationPage.gotoKnowledgeConsole(true);            
+            await navigationPage.gotoKnowledgeConsole(true);
             await utilityGrid.sortGridColumn('Created Date', 'desc');
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             await utilityCommon.refresh(); // Refresh needed to reflect version update.
@@ -1361,10 +1359,10 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await viewKnowledgeArticlePo.getArticleVersion()).toBe(updatedVersion);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(updatedArticleTitle);
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access','Knowledge');
-            await accessTabPo.selectAccessEntityDropDown('Petramco','Select Company');
-            await accessTabPo.selectAccessEntityDropDown('HR Support','Select Business Unit');
-            await accessTabPo.selectAccessEntityDropDown('Employee Relations','Select Support Group');
+            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Knowledge');
+            await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
+            await accessTabPo.selectAccessEntityDropDown('HR Support', 'Select Business Unit');
+            await accessTabPo.selectAccessEntityDropDown('Employee Relations', 'Select Support Group');
             await accessTabPo.clickAccessEntitiyAddButton('Support Group');
             await accessTabPo.clickCloseKnowledgeAccessBlade();
             await browser.sleep(2000);
@@ -1402,7 +1400,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
 
         it('[DRDMV-20753]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', async () => {
             await editKnowledgePage.setKnowledgeStatus('Request Cancelation');
-            await navigationPage.gotoKnowledgeConsole(true);            
+            await navigationPage.gotoKnowledgeConsole(true);
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             await browser.sleep(2000);
             await utilityCommon.refresh(); // Refresh needed to reflect status changes.
@@ -1419,7 +1417,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await browser.sleep(2000);
         });
         it('[DRDMV-20753]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', async () => {
-            await navigationPage.gotoKnowledgeConsole(true);            
+            await navigationPage.gotoKnowledgeConsole(true);
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             updatedVersion = "Version " + "3" + " - " + actualDate;
             expect(await viewKnowledgeArticlePo.getArticleVersion()).toBe(updatedVersion);
@@ -1519,33 +1517,33 @@ describe('Knowledge Articles - Versioning Tests', () => {
         });
         it('[DRDMV-20748]:  Verify whether the user with appropriate knowledge permission roles can able to update the article with updated / new version', async () => {
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access','Knowledge');
-            await accessTabPo.selectAccessEntityDropDown('Petramco','Select Company');
-            await accessTabPo.selectAccessEntityDropDown('Australia Support','Select Business Unit');
-            await accessTabPo.selectAccessEntityDropDown('AU Support 1','Select Support Group');
+            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Knowledge');
+            await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
+            await accessTabPo.selectAccessEntityDropDown('Australia Support', 'Select Business Unit');
+            await accessTabPo.selectAccessEntityDropDown('AU Support 1', 'Select Support Group');
             await accessTabPo.clickAccessEntitiyAddButton('Support Group');
             await accessTabPo.clickCloseKnowledgeAccessBlade();
         });
         it('[DRDMV-20748]:  Verify whether the user with appropriate knowledge permission roles can able to update the article with updated / new version', async () => {
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access','Knowledge');
-            await accessTabPo.selectAccessEntityDropDown('Petramco','Select Company');
-            await accessTabPo.selectAccessEntityDropDown('India Support','Select Business Unit');
-            await accessTabPo.selectAccessEntityDropDown('IN Support 2','Select Support Group');
+            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Knowledge');
+            await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
+            await accessTabPo.selectAccessEntityDropDown('India Support', 'Select Business Unit');
+            await accessTabPo.selectAccessEntityDropDown('IN Support 2', 'Select Support Group');
             await accessTabPo.clickAccessEntitiyAddButton('Support Group');
             await accessTabPo.clickCloseKnowledgeAccessBlade();
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access','Knowledge');
-            await accessTabPo.selectAccessEntityDropDown('Petramco','Select Company');
-            await accessTabPo.selectAccessEntityDropDown('India Support','Select Business Unit');
-            await accessTabPo.selectAccessEntityDropDown('IN Support 3','Select Support Group');
+            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Knowledge');
+            await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
+            await accessTabPo.selectAccessEntityDropDown('India Support', 'Select Business Unit');
+            await accessTabPo.selectAccessEntityDropDown('IN Support 3', 'Select Support Group');
             await accessTabPo.clickAccessEntitiyAddButton('Support Group');
             await accessTabPo.clickCloseKnowledgeAccessBlade();
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access','Knowledge');
-            await accessTabPo.selectAccessEntityDropDown('Petramco','Select Company');
-            await accessTabPo.selectAccessEntityDropDown('United States Support','Select Business Unit');
-            await accessTabPo.selectAccessEntityDropDown('US Support 1','Select Support Group');
+            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Knowledge');
+            await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
+            await accessTabPo.selectAccessEntityDropDown('United States Support', 'Select Business Unit');
+            await accessTabPo.selectAccessEntityDropDown('US Support 1', 'Select Support Group');
             await accessTabPo.clickAccessEntitiyAddButton('Support Group');
             await accessTabPo.clickCloseKnowledgeAccessBlade();
             await viewKnowledgeArticlePo.clickOnEditLink();
@@ -1672,7 +1670,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await editKnowledgePage.clickArticleCancelButton();
             await editKnowledgePage.setKnowledgeStatus('Publish Approval');
             await utilityCommon.closePopUpMessage();
-            await navigationPage.gotoKnowledgeConsole(true);            
+            await navigationPage.gotoKnowledgeConsole(true);
             await utilityGrid.searchAndOpenHyperlink(knowledgeArticleDisplayId);
             expect(await viewKnowledgeArticlePo.getStatusValue()).toContain('Released', 'value is not matched with status');
             await viewKnowledgeArticlePo.clickOnEditLink();

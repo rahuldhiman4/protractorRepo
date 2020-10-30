@@ -43,13 +43,11 @@ describe('Knowledge Article Template', () => {
 
         //Creating an Article Template from API
         let knowledgeArticleTemplateData = {
-            templateName: `${templateName}`,
-            company: "Petramco",
-            knowledgeSetId: "AGGADGG8ECDC0AQGPUJ1QFRW9RZH4E",
-            title: "articleSection"
+            templateName: templateName,
+            sectionTitle: "articleSection"
         }
         await apiHelper.apiLogin('kWilliamson');
-        await apiHelper.createKnowledgeArticleTemplate('Policy', 'AGGAA5V0GENSZAOO2YJBON6YXXU1R6', knowledgeArticleTemplateData);
+        await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateData);
 
         //Creating the Article Template with same name and set from UI
         await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
@@ -82,20 +80,17 @@ describe('Knowledge Article Template', () => {
                 company: 'Psilon'
             }
 
-            let knowledgeArticleTemplateData = {
-                templateName: 'Article Template Name Psilon',
-                company: "Psilon",
-                knowledgeSetId: 'AGGADGG8ECDC0AQGPUJ1QFRW9RZH4E',
-                title: "articleSection"
-            }
-
             await apiHelper.deleteArticleTemplate('DRDMV-1065');
             await apiHelper.deleteArticleTemplate('DRDMV-619');
             await apiHelper.deleteArticleTemplate('Article Template Name Psilon');
             await apiHelper.deleteKnowledgeSet('Knowledge Set Psilon Title');
+            await apiHelper.createKnowledgeSet(knowledgeSetData);
 
-            let knowledgeSet = await apiHelper.createKnowledgeSet(knowledgeSetData);
-            await apiHelper.createKnowledgeArticleTemplate(knowledgeSetData.knowledgeSetTitle, knowledgeSet.id, knowledgeArticleTemplateData);
+            let knowledgeArticleTemplateData = {
+                templateName: 'Article Template Name Psilon',
+                sectionTitle: "articleSection"
+            }
+            await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateData);
         });
 
         it('[DRDMV-619,DRDMV-1065,DRDMV-1180]: Create templates for Knowledge article', async () => {

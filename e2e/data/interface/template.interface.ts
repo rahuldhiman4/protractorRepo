@@ -58,11 +58,11 @@ export interface IEmailTemplate {
     TemplateName: string,
     Company: string
     Status: string,
-    Module: string,
+    Module?: string,
     Description: string,
     EmailMessageSubject: string,
     EmailMessageBody: string,
-    lineOfBusiness: string,
+    lineOfBusiness?: string,
 };
 
 export interface INotesTemplate {

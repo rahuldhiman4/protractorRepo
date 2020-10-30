@@ -210,7 +210,7 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.setNewProcessName(taskProcess1);
             await copyTemplatePage.clickSaveCopytemplate();
             await utilCommon.closePopUpMessage();
-            expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.petramco.human resource:' + taskProcess1);
+            expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.petramco.human-resource:' + taskProcess1);
         });
         it('[DRDMV-14218,DRDMV-13573]: Login through only Petramco User', async () => {
             await navigationPage.signOut();
@@ -218,7 +218,7 @@ describe('Copy Task Template', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(autoTemplate1);
-            expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.petramco.human resource:' + taskProcess1);
+            expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.petramco.human-resource:' + taskProcess1);
         });
         it('[DRDMV-14218,DRDMV-13573]: The copy of Automated Task template is created across company and check the way to Edit the existing linked Process', async () => {
             //Login through only Psilon User
@@ -227,7 +227,7 @@ describe('Copy Task Template', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(autoTemplate1);
-            expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.petramco.human resource:' + taskProcess1);
+            expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.petramco.human-resource:' + taskProcess1);
         });
         afterAll(async () => {
             await navigationPage.signOut();
@@ -243,7 +243,7 @@ describe('Copy Task Template', () => {
                 "templateName": 'DRDMV14217Automationtask' + randomStr,
                 "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
                 "templateStatus": "Active",
-                "processBundle": "com.petramco.human resource",
+                "processBundle": "com.petramco.human-resource",
                 "processName": `Case Process ${randomStr}`,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
@@ -269,7 +269,7 @@ describe('Copy Task Template', () => {
             await utilCommon.clickOnWarningOk();
             await utilCommon.clickOnBackArrow();
             await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
-            expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.petramco.human resource:' + templateData.processName);
+            expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.petramco.human-resource:' + templateData.processName);
         });
         afterAll(async () => {
             await navigationPage.signOut();
@@ -386,7 +386,7 @@ describe('Copy Task Template', () => {
                 "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
                 "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
                 "templateStatus": "Active",
-                "processBundle": "com.petramco.human resource",
+                "processBundle": "com.petramco.human-resource",
                 "processName": 'DRDMV14221Process' + randomStr,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",

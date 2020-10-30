@@ -10,6 +10,10 @@ export const NOTIFICATION_TEMPLATE = {
       "id": 301233800,
       "value": "Knowledge"
     },
+    "450000420": {
+      "id": 450000420,
+      "value": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+  },
     "301718200": {
       "id": 301718200,
       "value": "AGGADGG8ECDC0AQ4PGWCQ3QYTE8CHA"
