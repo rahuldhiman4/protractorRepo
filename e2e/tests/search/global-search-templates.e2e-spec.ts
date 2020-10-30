@@ -338,7 +338,7 @@ describe('Global Search Template', () => {
 
         it('[DRDMV-16116]: Verify search case by other group user  ', async () => {
             await navigationPage.signOut();
-            await loginPage.login('elizabeth');
+            await loginPage.login('qheroux');
             await navigationPage.gotoSearch();
             // Verify with case template title
             await searchPo.searchRecord(templateName + '1');
@@ -578,7 +578,7 @@ describe('Global Search Template', () => {
 
         it('[DRDMV-16118]: Verify search task by other group user  ', async () => {
             await navigationPage.signOut();
-            await loginPage.login('elizabeth')
+            await loginPage.login('qheroux')
             await navigationPage.gotoSearch();
             // Verify with task template title
             await searchPo.searchRecord(templateName + '1');
@@ -808,7 +808,7 @@ describe('Global Search Template', () => {
 
         it('[DRDMV-16123]: Verify search Document with other group user', async () => {
             await navigationPage.signOut();
-            await loginPage.login('elizabeth')
+            await loginPage.login('qheroux');
             await navigationPage.gotoSearch();
             await searchPo.searchRecord(docName1);
             expect(await searchPo.isModuleTitleDisplayed(docName1, 'Documents (0)', documentModule)).toBeTruthy('FailureMsg63: Document module title is missing');

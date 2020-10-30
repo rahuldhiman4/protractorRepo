@@ -415,7 +415,7 @@ describe('Global Search Category Validation', () => {
 
         it('[DRDMV-16102]: Verify search case by other group user  ', async () => {
             await navigationPage.signOut();
-            await loginPage.login('elizabeth');
+            await loginPage.login('qheroux');
             await navigationPage.gotoSearch();
             await searchPo.searchRecord(summary);
 
@@ -608,7 +608,7 @@ describe('Global Search Category Validation', () => {
 
         it('[DRDMV-16115]: Verify saerch task with other group user', async () => {
             await navigationPage.signOut();
-            await loginPage.login('elizabeth');
+            await loginPage.login('qheroux');
             await navigationPage.gotoSearch();
             await searchPo.searchRecord(nonMatchingSummary);
             expect(await searchPo.isModuleTitleDisplayed(nonMatchingSummary, 'Tasks (0)', taskModule)).toBeTruthy('FailureMsg58: Task module title is missing');
@@ -833,7 +833,7 @@ describe('Global Search Category Validation', () => {
 
         it('[DRDMV-16114]: Verify saerch KA with other group user', async () => {
             await navigationPage.signOut();
-            await loginPage.login('elizabeth');
+            await loginPage.login('qheroux');
             await navigationPage.gotoSearch();
             await searchPo.searchRecord(summary1);
             expect(await searchPo.isModuleTitleDisplayed(summary1, 'Knowledge Articles (5)', KAModule)).toBeTruthy('FailureMsg1: KA module title is missing');
