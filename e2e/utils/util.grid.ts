@@ -1,5 +1,5 @@
-import { $, $$, browser, by, By, element, ElementFinder, Key, protractor, ProtractorExpectedConditions, until, ElementHelper, ElementArrayFinder } from 'protractor';
-import utilCommon, { Util } from './util.common';
+import { $, $$, browser, by, element, ElementFinder, Key, protractor, ProtractorExpectedConditions } from 'protractor';
+import { Util } from './util.common';
 
 export class GridOperation {
 
@@ -35,7 +35,8 @@ export class GridOperation {
         datePickerApplyButton: '.dropdown-item_range .d-button_small',
         presetFilter: '.rx-filter-preset__title span',
         appliedFilterName: '.d-tag-label',
-        timePicker: 'button.d-timepicker__input'
+        timePicker: 'button.d-timepicker__input',
+        lineOfBusinessDropDown: 'button[title]'
     }
 
     async clickOnGridRefreshButton(): Promise<void> {
@@ -441,6 +442,14 @@ export class GridOperation {
         let allValues = await this.getAllValuesFromColoumn(guid, columnHeader);
         const allEqual = arr => arr.every(v => v === arr[0]);
         return allEqual(allValues) && allValues[0] === value;
+    }
+
+    async selectLineOfBusiness(value: string, guid?: string): Promise<void> {
+        let guidID: string = "";
+        if (guid) guidID = `[rx-view-component-id="${guid}"] `;
+        await $(guidID + this.selectors.lineOfBusinessDropDown).click();
+        await $(`[aria-label="${value}"]`).click();
+        await element(by.cssContainingText('.lob-list .dropdown-item', value)).click();
     }
 }
 export default new GridOperation();
