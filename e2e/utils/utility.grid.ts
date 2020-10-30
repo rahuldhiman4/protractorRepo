@@ -32,6 +32,7 @@ export class GridOperations {
         editPresetFilterSaveButton: '.advanced-filter__editing-footer .btn-primary',
         savePresetInput: '.advanced-filter-name-editor__input',
         saveOrCancelPresetFilterButton: 'button.custom-action-btn__right',
+        lineOfBusinessDropDown: 'button[btn-type="tertiary"]'
     }
 
     async searchRecord(searchValue: string, guid?: string): Promise<void> {
@@ -626,5 +627,14 @@ export class GridOperations {
             } else return false;
         });
     }
+    
+    async lineofBusiness(value: string, guid?: string): Promise<void> {
+        let guidID: string = "";
+        if (guid) guidID = `[rx-view-component-id="${guid}"] `;
+        await $(guidID + this.selectors.lineOfBusinessDropDown).click();
+        console.log(`Selecting dropdown value: ${value}`);
+        await element(by.cssContainingText('.lob-list .dropdown-item', value)).click();
+    }
+    
 }
 export default new GridOperations();
