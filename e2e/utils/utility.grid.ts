@@ -628,11 +628,10 @@ export class GridOperations {
         });
     }
     
-    async lineofBusiness(value: string, guid?: string): Promise<void> {
+    async selectLineOfBusiness(value: string, guid?: string): Promise<void> {
         let guidID: string = "";
         if (guid) guidID = `[rx-view-component-id="${guid}"] `;
         await $(guidID + this.selectors.lineOfBusinessDropDown).click();
-        console.log(`Selecting dropdown value: ${value}`);
         await element(by.cssContainingText('.lob-list .dropdown-item', value)).click();
     }
     

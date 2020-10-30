@@ -3,7 +3,8 @@
         "firstName": "fnPerson",
         "lastName": "lnPerson",
         "userId": "idPerson",
-        "company": "Petramco"
+        "company": "Petramco",
+        "userPermission": ["Case Business Analyst", "Human Resource"]
     },
     "PersonData19501": {
         "firstName": "fnPerson19501",
