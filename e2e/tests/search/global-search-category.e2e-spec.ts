@@ -415,7 +415,7 @@ describe('Global Search Category Validation', () => {
 
         it('[DRDMV-16102]: Verify search case by other group user  ', async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('elizabeth');
             await navigationPage.gotoSearch();
             await searchPo.searchRecord(summary);
 
@@ -572,7 +572,6 @@ describe('Global Search Category Validation', () => {
             expect(await searchPo.isModuleTitleDisplayed(nonMatchingSummary, 'Tasks (0)', taskModule)).toBeTruthy('FailureMsg58: Task module title is missing');
             expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(taskModule)).toBeTruthy(`FailureMsg59: No result found validation missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId2, taskModule)).toBeFalsy(`FailureMsg48: ${taskDisplayId2} task id  is displayed`);
-
             await searchPo.searchRecord(nonMatchingDescription);
             expect(await searchPo.isModuleTitleDisplayed(nonMatchingSummary, 'Tasks (0)', taskModule)).toBeTruthy('FailureMsg58: Task module title is missing');
             expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(taskModule)).toBeTruthy(`FailureMsg59: No result found validation is missing`);
@@ -609,7 +608,7 @@ describe('Global Search Category Validation', () => {
 
         it('[DRDMV-16115]: Verify saerch task with other group user', async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('elizabeth');
             await navigationPage.gotoSearch();
             await searchPo.searchRecord(nonMatchingSummary);
             expect(await searchPo.isModuleTitleDisplayed(nonMatchingSummary, 'Tasks (0)', taskModule)).toBeTruthy('FailureMsg58: Task module title is missing');
@@ -834,7 +833,7 @@ describe('Global Search Category Validation', () => {
 
         it('[DRDMV-16114]: Verify saerch KA with other group user', async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('elizabeth');
             await navigationPage.gotoSearch();
             await searchPo.searchRecord(summary1);
             expect(await searchPo.isModuleTitleDisplayed(summary1, 'Knowledge Articles (5)', KAModule)).toBeTruthy('FailureMsg1: KA module title is missing');
