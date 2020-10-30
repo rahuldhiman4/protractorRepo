@@ -26,7 +26,7 @@ class ViewKnowledgePage {
         knowledgeCompanyValue: '[rx-view-component-id="a034803f-aa70-4c4e-94ba-d847e4e50d2f"] .read-only-content',
         knowledgeAuthorValue: '[rx-view-component-id="e4e8e3e2-d792-452d-bbfe-4393d7650541"] .read-only-content',
         assigneeGroupValue: '[rx-view-component-id="51f0da81-fea9-4566-9eb0-0c706c60a445"] .read-only-content',
-        categoryTier1Value: '[rx-view-component-id="2e629e99-f2fa-48a2-910b-0652a6bf032f"] .read-only-content',
+        categoryTier1Value: '[rx-view-component-id="254ef6b1-74fe-47ae-ab5f-701acbcb1fd5"] .read-only-content',
         categoryTier2Value: '[rx-view-component-id="7e8a318c-2948-4b54-a8b6-049146bdf6c9"] .read-only-content',
         categoryTier3Value: '[rx-view-component-id="f2703b24-f357-46f7-83bc-e216f6d33cb0"] .read-only-content',
         categoryTier4Value: '[rx-view-component-id="863425e3-0e4e-4e83-a05d-86f57f919248"] .read-only-content',
