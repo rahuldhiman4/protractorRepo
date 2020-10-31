@@ -36,6 +36,7 @@ import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import applicationConfigPo from '../../pageobject/common/common-services/application-config.po';
+import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 
 describe('Dynamic Hidden Data', () => {
     beforeAll(async () => {
@@ -358,7 +359,7 @@ describe('Dynamic Hidden Data', () => {
             await viewTaskPo.clickOnViewCase();
         });
         it('[DRDMV-21422,DRDMV-21414]: Validate dynamic field and change the it teask template status', async () => {
-            expect(await viewCasePo.isDynamicFieldDisplayed('Field1OutsideDRDMV21415' + randomStr)).toBeFalsy();
+            expect(await viewCasePo.isDynamicFieldDisplayed('Field1OutsideDRDMV21415')).toBeFalsy();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
@@ -690,15 +691,12 @@ describe('Dynamic Hidden Data', () => {
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            await viewCasePo.getCaseID();
         });
         it('[DRDMV-21418]: Validate dynamic field ', async () => {
             expect(await viewCasePo.isDynamicFieldDisplayed('Field1OutsideDRDMV21415')).toBeTruthy();
             await viewCasePo.clickAddTaskButton();
             await manageTask.addTaskFromTaskTemplate(`manualTaskTemplate1 ${randomStr}`);
-            await manageTask.clickTaskLink(`manualTaskTemplateSummary1 ${randomStr}`);
-            await viewTaskPo.clickOnViewCase();
-            await viewCasePo.getCaseID();
+            await manageTaskBladePo.clickCloseButton();
             expect(await viewCasePo.isDynamicFieldDisplayed('Field1OutsideDRDMV21415')).toBeTruthy();
         });
         afterAll(async () => {
