@@ -1,24 +1,21 @@
 import { browser } from "protractor";
 import apiHelper from "../../api/api.helper";
-import localizeValuePopPo from '../../pageobject/common/localize-value-pop.po';
+import addFieldsPopPo from '../../pageobject/common/add-fields-pop.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import createMenuItemsBladePo from '../../pageobject/settings/application-config/create-menu-items-blade.po';
 import imagePropertiesPo from '../../pageobject/settings/common/image-properties.po';
 import createDocumentTemplatePo from '../../pageobject/settings/document-management/create-document-template.po';
 import documentTemplateConsolePo from '../../pageobject/settings/document-management/document-template-console.po';
 import editDocumentTemplatePo from '../../pageobject/settings/document-management/edit-document-template.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
+import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
-import addFieldsPopPo from '../../pageobject/common/add-fields-pop.po';
-import { SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
-import { cloneDeep } from 'lodash';
 
 describe('Document Template', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
-        await loginPage.login('qkatawazi');
+        await loginPage.login('jbarnes');
     });
 
     afterAll(async () => {
@@ -35,65 +32,49 @@ describe('Document Template', () => {
         let description2 = 'description2' + randomStr;
         let documentBody1 = 'documentBody1' + randomStr;
         let documentBody2 = 'documentBody2' + randomStr;
-        let labelRandVal1 = 'labelRandVal1' + randomStr;
-        let labelRandVal2 = 'labelRandVal2' + randomStr;
-        it('[DRDMV-14970,DRDMV-14974,DRDMV-14971,DRDMV-14972]: Create Menu item label', async () => {
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
-            await createMenuItemsBladePo.clickOnMenuOptionLink();
-            await createMenuItemsBladePo.selectMenuNameDropDown('Label');
-            await createMenuItemsBladePo.clickOnLocalizeLink();
-            await localizeValuePopPo.setLocalizeValue(labelRandVal1);
-            await localizeValuePopPo.clickOnSaveButton();
-            await createMenuItemsBladePo.selectStatusDropDown('Active');
-            await createMenuItemsBladePo.selectAvailableOnUiToggleButton(true);
-            await createMenuItemsBladePo.clickOnSaveButton();
-            await createMenuItemsBladePo.clickOnMenuOptionLink();
-            await createMenuItemsBladePo.selectMenuNameDropDown('Label');
-            await createMenuItemsBladePo.clickOnLocalizeLink();
-            await localizeValuePopPo.setLocalizeValue(labelRandVal2);
-            await localizeValuePopPo.clickOnSaveButton();
-            await createMenuItemsBladePo.selectStatusDropDown('Active');
-            await createMenuItemsBladePo.selectAvailableOnUiToggleButton(true);
-            await createMenuItemsBladePo.clickOnSaveButton();
-        });
+        let label1 = 'POSH';
+        let facilitiesLabel1 = 'Pantry';
+        let facilitiesLabel2 = 'Cleaning';
         it('[DRDMV-14970,DRDMV-14974,DRDMV-14971,DRDMV-14972]: Create document template', async () => {
-            await navigationPage.gotoCaseConsole();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Templates', 'Document Templates - Business Workflows');
+            await utilGrid.selectLineOfBusiness("Facilities");
             await createDocumentTemplatePo.clickOnAddTemplate();
             expect(await createDocumentTemplatePo.isSaveButtonEnabled()).toBeFalsy('Save button is enabled');
             await createDocumentTemplatePo.setTemplateName(templateRandVal1);
             await createDocumentTemplatePo.setCompany('Petramco');
-            await createDocumentTemplatePo.selectLabelDropDown(labelRandVal1);
+            await createDocumentTemplatePo.selectLabelDropDown(facilitiesLabel1);
             await createDocumentTemplatePo.setDescription(description1);
             await createDocumentTemplatePo.setDocumentBody(documentBody1);
             await createDocumentTemplatePo.clickOnDocumentBodyImageButton();
             await imagePropertiesPo.addImg('Upload', '../../../data/ui/attachment/articleStatus.png');
             await createDocumentTemplatePo.clickOnSaveButton();
+            await utilGrid.selectLineOfBusiness("Human Resource");
             await createDocumentTemplatePo.clickOnAddTemplate();
             await createDocumentTemplatePo.setTemplateName(templateRandVal2);
             expect(await createDocumentTemplatePo.isSaveButtonEnabled()).toBeFalsy('Save button is enabled');
             await createDocumentTemplatePo.setCompany('- Global -');
-            await createDocumentTemplatePo.selectLabelDropDown(labelRandVal1);
+            await createDocumentTemplatePo.selectLabelDropDown(label1);
             await createDocumentTemplatePo.setDescription(description1);
             await createDocumentTemplatePo.setDocumentBody(documentBody1);
             await createDocumentTemplatePo.clickOnSaveButton();
         });
         it('[DRDMV-14970,DRDMV-14974,DRDMV-14971,DRDMV-14972]: Validation of document template', async () => {
+            await utilGrid.selectLineOfBusiness("Facilities");
             await documentTemplateConsolePo.searchAndOpenDocumentTemplate(templateRandVal1);
             expect(await editDocumentTemplatePo.isTemplateNameDisplayed(templateRandVal1)).toBeTruthy('Template Name is missing');
             expect(await editDocumentTemplatePo.isCompanyNameDisplayed('Petramco')).toBeTruthy('Petramco Company Name is missing');
-            expect(await editDocumentTemplatePo.isLabelValueDisplayed(labelRandVal1)).toBeTruthy('label is missing');
+            expect(await editDocumentTemplatePo.isLabelValueDisplayed(facilitiesLabel1)).toBeTruthy('label is missing');
             expect(await editDocumentTemplatePo.isDescriptionValueDisplayed(description1)).toBeTruthy('Description Name is missing');
             expect(await editDocumentTemplatePo.isDocumentBodyDisplayed(documentBody1)).toBeTruthy('Document body text is missing');
             expect(await editDocumentTemplatePo.isDocumentBodyImgDisplay()).toBeTruthy('Document body Img text is missing');
             await editDocumentTemplatePo.clickOnCancelButton();
             await utilCommon.clickOnWarningOk();
+            await utilGrid.selectLineOfBusiness("Human Resource");
             await documentTemplateConsolePo.searchAndOpenDocumentTemplate(templateRandVal2);
             expect(await editDocumentTemplatePo.isTemplateNameDisplayed(templateRandVal2)).toBeTruthy('Template Name is missing for Global company');
             expect(await editDocumentTemplatePo.isCompanyNameDisplayed('- Global -')).toBeTruthy('Global Company Name is missing ');
-            expect(await editDocumentTemplatePo.isLabelValueDisplayed(labelRandVal1)).toBeTruthy('label is missing of Global company');
+            expect(await editDocumentTemplatePo.isLabelValueDisplayed(label1)).toBeTruthy('label is missing of Global company');
             expect(await editDocumentTemplatePo.isDescriptionValueDisplayed(description1)).toBeTruthy('Description Name is missing of Global company ');
             expect(await editDocumentTemplatePo.isDocumentBodyDisplayed(documentBody1)).toBeTruthy('Document body text is missing of Global company');
             expect(await editDocumentTemplatePo.isCompanyDropDownDisabled()).toBeTruthy('company drop down is enabled of Global company');
@@ -101,17 +82,18 @@ describe('Document Template', () => {
             await utilCommon.clickOnWarningOk();
         });
         it('[DRDMV-14970,DRDMV-14974,DRDMV-14971,DRDMV-14972]: Update document template', async () => {
+            await utilGrid.selectLineOfBusiness("Facilities");
             await documentTemplateConsolePo.searchAndOpenDocumentTemplate(templateRandVal1);
             expect(await editDocumentTemplatePo.isCompanyDropDownDisabled()).toBeTruthy('Company Drop down is not disabled');
             expect(await editDocumentTemplatePo.isTemplateNameDisabled()).toBeTruthy('Template Name is disabled');
-            await editDocumentTemplatePo.selectLabelDropDown(labelRandVal2);
+            await editDocumentTemplatePo.selectLabelDropDown(facilitiesLabel2);
             await editDocumentTemplatePo.updateDescription(description2);
             await editDocumentTemplatePo.updateDocumentBody(documentBody2);
             await editDocumentTemplatePo.clickOnSaveButton();
             await documentTemplateConsolePo.searchAndOpenDocumentTemplate(templateRandVal1);
             expect(await editDocumentTemplatePo.isTemplateNameDisplayed(templateRandVal1)).toBeTruthy('Template Name is missing');
             expect(await editDocumentTemplatePo.isCompanyNameDisplayed('Petramco')).toBeTruthy('Petramco 2 Company Name is missing');
-            expect(await editDocumentTemplatePo.isLabelValueDisplayed(labelRandVal2)).toBeTruthy('label2 is missing');
+            expect(await editDocumentTemplatePo.isLabelValueDisplayed(facilitiesLabel2)).toBeTruthy('label2 is missing');
             expect(await editDocumentTemplatePo.isDescriptionValueDisplayed(description2)).toBeTruthy('Description2 Name is missing');
             expect(await editDocumentTemplatePo.isDocumentBodyDisplayed(documentBody2)).toBeTruthy('Document body2 text is missing');
             await editDocumentTemplatePo.clickOnCancelButton();
@@ -138,7 +120,6 @@ describe('Document Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
-
     });
 
     //kgaikwad
@@ -208,9 +189,9 @@ describe('Document Template', () => {
                 "templateSummary": caseTemplateSummary,
                 "caseStatus": "InProgress",
                 "templateStatus": "Active",
-                "businessUnit": "United States Support",
-                "supportGroup": "US Support 3",
-                "assignee": "qkatawazi",
+                //"businessUnit": "United States Support",
+                //"supportGroup": "US Support 3",
+                //"assignee": "qkatawazi",
                 "ownerBU": 'United States Support',
                 "ownerGroup": "US Support 3",
             }
