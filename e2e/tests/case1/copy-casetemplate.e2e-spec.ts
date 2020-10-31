@@ -450,7 +450,7 @@ describe('Copy Case Template', () => {
             await taskTemplate.clickOnSaveTaskTemplate();
             await viewTaskTemplate.clickOnCopyTemplate();
             await copyTasktemplatePo.setTemplateName(copytaskTemplateName);
-            await copyTasktemplatePo.selectBuisnessUnitGroup("Psilon Support Org1");
+            await copyTasktemplatePo.selectOwnerBusinessUnit("Psilon Support Org1");
             await copyTasktemplatePo.selectOwnerGroup("Psilon Support Group1");
             await copyTasktemplatePo.clickSaveCopytemplate();
             await utilCommon.closePopUpMessage();

@@ -295,6 +295,9 @@ describe('Conditional Task Life Cycle', () => {
             await updateStatusBlade.clickSaveStatus('Resolved');
             expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
         });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
     });
 
     //asahitya

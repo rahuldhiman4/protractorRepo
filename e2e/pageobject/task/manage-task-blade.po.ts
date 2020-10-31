@@ -44,7 +44,7 @@ class ManageTaskBlade {
         await browser.sleep(1500); // wait until sorting
     }
 
-    async getTaskDisplayIdFromManageTaskBlade():Promise<string>{
+    async getTaskDisplayId():Promise<string>{
      return await $(this.selectors.taskDisplayId).getText();  
     }
 
