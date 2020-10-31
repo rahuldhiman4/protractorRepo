@@ -49,8 +49,8 @@ describe('Conditional Task', () => {
         beforeAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
             inactiveCaseTemplatePetramcoData = {
-                "templateName": `DRDMV-14901 Case Template ${randomStr}`,
-                "templateSummary": `DRDMV-14901 Case Template${randomStr}`,
+                "templateName": `DRDMV14901 Case Template ${randomStr}`,
+                "templateSummary": `DRDMV14901 Case Template${randomStr}`,
                 "templateStatus": "Inactive",
                 "casePriority": "Low",
                 "company": "Petramco",
@@ -63,8 +63,8 @@ describe('Conditional Task', () => {
             await apiHelper.createCaseTemplate(inactiveCaseTemplatePetramcoData);
 
             manualTaskTemplateData = {
-                "templateName": `DRDMV-14901 Manual ${randomStr}`,
-                "templateSummary": `DRDMV-14901 Manual${randomStr}`,
+                "templateName": `DRDMV14901 Manual ${randomStr}`,
+                "templateSummary": `DRDMV14901 Manual${randomStr}`,
                 "templateStatus": "Active",
                 "category1": 'Applications',
                 "category2": 'Help Desk',
@@ -82,8 +82,8 @@ describe('Conditional Task', () => {
             await apiHelper.createDynamicDataOnTemplate(manualTasktemplateResponse.id, 'TASK_TEMPLATE__DYNAMIC_FIELDS');
 
             externalTaskTemplateData = {
-                "templateName": `DRDMV-14901 External ${randomStr}`,
-                "templateSummary": `DRDMV-14901 External${randomStr}`,
+                "templateName": `DRDMV14901 External ${randomStr}`,
+                "templateSummary": `DRDMV14901 External${randomStr}`,
                 "templateStatus": "Active",
                 "category1": 'Applications',
                 "category2": 'Help Desk',
@@ -239,9 +239,14 @@ describe('Conditional Task', () => {
             expect(await utilityCommon.getFieldValue('Task Category Tier 1')).toBe(automatedTaskTemplateData.category1);
             expect(await utilityCommon.getFieldValue('Task Category Tier 2')).toBe(automatedTaskTemplateData.category2);
             expect(await utilityCommon.getFieldValue('Task Category Tier 3')).toBe(manualTaskTemplateData.category3);
+            
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await taskTemplatePreview.clickOnBackButton();
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
+    
     });
 
     //asahitya

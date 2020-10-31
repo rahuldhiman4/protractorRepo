@@ -85,54 +85,63 @@ export const TASK_TEMPLATE__DYNAMIC_FIELDS =
             "description": "temp",
             "dataType": "TEXT",
             "dataProviderUserRole": "Agent",
+            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
         },
         {
             "name": "temp1",
             "description": "temp1",
             "dataType": "NUMBER",
             "dataProviderUserRole": "Agent",
+            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
         },
         {
             "name": "temp2",
             "description": "temp2",
             "dataType": "DATE",
             "dataProviderUserRole": "Agent",
+            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
         },
         {
             "name": "temp3",
             "description": "temp3",
             "dataType": "BOOLEAN",
             "dataProviderUserRole": "Agent",
+            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
         },
         {
             "name": "temp4",
             "description": "temp4",
             "dataType": "DATE_TIME",
             "dataProviderUserRole": "Agent",
+            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
         },
         {
             "name": "temp5",
             "description": "temp5",
             "dataType": "TIME",
             "dataProviderUserRole": "Agent",
+            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
         },
         {
             "name": "attachment1",
             "description": "attachment1",
             "dataType": "ATTACHMENT",
             "dataProviderUserRole": "Agent",
+            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
         },
         {
             "name": "attachment2",
             "description": "attachment2",
             "dataType": "ATTACHMENT",
             "dataProviderUserRole": "Agent",
+            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
         },
         {
             "name": "attachment3",
             "description": "attachment3",
             "dataType": "ATTACHMENT",
             "dataProviderUserRole": "Agent",
+            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
         }
     ]
 };
@@ -721,6 +730,7 @@ export const EXTERNAL_TASK_TEMPLATE__DYNAMIC_FIELDS = {
             "description": "externalAttachment1",
             "dataType": "ATTACHMENT",
             "dataProviderUserRole": "Agent",
+            
         }
     ]
 };
@@ -1453,7 +1463,8 @@ export const hiddenField = {
         "active": true,
         "attachmentGroupId": null,
         "type": "SIMPLE_FIELD",
-        "hidden": true
+        "hidden": true,
+        "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
     }
     ]
 };
@@ -1473,7 +1484,8 @@ export const ALL_DATA_TYPE = {
         "active": true,
         "attachmentGroupId": null,
         "type": "SIMPLE_FIELD",
-        "hidden": false
+        "hidden": false,
+        "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
     },
     {
         "name": "confidentialFieldTrue",
@@ -1486,7 +1498,8 @@ export const ALL_DATA_TYPE = {
         "active": true,
         "attachmentGroupId": null,
         "type": "SIMPLE_FIELD",
-        "hidden": false
+        "hidden": false,
+        "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
     },
     {
         "name": "hiddenFieldTrue",
@@ -1499,7 +1512,8 @@ export const ALL_DATA_TYPE = {
         "active": true,
         "attachmentGroupId": null,
         "type": "SIMPLE_FIELD",
-        "hidden": true
+        "hidden": true,
+        "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
     }]
 };
 
@@ -1518,7 +1532,8 @@ export const DuplicateOFhiddenFieldDRDMV21418 = {
         "active": true,
         "attachmentGroupId": null,
         "type": "SIMPLE_FIELD",
-        "hidden": false
+        "hidden": false,
+        "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
     }]
 };
 export const UnhiddenField = {
@@ -1538,7 +1553,8 @@ export const UnhiddenField = {
             "dataProviderUserRole": "Agent",
             "active": true,
             "type": "SIMPLE_FIELD",
-            "hidden": false
+            "hidden": false,
+            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
         }
     ],
     "templateRecordDefinition": "com.bmc.dsm.task-lib:Task Template"
@@ -1559,7 +1575,8 @@ export const RequiredHiddenDRDMV21451 = {
         "active": true,
         "attachmentGroupId": null,
         "type": "SIMPLE_FIELD",
-        "hidden": true
+        "hidden": true,
+        "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
     }
     ]
 };
@@ -1579,7 +1596,8 @@ export const ConfidentialsHiddenDRDMV21452 = {
         "active": true,
         "attachmentGroupId": null,
         "type": "SIMPLE_FIELD",
-        "hidden": true
+        "hidden": true,
+        "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
     }
     ]
 };
@@ -1611,7 +1629,8 @@ export const CASE_TEMPLATE_WITH_REQUESTER = {
                     "externalId": "",
                     "attachmentGroupId": null,
                     "type": "SIMPLE_FIELD",
-                    "hidden": false
+                    "hidden": false,
+                    "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
                 },
                 {
                     "name": "Field2Group1",
@@ -1624,7 +1643,8 @@ export const CASE_TEMPLATE_WITH_REQUESTER = {
                     "active": true,
                     "attachmentGroupId": null,
                     "type": "SIMPLE_FIELD",
-                    "hidden": false
+                    "hidden": false,
+                    "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
                 }
             ],
             "published": false,
@@ -1647,7 +1667,8 @@ export const CASE_TEMPLATE_WITH_REQUESTER = {
                     "dataProviderApplication": "",
                     "active": true,
                     "type": "SIMPLE_FIELD",
-                    "hidden": false
+                    "hidden": false,
+                    "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
                 },
                 {
                     "name": "FieldGroup2",
@@ -1660,7 +1681,8 @@ export const CASE_TEMPLATE_WITH_REQUESTER = {
                     "active": true,
                     "attachmentGroupId": null,
                     "type": "SIMPLE_FIELD",
-                    "hidden": false
+                    "hidden": false,
+                    "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
                 }
             ],
             "published": false,
@@ -1677,7 +1699,8 @@ export const CASE_TEMPLATE_WITH_REQUESTER = {
             "active": true,
             "attachmentGroupId": null,
             "type": "SIMPLE_FIELD",
-            "hidden": false
+            "hidden": false,
+            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
         }
     ],
     "templateRecordDefinition": "com.bmc.dsm.case-lib:Case Template"
@@ -1710,7 +1733,8 @@ export const DynamicGroupContainsHiddenFieldDRDMV21416 = {
                     "externalId": "",
                     "attachmentGroupId": null,
                     "type": "SIMPLE_FIELD",
-                    "hidden": true
+                    "hidden": true,
+                    "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
                 },
             ]
         }
@@ -1739,7 +1763,8 @@ export const AllSourceAndTypeDRDMV21515 = {
             "externalId": "",
             "attachmentGroupId": null,
             "type": "SIMPLE_FIELD",
-            "hidden": true
+            "hidden": true,
+            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
         },
         {
             "id": "",
@@ -1755,7 +1780,8 @@ export const AllSourceAndTypeDRDMV21515 = {
             "externalId": "",
             "attachmentGroupId": null,
             "type": "SIMPLE_FIELD",
-            "hidden": true
+            "hidden": true,
+            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
         },
         {
             "id": "",
@@ -1771,7 +1797,8 @@ export const AllSourceAndTypeDRDMV21515 = {
             "externalId": "",
             "attachmentGroupId": null,
             "type": "SIMPLE_FIELD",
-            "hidden": true
+            "hidden": true,
+            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
         },
         {
             "id": "",
@@ -1793,7 +1820,8 @@ export const AllSourceAndTypeDRDMV21515 = {
             "externalId": "",
             "attachmentGroupId": null,
             "type": "SIMPLE_FIELD",
-            "hidden": true
+            "hidden": true,
+            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
         },
         {
             "id": "",
@@ -1809,7 +1837,8 @@ export const AllSourceAndTypeDRDMV21515 = {
             "externalId": "",
             "attachmentGroupId": null,
             "type": "SIMPLE_FIELD",
-            "hidden": true
+            "hidden": true,
+            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
         },
         {
             "id": "",
@@ -1825,7 +1854,8 @@ export const AllSourceAndTypeDRDMV21515 = {
             "externalId": "",
             "attachmentGroupId": null,
             "type": "SIMPLE_FIELD",
-            "hidden": true
+            "hidden": true,
+            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
         },
         {
             "id": "",
@@ -1841,7 +1871,8 @@ export const AllSourceAndTypeDRDMV21515 = {
             "externalId": "",
             "attachmentGroupId": null,
             "type": "SIMPLE_FIELD",
-            "hidden": true
+            "hidden": true,
+            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
         },
         {
             "id": "",
@@ -1857,7 +1888,8 @@ export const AllSourceAndTypeDRDMV21515 = {
             "externalId": "",
             "attachmentGroupId": null,
             "type": "SIMPLE_FIELD",
-            "hidden": false
+            "hidden": false,
+            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
         },
         {
             "id": "",
@@ -1873,7 +1905,8 @@ export const AllSourceAndTypeDRDMV21515 = {
             "externalId": "",
             "attachmentGroupId": null,
             "type": "SIMPLE_FIELD",
-            "hidden": false
+            "hidden": false,
+            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
         },
         {
             "id": "",
@@ -1889,7 +1922,8 @@ export const AllSourceAndTypeDRDMV21515 = {
             "externalId": "",
             "attachmentGroupId": null,
             "type": "SIMPLE_FIELD",
-            "hidden": false
+            "hidden": false,
+            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
         },
         {
             "id": "",
@@ -1911,7 +1945,8 @@ export const AllSourceAndTypeDRDMV21515 = {
             "externalId": "",
             "attachmentGroupId": null,
             "type": "SIMPLE_FIELD",
-            "hidden": false
+            "hidden": false,
+            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
         },
         {
             "id": "",
@@ -1927,7 +1962,8 @@ export const AllSourceAndTypeDRDMV21515 = {
             "externalId": "",
             "attachmentGroupId": null,
             "type": "SIMPLE_FIELD",
-            "hidden": false
+            "hidden": false,
+            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
         },
         {
             "id": "",
@@ -1943,7 +1979,8 @@ export const AllSourceAndTypeDRDMV21515 = {
             "externalId": "",
             "attachmentGroupId": null,
             "type": "SIMPLE_FIELD",
-            "hidden": false
+            "hidden": false,
+            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
         },
         {
             "id": "",
@@ -1959,7 +1996,8 @@ export const AllSourceAndTypeDRDMV21515 = {
             "externalId": "",
             "attachmentGroupId": null,
             "type": "SIMPLE_FIELD",
-            "hidden": false
+            "hidden": false,
+            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
         }
     ],
     "templateRecordDefinition": "com.bmc.dsm.task-lib:Task Template"
@@ -2074,30 +2112,36 @@ export const DynamicGroupFieldDRDMV13129Data1 = {
                     "description": "FieldGroup1",
                     "dataType": "TEXT",
                     "dataProviderUserRole": "Agent",
+                    "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+
                 },
                 {
                     "name": "externalNumber",
                     "description": "externalNumber",
                     "dataType": "NUMBER",
                     "dataProviderUserRole": "Agent",
+                    "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
                 },
                 {
                     "name": "externalDate",
                     "description": "externalDate",
                     "dataType": "DATE",
                     "dataProviderUserRole": "Agent",
+                    "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
                 },
                 {
                     "name": "externalBoolean",
                     "description": "externalBoolean",
                     "dataType": "BOOLEAN",
                     "dataProviderUserRole": "Agent",
+                    "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
                 },
                 {
                     "name": "externalDateTime",
                     "description": "externalDateTime",
                     "dataType": "DATE_TIME",
                     "dataProviderUserRole": "Agent",
+                    "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
                 }
             ]
         },
@@ -2106,6 +2150,7 @@ export const DynamicGroupFieldDRDMV13129Data1 = {
             "description": "FieldGroupOutside",
             "dataType": "TEXT",
             "dataProviderUserRole": "Agent",
+            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
         }
     ]
 };
@@ -2130,30 +2175,35 @@ export const DynamicGroupFieldDRDMV13129Data2 = {
                     "description": "externalDate",
                     "dataType": "DATE",
                     "dataProviderUserRole": "Agent",
+                    "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
                 },
                 {
                     "name": "externalBoolean",
                     "description": "externalBoolean",
                     "dataType": "BOOLEAN",
                     "dataProviderUserRole": "Agent",
+                    "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
                 },
                 {
                     "name": "externalDateTime",
                     "description": "externalDateTime",
                     "dataType": "DATE_TIME",
                     "dataProviderUserRole": "Agent",
+                    "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
                 },
                 {
                     "name": "externalTime",
                     "description": "externalTime",
                     "dataType": "TIME",
                     "dataProviderUserRole": "Agent",
+                    "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
                 },
                 {
                     "name": "newfiles",
                     "description": "dynamicList",
                     "dataType": "LIST",
                     "dataProviderUserRole": "Agent",
+                    "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
                     "displayDataListDefinitions": [
                         {
                             "nameKey": "listvalues",
@@ -2168,6 +2218,7 @@ export const DynamicGroupFieldDRDMV13129Data2 = {
                     "description": "externalAttachment1",
                     "dataType": "ATTACHMENT",
                     "dataProviderUserRole": "Agent",
+                    "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
                 }
             ]
         }
@@ -2201,7 +2252,8 @@ export const DynamicGroupContainsConfidentialsFieldDRDMV15041 = {
                     "externalId": "",
                     "attachmentGroupId": null,
                     "type": "SIMPLE_FIELD",
-                    "hidden": false
+                    "hidden": false,
+                    "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
                 },
                 {
                     "name": "externalDate",

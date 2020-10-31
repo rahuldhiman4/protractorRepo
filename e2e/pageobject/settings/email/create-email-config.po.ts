@@ -11,6 +11,7 @@ export class CreateEmailConfig {
         descriptionField: '[rx-view-component-id="6f83d1ad-52d5-4542-810a-8e7f1266a8a3"] textarea',
         saveButton: '[rx-view-component-id="cb16fd71-146e-4e5f-9e18-854ddd185d5e"] button',
         cancelButton: '[rx-view-component-id="daad4496-bc8a-4de8-8a2e-cc7665ff8813"] button',
+        incomingMailBoxNameGuid: '948378d1-5e37-4de0-a1fa-213c09c35000',
     }
 
     async setDescription(description: string): Promise<void> {
@@ -42,6 +43,10 @@ export class CreateEmailConfig {
 
     async selectStatus(emailID: string): Promise<void> {
         await utilCommon.selectDropDown(this.selectors.statusGuid, emailID);
+    }
+
+    async selectIncomingMailBoxName(emailID: string): Promise<void> {
+        await utilCommon.selectDropDown(this.selectors.incomingMailBoxNameGuid, emailID);
     }
 }
 

@@ -741,8 +741,8 @@ describe('Case Data Store', () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
             templateData = {
-                "templateName": 'ManualtaskDRDMV-13154' + randomStr,
-                "templateSummary": 'ManualtaskDRDMV-13154' + randomStr,
+                "templateName": 'ManualtaskDRDMV13154' + randomStr,
+                "templateSummary": 'ManualtaskDRDMV13154' + randomStr,
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
@@ -755,9 +755,9 @@ describe('Case Data Store', () => {
             await apiHelper.createDynamicDataOnTemplate(tasktemplate.id, 'TASK_TEMPLATE__DYNAMIC_FIELDS');
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
-            templateData.templateName = 'externalTaskDRDMV-13154' + randomStr;
-            templateData.templateSummary = 'externalTaskDRDMV-13154' + randomStr,
-            await apiHelper.apiLogin('qkatawazi');
+            templateData.templateName = 'externalTaskDRDMV13154' + randomStr;
+            templateData.templateSummary = 'externalTaskDRDMV13154' + randomStr,
+                await apiHelper.apiLogin('qkatawazi');
             let externalTaskTemplate = await apiHelper.createExternalTaskTemplate(templateData);
             await apiHelper.createDynamicDataOnTemplate(externalTaskTemplate.id, 'EXTERNAL_TASK_TEMPLATE__DYNAMIC_FIELDS');
         });
@@ -814,9 +814,9 @@ describe('Case Data Store', () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteDynamicFieldAndGroup();
-       let casetemplateData = {
-            "templateName": randomStr + 'caseTemplateDRDMV-13120',
-            "templateSummary": randomStr + 'caseTemplateDRDMV-13120',
+        let casetemplateData = {
+            "templateName": randomStr + 'caseTemplateDRDMV13120',
+            "templateSummary": randomStr + 'caseTemplateDRDMV13120',
             "templateStatus": "Active",
             "assignee": "qkatawazi",
             "company": "Petramco",
