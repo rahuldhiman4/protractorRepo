@@ -449,7 +449,6 @@ export class GridOperation {
         if (guid) guidID = `[rx-view-component-id="${guid}"] `;
         await $(guidID + this.selectors.lineOfBusinessDropDown).click();
         await $(`[aria-label="${value}"]`).click();
-        await element(by.cssContainingText('.lob-list .dropdown-item', value)).click();
     }
 }
 export default new GridOperation();

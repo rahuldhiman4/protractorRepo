@@ -56,7 +56,7 @@ describe('Document Library Consume Permission', () => {
     describe('[DRDMV-13458]: Edit Case - Case manager attaches published document from document library who has write access to that document', async () => {
         let publish: string[] = ['drdmv13458_publish_document1', 'drdmv13458_publish_document2', 'drdmv13458_publish_document5'];
         let files1: string[] = [filePath1, filePath2, filePath5];
-        let publishDocLibData2, draftDocLibData
+        let publishDocLibData2, draftDocLibData;
         beforeAll(async () => {
             for (let i = 0; i < publish.length; i++) {
                 let publishDocLibData1 = {
@@ -94,12 +94,10 @@ describe('Document Library Consume Permission', () => {
             await apiHelper.deleteDocumentLibrary(draftDocLibData.docLibTitle);
             await apiHelper.apiLogin('elizabeth');
             await apiHelper.createDocumentLibrary(draftDocLibData, filePath4);
-
-            await navigationPage.signOut();
-            await loginPage.login('qdu');
-
         });
         it('[DRDMV-13458]: Edit Case - Case manager attaches published document from document library who has write access to that document', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qdu');
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(caseSummary);
@@ -451,6 +449,8 @@ describe('Document Library Consume Permission', () => {
             expect(await utilityCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is not downloaded.');
         });
         afterAll(async () => {
+            await composeMailPo.clickOnDiscardButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });

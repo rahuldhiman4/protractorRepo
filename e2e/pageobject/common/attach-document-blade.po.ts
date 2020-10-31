@@ -63,6 +63,7 @@ class AttachDocumentBlade {
     }
 
     async searchRecord(documentName: string): Promise<void> {
+        await browser.sleep(30000); // workaround for performance issue
         await $(this.selectors.searchBox).clear();
         await $(this.selectors.searchBox).sendKeys(documentName + protractor.Key.ENTER);
         let i: number;
