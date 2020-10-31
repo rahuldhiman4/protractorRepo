@@ -189,9 +189,9 @@ describe('Document Template', () => {
                 "templateSummary": caseTemplateSummary,
                 "caseStatus": "InProgress",
                 "templateStatus": "Active",
-                //"businessUnit": "United States Support",
-                //"supportGroup": "US Support 3",
-                //"assignee": "qkatawazi",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
                 "ownerBU": 'United States Support',
                 "ownerGroup": "US Support 3",
             }

@@ -78,7 +78,6 @@ describe('Document Library Consume Permission', () => {
                 businessUnit: 'HR Support',
                 ownerGroup: 'Staffing',
             }
-            console.log(JSON.stringify(publishDocLibData2))
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDocumentLibrary(publishDocLibData2.docLibTitle);
             await apiHelper.apiLogin('elizabeth');
