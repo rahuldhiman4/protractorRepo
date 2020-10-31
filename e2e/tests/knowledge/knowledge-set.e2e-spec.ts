@@ -101,9 +101,9 @@ describe('Knowledge Article Set', () => {
                 "knowledgeSet": `${knowledgeSetTitle}`,
                 "title": `${knowledgeSetTitle}`,
                 "templateId": knowledgeTemplateId,
-                "categoryTier1": "Applications",
-                "categoryTier2": "Help Desk",
-                "categoryTier3": "Incident",
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
                 "region": "Australia",
                 "site": "Canberra",
                 "company": "Petramco",
@@ -119,6 +119,7 @@ describe('Knowledge Article Set', () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
             await navigationPage.switchToApplication(knowledgeManagementApp);
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);

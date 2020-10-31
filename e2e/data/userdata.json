@@ -150,5 +150,9 @@
 	"dbomei": {
 		"userName": "dbomei@petramco.com",
 		"userPassword": "Password_1234"
+	},
+	"jbarnes": {
+		"userName": "jbarnes@petramco.com",
+		"userPassword": "Password_1234"
 	}
 }
