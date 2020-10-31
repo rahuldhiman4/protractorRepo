@@ -456,7 +456,7 @@ describe("Task Self Approval Tests", () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
             await viewCasePo.openTaskCard(1);
-            manualTaskDisplayId = await manageTask.getTaskDisplayIdFromManageTaskBlade();
+            manualTaskDisplayId = await manageTask.getTaskDisplayId();
             await manageTask.clickTaskLink(manualTaskTemplateData.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
             expect(await viewTask.isShowApproversBannerDisplayed()).toBeTruthy('Show Approvers Banner is not displayed');
@@ -493,7 +493,7 @@ describe("Task Self Approval Tests", () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
             await viewCasePo.openTaskCard(1);
-            manualTaskDisplayId = await manageTask.getTaskDisplayIdFromManageTaskBlade();
+            manualTaskDisplayId = await manageTask.getTaskDisplayId();
             await manageTask.clickTaskLink(taskData.taskName);
             expect(await viewTask.getTaskStatusValue()).toBe("Assigned");
             expect(await viewTask.isShowApproversBannerDisplayed()).toBeFalsy('Show Approvers Banner is not displayed');
@@ -518,7 +518,7 @@ describe("Task Self Approval Tests", () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
             await viewCasePo.openTaskCard(1);
-            manualTaskDisplayId = await manageTask.getTaskDisplayIdFromManageTaskBlade();
+            manualTaskDisplayId = await manageTask.getTaskDisplayId();
             await manageTask.clickTaskLink(manualTaskTemplateData1.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Assigned");
             expect(await viewTask.isShowApproversBannerDisplayed()).toBeFalsy('Show Approvers Banner is not displayed');
@@ -555,7 +555,7 @@ describe("Task Self Approval Tests", () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
             await viewCasePo.openTaskCard(1);
-            manualTaskDisplayId = await manageTask.getTaskDisplayIdFromManageTaskBlade();
+            manualTaskDisplayId = await manageTask.getTaskDisplayId();
             await manageTask.clickTaskLink(manualTaskTemplateData.templateSummary);
             let taskId = await viewTask.getTaskID();
             await navigationPage.gotoTaskConsole();
@@ -605,7 +605,7 @@ describe("Task Self Approval Tests", () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
             await viewCasePo.openTaskCard(1);
-            manualTaskDisplayId = await manageTask.getTaskDisplayIdFromManageTaskBlade();
+            manualTaskDisplayId = await manageTask.getTaskDisplayId();
             await manageTask.clickTaskLink(taskData.taskName);
             let taskId = await viewTask.getTaskID();
             await navigationPage.gotoTaskConsole();
@@ -633,7 +633,7 @@ describe("Task Self Approval Tests", () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
             await viewCasePo.openTaskCard(1);
-            manualTaskDisplayId = await manageTask.getTaskDisplayIdFromManageTaskBlade();
+            manualTaskDisplayId = await manageTask.getTaskDisplayId();
             await manageTask.clickTaskLink(manualTaskTemplateData1.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Assigned");
             expect(await viewTask.isShowApproversBannerDisplayed()).toBeFalsy('Show Approvers Banner is not displayed');
@@ -739,7 +739,7 @@ describe("Task Self Approval Tests", () => {
 
         it('[DRDMV-22396,DRDMV-22397]: Verify the task approval details', async () => {
             await viewCasePo.openTaskCard(1);
-            automatedTaskDisplayId = await manageTask.getTaskDisplayIdFromManageTaskBlade();
+            automatedTaskDisplayId = await manageTask.getTaskDisplayId();
             await manageTask.clickTaskLink(manualTaskTemplateData.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
             await navigationPage.gotoTaskConsole();
@@ -786,7 +786,7 @@ describe("Task Self Approval Tests", () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             await viewCasePo.openTaskCard(1);
-            automatedTaskDisplayId = await manageTask.getTaskDisplayIdFromManageTaskBlade();
+            automatedTaskDisplayId = await manageTask.getTaskDisplayId();
             await manageTask.clickTaskLink(manualTaskTemplateData.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
             await navigationPage.gotoTaskConsole();
@@ -924,7 +924,7 @@ describe("Task Self Approval Tests", () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             await viewCasePo.openTaskCard(1);
-            automatedTaskDisplayId = await manageTask.getTaskDisplayIdFromManageTaskBlade();
+            automatedTaskDisplayId = await manageTask.getTaskDisplayId();
             await manageTask.clickTaskLink(manualTaskTemplateData.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
         });
@@ -1007,7 +1007,7 @@ describe("Task Self Approval Tests", () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
             await viewCasePo.openTaskCard(1);
-            automatedTaskDisplayId = await manageTask.getTaskDisplayIdFromManageTaskBlade();
+            automatedTaskDisplayId = await manageTask.getTaskDisplayId();
             await manageTask.clickTaskLink(manualTaskTemplateData.templateSummary);
             let taskId = await viewTask.getTaskID();
             await navigationPage.gotoTaskConsole();

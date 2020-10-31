@@ -208,6 +208,9 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.selectTaskCompany('Psilon')
             await copyTemplatePage.setTemplateName(autoTemplate1);
             await copyTemplatePage.setNewProcessName(taskProcess1);
+            await copyTemplatePage.selectOwnerCompany('Petramco');
+            await copyTemplatePage.selectOwnerBusinessUnit('United States Support');
+            await copyTemplatePage.selectOwnerGroup('US Support 3');
             await copyTemplatePage.clickSaveCopytemplate();
             await utilCommon.closePopUpMessage();
             expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.petramco.human-resource:' + taskProcess1);
@@ -261,8 +264,11 @@ describe('Copy Task Template', () => {
             await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
             await viewTaskTemplate.clickOnCopyTemplate();
             await copyTemplatePage.setTemplateName(newAutomationTaskTemplate);
-            await copyTemplatePage.selectTaskCompany('Psilon')
+            await copyTemplatePage.selectTaskCompany('Psilon');
             await copyTemplatePage.setNewProcessName(templateData.processName);
+            await copyTemplatePage.selectOwnerCompany('Petramco');
+            await copyTemplatePage.selectOwnerBusinessUnit('United States Support');
+            await copyTemplatePage.selectOwnerGroup('US Support 3');
             await copyTemplatePage.clickSaveCopytemplate();// Failing due to defect (turned improvement DRDMV-21097)
             expect(await utilCommon.isPopUpMessagePresent(`ERROR (902): Duplicate process name ${templateData.processBundle}:${templateData.processName}`, 2)).toBeTruthy(); // ERROR (902): Duplicate process name
             await copyTemplatePage.clickCancelCopytemplate();
@@ -364,6 +370,7 @@ describe('Copy Task Template', () => {
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
             await viewCasePage.clickAddTaskButton();
             await manageTask.addTaskFromTaskTemplate(templateData.templateSummary);
+            let taskId = await manageTask.getTaskDisplayId();
             await manageTask.clickCloseButton();
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
@@ -372,7 +379,7 @@ describe('Copy Task Template', () => {
             await utilityCommon.closePopUpMessage();
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
-            await utilityGrid.searchAndOpenHyperlink(templateData.templateSummary);
+            await utilityGrid.searchAndOpenHyperlink(taskId);
             expect(await viewTask.getTaskStatusValue()).toBe('Completed');
         });
     });

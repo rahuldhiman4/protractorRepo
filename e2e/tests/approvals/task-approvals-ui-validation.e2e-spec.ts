@@ -159,7 +159,7 @@ describe("Task Approval UI Validations", () => {
             await manageTask.addTaskFromTaskTemplate(manualTaskTemplateData.templateName);
             await manageTask.waitUntilNumberOfTaskLinkAppear(1);
             expect(await manageTask.isTaskLinkPresent(manualTaskTemplateData.templateSummary)).toBeTruthy(manualTaskTemplateData.templateSummary + ' Task is not added to case');
-            manualTaskId = await manageTask.getTaskDisplayIdFromManageTaskBlade();
+            manualTaskId = await manageTask.getTaskDisplayId();
             await manageTask.clickCloseButton();
         });
 

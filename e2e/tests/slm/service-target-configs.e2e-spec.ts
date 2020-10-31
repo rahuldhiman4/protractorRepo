@@ -900,7 +900,7 @@ describe('Service Target Configs', () => {
             // On view case page.
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateData.templateSummary);
-            let taskId = await manageTaskBladePo.getTaskDisplayIdFromManageTaskBlade();
+            let taskId = await manageTaskBladePo.getTaskDisplayId();
             await manageTaskBladePo.clickTaskLink(manualTemplateData.templateSummary);
 
             await browser.sleep(40000); // wait added for milestone to trigger and reflect the changes
@@ -944,7 +944,7 @@ describe('Service Target Configs', () => {
             // On view case page.
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(automatedtemplateData.templateSummary);
-            let taskId = await manageTaskBladePo.getTaskDisplayIdFromManageTaskBlade();
+            let taskId = await manageTaskBladePo.getTaskDisplayId();
             await manageTaskBladePo.clickTaskLink(automatedtemplateData.templateSummary);
 
             await browser.sleep(35000); // wait added for milestone to trigger and reflect the changes
