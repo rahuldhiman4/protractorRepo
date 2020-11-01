@@ -220,6 +220,7 @@ describe('Create Case Task', () => {
             expect(await viewTask.getCategoryTier4Value()).toBe('-', "getCategoryTier4Value");
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         });
