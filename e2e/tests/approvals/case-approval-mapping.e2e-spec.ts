@@ -43,7 +43,7 @@ describe("Case Approval Mapping Tests", () => {
         await apiHelper.createNewUser(twoCompanyUser);
         await apiHelper.associatePersonToCompany(twoCompanyUser.userId, "Petramco");
         await apiHelper.associatePersonToCompany(twoCompanyUser.userId, "Psilon");
-        await apiHelper.associatePersonToSupportGroup(twoCompanyUser.userId, "Facilities");
+        await apiHelper.associatePersonToSupportGroup(twoCompanyUser.userId, "US Support 3");
     });
 
     afterAll(async () => {

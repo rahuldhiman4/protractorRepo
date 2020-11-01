@@ -148,6 +148,7 @@ describe('Login and create case from API', () => {
             "firstName": "Petramco2",
             "lastName": "Psilon2",
             "userId": "psilopetra2",
+            "userPermission": ["Case Business Analyst","Human Resource"]
         }
         await apiHelper.createNewUser(userData);
         await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
