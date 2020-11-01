@@ -58,6 +58,7 @@ describe('Task and Knowledge Console Filter Combinations', () => {
 
         it('[DRDMV-23494]: Verify records are fetched on task console with Assignee, Assigned Group, Status combinations', async () => {
             await navigationPage.gotoTaskConsole();
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Assignee', 'Kita Williams', 'text');
             await utilityGrid.addFilter('Assigned Group', 'AU Support 1', 'text');
@@ -205,6 +206,7 @@ describe('Task and Knowledge Console Filter Combinations', () => {
 
         it('[DRDMV-23495]: Verify records are fetched on task console with Assignee, Assigned Group, Category combinationss', async () => {
             await navigationPage.gotoTaskConsole();
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Assigned Group', 'Employee Relations', 'text');
             await utilityGrid.addFilter('Assigned Group', 'Workforce Administration', 'text');
@@ -263,7 +265,7 @@ describe('Task and Knowledge Console Filter Combinations', () => {
             await utilityGrid.addFilter('Assigned Group', 'Compensation and Benefits', 'text');
             await utilityGrid.addFilter('Category Tier 1', 'Payroll', 'text');
             await utilityGrid.addFilter('Category Tier 2', 'Finance', 'text');
-            await utilityGrid.addFilter('Category Tier 3', 'Reproting', 'text');
+            await utilityGrid.addFilter('Category Tier 3', 'Reporting', 'text');
             await utilityGrid.clickRefreshIcon();
             for (let i: number = 1; i < 2; i++) {
                 expect(await utilityGrid.isGridRecordPresent(taskId[i])).toBeTruthy(taskId[i] + ' :Record is not available');
@@ -301,7 +303,7 @@ describe('Task and Knowledge Console Filter Combinations', () => {
             let response4 = await apiHelper.createAdhocTask(response3.id, taskData.TASK_DATA_Combination_3);
             taskId.push(response4.displayId);
             await apiHelper.updateTaskStatus(response4.id, 'Assigned');
-
+           
             let response5 = await apiHelper.createCase(taskData.Case_InProgres_FILTER_3);
             await apiHelper.updateCaseStatus(response5.id, "InProgress");
             let response6 = await apiHelper.createAdhocTask(response5.id, taskData.TASK_DATA_Combination_5);
@@ -324,6 +326,7 @@ describe('Task and Knowledge Console Filter Combinations', () => {
 
         it('[DRDMV-23497]: Verify records are fetched on task console with Task Type, Priority and status combinationss', async () => {
             await navigationPage.gotoTaskConsole();
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Task Type', 'Manual', 'checkbox');
             await utilityGrid.addFilter('Status', 'Staged', 'text');
@@ -395,6 +398,7 @@ describe('Task and Knowledge Console Filter Combinations', () => {
 
         it('[DRDMV-23515]: Verify records are fetched on knowledge console Author, Status, Assignee & Flag combinations', async () => {
             await navigationPage.gotoKnowledgeConsole();
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Status', 'Published', 'text');
             await utilityGrid.addFilter('Author', 'Elizabeth Peters', 'text');
@@ -463,6 +467,7 @@ describe('Task and Knowledge Console Filter Combinations', () => {
 
         it('[DRDMV-23516]: Verify records are fetched on knowledge console Status, Reviewer& Review Status combinations', async () => {
             await navigationPage.gotoKnowledgeConsole();
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Reviewer', 'Kadeem Hardison', 'text');
             await utilityGrid.addFilter('Review Status', 'Due Review Date', 'checkbox');
