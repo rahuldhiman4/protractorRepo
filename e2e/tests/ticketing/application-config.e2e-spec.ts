@@ -29,7 +29,7 @@ describe('Application Configuration', () => {
                 "lastName": "DRDMV-22773",
                 "userId": "22773User",
                 "emailId": "DRDMV-22773_User@petramco.com",
-                "userPermission": ["Case Business Analyst", "Foundation Read"]
+                "userPermission": ["Case Business Analyst", "Foundation Read", "Human Resource"]
             }
             await apiHelper.createNewUser(userData);
             await apiHelper.associatePersonToCompany(userData.userId, "Petramco");

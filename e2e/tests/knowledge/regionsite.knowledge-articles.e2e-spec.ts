@@ -436,13 +436,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             "firstName": "caseAgent",
             "lastName": "user",
             "userId": "caseAgent",
-            "userPermission": ["Case Agent","Foundation Read","Document Manager"]
+            "userPermission": ["Case Agent","Foundation Read","Document Manager","Human Resource"]
         }
         let caseManageruserData = {
             "firstName": "caseManager",
             "lastName": "user",
             "userId": "caseManager",
-            "userPermission": ["Case Manager","Foundation Read","Document Manager"]
+            "userPermission": ["Case Manager","Foundation Read","Document Manager","Human Resource"]
         }
         let title = `Document-${new Date().valueOf()}`;
 
@@ -547,13 +547,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             "firstName": "caseAgent",
             "lastName": "user",
             "userId": "caseAgent",
-            "userPermission": ["Case Agent", "Foundation Read", "Document Manager"]
+            "userPermission": ["Case Agent", "Foundation Read", "Document Manager","Human Resource"]
         }
         let caseManageruserData = {
             "firstName": "caseManager",
             "lastName": "user",
             "userId": "caseManager",
-            "userPermission": ["Case Manager", "Foundation Read", "Document Manager"]
+            "userPermission": ["Case Manager", "Foundation Read", "Document Manager","Human Resource"]
         }
 
         beforeAll(async () => {

@@ -1041,7 +1041,8 @@ describe("Create Case", () => {
                 "firstName": "Petramco",
                 "lastName": "Psilon",
                 "userId": "DRDMV-12061",
-                "company": "Psilon"
+                "company": "Psilon",
+                "userPermission": ["Case Business Analyst","Human Resource"]
             }
             await apiHelper.createNewUser(userData);
             await apiHelper.associatePersonToCompany(userData.userId, "Psilon");
