@@ -241,6 +241,11 @@ describe('Login and create case from API', () => {
         await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateWithMandatoryField']);
     });
 
+    it('create Email config', async () => {
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.createIncomingEmail();
+    });
+
     it('create notes template', async () => {
         await apiHelper.apiLogin('tadmin');
         NOTES_TEMPLATE_MANDATORY_FIELD.templateName = NOTES_TEMPLATE_MANDATORY_FIELD.templateName + randomStr;
