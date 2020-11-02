@@ -91,7 +91,7 @@ describe('Document Library', () => {
     });
 
     //kgaikwad
-    fit('[DRDMV-13045,DRDMV-13014,DRDMV-13017]: Verify Delete button on document', async () => {
+    it('[DRDMV-13045,DRDMV-13014,DRDMV-13017]: Verify Delete button on document', async () => {
         let filePath = '../../../data/ui/attachment/demo.txt';
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoSettingsPage();

@@ -1,6 +1,5 @@
-import { $, $$, by, element, Key, protractor, ProtractorExpectedConditions, browser } from "protractor";
+import { $, $$, browser, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
 import utilityGrid from '../../utils/utility.grid';
-import { async } from 'q';
 
 class ManageTaskBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;

@@ -1,8 +1,5 @@
-import { $, by, element, protractor, ProtractorExpectedConditions, browser, $$ } from "protractor";
-import utilGrid from '../../utils/utility.grid';
+import { $, $$, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilityGrid from '../../utils/utility.grid';
-import utilityCommon from '../../utils/utility.common';
-import { async } from 'q';
 
 class SelectCaseTemplateBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
