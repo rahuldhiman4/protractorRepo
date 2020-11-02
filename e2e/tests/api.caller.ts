@@ -243,7 +243,10 @@ describe('Login and create case from API', () => {
 
     it('create Email config', async () => {
         await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteAllEmailConfiguration();
         await apiHelper.createIncomingEmail();
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.createEmailConfiguration();
     });
 
     it('create notes template', async () => {

@@ -178,9 +178,10 @@ class ApiHelper {
     }
 
     async createIncomingEmail(incomingEmailConfigData?: IIncomingEmailConfig): Promise<boolean> {
-        await this.apiLogin('tadmin');
         let incomingMailBox = cloneDeep(INCOMINGMAIL_DEFAULT);
-        incomingMailBox.fieldInstances[18037].value = incomingEmailConfigData.incomingMailBoxName;
+        if (incomingEmailConfigData) {
+            incomingMailBox.fieldInstances[18037].value = incomingEmailConfigData.incomingMailBoxName;
+        }
         let incomingMailResponse: AxiosResponse = await apiCoreUtil.createRecordInstance(incomingMailBox);
         console.log('Configure Incoming Email API Status =============>', incomingMailResponse.status);
         return incomingMailResponse.status == 204;
