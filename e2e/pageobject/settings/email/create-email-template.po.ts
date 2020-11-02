@@ -86,6 +86,7 @@ class CreateEmailTemplate {
         await $(this.selectors.body).sendKeys(value);
     }
     async setBody(value: string): Promise<void> {
+        await browser.sleep(1000); // required to load CKE component
         await $(this.selectors.body).sendKeys(Key.chord(Key.CONTROL, Key.END));
         await $(this.selectors.body).sendKeys(Key.ENTER);
         await $(this.selectors.body).sendKeys(value);

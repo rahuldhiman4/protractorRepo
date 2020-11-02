@@ -26,6 +26,8 @@ describe('Email Task', () => {
 
     afterAll(async () => {
         await utilityCommon.closeAllBlades();
+        await composeMailPo.clickOnDiscardButton();
+        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         await navigationPage.signOut();
     });
 
@@ -275,7 +277,7 @@ describe('Email Task', () => {
             await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary);
             await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary);
             await manageTaskBladePo.clickTaskLink(manualTaskSummary);
-            await browser.sleep(2000); // To wait until view task page gets load corrrectly.
+            await browser.sleep(2000); // To wait until view task page gets load correctly.
             await viewTaskPo.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
             await changeAssignmentBladePo.selectBusinessUnit('Canada Support');
@@ -416,7 +418,6 @@ describe('Email Task', () => {
             let newCaseTemplate = await apiHelper.createCase(caseData);
             displayId = newCaseTemplate.displayId;
         });
-
         it('[DRDMV-19556]: Reply / Reply All earlier email context should be copied as part of email composition on Task', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
