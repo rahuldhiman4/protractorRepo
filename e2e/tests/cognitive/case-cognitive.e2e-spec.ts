@@ -21,10 +21,6 @@ import consoleCognitivePo from './../../pageobject/settings/case-management/cons
 
 describe('Case Cognitive', () => {
     const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-    let categName1 = 'DemoCateg1';
-    let categName2 = 'DemoCateg2';
-    let categName3 = 'DemoCateg3';
-    let categName4 = 'DemoCateg4';
     let categoryDataSetMapping, templateDataSetMapping;
     let apiKey = "HnmJ6tOYmUheiH7hLbQdW6HHvIhUFYCq6NVo5acPY4Ww";
     let templateDataSet = "My Template Data Set";
@@ -57,7 +53,6 @@ describe('Case Cognitive', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
-        await createCategoryAssociation();
     });
 
     afterAll(async () => {
@@ -68,21 +63,6 @@ describe('Case Cognitive', () => {
         await navigationPage.signOut();
     });
 
-    async function createCategoryAssociation() {
-        categName1 = 'DemoCateg1';
-        categName2 = 'DemoCateg2';
-        categName3 = 'DemoCateg3';
-        categName4 = 'DemoCateg4';
-        await apiHelper.apiLogin('tadmin');
-        await apiHelper.createOperationalCategory(categName1);
-        await apiHelper.createOperationalCategory(categName2);
-        await apiHelper.createOperationalCategory(categName3);
-        await apiHelper.createOperationalCategory(categName4);
-        await apiHelper.associateCategoryToOrganization(categName1, 'Petramco');
-        await apiHelper.associateCategoryToCategory(categName1, categName2);
-        await apiHelper.associateCategoryToCategory(categName2, categName3);
-        await apiHelper.associateCategoryToCategory(categName3, categName4);
-    }
 
     async function createCognitiveConfig() {
         let created = await apiHelper.addWatsonAccount(apiKey);
@@ -175,10 +155,10 @@ describe('Case Cognitive', () => {
         caseTemplateResponse4 = await apiHelper.createCaseTemplate(caseTemplateData);
         caseTemplateData.templateName = 'caseTemplateForCognitive6' + randomStr;
         caseTemplateData.templateSummary = 'Employee is looking for supplemental life insurance options bonus';
-        caseTemplateData.categoryTier1 = categName1;
-        caseTemplateData.categoryTier2 = categName2;
-        caseTemplateData.categoryTier3 = categName3;
-        caseTemplateData.categoryTier4 = categName4;
+        caseTemplateData.categoryTier1 = 'Employee Relations';
+        caseTemplateData.categoryTier2 = 'Compensation';
+        caseTemplateData.categoryTier3 = 'Bonus';
+        caseTemplateData.categoryTier4 = 'Retention Bonus';
         caseTemplateResponse6 = await apiHelper.createCaseTemplate(caseTemplateData);
     }
 
@@ -241,10 +221,10 @@ describe('Case Cognitive', () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary('Cognitive summary2');
-            await createCasePo.selectCategoryTier1(categName1);
-            await createCasePo.selectCategoryTier2(categName2);
-            await createCasePo.selectCategoryTier3(categName3);
-            await createCasePo.selectCategoryTier4(categName4);
+            await createCasePo.selectCategoryTier1('Employee Relations');
+            await createCasePo.selectCategoryTier2('Compensation');
+            await createCasePo.selectCategoryTier3('Bonus');
+            await createCasePo.selectCategoryTier4('Retention Bonus');
             await createCasePo.clickAssignToMeButton();
             await createCasePo.clickSaveCaseButton();
             await casePreviewPo.clickGoToCaseButton();
@@ -253,10 +233,10 @@ describe('Case Cognitive', () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary('Cognitive summary2');
-            await createCasePo.selectCategoryTier1(categName1);
-            await createCasePo.selectCategoryTier2(categName2);
-            await createCasePo.selectCategoryTier3(categName3);
-            await createCasePo.selectCategoryTier4(categName4);
+            await createCasePo.selectCategoryTier1('Employee Relations');
+            await createCasePo.selectCategoryTier2('Compensation');
+            await createCasePo.selectCategoryTier3('Bonus');
+            await createCasePo.selectCategoryTier4('Retention Bonus');
             await createCasePo.clickAssignToMeButton();
             await createCasePo.clickSaveCaseButton();
             await casePreviewPo.clickGoToCaseButton();
@@ -369,9 +349,9 @@ describe('Case Cognitive', () => {
         it('[DRDMV-8937,DRDMV-8935,DRDMV-8938,DRDMV-8980]:[Create Case] [Predict Template] - Recommended Template and All template selection behavior', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('adam');
-            await createCasePo.setSummary('Employee employment verification bonus');
+            await createCasePo.setSummary('Employee asked requested');
             await createCasePo.clickSelectCaseTemplateButton();
-            expect(await selectCasetemplateBladePo.isCaseSummaryPresentInRecommendedTemplates('Employee needs an employment verification letter bonus')).toBeTruthy('Template seach is not working');
+            expect(await selectCasetemplateBladePo.isCaseSummaryPresentInRecommendedTemplates('Employee asked requested for ergonomics assessment change')).toBeTruthy('Template seach is not working');
             expect(await selectCasetemplateBladePo.isApplyButtonEnabled()).toBeFalsy("Apply button is Enabled");
             expect(await selectCasetemplateBladePo.isPaginationPresent()).toBeTruthy("Pagination is present");
             expect(await selectCasetemplateBladePo.getCountOfTemplates()).toBe(5);
@@ -380,7 +360,7 @@ describe('Case Cognitive', () => {
             await selectCasetemplateBladePo.selectFirstRecommendedTemplate();
             await selectCasetemplateBladePo.clickOnFirstRecommendedArrow();
             await browser.sleep(1000); // Wait For Case Template Preview Page Open.
-            expect(await caseTemplatePreview.getCaseSummary()).toContain('Employee needs an employment verification letter bonus');
+            expect(await caseTemplatePreview.getCaseSummary()).toContain('Employee asked requested for ergonomics assessment change');
             expect(await caseTemplatePreview.getCaseTemplateName()).toContain('caseTemplateForCognitive');
             expect(await caseTemplatePreview.getCaseCompanyValue()).toBe('Petramco');
             expect(await caseTemplatePreview.getCasePriority()).toBe('Critical');
@@ -413,9 +393,9 @@ describe('Case Cognitive', () => {
             await createCasePo.clickSaveCaseButton();
             await casePreviewPo.clickGoToCaseButton();
             expect(await viewCasePo.getPriorityValue()).toBe('Critical');
-            expect(await viewCasePo.getCategoryTier1Value()).toBe('Accounts Payable');
+            expect(await viewCasePo.getCategoryTier1Value()).toBe('-');
             expect(await viewCasePo.getAssignedCompanyText()).toBe('Petramco');
-            expect(await viewCasePo.getCaseSummary()).toBe('Employee employment verification bonus');
+            expect(await viewCasePo.getCaseSummary()).toBe('Employee asked requested');
         });
         it('[DRDMV-8937,DRDMV-8935,DRDMV-8938,DRDMV-8980]:[Cognitive] - Auto Categorization button validation on Case Create screen', async () => {
             await navigationPage.gotoCreateCase();
@@ -468,25 +448,25 @@ describe('Case Cognitive', () => {
         });
         it('[DRDMV-8985,DRDMV-8987]:[Cognitive] - Auto categorization when cognitive search return only tier 1, tier 1,2 and tier 1,2,3 values', async () => {
             await createCasePo.clearSummary();
-            await createCasePo.setSummary('Employee needs an employment');
+            await createCasePo.setSummary('life insurance options bonus');
             await createCasePo.clickOnAutoCategorize();
-            expect(await createCasePo.getCategoryTier1Value()).toBe("Accounts Payable");
-            expect(await createCasePo.getCategoryTier2Value()).toBe("Invoices");
-            expect(await createCasePo.getCategoryTier3Value()).toBe('Payment');
-            expect(await createCasePo.getCategoryTier4Value()).toBe('Select');
-            await createCasePo.selectCategoryTier1("Facilities");
-            await createCasePo.selectCategoryTier2("Conference Room");
-            await createCasePo.selectCategoryTier3("Furniture");
-            expect(await createCasePo.getCategoryTier1Value()).toBe("Facilities");
-            expect(await createCasePo.getCategoryTier2Value()).toBe("Conference Room");
-            expect(await createCasePo.getCategoryTier3Value()).toBe("Furniture");
+            expect(await createCasePo.getCategoryTier1Value()).toBe('Employee Relations');
+            expect(await createCasePo.getCategoryTier2Value()).toBe('Compensation');
+            expect(await createCasePo.getCategoryTier3Value()).toBe('Bonus');
+            expect(await createCasePo.getCategoryTier4Value()).toBe('Retention Bonus');
+            await createCasePo.selectCategoryTier1("Payroll");
+            await createCasePo.selectCategoryTier2("Finance");
+            await createCasePo.selectCategoryTier3("Cost Centers");
+            expect(await createCasePo.getCategoryTier1Value()).toBe("Payroll");
+            expect(await createCasePo.getCategoryTier2Value()).toBe("Finance");
+            expect(await createCasePo.getCategoryTier3Value()).toBe("Cost Centers");
             await createCasePo.clearSummary();
             await createCasePo.setSummary('supplemental life insurance options bonus');
             await createCasePo.clickOnAutoCategorize();
-            expect(await createCasePo.getCategoryTier1Value()).toBe(categName1);
-            expect(await createCasePo.getCategoryTier2Value()).toBe(categName2);
-            expect(await createCasePo.getCategoryTier3Value()).toBe(categName3);
-            expect(await createCasePo.getCategoryTier4Value()).toBe(categName4);
+            expect(await createCasePo.getCategoryTier1Value()).toBe('Employee Relations');
+            expect(await createCasePo.getCategoryTier2Value()).toBe('Compensation');
+            expect(await createCasePo.getCategoryTier3Value()).toBe('Bonus');
+            expect(await createCasePo.getCategoryTier4Value()).toBe('Retention Bonus');
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();

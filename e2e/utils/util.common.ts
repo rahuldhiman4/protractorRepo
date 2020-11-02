@@ -75,7 +75,7 @@ export class Util {
         //            let count = await $$(this.selectors.dropDownChoice).count();
         //            return count >= 1;
         //        }));
-        let option = await element(by.cssContainingText(this.selectors.dropDownChoice, value));
+        let option = await element(by.cssContainingText('.ui-select-choices-row-inner *', value));
         //        await browser.sleep(1000);
         //        await browser.wait(this.EC.elementToBeClickable(option), 2000).then(async function () {
         await option.click();

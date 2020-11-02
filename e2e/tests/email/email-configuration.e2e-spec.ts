@@ -48,7 +48,7 @@ describe('Email Configuration', () => {
 
     
     beforeAll(async () => {
-       
+
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
         await apiHelper.apiLogin('tadmin');
@@ -263,7 +263,7 @@ describe('Email Configuration', () => {
             await apiHelper.apiLogin('fritz');
             await apiHelper.createEmailConfiguration(emailConfigFacilities);
             await apiHelper.createEmailConfiguration(differntEmailConfigFacilities);
-        });  
+        });
         it('[DRDMV-10764]: Exclusion Subject: Available exclusion subject list for multiple email configurations of same & different companies', async () => {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
@@ -299,11 +299,11 @@ describe('Email Configuration', () => {
         it('[DRDMV-10764]: Exclusion Subject: Available exclusion subject list for multiple email configurations of same & different companies', async () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
-             await apiHelper.apiLogin('tadmin');
+            await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteAllEmailConfiguration();
             await apiHelper.createIncomingEmail(incomingEmail);
             await apiHelper.apiLogin('gwixillian');
-            await apiHelper.createEmailConfiguration({"email":"psilon@gmail.com","incomingMailBoxName":incomingEmail.incomingMailBoxName,"company":"Psilon"});
+            await apiHelper.createEmailConfiguration({ "email": "psilon@gmail.com", "incomingMailBoxName": incomingEmail.incomingMailBoxName, "company": "Psilon" });
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
             await utilGrid.searchAndOpenHyperlink("psilon@gmail.com");
@@ -395,12 +395,14 @@ describe('Email Configuration', () => {
         });
         it('[DRDMV-10765,DRDMV-10766]: Exclusion Subject: Associate exclusion subject validation for newly added public subject with newly added email config', async () => {
             await editEmailConfigPo.closedAssociatePublicExclusionSubjects();
+            await navigationPage.signOut();
+            await loginPage.login('gwixillian');
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteAllEmailConfiguration();
             await apiHelper.createIncomingEmail(incomingEmail);
             await apiHelper.apiLogin('gwixillian');
-            await apiHelper.createEmailConfiguration({"email":"psilon@gmail.com","incomingMailBoxName":incomingEmail.incomingMailBoxName,"company":"Psilon"});
-            await loginPage.login('gwixillian')
+            await apiHelper.createEmailConfiguration({ "email": "psilon@gmail.com", "incomingMailBoxName": incomingEmail.incomingMailBoxName, "company": "Psilon" });
+            
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
             await utilGrid.searchAndOpenHyperlink("psilon@gmail.com");
@@ -410,6 +412,13 @@ describe('Email Configuration', () => {
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades(); // escape is working on these settings pages
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteAllEmailConfiguration();
+            await apiHelper.createIncomingEmail();
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createEmailConfiguration(emailConfig);
         });
     });
 
@@ -422,12 +431,14 @@ describe('Email Configuration', () => {
                 "templateSummary": 'CaseSummaryName' + randomStr,
                 "caseStatus": "InProgress",
                 "templateStatus": "Active",
-                "assignee": "Fritz",
+                "assignee": "qkatawazi",
                 "company": "Petramco",
-                "supportGroup": "Facilities",
-                "ownerGroup": "Facilities"
+                "businessUnit": "United States Support",
+                "ownerBU": "United States Support",
+                "supportGroup": "US Support 3",
+                "ownerGroup": "US Support 3"
             }
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createCaseTemplate(caseTemplateData);
             caseTemplateData.templateStatus = "Draft";
             caseTemplateData.templateName = randomStr + 'caseTemplateNameDraft'
@@ -480,15 +491,15 @@ describe('Email Configuration', () => {
                 "resolveCaseonLastTaskCompletion": "1",
                 "templateStatus": "Active",
                 "company": "- Global -",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
-                "ownerBU": 'Facilities Support',
-                "ownerGroup": "Facilities",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
+                "ownerBU": 'United States Support',
+                "ownerGroup": "US Support 3",
                 "caseStatus": "Assigned",
                 "description": 'description' + randomStr,
             }
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createCaseTemplate(templateData);
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
@@ -569,6 +580,4 @@ describe('Email Configuration', () => {
             expect(await editEmailConfigPo.isRecordPresentonTrustedEmail("Test@xyz.com")).toBeTruthy();
         });
     });
-
-
 });
