@@ -1012,6 +1012,7 @@ describe('Preset Filter Funcational Verification', () => {
             await navigationPage.gotoKnowledgeConsole();
             expect(await utilityGrid.isAppliedFilterMatches(['Company: Petramco', 'Knowledge Set: testone', 'Status: In Progress', 'Template Name: Reference'])).toBeTruthy('Applied filter is missing');
 
+            expect(await utilityGrid.isAppliedFilterMatches(['Company: Petramco', 'Knowledge Set: HR', 'Status: In Progress', 'Template Name: Reference'])).toBeTruthy('Applied filter is missing');
             let taskId2 = await utilityGrid.getFirstGridRecordColumnValue('Article ID');
             expect(taskId1).toBe(taskId2);
             expect(await utilityGrid.isGridColumnSorted('Article ID', 'desc')).toBeTruthy('Column not sorted on case console page');
