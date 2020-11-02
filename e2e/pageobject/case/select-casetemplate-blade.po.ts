@@ -2,6 +2,7 @@ import { $, by, element, protractor, ProtractorExpectedConditions, browser, $$ }
 import utilGrid from '../../utils/utility.grid';
 import utilityGrid from '../../utils/utility.grid';
 import utilityCommon from '../../utils/utility.common';
+import { async } from 'q';
 
 class SelectCaseTemplateBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -37,7 +38,9 @@ class SelectCaseTemplateBlade {
     }
 
     async clickOnAllTemplateTab(): Promise<void> {
-        await element.all(by.cssContainingText(this.selectors.allTemplates, 'All Templates')).first().click();
+        await element.all(by.cssContainingText(this.selectors.allTemplates, 'All Templates')).isPresent().then(async (present) => {
+            await element.all(by.cssContainingText(this.selectors.allTemplates, 'All Templates')).first().click();
+        });
     }
 
     async searchAndOpenCaseTemplate(input: string): Promise<void> {

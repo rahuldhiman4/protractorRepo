@@ -172,7 +172,7 @@ describe('Create Flowset', () => {
     });
 
     //ankagraw
-    describe('[DRDMV-1259]: [Permissions] Flowsets access', () => {
+    fdescribe('[DRDMV-1259]: [Permissions] Flowsets access', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let flowsetMandatoryFieldsData = undefined;
 
