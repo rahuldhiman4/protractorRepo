@@ -194,6 +194,7 @@ class ApiHelper {
             mailBoxConfig.fieldInstances[450000420].value = emailConfigData.lineOfBusiness ? await constants.LOB[emailConfigData.lineOfBusiness] : mailBoxConfig.fieldInstances[450000420].value;
             mailBoxConfig.fieldInstances[1000000001].value = emailConfigData.company ? await apiCoreUtil.getOrganizationGuid(emailConfigData.company) : mailBoxConfig.fieldInstances[1000000001].value;
             mailBoxConfig.fieldInstances[8].value = emailConfigData.description ? emailConfigData.description : mailBoxConfig.fieldInstances[8].value;
+            mailBoxConfig.fieldInstances[450000152].value = emailConfigData.incomingMailBoxName ? emailConfigData.incomingMailBoxName : mailBoxConfig.fieldInstances[450000152].value;
         }
         let emailConfigCreateResponse: AxiosResponse = await apiCoreUtil.createRecordInstance(mailBoxConfig);
         console.log('Configure Email API Status =============>', emailConfigCreateResponse.status);
