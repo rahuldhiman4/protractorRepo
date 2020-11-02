@@ -260,7 +260,7 @@ export class GridOperation {
     }
 
     async searchOnGridConsole(searchValue: string, guid?: string): Promise<void> {
-        await browser.sleep(30000); // workaround for performance issue
+        await browser.sleep(40000); // workaround for performance issue
         let searchBoxInput: string = this.selectors.searchInput;
         let gridRefreshButton: string = this.selectors.refreshButton;
         let gridSearchIcon: string = this.selectors.searchIcon;

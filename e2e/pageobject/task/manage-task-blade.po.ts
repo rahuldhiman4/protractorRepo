@@ -1,4 +1,4 @@
-import { $, $$, by, element, Key, protractor, ProtractorExpectedConditions, browser } from "protractor";
+import { $, $$, browser, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
 import utilityGrid from '../../utils/utility.grid';
 
 class ManageTaskBlade {
@@ -21,7 +21,11 @@ class ManageTaskBlade {
 
     async clickAddTaskFromTemplateButton(): Promise<void> {
         await $(this.selectors.addTaskFromTemplateButton).isPresent().then(async (link) => {
-            if (link) await $(this.selectors.addTaskFromTemplateButton).click();
+            if (link) {
+                await $(this.selectors.addTaskFromTemplateButton).isDisplayed().then(async (displayed) => {
+                    if (displayed) await $(this.selectors.addTaskFromTemplateButton).click();
+                });
+            }
             else console.log('AddTaskFromTemplate button not found');
         });
     }
@@ -44,8 +48,8 @@ class ManageTaskBlade {
         await browser.sleep(1500); // wait until sorting
     }
 
-    async getTaskDisplayId():Promise<string>{
-     return await $(this.selectors.taskDisplayId).getText();  
+    async getTaskDisplayId(): Promise<string> {
+        return await $(this.selectors.taskDisplayId).getText();
     }
 
     async clickAddAdhocTaskButton(): Promise<void> {
@@ -113,8 +117,8 @@ class ManageTaskBlade {
     async getTaskStatus(taskName: string): Promise<string> {
         let totalTaskCard = await $$(this.selectors.taskCardLocator).count();
         let statusValue: string = '';
-        for(let i=0; i<totalTaskCard; i++) {
-            if(await $$(this.selectors.taskCardLocator).get(i).$('a.task-summary__name').getText() == taskName) {
+        for (let i = 0; i < totalTaskCard; i++) {
+            if (await $$(this.selectors.taskCardLocator).get(i).$('a.task-summary__name').getText() == taskName) {
                 statusValue = await $$(this.selectors.taskCardLocator).get(i).$('.task-assigned-group div[title]').getText();
                 break;
             }
