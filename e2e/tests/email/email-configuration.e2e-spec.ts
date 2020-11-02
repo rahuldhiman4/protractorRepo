@@ -24,14 +24,38 @@ describe('Email Configuration', () => {
     let offlineSupportGroup, emailID = "bmctemptestemail@gmail.com";
     const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
     const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
+    let incomingEmail ={
+        'incomingMailBoxName': 'testEmail@gmail.com'
+    }
 
+    let emailConfig ={
+        email: emailID,
+        incomingMailBoxName:incomingEmail.incomingMailBoxName,
+    }
+
+    let emailConfigFacilities ={
+        email: emailID,
+        incomingMailBoxName:incomingEmail.incomingMailBoxName,
+        lineOfBusiness: "Facilities"
+    }
+
+    let differntEmailConfigFacilities ={
+        email: "bwfqa2019@gmail.com",
+        incomingMailBoxName:incomingEmail.incomingMailBoxName,
+        lineOfBusiness: "Facilities"
+    }
+    
+
+    
     beforeAll(async () => {
        
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteAllEmailConfiguration();
-        await apiHelper.createEmailConfiguration();
+        await apiHelper.createIncomingEmail(incomingEmail);
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.createEmailConfiguration(emailConfig);
         await foundationData("Petramco", "BusinessUnitData10410", "SuppGrpData10410");
         await foundationData("Psilon", "BusinessUnitDataPsilon", "SuppGrpDataPsilon");
 
@@ -68,7 +92,7 @@ describe('Email Configuration', () => {
     describe('[DRDMV-8528,DRDMV-8527]: [Email Configuration] Verify Email configuration Grid view', async () => {
         it('[DRDMV-8528,DRDMV-8527]: Verify Email configuration header', async () => {
             await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
             let emailHeaders: string[] = ["Email ID", "Alternate Email IDs","Company", "Status"];
             let add: string[] = ["Company ID","Display ID", "ID"];
             let newEmailHeaders: string[] = ["Email ID", "Alternate Email IDs", "Company","Company ID","Status","Display ID", "ID"];
@@ -87,6 +111,7 @@ describe('Email Configuration', () => {
             await createEmailConfigPo.selectCompany("Petramco");
             await createEmailConfigPo.setDescription("test ");
             await createEmailConfigPo.selectStatus("Active");
+            await createEmailConfigPo.selectIncomingMailBoxName(incomingEmail.incomingMailBoxName);
             await createEmailConfigPo.clickSave();
             expect(await utilCommon.isPopUpMessagePresent("Saved successfully.")).toBeTruthy();
         });
@@ -140,7 +165,12 @@ describe('Email Configuration', () => {
             await consoleEmailConfig.deleteConfigurationEmail();
             await utilCommon.clickOnWarningOk();
             expect(await utilGrid.isGridRecordPresent(emailID)).toBeFalsy();
-            await apiHelper.createEmailConfiguration();
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteAllEmailConfiguration();
+            await apiHelper.createIncomingEmail(incomingEmail);
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createEmailConfiguration(emailConfig);
+    
         });
         it('[DRDMV-8514,DRDMV-8515,DRDMV-8516,DRDMV-8517,DRDMV-8518,DRDMV-8519]: Verify Global Exclusion should be displayed', async () => {
             expect(await utilGrid.isGridRecordPresent(emailID)).toBeTruthy();
@@ -224,6 +254,16 @@ describe('Email Configuration', () => {
     //ankagraw
     describe('[DRDMV-10764]: Exclusion Subject: Available exclusion subject list for multiple email configurations of same & different companies', async () => {
         let randomStr = Math.floor(Math.random() * 1000000);
+        beforeAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteAllEmailConfiguration();
+            await apiHelper.createIncomingEmail(incomingEmail);
+            await apiHelper.apiLogin('fritz');
+            await apiHelper.createEmailConfiguration(emailConfigFacilities);
+            await apiHelper.createEmailConfiguration(differntEmailConfigFacilities);
+        });  
         it('[DRDMV-10764]: Exclusion Subject: Available exclusion subject list for multiple email configurations of same & different companies', async () => {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
@@ -258,7 +298,12 @@ describe('Email Configuration', () => {
         });
         it('[DRDMV-10764]: Exclusion Subject: Available exclusion subject list for multiple email configurations of same & different companies', async () => {
             await navigationPage.signOut();
-            await loginPage.login('gwixillian')
+            await loginPage.login('gwixillian');
+             await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteAllEmailConfiguration();
+            await apiHelper.createIncomingEmail(incomingEmail);
+            await apiHelper.apiLogin('gwixillian');
+            await apiHelper.createEmailConfiguration({"email":"psilon@gmail.com","incomingMailBoxName":incomingEmail.incomingMailBoxName,"company":"Psilon"});
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
             await utilGrid.searchAndOpenHyperlink("psilon@gmail.com");
@@ -288,6 +333,13 @@ describe('Email Configuration', () => {
     //ankagraw
     describe('[DRDMV-10762]: Exclusion Subject: Associate exclusion subject list verification for newly added exclusion subject', async () => {
         let randomStr = Math.floor(Math.random() * 1000000);
+        beforeAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteAllEmailConfiguration();
+            await apiHelper.createIncomingEmail(incomingEmail);
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createEmailConfiguration(emailConfig);
+        });  
         it('[DRDMV-10762]: Add exclusive subject', async () => {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
@@ -319,6 +371,15 @@ describe('Email Configuration', () => {
     //ankagraw
     describe('[DRDMV-10765,DRDMV-10766]: Exclusion Subject: Associate exclusion subject validation for newly added public subject with newly added email config', async () => {
         let randomStr = Math.floor(Math.random() * 1000000);
+        beforeAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteAllEmailConfiguration();
+            await apiHelper.createIncomingEmail(incomingEmail);
+            await apiHelper.apiLogin('fritz');
+            await apiHelper.createEmailConfiguration(emailConfigFacilities);
+        });        
         it('[DRDMV-10765,DRDMV-10766]: Add exclusive subject', async () => {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
@@ -336,8 +397,9 @@ describe('Email Configuration', () => {
             await editEmailConfigPo.closedAssociatePublicExclusionSubjects();
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteAllEmailConfiguration();
-            await apiHelper.createEmailConfiguration({"email":"psilon@gmail.com","company":"Psilon"});
-            await navigationPage.signOut();
+            await apiHelper.createIncomingEmail(incomingEmail);
+            await apiHelper.apiLogin('gwixillian');
+            await apiHelper.createEmailConfiguration({"email":"psilon@gmail.com","incomingMailBoxName":incomingEmail.incomingMailBoxName,"company":"Psilon"});
             await loginPage.login('gwixillian')
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
