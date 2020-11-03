@@ -894,7 +894,7 @@ describe("Actionable Notifications", () => {
             await addFieldsPopPo.selectDynamicField('Display ID');
             await addFieldsPopPo.clickOnOkButtonOfEditor();
             await createNotificationTemplatePage.clickOnGenerateClickableLinkIconOnAlert();
-            await createNotificationTemplatePage.clickOnTab();
+            await createNotificationTemplatePage.clickOnEmailTab();
             await createNotificationTemplatePage.setSubject('Notification Template Email Subject ');
             await createNotificationTemplatePage.setEmailBody('Notification Template Email Body Actionable Link: ');
             await createNotificationTemplatePage.clickOnInsertFieldOfEmail();

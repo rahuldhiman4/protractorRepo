@@ -6,7 +6,7 @@ class NotificationTemplateGridPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        copyTemplate: '[rx-view-component-id="c2e4b483-9365-4a10-a326-2c43a76de2fa"] .d-button_link',
+        copyTemplate: '[rx-view-component-id="d4a5bf08-5793-487f-af3a-7f77ead94c9a"] .d-button_link',
         searchButton: '.d-icon-search',
         selectTemplateCheckBox: '.ui-grid-icon-ok',
         copyTemplateWindow: '.modal-title',
@@ -15,10 +15,10 @@ class NotificationTemplateGridPage {
         clearCompanyDropDownCopyTempWindow: ".modal-content [class*=glyphicon-remove]",
         tempNameCopyTempWindow: ".modal-content [class*='d-textfield__input field']",
         saveButton: "[rx-view-component-id='50e25982-5452-4f20-ac79-5682de7cb467'] button",
-        createNotificationTemplate: "[rx-view-component-id='48d1ab7c-3e17-458c-9d57-4acb72f49595'] button",
-        searchBox: "[rx-view-component-id='7d5c5beb-d652-4bf9-9fc7-ccc7100d3b77'] [rx-id='search-text-input']",
-        guid: '7d5c5beb-d652-4bf9-9fc7-ccc7100d3b77',
-        deleteButton: '[rx-view-component-id="78c3aad2-3ffa-4212-ab32-0055553d7048"] button'
+        createNotificationTemplate: "[rx-view-component-id='750e4190-378a-4f76-b7a7-1b37e0baa5e0'] button",
+        searchBox: "[rx-view-component-id='adabdd0a-24fb-4d75-a265-ce0d72aeccb1'] [rx-id='search-text-input']",
+        guid: 'adabdd0a-24fb-4d75-a265-ce0d72aeccb1',
+        deleteButton: '[rx-view-component-id="adabdd0a-24fb-4d75-a265-ce0d72aeccb1"] button'
     }
 
     async isCopyTemplateButtonDisabled(): Promise<boolean> {

@@ -1,32 +1,33 @@
-import { $, $$, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../../utils/util.common';
 
 class createNotificationTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        templateName: '[rx-view-component-id="383011ea-6f7d-40c2-bf7d-5bb9d5ab6faa"] input',
-        description: '[rx-view-component-id="a2ac2ebb-72e8-48b9-b639-648f3b5f3357"] textarea',
-        eventDropDownGuid: '6b65ad98-5a2c-40b9-a45b-62c10a88df86',
-        moduleName: 'bbaf88e2-7db2-4be4-858c-950d53ace33c',
-        alertInsertField: '[rx-view-component-id="b77c0581-b76e-4c92-a5e1-5c3026b379fa"] .cke_button__expressioneditor',
-        emailInsertField: '[rx-view-component-id="cbc9e73f-032f-463a-9c6c-2b5abd5b59e1"] .cke_button__expressioneditor',
-        fieldValueInAlertBody: '[rx-view-component-id="b77c0581-b76e-4c92-a5e1-5c3026b379fa"] .cke_wysiwyg_div span',
-        fieldValueInEmailBody: '[rx-view-component-id="cbc9e73f-032f-463a-9c6c-2b5abd5b59e1"] .cke_wysiwyg_div span',
-        clickOnEmailTab: '[rx-view-component-id="3f855256-dd6c-45dd-a970-2414b4d01388"] li a[title="Email"]',
-        subject: '[rx-view-component-id="502114ff-23fe-4508-a5ca-04373a04d56e"] input',
-        saveButton: '[rx-view-component-id="a07cb7fc-3b1a-41ca-8eee-e99e2058e161"] button',
-        cancelButton: '[rx-view-component-id="86d6f515-fcd3-484a-a18f-1ff30c137a1d"] button',
+        templateName: '[rx-view-component-id="ed45b56c-b7a3-4299-affd-5e9630ab5f4b"] input',
+        description: '[rx-view-component-id="f5b5ca51-f48e-478c-b3bd-9457909bb4c6"] textarea',
+        eventDropDownGuid: '38aba7a1-c142-41f7-9017-d261971c2429',
+        moduleName: 'af58911a-383b-4548-9a8a-1a228457d0b7',
+        alertInsertField: '[rx-view-component-id="34d2b4a6-5403-4e22-809d-5d26fe2f4ad8"] .cke_button__expressioneditor',
+        emailInsertField: '[rx-view-component-id="ac6ba449-9c5a-46f9-85fb-8384bf57fc92"] .cke_button__expressioneditor',
+        fieldValueInAlertBody: '[rx-view-component-id="34d2b4a6-5403-4e22-809d-5d26fe2f4ad8"] .cke_wysiwyg_div span',
+        fieldValueInEmailBody: '[rx-view-component-id="ac6ba449-9c5a-46f9-85fb-8384bf57fc92"] .cke_wysiwyg_div span',
+        emailTab: '[rx-view-component-id="c7d14533-5e1a-4564-8a81-7c6c9db3878f"] li a[title="Email"]',
+        subject: '[rx-view-component-id="905d5f81-de26-4c43-8c5c-f38de9b518bf"] input',
+        saveButton: '[rx-view-component-id="18ba6978-2eb2-4bf0-ab20-bd484938729e"] button',
+        cancelButton: '[rx-view-component-id="1f86f67c-1645-43f5-ae8e-1cb5efa21787"] button',
         recipientsList: 'div[ng-repeat*="recipient"] .text-wrapper span',
-        alertMessage: '[rx-view-component-id="b77c0581-b76e-4c92-a5e1-5c3026b379fa"] .cke_wysiwyg_div',
+        alertMessage: '[rx-view-component-id="34d2b4a6-5403-4e22-809d-5d26fe2f4ad8"] .cke_wysiwyg_div',
         emailBasedApprovalFlag: '[rx-view-component-id="be4360ec-c852-457f-87c0-c1bf1abf8952"] .d-textfield',
-        emailBasedApprovalToggleGuid: '4c32ae80-d3de-4cca-88b9-0714972d15c1',
-        notificationMethodGuid: '0788e5c4-93ca-4d92-b61a-cd024f523a3e',
-        generateClickableLinkIconAlert: '[rx-view-component-id="b77c0581-b76e-4c92-a5e1-5c3026b379fa"] .cke_button__clickablelink_icon',
-        generateClickableLinkIconEmail: '[rx-view-component-id="cbc9e73f-032f-463a-9c6c-2b5abd5b59e1"] .cke_button__clickablelink_icon',
+        emailBasedApprovalToggleGuid: '4437da1b-4da6-4e84-bf9c-f7366cca0f1a',
+        notificationMethodGuid: '0f634bc9-63ce-4515-99d1-525fdb4e44a9',
+        generateClickableLinkIconAlert: '[rx-view-component-id="34d2b4a6-5403-4e22-809d-5d26fe2f4ad8"] .cke_button__clickablelink_icon',
+        generateClickableLinkIconEmail: '[rx-view-component-id="ac6ba449-9c5a-46f9-85fb-8384bf57fc92"] .cke_button__clickablelink_icon',
+        emailBodyGuid: '7ecf7b01-9de9-45a6-a448-2806fe51cece'
     }
     async selectModuleName(value: string): Promise<void> {
-        await utilCommon.selectDropDown('bbaf88e2-7db2-4be4-858c-950d53ace33c', value);
+        await utilCommon.selectDropDown(this.selectors.moduleName, value);
     }
 
     async selectEvent(value: string): Promise<void> {
@@ -42,7 +43,7 @@ class createNotificationTemplate {
     }
 
     async setEmailBody(value: string): Promise<void> {
-        await utilCommon.setCKEditor(value, 'cbc9e73f-032f-463a-9c6c-2b5abd5b59e1');
+        await utilCommon.setCKEditor(value, this.selectors.emailBodyGuid);
     }
 
     async setDescription(value: string): Promise<void> {
@@ -57,8 +58,8 @@ class createNotificationTemplate {
         await $(this.selectors.emailInsertField).click();
     }
 
-    async clickOnTab(): Promise<void> {
-        await $(this.selectors.clickOnEmailTab).click();
+    async clickOnEmailTab(): Promise<void> {
+        await $(this.selectors.emailTab).click();
     }
 
     async clickOnCancelButton(): Promise<void> {

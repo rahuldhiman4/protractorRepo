@@ -251,7 +251,7 @@ describe('Dynamic data', () => {
             expect(await createNotificationTemplatePo.isDynamicFieldDisplayedInAlertBody('OuterConfidential')).toBeTruthy();
             expect(await createNotificationTemplatePo.isDynamicFieldDisplayedInAlertBody('LocalNonConfidential')).toBeTruthy();
             expect(await createNotificationTemplatePo.isDynamicFieldDisplayedInAlertBody('confidentialPublic')).toBeTruthy();
-            await createNotificationTemplatePo.clickOnTab();
+            await createNotificationTemplatePo.clickOnEmailTab();
         });
         it('[DRDMV-19270]: Associated and Dynamic fields usage on Notification/Email/Activity Templates', async () => {
             await createNotificationTemplatePo.setSubject(randomStr);
@@ -309,7 +309,7 @@ describe('Dynamic data', () => {
             await addFieldsPopPo.clickOnOkButtonOfEditor();
             expect(await createNotificationTemplatePo.isDynamicFieldDisplayedInAlertBody('Confidential data')).toBeTruthy();
             expect(await createNotificationTemplatePo.isDynamicFieldDisplayedInAlertBody('Additional Site Details')).toBeTruthy();
-            await createNotificationTemplatePo.clickOnTab();
+            await createNotificationTemplatePo.clickOnEmailTab();
             await createNotificationTemplatePo.clickOnInsertFieldOfEmail();
             await createNotificationTemplatePo.setSubject(randomStr);
             await addFieldsPopPo.navigateToAssociationsInCase();

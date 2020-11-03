@@ -45,8 +45,8 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Global', 'Case Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Category Tier 1', '=', 'ASSOCIATION', 'Applications');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('ASSOCIATION');
+            await SlmExpressionBuilder.selectExpressionQualification('Category Tier 1', '=', 'NAMED_LIST', 'Applications');
+            await SlmExpressionBuilder.clickOnAddExpressionButton('NAMED_LIST');
             let selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Category Tier 1" + "'" + "=" + '"' + "Applications" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
@@ -98,7 +98,6 @@ describe('Service Target Tests for Cases', () => {
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
         });
-
     });
 
     //skhobrag
