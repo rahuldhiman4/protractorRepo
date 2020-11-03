@@ -35,11 +35,11 @@ class EditNotificationTemplate {
         recipientsCheckbox: 'div[ng-repeat*="recipient"] .d-checkbox__item',
         recipientsCheckboxInput: 'div[ng-repeat*="recipient"] input',
         notificationMethod: '[rx-view-component-id="c80f9de5-1a84-46fa-949d-fc073d65ebd8"] .dropdown',
-        emailBasedApprovalFlag: '[rx-view-component-id="be4360ec-c852-457f-87c0-c1bf1abf8952"] button',
+        emailBasedApprovalFlag: '[rx-view-component-id="99cd2540-80fa-4dbe-96b9-bbadc2fcc93c"] button',
         emailSubject: '[rx-view-component-id="2edd6ab4-d1e5-456e-879c-f8ca22bfbb32"] textarea',
         saveAlertEmailSubjectBody: '[rx-view-component-id="498a2cf3-8866-4303-996a-61dc33e4a400"] button, [rx-view-component-id="cd6ddce5-4729-4cc9-a5a4-6f76e967de03"] button, [rx-view-component-id="498a2cf3-8866-4303-996a-61dc33e4a400"] button',
         emailBody: '.cke_editable_themed p, .cke_editable_themed p u, .cke_editable_themed p span i',
-        emailBasedApplrovalTrueFlag: '[rx-view-component-id="be4360ec-c852-457f-87c0-c1bf1abf8952"] button.d-icon-check' 
+        emailBasedApplrovalTrueFlag: '[rx-view-component-id="99cd2540-80fa-4dbe-96b9-bbadc2fcc93c"] button.d-icon-check' 
     }
 
     async selectCheckBoxOfBody(): Promise<void> {
