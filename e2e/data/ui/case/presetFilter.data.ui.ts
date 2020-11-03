@@ -882,7 +882,6 @@ export const SERVICE_TARGET_ASSIGNED_TASK = {
     "dataSource": "Task Management",
     "company": "Phylum",
     "svtName": "SVT Assigned to Completed",
-    "lineOfBusiness": "Finance"
 };
 
 export const SERVICE_TARGET_NEW_TASK = {
