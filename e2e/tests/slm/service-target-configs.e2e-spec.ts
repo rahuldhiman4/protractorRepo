@@ -310,8 +310,8 @@ describe('Service Target Configs', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Global', 'Case Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Category Tier 1', '=', 'ASSOCIATION', 'Applications');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('ASSOCIATION');
+            await SlmExpressionBuilder.selectExpressionQualification('Category Tier 1', '=', 'NAMED_LIST', 'Applications');
+            await SlmExpressionBuilder.clickOnAddExpressionButton('NAMED_LIST');
             let selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Category Tier 1" + "'" + "=" + '"' + "Applications" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
@@ -389,8 +389,8 @@ describe('Service Target Configs', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Global', 'Case Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Category Tier 1', '=', 'ASSOCIATION', 'Applications');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('ASSOCIATION');
+            await SlmExpressionBuilder.selectExpressionQualification('Category Tier 1', '=', 'NAMED_LIST', 'Applications');
+            await SlmExpressionBuilder.clickOnAddExpressionButton('NAMED_LIST');
             let selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Category Tier 1" + "'" + "=" + '"' + "Applications" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
@@ -414,8 +414,8 @@ describe('Service Target Configs', () => {
 
         it('[DRDMV-2357]: Verify SVT warning when data source is modified', async () => {
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Global', 'Case Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Category Tier 1', '=', 'ASSOCIATION', 'Applications');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('ASSOCIATION');
+            await SlmExpressionBuilder.selectExpressionQualification('Category Tier 1', '=', 'NAMED_LIST', 'Applications');
+            await SlmExpressionBuilder.clickOnAddExpressionButton('NAMED_LIST');
             let selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Category Tier 1" + "'" + "=" + '"' + "Applications" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
