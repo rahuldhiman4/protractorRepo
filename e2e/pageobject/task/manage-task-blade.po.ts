@@ -21,11 +21,7 @@ class ManageTaskBlade {
 
     async clickAddTaskFromTemplateButton(): Promise<void> {
         await $(this.selectors.addTaskFromTemplateButton).isPresent().then(async (link) => {
-            if (link) {
-                await $(this.selectors.addTaskFromTemplateButton).isDisplayed().then(async (displayed) => {
-                    if (displayed) await $(this.selectors.addTaskFromTemplateButton).click();
-                });
-            }
+            if (link) await $(this.selectors.addTaskFromTemplateButton).click();
             else console.log('AddTaskFromTemplate button not found');
         });
     }
