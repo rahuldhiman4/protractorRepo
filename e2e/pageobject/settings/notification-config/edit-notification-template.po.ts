@@ -4,28 +4,28 @@ class EditNotificationTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        cancelButton: '[rx-view-component-id="2a50e7b7-b260-4749-ad9d-1d7cb65b5d95"] button',
+        cancelButton: '[rx-view-component-id="d2dd0f98-69d0-462f-9002-5da452b67f63"] button',
         header: '.modal-title',
-        saveButton: '[rx-view-component-id="50e25982-5452-4f20-ac79-5682de7cb467"] button',
-        clickOnEmailTab: 'li.rx-tab a',
-        editButtonOnEmailTab: '[rx-view-component-id="0306ec1b-e16e-416d-952d-b39c3a8336f0"] button',
-        selectCheckBoxEmailTab: '[rx-view-component-id="4436dca0-329b-406f-8dd9-ab686df3f4b8"] .ui-grid-selection-row-header-buttons',
-        selectAlertSubjectCheckbox: '[rx-view-component-id="54e4673e-6717-4f72-98e2-4251ee72d702"] .ui-grid-selection-row-header-buttons',
+        saveButton: '[rx-view-component-id="8b5f78b0-0aa8-40da-8d52-66d5afe1356b"] button',
+        emailTab: 'li.rx-tab a',
+        editButtonOnEmailTab: '[rx-view-component-id="4436dca0-329b-406f-8dd9-ab686df3f4b8"] button',
+        checkBoxEmailTab: '[rx-view-component-id="4436dca0-329b-406f-8dd9-ab686df3f4b8"] .ui-grid-selection-row-header-buttons',
+        alertSubjectCheckbox: '[rx-view-component-id="54e4673e-6717-4f72-98e2-4251ee72d702"] .ui-grid-selection-row-header-buttons',
         editCheckbox: 'button.d-icon-left-pencil',
         clickableField: 'div.cke_contents.cke_reset span[contenteditable]',
         cancelAlertMessageTextButton: '[rx-view-component-id="780514cc-7344-44a5-88af-5af509619ab0"] button',
-        defaultNotificationMethodGuid: "911e28fd-89bb-4ee0-bea9-1d22e48f1134",
-        description: '[rx-view-component-id="a9a1fe44-a890-4c1d-903d-74674bf4c221"] textarea',
-        event: '[rx-view-component-id="15aad4c8-1522-4586-b9d3-6be376cfcaa8"] .ui-select-toggle',
-        addRecipientsBtn: '[rx-view-component-id="9c294d12-1577-44fd-950d-fe7021853558"] button',
+        defaultNotificationMethodGuid: "c80f9de5-1a84-46fa-949d-fc073d65ebd8",
+        description: '[rx-view-component-id="73750a2f-4d74-4919-b0e4-fbc8e1b4167a"] textarea',
+        event: '[rx-view-component-id="f535976d-f547-460a-8fa6-f959eb485d38"] .ui-select-toggle',
+        addRecipientsBtn: '[rx-view-component-id="73a718fa-c683-48b0-b211-97b3744d7c3f"] button',
         addLocalizedMessageBtn: '[rx-view-component-id="a93ae1ed-3ae3-42cc-8f2b-6ce26fcc1f91"] button',
         alertMessageBox: '[rx-view-component-id="f86522e1-87a9-4c7b-9e1e-a940deec8b24"] .d-textfield div',
         emailSubjectBox: '[rx-view-component-id="2edd6ab4-d1e5-456e-879c-f8ca22bfbb32"] textarea',
         emailBodyMessageBox: '[rx-view-component-id="f86522e1-87a9-4c7b-9e1e-a940deec8b24"] .d-textfield div',
         cancelEmailSubjectBlade: '[rx-view-component-id="8335618d-2a88-49d1-9002-e5b7601b7674"] button',
         cancelEmailBodyBlade: '[rx-view-component-id="780514cc-7344-44a5-88af-5af509619ab0"] button',
-        moduleNameText: '[rx-view-component-id="4fd471a8-c2c4-44f3-8c33-57501411df07"] .ui-select-match-text',
-        eventNameText: '[rx-view-component-id="15aad4c8-1522-4586-b9d3-6be376cfcaa8"] .ui-select-match-text',
+        moduleNameText: '[rx-view-component-id="bdd94b56-3700-4876-8455-62f1e1b05ff6"] .ui-select-match-text',
+        eventNameText: '[rx-view-component-id="f535976d-f547-460a-8fa6-f959eb485d38"] .ui-select-match-text',
         searchRecipient: 'input[ng-model="searchInput"]',
         applyButton: '[ng-click="onFilterApply()"]',
         fieldLabels: '.rx-recipients-assignment-select-label, .modal-footer button',
@@ -34,7 +34,7 @@ class EditNotificationTemplate {
         recipientList: 'div[ng-repeat*="recipient"] .text-wrapper span',
         recipientsCheckbox: 'div[ng-repeat*="recipient"] .d-checkbox__item',
         recipientsCheckboxInput: 'div[ng-repeat*="recipient"] input',
-        notificationMethod: '[rx-view-component-id="911e28fd-89bb-4ee0-bea9-1d22e48f1134"] .dropdown',
+        notificationMethod: '[rx-view-component-id="c80f9de5-1a84-46fa-949d-fc073d65ebd8"] .dropdown',
         emailBasedApprovalFlag: '[rx-view-component-id="be4360ec-c852-457f-87c0-c1bf1abf8952"] button',
         emailSubject: '[rx-view-component-id="2edd6ab4-d1e5-456e-879c-f8ca22bfbb32"] textarea',
         saveAlertEmailSubjectBody: '[rx-view-component-id="498a2cf3-8866-4303-996a-61dc33e4a400"] button, [rx-view-component-id="cd6ddce5-4729-4cc9-a5a4-6f76e967de03"] button, [rx-view-component-id="498a2cf3-8866-4303-996a-61dc33e4a400"] button',
@@ -43,7 +43,7 @@ class EditNotificationTemplate {
     }
 
     async selectCheckBoxOfBody(): Promise<void> {
-        await $$(this.selectors.selectCheckBoxEmailTab).get(1).click();
+        await $$(this.selectors.checkBoxEmailTab).get(1).click();
     }
 
     async selectDefaultNotificationMethod(notification: string): Promise<void> {
@@ -63,7 +63,7 @@ class EditNotificationTemplate {
     }
 
     async clickOnEmailTab(): Promise<void> {
-        await $(this.selectors.clickOnEmailTab).click();
+        await $(this.selectors.emailTab).click();
     }
 
     async clickOnEditButtonOfEmailTab(): Promise<void> {
@@ -72,7 +72,7 @@ class EditNotificationTemplate {
     }
 
     async openAlertEditMessageText(): Promise<void> {
-        await $(this.selectors.selectAlertSubjectCheckbox).click();
+        await $(this.selectors.alertSubjectCheckbox).click();
         await $$(this.selectors.editCheckbox).first().click();
     }
 
@@ -95,7 +95,7 @@ class EditNotificationTemplate {
     }
 
     async openEmailSubjectEditMessageText(): Promise<void> {
-        await $$(this.selectors.selectCheckBoxEmailTab).get(0).click();
+        await $$(this.selectors.checkBoxEmailTab).get(0).click();
         await $$(this.selectors.editCheckbox).last().click();
     }
 
@@ -299,23 +299,23 @@ class EditNotificationTemplate {
         let fieldGuid: string = undefined; 
         switch (fieldName) {
             case "Company": {
-                fieldGuid = 'a423a785-aec4-453b-b2b7-d44f534fd2ed';
+                fieldGuid = '0d86e65f-f804-40c4-a955-ff82dd531956';
                 break;
             }
             case "Status": {
-                fieldGuid = 'edadf429-50e9-4867-ab44-d027826932df';
+                fieldGuid = 'da40a967-db52-4c1b-8d69-0c441f290323';
                 break;
             }
             case "Module": {
-                fieldGuid = '4fd471a8-c2c4-44f3-8c33-57501411df07';
+                fieldGuid = 'bdd94b56-3700-4876-8455-62f1e1b05ff6';
                 break;
             }
             case "Default Notification Method": {
-                fieldGuid = '911e28fd-89bb-4ee0-bea9-1d22e48f1134';
+                fieldGuid = 'c80f9de5-1a84-46fa-949d-fc073d65ebd8';
                 break;
             }
             case "Event": {
-                fieldGuid = '15aad4c8-1522-4586-b9d3-6be376cfcaa8';
+                fieldGuid = 'f535976d-f547-460a-8fa6-f959eb485d38';
                 break;
             }
             default: {

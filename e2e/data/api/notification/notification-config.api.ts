@@ -60,11 +60,11 @@ export const NOTIFICATION_EVENT_ACTIVE = {
     },
     "450000420": {
       "id": 450000420,
-      "value": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
+      "value": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
     },
     "450000152": {
       "id": 450000152,
-      "value": "- Global -",
+      "value": "- Global -"
     }
   }
 }
