@@ -15,7 +15,7 @@ import { ADD_TO_WATCHLIST } from '../data/api/case/case.watchlist.api';
 import * as COMPLEX_SURVEY from '../data/api/case/complex-survey.api';
 import { CASE_STATUS_CHANGE, UPDATE_CASE, UPDATE_CASE_ASSIGNMENT } from '../data/api/case/update.case.api';
 import { COGNITIVE_CATEGORY_DATASET, COGNITIVE_CATEGORY_DATASET_MAPPING, COGNITIVE_LICENSE, COGNITIVE_TEMPLATE_DATASET, COGNITIVE_TEMPLATE_DATASET_MAPPING } from '../data/api/cognitive/cognitive.config.api';
-import { MAILBOX_CONFIG } from '../data/api/email/email.configuration.data.api';
+import { MAILBOX_CONFIG, INCOMINGMAIL_DEFAULT } from '../data/api/email/email.configuration.data.api';
 import { EMAIL_WHITELIST } from '../data/api/email/email.whitelist.data.api';
 import { NEW_PROCESS_LIB, PROCESS_FLOWSET_MAPPING } from '../data/api/flowset/create-process-lib';
 import { ENABLE_USER, NEW_USER } from '../data/api/foundation/create-foundation-entity.api';
@@ -47,7 +47,7 @@ import { ICognitiveDataSet, ICognitiveDataSetMapping } from '../data/interface/c
 import { IFlowset, IFlowsetProcess, IFlowsetProcessMapping } from '../data/interface/flowset.interface';
 import { IBusinessUnit, IDepartment, IDomainTag, IFoundationEntity, IMenuItem, IPerson, ISupportGroup } from '../data/interface/foundation.interface';
 import { IDocumentLib, IDocumentTemplate, IKnowledgeArticles, IKnowledgeArticleTemplate, IKnowledgeSet, IknowledgeSetPermissions, IUpdateKnowledgeArticle } from '../data/interface/knowledge.interface';
-import { IEmailConfig, INotificationEvent, INotificationTemplate } from '../data/interface/notification.interface';
+import { IEmailConfig, INotificationEvent, INotificationTemplate, IIncomingEmailConfig } from '../data/interface/notification.interface';
 import { ICreateSVT, ICreateSVTGroup } from '../data/interface/svt.interface';
 import { IAdhocTask, ITaskUpdate } from '../data/interface/task.interface';
 import { ICaseTemplate, IEmailTemplate, INotesTemplate, ITaskTemplate } from '../data/interface/template.interface';
@@ -177,13 +177,24 @@ class ApiHelper {
         console.log('Create Dynamic on Template API Status =============>', newCaseTemplate.status);
     }
 
-    async createEmailConfiguration(data?: IEmailConfig): Promise<IIDs> {
+    async createIncomingEmail(incomingEmailConfigData?: IIncomingEmailConfig): Promise<boolean> {
+        let incomingMailBox = cloneDeep(INCOMINGMAIL_DEFAULT);
+        if (incomingEmailConfigData) {
+            incomingMailBox.fieldInstances[18037].value = incomingEmailConfigData.incomingMailBoxName;
+        }
+        let incomingMailResponse: AxiosResponse = await apiCoreUtil.createRecordInstance(incomingMailBox);
+        console.log('Configure Incoming Email API Status =============>', incomingMailResponse.status);
+        return incomingMailResponse.status == 204;
+    }
+
+    async createEmailConfiguration(emailConfigData?: IEmailConfig): Promise<IIDs> {
         let mailBoxConfig = cloneDeep(MAILBOX_CONFIG);
-        if (data) {
-            mailBoxConfig.fieldInstances[450000156].value = data.email;
-            mailBoxConfig.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : mailBoxConfig.fieldInstances[450000420].value;
-            mailBoxConfig.fieldInstances[1000000001].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : mailBoxConfig.fieldInstances[1000000001].value;
-            mailBoxConfig.fieldInstances[8].value = data.description ? data.description : mailBoxConfig.fieldInstances[8].value;
+        if (emailConfigData) {
+            mailBoxConfig.fieldInstances[450000156].value = emailConfigData.email;
+            mailBoxConfig.fieldInstances[450000420].value = emailConfigData.lineOfBusiness ? await constants.LOB[emailConfigData.lineOfBusiness] : mailBoxConfig.fieldInstances[450000420].value;
+            mailBoxConfig.fieldInstances[1000000001].value = emailConfigData.company ? await apiCoreUtil.getOrganizationGuid(emailConfigData.company) : mailBoxConfig.fieldInstances[1000000001].value;
+            mailBoxConfig.fieldInstances[8].value = emailConfigData.description ? emailConfigData.description : mailBoxConfig.fieldInstances[8].value;
+            mailBoxConfig.fieldInstances[450000152].value = emailConfigData.incomingMailBoxName ? emailConfigData.incomingMailBoxName : mailBoxConfig.fieldInstances[450000152].value;
         }
         let emailConfigCreateResponse: AxiosResponse = await apiCoreUtil.createRecordInstance(mailBoxConfig);
         console.log('Configure Email API Status =============>', emailConfigCreateResponse.status);
@@ -1852,7 +1863,7 @@ class ApiHelper {
         documentLibRecordInstanceJson.fieldInstances[1000000064].value = docLibDetails.category2 ? await apiCoreUtil.getCategoryGuid(docLibDetails.category2) : documentLibRecordInstanceJson.fieldInstances[1000000064].value;
         documentLibRecordInstanceJson.fieldInstances[1000000065].value = docLibDetails.category3 ? await apiCoreUtil.getCategoryGuid(docLibDetails.category3) : documentLibRecordInstanceJson.fieldInstances[1000000065].value;
         documentLibRecordInstanceJson.fieldInstances[450000167].value = docLibDetails.category4 ? await apiCoreUtil.getCategoryGuid(docLibDetails.category4) : documentLibRecordInstanceJson.fieldInstances[450000167].value;
-        documentLibRecordInstanceJson.fieldInstances[450000411].value = docLibDetails.lineOfBusiness ? await constants.LOB[docLibDetails.lineOfBusiness] : documentLibRecordInstanceJson.fieldInstances[450000420].value;
+        documentLibRecordInstanceJson.fieldInstances[450000411].value = docLibDetails.lineOfBusiness ? await constants.LOB[docLibDetails.lineOfBusiness] : documentLibRecordInstanceJson.fieldInstances[450000411].value;
         let data = {
             recordInstance: documentLibRecordInstanceJson,
             1000000351: filePath
