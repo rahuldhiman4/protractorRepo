@@ -493,6 +493,9 @@ describe('Dynamic data', () => {
             expect(await viewCasePo.isFileDisplayed('articleStatus.png')).toBeTruthy('File is not present');
             expect(await viewCasePo.getShowMoreLessAttachmentsLinkText('attachment1')).toContain('Show less');
         });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
     });
 
     it('[DRDMV-13947]: [Dynamic Data] [Attachment] - Task UI when it has Dynamic Fields including Attachment', async () => {

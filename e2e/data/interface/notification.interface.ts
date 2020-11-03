@@ -20,7 +20,14 @@ export interface INotificationTemplate {
 
 export interface IEmailConfig {
     email: string;
+    incomingMailBoxName?: string;
+    status?: string;
     description?: string;
     company?: string;
     lineOfBusiness?: string;
+}
+
+export interface IIncomingEmailConfig {
+    incomingMailBoxName: string;
+    emailServerUser?: string;
 }

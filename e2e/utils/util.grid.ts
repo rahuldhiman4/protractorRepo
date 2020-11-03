@@ -260,7 +260,7 @@ export class GridOperation {
     }
 
     async searchOnGridConsole(searchValue: string, guid?: string): Promise<void> {
-        await browser.sleep(30000); // workaround for performance issue
+        await browser.sleep(40000); // workaround for performance issue
         let searchBoxInput: string = this.selectors.searchInput;
         let gridRefreshButton: string = this.selectors.refreshButton;
         let gridSearchIcon: string = this.selectors.searchIcon;
@@ -449,7 +449,6 @@ export class GridOperation {
         if (guid) guidID = `[rx-view-component-id="${guid}"] `;
         await $(guidID + this.selectors.lineOfBusinessDropDown).click();
         await $(`[aria-label="${value}"]`).click();
-        await element(by.cssContainingText('.lob-list .dropdown-item', value)).click();
     }
 }
 export default new GridOperation();

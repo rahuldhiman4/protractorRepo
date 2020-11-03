@@ -16,9 +16,10 @@ class Copytaskpage {
         taskSummary: '[rx-view-component-id="c19d336e-7339-4970-b69a-100108d672fd"] input',
         sourceProcessNameValue: '[rx-view-component-id="9f29e10e-dedf-4bab-8372-5b40002d999a"] input',
         companyGiud: 'f62bd26b-c464-4dff-ab7b-e4446d1cbf99',
-        ownerGuid: '61278673-8106-419c-83e4-a9e00f12f835',
+        ownerCompanyGiud: '87ec3995-3350-4e3f-ab19-0f1e7846fbd7',
+        ownerGroupGuid: '61278673-8106-419c-83e4-a9e00f12f835',
         ownerGroupValueOnCopy: '[rx-view-component-id="61278673-8106-419c-83e4-a9e00f12f835"] .ui-select-match-text',
-        buisnessUnitGuid: 'a81cc2df-7b89-4367-81f7-f0ad5e786ca2',
+        ownerBusinessUnitGuid: 'a81cc2df-7b89-4367-81f7-f0ad5e786ca2',
         showMoreDescriptionLink: '[rx-view-component-id="cce67ce7-e6a5-4ed6-aa50-c57ea75d2854"] button.more',
     }
 
@@ -74,12 +75,16 @@ class Copytaskpage {
         await util.selectDropDown(this.selectors.companyGiud, companyName);
     }
 
-    async selectOwnerGroup(ownerGroup: string): Promise<void> {
-        await util.selectDropDown(this.selectors.ownerGuid, ownerGroup);
+    async selectOwnerCompany(companyName: string): Promise<void> {
+        await util.selectDropDown(this.selectors.ownerCompanyGiud, companyName);
     }
 
-    async selectBuisnessUnitGroup(ownerGroup: string): Promise<void> {
-        await util.selectDropDown(this.selectors.buisnessUnitGuid, ownerGroup);
+    async selectOwnerGroup(ownerGroup: string): Promise<void> {
+        await util.selectDropDown(this.selectors.ownerGroupGuid, ownerGroup);
+    }
+
+    async selectOwnerBusinessUnit(businessUnit: string): Promise<void> {
+        await util.selectDropDown(this.selectors.ownerBusinessUnitGuid, businessUnit);
     }
 
     async clickShowMoreDescriptionLink(): Promise<void> {

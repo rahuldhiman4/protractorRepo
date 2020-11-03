@@ -46,7 +46,6 @@ describe('Case Status Configuration', () => {
         await apiHelper.associatePersonToSupportGroup(personData3.userId, 'Phylum Support Group1');
         await browser.sleep(7000); //Wait to reflect the user created above
 
-
         await loginPage.login(personData1.userId+"@petramco.com", 'Password_1234');
     });
 
@@ -439,7 +438,7 @@ describe('Case Status Configuration', () => {
     });
 
     //ankagraw
-    describe('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
+    xdescribe('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
         let caseId, taskId, caseId1, caseData, articleData1, articleData2, caseDataInProgress, knowledgeSetData, knowldgeId, randomStr = Math.floor(Math.random() * 1000000);
         let personData1;
         beforeAll(async () => {

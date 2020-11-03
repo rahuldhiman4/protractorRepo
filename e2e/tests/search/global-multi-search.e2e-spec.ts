@@ -189,7 +189,7 @@ describe('Multi Search Validation', () => {
             "lastName": lastName,
             "userId": loginId,
             "emailId": emailId,
-            "userPermission": ["Case Agent","Document Manager"]
+            "userPermission": ["Case Agent","Document Manager","Human Resource"]
         }
         if (company) {
             await apiHelper.createNewUser(caseAgentuserData);

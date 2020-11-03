@@ -7,7 +7,7 @@ class CopyCaseTemplate {
     selectors = {
         templateName: '[rx-view-component-id="432c5f23-8c50-490d-9e94-8912ac4cd5e1"] input',
         saveButton: '[rx-view-component-id="fee3e577-173c-4dec-8265-ec81580ed26d"] button',
-        caseCategoryTier1ValueOnCopy: '[rx-view-component-id="c8ce4fd2-d864-4544-baf7-4b27b59c12c3"] .ui-select-match-text',
+        caseCategoryTier1ValueOnCopy: '[rx-view-component-id="08ebbf12-f517-46bb-a60c-e3996f133e37"] .ui-select-match-text',
         caseCategoryTier2ValueOnCopy: '[rx-view-component-id="42e3edda-f057-41e2-8160-7a9482e847dc"] .ui-select-match-text',
         caseCategoryTier3ValueOnCopy: '[rx-view-component-id="bb675d8f-82bc-497b-8b99-dfc1baa1dd41"] .ui-select-match-text',
         casePriorityValueOnCopy: '[rx-view-component-id="98327bc1-9ada-48f9-ab88-9787ddecd409"] .ui-select-match-text',

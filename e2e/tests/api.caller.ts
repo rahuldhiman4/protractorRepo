@@ -148,6 +148,7 @@ describe('Login and create case from API', () => {
             "firstName": "Petramco2",
             "lastName": "Psilon2",
             "userId": "psilopetra2",
+            "userPermission": ["Case Business Analyst","Human Resource"]
         }
         await apiHelper.createNewUser(userData);
         await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
@@ -238,6 +239,14 @@ describe('Login and create case from API', () => {
         let emailTemplateName: string = await emailTemplateData['emailTemplateWithMandatoryField'].TemplateName + randomStr;
         emailTemplateData['notesTemplateWithMandatoryField'].templateName = emailTemplateName;
         await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateWithMandatoryField']);
+    });
+
+    it('create Email config', async () => {
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteAllEmailConfiguration();
+        await apiHelper.createIncomingEmail();
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.createEmailConfiguration();
     });
 
     it('create notes template', async () => {

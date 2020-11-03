@@ -251,7 +251,7 @@ export const ARTICLE_DATA_Combination1 = {
     "assigneeBusinessUnit": "United States Support",
     "assigneeSupportGroup": "US Support 1",
     "assignee": "kayo",
-    "categoryTier1": "Applications",
+    "categoryTier1": "Employee Relations",
     "region": "Australia",
     "site": "Canberra",
 };
@@ -263,7 +263,7 @@ export const ARTICLE_DATA_Combination2 = {
     "assigneeBusinessUnit": "United States Support",
     "assigneeSupportGroup": "US Support 1",
     "assignee": "kayo",
-    "categoryTier1": "Applications",
+    "categoryTier1": "Employee Relations",
     "region": "Australia",
     "site": "Canberra",
 };

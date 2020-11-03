@@ -60,7 +60,6 @@ describe("Case Read Access", () => {
         departmentData1 = departmentDataFile['DepartmentData'];
         suppGrpData1 = supportGrpDataFile['SuppGrpData'];
         let personData1 = personDataFile['PersonData'];
-        personData1.userPermission = ["Case Business Analyst", "Human Resource"]
         await apiHelper.createNewUser(personData1);
         await apiHelper.associatePersonToCompany(personData1.userId, company);
         let orgId = await apiCoreUtil.getOrganizationGuid(company);
@@ -103,16 +102,16 @@ describe("Case Read Access", () => {
             "firstName": "7605",
             "lastName": "User1",
             "userId": "manager",
-            "userPermission": ["Case Manager", "Human Resource"],
             "emailId": "manager@petramco.com",
+            "userPermission": ["Case Manager", "Human Resource"]
         }
         await apiHelper.createNewUser(userData1);
         userData2 = {
             "firstName": "7605",
             "lastName": "User2",
             "userId": "analyst",
-            "userPermission": ["Case Business Analyst", "Human Resource"],
-            "emailId": "analyst@petramco.com"
+            "emailId": "analyst@petramco.com",
+            "userPermission": ["Case Business Analyst", "Human Resource"]
         }
         await apiHelper.createNewUser(userData2);
         await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");

@@ -27,10 +27,6 @@ import { cloneDeep } from 'lodash';
 let caseTemplateAllFields = ALL_FIELD;
 let caseTemplateRequiredFields = MANDATORY_FIELD;
 let userData1, userData2;
-let categName1 = 'DemoCateg1';
-let categName2 = 'DemoCateg2';
-let categName3 = 'DemoCateg3';
-let categName4 = 'DemoCateg4';
 let businessData, departmentData, suppGrpData;
 
 describe('Copy Case Template', () => {
@@ -51,14 +47,14 @@ describe('Copy Case Template', () => {
             "firstName": "Petramco",
             "lastName": "SGUser1",
             "userId": "13550User1",
-            "userPermission": ["Case Business Analyst","Human Resource"]
+            "userPermission": ["Case Business Analyst", "Human Resource"]
         }
         await apiHelper.createNewUser(userData1);
         userData2 = {
             "firstName": "Petramco",
             "lastName": "SGUser2",
             "userId": "13550User2",
-            "userPermission": ["Case Business Analyst","Human Resource"]
+            "userPermission": ["Case Business Analyst", "Human Resource"]
         }
         await apiHelper.createNewUser(userData2);
         await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
@@ -69,18 +65,6 @@ describe('Copy Case Template', () => {
         await apiHelper.associatePersonToCompany(userData2.userId, "Psilon");
         await apiHelper.associatePersonToSupportGroup(userData2.userId, "Psilon Support Group2");
         await browser.sleep(3000); // timeout requried to reflect data on UI
-    }
-
-    async function createCategories() {
-        await apiHelper.apiLogin('tadmin');
-        await apiHelper.createOperationalCategory(categName1);
-        await apiHelper.createOperationalCategory(categName2);
-        await apiHelper.createOperationalCategory(categName3);
-        await apiHelper.createOperationalCategory(categName4);
-        await apiHelper.associateCategoryToOrganization(categName1, 'Petramco');
-        await apiHelper.associateCategoryToCategory(categName1, categName2);
-        await apiHelper.associateCategoryToCategory(categName2, categName3);
-        await apiHelper.associateCategoryToCategory(categName3, categName4);
     }
 
     async function foundationData(company: string) {
@@ -131,7 +115,7 @@ describe('Copy Case Template', () => {
             expect(await copyCaseTemplate.getValueofCaseCategoryTier2()).toBe(caseTemplateAllFields.categoryTier2);
             expect(await copyCaseTemplate.getValueofCaseCategoryTier3()).toBe(caseTemplateAllFields.categoryTier3);
             expect(await copyCaseTemplate.getValueOfAllowReopen()).toBe(caseTemplateAllFields.allowCaseReopen);
-            expect(await copyCaseTemplate.getValueOfFlowset()).toBe(caseTemplateAllFields.flowset);
+            expect(await copyCaseTemplate.getValueOfFlowset()).toBe(caseTemplateName);
             expect(await copyCaseTemplate.getValueOfCaseCompany()).toBe(caseTemplateAllFields.company);
             expect(await copyCaseTemplate.getValueOfAssignementMethod()).toBe(caseTemplateAllFields.assignmentMethod);
             expect(await copyCaseTemplate.getValueOfTaskFailureConfiguration()).toBe(caseTemplateAllFields.taskFailureConfiguration);
@@ -175,7 +159,7 @@ describe('Copy Case Template', () => {
             expect(await copyCaseTemplate.getValueofCaseCategoryTier2()).toBe(caseTemplateRequiredFields.categoryTier2);
             expect(await copyCaseTemplate.getValueofCaseCategoryTier3()).toBe(caseTemplateRequiredFields.categoryTier3);
             expect(await copyCaseTemplate.getValueOfAllowReopen()).toBe(caseTemplateRequiredFields.allowCaseReopen);
-            expect(await copyCaseTemplate.getValueOfFlowset()).toBe(caseTemplateRequiredFields.flowset);
+            expect(await copyCaseTemplate.getValueOfFlowset()).toBe(caseTemplateRequiredFields.templateName);
             expect(await copyCaseTemplate.getValueOfCaseCompany()).toBe(caseTemplateRequiredFields.company);
             expect(await copyCaseTemplate.getValueOfOwnerCompany()).toBe(caseTemplateRequiredFields.ownerCompany);
             expect(await copyCaseTemplate.getValueOfOwnerGroup()).toContain('US Support 3');
@@ -221,7 +205,7 @@ describe('Copy Case Template', () => {
             expect(await copyCaseTemplate.getValueofCaseCategoryTier2()).toBe(caseTemplateRequiredFields.categoryTier2);
             expect(await copyCaseTemplate.getValueofCaseCategoryTier3()).toBe(caseTemplateRequiredFields.categoryTier3);
             expect(await copyCaseTemplate.getValueOfAllowReopen()).toBe(caseTemplateRequiredFields.allowCaseReopen);
-            expect(await copyCaseTemplate.getValueOfFlowset()).toBe(caseTemplateRequiredFields.flowset);
+            expect(await copyCaseTemplate.getValueOfFlowset()).toBe(caseTemplateRequiredFields.templateName);
             expect(await copyCaseTemplate.getValueOfCaseCompany()).toBe(caseTemplateRequiredFields.company);
             expect(await copyCaseTemplate.getValueOfAssignementMethod()).toBe(caseTemplateRequiredFields.assignmentMethod);
             expect(await copyCaseTemplate.getValueOfTaskFailureConfiguration()).toBe(caseTemplateRequiredFields.taskFailureConfiguration);
@@ -406,11 +390,13 @@ describe('Copy Case Template', () => {
             await createCaseTemplate.setTemplateName(caseTemplateName);
             await createCaseTemplate.setCompanyName("Psilon");
             await createCaseTemplate.setCaseSummary("caseTemplateSummary1" + randomStr);
+            await createCaseTemplate.setOwnerCompanyValue('Psilon');
             await createCaseTemplate.setBusinessUnitDropdownValue("Psilon Support Org2");
             await createCaseTemplate.setOwnerGroupDropdownValue("Psilon Support Group2");
             await createCaseTemplate.clickSaveCaseTemplate();
             await editCaseTemplate.clickOnCopyCaseTemplate();
             await copyCaseTemplate.setTemplateName(copyCaseTemplateName);
+            await createCaseTemplate.setOwnerCompanyValue('Psilon');
             await createCaseTemplate.setBusinessUnitDropdownValue("Psilon Support Org1");
             await copyCaseTemplate.setOwnerGroupDropdownValue("Psilon Support Group1");
             await copyCaseTemplate.clickSaveCaseTemplate();
@@ -450,7 +436,8 @@ describe('Copy Case Template', () => {
             await taskTemplate.clickOnSaveTaskTemplate();
             await viewTaskTemplate.clickOnCopyTemplate();
             await copyTasktemplatePo.setTemplateName(copytaskTemplateName);
-            await copyTasktemplatePo.selectBuisnessUnitGroup("Psilon Support Org1");
+            await copyTasktemplatePo.selectOwnerCompany('Psilon');
+            await copyTasktemplatePo.selectOwnerBusinessUnit("Psilon Support Org1");
             await copyTasktemplatePo.selectOwnerGroup("Psilon Support Group1");
             await copyTasktemplatePo.clickSaveCopytemplate();
             await utilCommon.closePopUpMessage();
@@ -572,6 +559,7 @@ describe('Copy Case Template', () => {
                 "businessUnit": "United States Support",
                 "supportGroup": "US Support 3",
                 "assignee": "qkatawazi",
+                "ownerCompany": "Petramco",
                 "ownerBU": "United States Support",
                 "ownerGroup": "US Support 3"
             }
@@ -634,6 +622,9 @@ describe('Copy Case Template', () => {
             await changeAssignmentOldPage.selectSupportGroup('Psilon Support Group1');
             await changeAssignmentOldPage.selectAssignee('Glit Deruno');
             await changeAssignmentOldPage.clickOnAssignButton();
+            await createCaseTemplate.setOwnerCompanyValue('Psilon');
+            await createCaseTemplate.setBusinessUnitDropdownValue("Psilon Support Org1");
+            await copyCaseTemplate.setOwnerGroupDropdownValue("Psilon Support Group1");
             await copyCaseTemplate.clickSaveCaseTemplate();
             await utilCommon.closePopUpMessage();
             await viewCasetemplatePo.clickOnTaskBox(templateData.templateName);
@@ -662,7 +653,9 @@ describe('Copy Case Template', () => {
             await consoleCasetemplatePo.clickOnCopyCaseTemplate();
             await copyCaseTemplate.setTemplateName("copycaseTemplateForOtherCompany");
             await copyCaseTemplate.setCompanyName('Psilon');
-            await copyCaseTemplate.setOwnerGroupDropdownValue('Psilon Support Group1');
+            await createCaseTemplate.setOwnerCompanyValue('Psilon');
+            await createCaseTemplate.setBusinessUnitDropdownValue("Psilon Support Org1");
+            await copyCaseTemplate.setOwnerGroupDropdownValue("Psilon Support Group1");
             await copyCaseTemplate.clickSaveCaseTemplate();
             expect(await utilCommon.isPopupMsgsMatches(['ERROR (222112): The selected Assignee does not have access to Psilon. Please select a different Assignee or contact System Administrator to grant access.'])).toBeTruthy('Message of permission denined for group access remove not displayed');
             await utilCommon.closePopUpMessage();
@@ -751,7 +744,9 @@ describe('Copy Case Template', () => {
             await consoleCasetemplatePo.clickOnCopyCaseTemplate();
             await copyCaseTemplate.setTemplateName(copyCaseTemplateName);
             await copyCaseTemplate.setCompanyName('Psilon');
-            await copyCaseTemplate.setOwnerGroupDropdownValue('Psilon Support Group1');
+            await createCaseTemplate.setOwnerCompanyValue('Psilon');
+            await createCaseTemplate.setBusinessUnitDropdownValue("Psilon Support Org1");
+            await copyCaseTemplate.setOwnerGroupDropdownValue("Psilon Support Group1");
             await createCaseTemplate.clickOnChangeAssignmentButton();
             await changeAssignmentOldPage.selectCompany('Psilon');
             await changeAssignmentOldPage.selectBusinessUnit('Psilon Support Org1');
@@ -861,7 +856,9 @@ describe('Copy Case Template', () => {
             await consoleCasetemplatePo.clickOnCopyCaseTemplate();
             await copyCaseTemplate.setTemplateName(copyCaseTemplateName);
             await copyCaseTemplate.setCompanyName('Psilon');
-            await copyCaseTemplate.setOwnerGroupDropdownValue('Psilon Support Group1');
+            await createCaseTemplate.setOwnerCompanyValue('Psilon');
+            await createCaseTemplate.setBusinessUnitDropdownValue("Psilon Support Org1");
+            await copyCaseTemplate.setOwnerGroupDropdownValue("Psilon Support Group1");
             await createCaseTemplate.clickOnChangeAssignmentButton();
             await changeAssignmentOldPage.selectCompany('Psilon');
             await changeAssignmentOldPage.selectBusinessUnit('Psilon Support Org1');
@@ -897,7 +894,7 @@ describe('Copy Case Template', () => {
 
     describe('[DRDMV-13847]: Execution of Automated task for Copy Case Template when Company is changed while creating Copy of Case Template', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let copyCaseTemplateName: string = "copycasetemplate" + randomStr;
+        let copyCaseTemplateName: string = "copycasetemplate_DRDMV-13847" + randomStr;
         let casetemplatePetramco, automatedtemplateData;
         beforeAll(async () => {
             casetemplatePetramco = {
@@ -941,7 +938,9 @@ describe('Copy Case Template', () => {
             await consoleCasetemplatePo.clickOnCopyCaseTemplate();
             await copyCaseTemplate.setTemplateName(copyCaseTemplateName);
             await copyCaseTemplate.setCompanyName('Psilon');
-            await copyCaseTemplate.setOwnerGroupDropdownValue('Psilon Support Group1');
+            await createCaseTemplate.setOwnerCompanyValue('Psilon');
+            await createCaseTemplate.setBusinessUnitDropdownValue("Psilon Support Org1");
+            await copyCaseTemplate.setOwnerGroupDropdownValue("Psilon Support Group1");
             await createCaseTemplate.clickOnChangeAssignmentButton();
             await changeAssignmentOldPage.selectCompany('Psilon');
             await changeAssignmentOldPage.selectBusinessUnit('Psilon Support Org1');
@@ -969,7 +968,6 @@ describe('Copy Case Template', () => {
         let randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateData, taskTemplateData, label: string = undefined;
         beforeAll(async () => {
-            await createCategories();
             await apiHelper.apiLogin('tadmin');
             let menuItemData = cloneDeep(SAMPLE_MENU_ITEM);
             label = await menuItemData.menuItemName + randomStr;
@@ -979,10 +977,10 @@ describe('Copy Case Template', () => {
             caseTemplateData = {
                 "templateName": 'caseTemplateName' + randomStr,
                 "templateSummary": 'caseTemplateSummary' + randomStr,
-                "categoryTier1": categName1,
-                "categoryTier2": categName2,
-                "categoryTier3": categName3,
-                "categoryTier4": categName4,
+                "categoryTier1": 'Employee Relations',
+                "categoryTier2": 'Compensation',
+                "categoryTier3": 'Bonus',
+                "categoryTier4": 'Retention Bonus',
                 "casePriority": "Low",
                 "templateStatus": "Active",
                 "company": "Petramco",
@@ -998,10 +996,10 @@ describe('Copy Case Template', () => {
                 "templateName": 'task template name ' + randomStr,
                 "templateSummary": `task template summary ${randomStr}`,
                 "templateStatus": "Active",
-                "category1": categName1,
-                "category2": categName2,
-                "category3": categName3,
-                "category4": categName4,
+                "category1": 'Employee Relations',
+                "category2": 'Compensation',
+                "category3": 'Bonus',
+                "category4": 'Retention Bonus',
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "United States Support",

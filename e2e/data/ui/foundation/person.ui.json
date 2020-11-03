@@ -80,37 +80,61 @@
         "firstName": "phylumfn4",
         "lastName": "phylumln4",
         "userId": "idphylum4",
-        "company": "Phylum"
+        "company": "Phylum",
+        "userPermission": [
+            "Case Business Analyst",
+            "Finance"
+        ]
     },
     "PhylumCaseAgent5": {
         "firstName": "phylumfn5",
         "lastName": "phylumln5",
         "userId": "idphylum5",
-        "company": "Phylum"
+        "company": "Phylum",
+        "userPermission": [
+            "Case Business Analyst",
+            "Finance"
+        ]
     },
     "PhylumCaseAgent6": {
         "firstName": "phylumfn6",
         "lastName": "phylumln6",
         "userId": "idphylum6",
-        "company": "Phylum"
+        "company": "Phylum",
+        "userPermission": [
+            "Case Business Analyst",
+            "Finance"
+        ]
     },
     "PhylumCaseAgent7": {
         "firstName": "phylumfn7",
         "lastName": "phylumln7",
         "userId": "idphylum7",
-        "company": "Phylum"
+        "company": "Phylum",
+        "userPermission": [
+            "Case Business Analyst",
+            "Finance"
+        ]
     },
     "PhylumCaseAgent8": {
         "firstName": "phylumfn8",
         "lastName": "phylumln8",
         "userId": "idphylum8",
-        "company": "Phylum"
+        "company": "Phylum",
+        "userPermission": [
+            "Case Business Analyst",
+            "Finance"
+        ]
     },
     "PhylumCaseAgent9": {
         "firstName": "phylumfn9",
         "lastName": "phylumln9",
         "userId": "idphylum9",
-        "company": "Phylum"
+        "company": "Phylum",
+        "userPermission": [
+            "Case Business Analyst",
+            "Finance"
+        ]
     },
     "PhylumKnowledgeUser1": {
         "firstName": "phylumfnk1",
@@ -118,7 +142,8 @@
         "userId": "idphylumkuser",
         "userPermission": [
             "Case Agent",
-            "Knowledge Coach"
+            "Knowledge Coach",
+            "Finance"
         ]
     },
     "PhylumKnowledgeUser2": {
@@ -127,18 +152,27 @@
         "userId": "idphylumkuser2",
         "userPermission": [
             "Case Agent",
-            "Knowledge Coach"
+            "Knowledge Coach",
+            "Finance"
         ]
     },
     "PersonData11825": {
         "firstName": "fnPerson11825",
         "lastName": "lnPerson11825",
-        "userId": "idphylum311825"
+        "userId": "idphylum311825",
+        "userPermission": [
+            "Case Business Analyst",
+            "Finance"
+        ]
     },
     "PersonData12080": {
         "firstName": "fnPerson12080",
         "lastName": "lnPerson12080",
-        "userId": "idphylum312080"
+        "userId": "idphylum312080",
+        "userPermission": [
+            "Case Business Analyst",
+            "Finance"
+        ]
     },
     "PhylumCaseAdmin1": {
         "firstName": "Ashish",
@@ -171,33 +205,6 @@
             "Case Agent",
             "Knowledge Coach",
             "Finance"
-        ]
-    },
-    "AlienwareCaseAdmin1": {
-        "firstName": "Indian",
-        "lastName": "People",
-        "userId": "Ipeople",
-        "company": "Pico Systems",
-        "userPermission": [
-            "Case Agent",
-            "Case Business Analyst",
-            "Knowledge Coach"
-        ]
-    },
-    "AlienwareCaseAdmin2": {
-        "firstName": "Indian",
-        "lastName": "Peoples",
-        "userId": "Jpeople",
-        "company": "Pico Systems"
-    },
-    "AlienwareKnowledgeUser": {
-        "firstName": "India",
-        "lastName": "People",
-        "userId": "Kpeople",
-        "company": "Pico Systems",
-        "userPermission": [
-            "Case Agent",
-            "Knowledge Coach"
         ]
     }
 }

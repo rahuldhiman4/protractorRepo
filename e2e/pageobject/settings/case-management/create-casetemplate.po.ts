@@ -1,8 +1,11 @@
+import apiHelper from '../../../api/api.helper';
 import { $, protractor, ProtractorExpectedConditions } from "protractor";
 import { ICaseTemplateUI } from "../../../data/interface/template.interface";
 import caseTemplateGrid from "../../../pageobject/settings/case-management/console-casetemplate.po";
 import utilCommon from '../../../utils/util.common';
 import changeAssignemetOldBlade from '../../common/change-assignment-old-blade.po';
+import { flowsetMandatoryFields } from '../../../data/ui/flowset/flowset.ui';
+import { cloneDeep } from 'lodash';
 
 class CreateCaseTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -20,7 +23,7 @@ class CreateCaseTemplate {
         caseStatus: '6b1d1112-129e-4c27-82b2-2248f12dc09a',
         statusReason: 'b6a6fc24-c3e7-4565-b2d2-848dd4a6747b',
         label: '57a61ccd-d80f-4490-b1d7-ec16d19c551f',
-        caseCategoryTier1: '[rx-view-component-id="57b0a78a-b91a-46c3-8800-04acc0d81108"], [rx-view-component-id="c8ce4fd2-d864-4544-baf7-4b27b59c12c3"]',
+        caseCategoryTier1: '[rx-view-component-id="08ebbf12-f517-46bb-a60c-e3996f133e37"], [rx-view-component-id="c8ce4fd2-d864-4544-baf7-4b27b59c12c3"]',
         caseCategoryTier2: '42e3edda-f057-41e2-8160-7a9482e847dc',
         caseCategoryTier3: 'bb675d8f-82bc-497b-8b99-dfc1baa1dd41',
         caseCategoryTier4: 'ec532c69-dbc8-4473-b76d-ad90bec193d2',
@@ -65,7 +68,7 @@ class CreateCaseTemplate {
     async setCategoryTier1(tier1Value: string): Promise<void> {
         let flowsetgetText = await $(this.selectors.flowsetVal).getText();
         if (flowsetgetText == '') {
-            await utilCommon.selectDropDown('57b0a78a-b91a-46c3-8800-04acc0d81108', tier1Value);
+            await utilCommon.selectDropDown('08ebbf12-f517-46bb-a60c-e3996f133e37', tier1Value);
         } else {
             await utilCommon.selectDropDown2($(this.selectors.caseCategoryTier1), tier1Value);
         }
@@ -97,7 +100,7 @@ class CreateCaseTemplate {
 
     async setStatusReasonValue(StatusReasonValue: string): Promise<void> {
         await $('[rx-view-component-id="ffcb232a-0ef2-4e6f-9fc1-5d75c1576fd1"] label').isPresent().then(async (present) => {
-            if (present) await utilCommon.selectDropDown('ffcb232a-0ef2-4e6f-9fc1-5d75c1576fd1', StatusReasonValue);
+            if (present) await utilCommon.selectDropDown(this.selectors.statusReason, StatusReasonValue);
             else await utilCommon.selectDropDown(this.selectors.statusReason, StatusReasonValue);
         });
     }
@@ -219,12 +222,17 @@ class CreateCaseTemplate {
     }
 
     async createCaseTemplateWithAllFields(caseTemplate: ICaseTemplateUI): Promise<void> {
+        //API call to create the flowset
+        await apiHelper.apiLogin('qkatawazi');
+        let flowsetMandatoryFieldsData = cloneDeep(flowsetMandatoryFields);
+        flowsetMandatoryFieldsData.flowsetName = caseTemplate.templateName;
+        await apiHelper.createNewFlowset(flowsetMandatoryFieldsData);
         await caseTemplateGrid.clickOnCreateCaseTemplateButton();
         await this.setTemplateName(caseTemplate.templateName);
         await this.setCaseSummary(caseTemplate.templateSummary);
         await this.setCompanyName(caseTemplate.company);
         await this.setCaseDescription(caseTemplate.templateDescription);
-        await this.setFlowsetValue(caseTemplate.flowset);
+        await this.setFlowsetValue(caseTemplate.templateName);
         await this.setCaseStatusValue(caseTemplate.caseStatus);
         await this.setBusinessUnitDropdownValue(caseTemplate.ownerBusinessUnit);
         await this.setOwnerGroupDropdownValue(caseTemplate.ownerGroup);

@@ -77,11 +77,11 @@ describe('Notes template', () => {
             "firstName": "Petramco",
             "lastName": "SGUser1",
             "userId": "22653User",
-            "userPermission": ["Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read"]
+            "userPermission": ["Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read","Human Resource"]
         }
         await apiHelper.createNewUser(userData);
         await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
-        await apiHelper.associatePersonToSupportGroup(userData.userId, "Facilities");
+        await apiHelper.associatePersonToSupportGroup(userData.userId, "US Support 3");
     });
 
     afterAll(async () => {
@@ -1036,7 +1036,7 @@ describe('Notes template', () => {
                 "lastName": "Access",
                 "userId": "DRDMV-16112_User",
                 "emailId": "DRDMV-16112_User@petramco.com",
-                "userPermission": ["Case Agent", "Foundation Read", "Document Manager", "Case Business Analyst"]
+                "userPermission": ["Case Agent", "Foundation Read", "Document Manager", "Case Business Analyst","Human Resource"]
             }
             await apiHelper.createNewUser(userData1);
             await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");

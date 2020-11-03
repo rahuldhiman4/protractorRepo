@@ -38,25 +38,29 @@ describe("Quick Case", () => {
             "firstName": "Person1",
             "lastName": "Person1",
             "userId": "userData1",
-            "company": "Petramco"
+            "company": "Petramco",
+            "userPermission": ["Case Business Analyst","Human Resource"]
         }
         userData2 = {
             "firstName": "Person1",
             "lastName": "Person1",
             "userId": "userData2",
-            "company": "Petramco"
+            "company": "Petramco",
+            "userPermission": ["Case Business Analyst","Human Resource"]
         }
         userData3 = {
             "firstName": "Person1",
             "lastName": "Person1",
             "userId": "userData3",
-            "company": "Petramco"
+            "company": "Petramco",
+            "userPermission": ["Case Business Analyst","Human Resource"]
         }
         userData4 = {
             "firstName": "Person1",
             "lastName": "Person1",
             "userId": "userData4",
-            "company": "Petramco"
+            "company": "Petramco",
+            "userPermission": ["Case Business Analyst","Human Resource"]
         }
         await apiHelper.apiLogin('tadmin');
         await apiHelper.createNewUser(userData1);

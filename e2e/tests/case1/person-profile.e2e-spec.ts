@@ -558,7 +558,8 @@ describe('Person Profile test', () => {
             "firstName": "Person1",
             "lastName": "Person1",
             "userId": "userData1",
-            "company": "Petramco"
+            "company": "Petramco",
+            "userPermission": ["Case Business Analyst","Human Resource"]
         }
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
