@@ -49,8 +49,8 @@ describe("Task Self Approval Tests", () => {
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             autoTaskTemplateData = {
                 "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
@@ -60,8 +60,8 @@ describe("Task Self Approval Tests", () => {
                 "processName": `Case Process 1 ${randomStr}`,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             caseData = {
                 "Requester": "Fritz",
@@ -200,8 +200,8 @@ describe("Task Self Approval Tests", () => {
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             autoTaskTemplateData = {
                 "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
@@ -211,8 +211,8 @@ describe("Task Self Approval Tests", () => {
                 "processName": `Case Process 1 ${randomStr}`,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             caseData = {
                 "Requester": "Fritz",
@@ -364,12 +364,12 @@ describe("Task Self Approval Tests", () => {
                 "templateStatus": "Active",
                 "priority": "Low",
                 "taskCompany": 'Petramco',
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
 
             caseTemplateData1 = {
@@ -392,19 +392,19 @@ describe("Task Self Approval Tests", () => {
                 "templateStatus": "Active",
                 "priority": "Low",
                 "taskCompany": 'Petramco',
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "businessUnit": "United Kingdom Support",
+                "supportGroup": "GB Support 2",
+                "assignee": "qstrong",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United Kingdom Support",
+                "ownerGroup": "GB Support 2"
             }
             await apiHelper.apiLogin('qkatawazi');
             caseTemplate = await apiHelper.createCaseTemplate(caseTemplateData);
             manualTaskTemplate = await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
             await apiHelper.associateCaseTemplateWithOneTaskTemplate(caseTemplate.displayId, manualTaskTemplate.displayId);
 
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qstrong');
             caseTemplate1 = await apiHelper.createCaseTemplate(caseTemplateData1);
             manualTaskTemplate1 = await apiHelper.createManualTaskTemplate(manualTaskTemplateData1);
             await apiHelper.associateCaseTemplateWithOneTaskTemplate(caseTemplate1.displayId, manualTaskTemplate1.displayId);
@@ -463,7 +463,7 @@ describe("Task Self Approval Tests", () => {
         });
 
         it('[DRDMV-22951]:Toggle False, task created without template, task should NOT go in Approval', async () => {
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qstrong');
             let caseData = {
                 "Requester": "qdu",
                 "Summary": "Toggle False, case without template" + "_" + randomStr,

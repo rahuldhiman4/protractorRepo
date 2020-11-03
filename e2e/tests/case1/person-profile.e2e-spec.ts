@@ -65,7 +65,7 @@ describe('Person Profile test', () => {
         expect(await personProfile.getCorporateID()).toBe('200003', 'Corporate Id does not match');
         expect(await personProfile.getEmployeeTypeValue()).toBe('Full time', 'Employee Type value does not match');
         expect(await personProfile.getLoginID()).toBe('Elizabeth', 'Login Id does not match');
-        expect(await personProfile.getFunctionalRoles()).toContain('Knowledge Coach, Knowledge Publisher, Knowledge Contributor, Knowledge Candidate, Case Business Analyst, Case Catalog Administrator, FoundationRead, Human Resource, Human Resource, Human Resource, Human Resource, Human Resource');
+        expect(await personProfile.getFunctionalRoles()).toContain('Knowledge Coach, Case Business Analyst, Case Catalog Administrator, Human Resource');
         expect(await personProfile.isVIPTagPresent()).toBeTruthy('VIP tag is not present');
         expect(await personProfile.getCompany()).toContain("Petramco", "Company name mismatch");
         expect(await personProfile.getContactNumber()).toBe("+19255553456", "Phone number mismatch");
@@ -129,7 +129,7 @@ describe('Person Profile test', () => {
             expect(await personProfile.getCorporateID()).toBe('PET00000521', 'Corporate Id does not match');
             expect(await personProfile.getEmployeeTypeValue()).toBe('Full time', 'Employee Type value does not match');
             expect(await personProfile.getLoginID()).toBe('qfeng', 'Login Id does not match');
-            expect(await personProfile.getFunctionalRoles()).toContain('Case Agent, FoundationRead, Human Resource, Human Resource');
+            expect(await personProfile.getFunctionalRoles()).toContain('Case Agent, Human Resource');
             expect(await personProfile.isVIPTagPresent()).toBeTruthy('VIP tag is not present');
             expect(await personProfile.getCompany()).toContain("Petramco", "Company name mismatch");
             expect(await personProfile.getContactNumber()).toContain("+15123431920", "Phone number mismatch");
@@ -168,7 +168,7 @@ describe('Person Profile test', () => {
     //asahitya check
     it('[DRDMV-16806]: Person profile display for person from activity/history tab', async () => {
         await apiHelper.apiLogin('tadmin');
-        await apiHelper.updateFoundationEntity('Person', 'qyuan', { vipStatus: 'Yes' });
+        await apiHelper.updateFoundationEntity('Person', 'qfeng', { vipStatus: 'Yes' });
         await apiHelper.apiLogin('elizabeth');
 
         let caseData = {
@@ -182,6 +182,8 @@ describe('Person Profile test', () => {
 
         let response = await apiHelper.createCase(caseData);
         await navigationPage.gotoCaseConsole();
+        await utilityGrid.selectLineOfBusiness('Human Resource');
+        await utilityGrid.clearFilter();
         await utilityGrid.searchAndOpenHyperlink(response.displayId);
         await activityTabPage.addPersonInActivityNote('Qiao Feng');
         await activityTabPage.clickOnPostButton();
@@ -192,7 +194,7 @@ describe('Person Profile test', () => {
         expect(await personProfile.getCorporateID()).toBe('PET00000521', 'Corporate Id does not match');
         expect(await personProfile.getEmployeeTypeValue()).toBe('Full time', 'Employee Type value does not match');
         expect(await personProfile.getLoginID()).toBe('qfeng', 'Login Id does not match');
-        expect(await personProfile.getFunctionalRoles()).toContain('Case Agent, FoundationRead, Human Resource, Human Resource');
+        expect(await personProfile.getFunctionalRoles()).toContain('Case Agent, Human Resource');
         expect(await personProfile.isVIPTagPresent()).toBeTruthy('VIP tag is not present');
         expect(await personProfile.getCompany()).toContain("Petramco", "Company name mismatch");
         expect(await personProfile.getContactNumber()).toContain('+15123431920', "Phone number mismatch");
@@ -256,6 +258,8 @@ describe('Person Profile test', () => {
 
             // Verify the Person Profile of Adam Pavlik
             await navigationPage.gotoCaseConsole();
+            await utilityGrid.selectLineOfBusiness('Human Resource');
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(response.displayId);
             await viewCasePage.clickOnContactPersonerDrpDwn();
             await viewCasePage.clickContactPersonName();
@@ -300,6 +304,8 @@ describe('Person Profile test', () => {
             //Verify that updated relation name does not impact existing relations
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(response.displayId);
             await viewCasePage.clickOnContactPersonerDrpDwn();
             await viewCasePage.clickContactPersonName();
@@ -335,6 +341,8 @@ describe('Person Profile test', () => {
 
             let response = await apiHelper.createCase(caseData);
             await navigationPage.gotoCaseConsole();
+            await utilityGrid.selectLineOfBusiness('Human Resource');
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(response.displayId);
             await viewCasePage.clickOnContactPersonerDrpDwn();
             await viewCasePage.clickContactPersonName();
@@ -345,7 +353,7 @@ describe('Person Profile test', () => {
             expect(await personProfile.getCorporateID()).toBe('PET00000521', 'Corporate Id does not match');
             expect(await personProfile.getEmployeeTypeValue()).toBe('Full time', 'Employee Type value does not match');
             expect(await personProfile.getLoginID()).toBe('qfeng', 'Login Id does not match');
-            expect(await personProfile.getFunctionalRoles()).toContain('Case Agent, FoundationRead, Human Resource, Human Resource');
+            expect(await personProfile.getFunctionalRoles()).toContain('Case Agent, Human Resource');
             expect(await personProfile.isVIPTagPresent()).toBeTruthy('VIP tag is not present');
             expect(await personProfile.getCompany()).toContain("Petramco", "Company name mismatch");
             expect(await personProfile.getContactNumber()).toContain("+15123431920", "Phone number mismatch");
@@ -765,7 +773,7 @@ describe('Person Profile test', () => {
             expect(await personProfile.getCorporateID()).toBe('PET00000498', 'Corporate Id does not match');
             expect(await personProfile.getEmployeeTypeValue()).toBe('Full time', 'Employee Type value does not match');
             expect(await personProfile.getLoginID()).toBe('qnorton', 'Login Id does not match');
-            expect(await personProfile.getFunctionalRoles()).toContain('Case Agent, Case Business Analyst, FoundationRead, Human Resource');
+            expect(await personProfile.getFunctionalRoles()).toContain('Case Agent, Human Resource');
             expect(await personProfile.isVIPTagPresent()).toBeTruthy('VIP tag is not present');
             expect(await personProfile.getCompany()).toContain("Petramco", "Company name mismatch");
             expect(await personProfile.getContactNumber()).toContain("+61288992923", "Phone number mismatch");

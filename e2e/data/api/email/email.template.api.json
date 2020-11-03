@@ -38,7 +38,8 @@
       "Public": "0",
       "Application ID": "com.bmc.dsm.case-lib",
       "Source Definition Name": "com.bmc.dsm.case-lib:Case",
-      "EmailMessageBody": "<p>HiTeam ,</p><p>&nbsp;</p><p>I am taking leave today.</p><p>&nbsp;</p><p>Thanks.</p>"
+      "EmailMessageBody": "<p>HiTeam ,</p><p>&nbsp;</p><p>I am taking leave today.</p><p>&nbsp;</p><p>Thanks.</p>",
+      "Line of Business":"AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
     }
   }
 }

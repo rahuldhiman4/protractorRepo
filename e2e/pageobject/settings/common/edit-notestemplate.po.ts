@@ -17,7 +17,7 @@ class editNotesTemplate {
         cancelButtonOnEditor: '.rx-expression-editor-action-buttons .d-button_secondary',
         body: '.cke_wysiwyg_div',
         statusValue: '[rx-view-component-id="6333057d-5f6a-4d5d-b862-a07db2f9997e"] .ui-select-match-text',
-        bodyUpdateValue: '.cke_wysiwyg_div p',
+        bodyUpdateValue: '.cke_wysiwyg_div p,.cke_wysiwyg_div',
         notesTemplate: '[rx-view-component-id="ec3b4b22-122a-480c-a4d7-b62647710c87"] button',
         saveButton: '[rx-view-component-id="7cfbf19a-7366-4d4f-b686-be6b6befaf82"] .d-button_primary',
         cancelButton: '[rx-view-component-id="020cadc5-e0da-4ed3-99d3-6ad0bef712bc"] .d-button_secondary',

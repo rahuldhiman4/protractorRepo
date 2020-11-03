@@ -63,7 +63,8 @@ export interface IDocumentTemplate {
     templateName: string,
     description: string,
     messageBody: string,
-    company?: string
+    company?: string,
+    lineOfBusiness?: string
 };
 
 export interface IUpdateKnowledgeArticle {

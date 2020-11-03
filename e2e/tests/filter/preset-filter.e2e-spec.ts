@@ -134,7 +134,7 @@ describe('Preset Filter Funcational Verification', () => {
             await navigationPage.signOut();
             await loginPage.login(caseAgentuserData.userId + "@petramco.com", "Password_1234");
             await navigationPage.gotoKnowledgeConsole();
-            expect(await utilityGrid.isAppliedFilterMatches(['My Open Articles'])).toBeFalsy('My Open Tasks is missing');
+            expect(await utilityGrid.isAppliedFilterMatches(['My Open Articles'])).toBeTruthy('My Open Tasks is missing');
 
             await utilityGrid.applyPresetFilter('My Open Articles');
             expect(await utilityGrid.isAppliedFilterMatches(['My Open Articles'])).toBeTruthy('My Open Tasks is missing');
@@ -1005,14 +1005,13 @@ describe('Preset Filter Funcational Verification', () => {
             await utilityGrid.updateCustomPresetFilter('Status', 'In Progress', 'default', filtername1);
             await utilityGrid.updateCustomPresetFilter('Template Name', 'Reference', 'default', filtername1);
 
-            expect(await utilityGrid.isAppliedFilterMatches(['Company: Petramco', 'Knowledge Set: testone', 'Status: In Progress', 'Template Name: Reference'])).toBeTruthy('Applied filter is missing');
+            expect(await utilityGrid.isAppliedFilterMatches(['Company: Petramco', 'Knowledge Set: HR', 'Status: In Progress', 'Template Name: Reference'])).toBeTruthy('Applied filter is missing');
             expect(await utilityGrid.isGridColumnSorted('Article ID', 'desc')).toBeTruthy('Column not sorted on case console page');
             let taskId1 = await utilityGrid.getFirstGridRecordColumnValue('Article ID');
             await navigationPage.gotoTaskConsole();
             await navigationPage.gotoKnowledgeConsole();
-            expect(await utilityGrid.isAppliedFilterMatches(['Company: Petramco', 'Knowledge Set: testone', 'Status: In Progress', 'Template Name: Reference'])).toBeTruthy('Applied filter is missing');
-
             expect(await utilityGrid.isAppliedFilterMatches(['Company: Petramco', 'Knowledge Set: HR', 'Status: In Progress', 'Template Name: Reference'])).toBeTruthy('Applied filter is missing');
+
             let taskId2 = await utilityGrid.getFirstGridRecordColumnValue('Article ID');
             expect(taskId1).toBe(taskId2);
             expect(await utilityGrid.isGridColumnSorted('Article ID', 'desc')).toBeTruthy('Column not sorted on case console page');

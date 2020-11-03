@@ -71,6 +71,7 @@ describe('Notes template', () => {
         const caseModule = 'Case';
         await browser.get(BWF_BASE_URL);
         await loginPage.login("elizabeth");
+        await utilityGrid.selectLineOfBusiness('Human Resource');
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteApprovalMapping(caseModule);
         userData = {
@@ -404,14 +405,14 @@ describe('Notes template', () => {
             await apiHelper.apiLogin('elizabeth');
             await apiHelper.createNotesTemplate("People", tempNotesTemplateData);
             // create case1 & case2
-            await apiHelper.apiLogin('franz');
+            await apiHelper.apiLogin('qheroux');
             newCase1 = await apiHelper.createCase(caseData1);
             await apiHelper.apiLogin('qdu');
             newCase2 = await apiHelper.createCase(caseData2);
         });
         it('[DRDMV-16578]: Case Agent consume People Notes Template in People profile', async () => {
             await navigationPage.signOut();
-            await loginPage.login('franz');
+            await loginPage.login('qheroux');
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(newCase1.displayId);
             await viewCasePage.clickRequsterName();
@@ -1114,6 +1115,7 @@ describe('Notes template', () => {
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
         });
     });
 
@@ -1323,29 +1325,38 @@ describe('Notes template', () => {
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink('NotesTemplateCase1' + randomString);
             await activityTabPo.clickOnRefreshButton();
-            await activityTabPo.clickShowMoreLinkInActivity(1);
-            expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
-            expect(await activityTabPo.isItalicTextDisplayedInActivity(italicText, 1)).toBeTruthy('FailureMsg Italic Text is missing In Activity');
-            expect(await activityTabPo.isUnderlineTextDisplayedInActivity(underLineText, 1)).toBeTruthy('FailureMsg Underline Text is missing In Activity');
-            expect(await activityTabPo.isRightAlignTextDisplayedInActivity(rightAlignText, 1)).toBeTruthy('FailureMsg Right Align Text is missing In Activity');
-            expect(await activityTabPo.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
-            expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
-            expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
+            await activityTabPo.clickShowMoreLinkInActivity(2);
+            expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 2)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
+            expect(await activityTabPo.isItalicTextDisplayedInActivity(italicText, 2)).toBeTruthy('FailureMsg Italic Text is missing In Activity');
+            expect(await activityTabPo.isUnderlineTextDisplayedInActivity(underLineText, 2)).toBeTruthy('FailureMsg Underline Text is missing In Activity');
+            expect(await activityTabPo.isRightAlignTextDisplayedInActivity(rightAlignText, 2)).toBeTruthy('FailureMsg Right Align Text is missing In Activity');
+            expect(await activityTabPo.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 2)).toBeTruthy('FailureMsg Link Text is missing In Activity');
+            expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 2)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
+            expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 2)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
             expect(await ckeditorValidationPo.isTableCaptionDisplayedInCkEditorTextArea('tableSummary', 'new' + randomString)).toBeTruthy('Text is not Left Align In Ck Editor');
             expect(await ckeditorValidationPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('Text is not Left Align In Ck Editor');
+            
+            await viewCasePage.clickOnTab('Case Access');
+            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Case');
+            await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
+            await accessTabPo.selectAccessEntityDropDown('United States Support', 'Select Business Unit');
+            await accessTabPo.selectAccessEntityDropDown('US Support 1', 'Select Support Group');
+            await accessTabPo.clickAssignWriteAccessCheckbox('Support Group');
+            await accessTabPo.clickAccessEntitiyAddButton('Support Group');
+
             await navigationPage.signOut();
             await loginPage.login('qtao');
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink('NotesTemplateCase1' + randomString);
             await activityTabPo.clickOnRefreshButton();
-            await activityTabPo.clickOnShowMore();
-            expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
-            expect(await activityTabPo.isItalicTextDisplayedInActivity(italicText, 1)).toBeTruthy('FailureMsg Italic Text is missing In Activity');
-            expect(await activityTabPo.isUnderlineTextDisplayedInActivity(underLineText, 1)).toBeTruthy('FailureMsg Underline Text is missing In Activity');
-            expect(await activityTabPo.isRightAlignTextDisplayedInActivity(rightAlignText, 1)).toBeTruthy('FailureMsg Right Align Text is missing In Activity');
-            expect(await activityTabPo.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
-            expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
-            expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
+            await activityTabPo.clickShowMoreLinkInActivity(4);
+            expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 4)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
+            expect(await activityTabPo.isItalicTextDisplayedInActivity(italicText, 4)).toBeTruthy('FailureMsg Italic Text is missing In Activity');
+            expect(await activityTabPo.isUnderlineTextDisplayedInActivity(underLineText, 4)).toBeTruthy('FailureMsg Underline Text is missing In Activity');
+            expect(await activityTabPo.isRightAlignTextDisplayedInActivity(rightAlignText, 4)).toBeTruthy('FailureMsg Right Align Text is missing In Activity');
+            expect(await activityTabPo.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 4)).toBeTruthy('FailureMsg Link Text is missing In Activity');
+            expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 4)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
+            expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 4)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
             expect(await ckeditorValidationPo.isTableCaptionDisplayedInCkEditorTextArea('tableSummary', 'new' + randomString)).toBeTruthy('Text is not Left Align In Ck Editor');
             expect(await ckeditorValidationPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('Text is not Left Align In Ck Editor');
         });
@@ -1576,7 +1587,7 @@ describe('Notes template', () => {
     });
 
     //Covered DefectID-DRDMV-22228
-   describe('[DRDMV-22637,DRDMV-22643,DRDMV-22653]: Verify CKE functionality on Create and Edit People Notes template', async () => {
+    describe('[DRDMV-22637,DRDMV-22643,DRDMV-22653]: Verify CKE functionality on Create and Edit People Notes template', async () => {
         let templateName: string, caseData, newCase, randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
@@ -2410,8 +2421,8 @@ describe('Notes template', () => {
             readAccessMappingData = {
                 "configName": randomString + '1ReadAccessMappingName',
                 "assignedCompany": 'Petramco',
-                "businessUnit": 'Facilities Support',
-                "supportGroup": 'Facilities',
+                "businessUnit": 'Canada Support',
+                "supportGroup": 'CA Support 3',
                 "company": 'Petramco',
                 "priority": "Low",
             }
@@ -2538,7 +2549,7 @@ describe('Notes template', () => {
             await quickCasePo.saveCase();
             await quickCasePo.gotoCaseButton();
             await viewCasePage.clickOnTab('Case Access');
-            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Facilities', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('CA Support 3', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
             await viewCasePage.clickOnTab('Tasks');
             await viewCasePage.clickOnTaskLink(templateData.templateName);
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate('taskNotesTemplate87163');
@@ -2644,7 +2655,7 @@ describe('Notes template', () => {
         });
         it('[DRDMV-22641,DRDMV-22645,DRDMV-22656]: Verify CKE functionality on Create and Edit Task Notes template', async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('qheroux');
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(casetemplatePetramco.templateSummary);
             await viewCasePage.clickOnTaskLink(templateData.templateName);
