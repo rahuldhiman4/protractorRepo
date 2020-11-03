@@ -404,14 +404,14 @@ describe('Notes template', () => {
             await apiHelper.apiLogin('elizabeth');
             await apiHelper.createNotesTemplate("People", tempNotesTemplateData);
             // create case1 & case2
-            await apiHelper.apiLogin('franz');
+            await apiHelper.apiLogin('qheroux');
             newCase1 = await apiHelper.createCase(caseData1);
             await apiHelper.apiLogin('qdu');
             newCase2 = await apiHelper.createCase(caseData2);
         });
         it('[DRDMV-16578]: Case Agent consume People Notes Template in People profile', async () => {
             await navigationPage.signOut();
-            await loginPage.login('franz');
+            await loginPage.login('qheroux');
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(newCase1.displayId);
             await viewCasePage.clickRequsterName();
@@ -1576,7 +1576,7 @@ describe('Notes template', () => {
     });
 
     //Covered DefectID-DRDMV-22228
-   describe('[DRDMV-22637,DRDMV-22643,DRDMV-22653]: Verify CKE functionality on Create and Edit People Notes template', async () => {
+    describe('[DRDMV-22637,DRDMV-22643,DRDMV-22653]: Verify CKE functionality on Create and Edit People Notes template', async () => {
         let templateName: string, caseData, newCase, randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
@@ -2410,8 +2410,8 @@ describe('Notes template', () => {
             readAccessMappingData = {
                 "configName": randomString + '1ReadAccessMappingName',
                 "assignedCompany": 'Petramco',
-                "businessUnit": 'Facilities Support',
-                "supportGroup": 'Facilities',
+                "businessUnit": 'Canada Support',
+                "supportGroup": 'CA Support 3',
                 "company": 'Petramco',
                 "priority": "Low",
             }
@@ -2538,7 +2538,7 @@ describe('Notes template', () => {
             await quickCasePo.saveCase();
             await quickCasePo.gotoCaseButton();
             await viewCasePage.clickOnTab('Case Access');
-            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Facilities', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('CA Support 3', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
             await viewCasePage.clickOnTab('Tasks');
             await viewCasePage.clickOnTaskLink(templateData.templateName);
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate('taskNotesTemplate87163');
@@ -2644,7 +2644,7 @@ describe('Notes template', () => {
         });
         it('[DRDMV-22641,DRDMV-22645,DRDMV-22656]: Verify CKE functionality on Create and Edit Task Notes template', async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('qheroux');
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(casetemplatePetramco.templateSummary);
             await viewCasePage.clickOnTaskLink(templateData.templateName);

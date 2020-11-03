@@ -1851,7 +1851,7 @@ class ApiHelper {
         documentLibRecordInstanceJson.fieldInstances[1000000064].value = docLibDetails.category2 ? await apiCoreUtil.getCategoryGuid(docLibDetails.category2) : documentLibRecordInstanceJson.fieldInstances[1000000064].value;
         documentLibRecordInstanceJson.fieldInstances[1000000065].value = docLibDetails.category3 ? await apiCoreUtil.getCategoryGuid(docLibDetails.category3) : documentLibRecordInstanceJson.fieldInstances[1000000065].value;
         documentLibRecordInstanceJson.fieldInstances[450000167].value = docLibDetails.category4 ? await apiCoreUtil.getCategoryGuid(docLibDetails.category4) : documentLibRecordInstanceJson.fieldInstances[450000167].value;
-        documentLibRecordInstanceJson.fieldInstances[450000420].value = docLibDetails.lineOfBusiness ? await constants.LOB[docLibDetails.lineOfBusiness] : documentLibRecordInstanceJson.fieldInstances[450000420].value;
+        documentLibRecordInstanceJson.fieldInstances[450000411].value = docLibDetails.lineOfBusiness ? await constants.LOB[docLibDetails.lineOfBusiness] : documentLibRecordInstanceJson.fieldInstances[450000420].value;
         let data = {
             recordInstance: documentLibRecordInstanceJson,
             1000000351: filePath
