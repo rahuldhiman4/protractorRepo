@@ -444,11 +444,12 @@ describe('Task and Knowledge Console Filter Combinations', () => {
     });
     describe('[DRDMV-23516]: Verify records are fetched on knowledge console Status, Reviewer& Review Status combinations', () => {
         let knowledgeId: string[] = [];
+        let knowledgeArticleData2;
         beforeAll(async () => {
             await apiHelper.apiLogin('sasadmin');
             await apiHelper.updateReviewDueDateRule();
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.addCommonConfig('NEXT_REVIEW_PERIOD', ['1_MINUTE'], 'Petramco');
+            await apiHelper.addCommonConfig('NEXT_REVIEW_PERIOD', ['2_MINUTE'], 'Petramco');
             await apiHelper.deleteApprovalMapping('Knowledge');
             await apiHelper.apiLogin('elizabeth');
 
@@ -458,7 +459,7 @@ describe('Task and Knowledge Console Filter Combinations', () => {
             knowledgeId.push(knowledgeArticleData1.displayId);
             await apiHelper.flagAndUnflagKnowledgeArticle(knowledgeArticleData1.id, "FlagComment1", 1);
 
-            let knowledgeArticleData2 = await apiHelper.createKnowledgeArticle(taskData.ARTICLE_DATA_Combination2);
+             knowledgeArticleData2 = await apiHelper.createKnowledgeArticle(taskData.ARTICLE_DATA_Combination2);
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData2.id, 'Draft');
             knowledgeId.push(knowledgeArticleData2.displayId);
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData2.id, 'SMEReview', 'khardison', 'CA Support 3', 'Petramco');
@@ -470,9 +471,10 @@ describe('Task and Knowledge Console Filter Combinations', () => {
             await utilityGrid.selectLineOfBusiness('Human Resource');
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Reviewer', 'Kadeem Hardison', 'text');
-            await utilityGrid.addFilter('Review Status', 'Due Review Date', 'checkbox');
+            await utilityGrid.addFilter('Review Status', 'Not Reviewed', 'checkbox');
             await utilityGrid.clickRefreshIcon();
             for (let i: number = 1; i < 2; i++) {
+                await utilityGrid.clickRefreshIcon();
                 expect(await utilityGrid.isGridRecordPresent(knowledgeId[i])).toBeTruthy(knowledgeId[i] + ' :Record is not available');
             }
             for (let i: number = 0; i < 1; i++) {
@@ -480,6 +482,8 @@ describe('Task and Knowledge Console Filter Combinations', () => {
             }
         });
         it('[DRDMV-23516]: Verify records are fetched on knowledge console Status, Reviewer& Review Status combinations', async () => {
+            await navigationPage.gotoKnowledgeConsole();
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Flagged', 'Yes', 'checkbox');
             await utilityGrid.addFilter('Assigned Group', 'CA Support 1', 'text');

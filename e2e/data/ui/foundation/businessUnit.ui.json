@@ -70,5 +70,10 @@
         "orgName": "UI-Phylum-BUnit6",
         "relatedOrgId": null,
         "domainTag": "Human Resource"
+    },
+    "PhylumBusinessUnitHRData": {
+        "orgName": "UI-BusinessUnitHR",
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
     }
 }
