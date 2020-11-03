@@ -47,12 +47,12 @@ describe("Task Approval UI Validations", () => {
                 "templateStatus": "Active",
                 "category1": 'Phones',
                 "taskCompany": "Petramco",
-                "buisnessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "buisnessUnit": "United Kingdom Support",
+                "supportGroup": "GB Support 2",
+                "assignee": "qstrong",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United Kingdom Support",
+                "ownerGroup": "GB Support 2"
             }
             autoTaskTemplateData = {
                 "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
@@ -63,11 +63,11 @@ describe("Task Approval UI Validations", () => {
                 "processName": `Case Process 1 ${randomStr}`,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
-                "buisnessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+                "buisnessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi"
             }
             caseData = {
                 "Requester": "Fritz",
@@ -176,7 +176,7 @@ describe("Task Approval UI Validations", () => {
         });
 
         it('[DRDMV-21583]: Verify the task approval details', async () => {
-            await loginPage.login('fritz');
+            await loginPage.login('qstrong');
             await navigationPage.gotoTaskConsole();
             await utilityGrid.searchAndOpenHyperlink(manualTaskId);
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
@@ -208,7 +208,7 @@ describe("Task Approval UI Validations", () => {
             await approvalConsolePage.searchCaseOnApprovalConsole(manualTaskTemplateData.templateSummary, 'Approve');
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('qstrong');
             await navigationPage.gotoTaskConsole();
             await utilityGrid.searchAndOpenHyperlink(manualTaskId);
             expect(await viewTask.getTaskStatusValue()).toBe("In Progress");
