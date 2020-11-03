@@ -1,4 +1,4 @@
-import { $, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, by, element, protractor, ProtractorExpectedConditions, browser } from "protractor";
 import utilCommon from '../../../utils/util.common';
 
 class createNotificationTemplate {
@@ -32,6 +32,10 @@ class createNotificationTemplate {
 
     async selectEvent(value: string): Promise<void> {
         await utilCommon.selectDropDown(this.selectors.eventDropDownGuid, value);
+    }
+
+    async selectNthEvent(value: string, n: number): Promise<void> {
+        await utilCommon.selectNthDropDown(this.selectors.eventDropDownGuid, value, n);
     }
 
     async setTemplateName(value: string): Promise<void> {

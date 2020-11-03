@@ -852,7 +852,6 @@ describe("Actionable Notifications", () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
         });
-
         it('[DRDMV-17006]: Check newly created notification template is actionable', async () => {
             //Create Automated Task Template
             await taskTemplateConsolePage.clickOnAutomationTaskTemplateButton();
@@ -877,7 +876,6 @@ describe("Actionable Notifications", () => {
             await createNotificationEventPage.setDescription('NotificationEvent for Actionable Notification');
             await createNotificationEventPage.saveEventConfig();
         });
-
         it('[DRDMV-17006]: Check newly created notification template is actionable', async () => {
             //Create NotificationTemplate
             await navigationPage.gotoSettingsPage();
@@ -918,7 +916,6 @@ describe("Actionable Notifications", () => {
             await previewCasePo.clickGoToCaseButton();
             caseDisplayId = await viewCasePage.getCaseID();
         });
-
         it('[DRDMV-17006]: Check newly created notification template is actionable', async () => {
             //Attach the Automated Task from Task Template as created above
             await viewCasePage.clickAddTaskButton();
