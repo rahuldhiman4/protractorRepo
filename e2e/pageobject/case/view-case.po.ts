@@ -327,6 +327,7 @@ class ViewCasePage {
             return count >= 1;
         }), 5000);
         await element(by.cssContainingText(this.selectors.addedTaskFromCaseTemplate, taskSummary)).click();
+        await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
     }
 
     async getCaseStatusValue(): Promise<string> {

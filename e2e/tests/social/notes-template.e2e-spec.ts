@@ -71,6 +71,7 @@ describe('Notes template', () => {
         const caseModule = 'Case';
         await browser.get(BWF_BASE_URL);
         await loginPage.login("elizabeth");
+        await utilityGrid.selectLineOfBusiness('Human Resource');
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteApprovalMapping(caseModule);
         userData = {
@@ -1114,6 +1115,7 @@ describe('Notes template', () => {
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
         });
     });
 
@@ -1323,29 +1325,38 @@ describe('Notes template', () => {
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink('NotesTemplateCase1' + randomString);
             await activityTabPo.clickOnRefreshButton();
-            await activityTabPo.clickShowMoreLinkInActivity(1);
-            expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
-            expect(await activityTabPo.isItalicTextDisplayedInActivity(italicText, 1)).toBeTruthy('FailureMsg Italic Text is missing In Activity');
-            expect(await activityTabPo.isUnderlineTextDisplayedInActivity(underLineText, 1)).toBeTruthy('FailureMsg Underline Text is missing In Activity');
-            expect(await activityTabPo.isRightAlignTextDisplayedInActivity(rightAlignText, 1)).toBeTruthy('FailureMsg Right Align Text is missing In Activity');
-            expect(await activityTabPo.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
-            expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
-            expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
+            await activityTabPo.clickShowMoreLinkInActivity(2);
+            expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 2)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
+            expect(await activityTabPo.isItalicTextDisplayedInActivity(italicText, 2)).toBeTruthy('FailureMsg Italic Text is missing In Activity');
+            expect(await activityTabPo.isUnderlineTextDisplayedInActivity(underLineText, 2)).toBeTruthy('FailureMsg Underline Text is missing In Activity');
+            expect(await activityTabPo.isRightAlignTextDisplayedInActivity(rightAlignText, 2)).toBeTruthy('FailureMsg Right Align Text is missing In Activity');
+            expect(await activityTabPo.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 2)).toBeTruthy('FailureMsg Link Text is missing In Activity');
+            expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 2)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
+            expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 2)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
             expect(await ckeditorValidationPo.isTableCaptionDisplayedInCkEditorTextArea('tableSummary', 'new' + randomString)).toBeTruthy('Text is not Left Align In Ck Editor');
             expect(await ckeditorValidationPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('Text is not Left Align In Ck Editor');
+            
+            await viewCasePage.clickOnTab('Case Access');
+            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Case');
+            await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
+            await accessTabPo.selectAccessEntityDropDown('United States Support', 'Select Business Unit');
+            await accessTabPo.selectAccessEntityDropDown('US Support 1', 'Select Support Group');
+            await accessTabPo.clickAssignWriteAccessCheckbox('Support Group');
+            await accessTabPo.clickAccessEntitiyAddButton('Support Group');
+
             await navigationPage.signOut();
             await loginPage.login('qtao');
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink('NotesTemplateCase1' + randomString);
             await activityTabPo.clickOnRefreshButton();
-            await activityTabPo.clickOnShowMore();
-            expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
-            expect(await activityTabPo.isItalicTextDisplayedInActivity(italicText, 1)).toBeTruthy('FailureMsg Italic Text is missing In Activity');
-            expect(await activityTabPo.isUnderlineTextDisplayedInActivity(underLineText, 1)).toBeTruthy('FailureMsg Underline Text is missing In Activity');
-            expect(await activityTabPo.isRightAlignTextDisplayedInActivity(rightAlignText, 1)).toBeTruthy('FailureMsg Right Align Text is missing In Activity');
-            expect(await activityTabPo.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
-            expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
-            expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
+            await activityTabPo.clickShowMoreLinkInActivity(4);
+            expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 4)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
+            expect(await activityTabPo.isItalicTextDisplayedInActivity(italicText, 4)).toBeTruthy('FailureMsg Italic Text is missing In Activity');
+            expect(await activityTabPo.isUnderlineTextDisplayedInActivity(underLineText, 4)).toBeTruthy('FailureMsg Underline Text is missing In Activity');
+            expect(await activityTabPo.isRightAlignTextDisplayedInActivity(rightAlignText, 4)).toBeTruthy('FailureMsg Right Align Text is missing In Activity');
+            expect(await activityTabPo.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 4)).toBeTruthy('FailureMsg Link Text is missing In Activity');
+            expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 4)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
+            expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 4)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
             expect(await ckeditorValidationPo.isTableCaptionDisplayedInCkEditorTextArea('tableSummary', 'new' + randomString)).toBeTruthy('Text is not Left Align In Ck Editor');
             expect(await ckeditorValidationPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('Text is not Left Align In Ck Editor');
         });
