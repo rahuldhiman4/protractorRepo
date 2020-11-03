@@ -4,8 +4,8 @@ import utilGrid from '../../../utils/util.grid';
 class NotificationEventConsolePage {
 
     selectors = {
-        addNotificationEventButton: '[rx-view-component-id="a86ae6d5-e95a-4715-aac0-be26ee77c423"] button',
-        guid: '3f57d36e-dd20-4d34-acac-b568fec6a9d4'
+        addNotificationEventButton: '[rx-view-component-id="8bd6d456-fdf1-4ee4-9832-31f391960627"] button',
+        guid: 'd19cba75-0acd-4a6b-ada7-5c6a2815b271'
     }
 
     async clickAddNotificationEventBtn(): Promise<void> {

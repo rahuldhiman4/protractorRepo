@@ -1,17 +1,17 @@
-import { browser, $ } from "protractor";
+import { browser } from "protractor";
+import apiHelper from '../../api/api.helper';
+import coreApi from '../../api/api.core.util';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import notificationTempGridPage from "../../pageobject/settings/notification-config/console-notification-template.po";
-import editNotificationTemplate from "../../pageobject/settings/notification-config/edit-notification-template.po";
-import { BWF_BASE_URL } from '../../utils/constants';
-import utilityCommon from '../../utils/utility.common';
-import apiHelper from '../../api/api.helper';
-import utilGrid from '../../utils/util.grid';
 import notificationEventConsolePage from '../../pageobject/settings/notification-config/console-notification-event.po';
+import notificationTempGridPage from "../../pageobject/settings/notification-config/console-notification-template.po";
 import createNotificationEventPage from '../../pageobject/settings/notification-config/create-notification-event.po';
 import createNotificationTemplatePage from '../../pageobject/settings/notification-config/create-notification-template.po';
+import editNotificationTemplate from "../../pageobject/settings/notification-config/edit-notification-template.po";
+import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
-import coreApi from '../../api/api.core.util';
+import utilGrid from '../../utils/util.grid';
+import utilityCommon from '../../utils/utility.common';
 
 describe("Notification Template", () => {
     let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -28,7 +28,7 @@ describe("Notification Template", () => {
         if (await coreApi.getNotificationEventGuid(eventName, 'Petramco') == null || undefined) {
             await apiHelper.createNotificationEvent(eventData);
         }
-       
+
     });
 
     afterAll(async () => {
@@ -41,7 +41,7 @@ describe("Notification Template", () => {
         let notificationTemplateName = 'DRDMV-19109_CopiedTemplate';
         it('[DRDMV-19109]: [Copy Notification] - UI behavior when copying a notification template', async () => {
             await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Notification Template - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Notification Template - Business Workflows');
             await expect(notificationTempGridPage.isCopyTemplateButtonDisabled()).toBeTruthy();
             await utilGrid.searchAndSelectGridRecord("Task SLA Missed");
             await notificationTempGridPage.clickCopyTemplate();
@@ -92,7 +92,7 @@ describe("Notification Template", () => {
         await createNotificationTemplatePage.setTemplateName('DRDMV-14062' + randomStr);
         await createNotificationTemplatePage.setDescription('DRDMV-14062' + randomStr);
         await createNotificationTemplatePage.setAlertMessage('Priority is change');
-        await createNotificationTemplatePage.clickOnTab();
+        await createNotificationTemplatePage.clickOnEmailTab();
         await createNotificationTemplatePage.setSubject('Priority is change');
         await editNotificationTemplate.clickRecipientsCheckbox("Assignee's Manager", "BCC");
         await editNotificationTemplate.clickRecipientsCheckbox("External Requester", "TO");
@@ -128,37 +128,43 @@ describe("Notification Template", () => {
     });
 
     //asahitya
-    it('[DRDMV-14061]: Availability of Recipient List on OOB Global Template', async () => {
-        await utilGrid.searchAndOpenHyperlink('New Signature Template');
-        expect(await createNotificationTemplatePage.areRecipientsMatches(["Approvers", "Assigned Group's Manager", "Assignee", "Assignee's Manager", "Assigned Group"])).toBeTruthy('Recipient List of Case Approval Module is not matching');
-        await utilCommon.closeBladeOnSettings();
-        await utilGrid.searchAndOpenHyperlink('Case Watchlist - Status Change');
-        expect(await createNotificationTemplatePage.areRecipientsMatches(["Followers"])).toBeTruthy('Recipient List of Case Watchlist Module is not matching');
-        await utilCommon.closeBladeOnSettings();
-        await utilGrid.searchAndOpenHyperlink('Case Agent Assignment');
-        expect(await createNotificationTemplatePage.areRecipientsMatches(["Assigned Business Unit's Manager", "Assigned Department's Manager", "Assigned Group's Manager", "Assignee", "Assignee's Manager", "Contact", "Contact's Manager", "External Requester", "Requester", "Requester's Manager", "Assigned Business Unit", "Assigned Department", "Assigned Group"])).toBeTruthy('Recipient List of Cases Module is not matching');
-        await utilCommon.closeBladeOnSettings();
-        await utilGrid.searchAndOpenHyperlink('Article Reviewer Assignment');
-        expect(await createNotificationTemplatePage.areRecipientsMatches(["Reviewer", "Assignee", "Assignee's Manager", "Reviewer's Manager"])).toBeTruthy('Recipient List of Knowledge Module is not matching');
-        await utilCommon.closeBladeOnSettings();
-        await utilGrid.searchAndOpenHyperlink('Knowledge Approve');
-        expect(await createNotificationTemplatePage.areRecipientsMatches(["Approvers", "Reviewer", "Assignee", "Assigned Group", "Reviewer Group", "Author"])).toBeTruthy('Recipient List of Knowledge Approval Module is not matching');
-        await utilCommon.closeBladeOnSettings();
-        await utilGrid.searchAndOpenHyperlink('Case SLA Missed');
-        expect(await createNotificationTemplatePage.areRecipientsMatches([])).toBeTruthy('Recipient List of SLA Module is not matching');
-        await utilCommon.closeBladeOnSettings();
-        await utilGrid.searchAndOpenHyperlink('Notes from Activity Feed in Case');
-        expect(await createNotificationTemplatePage.areRecipientsMatches([])).toBeTruthy('Recipient List of Social Module is not matching');
-        await utilCommon.closeBladeOnSettings();
-        await utilGrid.searchAndOpenHyperlink('Task - Approve Template');
-        expect(await createNotificationTemplatePage.areRecipientsMatches(["Approvers", "Assigned Group's Manager", "Assignee", "Assignee's Manager", "Assigned Group"])).toBeTruthy('Recipient List of Task Approval Module is not matching');
-        await utilCommon.closeBladeOnSettings();
-        await utilGrid.searchAndOpenHyperlink('Task Agent Assignment');
-        expect(await createNotificationTemplatePage.areRecipientsMatches(["Assigned Group's Manager", "Assignee", "Assignee's Manager", "Assigned Group"])).toBeTruthy('Recipient List of Tasks Module is not matching');
-        await utilCommon.closeBladeOnSettings();
-        // await utilGrid.searchAndOpenHyperlink('MC Flow Error');
-        // expect(await createNotificationTemplatePage.areRecipientsMatches(["Multi-cloud Admins"])).toBeTruthy('Recipient List of MultiCloud Module is not matching');
-        // await utilCommon.closeBladeOnSettings();
+    describe('[DRDMV-14061]: Availability of Recipient List on OOB Global Template', async () => {
+        it('[DRDMV-14061]: Availability of Recipient List on OOB Global Template', async () => {
+            await utilGrid.searchAndOpenHyperlink('New Signature Template');
+            expect(await createNotificationTemplatePage.areRecipientsMatches(["Approvers", "Assigned Group's Manager", "Assignee", "Assignee's Manager", "Assigned Group"])).toBeTruthy('Recipient List of Case Approval Module is not matching');
+            await utilCommon.closeBladeOnSettings();
+            await utilGrid.searchAndOpenHyperlink('Case Watchlist - Status Change');
+            expect(await createNotificationTemplatePage.areRecipientsMatches(["Followers"])).toBeTruthy('Recipient List of Case Watchlist Module is not matching');
+            await utilCommon.closeBladeOnSettings();
+            await utilGrid.searchAndOpenHyperlink('Case Agent Assignment');
+            expect(await createNotificationTemplatePage.areRecipientsMatches(["Assigned Business Unit's Manager", "Assigned Department's Manager", "Assigned Group's Manager", "Assignee", "Assignee's Manager", "Contact", "Contact's Manager", "External Requester", "Requester", "Requester's Manager", "Assigned Business Unit", "Assigned Department", "Assigned Group"])).toBeTruthy('Recipient List of Cases Module is not matching');
+            await utilCommon.closeBladeOnSettings();
+        });
+        it('[DRDMV-14061]: Availability of Recipient List on OOB Global Template', async () => {
+            await utilGrid.searchAndOpenHyperlink('Article Reviewer Assignment');
+            expect(await createNotificationTemplatePage.areRecipientsMatches(["Reviewer", "Assignee", "Assignee's Manager", "Reviewer's Manager"])).toBeTruthy('Recipient List of Knowledge Module is not matching');
+            await utilCommon.closeBladeOnSettings();
+            await utilGrid.searchAndOpenHyperlink('Knowledge Approve');
+            expect(await createNotificationTemplatePage.areRecipientsMatches(["Approvers", "Reviewer", "Assignee", "Assigned Group", "Reviewer Group", "Author"])).toBeTruthy('Recipient List of Knowledge Approval Module is not matching');
+            await utilCommon.closeBladeOnSettings();
+            await utilGrid.searchAndOpenHyperlink('Case SLA Missed');
+            expect(await createNotificationTemplatePage.areRecipientsMatches([])).toBeTruthy('Recipient List of SLA Module is not matching');
+            await utilCommon.closeBladeOnSettings();
+        });
+        it('[DRDMV-14061]: Availability of Recipient List on OOB Global Template', async () => {
+            await utilGrid.searchAndOpenHyperlink('Notes from Activity Feed in Case');
+            expect(await createNotificationTemplatePage.areRecipientsMatches([])).toBeTruthy('Recipient List of Social Module is not matching');
+            await utilCommon.closeBladeOnSettings();
+            await utilGrid.searchAndOpenHyperlink('Task - Approve Template');
+            expect(await createNotificationTemplatePage.areRecipientsMatches(["Approvers", "Assigned Group's Manager", "Assignee", "Assignee's Manager", "Assigned Group"])).toBeTruthy('Recipient List of Task Approval Module is not matching');
+            await utilCommon.closeBladeOnSettings();
+            await utilGrid.searchAndOpenHyperlink('Task Agent Assignment');
+            expect(await createNotificationTemplatePage.areRecipientsMatches(["Assigned Group's Manager", "Assignee", "Assignee's Manager", "Assigned Group"])).toBeTruthy('Recipient List of Tasks Module is not matching');
+            await utilCommon.closeBladeOnSettings();
+            // await utilGrid.searchAndOpenHyperlink('MC Flow Error');
+            // expect(await createNotificationTemplatePage.areRecipientsMatches(["Multi-cloud Admins"])).toBeTruthy('Recipient List of MultiCloud Module is not matching');
+            // await utilCommon.closeBladeOnSettings();
+        });
     });
 
     it('[DRDMV-14082]: Add new recipient as Individual/Group and availability of fields on Add recipient screen', async () => {
@@ -229,7 +235,7 @@ describe("Notification Template", () => {
             expect(await createNotificationTemplatePage.areRecipientsMatches(["Approvers"])).toBeTruthy('Recipient List of Case Approval Module is not matching');
             await createNotificationTemplatePage.setDescription('Description');
             await createNotificationTemplatePage.setAlertMessage('Sample Alert Text');
-            await createNotificationTemplatePage.clickOnTab();
+            await createNotificationTemplatePage.clickOnEmailTab();
             await createNotificationTemplatePage.setSubject('Sample Subject text');
             await createNotificationTemplatePage.clickOnSaveButton();
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
@@ -270,7 +276,7 @@ describe("Notification Template", () => {
             await createNotificationTemplatePage.selectEmailBasedApprovalToggle(false);
             await createNotificationTemplatePage.setDescription('Description2');
             await createNotificationTemplatePage.setAlertMessage('Sample Alert Text2');
-            await createNotificationTemplatePage.clickOnTab();
+            await createNotificationTemplatePage.clickOnEmailTab();
             await createNotificationTemplatePage.setSubject('Sample Subject text2');
             await createNotificationTemplatePage.clickOnSaveButton();
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
@@ -287,7 +293,7 @@ describe("Notification Template", () => {
             await createNotificationTemplatePage.selectEvent('Email Based Approval');
             await createNotificationTemplatePage.setDescription('Description3');
             await createNotificationTemplatePage.setAlertMessage('Sample Alert Text3');
-            await createNotificationTemplatePage.clickOnTab();
+            await createNotificationTemplatePage.clickOnEmailTab();
             await createNotificationTemplatePage.setSubject('Sample Subject text3');
             await createNotificationTemplatePage.clickOnSaveButton();
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
@@ -319,7 +325,7 @@ describe("Notification Template", () => {
         expect(await createNotificationTemplatePage.areRecipientsMatches(["Approvers"])).toBeTruthy('Recipient List of Case Approval Module is not matching');
         await createNotificationTemplatePage.setDescription('Description');
         await createNotificationTemplatePage.setAlertMessage('Sample Alert Text');
-        await createNotificationTemplatePage.clickOnTab();
+        await createNotificationTemplatePage.clickOnEmailTab();
         await createNotificationTemplatePage.setSubject('Sample Subject text');
         await createNotificationTemplatePage.clickOnSaveButton();
         expect(await utilCommon.isPopUpMessagePresent('ERROR (222107): Template already exists with given Event ,Module and Line of Business combination.')).toBeTruthy();
