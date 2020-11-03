@@ -1204,6 +1204,7 @@ class ApiHelper {
         templateData.processInputValues["EmailMessageBody"] = data.EmailMessageBody;
         templateData.processInputValues["Module"] = "Cases";
         templateData.processInputValues["Source Definition Name"] = "com.bmc.dsm.case-lib:Case";
+        templateData.processInputValues["Line of Business"] = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : templateData.processInputValues["Line of Business"];
         const emailTemplateResponse = await axios.post(
             commandUri,
             templateData
@@ -2641,6 +2642,7 @@ class ApiHelper {
         DOCUMENT_TEMPLATE.processInputValues["Template Name"] = data.templateName;
         DOCUMENT_TEMPLATE.processInputValues.Description = data.description;
         DOCUMENT_TEMPLATE.processInputValues["Document Message Body"] = data.messageBody;
+        DOCUMENT_TEMPLATE.processInputValues["Line of Business"] = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : DOCUMENT_TEMPLATE.processInputValues["Line of Business"];
         let response = await axios.post(
             commandUri,
             DOCUMENT_TEMPLATE

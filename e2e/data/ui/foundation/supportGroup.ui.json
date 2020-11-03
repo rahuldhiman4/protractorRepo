@@ -75,5 +75,10 @@
         "orgName": "UI-Phylum-SuppGrup6",
         "relatedOrgId": null,
         "domainTag": "Human Resource"
+    },
+    "PhylumSuppGrpData": {
+        "orgName": "UI-SupportGroupHR",
+        "relatedOrgId": null,
+        "domainTag": "Human Resource"
     }
 }

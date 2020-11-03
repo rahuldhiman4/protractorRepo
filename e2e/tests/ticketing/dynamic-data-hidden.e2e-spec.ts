@@ -225,6 +225,7 @@ describe('Dynamic Hidden Data', () => {
             await updateStatusBladePo.clickSaveStatus();
             await updateStatusBladePo.changeCaseStatus("Resolved");
             await updateStatusBladePo.setStatusReason('Auto Resolved');
+            await browser.sleep(2000);
             await updateStatusBladePo.clickSaveStatus();
             expect(await utilityCommon.isPopUpMessagePresent("Message not found, [bundleId = Ticketing-AppID, messageNum = 930] Required fields not entered Field1OutsideDRDMV21451")).toBeTruthy();
             await updateStatusBladePo.clickCancelButton();
@@ -300,6 +301,7 @@ describe('Dynamic Hidden Data', () => {
             await previewCasePo.clickGoToCaseButton();
             await viewCasePo.getCaseID()
             await viewCasePo.clickAddTaskButton();
+            await browser.sleep(2000);
             await manageTask.addTaskFromTaskTemplate(templateData.templateName);
             await manageTask.clickTaskLink(templateData.templateSummary);
             await viewTaskPo.clickOnViewCase();
@@ -354,6 +356,7 @@ describe('Dynamic Hidden Data', () => {
             await previewCasePo.clickGoToCaseButton();
             caseId = await viewCasePo.getCaseID();
             await viewCasePo.clickAddTaskButton();
+            await browser.sleep(2000);
             await manageTask.addTaskFromTaskTemplate(templateData.templateName);
             await manageTask.clickTaskLink(templateData.templateSummary);
             await viewTaskPo.clickOnViewCase();
@@ -486,6 +489,7 @@ describe('Dynamic Hidden Data', () => {
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await viewCasePo.clickAddTaskButton();
+            await browser.sleep(2000);
             await manageTask.addTaskFromTaskTemplate(templateData.templateName);
             await manageTask.clickTaskLink(templateData.templateSummary);
             await viewTaskPo.clickOnViewCase();

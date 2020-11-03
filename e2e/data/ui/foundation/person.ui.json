@@ -206,5 +206,35 @@
             "Knowledge Coach",
             "Finance"
         ]
+    },
+    "HumanResouceCaseAgent1": {
+        "firstName": "phylumfHR1",
+        "lastName": "phylumlHR1",
+        "userId": "idphylumHR1",
+        "company": "Phylum",
+        "userPermission": [
+            "Case Business Analyst",
+            "Human Resource"
+        ]
+    },
+    "HumanResouceCaseAgent2": {
+        "firstName": "phylumfHR2",
+        "lastName": "phylumlHR2",
+        "userId": "idphylumHR2",
+        "company": "Phylum",
+        "userPermission": [
+            "Case Business Analyst",
+            "Human Resource"
+        ]
+    },
+    "HumanResouceCaseAgent3": {
+        "firstName": "phylumfHR3",
+        "lastName": "phylumlHR3",
+        "userId": "idphylumHR3",
+        "company": "Phylum",
+        "userPermission": [
+            "Case Business Analyst",
+            "Human Resource"
+        ]
     }
 }

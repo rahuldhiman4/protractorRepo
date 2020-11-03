@@ -668,6 +668,12 @@ describe("Create Case", () => {
             expect(await utilityGrid.isGridColumnSorted('Created date', 'desc')).toBeTruthy("Created date Not Sorted Desecnding");
             expect(await utilityGrid.isGridColumnSorted('Created date', 'asc')).toBeTruthy("Created date Not Sorted Asecnding");
         });
+
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
     });
 
     it('[DRDMV-22772]:Assignment blade should list the agent names which are sorted alphabetically', async () => {
@@ -924,7 +930,7 @@ describe("Create Case", () => {
             await createCaseTemplate.setCaseSummary(caseTemplateSummary2);
             await createCaseTemplate.setCaseStatusValue("Assigned");
             await createCaseTemplate.clickOnChangeAssignmentButton();
-            await changAssignmentOldPage.setAssignee('Petramco', 'United States Support', 'US Support 3', 'Adam Pavlik')
+            await changAssignmentOldPage.setAssignee('Petramco', 'United States Support', 'US Support 3', 'Qadim Katawazi')
             await createCaseTemplate.setAllowCaseReopenValue('No');
             await createCaseTemplate.setTemplateStatusDropdownValue('Active');
             await createCaseTemplate.clickSaveCaseTemplate();

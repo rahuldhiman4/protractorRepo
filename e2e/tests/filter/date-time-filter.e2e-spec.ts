@@ -95,7 +95,7 @@ describe('Date and Time Preset Filter', () => {
             let endDateexactTime1 = endDateTime1[0] + ":" + endDateTime11[1] + " " + endDatetimediffTime1[1];
             let completeEndDate1 = ' - Sep 11, 2017 ' + endDateexactTime1;
             let date2: string[] = [completeEndDate + completeEndDate1];
-            expect(await utilityGrid.isAppliedFilterMatches(date2)).toBeTruthy();
+            expect(await utilityGrid.isAppliedFilterMatches(date2)).toBeTruthy(" Expected Date:" + date2);
 
         });
         it('[DRDMV-23499,DRDMV-23511]: Validation for modified date, created date and target date', async () => {
@@ -119,7 +119,7 @@ describe('Date and Time Preset Filter', () => {
             await utilityGrid.clickFilterField("Target Date");
             await dateTimeSelectorPo.clickEndDateTab();
             await dateTimeSelectorPo.selectPreviousMonthUsingAngularIcon("Feb");
-            await dateTimeSelectorPo.selectPreviousYearUsingAngularIcon(2016);
+            await dateTimeSelectorPo.selectNextYearUsingAngularIcon(2016);
             await dateTimeSelectorPo.selectDateOnCalender(21);
             await dateTimeSelectorPo.selectTimeToggle();
             expect(await dateTimeSelectorPo.getActiveTimeUnit()).toBe('HH');
@@ -177,7 +177,7 @@ describe('Date and Time Preset Filter', () => {
             await dateTimeSelectorPo.selectDateOnCalender(17);
             await dateTimeSelectorPo.selectTimeToggle();
             expect(await dateTimeSelectorPo.getActiveTimeUnit()).toBe('HH');
-            await dateTimeSelectorPo.setHour('7');
+            await dateTimeSelectorPo.setHour('07');
             await dateTimeSelectorPo.setMinute(11);
             await dateTimeSelectorPo.clickMeridianValue("AM");
             expect(await utilityGrid.isNoFilterAppliedError()).toBeTruthy();
@@ -193,9 +193,8 @@ describe('Date and Time Preset Filter', () => {
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter("Assignee", "Al Allbrook", 'test');
             await utilityGrid.addFilter("Status", "Published", 'test');
-            await utilityGrid.addFilter("Created Date", "Jan 19, 2020, 6:52:03 PM", 'date');
             await utilityGrid.clickFilterField("Created Date");
-            await dateTimeSelectorPo.selectPreviousMonthUsingAngularIcon("January");
+            await dateTimeSelectorPo.selectPreviousMonthUsingAngularIcon("Jan");
             await dateTimeSelectorPo.selectPreviousYearUsingAngularIcon(2020);
             await dateTimeSelectorPo.selectDateOnCalender(19);
             await dateTimeSelectorPo.selectTimeToggle();
@@ -210,19 +209,19 @@ describe('Date and Time Preset Filter', () => {
         it('[DRDMV-23517,DRDMV-23518]: Verify records are fetched on knowledge console Knowledge set, Version, template Name and Assigned group combinations', async () => {
             await navigationPage.gotoKnowledgeConsole();
             await utilityGrid.clearFilter();
-            await utilityGrid.addFilter("Assigned Group", "Facilities", 'test');
-            await utilityGrid.addFilter("Category Tier 1", "Facilities", 'test');
-            await utilityGrid.addFilter("Category Tier 2", "Cleaning", 'test');
-            await utilityGrid.addFilter("Category Tier 3", "Internal", 'test');
-            expect(await utilityGrid.isGridRecordPresent('KA-000000000023')).toBeTruthy('KA-000000000023');
+            await utilityGrid.addFilter("Assigned Group", "Employee Relations", 'text');
+            await utilityGrid.addFilter("Category Tier 1", "Total Rewards", 'text');
+            await utilityGrid.addFilter("Category Tier 2", "Benefits", 'text');
+            await utilityGrid.addFilter("Category Tier 3", "Transportation", 'text');
+            expect(await utilityGrid.isGridRecordPresent('KA-000000000005')).toBeTruthy('KA-000000000023');
 
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter("Template Name", "How To", 'test');
             expect(await utilityGrid.isGridRecordPresent('KA-000000000013')).toBeTruthy('KA-000000000013');
 
             await utilityGrid.clearFilter();
-            await utilityGrid.addFilter("Knowledge Set", "Finance", 'test');
-            expect(await utilityGrid.isGridRecordPresent('KA-000000000045')).toBeTruthy('KA-000000000045');
+            await utilityGrid.addFilter("Knowledge Set", "HR", 'test');
+            expect(await utilityGrid.isGridRecordPresent('KA-000000000040')).toBeTruthy('KA-000000000045');
 
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter("Version", "1-2", 'counter');
@@ -320,7 +319,7 @@ describe('Date and Time Preset Filter', () => {
             await utilityGrid.clearFilter();
         });
     });
-    //Pass
+    
     describe('[DRDMV-23496]: Verify records are fetched on task console with Targeted Date, Priority and status combinations', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase1, tempIdLow, tempIdMedium;
@@ -339,7 +338,7 @@ describe('Date and Time Preset Filter', () => {
                 "targetDate": "2020-10-13T11:44:00.000Z",
             };
             let caseData1 = {
-                "Requester": "Fritz",
+                "Requester": "qdu",
                 "Summary": "Test case for inProgress task",
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
@@ -359,7 +358,7 @@ describe('Date and Time Preset Filter', () => {
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.clickFilterField("Target Date");
-            await dateTimeSelectorPo.selectPreviousMonthUsingAngularIcon("october");
+            await dateTimeSelectorPo.selectPreviousMonthUsingAngularIcon("Oct");
             await dateTimeSelectorPo.selectPreviousYearUsingAngularIcon(2020);
             await dateTimeSelectorPo.selectDateOnCalender(13);
             await dateTimeSelectorPo.selectTimeToggle();
@@ -367,6 +366,7 @@ describe('Date and Time Preset Filter', () => {
             await dateTimeSelectorPo.setMinute(14);
             await dateTimeSelectorPo.clickMeridianValue("PM");
             await $('body').sendKeys(protractor.Key.ESCAPE);
+            await utilityGrid.clickRefreshIcon();
         });
         it('[DRDMV-23496]: Verify records are fetched on task console with Targeted Date, Priority and status combinations', async () => {
             expect(await utilityGrid.isGridRecordPresent(tempIdMedium.displayId)).toBeTruthy();
