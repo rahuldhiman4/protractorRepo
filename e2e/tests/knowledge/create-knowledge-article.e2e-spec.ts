@@ -83,8 +83,8 @@ describe('Knowledge Article', () => {
             await createKnowledgePage.clickAssignToMeButton();
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
-            await editKnowledgePage.verifyKnowledgeMetadata('Assignee', 'Qadim Katawazi');
-            await editKnowledgePage.verifyKnowledgeMetadata('Assigned Group', 'Compensation and Benefits');
+            expect (await editKnowledgePage.getKnowledgeMetaDataValue('Assignee')).toBe('Qadim Katawazi');
+            expect (await editKnowledgePage.getKnowledgeMetaDataValue('Assigned Group')).toBe('US Support 3');
         }
         catch (error) {
             throw error;
@@ -96,6 +96,7 @@ describe('Knowledge Article', () => {
     });
 
     it('[DRDMV-19079]: Change Reviewer blade should process properly on KA', async () => {
+        await utilityGrid.selectLineOfBusiness('Human Resource');
         let businessData = businessDataFile['BusinessUnitData'];
         let departmentData = departmentDataFile['DepartmentData'];
         let suppGrpData = supportGrpDataFile['SuppGrpData'];
@@ -162,11 +163,14 @@ describe('Knowledge Article', () => {
         await changeAssignmentBlade.clickOnAssignButton();
         await editKnowledgePage.saveKnowledgeMedataDataChanges();
         let assigneeFullName = personData.firstName + " " + personData.lastName;
-        await editKnowledgePage.verifyKnowledgeMetadata('Assignee', assigneeFullName);
-        await editKnowledgePage.verifyKnowledgeMetadata('Assigned Group', suppGrpData.orgName);
+        expect (await editKnowledgePage.getKnowledgeMetaDataValue('Assignee')).toBe(assigneeFullName);
+        expect (await editKnowledgePage.getKnowledgeMetaDataValue('Assigned Group')).toBe(suppGrpData.orgName);
     });
 
     it('[DRDMV-19081]: Assignment fields is not available on Status Change blade except when Status= SME Review', async () => {
+        await navigationPage.signOut();
+        await loginPage.login('elizabeth');
+        await utilityGrid.selectLineOfBusiness('Human Resource');
         let knowledgeDataFile = require("../../data/ui/knowledge/knowledgeArticle.ui.json")
         let knowledgeData = knowledgeDataFile['DRDMV-19081'];
         await navigationPage.gotoCreateKnowledge();
@@ -206,6 +210,9 @@ describe('Knowledge Article', () => {
     });
 
     it('[DRDMV-19508]: On Create KA, Change Assignment blade should process properly', async () => {
+        await navigationPage.signOut();
+        await loginPage.login('peter');
+        await utilityGrid.selectLineOfBusiness('Human Resource');
         let businessData = businessDataFile['BusinessUnitData'];
         let departmentData = departmentDataFile['DepartmentData'];
         let suppGrpData = supportGrpDataFile['SuppGrpData'];
@@ -288,6 +295,7 @@ describe('Knowledge Article', () => {
             let knowledgeTitle: string = 'Knowledge Template' + randomStr;
             await navigationPage.signOut();
             await loginPage.login('peter');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             await navigationPage.gotoCreateKnowledge();
             await createKnowledgePage.clickOnTemplate('Reference');
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
@@ -311,7 +319,7 @@ describe('Knowledge Article', () => {
             await loginPage.login('peter');
         }
     });
-
+//pass
     it('[DRDMV-5058]: Review article in SME Review status & Approve article', async () => {
         try {
             let knowledgeTitile = 'knowledge5058' + randomStr;
@@ -367,7 +375,7 @@ describe('Knowledge Article', () => {
             await loginPage.login('peter');
         }
     });
-
+//pass
     it('[DRDMV-5059]: Review article in SME Review status & Reject article', async () => {
         try {
             let knowledgeTitile = 'knowledge5059' + randomStr;
@@ -420,7 +428,7 @@ describe('Knowledge Article', () => {
             await loginPage.login('peter');
         }
     });
-
+//pass
     it('[DRDMV-2433]: Assign SME - Reviewer assignment UI validation', async () => {
         try {
             let knowledgeTitile = 'knowledge2433' + randomStr;
@@ -465,9 +473,10 @@ describe('Knowledge Article', () => {
             await loginPage.login('peter');
         }
     });
-
+//pass
     it('[DRDMV-1914]: [Article Creation] Ability to select the knowledge set during article creation', async () => {
         let knowledgeTitle = 'knowledgeCoachUser1914' + randomStr;
+        await utilityGrid.selectLineOfBusiness('Human Resource');
         await navigationPage.gotoKnowledgeConsole();
         await navigationPage.gotoCreateKnowledge();
         expect(await createKnowledgePage.isTemplatePresent('KCS')).toBeTruthy('Template is not present');
@@ -477,15 +486,15 @@ describe('Knowledge Article', () => {
         await createKnowledgePage.clickOnUseSelectedTemplateButton();
         await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeTitle);
         await createKnowledgePage.selectRegionDropDownOption('Australia');
-        await createKnowledgePage.selectCategoryTier1Option('Applications');
-        await createKnowledgePage.selectCategoryTier2Option('Help Desk');
-        await createKnowledgePage.selectCategoryTier3Option('Incident');
+        await createKnowledgePage.selectCategoryTier1Option('Employee Relations');
+        await createKnowledgePage.selectCategoryTier2Option('Compensation');
+        await createKnowledgePage.selectCategoryTier3Option('Bonus');
         await createKnowledgePage.selectSiteDropDownOption('Melbourne');
         await createKnowledgePage.setReferenceValue('reference values are as follows');
         expect(await createKnowledgePage.getKnowledgeArticleTitleValue()).toContain(knowledgeTitle, 'expected Value not present');
-        expect(await createKnowledgePage.getValueOfCategoryTier1()).toContain('Applications', 'value not matched with expected');
-        expect(await createKnowledgePage.getValueOfCategoryTier2()).toContain('Help Desk', 'value not matched with expected');
-        expect(await createKnowledgePage.getValueOfCategoryTier3()).toContain('Incident', 'value not matched with expected');
+        expect(await createKnowledgePage.getValueOfCategoryTier1()).toContain('Employee Relations', 'value not matched with expected');
+        expect(await createKnowledgePage.getValueOfCategoryTier2()).toContain('Compensation', 'value not matched with expected');
+        expect(await createKnowledgePage.getValueOfCategoryTier3()).toContain('Bonus', 'value not matched with expected');
         expect(await createKnowledgePage.isSaveButtonEnabled()).toBeFalsy('Save Button is enabled');
         await createKnowledgePage.selectKnowledgeSet('HR');
         expect(await createKnowledgePage.getKnowledgeSetValue()).toContain('HR', 'expected Value not present');
@@ -497,7 +506,7 @@ describe('Knowledge Article', () => {
         await utilityGrid.searchRecord(knowledgeTitle);
         expect(await knowledgeArticlesConsolePo.isValueDisplayedInGrid('Knowledge Set')).toContain('HR', 'HR not display on Knowledge Console');
     });
-
+//pass
     it('[DRDMV-1783]: [Knowledge Article] Access to the Create Knowledge view (Negative)', async () => {
         try {
             await navigationPage.signOut();
@@ -513,10 +522,11 @@ describe('Knowledge Article', () => {
             await loginPage.login('peter');
         }
     });
-
+//Pass
     it('[DRDMV-2887]: [Knowledge Article] Adding/Modifying location data while creating knowledge articles - site, region', async () => {
         try {
             let knowledgeTitle = 'knowledge2887' + randomStr;
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             await navigationPage.gotoKnowledgeConsole();
             await navigationPage.gotoCreateKnowledge();
             await createKnowledgePage.clickOnTemplate('Reference');
@@ -562,7 +572,7 @@ describe('Knowledge Article', () => {
             await loginPage.login('peter');
         }
     });
-
+//pass
     describe('[DRDMV-1152]: [Permissions] Settings menu for Knowledge Functional Roles', () => {
         it('[DRDMV-1152]: [Permissions] Settings menu for Knowledge Functional Roles', async () => {
             //Validation of Knowledge Coach Settings Permission
@@ -605,7 +615,7 @@ describe('Knowledge Article', () => {
             expect(await navigationPage.isSettingPanelTextMatches("Configuration options not created for these settings.")).toBeTruthy();
         });
     });
-
+//issue
     describe('[DRDMV-2985]: Article creation and possible status changes - Knowledge Publisher & Coach', async () => {
         let KADetails, KACoachDetails, articleDataCoach;
         beforeAll(async () => {
@@ -630,10 +640,10 @@ describe('Knowledge Article', () => {
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
-                "assigneeSupportGroup": "GB Support 1",
-                "assignee": "KMills"
+                "assigneeSupportGroup": "GB Support 2",
+                "assignee": "KMills",
             }
-            await apiHelper.apiLogin("peter");
+            await apiHelper.apiLogin("elizabeth");
             KACoachDetails = await apiHelper.createKnowledgeArticle(articleDataCoach);
         });
         it('[DRDMV-2985]: Article creation and possible status changes - Knowledge Publisher & Coach', async () => {
@@ -684,7 +694,8 @@ describe('Knowledge Article', () => {
         });
         it('[DRDMV-2985]: Article creation and possible status changes - Knowledge Publisher & Coach', async () => {
             await navigationPage.signOut();
-            await loginPage.login('peter');
+            await loginPage.login('elizabeth');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             await navigationPage.switchToApplication(knowledgeManagementApp);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.clearFilter();
@@ -696,7 +707,7 @@ describe('Knowledge Article', () => {
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
             expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Status not Set');
-            await statusBladeKnowledgeArticlePo.setKnowledgeStatusWithReviewerDetails('SME Review', 'Petramco', 'HR Support', 'Compensation and Benefits', 'Peter Kahn')
+            await statusBladeKnowledgeArticlePo.setKnowledgeStatusWithReviewerDetails('SME Review', 'Petramco', 'HR Support', 'Compensation and Benefits', 'Elizabeth Peters')
             await utilityCommon.closePopUpMessage();
             expect(await editKnowledgePage.getStatusValue()).toContain('SME Review', 'Status not Set');
             await navigationPage.gotoKnowledgeConsole(true);
@@ -720,6 +731,7 @@ describe('Knowledge Article', () => {
             await utilityCommon.closePopUpMessage();
             await utilityCommon.closePopUpMessage();
             await navigationPage.gotoKnowledgeConsole(true);
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
             expect(await editKnowledgePage.getStatusValue()).toContain('Retired', 'Status not Set');
             await editKnowledgePage.setClosedKnowledgeStatus('Closed');
@@ -742,7 +754,7 @@ describe('Knowledge Article', () => {
                 "title": `${knowledgeTitile}`,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
                 "assignedCompany": "Petramco",
-                "assigneeBusinessUnit": "United Kingdom Support",
+                "assigneeBusinessUnit": "United States Support",
                 "assigneeSupportGroup": "US Support 1",
                 "assignee": "kayo"
             }
