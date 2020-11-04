@@ -36,7 +36,6 @@ describe('Case Activity CKE', () => {
     describe('[DRDMV-21619]: Verify the Comments posted in activity without notes template', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
 
-        let summary = 'summaryDRDMV21619' + randomStr;
         let addNoteBodyText = 'addNoteBodyTextDRDMV21619' + randomStr;
         let adhocTaskSummary = 'adhocTaskSummaryDRDMV21619' + randomStr;
         let knowledgeArticle = 'knowledgeArticleDRDMV21619' + randomStr;
@@ -49,8 +48,8 @@ describe('Case Activity CKE', () => {
         beforeAll(async () => {
             // Create manual task template
             manualTemplateData = {
-                "templateName": "DRDMV-21617_task template" + summary,
-                "templateSummary": "DRDMV-21617_Manual_task template summary" + summary,
+                "templateName": "DRDMV21619TaskTemplate" + randomStr,
+                "templateSummary": "DRDMV21619ManualTaskTemplateSummary" + randomStr,
                 "templateStatus": "Active",
                 "taskCompany": '- Global -',
                 "ownerCompany": "Petramco",
@@ -62,11 +61,11 @@ describe('Case Activity CKE', () => {
 
             // Create automated task template
             autoTemplateData = {
-                "templateName": "DRDMV-21617 auto task template" + summary,
-                "templateSummary": "DRDMV-21617 auto task template summary" + summary,
+                "templateName": "DRDMV21619AutoTaskTemplate" + randomStr,
+                "templateSummary": "DRDMV21619AutoTaskTemplateSummary" + randomStr,
                 "templateStatus": "Active",
                 "processBundle": "com.bmc.dsm.case-lib",
-                "processName": `Case Process ${summary}`,
+                "processName": `Case Process ${randomStr}`,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "Canada Support",
@@ -76,8 +75,8 @@ describe('Case Activity CKE', () => {
 
             // For External
             externalTemplateData = {
-                "templateName": "DRDMV-21617 external task template name" + summary,
-                "templateSummary": "DRDMV-21617 external task template summary" + summary,
+                "templateName": "DRDMV21619ExternalTaskTemplateName" + randomStr,
+                "templateSummary": "DRDMV21619ExternalTaskTemplateSummary" + randomStr,
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
@@ -89,7 +88,7 @@ describe('Case Activity CKE', () => {
             // Create Case
             let caseData = {
                 "Requester": "qtao",
-                "Summary": "DRDMV-21617_TC_2",
+                "Summary": "DRDMV21619TC2",
                 "Assigned Company": "Petramco",
                 "Business Unit": "Canada Support",
                 "Support Group": "CA Support 1",
@@ -725,7 +724,6 @@ describe('Case Activity CKE', () => {
     describe('[DRDMV-21620]: Verify the Comments posted in activity with notes template', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let notesTemplateNameRandStr = 'notesTemplateDRDMV21620' + randomStr;
-        let summary = 'summaryDRDMV21620' + randomStr;
         let adhocTaskSummary = 'adhocTaskSummaryDRDMV21620' + randomStr;
         let knowledgeArticle = 'knowledgeArticleDRDMV21620' + randomStr;
         let manualTemplateData;
@@ -742,8 +740,8 @@ describe('Case Activity CKE', () => {
             await apiHelper.apiLogin('qkatawazi');
             // Create manual task template
             manualTemplateData = {
-                "templateName": "DRDMV-21620 template" + summary,
-                "templateSummary": "DRDMV-21620_Manual_task template summary" + summary,
+                "templateName": "DRDMV21620Template" + randomStr,
+                "templateSummary": "DRDMV21620ManualTaskTemplateSummary" + randomStr,
                 "templateStatus": "Active",
                 "taskCompany": '- Global -',
                 "ownerCompany": "Petramco",
@@ -755,11 +753,11 @@ describe('Case Activity CKE', () => {
 
             // Create automated task template
             autoTemplateData = {
-                "templateName": "DRDMV-21620 auto task template" + summary,
-                "templateSummary": "DRDMV-21620 auto task template summary" + summary,
+                "templateName": "DRDMV21620AutoTaskTemplate" + randomStr,
+                "templateSummary": "DRDMV21620AutoTaskTemplateSummary" + randomStr,
                 "templateStatus": "Active",
                 "processBundle": "com.bmc.dsm.case-lib",
-                "processName": `Case Process ${summary}`,
+                "processName": `Case Process ${randomStr}`,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "Canada Support",
@@ -769,8 +767,8 @@ describe('Case Activity CKE', () => {
 
             // For External
             externalTemplateData = {
-                "templateName": "DRDMV-21620 external task template name" + summary,
-                "templateSummary": "DRDMV-21620 external task template summary" + summary,
+                "templateName": "DRDMV21620ExternalTaskTemplateName" + randomStr,
+                "templateSummary": "DRDMV21620ExternalTaskTemplateSummary" + randomStr,
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
