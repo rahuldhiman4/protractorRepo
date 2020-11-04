@@ -19,7 +19,7 @@ class EditKnowledgePage {
         reviewPendingBtn: '[rx-view-component-id="f0cf7f67-da22-4149-a54d-ec3b95fe05e6"] button',
         editLinkKnowledgeMetadata: '[rx-view-component-id="56cc9627-6ef9-46f8-9b76-728349193ed2"] .float-right button',
         saveBtnEditMetadata: '[rx-view-component-id="15dcacfb-8cb2-49b7-a5db-fe0e16b311dc"] button',
-        knowledgeMetadataSection: '[rx-view-component-id="6cdbaf54-4c29-4ca0-ab73-aa165234f9ed"] .d-textfield',
+        knowledgeMetadataSection: '[rx-view-component-id="56cc9627-6ef9-46f8-9b76-728349193ed2"] label',
         saveButtonONKA: '[rx-view-component-id="813f61fe-28db-4d22-bfa5-4055e8a583fc"] button',
         editRegionGuid: 'd5c6cfef-2d53-48df-a03a-1a3e8381eef5',
         editSiteGuid: 'aa218b2b-4fa3-4525-82f3-3e0f9bfc4193',
@@ -48,7 +48,7 @@ class EditKnowledgePage {
         categoryTier3Guid: 'f2703b24-f357-46f7-83bc-e216f6d33cb0',
         regionGuid: '6c3548bc-bd52-4da6-b365-f546ca7bd744',
         siteGuid: '6c3548bc-bd52-4da6-b365-f546ca7bd744',
-        uploadAttachmentField : '[rx-view-component-id="1f42f6d7-99cc-4c07-9249-94172d98d526"] input[type="file"]',
+        uploadAttachmentField: '[rx-view-component-id="1f42f6d7-99cc-4c07-9249-94172d98d526"] input[type="file"]',
         closedTip: '.bwf-attachment-container__remove .d-icon-cross',
         closedStatusChangeGuid: 'b71875a3-b23a-4fc4-8f0f-0e29f2e6eb74',
         changeAssignment: '[rx-view-component-id="3da1754d-3c41-4b04-9e1c-f5f5a6b3226f"] button',
@@ -79,7 +79,7 @@ class EditKnowledgePage {
     async setKnowledgeStatusAndVerifyAssignmentNotAppear(newStatus: string): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusChange)));
         await $(this.selectors.statusChange).click();
-        await utilityCommon.selectDropDown(this.selectors.statusChangeDrpDwnGuid, newStatus);      
+        await utilityCommon.selectDropDown(this.selectors.statusChangeDrpDwnGuid, newStatus);
         await $(this.selectors.statusSaveBtn).click();
     }
 
@@ -110,14 +110,12 @@ class EditKnowledgePage {
         await $(this.selectors.saveBtnEditMetadata).click();
     }
 
-    async verifyKnowledgeMetadata(fldName: String, fldVal: String): Promise<void> {
+    async getKnowledgeMetaDataValue(fldName: string): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.knowledgeMetadataSection)));
         let fldsCount = await $$(this.selectors.knowledgeMetadataSection).count();
         for (let i = 0; i < fldsCount; i++) {
-            let elem = await $$(this.selectors.knowledgeMetadataSection).get(i);
-            if (await elem.$('.d-textfield__item').getText() == fldName) {
-                expect(await elem.$('.d-textfield__rx-value').getText()).toBe(fldVal);
-                break;
+            if (await $$(this.selectors.knowledgeMetadataSection).get(i).getText() == fldName) {
+                return await $$('[rx-view-component-id="56cc9627-6ef9-46f8-9b76-728349193ed2"] .read-only-content').get(i).getAttribute("title");
             }
         }
     }
@@ -158,7 +156,7 @@ class EditKnowledgePage {
 
     async clickAssignToMeReviewerBlade(): Promise<void> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.assigneToMeReviewerAssign)));
-         await $(this.selectors.assigneToMeReviewerAssign).click();
+        await $(this.selectors.assigneToMeReviewerAssign).click();
     }
 
     async isReviewerCompanyFieldDisbaledOnStatusChangeBlade(): Promise<Boolean> {
@@ -213,8 +211,8 @@ class EditKnowledgePage {
     async getSelectedFieldValue(fieldName: string): Promise<string> {
         let fieldLocator = await $$('adapt-select');
         let fieldValue: string = undefined;
-        for(let i:number =0; i< fieldLocator.length; i++) {
-            if(await fieldLocator[i].$('.form-control-label span').getText()==fieldName) {
+        for (let i: number = 0; i < fieldLocator.length; i++) {
+            if (await fieldLocator[i].$('.form-control-label span').getText() == fieldName) {
                 fieldValue = await fieldLocator[i].$('button').getText();
             }
         }
@@ -347,28 +345,28 @@ class EditKnowledgePage {
         await $(this.selectors.uploadAttachmentField).sendKeys(absPathArray.join('\n'));
     }
 
-    async removeAttachment(): Promise<void> {
+    async removeAttachment(): Promise<void> {
         await $(this.selectors.closedTip).click();
     }
 
     async removeCategoryTier1(): Promise<void> {
-        await utilityCommon.clearDropDown(this.selectors.categoryTier1Guid,'None');
+        await utilityCommon.clearDropDown(this.selectors.categoryTier1Guid, 'None');
     }
-    
+
     async removeCategoryTier2(): Promise<void> {
-        await utilityCommon.clearDropDown(this.selectors.categoryTier2Guid,'None');
+        await utilityCommon.clearDropDown(this.selectors.categoryTier2Guid, 'None');
     }
-    
+
     async removeCategoryTier3(): Promise<void> {
-        await utilityCommon.clearDropDown(this.selectors.categoryTier3Guid,'None');
+        await utilityCommon.clearDropDown(this.selectors.categoryTier3Guid, 'None');
     }
 
     async removeSiteValue(): Promise<void> {
-        await utilityCommon.clearDropDown('ff94cecf-1b32-46c2-a207-cd3e426d52f7','Clear');
+        await utilityCommon.clearDropDown('ff94cecf-1b32-46c2-a207-cd3e426d52f7', 'Clear');
     }
 
     async removeRegionValue(): Promise<void> {
-        await utilityCommon.clearDropDown('6c3548bc-bd52-4da6-b365-f546ca7bd744','Clear');
+        await utilityCommon.clearDropDown('6c3548bc-bd52-4da6-b365-f546ca7bd744', 'Clear');
     }
 }
 

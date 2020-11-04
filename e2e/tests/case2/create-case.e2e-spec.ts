@@ -42,11 +42,6 @@ describe("Create Case", () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
-        await apiHelper.apiLogin('qkatawazi');
-        await apiHelper.addCommonConfig('RESOLUTION_CODE_MANDATORY', [true], 'Petramco');
-        await apiHelper.addCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY', [true], 'Petramco');
-        await apiHelper.addCommonConfig('RESOLUTION_CODE_MANDATORY', [true], '- Global -');
-        await apiHelper.addCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY', [true], '- Global -');
     });
 
     afterAll(async () => {
@@ -131,7 +126,7 @@ describe("Create Case", () => {
             expect(await viewCasePage.getTextOfStatus()).toBe('Closed');
         });
         afterAll(async () => {
-            await utilityCommon.closeAllBlades(); 
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         });
@@ -805,68 +800,6 @@ describe("Create Case", () => {
         });
     });
 
-    describe('[DRDMV-21688,DRDMV-21689]:Create a Company specific Configuration for Resolution Code/Description and Check on Case', async () => {
-        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        it('[DRDMV-21688,DRDMV-21689]:Create a Company specific Configuration for Resolution Code/Description and Check on Case', async () => {
-            await navigationPage.gotoCreateCase();
-            await createCasePage.selectRequester('adam');
-            await createCasePage.setSummary('Summary' + randomStr);
-            await createCasePage.clickAssignToMeButton();
-            await createCasePage.clickSaveCaseButton();
-            await previewCasePo.clickGoToCaseButton();
-            await updateStatusBladePo.changeCaseStatus('In Progress');
-            await updateStatusBladePo.clickSaveStatus();
-            await updateStatusBladePo.changeCaseStatus('Resolved');
-            expect(await updateStatusBladePo.isRequiredTagToResolutionCode()).toBeTruthy('FailureMsg: Required Tab for Resolution Code is missing');
-            expect(await updateStatusBladePo.isRequiredTagToResolutionDescription()).toBeTruthy('FailureMsg: Required Tab for Resolution Code is missing');
-            expect(await updateStatusBladePo.isSaveUpdateStatusButtonEnabled()).toBeFalsy('FailureMsg: Save button is not enabled');
-            await updateStatusBladePo.clickCancelButton();
-            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
-            await apiHelper.apiLogin('qkatawazi');
-            await apiHelper.deleteCommonConfig('RESOLUTION_CODE_MANDATORY', 'Petramco');
-            await apiHelper.deleteCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY', 'Petramco');
-            await updateStatusBladePo.changeCaseStatus('Resolved');
-            expect(await updateStatusBladePo.isRequiredTagToResolutionCode()).toBeTruthy('FailureMsg: Required Tab for Resolution Code is missing');
-            expect(await updateStatusBladePo.isRequiredTagToResolutionDescription()).toBeTruthy('FailureMsg: Required Tab for Resolution Code is missing');
-            expect(await updateStatusBladePo.isSaveUpdateStatusButtonEnabled()).toBeFalsy('FailureMsg: Save button is not enabled');
-            await updateStatusBladePo.setStatusReason('Auto Resolved');
-            await updateStatusBladePo.selectResolutionCode('Report Delivered');
-            await updateStatusBladePo.setResolutionDescription("CaseResolved" + randomStr);
-            await updateStatusBladePo.clickSaveStatus();
-            await utilityCommon.closePopUpMessage();
-            expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
-            expect(await viewCasePage.getResolutionCodeValue()).toBe('Report Delivered');
-            expect(await viewCasePage.getResolutionDescription()).toBe("CaseResolved" + randomStr);
-        });
-        it('[DRDMV-21688,DRDMV-21689]:Create a Company specific Configuration for Resolution Code/Description and Check on Case', async () => {
-            await navigationPage.gotoCreateCase();
-            await createCasePage.selectRequester('adam');
-            await createCasePage.setSummary('Summary2' + randomStr);
-            await createCasePage.clickAssignToMeButton();
-            await createCasePage.clickSaveCaseButton();
-            await previewCasePo.clickGoToCaseButton();
-            await updateStatusBladePo.changeCaseStatus('In Progress');
-            await updateStatusBladePo.clickSaveStatus();
-            await utilityCommon.closePopUpMessage();
-            await updateStatusBladePo.changeCaseStatus('Resolved');
-            await updateStatusBladePo.setStatusReason('Auto Resolved');
-            expect(await updateStatusBladePo.isSaveUpdateStatusButtonEnabled()).toBeTruthy('FailureMsg: Save button is not enabled');
-            await updateStatusBladePo.clickSaveStatus();
-            await utilityCommon.closePopUpMessage();
-            expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
-        });
-        afterAll(async () => {
-            await apiHelper.apiLogin('qkatawazi');
-            await apiHelper.deleteCommonConfig('RESOLUTION_CODE_MANDATORY', 'Petramco');
-            await apiHelper.deleteCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY', 'Petramco');
-            await apiHelper.deleteCommonConfig('RESOLUTION_CODE_MANDATORY', '- Global -');
-            await apiHelper.deleteCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY', '- Global -');
-            await utilityCommon.closeAllBlades();
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
-        });
-    });
-
     describe('[DRDMV-9052]: [Case] Source field on Case details/Case Workspace', async () => {
         let caseDataForEmail, caseDataForDwp, caseIdForEmail, caseIdForDWP
         beforeAll(async () => {
@@ -900,7 +833,7 @@ describe("Create Case", () => {
             expect(await utilityGrid.isGridRecordPresent(caseIdForEmail.displayId)).toBeTruthy();
         });
     });
-  
+
     //ankagraw
     describe('[DRDMV-16081]: Verify allow case reopen tag in case template', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -989,7 +922,7 @@ describe("Create Case", () => {
             await loginPage.login("qkatawazi");
         });
     });
-   
+
     //ankagraw
     describe('[DRDMV-12061]: [ Task ] - Verify create case with Global task template having assignment', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -1048,7 +981,7 @@ describe("Create Case", () => {
                 "lastName": "Psilon",
                 "userId": "DRDMV-12061",
                 "company": "Psilon",
-                "userPermission": ["Case Business Analyst","Human Resource"]
+                "userPermission": ["Case Business Analyst", "Human Resource"]
             }
             await apiHelper.createNewUser(userData);
             await apiHelper.associatePersonToCompany(userData.userId, "Psilon");
@@ -1275,6 +1208,75 @@ describe("Create Case", () => {
         });
 
         afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+    });
+
+    describe('[DRDMV-21688,DRDMV-21689]:Create a Company specific Configuration for Resolution Code/Description and Check on Case', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        beforeAll(async () => {
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.addCommonConfig('RESOLUTION_CODE_MANDATORY', [true], 'Petramco');
+            await apiHelper.addCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY', [true], 'Petramco');
+            await apiHelper.addCommonConfig('RESOLUTION_CODE_MANDATORY', [true], '- Global -');
+            await apiHelper.addCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY', [true], '- Global -');
+        });
+        it('[DRDMV-21688,DRDMV-21689]:Create a Company specific Configuration for Resolution Code/Description and Check on Case', async () => {
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester('adam');
+            await createCasePage.setSummary('Summary' + randomStr);
+            await createCasePage.clickAssignToMeButton();
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.clickSaveStatus();
+            await updateStatusBladePo.changeCaseStatus('Resolved');
+            expect(await updateStatusBladePo.isRequiredTagToResolutionCode()).toBeTruthy('FailureMsg: Required Tab for Resolution Code is missing');
+            expect(await updateStatusBladePo.isRequiredTagToResolutionDescription()).toBeTruthy('FailureMsg: Required Tab for Resolution Code is missing');
+            expect(await updateStatusBladePo.isSaveUpdateStatusButtonEnabled()).toBeFalsy('FailureMsg: Save button is not enabled');
+            await updateStatusBladePo.clickCancelButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.deleteCommonConfig('RESOLUTION_CODE_MANDATORY', 'Petramco');
+            await apiHelper.deleteCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY', 'Petramco');
+            await updateStatusBladePo.changeCaseStatus('Resolved');
+            expect(await updateStatusBladePo.isRequiredTagToResolutionCode()).toBeTruthy('FailureMsg: Required Tab for Resolution Code is missing');
+            expect(await updateStatusBladePo.isRequiredTagToResolutionDescription()).toBeTruthy('FailureMsg: Required Tab for Resolution Code is missing');
+            expect(await updateStatusBladePo.isSaveUpdateStatusButtonEnabled()).toBeFalsy('FailureMsg: Save button is not enabled');
+            await updateStatusBladePo.setStatusReason('Auto Resolved');
+            await updateStatusBladePo.selectResolutionCode('Report Delivered');
+            await updateStatusBladePo.setResolutionDescription("CaseResolved" + randomStr);
+            await updateStatusBladePo.clickSaveStatus();
+            await utilityCommon.closePopUpMessage();
+            expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
+            expect(await viewCasePage.getResolutionCodeValue()).toBe('Report Delivered');
+            expect(await viewCasePage.getResolutionDescription()).toBe("CaseResolved" + randomStr);
+        });
+        it('[DRDMV-21688,DRDMV-21689]:Create a Company specific Configuration for Resolution Code/Description and Check on Case', async () => {
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester('adam');
+            await createCasePage.setSummary('Summary2' + randomStr);
+            await createCasePage.clickAssignToMeButton();
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.clickSaveStatus();
+            await utilityCommon.closePopUpMessage();
+            await updateStatusBladePo.changeCaseStatus('Resolved');
+            await updateStatusBladePo.setStatusReason('Auto Resolved');
+            expect(await updateStatusBladePo.isSaveUpdateStatusButtonEnabled()).toBeTruthy('FailureMsg: Save button is not enabled');
+            await updateStatusBladePo.clickSaveStatus();
+            await utilityCommon.closePopUpMessage();
+            expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
+        });
+        afterAll(async () => {
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.deleteCommonConfig('RESOLUTION_CODE_MANDATORY', 'Petramco');
+            await apiHelper.deleteCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY', 'Petramco');
+            await apiHelper.deleteCommonConfig('RESOLUTION_CODE_MANDATORY', '- Global -');
+            await apiHelper.deleteCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY', '- Global -');
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
