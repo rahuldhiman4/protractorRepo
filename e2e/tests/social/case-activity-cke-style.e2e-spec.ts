@@ -31,7 +31,6 @@ describe('Case Activity CKE Styling', () => {
     describe('[DRDMV-21617,DRDMV-21618]: Search and UI Validation of document library search view', async () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
 
-        let summary = 'summaryDRDMV21617' + randomStr;
         let addNoteBodyText = 'addNoteBodyTextDRDMV21617' + randomStr;
         let adhocTaskSummary = 'adhocTaskSummaryDRDMV21617' + randomStr;
         let knowledgeArticle = 'knowledgeArticleDRDMV21617' + randomStr;
@@ -44,8 +43,8 @@ describe('Case Activity CKE Styling', () => {
         beforeAll(async () => {
             // Create manual task template
             manualTemplateData = {
-                "templateName": "DRDMV-21617_task template" + summary,
-                "templateSummary": "DRDMV-21617_Manual_task template summary" + summary,
+                "templateName": "DRDMV21617TaskTemplate" + randomStr,
+                "templateSummary": "DRDMV21617ManualTaskTemplateSummary" + randomStr,
                 "templateStatus": "Active",
                 "taskCompany": '- Global -',
                 "ownerCompany": "Petramco",
@@ -57,11 +56,11 @@ describe('Case Activity CKE Styling', () => {
 
             // Create automated task template
             autoTemplateData = {
-                "templateName": "DRDMV-21617 auto task template" + summary,
-                "templateSummary": "DRDMV-21617 auto task template summary" + summary,
+                "templateName": "DRDMV21617AutoTaskTemplate" + randomStr,
+                "templateSummary": "DRDMV21617AutoTaskTemplateSummary" + randomStr,
                 "templateStatus": "Active",
                 "processBundle": "com.bmc.dsm.case-lib",
-                "processName": `Case Process ${summary}`,
+                "processName": `Case Process ${randomStr}`,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "Canada Support",
@@ -71,8 +70,8 @@ describe('Case Activity CKE Styling', () => {
 
             // For External
             externalTemplateData = {
-                "templateName": "DRDMV-21617 external task template name" + summary,
-                "templateSummary": "DRDMV-21617 external task template summary" + summary,
+                "templateName": "DRDMV21617ExternalTaskTemplateName" + randomStr,
+                "templateSummary": "DRDMV21617ExternalTaskTemplateSummary" + randomStr,
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
@@ -84,7 +83,7 @@ describe('Case Activity CKE Styling', () => {
             // Create Case
             let caseData = {
                 "Requester": "qtao",
-                "Summary": "DRDMV-21617_TC",
+                "Summary": "DRDMV21617TC",
                 "Assigned Company": "Petramco",
                 "Business Unit": "Canada Support",
                 "Support Group": "CA Support 1",

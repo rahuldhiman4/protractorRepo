@@ -363,8 +363,8 @@ describe('Case Activity', () => {
                 "templateStatus": "Active",
                 "taskCompany": '- Global -',
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "Canada Support",
+                "ownerGroup": "CA Support 3"
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createManualTaskTemplate(manualTemplateData);
