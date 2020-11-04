@@ -392,19 +392,19 @@ describe("Task Self Approval Tests", () => {
                 "templateStatus": "Active",
                 "priority": "Low",
                 "taskCompany": 'Petramco',
-                "businessUnit": "United Kingdom Support",
-                "supportGroup": "GB Support 2",
-                "assignee": "qstrong",
+                "businessUnit": "Australia Support",
+                "supportGroup": "AU Support 1",
+                "assignee": "qliu",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "United Kingdom Support",
-                "ownerGroup": "GB Support 2"
+                "ownerBusinessUnit": "Australia Support",
+                "ownerGroup": "AU Support 1"
             }
             await apiHelper.apiLogin('qkatawazi');
             caseTemplate = await apiHelper.createCaseTemplate(caseTemplateData);
             manualTaskTemplate = await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
             await apiHelper.associateCaseTemplateWithOneTaskTemplate(caseTemplate.displayId, manualTaskTemplate.displayId);
 
-            await apiHelper.apiLogin('qstrong');
+            await apiHelper.apiLogin('qliu');
             caseTemplate1 = await apiHelper.createCaseTemplate(caseTemplateData1);
             manualTaskTemplate1 = await apiHelper.createManualTaskTemplate(manualTaskTemplateData1);
             await apiHelper.associateCaseTemplateWithOneTaskTemplate(caseTemplate1.displayId, manualTaskTemplate1.displayId);
@@ -463,7 +463,7 @@ describe("Task Self Approval Tests", () => {
         });
 
         it('[DRDMV-22951]:Toggle False, task created without template, task should NOT go in Approval', async () => {
-            await apiHelper.apiLogin('qstrong');
+            await apiHelper.apiLogin('qliu');
             let caseData = {
                 "Requester": "qdu",
                 "Summary": "Toggle False, case without template" + "_" + randomStr,
@@ -674,12 +674,12 @@ describe("Task Self Approval Tests", () => {
                 "category1": 'Facilities',
                 "category2": 'Kitchen',
                 "taskCompany": "Petramco",
-                "buisnessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "buisnessUnit": "United Kingdom Support",
+                "supportGroup": "GB Support 2",
+                "assignee": "qstrong",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United Kingdom Support",
+                "ownerGroup": "GB Support 2"
             }
 
             await apiHelper.apiLogin('qkatawazi');
@@ -689,7 +689,7 @@ describe("Task Self Approval Tests", () => {
             // Create Approval Flow through API
             let approvalFlows = {
                 "flowName": 'Approval Flow1' + randomStr,
-                "approver": "U:qliu;U:Fritz",
+                "approver": "U:qliu;U:qstrong",
                 "isLevelUp": false,
                 "qualification": "'Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.bccb0487dc2fab9e5052c16c67f647df8ce68a989fd53a4999763c5a336e5b79c83b8ba8108907851a28e035b87c73ae2f086df65912d77eff8e21299d90c32c.304405421} AND 'Category Tier 2' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.8c700e7edba91d3091aed763ab1c3c0bcf1c44c8c8776d53fa6bc76b6ff78bb48f106c210f41c330a2c42af0daab956847e9712a4a8822b8c571e5b97eec1bf5.304405421}",
                 "precedence": 0,
@@ -719,7 +719,7 @@ describe("Task Self Approval Tests", () => {
                 "Origin": "Agent",
                 "Case Template ID": caseTemplate.displayId
             }
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qstrong');
             let newCase = await apiHelper.createCase(caseData);
             caseId = newCase.displayId;
 
@@ -754,7 +754,7 @@ describe("Task Self Approval Tests", () => {
 
         it('[DRDMV-22396,DRDMV-22397]: Approve the task with approver and check the approver details on task view', async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('qstrong');
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(automatedTaskDisplayId);
@@ -801,7 +801,7 @@ describe("Task Self Approval Tests", () => {
 
         it('[DRDMV-22396,DRDMV-22397]: Verify the task approver details on task view for the user who is submitter of task but not belongs to approval configs', async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('qstrong');
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(automatedTaskDisplayId);
@@ -847,12 +847,12 @@ describe("Task Self Approval Tests", () => {
                 "category1": 'Facilities',
                 "category2": 'Kitchen',
                 "taskCompany": "Petramco",
-                "buisnessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "buisnessUnit": "United Kingdom Support",
+                "supportGroup": "GB Support 2",
+                "assignee": "qstrong",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United Kingdom Support",
+                "ownerGroup": "GB Support 2"
             }
 
             await apiHelper.apiLogin('qkatawazi');
@@ -862,7 +862,7 @@ describe("Task Self Approval Tests", () => {
             // Create Approval Flow through API
             let approvalFlows = {
                 "flowName": 'Approval Flow1' + randomStr,
-                "approver": "U:qliu;U:Fritz",
+                "approver": "U:qliu;U:qstrong",
                 "isLevelUp": false,
                 "qualification": "'Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.bccb0487dc2fab9e5052c16c67f647df8ce68a989fd53a4999763c5a336e5b79c83b8ba8108907851a28e035b87c73ae2f086df65912d77eff8e21299d90c32c.304405421} AND 'Category Tier 2' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.8c700e7edba91d3091aed763ab1c3c0bcf1c44c8c8776d53fa6bc76b6ff78bb48f106c210f41c330a2c42af0daab956847e9712a4a8822b8c571e5b97eec1bf5.304405421}",
                 "precedence": 0,
@@ -905,7 +905,7 @@ describe("Task Self Approval Tests", () => {
                 "Origin": "Agent",
                 "Case Template ID": caseTemplate.displayId
             }
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qstrong');
             let newCase = await apiHelper.createCase(caseData);
             caseId = newCase.displayId;
 
@@ -943,9 +943,9 @@ describe("Task Self Approval Tests", () => {
             expect(await showApproversBladePo.getApproversTabLabel('Approval Decision')).toContain('Approval Decision (0)');
             expect(await showApproversBladePo.getApprovalsHelpTextOnShowApproversBlade()).toContain('One of following people must approve this case:');
             expect(await showApproversBladePo.getApproversCount()).toBe(2);
-            expect(await showApproversBladePo.getApproversName('Fritz Schulz')).toBeTruthy('Approver not present');
+            expect(await showApproversBladePo.getApproversName('Quin Strong')).toBeTruthy('Approver not present');
             expect(await showApproversBladePo.getApproversName('RA3 Liu')).toBeTruthy('Approver not present');
-            expect(await showApproversBladePo.isApproverPersonIconDisplayed('Fritz Schulz')).toBeTruthy('Approver Person Icon is not displayed');
+            expect(await showApproversBladePo.isApproverPersonIconDisplayed('Quin Strong')).toBeTruthy('Approver Person Icon is not displayed');
             expect(await showApproversBladePo.isAwaitingApproverIconDisplayed()).toBeTruthy('Awaiting approver icon is not displayed');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompany('Petramco')).toBeTruthy('Approver Company is not displayed');
@@ -957,7 +957,7 @@ describe("Task Self Approval Tests", () => {
 
         it('[DRDMV-22264]: Verify task approval precedence given to company specific mapping', async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('qstrong');
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(automatedTaskDisplayId);
@@ -977,7 +977,7 @@ describe("Task Self Approval Tests", () => {
             expect(await showApproversBladePo.getApproversTabLabelFromActivity('Pending Approval')).toContain('Pending Approval (0)');
             expect(await showApproversBladePo.getApproversTabLabelFromActivity('Approval Decision')).toContain('Approval Decision (1)');
             expect(await showApproversBladePo.getApproversCountFromActivity()).toBe(2);
-            expect(await showApproversBladePo.getApproversNameFromActivity('Fritz Schulz')).toBeTruthy('Approver not present');
+            expect(await showApproversBladePo.getApproversNameFromActivity('Quin Strong')).toBeTruthy('Approver not present');
             expect(await showApproversBladePo.getApproversNameFromActivity('RA3 Liu')).toBeTruthy('Approver not present');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompanyFromActivity('Petramco')).toBeTruthy('Approver Company is not displayed');
@@ -995,7 +995,7 @@ describe("Task Self Approval Tests", () => {
             await utilityGrid.searchAndOpenHyperlink(automatedTaskDisplayId);
             expect(await viewTask.getTaskStatusValue()).toBe("Completed");
             expect(await viewTask.isShowApproversBannerDisplayed()).toBeFalsy('Show Approvers Banner is not displayed');
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qstrong');
             await apiHelper.deleteApprovalMapping(taskModule, "Task Approval Mapping_" + randomStr);
             let newCase = await apiHelper.createCase(caseData);
             caseId = newCase.displayId;
@@ -1023,7 +1023,7 @@ describe("Task Self Approval Tests", () => {
             expect(await viewTask.isShowApproversBannerDisplayed()).toBeTruthy('Show Approvers Banner is not displayed');
             expect(await viewTask.getShowPendingApproversInfo()).toContain('Pending Approval :1');
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('qstrong');
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(automatedTaskDisplayId);
@@ -1043,7 +1043,7 @@ describe("Task Self Approval Tests", () => {
             expect(await showApproversBladePo.getApproversTabLabelFromActivity('Pending Approval')).toContain('Pending Approval (0)');
             expect(await showApproversBladePo.getApproversTabLabelFromActivity('Approval Decision')).toContain('Approval Decision (1)');
             expect(await showApproversBladePo.getApproversCountFromActivity()).toBe(2);
-            expect(await showApproversBladePo.getApproversNameFromActivity('Fritz Schulz')).toBeTruthy('Approver not present');
+            expect(await showApproversBladePo.getApproversNameFromActivity('Quin Strong')).toBeTruthy('Approver not present');
             expect(await showApproversBladePo.getApproversNameFromActivity('RA3 Liu')).toBeTruthy('Approver not present');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompanyFromActivity('Petramco')).toBeTruthy('Approver Company is not displayed');

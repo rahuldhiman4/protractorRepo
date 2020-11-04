@@ -67,6 +67,19 @@ export class Util {
         });
     }
 
+    async selectNthDropDown(guid: string, value: string, n: number): Promise<void> {
+        const dropDown = await $(`[rx-view-component-id="${guid}"]`);
+        const dropDownInputElement = await dropDown.$(this.selectors.dropDownInput);
+        await utilityCommon.scrollToElement(await dropDown.$(this.selectors.dropdownBox));
+        await dropDown.$(this.selectors.dropdownBox).click();
+        await dropDownInputElement.sendKeys(value);
+        let optionCss: string = `[rx-view-component-id="${guid}"] .ui-select-choices-row-inner *`;
+        let option = await element.all(by.cssContainingText(optionCss, value)).get(n - 1);
+        await browser.wait(this.EC.elementToBeClickable(option), 3000).then(async function () {
+            await element.all(by.cssContainingText(optionCss, value)).get(n - 1).click();
+        });
+    }
+
     async selectDropDown2(dropDownElementFinder: ElementFinder, value: string): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable(dropDownElementFinder));
         await dropDownElementFinder.click();
