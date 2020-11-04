@@ -1272,10 +1272,10 @@ describe("Create Case", () => {
         });
         afterAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
-            await apiHelper.deleteCommonConfig('RESOLUTION_CODE_MANDATORY', 'Petramco');
-            await apiHelper.deleteCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY', 'Petramco');
-            await apiHelper.deleteCommonConfig('RESOLUTION_CODE_MANDATORY', '- Global -');
-            await apiHelper.deleteCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY', '- Global -');
+            await apiHelper.addCommonConfig('RESOLUTION_CODE_MANDATORY', [false], 'Petramco');
+            await apiHelper.addCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY', [false], 'Petramco');
+            await apiHelper.addCommonConfig('RESOLUTION_CODE_MANDATORY', [false], '- Global -');
+            await apiHelper.addCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY', [false], '- Global -');
             await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
