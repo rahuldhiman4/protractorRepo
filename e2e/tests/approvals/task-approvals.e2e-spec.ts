@@ -70,8 +70,8 @@ describe("Task Approval Tests", () => {
                 "processName": `Case Process 1 ${randomStr}`,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
             }
 
             // Create case template which will be changed to Inactive status
@@ -505,12 +505,12 @@ describe("Task Approval Tests", () => {
                 "category1": 'Facilities',
                 "category2": 'Kitchen',
                 "taskCompany": "Petramco",
-                "buisnessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "buisnessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
 
             await apiHelper.apiLogin('qkatawazi');
@@ -520,7 +520,7 @@ describe("Task Approval Tests", () => {
             // Create Approval Flow through API
             let approvalFlows = {
                 "flowName": 'Approval Flow1' + randomStr,
-                "approver": "U:qliu;U:Fritz",
+                "approver": "U:qliu;U:qkatawazi",
                 "isLevelUp": false,
                 "qualification": "'Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.bccb0487dc2fab9e5052c16c67f647df8ce68a989fd53a4999763c5a336e5b79c83b8ba8108907851a28e035b87c73ae2f086df65912d77eff8e21299d90c32c.304405421} AND 'Category Tier 2' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.8c700e7edba91d3091aed763ab1c3c0bcf1c44c8c8776d53fa6bc76b6ff78bb48f106c210f41c330a2c42af0daab956847e9712a4a8822b8c571e5b97eec1bf5.304405421}",
                 "precedence": 0,
@@ -549,7 +549,7 @@ describe("Task Approval Tests", () => {
                 "Origin": "Agent",
                 "Case Template ID": caseTemplate.displayId
             }
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             let newCase = await apiHelper.createCase(caseData);
             caseId = newCase.displayId;
         });
@@ -600,7 +600,7 @@ describe("Task Approval Tests", () => {
 
         it('[DRDMV-22391]: Verify the task approval details on task view and Approve the task with approver', async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('qkatawazi');
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(automatedTaskDisplayId);
@@ -641,7 +641,7 @@ describe("Task Approval Tests", () => {
             await utilityGrid.searchAndOpenHyperlink(automatedTaskDisplayId);
             expect(await viewTask.getTaskStatusValue()).toBe("In Progress");
             expect(await viewTask.isShowApproversBannerDisplayed()).toBeFalsy('Show Approvers Banner is not displayed');
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             let newCase = await apiHelper.createCase(caseData);
             caseId = newCase.displayId;
             await navigationPage.gotoCaseConsole();
@@ -667,7 +667,7 @@ describe("Task Approval Tests", () => {
             expect(await viewTask.isShowApproversBannerDisplayed()).toBeTruthy('Show Approvers Banner is not displayed');
             expect(await viewTask.getShowPendingApproversInfo()).toContain('Pending Approval :1');
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('qkatawazi');
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(automatedTaskDisplayId);
@@ -759,8 +759,8 @@ describe("Task Approval Tests", () => {
                 "processName": `Case Process 1 ${randomStr}`,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
             }
 
             externaltemplateData = {
@@ -771,11 +771,11 @@ describe("Task Approval Tests", () => {
                 "category1": 'Facilities',
                 "category2": 'Kitchen',
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
             }
 
             // Create case template which will be changed to Inactive status
