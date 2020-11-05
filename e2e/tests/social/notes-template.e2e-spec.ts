@@ -451,7 +451,6 @@ describe('Notes template', () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createNotesTemplate("Task", tempNotesTemplateData);
 
-
             //Creating Global task notes Template
             notesTemplateGlobalData = cloneDeep(notesTemplateData.NOTES_TEMPLATE_MANDATORY_FIELD_GLOBAL);
             notesTemplateGlobalData.templateName = notesTemplateGlobalData.templateName + randomStr + '456';
@@ -466,7 +465,7 @@ describe('Notes template', () => {
             await apiHelper.apiLogin('gderuno');
             await apiHelper.createNotesTemplate("Task", notesTemplatePsilonlData);
 
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qheroux');
 
             // create manual task template
             templateManualData = {
@@ -475,11 +474,11 @@ describe('Notes template', () => {
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "ownerBusinessUnit": "Canada Support",
+                "ownerGroup": "CA Support 3",
+                "businessUnit": "Canada Support",
+                "supportGroup": "CA Support 3",
+                "assignee": "qheroux",
             }
             await apiHelper.createManualTaskTemplate(templateManualData);
 
@@ -489,8 +488,8 @@ describe('Notes template', () => {
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
+                "ownerBusinessUnit": "Canada Support",
+                "ownerGroup": "CA Support 3",
             }
             await apiHelper.createManualTaskTemplate(templateManualData1);
 
@@ -503,11 +502,11 @@ describe('Notes template', () => {
                 "processName": 'Auto Proces' + randomStr,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "ownerBusinessUnit": "Canada Support",
+                "ownerGroup": "CA Support 3",
+                "businessUnit": "Canada Support",
+                "supportGroup": "CA Support 3",
+                "assignee": "qheroux",
             }
             await apiHelper.createAutomatedTaskTemplate(templateAutomatedData);
 
@@ -519,8 +518,8 @@ describe('Notes template', () => {
                 "processName": 'Auto Process1' + randomStr,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
+                "ownerBusinessUnit": "Canada Support",
+                "ownerGroup": "CA Support 3",
             }
             await apiHelper.createAutomatedTaskTemplate(templateAutomatedData1);
 
@@ -531,11 +530,11 @@ describe('Notes template', () => {
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "ownerBusinessUnit": "Canada Support",
+                "ownerGroup": "CA Support 3",
+                "businessUnit": "Canada Support",
+                "supportGroup": "CA Support 3",
+                "assignee": "qheroux",
             }
             await apiHelper.createExternalTaskTemplate(templateExternalData);
 
@@ -545,20 +544,19 @@ describe('Notes template', () => {
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
+                "ownerBusinessUnit": "Canada Support",
+                "ownerGroup": "CA Support 3",
             }
             await apiHelper.createExternalTaskTemplate(templateExternalData1);
-
 
             caseData = {
                 "Requester": "qtao",
                 "Company": "Petramco",
                 "Summary": "Create case for me postman1",
                 "Assigned Company": "Petramco",
-                "Business Unit": "United States Support",
-                "Support Group": "US Support 3",
-                "Assignee": "qkatawazi"
+                "Business Unit": "Canada Support",
+                "Support Group": "CA Support 3",
+                "Assignee": "qheroux"
             }
             caseResponse1 = await apiHelper.createCase(caseData);
 
@@ -567,10 +565,11 @@ describe('Notes template', () => {
                 "Company": "Petramco",
                 "Summary": "Create case for me postman1",
                 "Assigned Company": "Petramco",
-                "Business Unit": "United States Support",
-                "Support Group": "US Support 3",
-                "Assignee": "qkatawazi"
+                "Business Unit": "Canada Support",
+                "Support Group": "CA Support 3",
+                "Assignee": "qheroux"
             }
+
             caseResponse2 = await apiHelper.createCase(caseData1);
 
             const automatedTaskData = {
@@ -579,7 +578,6 @@ describe('Notes template', () => {
                 "templateName": templateAutomatedData.templateName
             }
             await apiHelper.addTaskToCase(automatedTaskData, caseResponse1.id);
-
 
             const manualTaskData = {
                 "company": "Petramco",
@@ -603,14 +601,12 @@ describe('Notes template', () => {
             }
             await apiHelper.addTaskToCase(automatedTaskData1, caseResponse2.id);
 
-
             const manualTaskData1 = {
                 "company": "Petramco",
                 "requesterId": "qtao",
                 "templateName": templateManualData1.templateName
             }
             await apiHelper.addTaskToCase(manualTaskData1, caseResponse2.id);
-
 
             const externalTaskData1 = {
                 "company": "Petramco",
@@ -620,20 +616,18 @@ describe('Notes template', () => {
             await apiHelper.addTaskToCase(externalTaskData1, caseResponse2.id);
 
             await apiHelper.updateCaseStatus(caseResponse1.id, 'InProgress');
-
-
         });
 
         it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('qheroux');
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseResponse2.displayId);
             await viewCasePage.openTaskCard(1);
             await manageTask.clickTaskLink(templateManualData1.templateSummary);
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
-            expect(await notesTemplateUsage.isTemplatePresent(tempNotesTemplateData.templateName)).toBeFalsy(); // Notes Template of Petramco not visible
+            expect(await notesTemplateUsage.isTemplatePresent(tempNotesTemplateData.templateName)).toBeTruthy(); // Notes Template of Petramco visible
             expect(await notesTemplateUsage.isTemplatePresent(notesTemplateGlobalData.templateName)).toBeTruthy();
             expect(await notesTemplateUsage.isTemplatePresent(notesTemplatePsilonlData.templateName)).toBeFalsy();//Notes Template of Psilon not visible
             await notesTemplateUsage.clickOnCancelBtn();
@@ -644,7 +638,7 @@ describe('Notes template', () => {
             await manageTask.clickTaskLink(templateExternalData1.templateSummary);
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
-            expect(await notesTemplateUsage.isTemplatePresent(tempNotesTemplateData.templateName)).toBeFalsy(); // Notes Template of Petramco not visible
+            expect(await notesTemplateUsage.isTemplatePresent(tempNotesTemplateData.templateName)).toBeTruthy(); // Notes Template of Petramco not visible
             expect(await notesTemplateUsage.isTemplatePresent(notesTemplateGlobalData.templateName)).toBeTruthy();
             expect(await notesTemplateUsage.isTemplatePresent(notesTemplatePsilonlData.templateName)).toBeFalsy();//Notes Template of Psilon not visible
             await notesTemplateUsage.clickOnCancelBtn();
@@ -655,12 +649,13 @@ describe('Notes template', () => {
             await manageTask.clickTaskLink(templateAutomatedData1.templateSummary);
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
-            expect(await notesTemplateUsage.isTemplatePresent(tempNotesTemplateData.templateName)).toBeFalsy(); // Notes Template of Petramco not visible
+            expect(await notesTemplateUsage.isTemplatePresent(tempNotesTemplateData.templateName)).toBeTruthy(); // Notes Template of Petramco not visible
             expect(await notesTemplateUsage.isTemplatePresent(notesTemplateGlobalData.templateName)).toBeTruthy();
             expect(await notesTemplateUsage.isTemplatePresent(notesTemplatePsilonlData.templateName)).toBeFalsy();//Notes Template of Psilon not visible
             await notesTemplateUsage.clickOnCancelBtn();
             await activityTabPo.clickOnCancelButton();
-
+        });
+        it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             await apiHelper.updateCaseStatus(caseResponse2.id, 'InProgress');
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseResponse2.displayId);
@@ -690,7 +685,7 @@ describe('Notes template', () => {
             await manageTask.clickTaskLink(templateExternalData1.templateSummary);
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
-            expect(await notesTemplateUsage.isTemplatePresent(tempNotesTemplateData.templateName)).toBeFalsy(); // Notes Template of Petramco not visible
+            expect(await notesTemplateUsage.isTemplatePresent(tempNotesTemplateData.templateName)).toBeTruthy(); // Notes Template of Petramco not visible
             expect(await notesTemplateUsage.isTemplatePresent(notesTemplateGlobalData.templateName)).toBeTruthy();
             expect(await notesTemplateUsage.isTemplatePresent(notesTemplatePsilonlData.templateName)).toBeFalsy();//Notes Template of Psilon not visible
             await notesTemplateUsage.clickOnCancelBtn();
@@ -759,6 +754,7 @@ describe('Notes template', () => {
             afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
         });
     });
 
@@ -868,6 +864,9 @@ describe('Notes template', () => {
         catch (ex) { throw ex }
         finally {
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+
         }
     });
 
@@ -886,8 +885,6 @@ describe('Notes template', () => {
         let knowledgeInactiveTemplateName: string = undefined;
 
         beforeAll(async () => {
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
             let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             //Creating Active Case Notes Template
             let activeCaseTemplateData = cloneDeep(notesTemplateData.NOTES_TEMPLATE_MANDATORY_FIELD);
@@ -901,7 +898,7 @@ describe('Notes template', () => {
             taskActiveTemplateName = activeTaskTemplateData.templateName + randomStr + 'Task';
             activeTaskTemplateData.templateName = taskActiveTemplateName;
             await apiHelper.createNotesTemplate("Task", activeTaskTemplateData);
-
+            
             //Creating Active Knowledge Notes Template
             let activeKnowledgeTemplateData = cloneDeep(notesTemplateData.NOTES_TEMPLATE_KNOWLEDGE_ARTICLE);
             knowledgeActiveTemplateName = activeKnowledgeTemplateData.templateName + randomStr + 'Article';
@@ -919,7 +916,7 @@ describe('Notes template', () => {
             caseInactiveTemplateName = inactiveCaseTemplateData.templateName + randomStr + 'Case';
             inactiveCaseTemplateData.templateName = caseInactiveTemplateName;
             await apiHelper.createNotesTemplate("Case", inactiveCaseTemplateData);
-
+            
             //Creating Inactive Task Notes Template
             let inactiveTaskTemplateData = cloneDeep(notesTemplateData.NOTES_TEMPLATE_TASK_INACTIVE);
             taskInactiveTemplateName = inactiveTaskTemplateData.templateName + randomStr + 'Task';
@@ -963,6 +960,8 @@ describe('Notes template', () => {
 
         it('[DRDMV-16051,DRDMV-16013]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', async () => {
             //Validating the Case Notes
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(response1.displayId);
             await activityTabPo.clickActivityNoteTextBox();
@@ -1100,6 +1099,7 @@ describe('Notes template', () => {
             await activityTabPo.clickOnPostButton();
 
             await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(psilonCaseResponse.displayId);
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
@@ -1326,15 +1326,15 @@ describe('Notes template', () => {
             await utilityGrid.searchAndOpenHyperlink('NotesTemplateCase1' + randomString);
             await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickShowMoreLinkInActivity(2);
-            expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 2)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
-            expect(await activityTabPo.isItalicTextDisplayedInActivity(italicText, 2)).toBeTruthy('FailureMsg Italic Text is missing In Activity');
-            expect(await activityTabPo.isUnderlineTextDisplayedInActivity(underLineText, 2)).toBeTruthy('FailureMsg Underline Text is missing In Activity');
-            expect(await activityTabPo.isRightAlignTextDisplayedInActivity(rightAlignText, 2)).toBeTruthy('FailureMsg Right Align Text is missing In Activity');
-            expect(await activityTabPo.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 2)).toBeTruthy('FailureMsg Link Text is missing In Activity');
-            expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 2)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
-            expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 2)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
-            expect(await ckeditorValidationPo.isTableCaptionDisplayedInCkEditorTextArea('tableSummary', 'new' + randomString)).toBeTruthy('Text is not Left Align In Ck Editor');
-            expect(await ckeditorValidationPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('Text is not Left Align In Ck Editor');
+            expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 2)).toBeTruthy('FailureMsg1: Bold Text is missing in Activity');
+            expect(await activityTabPo.isItalicTextDisplayedInActivity(italicText, 2)).toBeTruthy('FailureMsg2: Italic Text is missing In Activity');
+            expect(await activityTabPo.isUnderlineTextDisplayedInActivity(underLineText, 2)).toBeTruthy('FailureMsg3: Underline Text is missing In Activity');
+            expect(await activityTabPo.isRightAlignTextDisplayedInActivity(rightAlignText, 2)).toBeTruthy('FailureMsg4: Right Align Text is missing In Activity');
+            expect(await activityTabPo.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 2)).toBeTruthy('FailureMsg5: Link Text is missing In Activity');
+            expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 2)).toBeTruthy('FailureMsg6: Number List Text is missing In Activity');
+            expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 2)).toBeTruthy('FailureMsg7: Bullet List Text is missing In Activity');
+            expect(await ckeditorValidationPo.isTableCaptionDisplayedInCkEditorTextArea('tableSummary', 'new' + randomString)).toBeTruthy('FailureMsg8: Text is not Left Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('FailureMsg9: Text is not Left Align In Ck Editor');
             
             await viewCasePage.clickOnTab('Case Access');
             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Case');
@@ -1350,15 +1350,15 @@ describe('Notes template', () => {
             await utilityGrid.searchAndOpenHyperlink('NotesTemplateCase1' + randomString);
             await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickShowMoreLinkInActivity(4);
-            expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 4)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
-            expect(await activityTabPo.isItalicTextDisplayedInActivity(italicText, 4)).toBeTruthy('FailureMsg Italic Text is missing In Activity');
-            expect(await activityTabPo.isUnderlineTextDisplayedInActivity(underLineText, 4)).toBeTruthy('FailureMsg Underline Text is missing In Activity');
-            expect(await activityTabPo.isRightAlignTextDisplayedInActivity(rightAlignText, 4)).toBeTruthy('FailureMsg Right Align Text is missing In Activity');
-            expect(await activityTabPo.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 4)).toBeTruthy('FailureMsg Link Text is missing In Activity');
-            expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 4)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
-            expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 4)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
-            expect(await ckeditorValidationPo.isTableCaptionDisplayedInCkEditorTextArea('tableSummary', 'new' + randomString)).toBeTruthy('Text is not Left Align In Ck Editor');
-            expect(await ckeditorValidationPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('Text is not Left Align In Ck Editor');
+            expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 4)).toBeTruthy('FailureMsg10: Bold Text is missing in Activity');
+            expect(await activityTabPo.isItalicTextDisplayedInActivity(italicText, 4)).toBeTruthy('FailureMsg11: Italic Text is missing In Activity');
+            expect(await activityTabPo.isUnderlineTextDisplayedInActivity(underLineText, 4)).toBeTruthy('FailureMsg12: Underline Text is missing In Activity');
+            expect(await activityTabPo.isRightAlignTextDisplayedInActivity(rightAlignText, 4)).toBeTruthy('FailureMsg13: Right Align Text is missing In Activity');
+            expect(await activityTabPo.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 4)).toBeTruthy('FailureMsg13: Link Text is missing In Activity');
+            expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 4)).toBeTruthy('FailureMsg14: Number List Text is missing In Activity');
+            expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 4)).toBeTruthy('FailureMsg15: Bullet List Text is missing In Activity');
+            expect(await ckeditorValidationPo.isTableCaptionDisplayedInCkEditorTextArea('tableSummary', 'new' + randomString)).toBeTruthy('FailureMsg16: Text is not Left Align In Ck Editor');
+            expect(await ckeditorValidationPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('FailureMsg17: Text is not Left Align In Ck Editor');
         });
         afterAll(async () => {
             await navigationPage.signOut();
@@ -1606,6 +1606,7 @@ describe('Notes template', () => {
             await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'Activity Notes Template Console - Person - Business Workflows');
             await consoleNotesTemplate.clickOnCreateNotesTemplate();
             templateName = "PeopleNotesTemplate" + Math.floor(Math.random() * 100000);
+
             await createNotesTemplate.setTemplateName(templateName);
             await createNotesTemplate.setStatusValue('Active');
             await createNotesTemplate.setCompanyValue('Petramco');
