@@ -209,6 +209,7 @@ describe("Case General Approval Tests", () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             // Edit case and select case template for DRDMV-22257
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("New");
             expect(await viewCasePo.isShowApproversBannerDisplayed()).toBeFalsy('Approval is triggerd');
@@ -378,6 +379,7 @@ describe("Case General Approval Tests", () => {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
             await activityTabPage.clickOnFilterButton();
@@ -407,6 +409,7 @@ describe("Case General Approval Tests", () => {
 
         it('[DRDMV-10832]:Update the case status to retrigger the approval and verify the details', async () => {
             await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             await updateStatusBladePo.changeCaseStatus('Resolved');
             await updateStatusBladePo.setStatusReason('Auto Resolved');
@@ -443,6 +446,7 @@ describe("Case General Approval Tests", () => {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Closed");
             await activityTabPage.clickOnFilterButton();
@@ -607,6 +611,7 @@ describe("Case General Approval Tests", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await utilityGrid.clearFilter();
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseInfo1.displayId);
             await viewCasePo.clickOnApproveLink();
             await navigationPage.gotoCaseConsole(); // navigation to reflect post approve changes
@@ -614,6 +619,7 @@ describe("Case General Approval Tests", () => {
             expect(await viewCasePo.getTextOfStatus()).toBe("In Progress");
 
             await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseInfo2.displayId);
             await viewCasePo.clickOnRejectLink();
             await navigationPage.gotoCaseConsole(); // navigation to reflect post reject changes

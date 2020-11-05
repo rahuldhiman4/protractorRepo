@@ -319,7 +319,7 @@ describe("Case Approval Mapping Tests", () => {
         it('[DRDMV-10703,DRDMV-1303]: Case approval mapping access Case BA', async () => {
             let newApprovalName = "Test2 " + approvalMappingName;
             await navigationPage.signOut();
-            await loginPage.login(twoCompanyUser.userId+"@petramco.com", 'Password_1234');
+            await loginPage.login(twoCompanyUser.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', 'Configure Case Approvals - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(approvalMappingName);
@@ -344,7 +344,7 @@ describe("Case Approval Mapping Tests", () => {
     describe('[DRDMV-11881,DRDMV-22947]:[Approval Mapping] - Create Global Approval Mapping with all fields, Toggle button status', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let approvalMappingName = 'Approval Mapping' + randomStr;
-        let flowsetValues: string[] = ["Human Resources"];
+        let flowsetValues: string[] = ["Benefits"];
 
         it('[DRDMV-11881,DRDMV-22947]: Create Global Approval Mapping with all fields', async () => {
             await navigationPage.gotoSettingsPage();
@@ -355,13 +355,13 @@ describe("Case Approval Mapping Tests", () => {
             await createApprovalMappingPage.selectCompany('- Global -');
             await createApprovalMappingPage.isSelectFlowsetDropDownOptionsMatches(flowsetValues);
             await createApprovalMappingPage.selectStatusTrigger('Assigned');
-            await createApprovalMappingPage.selectFlowset('Human Resources');
+            await createApprovalMappingPage.selectFlowset("Benefits");
             await createApprovalMappingPage.selectStatusMappingApproved('In Progress');
             await createApprovalMappingPage.selectStatusMappingRejected('Canceled');
             await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Pending');
             await createApprovalMappingPage.selectStatusMappingError('New');
             expect(await editApprovalMappingPage.isCaseCreatedUsingTemplateGoInApprovalToggleDisplayed()).toBeFalsy('Cases created without using any template should go through approval displayed.');
-            expect(await createApprovalMappingPage.isSaveApprovalMappingBtnEnabled()).toBeFalsy();
+            expect(await createApprovalMappingPage.isSaveApprovalMappingBtnEnabled()).toBeFalsy("Save button Enabling");
             await createApprovalMappingPage.clickSaveApprovalMappingBtn();
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
             expect(await editApprovalMappingPage.getSelectedCompany()).toBe('- Global -');
@@ -806,7 +806,7 @@ describe("Case Approval Mapping Tests", () => {
             await loginPage.login("qkatawazi");
         });
     });
-    
+
     describe('[DRDMV-10704]:Approval Mapping - Console', async () => {
         beforeAll(async () => {
             //Create Approval Mapping through API
@@ -820,7 +820,8 @@ describe("Case Approval Mapping Tests", () => {
                 "company": "Petramco",
                 "mappingName": "Approval Mapping for Petramco - Automated"
             }
-            let approvalMappingId = await apiHelper.createApprovalMapping(caseModule, approvalMappingData);
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createApprovalMapping(caseModule, approvalMappingData);
         });
         it('[DRDMV-10704]: Approval Mapping - Console', async () => {
             await navigationPage.gotoSettingsPage();
@@ -853,6 +854,8 @@ describe("Case Approval Mapping Tests", () => {
             expect(await approvalMappingConsolePage.isColumnSorted("Flowset", "asc")).toBeTruthy();
             expect(await approvalMappingConsolePage.isColumnSorted("Flowset", "desc")).toBeTruthy();
 
+        });
+        it('[DRDMV-10704]: Approval Mapping - Console', async () => {
             //Verify search Field
             await approvalMappingConsolePage.searchValueOnGrid('Update Aprroval Mapping-Petramco');
             expect(await approvalMappingConsolePage.isRecordPresent('Update Aprroval Mapping-Petramco')).toBeTruthy();

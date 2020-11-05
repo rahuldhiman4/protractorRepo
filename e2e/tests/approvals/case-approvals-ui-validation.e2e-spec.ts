@@ -958,6 +958,7 @@ describe("Case Approval UI Validations", () => {
             await apiHelper.apiLogin('qkatawazi');
             caseId = await apiHelper.createCase(caseData);
             await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId.displayId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
             expect(viewCasePo.getStatusReason("Approval")).toContain("Approval");
@@ -969,6 +970,7 @@ describe("Case Approval UI Validations", () => {
             await apiHelper.apiLogin('qkatawazi');
             caseId = await apiHelper.createCase(caseData2);
             await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId.displayId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
             expect(viewCasePo.getStatusReason("Approval")).toBe("Approval");
