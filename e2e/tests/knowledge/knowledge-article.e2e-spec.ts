@@ -198,13 +198,14 @@ describe('Knowledge Article', () => {
     //Bug='DRDMV-21644
     it('[DRDMV-2374]: [Edit Knowledge Article] Article creation not possible by selecting disabled templates', async () => {
         try {
+            await navigationPage.signOut();
+            await loginPage.login(knowledgeCoachUser);
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', 'Knowledge Article Templates - Business Workflows');
             await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
             await createKnowledgeArticleTemplatePo.setTemplateName(randomStr);
             await createKnowledgeArticleTemplatePo.clickOnDisableEnableCheckBox();
             await createKnowledgeArticleTemplatePo.clickOnAddSection();
-            await createKnowledgeArticleTemplatePo.setKnowledgeSetValue('Global');
             await createKnowledgeArticleTemplatePo.setSectionTitle('NewThings' + randomStr);
             await createKnowledgeArticleTemplatePo.setDescription('DescriptionOFKA');
             await createKnowledgeArticleTemplatePo.clickOnSaveButton();
@@ -223,11 +224,16 @@ describe('Knowledge Article', () => {
     it('[DRDMV-774,DRDMV-2447]: [Knowledge Article] [SearchArticle] Knowledge article search with article ID and title', async () => {
         let knowledgeGridColumnFields: string[] = ["Assigned Group", "Assignee Login Name", "Author", "GUID", "Region", "Review Status", "Category Tier 1", "Category Tier 2", "Category Tier 3"];
         let knowledgeTitle = 'knowledge774' + randomStr;
-        await apiHelper.apiLogin('peter');
+        await apiHelper.apiLogin('elizabeth');
         let articleData = {
-            "knowledgeSet": "HR",
+            "knowledgeSet": 'HR',
             "title": `${knowledgeTitle}`,
             "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "United Kingdom Support",
+            "assigneeSupportGroup": "GB Support 2",
+            "assignee": "KMills",
+            "lineOfBuisness": "Ericsson HR"
         }
         let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         await navigationPage.gotoKnowledgeConsole();
@@ -249,7 +255,7 @@ describe('Knowledge Article', () => {
             let knowledgeTitile = 'knowledge3095' + randomStr;
             await apiHelper.apiLogin(knowledgeCandidateUser);
             let articleData = {
-                "knowledgeSet": "HR",
+                "knowledgeSet": 'HR',
                 "title": `${knowledgeTitile}`,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
                 "assignedCompany": "Petramco",
@@ -287,7 +293,7 @@ describe('Knowledge Article', () => {
             let knowledgeTitile1 = 'knowledgeContributor3095' + randomStr;
             await apiHelper.apiLogin(knowledgeCandidateUser);
             let articleData1 = {
-                "knowledgeSet": "HR",
+                "knowledgeSet": 'HR',
                 "title": `${knowledgeTitile1}`,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
                 "assignedCompany": "Petramco",
@@ -317,12 +323,12 @@ describe('Knowledge Article', () => {
             let knowledgeTitile2 = 'knowledgePublisher3095' + randomStr;
             await apiHelper.apiLogin(knowledgePublisherUser);
             let articleData2 = {
-                "knowledgeSet": "HR",
+                "knowledgeSet": 'HR',
                 "title": `${knowledgeTitile2}`,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
-                "assigneeSupportGroup": "GB Support 1",
+                "assigneeSupportGroup": "GB Support 2",
                 "assignee": "KMills"
             }
             let kmillsId = await apiHelper.createKnowledgeArticle(articleData2);
@@ -348,7 +354,7 @@ describe('Knowledge Article', () => {
             let knowledgeTitile3 = 'knowledgeCoachUser3095' + randomStr;
             await apiHelper.apiLogin(knowledgeCoachUser);
             let articleData3 = {
-                "knowledgeSet": "HR",
+                "knowledgeSet": 'HR',
                 "title": `${knowledgeTitile3}`,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
                 "assignedCompany": "Petramco",
@@ -380,7 +386,7 @@ describe('Knowledge Article', () => {
         let knowledgeTitile = 'knowledge792' + randomStr;
         await apiHelper.apiLogin('peter');
         let articleData = {
-            "knowledgeSet": "HR",
+            "knowledgeSet": 'HR',
             "title": `${knowledgeTitile}`,
             "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
         }
@@ -515,13 +521,13 @@ describe('Knowledge Article', () => {
             let knowledgeTitile = 'knowledge2586' + randomStr;
             await apiHelper.apiLogin(knowledgeCandidateUser);
             let articleData = {
-                "knowledgeSet": "HR",
+                "knowledgeSet": 'HR',
                 "title": `${knowledgeTitile}`,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United States Support",
                 "assigneeSupportGroup": "US Support 1",
-                "assignee": "kayo"
+                "assignee": "kayo",
             }
             KADetails = await apiHelper.createKnowledgeArticle(articleData);
         });
@@ -622,12 +628,13 @@ describe('Knowledge Article', () => {
 
     it('[DRDMV-1064]:[Create Mode] Removing sections with the Remove button', async () => {
         try {
+            await navigationPage.signOut();
+            await loginPage.login(knowledgeCoachUser);
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', 'Knowledge Article Templates');
             await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
             await createKnowledgeArticleTemplatePo.setTemplateName('template1064' + randomStr);
             await createKnowledgeArticleTemplatePo.clickOnAddSection();
-            await createKnowledgeArticleTemplatePo.setKnowledgeSetValue('Global');
             await createKnowledgeArticleTemplatePo.setSectionTitle('First' + randomStr);
             await editKnowledgeArticleTemplatePo.clickOnCancelButton();
             expect(await utilCommon.isWarningDialogBoxDisplayed()).toBeTruthy('Warning Dialog Box is not displayed.');
@@ -636,7 +643,6 @@ describe('Knowledge Article', () => {
             await utilCommon.clickOnWarningOk();
             await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
             await createKnowledgeArticleTemplatePo.setTemplateName('template1064' + randomStr);
-            await createKnowledgeArticleTemplatePo.setKnowledgeSetValue('Global');
             await createKnowledgeArticleTemplatePo.clickOnAddSection();
             await createKnowledgeArticleTemplatePo.setDescription('DescriptionOFKA');
             await createKnowledgeArticleTemplatePo.setSectionTitle('Second' + randomStr);
@@ -683,7 +689,7 @@ describe('Knowledge Article', () => {
             "site": "Canberra",
             "assignedCompany": "Petramco",
             "assigneeBusinessUnit": "United Kingdom Support",
-            "assigneeSupportGroup": "GB Support 1",
+            "assigneeSupportGroup": "GB Support 2",
             "assignee": "KMills"
         }
         let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
@@ -716,7 +722,7 @@ describe('Knowledge Article', () => {
             "site": "Canberra",
             "assignedCompany": "Petramco",
             "assigneeBusinessUnit": "United Kingdom Support",
-            "assigneeSupportGroup": "GB Support 1",
+            "assigneeSupportGroup": "GB Support 2",
             "assignee": "KMills"
         }
         let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
@@ -776,7 +782,7 @@ describe('Knowledge Article', () => {
             "site": "Canberra",
             "assignedCompany": "Petramco",
             "assigneeBusinessUnit": "United Kingdom Support",
-            "assigneeSupportGroup": "GB Support 1",
+            "assigneeSupportGroup": "GB Support 2",
             "assignee": "KMills"
         }
         let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
@@ -810,7 +816,7 @@ describe('Knowledge Article', () => {
             "site": "Canberra",
             "assignedCompany": "Petramco",
             "assigneeBusinessUnit": "United Kingdom Support",
-            "assigneeSupportGroup": "GB Support 1",
+            "assigneeSupportGroup": "GB Support 2",
             "assignee": "KMills"
         }
         let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
@@ -831,18 +837,22 @@ describe('Knowledge Article', () => {
 
     describe('[DRDMV-13707]: Navigate an Article from Knowledge Create->Preview Knowledge Article->Article Full view', () => {
         it('[DRDMV-13707]: Navigate an Article from Knowledge Create->Preview Knowledge Article->Article Full view', async () => {
-            await navigationPage.signOut();
-            await loginPage.login('franz');
             await navigationPage.gotoCreateKnowledge();
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             await createKnowledgePage.clickOnTemplate('Reference');
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
             await createKnowledgePage.addTextInKnowlegeTitleField('Knowledge' + randomStr);
             await createKnowledgePage.setReferenceValue('KnowledgeReference' + randomStr)
             await createKnowledgePage.selectKnowledgeSet('HR');
-            await createKnowledgePage.clickAssignToMeButton();
-            await createKnowledgePage.selectCategoryTier1Option('Accounts Payable');
-            await createKnowledgePage.selectCategoryTier2Option('Invoices');
-            await createKnowledgePage.selectCategoryTier3Option('Payment');
+            await createKnowledgePage.clickChangeAssignmentButton();
+            await changeAssignmentBladePo.selectCompany('Petramco');
+            await changeAssignmentBladePo.selectBusinessUnit('HR Support');
+            await changeAssignmentBladePo.selectSupportGroup('Compensation and Benefits');
+            await changeAssignmentBladePo.selectAssignee('Peter Kahn');
+            await changeAssignmentBladePo.clickOnAssignButton();
+            await createKnowledgePage.selectCategoryTier1Option('Employee Relations');
+            await createKnowledgePage.selectCategoryTier2Option('Compensation');
+            await createKnowledgePage.selectCategoryTier3Option('Bonus');
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
@@ -871,7 +881,7 @@ describe('Knowledge Article', () => {
                 "site": "Canberra",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
-                "assigneeSupportGroup": "GB Support 1",
+                "assigneeSupportGroup": "GB Support 2",
                 "assignee": "KMills"
             }
             let articleDataSecond = {
@@ -885,15 +895,16 @@ describe('Knowledge Article', () => {
                 "site": "Canberra",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
-                "assigneeSupportGroup": "GB Support 1",
+                "assigneeSupportGroup": "GB Support 2",
                 "assignee": "KMills"
             }
             knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleDataFirst);
             knowledgeArticleDataSecond = await apiHelper.createKnowledgeArticle(articleDataSecond);
         });
         it('[DRDMV-5192]: Unflag the article', async () => {
-            await navigationPage.gotoKnowledgeConsole()
+            await navigationPage.gotoKnowledgeConsole();
             await utilityGrid.clearFilter();
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
             await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
             await feedbackBladeKnowledgeArticlePo.selectFlag(true);
@@ -949,133 +960,47 @@ describe('Knowledge Article', () => {
         });
     });
 
-    describe('[DRDMV-2746]: Article status transition - In Progress->Draft->Published->Closed', async () => {
-        let KADetails, KACoachDetails;
-        beforeAll(async () => {
-            await apiHelper.apiLogin("elizabeth");
-            apiHelper.deleteApprovalMapping(knowledgeModule);
-            let knowledgeTitile = 'knowledge2746' + randomStr;
-            await apiHelper.apiLogin(knowledgePublisherUser);
-            let articleData = {
-                "knowledgeSet": "HR",
-                "title": `${knowledgeTitile}`,
-                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-                "assignedCompany": "Petramco",
-                "assigneeBusinessUnit": "United States Support",
-                "assigneeSupportGroup": "US Support 1",
-                "assignee": "kayo"
-            }
-            KADetails = await apiHelper.createKnowledgeArticle(articleData);
-            await apiHelper.apiLogin(knowledgeCoachUser);
-            let articleDataCoach = {
-                "knowledgeSet": "HR",
-                "title": `${knowledgeTitile}`,
-                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-                "assignee": "kayo",
-                "assigneeSupportGroup": "US Support 1",
-                "company": "Petramco"
-            }
-            KACoachDetails = await apiHelper.createKnowledgeArticle(articleDataCoach);
-        });
-        it('[DRDMV-2746]: Article status transition - In Progress->Draft->Published->Closed', async () => {
-            await navigationPage.signOut();
-            await loginPage.login(knowledgePublisherUser);
-            await navigationPage.switchToApplication(knowledgeManagementApp);
-            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilityGrid.clearFilter();
-            await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
-            await editKnowledgePage.setKnowledgeStatus('Draft');
-            expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Status not Set');
-            await navigationPage.gotoKnowledgeConsole(true);
-            await utilityGrid.clearFilter();
-            await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
-            expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Status not Set');
-            await editKnowledgePage.setKnowledgeStatus('Publish Approval');
-            await navigationPage.gotoKnowledgeConsole(true);
-            await utilityGrid.clearFilter();
-            await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
-            expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Status not Set');
-            await editKnowledgePage.setKnowledgeStatus('Retire Approval');
-            await navigationPage.gotoKnowledgeConsole(true);
-            await utilityGrid.clearFilter();
-            await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
-            expect(await editKnowledgePage.getStatusValue()).toContain('Retired', 'Status not Set');
-            await editKnowledgePage.setClosedKnowledgeStatus('Closed');
-            expect(await editKnowledgePage.getStatusValue()).toContain('Closed', 'Status not Set');
-            await navigationPage.gotoKnowledgeConsole(true);
-            await utilityGrid.clearFilter();
-            await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
-            expect(await editKnowledgePage.getStatusValue()).toContain('Closed', 'Status not Set');
-            expect(await viewKnowledgeArticlePo.isStatusChangeBladePresent()).toBeFalsy('status changes blade is peresent');
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
-        });
-        it('[DRDMV-2746]: Article status transition - In Progress->Draft->Published->Closed', async () => {
-            await navigationPage.signOut();
-            await loginPage.login(knowledgeCoachUser);
-            await navigationPage.switchToApplication(knowledgeManagementApp);
-            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilityGrid.clearFilter();
-            await utilityGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
-            await editKnowledgePage.setKnowledgeStatus('Draft');
-            expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Status not Set');
-            await navigationPage.gotoKnowledgeConsole(true);
-            await utilityGrid.clearFilter();
-            await utilityGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
-            expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Status not Set');
-            await editKnowledgePage.setKnowledgeStatus('Publish Approval');
-            await navigationPage.gotoKnowledgeConsole(true);
-            await utilityGrid.clearFilter();
-            await utilityGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
-            expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Status not Set');
-            await editKnowledgePage.setKnowledgeStatus('Retire Approval');
-            await navigationPage.gotoKnowledgeConsole(true);
-            await utilityGrid.clearFilter();
-            await utilityGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
-            expect(await editKnowledgePage.getStatusValue()).toContain('Retired', 'Status not Set');
-            await editKnowledgePage.setClosedKnowledgeStatus('Closed');
-            await navigationPage.gotoKnowledgeConsole(true);
-            await utilityGrid.clearFilter();
-            await utilityGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
-            expect(await editKnowledgePage.getStatusValue()).toContain('Closed', 'Status not Set');
-            expect(await viewKnowledgeArticlePo.isStatusChangeBladePresent()).toBeFalsy('status changes blade is peresent');
-        });
-        afterAll(async () => {
-            await navigationPage.signOut();
-            await loginPage.login('elizabeth');
-        });
-    });
-
     it('[DRDMV-1784]: [Knowledge Article] Changing the template for the article', async () => {
-        let knowledgeTitile = 'knowledgeCoachUser1784' + randomStr;
-        await navigationPage.gotoKnowledgeConsole();
-        await navigationPage.gotoCreateKnowledge();
-        expect(await createKnowledgePage.isTemplatePresent('KCS')).toBeTruthy('Template is not present');
-        expect(await createKnowledgePage.isTemplatePresent('Reference')).toBeTruthy('Template is not present');
-        expect(await createKnowledgePage.isTemplatePresent('How To')).toBeTruthy('Template is not present');
-        await createKnowledgePage.clickOnTemplate('KCS');
-        expect(createKnowledgePage.getTemplatePreviewText()).toContain('KCS', 'Preview is not present');
-        expect(createKnowledgePage.isKnowledgeStyleTemplateDisplayed()).toBeTruthy('style is not present');
-        await createKnowledgePage.clickOnSelectDifferentTemplate();
-        await createKnowledgePage.clickOnTemplate('Reference');
-        expect(createKnowledgePage.getTemplatePreviewText()).toContain('Reference', 'Preview is not present');
-        expect(createKnowledgePage.isKnowledgeStyleTemplateDisplayed()).toBeTruthy('style is not present');
-        await createKnowledgePage.clickOnUseSelectedTemplateButton();
-        await createKnowledgePage.addTextInKnowlegeTitleField('Knowledge Template Reference');
-        await createKnowledgePage.setReferenceValue('reference values are as follows');
-        await createKnowledgePage.clickChangeTemplateButton();
-        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
-        await createKnowledgePage.clickOnTemplate('How To');
-        expect(createKnowledgePage.getTemplatePreviewText()).toContain('How To', 'Preview is not present');
-        expect(createKnowledgePage.isKnowledgeStyleTemplateDisplayed()).toBeTruthy('style is not present');
-        await createKnowledgePage.clickOnUseSelectedTemplateButton();
-        await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeTitile);
-        await createKnowledgePage.setReferenceValue('reference values are as follows');
-        await createKnowledgePage.clickChangeTemplateButton();
-        await utilityCommon.clickOnApplicationWarningYesNoButton("No");
-        expect(await createKnowledgePage.getKnowledgeArticleTitleValue()).toContain(knowledgeTitile, 'expected Value not present');
-        await createKnowledgePage.selectKnowledgeSet('HR');
-        await createKnowledgePage.clickOnSaveKnowledgeButton();
-        await utilityCommon.closePopUpMessage();
+        try {
+            let knowledgeTitile = 'knowledgeCoachUser1784' + randomStr;
+            await navigationPage.gotoKnowledgeConsole();
+            await navigationPage.gotoCreateKnowledge();
+            expect(await createKnowledgePage.isTemplatePresent('KCS')).toBeTruthy('Template is not present');
+            expect(await createKnowledgePage.isTemplatePresent('Reference')).toBeTruthy('Template is not present');
+            expect(await createKnowledgePage.isTemplatePresent('How To')).toBeTruthy('Template is not present');
+            await createKnowledgePage.clickOnTemplate('KCS');
+            expect(createKnowledgePage.getTemplatePreviewText()).toContain('KCS', 'Preview is not present');
+            expect(createKnowledgePage.isKnowledgeStyleTemplateDisplayed()).toBeTruthy('style is not present');
+            await createKnowledgePage.clickOnSelectDifferentTemplate();
+            await createKnowledgePage.clickOnTemplate('Reference');
+            expect(createKnowledgePage.getTemplatePreviewText()).toContain('Reference', 'Preview is not present');
+            expect(createKnowledgePage.isKnowledgeStyleTemplateDisplayed()).toBeTruthy('style is not present');
+            await createKnowledgePage.clickOnUseSelectedTemplateButton();
+            await createKnowledgePage.addTextInKnowlegeTitleField('Knowledge Template Reference');
+            await createKnowledgePage.setReferenceValue('reference values are as follows');
+            await createKnowledgePage.clickChangeTemplateButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+            await createKnowledgePage.clickOnTemplate('How To');
+            expect(createKnowledgePage.getTemplatePreviewText()).toContain('How To', 'Preview is not present');
+            expect(createKnowledgePage.isKnowledgeStyleTemplateDisplayed()).toBeTruthy('style is not present');
+            await createKnowledgePage.clickOnUseSelectedTemplateButton();
+            await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeTitile);
+            await createKnowledgePage.setReferenceValue('reference values are as follows');
+            await createKnowledgePage.clickChangeTemplateButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("No");
+            expect(await createKnowledgePage.getKnowledgeArticleTitleValue()).toContain(knowledgeTitile, 'expected Value not present');
+            await createKnowledgePage.selectKnowledgeSet('HR');
+            await createKnowledgePage.clickOnSaveKnowledgeButton();
+            await utilityCommon.closePopUpMessage();
+        }
+        catch (e) {
+            throw e;
+        }
+        finally {
+            await utilityCommon.closeAllBlades();
+            await navigationPage.signOut();
+            await loginPage.login('peter');
+        }
     });
 
     it('[DRDMV-777]:[Edit Knowledge Article] Modify knowledge article by removing all optional data on edit article view', async () => {
@@ -1088,9 +1013,9 @@ describe('Knowledge Article', () => {
             "assigneeBusinessUnit": "United States Support",
             "assigneeSupportGroup": "US Support 1",
             "assignee": "kayo",
-            "categoryTier1": "Applications",
-            "categoryTier2": "Help Desk",
-            "categoryTier3": "Incident",
+            "categoryTier1": "Employee Relations",
+            "categoryTier2": "Compensation",
+            "categoryTier3": "Bonus",
             "region": "Australia",
             "site": "Canberra",
             "articleDesc": 'knowledge2746' + randomStr,
@@ -1179,15 +1104,20 @@ describe('Knowledge Article', () => {
         await createKnowledgePage.addTextInKnowlegeTitleField('Knowledge' + randomStr);
         await createKnowledgePage.setReferenceValue('KnowledgeReference' + randomStr)
         await createKnowledgePage.selectKnowledgeSet('HR');
-        await createKnowledgePage.clickAssignToMeButton();
-        await createKnowledgePage.selectCategoryTier1Option('Accounts Payable');
-        await createKnowledgePage.selectCategoryTier2Option('Invoices');
-        await createKnowledgePage.selectCategoryTier3Option('Payment');
+        await createKnowledgePage.clickChangeAssignmentButton();
+        await changeAssignmentBladePo.selectCompany('Petramco');
+        await changeAssignmentBladePo.selectBusinessUnit('HR Support');
+        await changeAssignmentBladePo.selectSupportGroup('Compensation and Benefits');
+        await changeAssignmentBladePo.selectAssignee('Peter Kahn');
+        await changeAssignmentBladePo.clickOnAssignButton();
+        await createKnowledgePage.selectCategoryTier1Option('Total Rewards');
+        await createKnowledgePage.selectCategoryTier2Option('Leave');
+        await createKnowledgePage.selectCategoryTier3Option('PTO');
         await createKnowledgePage.clickOnSaveKnowledgeButton();
         await previewKnowledgePo.clickGoToArticleButton();
-        expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe('Accounts Payable');
-        expect(await viewKnowledgeArticlePo.getCategoryTier2Value()).toBe('Invoices');
-        expect(await viewKnowledgeArticlePo.getCategoryTier3Value()).toBe('Payment');
+        expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe('Total Rewards');
+        expect(await viewKnowledgeArticlePo.getCategoryTier2Value()).toBe('Leave');
+        expect(await viewKnowledgeArticlePo.getCategoryTier3Value()).toBe('PTO');
         await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
         await editKnowledgePage.removeCategoryTier1();
         await editKnowledgePage.removeCategoryTier2();
@@ -1205,10 +1135,10 @@ describe('Knowledge Article', () => {
         expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe('Employee Relations');
         expect(await viewKnowledgeArticlePo.getCategoryTier2Value()).toBe('Compensation');
         await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
-        await editKnowledgePage.setCategoryTier1('Accounts Payable');
+        await editKnowledgePage.setCategoryTier1('Total Rewards');
         await editKnowledgePage.saveKnowledgeMedataDataChanges();
         await utilityCommon.closePopUpMessage();
-        expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe('Accounts Payable');
+        expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe('Total Rewards');
     });
 
     it('[DRDMV-2448]:KA Console - Search Article by name, keywords', async () => {
@@ -1377,7 +1307,7 @@ describe('Knowledge Article', () => {
             for (let i: number = 0; i < fileName.length; i++) {
                 await editKnowledgePage.removeAttachment();
             }
-            await editKnowledgePage.setCategoryTier1('Applications');
+            await editKnowledgePage.setCategoryTier1('Total Rewards');
             await editKnowledgePage.saveKnowledgeMedataDataChanges();
             await utilityCommon.closePopUpMessage();
             expect(await viewKnowledgeArticlePo.getAttachmentCountFromKA()).toBe(0);
@@ -1388,7 +1318,7 @@ describe('Knowledge Article', () => {
             await utilityGrid.searchAndOpenHyperlink(kaDetails2.displayId);
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             await editKnowledgePage.addAttachment(['../../data/ui/attachment/bwfJpg.jpg']);
-            await editKnowledgePage.setCategoryTier1('Applications');
+            await editKnowledgePage.setCategoryTier1('Total Rewards');
             await editKnowledgePage.saveKnowledgeMedataDataChanges();
             await utilityCommon.closePopUpMessage();
             expect(await viewKnowledgeArticlePo.isAttachedFileNamePresent('bwfJpg')).toBeTruthy();
@@ -1403,7 +1333,7 @@ describe('Knowledge Article', () => {
             await loginPage.login('qkatawazi');
         });
     });
-
+    
     it('[DRDMV-4018]:CK Editor - Should be able to upload image using url', async () => {
         let uploadURL = "https://www.google.com/homepage/images/hero-dhp-chrome-win.jpg?mmfb=90bec8294f441f5c41987596ca1b8cff";
         let imageUrlFieldIndex = 0;
@@ -1464,7 +1394,7 @@ describe('Knowledge Article', () => {
                 "site": "Canberra",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
-                "assigneeSupportGroup": "GB Support 1",
+                "assigneeSupportGroup": "GB Support 2",
                 "assignee": "KMills"
             }
             // Create article in in progress status
@@ -1481,6 +1411,7 @@ describe('Knowledge Article', () => {
             await navigationPage.switchToApplication(knowledgeManagementApp);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr, 'title not correct');
             await utilityGrid.clearFilter();
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
             expect(await viewKnowledgeArticlePo.isApprovalButtonsPresent("Approve")).toBeFalsy();
             expect(await viewKnowledgeArticlePo.isApprovalButtonsPresent("Reject")).toBeFalsy();
@@ -1562,7 +1493,7 @@ describe('Knowledge Article', () => {
                 "site": "Canberra",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
-                "assigneeSupportGroup": "GB Support 1",
+                "assigneeSupportGroup": "GB Support 2",
                 "assignee": "KMills"
             }
             // Create article in in progress status
@@ -1587,6 +1518,7 @@ describe('Knowledge Article', () => {
             await navigationPage.switchToApplication(knowledgeManagementApp);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr, 'title not correct');
             await utilityGrid.clearFilter();
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
             expect(await viewKnowledgeArticlePo.getStatusValue()).toBe("Draft", 'Status is not updated');
             await editKnowledgePage.setKnowledgeStatus('Request Cancelation');
@@ -1606,6 +1538,7 @@ describe('Knowledge Article', () => {
             await navigationPage.switchToApplication(knowledgeManagementApp);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr, 'title not correct');
             await utilityGrid.clearFilter();
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
             expect(await viewKnowledgeArticlePo.getStatusValue()).toBe("Draft", 'Status is not updated');
             await editKnowledgePage.setKnowledgeStatus('Publish Approval');
@@ -1625,6 +1558,7 @@ describe('Knowledge Article', () => {
             await navigationPage.switchToApplication(knowledgeManagementApp);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr, 'title not correct');
             await utilityGrid.clearFilter();
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
             expect(await viewKnowledgeArticlePo.getStatusValue()).toBe("Published", 'Status is not updated');
             await editKnowledgePage.setKnowledgeStatus('Retire Approval');
@@ -1644,6 +1578,7 @@ describe('Knowledge Article', () => {
             await navigationPage.switchToApplication(knowledgeManagementApp);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr, 'title not correct');
             await utilityGrid.clearFilter();
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
             expect(await viewKnowledgeArticlePo.getStatusValue()).toBe("Retired", 'Status is not updated');
         });
@@ -1684,7 +1619,7 @@ describe('Knowledge Article', () => {
                 "site": "Canberra",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
-                "assigneeSupportGroup": "GB Support 1",
+                "assigneeSupportGroup": "GB Support 2",
                 "assignee": "KMills"
             }
             let caseTemplateResponse = await apiHelper.createCaseTemplate(caseTemplateData);
@@ -1721,12 +1656,14 @@ describe('Knowledge Article', () => {
             await editCasePo.clickSaveCase();
             expect(await resources.isFirstPinnedArticleDisplayed()).toBeTruthy();
             await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(createCaseResponse.displayId);
             await viewCasePage.clickOnTab('Resources');
             expect(await resources.isFirstPinnedArticleDisplayed()).toBeTruthy();
             await resources.unpinRecommendedKnowledgeArticles(1);
             expect(await resources.isFirstPinnedArticleDisplayed()).toBeFalsy();
             await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(createCaseResponse.displayId);
             await viewCasePage.clickOnTab('Resources');
             expect(await resources.isFirstPinnedArticleDisplayed()).toBeFalsy();
@@ -1748,6 +1685,7 @@ describe('Knowledge Article', () => {
             await resources.pinRecommendedKnowledgeArticles(2);
             expect(await resources.getCountOfPinKnowledgeArticles()).toBe(2);
             await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink("compensation" + "_" + randomStr);
             await viewCasePage.clickOnTab('Resources');
             expect(await resources.getCountOfPinKnowledgeArticles()).toBe(4);
@@ -1778,7 +1716,7 @@ describe('Knowledge Article', () => {
                 "site": "Mexico City",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
-                "assigneeSupportGroup": "GB Support 1",
+                "assigneeSupportGroup": "GB Support 2",
                 "assignee": "KMills"
             }
             articleData2 = {
@@ -1790,7 +1728,7 @@ describe('Knowledge Article', () => {
                 "site": "Barcelona 1",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
-                "assigneeSupportGroup": "GB Support 1",
+                "assigneeSupportGroup": "GB Support 2",
                 "assignee": "KMills"
             }
             articleData3 = {
@@ -1802,7 +1740,7 @@ describe('Knowledge Article', () => {
                 "site": "Canberra",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
-                "assigneeSupportGroup": "GB Support 1",
+                "assigneeSupportGroup": "GB Support 2",
                 "assignee": "KMills"
             }
             await apiHelper.apiLogin('qtao');
@@ -1837,6 +1775,7 @@ describe('Knowledge Article', () => {
         });
         it('[DRDMV-620]: [Advanced Search] Advanced Search UI verification on the Knowledge Edit view', async () => {
             await viewKnowledgeArticlePo.clickOnTab("Resources");
+            await resources.clickOnBackButton();
             await resources.clickOnAdvancedSearchOptions();
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.enterAdvancedSearchText(articleData2.title);
@@ -1895,7 +1834,7 @@ describe('Knowledge Article', () => {
                 "site": "Canberra",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
-                "assigneeSupportGroup": "GB Support 1",
+                "assigneeSupportGroup": "GB Support 2",
                 "assignee": "KMills"
             }
             articleData2 = {
@@ -1907,7 +1846,7 @@ describe('Knowledge Article', () => {
                 "site": "Mexico City",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
-                "assigneeSupportGroup": "GB Support 1",
+                "assigneeSupportGroup": "GB Support 2",
                 "assignee": "KMills"
             }
             articleData3 = {
@@ -1919,7 +1858,7 @@ describe('Knowledge Article', () => {
                 "site": "Canberra",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
-                "assigneeSupportGroup": "GB Support 1",
+                "assigneeSupportGroup": "GB Support 2",
                 "assignee": "KMills"
             }
             articleData4 = {
@@ -1931,7 +1870,7 @@ describe('Knowledge Article', () => {
                 "site": "Barcelona 1",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
-                "assigneeSupportGroup": "GB Support 1",
+                "assigneeSupportGroup": "GB Support 2",
                 "assignee": "KMills"
             }
             articleData5 = {
@@ -1943,7 +1882,7 @@ describe('Knowledge Article', () => {
                 "site": "Canberra",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
-                "assigneeSupportGroup": "GB Support 1",
+                "assigneeSupportGroup": "GB Support 2",
                 "assignee": "KMills"
             }
             articleData6 = {
@@ -1955,7 +1894,7 @@ describe('Knowledge Article', () => {
                 "site": "Canberra",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
-                "assigneeSupportGroup": "GB Support 1",
+                "assigneeSupportGroup": "GB Support 2",
                 "assignee": "KMills"
             }
             let caseData =
@@ -2002,6 +1941,7 @@ describe('Knowledge Article', () => {
         });
         it('[DRDMV-623]: [Advanced Search] Advanced Search UI verification on the Case Edit view', async () => {
             await viewKnowledgeArticlePo.clickOnTab("Resources");
+            await resources.clickOnBackButton();
             await resources.clickOnAdvancedSearchOptions();
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.enterAdvancedSearchText(articleData1.title);
@@ -2129,7 +2069,7 @@ describe('Knowledge Article', () => {
                 "site": "Canberra",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
-                "assigneeSupportGroup": "GB Support 1",
+                "assigneeSupportGroup": "GB Support 2",
                 "assignee": "KMills"
             }
             await apiHelper.apiLogin('kWilliamson');
@@ -2188,7 +2128,7 @@ describe('Knowledge Article', () => {
                 "site": "Canberra",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
-                "assigneeSupportGroup": "GB Support 1",
+                "assigneeSupportGroup": "GB Support 2",
                 "assignee": "KMills"
             }
             knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
@@ -2297,14 +2237,14 @@ describe('Knowledge Article', () => {
                 "knowledgeSet": "HR",
                 "title": "KnowledgeArticle" + randomStr,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-                "categoryTier1": "Applications",
-                "categoryTier2": "Help Desk",
-                "categoryTier3": "Incident",
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
                 "region": "Australia",
                 "site": "Canberra",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
-                "assigneeSupportGroup": "GB Support 1",
+                "assigneeSupportGroup": "GB Support 2",
                 "assignee": "KMills"
             }
             await apiHelper.apiLogin('kWilliamson');
@@ -2332,7 +2272,7 @@ describe('Knowledge Article', () => {
             expect(await viewKnowledgeArticlePo.getCategoryTier3Value()).toBe(articleData.categoryTier3);
             expect(await viewKnowledgeArticlePo.getRegionValue()).toBe(articleData.region);
             expect(await viewKnowledgeArticlePo.getSiteValue()).toBe(articleData.site);
-            expect(await viewKnowledgeArticlePo.getKnowledgeArticleAssigneeGroupValue()).toBe('GB Support 1');
+            expect(await viewKnowledgeArticlePo.getKnowledgeArticleAssigneeGroupValue()).toBe('GB Support 2');
         });
         afterAll(async () => {
             await navigationPage.signOut();
@@ -2502,7 +2442,7 @@ describe('Knowledge Article', () => {
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
-                "assigneeSupportGroup": "GB Support 1",
+                "assigneeSupportGroup": "GB Support 2",
                 "assignee": "KMills"
             }
             kaDetails1 = await apiHelper.createKnowledgeArticle(articleData);

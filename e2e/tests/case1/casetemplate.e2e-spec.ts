@@ -757,7 +757,7 @@ describe('Case Template', () => {
             await editCasePo.clickSaveCase();
             await utilityCommon.closePopUpMessage();
             await utilityCommon.closePopUpMessage();
-            await navigationPage.gotoCreateCase();
+            await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseTemplateName);
             expect(await viewCasePo.getPriorityValue()).toBe('Low');

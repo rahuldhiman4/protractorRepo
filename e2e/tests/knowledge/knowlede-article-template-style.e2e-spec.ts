@@ -22,6 +22,8 @@ describe('Knowledge article template style', () => {
     });
 
     it('[DRDMV-5013]: [Template Styles] Availability of default styles on OOB templates', async () => {
+        await navigationPage.signOut();
+        await loginPage.login(knowledgeCoachUser);
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Template Styles', 'Template Styles Configuration - Business Workflows');
         await articleTemplateStylePo.navigateToTemplateName('Global', 'Reference');
@@ -85,6 +87,8 @@ describe('Knowledge article template style', () => {
     });
 
     it('[DRDMV-5020]: [Article Styles] Mandatory field validation on template styles', async () => {
+        await navigationPage.signOut();
+        await loginPage.login(knowledgeCoachUser);
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Template Styles', 'Template Styles Configuration - Business Workflows');
         await articleTemplateStylePo.navigateToTemplateName('Global', 'KCS');
@@ -108,6 +112,8 @@ describe('Knowledge article template style', () => {
     describe('[DRDMV-5014,DRDMV-5022]: [Template Styles] Availability of default styles on custom templates', () => {
         let styleName: string = "DRDMV-5014" + randomStr;
         it('[DRDMV-5014,DRDMV-5022]: [Template Styles] Availability of default styles on custom templates', async () => {
+            await navigationPage.signOut();
+            await loginPage.login(knowledgeCoachUser);
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', 'Knowledge Article Templates - Business Workflows');
             await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();

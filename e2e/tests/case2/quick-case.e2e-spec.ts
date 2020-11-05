@@ -23,6 +23,7 @@ import casePreviewPo from '../../pageobject/case/case-preview.po';
 import templateAccessTabPo from '../../pageobject/settings/case-management/template-access-tab.po';
 import { SOURCE_MENU_ITEM, SOURCE_INACTIVE, SOURCE_DEPRECATED, SOURCE_ACTIVE_NOT_ON_UI } from '../../data/ui/ticketing/menu.item.ui';
 import { cloneDeep } from 'lodash';
+import utilityGrid from '../../utils/utility.grid';
 
 describe("Quick Case", () => {
     const requester = "The requester of the case";
@@ -1051,14 +1052,17 @@ describe("Quick Case", () => {
         });
         it('[DRDMV-22711,DRDMV-22703]: Verify Case Template access while Creating case for Global and Petramco Company', async () => {
             await navigationPo.signOut();
-            await loginPo.login('elizabeth');
+            await loginPo.login('fritz');
             await navigationPo.gotoCreateCase();
             await createCasePo.selectRequester('adam');
             await createCasePo.setSummary("CaseSummary1" + randomStr);
             await createCasePo.clickSelectCaseTemplateButton();
             expect(await createCasePo.isTemplateNamePresent(templateData1.templateName)).toBeTruthy('template is present1');
             await selectCasetemplateBladePo.clickOnCancelButton();
+            await navigationPo.signOut();
+            await loginPo.login('elizabeth');
             await navigationPo.gotoCaseConsole();
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             await navigationPo.gotoCreateCase();
             await createCasePo.selectRequester('adam');
             await createCasePo.setSummary("CaseSummary1" + randomStr);
