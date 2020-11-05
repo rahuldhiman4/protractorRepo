@@ -37,7 +37,7 @@ describe('Service Level Management - Goal Type Tests', () => {
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Goal Type', 'Goal Type');
             await createGoalType.clickCreateGoalTypeConfigButton();
             await createGoalType.enterGoalTypeName(goalTypeTitle);
-            expect(await createGoalType.isGoalTypeDisabled()).toBeTruthy('Goal Type field is enabled.');
+            // expect(await createGoalType.isGoalTypeDisabled()).toBeTruthy('Goal Type field is enabled.');
             await createGoalType.selectGoalTypeStatus('Active');
             await createGoalType.clickSaveGoalTypeButton();
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
@@ -52,7 +52,7 @@ describe('Service Level Management - Goal Type Tests', () => {
             expect(await editGoalType.isStatusFieldRequired()).toBeTruthy('Status field is marked as optional.');
             expect(await editGoalType.getGoalTypeFieldValue()).toBe('Request-Based');
             expect(await editGoalType.getStatusDropDownFieldValue()).toBe('Active');
-            await editGoalType.selectGoalTypeStatus('Inactive');
+            await editGoalType.selectGoalTypeStatus('InActive');
             expect(await editGoalType.isSaveButtonDisabled()).toBeFalsy('Save button is disabled.');
             await editGoalType.clickCloseGoalTypeButton();
             expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue without saving?');
@@ -61,7 +61,7 @@ describe('Service Level Management - Goal Type Tests', () => {
             await editGoalType.clickSaveGoalTypeButton();
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
             await utilGrid.searchAndOpenHyperlink(goalTypeTitle);
-            expect(await editGoalType.getStatusDropDownFieldValue()).toBe('Inactive');
+            expect(await editGoalType.getStatusDropDownFieldValue()).toBe('InActive');
         });
     });
 
@@ -87,7 +87,7 @@ describe('Service Level Management - Goal Type Tests', () => {
             expect(await editGoalType.isSaveButtonDisabled()).toBeTruthy('Save button is enabled.');
             expect(await editGoalType.getGoalTypeFieldValue()).toBe('Request-Based');
             expect(await editGoalType.getStatusDropDownFieldValue()).toBe('Active');
-            await editGoalType.selectGoalTypeStatus('Inactive');
+            await editGoalType.selectGoalTypeStatus('InActive');
             await editGoalType.clickCloseGoalTypeButton();
             expect(await utilCommon.isWarningDialogBoxDisplayed()).toBeTruthy('Warning Dialog Box is not displayed.');
             expect(await utilCommon.getWarningDialogTitle()).toBe('Warning!');
@@ -118,7 +118,7 @@ describe('Service Level Management - Goal Type Tests', () => {
             await createGoalType.clickCreateGoalTypeConfigButton();
             await createGoalType.enterGoalTypeName(goalTypeTitle);
             expect(await createGoalType.isGoalTypeDisabled()).toBeTruthy('Goal Type field is enabled.');
-            await createGoalType.selectGoalTypeStatus('Inactive');
+            await createGoalType.selectGoalTypeStatus('InActive');
             await createGoalType.clickSaveGoalTypeButton();
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
@@ -159,7 +159,7 @@ describe('Service Level Management - Goal Type Tests', () => {
 
             await utilGrid.clearFilter();
             await goalTypeConsole.clickRefreshIcon();
-            await utilGrid.addFilter('Status', 'Inactive', 'checkbox', goalTypeConsoleGUID);
+            await utilGrid.addFilter('Status', 'InActive', 'checkbox', goalTypeConsoleGUID);
             expect(await goalTypeConsole.isFilteredRecordDisplayed()).toBeTruthy('Goal Type Name record is not searched.');
 
             await utilGrid.clearFilter();
