@@ -349,16 +349,16 @@ describe('Service Target Configs', () => {
             await serviceTargetInfoPage.clickOnCloseButton();
             await viewCasePo.clickEditCaseButton();
             await editCasePo.clickChangeAssignmentButton();
-            await changeAssignmentPage.selectBusinessUnit('Facilities Support');
-            await changeAssignmentPage.selectSupportGroup('Facilities');
-            await changeAssignmentPage.selectAssignee('Fritz Schulz');
+            await changeAssignmentPage.selectBusinessUnit('United States Support');
+            await changeAssignmentPage.selectSupportGroup('US Support 3');
+            await changeAssignmentPage.selectAssignee('Qiao Feng');
             await changeAssignmentPage.clickOnAssignButton();
             await editCasePo.clickSaveCase();
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
         });
         it('[DRDMV-21723]:Verify if SVT is still attached to a case when case assignment is changed', async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('qfeng');
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
