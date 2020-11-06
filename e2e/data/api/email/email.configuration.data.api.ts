@@ -8,11 +8,15 @@ export const MAILBOX_CONFIG = {
         },
         "450000152": {
             "id": 450000152,
-            "value": "IncomingMail"
+            "value": "bmctemptestemail@gmail.com"
+        },
+        "450000155": {
+            "id": 450000155,
+            "value": "test@gmail.com"
         },
         "450000156": {
             "id": 450000156,
-            "value": "test@gmail.com"
+            "value": "IncomingMailboxEmailAddress"
         },
         "450000420": {
             "id": 450000420,

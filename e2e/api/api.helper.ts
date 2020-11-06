@@ -190,7 +190,7 @@ class ApiHelper {
     async createEmailConfiguration(emailConfigData?: IEmailConfig): Promise<IIDs> {
         let mailBoxConfig = cloneDeep(MAILBOX_CONFIG);
         if (emailConfigData) {
-            mailBoxConfig.fieldInstances[450000156].value = emailConfigData.email;
+            mailBoxConfig.fieldInstances[450000155].value = emailConfigData.email;
             mailBoxConfig.fieldInstances[450000420].value = emailConfigData.lineOfBusiness ? await constants.LOB[emailConfigData.lineOfBusiness] : mailBoxConfig.fieldInstances[450000420].value;
             mailBoxConfig.fieldInstances[1000000001].value = emailConfigData.company ? await apiCoreUtil.getOrganizationGuid(emailConfigData.company) : mailBoxConfig.fieldInstances[1000000001].value;
             mailBoxConfig.fieldInstances[8].value = emailConfigData.description ? emailConfigData.description : mailBoxConfig.fieldInstances[8].value;
