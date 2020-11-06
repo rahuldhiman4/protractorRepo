@@ -386,7 +386,7 @@ describe('Knowledge Article', () => {
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
-                "assigneeSupportGroup": "GB Support 1",
+                "assigneeSupportGroup": "GB Support 2",
                 "assignee": "KMills"
             }
             let KADetails = await apiHelper.createKnowledgeArticle(articleData);
@@ -439,7 +439,7 @@ describe('Knowledge Article', () => {
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
-                "assigneeSupportGroup": "GB Support 1",
+                "assigneeSupportGroup": "GB Support 2",
                 "assignee": "KMills"
             }
             let KADetails = await apiHelper.createKnowledgeArticle(articleData);

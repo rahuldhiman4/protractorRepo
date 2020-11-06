@@ -550,15 +550,15 @@ describe('Document Library', () => {
             await createDocumentLibraryPo.selectOwnerGroup('US Support 3');
             await createDocumentLibraryPo.clickOnSaveButton();
             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
-            await editDocumentLibraryPo.selectBusinessUnit('Facilities Support');
-            await editDocumentLibraryPo.selectOwnerGroup('Facilities');
+            await editDocumentLibraryPo.selectBusinessUnit('HR Support');
+            await editDocumentLibraryPo.selectOwnerGroup('Employee Relations');
             await editDocumentLibraryPo.clickOnSaveButton();
             //This validation is alredy covered at DRDMV-13088 hence commented
             //expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
         });
         it('[DRDMV-13044]: Verify that Document access on multiple change in assignments of support group.', async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('elizabeth');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
@@ -578,8 +578,7 @@ describe('Document Library', () => {
         });
         it('[DRDMV-13044]: Verify that Document access on multiple change in assignments of support group.', async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz');
-            await navigationPage.gotoCaseConsole();
+            await loginPage.login('elizabeth');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
             expect(await documentLibraryConsolePo.searchAndCheckDocumentLibraryListed(titleRandVal)).toBeFalsy("Document is listed");
