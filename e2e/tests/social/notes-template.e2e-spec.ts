@@ -71,7 +71,6 @@ describe('Notes template', () => {
         const caseModule = 'Case';
         await browser.get(BWF_BASE_URL);
         await loginPage.login("elizabeth");
-        await utilityGrid.selectLineOfBusiness('Human Resource');
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteApprovalMapping(caseModule);
         userData = {
@@ -690,7 +689,6 @@ describe('Notes template', () => {
             expect(await notesTemplateUsage.isTemplatePresent(notesTemplatePsilonlData.templateName)).toBeFalsy();//Notes Template of Psilon not visible
             await notesTemplateUsage.clickOnCancelBtn();
             await activityTabPo.clickOnCancelButton();
-
         });
 
         it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
@@ -709,7 +707,6 @@ describe('Notes template', () => {
             await activityTabPo.addActivityNote('ManualTemplateData');
             await activityTabPo.clickOnPostButton();
             expect(await activityTabPo.isTextPresentInActivityLog('ManualTemplateData'+tempNotesTemplateData.body)).toBeTruthy();
-
 
             await viewTaskPo.clickOnViewCase();
             await viewCasePage.openTaskCard(1);
@@ -754,7 +751,6 @@ describe('Notes template', () => {
             afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
-            await utilityGrid.selectLineOfBusiness('Human Resource');
         });
     });
 
@@ -1115,7 +1111,6 @@ describe('Notes template', () => {
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
-            await utilityGrid.selectLineOfBusiness('Human Resource');
         });
     });
 
