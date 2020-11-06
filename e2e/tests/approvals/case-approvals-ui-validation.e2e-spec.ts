@@ -55,7 +55,7 @@ describe("Case Approval UI Validations", () => {
             caseTemplateDataWithMatchingCriteria = {
                 "templateName": 'caseTemplateForSelfApprovalWithoutProcessWithCriticalPriority' + randomStr,
                 "templateSummary": 'Automated One must Approval Case',
-                "categoryTier1": 'Phones',
+                "categoryTier1": 'Workforce Administration',
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "businessUnit": "United States Support",
