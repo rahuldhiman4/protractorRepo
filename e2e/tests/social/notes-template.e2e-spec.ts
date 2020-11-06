@@ -1364,8 +1364,6 @@ describe('Notes template', () => {
     describe('[DRDMV-22638,DRDMV-22644,DRDMV-22654]: Verify CKE functionality on Create and Edit Knowledge Notes template', async () => {
         let templateName: string, randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         it('[DRDMV-22638,DRDMV-22644,DRDMV-22654]: Verify CKE functionality on Create and Edit Knowledge Notes template', async () => {
-            await navigationPage.signOut();
-            await loginPage.login('peter');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Notes Template', 'Activity Notes Template Console - Knowledge - Business Workflows');
             await consoleNotesTemplate.clickOnCreateNotesTemplate();
@@ -1373,7 +1371,32 @@ describe('Notes template', () => {
             await createNotesTemplate.setTemplateName(templateName);
             await createNotesTemplate.setStatusValue('Active');
             await createNotesTemplate.setCompanyValue('Petramco');
-            await createNotesTemplate.setBody("this is new actiivty notes template");
+            await createNotesTemplate.setBody("this is new actiivty notes template ");
+            //Right Align
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await ckeditorOpsPo.clickOnRightAlignIcon();
+            await ckeditorOpsPo.updateDescription(rightAlignText);
+            expect(await ckeditorValidationPo.isTextRightAlignInCkEditorTextArea(rightAlignText)).toBeTruthy('Text is not right Align In Ck Editor');
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await ckeditorOpsPo.clickOnRightAlignIcon();
+            //Center Align
+            await ckeditorOpsPo.clickOnCenterAlignIcon();
+            await ckeditorOpsPo.updateDescription(centerAlignText);
+            expect(await ckeditorValidationPo.isTextCenterAlignInCkEditorTextArea(centerAlignText)).toBeTruthy('Text is not center Align In Ck Editor');
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await ckeditorOpsPo.clickOnCenterAlignIcon();
+            //Justify Align
+            await ckeditorOpsPo.clickOnJustifyAlignIcon();
+            await ckeditorOpsPo.updateDescription(justifyAlignText);
+            expect(await ckeditorValidationPo.isTextJustifyAlignInCkEditorTextArea(justifyAlignText)).toBeTruthy('Text is not justify Align In Ck Editor');
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await ckeditorOpsPo.clickOnJustifyAlignIcon();
+            //left Align
+            await ckeditorOpsPo.clickOnLeftAlignIcon();
+            await ckeditorOpsPo.updateDescription(lefAlignText);
+            expect(await ckeditorValidationPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await ckeditorOpsPo.clickOnLeftAlignIcon();
             // bold
             await ckeditorOpsPo.updateDescription("this is text ");
             await ckeditorOpsPo.enterNewLineInCKE();
@@ -1402,30 +1425,6 @@ describe('Notes template', () => {
             await ckeditorOpsPo.clickOnUnderLineIcon();
         });
         it('[DRDMV-22638,DRDMV-22644,DRDMV-22654]: Verify CKE functionality on Create and Edit Knowledge Notes template', async () => {
-            //left Align
-            await ckeditorOpsPo.clickOnLeftAlignIcon();
-            await ckeditorOpsPo.updateDescription(lefAlignText);
-            expect(await ckeditorValidationPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
-            await ckeditorOpsPo.enterNewLineInCKE();
-            await ckeditorOpsPo.clickOnLeftAlignIcon();
-            //Right Align
-            await ckeditorOpsPo.clickOnRightAlignIcon();
-            await ckeditorOpsPo.updateDescription(rightAlignText);
-            expect(await ckeditorValidationPo.isTextRightAlignInCkEditorTextArea(rightAlignText)).toBeTruthy('Text is not right Align In Ck Editor');
-            await ckeditorOpsPo.enterNewLineInCKE();
-            await ckeditorOpsPo.clickOnRightAlignIcon();
-            //Center Align
-            await ckeditorOpsPo.clickOnCenterAlignIcon();
-            await ckeditorOpsPo.updateDescription(centerAlignText);
-            expect(await ckeditorValidationPo.isTextCenterAlignInCkEditorTextArea(centerAlignText)).toBeTruthy('Text is not center Align In Ck Editor');
-            await ckeditorOpsPo.enterNewLineInCKE();
-            await ckeditorOpsPo.clickOnCenterAlignIcon();
-            //Justify Align
-            await ckeditorOpsPo.clickOnJustifyAlignIcon();
-            await ckeditorOpsPo.updateDescription(justifyAlignText);
-            expect(await ckeditorValidationPo.isTextJustifyAlignInCkEditorTextArea(justifyAlignText)).toBeTruthy('Text is not justify Align In Ck Editor');
-            await ckeditorOpsPo.enterNewLineInCKE();
-            await ckeditorOpsPo.clickOnJustifyAlignIcon();
             //set color
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.selectColor('Strong Red');
@@ -1502,19 +1501,22 @@ describe('Notes template', () => {
             await createKnowlegePo.selectKnowledgeSet("HR");
             await createKnowlegePo.clickChangeAssignmentButton();
             await changeAssignmentBladePo.selectCompany('Petramco');
-            await changeAssignmentBladePo.selectBusinessUnit('HR Support');
-            await changeAssignmentBladePo.selectSupportGroup('Employee Relations');
-            await changeAssignmentBladePo.selectAssignee('Elizabeth');
+            await changeAssignmentBladePo.selectBusinessUnit('Canada Support');
+            await changeAssignmentBladePo.selectSupportGroup('CA Support 3');
+            await changeAssignmentBladePo.selectAssignee('Quigley Heroux');
+
             await changeAssignmentBladePo.clickOnAssignButton();
             await createKnowlegePo.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Knowledge');
             await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
-            await accessTabPo.selectAccessEntityDropDown('Facilities Support', 'Select Business Unit');
-            await accessTabPo.selectAccessEntityDropDown('Facilities', 'Select Support Group');
+            await accessTabPo.selectAccessEntityDropDown('Australia Support', 'Select Business Unit');
+            await accessTabPo.selectAccessEntityDropDown('AU Support 3', 'Select Support Group');
             await accessTabPo.clickAccessEntitiyAddButton('Support Group');
             await accessTabPo.clickCloseKnowledgeAccessBlade();
+            await utilityCommon.closePopUpMessage();
+
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(templateName);
             expect(await ckeditorValidationPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
@@ -1559,7 +1561,7 @@ describe('Notes template', () => {
             expect(await ckeditorValidationPo.isTableCaptionDisplayedInCkEditorTextArea('tableSummary', 'new' + randomString)).toBeTruthy('Text is not Left Align In Ck Editor');
             expect(await ckeditorValidationPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('Text is not Left Align In Ck Editor');
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('qheroux');
             await navigationPage.gotoKnowledgeConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink("KnowledgeTitle_" + randomString);
@@ -1581,7 +1583,6 @@ describe('Notes template', () => {
         });
     });
 
-    //Covered DefectID-DRDMV-22228
     describe('[DRDMV-22637,DRDMV-22643,DRDMV-22653]: Verify CKE functionality on Create and Edit People Notes template', async () => {
         let templateName: string, caseData, newCase, randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
@@ -1597,6 +1598,17 @@ describe('Notes template', () => {
             newCase = await apiHelper.createCase(caseData);
         });
         it('[DRDMV-22637,DRDMV-22643,DRDMV-22653]: Verify CKE functionality on Create and Edit People Notes template', async () => {
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(newCase.displayId);
+
+            await viewCasePage.clickOnTab('Case Access');
+            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Case');
+            await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
+            await accessTabPo.selectAccessEntityDropDown('Canada Support', 'Select Business Unit');
+            await accessTabPo.selectAccessEntityDropDown('CA Support 3', 'Select Support Group');
+            await accessTabPo.clickAssignWriteAccessCheckbox('Support Group');
+            await accessTabPo.clickAccessEntitiyAddButton('Support Group');
+
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'Activity Notes Template Console - Person - Business Workflows');
             await consoleNotesTemplate.clickOnCreateNotesTemplate();
@@ -1605,7 +1617,33 @@ describe('Notes template', () => {
             await createNotesTemplate.setTemplateName(templateName);
             await createNotesTemplate.setStatusValue('Active');
             await createNotesTemplate.setCompanyValue('Petramco');
-            await createNotesTemplate.setBody("this is new actiivty notes template");
+            await createNotesTemplate.setBody("this is new actiivty notes template ");
+             //left Align
+             await ckeditorOpsPo.enterNewLineInCKE();
+             await ckeditorOpsPo.clickOnLeftAlignIcon();
+             await ckeditorOpsPo.updateDescription(lefAlignText);
+             expect(await ckeditorValidationPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
+             await ckeditorOpsPo.enterNewLineInCKE();
+             await ckeditorOpsPo.clickOnLeftAlignIcon();
+             //Right Align
+             await ckeditorOpsPo.clickOnRightAlignIcon();
+             await ckeditorOpsPo.updateDescription(rightAlignText);
+             expect(await ckeditorValidationPo.isTextRightAlignInCkEditorTextArea(rightAlignText)).toBeTruthy('Text is not right Align In Ck Editor');
+             await ckeditorOpsPo.enterNewLineInCKE();
+             await ckeditorOpsPo.clickOnRightAlignIcon();
+             //Center Align
+             await ckeditorOpsPo.clickOnCenterAlignIcon();
+             await ckeditorOpsPo.updateDescription(centerAlignText);
+             expect(await ckeditorValidationPo.isTextCenterAlignInCkEditorTextArea(centerAlignText)).toBeTruthy('Text is not center Align In Ck Editor');
+             await ckeditorOpsPo.enterNewLineInCKE();
+             await ckeditorOpsPo.clickOnCenterAlignIcon();
+             //Justify Align
+             await ckeditorOpsPo.clickOnJustifyAlignIcon();
+             await ckeditorOpsPo.updateDescription(justifyAlignText);
+             expect(await ckeditorValidationPo.isTextJustifyAlignInCkEditorTextArea(justifyAlignText)).toBeTruthy('Text is not justify Align In Ck Editor');
+             await ckeditorOpsPo.enterNewLineInCKE();
+             await ckeditorOpsPo.clickOnJustifyAlignIcon();
+ 
             // bold
             await ckeditorOpsPo.updateDescription("this is text ");
             await ckeditorOpsPo.enterNewLineInCKE();
@@ -1635,30 +1673,6 @@ describe('Notes template', () => {
             await ckeditorOpsPo.clickOnUnderLineIcon();
         });
         it('[DRDMV-22637,DRDMV-22643,DRDMV-22653]: Verify CKE functionality on Create and Edit People Notes template', async () => {
-            //left Align
-            await ckeditorOpsPo.clickOnLeftAlignIcon();
-            await ckeditorOpsPo.updateDescription(lefAlignText);
-            expect(await ckeditorValidationPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
-            await ckeditorOpsPo.enterNewLineInCKE();
-            await ckeditorOpsPo.clickOnLeftAlignIcon();
-            //Right Align
-            await ckeditorOpsPo.clickOnRightAlignIcon();
-            await ckeditorOpsPo.updateDescription(rightAlignText);
-            expect(await ckeditorValidationPo.isTextRightAlignInCkEditorTextArea(rightAlignText)).toBeTruthy('Text is not right Align In Ck Editor');
-            await ckeditorOpsPo.enterNewLineInCKE();
-            await ckeditorOpsPo.clickOnRightAlignIcon();
-            //Center Align
-            await ckeditorOpsPo.clickOnCenterAlignIcon();
-            await ckeditorOpsPo.updateDescription(centerAlignText);
-            expect(await ckeditorValidationPo.isTextCenterAlignInCkEditorTextArea(centerAlignText)).toBeTruthy('Text is not center Align In Ck Editor');
-            await ckeditorOpsPo.enterNewLineInCKE();
-            await ckeditorOpsPo.clickOnCenterAlignIcon();
-            //Justify Align
-            await ckeditorOpsPo.clickOnJustifyAlignIcon();
-            await ckeditorOpsPo.updateDescription(justifyAlignText);
-            expect(await ckeditorValidationPo.isTextJustifyAlignInCkEditorTextArea(justifyAlignText)).toBeTruthy('Text is not justify Align In Ck Editor');
-            await ckeditorOpsPo.enterNewLineInCKE();
-            await ckeditorOpsPo.clickOnJustifyAlignIcon();
             //set color
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.selectColor('Strong Red');
@@ -1744,13 +1758,14 @@ describe('Notes template', () => {
         });
         it('[DRDMV-22637,DRDMV-22643,DRDMV-22653]: Verify CKE functionality on Create and Edit People Notes template', async () => {
             await navigationPage.signOut();
-            await loginPage.login('elizabeth');
+            await loginPage.login('qheroux');
             await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(newCase.displayId);
             await viewCasePage.clickAssigneeLink();
             await utilityCommon.switchToNewTab(1);
             await personProfilePo.clickOnTab('Related Cases');
+
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(templateName);
             expect(await ckeditorValidationPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
             expect(await ckeditorValidationPo.isItalicTextDisplayedInCkEditorTextArea(italicText)).toBeTruthy('Text is not Italic In Ck Editor');
