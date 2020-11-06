@@ -1,5 +1,4 @@
-import { $, $$, by, element, ElementFinder, protractor, ProtractorExpectedConditions } from "protractor";
-import utilGrid from '../../utils/util.grid';
+import { $, $$, by, element, ElementFinder, protractor, ProtractorExpectedConditions, browser } from "protractor";
 import utilityGrid from '../../utils/utility.grid';
 
 class CaseWatchlistBlade {
@@ -10,9 +9,9 @@ class CaseWatchlistBlade {
         closeButton: '[rx-view-component-id="7a0cb1ff-c0a5-4571-a2dc-6670842db2c6"] button',
         guid: '60bc2700-9909-4b0f-8de4-edb02443b62f',
         selectAllrows: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] .checkbox__label input',
-        selectedCheckboxes: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] div[aria-checked="true"]',
-        unselectedCheckboxes: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] div[aria-checked="false"]',
-        allCheckboxes: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] .ui-grid-selection-row-header-buttons',
+        selectedCheckboxes: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] div .ui-state-active',
+        unselectedCheckboxes: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] div[class="ui-chkbox-box ui-widget ui-state-default"]',
+        allCheckboxes: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] div .ui-state-default .ui-clickable',
         backButton: '[rx-view-component-id="e109c9be-4093-4c82-9e20-8bc98347c984"] button',
         searchInput: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] .adapt-search-field-ellipsis',
         searchIcon: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] .adapt-search-button',
@@ -23,11 +22,16 @@ class CaseWatchlistBlade {
         filterDropdown: '.show__more-tags',
         caseLinks: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] tr td:nth-of-type(2) a',
         clearSearchicon: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] .adapt-search-clear',
-        clearSorting: '.adapt-table-sort-menu__clear-all-btn button'
+        clearSorting: '.adapt-table-sort-menu__clear-all-btn button',
+        selectAllEvent: '[rx-view-component-id="1c7ab457-9db0-430c-958f-e05bf00feb57"] [class="custom-action-btn-label"]'
     }
 
     async addWatchlistEvent(eventName: string): Promise<void> {
-        await element(by.cssContainingText(this.selectors.watchlistEvents, eventName)).click();
+        await  $(this.selectors.selectAllEvent).isPresent().then(async (results) => {
+            if (results) {
+                await element(by.cssContainingText(this.selectors.watchlistEvents, eventName)).click();
+            } else await element(by.cssContainingText(this.selectors.watchlistEvents, eventName)).click();
+        });
     }
 
     async saveEvents(): Promise<void> {

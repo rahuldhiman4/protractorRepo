@@ -1,10 +1,8 @@
 import { browser } from "protractor";
 import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from '../../api/api.helper';
-import viewCasePo from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import composeMailPo from '../../pageobject/email/compose-mail.po';
 import consoleAcknowledgmentTemplatePo from '../../pageobject/settings/email/console-acknowledgment-template.po';
 import consoleEmailConfig from '../../pageobject/settings/email/console-email-configuration.po';
 import createAcknowledgmentTemplatesPo from '../../pageobject/settings/email/create-acknowledgment-template.po';
@@ -13,40 +11,38 @@ import editAcknowledgmentTemplatePo from '../../pageobject/settings/email/edit-a
 import editEmailConfigPo from '../../pageobject/settings/email/edit-email-config.po';
 import editExclusiveSubjectPo from '../../pageobject/settings/email/edit-exclusive-subject.po';
 import newExclusiveSubjectPo from '../../pageobject/settings/email/new-exclusive-subject.po';
-import activityTabPo from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
-import utilityGrid from '../../utils/utility.grid';
 
 describe('Email Configuration', () => {
     let offlineSupportGroup, emailID = "bmctemptestemail@gmail.com";
     const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
     const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
-    let incomingEmail ={
+    let incomingEmail = {
         'incomingMailBoxName': 'testEmail@gmail.com'
     }
 
-    let emailConfig ={
+    let emailConfig = {
         email: emailID,
-        incomingMailBoxName:incomingEmail.incomingMailBoxName,
+        incomingMailBoxName: incomingEmail.incomingMailBoxName,
     }
 
-    let emailConfigFacilities ={
+    let emailConfigFacilities = {
         email: emailID,
-        incomingMailBoxName:incomingEmail.incomingMailBoxName,
+        incomingMailBoxName: incomingEmail.incomingMailBoxName,
         lineOfBusiness: "Facilities"
     }
 
-    let differntEmailConfigFacilities ={
+    let differntEmailConfigFacilities = {
         email: "bwfqa2019@gmail.com",
-        incomingMailBoxName:incomingEmail.incomingMailBoxName,
+        incomingMailBoxName: incomingEmail.incomingMailBoxName,
         lineOfBusiness: "Facilities"
     }
-    
 
-    
+
+
     beforeAll(async () => {
 
         await browser.get(BWF_BASE_URL);
@@ -93,9 +89,9 @@ describe('Email Configuration', () => {
         it('[DRDMV-8528,DRDMV-8527]: Verify Email configuration header', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
-            let emailHeaders: string[] = ["Email ID", "Alternate Email IDs","Company", "Status"];
-            let add: string[] = ["Company ID","Display ID", "ID"];
-            let newEmailHeaders: string[] = ["Email ID", "Alternate Email IDs", "Company","Company ID","Status","Display ID", "ID"];
+            let emailHeaders: string[] = ["Email ID", "Alternate Email IDs", "Company", "Status"];
+            let add: string[] = ["Company ID", "Display ID", "ID"];
+            let newEmailHeaders: string[] = ["Email ID", "Alternate Email IDs", "Company", "Company ID", "Status", "Display ID", "ID"];
             expect(await consoleEmailConfig.coloumnHeaderMatches(emailHeaders)).toBeTruthy();
             await consoleEmailConfig.addHeader(add);
             expect(await consoleEmailConfig.coloumnHeaderMatches(newEmailHeaders)).toBeTruthy();
@@ -170,7 +166,7 @@ describe('Email Configuration', () => {
             await apiHelper.createIncomingEmail(incomingEmail);
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createEmailConfiguration(emailConfig);
-    
+
         });
         it('[DRDMV-8514,DRDMV-8515,DRDMV-8516,DRDMV-8517,DRDMV-8518,DRDMV-8519]: Verify Global Exclusion should be displayed', async () => {
             expect(await utilGrid.isGridRecordPresent(emailID)).toBeTruthy();
@@ -339,7 +335,7 @@ describe('Email Configuration', () => {
             await apiHelper.createIncomingEmail(incomingEmail);
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createEmailConfiguration(emailConfig);
-        });  
+        });
         it('[DRDMV-10762]: Add exclusive subject', async () => {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
@@ -379,7 +375,7 @@ describe('Email Configuration', () => {
             await apiHelper.createIncomingEmail(incomingEmail);
             await apiHelper.apiLogin('fritz');
             await apiHelper.createEmailConfiguration(emailConfigFacilities);
-        });        
+        });
         it('[DRDMV-10765,DRDMV-10766]: Add exclusive subject', async () => {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
@@ -402,7 +398,7 @@ describe('Email Configuration', () => {
             await apiHelper.createIncomingEmail(incomingEmail);
             await apiHelper.apiLogin('gwixillian');
             await apiHelper.createEmailConfiguration({ "email": "psilon@gmail.com", "incomingMailBoxName": incomingEmail.incomingMailBoxName, "company": "Psilon" });
-            
+
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
             await utilGrid.searchAndOpenHyperlink("psilon@gmail.com");
