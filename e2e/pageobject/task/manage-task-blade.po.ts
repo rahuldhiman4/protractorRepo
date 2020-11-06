@@ -1,4 +1,5 @@
 import { $, $$, browser, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
+import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
 class ManageTaskBlade {
@@ -71,6 +72,8 @@ class ManageTaskBlade {
             return count >= 1;
         }), 5000);
         await element(by.cssContainingText(this.selectors.taskSummaryLink, taskSummary)).click();
+        // due to defect we are adding below code
+        await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
     }
 
     async clickFirstCheckBoxInTaskTemplateSearchGrid(): Promise<void> {

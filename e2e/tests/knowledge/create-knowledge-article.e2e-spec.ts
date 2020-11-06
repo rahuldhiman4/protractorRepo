@@ -96,7 +96,6 @@ describe('Knowledge Article', () => {
     });
 
     it('[DRDMV-19079]: Change Reviewer blade should process properly on KA', async () => {
-        await utilityGrid.selectLineOfBusiness('Human Resource');
         let businessData = businessDataFile['BusinessUnitData'];
         let departmentData = departmentDataFile['DepartmentData'];
         let suppGrpData = supportGrpDataFile['SuppGrpData'];
@@ -170,7 +169,6 @@ describe('Knowledge Article', () => {
     it('[DRDMV-19081]: Assignment fields is not available on Status Change blade except when Status= SME Review', async () => {
         await navigationPage.signOut();
         await loginPage.login('elizabeth');
-        await utilityGrid.selectLineOfBusiness('Human Resource');
         let knowledgeDataFile = require("../../data/ui/knowledge/knowledgeArticle.ui.json")
         let knowledgeData = knowledgeDataFile['DRDMV-19081'];
         await navigationPage.gotoCreateKnowledge();
@@ -212,7 +210,6 @@ describe('Knowledge Article', () => {
     it('[DRDMV-19508]: On Create KA, Change Assignment blade should process properly', async () => {
         await navigationPage.signOut();
         await loginPage.login('peter');
-        await utilityGrid.selectLineOfBusiness('Human Resource');
         let businessData = businessDataFile['BusinessUnitData'];
         let departmentData = departmentDataFile['DepartmentData'];
         let suppGrpData = supportGrpDataFile['SuppGrpData'];
@@ -295,7 +292,6 @@ describe('Knowledge Article', () => {
             let knowledgeTitle: string = 'Knowledge Template' + randomStr;
             await navigationPage.signOut();
             await loginPage.login('peter');
-            await utilityGrid.selectLineOfBusiness('Human Resource');
             await navigationPage.gotoCreateKnowledge();
             await createKnowledgePage.clickOnTemplate('Reference');
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
@@ -386,7 +382,7 @@ describe('Knowledge Article', () => {
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
-                "assigneeSupportGroup": "GB Support 1",
+                "assigneeSupportGroup": "GB Support 2",
                 "assignee": "KMills"
             }
             let KADetails = await apiHelper.createKnowledgeArticle(articleData);
@@ -439,7 +435,7 @@ describe('Knowledge Article', () => {
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
-                "assigneeSupportGroup": "GB Support 1",
+                "assigneeSupportGroup": "GB Support 2",
                 "assignee": "KMills"
             }
             let KADetails = await apiHelper.createKnowledgeArticle(articleData);
@@ -476,7 +472,6 @@ describe('Knowledge Article', () => {
 //pass
     it('[DRDMV-1914]: [Article Creation] Ability to select the knowledge set during article creation', async () => {
         let knowledgeTitle = 'knowledgeCoachUser1914' + randomStr;
-        await utilityGrid.selectLineOfBusiness('Human Resource');
         await navigationPage.gotoKnowledgeConsole();
         await navigationPage.gotoCreateKnowledge();
         expect(await createKnowledgePage.isTemplatePresent('KCS')).toBeTruthy('Template is not present');
@@ -526,7 +521,6 @@ describe('Knowledge Article', () => {
     it('[DRDMV-2887]: [Knowledge Article] Adding/Modifying location data while creating knowledge articles - site, region', async () => {
         try {
             let knowledgeTitle = 'knowledge2887' + randomStr;
-            await utilityGrid.selectLineOfBusiness('Human Resource');
             await navigationPage.gotoKnowledgeConsole();
             await navigationPage.gotoCreateKnowledge();
             await createKnowledgePage.clickOnTemplate('Reference');
@@ -695,7 +689,6 @@ describe('Knowledge Article', () => {
         it('[DRDMV-2985]: Article creation and possible status changes - Knowledge Publisher & Coach', async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
-            await utilityGrid.selectLineOfBusiness('Human Resource');
             await navigationPage.switchToApplication(knowledgeManagementApp);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.clearFilter();

@@ -795,6 +795,7 @@ describe("Create Case", () => {
             expect(await viewTaskPo.getTaskStatusValue()).toBe('Completed');
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });

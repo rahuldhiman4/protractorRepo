@@ -104,21 +104,21 @@ describe('Menu Item', () => {
             await createMenuItems.selectStatusDropDown('Active');
             await createMenuItems.selectAvailableOnUiToggleButton(true);
             await createMenuItems.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (382): The value(s) for this entry violate a unique index that has been defined for this record definition.')).toBeTruthy();
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (222176): The Label already exists. Please select a different name.')).toBeTruthy();
             await utilCommon.closePopUpMessage();
             await createMenuItems.clickOnLocalizeLink();
             await localizeValuePopPo.clearValueTextBox();
             await localizeValuePopPo.setLocalizeValue(label1);
             await localizeValuePopPo.clickOnSaveButton();
             await createMenuItems.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (382): The value(s) for this entry violate a unique index that has been defined for this record definition.')).toBeTruthy();
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (222176): The Label already exists. Please select a different name.')).toBeTruthy();
             await utilCommon.closePopUpMessage();
             await createMenuItems.clickOnLocalizeLink();
             await localizeValuePopPo.clearValueTextBox();
             await localizeValuePopPo.setLocalizeValue(label2);
             await localizeValuePopPo.clickOnSaveButton();
             await createMenuItems.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (382): The value(s) for this entry violate a unique index that has been defined for this record definition.')).toBeTruthy();
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (222176): The Label already exists. Please select a different name.')).toBeTruthy();
             await utilCommon.closePopUpMessage();
 
         });

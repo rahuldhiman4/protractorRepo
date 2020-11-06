@@ -6,7 +6,7 @@ class GoalTypeConfigConsolePage {
 
     selectors = {
         addGoalType: '[rx-view-component-id="4d8a4ec5-1b1c-4679-b3cf-0ad793c56bc5"] button',
-        goalTypeConsoleGUID: '781a6488-ff08-481b-86c7-7c78c577357b',
+        goalTypeConsoleGUID: '72a09a55-57b4-440a-9e8d-e8ed1d30edc6',
         refreshIcon: 'button.d-icon-refresh',
         filterIcon: '.rx-search-filter button',
         filterItems: '.search-filter-dropdown .d-accordion__item',
