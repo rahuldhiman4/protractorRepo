@@ -21,8 +21,9 @@ class CaseWatchlistBlade {
         filterPreset: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] button.d-icon-left-filter',
         clearFilterButton: 'button.custom-action-btn',
         filterDropdown: '.show__more-tags',
-        caseLinks: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] tr td:nth-of-type(2) button',
+        caseLinks: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] tr td:nth-of-type(2) a',
         clearSearchicon: '[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] .adapt-search-clear',
+        clearSorting: '.adapt-table-sort-menu__clear-all-btn button'
     }
 
     async addWatchlistEvent(eventName: string): Promise<void> {

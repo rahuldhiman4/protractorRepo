@@ -78,11 +78,15 @@ class CaseConsolePage {
     }
 
     async clickOnAddToWatchlist(): Promise<void> {
-        await $(this.selectors.addToWatchlist).click();
+        await $(this.selectors.addToWatchlist).isPresent().then(async (result) => {
+            if (result) await $(this.selectors.addToWatchlist).click();
+        });
     }
 
     async clickOnWatchlistIcon(): Promise<void> {
-        await $(this.selectors.watchlistIcon).click();
+        await $(this.selectors.watchlistIcon).isPresent().then(async (result) => {
+            if (result) await $(this.selectors.watchlistIcon).click();
+        });
     }
 
     async getAddToWatchlistText(): Promise<string> {
@@ -126,11 +130,11 @@ class CaseConsolePage {
     }
 
     async removeColumns(columnNames: string[]): Promise<void> {
-        await utilityGrid.removeGridColumn(columnNames,this.selectors.guid);
+        await utilityGrid.removeGridColumn(columnNames, this.selectors.guid);
     }
 
     async addColumns(columnNames: string[]): Promise<void> {
-        await utilityGrid.addGridColumn(columnNames,this.selectors.guid);
+        await utilityGrid.addGridColumn(columnNames, this.selectors.guid);
     }
 
     async isFieldLabelDisplayed(labelName: string): Promise<boolean> {

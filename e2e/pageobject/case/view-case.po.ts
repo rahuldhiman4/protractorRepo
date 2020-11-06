@@ -1,7 +1,5 @@
-import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions, ElementFinder } from "protractor";
-import updateStatusBlade from '../../pageobject/common/update.status.blade.po';
+import { $, $$, browser, by, element, ElementFinder, protractor, ProtractorExpectedConditions } from "protractor";
 import utilityCommon from '../../utils/utility.common';
-import ckeditorValidationPo from '../common/ck-editor/ckeditor-validation.po';
 
 class ViewCasePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -33,6 +31,7 @@ class ViewCasePage {
         businessUnitText: '[rx-view-component-id="f14326b0-0c70-4827-8a02-95e82527409a"] .read-only-content',
         assignedCompanyText: '[rx-view-component-id="8b4d78f0-fbda-420c-928f-3dee49fde4fc"] .read-only-content',
         attachmentsLink: '[rx-view-component-id="43357d0a-a8ec-497a-a7e6-f77e45dad719"] button',
+        addToWatchlistDropdown: '.button-container .dropdown button',
         addToWatchlist: '[rx-view-component-id="df24e195-e4f2-4114-af3f-e8a07691bdfd"] button',
         caseSummary: '[rx-view-component-id="8ebc1637-af05-4a08-b873-4f810c4981b9"] p span',
         caseSite: '[rx-view-component-id="4a58cc3b-e699-4357-a68a-482163d6cbbe"] .read-only-content',
@@ -180,10 +179,14 @@ class ViewCasePage {
     }
 
     async clickAddToWatchlistLink(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addToWatchlist)), 7000);
-        await $(this.selectors.addToWatchlist).click();
+                await $(this.selectors.addToWatchlistDropdown).isDisplayed().then(async (isDisplay) => {
+                    if (isDisplay) {
+                        await $(this.selectors.addToWatchlistDropdown).click();
+                        await $('.dropdown-menu [rx-view-component-id="df24e195-e4f2-4114-af3f-e8a07691bdfd"] button').click();
+                    }else await $(this.selectors.addToWatchlist).click();
+                });
     }
-
+    
     async getAddToWatchlistLinkText(): Promise<string> {
         return await $(this.selectors.addToWatchlist).getText();
     }
@@ -195,7 +198,7 @@ class ViewCasePage {
         });
     }
 
-    async clickEditCaseButton(): Promise<void> { 
+    async clickEditCaseButton(): Promise<void> {
         await utilityCommon.scrollToElement($(this.selectors.editLink));
         await $(this.selectors.editLink).click();
     }
@@ -549,7 +552,7 @@ class ViewCasePage {
         await $(this.selectors.refreshActivity).click();
     }
 
-    async clickDynamicAttachmentValue(fileName:string): Promise<void> {
+    async clickDynamicAttachmentValue(fileName: string): Promise<void> {
         await element(by.cssContainingText(this.selectors.dynamicAttachmentValue, fileName)).click();
     }
 }
