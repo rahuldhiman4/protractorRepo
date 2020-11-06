@@ -209,6 +209,8 @@ describe('Knowledge Article', () => {
             await createKnowledgeArticleTemplatePo.setSectionTitle('NewThings' + randomStr);
             await createKnowledgeArticleTemplatePo.setDescription('DescriptionOFKA');
             await createKnowledgeArticleTemplatePo.clickOnSaveButton();
+            await navigationPage.switchToApplication(knowledgeManagementApp);
+            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await navigationPage.gotoCreateKnowledge();
             expect(await createKnowledgePage.isTemplatePresent(randomStr)).toBeFalsy('Template is present');
         }
@@ -236,6 +238,8 @@ describe('Knowledge Article', () => {
             "lineOfBuisness": "Ericsson HR"
         }
         let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
+        await navigationPage.switchToApplication(knowledgeManagementApp);
+        expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
         await navigationPage.gotoKnowledgeConsole();
         await knowledgeConsolePo.addColumnOnGrid(knowledgeGridColumnFields)
         await utilityGrid.clearFilter();
@@ -303,6 +307,7 @@ describe('Knowledge Article', () => {
             }
             let kkohriId = await apiHelper.createKnowledgeArticle(articleData1);
             await utilityGrid.clearFilter();
+            await utilityGrid.clickRefreshIcon();
             await utilityGrid.searchAndOpenHyperlink(kkohriId.displayId);
             await editKnowledgePage.setKnowledgeStatus('Draft');
             await utilityCommon.closePopUpMessage();
@@ -332,8 +337,8 @@ describe('Knowledge Article', () => {
                 "assignee": "KMills"
             }
             let kmillsId = await apiHelper.createKnowledgeArticle(articleData2);
-            console.log(kmillsId);
             await utilityGrid.clearFilter();
+            await utilityGrid.clickRefreshIcon();
             await utilityGrid.searchAndOpenHyperlink(kmillsId.displayId);
             await editKnowledgePage.setKnowledgeStatus('Draft');
             await utilityCommon.closePopUpMessage();
@@ -364,6 +369,7 @@ describe('Knowledge Article', () => {
             }
             let kWilliamsonId = await apiHelper.createKnowledgeArticle(articleData3);
             await utilityGrid.clearFilter();
+            await utilityGrid.clickRefreshIcon();
             await utilityGrid.searchAndOpenHyperlink(kWilliamsonId.displayId);
             await editKnowledgePage.setKnowledgeStatus('Draft');
             await utilityCommon.closePopUpMessage();
@@ -668,7 +674,9 @@ describe('Knowledge Article', () => {
         }
         let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         let knowledgeDisplayID = knowledgeArticleData.displayId;
-        await navigationPage.gotoKnowledgeConsole();
+        await navigationPage.signOut();
+        await loginPage.login(knowledgeCoachUser);
+        await navigationPage.switchToApplication(knowledgeManagementApp);
         expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
         await utilityGrid.clearFilter();
         await utilityGrid.searchAndOpenHyperlink(knowledgeDisplayID);
@@ -677,7 +685,7 @@ describe('Knowledge Article', () => {
 
     it('[DRDMV-5193]: [Knowledge]-Assigning current user as the Assignee of an article', async () => {
         let knowledgeTitile = 'knowledge5193' + randomStr;
-        await apiHelper.apiLogin('peter');
+        await apiHelper.apiLogin(knowledgeCoachUser);
         let articleData = {
             "knowledgeSet": "HR",
             "title": `${knowledgeTitile}`,
@@ -693,24 +701,26 @@ describe('Knowledge Article', () => {
             "assignee": "KMills"
         }
         let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
-        await navigationPage.gotoKnowledgeConsole();
+        await navigationPage.signOut();
+        await loginPage.login(knowledgeCoachUser);
+        await navigationPage.switchToApplication(knowledgeManagementApp);
+        expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
         await utilityGrid.clearFilter();
         await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
         await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
         await editKnowledgePage.clickChangeAssignmentButton();
         await changeAssignmentBladePo.clickOnAssignToMeCheckBox();
-        expect(await changeAssignmentBladePo.getCountOfSupportGroup()).toBeGreaterThan(2);
-        expect(await changeAssignmentBladePo.getTextOfSupportGroup('Compensation and Benefits')).toContain('Peter Kahn');
-        expect(await changeAssignmentBladePo.getTextOfSupportGroup('Compensation and Benefits')).toContain('Petramco');
-        await changeAssignmentBladePo.clickOnSupportGroup('Compensation and Benefits');
+        expect(await changeAssignmentBladePo.getCountOfSupportGroup()).toBe(1);
+        expect(await changeAssignmentBladePo.getTextOfSupportGroup('Australia Support')).toContain('Kane Williamson');
+        expect(await changeAssignmentBladePo.getTextOfSupportGroup('Australia Support')).toContain('Petramco');
         await changeAssignmentBladePo.clickOnAssignButton();
         await editKnowledgePage.saveKnowledgeMedataDataChanges();
-        expect(await viewKnowledgeArticlePo.getAssigneeValue()).toContain('Peter Kahn');
+        expect(await viewKnowledgeArticlePo.getAssigneeValue()).toContain('Kane Williamson');
     });
 
     it('[DRDMV-5195]: [Knowledge]-Assigning the article using Assignment component', async () => {
         let knowledgeTitile = 'knowledge5195' + randomStr;
-        await apiHelper.apiLogin('peter');
+        await apiHelper.apiLogin(knowledgeCoachUser);
         let articleData = {
             "knowledgeSet": "HR",
             "title": `${knowledgeTitile}`,
@@ -726,7 +736,10 @@ describe('Knowledge Article', () => {
             "assignee": "KMills"
         }
         let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
-        await navigationPage.gotoKnowledgeConsole();
+        await navigationPage.signOut();
+        await loginPage.login(knowledgeCoachUser);
+        await navigationPage.switchToApplication(knowledgeManagementApp);
+        expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
         await utilityGrid.clearFilter();
         await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
         await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
@@ -746,6 +759,10 @@ describe('Knowledge Article', () => {
 
     it('[DRDMV-1186,DRDMV-768]: [Knowledge Article] [ArticleCreation] Closing the article without saving it', async () => {
         let knowledgeTitle = 'knowledge1186' + randomStr;
+        await navigationPage.signOut();
+        await loginPage.login(knowledgeCoachUser);
+        await navigationPage.switchToApplication(knowledgeManagementApp);
+        expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
         await navigationPage.gotoCreateKnowledge();
         expect(await createKnowledgePage.isTemplatePresent('KCS')).toBeTruthy('Template is not present');
         expect(await createKnowledgePage.isTemplatePresent('How To')).toBeTruthy('Template is not present');
@@ -786,7 +803,10 @@ describe('Knowledge Article', () => {
             "assignee": "KMills"
         }
         let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
-        await navigationPage.gotoKnowledgeConsole();
+        await navigationPage.signOut();
+        await loginPage.login(knowledgeCoachUser);
+        await navigationPage.switchToApplication(knowledgeManagementApp);
+        expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
         await utilityGrid.clearFilter();
         await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
         await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
@@ -804,7 +824,7 @@ describe('Knowledge Article', () => {
 
     it('[DRDMV-5162]: [Knowledge]- Click on thumps down and enable the flag option.', async () => {
         let knowledgeTitile = 'knowledge5162' + randomStr;
-        await apiHelper.apiLogin('peter');
+        await apiHelper.apiLogin(knowledgeCoachUser);
         let articleData = {
             "knowledgeSet": "HR",
             "title": `${knowledgeTitile}`,
@@ -820,8 +840,12 @@ describe('Knowledge Article', () => {
             "assignee": "KMills"
         }
         let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
-        await navigationPage.gotoKnowledgeConsole();
+        await navigationPage.signOut();
+        await loginPage.login(knowledgeCoachUser);
+        await navigationPage.switchToApplication(knowledgeManagementApp);
+        expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
         await utilityGrid.clearFilter();
+        await utilityGrid.clickRefreshIcon();
         await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
         await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
         await feedbackBladeKnowledgeArticlePo.selectFlag(true);
@@ -831,12 +855,16 @@ describe('Knowledge Article', () => {
         expect(await viewKnowledgeArticlePo.isUnFlagButtonDisplayed()).toBeTruthy('Unflag Button is not present');
         await viewKnowledgeArticlePo.clickOnTab('Activity');
         await activityTabPo.clickOnRefreshButton();
-        expect(await activityTabPo.getFirstPostContent()).toContain('Peter Kahn flagged the article', 'content not displaying on Activity');
+        expect(await activityTabPo.getFirstPostContent()).toContain('Kane Williamson flagged the article', 'content not displaying on Activity');
         expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitile, 'content not displaying on Activity');
     });
 
     describe('[DRDMV-13707]: Navigate an Article from Knowledge Create->Preview Knowledge Article->Article Full view', () => {
         it('[DRDMV-13707]: Navigate an Article from Knowledge Create->Preview Knowledge Article->Article Full view', async () => {
+            await navigationPage.signOut();
+            await loginPage.login(knowledgeCoachUser);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
+            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await navigationPage.gotoCreateKnowledge();
             await utilityGrid.selectLineOfBusiness('Human Resource');
             await createKnowledgePage.clickOnTemplate('Reference');

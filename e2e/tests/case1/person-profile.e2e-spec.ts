@@ -182,7 +182,6 @@ describe('Person Profile test', () => {
 
         let response = await apiHelper.createCase(caseData);
         await navigationPage.gotoCaseConsole();
-        await utilityGrid.selectLineOfBusiness('Human Resource');
         await utilityGrid.clearFilter();
         await utilityGrid.searchAndOpenHyperlink(response.displayId);
         await activityTabPage.addPersonInActivityNote('Qiao Feng');
@@ -258,7 +257,6 @@ describe('Person Profile test', () => {
 
             // Verify the Person Profile of Adam Pavlik
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.selectLineOfBusiness('Human Resource');
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(response.displayId);
             await viewCasePage.clickOnContactPersonerDrpDwn();
@@ -304,7 +302,6 @@ describe('Person Profile test', () => {
             //Verify that updated relation name does not impact existing relations
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
-            await utilityGrid.selectLineOfBusiness('Human Resource');
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(response.displayId);
             await viewCasePage.clickOnContactPersonerDrpDwn();
@@ -341,7 +338,6 @@ describe('Person Profile test', () => {
 
             let response = await apiHelper.createCase(caseData);
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.selectLineOfBusiness('Human Resource');
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(response.displayId);
             await viewCasePage.clickOnContactPersonerDrpDwn();
