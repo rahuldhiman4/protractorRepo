@@ -134,7 +134,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await apiHelper.apiLogin(caseAgentUser);
 
             articleData = {
-                "knowledgeSet": `${knowledgeSetTitleStrPetramco}`,
+                "knowledgeSet": "HR",
                 "title": `${knowledgeTitleStr}`,
                 "templateId": `${knowledgeTemplateId}`,
                 "categoryTier1": "Applications",
@@ -209,7 +209,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             console.log(await viewKnowledgeArticlePo.getKnowledgeArticleDescription());
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(knowledgeTitleStr);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(articleData.articleDesc);
-            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStrPetramco);
+            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe('HR');
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.assignedCompany);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAuthor()).toBe('Qianru Tao');
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe(articleData.categoryTier1);
@@ -242,7 +242,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await viewKnowledgeArticlePo.getArticleVersion()).toBe(expectedVersion);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(updatedArticleTitle);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(updatedArticleDesc);
-            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStrPetramco);
+            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe('HR');
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.assignedCompany);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAuthor()).toBe('Qianru Tao');
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe(articleData.categoryTier1);
@@ -605,7 +605,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             let knowledgeTemplateId = await apiCoreUtil.getKnowledgeTemplateGuid(knowledgeTemplateStr);
 
             articleData = {
-                "knowledgeSet": `${knowledgeSetTitleStrPetramco}`,
+                "knowledgeSet": 'HR',
                 "title": `${knowledgeTitleStr}`,
                 "templateId": `${knowledgeTemplateId}`,
                 "categoryTier1": "Applications",
@@ -675,6 +675,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await reviewCommentsPo.setTextInTellUsMore(articleDetails.displayId);
             await reviewCommentsPo.clickApprovedButton();
             await navigationPage.gotoKnowledgeConsole(true);
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Article is updated with Published status.');
             await apiHelper.apiLogin('tadmin');
@@ -693,7 +694,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await utilityCommon.isPopUpMessagePresent('You have successfully flagged the article.')).toBeTruthy('Article Not Flagged');
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(knowledgeTitleStr);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(articleData.articleDesc);
-            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStrPetramco);
+            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe('HR');
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.assignedCompany);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAuthor()).toBe('Qianru Tao');
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe(articleData.categoryTier1);
@@ -726,13 +727,14 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await editKnowledgePage.updateKnowledgeArticleDescription(updatedArticleDesc);
             await editKnowledgePage.clickArticleMajorEditSaveButton();
             await navigationPage.gotoKnowledgeConsole(true);
+            await utilityGrid.clearFilter();
             await utilityGrid.sortGridColumn('Created Date', 'desc');
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             let updatedVersion = "Version " + "2" + " - " + actualDate;
             expect(await viewKnowledgeArticlePo.getArticleVersion()).toBe(updatedVersion);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(updatedArticleTitle);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(updatedArticleDesc);
-            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStrPetramco);
+            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe('HR');
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.assignedCompany);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAuthor()).toBe('Kane Williamson');
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe(articleData.categoryTier1);
@@ -762,7 +764,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Article is updated with Published status.');
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(knowledgeTitleStr);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(articleData.articleDesc);
-            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStrPetramco);
+            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe('HR');
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.assignedCompany);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAuthor()).toBe('Qianru Tao');
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe(articleData.categoryTier1);
@@ -811,7 +813,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             let knowledgeTemplateId = await apiCoreUtil.getKnowledgeTemplateGuid(knowledgeTemplateStr);
             await apiHelper.apiLogin(caseAgentUser);
             articleData = {
-                "knowledgeSet": `${knowledgeSetTitleStrPetramco}`,
+                "knowledgeSet": 'HR',
                 "title": `${knowledgeTitleStr}`,
                 "templateId": `${knowledgeTemplateId}`,
                 "categoryTier1": "Applications",
@@ -939,7 +941,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             let knowledgeTemplateId = await apiCoreUtil.getKnowledgeTemplateGuid(knowledgeTemplateStr);
 
             articleData = {
-                "knowledgeSet": `${knowledgeSetTitleStrPetramco}`,
+                "knowledgeSet": 'HR',
                 "title": `${knowledgeTitleStr}`,
                 "templateId": `${knowledgeTemplateId}`,
                 "categoryTier1": "Applications",
@@ -1089,7 +1091,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await apiHelper.apiLogin(caseAgentUser);
             let knowledgeTemplateId = await apiCoreUtil.getKnowledgeTemplateGuid(knowledgeTemplateStr);
             articleData = {
-                "knowledgeSet": `${knowledgeSetTitleStrPetramco}`,
+                "knowledgeSet": 'HR',
                 "title": `${knowledgeTitleStr}`,
                 "templateId": `${knowledgeTemplateId}`,
                 "categoryTier1": "Applications",
@@ -1229,7 +1231,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await apiHelper.apiLogin(caseAgentUser);
             let knowledgeTemplateId = await apiCoreUtil.getKnowledgeTemplateGuid(knowledgeTemplateStr);
             articleData = {
-                "knowledgeSet": `${knowledgeSetTitleStrPetramco}`,
+                "knowledgeSet": 'HR',
                 "title": `${knowledgeTitleStr}`,
                 "templateId": `${knowledgeTemplateId}`,
                 "categoryTier1": "Applications",
@@ -1318,7 +1320,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await utilityCommon.isPopUpMessagePresent('You have successfully flagged the article.')).toBeTruthy('Article Not Flagged');
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(knowledgeTitleStr);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(articleData.articleDesc);
-            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStrPetramco);
+            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe('HR');
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.assignedCompany);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAuthor()).toBe('Qianru Tao');
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe(articleData.categoryTier1);
@@ -1351,6 +1353,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
         });
         it('[DRDMV-20753]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', async () => {
             await navigationPage.gotoKnowledgeConsole(true);
+            await utilityGrid.clearFilter();
             await utilityGrid.sortGridColumn('Created Date', 'desc');
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             await utilityCommon.refresh(); // Refresh needed to reflect version update.
@@ -1370,7 +1373,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await utilityCommon.refresh(); // Refresh needed to reflect article updates.
             await browser.sleep(2000);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(updatedArticleDesc);
-            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStrPetramco);
+            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe('HR');
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.assignedCompany);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAuthor()).toBe('Kane Williamson');
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe(articleData.categoryTier1);
@@ -1402,6 +1405,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
         it('[DRDMV-20753]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', async () => {
             await editKnowledgePage.setKnowledgeStatus('Request Cancelation');
             await navigationPage.gotoKnowledgeConsole(true);
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             await browser.sleep(2000);
             await utilityCommon.refresh(); // Refresh needed to reflect status changes.
@@ -1419,13 +1423,14 @@ describe('Knowledge Articles - Versioning Tests', () => {
         });
         it('[DRDMV-20753]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', async () => {
             await navigationPage.gotoKnowledgeConsole(true);
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             updatedVersion = "Version " + "3" + " - " + actualDate;
             expect(await viewKnowledgeArticlePo.getArticleVersion()).toBe(updatedVersion);
             expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Article is updated with Published status.');
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(updatedArticleTitle + "_for Version 3");
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(updatedArticleDesc + "_for Version 3");
-            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStrPetramco);
+            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe('HR');
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.assignedCompany);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAuthor()).toBe('Kane Williamson');
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe(articleData.categoryTier1);
@@ -1477,7 +1482,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await apiHelper.apiLogin(caseAgentUser);
             let knowledgeTemplateId = await apiCoreUtil.getKnowledgeTemplateGuid(knowledgeTemplateStr);
             articleData = {
-                "knowledgeSet": `${knowledgeSetTitleStrPetramco}`,
+                "knowledgeSet": 'HR',
                 "title": `${knowledgeTitleStr}`,
                 "templateId": `${knowledgeTemplateId}`,
                 "categoryTier1": "Applications",
@@ -1621,7 +1626,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
 
         beforeAll(async () => {
             await navigationPage.signOut();
-            await loginPage.login('dbomei');
+            await loginPage.login('gderuno');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Status Configuration', 'Configure Knowledge Status Transition - Business Workflows');
             await statusConfigPO.setCompanyDropdown('Psilon', 'knowledge');
@@ -1643,7 +1648,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
             await createKnowledgePage.addTextInKnowlegeTitleField('DRDMV-20758 Title');
             await createKnowledgePage.setReferenceValue('DRDMV-20758 Reference data')
-            await createKnowledgePage.selectKnowledgeSet(knowledgeSetTitleStrPetramco);
+            await createKnowledgePage.selectKnowledgeSet('HR');
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
             await editKnowledgePage.setKnowledgeStatus('Draft');
@@ -1653,7 +1658,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await changeAssignmentBlade.selectCompany('Psilon');
             await changeAssignmentBlade.selectBusinessUnit('Psilon Support Org1');
             await changeAssignmentBlade.selectSupportGroup('Psilon Support Group1');
-            await changeAssignmentBlade.selectAssignee('Doomi Bomei');
+            await changeAssignmentBlade.selectAssignee('Glit Deruno');
             await changeAssignmentBlade.clickOnAssignButton();
             await editKnowledgePage.clickSaveStatusBtn();
             await viewKnowledgeArticlePo.clickReviewPendingLink();
@@ -1672,6 +1677,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await editKnowledgePage.setKnowledgeStatus('Publish Approval');
             await utilityCommon.closePopUpMessage();
             await navigationPage.gotoKnowledgeConsole(true);
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(knowledgeArticleDisplayId);
             expect(await viewKnowledgeArticlePo.getStatusValue()).toContain('Released', 'value is not matched with status');
             await viewKnowledgeArticlePo.clickOnEditLink();
