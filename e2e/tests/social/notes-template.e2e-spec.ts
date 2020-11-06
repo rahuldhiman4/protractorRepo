@@ -751,7 +751,6 @@ describe('Notes template', () => {
             afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
-            await utilityGrid.selectLineOfBusiness('Human Resource');
         });
     });
 
