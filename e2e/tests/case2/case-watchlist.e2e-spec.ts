@@ -158,13 +158,13 @@ describe('Case Watchlist', () => {
     it('[DRDMV-16018]: Verify the default columns and total columns available in Watchlist modal', async () => {
         try {
             await caseConsole.clickOnWatchlistIcon();
-            let expectedColumns: string[] = ["Case ID", "Priority", "Status", "Summary", "Assigned Group", "Assignee", "Assigned Company", "ID"];
+            let expectedColumns: string[] = ["Case ID", "Priority", "Status", "Summary","Assigned Company", "Assigned Group", "Assignee", "ID"];
             let defaultAssignedCaseColumns: string[] = ["Case ID", "Priority", "Status", "Summary", "Assigned Group", "Assignee"];
             expect(await caseWatchlist.areWatchlistColumnMatches(expectedColumns)).toBeTruthy("Default columns are not matching");
             let remainingColumns: string[] = ["Assigned Company", "ID"];
             await caseWatchlist.removeWatchlistGridColumn(remainingColumns);
             expect(await caseWatchlist.areWatchlistColumnMatches(defaultAssignedCaseColumns)).toBeTruthy("All columns are not matching");
-            await caseWatchlist.clickOnCloseButton();
+            await caseWatchlist.clickOnBackBtn();
         } catch (ex) {
             throw ex;
         }
@@ -317,6 +317,7 @@ describe('Case Watchlist', () => {
             //Login with qtao and update the case status and assignment
             await navigationPage.signOut();
             await loginPage.login("qtao");
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             await updateStatusBladePo.changeCaseStatus(pendingStr);
             await updateStatusBladePo.setStatusReason(customerResponseStr);
@@ -352,7 +353,7 @@ describe('Case Watchlist', () => {
             caseDataForTest.Summary = "Watchlist Test DRDMV-16033"
             let response = await apiHelper.createCase(caseDataForTest);
             let caseId = response.displayId;
-
+            await navigationPage.gotoCaseConsole();
             await utilityGrid.searchRecord(caseDataForTest.Summary);
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId);
             await caseConsole.clickOnAddToWatchlist();
@@ -410,6 +411,7 @@ describe('Case Watchlist', () => {
                 caseId[i] = response.displayId;
             }
             await utilityGrid.clickRefreshIcon();
+            await utilityGrid.clearFilter();
             await utilityGrid.searchRecord(caseDataForTest.Summary);
             await utilityGrid.searchAndOpenHyperlink(caseId[1]);
             await viewCasePage.clickAddToWatchlistLink();
@@ -568,6 +570,7 @@ describe('Case Watchlist', () => {
         let response = await apiHelper.createCase(caseDataForTest);
         let caseId = response.displayId;
         await utilityGrid.clickRefreshIcon();
+        await utilityGrid.clearFilter();
         await utilityGrid.searchRecord(caseDataForTest.Summary);
         await utilityGrid.clickCheckBoxOfValueInGrid(caseId);
         await caseConsole.clickOnAddToWatchlist();
@@ -711,6 +714,7 @@ describe('Case Watchlist', () => {
             await loginPage.login(qtaoStr);
 
             //Add Case to Watchlist with events Case Status Change and Case Assignment change
+            await utilityGrid.clearFilter();
             await utilityGrid.searchRecord(caseDataForTest.Summary);
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId);
             await caseConsole.clickOnAddToWatchlist();
@@ -787,6 +791,7 @@ describe('Case Watchlist', () => {
             expect(await utilityCommon.getAllPopupMsg()).toContain("Added 1 selected case(s) to the watchlist.");
 
             //Update the case status and case assignment
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             await updateStatusBladePo.changeCaseStatus(inProgressStr);
             await updateStatusBladePo.clickSaveStatus();
@@ -794,6 +799,8 @@ describe('Case Watchlist', () => {
             await editCase.clickChangeAssignmentButton();
             await changeAssignment.setAssignee(petramcoStr, hrSupportStr, compensationAndBenefitsStr, elizabethPetersStr);
             await editCase.clickSaveCase();
+            await utilityCommon.closePopUpMessage();
+
 
             //Stop Watching the case from Case and update Case Status & Case Assignment
             await viewCasePage.clickStopWatchingLink();

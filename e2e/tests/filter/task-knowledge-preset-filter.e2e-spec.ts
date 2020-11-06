@@ -58,7 +58,6 @@ describe('Task and Knowledge Console Filter Combinations', () => {
 
         it('[DRDMV-23494]: Verify records are fetched on task console with Assignee, Assigned Group, Status combinations', async () => {
             await navigationPage.gotoTaskConsole();
-            await utilityGrid.selectLineOfBusiness('Human Resource');
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Assignee', 'Kita Williams', 'text');
             await utilityGrid.addFilter('Assigned Group', 'AU Support 1', 'text');
@@ -206,7 +205,6 @@ describe('Task and Knowledge Console Filter Combinations', () => {
 
         it('[DRDMV-23495]: Verify records are fetched on task console with Assignee, Assigned Group, Category combinationss', async () => {
             await navigationPage.gotoTaskConsole();
-            await utilityGrid.selectLineOfBusiness('Human Resource');
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Assigned Group', 'Employee Relations', 'text');
             await utilityGrid.addFilter('Assigned Group', 'Workforce Administration', 'text');
@@ -326,7 +324,6 @@ describe('Task and Knowledge Console Filter Combinations', () => {
 
         it('[DRDMV-23497]: Verify records are fetched on task console with Task Type, Priority and status combinationss', async () => {
             await navigationPage.gotoTaskConsole();
-            await utilityGrid.selectLineOfBusiness('Human Resource');
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Task Type', 'Manual', 'checkbox');
             await utilityGrid.addFilter('Status', 'Staged', 'text');
@@ -398,7 +395,6 @@ describe('Task and Knowledge Console Filter Combinations', () => {
 
         it('[DRDMV-23515]: Verify records are fetched on knowledge console Author, Status, Assignee & Flag combinations', async () => {
             await navigationPage.gotoKnowledgeConsole();
-            await utilityGrid.selectLineOfBusiness('Human Resource');
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Status', 'Published', 'text');
             await utilityGrid.addFilter('Author', 'Elizabeth Peters', 'text');
@@ -468,7 +464,6 @@ describe('Task and Knowledge Console Filter Combinations', () => {
 
         it('[DRDMV-23516]: Verify records are fetched on knowledge console Status, Reviewer& Review Status combinations', async () => {
             await navigationPage.gotoKnowledgeConsole();
-            await utilityGrid.selectLineOfBusiness('Human Resource');
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Reviewer', 'Kadeem Hardison', 'text');
             await utilityGrid.addFilter('Review Status', 'Not Reviewed', 'checkbox');
@@ -483,7 +478,6 @@ describe('Task and Knowledge Console Filter Combinations', () => {
         });
         it('[DRDMV-23516]: Verify records are fetched on knowledge console Status, Reviewer& Review Status combinations', async () => {
             await navigationPage.gotoKnowledgeConsole();
-            await utilityGrid.selectLineOfBusiness('Human Resource');
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Flagged', 'Yes', 'checkbox');
             await utilityGrid.addFilter('Assigned Group', 'CA Support 1', 'text');

@@ -43,10 +43,10 @@ describe('Knowledge article template style', () => {
             await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
             await createKnowledgeArticleTemplatePo.setTemplateName("DRDMV-5019" + randomStr);
             await createKnowledgeArticleTemplatePo.clickOnAddSection();
-            await createKnowledgeArticleTemplatePo.setKnowledgeSetValue('Global');
             await createKnowledgeArticleTemplatePo.setSectionTitle('NewThings' + randomStr);
             await createKnowledgeArticleTemplatePo.setDescription('DescriptionOFKA');
             await createKnowledgeArticleTemplatePo.clickOnSaveButton();
+            await utilityCommon.closePopUpMessage();
             await browser.navigate().back();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Template Styles', 'Template Styles Configuration - Business Workflows');
@@ -119,7 +119,6 @@ describe('Knowledge article template style', () => {
             await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
             await createKnowledgeArticleTemplatePo.setTemplateName(styleName);
             await createKnowledgeArticleTemplatePo.clickOnAddSection();
-            await createKnowledgeArticleTemplatePo.setKnowledgeSetValue('Global');
             await createKnowledgeArticleTemplatePo.setSectionTitle('NewThings' + randomStr);
             await createKnowledgeArticleTemplatePo.setDescription('DescriptionOFKA');
             await createKnowledgeArticleTemplatePo.clickOnSaveButton();
@@ -207,7 +206,6 @@ describe('Knowledge article template style', () => {
             await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
             await createKnowledgeArticleTemplatePo.setTemplateName("DRDMV-5023" + randomStr);
             await createKnowledgeArticleTemplatePo.clickOnAddSection();
-            await createKnowledgeArticleTemplatePo.setKnowledgeSetValue('Global');
             await createKnowledgeArticleTemplatePo.setSectionTitle('NewThings' + randomStr);
             await createKnowledgeArticleTemplatePo.setDescription('DescriptionOFKA');
             await createKnowledgeArticleTemplatePo.clickOnSaveButton();
