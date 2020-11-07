@@ -69,16 +69,16 @@ describe("Compose Email", () => {
                 "Requester": "qkatawazi",
                 "Summary": "Test case for DRDMV-20368 RandVal" + randomString,
                 "Assigned Company": "Petramco",
-                "Business Unit": "United States Support",
-                "Support Group": "US Support 3",
-                "Assignee": "qkatawazi"
+                "Business Unit": "Canada Support",
+                "Support Group": "CA Support 3",
+                "Assignee": "qheroux"
             }
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qheroux');
             newCase = await apiHelper.createCase(caseData);
         });
         it('[DRDMV-20368,DRDMV-20371]: Verify Able to insert table,hyperlink, images and Copy paste images in Notification template and notifications received by user with these contents', async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('qheroux');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
             await utilGrid.clearFilter();
@@ -153,7 +153,7 @@ describe("Compose Email", () => {
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
-            let subject = `Fritz Schulz changed the status of ${newCase.displayId} to In Progress`;
+            let subject = `Quigley Heroux changed the status of ${newCase.displayId} to In Progress`;
             console.log("Subject of the email: ", subject);
             await browser.sleep(5000); // hardwait to appear email message in "AR System Email Messages"
             await apiHelper.apiLogin('tadmin');
@@ -177,7 +177,7 @@ describe("Compose Email", () => {
             await expect(body.includes('<td><u>FirstUnderLine</u></td>')).toBeTruthy('Underline Font is not present');
         });
         afterAll(async () => {
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qheroux');
             await apiHelper.deleteEmailOrNotificationTemplate('Case Status Change', 'Petramco');
             await navigationPage.signOut();
             await loginPage.login("qtao");
@@ -291,7 +291,7 @@ describe("Compose Email", () => {
             expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
             await viewCasePo.clickOnEmailLink();
             await composeMail.clickOnSelectEmailTemplateLink();
-            let columnHeaders: string[] = ["Template Name", "Message Subject", "Locale"];
+            let columnHeaders: string[] = ["Template Name", "Message Subject", "Locale", "Company"];
             expect(await selectEmailTemplateBladePo.areColumnHeaderMatches(columnHeaders)).toBeTruthy('wrong column headers');
             await selectEmailTemplateBladePo.clickOnCancelButton();
         });
@@ -380,7 +380,7 @@ describe("Compose Email", () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createEmailTemplate(emailTemplateDataForTest);
             let caseData = {
-                "Requester": "qkatawazi",
+                "Requester": "qdu",
                 "Summary": "Test case for DRDMV-10394 RandVal" + randomString,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
@@ -625,7 +625,7 @@ describe("Compose Email", () => {
                 "templateSummary": `${caseTemaplateSummary}`,
                 "templateStatus": "Active",
             }
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qheroux');
             let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_WITH_CONFIDENTIAL');
             let caseData = {
@@ -636,12 +636,12 @@ describe("Compose Email", () => {
                 "Support Group": "US Support 3",
                 "Assignee": "qkatawazi"
             }
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qheroux');
             newCase = await apiHelper.createCase(caseData);
         });
         it('[DRDMV-20369]: Verify able to apply email template with images tables and hyperlinks ', async () => {
             await navigationPage.signOut();
-            await loginPage.login('fritz');
+            await loginPage.login('qheroux');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
             await consoleEmailTemplatePo.clickOnAddEmailTemplateButton();
@@ -739,7 +739,7 @@ describe("Compose Email", () => {
             await composeMail.clickOnSendButton();
             await utilityCommon.closePopUpMessage();
             await activityTabPo.clickOnShowMore();
-            expect(await activityTabPo.getFirstPostContent()).toContain('Fritz Schulz sent an email', 'not');
+            expect(await activityTabPo.getFirstPostContent()).toContain('Quigley Heroux sent an email', 'not');
             expect(await activityTabPo.isLinkDisplayedInActivity('http://www.google.com')).toBeTruthy('Link is not displayed');
             expect(await activityTabPo.getTextOfTD('strong')).toContain('FirstBold');
             expect(await activityTabPo.getTextOfTD('em')).toContain('FirstItalic');
@@ -1122,7 +1122,6 @@ describe("Compose Email", () => {
         });
         it('[DRDMV-10399]: Compose email UI changes via different way', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await caseConsole.searchAndOpenCase(newCase.displayId);
             await viewCasePo.clickOnRequestersEmail();
             expect(await composeMail.isComposeEmailTitlePresent('Compose Email')).toBeTruthy('Compose email title missing');
