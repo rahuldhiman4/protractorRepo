@@ -49,8 +49,8 @@ describe("Task Approval Tests", () => {
             caseTemplateData = {
                 "templateName": 'ActiveToInactiveCaseTemplate_' + randomStr,
                 "templateSummary": 'Case Template Summary1',
-                "categoryTier1": 'Facilities',
-                "categoryTier2": 'Kitchen',
+                "categoryTier1": 'Workforce Administration',
+                "categoryTier2": 'HR Operations',
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "businessUnit": "United States Support",
@@ -64,8 +64,8 @@ describe("Task Approval Tests", () => {
                 "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
                 "templateSummary": `Automated Approval for task  ${randomStr}`,
                 "templateStatus": "Active",
-                "category1": 'Facilities',
-                "category2": 'Kitchen',
+                "category1": 'Workforce Administration',
+                "category2": 'HR Operations',
                 "processBundle": "com.bmc.dsm.case-lib",
                 "processName": `Case Process 1 ${randomStr}`,
                 "taskCompany": "Petramco",
@@ -85,7 +85,7 @@ describe("Task Approval Tests", () => {
                 "flowName": 'Approval Flow1' + randomStr,
                 "approver": "U:qliu;U:qkatawazi",
                 "isLevelUp": false,
-                "qualification": "'Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.bccb0487dc2fab9e5052c16c67f647df8ce68a989fd53a4999763c5a336e5b79c83b8ba8108907851a28e035b87c73ae2f086df65912d77eff8e21299d90c32c.304405421} AND 'Category Tier 2' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.8c700e7edba91d3091aed763ab1c3c0bcf1c44c8c8776d53fa6bc76b6ff78bb48f106c210f41c330a2c42af0daab956847e9712a4a8822b8c571e5b97eec1bf5.304405421}",
+                "qualification": "'Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.662dc43aa1b2ada8eefe9dfb6aec1413d9d6b92f119132f2f8fbe01d771768f4c674c03062fa2ce190b9b6889e7a73c5b94501a79b2f50b4a488d63252c05920.304405421} AND 'Category Tier 2' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.5264bb516ca8f271f6740d23ef297f8ad20245a7ab732f732c86f72180b26473dae7afcaa103d196e9a5c2d948a9a2d42a74200859284322111b7ded9666eae9.304405421}",
                 "precedence": 0,
                 "signingCriteria": 1,
             }
@@ -119,7 +119,6 @@ describe("Task Approval Tests", () => {
         it('[DRDMV-21584]:Create case and assign tasks to it', async () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
@@ -291,8 +290,8 @@ describe("Task Approval Tests", () => {
             caseTemplateData = {
                 "templateName": 'ActiveToInactiveCaseTemplate_' + randomStr,
                 "templateSummary": 'Case Template Summary1',
-                "categoryTier1": 'Facilities',
-                "categoryTier2": 'Kitchen',
+                "categoryTier1": 'Workforce Administration',
+                "categoryTier2": 'HR Operations',
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "businessUnit": "United States Support",
@@ -306,14 +305,14 @@ describe("Task Approval Tests", () => {
                 "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
                 "templateSummary": `Automated Approval for task  ${randomStr}`,
                 "templateStatus": "Active",
-                "category1": 'Facilities',
-                "category2": 'Kitchen',
+                "category1": 'Workforce Administration',
+                "category2": 'HR Operations',
                 "processBundle": "com.bmc.dsm.case-lib",
                 "processName": `Case Process 1 ${randomStr}`,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3"
             }
 
             await apiHelper.apiLogin('qkatawazi');
@@ -323,7 +322,7 @@ describe("Task Approval Tests", () => {
             // Create Approval Flow through API
             let approvalFlows = {
                 "flowName": 'Approval Flow1' + randomStr,
-                "qualification": "'Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.bccb0487dc2fab9e5052c16c67f647df8ce68a989fd53a4999763c5a336e5b79c83b8ba8108907851a28e035b87c73ae2f086df65912d77eff8e21299d90c32c.304405421} AND 'Category Tier 2' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.8c700e7edba91d3091aed763ab1c3c0bcf1c44c8c8776d53fa6bc76b6ff78bb48f106c210f41c330a2c42af0daab956847e9712a4a8822b8c571e5b97eec1bf5.304405421}",
+                "qualification": "'Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.662dc43aa1b2ada8eefe9dfb6aec1413d9d6b92f119132f2f8fbe01d771768f4c674c03062fa2ce190b9b6889e7a73c5b94501a79b2f50b4a488d63252c05920.304405421} AND 'Category Tier 2' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.5264bb516ca8f271f6740d23ef297f8ad20245a7ab732f732c86f72180b26473dae7afcaa103d196e9a5c2d948a9a2d42a74200859284322111b7ded9666eae9.304405421}",
                 "precedence": 0,
                 "isLevelUp": true,
                 "levels": 1,
@@ -357,7 +356,6 @@ describe("Task Approval Tests", () => {
         it('[DRDMV-21587]:Create case and assign tasks to it', async () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
@@ -487,8 +485,8 @@ describe("Task Approval Tests", () => {
             caseTemplateData = {
                 "templateName": 'ActiveToInactiveCaseTemplate_' + randomStr,
                 "templateSummary": 'Case Template Summary1',
-                "categoryTier1": 'Facilities',
-                "categoryTier2": 'Kitchen',
+                "categoryTier1": 'Workforce Administration',
+                "categoryTier2": 'HR Operations',
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "businessUnit": "United States Support",
@@ -502,8 +500,8 @@ describe("Task Approval Tests", () => {
                 "templateName": `manualTaskTemplateDraft ${randomStr}`,
                 "templateSummary": `One must approval for task ${randomStr}`,
                 "templateStatus": "Active",
-                "category1": 'Facilities',
-                "category2": 'Kitchen',
+                "category1": 'Workforce Administration',
+                "category2": 'HR Operations',
                 "taskCompany": "Petramco",
                 "buisnessUnit": "United States Support",
                 "supportGroup": "US Support 3",
@@ -522,7 +520,7 @@ describe("Task Approval Tests", () => {
                 "flowName": 'Approval Flow1' + randomStr,
                 "approver": "U:qliu;U:qkatawazi",
                 "isLevelUp": false,
-                "qualification": "'Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.bccb0487dc2fab9e5052c16c67f647df8ce68a989fd53a4999763c5a336e5b79c83b8ba8108907851a28e035b87c73ae2f086df65912d77eff8e21299d90c32c.304405421} AND 'Category Tier 2' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.8c700e7edba91d3091aed763ab1c3c0bcf1c44c8c8776d53fa6bc76b6ff78bb48f106c210f41c330a2c42af0daab956847e9712a4a8822b8c571e5b97eec1bf5.304405421}",
+                "qualification": "'Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.662dc43aa1b2ada8eefe9dfb6aec1413d9d6b92f119132f2f8fbe01d771768f4c674c03062fa2ce190b9b6889e7a73c5b94501a79b2f50b4a488d63252c05920.304405421} AND 'Category Tier 2' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.5264bb516ca8f271f6740d23ef297f8ad20245a7ab732f732c86f72180b26473dae7afcaa103d196e9a5c2d948a9a2d42a74200859284322111b7ded9666eae9.304405421}",
                 "precedence": 0,
                 "signingCriteria": 0,
             }
@@ -724,8 +722,8 @@ describe("Task Approval Tests", () => {
             caseTemplateData = {
                 "templateName": 'ActiveToInactiveCaseTemplate_' + randomStr,
                 "templateSummary": 'Case Template Summary1',
-                "categoryTier1": 'Facilities',
-                "categoryTier2": 'Kitchen',
+                "categoryTier1": 'Workforce Administration',
+                "categoryTier2": 'HR Operations',
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "businessUnit": "United States Support",
@@ -738,8 +736,8 @@ describe("Task Approval Tests", () => {
             caseTemplateData1 = {
                 "templateName": 'Case Template for Approval' + randomStr,
                 "templateSummary": 'Case Template Summary1',
-                "categoryTier1": 'Facilities',
-                "categoryTier2": 'Kitchen',
+                "categoryTier1": 'Workforce Administration',
+                "categoryTier2": 'HR Operations',
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "businessUnit": "United States Support",
@@ -753,8 +751,8 @@ describe("Task Approval Tests", () => {
                 "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
                 "templateSummary": `Automated Approval for task  ${randomStr}`,
                 "templateStatus": "Active",
-                "category1": 'Facilities',
-                "category2": 'Kitchen',
+                "category1": 'Workforce Administration',
+                "category2": 'HR Operations',
                 "processBundle": "com.bmc.dsm.case-lib",
                 "processName": `Case Process 1 ${randomStr}`,
                 "taskCompany": "Petramco",
@@ -768,8 +766,8 @@ describe("Task Approval Tests", () => {
                 "templateSummary": 'External task19011' + randomStr,
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
-                "category1": 'Facilities',
-                "category2": 'Kitchen',
+                "category1": 'Workforce Administration',
+                "category2": 'HR Operations',
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "United States Support",
                 "ownerGroup": "US Support 3",
@@ -790,7 +788,7 @@ describe("Task Approval Tests", () => {
             // Create Approval Flow through API
             let approvalFlows = {
                 "flowName": 'Approval Flow1' + randomStr,
-                "qualification": "'Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.bccb0487dc2fab9e5052c16c67f647df8ce68a989fd53a4999763c5a336e5b79c83b8ba8108907851a28e035b87c73ae2f086df65912d77eff8e21299d90c32c.304405421} AND 'Category Tier 2' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.8c700e7edba91d3091aed763ab1c3c0bcf1c44c8c8776d53fa6bc76b6ff78bb48f106c210f41c330a2c42af0daab956847e9712a4a8822b8c571e5b97eec1bf5.304405421}",
+                "qualification": "'Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.662dc43aa1b2ada8eefe9dfb6aec1413d9d6b92f119132f2f8fbe01d771768f4c674c03062fa2ce190b9b6889e7a73c5b94501a79b2f50b4a488d63252c05920.304405421} AND 'Category Tier 2' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.5264bb516ca8f271f6740d23ef297f8ad20245a7ab732f732c86f72180b26473dae7afcaa103d196e9a5c2d948a9a2d42a74200859284322111b7ded9666eae9.304405421}",
                 "precedence": 0,
                 "isLevelUp": true,
                 "levels": 1,
@@ -837,7 +835,6 @@ describe("Task Approval Tests", () => {
         it('[DRDMV-21827]:Trigger task based approval for automated task and verify error status', async () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
