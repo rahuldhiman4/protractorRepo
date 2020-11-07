@@ -207,7 +207,7 @@ describe("Actionable Notifications", () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await notificationPo.clickOnNotificationIcon();
-            await notificationPo.clickActionableLink('Watchlist Alert: ' + response.displayId + ' assigned to Fritz Schulz by Qiao Feng.');
+            await notificationPo.clickActionableLink(response.displayId + ' has been assigned to you');
             await utilityCommon.switchToNewTab(1);
             expect(await viewCasePage.getCaseID()).toBe(response.displayId);
         }
@@ -242,7 +242,7 @@ describe("Actionable Notifications", () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await notificationPo.clickOnNotificationIcon();
-            await notificationPo.clickActionableLink(`Watchlist Alert: ${response.displayId} Marked: In Progress by Qiao Feng.`);
+            await notificationPo.clickActionableLink(response.displayId + ' has been assigned to you');
             await utilityCommon.switchToNewTab(1);
             expect(await viewCasePage.getCaseID()).toBe(response.displayId);
         }
@@ -279,8 +279,7 @@ describe("Actionable Notifications", () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await notificationPo.clickOnNotificationIcon();
-            await notificationPo.clickActionableLink(`Watchlist Alert: ${response.displayId} was assigned to group US Support 2 by Qianru Tao`);
-
+            await notificationPo.clickActionableLink(response.displayId + ' has been assigned to you');
             await utilityCommon.switchToNewTab(1);
             expect(await viewCasePage.getCaseID()).toBe(response.displayId);
         }
@@ -931,7 +930,7 @@ describe("Actionable Notifications", () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await notificationPo.clickOnNotificationIcon();
-            await notificationPo.clickActionableLink(`Actionable Alert check for Case ID: ${caseDisplayId}`);
+            await notificationPo.clickActionableLink(caseDisplayId + ' has been assigned to you');
             await utilityCommon.switchToNewTab(1);
             expect(await viewCasePage.getCaseID()).toBe(caseDisplayId);
         });

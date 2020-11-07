@@ -31,7 +31,6 @@ describe('Knowledge Article Template', () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
         await createKnowledgeArticleTemplatePo.setTemplateName('template1062' + randomStr);
-        await createKnowledgeArticleTemplatePo.setKnowledgeSetValue('HR');
         await createKnowledgeArticleTemplatePo.clickCancelBtn();
         expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue?');
         await utilCommon.clickOnWarningOk();
@@ -44,15 +43,22 @@ describe('Knowledge Article Template', () => {
         //Creating an Article Template from API
         let knowledgeArticleTemplateData = {
             templateName: templateName,
-            sectionTitle: "articleSection"
+            sectionTitle: "articleSection",
+            lineOfBusiness: "Human Resource"
         }
-        await apiHelper.apiLogin('kWilliamson');
+        await apiHelper.apiLogin('jbarnes');
         await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateData);
-
+        knowledgeArticleTemplateData.lineOfBusiness = 'Facilities';
+        await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateData);
+        
+        await navigationPage.signOut();
+        await loginPage.login('jbarnes');
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', 'Knowledge Article Templates');
         //Creating the Article Template with same name and set from UI
+        await utilGrid.selectLineOfBusiness('Human Resource');
         await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
         await createKnowledgeArticleTemplatePo.setTemplateName(templateName);
-        await createKnowledgeArticleTemplatePo.setKnowledgeSetValue('Policy');
         await createKnowledgeArticleTemplatePo.clickOnAddSection();
         await createKnowledgeArticleTemplatePo.setSectionTitle('Section Title');
         await createKnowledgeArticleTemplatePo.clickOnSaveButton();
@@ -61,14 +67,14 @@ describe('Knowledge Article Template', () => {
         await createKnowledgeArticleTemplatePo.clickCancelBtn();
         await utilCommon.clickOnWarningOk();
 
-        //Creating the Article Template with same name but different set from UI
+        //Creating the Article Template with same name but different LOB
+        await utilGrid.selectLineOfBusiness('Facilities');
         await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
         await createKnowledgeArticleTemplatePo.setTemplateName(templateName);
-        await createKnowledgeArticleTemplatePo.setKnowledgeSetValue('Global');
         await createKnowledgeArticleTemplatePo.clickOnAddSection();
         await createKnowledgeArticleTemplatePo.setSectionTitle('Section Title');
         await createKnowledgeArticleTemplatePo.clickOnSaveButton();
-        expect(await utilCommon.isPopUpMessagePresent('Knowledge Template : Template Name DRDMV-1088 has been successfully created')).toBeTruthy();
+        expect(await utilCommon.isPopUpMessagePresent('ERROR (222061): Template already exists.')).toBeTruthy();
     });
 
     describe('[DRDMV-619,DRDMV-1065,DRDMV-1180]: [Create Mode] Create a template for Knowledge article', () => {
@@ -96,7 +102,6 @@ describe('Knowledge Article Template', () => {
         it('[DRDMV-619,DRDMV-1065,DRDMV-1180]: Create templates for Knowledge article', async () => {
             await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
             await createKnowledgeArticleTemplatePo.setTemplateName('DRDMV-1065');
-            await createKnowledgeArticleTemplatePo.setKnowledgeSetValue('Global');
             await createKnowledgeArticleTemplatePo.clickOnAddSection();
             expect(await createKnowledgeArticleTemplatePo.getfieldLabel('Section Title')).toBe('Section Title');
             await createKnowledgeArticleTemplatePo.setSectionTitle('Section Title1');
@@ -125,7 +130,6 @@ describe('Knowledge Article Template', () => {
 
             expect(await createKnowledgeArticleTemplatePo.getfieldLabel('Template Name')).toBe('Template Name');
             expect(await createKnowledgeArticleTemplatePo.getfieldLabel('Template Description')).toBe('Template Description');
-            expect(await createKnowledgeArticleTemplatePo.getfieldLabel('Knowledge Set')).toBe('Knowledge Set');
 
             expect(await utilCommon.isButtonVisible('Add Section')).toBeTruthy('Add Section button is not visible');
             expect(await utilCommon.isButtonVisible('Expand All')).toBeTruthy('Expand All button is not visible');
@@ -138,7 +142,6 @@ describe('Knowledge Article Template', () => {
 
             await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
             await createKnowledgeArticleTemplatePo.setTemplateName('DRDMV-619');
-            await createKnowledgeArticleTemplatePo.setKnowledgeSetValue('HR');
             await createKnowledgeArticleTemplatePo.clickOnAddSection();
             await createKnowledgeArticleTemplatePo.setSectionTitle('Section Title_1');
             await createKnowledgeArticleTemplatePo.clickOnSaveButton();
@@ -152,7 +155,6 @@ describe('Knowledge Article Template', () => {
         it('[DRDMV-619,DRDMV-1065,DRDMV-1180]: [Create Mode] Create a template for Knowledge article', async () => {
             expect(await createKnowledgePage.isTemplatePresent('DRDMV-1065')).toBeTruthy('Template DRDMV-1065 is not present');
             expect(await createKnowledgePage.isTemplatePresent('DRDMV-619')).toBeTruthy('Template DRDMV-619 is not present');
-            expect(await createKnowledgePage.isTemplatePresent('Article Template Name Psilon')).toBeFalsy('Template Article Template Name Psilon is present');
 
             expect(await createKnowledgePage.isTemplateDescriptionPresent('KCS Template')).toBeTruthy('Template Description is missing');
             expect(await createKnowledgePage.isSectionTitleVisibleOnPreview('Problem')).toBeTruthy('Section title is missing');
@@ -179,9 +181,14 @@ describe('Knowledge Article Template', () => {
 
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.switchToApplication("Knowledge Management");
+            await utilityGrid.clickRefreshIcon();
             await utilityGrid.clearFilter();
             expect(await utilityGrid.isGridRecordPresent('Article Title KCS')).toBeTruthy('Article is not present');
             expect(await utilityGrid.isGridRecordPresent('Article Title 619')).toBeTruthy('Article is not present');
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await navigationPage.gotoCreateKnowledge();
+            expect(await createKnowledgePage.isTemplatePresent('Article Template Name Psilon')).toBeFalsy('Template Article Template Name Psilon is present');
         })
     });
 });
