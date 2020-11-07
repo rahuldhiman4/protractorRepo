@@ -42,7 +42,7 @@ describe("Case Approval UI Validations", () => {
     });
 
     //skhobrag
-    fdescribe('[DRDMV-1367,DRDMV-10823]:[Approval] Approval details in Case details - UI validation (One Must Sign)', async () => {
+    describe('[DRDMV-1367,DRDMV-10823]:[Approval] Approval details in Case details - UI validation (One Must Sign)', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let approvalFlowName = 'Approval Flow' + randomStr;
         let caseData = undefined;

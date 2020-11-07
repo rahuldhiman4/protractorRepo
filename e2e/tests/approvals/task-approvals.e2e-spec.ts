@@ -40,7 +40,7 @@ describe("Task Approval Tests", () => {
         await navigationPage.signOut();
     });
 
-    fdescribe('[DRDMV-21584]:[Task Approval] - Case General Approval - All Must Sign', async () => {
+    describe('[DRDMV-21584]:[Task Approval] - Case General Approval - All Must Sign', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseId, caseData, automatedTaskDisplayId, approvalMappingResponse, approvalMappingData;
         let caseTemplateData, autoTaskTemplateData, automatedTask, caseTemplate;

@@ -808,7 +808,7 @@ describe("Task Self Approval Tests", () => {
         });
     });
 
-    fdescribe('[DRDMV-22264]:[Approval] Verify precedence will be given to company specific approval mapping if we have global approval mapping with Same name when task enters approval cycle', async () => {
+    describe('[DRDMV-22264]:[Approval] Verify precedence will be given to company specific approval mapping if we have global approval mapping with Same name when task enters approval cycle', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseId, caseData, automatedTaskDisplayId, approvalMappingResponse, approvalMappingData, globalApprovalMappingData;
         let caseTemplateData, manualTaskTemplateData, automatedTask, caseTemplate;
