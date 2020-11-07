@@ -493,8 +493,8 @@ describe("Case General Approval Tests", () => {
             activeToInactiveTemplateData = {
                 "templateName": 'ActiveToInactiveCaseTemplate_' + randomStr,
                 "templateSummary": 'Case Template Summary1',
-                "categoryTier1": 'Facilities',
-                "categoryTier2": 'Kitchen',
+                "categoryTier1": 'Workforce Administration',
+                "categoryTier2": 'HR Operations',
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "businessUnit": "United States Support",
@@ -506,7 +506,7 @@ describe("Case General Approval Tests", () => {
             removeAssociationTemplateData = {
                 "templateName": 'RemoveAfterApprovalCaseTemplate_' + randomStr,
                 "templateSummary": 'Case Template Summary2',
-                "categoryTier1": 'Facilities',
+                "categoryTier1": 'Workforce Administration',
                 "categoryTier2": 'Restroom',
                 "templateStatus": "Active",
                 "company": "Petramco",
@@ -526,7 +526,7 @@ describe("Case General Approval Tests", () => {
                 {
                     "flowName": 'Approval Flow1' + randomStr,
                     "approvers": "U:qliu;qkatawazi",
-                    "qualification": "'Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.bccb0487dc2fab9e5052c16c67f647df8ce68a989fd53a4999763c5a336e5b79c83b8ba8108907851a28e035b87c73ae2f086df65912d77eff8e21299d90c32c.304405421} AND 'Category Tier 2' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.8c700e7edba91d3091aed763ab1c3c0bcf1c44c8c8776d53fa6bc76b6ff78bb48f106c210f41c330a2c42af0daab956847e9712a4a8822b8c571e5b97eec1bf5.304405421}",
+                    "qualification": "'Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.662dc43aa1b2ada8eefe9dfb6aec1413d9d6b92f119132f2f8fbe01d771768f4c674c03062fa2ce190b9b6889e7a73c5b94501a79b2f50b4a488d63252c05920.304405421} AND 'Category Tier 2' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.5264bb516ca8f271f6740d23ef297f8ad20245a7ab732f732c86f72180b26473dae7afcaa103d196e9a5c2d948a9a2d42a74200859284322111b7ded9666eae9.304405421}",
                     "precedence": 1,
                     "signingCriteria": 0,
                     "approvalFlowOutcomeMappingList": [
@@ -536,7 +536,7 @@ describe("Case General Approval Tests", () => {
                 {
                     "flowName": 'Approval Flow2' + randomStr,
                     "approvers": "U:qliu;qkatawazi",
-                    "qualification": "'Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.bccb0487dc2fab9e5052c16c67f647df8ce68a989fd53a4999763c5a336e5b79c83b8ba8108907851a28e035b87c73ae2f086df65912d77eff8e21299d90c32c.304405421} AND 'Category Tier 2' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.5210cb25d5359c0d18bbedf989946c0c825d93b842ada3b854efca277e78b52c951fdc5ded083e9b854fe570df6441ec3616f81c783cd7450871c9c8f66c5a2b.304405421}",
+                    "qualification": "'Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.662dc43aa1b2ada8eefe9dfb6aec1413d9d6b92f119132f2f8fbe01d771768f4c674c03062fa2ce190b9b6889e7a73c5b94501a79b2f50b4a488d63252c05920.304405421} AND 'Category Tier 2' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.5210cb25d5359c0d18bbedf989946c0c825d93b842ada3b854efca277e78b52c951fdc5ded083e9b854fe570df6441ec3616f81c783cd7450871c9c8f66c5a2b.304405421}",
                     "precedence": 2,
                     "signingCriteria": 0,
                     "approvalFlowOutcomeMappingList": [
