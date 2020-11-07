@@ -57,7 +57,6 @@ describe('Case Console Filter Combinations', () => {
         });
 
         it('[DRDMV-23477]: Verify records are fetched on case console with Assignee, Assigned Group, Status combinations', async () => {
-            await utilityGrid.selectLineOfBusiness('Human Resource');
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Assignee', 'Elizabeth Peters', 'text');
             await utilityGrid.addFilter('Status', 'Assigned', 'text');
@@ -206,8 +205,6 @@ describe('Case Console Filter Combinations', () => {
             caseId.push(response5.displayId);
         });
         it('[DRDMV-23479]:Verify records are fetched on case console with case Site, Region, Status combinations', async () => {
-            await utilityGrid.selectLineOfBusiness('Human Resource');
-            await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Status', 'New', 'text');
             await utilityGrid.addFilter('Status', 'Assigned', 'text');
             await utilityGrid.addFilter('Case Site', 'Pune', 'text');
@@ -289,7 +286,6 @@ describe('Case Console Filter Combinations', () => {
             caseId.push(response4.displayId);
         });
         it('[DRDMV-23492]:Verify records are fetched on case console with Label and Assigned group combinations', async () => {
-            await utilityGrid.selectLineOfBusiness('Human Resource');
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Assigned Group', 'Employee Relations', 'text');
             await utilityGrid.addFilter('Assigned Group', 'Workforce Administration', 'text');
@@ -372,7 +368,6 @@ describe('Case Console Filter Combinations', () => {
 
         });
         it('[DRDMV-23480]:Verify records are fetched on case console with Source and Assignee combinations', async () => {
-            await utilityGrid.selectLineOfBusiness('Human Resource');
             await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Status', 'New', 'text');

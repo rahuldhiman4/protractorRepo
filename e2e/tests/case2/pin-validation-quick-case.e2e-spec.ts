@@ -312,9 +312,9 @@ describe('PIN Validation Quick Case', () => {
             await createKnowledgePage.addTextInKnowlegeTitleField(`${randomStr}2Casetemplate`);
             await createKnowledgePage.selectKnowledgeSet(knowledgeSetData.knowledgeSetTitle);
             await createKnowledgePage.clickAssignToMeButton();
-            await createKnowledgePage.selectCategoryTier1Option('Accounts Payable');
-            await createKnowledgePage.selectCategoryTier2Option('Invoices');
-            await createKnowledgePage.selectCategoryTier3Option('Payment');
+            await createKnowledgePage.selectCategoryTier1Option('Employee Relations');
+            await createKnowledgePage.selectCategoryTier2Option('Compensation');
+            await createKnowledgePage.selectCategoryTier3Option('Bonus');
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
             await editKnowledgePage.setKnowledgeStatus('Draft');
@@ -456,9 +456,9 @@ describe('PIN Validation Quick Case', () => {
             await createKnowledgePage.addTextInKnowlegeTitleField(`${randomStr}2Casetemplate`);
             await createKnowledgePage.selectKnowledgeSet(knowledgeSetData.knowledgeSetTitle);
             await createKnowledgePage.clickAssignToMeButton();
-            await createKnowledgePage.selectCategoryTier1Option('Accounts Payable');
-            await createKnowledgePage.selectCategoryTier2Option('Invoices');
-            await createKnowledgePage.selectCategoryTier3Option('Payment');
+            await createKnowledgePage.selectCategoryTier1Option('Employee Relations');
+            await createKnowledgePage.selectCategoryTier2Option('Compensation');
+            await createKnowledgePage.selectCategoryTier3Option('Bonus');
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
             await editKnowledgePage.setKnowledgeStatus('Draft');

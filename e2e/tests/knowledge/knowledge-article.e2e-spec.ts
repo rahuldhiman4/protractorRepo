@@ -235,12 +235,12 @@ describe('Knowledge Article', () => {
             "assigneeBusinessUnit": "United Kingdom Support",
             "assigneeSupportGroup": "GB Support 2",
             "assignee": "KMills",
-            "lineOfBuisness": "Ericsson HR"
         }
         let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
+        await navigationPage.signOut();
+        await loginPage.login(knowledgeCoachUser);
         await navigationPage.switchToApplication(knowledgeManagementApp);
         expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-        await navigationPage.gotoKnowledgeConsole();
         await knowledgeConsolePo.addColumnOnGrid(knowledgeGridColumnFields)
         await utilityGrid.clearFilter();
         await utilityGrid.searchRecord(knowledgeTitle);
@@ -866,7 +866,6 @@ describe('Knowledge Article', () => {
             await navigationPage.switchToApplication(knowledgeManagementApp);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await navigationPage.gotoCreateKnowledge();
-            await utilityGrid.selectLineOfBusiness('Human Resource');
             await createKnowledgePage.clickOnTemplate('Reference');
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
             await createKnowledgePage.addTextInKnowlegeTitleField('Knowledge' + randomStr);
@@ -932,7 +931,6 @@ describe('Knowledge Article', () => {
         it('[DRDMV-5192]: Unflag the article', async () => {
             await navigationPage.gotoKnowledgeConsole();
             await utilityGrid.clearFilter();
-            await utilityGrid.selectLineOfBusiness('Human Resource');
             await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
             await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
             await feedbackBladeKnowledgeArticlePo.selectFlag(true);
@@ -1439,7 +1437,6 @@ describe('Knowledge Article', () => {
             await navigationPage.switchToApplication(knowledgeManagementApp);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr, 'title not correct');
             await utilityGrid.clearFilter();
-            await utilityGrid.selectLineOfBusiness('Human Resource');
             await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
             expect(await viewKnowledgeArticlePo.isApprovalButtonsPresent("Approve")).toBeFalsy();
             expect(await viewKnowledgeArticlePo.isApprovalButtonsPresent("Reject")).toBeFalsy();
@@ -1546,7 +1543,6 @@ describe('Knowledge Article', () => {
             await navigationPage.switchToApplication(knowledgeManagementApp);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr, 'title not correct');
             await utilityGrid.clearFilter();
-            await utilityGrid.selectLineOfBusiness('Human Resource');
             await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
             expect(await viewKnowledgeArticlePo.getStatusValue()).toBe("Draft", 'Status is not updated');
             await editKnowledgePage.setKnowledgeStatus('Request Cancelation');
@@ -1566,7 +1562,6 @@ describe('Knowledge Article', () => {
             await navigationPage.switchToApplication(knowledgeManagementApp);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr, 'title not correct');
             await utilityGrid.clearFilter();
-            await utilityGrid.selectLineOfBusiness('Human Resource');
             await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
             expect(await viewKnowledgeArticlePo.getStatusValue()).toBe("Draft", 'Status is not updated');
             await editKnowledgePage.setKnowledgeStatus('Publish Approval');
@@ -1586,7 +1581,6 @@ describe('Knowledge Article', () => {
             await navigationPage.switchToApplication(knowledgeManagementApp);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr, 'title not correct');
             await utilityGrid.clearFilter();
-            await utilityGrid.selectLineOfBusiness('Human Resource');
             await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
             expect(await viewKnowledgeArticlePo.getStatusValue()).toBe("Published", 'Status is not updated');
             await editKnowledgePage.setKnowledgeStatus('Retire Approval');
@@ -1606,7 +1600,6 @@ describe('Knowledge Article', () => {
             await navigationPage.switchToApplication(knowledgeManagementApp);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr, 'title not correct');
             await utilityGrid.clearFilter();
-            await utilityGrid.selectLineOfBusiness('Human Resource');
             await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
             expect(await viewKnowledgeArticlePo.getStatusValue()).toBe("Retired", 'Status is not updated');
         });

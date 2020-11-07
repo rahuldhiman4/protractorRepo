@@ -89,9 +89,9 @@ describe('Email Configuration', () => {
         it('[DRDMV-8528,DRDMV-8527]: Verify Email configuration header', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
-            let emailHeaders: string[] = ["Email ID", "Alternate Email IDs", "Company", "Status"];
+            let emailHeaders: string[] = ["Email IDs", "Company", "Status"];
             let add: string[] = ["Company ID", "Display ID", "ID"];
-            let newEmailHeaders: string[] = ["Email ID", "Alternate Email IDs", "Company", "Company ID", "Status", "Display ID", "ID"];
+            let newEmailHeaders: string[] = ["Email IDs", "Company", "Company ID", "Status", "Display ID", "ID"];
             expect(await consoleEmailConfig.coloumnHeaderMatches(emailHeaders)).toBeTruthy();
             await consoleEmailConfig.addHeader(add);
             expect(await consoleEmailConfig.coloumnHeaderMatches(newEmailHeaders)).toBeTruthy();
@@ -465,7 +465,7 @@ describe('Email Configuration', () => {
             await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
             await consoleAcknowledgmentTemplatePo.searchAndSelectGridRecord('Case Closed Ack Template');
             await consoleAcknowledgmentTemplatePo.clickOnDeleteButton();
-            expect(await utilCommon.isPopUpMessagePresent("ERROR (10014): Out of box acknowledgment templates cannot be deleted")).toBeTruthy("ERROR (10014)");
+            expect(await utilCommon.isPopUpMessagePresent("ERROR (10000): Template is already in use hence it can not be deleted.")).toBeTruthy("ERROR (10014)");
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
             await consoleAcknowledgmentTemplatePo.searchAndOpenAcknowledgmentTemplate('Case Closed Ack Template');

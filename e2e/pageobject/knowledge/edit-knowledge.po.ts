@@ -197,7 +197,7 @@ class EditKnowledgePage {
     }
 
     async getCategoryTier1SelectedValue(): Promise<string> {
-        return await utilityCommon.getSelectedFieldValue('2e629e99-f2fa-48a2-910b-0652a6bf032f');
+        return await utilityCommon.getSelectedFieldValue('254ef6b1-74fe-47ae-ab5f-701acbcb1fd5');
     }
 
     async getRegionSelectedValue(fieldName: string): Promise<string> {
