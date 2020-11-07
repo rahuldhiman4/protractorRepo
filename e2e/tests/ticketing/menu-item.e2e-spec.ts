@@ -129,14 +129,8 @@ describe('Menu Item', () => {
     describe('[DRDMV-16105,DRDMV-16106]: Verify Multiple records with same name', async () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let label = 'label' + randomStr;
-        let sourcesActive = 'source' + randomStr;
+        let sourcesActive = 'Email';
         let resolutionCode = 'resolutionCode' + randomStr;
-        beforeAll(async () => {
-            await apiHelper.apiLogin('tadmin');
-            let sourceActiveUIFalseData = cloneDeep(SOURCE_MENU_ITEM);
-            sourceActiveUIFalseData.menuItemName = sourcesActive;
-            await apiHelper.createNewMenuItem(sourceActiveUIFalseData);
-        });
         it('[DRDMV-16105,DRDMV-16106]: [Menu Items] - Create Menu Item', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
@@ -215,7 +209,7 @@ describe('Menu Item', () => {
             await menuItemsConfigConsolePo.searchOnGridConsole(sourcesActive);
             expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Menu Name')).toBe('Source'), 'Menu Name column value is missing for Source';
             expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Menu Options')).toBe(sourcesActive), 'Menu Option column value is missing for source';
-            expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Status')).toBe('Inactive'), 'Status column value is missing for source';
+            expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Status')).toBe('Active'), 'Status column value is missing for source';
 
             await menuItemsConfigConsolePo.searchOnGridConsole(resolutionCode);
             expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Menu Name')).toBe('Resolution Code'), 'Menu Name column value is missing for resolution code';
