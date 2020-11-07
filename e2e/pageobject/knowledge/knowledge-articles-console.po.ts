@@ -14,7 +14,7 @@ class KnowledgeArticlesGridConsole {
         hamburgerFilterIcon: '[rx-view-component-id="a9dfa448-2900-4a2b-a230-503f4a0ac12e"] .rx-record-grid-toolbar__item .d-icon-ellipsis',
         removeAssignedToMeFilter: '.d-tag-remove-button',
         knowledgeArticleGridConsoleGuid: '0df18e99-4315-457c-aef0-3abc96fb08ee',
-        recommendedArticleLink: '.at-data-cell button',
+        recommendedArticleLink: '.at-data-row a',
         filter: '.d-icon-left-filter',
         applyFilter: '.advanced-filter__actions-buttons .m-start-4',
         removeFilter: '.advanced-filter__actions-buttons button',
