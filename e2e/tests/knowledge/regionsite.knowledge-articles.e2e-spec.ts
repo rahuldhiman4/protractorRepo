@@ -24,6 +24,7 @@ import utilityGrid from "../../utils/utility.grid";
 import utilityCommon from '../../utils/utility.common';
 import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
 
+
 let caseBAUser = 'qkatawazi';
 let caseAgentUser = 'qtao';
 let caseManagerUser = 'qdu';
@@ -292,7 +293,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await navigationPage.signOut();
 
             //Create Knowledge article by Case Manager
-            await loginPage.login('frieda');
+            await loginPage.login('qdu');
             await navigationPage.gotoKnowledgeConsole();
             await navigationPage.gotoCreateKnowledge();
             await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
@@ -301,6 +302,8 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
             await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
             await createKnowledgePage.clickAssignToMeButton();
+            await changeAssignmentBladePo.clickOnSupportGroup('CA Support 1');
+            await changeAssignmentBladePo.clickOnAssignButton();
             await createKnowledgePage.selectSiteDropDownOption(siteFieldVal);
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
@@ -539,7 +542,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await loginPage.login(caseBAUser);
         });
     });
-
+//done
     describe('[DRDMV-19575]:Verify the search functionality of Document library console for Region', () => {
         let regionFields: string[] = ["Region"];
         let emptyStr = undefined;
@@ -627,7 +630,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await loginPage.login(caseBAUser);
         });
     });
-
+//done
     describe('[DRDMV-19573]:Verify the document search based on Region and Site from attachments', () => {
         let caseSummary = `Case for Document Search-${new Date().valueOf()}`;
         let title = `Document-${new Date().valueOf()}`;
@@ -816,7 +819,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await loginPage.login(caseBAUser);
         });
     });
-
+//done
     describe('[DRDMV-19572]:Verify the knowledge articles search based on Region and Site on Quick case / Create case', () => {
         it('[DRDMV-19572]:Verify the knowledge articles search based on Region and Site on Quick case / Create case', async () => {
             await navigationPage.gotoQuickCase();
