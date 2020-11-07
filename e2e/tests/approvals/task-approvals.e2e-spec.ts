@@ -40,7 +40,7 @@ describe("Task Approval Tests", () => {
         await navigationPage.signOut();
     });
 
-    describe('[DRDMV-21584]:[Task Approval] - Case General Approval - All Must Sign', async () => {
+    fdescribe('[DRDMV-21584]:[Task Approval] - Case General Approval - All Must Sign', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseId, caseData, automatedTaskDisplayId, approvalMappingResponse, approvalMappingData;
         let caseTemplateData, autoTaskTemplateData, automatedTask, caseTemplate;
@@ -119,7 +119,6 @@ describe("Task Approval Tests", () => {
         it('[DRDMV-21584]:Create case and assign tasks to it', async () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
@@ -357,7 +356,6 @@ describe("Task Approval Tests", () => {
         it('[DRDMV-21587]:Create case and assign tasks to it', async () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
@@ -837,7 +835,6 @@ describe("Task Approval Tests", () => {
         it('[DRDMV-21827]:Trigger task based approval for automated task and verify error status', async () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");

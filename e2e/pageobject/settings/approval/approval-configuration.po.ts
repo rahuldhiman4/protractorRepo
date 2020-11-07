@@ -160,6 +160,7 @@ class ApprovalsConsole {
     }
 
     async clickNewApprovalFlowSaveButton(): Promise<void> {
+        await browser.sleep(500);
         await $(this.selectors.newApprovalFlowSaveButton).click();
     }
 
