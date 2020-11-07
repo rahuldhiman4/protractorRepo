@@ -585,7 +585,7 @@ describe("Task Approval Tests", () => {
             expect(await showApproversBladePo.getApproversTabLabel('Approval Decision')).toContain('Approval Decision (0)');
             expect(await showApproversBladePo.getApprovalsHelpTextOnShowApproversBlade()).toContain('One of following people must approve this case:');
             expect(await showApproversBladePo.getApproversCount()).toBe(2);
-            expect(await showApproversBladePo.getApproversName('Fritz Schulz')).toBeTruthy('Approver not present');
+            expect(await showApproversBladePo.getApproversName('Qadim Katawazi')).toBeTruthy('Approver not present');
             expect(await showApproversBladePo.getApproversName('RA3 Liu')).toBeTruthy('Approver not present');
             expect(await showApproversBladePo.isApproverPersonIconDisplayed('Fritz Schulz')).toBeTruthy('Approver Person Icon is not displayed');
             expect(await showApproversBladePo.isAwaitingApproverIconDisplayed()).toBeTruthy('Awaiting approver icon is not displayed');

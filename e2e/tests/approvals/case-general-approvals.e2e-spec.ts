@@ -161,8 +161,8 @@ describe("Case General Approval Tests", () => {
             caseTemplateDataWithMatchingCriteria = {
                 "templateName": 'caseTemplateName' + randomStr,
                 "templateSummary": 'Case Template Summary',
-                "categoryTier1": 'Phones',
-                "categoryTier2": 'Infrastructure',
+                "categoryTier1": 'Workforce Administration',
+                "categoryTier2": 'HR Operations',
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "businessUnit": "United States Support",
@@ -178,7 +178,7 @@ describe("Case General Approval Tests", () => {
             let approvalFlowData = {
                 "flowName": `Approval FLow ${randomStr}`,
                 "approver": "qliu;qkatawazi",
-                "qualification": "'Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.d05a0ef4c11d0ecd132117631142e79341b678f18b3dc1b569544d6f09b085960cd750cef35ce6b4393d6900184a519f9233807bb6187d3961f0fff43adc553f.304405421} AND 'Category Tier 2' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.a98e71fb172dbf594abbfae7cfe2114dded55c95efbfe6e2594137d94af12686911bed8da886fadca5c821fea4f942efa89f3aa072ee088232336bad5f4f8f06.304405421}"
+                "qualification": "'Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.662dc43aa1b2ada8eefe9dfb6aec1413d9d6b92f119132f2f8fbe01d771768f4c674c03062fa2ce190b9b6889e7a73c5b94501a79b2f50b4a488d63252c05920.304405421} AND 'Category Tier 2' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.5264bb516ca8f271f6740d23ef297f8ad20245a7ab732f732c86f72180b26473dae7afcaa103d196e9a5c2d948a9a2d42a74200859284322111b7ded9666eae9.304405421}"
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createApprovalFlow(approvalFlowData, caseModule);

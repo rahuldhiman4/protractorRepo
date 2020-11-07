@@ -45,7 +45,7 @@ describe("Task Approval UI Validations", () => {
                 "templateName": `manualTaskTemplateDraft ${randomStr}`,
                 "templateSummary": `One must approval for task ${randomStr}`,
                 "templateStatus": "Active",
-                "category1": 'Phones',
+                "category1": 'Workforce Administration',
                 "taskCompany": "Petramco",
                 "buisnessUnit": "United Kingdom Support",
                 "supportGroup": "GB Support 2",
@@ -58,7 +58,7 @@ describe("Task Approval UI Validations", () => {
                 "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
                 "templateSummary": `Automated Approval for task  ${randomStr}`,
                 "templateStatus": "Active",
-                "category1": 'Phones',
+                "category1": 'Workforce Administration',
                 "processBundle": "com.bmc.dsm.case-lib",
                 "processName": `Case Process 1 ${randomStr}`,
                 "taskCompany": "Petramco",
@@ -113,7 +113,7 @@ describe("Task Approval UI Validations", () => {
             await browser.sleep(1000); // sleep added for expression builder loading time
             await approvalConfigurationPage.clickExpressionOperatorLinkToSelectExpressionValue();
             await approvalConfigurationPage.selectExpressionValuesOptions('Categorization', 'Operational');
-            await approvalConfigurationPage.searchFoundationDataToApprovalExpression('Phones');
+            await approvalConfigurationPage.searchFoundationDataToApprovalExpression('Workforce Administration');
             await approvalConfigurationPage.clickSelectLink();
             await approvalConfigurationPage.clickFoundationDataSaveButton();
             await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
