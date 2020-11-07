@@ -507,7 +507,7 @@ describe("Case General Approval Tests", () => {
                 "templateName": 'RemoveAfterApprovalCaseTemplate_' + randomStr,
                 "templateSummary": 'Case Template Summary2',
                 "categoryTier1": 'Workforce Administration',
-                "categoryTier2": 'Restroom',
+                "categoryTier2": 'HR Operations',
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "businessUnit": "United States Support",
