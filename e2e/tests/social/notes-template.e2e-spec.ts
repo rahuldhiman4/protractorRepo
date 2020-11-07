@@ -2578,7 +2578,6 @@ describe('Notes template', () => {
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('CA Support 3', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
             await viewCasePage.clickOnTab('Tasks');
             await viewCasePage.clickOnTaskLink(templateData.templateName);
-            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(templateName);
             await activityTabPo.addActivityNote(randomString);
             expect(await ckeditorValidationPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
@@ -2602,7 +2601,6 @@ describe('Notes template', () => {
         });
         it('[DRDMV-22641,DRDMV-22645,DRDMV-22656]: Verify CKE functionality on Create and Edit Task Notes template', async () => {
             await viewCasePage.clickOnTaskLink(externaltemplateData.templateName);
-            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(templateName);
             await activityTabPo.addActivityNote(randomString);
             expect(await ckeditorValidationPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
@@ -2627,7 +2625,6 @@ describe('Notes template', () => {
         });
         it('[DRDMV-22641,DRDMV-22645,DRDMV-22656]: Verify CKE functionality on Create and Edit Task Notes template', async () => {
             await viewCasePage.clickOnTaskLink(automatedtemplateData.templateName);
-            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(templateName);
             await activityTabPo.addActivityNote(randomString);
             expect(await ckeditorValidationPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
@@ -2655,7 +2652,6 @@ describe('Notes template', () => {
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             await viewCasePage.clickOnTaskLink(templateData.templateName);
-            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
@@ -2667,7 +2663,6 @@ describe('Notes template', () => {
             expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
             await viewTaskPo.clickOnViewCase();
             await viewCasePage.clickOnTaskLink(automatedtemplateData.templateName);
-            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
@@ -2679,7 +2674,6 @@ describe('Notes template', () => {
             expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
             await viewTaskPo.clickOnViewCase();
             await viewCasePage.clickOnTaskLink(externaltemplateData.templateName);
-            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
@@ -2697,7 +2691,6 @@ describe('Notes template', () => {
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             await viewCasePage.clickOnTaskLink(templateData.templateName);
-            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
@@ -2709,7 +2702,6 @@ describe('Notes template', () => {
             expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
             await viewTaskPo.clickOnViewCase();
             await viewCasePage.clickOnTaskLink(automatedtemplateData.templateName);
-            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
@@ -2721,7 +2713,6 @@ describe('Notes template', () => {
             expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
             await viewTaskPo.clickOnViewCase();
             await viewCasePage.clickOnTaskLink(externaltemplateData.templateName);
-            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
