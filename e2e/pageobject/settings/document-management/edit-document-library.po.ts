@@ -82,7 +82,7 @@ class EditDocumentLibraryPage {
 
     async selectAddCompanyDropDownOfReadAccess(value: string): Promise<void> {
         await $$('.ui-select-bootstrap button').get(0).click();
-        await $$('.field input').get(0).sendKeys(value);
+        await $$('.field input').get(1).sendKeys(value);
         await element(by.cssContainingText(this.selectors.readAccessDropDownValue, value)).click();
     }
 
@@ -100,7 +100,7 @@ class EditDocumentLibraryPage {
 
     async selectAddReadAccess(value: string, index: number): Promise<void> {
         await $$('.ui-select-bootstrap button').get(index).click();
-        await $$('.field input').get(index).sendKeys(value);
+        await $$('.field input').get(index+1).sendKeys(value);
         let readAccessDropDownLocator = this.selectors.readAccessDropDownValue;
         await browser.wait(this.EC.elementToBeClickable(await element(by.cssContainingText(readAccessDropDownLocator, value))), 3000).then(async function () {
             await element(by.cssContainingText(readAccessDropDownLocator, value)).click();
