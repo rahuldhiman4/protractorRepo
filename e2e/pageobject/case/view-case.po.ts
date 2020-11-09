@@ -179,16 +179,23 @@ class ViewCasePage {
     }
 
     async clickAddToWatchlistLink(): Promise<void> {
-                await $(this.selectors.addToWatchlistDropdown).isDisplayed().then(async (isDisplay) => {
-                    if (isDisplay) {
-                        await $(this.selectors.addToWatchlistDropdown).click();
-                        await $('.dropdown-menu [rx-view-component-id="df24e195-e4f2-4114-af3f-e8a07691bdfd"] button').click();
-                    }else await $(this.selectors.addToWatchlist).click();
-                });
+        await $(this.selectors.addToWatchlistDropdown).isDisplayed().then(async (isDisplay) => {
+            if (isDisplay) {
+                await $(this.selectors.addToWatchlistDropdown).click();
+                await $('.dropdown-menu [rx-view-component-id="df24e195-e4f2-4114-af3f-e8a07691bdfd"] button').click();
+            } else await $(this.selectors.addToWatchlist).click();
+        });
     }
-    
-    async getAddToWatchlistLinkText(): Promise<string> {
-        return await $(this.selectors.addToWatchlist).getText();
+
+    async getAddToWatchlistLinkText(): Promise<boolean> {
+        return await $(this.selectors.addToWatchlistDropdown).isDisplayed().then(async (isDisplayed) => {
+            if (isDisplayed) {
+                await $(this.selectors.addToWatchlistDropdown).click();
+                let value: boolean = await $('.dropdown-menu [rx-view-component-id="df24e195-e4f2-4114-af3f-e8a07691bdfd"] button').isDisplayed();
+                await $(this.selectors.addToWatchlistDropdown).click();
+                return value;
+            } else return await $(this.selectors.addToWatchlist).isDisplayed();
+        });
     }
 
     async isEditLinkDisplay(): Promise<boolean> {
@@ -218,6 +225,7 @@ class ViewCasePage {
     }
 
     async openTaskCard(taskCardNumber: number): Promise<void> {
+        await browser.navigate().refresh(); // workaround for DRDMV-23816
         await utilityCommon.scrollToElement($(this.selectors.taskCardArrow));
         await $$(this.selectors.taskCardArrow).get(taskCardNumber - 1).click();
     }
@@ -263,11 +271,23 @@ class ViewCasePage {
     }
 
     async clickStopWatchingLink(): Promise<void> {
-        await $(this.selectors.stopWatching).click();
+        await $(this.selectors.addToWatchlistDropdown).isDisplayed().then(async (isDisplay) => {
+            if (isDisplay) {
+                await $(this.selectors.addToWatchlistDropdown).click();
+                await $('.dropdown-menu  [rx-view-component-id="a62c849f-5bb0-480f-9811-50def59d82d0"] button').click();
+            } else await $(this.selectors.stopWatching).click();
+        });
     }
 
-    async getStopWatchingLinkText(): Promise<string> {
-        return await $(this.selectors.stopWatching).getText();
+    async getStopWatchingLinkText(): Promise<boolean> {
+        return await $(this.selectors.addToWatchlistDropdown).isDisplayed().then(async (isDisplay) => {
+            if (isDisplay) {
+                await $(this.selectors.addToWatchlistDropdown).click();
+                let value: boolean = await $('.dropdown-menu  [rx-view-component-id="a62c849f-5bb0-480f-9811-50def59d82d0"] button').isDisplayed();
+                await $(this.selectors.addToWatchlistDropdown).click();
+                return value;
+            } else return await $(this.selectors.stopWatching).isDisplayed();
+        });
     }
 
     async clickOnContactPersonerDrpDwn(): Promise<void> {

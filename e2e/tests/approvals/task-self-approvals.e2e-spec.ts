@@ -347,8 +347,8 @@ describe("Task Self Approval Tests", () => {
             caseTemplateData = {
                 "templateName": 'Case Template for Task Approvals' + randomStr,
                 "templateSummary": 'Case Template Summary1',
-                "categoryTier1": 'Facilities',
-                "categoryTier2": 'Kitchen',
+                "categoryTier1": 'Workforce Administration',
+                "categoryTier2": 'HR Operations',
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "businessUnit": "United States Support",
@@ -375,8 +375,8 @@ describe("Task Self Approval Tests", () => {
             caseTemplateData1 = {
                 "templateName": 'Case Template for Task Approvals Second' + randomStr,
                 "templateSummary": 'Case Template Summary another',
-                "categoryTier1": 'Facilities',
-                "categoryTier2": 'Kitchen',
+                "categoryTier1": 'Workforce Administration',
+                "categoryTier2": 'HR Operations',
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "businessUnit": "United States Support",
@@ -448,7 +448,6 @@ describe("Task Self Approval Tests", () => {
             caseId = newCase.displayId;
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
@@ -649,15 +648,15 @@ describe("Task Self Approval Tests", () => {
 
     describe('[DRDMV-22396,DRDMV-22397]:Tiggered the Approval on Task and check Task View screen by Approver should show Approval component', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let caseId, caseData, automatedTaskDisplayId, approvalMappingResponse, approvalMappingData;
-        let caseTemplateData, manualTaskTemplateData, automatedTask, caseTemplate;
+        let caseId, caseData, manualTaskDisplayId, approvalMappingResponse, approvalMappingData;
+        let caseTemplateData, manualTaskTemplateData, manualTask, caseTemplate;
         beforeAll(async () => {
             // Create Case Templates through API
             caseTemplateData = {
                 "templateName": 'ActiveToInactiveCaseTemplate_' + randomStr,
                 "templateSummary": 'Case Template Summary1',
-                "categoryTier1": 'Facilities',
-                "categoryTier2": 'Kitchen',
+                "categoryTier1": 'Workforce Administration',
+                "categoryTier2": 'HR Operations',
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "businessUnit": "United States Support",
@@ -666,13 +665,12 @@ describe("Task Self Approval Tests", () => {
                 "ownerBU": "United States Support",
                 "ownerGroup": "US Support 3"
             }
-
             manualTaskTemplateData = {
                 "templateName": `manualTaskTemplateDraft ${randomStr}`,
                 "templateSummary": `One must approval for task ${randomStr}`,
                 "templateStatus": "Active",
-                "category1": 'Facilities',
-                "category2": 'Kitchen',
+                "category1": 'Workforce Administration',
+                "category2": 'HR Operations',
                 "taskCompany": "Petramco",
                 "buisnessUnit": "United Kingdom Support",
                 "supportGroup": "GB Support 2",
@@ -681,21 +679,19 @@ describe("Task Self Approval Tests", () => {
                 "ownerBusinessUnit": "United Kingdom Support",
                 "ownerGroup": "GB Support 2"
             }
-
             await apiHelper.apiLogin('qkatawazi');
             caseTemplate = await apiHelper.createCaseTemplate(caseTemplateData);
-            automatedTask = await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
-            await apiHelper.associateCaseTemplateWithOneTaskTemplate(caseTemplate.displayId, automatedTask.displayId);
+            manualTask = await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
+            await apiHelper.associateCaseTemplateWithOneTaskTemplate(caseTemplate.displayId, manualTask.displayId);
             // Create Approval Flow through API
             let approvalFlows = {
                 "flowName": 'Approval Flow1' + randomStr,
                 "approver": "U:qliu;U:qstrong",
                 "isLevelUp": false,
-                "qualification": "'Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.bccb0487dc2fab9e5052c16c67f647df8ce68a989fd53a4999763c5a336e5b79c83b8ba8108907851a28e035b87c73ae2f086df65912d77eff8e21299d90c32c.304405421} AND 'Category Tier 2' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.8c700e7edba91d3091aed763ab1c3c0bcf1c44c8c8776d53fa6bc76b6ff78bb48f106c210f41c330a2c42af0daab956847e9712a4a8822b8c571e5b97eec1bf5.304405421}",
+                "qualification": "'Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.662dc43aa1b2ada8eefe9dfb6aec1413d9d6b92f119132f2f8fbe01d771768f4c674c03062fa2ce190b9b6889e7a73c5b94501a79b2f50b4a488d63252c05920.304405421} AND 'Category Tier 2' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.5264bb516ca8f271f6740d23ef297f8ad20245a7ab732f732c86f72180b26473dae7afcaa103d196e9a5c2d948a9a2d42a74200859284322111b7ded9666eae9.304405421}",
                 "precedence": 0,
                 "signingCriteria": 0,
             }
-
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createApprovalFlow(approvalFlows, taskModule);
 
@@ -711,7 +707,7 @@ describe("Task Self Approval Tests", () => {
             }
 
             approvalMappingResponse = await apiHelper.createApprovalMapping(taskModule, approvalMappingData);
-            await apiHelper.associateTemplateWithApprovalMapping(taskModule, automatedTask.id, approvalMappingResponse.id);
+            await apiHelper.associateTemplateWithApprovalMapping(taskModule, manualTask.id, approvalMappingResponse.id);
 
             caseData = {
                 "Requester": "qdu",
@@ -722,13 +718,10 @@ describe("Task Self Approval Tests", () => {
             await apiHelper.apiLogin('qstrong');
             let newCase = await apiHelper.createCase(caseData);
             caseId = newCase.displayId;
-
         });
-
         it('[DRDMV-22396,DRDMV-22397]:Create case and assign tasks to it', async () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
@@ -736,28 +729,26 @@ describe("Task Self Approval Tests", () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
         });
-
         it('[DRDMV-22396,DRDMV-22397]: Verify the task approval details', async () => {
             await viewCasePo.openTaskCard(1);
-            automatedTaskDisplayId = await manageTask.getTaskDisplayId();
+            manualTaskDisplayId = await manageTask.getTaskDisplayId();
             await manageTask.clickTaskLink(manualTaskTemplateData.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
-            await utilityGrid.searchAndOpenHyperlink(automatedTaskDisplayId);
+            await utilityGrid.searchAndOpenHyperlink(manualTaskDisplayId);
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
             expect(await viewTask.isShowApproversBannerDisplayed()).toBeTruthy('Show Approvers Banner is not displayed');
             expect(await viewTask.getShowPendingApproversInfo()).toContain('Pending Approval :1');
             expect(await viewTask.isApprovalButtonsPresent('Approve')).toBeFalsy('Show Approvers Banner is not displayed');
             expect(await viewTask.isApprovalButtonsPresent('Reject')).toBeFalsy('Show Approvers Banner is not displayed');
-        })
-
+        });
         it('[DRDMV-22396,DRDMV-22397]: Approve the task with approver and check the approver details on task view', async () => {
             await navigationPage.signOut();
             await loginPage.login('qstrong');
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
-            await utilityGrid.searchAndOpenHyperlink(automatedTaskDisplayId);
+            await utilityGrid.searchAndOpenHyperlink(manualTaskDisplayId);
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
             expect(await viewTask.isShowApproversBannerDisplayed()).toBeTruthy('Show Approvers Banner is not displayed');
             expect(await viewTask.getShowPendingApproversInfo()).toContain('Pending Approval :1');
@@ -765,12 +756,11 @@ describe("Task Self Approval Tests", () => {
             expect(await viewTask.isApprovalButtonsPresent('Reject')).toBeTruthy('Show Approvers Banner is not displayed');
             await viewTask.clickOnApproveLink();
         });
-
         it('[DRDMV-22396,DRDMV-22397]:Create case and assign tasks to it', async () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await navigationPage.gotoTaskConsole();
-            await utilityGrid.searchAndOpenHyperlink(automatedTaskDisplayId);
+            await utilityGrid.searchAndOpenHyperlink(manualTaskDisplayId);
             expect(await viewTask.getTaskStatusValue()).toBe("Completed");
             expect(await viewTask.isShowApproversBannerDisplayed()).toBeFalsy('Show Approvers Banner is not displayed');
             await apiHelper.apiLogin('qfeng');
@@ -786,32 +776,30 @@ describe("Task Self Approval Tests", () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             await viewCasePo.openTaskCard(1);
-            automatedTaskDisplayId = await manageTask.getTaskDisplayId();
+            manualTaskDisplayId = await manageTask.getTaskDisplayId();
             await manageTask.clickTaskLink(manualTaskTemplateData.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
-            await utilityGrid.searchAndOpenHyperlink(automatedTaskDisplayId);
+            await utilityGrid.searchAndOpenHyperlink(manualTaskDisplayId);
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
             expect(await viewTask.isShowApproversBannerDisplayed()).toBeTruthy('Show Approvers Banner is not displayed');
             expect(await viewTask.getShowPendingApproversInfo()).toContain('Pending Approval :1');
             expect(await viewTask.isApprovalButtonsPresent('Approve')).toBeFalsy('Show Approvers Banner is not displayed');
             expect(await viewTask.isApprovalButtonsPresent('Reject')).toBeFalsy('Show Approvers Banner is not displayed');
         });
-
         it('[DRDMV-22396,DRDMV-22397]: Verify the task approver details on task view for the user who is submitter of task but not belongs to approval configs', async () => {
             await navigationPage.signOut();
             await loginPage.login('qstrong');
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
-            await utilityGrid.searchAndOpenHyperlink(automatedTaskDisplayId);
+            await utilityGrid.searchAndOpenHyperlink(manualTaskDisplayId);
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
             expect(await viewTask.isShowApproversBannerDisplayed()).toBeTruthy('Show Approvers Banner is not displayed');
             expect(await viewTask.getShowPendingApproversInfo()).toContain('Pending Approval :1');
             expect(await viewTask.isApprovalButtonsPresent('Approve')).toBeTruthy('Show Approvers Banner is not displayed');
             expect(await viewTask.isApprovalButtonsPresent('Reject')).toBeTruthy('Show Approvers Banner is not displayed');
         });
-
         afterAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.deleteApprovalMapping(taskModule);
@@ -829,8 +817,8 @@ describe("Task Self Approval Tests", () => {
             caseTemplateData = {
                 "templateName": 'ActiveToInactiveCaseTemplate_' + randomStr,
                 "templateSummary": 'Case Template Summary1',
-                "categoryTier1": 'Facilities',
-                "categoryTier2": 'Kitchen',
+                "categoryTier1": 'Workforce Administration',
+                "categoryTier2": 'HR Operations',
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "businessUnit": "United States Support",
@@ -844,8 +832,8 @@ describe("Task Self Approval Tests", () => {
                 "templateName": `manualTaskTemplateDraft ${randomStr}`,
                 "templateSummary": `One must approval for task ${randomStr}`,
                 "templateStatus": "Active",
-                "category1": 'Facilities',
-                "category2": 'Kitchen',
+                "category1": 'Workforce Administration',
+                "category2": 'HR Operations',
                 "taskCompany": "Petramco",
                 "buisnessUnit": "United Kingdom Support",
                 "supportGroup": "GB Support 2",
@@ -864,7 +852,7 @@ describe("Task Self Approval Tests", () => {
                 "flowName": 'Approval Flow1' + randomStr,
                 "approver": "U:qliu;U:qstrong",
                 "isLevelUp": false,
-                "qualification": "'Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.bccb0487dc2fab9e5052c16c67f647df8ce68a989fd53a4999763c5a336e5b79c83b8ba8108907851a28e035b87c73ae2f086df65912d77eff8e21299d90c32c.304405421} AND 'Category Tier 2' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.8c700e7edba91d3091aed763ab1c3c0bcf1c44c8c8776d53fa6bc76b6ff78bb48f106c210f41c330a2c42af0daab956847e9712a4a8822b8c571e5b97eec1bf5.304405421}",
+                "qualification": "'Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.662dc43aa1b2ada8eefe9dfb6aec1413d9d6b92f119132f2f8fbe01d771768f4c674c03062fa2ce190b9b6889e7a73c5b94501a79b2f50b4a488d63252c05920.304405421} AND 'Category Tier 2' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.5264bb516ca8f271f6740d23ef297f8ad20245a7ab732f732c86f72180b26473dae7afcaa103d196e9a5c2d948a9a2d42a74200859284322111b7ded9666eae9.304405421}",
                 "precedence": 0,
                 "signingCriteria": 0,
             }
@@ -914,7 +902,6 @@ describe("Task Self Approval Tests", () => {
         it('[DRDMV-22264]:Create case and assign tasks to it', async () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
