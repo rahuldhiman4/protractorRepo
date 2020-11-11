@@ -326,7 +326,7 @@ describe("Notification Template", () => {
         await createNotificationTemplatePage.clickOnEmailTab();
         await createNotificationTemplatePage.setSubject('Sample Subject text');
         await createNotificationTemplatePage.clickOnSaveButton();
-        expect(await utilCommon.isPopUpMessagePresent('ERROR (222107): Template already exists with given Event ,Module and Line of Business combination.')).toBeTruthy();
+        expect(await utilCommon.isPopUpMessagePresent('ERROR (222107): A template already exists for the selected combination of event, module, and line of business. Specify a different combination.')).toBeTruthy();
         await utilCommon.closeBladeOnSettings();
         await notificationTempGridPage.clickOnCreateNotificationTemplate();
         await createNotificationTemplatePage.setTemplateName('Email Based Approval DRDMV-16034');
