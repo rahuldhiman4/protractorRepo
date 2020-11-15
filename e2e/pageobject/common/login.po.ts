@@ -51,7 +51,7 @@ class LoginPage {
         // }
         await browser.wait(this.EC.elementToBeClickable($(userLocator)), 30000).then(async () => {
             await $(userLocator).clear();
-            await $(userLocator).sendKeys(user + '@petramco.com');
+            await $(userLocator).sendKeys(user);
         })
         console.log(`Login to BWF with ${user}`);
         await $(passwordLocator).clear();
