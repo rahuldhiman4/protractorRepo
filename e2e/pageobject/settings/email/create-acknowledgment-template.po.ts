@@ -10,8 +10,8 @@ class CreateAcknowledgmentTemplateBlade {
         statusGuid: '3cfbfd34-19ff-4ddb-818b-23b19c859dbe',
         labelGuid: '44510e3a-6542-432a-82b1-433dd0cbf49f',
         description: '[rx-view-component-id="13cf801e-fc2f-4d74-a57b-77e4ebf2bde6"] input',
-        subject: '[rx-view-component-id="187510cc-9804-46e2-bbda-0cdba1d6c83c"] textarea',
-        subjectGuid: '187510cc-9804-46e2-bbda-0cdba1d6c83c',
+        subject: '[rx-view-component-id="d239e3ac-7386-4bdc-866d-095d700eed62"] input',
+        subjectGuid: 'd239e3ac-7386-4bdc-866d-095d700eed62',
         body: '.cke_wysiwyg_div',
         saveButton: '[rx-view-component-id="093a0eeb-c1e0-4ed8-945f-da46d9bbde88"] button',
         cancelButton: '[rx-view-component-id="9aeef4d7-1a10-4ffd-aa3a-22665c32883c"] button',
@@ -48,7 +48,7 @@ class CreateAcknowledgmentTemplateBlade {
     }
 
     async isSubjectRequired(): Promise<boolean> {
-        return   await utilCommon.isRequiredTagToField(this.selectors.subjectGuid);
+        return await utilCommon.isRequiredTagToField(this.selectors.subjectGuid);
     }
 
     async selectStatusDropDown(value: string): Promise<void> {
