@@ -82,9 +82,6 @@ class ApiHelper {
 
     async createCase(data: ICreateCase): Promise<IIDs> {
         let caseData = cloneDeep(data);
-        if (data.Requester) data.Requester = data.Requester;
-        if (data.Contact) data.Contact = data.Contact;
-        if (data.Assignee) data.Assignee = data.Assignee;
         const newCase = await axios.post(
             "api/com.bmc.dsm.case-lib/cases",
             caseData
