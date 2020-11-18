@@ -784,25 +784,31 @@ describe('Notes template', () => {
         await activityTabPo.clickOnPostButton();
         expect(await activityTabPo.isTextPresentInActivityLog(tempNotesTemplateData.body)).toBeTruthy();
     });
-
     //asahitya
-    it('[DRDMV-16008]: [DesignTime] Verify "Case Notes templates", grid operation searching , sorting columns and filter on company', async () => {
+    describe('[DRDMV-16008]: [DesignTime] Verify "Case Notes templates", grid operation searching , sorting columns and filter on company', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let notesTemplateInactiveData;
+        let notesTemplatePetramcoData;
+        let notesTemplateGlobalData;
+        let notesTemplateWithLabelData;
+        let templateGuid;
+
+    beforeAll(async () => {
         //Creating Petramco Template
-        let notesTemplatePetramcoData = cloneDeep(notesTemplateData.NOTES_TEMPLATE_MANDATORY_FIELD);
+        notesTemplatePetramcoData = cloneDeep(notesTemplateData.NOTES_TEMPLATE_MANDATORY_FIELD);
         notesTemplatePetramcoData.templateName = notesTemplatePetramcoData.templateName + randomStr + '123';
         notesTemplatePetramcoData.body = notesTemplatePetramcoData.body + randomStr + '123';
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createNotesTemplate("Case", notesTemplatePetramcoData);
 
         //Creating Global Template
-        let notesTemplateGlobalData = cloneDeep(notesTemplateData.NOTES_TEMPLATE_MANDATORY_FIELD_GLOBAL);
+        notesTemplateGlobalData = cloneDeep(notesTemplateData.NOTES_TEMPLATE_MANDATORY_FIELD_GLOBAL);
         notesTemplateGlobalData.templateName = notesTemplateGlobalData.templateName + randomStr + '456';
         notesTemplateGlobalData.body = notesTemplateGlobalData.body + randomStr + '456';
         await apiHelper.createNotesTemplate("Case", notesTemplateGlobalData);
 
         //Creating Inactive Template
-        let notesTemplateInactiveData = cloneDeep(notesTemplateData.NOTES_TEMPLATE_CASE_INACTIVE);
+        notesTemplateInactiveData = cloneDeep(notesTemplateData.NOTES_TEMPLATE_CASE_INACTIVE);
         notesTemplateInactiveData.templateName = notesTemplateInactiveData.templateName + randomStr + '789';
         await apiHelper.createNotesTemplate("Case", notesTemplateInactiveData);
 
@@ -813,7 +819,7 @@ describe('Notes template', () => {
         }
         await apiHelper.createNewMenuItem(menuItemData);
 
-        let notesTemplateWithLabelData = {
+        notesTemplateWithLabelData = {
             "templateName": "Notes template with label",
             "company": "Petramco",
             "templateStatus": 2,
@@ -825,52 +831,54 @@ describe('Notes template', () => {
         notesTemplateWithLabelData.templateName = notesTemplateWithLabelData.templateName + randomStr;
         notesTemplateWithLabelData.label = notesTemplateWithLabelData.label + randomStr;
         await apiHelper.createNotesTemplate("Case", notesTemplateWithLabelData);
-
-        try {
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
-            await utilGrid.clearFilter();
-            await consoleNotestemplatePo.addColumns(['Label', 'ID']);
-            await utilGrid.searchOnGridConsole(notesTemplateInactiveData.templateName);
-            expect(await utilGrid.getNumberOfRecordsInGrid()).toEqual(1);
-            let templateGuid = await consoleNotestemplatePo.getGuidValue();
-            await utilGrid.clearGridSearchBox();
-            expect(await consoleNotestemplatePo.isGridColumnSorted('Template Name')).toBeTruthy('Column is not sorted');
-            await utilGrid.clearFilter();
-            await utilGrid.addFilter('Company', 'Petramco', 'text');
-            expect(await utilGrid.isGridRecordPresent(notesTemplatePetramcoData.templateName)).toBeTruthy('Petramco Company Filter is not applied');
-            expect(await utilGrid.isGridRecordPresent(notesTemplateGlobalData.templateName)).toBeFalsy('Petramco Company Filter is not applied');
-            await utilGrid.clearFilter();
-            await utilGrid.addFilter('Company', '- Global -', 'text');
-            expect(await utilGrid.isGridRecordPresent(notesTemplatePetramcoData.templateName)).toBeFalsy('Global Company Filter is not applied');
-            expect(await utilGrid.isGridRecordPresent(notesTemplateGlobalData.templateName)).toBeTruthy('Global Company Filter is not applied');
-            await utilGrid.clearFilter();
-            await utilGrid.addFilter('Status', 'Inactive', 'checkbox');
-            expect(await utilGrid.isGridRecordPresent(notesTemplatePetramcoData.templateName)).toBeFalsy('Status Filter is not applied');
-            expect(await utilGrid.isGridRecordPresent(notesTemplateInactiveData.templateName)).toBeTruthy('Status Filter is not applied');
-            await utilGrid.clearFilter();
-            await utilGrid.addFilter('Template Name', notesTemplatePetramcoData.templateName, 'text');
-            expect(await utilGrid.isGridRecordPresent(notesTemplatePetramcoData.templateName)).toBeTruthy('Template Name Filter is not applied');
-            expect(await utilGrid.isGridRecordPresent(notesTemplateInactiveData.templateName)).toBeFalsy('Template Name Filter is not applied');
-            await utilGrid.clearFilter();
-            await utilGrid.addFilter('Label', 'TestMenuItemName' + randomStr, 'text');
-            expect(await utilGrid.isGridRecordPresent(notesTemplateWithLabelData.templateName)).toBeTruthy('Label Filter is not applied');
-            expect(await utilGrid.isGridRecordPresent(notesTemplateInactiveData.templateName)).toBeFalsy('Label Filter is not applied');
-            await utilGrid.clearFilter();
-            await utilGrid.addFilter('ID', templateGuid, 'text');
-            expect(await utilGrid.isGridRecordPresent(notesTemplateInactiveData.templateName)).toBeTruthy('ID Filter is not applied');
-            expect(await utilGrid.isGridRecordPresent(notesTemplateWithLabelData.templateName)).toBeFalsy('ID Filter is not applied');
-            await consoleNotestemplatePo.removeColumns(['Label', 'ID']);
-        }
-        catch (ex) { throw ex }
-        finally {
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
-
-        }
     });
-    
+
+    it('[DRDMV-16008]: [DesignTime] Verify "Case Notes templates", grid operation searching , sorting columns and filter on company', async () => {
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
+        await utilGrid.clearFilter();
+        await consoleNotestemplatePo.addColumns(['Label', 'ID']);
+        await utilGrid.searchOnGridConsole(notesTemplateInactiveData.templateName);
+        expect(await utilGrid.getNumberOfRecordsInGrid()).toEqual(1);
+        templateGuid = await consoleNotestemplatePo.getGuidValue();
+        await utilGrid.clearGridSearchBox();
+        expect(await consoleNotestemplatePo.isGridColumnSorted('Template Name')).toBeTruthy('Column is not sorted');
+        await utilGrid.clearFilter();
+        await utilGrid.addFilter('Company', 'Petramco', 'text');
+        expect(await utilGrid.isGridRecordPresent(notesTemplatePetramcoData.templateName)).toBeTruthy('Petramco Company Filter is not applied');
+        expect(await utilGrid.isGridRecordPresent(notesTemplateGlobalData.templateName)).toBeFalsy('Petramco Company Filter is not applied');
+        await utilGrid.clearFilter();
+        await utilGrid.addFilter('Company', '- Global -', 'text');
+        expect(await utilGrid.isGridRecordPresent(notesTemplatePetramcoData.templateName)).toBeFalsy('Global Company Filter is not applied');
+        expect(await utilGrid.isGridRecordPresent(notesTemplateGlobalData.templateName)).toBeTruthy('Global Company Filter is not applied');
+    });
+    it('[DRDMV-16008]: [DesignTime] Verify "Case Notes templates", grid operation searching , sorting columns and filter on company', async () => {
+        await utilGrid.clearFilter();
+        await utilGrid.addFilter('Status', 'Inactive', 'checkbox');
+        expect(await utilGrid.isGridRecordPresent(notesTemplatePetramcoData.templateName)).toBeFalsy('Status Filter is not applied');
+        expect(await utilGrid.isGridRecordPresent(notesTemplateInactiveData.templateName)).toBeTruthy('Status Filter is not applied');
+        await utilGrid.clearFilter();
+        await utilGrid.addFilter('Template Name', notesTemplatePetramcoData.templateName, 'text');
+        expect(await utilGrid.isGridRecordPresent(notesTemplatePetramcoData.templateName)).toBeTruthy('Template Name Filter is not applied');
+        expect(await utilGrid.isGridRecordPresent(notesTemplateInactiveData.templateName)).toBeFalsy('Template Name Filter is not applied');
+        await utilGrid.clearFilter();
+        await utilGrid.addFilter('Label', 'TestMenuItemName' + randomStr, 'text');
+        expect(await utilGrid.isGridRecordPresent(notesTemplateWithLabelData.templateName)).toBeTruthy('Label Filter is not applied');
+        expect(await utilGrid.isGridRecordPresent(notesTemplateInactiveData.templateName)).toBeFalsy('Label Filter is not applied');
+        await utilGrid.clearFilter();
+        await utilGrid.addFilter('ID', templateGuid, 'text');
+        expect(await utilGrid.isGridRecordPresent(notesTemplateInactiveData.templateName)).toBeTruthy('ID Filter is not applied');
+        expect(await utilGrid.isGridRecordPresent(notesTemplateWithLabelData.templateName)).toBeFalsy('ID Filter is not applied');
+        await consoleNotestemplatePo.removeColumns(['Label', 'ID']);
+    });
+       
+    afterAll(async () => {
+        await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+        await navigationPage.signOut();
+        await loginPage.login('qkatawazi');
+    });
+});
+
     //asahitya
     describe('[DRDMV-16051,DRDMV-16013]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', () => {
         let response1 = undefined;
@@ -2505,7 +2513,6 @@ describe('Notes template', () => {
             await ckeditorOpsPo.clickOnUnderLineIcon();
         });
         it('[DRDMV-22641,DRDMV-22645,DRDMV-22656]: Verify CKE functionality on Create and Edit Task Notes template', async () => {
-
             //set color
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.selectColor('Strong Red');
@@ -2577,6 +2584,8 @@ describe('Notes template', () => {
             await quickCasePo.saveCase();
             await quickCasePo.gotoCaseButton();
             caseId = await viewCasePage.getCaseID();
+            console.log('caseId>>>>>>>>>>>>>>>>>>',caseId);
+            
             await viewCasePage.clickOnTab('Case Access');
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('CA Support 3', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
             await viewCasePage.clickOnTab('Tasks');
