@@ -619,7 +619,7 @@ describe('Notes template', () => {
         it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseResponse2.displayId);
-            await viewCasePage.openTaskCard(1);
+            await viewCasePage.clickAddTaskButton();
             await manageTask.clickTaskLink(templateManualData1.templateSummary);
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
@@ -631,7 +631,7 @@ describe('Notes template', () => {
         });
         it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             await viewTaskPo.clickOnViewCase();
-            await viewCasePage.openTaskCard(1);
+            await viewCasePage.clickAddTaskButton();
             await manageTask.clickTaskLink(templateExternalData1.templateSummary);
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
@@ -643,7 +643,7 @@ describe('Notes template', () => {
         });
         it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             await viewTaskPo.clickOnViewCase();
-            await viewCasePage.openTaskCard(1);
+            await viewCasePage.clickAddTaskButton();
             await manageTask.clickTaskLink(templateAutomatedData1.templateSummary);
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
@@ -657,7 +657,7 @@ describe('Notes template', () => {
             await apiHelper.updateCaseStatus(caseResponse2.id, 'InProgress');
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseResponse2.displayId);
-            await viewCasePage.openTaskCard(1);
+            await viewCasePage.clickAddTaskButton();
             await manageTask.clickTaskLink(templateManualData1.templateSummary);
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
@@ -669,7 +669,7 @@ describe('Notes template', () => {
         });
         it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             await viewTaskPo.clickOnViewCase();
-            await viewCasePage.openTaskCard(1);
+            await viewCasePage.clickAddTaskButton();
             await manageTask.clickTaskLink(templateAutomatedData1.templateSummary);
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
@@ -682,7 +682,7 @@ describe('Notes template', () => {
 
         it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             await viewTaskPo.clickOnViewCase();
-            await viewCasePage.openTaskCard(1);
+            await viewCasePage.clickAddTaskButton();
             await manageTask.clickTaskLink(templateExternalData1.templateSummary);
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
@@ -696,7 +696,7 @@ describe('Notes template', () => {
         it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseResponse1.displayId);
-            await viewCasePage.openTaskCard(1);
+            await viewCasePage.clickAddTaskButton();
             await manageTask.clickTaskLink(templateManualData.templateSummary);
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
@@ -709,9 +709,10 @@ describe('Notes template', () => {
             await activityTabPo.addActivityNote('ManualTemplateData');
             await activityTabPo.clickOnPostButton();
             expect(await activityTabPo.isTextPresentInActivityLog('ManualTemplateData'+tempNotesTemplateData.body)).toBeTruthy();
-
+        });
+        it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             await viewTaskPo.clickOnViewCase();
-            await viewCasePage.openTaskCard(1);
+            await viewCasePage.clickAddTaskButton();
             await manageTask.clickTaskLink(templateAutomatedData.templateSummary);
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(tempNotesTemplateData.templateName);// notes template not shown
             await activityTabPo.addActivityNote('AutomatedTemplateData');
@@ -719,7 +720,7 @@ describe('Notes template', () => {
             expect(await activityTabPo.isTextPresentInActivityLog('AutomatedTemplateData'+tempNotesTemplateData.body)).toBeTruthy();
 
             await viewTaskPo.clickOnViewCase();
-            await viewCasePage.openTaskCard(1);
+            await viewCasePage.clickAddTaskButton();
             await manageTask.clickTaskLink(templateExternalData.templateSummary);
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(tempNotesTemplateData.templateName);// notes template not shown
             await activityTabPo.addActivityNote('ExternalTemplateData');
@@ -736,7 +737,7 @@ describe('Notes template', () => {
             await createAdhocTaskPo.clickSaveAdhoctask();
             await utilityCommon.closePopUpMessage();
             await utilityCommon.closeAllBlades();
-            await viewCasePage.openTaskCard(1);
+            await viewCasePage.clickAddTaskButton();
             await manageTask.clickTaskLink('AdhocTask_DRDMV_16045');
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(tempNotesTemplateData.templateName);// notes template not shown
             await activityTabPo.addActivityNote('AdhocTemplateData');
@@ -747,6 +748,8 @@ describe('Notes template', () => {
             await navigationPage.gotoPersonProfile();
             expect(await activityTabPo.isTextPresentInActivityLog('AdhocTemplateData' + tempNotesTemplateData.body)).toBeTruthy();
             expect(await activityTabPo.isTextPresentInActivityLog('AutomatedTemplateData' + tempNotesTemplateData.body)).toBeTruthy();
+        });
+        it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             expect(await activityTabPo.isTextPresentInActivityLog('ManualTemplateData' + tempNotesTemplateData.body)).toBeTruthy();
             expect(await activityTabPo.isTextPresentInActivityLog('ExternalTemplateData' + tempNotesTemplateData.body)).toBeTruthy();
         });
@@ -1097,7 +1100,8 @@ describe('Notes template', () => {
             await activityTabPo.clickOnPostButton();
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(globalTemplateName);
             await activityTabPo.clickOnPostButton();
-
+        });
+        it('[DRDMV-16112]: Verify Case Notes template is displayed as per to be assignee company(operating organisation)', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(psilonCaseResponse.displayId);
@@ -1111,7 +1115,6 @@ describe('Notes template', () => {
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(globalTemplateName);
             await activityTabPo.clickOnPostButton();
         });
-
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
