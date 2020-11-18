@@ -223,7 +223,7 @@ describe("Case Preview", () => {
             "Assignee": "qtao",
             "Status": "3000",
         }
-        await apiHelper.apiLogin('qtao');
+        await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createCase(caseData);
         await apiHelper.createCaseTemplate(templateData);
         let knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData1);

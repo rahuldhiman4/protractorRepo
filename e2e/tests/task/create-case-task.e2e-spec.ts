@@ -22,6 +22,7 @@ import viewTasktemplatePo from "../../pageobject/settings/task-management/view-t
 import consoleTask from "../../pageobject/task/console-task.po";
 import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
 import editTask from "../../pageobject/task/edit-task.po";
+import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
 import { BWF_BASE_URL } from '../../utils/constants';
@@ -108,8 +109,8 @@ describe('Create Case Task', () => {
 
             //validate Automation Template
             await viewTask.clickOnViewCase();
-            await viewCasePage.openTaskCard(1);
-            await manageTask.clickTaskLink(autoTaskTemplateData.templateSummary);
+            await viewCasePage.clickAddTaskButton();
+            await manageTaskBladePo.clickTaskLink(autoTaskTemplateData.templateSummary);
             await viewTask.clickOnEditTask();
             expect(await editTask.getTaskTypeValue()).toBe('Automated');
             expect(await editTask.getTaskTypeValueAttribute('class')).toContain("disabled");
@@ -208,8 +209,8 @@ describe('Create Case Task', () => {
         it('[DRDMV-7148,DRDMV-7140,DRDMV-745,DRDMV-793]: Automatic Task data validation once Task is created', async () => {
             //validate Automation Template
             await viewTask.clickOnViewCase();
-            await viewCasePage.openTaskCard(1);
-            await manageTask.clickTaskLink(autmationTaskSummaryWithRequiredData);
+            await viewCasePage.clickAddTaskButton();
+            await manageTaskBladePo.clickTaskLink(autmationTaskSummaryWithRequiredData);          
             expect(await viewTask.getTaskTypeValue()).toBe('Automated');
             expect(await viewTask.getProcessNameValue()).toBe(`com.petramco.human-resource:Get Request Status Data1 ${randomStr}`);
             expect(await viewTask.getDescriptionValue()).toBe('-', "getDescriptionValue");

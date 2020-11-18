@@ -868,11 +868,11 @@ describe("Case Read Access", () => {
             await viewCasePage.clickOnTab('Case Access');
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('US Support 1', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
             await accessTabPo.clickToExpandAccessEntitiySearch('Agent Access', 'Case');
-            await accessTabPo.selectAgent('gderuno', 'Agent');
+            await accessTabPo.selectAgent('jbarnes', 'Agent');
             await accessTabPo.clickAccessEntitiyAddButton('Agent');
             await navigationPo.signOut();
-            await loginPage.login('gderuno');
-            await navigationPo.gotoCaseConsole();
+            await loginPage.login('jbarnes');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink('ReadAccessCase' + randomStr);
             expect(await viewCasePage.isAddTaskButtonDisabled()).toBeTruthy();
@@ -893,7 +893,7 @@ describe("Case Read Access", () => {
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Case Access');
-            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('US Support 3', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Compensation and Benefits', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
             await navigationPo.gotoCreateCase();
             await createCasePage.selectRequester('qtao');
             await createCasePage.setSummary('SummaryWithmapping2');
