@@ -2584,7 +2584,6 @@ describe('Notes template', () => {
             await quickCasePo.saveCase();
             await quickCasePo.gotoCaseButton();
             caseId = await viewCasePage.getCaseID();
-            console.log('caseId>>>>>>>>>>>>>>>>>>',caseId);
             
             await viewCasePage.clickOnTab('Case Access');
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('CA Support 3', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
