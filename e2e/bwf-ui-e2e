@@ -1,4 +1,3 @@
-def NODE = 'AutoUI'
 def user = 'dsm-bot'
 
 node("node2"){
