@@ -23,7 +23,6 @@ class KnowledgeArticlesGridConsole {
     }
 
     async searchAndOpenKnowledgeArticle(knowledgeId: string): Promise<void> {
-        await utilityGrid.clearFilter();
         await utilityGrid.searchAndOpenHyperlink(knowledgeId);
     }
 

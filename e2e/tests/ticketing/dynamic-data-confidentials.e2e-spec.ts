@@ -102,7 +102,6 @@ describe('Dynamic Confidentials Data', () => {
             await navigationPage.signOut();
             await loginPage.login('qstrong');
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getValueOfDynamicFields("LocalNonConfidentialDesc")).toBe("Test 1");
             expect(await viewCasePo.getValueOfDynamicFields("LocalConfidentialDesc")).toBe("******");

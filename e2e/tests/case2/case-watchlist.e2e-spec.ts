@@ -64,8 +64,6 @@ describe('Case Watchlist', () => {
                 let response = await apiHelper.createCase(caseDataForTest);
                 caseId[i] = response.displayId;
             }
-            await utilityGrid.clearFilter();
-            await utilityGrid.clickRefreshIcon();
             await utilityGrid.searchRecord(caseDataForTest.Summary);
             for (let i: number = 0; i < 3; i++) {
                 await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
@@ -98,8 +96,6 @@ describe('Case Watchlist', () => {
                 let response = await apiHelper.createCase(caseDataForTest);
                 caseId[i] = response.displayId;
             }
-            await utilityGrid.clearFilter();
-            await utilityGrid.clickRefreshIcon();
             await utilityGrid.searchRecord(caseDataForTest.Summary);
             for (let i: number = 0; i < 3; i++) {
                 await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
@@ -272,7 +268,6 @@ describe('Case Watchlist', () => {
             //login with qannis and Add the case to Watchlist
             await navigationPage.signOut();
             await loginPage.login(qannisStr);
-            await utilityGrid.clearFilter();
             await utilityGrid.searchRecord(caseDataForTest.Summary);
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId);
             await caseConsole.clickOnAddToWatchlist();
@@ -286,7 +281,6 @@ describe('Case Watchlist', () => {
             //login with qtao and update the case assignment and case status
             await navigationPage.signOut();
             await loginPage.login(qtaoStr);
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             await updateStatusBladePo.changeCaseStatus(inProgressStr);
             await updateStatusBladePo.clickSaveStatus();
@@ -317,7 +311,6 @@ describe('Case Watchlist', () => {
             //Login with qtao and update the case status and assignment
             await navigationPage.signOut();
             await loginPage.login("qtao");
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             await updateStatusBladePo.changeCaseStatus(pendingStr);
             await updateStatusBladePo.setStatusReason(customerResponseStr);
@@ -411,7 +404,6 @@ describe('Case Watchlist', () => {
                 caseId[i] = response.displayId;
             }
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId[1]);
             await viewCasePage.clickAddToWatchlistLink();
             await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
@@ -474,7 +466,6 @@ describe('Case Watchlist', () => {
         let caseId = response.displayId;
         try {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchRecord(caseDataForTest.Summary);
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId);
             expect(await caseConsole.getAddToWatchlistText()).toBe("Add to Watchlist", "Label is not matching");
@@ -517,7 +508,6 @@ describe('Case Watchlist', () => {
         let caseId = response.displayId;
         try {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             await viewCasePage.clickAddToWatchlistLink();
             await caseWatchlist.addWatchlistEvent(caseGroupAssignmentChangesStr);
@@ -573,7 +563,6 @@ describe('Case Watchlist', () => {
             let response = await apiHelper.createCase(caseDataForTest);
             caseId = response.displayId;
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchRecord(caseDataForTest.Summary);
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId);
             await caseConsole.clickOnAddToWatchlist();
@@ -596,7 +585,6 @@ describe('Case Watchlist', () => {
             await caseWatchlist.selectCase(caseId);
             await caseWatchlist.clickOnRemoveBtn();
             await caseWatchlist.clickOnBackBtn();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
         });
 
@@ -643,7 +631,6 @@ describe('Case Watchlist', () => {
         try {
             await navigationPage.signOut();
             await loginPage.login(qtaoStr);
-            await utilityGrid.clearFilter();
             await utilityGrid.searchRecord(caseDataForTest.Summary);
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId);
             await caseConsole.clickOnAddToWatchlist();
@@ -658,7 +645,6 @@ describe('Case Watchlist', () => {
             await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
             await caseWatchlist.saveEvents();
             await caseWatchlist.clickOnBackBtn();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             await updateStatusBladePo.changeCaseStatus(inProgressStr);
             await updateStatusBladePo.clickSaveStatus();
@@ -722,7 +708,6 @@ describe('Case Watchlist', () => {
             await loginPage.login(qtaoStr);
 
             //Add Case to Watchlist with events Case Status Change and Case Assignment change
-            await utilityGrid.clearFilter();
             await utilityGrid.searchRecord(caseDataForTest.Summary);
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId);
             await caseConsole.clickOnAddToWatchlist();
@@ -790,7 +775,6 @@ describe('Case Watchlist', () => {
         try {
             //Add the case to watchlist
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchRecord(caseDataForTest.Summary);
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId);
             await caseConsole.clickOnAddToWatchlist();
@@ -800,7 +784,6 @@ describe('Case Watchlist', () => {
             expect(await utilityCommon.getAllPopupMsg()).toContain("Added 1 selected case(s) to the watchlist.");
 
             //Update the case status and case assignment
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             await updateStatusBladePo.changeCaseStatus(inProgressStr);
             await updateStatusBladePo.clickSaveStatus();
@@ -860,7 +843,6 @@ describe('Case Watchlist', () => {
         });
         it('[DRDMV-16061]: Verify that once user add the cases to watchlist from case console then they are still available in Case console and Agent could add them again without any error', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchRecord(caseDataForTest.Summary);
             //Adding the cases to watchlist
             for (let i: number = 0; i < 3; i++) {
@@ -874,7 +856,6 @@ describe('Case Watchlist', () => {
             await utilityCommon.closePopUpMessage();
         });
         it('[DRDMV-16061]: Verify that once user add the cases to watchlist from case console then they are still available in Case console and Agent could add them again without any error', async () => {
-            await utilityGrid.clearFilter();
             await utilityGrid.searchRecord(caseDataForTest.Summary);
             //Adding the cases to watchlist again
             for (let i: number = 0; i < 3; i++) {
@@ -901,7 +882,6 @@ describe('Case Watchlist', () => {
         let caseId = response.displayId;
         try {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchRecord(caseDataForTest.Summary);
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId);
             await caseConsole.clickOnAddToWatchlist();
@@ -957,7 +937,6 @@ describe('Case Watchlist', () => {
             await navigationPage.signOut();
             await loginPage.login(qannisStr);
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchRecord(caseDataForTest.Summary);
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId);
             await caseConsole.clickOnAddToWatchlist();
@@ -970,7 +949,6 @@ describe('Case Watchlist', () => {
         it('[DRDMV-16058]: Verify if Agent is added to Watchlist and later his read access is removed', async () => {
             await navigationPage.signOut();
             await loginPage.login(qfengStr);
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             await updateStatusBladePo.changeCaseStatus(inProgressStr);
             await updateStatusBladePo.clickSaveStatus();
@@ -1226,7 +1204,6 @@ describe('Case Watchlist', () => {
         it('[DRDMV-16050]: Verify that write access Agent can add the case to watchlist from Case', async () => {
             await navigationPage.signOut();
             await loginPage.login(qtaoStr);
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             await viewCasePage.clickAddToWatchlistLink();
             await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
@@ -1300,7 +1277,6 @@ describe('Case Watchlist', () => {
         it('[DRDMV-16041]: Verify that Case Agent can follow/unfollow the cases from case itself - Read only user', async () => {
             await navigationPage.signOut();
             await loginPage.login(qannisStr);
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             await viewCasePage.clickAddToWatchlistLink();
             await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
@@ -1328,7 +1304,6 @@ describe('Case Watchlist', () => {
             await caseWatchlist.clickOnBackBtn();
             await navigationPage.signOut();
             await loginPage.login(qtaoStr);
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             await updateStatusBladePo.changeCaseStatus(pendingStr);
             await updateStatusBladePo.setStatusReason(customerResponseStr);

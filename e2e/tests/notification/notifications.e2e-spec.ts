@@ -68,7 +68,6 @@ describe("Notifications", () => {
             }
             let response = await apiHelper.createCase(caseData);
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await apiHelper.apiLogin('idphylum1@petramco.com', "Password_1234");
             await apiHelper.addCaseToWatchlistAllEvents(response.id);
             await apiHelper.apiLogin('idphylum2@petramco.com', "Password_1234");

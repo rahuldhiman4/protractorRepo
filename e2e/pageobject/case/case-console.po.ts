@@ -44,12 +44,10 @@ class CaseConsolePage {
     }
 
     async searchCase(caseId: string): Promise<void> {
-        await utilityGrid.clearFilter();
         await utilityGrid.searchRecord(caseId);
     }
 
     async searchAndOpenCase(caseId: string): Promise<void> {
-        await utilityGrid.clearFilter();
         await utilityGrid.searchAndOpenHyperlink(caseId);
     }
 

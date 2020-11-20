@@ -83,7 +83,6 @@ class PersonProfilePage {
     }
 
     async isCasePresentOnRequestedCases(caseId: string): Promise<boolean> {
-        await utilityGrid.clearFilter();
         await utilityGrid.searchRecord(caseId);
         return caseId == await utilityGrid.getFirstGridRecordColumnValue("Case ID", this.selectors.requestedCaseGuid);
     }

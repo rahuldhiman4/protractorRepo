@@ -247,7 +247,6 @@ describe('Case Console', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(newCase1.displayId);
             await viewCasePo.clickEditCaseButton();
             await editCasePo.clickOnSelectCaseTemplate();
@@ -266,7 +265,6 @@ describe('Case Console', () => {
             let exactTime = newTime[0] + ":" + newTime[1] + " " + diffTime[1];
             modifiedDateFormate = modifiedMonthValue + " " + modifiedDate.getDate() + ", " + modifiedDate.getFullYear() + " " + exactTime;
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(newCase2.displayId);
             await viewCasePo.clickEditCaseButton();
             await editCasePo.clickOnSelectCaseTemplate();
@@ -328,6 +326,7 @@ describe('Case Console', () => {
             expect(await utilityGrid.isGridRecordPresent(newCase2.displayId)).toBeFalsy(newCase2.displayId);
             await utilityGrid.clearFilter();
             await utilityGrid.typeInFilterExperssion("Modified Date:" + modifiedDateFormate);
+            await utilityGrid.searchRecordWithoutFilter(newCase1.displayId);
             expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy(newCase1.displayId);
         });
         it('[DRDMV-8280]:[Case Workspace] Cases search using filters', async () => {

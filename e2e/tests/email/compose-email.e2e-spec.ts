@@ -148,7 +148,6 @@ describe("Compose Email", () => {
         });
         it('[DRDMV-20368,DRDMV-20371]: Verify Able to insert table,hyperlink, images and Copy paste images in Notification template and notifications received by user with these contents', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await caseConsole.searchAndOpenCase(newCase.displayId);
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
@@ -393,8 +392,7 @@ describe("Compose Email", () => {
         it('[DRDMV-10394,DRDMV-10397]: Apply Email Template', async () => {
             await navigationPage.gotoCaseConsole();
             let caseId: string = newCase.displayId;
-            await utilityGrid.clearFilter();
-            await caseConsole.searchAndOpenCase(caseId);
+            await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
             await viewCasePo.clickOnEmailLink();
             await composeMail.clickOnSelectEmailTemplateLink();
@@ -443,7 +441,6 @@ describe("Compose Email", () => {
         it('[DRDMV-10401,DRDMV-10393]: Email Body override with template details', async () => {
             let caseId: string = newCase.displayId;
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await caseConsole.searchAndOpenCase(caseId);
             expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
             await viewCasePo.clickOnEmailLink();
@@ -489,7 +486,6 @@ describe("Compose Email", () => {
         it('[DRDMV-10398,DRDMV-10396,DRDMV-10402]:Email Template List Update in case compose email', async () => {
             let caseId: string = newCase.displayId;
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await caseConsole.searchAndOpenCase(caseId);
             expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
             await viewCasePo.clickOnRequestersEmail();
@@ -542,7 +538,6 @@ describe("Compose Email", () => {
         it('[DRDMV-10395]: Email template Update', async () => {
             await navigationPage.gotoCaseConsole();
             let caseId: string = newCase.displayId;
-            await utilityGrid.clearFilter();
             await caseConsole.searchAndOpenCase(caseId);
             expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
             await viewCasePo.clickOnEmailLink();
@@ -590,7 +585,6 @@ describe("Compose Email", () => {
         it('[DRDMV-8392,DRDMV-10384]: Negative: In Email "To" and "cc" should be user from Foundation data ', async () => {
             let caseId: string = newCase.displayId;
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await caseConsole.searchAndOpenCase(caseId);
             expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
             await viewCasePo.clickOnEmailLink();
@@ -726,7 +720,6 @@ describe("Compose Email", () => {
         });
         it('[DRDMV-20369]: Verify able to apply email template with images tables and hyperlinks ', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await caseConsole.searchAndOpenCase(newCase.displayId);
             expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('Email Link is missing');
             await viewCasePo.clickOnEmailLink();
@@ -776,7 +769,6 @@ describe("Compose Email", () => {
         it('[DRDMV-20365,DRDMV-20366]: Verify Able to insert table,hyperlink, images (All images) and Copy paste images in compose email and its send successfully', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
-            await utilityGrid.clearFilter();
             await caseConsole.searchAndOpenCase(newCase.displayId);
             await viewCasePo.clickOnEmailLink();
             await composeMail.clickOnSelectEmailTemplateLink();
@@ -987,7 +979,6 @@ describe("Compose Email", () => {
         });
         it('[DRDMV-10388]: Search on Email Template Grid on Compose Email UI', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await caseConsole.searchAndOpenCase(newCase.displayId);
             await viewCasePo.clickOnEmailLink();
             await composeMail.clickOnSelectEmailTemplateLink();
@@ -1027,7 +1018,6 @@ describe("Compose Email", () => {
         it('[DRDMV-8388]: Compose and Send Email to Requester', async () => {
             await navigationPage.gotoCaseConsole();
             let caseId: string = newCase.displayId;
-            await utilityGrid.clearFilter();
             await caseConsole.searchAndOpenCase(newCase.displayId);
             await viewCasePo.clickOnRequestersEmail();
             expect(await composeMail.isComposeEmailTitlePresent('Compose Email')).toBeTruthy('Compose email title missing');
@@ -1077,7 +1067,6 @@ describe("Compose Email", () => {
         });
         it('[DRDMV-10387]: Filters on Email Template Grid on Compose Email UI', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await caseConsole.searchAndOpenCase(newCase.displayId);
             await viewCasePo.clickOnEmailLink();
             await composeMail.clickOnSelectEmailTemplateLink();

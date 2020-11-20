@@ -119,7 +119,6 @@ describe('Person Profile test', () => {
 
         let response = await apiHelper.createCase(caseData);
         await navigationPage.gotoCaseConsole();
-        await utilityGrid.clearFilter();
         await utilityGrid.searchAndOpenHyperlink(response.displayId);
         await viewCasePage.clickAssigneeLink();
         try {
@@ -182,7 +181,6 @@ describe('Person Profile test', () => {
 
         let response = await apiHelper.createCase(caseData);
         await navigationPage.gotoCaseConsole();
-        await utilityGrid.clearFilter();
         await utilityGrid.searchAndOpenHyperlink(response.displayId);
         await activityTabPage.addPersonInActivityNote('Qiao Feng');
         await activityTabPage.clickOnPostButton();
@@ -257,7 +255,6 @@ describe('Person Profile test', () => {
 
             // Verify the Person Profile of Adam Pavlik
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(response.displayId);
             await viewCasePage.clickOnContactPersonerDrpDwn();
             await viewCasePage.clickContactPersonName();
@@ -302,7 +299,6 @@ describe('Person Profile test', () => {
             //Verify that updated relation name does not impact existing relations
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(response.displayId);
             await viewCasePage.clickOnContactPersonerDrpDwn();
             await viewCasePage.clickContactPersonName();
@@ -338,7 +334,6 @@ describe('Person Profile test', () => {
 
             let response = await apiHelper.createCase(caseData);
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(response.displayId);
             await viewCasePage.clickOnContactPersonerDrpDwn();
             await viewCasePage.clickContactPersonName();
@@ -703,7 +698,6 @@ describe('Person Profile test', () => {
 
             //Verify the Person Profile of Alex Raisin
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(response.displayId);
             await viewCasePage.clickRequsterName();
             await utilityCommon.switchToNewTab(1);
@@ -759,7 +753,6 @@ describe('Person Profile test', () => {
 
             let response = await apiHelper.createCase(caseData);
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(response.displayId);
             await viewCasePage.clickRequsterName();
 

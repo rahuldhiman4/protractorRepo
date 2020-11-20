@@ -216,7 +216,6 @@ describe('Conditional Task Life Cycle', () => {
         });
         it('[DRDMV-14996]: [Task] Case created with CaseTemplate (with no TaskFlow) and without CaseTemplate', async () => {
             //Update Adhoc task to Completed and check manual task status(CASE 1)
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(responseCaseDNP.displayId);
             await viewCasePage.openTaskCard(1);
             expect(await manageTaskBlade.getTaskStatus(adhocTaskData.taskName)).toContain(completedStr);
@@ -246,7 +245,6 @@ describe('Conditional Task Life Cycle', () => {
             //Update Manual task to completed and verify Automated Task status(CASE 2)
             await apiHelper.updateTaskStatus(manualTaskNTId, 'Completed', 'Successful');
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(responseCaseNT.displayId);
             await viewCasePage.clickOnRefreshTaskList();
             await viewCasePage.openTaskCard(1);
@@ -653,7 +651,6 @@ describe('Conditional Task Life Cycle', () => {
 
         it('[DRDMV-15001]: [Task] Change Case Template in a Case which already have some tasks', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseResponse1.displayId);
             await viewCasePage.openTaskCard(1);
             expect(await manageTaskBlade.getTaskStatus(`DRDMV-15001_1 ${randomStr}`)).toContain('Staged');

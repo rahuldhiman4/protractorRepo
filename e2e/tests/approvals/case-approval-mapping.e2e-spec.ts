@@ -708,7 +708,6 @@ describe("Case Approval Mapping Tests", () => {
             let caseInfo = await apiHelper.createCase(caseData);
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseInfo.displayId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
             expect(await viewCasePo.isShowApproversBannerDisplayed()).toBeTruthy('Approval is not triggered');
@@ -763,7 +762,6 @@ describe("Case Approval Mapping Tests", () => {
             let caseInfo = await apiHelper.createCase(caseData);
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseInfo.displayId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
             expect(await viewCasePo.isShowApproversBannerDisplayed()).toBeTruthy('Approval is not triggered');

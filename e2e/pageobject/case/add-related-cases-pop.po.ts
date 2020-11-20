@@ -26,7 +26,6 @@ class AddRelatedCasesPopupPage {
     }
 
     async addRelatedCase(caseId: string, relation: string) {
-        await utilityGrid.clearFilter();
         await this.searchAndSelectEntity(caseId);
         await this.clickNextButton();
         await this.selectRelationshipType(relation);

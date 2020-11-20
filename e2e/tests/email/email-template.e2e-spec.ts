@@ -328,7 +328,6 @@ describe('Email Template', () => {
         });
         it('[DRDMV-10385]: Active Email Temlate list in Grid', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(newCase.displayId)
             await viewCasePo.clickOnEmailLink();
             await composeMailPo.clickOnSelectEmailTemplateLink();
