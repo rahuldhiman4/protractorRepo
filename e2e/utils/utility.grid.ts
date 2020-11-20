@@ -112,11 +112,19 @@ export class GridOperations {
             filterPresetBtn = gridGuid + filterPresetBtn;
             refreshIcon = gridGuid + refreshIcon;
         }
+        let hiddentFilter1 = await $('.adapt-table-toolbar-hidden-items-dropdown .d-icon-ellipsis').isPresent();
+        if(hiddentFilter1 == true){
+            await $('.adapt-table-toolbar-hidden-items-dropdown .d-icon-ellipsis').click();
+        }
         await $(appliedPresetFilter).isPresent().then(async (result) => {
             if (result) {
                 await $(filterPresetBtn).click();
                 await $$(clearBtn).first().click();
                 await $(refreshIcon).click();
+                let hiddentFilter2 = await $('.adapt-table-toolbar-hidden-items-dropdown .d-icon-ellipsis').isPresent();
+                if(hiddentFilter2 == true){
+                    await $('.adapt-table-toolbar-hidden-items-dropdown .d-icon-ellipsis').click();
+                } 
             } else {
                 console.log("Filters are already cleared");
             }
@@ -285,6 +293,10 @@ export class GridOperations {
             guidId = `[rx-view-component-id="${guid}"] `;
             refreshIcon = `[rx-view-component-id="${guid}"] ` + refreshIcon;
         }
+        let hiddentFilter = await $('.adapt-table-toolbar-hidden-items-dropdown .d-icon-ellipsis').isPresent();
+        if(hiddentFilter == true){
+            await $('.adapt-table-toolbar-hidden-items-dropdown .d-icon-ellipsis').click();
+        }
         await $(guidId + this.selectors.filterPresetBtn).click();
         await $$(this.selectors.filterTab).get(0).click();
         let filterCount = await $$(this.selectors.filterItems);
@@ -320,6 +332,10 @@ export class GridOperations {
             }
         }
         await $(refreshIcon).click();
+        if(hiddentFilter == true){
+            await $('.adapt-table-toolbar-hidden-items-dropdown .d-icon-ellipsis').click();
+        }
+        
     }
 
     async applyPresetFilter(filterName: string, guid?: string): Promise<void> {
