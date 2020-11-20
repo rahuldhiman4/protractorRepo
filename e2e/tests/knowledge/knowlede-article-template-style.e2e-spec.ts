@@ -68,7 +68,7 @@ describe('Knowledge article template style', () => {
         it('[DRDMV-5019]: [Template Styles] Deletion of template styles - OOB/Custom Templates', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Template Styles', 'Template Styles Configuration - Business Workflows');
-            await articleTemplateStylePo.navigateToTemplateName('Global', "DRDMV-5019" + randomStr);
+            await articleTemplateStylePo.navigateToTemplateName('Human Resource', "DRDMV-5019" + randomStr); // Custom Template is getting created under LOB , cc: @tus
             expect(await articleTemplateStylePo.isDeleteStyleButtonPresent()).toBeFalsy('Delete Button should not be Present');
             await articleTemplateStylePo.clickAddNewStyle();
             await articleTemplateStylePo.setStyleName(randomStr);
@@ -128,7 +128,7 @@ describe('Knowledge article template style', () => {
         it('[DRDMV-5014,DRDMV-5022]: [Template Styles] Availability of default styles on custom templates', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Template Styles', 'Template Styles Configuration - Business Workflows');
-            await articleTemplateStylePo.navigateToTemplateName('Global', styleName);
+            await articleTemplateStylePo.navigateToTemplateName('Human Resource', styleName);
             expect(await articleTemplateStylePo.getStyleOfAllTemplate()).toContain('Header 1');
             expect(await articleTemplateStylePo.getStyleOfAllTemplate()).toContain('Header 2');
             expect(await articleTemplateStylePo.getStyleOfAllTemplate()).toContain('Header 3');
@@ -212,7 +212,7 @@ describe('Knowledge article template style', () => {
             await browser.navigate().back();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Template Styles', 'Template Styles Configuration - Business Workflows');
-            await articleTemplateStylePo.navigateToTemplateName('Global', "DRDMV-5023" + randomStr);
+            await articleTemplateStylePo.navigateToTemplateName('Human Resource', "DRDMV-5023" + randomStr);
             expect(await articleTemplateStylePo.isDeleteStyleButtonPresent()).toBeFalsy('Delete Button should not be Present');
             await articleTemplateStylePo.clickAddNewStyle();
             await articleTemplateStylePo.setStyleName(randomStr);
