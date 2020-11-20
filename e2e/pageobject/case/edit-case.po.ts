@@ -30,7 +30,7 @@ class CaseEditPage {
         caseLabel: '[rx-view-component-id="70618f76-64a9-4c18-9362-0bf095f76e86"] .btn-secondary',
         siteGuid: '664af3b6-dde6-47a7-84f9-4a5ad721e993',
         clearSiteField: '[rx-view-component-id="664af3b6-dde6-47a7-84f9-4a5ad721e993"] .btn-secondary',
-        resolutionCodeGuid: '32eeffe4-f5c1-4fc8-9c91-25946cc86d66',
+        resolutionCodeGuid: '761ffcaa-fae0-4644-96a9-7e06cf670d27',
         siteChangeReason: '[rx-view-component-id="54d1727e-1b2d-4f4f-8fb4-a3174746ee1d"] input',
         targetDateDate: '[rx-view-component-id="0b8f81f4-9e06-4475-b6a6-7d7270e72bbd"] .ng-valid-date',
         targetDateHours: '[rx-view-component-id="0b8f81f4-9e06-4475-b6a6-7d7270e72bbd"] input[ng-model="hours"]',

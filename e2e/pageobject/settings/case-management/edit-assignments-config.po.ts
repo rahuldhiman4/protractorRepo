@@ -17,7 +17,7 @@ class AssignmentConfigEditPage {
         categoryTier2Guid: 'b2dc177f-4ad0-4c12-8809-c9211cda502b',
         categoryTier3Guid: 'a373976b-498a-46da-a97f-5573fc6c3b03',
         categoryTier4Guid: '647bd05c-d3b3-46dd-8747-b67a87013d1b',
-        labelValue: '[rx-view-component-id="bb4291cc-a7f9-4116-8bf9-b3f52e0731d0"] .ui-select-match-text',
+        labelValue: '[rx-view-component-id="ef7b61e9-8bc0-49cb-8fdc-d1ba41db5bcd"] .ui-select-match-text',
         labelGuid: 'ef7b61e9-8bc0-49cb-8fdc-d1ba41db5bcd'
     }
 

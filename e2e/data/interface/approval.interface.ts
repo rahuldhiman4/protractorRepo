@@ -6,6 +6,7 @@ export interface ICaseApprovalMapping {
     mappingName: string
     errorStatus: string;
     company?: string;
+    flowset?:string;
 };
 
 export interface ITaskApprovalMapping {

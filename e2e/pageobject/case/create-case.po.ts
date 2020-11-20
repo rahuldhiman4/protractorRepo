@@ -45,7 +45,7 @@ class CreateCasePage {
         labelGuid: 'fad63b83-2f1e-4597-93d8-dc2934e01559',
         attachmentField: '[rx-view-component-id="e494b462-7749-44aa-922e-fc5d9b3dd5cb"] input[type="file"]',
         clearRequesterButton: '[rx-view-component-id="be946309-c359-40fe-a579-1a0e0d04bb01"] .d-icon-cross',
-        templateValue: 'td .btn-link',
+        templateValue: 'td .no-href-link',
         cancelButton: '[rx-view-component-id="3e34f97b-e0f1-492e-bb7d-609b5ccc8d4f"] button',
         autoCategorize: '[rx-view-component-id="cfb3cc65-210c-4530-b529-3bc414b6d8dc"] button',
         recommendedTemplate: 'div.bwf-search-fields__title-text',

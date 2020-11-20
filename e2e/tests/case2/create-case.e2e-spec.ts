@@ -749,8 +749,6 @@ describe("Create Case", () => {
             await utilityCommon.closePopUpMessage();
             await viewCasePage.clickEditCaseButton();
             await editCasePage.clickChangeAssignmentButton();
-            await changeAssignmentPage.selectBusinessUnit('United States Support')
-            await changeAssignmentPage.selectSupportGroup('US Support 3');
             await changeAssignmentPage.selectAssignToSupportGroup();
             await changeAssignmentPage.clickOnAssignButton();
             await editCasePage.clickSaveCase();
