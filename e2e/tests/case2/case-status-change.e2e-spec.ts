@@ -282,7 +282,6 @@ describe('Case Status Change', () => {
         });
         it('[DRDMV-1199]: Updating the case status -Pending', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await caseConsole.searchAndOpenCase(caseId1);
             await viewCasePage.clickOnStatus();
             expect(await updateStatusBladePo.allStatusOptionsPresent(statusOptions)).toBeTruthy("Status Options is not present");
@@ -299,7 +298,6 @@ describe('Case Status Change', () => {
         });
         it('[DRDMV-1199]: Updating the case status -Resolved', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await caseConsole.searchAndOpenCase(caseId2);
             await updateStatusBladePo.changeCaseStatus('Resolved');
             await updateStatusBladePo.setStatusReason('Auto Resolved');
@@ -307,7 +305,6 @@ describe('Case Status Change', () => {
         });
         it('[DRDMV-1199]: [Case Status] Case status change from In Progress', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await caseConsole.searchAndOpenCase(caseId3);
             await viewCasePage.clickAddTaskButton();
             await manageTask.addTaskFromTaskTemplate(manualTask);

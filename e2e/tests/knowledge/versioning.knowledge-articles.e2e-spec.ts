@@ -157,7 +157,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Article view screen is not displayed');
             expect(await viewKnowledgeArticlePo.isArticleVersionDisplayed()).toBeTruthy('Article version on View knowledge article is not displayed');
@@ -187,7 +186,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
             await browser.sleep(2000); //Hard wait to load the new tab properly
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await viewKnowledgeArticlePo.isReviewMessageDisplayed('Knowledge Article is in Review')).toBeTruthy();
             await viewKnowledgeArticlePo.clickOnEditLink();
@@ -302,7 +300,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
 
         it('[DRDMV-20746]: Verify the search based on version on knowledge article console', async () => {
             await navigationPage.gotoKnowledgeConsole();
-            await utilityGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(versionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
             await utilityGrid.searchRecord(versionFieldVal);
@@ -319,7 +316,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
 
             await loginPage.login(caseManagerUser);
             await navigationPage.gotoKnowledgeConsole();
-            await utilityGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(versionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
             await utilityGrid.searchRecord(versionFieldVal);
@@ -338,7 +334,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
         it('[DRDMV-20746]: Verify the search based on version on knowledge article console', async () => {
             await loginPage.login(caseAgentUser);
             await navigationPage.gotoKnowledgeConsole();
-            await utilityGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(versionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
             await utilityGrid.searchRecord(versionFieldVal);
@@ -357,7 +352,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             await browser.sleep(2000) //Hard wait to load the new tab
-            await utilityGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(versionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
             await utilityGrid.searchRecord(versionFieldVal);
@@ -379,7 +373,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             await browser.sleep(2000) //Hard wait to load the new tab
-            await utilityGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(versionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
             await utilityGrid.searchRecord(versionFieldVal);
@@ -399,7 +392,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             await browser.sleep(2000) //Hard wait to load the new tab
-            await utilityGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(versionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
             await utilityGrid.searchRecord(versionFieldVal);
@@ -421,7 +413,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
             await browser.sleep(2000) //Hard wait to load the new tab
-            await utilityGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(versionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
             await utilityGrid.searchRecord(versionFieldVal);
@@ -632,7 +623,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await browser.sleep(5000); //Hard wait to load the new tab properly
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Article view screen is not displayed');
             expect(await viewKnowledgeArticlePo.isArticleVersionDisplayed()).toBeTruthy('Article version on View knowledge article is not displayed');
@@ -663,7 +653,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await utilCommon.switchToNewWidnow(1);
             await browser.sleep(5000); //Hard wait to load the new tab properly
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await viewKnowledgeArticlePo.isReviewMessageDisplayed('Knowledge Article is in Review')).toBeTruthy();
             await viewKnowledgeArticlePo.clickOnEditLink();
@@ -675,7 +664,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await reviewCommentsPo.setTextInTellUsMore(articleDetails.displayId);
             await reviewCommentsPo.clickApprovedButton();
             await navigationPage.gotoKnowledgeConsole(true);
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Article is updated with Published status.');
             await apiHelper.apiLogin('tadmin');
@@ -727,7 +715,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await editKnowledgePage.updateKnowledgeArticleDescription(updatedArticleDesc);
             await editKnowledgePage.clickArticleMajorEditSaveButton();
             await navigationPage.gotoKnowledgeConsole(true);
-            await utilityGrid.clearFilter();
             await utilityGrid.sortGridColumn('Created Date', 'desc');
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             let updatedVersion = "Version " + "2" + " - " + actualDate;
@@ -837,7 +824,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await utilCommon.switchToNewWidnow(1);
             await browser.sleep(2000); //Hard wait to load the new tab properly
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Article view screen is not displayed');
             expect(await viewKnowledgeArticlePo.isArticleVersionDisplayed()).toBeTruthy('Article version on View knowledge article is not displayed');
@@ -860,7 +846,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await utilCommon.switchToNewWidnow(1);
             await browser.sleep(5000); //Hard wait to load the new tab properly
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await viewKnowledgeArticlePo.isReviewMessageDisplayed('Knowledge Article is in Review')).toBeTruthy();
             await viewKnowledgeArticlePo.clickReviewPendingLink();
@@ -965,7 +950,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await utilCommon.switchToNewWidnow(1);
             await browser.sleep(2000); //Hard wait to laod the tab completely
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Article view screen is not displayed');
             expect(await viewKnowledgeArticlePo.isArticleVersionDisplayed()).toBeTruthy('Article version on View knowledge article is not displayed');
@@ -989,7 +973,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await navigationPage.switchToApplication(knowledgeManagementApp);
             await browser.sleep(3000); //Hard wait to laod the tab completely
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await viewKnowledgeArticlePo.isReviewMessageDisplayed('Knowledge Article is in Review')).toBeTruthy();
             await viewKnowledgeArticlePo.clickReviewPendingLink();
@@ -1047,7 +1030,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await navigationPage.switchToApplication(knowledgeManagementApp);
             await browser.sleep(3000); //Hard wait to laod the tab completely
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(articleData.title);
 
             await viewKnowledgeArticlePo.clickOnEditLink();
@@ -1114,7 +1096,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Article view screen is not displayed');
             expect(await viewKnowledgeArticlePo.isArticleVersionDisplayed()).toBeTruthy('Article version on View knowledge article is not displayed');
@@ -1137,7 +1118,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await utilCommon.switchToNewWidnow(1);
             await browser.sleep(5000); // Hard wait to load the tab properly
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await viewKnowledgeArticlePo.isReviewMessageDisplayed('Knowledge Article is in Review')).toBeTruthy();
             await viewKnowledgeArticlePo.clickReviewPendingLink();
@@ -1186,7 +1166,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await navigationPage.gotoKnowledgeConsole();
             await browser.sleep(5000);// Hard wait to load the tab properly
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilityGrid.clearFilter();
             await knowledgeConsole.addColumnOnGrid(versionFieldColumns);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
             await knowledgeConsole.searchOnGridConsole(updatedArticleTitle);
@@ -1257,7 +1236,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Article view screen is not displayed');
             expect(await viewKnowledgeArticlePo.isArticleVersionDisplayed()).toBeTruthy('Article version on View knowledge article is not displayed');
@@ -1287,7 +1265,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await utilCommon.switchToNewWidnow(1);
             await browser.sleep(4000); // Hard wait for page load
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await viewKnowledgeArticlePo.isReviewMessageDisplayed('Knowledge Article is in Review')).toBeTruthy();
             await viewKnowledgeArticlePo.clickOnEditLink();
@@ -1353,7 +1330,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
         });
         it('[DRDMV-20753]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', async () => {
             await navigationPage.gotoKnowledgeConsole(true);
-            await utilityGrid.clearFilter();
             await utilityGrid.sortGridColumn('Created Date', 'desc');
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             await utilityCommon.refresh(); // Refresh needed to reflect version update.
@@ -1405,7 +1381,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
         it('[DRDMV-20753]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', async () => {
             await editKnowledgePage.setKnowledgeStatus('Request Cancelation');
             await navigationPage.gotoKnowledgeConsole(true);
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             await browser.sleep(2000);
             await utilityCommon.refresh(); // Refresh needed to reflect status changes.
@@ -1423,7 +1398,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
         });
         it('[DRDMV-20753]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', async () => {
             await navigationPage.gotoKnowledgeConsole(true);
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             updatedVersion = "Version " + "3" + " - " + actualDate;
             expect(await viewKnowledgeArticlePo.getArticleVersion()).toBe(updatedVersion);
@@ -1505,7 +1479,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Article view screen is not displayed');
             expect(await viewKnowledgeArticlePo.isArticleVersionDisplayed()).toBeTruthy('Article version on View knowledge article is not displayed');
@@ -1566,7 +1539,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await viewKnowledgeArticlePo.isReviewMessageDisplayed('Knowledge Article is in Review')).toBeTruthy();
             await viewKnowledgeArticlePo.clickOnEditLink();
@@ -1601,7 +1573,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await loginPage.login(knowledgePublisherUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilCommon.switchToNewWidnow(1);
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             await viewKnowledgeArticlePo.clickOnEditLink();
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(minorEditOption)).toBeTruthy('Minor Edit Option is displayed for Published Knowledge Article.');
@@ -1667,7 +1638,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await reviewCommentsPo.clickApprovedButton();
             await utilityCommon.closePopUpMessage();
             await navigationPage.gotoKnowledgeConsole(true);
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(knowledgeArticleDisplayId);
             expect(await viewKnowledgeArticlePo.getStatusValue()).toContain('BeforePublished', 'value is not matched with status');
             await viewKnowledgeArticlePo.clickOnEditLink();
@@ -1677,7 +1647,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await editKnowledgePage.setKnowledgeStatus('Publish Approval');
             await utilityCommon.closePopUpMessage();
             await navigationPage.gotoKnowledgeConsole(true);
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(knowledgeArticleDisplayId);
             expect(await viewKnowledgeArticlePo.getStatusValue()).toContain('Released', 'value is not matched with status');
             await viewKnowledgeArticlePo.clickOnEditLink();

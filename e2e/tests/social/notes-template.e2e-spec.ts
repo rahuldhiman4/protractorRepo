@@ -367,7 +367,6 @@ describe('Notes template', () => {
         await apiHelper.apiLogin('qtao');
         let newCase = await apiHelper.createCase(caseData);
         await navigationPage.gotoCaseConsole();
-        await utilityGrid.clearFilter();
         await utilityGrid.searchAndOpenHyperlink(newCase.displayId);
         await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(notesTemplateName);
         await activityTabPo.clickOnPostButton();
@@ -411,7 +410,6 @@ describe('Notes template', () => {
         it('[DRDMV-16578]: Case Agent consume People Notes Template in People profile', async () => {
             await navigationPage.signOut();
             await loginPage.login('qheroux');
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(newCase1.displayId);
             await viewCasePage.clickRequsterName();
             await utilityCommon.switchToNewTab(1);
@@ -422,7 +420,6 @@ describe('Notes template', () => {
         it('[DRDMV-16578]: Case Agent/Case Manger Should be able to consume People Notes Template in People profile', async () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(newCase2.displayId);
             await viewCasePage.clickRequsterName();
             await utilityCommon.switchToNewTab(1);
@@ -617,7 +614,6 @@ describe('Notes template', () => {
         });
 
         it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseResponse2.displayId);
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickTaskLink(templateManualData1.templateSummary);
@@ -784,25 +780,31 @@ describe('Notes template', () => {
         await activityTabPo.clickOnPostButton();
         expect(await activityTabPo.isTextPresentInActivityLog(tempNotesTemplateData.body)).toBeTruthy();
     });
-
     //asahitya
-    it('[DRDMV-16008]: [DesignTime] Verify "Case Notes templates", grid operation searching , sorting columns and filter on company', async () => {
+    describe('[DRDMV-16008]: [DesignTime] Verify "Case Notes templates", grid operation searching , sorting columns and filter on company', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let notesTemplateInactiveData;
+        let notesTemplatePetramcoData;
+        let notesTemplateGlobalData;
+        let notesTemplateWithLabelData;
+        let templateGuid;
+
+    beforeAll(async () => {
         //Creating Petramco Template
-        let notesTemplatePetramcoData = cloneDeep(notesTemplateData.NOTES_TEMPLATE_MANDATORY_FIELD);
+        notesTemplatePetramcoData = cloneDeep(notesTemplateData.NOTES_TEMPLATE_MANDATORY_FIELD);
         notesTemplatePetramcoData.templateName = notesTemplatePetramcoData.templateName + randomStr + '123';
         notesTemplatePetramcoData.body = notesTemplatePetramcoData.body + randomStr + '123';
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createNotesTemplate("Case", notesTemplatePetramcoData);
 
         //Creating Global Template
-        let notesTemplateGlobalData = cloneDeep(notesTemplateData.NOTES_TEMPLATE_MANDATORY_FIELD_GLOBAL);
+        notesTemplateGlobalData = cloneDeep(notesTemplateData.NOTES_TEMPLATE_MANDATORY_FIELD_GLOBAL);
         notesTemplateGlobalData.templateName = notesTemplateGlobalData.templateName + randomStr + '456';
         notesTemplateGlobalData.body = notesTemplateGlobalData.body + randomStr + '456';
         await apiHelper.createNotesTemplate("Case", notesTemplateGlobalData);
 
         //Creating Inactive Template
-        let notesTemplateInactiveData = cloneDeep(notesTemplateData.NOTES_TEMPLATE_CASE_INACTIVE);
+        notesTemplateInactiveData = cloneDeep(notesTemplateData.NOTES_TEMPLATE_CASE_INACTIVE);
         notesTemplateInactiveData.templateName = notesTemplateInactiveData.templateName + randomStr + '789';
         await apiHelper.createNotesTemplate("Case", notesTemplateInactiveData);
 
@@ -813,7 +815,7 @@ describe('Notes template', () => {
         }
         await apiHelper.createNewMenuItem(menuItemData);
 
-        let notesTemplateWithLabelData = {
+        notesTemplateWithLabelData = {
             "templateName": "Notes template with label",
             "company": "Petramco",
             "templateStatus": 2,
@@ -825,52 +827,54 @@ describe('Notes template', () => {
         notesTemplateWithLabelData.templateName = notesTemplateWithLabelData.templateName + randomStr;
         notesTemplateWithLabelData.label = notesTemplateWithLabelData.label + randomStr;
         await apiHelper.createNotesTemplate("Case", notesTemplateWithLabelData);
-
-        try {
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
-            await utilGrid.clearFilter();
-            await consoleNotestemplatePo.addColumns(['Label', 'ID']);
-            await utilGrid.searchOnGridConsole(notesTemplateInactiveData.templateName);
-            expect(await utilGrid.getNumberOfRecordsInGrid()).toEqual(1);
-            let templateGuid = await consoleNotestemplatePo.getGuidValue();
-            await utilGrid.clearGridSearchBox();
-            expect(await consoleNotestemplatePo.isGridColumnSorted('Template Name')).toBeTruthy('Column is not sorted');
-            await utilGrid.clearFilter();
-            await utilGrid.addFilter('Company', 'Petramco', 'text');
-            expect(await utilGrid.isGridRecordPresent(notesTemplatePetramcoData.templateName)).toBeTruthy('Petramco Company Filter is not applied');
-            expect(await utilGrid.isGridRecordPresent(notesTemplateGlobalData.templateName)).toBeFalsy('Petramco Company Filter is not applied');
-            await utilGrid.clearFilter();
-            await utilGrid.addFilter('Company', '- Global -', 'text');
-            expect(await utilGrid.isGridRecordPresent(notesTemplatePetramcoData.templateName)).toBeFalsy('Global Company Filter is not applied');
-            expect(await utilGrid.isGridRecordPresent(notesTemplateGlobalData.templateName)).toBeTruthy('Global Company Filter is not applied');
-            await utilGrid.clearFilter();
-            await utilGrid.addFilter('Status', 'Inactive', 'checkbox');
-            expect(await utilGrid.isGridRecordPresent(notesTemplatePetramcoData.templateName)).toBeFalsy('Status Filter is not applied');
-            expect(await utilGrid.isGridRecordPresent(notesTemplateInactiveData.templateName)).toBeTruthy('Status Filter is not applied');
-            await utilGrid.clearFilter();
-            await utilGrid.addFilter('Template Name', notesTemplatePetramcoData.templateName, 'text');
-            expect(await utilGrid.isGridRecordPresent(notesTemplatePetramcoData.templateName)).toBeTruthy('Template Name Filter is not applied');
-            expect(await utilGrid.isGridRecordPresent(notesTemplateInactiveData.templateName)).toBeFalsy('Template Name Filter is not applied');
-            await utilGrid.clearFilter();
-            await utilGrid.addFilter('Label', 'TestMenuItemName' + randomStr, 'text');
-            expect(await utilGrid.isGridRecordPresent(notesTemplateWithLabelData.templateName)).toBeTruthy('Label Filter is not applied');
-            expect(await utilGrid.isGridRecordPresent(notesTemplateInactiveData.templateName)).toBeFalsy('Label Filter is not applied');
-            await utilGrid.clearFilter();
-            await utilGrid.addFilter('ID', templateGuid, 'text');
-            expect(await utilGrid.isGridRecordPresent(notesTemplateInactiveData.templateName)).toBeTruthy('ID Filter is not applied');
-            expect(await utilGrid.isGridRecordPresent(notesTemplateWithLabelData.templateName)).toBeFalsy('ID Filter is not applied');
-            await consoleNotestemplatePo.removeColumns(['Label', 'ID']);
-        }
-        catch (ex) { throw ex }
-        finally {
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
-
-        }
     });
-    
+
+    it('[DRDMV-16008]: [DesignTime] Verify "Case Notes templates", grid operation searching , sorting columns and filter on company', async () => {
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
+        await utilGrid.clearFilter();
+        await consoleNotestemplatePo.addColumns(['Label', 'ID']);
+        await utilGrid.searchOnGridConsole(notesTemplateInactiveData.templateName);
+        expect(await utilGrid.getNumberOfRecordsInGrid()).toEqual(1);
+        templateGuid = await consoleNotestemplatePo.getGuidValue();
+        await utilGrid.clearGridSearchBox();
+        expect(await consoleNotestemplatePo.isGridColumnSorted('Template Name')).toBeTruthy('Column is not sorted');
+        await utilGrid.clearFilter();
+        await utilGrid.addFilter('Company', 'Petramco', 'text');
+        expect(await utilGrid.isGridRecordPresent(notesTemplatePetramcoData.templateName)).toBeTruthy('Petramco Company Filter is not applied');
+        expect(await utilGrid.isGridRecordPresent(notesTemplateGlobalData.templateName)).toBeFalsy('Petramco Company Filter is not applied');
+        await utilGrid.clearFilter();
+        await utilGrid.addFilter('Company', '- Global -', 'text');
+        expect(await utilGrid.isGridRecordPresent(notesTemplatePetramcoData.templateName)).toBeFalsy('Global Company Filter is not applied');
+        expect(await utilGrid.isGridRecordPresent(notesTemplateGlobalData.templateName)).toBeTruthy('Global Company Filter is not applied');
+    });
+    it('[DRDMV-16008]: [DesignTime] Verify "Case Notes templates", grid operation searching , sorting columns and filter on company', async () => {
+        await utilGrid.clearFilter();
+        await utilGrid.addFilter('Status', 'Inactive', 'checkbox');
+        expect(await utilGrid.isGridRecordPresent(notesTemplatePetramcoData.templateName)).toBeFalsy('Status Filter is not applied');
+        expect(await utilGrid.isGridRecordPresent(notesTemplateInactiveData.templateName)).toBeTruthy('Status Filter is not applied');
+        await utilGrid.clearFilter();
+        await utilGrid.addFilter('Template Name', notesTemplatePetramcoData.templateName, 'text');
+        expect(await utilGrid.isGridRecordPresent(notesTemplatePetramcoData.templateName)).toBeTruthy('Template Name Filter is not applied');
+        expect(await utilGrid.isGridRecordPresent(notesTemplateInactiveData.templateName)).toBeFalsy('Template Name Filter is not applied');
+        await utilGrid.clearFilter();
+        await utilGrid.addFilter('Label', 'TestMenuItemName' + randomStr, 'text');
+        expect(await utilGrid.isGridRecordPresent(notesTemplateWithLabelData.templateName)).toBeTruthy('Label Filter is not applied');
+        expect(await utilGrid.isGridRecordPresent(notesTemplateInactiveData.templateName)).toBeFalsy('Label Filter is not applied');
+        await utilGrid.clearFilter();
+        await utilGrid.addFilter('ID', templateGuid, 'text');
+        expect(await utilGrid.isGridRecordPresent(notesTemplateInactiveData.templateName)).toBeTruthy('ID Filter is not applied');
+        expect(await utilGrid.isGridRecordPresent(notesTemplateWithLabelData.templateName)).toBeFalsy('ID Filter is not applied');
+        await consoleNotestemplatePo.removeColumns(['Label', 'ID']);
+    });
+       
+    afterAll(async () => {
+        await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+        await navigationPage.signOut();
+        await loginPage.login('qkatawazi');
+    });
+});
+
     //asahitya
     describe('[DRDMV-16051,DRDMV-16013]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', () => {
         let response1 = undefined;
@@ -961,7 +965,6 @@ describe('Notes template', () => {
 
         it('[DRDMV-16051,DRDMV-16013]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', async () => {
             //Validating the Case Notes
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(response1.displayId);
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
@@ -975,7 +978,6 @@ describe('Notes template', () => {
         it('[DRDMV-16051,DRDMV-16013]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', async () => {
             //Validating the Task Notes
             await navigationPage.gotoTaskConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(response2.displayId);
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
@@ -1006,7 +1008,6 @@ describe('Notes template', () => {
         it('[DRDMV-16051,DRDMV-16013]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', async () => {
             //Validating the Knowledge Notes
             await navigationPage.gotoKnowledgeConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(response3.displayId);
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             await activityTabPo.clickActivityNoteTextBox();
@@ -1089,7 +1090,6 @@ describe('Notes template', () => {
         it('[DRDMV-16112]: Verify Case Notes template is displayed as per to be assignee company(operating organisation)', async () => {
             await navigationPage.signOut();
             await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(petramcoCaseResponse.displayId);
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
@@ -1103,7 +1103,6 @@ describe('Notes template', () => {
         });
         it('[DRDMV-16112]: Verify Case Notes template is displayed as per to be assignee company(operating organisation)', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(psilonCaseResponse.displayId);
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
@@ -1274,7 +1273,6 @@ describe('Notes template', () => {
         it('[DRDMV-22642,DRDMV-22646,DRDMV-22657]: Verify CKE functionality on Create and Edit Case Notes template', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(newCase.displayId);
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(templateName);
             await activityTabPo.addActivityNote(randomString);
@@ -1324,7 +1322,6 @@ describe('Notes template', () => {
         it('[DRDMV-22642,DRDMV-22646,DRDMV-22657]: Verify CKE functionality on Create and Edit Case Notes template', async () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink('NotesTemplateCase1' + randomString);
             await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickShowMoreLinkInActivity(2);
@@ -1349,7 +1346,6 @@ describe('Notes template', () => {
         it('[DRDMV-22642,DRDMV-22646,DRDMV-22657]: Verify CKE functionality on Create and Edit Case Notes template', async () => {
             await navigationPage.signOut();
             await loginPage.login('qtao');
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink('NotesTemplateCase1' + randomString);
             await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickShowMoreLinkInActivity(4);
@@ -1536,7 +1532,6 @@ describe('Notes template', () => {
             expect(await ckeditorValidationPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('Text is not Left Align In Ck Editor');
             await activityTabPo.clickOnPostButton();
             await navigationPage.gotoKnowledgeConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink("KnowledgeTitle_" + randomString);
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             await activityTabPo.clickOnShowMore();
@@ -1555,7 +1550,6 @@ describe('Notes template', () => {
             await loginPage.login('kWilliamson');
             await navigationPage.switchToApplication("Knowledge Management");
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual("Knowledge Articles", 'title not correct');
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink("KnowledgeTitle_" + randomString);
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             await activityTabPo.clickOnShowMore();
@@ -1571,7 +1565,6 @@ describe('Notes template', () => {
             await navigationPage.signOut();
             await loginPage.login('qheroux');
             await navigationPage.gotoKnowledgeConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink("KnowledgeTitle_" + randomString);
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             await activityTabPo.clickOnShowMore();
@@ -1606,7 +1599,6 @@ describe('Notes template', () => {
             newCase = await apiHelper.createCase(caseData);
         });
         it('[DRDMV-22637,DRDMV-22643,DRDMV-22653]: Verify CKE functionality on Create and Edit People Notes template', async () => {
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(newCase.displayId);
 
             await viewCasePage.clickOnTab('Case Access');
@@ -1768,7 +1760,6 @@ describe('Notes template', () => {
             await navigationPage.signOut();
             await loginPage.login('qheroux');
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(newCase.displayId);
             await viewCasePage.clickAssigneeLink();
             await utilityCommon.switchToNewTab(1);
@@ -1800,7 +1791,6 @@ describe('Notes template', () => {
             await navigationPage.signOut();
             await loginPage.login('22653User@petramco.com', 'Password_1234');
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(newCase.displayId);
             await viewCasePage.clickAssigneeLink();
             await utilityCommon.switchToNewTab(1);
@@ -2505,7 +2495,6 @@ describe('Notes template', () => {
             await ckeditorOpsPo.clickOnUnderLineIcon();
         });
         it('[DRDMV-22641,DRDMV-22645,DRDMV-22656]: Verify CKE functionality on Create and Edit Task Notes template', async () => {
-
             //set color
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.selectColor('Strong Red');
@@ -2577,6 +2566,7 @@ describe('Notes template', () => {
             await quickCasePo.saveCase();
             await quickCasePo.gotoCaseButton();
             caseId = await viewCasePage.getCaseID();
+            
             await viewCasePage.clickOnTab('Case Access');
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('CA Support 3', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
             await viewCasePage.clickOnTab('Tasks');
@@ -2652,7 +2642,6 @@ describe('Notes template', () => {
         it('[DRDMV-22641,DRDMV-22645,DRDMV-22656]: Verify CKE functionality on Create and Edit Task Notes template', async () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             await viewCasePage.clickOnTaskLink(templateData.templateName);
             await activityTabPo.clickOnRefreshButton();
@@ -2691,7 +2680,6 @@ describe('Notes template', () => {
         it('[DRDMV-22641,DRDMV-22645,DRDMV-22656]: Verify CKE functionality on Create and Edit Task Notes template', async () => {
             await navigationPage.signOut();
             await loginPage.login('qheroux');
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             await viewCasePage.clickOnTaskLink(templateData.templateName);
             await activityTabPo.clickOnRefreshButton();

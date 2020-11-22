@@ -406,7 +406,6 @@ describe('Create Task Template', () => {
             await navigationPage.signOut();
             await loginPage.login("peter");
             await navigationPage.gotoTaskConsole();
-            await utilityGrid.clearFilter()
             await utilityGrid.searchAndOpenHyperlink(taskID);
             expect(await viewTask.getTaskStatusValue()).toBe('Assigned');
         });
@@ -414,7 +413,6 @@ describe('Create Task Template', () => {
             await navigationPage.signOut();
             await loginPage.login("qtao");
             await navigationPage.gotoTaskConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(taskID);
             expect(await viewTask.getTaskStatusValue()).toBe('Assigned');
             await navigationPage.gotoCaseConsole();
@@ -483,7 +481,6 @@ describe('Create Task Template', () => {
         });
         it('[DRDMV-3872,DRDMV-3870,DRDMV-3878,DRDMV-4178,DRDMV-4087]: Open the case verify the Assigned Status ', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await caseConsolePo.searchAndOpenCase(displayId);
             await viewCasePage.openTaskCard(1);
             await manageTask.clickTaskLink('manualTaskTemplateAssigned' + randomStr);

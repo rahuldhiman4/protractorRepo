@@ -208,7 +208,6 @@ describe("Case Approval UI Validations", () => {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Canceled");
             await activityTabPage.clickOnFilterButton();
@@ -450,7 +449,6 @@ describe("Case Approval UI Validations", () => {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Canceled");
             await activityTabPage.clickOnFilterButton();
@@ -735,7 +733,6 @@ describe("Case Approval UI Validations", () => {
             caseId = response.displayId;
             await navigationPage.signOut();
             await loginPage.login('qstrong');
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.isApprovalButtonsPresent("Approve")).toBeFalsy();
             expect(await viewCasePo.isApprovalButtonsPresent("Reject")).toBeFalsy();
@@ -756,7 +753,6 @@ describe("Case Approval UI Validations", () => {
         it('[DRDMV-22395,DRDMV-22398]:Tiggered the Approval on Case and check Case View screen by Approver should show Approval component', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
             expect(await viewCasePo.isShowApproversBannerDisplayed()).toBeTruthy('Show Approvers Banner is not displayed');
@@ -765,7 +761,6 @@ describe("Case Approval UI Validations", () => {
             expect(await viewCasePo.isApprovalButtonsPresent("Reject")).toBeTruthy();
             await viewCasePo.clickOnApproveLink();
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("In Progress");
             await activityTabPage.clickOnFilterButton();
@@ -791,12 +786,10 @@ describe("Case Approval UI Validations", () => {
             caseId = response.displayId;
             await navigationPage.signOut();
             await loginPage.login('qliu');
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
             await viewCasePo.clickOnRejectLink();
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Canceled");
             await activityTabPage.clickOnFilterButton();
@@ -958,7 +951,6 @@ describe("Case Approval UI Validations", () => {
             await apiHelper.apiLogin('qkatawazi');
             caseId = await apiHelper.createCase(caseData);
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId.displayId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
             expect(viewCasePo.getStatusReason("Approval")).toContain("Approval");
@@ -970,7 +962,6 @@ describe("Case Approval UI Validations", () => {
             await apiHelper.apiLogin('qkatawazi');
             caseId = await apiHelper.createCase(caseData2);
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId.displayId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
             expect(viewCasePo.getStatusReason("Approval")).toBe("Approval");

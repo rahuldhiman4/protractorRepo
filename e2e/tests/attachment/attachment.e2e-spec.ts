@@ -468,7 +468,6 @@ describe("Attachment", () => {
         });
         it('[DRDMV-9032]: Negative -Verify large number of attachments. Click on Send button in Compose Email', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await caseConsole.searchAndOpenCase(newCase.displayId);
             await viewCasePo.clickOnEmailLink();
             await composeMail.setToOrCCInputTextbox('To', 'franz@bwflabs.localdomain');

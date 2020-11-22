@@ -19,7 +19,7 @@ class EditCaseTemplate {
         casePriority: '98327bc1-9ada-48f9-ab88-9787ddecd409',
         caseStatusGuid: '5289a531-7138-4e4f-afdc-ee3f67a2aa64',
         statusReason: 'cfde7589-436d-4835-aab8-f5d71e04f91a',
-        label: '06d4ad28-b48e-493a-b6b3-925fea737576',
+        label: 'a18b9936-ef9a-48cd-b79b-9a4da61a679a',
         caseCategoryTier1: '241f0e58-3106-4f8a-a1cc-43554414bb7c',
         caseCategoryTier2: '4f950be7-d968-41a4-8bb9-018674e53f88',
         caseCategoryTier3: 'a7fbc4bc-23c6-4f92-818a-5554107d04c0',
@@ -57,7 +57,7 @@ class EditCaseTemplate {
         manageDynamicField: '[rx-view-component-id="3cd9b535-36f6-4718-bede-9154ca02ae22"] button',
         dynamicFieldsName:'[rx-view-component-id="3cd9b535-36f6-4718-bede-9154ca02ae22"] span',
         caseStatus: '[rx-view-component-id="5289a531-7138-4e4f-afdc-ee3f67a2aa64"] .dropdown',
-        labelValue : '[rx-view-component-id="06d4ad28-b48e-493a-b6b3-925fea737576"] .ui-select-match-text',
+        labelValue : '[rx-view-component-id="a18b9936-ef9a-48cd-b79b-9a4da61a679a"] .ui-select-match-text',
     }
 
     async clickOnCopyCaseTemplate(): Promise<void> {

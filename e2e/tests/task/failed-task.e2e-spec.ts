@@ -105,7 +105,6 @@ describe('Failed Task', () => {
             await statusUpdateBladePo.changeCaseStatus('In Progress');
             await statusUpdateBladePo.clickSaveStatus('In Progress');
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseDisplayId);
             await viewCasePage.openTaskCard(1);
             expect(await manageTaskBlade.getTaskStatus(manualTaskTemplateData.templateSummary)).toContain('Assigned');
@@ -210,7 +209,6 @@ describe('Failed Task', () => {
             await statusUpdateBladePo.changeCaseStatus('In Progress');
             await statusUpdateBladePo.clickSaveStatus('In Progress');
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseDisplayId);
 
             await viewCasePage.openTaskCard(1);
@@ -275,7 +273,6 @@ describe('Failed Task', () => {
         });
         it('[DRDMV-10000]: "ReRun"action of failed Automated task', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
             await viewCasePage.clickOnTaskLink(automatedTaskTemplateData.templateSummary);
             expect(await taskViewPage.getTaskStatusValue()).toBe('Failed');
@@ -337,7 +334,6 @@ describe('Failed Task', () => {
         await apiHelper.addTaskToCase(taskData, caseResponse.id);
         await apiHelper.updateCaseStatus(caseResponse.id, 'InProgress');
         await navigationPage.gotoCaseConsole();
-        await utilityGrid.clearFilter();
         await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
         await viewCasePage.clickOnTaskLink(manualTaskTemplateData.templateSummary);
         await taskViewPage.clickOnChangeStatus();
@@ -438,7 +434,6 @@ describe('Failed Task', () => {
 
         it('[[DRDMV-10044]: Task behaviour when one manual task is closed and other sequenced automated task is failed', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
             await viewCasePage.openTaskCard(1);
             expect(await manageTaskBlade.getTaskStatus(manualTaskTemplateData1.templateSummary)).toBe('Assigned');
@@ -570,7 +565,6 @@ describe('Failed Task', () => {
 
         it('[DRDMV-10045]: Case Status when one automated task got failed and other 2 automated task got passed', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
             await viewCasePage.openTaskCard(1);
             expect(await manageTaskBlade.getTaskStatus(automatedTaskTemplateData1.templateSummary)).toBe('Failed');
@@ -666,7 +660,6 @@ describe('Failed Task', () => {
         it('[DRDMV-9997]: Automated task= Failed, Case created with case template check Default Action', async () => {
             await apiHelper.updateCaseStatus(caseResponse.id, 'InProgress');
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
             await viewCasePage.openTaskCard(1);
             expect(await manageTaskBlade.getTaskStatus(automatedTaskTemplateData1.templateSummary)).toBe('Failed');
@@ -737,7 +730,6 @@ describe('Failed Task', () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.updateCaseStatus(caseResponse.id, 'InProgress');
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
             await viewCasePage.openTaskCard(1);
             expect(await manageTaskBlade.getTaskStatus(automatedTaskTemplateData.templateSummary)).toBe('Completed');

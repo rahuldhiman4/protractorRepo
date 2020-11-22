@@ -24,7 +24,6 @@ describe('Complex Surveys', () => {
 
     beforeEach(async () => {
         await navigationPage.gotoCaseConsole();
-        await utilityGrid.clearFilter();
     });
 
     it('[DRDMV-18118]: [Complex Survey] - Survey Details in Case having Stars', async () => {

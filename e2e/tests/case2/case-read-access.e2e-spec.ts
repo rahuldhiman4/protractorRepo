@@ -873,7 +873,6 @@ describe("Case Read Access", () => {
             await navigationPo.signOut();
             await loginPage.login('jbarnes');
             await utilityGrid.selectLineOfBusiness('Human Resource');
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink('ReadAccessCase' + randomStr);
             expect(await viewCasePage.isAddTaskButtonDisabled()).toBeTruthy();
             await viewCasePage.clickEditCaseButton();

@@ -36,8 +36,26 @@ export class GridOperations {
     }
 
     async searchRecord(searchValue: string, guid?: string): Promise<void> {
+        let searchTextBoxLocator: string = this.selectors.searchTextBox;
+        let gridRecordsLocator: string = this.selectors.gridRowLinks;
+        if (guid) {
+            searchTextBoxLocator = `[rx-view-component-id="${guid}"] ` + searchTextBoxLocator;
+            gridRecordsLocator = `[rx-view-component-id='${guid}'] ` + gridRecordsLocator;
+        }
+        await this.clearFilter();
+        for (let i: number = 0; i <= 5; i++) {
+            console.log(searchValue, "search angular grid count: ", i);
+            await $(searchTextBoxLocator).clear();
+            await $(searchTextBoxLocator).sendKeys(searchValue + protractor.Key.ENTER);
+            let gridRecordCount: number = await $$(gridRecordsLocator).count();
+            if (gridRecordCount == 0) {
+                await browser.sleep(10000); // workaround for performance issue, this can be removed when issue fixed
+            } else break;
+        }
+    }
+
+    async searchRecordWithoutFilter(searchValue: string, guid?: string): Promise<void> {
         await browser.sleep(30000); // workaround for performance issue
-        await this.clearFilter(); // My Open Cases/Tasks filter always applied
         let searchTextBoxLocator: string = this.selectors.searchTextBox;
         if (guid) { searchTextBoxLocator = `[rx-view-component-id="${guid}"] ` + searchTextBoxLocator; }
         await $(searchTextBoxLocator).clear();
@@ -628,13 +646,13 @@ export class GridOperations {
             } else return false;
         });
     }
-    
+
     async selectLineOfBusiness(value: string, guid?: string): Promise<void> {
         let guidID: string = "";
         if (guid) guidID = `[rx-view-component-id="${guid}"] `;
         await $(guidID + this.selectors.lineOfBusinessDropDown).click();
         await element(by.cssContainingText('.lob-list .dropdown-item', value)).click();
     }
-    
+
 }
 export default new GridOperations();

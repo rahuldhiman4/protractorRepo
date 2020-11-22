@@ -157,7 +157,6 @@ describe("Case Level Up Approval Tests", () => {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Resolved");
             await activityTabPage.clickOnFilterButton();
@@ -229,7 +228,6 @@ describe("Case Level Up Approval Tests", () => {
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus('In Progress');
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
             await navigationPage.signOut();
@@ -239,7 +237,6 @@ describe("Case Level Up Approval Tests", () => {
             await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Resolved");
             await activityTabPage.clickOnFilterButton();

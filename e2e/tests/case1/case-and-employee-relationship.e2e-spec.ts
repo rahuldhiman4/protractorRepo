@@ -21,7 +21,6 @@ describe('Case And Employee Relationship', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qtao');
-        await utilityGrid.clearFilter();
     });
 
     afterAll(async () => {
@@ -168,7 +167,6 @@ describe('Case And Employee Relationship', () => {
         });
         it('[DRDMV-17035]: Remove Related Case from Case', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId3);
             //Add case 1 and case 2 in related cases
             await viewCasePo.clickOnTab('Related Cases');
@@ -185,7 +183,6 @@ describe('Case And Employee Relationship', () => {
         it('[DRDMV-17035]: Remove Related Case from Case', async () => {
             //Open case 3 and verify case1 is not present in Related cases
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId3);
             await viewCasePo.clickOnTab('Related Cases');
             expect(await relatedCasePage.isCasePresent(caseId1)).toBeFalsy();
@@ -193,7 +190,6 @@ describe('Case And Employee Relationship', () => {
             //Remove case 2 from case 1 and verify in case 2
             await relatedCasePage.removeRelatedCase(caseId2);
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId2);
             await viewCasePo.clickOnTab('Related Cases');
             expect(await relatedCasePage.isCasePresent(caseId3)).toBeFalsy();
@@ -207,7 +203,6 @@ describe('Case And Employee Relationship', () => {
         let response = await apiHelper.createCase(caseData['caseData_DRDMV16243']);
         let caseDisplayId = response.displayId;
         await navigationPage.gotoCaseConsole();
-        await utilityGrid.clearFilter();
         await utilityGrid.searchAndOpenHyperlink(caseDisplayId);
         await viewCasePo.clickOnTab('Related Persons');
         await relatedTabPage.addRelatedPerson();
@@ -228,7 +223,6 @@ describe('Case And Employee Relationship', () => {
         let caseDisplayId1 = response1.displayId;
         let caseDisplayId2 = response2.displayId;
         await navigationPage.gotoCaseConsole();
-        await utilityGrid.clearFilter();
         await utilityGrid.searchAndOpenHyperlink(caseDisplayId1);
         await viewCasePo.clickOnTab('Related Cases');
         await relatedCasePage.addRelatedCases();
@@ -265,13 +259,11 @@ describe('Case And Employee Relationship', () => {
         });
         it('[DRDMV-16245]: Remove the Person from Case Related People tab and Person Profile Related People tab', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             await viewCasePo.clickOnTab('Related Persons');
             await relatedTabPage.addRelatedPerson();
             await addRelatedPopupPage.addPerson('Harry Potter', 'Related to');
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             await viewCasePo.clickOnTab('Related Persons');
             await relatedTabPage.removeRelatedPerson("Harry Potter");
@@ -336,13 +328,11 @@ describe('Case And Employee Relationship', () => {
         try {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(response1.displayId);
             await viewCasePo.clickOnTab('Related Persons');
             await relatedTabPage.addRelatedPerson();
             await addRelatedPopupPage.addPerson('Qianru Tao', 'Inspector');
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(response2.displayId);
             await viewCasePo.clickOnTab('Related Persons');
             await relatedTabPage.addRelatedPerson();
@@ -375,7 +365,6 @@ describe('Case And Employee Relationship', () => {
         });
         it('[DRDMV-16247]: Send Email to Related Person from Related Persons tab', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseInfo.displayId);
             let subject = 'Email Subject ' + randomStr;
             await viewCasePo.clickOnTab('Related Persons');
@@ -429,39 +418,33 @@ describe('Case And Employee Relationship', () => {
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
         it('[DRDMV-17030]: Relate Cases using OOB Cases to Cases Relationship and check Child Relationship', async () => {
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId[0]);
             await viewCasePo.clickOnTab('Related Cases');
             await relatedCaseTabPo.addRelatedCases();
             await addRelatedCasespopup.addRelatedCase(caseId[1], 'Child');
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId[1]);
             await viewCasePo.clickOnTab('Related Cases');
             expect(await relatedCaseTabPo.getRelatedCaseRelation(caseId[0])).toBe('Parent');
         });
         it('[DRDMV-17030]: Relate Cases using OOB Cases to Cases Relationship and check Child Relationship', async () => {       
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId[2]);
             await viewCasePo.clickOnTab('Related Cases');
             await relatedCaseTabPo.addRelatedCases();
             await addRelatedCasespopup.addRelatedCase(caseId[3], 'Duplicates');
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId[3]);
             await viewCasePo.clickOnTab('Related Cases');
             expect(await relatedCaseTabPo.getRelatedCaseRelation(caseId[2])).toBe('Duplicates');
         });
         it('[DRDMV-17030]: Relate Cases using OOB Cases to Cases Relationship and check Child Relationship', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId[4]);
             await viewCasePo.clickOnTab('Related Cases');
             await relatedCaseTabPo.addRelatedCases();
             await addRelatedCasespopup.addRelatedCase(caseId[5], 'Related to');
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId[5]);
             await viewCasePo.clickOnTab('Related Cases');
             expect(await relatedCaseTabPo.getRelatedCaseRelation(caseId[4])).toBe('Related to');

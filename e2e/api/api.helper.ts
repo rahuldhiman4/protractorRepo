@@ -2830,6 +2830,7 @@ class ApiHelper {
                 caseApprovalMapping.fieldInstances[450000155].value = constants.CaseStatus[approvalData.errorStatus];
                 caseApprovalMapping.fieldInstances[450000158].value = constants.CaseStatus[approvalData.noApprovalFoundStatus];
                 caseApprovalMapping.fieldInstances[1000001437].value = approvalData.mappingName;
+                caseApprovalMapping.fieldInstances[450000121].value = data.flowset ? await apiCoreUtil.getFlowsetGuid(data.flowset) : caseApprovalMapping.fieldInstances[450000121].value;
                 if (approvalData.company) caseApprovalMapping.fieldInstances[1000000001].value = await apiCoreUtil.getOrganizationGuid(approvalData.company);
                 let response = await apiCoreUtil.createRecordInstance(caseApprovalMapping);
                 console.log('Case Approval Mapping API Status =============>', response.status);

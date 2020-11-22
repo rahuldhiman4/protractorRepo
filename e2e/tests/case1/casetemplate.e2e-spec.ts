@@ -758,7 +758,6 @@ describe('Case Template', () => {
             await utilityCommon.closePopUpMessage();
             await utilityCommon.closePopUpMessage();
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseTemplateName);
             expect(await viewCasePo.getPriorityValue()).toBe('Low');
             expect(await viewCasePo.getCaseStatusValue()).toContain('New');
@@ -854,7 +853,6 @@ describe('Case Template', () => {
             await utilityCommon.closePopUpMessage();
             await utilityCommon.closePopUpMessage();
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseTemplateName);
             expect(await viewCasePo.getPriorityValue()).toBe('Low');
             expect(await viewCasePo.getCaseStatusValue()).toContain('Assigned');
@@ -918,7 +916,6 @@ describe('Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login('franz');
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await caseConsolePo.searchCase(caseTemplateName);
             expect(await caseConsolePo.isCaseSummaryPresent(caseTemplateName)).toBeFalsy("Case is present for diffrent company");
         });
@@ -926,7 +923,6 @@ describe('Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login('rrovnitov');
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await caseConsolePo.searchCase(caseTemplateName);
             expect(await caseConsolePo.isCaseSummaryPresent(caseTemplateName)).toBeFalsy("Case is present for diffrent company");
         });
@@ -1090,7 +1086,6 @@ describe('Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qtao');
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await caseConsolePo.searchCase(caseTemplateName);
             expect(await caseConsolePo.isCaseSummaryPresent(caseTemplateName)).toBeFalsy("Case is present for diffrent company");
         });
@@ -1098,7 +1093,6 @@ describe('Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login('werusha');
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await caseConsolePo.searchCase(caseTemplateName);
             expect(await caseConsolePo.isCaseSummaryPresent(caseTemplateName)).toBeFalsy("Case is present for diffrent company");
         });
@@ -1106,7 +1100,6 @@ describe('Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await caseConsolePo.searchAndOpenCase(caseTemplateName);
             expect(await viewCasePo.getCaseSummary()).toBe(caseTemplateName);
         });
@@ -1281,7 +1274,6 @@ describe('Case Template', () => {
         });
         it('[DRDMV-15245]: Verify case assignment method is not applicable if user changes the case template', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await caseConsolePo.searchAndOpenCase(newCase1.displayId);
             expect(await viewCasePo.getAssigneeText()).toBe("Qadim Katawazi");
             await viewCasePo.clickEditCaseButton();
@@ -1296,7 +1288,6 @@ describe('Case Template', () => {
         });
         it('[DRDMV-15245]: Verify case assignment method is not applicable if user changes the case template', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await caseConsolePo.searchAndOpenCase(newCase2.displayId);
             expect(await viewCasePo.getAssigneeText()).toBe("Qadim Katawazi");
             await viewCasePo.clickEditCaseButton();
@@ -1318,7 +1309,6 @@ describe('Case Template', () => {
         });
         it('[DRDMV-15245]: Verify case assignment method is not applicable if user changes the case template', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await caseConsolePo.searchAndOpenCase(newCase3.displayId);
             expect(await viewCasePo.getAssigneeText()).toBe("Qadim Katawazi");
             await viewCasePo.clickEditCaseButton();
@@ -1340,7 +1330,6 @@ describe('Case Template', () => {
         });
         it('[DRDMV-15245]: Verify case assignment method is not applicable if user changes the case template', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await caseConsolePo.searchAndOpenCase(newCase4.displayId);
             expect(await viewCasePo.getAssigneeText()).toBe("Qadim Katawazi");
             await viewCasePo.clickEditCaseButton();
@@ -1436,7 +1425,6 @@ describe('Case Template', () => {
         });
         it('[DRDMV-19741]: Case behavior when Case Template is changed', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId1.displayId);
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus('In Progress');
@@ -1454,7 +1442,6 @@ describe('Case Template', () => {
         });
         it('[DRDMV-19741]: Case behavior when Case Template is changed', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId.displayId);
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus('In Progress');

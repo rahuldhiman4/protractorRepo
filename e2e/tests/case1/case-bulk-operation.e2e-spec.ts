@@ -73,8 +73,6 @@ describe('Case Bulk Operation', () => {
             let response = await apiHelper.createCase(caseDataForTest);
             caseId[i] = response.displayId;
         }
-        await utilityGrid.clearFilter();
-        await utilityGrid.clickRefreshIcon();
         await utilityGrid.searchRecord(caseDataForTest.Summary);
         for (let i: number = 0; i < 3; i++) {
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
@@ -83,12 +81,10 @@ describe('Case Bulk Operation', () => {
         await changeAssignmentBladePo.setAssignee(petramcoStr, 'United States Support', 'US Support 3', "Qiao Feng");
         expect(await utilityCommon.isPopUpMessagePresent('The selected case(s) have been successfully assigned.', 1)).toBeTruthy();
         await utilityCommon.closePopUpMessage();
-        await utilityGrid.clearFilter();
         for (let i: number = 0; i < 3; i++) {
             await utilityGrid.searchAndOpenHyperlink(caseId[i]);
             expect(await viewCasePage.getAssigneeText()).toBe("Qiao Feng");
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
         }
     });
 
@@ -168,7 +164,6 @@ describe('Case Bulk Operation', () => {
         try {
             await navigationPage.signOut();
             await loginPage.login('qstrong');
-            await utilityGrid.clearFilter();
             await utilityGrid.searchRecord(caseDataForTest.Summary);
             await utilityGrid.clickCheckBoxOfValueInGrid(newCase1.displayId);
             await utilityGrid.clickCheckBoxOfValueInGrid(newCase2.displayId);
@@ -201,8 +196,6 @@ describe('Case Bulk Operation', () => {
         });
         it('[DRDMV-15980]: Verify that Assignment change information is visible in Actvity section', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
-            await utilityGrid.clickRefreshIcon();
             await utilityGrid.searchRecord(caseDataForTest.Summary);
             for (let i: number = 0; i < 1; i++) {
                 await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
@@ -222,7 +215,6 @@ describe('Case Bulk Operation', () => {
             expect(await utilityCommon.isPopUpMessagePresent('The selected case(s) have been successfully assigned.', 3)).toBeTruthy();
             await utilityCommon.closePopUpMessage();
             await utilityCommon.closePopUpMessage();
-            await utilityGrid.clearFilter();
             for (let i: number = 0; i < 1; i++) {
                 await utilityGrid.searchAndOpenHyperlink(caseId[i]);
                 expect(await activityPo.isTextPresentInActivityLog("Qiao Feng")).toBeTruthy("Text is not present in activiy tab1");
@@ -234,7 +226,6 @@ describe('Case Bulk Operation', () => {
                 expect(await activityPo.isTextPresentInActivityLog("Assigned Group")).toBeTruthy("Text is not present in activiy tab5");
                 expect(await activityPo.isTextPresentInActivityLog("Facilities")).toBeTruthy("Text is not present in activiy tab6");
                 await navigationPage.gotoCaseConsole();
-                await utilityGrid.clearFilter();
             }
         });
     });
@@ -248,8 +239,6 @@ describe('Case Bulk Operation', () => {
         caseId[1] = (await apiHelper.createCase(caseDataForTest)).displayId;
         caseId[2] = (await apiHelper.createCase(caseDataForTest)).displayId;
         await navigationPage.gotoCaseConsole();
-        await utilityGrid.clearFilter();
-        await utilityGrid.clickRefreshIcon();
         await utilityGrid.searchRecord(caseDataForTest.Summary);
         for (let i: number = 0; i < 3; i++) {
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
@@ -259,12 +248,10 @@ describe('Case Bulk Operation', () => {
         expect(await utilityCommon.isPopUpMessagePresent('The selected case(s) have been successfully assigned.', 1)).toBeTruthy();
 
         await utilityCommon.closePopUpMessage();
-        await utilityGrid.clearFilter();
         for (let i: number = 0; i < 3; i++) {
             await utilityGrid.searchAndOpenHyperlink(caseId[i]);
             expect(await viewCasePage.getAssigneeText()).toBe("Qadim Katawazi");
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
         }
 
     });
@@ -284,8 +271,6 @@ describe('Case Bulk Operation', () => {
         });
         it('[DRDMV-16109]: Verify that Agent creates the Case with BU, Org, Support Group, Department and while Bulk Assignment select only Org and Support Group', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
-            await utilityGrid.clickRefreshIcon();
             await utilityGrid.searchRecord(caseDataForTest.Summary);
             for (let i: number = 0; i < 3; i++) {
                 await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
@@ -309,7 +294,6 @@ describe('Case Bulk Operation', () => {
             expect(await utilityCommon.isPopUpMessagePresent('The selected case(s) have been successfully assigned.', 3)).toBeTruthy();
             await utilityCommon.closePopUpMessage();
             await utilityCommon.closePopUpMessage();
-            await utilityGrid.clearFilter();
             for (let i: number = 0; i < 3; i++) {
                 await utilityGrid.searchAndOpenHyperlink(caseId[i]);
                 expect(await viewCasePage.getBusinessUnitText()).toBe(businessData.orgName, `Business unit details are not matching for ${caseId[i]}`);
@@ -318,7 +302,6 @@ describe('Case Bulk Operation', () => {
                 expect(await viewCasePage.getAssignedGroupText()).toBe(suppGrpData.orgName, `Assigned Group details are not matching for ${caseId[i]}`);
                 expect(await viewCasePage.getAssigneeText()).toBe(`${personData.firstName} ${personData.lastName}`, `Assignee details are not matching for ${caseId[i]}`);
                 await navigationPage.gotoCaseConsole();
-                await utilityGrid.clearFilter();
             }
         });
         afterAll(async () => {
@@ -342,8 +325,6 @@ describe('Case Bulk Operation', () => {
             await navigationPage.signOut();
             await loginPage.login(personData.userId + '@petramco.com', "Password_1234");
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
-            await utilityGrid.clickRefreshIcon();
             await utilityGrid.searchRecord(caseDataForTest.Summary);
             for (let i: number = 0; i < 3; i++) {
                 await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
@@ -352,7 +333,6 @@ describe('Case Bulk Operation', () => {
             await caseConsolePage.clickOnChangeAssignmentButton();
             await changeAssignmentBladePo.setAssignee(petramcoStr, 'United States Support', "US Support 3", 'Qadim Katawazi');
             expect(await utilityCommon.isPopUpMessagePresent('The selected case(s) have been successfully assigned.', 1)).toBeTruthy();
-            await utilityGrid.clearFilter();
             for (let i: number = 0; i < 3; i++) {
                 await utilityGrid.searchAndOpenHyperlink(caseId[i]);
                 expect(await viewCasePage.isTextPresent('BulkOperationBusinessUnit')).toBeFalsy("BulkOperationBusinessUnit is present");
@@ -361,7 +341,6 @@ describe('Case Bulk Operation', () => {
                 expect(await viewCasePage.getAssignedGroupText()).toBe(usSupportGroup3Str);
                 expect(await viewCasePage.getAssigneeText()).toBe('Qadim Katawazi');
                 await navigationPage.gotoCaseConsole();
-                await utilityGrid.clearFilter();
             }
         });
         afterAll(async () => {
@@ -389,8 +368,6 @@ describe('Case Bulk Operation', () => {
         await apiHelper.updateCaseStatus(caseGuid, "Closed");
         await utilityGrid.sortGridColumn('Case ID', 'desc');
         await navigationPage.gotoCaseConsole();
-        await utilityGrid.clearFilter();
-        await utilityGrid.clickRefreshIcon();
         await utilityGrid.searchRecord(caseDataForTest.Summary);
         for (let i: number = 0; i < 3; i++) {
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
@@ -464,8 +441,6 @@ describe('Case Bulk Operation', () => {
         await apiHelper.updateCaseStatus(caseGuid[0], 'InProgress');
         await apiHelper.updateCaseStatus(caseGuid[1], 'Canceled', 'Customer Canceled');
         await navigationPage.gotoCaseConsole();
-        await utilityGrid.clearFilter();
-        await utilityGrid.clickRefreshIcon();
         await utilityGrid.searchRecord(caseId[0]);
         await utilityGrid.clickCheckBoxOfValueInGrid(caseId[0]);
         await caseConsolePage.clickOnChangeAssignmentButton();

@@ -219,7 +219,6 @@ describe("Create Case", () => {
         await previewCasePo.clickGoToCaseButton();
         expect(await viewCasePage.getPriorityValue()).toBe('Medium');
         await navigationPage.gotoCaseConsole();
-        await utilityGrid.clearFilter();
         await caseConsolePage.setCaseSearchBoxValue(caseSummary);
         expect(await caseConsolePage.isCaseIdHyperlinked()).toBeTruthy('Unable to find the created case');
     });
@@ -749,8 +748,6 @@ describe("Create Case", () => {
             await utilityCommon.closePopUpMessage();
             await viewCasePage.clickEditCaseButton();
             await editCasePage.clickChangeAssignmentButton();
-            await changeAssignmentPage.selectBusinessUnit('United States Support')
-            await changeAssignmentPage.selectSupportGroup('US Support 3');
             await changeAssignmentPage.selectAssignToSupportGroup();
             await changeAssignmentPage.clickOnAssignButton();
             await editCasePage.clickSaveCase();
@@ -776,7 +773,6 @@ describe("Create Case", () => {
             await selectCaseTemplateBlade.selectCaseTemplate(templateData2.templateName);
             await editCasePage.clickSaveCase();
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink('Summary2' + randomStr);
             await updateStatusBladePo.changeCaseStatus('In Progress');
             expect(await viewCasePage.getErrorMsgOfInprogressStatus()).toBe('Assignee is required for this case status.  Please select an assignee. ');
@@ -999,7 +995,6 @@ describe("Create Case", () => {
             await apiHelper.apiLogin(userData.userId + "@petramco.com", 'Password_1234');
             let psilonCaseResponse = await apiHelper.createCase(caseDataPsilon);
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await caseConsolePage.searchAndOpenCase(psilonCaseResponse.displayId);
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickAddTaskFromTemplateButton();

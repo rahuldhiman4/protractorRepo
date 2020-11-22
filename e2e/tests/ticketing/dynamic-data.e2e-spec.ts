@@ -773,7 +773,6 @@ describe('Dynamic data', () => {
             expect(await viewTaskPo.getDynamicFieldValue(dynamicfield3)).toContain(dynamicfield4);
             expect(await viewTaskPo.getDynamicFieldValue(dynamicfield4)).toContain('100');
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await caseConsolePo.searchAndOpenCase(caseId);
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus('In Progress');

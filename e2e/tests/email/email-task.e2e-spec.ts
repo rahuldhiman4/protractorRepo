@@ -90,7 +90,6 @@ describe('Email Task', () => {
             displayId = newCaseTemplate.displayId;
         });
         it('[DRDMV-19011]: Automated task should not have email options but other type of task should have email option	', async () => {
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(displayId);
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary);
@@ -165,7 +164,6 @@ describe('Email Task', () => {
         });
         it('[DRDMV-19008]: Email icon and Requester email link should open compose email dialog in Task', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(displayId);
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary);
@@ -271,7 +269,6 @@ describe('Email Task', () => {
             displayId = newCaseTemplate.displayId;
         });
         it('[DRDMV-19009]: Verify Subject of Email from Task Compose email', async () => {
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(displayId);
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary);
@@ -315,7 +312,6 @@ describe('Email Task', () => {
             await navigationPage.signOut();
             await loginPage.login('qheroux');
             await navigationPage.gotoTaskConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(ExternaltaskID);
             await viewTaskPo.clickEmailLink();
             expect(await emailPo.getSubject()).toContain(displayId + ':' + ExternaltaskID);
@@ -361,7 +357,6 @@ describe('Email Task', () => {
         let newCase = await apiHelper.createCase(caseData);
         let displayId: string = newCase.displayId;
         await navigationPage.gotoCaseConsole();
-        await utilityGrid.clearFilter();
         await utilityGrid.searchAndOpenHyperlink(displayId);
         await activityTabPo.addActivityNote('This is case notes templates');
         await activityTabPo.clickOnPostButton();
@@ -420,7 +415,6 @@ describe('Email Task', () => {
         });
         it('[DRDMV-19556]: Reply / Reply All earlier email context should be copied as part of email composition on Task', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(displayId);
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary);
@@ -512,7 +506,6 @@ describe('Email Task', () => {
         let newCaseTemplate = await apiHelper.createCase(caseData);
         let displayId: string = newCaseTemplate.displayId;
         await navigationPage.gotoCaseConsole();
-        await utilityGrid.clearFilter();
         await utilityGrid.searchAndOpenHyperlink(displayId);
         await viewCasePo.clickOnEmailLink();
         await composeMailPo.clickOnSelectEmailTemplateLink();
@@ -595,7 +588,6 @@ describe('Email Task', () => {
         });
         it('[DRDMV-19555]: In Case of Reply/Reply All if we select new Email template then previous contents should not be erased.', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(displayId);
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary);
@@ -716,7 +708,6 @@ describe('Email Task', () => {
         });
         it('[DRDMV-19550]: Email Templates option driven by Task assignee permission for case', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(displayId);
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary);
@@ -752,7 +743,6 @@ describe('Email Task', () => {
             await navigationPage.signOut();
             await loginPage.login('qheroux');
             await navigationPage.gotoTaskConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(ManualtaskID);
             await viewTaskPo.clickOnRequesterEmail();
             await browser.sleep(2000); // Wait until Email Pop up gets display.
