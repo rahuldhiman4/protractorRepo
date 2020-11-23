@@ -162,7 +162,6 @@ describe('Document Library Consume UI', () => {
         });
         it('[DRDMV-13533]: Open the case and attach the document', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await caseConsolePo.searchAndOpenCase(caseId);
             await viewCasePo.clickEditCaseButton();
             await editCasePo.clickOnAttachLink();
@@ -180,7 +179,6 @@ describe('Document Library Consume UI', () => {
         it('[DRDMV-13533]: Verify the case with different user', async () => {
             await navigationPage.signOut();
             await loginPage.login('qstrong');
-            await utilityGrid.clearFilter();
             await caseConsolePo.searchAndOpenCase(caseId);
             expect(await viewCasePo.getCaseID()).toBe(caseId, 'Case Id is missing');
             expect(await viewCasePo.isAttachedDocumentPresent(' bwfJpg.jpg')).toBeTruthy('FailuerMsg2: Attached Document is missing');

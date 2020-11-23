@@ -920,7 +920,6 @@ describe('Case Activity CKE', () => {
         it('[DRDMV-21620]: Verify the Comments posted in activity with notes template For knowledge Article ', async () => {
             // Create knowledge Article task template
             await navigationPage.gotoKnowledgeConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
             expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('FailureMsg KA Edit link is missing')
             await viewKnowledgeArticlePo.clickOnActivityTab();

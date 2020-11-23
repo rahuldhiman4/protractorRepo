@@ -193,7 +193,6 @@ describe('Case Status Configuration', () => {
             expect(await viewCasePo.getTextOfStatus()).toBe("Staged");
 
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await caseConsolePo.searchAndOpenCase(caseId1);
             expect(await viewCasePo.getTextOfStatus()).toBe("Staged");
 
@@ -637,7 +636,6 @@ describe('Case Status Configuration', () => {
             await apiHelper.createKnowledgeSet(knowledgeSetData);
             knowldgeId = await apiHelper.createKnowledgeArticle(articleData1);
             await navigationPage.gotoKnowledgeConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(knowldgeId.displayId);
             await editKnowledgePo.setKnowledgeStatus('Custom');
         });

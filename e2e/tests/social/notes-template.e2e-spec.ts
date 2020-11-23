@@ -367,7 +367,6 @@ describe('Notes template', () => {
         await apiHelper.apiLogin('qtao');
         let newCase = await apiHelper.createCase(caseData);
         await navigationPage.gotoCaseConsole();
-        await utilityGrid.clearFilter();
         await utilityGrid.searchAndOpenHyperlink(newCase.displayId);
         await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(notesTemplateName);
         await activityTabPo.clickOnPostButton();
@@ -411,7 +410,6 @@ describe('Notes template', () => {
         it('[DRDMV-16578]: Case Agent consume People Notes Template in People profile', async () => {
             await navigationPage.signOut();
             await loginPage.login('qheroux');
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(newCase1.displayId);
             await viewCasePage.clickRequsterName();
             await utilityCommon.switchToNewTab(1);
@@ -422,7 +420,6 @@ describe('Notes template', () => {
         it('[DRDMV-16578]: Case Agent/Case Manger Should be able to consume People Notes Template in People profile', async () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(newCase2.displayId);
             await viewCasePage.clickRequsterName();
             await utilityCommon.switchToNewTab(1);
@@ -617,7 +614,6 @@ describe('Notes template', () => {
         });
 
         it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseResponse2.displayId);
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickTaskLink(templateManualData1.templateSummary);
@@ -969,7 +965,6 @@ describe('Notes template', () => {
 
         it('[DRDMV-16051,DRDMV-16013]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', async () => {
             //Validating the Case Notes
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(response1.displayId);
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
@@ -983,7 +978,6 @@ describe('Notes template', () => {
         it('[DRDMV-16051,DRDMV-16013]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', async () => {
             //Validating the Task Notes
             await navigationPage.gotoTaskConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(response2.displayId);
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
@@ -1014,7 +1008,6 @@ describe('Notes template', () => {
         it('[DRDMV-16051,DRDMV-16013]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', async () => {
             //Validating the Knowledge Notes
             await navigationPage.gotoKnowledgeConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(response3.displayId);
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             await activityTabPo.clickActivityNoteTextBox();
@@ -1097,7 +1090,6 @@ describe('Notes template', () => {
         it('[DRDMV-16112]: Verify Case Notes template is displayed as per to be assignee company(operating organisation)', async () => {
             await navigationPage.signOut();
             await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(petramcoCaseResponse.displayId);
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
@@ -1111,7 +1103,6 @@ describe('Notes template', () => {
         });
         it('[DRDMV-16112]: Verify Case Notes template is displayed as per to be assignee company(operating organisation)', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(psilonCaseResponse.displayId);
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
@@ -1282,7 +1273,6 @@ describe('Notes template', () => {
         it('[DRDMV-22642,DRDMV-22646,DRDMV-22657]: Verify CKE functionality on Create and Edit Case Notes template', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(newCase.displayId);
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(templateName);
             await activityTabPo.addActivityNote(randomString);
@@ -1332,7 +1322,6 @@ describe('Notes template', () => {
         it('[DRDMV-22642,DRDMV-22646,DRDMV-22657]: Verify CKE functionality on Create and Edit Case Notes template', async () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink('NotesTemplateCase1' + randomString);
             await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickShowMoreLinkInActivity(2);
@@ -1357,7 +1346,6 @@ describe('Notes template', () => {
         it('[DRDMV-22642,DRDMV-22646,DRDMV-22657]: Verify CKE functionality on Create and Edit Case Notes template', async () => {
             await navigationPage.signOut();
             await loginPage.login('qtao');
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink('NotesTemplateCase1' + randomString);
             await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickShowMoreLinkInActivity(4);
@@ -1544,7 +1532,6 @@ describe('Notes template', () => {
             expect(await ckeditorValidationPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('Text is not Left Align In Ck Editor');
             await activityTabPo.clickOnPostButton();
             await navigationPage.gotoKnowledgeConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink("KnowledgeTitle_" + randomString);
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             await activityTabPo.clickOnShowMore();
@@ -1563,7 +1550,6 @@ describe('Notes template', () => {
             await loginPage.login('kWilliamson');
             await navigationPage.switchToApplication("Knowledge Management");
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual("Knowledge Articles", 'title not correct');
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink("KnowledgeTitle_" + randomString);
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             await activityTabPo.clickOnShowMore();
@@ -1579,7 +1565,6 @@ describe('Notes template', () => {
             await navigationPage.signOut();
             await loginPage.login('qheroux');
             await navigationPage.gotoKnowledgeConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink("KnowledgeTitle_" + randomString);
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             await activityTabPo.clickOnShowMore();
@@ -1614,7 +1599,6 @@ describe('Notes template', () => {
             newCase = await apiHelper.createCase(caseData);
         });
         it('[DRDMV-22637,DRDMV-22643,DRDMV-22653]: Verify CKE functionality on Create and Edit People Notes template', async () => {
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(newCase.displayId);
 
             await viewCasePage.clickOnTab('Case Access');
@@ -1776,7 +1760,6 @@ describe('Notes template', () => {
             await navigationPage.signOut();
             await loginPage.login('qheroux');
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(newCase.displayId);
             await viewCasePage.clickAssigneeLink();
             await utilityCommon.switchToNewTab(1);
@@ -1808,7 +1791,6 @@ describe('Notes template', () => {
             await navigationPage.signOut();
             await loginPage.login('22653User@petramco.com', 'Password_1234');
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(newCase.displayId);
             await viewCasePage.clickAssigneeLink();
             await utilityCommon.switchToNewTab(1);
@@ -2660,7 +2642,6 @@ describe('Notes template', () => {
         it('[DRDMV-22641,DRDMV-22645,DRDMV-22656]: Verify CKE functionality on Create and Edit Task Notes template', async () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             await viewCasePage.clickOnTaskLink(templateData.templateName);
             await activityTabPo.clickOnRefreshButton();
@@ -2699,7 +2680,6 @@ describe('Notes template', () => {
         it('[DRDMV-22641,DRDMV-22645,DRDMV-22656]: Verify CKE functionality on Create and Edit Task Notes template', async () => {
             await navigationPage.signOut();
             await loginPage.login('qheroux');
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             await viewCasePage.clickOnTaskLink(templateData.templateName);
             await activityTabPo.clickOnRefreshButton();

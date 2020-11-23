@@ -323,7 +323,6 @@ describe('Service Target Tests for Tasks', () => {
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('due on');
             taskId = await viewTask.getTaskID();
             await navigationPage.gotoTaskConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchRecord(taskId);
             expect(await utilityGrid.getAllValuesFromColumn('SLM Status')).toEqual(slmStatusWithinTimeLimitArr);
             await utilityGrid.searchAndOpenHyperlink(taskId);

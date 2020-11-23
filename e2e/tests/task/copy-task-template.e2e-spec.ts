@@ -107,7 +107,6 @@ describe('Copy Task Template', () => {
             await updateStatusBladePo.clickSaveStatus('In Progress');
             await utilityCommon.closePopUpMessage();
             await navigationPage.gotoTaskConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(templateData.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe('Completed');
         });
@@ -378,7 +377,6 @@ describe('Copy Task Template', () => {
             await updateStatusBladePo.clickSaveStatus('In Progress');
             await utilityCommon.closePopUpMessage();
             await navigationPage.gotoTaskConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(taskId);
             expect(await viewTask.getTaskStatusValue()).toBe('Completed');
         });

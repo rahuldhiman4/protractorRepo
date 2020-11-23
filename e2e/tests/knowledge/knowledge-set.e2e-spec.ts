@@ -121,7 +121,6 @@ describe('Knowledge Article Set', () => {
             await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityGrid.selectLineOfBusiness('Human Resource');
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitle, 'Article set is not displayed');
         });

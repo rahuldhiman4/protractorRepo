@@ -708,7 +708,6 @@ describe("Case Approval Mapping Tests", () => {
             let caseInfo = await apiHelper.createCase(caseData);
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseInfo.displayId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
             expect(await viewCasePo.isShowApproversBannerDisplayed()).toBeTruthy('Approval is not triggered');
@@ -763,7 +762,6 @@ describe("Case Approval Mapping Tests", () => {
             let caseInfo = await apiHelper.createCase(caseData);
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseInfo.displayId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
             expect(await viewCasePo.isShowApproversBannerDisplayed()).toBeTruthy('Approval is not triggered');
@@ -818,7 +816,8 @@ describe("Case Approval Mapping Tests", () => {
                 "noApprovalFoundStatus": "Assigned",
                 "rejectStatus": "Canceled",
                 "company": "Petramco",
-                "mappingName": "Approval Mapping for Petramco - Automated"
+                "mappingName": "Approval Mapping for Petramco - Automated",
+                "flowset": "Human Resources"
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createApprovalMapping(caseModule, approvalMappingData);
@@ -864,7 +863,8 @@ describe("Case Approval Mapping Tests", () => {
             await approvalMappingConsolePage.searchValueOnGrid('Human Resources');
             await approvalMappingConsolePage.searchValueOnGrid('In Progress');
             expect(await approvalMappingConsolePage.isRecordPresent('In Progress')).toBeTruthy();
-
+        });
+        it('[DRDMV-10704]: Approval Mapping - Console', async () => {
             //Verify records after applying filter
             await approvalMappingConsolePage.addFilter('Company', 'Petramco', 'text');
             expect(await approvalMappingConsolePage.isRecordPresent('Petramco')).toBeTruthy();

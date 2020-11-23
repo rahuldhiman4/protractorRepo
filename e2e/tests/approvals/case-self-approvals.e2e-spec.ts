@@ -115,7 +115,6 @@ describe("Case Self Approval Tests", () => {
             let response = await apiHelper.createCase(caseData);
             caseId = response.displayId;
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("In Progress");
             await activityTabPage.clickOnFilterButton();
@@ -252,7 +251,6 @@ describe("Case Self Approval Tests", () => {
             let response = await apiHelper.createCase(caseData);
             caseId = response.displayId;
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("In Progress");
             await activityTabPage.clickOnFilterButton();

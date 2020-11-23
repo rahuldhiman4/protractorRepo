@@ -1051,8 +1051,6 @@ describe("Quick Case", () => {
             await utilCommon.closePopUpMessage();
         });
         it('[DRDMV-22711,DRDMV-22703]: Verify Case Template access while Creating case for Global and Petramco Company', async () => {
-            await navigationPo.signOut();
-            await loginPo.login('fritz');
             await navigationPo.gotoCreateCase();
             await createCasePo.selectRequester('adam');
             await createCasePo.setSummary("CaseSummary1" + randomStr);
@@ -1062,7 +1060,6 @@ describe("Quick Case", () => {
             await navigationPo.signOut();
             await loginPo.login('elizabeth');
             await navigationPo.gotoCaseConsole();
-            await utilityGrid.selectLineOfBusiness('Human Resource');
             await navigationPo.gotoCreateCase();
             await createCasePo.selectRequester('adam');
             await createCasePo.setSummary("CaseSummary1" + randomStr);

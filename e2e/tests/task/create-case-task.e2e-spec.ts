@@ -1320,11 +1320,9 @@ describe('Create Case Task', () => {
         });
         it('[DRDMV-3880,DRDMV-5320]: [Task Status] Task Status change from Completed', async () => {
             await navigationPage.gotoTaskConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(`manualTaskTemplateSummary1 ${randomStr}`);
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
             await navigationPage.gotoTaskConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(`manualTaskTemplateSummary2 ${randomStr}`);
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
             await viewTask.clickOnViewCase();
@@ -1338,7 +1336,6 @@ describe('Create Case Task', () => {
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await caseConsolePage.searchAndOpenCase('DRDMV3880Summary' + randomStr);
             await viewCasePage.clickOnTaskLink(`manualTaskTemplateSummary1 ${randomStr}`);
             expect(await viewTask.getTaskStatusValue()).toBe("Assigned");
@@ -1666,7 +1663,6 @@ describe('Create Case Task', () => {
         });
         it('[DRDMV-1579]: [Edit Task] Update summary, status, description and assignment', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await caseConsolePage.searchAndOpenCase('DRDMV1579Summary' + randomStr);
             await expect(viewCasePage.getRequesterName()).toBe('Qianru Tao');
             await viewCasePage.clickOnContactPersonerDrpDwn();
@@ -1702,7 +1698,6 @@ describe('Create Case Task', () => {
             await updateStatusBladePo.clickSaveStatus();
             await utilCommon.closePopUpMessage();
             await navigationPage.gotoTaskConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(templateData.templateName);
             await viewTask.clickOnContactName();
             await utilityCommon.switchToNewTab(1);
@@ -1725,14 +1720,12 @@ describe('Create Case Task', () => {
             await navigationPage.signOut();
             await loginPage.login('qtao');
             await navigationPage.gotoTaskConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(externaltemplateData.templateName);
             await viewTask.clickOnEditTask();
             expect(await editTask.isRequesterNameDisplayed('Qianru Tao')).toBeTruthy();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await navigationPage.gotoTaskConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink("AdHocSummary" + randomStr);
             await viewTask.clickOnEditTask();
             expect(await editTask.isRequesterNameDisplayed('Qianru Tao')).toBeTruthy();

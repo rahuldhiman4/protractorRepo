@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "e2e": "ng e2e",
-    "webdriver-update": "webdriver-manager update",
+    "webdriver-update": "webdriver-manager update --versions.chrome 86.0.4240.111",
     "e2e-protractor": "protractor ./e2e/protractor.conf.js",
     "jira-cycle": "tsc ./e2e/reporters/spec-jira-reporter/index.ts && node ./e2e/reporters/spec-jira-reporter/index.js"
   },

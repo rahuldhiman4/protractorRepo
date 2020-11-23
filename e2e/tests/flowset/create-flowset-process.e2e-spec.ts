@@ -304,7 +304,6 @@ describe('Create Process in Flowset', () => {
         it('[DRDMV-11987]: [Case Creation] Verify able to create case with Global case template having flowset', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
             expect(await viewCasePage.getPriorityValue()).toBe('Low');
             await apiHelper.apiLogin('tadmin');
@@ -451,7 +450,6 @@ describe('Create Process in Flowset', () => {
 
         it('[DRDMV-10327]: Initialization process execution for case origin Agent', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
             expect(await viewCasePage.getPriorityValue()).toBe('Critical');
             await apiHelper.apiLogin('tadmin');
@@ -615,7 +613,6 @@ describe('Create Process in Flowset', () => {
         });
         it('[DRDMV-10328,DRDMV-10023,DRDMV-10028]: User Activity Feeds process execution for post created by email', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
             await viewCasePage.clickOnRequestersEmail();
             await composeEmailPo.setEmailBody('Text added for DRDMV-10328');
@@ -734,7 +731,6 @@ describe('Create Process in Flowset', () => {
             expect(await apiCoreUtil.getProcessRunCount('com.bmc.dsm.case-lib', `Email Origin DRDMV-10024 ${randomStr}`)).toEqual(1);
             expect(await apiCoreUtil.getProcessRunCount('com.bmc.dsm.social-lib', `Activity Feed Email DRDMV-10024 ${randomStr}`)).toEqual(0);
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
             await activityTabPage.addActivityNote("hello");
             await activityTabPage.clickOnPostButton();

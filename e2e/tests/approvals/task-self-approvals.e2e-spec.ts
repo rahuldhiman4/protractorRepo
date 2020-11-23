@@ -152,7 +152,6 @@ describe("Task Self Approval Tests", () => {
             await manageTask.clickTaskLink(manualTaskTemplateData.templateSummary);
             let taskId = await viewTask.getTaskID();
             await navigationPage.gotoTaskConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(taskId);
             expect(await viewTask.getTaskStatusValue()).toBe("In Progress");
             expect(await activityTabPage.getApprovalActivityText('Task was auto-approved')).toBeTruthy();
@@ -448,7 +447,6 @@ describe("Task Self Approval Tests", () => {
             caseId = newCase.displayId;
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
             await updateStatusBladePo.changeCaseStatus('In Progress');
@@ -485,7 +483,6 @@ describe("Task Self Approval Tests", () => {
             await apiHelper.createAdhocTask(newCase1.id, taskData);
 
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
             await updateStatusBladePo.changeCaseStatus('In Progress');
@@ -510,7 +507,6 @@ describe("Task Self Approval Tests", () => {
             let newCase = await apiHelper.createCase(caseData);
             caseId = newCase.displayId;
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
             await updateStatusBladePo.changeCaseStatus('In Progress');
@@ -547,7 +543,6 @@ describe("Task Self Approval Tests", () => {
             let newCase = await apiHelper.createCase(caseData);
             caseId = newCase.displayId;
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
             await updateStatusBladePo.changeCaseStatus('In Progress');
@@ -586,7 +581,6 @@ describe("Task Self Approval Tests", () => {
             caseId = newCase2.displayId;
 
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
             await viewCasePo.clickAddTaskButton();
@@ -625,7 +619,6 @@ describe("Task Self Approval Tests", () => {
             let newCase = await apiHelper.createCase(caseData);
             caseId = newCase.displayId;
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
             await updateStatusBladePo.changeCaseStatus('In Progress');
@@ -722,7 +715,6 @@ describe("Task Self Approval Tests", () => {
         it('[DRDMV-22396,DRDMV-22397]:Create case and assign tasks to it', async () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
             await updateStatusBladePo.changeCaseStatus('In Progress');
@@ -735,7 +727,6 @@ describe("Task Self Approval Tests", () => {
             await manageTask.clickTaskLink(manualTaskTemplateData.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
             await navigationPage.gotoTaskConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(manualTaskDisplayId);
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
             expect(await viewTask.isShowApproversBannerDisplayed()).toBeTruthy('Show Approvers Banner is not displayed');
@@ -747,7 +738,6 @@ describe("Task Self Approval Tests", () => {
             await navigationPage.signOut();
             await loginPage.login('qstrong');
             await navigationPage.gotoTaskConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(manualTaskDisplayId);
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
             expect(await viewTask.isShowApproversBannerDisplayed()).toBeTruthy('Show Approvers Banner is not displayed');
@@ -767,7 +757,6 @@ describe("Task Self Approval Tests", () => {
             let newCase = await apiHelper.createCase(caseData);
             caseId = newCase.displayId;
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
             await updateStatusBladePo.changeCaseStatus('In Progress');
@@ -780,7 +769,6 @@ describe("Task Self Approval Tests", () => {
             await manageTask.clickTaskLink(manualTaskTemplateData.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
             await navigationPage.gotoTaskConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(manualTaskDisplayId);
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
             expect(await viewTask.isShowApproversBannerDisplayed()).toBeTruthy('Show Approvers Banner is not displayed');
@@ -792,7 +780,6 @@ describe("Task Self Approval Tests", () => {
             await navigationPage.signOut();
             await loginPage.login('qstrong');
             await navigationPage.gotoTaskConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(manualTaskDisplayId);
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
             expect(await viewTask.isShowApproversBannerDisplayed()).toBeTruthy('Show Approvers Banner is not displayed');
@@ -902,7 +889,6 @@ describe("Task Self Approval Tests", () => {
         it('[DRDMV-22264]:Create case and assign tasks to it', async () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
             await updateStatusBladePo.changeCaseStatus('In Progress');
@@ -918,7 +904,6 @@ describe("Task Self Approval Tests", () => {
 
         it('[DRDMV-22264]: Verify the task approval details ', async () => {
             await navigationPage.gotoTaskConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(automatedTaskDisplayId);
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
             expect(await viewTask.isShowApproversBannerDisplayed()).toBeTruthy('Show Approvers Banner is not displayed');
@@ -946,7 +931,6 @@ describe("Task Self Approval Tests", () => {
             await navigationPage.signOut();
             await loginPage.login('qstrong');
             await navigationPage.gotoTaskConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(automatedTaskDisplayId);
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
             expect(await viewTask.isShowApproversBannerDisplayed()).toBeTruthy('Show Approvers Banner is not displayed');
@@ -987,7 +971,6 @@ describe("Task Self Approval Tests", () => {
             let newCase = await apiHelper.createCase(caseData);
             caseId = newCase.displayId;
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
             await updateStatusBladePo.changeCaseStatus('In Progress');
@@ -1004,7 +987,6 @@ describe("Task Self Approval Tests", () => {
 
         it('[DRDMV-22264]: Verify task approval precedence given to global company mapping', async () => {
             await navigationPage.gotoTaskConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(automatedTaskDisplayId);
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
             expect(await viewTask.isShowApproversBannerDisplayed()).toBeTruthy('Show Approvers Banner is not displayed');
@@ -1012,7 +994,6 @@ describe("Task Self Approval Tests", () => {
             await navigationPage.signOut();
             await loginPage.login('qstrong');
             await navigationPage.gotoTaskConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(automatedTaskDisplayId);
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
             expect(await viewTask.isShowApproversBannerDisplayed()).toBeTruthy('Show Approvers Banner is not displayed');

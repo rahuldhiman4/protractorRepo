@@ -359,7 +359,6 @@ describe('Service Target Configs', () => {
         it('[DRDMV-21723]:Verify if SVT is still attached to a case when case assignment is changed', async () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
             await slmProgressBar.clickOnSLAProgressBarInProcessIcon();
@@ -784,7 +783,6 @@ describe('Service Target Configs', () => {
 
             await browser.sleep(40000); // wait added for milestone to trigger and reflect the changes
 
-            await utilityGrid.clearFilter();
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
@@ -906,7 +904,6 @@ describe('Service Target Configs', () => {
             await browser.sleep(40000); // wait added for milestone to trigger and reflect the changes
 
             await navigationPage.gotoTaskConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(taskId);
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
             expect(await viewTaskPo.getTaskSummaryValue()).toBe(updatedTaskSummary);
@@ -950,7 +947,6 @@ describe('Service Target Configs', () => {
             await browser.sleep(35000); // wait added for milestone to trigger and reflect the changes
 
             await navigationPage.gotoTaskConsole();
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(taskId);
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
             expect(await viewTaskPo.getTaskSummaryValue()).toBe(automatedtemplateData.templateSummary);

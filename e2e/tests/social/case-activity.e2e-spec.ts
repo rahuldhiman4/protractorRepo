@@ -1451,7 +1451,6 @@ describe('Case Activity', () => {
             expect(await apiHelper.updateKnowledgeArticleStatus(KADetails.id, "SMEReview", "KMills", "GB Support 2", "Petramco")).toBeTruthy("Article with SME Review status not updated.");
     });
     it('[DRDMV-16764]: Create Flag/UnFlag Activity Log', async () => {
-        await utilityGrid.clearFilter();
         await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
         await expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Edit button missing on knoledge page.');
         await viewKnowledgeArticlePo.clickOnFlagButton();
