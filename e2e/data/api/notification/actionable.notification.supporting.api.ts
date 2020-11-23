@@ -226,7 +226,7 @@ export const NOTIIFCATION_CREATE_PROCESS = {
 };
 
 export const NOTIFICATION_UPDATE_PROCESS = {
-    "lastChangedBy": "tadmin",
+    "lastChangedBy": "tadmin@petramco.com",
     "owner": "dev_npar",
     "name": "com.bmc.dsm.task-lib:Actionable Notification Process",
     "tags": [
@@ -242,8 +242,8 @@ export const NOTIFICATION_UPDATE_PROCESS = {
         {
             "resourceType": "com.bmc.arsys.rx.services.process.domain.SequenceFlowDefinition",
             "lastUpdateTime": "2019-07-15T08:18:39.319+0000",
-            "lastChangedBy": "tadmin",
-            "owner": "tadmin",
+            "lastChangedBy": "tadmin@petramco.com",
+            "owner": "tadmin@petramco.com",
             "name": "Sequence Flow",
             "tags": null,
             "description": "",
@@ -258,8 +258,8 @@ export const NOTIFICATION_UPDATE_PROCESS = {
         {
             "resourceType": "com.bmc.arsys.rx.services.process.domain.ServiceTaskDefinition",
             "lastUpdateTime": "2019-07-15T08:18:39.319+0000",
-            "lastChangedBy": "tadmin",
-            "owner": "tadmin",
+            "lastChangedBy": "tadmin@petramco.com",
+            "owner": "tadmin@petramco.com",
             "name": "Send Notification Using Event",
             "tags": null,
             "description": "",
@@ -291,8 +291,8 @@ export const NOTIFICATION_UPDATE_PROCESS = {
         {
             "resourceType": "com.bmc.arsys.rx.services.process.domain.StartEventDefinition",
             "lastUpdateTime": "2019-07-15T08:18:39.319+0000",
-            "lastChangedBy": "tadmin",
-            "owner": "tadmin",
+            "lastChangedBy": "tadmin@petramco.com",
+            "owner": "tadmin@petramco.com",
             "name": "Start",
             "tags": null,
             "description": null,
@@ -304,8 +304,8 @@ export const NOTIFICATION_UPDATE_PROCESS = {
         {
             "resourceType": "com.bmc.arsys.rx.services.process.domain.EndEventDefinition",
             "lastUpdateTime": "2019-07-15T08:18:39.319+0000",
-            "lastChangedBy": "tadmin",
-            "owner": "tadmin",
+            "lastChangedBy": "tadmin@petramco.com",
+            "owner": "tadmin@petramco.com",
             "name": "End",
             "tags": null,
             "description": null,
@@ -318,8 +318,8 @@ export const NOTIFICATION_UPDATE_PROCESS = {
         {
             "resourceType": "com.bmc.arsys.rx.services.process.domain.SequenceFlowDefinition",
             "lastUpdateTime": "2019-07-15T08:18:39.319+0000",
-            "lastChangedBy": "tadmin",
-            "owner": "tadmin",
+            "lastChangedBy": "tadmin@petramco.com",
+            "owner": "tadmin@petramco.com",
             "name": "Sequence Flow",
             "tags": null,
             "description": "",
@@ -336,7 +336,7 @@ export const NOTIFICATION_UPDATE_PROCESS = {
         {
             "resourceType": "com.bmc.arsys.rx.services.process.domain.record.ObjectFieldDefinition",
             "lastUpdateTime": "2019-07-15T08:18:39.319+0000",
-            "lastChangedBy": "tadmin",
+            "lastChangedBy": "tadmin@petramco.com",
             "owner": "dev_npar",
             "name": "DynamicData",
             "tags": null,
@@ -361,7 +361,7 @@ export const NOTIFICATION_UPDATE_PROCESS = {
         {
             "resourceType": "com.bmc.arsys.rx.services.process.domain.record.RecordInstanceFieldDefinition",
             "lastUpdateTime": "2019-07-15T08:18:39.319+0000",
-            "lastChangedBy": "tadmin",
+            "lastChangedBy": "tadmin@petramco.com",
             "owner": "dev_npar",
             "name": "Record Instance",
             "tags": null,
