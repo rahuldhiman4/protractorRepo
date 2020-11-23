@@ -6,7 +6,7 @@ class CreateKATemplate {
     selectors = {
         templateName: '[name="templateName"]',
         knowledgeSet: '[name="knowledgeSet"]',
-        disabledEnabledCheck: '.d-checkbox__label .d-checkbox__item',
+        disabledEnabledCheck: 'div.templateAttributes div:nth-of-type(2) .d-checkbox__item',
         addsection:'.d-icon-left-plus_circle',
         sectionTitle:'.rx-template-editor-text-fields input',
         templateDescription:'.d-textfield textarea',

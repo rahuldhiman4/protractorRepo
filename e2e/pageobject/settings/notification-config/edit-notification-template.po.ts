@@ -4,7 +4,7 @@ class EditNotificationTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        cancelButton: '[rx-view-component-id="d2dd0f98-69d0-462f-9002-5da452b67f63"] button',
+        cancelButton: '[rx-view-component-id="d2dd0f98-69d0-462f-9002-5da452b67f63"] button,[rx-view-component-id="2a50e7b7-b260-4749-ad9d-1d7cb65b5d95"] button',
         header: '.modal-title',
         saveButton: '[rx-view-component-id="8b5f78b0-0aa8-40da-8d52-66d5afe1356b"] button',
         emailTab: 'li.rx-tab a',
@@ -67,7 +67,7 @@ class EditNotificationTemplate {
     }
 
     async clickOnEditButtonOfEmailTab(): Promise<void> {
-        await $(this.selectors.editButtonOnEmailTab).click();
+        await $$(this.selectors.editButtonOnEmailTab).get(4).click();
         await browser.sleep(2000); // After click, edit email tab load takes time
     }
 

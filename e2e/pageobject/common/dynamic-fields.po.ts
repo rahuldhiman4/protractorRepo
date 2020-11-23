@@ -51,7 +51,9 @@ class DynamicField {
     }
 
     async clickOnDownArrow(): Promise<void> {
+       await $(this.selectors.enabledConfidentialsField).isPresent().then(async (result) => {
         await $(this.selectors.downArrow).click();
+    });
     }
 
     async setFieldName(name: string): Promise<void> {

@@ -659,12 +659,12 @@ describe('Case Data Store', () => {
     });
 
     //ptidke
-    it('[DRDMV-13153]: [Dynamic Data] [UI] - Dynamic fields and groups display on Task Template preview	', async () => {
-        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        try {
+    describe('[DRDMV-13153]: [Dynamic Data] [UI] - Dynamic fields and groups display on Task Template preview	', async () => {
+        let templateData, tasktemplate, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
-            let templateData = {
+            templateData = {
                 "templateName": 'ManualtaskDRDMV-13153' + randomStr,
                 "templateSummary": 'ManualtaskDRDMV-13153' + randomStr,
                 "templateStatus": "Active",
@@ -674,8 +674,10 @@ describe('Case Data Store', () => {
                 "ownerGroup": "US Support 3"
             }
             await apiHelper.apiLogin('qkatawazi');
-            let tasktemplate = await apiHelper.createManualTaskTemplate(templateData);
+            tasktemplate = await apiHelper.createManualTaskTemplate(templateData);
             await apiHelper.createDynamicDataOnTemplate(tasktemplate.id, 'TASK_TEMPLATE_WITH_CONFIDENTIAL');
+        });
+        it('[DRDMV-13153]: [Dynamic Data] [UI] - Dynamic fields and groups display on Task Template preview	', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qdu');
             await createCasePo.setSummary('new cases');
@@ -696,6 +698,10 @@ describe('Case Data Store', () => {
             await previewTaskTemplateCasesPo.clickOnBackButton();
             await manageTaskBladePo.clickTaskGridCancelButton();
             await manageTaskBladePo.clickCloseButton();
+
+
+        });
+        it('[DRDMV-13153]: [Dynamic Data] [UI] - Dynamic fields and groups display on Task Template preview	', async () => {
             let caseTemplateData = {
                 "templateName": 'caseTemplateNameDRDMV-13153' + randomStr,
                 "templateSummary": 'caseTemplateNameDRDMV-13153' + randomStr,
@@ -707,8 +713,8 @@ describe('Case Data Store', () => {
             }
             await apiHelper.apiLogin('qkatawazi');
             let casetemplateddetails = await apiHelper.createCaseTemplate(caseTemplateData);
-            await navigationPage.gotoSettingsPage();
             await apiHelper.associateCaseTemplateWithOneTaskTemplate(casetemplateddetails.displayId, tasktemplate.displayId);
+            await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(caseTemplateData.templateSummary);
             await viewCasetemplatePo.clickOneTask();
@@ -721,13 +727,8 @@ describe('Case Data Store', () => {
             expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskOuterNonConfidentialDesc')).toBeTruthy();
             expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskListOfDataNameDesc')).toBeTruthy();
             expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskOuterConfidentialDesc')).toBeTruthy();
-        }
-        catch (ex) {
-            throw ex;
-        }
-        finally {
             await previewTaskTemplateCasesPo.clickOnBackButton();
-        }
+        });
     });
 
     //ptidke

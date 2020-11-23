@@ -526,7 +526,7 @@ describe('Document Library Consume Permission', () => {
             expect(await attachDocumentBladePo.isPaginationPresent()).toBeTruthy('Failure: Pagination is missing');
             await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
 
-            expect(await resourcesTabPo.isValuePresentInDropdown('Operational Category 1', 'Payroll')).toBeTruthy('Failure: Operational Category 1 is missing');
+            expect(await resourcesTabPo.isValuePresentInDropdown('Operational Category 1', 'Total Rewards')).toBeTruthy('Failure: Operational Category 1 is missing');
             await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
             await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
             expect(await resourcesTabPo.isValuePresentInDropdown('Operational Category 1', 'DemoCateg2')).toBeFalsy('Failure: Operational Category 2 is displayed');

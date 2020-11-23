@@ -50,7 +50,7 @@ describe('Knowledge Article Template', () => {
         await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateData);
         knowledgeArticleTemplateData.lineOfBusiness = 'Facilities';
         await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateData);
-        
+
         await navigationPage.signOut();
         await loginPage.login('jbarnes');
         await navigationPage.gotoSettingsPage();
@@ -170,7 +170,7 @@ describe('Knowledge Article Template', () => {
             await createKnowledgePage.selectKnowledgeSet('HR');
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await createKnowledgePage.clickBackBtn();
-
+            await utilityCommon.closeAllBlades();
             await navigationPage.gotoCreateKnowledge();
             await createKnowledgePage.clickOnTemplate('DRDMV-619');
             await createKnowledgePage.clickOnUseSelectedTemplateButton();

@@ -86,6 +86,12 @@ describe("Compose Email", () => {
             await consoleNotificationTemplatePo.clickCopyTemplate();
             await copyNotificationTemplatePo.setCompanyValue('Petramco');
             await copyNotificationTemplatePo.clickOnCreateCopyButton();
+            await editNotificationTemplatePo.clickOnCancelButton();
+            await utilGrid.clickCheckBoxOfValueInGrid('Case Status Change');
+            await utilGrid.clearFilter();
+            await utilGrid.addFilter("Company", 'Petramco', "text");
+            await utilGrid.searchAndOpenHyperlink('Case Status Change');
+
             await editNotificationTemplatePo.selectDefaultNotificationMethod('Email');
             await editNotificationTemplatePo.clickOnEmailTab();
             await editNotificationTemplatePo.selectCheckBoxOfBody();
@@ -747,7 +753,7 @@ describe("Compose Email", () => {
             await composeMail.clickOnDiscardButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await navigationPage.signOut();
-            await loginPage.login('qtao');
+            await loginPage.login('qkatawazi');
         });
     });
 
@@ -767,8 +773,6 @@ describe("Compose Email", () => {
             newCase = await apiHelper.createCase(caseData);
         });
         it('[DRDMV-20365,DRDMV-20366]: Verify Able to insert table,hyperlink, images (All images) and Copy paste images in compose email and its send successfully', async () => {
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
             await caseConsole.searchAndOpenCase(newCase.displayId);
             await viewCasePo.clickOnEmailLink();
             await composeMail.clickOnSelectEmailTemplateLink();
@@ -884,7 +888,7 @@ describe("Compose Email", () => {
             await composeMail.clickOnDiscardButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await navigationPage.signOut();
-            await loginPage.login('qtao');
+            await loginPage.login('qkatawazi');
         });
     });
 
@@ -922,8 +926,6 @@ describe("Compose Email", () => {
             newCase = await apiHelper.createCase(caseData);
         });
         it('[DRDMV-21499]: Compose email using email template and check attachments are added', async () => {
-            await navigationPage.signOut();
-            await loginPage.login("qkatawazi");
             //link doc to email template
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
