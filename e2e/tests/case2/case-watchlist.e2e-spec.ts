@@ -42,7 +42,7 @@ describe('Case Watchlist', () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login(qfengStr);
         await utilityGrid.clearFilter();
-        await utilityGrid.sortGridColumn('Case ID', 'desc');
+        await utilityGrid.sortGridColumn('Case ID', 'desc');
         await apiHelper.apiLogin("tadmin");
         await apiHelper.setDefaultNotificationForUser(qannisStr, "Alert");
         await apiHelper.setDefaultNotificationForUser(qfengStr, "Alert");
@@ -71,7 +71,7 @@ describe('Case Watchlist', () => {
             await caseConsole.clickOnAddToWatchlist();
             await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
             await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
-            await caseWatchlist.saveEvents();
+           await caseWatchlist.saveEvents();
             await utilityCommon.closePopUpMessage();
             await caseConsole.clickOnWatchlistIcon();
             for (let i: number = 0; i < 3; i++) {
@@ -207,13 +207,12 @@ describe('Case Watchlist', () => {
             await apiHelper.apiLogin(qtaoStr);
             let caseId: string[] = [];
             let caseDataForTest = caseData['caseWatchlist_Resolved'];
-            caseDataForTest.Summary = "Watchlist Test DRDMV-16043";
+            caseDataForTest.Summary = "Watchlist Test DRDMV-16043" + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
 
             for (let i: number = 0; i < 2; i++) {
                 let response = await apiHelper.createCase(caseDataForTest);
                 caseId[i] = response.displayId;
             }
-            await utilityGrid.clickRefreshIcon();
             await utilityGrid.searchRecord(caseDataForTest.Summary);
             for (let i: number = 0; i < 2; i++) {
                 await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
@@ -448,7 +447,7 @@ describe('Case Watchlist', () => {
             expect(await notificationAlerts.isAlertPresent(assignmentNotification2)).toBeFalsy(assignmentNotification2 + " is present");
             expect(await notificationAlerts.isAlertPresent(statusNotification2)).toBeFalsy(statusNotification2 + " is present");
             await notificationAlerts.clickOnNotificationIcon();
-        }
+       }
         catch (ex) {
             throw ex;
         }
@@ -528,7 +527,7 @@ describe('Case Watchlist', () => {
             await viewCasePage.clickStopWatchingLink();
             await viewCasePage.clickEditCaseButton();
             await editCase.clickChangeAssignmentButton();
-            await changeAssignment.selectBusinessUnit('HR Support');
+           await changeAssignment.selectBusinessUnit('HR Support');
             await changeAssignment.selectSupportGroup(compensationAndBenefitsStr);
             await changeAssignment.selectAssignToSupportGroup();
             await changeAssignment.clickOnAssignButton();
@@ -877,7 +876,7 @@ describe('Case Watchlist', () => {
     it('[DRDMV-16059]: Verify that Save and Close buttons on Event Add are working correctly', async () => {
         await apiHelper.apiLogin(qtaoStr);
         let caseDataForTest = caseData['caseWatchlist'];
-        caseDataForTest.Summary = "Watchlist Test DRDMV-16059";
+        caseDataForTest.Summary = "Watchlist Test DRDMV-16059" + [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');;
         let response = await apiHelper.createCase(caseDataForTest);
         let caseId = response.displayId;
         try {
@@ -1263,7 +1262,7 @@ describe('Case Watchlist', () => {
                 "type": type['user'],
                 "security": security['witeAccess'],
                 "username": qfengStr
-            }
+           }
             await apiHelper.updateCaseAccess(caseGuid, caseAccessDataQtao);
             //Read access to qannis
             let caseAccessDataQannis = {
