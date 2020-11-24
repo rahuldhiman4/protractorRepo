@@ -1438,6 +1438,8 @@ describe("Attachment", () => {
             await composeMail.addAttachment([`../../data/ui/attachment/${fileName9}`,`../../data/ui/attachment/${fileName10}`,`../../data/ui/attachment/${fileName11}`,`../../data/ui/attachment/${fileName12}`]);
             await composeMail.clickOnSendButton();
             
+            await activityTabPo.clickOnRefreshButton();
+            await activityTabPo.clickShowMoreLinkInAttachmentActivity(1);
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName9}`)).toBeTruthy(`FailuerMsg: ${fileName9} File is delete sucessfully`);
             await activityTabPo.clickAndDownloadAttachmentFile(fileName9);
             expect(await utilityCommon.isFileDownloaded(`${fileName9}`)).toBeTruthy(`FailuerMsg: ${fileName9} File is not downloaded.`);

@@ -293,6 +293,8 @@ describe('Notes template', () => {
             expect(await editNotetemplate.getLocaleNotPresentMessage()).toContain('Please add the required localized message.');
             await editNotetemplate.clickOnCancelButton();
             await utilCommon.clickOnWarningOk();
+        });
+        it('Case and People Notes template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'Activity Notes Template Console - Person - Business Workflows');
             let caseNotesTemplate2 = await createNotesTemplate.createNotesTemplate('Petramco');
@@ -311,6 +313,8 @@ describe('Notes template', () => {
             expect(await editNotetemplate.getLocaleNotPresentMessage()).toContain('Please add the required localized message.');
             await editNotetemplate.clickOnCancelButton();
             await utilCommon.clickOnWarningOk();
+        });
+        it('[DRDMV-16111]: [Design Time] Verify warning Message for locale values if template message is not configured against that locale value', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Notes Template', 'Activity Notes Template Console - Knowledge - Business Workflows');
             let caseNotesTemplate4 = await createNotesTemplate.createNotesTemplate('Petramco');
@@ -438,7 +442,6 @@ describe('Notes template', () => {
         let randomStr: string = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let tempNotesTemplateData, templateManualData, templateManualData1, templateAutomatedData, templateAutomatedData1, templateExternalData, caseResponse1, caseResponse2, caseData, adhocTaskData, notesTemplateGlobalData, notesTemplatePsilonlData, templateExternalData1, caseData1;
         beforeAll(async () => {
-
             // create task notes template
             tempNotesTemplateData = cloneDeep(notesTemplateData.NOTES_TEMPLATE_MANDATORY_FIELD);
             tempNotesTemplateData.templateName = tempNotesTemplateData.templateName + randomStr + '123';
@@ -621,6 +624,8 @@ describe('Notes template', () => {
             await activityTabPo.clickOnNotesTemplate();
             expect(await notesTemplateUsage.isTemplatePresent(tempNotesTemplateData.templateName)).toBeTruthy(); // Notes Template of Petramco visible
             expect(await notesTemplateUsage.isTemplatePresent(notesTemplateGlobalData.templateName)).toBeTruthy();
+        });
+        it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             expect(await notesTemplateUsage.isTemplatePresent(notesTemplatePsilonlData.templateName)).toBeFalsy();//Notes Template of Psilon not visible
             await notesTemplateUsage.clickOnCancelBtn();
             await activityTabPo.clickOnCancelButton();
@@ -633,6 +638,8 @@ describe('Notes template', () => {
             await activityTabPo.clickOnNotesTemplate();
             expect(await notesTemplateUsage.isTemplatePresent(tempNotesTemplateData.templateName)).toBeTruthy(); // Notes Template of Petramco not visible
             expect(await notesTemplateUsage.isTemplatePresent(notesTemplateGlobalData.templateName)).toBeTruthy();
+        });
+        it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             expect(await notesTemplateUsage.isTemplatePresent(notesTemplatePsilonlData.templateName)).toBeFalsy();//Notes Template of Psilon not visible
             await notesTemplateUsage.clickOnCancelBtn();
             await activityTabPo.clickOnCancelButton();
@@ -645,6 +652,8 @@ describe('Notes template', () => {
             await activityTabPo.clickOnNotesTemplate();
             expect(await notesTemplateUsage.isTemplatePresent(tempNotesTemplateData.templateName)).toBeTruthy(); // Notes Template of Petramco not visible
             expect(await notesTemplateUsage.isTemplatePresent(notesTemplateGlobalData.templateName)).toBeTruthy();
+        });
+        it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             expect(await notesTemplateUsage.isTemplatePresent(notesTemplatePsilonlData.templateName)).toBeFalsy();//Notes Template of Psilon not visible
             await notesTemplateUsage.clickOnCancelBtn();
             await activityTabPo.clickOnCancelButton();
@@ -659,6 +668,8 @@ describe('Notes template', () => {
             await activityTabPo.clickOnNotesTemplate();
             expect(await notesTemplateUsage.isTemplatePresent(tempNotesTemplateData.templateName)).toBeTruthy(); // Notes Template of Petramco not visible
             expect(await notesTemplateUsage.isTemplatePresent(notesTemplateGlobalData.templateName)).toBeTruthy();
+        });
+        it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             expect(await notesTemplateUsage.isTemplatePresent(notesTemplatePsilonlData.templateName)).toBeFalsy();
             await notesTemplateUsage.clickOnCancelBtn();
             await activityTabPo.clickOnCancelButton();
@@ -671,6 +682,8 @@ describe('Notes template', () => {
             await activityTabPo.clickOnNotesTemplate();
             expect(await notesTemplateUsage.isTemplatePresent(tempNotesTemplateData.templateName)).toBeTruthy(); // Notes Template of Petramco not visible
             expect(await notesTemplateUsage.isTemplatePresent(notesTemplateGlobalData.templateName)).toBeTruthy();
+        });
+        it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             expect(await notesTemplateUsage.isTemplatePresent(notesTemplatePsilonlData.templateName)).toBeFalsy();//Notes Template of Psilon not visible
             await notesTemplateUsage.clickOnCancelBtn();
             await activityTabPo.clickOnCancelButton();
@@ -684,6 +697,8 @@ describe('Notes template', () => {
             await activityTabPo.clickOnNotesTemplate();
             expect(await notesTemplateUsage.isTemplatePresent(tempNotesTemplateData.templateName)).toBeTruthy(); // Notes Template of Petramco not visible
             expect(await notesTemplateUsage.isTemplatePresent(notesTemplateGlobalData.templateName)).toBeTruthy();
+        });
+        it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             expect(await notesTemplateUsage.isTemplatePresent(notesTemplatePsilonlData.templateName)).toBeFalsy();//Notes Template of Psilon not visible
             await notesTemplateUsage.clickOnCancelBtn();
             await activityTabPo.clickOnCancelButton();
@@ -698,6 +713,8 @@ describe('Notes template', () => {
             await activityTabPo.clickOnNotesTemplate();
             expect(await notesTemplateUsage.isTemplatePresent(tempNotesTemplateData.templateName)).toBeTruthy();
             expect(await notesTemplateUsage.isTemplatePresent(notesTemplateGlobalData.templateName)).toBeTruthy();
+        });
+        it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             expect(await notesTemplateUsage.isTemplatePresent(notesTemplatePsilonlData.templateName)).toBeFalsy();
             await notesTemplateUsage.clickOnCancelBtn();
             await activityTabPo.clickOnCancelButton();
@@ -968,8 +985,12 @@ describe('Notes template', () => {
             await utilityGrid.searchAndOpenHyperlink(response1.displayId);
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
+        });
+        it('[DRDMV-16051,DRDMV-16013]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', async () => {
             expect(await notesTemplateUsage.isTemplatePresent(taskActiveTemplateName)).toBeFalsy();
             expect(await notesTemplateUsage.isTemplatePresent(knowledgeActiveTemplateName)).toBeFalsy();
+        });
+            it('[DRDMV-16051,DRDMV-16013]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', async () => {
             expect(await notesTemplateUsage.isTemplatePresent(peopleActiveTemplateName)).toBeFalsy();
             expect(await notesTemplateUsage.isTemplatePresent(caseInactiveTemplateName)).toBeFalsy();
             await notesTemplateUsage.clickOnCancelBtn();
@@ -981,8 +1002,12 @@ describe('Notes template', () => {
             await utilityGrid.searchAndOpenHyperlink(response2.displayId);
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
+        });
+        it('[DRDMV-16051,DRDMV-16013]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', async () => {
             expect(await notesTemplateUsage.isTemplatePresent(caseActiveTemplateName)).toBeFalsy();
             expect(await notesTemplateUsage.isTemplatePresent(knowledgeActiveTemplateName)).toBeFalsy();
+        });
+        it('[DRDMV-16051,DRDMV-16013]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', async () => {
             expect(await notesTemplateUsage.isTemplatePresent(peopleActiveTemplateName)).toBeFalsy();
             expect(await notesTemplateUsage.isTemplatePresent(taskInactiveTemplateName)).toBeFalsy();
             await notesTemplateUsage.clickOnCancelBtn();
@@ -998,8 +1023,12 @@ describe('Notes template', () => {
             await utilityCommon.switchToNewTab(1);
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
+        });
+        it('[DRDMV-16051,DRDMV-16013]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', async () => {
             expect(await notesTemplateUsage.isTemplatePresent(caseActiveTemplateName)).toBeFalsy();
             expect(await notesTemplateUsage.isTemplatePresent(taskActiveTemplateName)).toBeFalsy();
+        });
+        it('[DRDMV-16051,DRDMV-16013]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', async () => {
             expect(await notesTemplateUsage.isTemplatePresent(knowledgeActiveTemplateName)).toBeFalsy();
             expect(await notesTemplateUsage.isTemplatePresent(peopleInactiveTemplateName)).toBeFalsy();
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
@@ -1012,8 +1041,12 @@ describe('Notes template', () => {
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
+        });
+        it('[DRDMV-16051,DRDMV-16013]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', async () => {
             expect(await notesTemplateUsage.isTemplatePresent(caseActiveTemplateName)).toBeFalsy();
             expect(await notesTemplateUsage.isTemplatePresent(taskActiveTemplateName)).toBeFalsy();
+        });
+        it('[DRDMV-16051,DRDMV-16013]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', async () => {
             expect(await notesTemplateUsage.isTemplatePresent(peopleActiveTemplateName)).toBeFalsy();
             expect(await notesTemplateUsage.isTemplatePresent(knowledgeInactiveTemplateName)).toBeFalsy();
             await notesTemplateUsage.clickOnCancelBtn();
@@ -1093,6 +1126,8 @@ describe('Notes template', () => {
             await utilityGrid.searchAndOpenHyperlink(petramcoCaseResponse.displayId);
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
+        });
+        it('[DRDMV-16112]: Verify Case Notes template is displayed as per to be assignee company(operating organisation)', async () => {
             expect(await notesTemplateUsage.isTemplatePresent(psilonTemplateName)).toBeFalsy();
             await notesTemplateUsage.clickOnCancelBtn();
             await activityTabPo.clickOnCancelButton();
@@ -1106,6 +1141,8 @@ describe('Notes template', () => {
             await utilityGrid.searchAndOpenHyperlink(psilonCaseResponse.displayId);
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
+        });
+        it('[DRDMV-16112]: Verify Case Notes template is displayed as per to be assignee company(operating organisation)', async () => {
             expect(await notesTemplateUsage.isTemplatePresent(petramcoTemplateName)).toBeFalsy();
             await notesTemplateUsage.clickOnCancelBtn();
             await activityTabPo.clickOnCancelButton();
