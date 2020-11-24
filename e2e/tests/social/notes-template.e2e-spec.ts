@@ -284,7 +284,7 @@ describe('Notes template', () => {
 
     //ptidke
     describe('[DRDMV-16111]: [Design Time] Verify warning Message for locale values', async () => {
-        it('Case and People Notes template', async () => {
+        it('[DRDMV-16111]: Case and People Notes template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
             let caseNotesTemplate1 = await createNotesTemplate.createNotesTemplate('Petramco');
@@ -294,7 +294,7 @@ describe('Notes template', () => {
             await editNotetemplate.clickOnCancelButton();
             await utilCommon.clickOnWarningOk();
         });
-        it('Case and People Notes template', async () => {
+        it('[DRDMV-16111]: Case and People Notes template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'Activity Notes Template Console - Person - Business Workflows');
             let caseNotesTemplate2 = await createNotesTemplate.createNotesTemplate('Petramco');
