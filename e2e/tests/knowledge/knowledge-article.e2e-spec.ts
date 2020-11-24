@@ -1967,7 +1967,7 @@ describe('Knowledge Article', () => {
                 "assigneeSupportGroup": "US Support 1",
                 "assignee": "kayo"
             }
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             kaDetails = await apiHelper.createKnowledgeArticle(articleData);
             await apiHelper.createKnowledgeArticle(articleData);
             await apiHelper.createKnowledgeArticle(articleData);
@@ -1977,7 +1977,7 @@ describe('Knowledge Article', () => {
         });
         it('[DRDMV-624]: Advanced Search UI verification on the Quick Case view', async () => {
             await navigationPage.gotoQuickCase();
-            await quickCasePo.selectRequesterName("fritz");
+            await quickCasePo.selectRequesterName("qkatawazi");
             await quickCasePo.setCaseSummary(articleData.title);
             await resources.clickOnAdvancedSearchOptions();
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
@@ -1991,8 +1991,10 @@ describe('Knowledge Article', () => {
             await resources.clickOnAdvancedSearchFiltersButton('Apply');
         });
         it('[DRDMV-624]: Advanced Search UI verification on the Quick Case view', async () => {
-            await quickCasePo.selectRequesterName("fritz");
+            await quickCasePo.clickStartOverButton();
+            await quickCasePo.selectRequesterName("qkatawazi");
             await quickCasePo.setCaseSummary(articleData.title);
+            await resources.clickOnBackButton();
             await resources.clickOnAdvancedSearchOptions();
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.selectAdvancedSearchFilterOption('Status', 'In Progress');
@@ -2002,7 +2004,7 @@ describe('Knowledge Article', () => {
             await resources.selectAdvancedSearchFilterOption('Site', 'Canberra');
             await resources.clickOnAdvancedSearchFiltersButton('Apply');
             expect(await resources.getKnowledgeArticleInfo()).toContain(articleData.title, 'title not correct');
-            expect(await resources.getKnowledgeArticleInfo()).toContain('Fritz Schulz', 'Author not correct');
+            expect(await resources.getKnowledgeArticleInfo()).toContain('Qadim Katawazi', 'Author not correct');
             expect(await resources.getKnowledgeArticleInfo()).toContain('In Progress', 'status not correct');
             expect(await resources.getKnowledgeArticleInfo()).toContain(dateFormate, 'KA ID not correct');
             await resources.clickArrowFirstRecommendedKnowledge('Recommended Knowledge');
