@@ -18,7 +18,7 @@ class ReadAccessConfigEditPage {
         supportGroupGuid: '59fae521-483b-4d6a-93ed-84c88919351a',
         businessUnitGuid: '2d897e8d-c447-4a0f-b494-50c0eb0fc3ac',
         categoryTier4Guid: '0ad049c9-856d-4945-82f1-9981d2d62465',
-        labelValue: '[rx-view-component-id="ec11b0ee-5c9c-4e80-8fe5-9d9fd47015fc"] .ui-select-match-text',
+        labelValue: '[rx-view-component-id="0ea3f865-68f7-45a8-859c-a1dc86e69742"] .ui-select-match-text',
         labelGuid: '324d4505-e365-4371-a28b-4ab8bdd2565c'
     }
 

@@ -619,10 +619,11 @@ describe('Case Activity Multi Logs', () => {
                 "title": "DRDMV-16771_KA" + randomStr,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
                 "assignedCompany": "Petramco",
-                "assigneeBusinessUnit": "United Kingdom Support",
-                "assigneeSupportGroup": "GB Support 1",
-                "assignee": "KMills"
+                "assigneeBusinessUnit": "Canada Support",
+                "assigneeSupportGroup": "CA Support 3",
+                "assignee": "qheroux"
             }
+
 
             await apiHelper.apiLogin('qkatawazi');
             knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
@@ -640,7 +641,8 @@ describe('Case Activity Multi Logs', () => {
                 await browser.sleep(1000);
                 await apiHelper.apiLogin('qkatawazi');
                 await apiHelper.flagAndUnflagKnowledgeArticle(knowledgeArticleData.id, "FlagComment1", 1);
-                await apiHelper.apiLogin('kmills');
+
+                await apiHelper.apiLogin('qheroux');
                 await apiHelper.flagAndUnflagKnowledgeArticle(knowledgeArticleData.id, "FlagComment2", 0);
             }
         });
@@ -649,7 +651,7 @@ describe('Case Activity Multi Logs', () => {
             await navigationPage.gotoKnowledgeConsole();
             await knowledgeArticlesConsolePo.searchAndOpenKnowledgeArticle(knowledgeArticleData.displayId);
             await viewKnowledgeArticlePo.clickOnActivityTab();
-            expect(await activityTabPage.isTitleTextDisplayedInActivity('Kyle Mills has provided the feedback for the article', 1)).toBeTruthy('Kyle Mills has provided the feedback for the article for 1 activity');
+            expect(await activityTabPage.isTitleTextDisplayedInActivity('Quigley Heroux has provided the feedback for the article', 1)).toBeTruthy('Kyle Mills has provided the feedback for the article for 1 activity');
             expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi flagged the article', 2)).toBeTruthy('Qadim Katawazi flagged the article for 2 activity');
 
             for (let i = 3; i <= 40; i++) {
@@ -657,7 +659,7 @@ describe('Case Activity Multi Logs', () => {
                 if (i % 2 == 0) {
                     expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi flagged the article', i)).toBeTruthy(`Qadim Katawazi flagged the article for 2 activity ${i}`);
                 } else {
-                    expect(await activityTabPage.isTitleTextDisplayedInActivity('Kyle Mills has provided the feedback for the article', i)).toBeTruthy(`Kyle Mills has provided the feedback for the article for activity ${i}`);
+                    expect(await activityTabPage.isTitleTextDisplayedInActivity('Quigley Heroux has provided the feedback for the article', i)).toBeTruthy(`Quigley Heroux has provided the feedback for the article for activity ${i}`);
                 }
             }
         });
@@ -672,7 +674,6 @@ describe('Case Activity Multi Logs', () => {
             }
         });
     });
-
     //kgaikwad
     describe('[DRDMV-16729]: All type of social activities are displayed correctly in Case Activity tab', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -736,7 +737,7 @@ describe('Case Activity Multi Logs', () => {
                 "templateName": `AutomatedTaskTemplateActive` + randomStr,
                 "templateSummary": `Automated Approval for task`,
                 "templateStatus": "Active",
-                "category1": 'Emplopyee Relations',
+                "category1": 'Employee Relations',
                 "category2": 'Compensation',
                 "processBundle": "com.bmc.dsm.case-lib",
                 "processName": `Case Process 1 ${randomStr}`,
@@ -751,7 +752,7 @@ describe('Case Activity Multi Logs', () => {
                 "templateSummary": 'task Summary task16729',
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
-                "category1": 'Emplopyee Relations',
+                "category1": 'Employee Relations',
                 "category2": 'Compensation',
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "Canada Support",
@@ -831,10 +832,10 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isTextPresentInActivityLog(approvalStr)).toBeTruthy(`FailureMsg23: ${approvalStr} Text is missing in activity log`);
             expect(await activityTabPage.isTextPresentInActivityLog('Status ')).toBeTruthy('FailureMsg23: Status  Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Assigned ')).toBeTruthy('FailureMsg23: Assigned  Text is missing in activity log');
-            expect(await activityTabPage.isTextPresentInActivityLog('Assignee ')).toBeTruthy('FailureMsg23: Assignee  Text is missing in activity log');
+            expect(await activityTabPage.isTextPresentInActivityLog('Assignee')).toBeTruthy('FailureMsg23: Assignee  Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Qiao Feng')).toBeTruthy('FailureMsg23: Qiao Feng Text is missing in activity log');
-            expect(await activityTabPage.isTextPresentInActivityLog('Site ')).toBeTruthy('FailureMsg23: Site  Text is missing in activity log');
-            expect(await activityTabPage.isTextPresentInActivityLog('Vancouver  ')).toBeTruthy('FailureMsg23: Vancouver   Text is missing in activity log');
+            expect(await activityTabPage.isTextPresentInActivityLog('Site')).toBeTruthy('FailureMsg23: Site  Text is missing in activity log');
+            expect(await activityTabPage.isTextPresentInActivityLog('Vancouver')).toBeTruthy('FailureMsg23: Vancouver Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Assigned Company')).toBeTruthy('FailureMsg23: Assigned Company Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Petramco')).toBeTruthy('FailureMsg23: Petramco Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Assigned Business Unit')).toBeTruthy('FailureMsg23: Assigned Business Unit Text is missing in activity log');
@@ -842,7 +843,7 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isTextPresentInActivityLog('Description')).toBeTruthy('FailureMsg23: Description  Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Case Template description')).toBeTruthy('FailureMsg23: Case Template description Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Category Tier 1')).toBeTruthy('FailureMsg23: Category Tier 1 Text is missing in activity log');
-            expect(await activityTabPage.isTextPresentInActivityLog('Applications ')).toBeTruthy('FailureMsg23: Applications   Text is missing in activity log');
+            expect(await activityTabPage.isTextPresentInActivityLog('Applications')).toBeTruthy('FailureMsg23: Applications Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Category Tier 2')).toBeTruthy('FailureMsg23: Category Tier 2 Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Social')).toBeTruthy('FailureMsg23: Social Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Category Tier 3')).toBeTruthy('FailureMsg23: Category Tier 3 Text is missing in activity log');
@@ -943,7 +944,7 @@ describe('Case Activity Multi Logs', () => {
             await changeAssignmentBladePo.selectCompany('Petramco')
             await changeAssignmentBladePo.selectBusinessUnit('Canada Support');
             await changeAssignmentBladePo.selectSupportGroup('CA Support 1');
-            await changeAssignmentBladePo.selectAssignee('qdu');
+            await changeAssignmentBladePo.selectAssignee('Qiang Du');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editCasePo.clickSaveCase();
             await activityTabPage.clickOnShowMore();

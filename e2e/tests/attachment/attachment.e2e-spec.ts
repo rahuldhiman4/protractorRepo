@@ -786,7 +786,7 @@ describe("Attachment", () => {
         let newCase2;
         let caseData1;
         let caseTemplateData;
-        let docLibTitle = 'docLibTitleDRDMV15252'+randomStr;
+        let docLibTitle = 'docLibTitleDRDMV23413'+randomStr;
         let knowledgeArticleData;
         let newCaseTemplate;
         let fileName1 = '1!@#$%^&()+_-={}[}.,123.jpg';
@@ -891,9 +891,9 @@ describe("Attachment", () => {
             await viewCasePo.clickOnAttachedDocumentFile(`${fileName1}`);
             expect(await utilityCommon.isFileDownloaded(`${fileName1}`)).toBeTruthy(`FailuerMsg: ${fileName1} File is not downloaded.`);
 
-            expect(await utilityCommon.deleteAlreadyDownloadedFile('1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: ${fileName2} File is delete sucessfully`);
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: ${fileName2} File is delete sucessfully`);
             await viewCasePo.clickOnAttachedDocumentFile(`${fileName2}`);
-            expect(await utilityCommon.isFileDownloaded('1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf' File is not downloaded.`);
+            expect(await utilityCommon.isFileDownloaded('1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf' File is not downloaded.`);
 
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName3}`)).toBeTruthy(`FailuerMsg: ${fileName3} File is delete sucessfully`);
             await viewCasePo.clickOnAttachedDocumentFile(`${fileName3}`);
@@ -910,11 +910,11 @@ describe("Attachment", () => {
             await attachmentBladePo.selectCheckBox(1);
             expect(await utilityCommon.isFileDownloaded(`${fileName1}`)).toBeTruthy(`FailuerMsg: ${fileName1} File is not downloaded.`);
             
-            expect(await utilityCommon.deleteAlreadyDownloadedFile('1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: ${fileName2} File is delete sucessfully`);
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: ${fileName2} File is delete sucessfully`);
             await attachmentBladePo.selectCheckBox(2);
             await attachmentBladePo.clickDownloadButton();
             await attachmentBladePo.selectCheckBox(2);
-            expect(await utilityCommon.isFileDownloaded('1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf' File is not downloaded.`);
+            expect(await utilityCommon.isFileDownloaded('1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf' File is not downloaded.`);
 
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName3}`)).toBeTruthy(`FailuerMsg: ${fileName3} File is delete sucessfully`);
             await attachmentBladePo.selectCheckBox(3);
@@ -945,9 +945,9 @@ describe("Attachment", () => {
             await activityTabPo.clickAttachedFile(`${fileName5}`);
             expect(await utilityCommon.isFileDownloaded(`${fileName5}`)).toBeTruthy(`FailuerMsg: ${fileName5} File is not downloaded.`);
 
-            expect(await utilityCommon.deleteAlreadyDownloadedFile('2ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: 2ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf File is delete sucessfully`);
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('2ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: 2ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf File is delete sucessfully`);
             await activityTabPo.clickAttachedFile(`${fileName6}`);
-            expect(await utilityCommon.isFileDownloaded('2ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf' File is not downloaded.`);
+            expect(await utilityCommon.isFileDownloaded('2ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf' File is not downloaded.`);
 
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName7}`)).toBeTruthy(`FailuerMsg: ${fileName7} File is delete sucessfully`);
             await activityTabPo.clickAttachedFile(`${fileName7}`);
@@ -964,11 +964,11 @@ describe("Attachment", () => {
             await attachmentBladePo.selectCheckBox(5);
             expect(await utilityCommon.isFileDownloaded(`${fileName5}`)).toBeTruthy(`FailuerMsg: ${fileName5} File is not downloaded.`);
             
-            expect(await utilityCommon.deleteAlreadyDownloadedFile('2ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: 2ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf File is delete sucessfully`);
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('2ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: 2ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf File is delete sucessfully`);
             await attachmentBladePo.selectCheckBox(6);
             await attachmentBladePo.clickDownloadButton();
             await attachmentBladePo.selectCheckBox(6);
-            expect(await utilityCommon.isFileDownloaded('2ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '2ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf' File is not downloaded.`);
+            expect(await utilityCommon.isFileDownloaded('2ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '2ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf' File is not downloaded.`);
 
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName7}`)).toBeTruthy(`FailuerMsg: ${fileName7} File is delete sucessfully`);
             await attachmentBladePo.selectCheckBox(7);
@@ -1007,9 +1007,9 @@ describe("Attachment", () => {
             await activityTabPo.clickAttachedFile(`${fileName9}`);
             expect(await utilityCommon.isFileDownloaded(`${fileName9}`)).toBeTruthy(`FailuerMsg: ${fileName9} File is not downloaded.`);
 
-            expect(await utilityCommon.deleteAlreadyDownloadedFile('3ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: ${fileName10} File is delete sucessfully`);
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('3ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: ${fileName10} File is delete sucessfully`);
             await activityTabPo.clickAttachedFile(`${fileName10}`);
-            expect(await utilityCommon.isFileDownloaded('3ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf' File is not downloaded.`);
+            expect(await utilityCommon.isFileDownloaded('3ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf' File is not downloaded.`);
 
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName11}`)).toBeTruthy(`FailuerMsg: ${fileName11} File is delete sucessfully`);
             await activityTabPo.clickAttachedFile(`${fileName11}`);
@@ -1028,11 +1028,11 @@ describe("Attachment", () => {
             await attachmentBladePo.selectCheckBox(9);
             expect(await utilityCommon.isFileDownloaded(`${fileName9}`)).toBeTruthy(`FailuerMsg: ${fileName9} File is not downloaded.`);
             
-            expect(await utilityCommon.deleteAlreadyDownloadedFile('3ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: 3ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf File is delete sucessfully`);
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('3ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: 3ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf File is delete sucessfully`);
             await attachmentBladePo.selectCheckBox(10);
             await attachmentBladePo.clickDownloadButton();
             await attachmentBladePo.selectCheckBox(10);
-            expect(await utilityCommon.isFileDownloaded('3ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '3ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf' File is not downloaded.`);
+            expect(await utilityCommon.isFileDownloaded('3ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '3ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf' File is not downloaded.`);
 
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName11}`)).toBeTruthy(`FailuerMsg: ${fileName11} File is delete sucessfully`);
             await attachmentBladePo.selectCheckBox(11);
@@ -1067,10 +1067,10 @@ describe("Attachment", () => {
             await viewTaskPo.clickOnAttachedDocumentFile(`${fileName1}`);
             expect(await utilityCommon.isFileDownloaded(`${fileName1}`)).toBeTruthy(`FailuerMsg: ${fileName1} File is not downloaded.`);
 
-            expect(await utilityCommon.deleteAlreadyDownloadedFile('1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: ${fileName2} File is delete sucessfully`);
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: ${fileName2} File is delete sucessfully`);
             await viewTaskPo.isAttachedFileNamePresent(fileName2);
             await viewTaskPo.clickOnAttachedDocumentFile(`${fileName2}`);
-            expect(await utilityCommon.isFileDownloaded('1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf' File is not downloaded.`);
+            expect(await utilityCommon.isFileDownloaded('1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf' File is not downloaded.`);
 
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName3}`)).toBeTruthy(`FailuerMsg: ${fileName3} File is delete sucessfully`);
             await viewTaskPo.isAttachedFileNamePresent(fileName3);
@@ -1098,9 +1098,9 @@ describe("Attachment", () => {
             await activityTabPo.clickAttachedFile(`${fileName5}`);
             expect(await utilityCommon.isFileDownloaded(`${fileName5}`)).toBeTruthy(`FailuerMsg: ${fileName5} File is not downloaded.`);
 
-            expect(await utilityCommon.deleteAlreadyDownloadedFile('2ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: 2ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf File is delete sucessfully`);
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('2ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: 2ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf File is delete sucessfully`);
             await activityTabPo.clickAttachedFile(`${fileName6}`);
-            expect(await utilityCommon.isFileDownloaded('2ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: 2ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf File is not downloaded.`);
+            expect(await utilityCommon.isFileDownloaded('2ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: 2ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf File is not downloaded.`);
 
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName7}`)).toBeTruthy(`FailuerMsg: ${fileName7} File is delete sucessfully`);
             await activityTabPo.clickAttachedFile(`${fileName7}`);
@@ -1133,9 +1133,9 @@ describe("Attachment", () => {
             await activityTabPo.clickAttachedFile(`${fileName9}`);
             expect(await utilityCommon.isFileDownloaded(`${fileName9}`)).toBeTruthy(`FailuerMsg: ${fileName9} File is not downloaded.`);
 
-            expect(await utilityCommon.deleteAlreadyDownloadedFile('3ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: 3ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf File is delete sucessfully`);
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('3ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: 3ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf File is delete sucessfully`);
             await activityTabPo.clickAttachedFile(`${fileName10}`);
-            expect(await utilityCommon.isFileDownloaded('3ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '3ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf' File is not downloaded.`);
+            expect(await utilityCommon.isFileDownloaded('3ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '3ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf' File is not downloaded.`);
 
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName11}`)).toBeTruthy(`FailuerMsg: ${fileName11} File is delete sucessfully`);
             await activityTabPo.clickAttachedFile(`${fileName11}`);
@@ -1156,11 +1156,11 @@ describe("Attachment", () => {
             await attachmentBladePo.selectCheckBox(1);
             expect(await utilityCommon.isFileDownloaded(`${fileName1}`)).toBeTruthy(`FailuerMsg: ${fileName1} File is not downloaded.`);
             
-            expect(await utilityCommon.deleteAlreadyDownloadedFile('1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: ${fileName2} File is delete sucessfully`);
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: ${fileName2} File is delete sucessfully`);
             await attachmentBladePo.selectCheckBox(2);
             await attachmentBladePo.clickDownloadButton();
             await attachmentBladePo.selectCheckBox(2);
-            expect(await utilityCommon.isFileDownloaded('1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf' File is not downloaded.`);
+            expect(await utilityCommon.isFileDownloaded('1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf' File is not downloaded.`);
 
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName3}`)).toBeTruthy(`FailuerMsg: ${fileName3} File is delete sucessfully`);
             await attachmentBladePo.selectCheckBox(3);
@@ -1180,11 +1180,11 @@ describe("Attachment", () => {
             await attachmentBladePo.selectCheckBox(5);
             expect(await utilityCommon.isFileDownloaded(`${fileName5}`)).toBeTruthy(`FailuerMsg: ${fileName5} File is not downloaded.`);
             
-            expect(await utilityCommon.deleteAlreadyDownloadedFile('2ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '2ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf' File is delete sucessfully`);
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('2ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '2ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf' File is delete sucessfully`);
             await attachmentBladePo.selectCheckBox(6);
             await attachmentBladePo.clickDownloadButton();
             await attachmentBladePo.selectCheckBox(6);
-            expect(await utilityCommon.isFileDownloaded('2ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '2ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf' File is not downloaded.`);
+            expect(await utilityCommon.isFileDownloaded('2ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '2ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf' File is not downloaded.`);
 
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName7}`)).toBeTruthy(`FailuerMsg: ${fileName7} File is delete sucessfully`);
             await attachmentBladePo.selectCheckBox(7);
@@ -1206,11 +1206,11 @@ describe("Attachment", () => {
             await attachmentBladePo.selectCheckBox(9);
             expect(await utilityCommon.isFileDownloaded(`${fileName9}`)).toBeTruthy(`FailuerMsg: ${fileName9} File is not downloaded.`);
             
-            expect(await utilityCommon.deleteAlreadyDownloadedFile('3ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: 3ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf File is delete sucessfully`);
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('3ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: 3ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf File is delete sucessfully`);
             await attachmentBladePo.selectCheckBox(10);
             await attachmentBladePo.clickDownloadButton();
             await attachmentBladePo.selectCheckBox(10);
-            expect(await utilityCommon.isFileDownloaded('3ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '3ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf' File is not downloaded.`);
+            expect(await utilityCommon.isFileDownloaded('3ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '3ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf' File is not downloaded.`);
 
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName11}`)).toBeTruthy(`FailuerMsg: ${fileName11} File is delete sucessfully`);
             await attachmentBladePo.selectCheckBox(11);
@@ -1275,9 +1275,9 @@ describe("Attachment", () => {
             await activityTabPo.clickAttachedFile(`${fileName5}`);
             expect(await utilityCommon.isFileDownloaded(`${fileName5}`)).toBeTruthy(`FailuerMsg: ${fileName5} File is not downloaded.`);
 
-            expect(await utilityCommon.deleteAlreadyDownloadedFile('2ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: 2ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf File is delete sucessfully`);
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('2ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: 2ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf File is delete sucessfully`);
             await activityTabPo.clickAttachedFile(`${fileName6}`);
-            expect(await utilityCommon.isFileDownloaded('2ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '2ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf' File is not downloaded.`);
+            expect(await utilityCommon.isFileDownloaded('2ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '2ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf' File is not downloaded.`);
 
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName7}`)).toBeTruthy(`FailuerMsg: ${fileName7} File is delete sucessfully`);
             await activityTabPo.clickAttachedFile(`${fileName7}`);
@@ -1310,9 +1310,9 @@ describe("Attachment", () => {
             await activityTabPo.clickAttachedFile(`${fileName9}`);
             expect(await utilityCommon.isFileDownloaded(`${fileName9}`)).toBeTruthy(`FailuerMsg: ${fileName9} File is not downloaded.`);
 
-            expect(await utilityCommon.deleteAlreadyDownloadedFile('3ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: 3ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf File is delete sucessfully`);
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('3ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: 3ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf File is delete sucessfully`);
             await activityTabPo.clickAttachedFile(`${fileName10}`);
-            expect(await utilityCommon.isFileDownloaded('3ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '3ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf' File is not downloaded.`);
+            expect(await utilityCommon.isFileDownloaded('3ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '3ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf' File is not downloaded.`);
 
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName11}`)).toBeTruthy(`FailuerMsg: ${fileName11} File is delete sucessfully`);
             await activityTabPo.clickAttachedFile(`${fileName11}`);
@@ -1359,9 +1359,9 @@ describe("Attachment", () => {
             await editCasePo.clickDownloadDynamicFile(1);
             expect(await utilityCommon.isFileDownloaded(`${fileName5}`)).toBeTruthy(`FailuerMsg: ${fileName5} File is not downloaded.`);
 
-            expect(await utilityCommon.deleteAlreadyDownloadedFile('2ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: 2ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf File is delete sucessfully`);
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('2ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: 2ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf File is delete sucessfully`);
             await editCasePo.clickDownloadDynamicFile(2);
-            expect(await utilityCommon.isFileDownloaded('2ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '2ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf' File is not downloaded.`);
+            expect(await utilityCommon.isFileDownloaded('2ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '2ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf' File is not downloaded.`);
 
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName7}`)).toBeTruthy(`FailuerMsg: ${fileName7} File is delete sucessfully`);
             await editCasePo.clickDownloadDynamicFile(3);
@@ -1390,9 +1390,9 @@ describe("Attachment", () => {
             await viewCasePo.clickDynamicAttachmentValue(fileName1);
             expect(await utilityCommon.isFileDownloaded(`${fileName1}`)).toBeTruthy(`FailuerMsg: ${fileName1} File is not downloaded.`);
 
-            expect(await utilityCommon.deleteAlreadyDownloadedFile('1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: 1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf File is delete sucessfully`);
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: 1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf File is delete sucessfully`);
             await viewCasePo.clickDynamicAttachmentValue(fileName2);
-            expect(await utilityCommon.isFileDownloaded('1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf' File is not downloaded.`);
+            expect(await utilityCommon.isFileDownloaded('1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf' File is not downloaded.`);
 
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName3}`)).toBeTruthy(`FailuerMsg: ${fileName3} File is delete sucessfully`);
             await viewCasePo.clickDynamicAttachmentValue(fileName3);
@@ -1411,11 +1411,11 @@ describe("Attachment", () => {
             await attachmentBladePo.selectCheckBox(1);
             expect(await utilityCommon.isFileDownloaded(`${fileName1}`)).toBeTruthy(`FailuerMsg: ${fileName1} File is not downloaded.`);
             
-            expect(await utilityCommon.deleteAlreadyDownloadedFile('1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: 1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf file is delete sucessfully`);
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: 1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf file is delete sucessfully`);
             await attachmentBladePo.selectCheckBox(2);
             await attachmentBladePo.clickDownloadButton();
             await attachmentBladePo.selectCheckBox(2);
-            expect(await utilityCommon.isFileDownloaded('1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '1ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf' File is not downloaded.`);
+            expect(await utilityCommon.isFileDownloaded('1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf' File is not downloaded.`);
 
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName3}`)).toBeTruthy(`FailuerMsg: ${fileName3} File is delete sucessfully`);
             await attachmentBladePo.selectCheckBox(3);
@@ -1439,19 +1439,19 @@ describe("Attachment", () => {
             await composeMail.clickOnSendButton();
             
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName9}`)).toBeTruthy(`FailuerMsg: ${fileName9} File is delete sucessfully`);
-            await viewCasePo.clickDynamicAttachmentValue(fileName9);
+            await activityTabPo.clickAndDownloadAttachmentFile(fileName9);
             expect(await utilityCommon.isFileDownloaded(`${fileName9}`)).toBeTruthy(`FailuerMsg: ${fileName9} File is not downloaded.`);
 
-            expect(await utilityCommon.deleteAlreadyDownloadedFile('3ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: 3ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf File is delete sucessfully`);
-            await viewCasePo.clickDynamicAttachmentValue(fileName10);
-            expect(await utilityCommon.isFileDownloaded('3ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '3ทรัพยากรมนุษย์+นโยบายการแพทย์.pdf' File is not downloaded.`);
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('3ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: 3ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf File is delete sucessfully`);
+            await activityTabPo.clickAndDownloadAttachmentFile(fileName10);
+            expect(await utilityCommon.isFileDownloaded('3ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '3ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf' File is not downloaded.`);
 
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName11}`)).toBeTruthy(`FailuerMsg: ${fileName11} File is delete sucessfully`);
-            await viewCasePo.clickDynamicAttachmentValue(fileName11);
+            await activityTabPo.clickAndDownloadAttachmentFile(fileName11);
             expect(await utilityCommon.isFileDownloaded(`${fileName11}`)).toBeTruthy(`FailuerMsg: ${fileName11} File is not downloaded.`);
 
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName12}`)).toBeTruthy(`FailuerMsg: ${fileName12} File is delete sucessfully`);
-            await viewCasePo.clickDynamicAttachmentValue(fileName12);
+            await activityTabPo.clickAndDownloadAttachmentFile(fileName12);
             expect(await utilityCommon.isFileDownloaded(`${fileName12}`)).toBeTruthy(`FailuerMsg: ${fileName12} File is not downloaded.`);
         });
      
