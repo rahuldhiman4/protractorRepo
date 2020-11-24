@@ -71,7 +71,7 @@ describe('Case Watchlist', () => {
             await caseConsole.clickOnAddToWatchlist();
             await caseWatchlist.addWatchlistEvent(caseAssignmentChangesStr);
             await caseWatchlist.addWatchlistEvent(caseStatusChangesStr);
-           await caseWatchlist.saveEvents();
+            await caseWatchlist.saveEvents();
             await utilityCommon.closePopUpMessage();
             await caseConsole.clickOnWatchlistIcon();
             for (let i: number = 0; i < 3; i++) {
@@ -447,7 +447,7 @@ describe('Case Watchlist', () => {
             expect(await notificationAlerts.isAlertPresent(assignmentNotification2)).toBeFalsy(assignmentNotification2 + " is present");
             expect(await notificationAlerts.isAlertPresent(statusNotification2)).toBeFalsy(statusNotification2 + " is present");
             await notificationAlerts.clickOnNotificationIcon();
-       }
+        }
         catch (ex) {
             throw ex;
         }
@@ -527,7 +527,7 @@ describe('Case Watchlist', () => {
             await viewCasePage.clickStopWatchingLink();
             await viewCasePage.clickEditCaseButton();
             await editCase.clickChangeAssignmentButton();
-           await changeAssignment.selectBusinessUnit('HR Support');
+            await changeAssignment.selectBusinessUnit('HR Support');
             await changeAssignment.selectSupportGroup(compensationAndBenefitsStr);
             await changeAssignment.selectAssignToSupportGroup();
             await changeAssignment.clickOnAssignButton();
@@ -1262,7 +1262,7 @@ describe('Case Watchlist', () => {
                 "type": type['user'],
                 "security": security['witeAccess'],
                 "username": qfengStr
-           }
+            }
             await apiHelper.updateCaseAccess(caseGuid, caseAccessDataQtao);
             //Read access to qannis
             let caseAccessDataQannis = {
