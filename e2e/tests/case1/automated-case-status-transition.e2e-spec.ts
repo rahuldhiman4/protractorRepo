@@ -37,13 +37,14 @@ describe('Automated Case Status Transition', () => {
             //Create first Record
             configName1 = AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.name = 'ConfigName1' + randomStr;
             AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.changeStatusAfter = Math.floor(Math.random() * 180) + 1;
+            await utilGrid.selectLineOfBusiness("Facilities");
             await automatedStatusTransitionConsole.clickAddAutomatedStatusTransitionBtn();
             await automatedStatusTransitionCreatePage.createAutomatedStatusTransition(AUTO_STATUS_TRANSITION_MANDATORY_FIELDS);
 
             //Create Second Record
             configName2 = AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.name = 'ConfigName2' + randomStr;
             AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.changeStatusAfter = Math.floor(Math.random() * 180) + 1;
-            await utilGrid.selectLineOfBusiness("Facilities");
+            AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.fromStatus = "In Progress";
             await automatedStatusTransitionConsole.clickAddAutomatedStatusTransitionBtn();
             await automatedStatusTransitionCreatePage.createAutomatedStatusTransition(AUTO_STATUS_TRANSITION_MANDATORY_FIELDS);
             expect(await utilGrid.isGridRecordPresent(configName1)).toBeTruthy();
@@ -86,18 +87,20 @@ describe('Automated Case Status Transition', () => {
     describe('[DRDMV-17553]: Case manager - automatic case status transtion rule console validations', async () => {
         let configName1, configName2, randomStr = [...Array(7)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
-            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.apiLogin('jbarnes');
             await apiHelper.deleteAutomatedCaseStatusTransition();
 
             //Create first Record
             configName1 = AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.name = 'ConfigName1' + randomStr;
             AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.changeStatusAfter = Math.floor(Math.random() * 180) + 1;
+            await utilGrid.selectLineOfBusiness("Human Resource");
             await automatedStatusTransitionConsole.clickAddAutomatedStatusTransitionBtn();
             await automatedStatusTransitionCreatePage.createAutomatedStatusTransition(AUTO_STATUS_TRANSITION_MANDATORY_FIELDS);
 
             //Create Second Record
             configName2 = AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.name = 'ConfigName2' + randomStr;
             AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.changeStatusAfter = Math.floor(Math.random() * 180) + 1;
+            AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.fromStatus = "In Progress";
             await automatedStatusTransitionConsole.clickAddAutomatedStatusTransitionBtn();
             await automatedStatusTransitionCreatePage.createAutomatedStatusTransition(AUTO_STATUS_TRANSITION_MANDATORY_FIELDS);
         });

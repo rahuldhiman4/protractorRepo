@@ -312,8 +312,9 @@ describe('Case Status Change', () => {
             await updateStatusBladePo.changeCaseStatus('Canceled');
             await updateStatusBladePo.setStatusReason('Approval Rejected');
             await updateStatusBladePo.clickSaveStatus();
-            await viewCasePage.openTaskCard(1);
-            await manageTask.clickTaskLink(manualSummary);
+            await utilityCommon.closePopUpMessage();
+            await viewCasePage.clickOnRefreshTaskList();
+            await viewCasePage.clickOnTaskLink(manualSummary);       
             expect(await viewTask.getTaskStatusValue()).toBe('Canceled', 'canceled status not found');
         });
     });
