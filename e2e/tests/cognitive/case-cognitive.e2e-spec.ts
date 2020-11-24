@@ -439,7 +439,7 @@ describe('Case Cognitive', () => {
             expect(await createCasePo.getCategoryTier3Value()).toBe('Select');
             expect(await createCasePo.getCategoryTier4Value()).toBe('Select');
             await createCasePo.clearSummary();
-            await createCasePo.setSummary('New Joinee assessment workplace change');
+            await createCasePo.setSummary('New Joinee looking assessment for his workplace change');
             await createCasePo.clickOnAutoCategorize();
             expect(await createCasePo.getCategoryTier1Value()).toBe("Applications");
             expect(await createCasePo.getCategoryTier2Value()).toBe('Help Desk');
@@ -448,7 +448,7 @@ describe('Case Cognitive', () => {
         });
         it('[DRDMV-8985,DRDMV-8987]:[Cognitive] - Auto categorization when cognitive search return only tier 1, tier 1,2 and tier 1,2,3 values', async () => {
             await createCasePo.clearSummary();
-            await createCasePo.setSummary('life insurance options bonus');
+            await createCasePo.setSummary('Employee life insurance options bonus');
             await createCasePo.clickOnAutoCategorize();
             expect(await createCasePo.getCategoryTier1Value()).toBe('Employee Relations');
             expect(await createCasePo.getCategoryTier2Value()).toBe('Compensation');
@@ -461,7 +461,7 @@ describe('Case Cognitive', () => {
             expect(await createCasePo.getCategoryTier2Value()).toBe("Finance");
             expect(await createCasePo.getCategoryTier3Value()).toBe("Cost Centers");
             await createCasePo.clearSummary();
-            await createCasePo.setSummary('supplemental life insurance options bonus');
+            await createCasePo.setSummary('Employee looking life insurance options bonus');
             await createCasePo.clickOnAutoCategorize();
             expect(await createCasePo.getCategoryTier1Value()).toBe('Employee Relations');
             expect(await createCasePo.getCategoryTier2Value()).toBe('Compensation');
