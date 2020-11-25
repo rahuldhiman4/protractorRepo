@@ -50,7 +50,7 @@ describe('Email Acknowledgment Template', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let arr: string[] = ["Label"];
 
-        it('[DRDMV-10896,DRDMV-10901,DRDMV-10922,DRDMV-10895]: Acknowledgment Template : Acknowledgment Template creation', async () => {
+        it('[DRDMV-10896,DRDMV-10901,DRDMV-10922]: Acknowledgment Template : Acknowledgment Template creation', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
             await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
@@ -64,7 +64,7 @@ describe('Email Acknowledgment Template', () => {
             await createAcknowledgmentTemplatesPo.clickOnSaveButton();
             await utilCommon.closePopUpMessage();
         });
-        it('[DRDMV-10896,DRDMV-10901,DRDMV-10922,DRDMV-10895]: Acknowledgment Template : Acknowledgment Template creation', async () => {
+        it('[DRDMV-10896,DRDMV-10901,DRDMV-10922]: Acknowledgment Template : Acknowledgment Template creation', async () => {
             await consoleAcknowledgmentTemplatePo.addColumnOnGrid(arr);
             let arr2: string[] = ['Template Name', 'Subject', "Company", "Status", "Label"];
             expect(await consoleAcknowledgmentTemplatePo.areGridColumnHeaderMatches(arr2)).toBeTruthy('Column header not matches');
@@ -85,7 +85,7 @@ describe('Email Acknowledgment Template', () => {
             await createAcknowledgmentTemplatesPo.clickOnSaveButton();
             await utilCommon.closePopUpMessage();
         });
-        it('[DRDMV-10896,DRDMV-10901,DRDMV-10922,DRDMV-10895]: Acknowledgment Template : Acknowledgment Template creation', async () => {
+        it('[DRDMV-10896,DRDMV-10901,DRDMV-10922]: Acknowledgment Template : Acknowledgment Template creation', async () => {
             await consoleAcknowledgmentTemplatePo.searchOnGridConsole(templateName2);
             expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Template Name')).toBe(templateName2, 'Public template name is missing');
             expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Subject')).toBe(subject, 'Public template subject is missing');
