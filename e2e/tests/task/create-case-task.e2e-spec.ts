@@ -1030,15 +1030,15 @@ describe('Create Case Task', () => {
             await viewCasePage.clickOnRefreshTaskList();
         });
         it('[DRDMV-7145]: Verify primary status of task', async () => {
-            await viewCasePage.openTaskCard(1);
-            await manageTask.clickTaskLink(`manualTaskTemplateSummary1 ${randomStr}`);
+            await viewCasePage.clickAddTaskButton();
+            await manageTask.clickTaskLink(`manualTaskTemplateSummary1 ${randomStr}`);   
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
             await viewTask.clickOnViewCase();
-            await viewCasePage.openTaskCard(1);
+            await viewCasePage.clickAddTaskButton();
             await manageTask.clickTaskLink(`manualTaskTemplateSummary2 ${randomStr}`);
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
             await viewTask.clickOnViewCase();
-            await viewCasePage.openTaskCard(1);
+            await viewCasePage.clickAddTaskButton();
             await manageTask.clickTaskLink(`manualTaskTemplateSummary3 ${randomStr}`);
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
             await viewTask.clickOnViewCase();
