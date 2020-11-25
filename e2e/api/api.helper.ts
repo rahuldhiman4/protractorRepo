@@ -15,7 +15,7 @@ import { ADD_TO_WATCHLIST } from '../data/api/case/case.watchlist.api';
 import * as COMPLEX_SURVEY from '../data/api/case/complex-survey.api';
 import { CASE_STATUS_CHANGE, UPDATE_CASE, UPDATE_CASE_ASSIGNMENT } from '../data/api/case/update.case.api';
 import { COGNITIVE_CATEGORY_DATASET, COGNITIVE_CATEGORY_DATASET_MAPPING, COGNITIVE_LICENSE, COGNITIVE_TEMPLATE_DATASET, COGNITIVE_TEMPLATE_DATASET_MAPPING } from '../data/api/cognitive/cognitive.config.api';
-import { MAILBOX_CONFIG, INCOMINGMAIL_DEFAULT } from '../data/api/email/email.configuration.data.api';
+import { MAILBOX_CONFIG, INCOMINGMAIL_DEFAULT, EMAIL_PROFILE, EMAIL_OUTGOING, UPDATE_EMAIL_PROFILE_ON_LOB } from '../data/api/email/email.configuration.data.api';
 import { EMAIL_WHITELIST } from '../data/api/email/email.whitelist.data.api';
 import { NEW_PROCESS_LIB, PROCESS_FLOWSET_MAPPING } from '../data/api/flowset/create-process-lib';
 import { ENABLE_USER, NEW_USER } from '../data/api/foundation/create-foundation-entity.api';
@@ -47,7 +47,7 @@ import { ICognitiveDataSet, ICognitiveDataSetMapping } from '../data/interface/c
 import { IFlowset, IFlowsetProcess, IFlowsetProcessMapping } from '../data/interface/flowset.interface';
 import { IBusinessUnit, IDepartment, IDomainTag, IFoundationEntity, IMenuItem, IPerson, ISupportGroup } from '../data/interface/foundation.interface';
 import { IDocumentLib, IDocumentTemplate, IKnowledgeArticles, IKnowledgeArticleTemplate, IKnowledgeSet, IknowledgeSetPermissions, IUpdateKnowledgeArticle } from '../data/interface/knowledge.interface';
-import { IEmailConfig, INotificationEvent, INotificationTemplate, IIncomingEmailConfig } from '../data/interface/notification.interface';
+import { IEmailConfig, INotificationEvent, INotificationTemplate, IEmailMailboxConfig } from '../data/interface/notification.interface';
 import { ICreateSVT, ICreateSVTGroup } from '../data/interface/svt.interface';
 import { IAdhocTask, ITaskUpdate } from '../data/interface/task.interface';
 import { ICaseTemplate, IEmailTemplate, INotesTemplate, ITaskTemplate } from '../data/interface/template.interface';
@@ -72,9 +72,12 @@ class ApiHelper {
 
     async apiLogin(userName: string, password?: string): Promise<void> {
         let credentials = await loginPage.getCredentials(userName, password);
+        let uname = undefined;
+        if(userName == 'sasadmin') uname = credentials.user;
+        else uname = credentials.user + '@petramco.com';
         let response = await axios.post(
             "api/rx/authentication/loginrequest",
-            { "userName": credentials.user, "password": credentials.pass },
+            { "userName": uname, "password": credentials.pass },
         )
         console.log('Login API Status of ' + credentials.user + ' =============>', response.status);
         axios.defaults.headers.common['Cookie'] = `AR-JWT=${response.data}`;
@@ -82,6 +85,9 @@ class ApiHelper {
 
     async createCase(data: ICreateCase): Promise<IIDs> {
         let caseData = cloneDeep(data);
+        if(caseData.Requester) caseData.Requester = caseData.Requester + '@petramco.com';
+        if(caseData.Contact) caseData.Contact = caseData.Contact + '@petramco.com';
+        if(caseData.Assignee) caseData.Assignee = caseData.Assignee + '@petramco.com';
         const newCase = await axios.post(
             "api/com.bmc.dsm.case-lib/cases",
             caseData
@@ -177,14 +183,41 @@ class ApiHelper {
         console.log('Create Dynamic on Template API Status =============>', newCaseTemplate.status);
     }
 
-    async createIncomingEmail(incomingEmailConfigData?: IIncomingEmailConfig): Promise<boolean> {
-        let incomingMailBox = cloneDeep(INCOMINGMAIL_DEFAULT);
-        if (incomingEmailConfigData) {
-            incomingMailBox.fieldInstances[18037].value = incomingEmailConfigData.incomingMailBoxName;
+    async createEmailBox(mailboxType: string, mailBoxConfigData?: IEmailMailboxConfig): Promise<IIDs> {
+        let mailBoxData = undefined;
+        if(mailboxType == 'incoming') 
+        mailBoxData = cloneDeep(INCOMINGMAIL_DEFAULT); 
+        else if(mailboxType = 'outgoing')
+        mailBoxData = cloneDeep(EMAIL_OUTGOING)
+        if (mailBoxConfigData) {
+            mailBoxData.fieldInstances[18037].value = mailBoxConfigData.mailBoxName;
         }
-        let incomingMailResponse: AxiosResponse = await apiCoreUtil.createRecordInstance(incomingMailBox);
-        console.log('Configure Incoming Email API Status =============>', incomingMailResponse.status);
-        return incomingMailResponse.status == 204;
+        let mailBoxResponse: AxiosResponse = await apiCoreUtil.createRecordInstance(mailBoxData);
+        console.log('Configure Mailbox setup API Status =============>', mailBoxResponse.status);
+        const mailboxConfigDetails = await axios.get(
+            await mailBoxResponse.headers.location
+        );
+        return {
+            id: mailboxConfigDetails.data.id,
+            displayId: mailboxConfigDetails.data.displayId
+        };
+    }
+
+    async createEmailProfile(outgoingEmailConfigGuid: string): Promise<boolean> {
+        let emailProfileData = cloneDeep(EMAIL_PROFILE);
+        emailProfileData.fieldInstances[56154].value = outgoingEmailConfigGuid
+        let emailProfileResponse: AxiosResponse = await apiCoreUtil.createRecordInstance(emailProfileData);
+        console.log('Configure Email Profile API Status =============>', emailProfileResponse.status);
+        return emailProfileResponse.status == 204;
+    }
+
+    async updateLOBWithEmailProfile(lobName: string, emailProfileName: string): Promise<boolean> {
+        let updateLOBData = cloneDeep(UPDATE_EMAIL_PROFILE_ON_LOB);
+        let lobGuid: string = await apiCoreUtil.getLineOfBusinessGuid(lobName);
+        updateLOBData.id = lobGuid;
+        updateLOBData.fieldInstances[450000157].value = emailProfileName; 
+        let updateLOBDataResponse = await apiCoreUtil.updateRecordInstance("com.bmc.dsm.shared-services-lib:Line of Business", lobGuid, updateLOBData);
+        return updateLOBDataResponse.status == 204;
     }
 
     async createEmailConfiguration(emailConfigData?: IEmailConfig): Promise<IIDs> {
@@ -241,7 +274,19 @@ class ApiHelper {
             return !result.includes(false);
         });
 
-        console.log('AllEmailConfiguration deleted =============>', deleteAllEmailConfig == deleteAllIncomingMail == deleteAllOutgoingMail);
+        //Deleting Email Profiles
+        let emailProfileDataPageUri = "api/rx/application/datapage?dataPageType=com.bmc.arsys.rx.application.record.datapage.RecordInstanceDataPageQuery&pageSize=50&propertySelection=379,56153,8,4,56154,56152&queryExpression=%2756150%27+%3D+%22email%22&recorddefinition=Alias+Mapping&startIndex=0";
+        let allEmailProfile = await axios.get(
+            emailProfileDataPageUri
+        );
+        let deleteAllEmailProfileMap = allEmailProfile.data.data.map(async (obj: string) => {
+            return await apiCoreUtil.deleteRecordInstance('Alias Mapping', obj[379]);
+        });
+        let deleteAllEmailProfile: boolean = await Promise.all(deleteAllEmailProfileMap).then(async (result) => {
+            return !result.includes(false);
+        });
+
+        console.log('AllEmailConfiguration deleted =============>', deleteAllEmailConfig == deleteAllIncomingMail == deleteAllOutgoingMail == deleteAllEmailProfile);
         return deleteAllEmailConfig == deleteAllIncomingMail == deleteAllOutgoingMail;
     }
 
@@ -926,7 +971,7 @@ class ApiHelper {
             let userData = cloneDeep(NEW_USER);
             userData.fieldInstances[1000000019].value = data.firstName;
             userData.fieldInstances[1000000018].value = data.lastName;
-            userData.fieldInstances[4].value = data.userId;
+            userData.fieldInstances[4].value = data.userId + '@petramco.com';
             let functionalRolesGuidArray: string[] = [];
             let functionalRolesGuid: string;
             if (data.userPermission) {
@@ -1687,7 +1732,7 @@ class ApiHelper {
         caseAccessData.processInputValues['Type'] = data.type;
         caseAccessData.processInputValues['Operation'] = data.operation;
         caseAccessData.processInputValues['Security Type'] = data.security;
-        caseAccessData.processInputValues['Value'] = data.username;
+        caseAccessData.processInputValues['Value'] = data.username + '@petramco.com';
         const updateCaseAccess = await axios.post(
             commandUri,
             caseAccessData
@@ -2019,7 +2064,7 @@ class ApiHelper {
                 if (data.functionalRole) {
                     jsonBody = cloneDeep(UPDATE_PERSON);
                     jsonBody.id = recordGUID;
-                    let currentUserRoles: string = await apiCoreUtil.getPersonFunctionalRoles(entityName);
+                    let currentUserRoles: string = await apiCoreUtil.getPersonFunctionalRoles(entityName + '@petramco.com');
                     let newUserRoles: string = currentUserRoles + ';' + constants.FunctionalRoleGuid[data.functionalRole]
                     let updateFunctionalRolePayload = {
                         "id": "430000002",
@@ -2242,7 +2287,7 @@ class ApiHelper {
         approvalAction.commands[0].command = action;
         approvalAction.commands[0].requestID = await apiCoreUtil.getSignatureInstanceId(recordGuid);
         if (assignee) {
-            approvalAction.commands[0]["assignToApprovers"] = assignee;
+            approvalAction.commands[0]["assignToApprovers"] = assignee + '@petramco.com';
         }
 
         await browser.sleep(20000);
@@ -2311,7 +2356,7 @@ class ApiHelper {
                     approvalFlowRecordDefinition = "com.bmc.dsm.case-lib:Case";
                     approvalFlow = cloneDeep(CASE_APPROVAL_FLOW);
                     approvalFlow.approvalFlowConfigurationList[0].flowName = data.flowName;
-                    approvalFlow.approvalFlowConfigurationList[0].approvers = 'U:' + data.approver;
+                    approvalFlow.approvalFlowConfigurationList[0].approvers = 'U:' + data.approver + '@petramco.com';
                     approvalFlow.approvalFlowConfigurationList[0].qualification = data.qualification;
                     break;
                 }
@@ -2320,7 +2365,7 @@ class ApiHelper {
                     approvalFlowRecordDefinition = "com.bmc.dsm.knowledge:Knowledge Article Template";
                     approvalFlow = cloneDeep(KNOWLEDGE_APPROVAL_FLOW_CONFIG);
                     approvalFlow.approvalFlowConfigurationList[0].flowName = data.flowName;
-                    approvalFlow.approvalFlowConfigurationList[0].approvers = 'U:' + data.approver;
+                    approvalFlow.approvalFlowConfigurationList[0].approvers = 'U:' + data.approver + '@petramco.com';
                     approvalFlow.approvalFlowConfigurationList[0].qualification = data.qualification;
                     break;
                 }
@@ -2329,10 +2374,10 @@ class ApiHelper {
                     approvalFlowRecordDefinition = "com.bmc.dsm.task-lib:Task";
                     approvalFlow = cloneDeep(TASK_APPROVAL_FLOW);
                     approvalFlow.approvalFlowConfigurationList[0].flowName = data.flowName;
-                    approvalFlow.approvalFlowConfigurationList[0].approvers = data.approver;
+                    approvalFlow.approvalFlowConfigurationList[0].approvers = data.approver + '@petramco.com';
                     approvalFlow.approvalFlowConfigurationList[0].qualification = data.qualification;
                     if (data.approver) {
-                        approvalFlow.approvalFlowConfigurationList[0].approvers = data.approver;
+                        approvalFlow.approvalFlowConfigurationList[0].approvers = data.approver + '@petramco.com';
                     }
 
                     if (data.isLevelUp) {
@@ -2503,7 +2548,7 @@ class ApiHelper {
     async sendApprovalQuestions(recordGuid: string, user: string, questions: string, caseId: string): Promise<boolean> {
         let signatureId = await apiCoreUtil.getSignatureId(recordGuid);
         let formData = {
-            to: user,
+            to: user + '@petramco.com',
             question: questions,
             application: 'com.bmc.dsm.case-lib:Case',
             applicationRequestId: caseId,

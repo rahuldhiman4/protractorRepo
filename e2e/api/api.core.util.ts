@@ -132,6 +132,14 @@ class ApiCoreUtil {
         });
         return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
     }
+    async getLineOfBusinessGuid(lobName: string): Promise<string> {
+        let allRecords = await this.getGuid("com.bmc.dsm.shared-services-lib:Line of Business");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj[450000152] === lobName;
+        });
+        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+    }
+
 
     async getOrganizationGuid(orgName: string): Promise<string> {
         let allRecords = await this.getGuid("com.bmc.arsys.rx.foundation:Primary Organization");
@@ -168,7 +176,7 @@ class ApiCoreUtil {
     async getPersonGuid(personName: string): Promise<string> {
         let allRecords = await this.getGuid("com.bmc.arsys.rx.foundation:Person");
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
-            return obj[4] === personName;
+            return obj[4] === personName + '@petramco.com';
         });
         return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
     }

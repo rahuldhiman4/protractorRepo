@@ -27,7 +27,7 @@ export interface IEmailConfig {
     lineOfBusiness?: string;
 }
 
-export interface IIncomingEmailConfig {
-    incomingMailBoxName: string;
+export interface IEmailMailboxConfig {
+    mailBoxName: string;
     emailServerUser?: string;
 }

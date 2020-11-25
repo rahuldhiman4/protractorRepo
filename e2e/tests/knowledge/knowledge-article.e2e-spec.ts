@@ -2110,9 +2110,9 @@ describe('Knowledge Article', () => {
             await utilityGrid.searchRecordWithoutFilter(knowledgeArticleData.displayId);
             expect(await knowledgeArticlesConsolePo.getSelectedGridRecordValue('Assignee')).toContain("Kyle Mills", 'Filter Assignee is missing in column');
             await utilityGrid.clearFilter();
-            await knowledgeArticlesConsolePo.applyFilter('Assigned Group', "GB Support 1", 'text');
+            await knowledgeArticlesConsolePo.applyFilter('Assigned Group', "GB Support 2", 'text');
             await utilityGrid.searchRecordWithoutFilter(knowledgeArticleData.displayId);
-            expect(await knowledgeArticlesConsolePo.getSelectedGridRecordValue('Assigned Group')).toBe("GB Support 1", 'Filter Assigned Group is missing in column');
+            expect(await knowledgeArticlesConsolePo.getSelectedGridRecordValue('Assigned Group')).toBe("GB Support 2", 'Filter Assigned Group is missing in column');
             await utilityGrid.clearFilter();
             await knowledgeArticlesConsolePo.applyFilter('Template Name', "How To", 'text');
             await utilityGrid.searchRecordWithoutFilter(knowledgeArticleData.displayId);

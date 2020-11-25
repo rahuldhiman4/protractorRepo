@@ -51,6 +51,9 @@ describe("Compose Email", () => {
         await loginPage.login("qtao");
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteAllEmailConfiguration();
+        let response = await apiHelper.createEmailBox('outgoing');
+        await apiHelper.createEmailProfile(response.id);
+        await apiHelper.updateLOBWithEmailProfile("Human Resource", "Email Profile for Outgoing");
         await apiHelper.createEmailConfiguration();
     });
 
