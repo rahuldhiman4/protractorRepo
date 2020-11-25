@@ -1017,6 +1017,50 @@ describe("Compose Email", () => {
         });
     });
 
+    describe('[DRDMV-10399]: Compose email UI changes via different way', async () => {
+        let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let newCase;
+        beforeAll(async () => {
+            let caseData = {
+                "Requester": "fritz",
+                "Summary": "TC DRDMV-10399 " + randomString,
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 3",
+                "Contact": "qtao",
+                "Assignee": "qkatawazi"
+            }
+            await apiHelper.apiLogin('qtao');
+            newCase = await apiHelper.createCase(caseData);
+        });
+        it('[DRDMV-10399]: Compose email UI changes via different way', async () => {
+            await navigationPage.gotoCaseConsole();
+            await caseConsole.searchAndOpenCase(newCase.displayId);
+            await viewCasePo.clickOnRequestersEmail();
+            expect(await composeMail.isComposeEmailTitlePresent('Compose Email')).toBeTruthy('Compose email title missing');
+            expect(await composeMail.isSelectEmailTemplateLinkPresent()).toBeTruthy('SelectEmailTemplateLink is missing');
+            expect(await composeMail.isSendButtonPresent()).toBeTruthy('Send Button is missing');
+            await composeMail.clickOnDiscardButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+            await viewCasePo.clickOnEmailLink();
+            expect(await composeMail.isComposeEmailTitlePresent('Compose Email')).toBeTruthy('Compose email title missing');
+            expect(await composeMail.isSelectEmailTemplateLinkPresent()).toBeTruthy('SelectEmailTemplateLink is missing');
+            expect(await composeMail.isSendButtonPresent()).toBeTruthy('Send Button is missing');
+            await composeMail.clickOnDiscardButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+            await viewCasePo.clickOnContactPersonerDrpDwn();
+            await viewCasePo.clickOnContactEmail();
+            expect(await composeMail.isComposeEmailTitlePresent('Compose Email')).toBeTruthy('Compose email title missing');
+            expect(await composeMail.isSelectEmailTemplateLinkPresent()).toBeTruthy('SelectEmailTemplateLink is missing');
+            expect(await composeMail.isSendButtonPresent()).toBeTruthy('Send Button is missing');
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+            await composeMail.clickOnDiscardButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+        });
+    });
+
     //radhiman
     //@Bug(DRDMV-21808)
     describe('[DRDMV-10387]: Filters on Email Template Grid on Compose Email UI', async () => {
@@ -1064,47 +1108,5 @@ describe("Compose Email", () => {
         });
     });
 
-    describe('[DRDMV-10399]: Compose email UI changes via different way', async () => {
-        let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let newCase;
-        beforeAll(async () => {
-            let caseData = {
-                "Requester": "fritz",
-                "Summary": "TC DRDMV-10399 " + randomString,
-                "Assigned Company": "Petramco",
-                "Business Unit": "United States Support",
-                "Support Group": "US Support 3",
-                "Contact": "qtao",
-                "Assignee": "qkatawazi"
-            }
-            await apiHelper.apiLogin('qtao');
-            newCase = await apiHelper.createCase(caseData);
-        });
-        it('[DRDMV-10399]: Compose email UI changes via different way', async () => {
-            await navigationPage.gotoCaseConsole();
-            await caseConsole.searchAndOpenCase(newCase.displayId);
-            await viewCasePo.clickOnRequestersEmail();
-            expect(await composeMail.isComposeEmailTitlePresent('Compose Email')).toBeTruthy('Compose email title missing');
-            expect(await composeMail.isSelectEmailTemplateLinkPresent()).toBeTruthy('SelectEmailTemplateLink is missing');
-            expect(await composeMail.isSendButtonPresent()).toBeTruthy('Send Button is missing');
-            await composeMail.clickOnDiscardButton();
-            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
-            await viewCasePo.clickOnEmailLink();
-            expect(await composeMail.isComposeEmailTitlePresent('Compose Email')).toBeTruthy('Compose email title missing');
-            expect(await composeMail.isSelectEmailTemplateLinkPresent()).toBeTruthy('SelectEmailTemplateLink is missing');
-            expect(await composeMail.isSendButtonPresent()).toBeTruthy('Send Button is missing');
-            await composeMail.clickOnDiscardButton();
-            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
-            await viewCasePo.clickOnContactPersonerDrpDwn();
-            await viewCasePo.clickOnContactEmail();
-            expect(await composeMail.isComposeEmailTitlePresent('Compose Email')).toBeTruthy('Compose email title missing');
-            expect(await composeMail.isSelectEmailTemplateLinkPresent()).toBeTruthy('SelectEmailTemplateLink is missing');
-            expect(await composeMail.isSendButtonPresent()).toBeTruthy('Send Button is missing');
-        });
-        afterAll(async () => {
-            await utilityCommon.closeAllBlades();
-            await composeMail.clickOnDiscardButton();
-            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
-        });
-    });
+
 });
