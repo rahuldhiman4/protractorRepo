@@ -990,7 +990,7 @@ describe('Notes template', () => {
             expect(await notesTemplateUsage.isTemplatePresent(taskActiveTemplateName)).toBeFalsy();
             expect(await notesTemplateUsage.isTemplatePresent(knowledgeActiveTemplateName)).toBeFalsy();
         });
-            it('[DRDMV-16051,DRDMV-16013]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', async () => {
+        it('[DRDMV-16051,DRDMV-16013]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', async () => {
             expect(await notesTemplateUsage.isTemplatePresent(peopleActiveTemplateName)).toBeFalsy();
             expect(await notesTemplateUsage.isTemplatePresent(caseInactiveTemplateName)).toBeFalsy();
             await notesTemplateUsage.clickOnCancelBtn();
@@ -1018,7 +1018,7 @@ describe('Notes template', () => {
             await navigationPage.gotoQuickCase();
             await navigationPage.gotoPersonProfile();
             await relatedTabPage.addRelatedPerson();
-            await addRelatedPopupPage.addPerson('Qiang Du', 'Parent');
+            await addRelatedPopupPage.addPerson('Qiang Du', 'Manager');
             await relatedTabPage.clickRelatedPersonName('Qiang Du');
             await utilityCommon.switchToNewTab(1);
             await activityTabPo.clickActivityNoteTextBox();
