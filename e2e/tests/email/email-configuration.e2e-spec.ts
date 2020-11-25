@@ -21,23 +21,23 @@ describe('Email Configuration', () => {
     const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
     const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
     let incomingEmail = {
-        'incomingMailBoxName': 'testEmail@gmail.com'
+        'mailBoxName': 'testEmail@gmail.com'
     }
 
     let emailConfig = {
         email: emailID,
-        incomingMailBoxName: incomingEmail.incomingMailBoxName,
+        incomingMailBoxName: incomingEmail.mailBoxName,
     }
 
     let emailConfigFacilities = {
         email: emailID,
-        incomingMailBoxName: incomingEmail.incomingMailBoxName,
+        incomingMailBoxName: incomingEmail.mailBoxName,
         lineOfBusiness: "Facilities"
     }
 
     let differntEmailConfigFacilities = {
         email: "bwfqa2019@gmail.com",
-        incomingMailBoxName: incomingEmail.incomingMailBoxName,
+        incomingMailBoxName: incomingEmail.mailBoxName,
         lineOfBusiness: "Facilities"
     }
 
@@ -49,7 +49,7 @@ describe('Email Configuration', () => {
         await loginPage.login("qkatawazi");
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteAllEmailConfiguration();
-        await apiHelper.createIncomingEmail(incomingEmail);
+        await apiHelper.createEmailBox('incoming',incomingEmail);
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createEmailConfiguration(emailConfig);
         await foundationData("Petramco", "BusinessUnitData10410", "SuppGrpData10410");
@@ -107,7 +107,7 @@ describe('Email Configuration', () => {
             await createEmailConfigPo.selectCompany("Petramco");
             await createEmailConfigPo.setDescription("test ");
             await createEmailConfigPo.selectStatus("Active");
-            await createEmailConfigPo.selectIncomingMailBoxName(incomingEmail.incomingMailBoxName);
+            await createEmailConfigPo.selectIncomingMailBoxName(incomingEmail.mailBoxName);
             await createEmailConfigPo.clickSave();
             expect(await utilCommon.isPopUpMessagePresent("Saved successfully.")).toBeTruthy();
         });
@@ -163,7 +163,7 @@ describe('Email Configuration', () => {
             expect(await utilGrid.isGridRecordPresent(emailID)).toBeFalsy();
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteAllEmailConfiguration();
-            await apiHelper.createIncomingEmail(incomingEmail);
+            await apiHelper.createEmailBox('incoming',incomingEmail);
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createEmailConfiguration(emailConfig);
 
@@ -255,7 +255,7 @@ describe('Email Configuration', () => {
             await loginPage.login('fritz');
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteAllEmailConfiguration();
-            await apiHelper.createIncomingEmail(incomingEmail);
+            await apiHelper.createEmailBox('incoming',incomingEmail);
             await apiHelper.apiLogin('fritz');
             await apiHelper.createEmailConfiguration(emailConfigFacilities);
             await apiHelper.createEmailConfiguration(differntEmailConfigFacilities);
@@ -297,9 +297,9 @@ describe('Email Configuration', () => {
             await loginPage.login('gwixillian');
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteAllEmailConfiguration();
-            await apiHelper.createIncomingEmail(incomingEmail);
+            await apiHelper.createEmailBox('incoming',incomingEmail);
             await apiHelper.apiLogin('gwixillian');
-            await apiHelper.createEmailConfiguration({ "email": "psilon@gmail.com", "incomingMailBoxName": incomingEmail.incomingMailBoxName, "company": "Psilon" });
+            await apiHelper.createEmailConfiguration({ "email": "psilon@gmail.com", "incomingMailBoxName": incomingEmail.mailBoxName, "company": "Psilon" });
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
             await utilGrid.searchAndOpenHyperlink("psilon@gmail.com");
@@ -332,7 +332,7 @@ describe('Email Configuration', () => {
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteAllEmailConfiguration();
-            await apiHelper.createIncomingEmail(incomingEmail);
+            await apiHelper.createEmailBox('incoming',incomingEmail);
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createEmailConfiguration(emailConfig);
         });
@@ -372,7 +372,7 @@ describe('Email Configuration', () => {
             await loginPage.login('fritz');
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteAllEmailConfiguration();
-            await apiHelper.createIncomingEmail(incomingEmail);
+            await apiHelper.createEmailBox('incoming',incomingEmail);
             await apiHelper.apiLogin('fritz');
             await apiHelper.createEmailConfiguration(emailConfigFacilities);
         });
@@ -395,9 +395,9 @@ describe('Email Configuration', () => {
             await loginPage.login('gwixillian');
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteAllEmailConfiguration();
-            await apiHelper.createIncomingEmail(incomingEmail);
+            await apiHelper.createEmailBox('incoming',incomingEmail);
             await apiHelper.apiLogin('gwixillian');
-            await apiHelper.createEmailConfiguration({ "email": "psilon@gmail.com", "incomingMailBoxName": incomingEmail.incomingMailBoxName, "company": "Psilon" });
+            await apiHelper.createEmailConfiguration({ "email": "psilon@gmail.com", "incomingMailBoxName": incomingEmail.mailBoxName, "company": "Psilon" });
 
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
@@ -412,7 +412,7 @@ describe('Email Configuration', () => {
             await loginPage.login('qkatawazi');
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteAllEmailConfiguration();
-            await apiHelper.createIncomingEmail();
+            await apiHelper.createEmailBox('incoming');
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createEmailConfiguration(emailConfig);
         });
