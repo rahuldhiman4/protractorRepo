@@ -1331,7 +1331,7 @@ describe("Attachment", () => {
             await consoleCasetemplatePo.searchAndClickOnCaseTemplate(caseTempateName);
             await viewCasetemplatePo.clickOnEditCaseTemplateButton();
             await editCasetemplatePo.clickOnMangeDyanmicLink();
-            await browser.sleep(5000); // Wait for attach elements gets load.
+            await browser.sleep(3000); // Wait for attach elements gets load.
             await dynamicFieldsPo.addAttachment([`../../data/ui/attachment/${fileName5}`], 1);
             await dynamicFieldsPo.addAttachment([`../../data/ui/attachment/${fileName6}`], 2);
             await dynamicFieldsPo.addAttachment([`../../data/ui/attachment/${fileName7}`], 3);

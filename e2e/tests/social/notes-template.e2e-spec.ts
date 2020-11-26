@@ -328,15 +328,7 @@ describe('Notes template', () => {
 
     //ptidke
     describe('[DRDMV-16040]: [Run Time] Verify that case BA is able to consume more than one Enabled case notes templates on case (one at a time can post)', async () => {
-        let newCase;
-        let notesTemplateName: string;
-        let notesTemplateName1: string;
-        let notesTemplateBody: string;
-        let notesTemplateBody1: string;
-        let notesTemplateName2: string;
-        let notesTemplateBody2: string;
-        let notesTemplateName3: string;
-        let notesTemplateBody3: string;
+        let newCase, notesTemplateName, notesTemplateName1, notesTemplateBody, notesTemplateBody1, notesTemplateName2, notesTemplateBody2, notesTemplateName3, notesTemplateBody3;
         beforeAll(async () => {
         //task template 1
         await apiHelper.apiLogin('tadmin');
