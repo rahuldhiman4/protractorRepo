@@ -182,7 +182,7 @@ describe('Document Library Consume UI', () => {
             await caseConsolePo.searchAndOpenCase(caseId);
             expect(await viewCasePo.getCaseID()).toBe(caseId, 'Case Id is missing');
             expect(await viewCasePo.isAttachedDocumentPresent(' bwfJpg.jpg')).toBeTruthy('FailuerMsg2: Attached Document is missing');
-            expect(await viewCasePo.isAttachedDocumentPresent(' bwfPdf.pdf')).toBeFalsy('FailuerMsg3: Attached Document is displyaed');
+            expect(await viewCasePo.isAttachedDocumentPresent(' bwfPdf.pdf')).toBeTruthy('FailuerMsg3: Attached Document is displyaed');
             expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg4: File is delete sucessfully');
             await viewCasePo.clickOnAttachedDocumentFile('bwfJpg.jpg');
             expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailuerMsg5: File is not downloaded.');
