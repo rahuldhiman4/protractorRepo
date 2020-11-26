@@ -350,10 +350,10 @@ export class GridOperations {
                 break;
             }
         }
+        await $(refreshIcon).click();
+
         if(hiddentFilter == true){
             await $('.adapt-table-toolbar-hidden-items-dropdown .d-icon-ellipsis').click();
-        }else{
-            await $(refreshIcon).click();
         }
     }
 
