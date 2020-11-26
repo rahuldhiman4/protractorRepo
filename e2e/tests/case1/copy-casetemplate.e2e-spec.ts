@@ -952,7 +952,7 @@ describe('Copy Case Template', () => {
             await copyCaseTemplate.clickSaveCaseTemplate();
             await utilCommon.closePopUpMessage();
             await viewCasetemplatePo.clickOnTaskBox(automatedtemplateData.templateName);
-            expect(await previewTaskTemplateCasesPo.getTaskTemplateName()).toBe(automatedtemplateData.templateName);
+            expect(await previewTaskTemplateCasesPo.getTaskSummary()).toBe(automatedtemplateData.templateSummary);
             expect(await previewTaskTemplateCasesPo.getTaskCompany()).toBe('Psilon');
             await previewTaskTemplateCasesPo.clickOnBackButton();
             await navigationPage.gotoSettingsPage();
@@ -1019,7 +1019,6 @@ describe('Copy Case Template', () => {
             await createCaseTemplate.clickSaveCaseTemplate();
             expect(await viewCasetemplatePo.getCategoryTier4()).toBe(caseTemplateData.categoryTier4);
             expect(await viewCasetemplatePo.getLabelValue()).toBe(label);
-            await utilCommon.clickOnBackArrow();
 
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');

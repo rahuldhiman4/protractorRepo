@@ -327,37 +327,39 @@ describe('Notes template', () => {
     });
 
     //ptidke
-    it('[DRDMV-16040]: [Run Time] Verify that case BA is able to consume more than one Enabled case notes templates on case (one at a time can post)', async () => {
+    describe('[DRDMV-16040]: [Run Time] Verify that case BA is able to consume more than one Enabled case notes templates on case (one at a time can post)', async () => {
+        let newCase, notesTemplateName, notesTemplateName1, notesTemplateBody, notesTemplateBody1, notesTemplateName2, notesTemplateBody2, notesTemplateName3, notesTemplateBody3;
+        beforeAll(async () => {
         //task template 1
         await apiHelper.apiLogin('tadmin');
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let tempNotesTemplateData1 = cloneDeep(notesTemplateData.NOTES_TEMPLATE_MANDATORY_FIELD);
-        let notesTemplateName: string = tempNotesTemplateData1.templateName + randomStr;
-        let notesTemplateBody: string = tempNotesTemplateData1.body + randomStr;
+        notesTemplateName = tempNotesTemplateData1.templateName + randomStr;
+        notesTemplateBody = tempNotesTemplateData1.body + randomStr;
         tempNotesTemplateData1.body = notesTemplateBody;
         tempNotesTemplateData1.templateName = notesTemplateName;
         await apiHelper.createNotesTemplate("Case", tempNotesTemplateData1);
         //task template 2
         let randomStr1 = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let tempNotesTemplateData2 = cloneDeep(notesTemplateData.NOTES_TEMPLATE_MANDATORY_FIELD);
-        let notesTemplateName1: string = tempNotesTemplateData2.templateName + randomStr1;
-        let notesTemplateBody1: string = tempNotesTemplateData2.body + randomStr1;
+        notesTemplateName1 = tempNotesTemplateData2.templateName + randomStr1;
+        notesTemplateBody1 = tempNotesTemplateData2.body + randomStr1;
         tempNotesTemplateData2.body = notesTemplateBody1;
         tempNotesTemplateData2.templateName = notesTemplateName1;
         await apiHelper.createNotesTemplate("Case", tempNotesTemplateData2);
         //task template 3
         let randomStr2 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let tempNotesTemplateData3 = cloneDeep(notesTemplateData.NOTES_TEMPLATE_MANDATORY_FIELD);
-        let notesTemplateName2: string = tempNotesTemplateData3.templateName + randomStr2;
-        let notesTemplateBody2: string = tempNotesTemplateData3.body + randomStr2;
+        notesTemplateName2 = tempNotesTemplateData3.templateName + randomStr2;
+        notesTemplateBody2 = tempNotesTemplateData3.body + randomStr2;
         tempNotesTemplateData3.body = notesTemplateBody2;
         tempNotesTemplateData3.templateName = notesTemplateName2;
         await apiHelper.createNotesTemplate("Case", tempNotesTemplateData3);
         //task template 4
         let randomStr3 = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let tempNotesTemplateData4 = cloneDeep(notesTemplateData.NOTES_TEMPLATE_MANDATORY_FIELD);
-        let notesTemplateName3: string = tempNotesTemplateData4.templateName + randomStr3;
-        let notesTemplateBody3: string = tempNotesTemplateData4.body + randomStr3;
+        notesTemplateName3 = tempNotesTemplateData4.templateName + randomStr3;
+        notesTemplateBody3 = tempNotesTemplateData4.body + randomStr3;
         tempNotesTemplateData4.body = notesTemplateBody3;
         tempNotesTemplateData4.templateName = notesTemplateName3;
         await apiHelper.createNotesTemplate("Case", tempNotesTemplateData4);
@@ -369,22 +371,31 @@ describe('Notes template', () => {
             "Support Group": "Compensation and Benefits"
         };
         await apiHelper.apiLogin('qtao');
-        let newCase = await apiHelper.createCase(caseData);
+        newCase = await apiHelper.createCase(caseData);
+    });
+
+    it('[DRDMV-16045]: [Run Time] Verify that case BA is able to consume more than one Enabled case notes templates on case (one at a time can post)', async () => {
         await navigationPage.gotoCaseConsole();
         await utilityGrid.searchAndOpenHyperlink(newCase.displayId);
+        
         await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(notesTemplateName);
         await activityTabPo.clickOnPostButton();
         expect(await activityTabPo.isTextPresentInNote(notesTemplateBody)).toBeTruthy();
+        
         await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(notesTemplateName1);
         await activityTabPo.clickOnPostButton();
         expect(await activityTabPo.isTextPresentInNote(notesTemplateBody1)).toBeTruthy();
+    });
+    it('[DRDMV-16045]: [Run Time] Verify that case BA is able to consume more than one Enabled case notes templates on case (one at a time can post)', async () => {
         await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(notesTemplateName2);
         await activityTabPo.clickOnPostButton();
         expect(await activityTabPo.isTextPresentInNote(notesTemplateBody2)).toBeTruthy();
+        
         await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(notesTemplateName3);
         await activityTabPo.clickOnPostButton();
         expect(await activityTabPo.isTextPresentInNote(notesTemplateBody3)).toBeTruthy();
     });
+});
 
     //ptidke
     describe('[DRDMV-16578]: Consume People Notes Template in People profile', async () => {
@@ -990,7 +1001,7 @@ describe('Notes template', () => {
             expect(await notesTemplateUsage.isTemplatePresent(taskActiveTemplateName)).toBeFalsy();
             expect(await notesTemplateUsage.isTemplatePresent(knowledgeActiveTemplateName)).toBeFalsy();
         });
-            it('[DRDMV-16051,DRDMV-16013]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', async () => {
+        it('[DRDMV-16051,DRDMV-16013]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', async () => {
             expect(await notesTemplateUsage.isTemplatePresent(peopleActiveTemplateName)).toBeFalsy();
             expect(await notesTemplateUsage.isTemplatePresent(caseInactiveTemplateName)).toBeFalsy();
             await notesTemplateUsage.clickOnCancelBtn();
@@ -1018,7 +1029,7 @@ describe('Notes template', () => {
             await navigationPage.gotoQuickCase();
             await navigationPage.gotoPersonProfile();
             await relatedTabPage.addRelatedPerson();
-            await addRelatedPopupPage.addPerson('Qiang Du', 'Parent');
+            await addRelatedPopupPage.addPerson('Qiang Du', 'Manager');
             await relatedTabPage.clickRelatedPersonName('Qiang Du');
             await utilityCommon.switchToNewTab(1);
             await activityTabPo.clickActivityNoteTextBox();

@@ -59,7 +59,7 @@ describe('Case Watchlist', () => {
             await apiHelper.apiLogin(qtaoStr);
             let caseId: string[] = [];
             let caseDataForTest = caseData['caseWatchlist'];
-            caseDataForTest.Summary = "Watchlist Test DRDMV-15985";
+            caseDataForTest.Summary = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('') + "Watchlist Test DRDMV-15985";
             for (let i: number = 0; i < 3; i++) {
                 let response = await apiHelper.createCase(caseDataForTest);
                 caseId[i] = response.displayId;
@@ -90,7 +90,7 @@ describe('Case Watchlist', () => {
         try {
             await apiHelper.apiLogin(qtaoStr);
             let caseDataForTest = caseData['caseWatchlist'];
-            caseDataForTest.Summary = "Watchlist Test DRDMV-16015";
+            caseDataForTest.Summary = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('') + "Watchlist Test DRDMV-16015";
             let caseId: string[] = [];
             for (let i: number = 0; i < 3; i++) {
                 let response = await apiHelper.createCase(caseDataForTest);
@@ -125,7 +125,7 @@ describe('Case Watchlist', () => {
             await apiHelper.apiLogin(qtaoStr);
             let caseId: string[] = [];
             let caseDataForTest = caseData['caseWatchlist'];
-            caseDataForTest.Summary = "Watchlist Test DRDMV-16017";
+            caseDataForTest.Summary = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('') + "Watchlist Test DRDMV-16017";
 
             for (let i: number = 0; i < 3; i++) {
                 let response = await apiHelper.createCase(caseDataForTest);
@@ -174,7 +174,7 @@ describe('Case Watchlist', () => {
             await apiHelper.apiLogin(qtaoStr);
             let caseId: string[] = [];
             let caseDataForTest = caseData['caseWatchlist'];
-            caseDataForTest.Summary = "Watchlist Test DRDMV-16019";
+            caseDataForTest.Summary = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('') + "Watchlist Test DRDMV-16019";
             let response = await apiHelper.createCase(caseDataForTest);
             caseId[0] = response.displayId;
             for (let i: number = 1; i < 4; i++) {
@@ -207,7 +207,7 @@ describe('Case Watchlist', () => {
             await apiHelper.apiLogin(qtaoStr);
             let caseId: string[] = [];
             let caseDataForTest = caseData['caseWatchlist_Resolved'];
-            caseDataForTest.Summary = "Watchlist Test DRDMV-16043" + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            caseDataForTest.Summary = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('') + "Watchlist Test DRDMV-16043";
 
             for (let i: number = 0; i < 2; i++) {
                 let response = await apiHelper.createCase(caseDataForTest);
@@ -238,7 +238,7 @@ describe('Case Watchlist', () => {
 
     describe('[DRDMV-16020]: Verify that all the Case Agents having read only access can follow/unfollow the cases', async () => {
         let caseDataForTest = caseData['caseWatchlist'];
-        caseDataForTest.Summary = "Watchlist Test DRDMV-16020";
+        caseDataForTest.Summary = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('') + "Watchlist Test DRDMV-16020";
         let caseId, caseGuid;
         beforeAll(async () => {
             await apiHelper.apiLogin(qtaoStr);
@@ -342,7 +342,7 @@ describe('Case Watchlist', () => {
             await apiHelper.apiLogin(qtaoStr);
             //Create case
             let caseDataForTest = caseData['caseWatchlist'];
-            caseDataForTest.Summary = "Watchlist Test DRDMV-16033"
+            caseDataForTest.Summary = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('') + "Watchlist Test DRDMV-16033";
             let response = await apiHelper.createCase(caseDataForTest);
             let caseId = response.displayId;
             await navigationPage.gotoCaseConsole();
@@ -397,7 +397,7 @@ describe('Case Watchlist', () => {
             await apiHelper.apiLogin(qfengStr);
             let caseId: string[] = [];
             let caseDataForTest = caseData['caseWatchlist'];
-            caseDataForTest.Summary = "Watchlist Test DRDMV-16029";
+            caseDataForTest.Summary = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('') + "Watchlist Test DRDMV-16029";
             for (let i: number = 0; i < 3; i++) {
                 let response = await apiHelper.createCase(caseDataForTest);
                 caseId[i] = response.displayId;
@@ -460,7 +460,7 @@ describe('Case Watchlist', () => {
     it('[DRDMV-16044,DRDMV-16060]: Verify the position, Labels and * icon on Case console, Case and Watchlist modal', async () => {
         await apiHelper.apiLogin(qfengStr);
         let caseDataForTest = caseData['caseWatchlist'];
-        caseDataForTest.Summary = "Watchlist Test DRDMV-16060";
+        caseDataForTest.Summary = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('') + "Watchlist Test DRDMV-16060";
         let response = await apiHelper.createCase(caseDataForTest);
         let caseId = response.displayId;
         try {
@@ -502,7 +502,7 @@ describe('Case Watchlist', () => {
     it('[DRDMV-16554]: Verify that Agent can Follow and Unfollow the Case Group Assignment from Case Edit', async () => {
         await apiHelper.apiLogin(qfengStr);
         let caseDataForTest = caseData['caseWatchlist'];
-        caseDataForTest.Summary = "Watchlist Test DRDMV-16554";
+        caseDataForTest.Summary = "Watchlist Test DRDMV-16554" + [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let response = await apiHelper.createCase(caseDataForTest);
         let caseId = response.displayId;
         try {
@@ -558,7 +558,7 @@ describe('Case Watchlist', () => {
         it('[DRDMV-16555]: Verify that Agent can Follow and Unfollow the Case Group Assignment from Case Console', async () => {
             await apiHelper.apiLogin(qfengStr);
             let caseDataForTest = caseData['caseWatchlist'];
-            caseDataForTest.Summary = "Watchlist Test DRDMV-16555";
+            caseDataForTest.Summary =  [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('') + "Watchlist Test DRDMV-16555";
             let response = await apiHelper.createCase(caseDataForTest);
             caseId = response.displayId;
             await navigationPage.gotoCaseConsole();
@@ -613,7 +613,7 @@ describe('Case Watchlist', () => {
         await apiHelper.apiLogin(qtaoStr);
 
         let caseDataForTest = caseData['caseWatchlist_2'];
-        caseDataForTest.Summary = "Watchlist Test DRDMV-16556";
+        caseDataForTest.Summary = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('') + "Watchlist Test DRDMV-16556";
         let response = await apiHelper.createCase(caseDataForTest);
         let caseId = response.displayId;
         let caseGuid = response.id;
@@ -687,7 +687,7 @@ describe('Case Watchlist', () => {
     it('[DRDMV-16557]: Verify that Agent can update(add) Case group Assignment for any of the existing Watched case', async () => {
         await apiHelper.apiLogin(qfengStr);
         let caseDataForTest = caseData['caseWatchlist_1'];
-        caseDataForTest.Summary = "Watchlist Test DRDMV-16557";
+        caseDataForTest.Summary = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('') + "Watchlist Test DRDMV-16557";
         let response = await apiHelper.createCase(caseDataForTest);
         let caseId = response.displayId;
         let caseGuid = response.id;
@@ -768,7 +768,7 @@ describe('Case Watchlist', () => {
     it('[DRDMV-16062]: Verify that user add the watch from Case Console and remove the watch from Case then it should reflect', async () => {
         await apiHelper.apiLogin(qfengStr);
         let caseDataForTest = caseData['caseWatchlist'];
-        caseDataForTest.Summary = "Watchlist Test DRDMV-16062";
+        caseDataForTest.Summary = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('') + "Watchlist Test DRDMV-16062";
         let response = await apiHelper.createCase(caseDataForTest);
         let caseId = response.displayId;
         try {
@@ -831,7 +831,7 @@ describe('Case Watchlist', () => {
 
     describe('[DRDMV-16061]: Verify that once user add the cases to watchlist from case console then they are still available in Case console and Agent could add them again without any error', async () => {
         let caseDataForTest = caseData['caseWatchlist'];
-        caseDataForTest.Summary = "Watchlist Test DRDMV-16061";
+        caseDataForTest.Summary = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('') + "Watchlist Test DRDMV-16061";
         let caseId: string[] = [];
         beforeAll(async () => {
             await apiHelper.apiLogin(qtaoStr);
@@ -876,7 +876,7 @@ describe('Case Watchlist', () => {
     it('[DRDMV-16059]: Verify that Save and Close buttons on Event Add are working correctly', async () => {
         await apiHelper.apiLogin(qtaoStr);
         let caseDataForTest = caseData['caseWatchlist'];
-        caseDataForTest.Summary = "Watchlist Test DRDMV-16059" + [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');;
+        caseDataForTest.Summary = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('') + "Watchlist Test DRDMV-16059";
         let response = await apiHelper.createCase(caseDataForTest);
         let caseId = response.displayId;
         try {
@@ -908,7 +908,7 @@ describe('Case Watchlist', () => {
 
     describe('[DRDMV-16058]: Verify if Agent is added to Watchlist and later his read access is removed', async () => {
         let caseDataForTest = caseData['caseWatchlist'];
-        caseDataForTest.Summary = "Watchlist Test DRDMV-16058";
+        caseDataForTest.Summary = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('') + "Watchlist Test DRDMV-16058";
         let caseId, caseGuid;
         beforeAll(async () => {
             await apiHelper.apiLogin(qtaoStr);
@@ -1001,7 +1001,7 @@ describe('Case Watchlist', () => {
 
     describe('[DRDMV-16055]: Verify that user can edit the access from watchlist and it reflects(Assignment only to Assignment and Status', async () => {
         let caseDataForTest = caseData['caseWatchlist'];
-        caseDataForTest.Summary = "Watchlist Test DRDMV-16055";
+        caseDataForTest.Summary = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('') + "Watchlist Test DRDMV-16055";
         let caseId: string[] = [];
         let caseGuid: string[] = [];
         beforeAll(async () => {
@@ -1099,7 +1099,7 @@ describe('Case Watchlist', () => {
         let caseId: string[] = [];
         let caseGuid: string[] = [];
         let caseDataForTest = caseData['caseWatchlist'];
-        caseDataForTest.Summary = "Watchlist Test DRDMV-16052";
+        caseDataForTest.Summary = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('') + "Watchlist Test DRDMV-16052";
         beforeAll(async () => {
             await apiHelper.apiLogin(qtaoStr);
             for (let i: number = 0; i < 2; i++) {
@@ -1193,7 +1193,7 @@ describe('Case Watchlist', () => {
 
     describe('[DRDMV-16050]: Verify that write access Agent can add the case to watchlist from Case', async () => {
         let caseDataForTest = caseData['caseWatchlist'];
-        caseDataForTest.Summary = "Watchlist Test DRDMV-16050";
+        caseDataForTest.Summary = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('') + "Watchlist Test DRDMV-16050";
         let caseId;
         beforeAll(async () => {
             await apiHelper.apiLogin(qtaoStr);
@@ -1252,7 +1252,7 @@ describe('Case Watchlist', () => {
         beforeAll(async () => {
             await apiHelper.apiLogin(qtaoStr);
             let caseDataForTest = caseData['caseWatchlist'];
-            caseDataForTest.Summary = "Watchlist Test DRDMV-16041";
+            caseDataForTest.Summary = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('') + "Watchlist Test DRDMV-16041";
             let response = await apiHelper.createCase(caseDataForTest);
             caseId = response.displayId;
             let caseGuid = response.id;

@@ -211,7 +211,7 @@ describe('Case Bulk Operation', () => {
                 await apiHelper.updateCaseAccess(caseGuid[i], caseReadAccessDataFeng);
             }
             await caseConsolePage.clickOnChangeAssignmentButton();
-            await changeAssignmentBladePo.setAssignee(petramcoStr, "Facilities Support", "Facilities", "Franz Schwarz");
+            await changeAssignmentBladePo.setAssignee(petramcoStr, unitedStateSupportStr, 'US Support 1', "Qianru Tao");
             expect(await utilityCommon.isPopUpMessagePresent('The selected case(s) have been successfully assigned.', 3)).toBeTruthy();
             await utilityCommon.closePopUpMessage();
             await utilityCommon.closePopUpMessage();
@@ -220,11 +220,11 @@ describe('Case Bulk Operation', () => {
                 expect(await activityPo.isTextPresentInActivityLog("Qiao Feng")).toBeTruthy("Text is not present in activiy tab1");
                 expect(await activityPo.isTextPresentInActivityLog("changed the following case fields")).toBeTruthy("Text is not present in activiy tab2");
                 expect(await activityPo.isTextPresentInActivityLog("Assignee")).toBeTruthy("Text is not present in activiy tab");
-                expect(await activityPo.isTextPresentInActivityLog("Franz Schwarz")).toBeTruthy("Text is not present in activiy tab4");
+                expect(await activityPo.isTextPresentInActivityLog("Qianru Tao")).toBeTruthy("Text is not present in activiy tab4");
                 await activityPo.applyActivityFilter("Assignment Change");
                 await activityPo.clickShowMoreLinkInActivity(1);
                 expect(await activityPo.isTextPresentInActivityLog("Assigned Group")).toBeTruthy("Text is not present in activiy tab5");
-                expect(await activityPo.isTextPresentInActivityLog("Facilities")).toBeTruthy("Text is not present in activiy tab6");
+                expect(await activityPo.isTextPresentInActivityLog('US Support 1')).toBeTruthy("Text is not present in activiy tab6");
                 await navigationPage.gotoCaseConsole();
             }
         });

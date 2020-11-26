@@ -164,7 +164,7 @@ describe('Person Profile test', () => {
         }
     });
 
-    //asahitya check
+    //asahitya
     it('[DRDMV-16806]: Person profile display for person from activity/history tab', async () => {
         await apiHelper.apiLogin('tadmin');
         await apiHelper.updateFoundationEntity('Person', 'qfeng', { vipStatus: 'Yes' });
@@ -218,7 +218,7 @@ describe('Person Profile test', () => {
             await navigationPage.signOut();
             await loginPage.login('qtao');
             await navigationPage.gotoPersonProfile();
-            expect(await relatedTabPage.isRelatedPersonPresent('Qiao Feng')).toBeFalsy('Qiao Feng is available in Related tab');
+            expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Qiao Feng', 'Former Reportee')).toBeFalsy('Relationship does not match');
         }
         catch (ex) { throw ex; }
         finally {
@@ -289,7 +289,7 @@ describe('Person Profile test', () => {
         it('[DRDMV-16802]: Person profile display for non Agent Contact', async () => {
             //Modify the Person to Person relationship
             await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
+            await loginPage.login('tadmin');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Relationships--Person to Person', 'Person To Person Relationship console - Business Workflows');
             await relationshipsConfigsPage.setRelationshipName('Former Manager', 'relation updated');
@@ -599,6 +599,8 @@ describe('Person Profile test', () => {
     describe('[DRDMV-16815]: Configuration - person-to-person relationship', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         it('[DRDMV-16815]: Configuration - person-to-person relationship', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('tadmin');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Relationships--Person to Person', 'Person To Person Relationship console - Business Workflows');
 
@@ -624,6 +626,8 @@ describe('Person Profile test', () => {
             await relationshipsConfigsPage.saveConfig();
 
             //Verify the Relationship type reflected to Add Relationships
+            await navigationPage.signOut();
+            await loginPage.login('elizabeth');
             await navigationPage.gotoPersonProfile();
             await relatedTabPage.addRelatedPerson();
             await addRelatedPopupPage.addPerson('Fabian Krause', `DRDMV-14186 Rname ${randomStr}`);
@@ -641,6 +645,8 @@ describe('Person Profile test', () => {
 
         it('[DRDMV-16815]: Configuration - person-to-person relationship', async () => {
             //Verify the Relationship Type with Inactive status
+            await navigationPage.signOut();
+            await loginPage.login('tadmin');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Relationships--Person to Person', 'Person To Person Relationship console - Business Workflows');
             await relationshipsConfigsPage.clickAddRelationshipButton();
@@ -648,6 +654,8 @@ describe('Person Profile test', () => {
             await relationshipsConfigsPage.setNewReverseRelationshipName(`DRDMV-14186 RRname Inacitve ${randomStr}`);
             await relationshipsConfigsPage.setNewRelationshipStatus('Inactive');
             await relationshipsConfigsPage.saveConfig();
+            await navigationPage.signOut();
+            await loginPage.login('elizabeth');
             await navigationPage.gotoPersonProfile();
             await relatedTabPage.addRelatedPerson();
             await addRelatedPopupPage.searchAndSelectPerson('Qing Yuan');
@@ -655,6 +663,8 @@ describe('Person Profile test', () => {
             expect(await addRelatedPopupPage.isRelationshipPresentInDropdown(`DRDMV-14186 Rname Inactive ${randomStr}`)).toBeFalsy();
             await utilityCommon.closeAllBlades();
 
+            await navigationPage.signOut();
+            await loginPage.login('tadmin');
             //Verify the Relationship Type with Deprecated status
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Relationships--Person to Person', 'Person To Person Relationship console - Business Workflows');
@@ -663,13 +673,18 @@ describe('Person Profile test', () => {
             await relationshipsConfigsPage.setNewReverseRelationshipName(`DRDMV-14186 RRname Deprecated ${randomStr}`);
             await relationshipsConfigsPage.setNewRelationshipStatus('Deprecated');
             await relationshipsConfigsPage.saveConfig();
-
+            await navigationPage.signOut();
+            await loginPage.login('elizabeth');
             await navigationPage.gotoPersonProfile();
             await relatedTabPage.addRelatedPerson();
             await addRelatedPopupPage.searchAndSelectPerson('Qing Yuan');
             await addRelatedPopupPage.clickNextButton();
             expect(await addRelatedPopupPage.isRelationshipPresentInDropdown(`DRDMV-14186 Rname Deprecated ${randomStr}`)).toBeFalsy();
             await utilityCommon.closeAllBlades();
+        });
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('elizabeth');
         });
     });
 

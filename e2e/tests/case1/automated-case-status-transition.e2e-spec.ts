@@ -93,7 +93,6 @@ describe('Automated Case Status Transition', () => {
             //Create first Record
             configName1 = AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.name = 'ConfigName1' + randomStr;
             AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.changeStatusAfter = Math.floor(Math.random() * 180) + 1;
-            await utilGrid.selectLineOfBusiness("Human Resource");
             await automatedStatusTransitionConsole.clickAddAutomatedStatusTransitionBtn();
             await automatedStatusTransitionCreatePage.createAutomatedStatusTransition(AUTO_STATUS_TRANSITION_MANDATORY_FIELDS);
 
@@ -106,7 +105,7 @@ describe('Automated Case Status Transition', () => {
         });
         it('[DRDMV-17553]: Search and presence of existing rule test', async () => {
             await navigationPage.signOut();
-            await loginPage.login('qdu');
+            await loginPage.login('frieda');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', 'Configure Automated Status Transitions - Business Workflows');
             expect(await automatedStatusTransitionConsole.isAddAutomatedStatusTransitionBtnPresent()).toBeFalsy('Add button is available');
