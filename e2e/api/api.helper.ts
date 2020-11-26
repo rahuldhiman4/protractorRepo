@@ -72,12 +72,9 @@ class ApiHelper {
 
     async apiLogin(userName: string, password?: string): Promise<void> {
         let credentials = await loginPage.getCredentials(userName, password);
-        let uname = undefined;
-        if(userName == 'sasadmin') uname = credentials.user;
-        else uname = credentials.user + '@petramco.com';
         let response = await axios.post(
             "api/rx/authentication/loginrequest",
-            { "userName": uname, "password": credentials.pass },
+            { "userName": credentials.user, "password": credentials.pass },
         )
         console.log('Login API Status of ' + credentials.user + ' =============>', response.status);
         axios.defaults.headers.common['Cookie'] = `AR-JWT=${response.data}`;
@@ -85,9 +82,6 @@ class ApiHelper {
 
     async createCase(data: ICreateCase): Promise<IIDs> {
         let caseData = cloneDeep(data);
-        if(caseData.Requester) caseData.Requester = caseData.Requester + '@petramco.com';
-        if(caseData.Contact) caseData.Contact = caseData.Contact + '@petramco.com';
-        if(caseData.Assignee) caseData.Assignee = caseData.Assignee + '@petramco.com';
         const newCase = await axios.post(
             "api/com.bmc.dsm.case-lib/cases",
             caseData
@@ -971,7 +965,7 @@ class ApiHelper {
             let userData = cloneDeep(NEW_USER);
             userData.fieldInstances[1000000019].value = data.firstName;
             userData.fieldInstances[1000000018].value = data.lastName;
-            userData.fieldInstances[4].value = data.userId + '@petramco.com';
+            userData.fieldInstances[4].value = data.userId;
             let functionalRolesGuidArray: string[] = [];
             let functionalRolesGuid: string;
             if (data.userPermission) {
@@ -1732,7 +1726,7 @@ class ApiHelper {
         caseAccessData.processInputValues['Type'] = data.type;
         caseAccessData.processInputValues['Operation'] = data.operation;
         caseAccessData.processInputValues['Security Type'] = data.security;
-        caseAccessData.processInputValues['Value'] = data.username + '@petramco.com';
+        caseAccessData.processInputValues['Value'] = data.username;
         const updateCaseAccess = await axios.post(
             commandUri,
             caseAccessData
@@ -2064,7 +2058,7 @@ class ApiHelper {
                 if (data.functionalRole) {
                     jsonBody = cloneDeep(UPDATE_PERSON);
                     jsonBody.id = recordGUID;
-                    let currentUserRoles: string = await apiCoreUtil.getPersonFunctionalRoles(entityName + '@petramco.com');
+                    let currentUserRoles: string = await apiCoreUtil.getPersonFunctionalRoles(entityName);
                     let newUserRoles: string = currentUserRoles + ';' + constants.FunctionalRoleGuid[data.functionalRole]
                     let updateFunctionalRolePayload = {
                         "id": "430000002",
@@ -2287,7 +2281,7 @@ class ApiHelper {
         approvalAction.commands[0].command = action;
         approvalAction.commands[0].requestID = await apiCoreUtil.getSignatureInstanceId(recordGuid);
         if (assignee) {
-            approvalAction.commands[0]["assignToApprovers"] = assignee + '@petramco.com';
+            approvalAction.commands[0]["assignToApprovers"] = assignee;
         }
 
         await browser.sleep(20000);
@@ -2356,7 +2350,7 @@ class ApiHelper {
                     approvalFlowRecordDefinition = "com.bmc.dsm.case-lib:Case";
                     approvalFlow = cloneDeep(CASE_APPROVAL_FLOW);
                     approvalFlow.approvalFlowConfigurationList[0].flowName = data.flowName;
-                    approvalFlow.approvalFlowConfigurationList[0].approvers = 'U:' + data.approver + '@petramco.com';
+                    approvalFlow.approvalFlowConfigurationList[0].approvers = 'U:' + data.approver;
                     approvalFlow.approvalFlowConfigurationList[0].qualification = data.qualification;
                     break;
                 }
@@ -2365,7 +2359,7 @@ class ApiHelper {
                     approvalFlowRecordDefinition = "com.bmc.dsm.knowledge:Knowledge Article Template";
                     approvalFlow = cloneDeep(KNOWLEDGE_APPROVAL_FLOW_CONFIG);
                     approvalFlow.approvalFlowConfigurationList[0].flowName = data.flowName;
-                    approvalFlow.approvalFlowConfigurationList[0].approvers = 'U:' + data.approver + '@petramco.com';
+                    approvalFlow.approvalFlowConfigurationList[0].approvers = 'U:' + data.approver;
                     approvalFlow.approvalFlowConfigurationList[0].qualification = data.qualification;
                     break;
                 }
@@ -2374,10 +2368,10 @@ class ApiHelper {
                     approvalFlowRecordDefinition = "com.bmc.dsm.task-lib:Task";
                     approvalFlow = cloneDeep(TASK_APPROVAL_FLOW);
                     approvalFlow.approvalFlowConfigurationList[0].flowName = data.flowName;
-                    approvalFlow.approvalFlowConfigurationList[0].approvers = data.approver + '@petramco.com';
+                    approvalFlow.approvalFlowConfigurationList[0].approvers = data.approver;
                     approvalFlow.approvalFlowConfigurationList[0].qualification = data.qualification;
                     if (data.approver) {
-                        approvalFlow.approvalFlowConfigurationList[0].approvers = data.approver + '@petramco.com';
+                        approvalFlow.approvalFlowConfigurationList[0].approvers = data.approver;
                     }
 
                     if (data.isLevelUp) {
@@ -2548,7 +2542,7 @@ class ApiHelper {
     async sendApprovalQuestions(recordGuid: string, user: string, questions: string, caseId: string): Promise<boolean> {
         let signatureId = await apiCoreUtil.getSignatureId(recordGuid);
         let formData = {
-            to: user + '@petramco.com',
+            to: user,
             question: questions,
             application: 'com.bmc.dsm.case-lib:Case',
             applicationRequestId: caseId,
