@@ -444,7 +444,7 @@ describe('Conditional Task Life Cycle', () => {
 
         it('[DRDMV-15000]: [Task] - Adhoc task in Case with multiple Series and parallel tasks with condition', async () => {
             //Get taskguid of External and Manual Task
-            await apiHelper.apiLogin('tadmin');
+            await apiHelper.apiLogin('fritz');
             let manualTaskGuid = await coreApi.getTaskGuid(manualTaskTemplateData.templateSummary);
             let externalTaskGuid = await coreApi.getTaskGuid(externalTaskTemplateData.templateSummary);
 
@@ -666,7 +666,7 @@ describe('Conditional Task Life Cycle', () => {
             expect(await viewCasePage.isAllTaskUnderStatusTitleMatches('Upcoming Tasks', [manualTaskTemplateData1.templateSummary, externalTaskTemplateData1.templateSummary, automatedTaskTemplateData1.templateSummary])).toBeTruthy();
 
             await apiHelper.updateCaseStatus(caseResponse1.id, 'InProgress');
-            await apiHelper.apiLogin('tadmin');
+            await apiHelper.apiLogin('fritz');
             let manualTaskGuid = await coreApi.getTaskGuid(manualTaskTemplateData1.templateSummary);
             let externalTaskGuid = await coreApi.getTaskGuid(externalTaskTemplateData1.templateSummary);
 
@@ -712,7 +712,7 @@ describe('Conditional Task Life Cycle', () => {
 
             expect(await viewCasePage.isAllTaskUnderStatusTitleMatches('In Progress Tasks', [manualTaskTemplateData2.templateSummary, externalTaskTemplateData2.templateSummary])).toBeTruthy();
 
-            await apiHelper.apiLogin('tadmin');
+            await apiHelper.apiLogin('fritz');
             let manualTaskGuid = await coreApi.getTaskGuid(manualTaskTemplateData2.templateSummary);
             let externalTaskGuid = await coreApi.getTaskGuid(externalTaskTemplateData2.templateSummary);
 
