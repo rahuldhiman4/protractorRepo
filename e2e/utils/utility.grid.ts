@@ -351,10 +351,10 @@ export class GridOperations {
             }
         }
         await $(refreshIcon).click();
+
         if(hiddentFilter == true){
             await $('.adapt-table-toolbar-hidden-items-dropdown .d-icon-ellipsis').click();
         }
-        
     }
 
     async applyPresetFilter(filterName: string, guid?: string): Promise<void> {

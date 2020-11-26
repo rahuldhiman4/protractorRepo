@@ -686,7 +686,7 @@ describe("Attachment", () => {
         await createDocumentLibraryPo.selectCategoryTier3(categName3);
         await createDocumentLibraryPo.selectCategoryTier4(categName4);
         await createDocumentLibraryPo.clickOnSaveButton();
-
+        await utilGrid.searchRecord(title);
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(title);
         expect (await editDocumentLibraryPo.getCategoryTier4()).toBe(categName4,'FailureMsg8: CategoryTier4 is displayed');
         });
@@ -1331,6 +1331,7 @@ describe("Attachment", () => {
             await consoleCasetemplatePo.searchAndClickOnCaseTemplate(caseTempateName);
             await viewCasetemplatePo.clickOnEditCaseTemplateButton();
             await editCasetemplatePo.clickOnMangeDyanmicLink();
+            await browser.sleep(3000); // Wait for attach elements gets load.
             await dynamicFieldsPo.addAttachment([`../../data/ui/attachment/${fileName5}`], 1);
             await dynamicFieldsPo.addAttachment([`../../data/ui/attachment/${fileName6}`], 2);
             await dynamicFieldsPo.addAttachment([`../../data/ui/attachment/${fileName7}`], 3);
@@ -1345,7 +1346,7 @@ describe("Attachment", () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('Elizabeth Peters');
             await createCasePo.setSummary('caseSummary');
-            await createCasePo.clickSelectCaseTemplateButton()
+            await createCasePo.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTempateName);
             await createCasePo.clickAssignToMeButton();
             await createCasePo.clickSaveCaseButton();

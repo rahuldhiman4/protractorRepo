@@ -607,7 +607,7 @@ describe('Email Task', () => {
             await emailPo.clickOnSendButton();
         });
         it('[DRDMV-19555]: In Case of Reply/Reply All if we select new Email template then previous contents should not be erased.', async () => {
-            expect(await activityTabPo.getEmailTitle()).toContain('"Qadim Katawazi" sent an email');
+            expect(await activityTabPo.getEmailTitle()).toContain('Qadim Katawazi sent an email');
             expect(await activityTabPo.getRecipientInTo()).toContain('To: Qiang Du');
             await activityTabPo.clickOnReply();
             expect(await emailPo.getToEmailPerson()).toContain("Qadim Katawazi");
