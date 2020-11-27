@@ -370,7 +370,7 @@ describe('Case Status Verification', () => {
             expect(await viewCasePage.getTextOfStatus()).toBe(statusResolved, 'FailureMsg2: Resolved status is missing');
             await viewCasePage.clickOnReopenCaseLink();
             expect(await viewCasePage.getTextOfStatus()).toBe(statusInProgress, 'FailureMsg3: In-Progress status is missing');
-            expect(await activityTabPo.isTextPresentInActivityLog('Fritz Schulz reopened the case')).toBeTruthy('FailureMsg4: Text is missing');
+            expect(await activityTabPo.isTextPresentInActivityLog('Quigley Heroux reopened the case')).toBeTruthy('FailureMsg4: Text is missing');
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isTextPresentInActivityLog(statusResolved)).toBeTruthy('FailureMsg5: Text is missing');
             expect(await activityTabPo.isTextPresentInActivityLog('The case was reopened for 2 time')).toBeTruthy('FailureMsg6: Text is missing');
@@ -381,7 +381,7 @@ describe('Case Status Verification', () => {
             expect(await viewCasePage.getTextOfStatus()).toBe(statusClosed, 'FailureMsg8: Resolved status is missing');
             await viewCasePage.clickOnReopenCaseLink();
             expect(await viewCasePage.getTextOfStatus()).toBe(statusInProgress, 'FailureMsg9: In Progress status is missing');
-            expect(await activityTabPo.isTextPresentInActivityLog('Fritz Schulz reopened the case')).toBeTruthy('FailureMsg10: Text is missing');
+            expect(await activityTabPo.isTextPresentInActivityLog('Quigley Heroux reopened the case')).toBeTruthy('FailureMsg10: Text is missing');
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isTextPresentInActivityLog(statusClosed)).toBeTruthy('FailureMsg11: Text is missing');
             expect(await activityTabPo.isTextPresentInActivityLog('The case was reopened for 2 time')).toBeTruthy('FailureMsg12: Text is missing');

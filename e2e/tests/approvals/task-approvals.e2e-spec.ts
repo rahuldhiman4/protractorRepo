@@ -598,8 +598,7 @@ describe("Task Approval Tests", () => {
             expect(await viewTask.isApprovalButtonsPresent('Reject')).toBeTruthy('Show Approvers Banner is not displayed');
             await viewTask.clickOnApproveLink();
             await viewTask.clickOnViewCase();
-            await viewCasePo.openTaskCard(1);
-            await manageTask.clickTaskLink(manualTaskTemplateData.templateSummary);
+            await viewCasePo.clickOnTaskLink(manualTaskTemplateData.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("In Progress");
             await activityTabPage.clickOnRefreshButton();
             expect(await activityTabPage.getApprovalActivityText('Task was approved')).toBeTruthy();
@@ -609,7 +608,7 @@ describe("Task Approval Tests", () => {
             expect(await showApproversBladePo.getApproversTabLabelFromActivity('Pending Approval')).toContain('Pending Approval (0)');
             expect(await showApproversBladePo.getApproversTabLabelFromActivity('Approval Decision')).toContain('Approval Decision (1)');
             expect(await showApproversBladePo.getApproversCountFromActivity()).toBe(2);
-            expect(await showApproversBladePo.getApproversNameFromActivity('Fritz Schulz')).toBeTruthy('Approver not present');
+            expect(await showApproversBladePo.getApproversNameFromActivity('Qadim Katawazi')).toBeTruthy('Approver not present');
             expect(await showApproversBladePo.getApproversNameFromActivity('RA3 Liu')).toBeTruthy('Approver not present');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompanyFromActivity('Petramco')).toBeTruthy('Approver Company is not displayed');
@@ -662,8 +661,7 @@ describe("Task Approval Tests", () => {
             expect(await viewTask.isApprovalButtonsPresent('Reject')).toBeTruthy('Show Approvers Banner is not displayed');
             await viewTask.clickOnRejectLink();
             await viewTask.clickOnViewCase();
-            await viewCasePo.openTaskCard(1);
-            await manageTask.clickTaskLink(manualTaskTemplateData.templateSummary);
+            await viewCasePo.clickOnTaskLink(manualTaskTemplateData.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Canceled");
             await activityTabPage.clickOnRefreshButton();
             expect(await activityTabPage.getApprovalRejectionActivityText('Task was rejected')).toBeTruthy();
@@ -673,7 +671,7 @@ describe("Task Approval Tests", () => {
             expect(await showApproversBladePo.getApproversTabLabelFromActivity('Pending Approval')).toContain('Pending Approval (0)');
             expect(await showApproversBladePo.getApproversTabLabelFromActivity('Approval Decision')).toContain('Approval Decision (1)');
             expect(await showApproversBladePo.getApproversCountFromActivity()).toBe(2);
-            expect(await showApproversBladePo.getApproversNameFromActivity('Fritz Schulz')).toBeTruthy('Approver not present');
+            expect(await showApproversBladePo.getApproversNameFromActivity('Qadim Katawazi')).toBeTruthy('Approver not present');
             expect(await showApproversBladePo.getApproversNameFromActivity('RA3 Liu')).toBeTruthy('Approver not present');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompanyFromActivity('Petramco')).toBeTruthy('Approver Company is not displayed');
