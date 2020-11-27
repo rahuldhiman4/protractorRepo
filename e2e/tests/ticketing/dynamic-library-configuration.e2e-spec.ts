@@ -473,6 +473,9 @@ describe('Dynamic Library Configuration', () => {
             await apiHelper.createDynamicDataOnTemplate(CaseTemplate.id, 'DynamicGroupContainsHiddenFieldDRDMV21416');
             casetemplateData.templateName = randomStr + 'caseTemplateDraft';
             casetemplateData.templateStatus = 'Draft';
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteDynamicFieldAndGroup();
+            await apiHelper.apiLogin('qkatawazi');
             let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'DynamicGroupContainsHiddenFieldDRDMV21416');
         });

@@ -38,7 +38,7 @@ describe('Document Library Consume UI', () => {
             "firstName": "caseAgent2",
             "lastName": "user2",
             "userId": 'caseagentbwf',
-            "userPermission": ["Case Agent", "Document Manager","Human Resource"]
+            "userPermission": ["Case Agent", "Document Manager", "Human Resource"]
         }
         await apiHelper.createNewUser(caseAgentuserData);
         await apiHelper.associatePersonToCompany(caseAgentuserData.userId, "Petramco");
@@ -137,14 +137,14 @@ describe('Document Library Consume UI', () => {
                 "ownerGroup": "US Support 3",
             }
             caseData =
-            {
-                "Requester": "qtao",
-                "Summary": "Test case for DRDMV-8377RandVal" + summary,
-                "Assigned Company": "Petramco",
-                "Business Unit": "United States Support",
-                "Support Group": "US Support 3",
-                "Assignee": "qkatawazi"
-            }
+                {
+                    "Requester": "qtao",
+                    "Summary": "Test case for DRDMV-8377RandVal" + summary,
+                    "Assigned Company": "Petramco",
+                    "Business Unit": "United States Support",
+                    "Support Group": "US Support 3",
+                    "Assignee": "qkatawazi"
+                }
             await apiHelper.apiLogin('qkatawazi');
             let newCase = await apiHelper.createCase(caseData);
             await apiHelper.apiLogin('tadmin');
@@ -170,10 +170,10 @@ describe('Document Library Consume UI', () => {
             await attachDocumentBladePo.searchAndAttachDocument(publishDocLibData2.docLibTitle);
             await editCasePo.clickSaveCase();
             await viewCasePo.clickOnTab('Case Access');
-            await accessTabPo.clickToExpandAccessEntitiySearch('Agent Access','Case');
-            await accessTabPo.selectAgent('qstrong','Agent');
+            await accessTabPo.clickToExpandAccessEntitiySearch('Agent Access', 'Case');
+            await accessTabPo.selectAgent('qstrong', 'Agent');
             await accessTabPo.clickAccessEntitiyAddButton('Agent');
-            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Quin Strong','Read')).toBeTruthy('FailuerMsg1: Quanah George Agent Name is missing');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Quin Strong', 'Read')).toBeTruthy('FailuerMsg1: Quanah George Agent Name is missing');
             await navigationPage.gotoCaseConsole();
         });
         it('[DRDMV-13533]: Verify the case with different user', async () => {
@@ -252,7 +252,7 @@ describe('Document Library Consume UI', () => {
 
                 await apiHelper.apiLogin('tadmin');
                 await apiHelper.deleteDocumentLibrary(publishDocLibData1.docLibTitle);
-                await apiHelper.apiLogin(caseAgentuserData.userId+'@petramco.com',"Password_1234");
+                await apiHelper.apiLogin(caseAgentuserData.userId + '@petramco.com', "Password_1234");
                 let getFilePath1 = files1[i];
                 let docLib = await apiHelper.createDocumentLibrary(publishDocLibData1, getFilePath1);
                 await apiHelper.publishDocumentLibrary(docLib);
@@ -265,12 +265,12 @@ describe('Document Library Consume UI', () => {
             }
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDocumentLibrary(draftDocLibData.docLibTitle);
-            await apiHelper.apiLogin(caseAgentuserData.userId+"@petramco.com","Password_1234");
+            await apiHelper.apiLogin(caseAgentuserData.userId + "@petramco.com", "Password_1234");
             await apiHelper.createDocumentLibrary(draftDocLibData, filePath4);
         });
         it('[DRDMV-13524]: Create a case and click task link ', async () => {
             await navigationPage.signOut();
-            await loginPage.login(caseAgentuserData.userId+"@petramco.com","Password_1234");
+            await loginPage.login(caseAgentuserData.userId + "@petramco.com", "Password_1234");
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(randomStr);
@@ -352,7 +352,7 @@ describe('Document Library Consume UI', () => {
                 }
                 await apiHelper.apiLogin('tadmin');
                 await apiHelper.deleteDocumentLibrary(publishDocLibData1.docLibTitle);
-                await apiHelper.apiLogin(caseAgentuserData.userId+'@petramco.com',"Password_1234");
+                await apiHelper.apiLogin(caseAgentuserData.userId + '@petramco.com', "Password_1234");
                 let getFilePath1 = files1[i];
                 let docLib = await apiHelper.createDocumentLibrary(publishDocLibData1, getFilePath1);
                 await apiHelper.publishDocumentLibrary(docLib);
@@ -366,12 +366,16 @@ describe('Document Library Consume UI', () => {
             }
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDocumentLibrary(draftDocLibData.docLibTitle);
-            await apiHelper.apiLogin(caseAgentuserData.userId+'@petramco.com',"Password_1234");
+            await apiHelper.apiLogin(caseAgentuserData.userId + '@petramco.com', "Password_1234");
             await apiHelper.createDocumentLibrary(draftDocLibData, filePath4);
+            await apiHelper.deleteAllEmailConfiguration();
+            let response = await apiHelper.createEmailBox('outgoing');
+            await apiHelper.createEmailProfile(response.id);
+            await apiHelper.updateLOBWithEmailProfile("Human Resource", "Email Profile for Outgoing");
         });
         it('[DRDMV-13507]: Create a case and add click on email', async () => {
             await navigationPage.signOut();
-            await loginPage.login(caseAgentuserData.userId+'@petramco.com',"Password_1234");
+            await loginPage.login(caseAgentuserData.userId + '@petramco.com', "Password_1234");
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(randomStr);
@@ -470,7 +474,7 @@ describe('Document Library Consume UI', () => {
         });
         it('[DRDMV-13449]: Create a case and add task on it', async () => {
             await navigationPage.signOut();
-            await loginPage.login(caseAgentuserData.userId+'@petramco.com',"Password_1234");
+            await loginPage.login(caseAgentuserData.userId + '@petramco.com', "Password_1234");
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(randomStr);
@@ -569,7 +573,7 @@ describe('Document Library Consume UI', () => {
         });
         it('[DRDMV-13480]: Create a case ', async () => {
             await navigationPage.signOut();
-            await loginPage.login(caseAgentuserData.userId+"@petramco.com","Password_1234");
+            await loginPage.login(caseAgentuserData.userId + "@petramco.com", "Password_1234");
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(randomStr);
@@ -858,6 +862,11 @@ describe('Document Library Consume UI', () => {
             await apiHelper.deleteDocumentLibrary(draftDocLibData.docLibTitle);
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createDocumentLibrary(draftDocLibData, filePath4);
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteAllEmailConfiguration();
+            let response = await apiHelper.createEmailBox('outgoing');
+            await apiHelper.createEmailProfile(response.id);
+            await apiHelper.updateLOBWithEmailProfile("Human Resource", "Email Profile for Outgoing");
         });
         it('[DRDMV-13506]: Create a case ', async () => {
             await navigationPage.signOut();

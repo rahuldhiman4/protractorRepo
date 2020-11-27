@@ -1453,8 +1453,8 @@ export const hiddenField = {
     "templateRecordDefinition": "com.bmc.dsm.task-lib:Task Template",
     "templateId": "nnn",
     "attributeDefinitions": [{
-        "name": "Field1OutsideDRDMV21415",
-        "description": "Field1OutsideDRDMV21415",
+        "name": "Field1Outside21415",
+        "description": "Field1Outside21415",
         "dataType": "TEXT",
         "required": false,
         "confidential": false,
@@ -2164,29 +2164,29 @@ export const DynamicGroupFieldDRDMV13129Data2 = {
     "id": null,
     "attributeDefinitions": [
         {
-            "name": "GroupOne",
-            "description": "GroupOne",
+            "name": "GroupTwo",
+            "description": "GroupTwo",
             "externalId": "",
             "type": "GROUP_FIELD",
             "active": true,
             "attributes": [
                 {
-                    "name": "externalDate",
-                    "description": "externalDate",
+                    "name": "externalDate1",
+                    "description": "externalDate1",
                     "dataType": "DATE",
                     "dataProviderUserRole": "Agent",
                     "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
                 },
                 {
-                    "name": "externalBoolean",
-                    "description": "externalBoolean",
+                    "name": "externalBoolean1",
+                    "description": "externalBoolean1",
                     "dataType": "BOOLEAN",
                     "dataProviderUserRole": "Agent",
                     "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
                 },
                 {
-                    "name": "externalDateTime",
-                    "description": "externalDateTime",
+                    "name": "externalDateTime1",
+                    "description": "externalDateTime1",
                     "dataType": "DATE_TIME",
                     "dataProviderUserRole": "Agent",
                     "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
