@@ -441,7 +441,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             "userPermission": ["Case Manager","Foundation Read","Document Manager","Human Resource"]
         }
         let title = `Document-${new Date().valueOf()}`;
-
+        let title1 = `Document1-${new Date().valueOf()}`;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.createNewUser(caseAgentuserData);
@@ -484,14 +484,14 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
                 .toEqual('Document Library Console - Business Workflows');
             await createDocumentLibraryPage.openAddNewDocumentBlade();
             await createDocumentLibraryPage.addAttachment(filePath);
-            await createDocumentLibraryPage.setTitle(title);
+            await createDocumentLibraryPage.setTitle(title1);
             await createDocumentLibraryPage.selectCompany(companyStr);
             await createDocumentLibraryPage.selectBusinessUnit(hrSupportStr);
             await createDocumentLibraryPage.selectOwnerGroup(ownerSupportGroup);
             await createDocumentLibraryPage.selectRegion(regionFieldVal);
             await createDocumentLibraryPage.selectSite(siteFieldVal);
             await createDocumentLibraryPage.saveNewDocument();
-            await utilGrid.searchAndOpenHyperlink(title);
+            await utilGrid.searchAndOpenHyperlink(title1);
             expect(await editDocumentLibraryPo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
             expect(await editDocumentLibraryPo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
             await editDocumentLibraryPo.setRegion(regionFieldVal2);
@@ -510,15 +510,15 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
                 .toEqual('Document Library Console - Business Workflows');
             await createDocumentLibraryPage.openAddNewDocumentBlade();
             await createDocumentLibraryPage.addAttachment(filePath);
-            title = `Document-${new Date().valueOf()}`;
-            await createDocumentLibraryPage.setTitle(title);
+            let title2 = `Document2-${new Date().valueOf()}`;
+            await createDocumentLibraryPage.setTitle(title2);
             await createDocumentLibraryPage.selectCompany(companyStr);
             await createDocumentLibraryPage.selectBusinessUnit(hrSupportStr);
             await createDocumentLibraryPage.selectOwnerGroup(ownerSupportGroup);
             await createDocumentLibraryPage.selectRegion(regionFieldVal);
             await createDocumentLibraryPage.selectSite(siteFieldVal);
             await createDocumentLibraryPage.saveNewDocument();
-            await utilGrid.searchAndOpenHyperlink(title);
+            await utilGrid.searchAndOpenHyperlink(title2);
             expect(await editDocumentLibraryPo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
             expect(await editDocumentLibraryPo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
             await editDocumentLibraryPo.setRegion(regionFieldVal2);
