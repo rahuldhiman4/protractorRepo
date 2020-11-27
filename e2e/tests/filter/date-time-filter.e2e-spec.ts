@@ -203,7 +203,6 @@ describe('Date and Time Preset Filter', () => {
             await dateTimeSelectorPo.setMinute(52);
             await dateTimeSelectorPo.clickMeridianValue("AM");
             expect(await utilityGrid.isGridRecordPresent('KA-000000000016')).toBeTruthy('KA-000000000016');
-
         });
 
         it('[DRDMV-23517,DRDMV-23518]: Verify records are fetched on knowledge console Knowledge set, Version, template Name and Assigned group combinations', async () => {
