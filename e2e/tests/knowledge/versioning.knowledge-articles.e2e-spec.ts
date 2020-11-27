@@ -51,6 +51,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
     const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
     const knowledgeSetTitleStrPetramco = 'versionedKnowledgeSetPetramco_' + randomStr;
     const knowledgeSetTitleStrPsilon = 'versionedKnowledgeSetPsilon_' + randomStr;
+    const knowledgeSetTitleStrPhylum = 'versionedKnowledgeSetPhylum_' + randomStr;
     const knowledgeTemplateStr = 'VersionedArticleTemplate_' + randomStr;
     const attachmentFilePath = 'e2e/data/ui/attachment/articleStatus.png';
     const minorEditHelpText = `Submitting your changes will edit the existing Version 1`;
@@ -1594,20 +1595,37 @@ describe('Knowledge Articles - Versioning Tests', () => {
     });
 
     describe('[DRDMV-20758]:  Verify the article versioning with respect to custom status configuration', () => {
-
         beforeAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            const personDataFile = require('../../data/ui/foundation/person.ui.json');
+            let personData1 = personDataFile['PhylumKnowledgeUser1'];
+            await apiHelper.createNewUser(personData1);
+            await apiHelper.associatePersonToSupportGroup(personData1.userId, 'Phylum Support Group1');
+            await apiHelper.associatePersonToCompany(personData1.userId, 'Phylum');
+
+            //KNowledge Set for Phylum
+            let knowledgeSetDataPhylum = {
+                knowledgeSetTitle: `${knowledgeSetTitleStrPhylum}`,
+                knowledgeSetDesc: `${knowledgeSetTitleStrPhylum}_Desc`,
+                company: 'Phylum',
+                lineOfBusiness:"Finance"
+            }
             await navigationPage.signOut();
-            await loginPage.login('gderuno');
+            await loginPage.login("idphylumkuser@petramco.com", "Password_1234");
+            await apiHelper.apiLogin("idphylumkuser@petramco.com", "Password_1234");
+            await apiHelper.createKnowledgeSet(knowledgeSetDataPhylum);
+        });
+        it('[DRDMV-20758]:  Verify the article versioning with respect to custom status configuration', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Status Configuration', 'Configure Knowledge Status Transition - Business Workflows');
-            await statusConfigPO.setCompanyDropdown('Psilon', 'knowledge');
+            await statusConfigPO.setCompanyDropdown('Phylum', 'knowledge');
             await statusConfigPO.clickEditLifeCycleLink();
             await statusConfigPO.clickEditStatus("Published");
             await statusConfigPO.renameExistingStatus('Released');
             await statusConfigPO.clickOnBackButton();
             await statusConfigPO.clickEditLifeCycleLink();
-            await statusConfigPO.addCustomStatus('SME Review', 'Publish Approval', 'BeforePublished');
-            await statusConfigPO.addCustomStatus('Released', 'Retire Approval', 'AfterPublished');
+            // await statusConfigPO.addCustomStatus('SME Review', 'Publish Approval', 'BeforePublished'); this custom status already created in knowledge-preset-filter.e2e-spec
+            // await statusConfigPO.addCustomStatus('Released', 'Retire Approval', 'AfterPublished'); which executes before this class
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
@@ -1619,17 +1637,17 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
             await createKnowledgePage.addTextInKnowlegeTitleField('DRDMV-20758 Title');
             await createKnowledgePage.setReferenceValue('DRDMV-20758 Reference data')
-            await createKnowledgePage.selectKnowledgeSet('HR');
+            await createKnowledgePage.selectKnowledgeSet(`${knowledgeSetTitleStrPhylum}`);
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
             await editKnowledgePage.setKnowledgeStatus('Draft');
             await utilityCommon.closePopUpMessage();
             await editKnowledgePage.setKnowledgeStatusWithoutSave('SME Review');
             await statusBladeKnowledgeArticlePo.clickChangeReviewerBtn();
-            await changeAssignmentBlade.selectCompany('Psilon');
-            await changeAssignmentBlade.selectBusinessUnit('Psilon Support Org1');
-            await changeAssignmentBlade.selectSupportGroup('Psilon Support Group1');
-            await changeAssignmentBlade.selectAssignee('Glit Deruno');
+            await changeAssignmentBlade.selectCompany('Phylum');
+            await changeAssignmentBlade.selectBusinessUnit('Phylum Support Org1');
+            await changeAssignmentBlade.selectSupportGroup('Phylum Support Group1');
+            await changeAssignmentBlade.selectAssignee('phylumfnk1 phylumlnk1');
             await changeAssignmentBlade.clickOnAssignButton();
             await editKnowledgePage.clickSaveStatusBtn();
             await viewKnowledgeArticlePo.clickReviewPendingLink();
