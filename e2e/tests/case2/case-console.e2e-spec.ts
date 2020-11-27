@@ -277,9 +277,9 @@ describe('Case Console', () => {
         it('[DRDMV-8280]:[Case Workspace] Cases search using filters', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.addColumns(defaultCaseColumns);
-            await utilityGrid.searchRecord(newCase1.displayId);
+            await utilityGrid.searchRecord(newCase2.displayId);
             await utilityGrid.addFilter('SLM Status', 'Service Targets Not Attached', 'checkbox');
-            expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy(newCase1.displayId);
+            expect(await utilityGrid.isGridRecordPresent(newCase2.displayId)).toBeTruthy(newCase2.displayId);
             await utilityGrid.searchRecord(newCase1.displayId);
             await utilityGrid.addFilter('Priority', 'Low', 'checkbox');
             expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy(newCase1.displayId);

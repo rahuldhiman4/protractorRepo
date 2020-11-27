@@ -1002,7 +1002,7 @@ describe("Task Self Approval Tests", () => {
             expect(await viewTask.isApprovalButtonsPresent('Reject')).toBeTruthy('Show Approvers Banner is not displayed');
             await viewTask.clickOnApproveLink();
             await browser.sleep(1000); // Hardwait To Reflect Post Approval Status On UI.
-            expect(await viewTask.getTaskStatusValue()).toBe("In Progress");
+            expect(await viewTask.getTaskStatusValue()).toBe("Completed");
             await activityTabPage.clickOnRefreshButton();
             expect(await activityTabPage.getApprovalActivityText('Task was approved')).toBeTruthy();
             await activityTabPage.clickShowApproversLink('Show Approvers');
@@ -1024,7 +1024,7 @@ describe("Task Self Approval Tests", () => {
             await loginPage.login('qfeng');
             await navigationPage.gotoTaskConsole();
             await utilityGrid.searchAndOpenHyperlink(automatedTaskDisplayId);
-            expect(await viewTask.getTaskStatusValue()).toBe("In Progress");
+            expect(await viewTask.getTaskStatusValue()).toBe("Completed");
             expect(await viewTask.isShowApproversBannerDisplayed()).toBeFalsy('Show Approvers Banner is not displayed');
         });
 
