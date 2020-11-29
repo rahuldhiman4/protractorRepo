@@ -692,7 +692,6 @@ describe('Dynamic Hidden Data', () => {
             await createCasePage.setSummary('Summary' + randomStr);
             await createCasePage.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateData.templateName);
-            await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
         });
@@ -857,8 +856,8 @@ describe('Dynamic Hidden Data', () => {
             await apiHelper.deleteDynamicFieldAndGroup();
 
             casetemplateData = {
-                "templateName": randomStr + 'caseTemplateDRDMV-13129',
-                "templateSummary": randomStr + 'caseTemplateSummaryDRDMV-13129',
+                "templateName": 'caseTemplateDRDMV13129'+randomStr,
+                "templateSummary": 'caseTemplateSummaryDRDMV13129'+randomStr,
                 "templateStatus": "Active",
                 "caseStatus": "InProgress",
                 "assignee": "qkatawazi",
@@ -872,6 +871,7 @@ describe('Dynamic Hidden Data', () => {
             let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'DynamicGroupFieldDRDMV13129Data1');
             casetemplateData.templateName = randomStr + '13129';
+            casetemplateData.templateSummary = randomStr + '13129';
             let newCaseTemplate1 = await apiHelper.createCaseTemplate(casetemplateData);
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate1.id, 'DynamicGroupFieldDRDMV13129Data2');
         });

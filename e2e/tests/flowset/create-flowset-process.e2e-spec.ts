@@ -610,6 +610,11 @@ describe('Create Process in Flowset', () => {
                 "Case Template ID": caseTemplateResponse.displayId
             }
             caseResponse = await apiHelper.createCase(caseData);
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteAllEmailConfiguration();
+            let response = await apiHelper.createEmailBox('outgoing');
+            await apiHelper.createEmailProfile(response.id);
+            await apiHelper.updateLOBWithEmailProfile("Human Resource", "Email Profile for Outgoing");
         });
         it('[DRDMV-10328,DRDMV-10023,DRDMV-10028]: User Activity Feeds process execution for post created by email', async () => {
             await navigationPage.gotoCaseConsole();
@@ -625,11 +630,10 @@ describe('Create Process in Flowset', () => {
             expect(await activityTabPage.getEmailBody()).toContain('Text added for DRDMV-10328');
             await apiHelper.apiLogin('tadmin');
             expect(await apiCoreUtil.getProcessRunCount('com.bmc.dsm.social-lib', processName)).toEqual(1);
-
             await activityTabPage.addActivityNote("hello");
             await activityTabPage.clickOnPostButton();
+            await browser.sleep(1000); //hardwait to complete process execution
             expect(await apiCoreUtil.getProcessRunCount('com.bmc.dsm.social-lib', processName)).toEqual(2);
-
             await statusBladePo.changeCaseStatus('In Progress');
             await statusBladePo.clickSaveStatus('In Progress');
             expect(await apiCoreUtil.getProcessRunCount('com.bmc.dsm.social-lib', processName)).toEqual(2);
@@ -725,7 +729,6 @@ describe('Create Process in Flowset', () => {
             }
             caseResponse = await apiHelper.createCase(caseData);
         });
-
         it('[DRDMV-10024]: Flowset with multiple process mapping with different functions', async () => {
             await apiHelper.apiLogin('tadmin');
             expect(await apiCoreUtil.getProcessRunCount('com.bmc.dsm.case-lib', `Email Origin DRDMV-10024 ${randomStr}`)).toEqual(1);
@@ -734,6 +737,7 @@ describe('Create Process in Flowset', () => {
             await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
             await activityTabPage.addActivityNote("hello");
             await activityTabPage.clickOnPostButton();
+            await browser.sleep(1000); //hardwait to complete process execution
             expect(await apiCoreUtil.getProcessRunCount('com.bmc.dsm.case-lib', `Email Origin DRDMV-10024 ${randomStr}`)).toEqual(1);
             expect(await apiCoreUtil.getProcessRunCount('com.bmc.dsm.social-lib', `Activity Feed Email DRDMV-10024 ${randomStr}`)).toEqual(1);
         });

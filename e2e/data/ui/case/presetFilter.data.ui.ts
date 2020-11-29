@@ -996,7 +996,8 @@ export const ARTICLE_DATA_ASSIGNTOME = {
     "categoryTier1": "Applications",
     "assignee": "idphylumkuser",
     "assigneeBusinessUnit": "Phylum Support Org1",
-    "assigneeSupportGroup": "Phylum Support Group1"
+    "assigneeSupportGroup": "Phylum Support Group1",
+    "lineOfBusiness": "Finance"
 };
 
 export const ARTICLE_DATA_ASSIGNTOGROUP = {
@@ -1006,7 +1007,8 @@ export const ARTICLE_DATA_ASSIGNTOGROUP = {
     "categoryTier1": "Applications",
     "company": "Phylum",
     "assigneeBusinessUnit": "Phylum Support Org1",
-    "assigneeSupportGroup": "Phylum Support Group1"
+    "assigneeSupportGroup": "Phylum Support Group1",
+    "lineOfBusiness": "Finance"
 };
 
 export const ARTICLE_DATA_ASSIGNTOANOTHERUSER = {
@@ -1017,13 +1019,15 @@ export const ARTICLE_DATA_ASSIGNTOANOTHERUSER = {
     "company": "Phylum",
     "categoryTier1": "Applications",
     "assigneeBusinessUnit": "Phylum Support Org1",
-    "assigneeSupportGroup": "Phylum Support Group1"
+    "assigneeSupportGroup": "Phylum Support Group1",
+    "lineOfBusiness": "Finance"
 };
 
 export const KNOWLEDGE_SET_DATA = {
     "knowledgeSetTitle": "Phylum Knowledge Set",
     "knowledgeSetDesc": "Phylum Knowledge Description",
-    "company": "Phylum"
+    "company": "Phylum",
+    "lineOfBusiness": "Finance"
 };
 
 export const KNOWLEDGE_APPROVAL_MAPPING_DATA = {
