@@ -260,7 +260,6 @@ export class GridOperation {
     }
 
     async searchOnGridConsole(searchValue: string, guid?: string): Promise<void> {
-        await browser.sleep(40000); // workaround for performance issue
         let searchBoxInput: string = this.selectors.searchInput;
         let gridRefreshButton: string = this.selectors.refreshButton;
         let gridSearchIcon: string = this.selectors.searchIcon;
@@ -269,10 +268,17 @@ export class GridOperation {
             gridRefreshButton = `[rx-view-component-id="${guid}"] ` + gridRefreshButton;
             gridSearchIcon = `[rx-view-component-id="${guid}"] ` + gridSearchIcon;
         }
-        await $(searchBoxInput).clear();
-        await $(gridRefreshButton).click();
-        await $(searchBoxInput).sendKeys(searchValue);
-        await $(gridSearchIcon).click();
+        for (let i: number = 0; i < 4; i++) {
+            console.log(searchValue, "search angularJs grid count: ", i);
+            await $(searchBoxInput).clear();
+            await $(gridRefreshButton).click();
+            await $(searchBoxInput).sendKeys(searchValue);
+            await $(gridSearchIcon).click();
+            let gridRecordCount: number = await this.getNumberOfRecordsInGrid(guid);
+            if (gridRecordCount == 0) {
+                await browser.sleep(10000); // workaround for performance issue, this can be removed when issue fixed
+            } else break;
+        }
     }
 
     async searchAndSelectGridRecord(searchValue: string, guid?: string): Promise<void> {

@@ -533,6 +533,7 @@ export const CASE_TEMPLATE_REQUESTER_DYNAMIC_FIELDS =
     "name": "case template",
     "templateId": "xalkdjasd",
     "templateRecordDefinition": "com.bmc.dsm.case-lib:Case Template",
+    "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
     "attributeDefinitions": [
         {
             "name": "temp",

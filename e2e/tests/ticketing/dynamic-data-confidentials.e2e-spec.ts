@@ -275,7 +275,6 @@ describe('Dynamic Confidentials Data', () => {
             await caseAccessTabOldPo.selectConfidentialSupportGroupDropDown("AU Support 4");
             await caseAccessTabOldPo.clickAddConfidentialSupportGroup();
         });
-
         it('[DRDMV-15026,DRDMV-15027,DRDMV-15013]: [DesignTime] Add confidential support group on case template - Global Company', async () => {
             await caseAccessTabOldPo.clickConfidentialSupportGroupAccess();
             expect(await caseAccessTabOldPo.isConfidentialSupportGroupDropDownPresent("US Support 3")).toBeTruthy();
