@@ -394,7 +394,13 @@ class CKEValidation {
     }
 
     async getColorFontStyleOfText(value: string, guid?: string): Promise<string> {
-        let alignColorFontStyle = `div[style="${value}"]`;
+        let getElementPresent = await $(`div[style="${value}"]`);
+        let alignColorFontStyle;
+        if(getElementPresent == true){
+            alignColorFontStyle = `div[style="${value}"]`;
+        }else{
+            alignColorFontStyle = `span[style="${value}"]`;
+        }
         if (guid) alignColorFontStyle = `[rx-view-component-id="${guid}"] div[style="${value}"]`;
         let framePresent = await $(this.selectors.frame).isPresent();
         let elementText: string;
