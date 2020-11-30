@@ -45,16 +45,21 @@ describe("Compose Email", () => {
     let linkTargetDropDownIndex = 4;
     let cellCaption: number = 7;
     let cellSummary: number = 8;
-
     beforeAll(async () => {
+        let emailConfig = {
+            email: "bmctemptestemail@gmail.com",
+            incomingMailBoxName: "IncomingMail",
+        }
+
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qtao");
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteAllEmailConfiguration();
-        let response = await apiHelper.createEmailBox('outgoing');
-        await apiHelper.createEmailProfile(response.id);
+        await apiHelper.createEmailBox('incoming');
+        let response1 = await apiHelper.createEmailBox('outgoing');
+        await apiHelper.createEmailProfile(response1.id);
         await apiHelper.updateLOBWithEmailProfile("Human Resource", "Email Profile for Outgoing");
-        await apiHelper.createEmailConfiguration();
+        await apiHelper.createEmailConfiguration(emailConfig);
     });
 
     afterAll(async () => {
