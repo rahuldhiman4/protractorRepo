@@ -831,7 +831,7 @@ describe('Case Data Store', () => {
         await apiHelper.createDynamicDataOnTemplate(casetemplateddetails.id, 'CASE_TEMPLATE_REQUESTER_DYNAMIC_FIELDS');
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
-        await utilGrid.searchAndOpenHyperlink(casetemplateData.templateName)
+        await utilGrid.searchAndOpenHyperlink(casetemplateData.templateName);
         let arr: string[] = ['temp', 'temp1', 'temp2', 'temp3', 'temp4', 'temp5', 'attachment1', 'dynamicList'];
         for (let i = 0; i < arr.length; i++) {
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed(arr[i])).toBeTruthy('field not presnet ' + arr[i]);

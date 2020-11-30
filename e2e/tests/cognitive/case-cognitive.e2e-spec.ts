@@ -573,6 +573,7 @@ describe('Case Cognitive', () => {
             await createCognitiveCategorizationMappingPo.clickSaveButton();
         });
         it('[DRDMV-8973,DRDMV-8971,DRDMV-8972,DRDMV-8977,DRDMV-8974,DRDMV-8975]:[Cognitive] - Add Data Set Mapping for Categorization', async () => {
+            await utilityCommon.closePopUpMessage();
             await consoleCognitivePo.clickAddDataSetMapping();
             await createCognitiveCategorizationMappingPo.setMappingName("Add Mapping Psilon" + randomStr);
             await createCognitiveCategorizationMappingPo.selectCompany("Psilon");
