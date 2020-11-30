@@ -394,7 +394,7 @@ class CKEValidation {
     }
 
     async getColorFontStyleOfText(value: string, guid?: string): Promise<string> {
-        let getElementPresent = await $(`div[style="${value}"]`);
+        let getElementPresent = await $(`div[style="${value}"]`).isPresent();
         let alignColorFontStyle;
         if(getElementPresent == true){
             alignColorFontStyle = `div[style="${value}"]`;
