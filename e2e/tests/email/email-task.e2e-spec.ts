@@ -20,11 +20,25 @@ import selectEmailTemplateBladePo from '../../pageobject/email/select-email-temp
 
 describe('Email Task', () => {
     beforeAll(async () => {
+        let emailConfig = {
+            email: "bmctemptestemail@gmail.com",
+            incomingMailBoxName: "IncomingMail",
+        }
+
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteAllEmailConfiguration();
+        await apiHelper.createEmailBox('incoming');
+        let response1 = await apiHelper.createEmailBox('outgoing');
+        await apiHelper.createEmailProfile(response1.id);
+        await apiHelper.updateLOBWithEmailProfile("Human Resource", "Email Profile for Outgoing");
+        await apiHelper.createEmailConfiguration(emailConfig);
     });
 
     afterAll(async () => {
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteAllEmailConfiguration();
         await utilityCommon.closeAllBlades();
         await composeMailPo.clickOnDiscardButton();
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
@@ -480,14 +494,16 @@ describe('Email Task', () => {
             expect(await emailPo.getEmailBody()).toContain('this is new email sending frist time to the user');
             await emailPo.setEmailBody('this is second reply to all');
             await emailPo.clickOnSendButton();
-            await activityTabPo.clickShowMoreLinkInActivity(1);
+            await activityTabPo.clickOnRefreshButton();
+            await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.getEmailBody()).toContain('this is second reply to all');
             await activityTabPo.clickOnReply();
-            expect(await emailPo.getToEmailPerson()).toContain('Fritz Schulz');
+            expect(await emailPo.getToEmailPerson()).toContain('Qadim Katawazi');
             expect(await emailPo.getEmailBody()).toContain('this is second reply to all');
             await emailPo.setEmailBody('this is third reply');
             await emailPo.clickOnSendButton();
-            await activityTabPo.clickShowMoreLinkInActivity(1);
+            await activityTabPo.clickOnRefreshButton();
+            await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.getEmailBody()).toContain('this is third reply', "477");
         });
     });
@@ -515,7 +531,7 @@ describe('Email Task', () => {
         await emailPo.setEmailBody('this is new email sending frist time to the user');
         await emailPo.addAttachment(['../../data/ui/attachment/demo.txt']);
         await emailPo.clickOnSendButton();
-        expect(await activityTabPo.getEmailTitle()).toContain('Fritz Schulz sent an email');
+        expect(await activityTabPo.getEmailTitle()).toContain('Qadim Katawazi sent an email');
         expect(await activityTabPo.getRecipientInTo()).toContain('To: Fritz Schulz');
         expect(await activityTabPo.getEmailSubject()).toContain(displayId + ':' + 'Create case for Email Test');
         expect(await activityTabPo.getEmailBody()).toContain('this is new email sending frist time to the user');
@@ -530,7 +546,7 @@ describe('Email Task', () => {
         await activityTabPo.clickShowMoreLinkInActivity(1);
         expect(await activityTabPo.getEmailBody()).toContain('this is second reply to all');
         await activityTabPo.clickOnReply();
-        expect(await emailPo.getToEmailPerson()).toContain('Fritz Schulz');
+        expect(await emailPo.getToEmailPerson()).toContain('Qadim Katawazi');
         expect(await emailPo.getEmailBody()).toContain('this is second reply to all');
         await emailPo.setEmailBody('this is third reply');
         await emailPo.clickOnSendButton();
@@ -637,7 +653,7 @@ describe('Email Task', () => {
             await emailPo.clickOnSendButton();
             await browser.sleep(2000); // After sent email wait until email log gets displayed on actvity.
             await activityTabPo.clickOnReply();
-            expect(await emailPo.getToEmailPerson()).toContain('Fritz Schulz');
+            expect(await emailPo.getToEmailPerson()).toContain('Qadim Katawazi');
             expect(await emailPo.getEmailBody()).toContain('Hi Team ,\n\nI am taking leave today.\n\nThanks.');
             await emailPo.clickOnSelectTempalteButton();
             await emailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateDataForTest2.TemplateName);
