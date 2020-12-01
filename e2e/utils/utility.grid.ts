@@ -70,6 +70,7 @@ export class GridOperations {
     }
 
     async isGridRecordPresent(searchRecord: string, guid?: string): Promise<boolean> {
+        let booleanVal:boolean =false;
         let searchTextBoxLocator: string = this.selectors.searchTextBox;
         let gridRowLinks: string = this.selectors.gridRowLinks;
         if (guid) {
@@ -78,7 +79,18 @@ export class GridOperations {
         }
         await $(searchTextBoxLocator).clear();
         await $(searchTextBoxLocator).sendKeys(searchRecord + protractor.Key.ENTER);
-        return await $(gridRowLinks).isPresent();
+        let recordCount = await $$(gridRowLinks).count();
+        for(let i = 0; i<recordCount; i++){
+            let getTextElement =  await $$(gridRowLinks).get(i).getText();
+            if(getTextElement.includes(searchRecord)){
+                booleanVal = true;
+                break;
+            }else{
+                booleanVal = false;
+                console.log('Record not shown'+i);
+            }
+        }
+        return booleanVal;
     }
 
 
