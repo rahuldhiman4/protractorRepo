@@ -56,11 +56,25 @@ import casePreviewPo from '../../pageobject/case/case-preview.po';
 
 describe("Attachment", () => {
     beforeAll(async () => {
+        let emailConfig = {
+            email: "bmctemptestemail@gmail.com",
+            incomingMailBoxName: "IncomingMail",
+        }
+
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qtao");
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteAllEmailConfiguration();
+        await apiHelper.createEmailBox('incoming');
+        let response1 = await apiHelper.createEmailBox('outgoing');
+        await apiHelper.createEmailProfile(response1.id);
+        await apiHelper.updateLOBWithEmailProfile("Human Resource", "Email Profile for Outgoing");
+        await apiHelper.createEmailConfiguration(emailConfig);
     });
 
     afterAll(async () => {
+        // await apiHelper.apiLogin('tadmin');
+        // await apiHelper.deleteAllEmailConfiguration();
         await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
