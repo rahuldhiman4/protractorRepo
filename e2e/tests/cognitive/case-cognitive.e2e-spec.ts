@@ -487,9 +487,10 @@ describe('Case Cognitive', () => {
             await apiHelper.deleteCognitiveDataSet();
 
             // add watson account
-            let apiKey = "2fVs7RMM9IuTvZyB3qD1eXnFzUR4KGJNqd5tF0XMwz4J";
+            //let apiKey = "ThOJRPo4xZWV_MxFi_mw095aYF5ESGAwm9FR337rgNUU";
             await apiHelper.addWatsonAccount(apiKey);
-
+        });
+        it('[DRDMV-8973,DRDMV-8971,DRDMV-8972,DRDMV-8977,DRDMV-8974,DRDMV-8975]:[Cognitive] - trained data set', async () => {
             // trained data set
             await apiHelper.createCognitiveDataSet("category", { name: trainedCategoryDataSet });
             await apiHelper.trainCognitiveDataSet(trainedCategoryDataSet);
@@ -630,9 +631,10 @@ describe('Case Cognitive', () => {
             await apiHelper.deleteCognitiveDataSet();
 
             // add watson account
-            let apiKey = "2fVs7RMM9IuTvZyB3qD1eXnFzUR4KGJNqd5tF0XMwz4J";
+            //let apiKey = "ThOJRPo4xZWV_MxFi_mw095aYF5ESGAwm9FR337rgNUU";
             await apiHelper.addWatsonAccount(apiKey);
-
+        });
+        it('[DRDMV-8454,DRDMV-8453,DRDMV-8464,DRDMV-8455,DRDMV-8456,DRDMV-8457]:[Cognitive] - train data set', async () => {
             // trained data set
             await apiHelper.createCognitiveDataSet("category", { name: trainedTemplateDataSet });
             await apiHelper.trainCognitiveDataSet(trainedTemplateDataSet);
