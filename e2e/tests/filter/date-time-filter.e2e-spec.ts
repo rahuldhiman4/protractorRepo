@@ -233,7 +233,7 @@ describe('Date and Time Preset Filter', () => {
         });
     });
 
-    describe('[DRDMV-23493]: Verify records are fetched on case console Target date and Request ID combinations', async () => {
+    fdescribe('[DRDMV-23493]: Verify records are fetched on case console Target date and Request ID combinations', async () => {
         let caseData, caseDataDWp, caseIdForDWP, caseId, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let menuItemName: string;
         beforeAll(async () => {
@@ -275,6 +275,7 @@ describe('Date and Time Preset Filter', () => {
         it('[DRDMV-23493]: Verify records are fetched on case console Target date and Request ID combinations', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
+            await utilityGrid.addFilter("Request ID", "121", "test");
             expect(await utilityGrid.isGridRecordPresent(caseIdForDWP.displayId)).toBeTruthy();
             await utilityGrid.clearFilter();
             await utilityGrid.clickFilterField("Target Date");
