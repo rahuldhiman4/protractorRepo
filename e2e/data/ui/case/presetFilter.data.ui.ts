@@ -479,7 +479,8 @@ export const SERVICE_TARGET_ASSIGNED = {
     "goalTimeMinutes": "4",
     "dataSource": "Case Management",
     "company": "Phylum",
-    "svtName": "SVT Assigned to Resolved"
+    "svtName": "SVT Assigned to Resolved",
+    "lineOfBusiness": "Finance"
 }
 
 export const SERVICE_TARGET_NEW = {
@@ -492,7 +493,8 @@ export const SERVICE_TARGET_NEW = {
     "goalTimeMinutes": "4",
     "dataSource": "Case Management",
     "company": "Phylum",
-    "svtName": "SVT New to Resolved"
+    "svtName": "SVT New to Resolved",
+    "lineOfBusiness": "Finance"
 }
 
 export const SERVICE_TARGET_INPROGRESS = {
@@ -505,7 +507,8 @@ export const SERVICE_TARGET_INPROGRESS = {
     "goalTimeMinutes": "4",
     "dataSource": "Case Management",
     "company": "Phylum",
-    "svtName": "SVT In Progress to Resolved"
+    "svtName": "SVT In Progress to Resolved",
+    "lineOfBusiness": "Finance"
 }
 
 export const SERVICE_TARGET_PENDING = {
@@ -518,7 +521,8 @@ export const SERVICE_TARGET_PENDING = {
     "goalTimeMinutes": "4",
     "dataSource": "Case Management",
     "company": "Phylum",
-    "svtName": "SVT Pending to Resolved"
+    "svtName": "SVT Pending to Resolved",
+    "lineOfBusiness": "Finance"
 }
 
 export const SERVICE_TARGET_CANCELED = {
@@ -531,7 +535,8 @@ export const SERVICE_TARGET_CANCELED = {
     "goalTimeMinutes": "4",
     "dataSource": "Case Management",
     "company": "Phylum",
-    "svtName": "SVT Canceled to Closed"
+    "svtName": "SVT Canceled to Closed",
+    "lineOfBusiness": "Finance"
 }
 
 export const SERVICE_TARGET_RESOLVED = {
@@ -544,7 +549,8 @@ export const SERVICE_TARGET_RESOLVED = {
     "goalTimeMinutes": "4",
     "dataSource": "Case Management",
     "company": "Phylum",
-    "svtName": "Resolved to Closed"
+    "svtName": "Resolved to Closed",
+    "lineOfBusiness": "Finance"
 }
 
 export const SERVICE_TARGET_CUSTOMSTATUS1 = {
@@ -557,7 +563,8 @@ export const SERVICE_TARGET_CUSTOMSTATUS1 = {
     "goalTimeMinutes": "4",
     "dataSource": "Case Management",
     "company": "Phylum",
-    "svtName": "SVT CustomStatus1 to Closed"
+    "svtName": "SVT CustomStatus1 to Closed",
+    "lineOfBusiness": "Finance"
 }
 
 export const SERVICE_TARGET_CUSTOMSTATUS2 = {
@@ -570,7 +577,8 @@ export const SERVICE_TARGET_CUSTOMSTATUS2 = {
     "goalTimeMinutes": "4",
     "dataSource": "Case Management",
     "company": "Phylum",
-    "svtName": "SVT CustomStatus2 to Closed"
+    "svtName": "SVT CustomStatus2 to Closed",
+    "lineOfBusiness": "Finance"
 }
 
 export const ASSIGNED_CRITICAL = {
@@ -993,7 +1001,7 @@ export const ARTICLE_DATA_ASSIGNTOME = {
     "title": "KnowledgeArticle",
     "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
     "company": "Phylum",
-    "categoryTier1": "Applications",
+    "categoryTier1": "Accounts Payable",
     "assignee": "idphylumkuser",
     "assigneeBusinessUnit": "Phylum Support Org1",
     "assigneeSupportGroup": "Phylum Support Group1",
@@ -1004,7 +1012,7 @@ export const ARTICLE_DATA_ASSIGNTOGROUP = {
     "knowledgeSet": "Phylum Knowledge Set",
     "title": "KnowledgeArticle",
     "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-    "categoryTier1": "Applications",
+    "categoryTier1": "Accounts Payable",
     "company": "Phylum",
     "assigneeBusinessUnit": "Phylum Support Org1",
     "assigneeSupportGroup": "Phylum Support Group1",
@@ -1017,7 +1025,7 @@ export const ARTICLE_DATA_ASSIGNTOANOTHERUSER = {
     "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
     "assignee": "idphylumkuser2",
     "company": "Phylum",
-    "categoryTier1": "Applications",
+    "categoryTier1": "Accounts Payable",
     "assigneeBusinessUnit": "Phylum Support Org1",
     "assigneeSupportGroup": "Phylum Support Group1",
     "lineOfBusiness": "Finance"
