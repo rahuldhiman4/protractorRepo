@@ -238,10 +238,6 @@ describe('Case And Employee Relationship', () => {
     //asahitya
     describe('[DRDMV-16245]: Remove the Person from Case Related People tab and Person Profile Related People tab', async () => {
         let caseId;
-        await navigationPage.gotoPersonProfile();
-        await relatedTabPage.addRelatedPerson();
-        await addRelatedPopupPage.addPerson('Brain Adams', 'Parent');
-        await relatedTabPage.removeRelatedPerson("Brain Adams");
         beforeAll(async () => {
             await apiHelper.apiLogin("qyuan");
             let caseData = require('../../data/ui/case/case.ui.json');
@@ -258,6 +254,10 @@ describe('Case And Employee Relationship', () => {
             await apiHelper.updateCaseAccess(caseGuid, caseAccessDataQtao);
         });
         it('[DRDMV-16245]: Remove the Person from Case Related People tab and Person Profile Related People tab', async () => {
+            await navigationPage.gotoPersonProfile();
+            await relatedTabPage.addRelatedPerson();
+            await addRelatedPopupPage.addPerson('Brain Adams', 'Parent');
+            await relatedTabPage.removeRelatedPerson("Brain Adams");
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             await viewCasePo.clickOnTab('Related Persons');
