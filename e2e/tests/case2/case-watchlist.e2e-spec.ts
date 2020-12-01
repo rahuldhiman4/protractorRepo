@@ -156,10 +156,11 @@ describe('Case Watchlist', () => {
             await caseConsole.clickOnWatchlistIcon();
             let expectedColumns: string[] = ["Assigned Company", "Assigned Group", "Assignee", "Case ID", "ID", "Priority", "Status", "Summary"];
             let defaultAssignedCaseColumns: string[] = ["Case ID", "Priority", "Status", "Summary", "Assigned Group", "Assignee"];
-            expect(await caseWatchlist.areWatchlistColumnMatches(expectedColumns)).toBeTruthy("Default columns are not matching");
+            expect(await caseWatchlist.areWatchlistColumnMatches(defaultAssignedCaseColumns)).toBeTruthy("Default columns are not matching");
             let remainingColumns: string[] = ["Assigned Company", "ID"];
+            await caseWatchlist.addWatchlistGridColumn(remainingColumns);
+            expect(await caseWatchlist.areWatchlistColumnMatches(expectedColumns)).toBeTruthy("All columns are not matching");
             await caseWatchlist.removeWatchlistGridColumn(remainingColumns);
-            expect(await caseWatchlist.areWatchlistColumnMatches(defaultAssignedCaseColumns)).toBeTruthy("All columns are not matching");
             await caseWatchlist.clickOnBackBtn();
         } catch (ex) {
             throw ex;
