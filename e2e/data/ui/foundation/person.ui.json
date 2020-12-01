@@ -206,7 +206,8 @@
         "userPermission": [
             "Case Agent",
             "Knowledge Coach",
-            "Finance"
+            "Finance",
+            "Case Business Analyst"
         ]
     },
     "HumanResouceCaseAgent1": {
