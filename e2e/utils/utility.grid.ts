@@ -77,7 +77,7 @@ export class GridOperations {
             gridRowLinks = `[rx-view-component-id="${guid}"] ` + gridRowLinks;
         }
         await $(searchTextBoxLocator).clear();
-        await $(searchTextBoxLocator).sendKeys(searchRecord + Key.ENTER);
+        await $(searchTextBoxLocator).sendKeys(searchRecord + protractor.Key.ENTER);
         return await $(gridRowLinks).isPresent();
     }
 
