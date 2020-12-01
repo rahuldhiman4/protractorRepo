@@ -203,6 +203,7 @@ describe('Date and Time Preset Filter', () => {
             await dateTimeSelectorPo.setMinute(52);
             await dateTimeSelectorPo.clickMeridianValue("AM");
             await utilityGrid.clickRefreshIcon();
+            await utilityGrid.searchRecordWithoutFilter('KA-000000000016');
             expect(await utilityGrid.isGridRecordPresent('KA-000000000016')).toBeTruthy('KA-000000000016');
         });
 
@@ -233,7 +234,7 @@ describe('Date and Time Preset Filter', () => {
         });
     });
 
-    fdescribe('[DRDMV-23493]: Verify records are fetched on case console Target date and Request ID combinations', async () => {
+    describe('[DRDMV-23493]: Verify records are fetched on case console Target date and Request ID combinations', async () => {
         let caseData, caseDataDWp, caseIdForDWP, caseId, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let menuItemName: string;
         beforeAll(async () => {
@@ -369,9 +370,11 @@ describe('Date and Time Preset Filter', () => {
             await utilityGrid.clickRefreshIcon();
         });
         it('[DRDMV-23496]: Verify records are fetched on task console with Targeted Date, Priority and status combinations', async () => {
+            await utilityGrid.searchRecordWithoutFilter(tempIdMedium.displayId);
             expect(await utilityGrid.isGridRecordPresent(tempIdMedium.displayId)).toBeTruthy();
             await utilityGrid.addFilter("Priority", 'Medium', "checkbox");
             await utilityGrid.addFilter("Status", 'Pending', "test");
+            await utilityGrid.searchRecordWithoutFilter(tempIdMedium.displayId);
             expect(await utilityGrid.isGridRecordPresent(tempIdMedium.displayId)).toBeTruthy();
             await utilityGrid.addFilter("Task ID", tempIdMedium.displayId, "test");
             await utilityGrid.addFilter("Case ID", newCase1.displayId, "test");
@@ -386,6 +389,7 @@ describe('Date and Time Preset Filter', () => {
             await utilityGrid.addFilter("Category Tier 2", "Compensation", "test");
             await utilityGrid.addFilter("Category Tier 3", "Bonus", "test");
             await utilityGrid.addFilter("Assignee Login Name", "qkatawazi", "test");
+            await utilityGrid.searchRecordWithoutFilter(tempIdMedium.displayId);
             expect(await utilityGrid.isGridRecordPresent(tempIdMedium.displayId)).toBeTruthy();
         });
         afterAll(async () => {
