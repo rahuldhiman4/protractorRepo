@@ -92,6 +92,7 @@ class StatusConfigPage {
 
     async clickEditStatus(status: string): Promise<void> {
         await element(by.cssContainingText(this.selectors.status, status)).click();
+        await browser.wait(this.EC.visibilityOf($('div.status-settings')), 5000);
     }
 
     async getDefaultStatus(status: string): Promise<string> {

@@ -2175,6 +2175,8 @@ describe('Knowledge Article', () => {
             await knowledgeArticlesConsolePo.applyFilter('Modified Date', finalDate, 'date');
             await utilityGrid.searchRecordWithoutFilter(knowledgeArticleData.displayId);
             expect(await knowledgeArticlesConsolePo.getSelectedGridRecordValue('Modified Date')).toContain(dateFormate, 'Filter Modified Date is missing in column');
+        });
+        it('[DRDMV-8167]: [KM][Knowledge Article Console] Knowledge article search using filters', async () => {
             await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
             expect(await viewKnowledgeArticlePo.isFlagArticleOptionDisplayed()).toBeTruthy('Flag Article option is displayed.');
             await viewKnowledgeArticlePo.clickOnFlagButton();
