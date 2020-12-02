@@ -1,4 +1,4 @@
-import { $, $$, browser, by, element, ElementFinder, protractor, ProtractorExpectedConditions, WebElement } from "protractor";
+import { $, $$, browser, by, element, ElementFinder, protractor, ProtractorExpectedConditions } from "protractor";
 import utilityCommon from '../../utils/utility.common';
 
 class ViewCasePage {

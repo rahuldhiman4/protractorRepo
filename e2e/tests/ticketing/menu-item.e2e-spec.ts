@@ -177,7 +177,7 @@ describe('Menu Item', () => {
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
             await utilCommon.closePopUpMessage();
         });
-        xit('[DRDMV-16105,DRDMV-16106]: [Menu Items] - Update records AND grid Validation', async () => {
+        it('[DRDMV-16105,DRDMV-16106]: [Menu Items] - Update records AND grid Validation', async () => {
             await menuItemsConfigConsolePo.searchAndEditMenuOption(resolutionCode);
             expect(await editMenuItemsConfigPo.isMenuNameDropDownEnabled()).toBeTruthy('MenuName drop down is editable');
             await editMenuItemsConfigPo.clickOnLocalizeLink();
