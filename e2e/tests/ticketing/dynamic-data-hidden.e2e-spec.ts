@@ -107,8 +107,8 @@ describe('Dynamic Hidden Data', () => {
         let templateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             templateData = {
-                "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
-                "templateSummary": `AutomatedTaskTemplateSummaryActive ${randomStr}`,
+                "templateName": randomStr + 'AutomatedTaskTemplateActive',
+                "templateSummary": randomStr + 'AutomatedTaskTemplateSummaryActive',
                 "templateStatus": "Draft",
                 "processBundle": "com.bmc.dsm.case-lib",
                 "processName": `Case Process 1 ${randomStr}`,
@@ -789,13 +789,14 @@ describe('Dynamic Hidden Data', () => {
             await editCasePo.selectValueFromList('dynamicList', 'listvalues');
             await editCasePo.addAttachment('externalAttachment1', ['../../data/ui/attachment/demo.txt']);
             await editCasePo.clickSaveCase();
+            await utilityCommon.refresh(); // workaround for DRDMV-23816
             await activityTabPo.clickShowMoreLinkInActivity(1);
-            expect(await activityTabPo.getAllTaskActivity("TextFieldlistvalues ")).toBeTruthy();
-            expect(await activityTabPo.getAllTaskActivity("333")).toBeTruthy();
-            expect(await activityTabPo.getAllTaskActivity("2:00 AM")).toBeTruthy();
-            expect(await activityTabPo.getAllTaskActivity("listvalues")).toBeTruthy();
-            expect(await activityTabPo.getAllTaskActivity("Yes")).toBeTruthy();
-            expect(await activityTabPo.getAllTaskActivity("demo.txt")).toBeTruthy();
+            expect(await activityTabPo.getAllTaskActivity("TextFieldlistvalues")).toBe('TextFieldlistvalues');
+            expect(await activityTabPo.getAllTaskActivity("333")).toBe("333");
+            expect(await activityTabPo.getAllTaskActivity("2:00 AM")).toBe("2:00 AM");
+            expect(await activityTabPo.getAllTaskActivity("listvalues")).toBe("listvalues");
+            expect(await activityTabPo.getAllTaskActivity("Yes")).toBe("Yes");
+            expect(await activityTabPo.getAllTaskActivity("demo.txt(+)")).toBe("demo.txt(+)");
             await viewCasePo.clickEditCaseButton();
             await editCasePo.setDynamicFieldValue('FieldGroupOutside', 'TextField123');
             await editCasePo.setDynamicFieldValue('externalNumber', '5555555');
@@ -803,7 +804,6 @@ describe('Dynamic Hidden Data', () => {
             expect(await activityTabPo.isTextPresentInActivityLog("TextField123")).toBeTruthy();
             expect(await activityTabPo.isTextPresentInActivityLog("5555555")).toBeTruthy();
             expect(await activityTabPo.isTextPresentInActivityLog("FieldGroupOutside1")).toBeFalsy();
-
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
@@ -817,8 +817,8 @@ describe('Dynamic Hidden Data', () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
             templateData = {
-                "templateName": `manualTaskTemplate1 ${randomStr}`,
-                "templateSummary": `manualTaskTemplateSummary1 ${randomStr}`,
+                "templateName": randomStr + 'manualTaskTemplate1',
+                "templateSummary": randomStr + 'manualTaskTemplateSummary1',
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
@@ -971,12 +971,14 @@ describe('Dynamic Hidden Data', () => {
     //ankagraw
     describe('[DRDMV-13139]: [Dynamic Data]- Add Dynamic Fields and Groups to Task Template', async () => {
         let templateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let manualTemplate1 = randomStr + 'manualTaskTemplateDraft';
+        let manualTemplate2 = randomStr + 'manualTaskTemplateActive';
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
             templateData = {
-                "templateName": `manualTaskTemplate1 ${randomStr}`,
-                "templateSummary": `manualTaskTemplateSummary1 ${randomStr}`,
+                "templateName": manualTemplate1,
+                "templateSummary": randomStr + 'manualTaskTemplateSummary1',
                 "templateStatus": "Draft",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
@@ -986,18 +988,18 @@ describe('Dynamic Hidden Data', () => {
             await apiHelper.apiLogin('qkatawazi');
             let newTaskTemplate = await apiHelper.createManualTaskTemplate(templateData);
             await apiHelper.createDynamicDataOnTemplate(newTaskTemplate.id, 'CASE_TEMPLATE_WITH_REQUESTER');
-            templateData.templateName = `manualTaskTemplateActive ${randomStr}`;
+            templateData.templateName = manualTemplate2;
             templateData.templateStatus = "Active";
             await apiHelper.createManualTaskTemplate(templateData);
         });
         it('[DRDMV-13139]: [Dynamic Data]- Add Dynamic Fields and Groups to Task Template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-            await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
+            await selectTaskTemplate.searchAndOpenTaskTemplate(manualTemplate2);
             expect(await viewTaskTemplate.isManageDynamicFieldLinkDisplayed()).toBeFalsy();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-            await selectTaskTemplate.searchAndOpenTaskTemplate(`manualTaskTemplate1 ${randomStr}`);
+            await selectTaskTemplate.searchAndOpenTaskTemplate(manualTemplate1);
             expect(await viewTaskTemplate.isDynamicFieldPresent('FieldGroup1')).toBeTruthy();
             expect(await viewTaskTemplate.isDynamicFieldPresent('Field2Group1')).toBeTruthy();
             expect(await viewTaskTemplate.isDynamicFieldPresent('Field2Group2')).toBeTruthy();

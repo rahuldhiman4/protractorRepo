@@ -239,8 +239,8 @@ describe('Dynamic Library Configuration', () => {
                 "ownerGroup": "US Support 3",
             }
             templateData = {
-                "templateName": `manualTaskTemplate1 ${randomStr}`,
-                "templateSummary": `manualTaskTemplateSummary1 ${randomStr}`,
+                "templateName": randomStr + 'manualTaskTemplate1',
+                "templateSummary": randomStr + 'manualTaskTemplateSummary1',
                 "templateStatus": "Draft",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
