@@ -274,6 +274,7 @@ describe('CKE Description', () => {
             await editCasePo.clickOnChangeCaseTemplate();
             await selectCasetemplateBladePo.selectCaseTemplate(copyCasetemplate);
             await editCasePo.clickSaveCase();
+            await browser.navigate().refresh(); // workaround for DRDMV-23816
             await viewCasePo.clickDescriptionShowMore();
             expect(await viewCasePo.getCaseTemplateText()).toContain(copyCasetemplate);
             expect(await ckeditorValidationPo.isLinkDisplayedInCKE('Google')).toBeTruthy();

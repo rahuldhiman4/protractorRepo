@@ -22,7 +22,7 @@ import consoleCognitivePo from './../../pageobject/settings/case-management/cons
 describe('Case Cognitive', () => {
     const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
     let categoryDataSetMapping, templateDataSetMapping;
-    let apiKey = "HnmJ6tOYmUheiH7hLbQdW6HHvIhUFYCq6NVo5acPY4Ww";
+    let apiKey = "UcB7woPKaCcqLHRkPyJGN-XEde3aIqzKZB24Pff7xqnk";
     let templateDataSet = "My Template Data Set";
     let categoryDataSet = "My Category Data Set";
     let caseTemplateResponse1, caseTemplateResponse2, caseTemplateResponse3, caseTemplateResponse4, caseTemplateResponse5, caseTemplateResponse6, caseTemplateResponse7;
@@ -57,36 +57,33 @@ describe('Case Cognitive', () => {
 
     afterAll(async () => {
         await utilityCommon.closeAllBlades();
-        await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteCognitiveDataSetMapping();
-        await apiHelper.deleteCognitiveDataSet();
         await navigationPage.signOut();
     });
 
 
     async function createCognitiveConfig() {
         let created = await apiHelper.addWatsonAccount(apiKey);
-        console.log("Watson Account Added ==> ", created);
+        console.log("Watson Account Added =============> ", created);
         let dataSetMappingDeleted = await apiHelper.deleteCognitiveDataSetMapping();
-        console.log("All DataSet Mapping Deleted ==> ", dataSetMappingDeleted);
+        console.log("All DataSet Mapping Deleted =============> ", dataSetMappingDeleted);
         let dataSetDeleted = await apiHelper.deleteCognitiveDataSet();
-        console.log("All DataSet Deleted ==> ", dataSetDeleted);
+        console.log("All DataSet Deleted =============> ", dataSetDeleted);
         let templateDataSetCreated = await apiHelper.createCognitiveDataSet("template", { name: templateDataSet });
-        console.log("Template DataSet Created ==> ", templateDataSetCreated);
+        console.log("Template DataSet Created =============> ", templateDataSetCreated);
         let categoryDataSetCreated = await apiHelper.createCognitiveDataSet("category", { name: categoryDataSet });
-        console.log("Category DataSet Created ==> ", categoryDataSetCreated);
+        console.log("Category DataSet Created =============> ", categoryDataSetCreated);
     }
 
     async function trainTemplateDataSet() {
         await apiHelper.apiLogin('tadmin');
         let templateDataSetTrained = await apiHelper.trainCognitiveDataSet(templateDataSet);
-        console.log("Template DataSet Created ==> ", templateDataSetTrained);
+        console.log("Template DataSet Training Status =============> ", templateDataSetTrained);
     }
 
     async function trainCategoryDataSet() {
         await apiHelper.apiLogin('tadmin');
         let categoryDataSetTrained = await apiHelper.trainCognitiveDataSet(categoryDataSet);
-        console.log("Category DataSet Created ==> ", categoryDataSetTrained);
+        console.log("Category DataSet Training Status =============> ", categoryDataSetTrained);
     }
 
     async function createCognitiveDataSetMapping() {
@@ -100,7 +97,7 @@ describe('Case Cognitive', () => {
         }
         await apiHelper.apiLogin('tadmin');
         let templateDataSetMappingStatus = await apiHelper.createCognitiveDataSetMapping("template", templateDataSetMapping);
-        console.log("Template DataSet Mapping Created ==> ", templateDataSetMappingStatus);
+        console.log("Template DataSet Mapping Created =============> ", templateDataSetMappingStatus);
         categoryDataSetMapping = {
             name: "Petramco Category Dataset Mapping",
             company: "Petramco",
@@ -110,7 +107,7 @@ describe('Case Cognitive', () => {
             confidenceLevelAgent: 70
         }
         let categoryDataSetMappingStatus = await apiHelper.createCognitiveDataSetMapping("category", categoryDataSetMapping);
-        console.log("Category DataSet Mapping Created ==> ", categoryDataSetMappingStatus);
+        console.log("Category DataSet Mapping Created =============> ", categoryDataSetMappingStatus);
     }
 
     async function createCaseTemplateData1() {
@@ -477,22 +474,10 @@ describe('Case Cognitive', () => {
 
     //ankagraw
     describe('[DRDMV-8973,DRDMV-8971,DRDMV-8972,DRDMV-8977,DRDMV-8974,DRDMV-8975]:[Cognitive] - Add Data Set Mapping for Categorization', async () => {
-        let trainedCategoryDataSet, randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('tadmin');
-            trainedCategoryDataSet = "Trained Category Data Set";
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteCognitiveDataSetMapping();
-            await apiHelper.deleteCognitiveDataSet();
-
-            // add watson account
-            let apiKey = "2fVs7RMM9IuTvZyB3qD1eXnFzUR4KGJNqd5tF0XMwz4J";
-            await apiHelper.addWatsonAccount(apiKey);
-
-            // trained data set
-            await apiHelper.createCognitiveDataSet("category", { name: trainedCategoryDataSet });
-            await apiHelper.trainCognitiveDataSet(trainedCategoryDataSet);
         });
         it('[DRDMV-8973,DRDMV-8971,DRDMV-8972,DRDMV-8977,DRDMV-8974,DRDMV-8975]:[Cognitive] - Add Data Set Mapping for Categorization', async () => {
             await navigationPage.gotoSettingsPage();
@@ -600,7 +585,7 @@ describe('Case Cognitive', () => {
             await utilGrid.addFilter("Mapping Type", "Categorization", "checkbox");
             expect(await consoleCognitivePo.isRecordPresentOnCategorization("Add Mapping Group " + randomStr)).toBeTruthy();
             await utilGrid.clearFilter();
-            await utilGrid.addFilter("Data Set Name", trainedCategoryDataSet, "text");
+            await utilGrid.addFilter("Data Set Name", categoryDataSet, "text");
             expect(await consoleCognitivePo.isRecordPresentOnCategorization("Add Mapping Group " + randomStr)).toBeTruthy();
             await utilGrid.clearFilter();
             await utilGrid.addFilter("Mapping Status", "False", "checkbox");
@@ -623,20 +608,6 @@ describe('Case Cognitive', () => {
     //ankagraw
     describe('[DRDMV-8454,DRDMV-8453,DRDMV-8464,DRDMV-8455,DRDMV-8456,DRDMV-8457]:[Cognitive] - Data Set Mapping for Templates UI validation', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let trainedTemplateDataSet = "Trained Templates Data Set";
-        beforeAll(async () => {
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteCognitiveDataSetMapping();
-            await apiHelper.deleteCognitiveDataSet();
-
-            // add watson account
-            let apiKey = "2fVs7RMM9IuTvZyB3qD1eXnFzUR4KGJNqd5tF0XMwz4J";
-            await apiHelper.addWatsonAccount(apiKey);
-
-            // trained data set
-            await apiHelper.createCognitiveDataSet("category", { name: trainedTemplateDataSet });
-            await apiHelper.trainCognitiveDataSet(trainedTemplateDataSet);
-        });
         it('[DRDMV-8454,DRDMV-8453,DRDMV-8464,DRDMV-8455,DRDMV-8456,DRDMV-8457]:[Cognitive] - Data Set Mapping for Templates UI validation', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Cognitive--Template', 'Template Configuration - Business Workflows');
@@ -650,7 +621,7 @@ describe('Case Cognitive', () => {
             expect(await createCognitiveTemplateMappingPo.isSaveButtonDisabled()).toBe("true");
             await createCognitiveTemplateMappingPo.setMappingName("Add Mapping" + randomStr);
             await createCognitiveTemplateMappingPo.selectCompany("Petramco");
-            await createCognitiveTemplateMappingPo.selectDataSet(trainedTemplateDataSet);
+            await createCognitiveTemplateMappingPo.selectDataSet(templateDataSet);
             await createCognitiveTemplateMappingPo.setConfidentialsLevelOfCategorization("20");
             await createCognitiveTemplateMappingPo.setConfidentialsLevelByAgent("10");
             await createCognitiveTemplateMappingPo.clickCancelButton();
@@ -662,7 +633,7 @@ describe('Case Cognitive', () => {
             await consoleCognitivePo.clickAddDataSetMapping();
             await createCognitiveTemplateMappingPo.setMappingName("Add Mapping" + randomStr);
             await createCognitiveTemplateMappingPo.selectCompany("Petramco");
-            await createCognitiveTemplateMappingPo.selectDataSet(trainedTemplateDataSet);
+            await createCognitiveTemplateMappingPo.selectDataSet(templateDataSet);
             await createCognitiveTemplateMappingPo.setConfidentialsLevelOfCategorization("200");
             expect(await createCognitiveTemplateMappingPo.getMaximumValueErrorMessage()).toContain("Maximum value is 100.");
             await createCognitiveTemplateMappingPo.setConfidentialsLevelOfCategorization("20");
@@ -702,7 +673,7 @@ describe('Case Cognitive', () => {
             await consoleCognitivePo.clickAddDataSetMapping();
             await createCognitiveTemplateMappingPo.setMappingName("Add Mapping Group " + randomStr);
             await createCognitiveTemplateMappingPo.selectCompany("Petramco");
-            await createCognitiveTemplateMappingPo.selectDataSet(trainedTemplateDataSet);
+            await createCognitiveTemplateMappingPo.selectDataSet(templateDataSet);
             await createCognitiveTemplateMappingPo.setConfidentialsLevelOfCategorization("20");
             await createCognitiveTemplateMappingPo.setConfidentialsLevelByAgent("10");
             await createCognitiveTemplateMappingPo.clickSaveButton();
@@ -719,7 +690,7 @@ describe('Case Cognitive', () => {
             await consoleCognitivePo.clickAddDataSetMapping();
             await createCognitiveTemplateMappingPo.setMappingName("Add Mapping Psilon" + randomStr);
             await createCognitiveTemplateMappingPo.selectCompany("Psilon");
-            await createCognitiveTemplateMappingPo.selectDataSet(trainedTemplateDataSet);
+            await createCognitiveTemplateMappingPo.selectDataSet(templateDataSet);
             await createCognitiveTemplateMappingPo.setConfidentialsLevelOfCategorization("20");
             await createCognitiveTemplateMappingPo.setConfidentialsLevelByAgent("10");
             await createCognitiveTemplateMappingPo.clickSaveButton();
@@ -742,7 +713,7 @@ describe('Case Cognitive', () => {
             await utilGrid.addFilter("Mapping Type", "Template", "checkbox");
             expect(await consoleCognitivePo.isRecordPresentOnTemplate("Add Mapping Group " + randomStr)).toBeTruthy();
             await utilGrid.clearFilter();
-            await utilGrid.addFilter("Data Set Name", trainedTemplateDataSet, "text");
+            await utilGrid.addFilter("Data Set Name", templateDataSet, "text");
             expect(await consoleCognitivePo.isRecordPresentOnTemplate("Add Mapping Group " + randomStr)).toBeTruthy();
             await utilGrid.clearFilter();
             await utilGrid.addFilter("Mapping Status", "False", "checkbox");
