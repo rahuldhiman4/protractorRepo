@@ -411,7 +411,7 @@ describe('Knowledge Console Preset Filter', () => {
 
         let dateForArticle1 = await utilityCommon.getOldDate(27);
         let dateEpochValueArticle1 = await dbConnectObj.dateEpochConverter(dateForArticle1);
-        await dbConnectVar.query(`UPDATE t685 SET c3 = '${dateEpochValueArticle1}' WHERE c302300507 = '${displayId1}'`);
+        await dbConnectVar.query(`UPDATE t1332 SET c3 = '${dateEpochValueArticle1}' WHERE c302300507 = '${displayId1}'`);
 
         //Create article in Published status and update the created date below 1 month
         ARTICLE_DATA_ASSIGNTOME.title = title + "_Published";
@@ -424,7 +424,7 @@ describe('Knowledge Console Preset Filter', () => {
 
         let dateForArticle2 = await utilityCommon.getOldDate(27);
         let dateEpochValueArticle2 = await dbConnectObj.dateEpochConverter(dateForArticle2);
-        await dbConnectVar.query(`UPDATE t685 SET c3 = '${dateEpochValueArticle2}' WHERE c302300507 = '${displayId2}'`);
+        await dbConnectVar.query(`UPDATE t1332 SET c3 = '${dateEpochValueArticle2}' WHERE c302300507 = '${displayId2}'`);
 
         //Create article in Draft status and update the created date above 1 month
         ARTICLE_DATA_ASSIGNTOME.title = title + "_Draft";
@@ -435,7 +435,7 @@ describe('Knowledge Console Preset Filter', () => {
 
         let dateForArticle3 = await utilityCommon.getOldDate(33);
         let dateEpochValueArticle3 = await dbConnectObj.dateEpochConverter(dateForArticle3);
-        await dbConnectVar.query(`UPDATE t685 SET c3 = '${dateEpochValueArticle3}' WHERE c302300507 = '${displayId3}'`);
+        await dbConnectVar.query(`UPDATE t1332 SET c3 = '${dateEpochValueArticle3}' WHERE c302300507 = '${displayId3}'`);
 
         //Create article in Published status and update the created date below 1 month
         ARTICLE_DATA_ASSIGNTOME.title = title + "_Published";
@@ -448,7 +448,7 @@ describe('Knowledge Console Preset Filter', () => {
 
         let dateForArticle4 = await utilityCommon.getOldDate(32);
         let dateEpochValueArticle4 = await dbConnectObj.dateEpochConverter(dateForArticle4);
-        await dbConnectVar.query(`UPDATE t685 SET c3 = '${dateEpochValueArticle4}' WHERE c302300507 = '${displayId4}'`);
+        await dbConnectVar.query(`UPDATE t1332 SET c3 = '${dateEpochValueArticle4}' WHERE c302300507 = '${displayId4}'`);
 
         await utilityGrid.applyPresetFilter('All Articles In Last 1 month');
         let allTaskFilter: string[] = ['All Articles In Last 1 month'];
@@ -482,7 +482,7 @@ describe('Knowledge Console Preset Filter', () => {
 
         let dateForArticle1 = await utilityCommon.getOldDate(27);
         let dateEpochValueArticle1 = await dbConnectObj.dateEpochConverter(dateForArticle1);
-        await dbConnectVar.query(`UPDATE t685 SET c3 = '${dateEpochValueArticle1}' WHERE c302300507 = '${displayId1}'`);
+        await dbConnectVar.query(`UPDATE t1332 SET c3 = '${dateEpochValueArticle1}' WHERE c302300507 = '${displayId1}'`);
 
         //Create article with the created date above 1 month and below 3 months
         ARTICLE_DATA_ASSIGNTOME.title = title + "_Draft";
@@ -493,7 +493,7 @@ describe('Knowledge Console Preset Filter', () => {
 
         let dateForArticle2 = await utilityCommon.getOldDate(80);
         let dateEpochValueArticle2 = await dbConnectObj.dateEpochConverter(dateForArticle2);
-        await dbConnectVar.query(`UPDATE t685 SET c3 = '${dateEpochValueArticle2}' WHERE c302300507 = '${displayId2}'`);
+        await dbConnectVar.query(`UPDATE t1332 SET c3 = '${dateEpochValueArticle2}' WHERE c302300507 = '${displayId2}'`);
 
         //Create article with the created date above 3 months
         ARTICLE_DATA_ASSIGNTOME.title = title + "_Draft";
@@ -504,7 +504,7 @@ describe('Knowledge Console Preset Filter', () => {
 
         let dateForArticle3 = await utilityCommon.getOldDate(93);
         let dateEpochValueArticle3 = await dbConnectObj.dateEpochConverter(dateForArticle3);
-        await dbConnectVar.query(`UPDATE t685 SET c3 = '${dateEpochValueArticle3}' WHERE c302300507 = '${displayId3}'`);
+        await dbConnectVar.query(`UPDATE t1332 SET c3 = '${dateEpochValueArticle3}' WHERE c302300507 = '${displayId3}'`);
 
         await utilityGrid.applyPresetFilter('All Articles In Last 3 months');
         let allTaskFilter: string[] = ['All Articles In Last 3 months'];
@@ -536,7 +536,7 @@ describe('Knowledge Console Preset Filter', () => {
 
         let dateForArticle1 = await utilityCommon.getOldDate(27);
         let dateEpochValueArticle1 = await dbConnectObj.dateEpochConverter(dateForArticle1);
-        await dbConnectVar.query(`UPDATE t685 SET c3 = '${dateEpochValueArticle1}' WHERE c302300507 = '${displayId1}'`);
+        await dbConnectVar.query(`UPDATE t1332 SET c3 = '${dateEpochValueArticle1}' WHERE c302300507 = '${displayId1}'`);
 
         //Create article with the created date above 1 month and below 3 months
         ARTICLE_DATA_ASSIGNTOME.title = title + "_Draft";
@@ -547,7 +547,7 @@ describe('Knowledge Console Preset Filter', () => {
 
         let dateForArticle2 = await utilityCommon.getOldDate(80);
         let dateEpochValueArticle2 = await dbConnectObj.dateEpochConverter(dateForArticle2);
-        await dbConnectVar.query(`UPDATE t685 SET c3 = '${dateEpochValueArticle2}' WHERE c302300507 = '${displayId2}'`);
+        await dbConnectVar.query(`UPDATE t1332 SET c3 = '${dateEpochValueArticle2}' WHERE c302300507 = '${displayId2}'`);
 
         //Create article with the created date above 3 months and below 6 months
         ARTICLE_DATA_ASSIGNTOME.title = title + "_Draft";
@@ -558,7 +558,7 @@ describe('Knowledge Console Preset Filter', () => {
 
         let dateForArticle3 = await utilityCommon.getOldDate(150);
         let dateEpochValueArticle3 = await dbConnectObj.dateEpochConverter(dateForArticle3);
-        await dbConnectVar.query(`UPDATE t685 SET c3 = '${dateEpochValueArticle3}' WHERE c302300507 = '${displayId3}'`);
+        await dbConnectVar.query(`UPDATE t1332 SET c3 = '${dateEpochValueArticle3}' WHERE c302300507 = '${displayId3}'`);
 
         //Create article with the created date above 3 months and below 6 months
         ARTICLE_DATA_ASSIGNTOME.title = title + "_Draft";
@@ -569,7 +569,7 @@ describe('Knowledge Console Preset Filter', () => {
 
         let dateForArticle4 = await utilityCommon.getOldDate(200);
         let dateEpochValueArticle4 = await dbConnectObj.dateEpochConverter(dateForArticle4);
-        await dbConnectVar.query(`UPDATE t685 SET c3 = '${dateEpochValueArticle4}' WHERE c302300507 = '${displayId4}'`);
+        await dbConnectVar.query(`UPDATE t1332 SET c3 = '${dateEpochValueArticle4}' WHERE c302300507 = '${displayId4}'`);
 
         await utilityGrid.applyPresetFilter('All Articles In Last 6 months');
         let allTaskFilter: string[] = ['All Articles In Last 6 months'];

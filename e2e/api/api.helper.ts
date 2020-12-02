@@ -1417,6 +1417,7 @@ class ApiHelper {
             knowledgeArticleData.fieldInstances[1000000001].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : knowledgeArticleData.fieldInstances[1000000001].value;
             knowledgeArticleData.fieldInstances[302301262].value = data.keyword ? data.keyword : knowledgeArticleData.fieldInstances[302301262].value;
             knowledgeArticleData.fieldInstances[302311201].value = data.articleDesc ? data.articleDesc : knowledgeArticleData.fieldInstances[302311201].value;
+            knowledgeArticleData.fieldInstances[450000411].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : knowledgeArticleData.fieldInstances[450000411].value;
 
             if (data.assignedCompany) {
                 let companyGuid = await apiCoreUtil.getOrganizationGuid(data.assignedCompany);
@@ -1498,7 +1499,7 @@ class ApiHelper {
                 }
                 knowledgeArticleData.fieldInstances["302300513"] = assigneeData;
             }
-
+            
             knowledgeArticleResponse = await apiCoreUtil.createRecordInstance(knowledgeArticleData);
             console.log('Create Knowledge Article API Status =============>', knowledgeArticleResponse.status);
         }
