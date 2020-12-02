@@ -1,4 +1,4 @@
-import { $, $$, browser, by, element, ElementFinder, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, browser, by, element, ElementFinder, protractor, ProtractorExpectedConditions, WebElement } from "protractor";
 import utilityCommon from '../../utils/utility.common';
 
 class ViewCasePage {
@@ -188,11 +188,11 @@ class ViewCasePage {
     }
 
     async getAddToWatchlistLinkText(): Promise<string> {
-        let text:string = undefined;
+        let text: string = undefined;
         return await $(this.selectors.addToWatchlistDropdown).isDisplayed().then(async (isDisplay) => {
             if (isDisplay) {
                 await $(this.selectors.addToWatchlistDropdown).click();
-                text= await $('.dropdown-menu  [rx-view-component-id="df24e195-e4f2-4114-af3f-e8a07691bdfd"] button').getText();
+                text = await $('.dropdown-menu  [rx-view-component-id="df24e195-e4f2-4114-af3f-e8a07691bdfd"] button').getText();
                 await $(this.selectors.addToWatchlistDropdown).click();
                 return text;
             } else text = await $('[rx-view-component-id="df24e195-e4f2-4114-af3f-e8a07691bdfd"] button span').getText();
