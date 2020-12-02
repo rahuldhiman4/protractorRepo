@@ -921,20 +921,11 @@ describe("Create Case", () => {
     //ankagraw
     describe('[DRDMV-12061]: [ Task ] - Verify create case with Global task template having assignment', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let globalCategName = 'MyCateg1';
-        let categName2 = 'MyCateg2';
-        let categName3 = 'MyCateg3';
+        let globalCategName = 'Applications';
+        let categName2 = 'Social';
+        let categName3 = 'Chatter';
         let TaskTemplate = 'Manual task' + randomStr;
         let TaskSummary = 'Summary' + randomStr;
-
-        beforeAll(async () => {
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.createOperationalCategory(globalCategName, true);
-            await apiHelper.createOperationalCategory(categName2);
-            await apiHelper.createOperationalCategory(categName3);
-            await apiHelper.associateCategoryToCategory(globalCategName, categName2);
-            await apiHelper.associateCategoryToCategory(categName2, categName3);
-        });
 
         it('[DRDMV-12061]: [ Task ] - Verify create case with Global task template having assignment', async () => {
             //manual Task template
