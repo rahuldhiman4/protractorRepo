@@ -187,14 +187,15 @@ class ViewCasePage {
         });
     }
 
-    async getAddToWatchlistLinkText(): Promise<boolean> {
-        return await $(this.selectors.addToWatchlistDropdown).isDisplayed().then(async (isDisplayed) => {
-            if (isDisplayed) {
+    async getAddToWatchlistLinkText(): Promise<string> {
+        let text:string = undefined;
+        return await $(this.selectors.addToWatchlistDropdown).isDisplayed().then(async (isDisplay) => {
+            if (isDisplay) {
                 await $(this.selectors.addToWatchlistDropdown).click();
-                let value: boolean = await $('.dropdown-menu [rx-view-component-id="df24e195-e4f2-4114-af3f-e8a07691bdfd"] button').isDisplayed();
+                text= await $('.dropdown-menu  [rx-view-component-id="df24e195-e4f2-4114-af3f-e8a07691bdfd"] button').getText();
                 await $(this.selectors.addToWatchlistDropdown).click();
-                return value;
-            } else return await $(this.selectors.addToWatchlist).isDisplayed();
+                return text;
+            } else text = await $('[rx-view-component-id="df24e195-e4f2-4114-af3f-e8a07691bdfd"] button span').getText();
         });
     }
 
@@ -279,14 +280,15 @@ class ViewCasePage {
         });
     }
 
-    async getStopWatchingLinkText(): Promise<boolean> {
+    async getStopWatchingLinkText(): Promise<string> {
+        let text: string = undefined;
         return await $(this.selectors.addToWatchlistDropdown).isDisplayed().then(async (isDisplay) => {
             if (isDisplay) {
                 await $(this.selectors.addToWatchlistDropdown).click();
-                let value: boolean = await $('.dropdown-menu  [rx-view-component-id="a62c849f-5bb0-480f-9811-50def59d82d0"] button').isDisplayed();
+                text = await $('.dropdown-menu  [rx-view-component-id="a62c849f-5bb0-480f-9811-50def59d82d0"] button').getText();
                 await $(this.selectors.addToWatchlistDropdown).click();
-                return value;
-            } else return await $(this.selectors.stopWatching).isDisplayed();
+                return text;
+            } else return await $('[rx-view-component-id="a62c849f-5bb0-480f-9811-50def59d82d0"] button span').getText();
         });
     }
 

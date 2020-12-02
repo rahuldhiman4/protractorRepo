@@ -380,7 +380,7 @@ describe('Dynamic Hidden Data', () => {
             await editTaskTemplate.selectTemplateStatus("Active");
             await editTaskTemplate.clickOnSaveMetadata();
         });
-        it('[DRDMV-21422,DRDMV-21414]: Validate dynamic field is visisble', async () => {
+        it('[DRDMV-21422,DRDMV-21414]: Validate dynamic field is visible', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
             expect(await viewCasePo.getCaseID()).toBe(caseId);
@@ -851,13 +851,15 @@ describe('Dynamic Hidden Data', () => {
     //ankagraw
     describe('[DRDMV-13129]: [Dynamic Data] - Change Case Template having dynamic fields and groups from Case', async () => {
         let casetemplateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseTemplate1 = randomStr + 'FirstCaseTemplateDRDMV13129';
+        let caseTemplate2 = randomStr + 'SecondCaseTemplateDRDMV13129';
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
 
             casetemplateData = {
-                "templateName": 'caseTemplateDRDMV13129'+randomStr,
-                "templateSummary": 'caseTemplateSummaryDRDMV13129'+randomStr,
+                "templateName": caseTemplate1,
+                "templateSummary": caseTemplate1 + ' summary',
                 "templateStatus": "Active",
                 "caseStatus": "InProgress",
                 "assignee": "qkatawazi",
@@ -868,12 +870,12 @@ describe('Dynamic Hidden Data', () => {
                 "ownerGroup": "US Support 3"
             }
             await apiHelper.apiLogin('qkatawazi');
-            let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
-            await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'DynamicGroupFieldDRDMV13129Data1');
-            casetemplateData.templateName = randomStr + '13129';
-            casetemplateData.templateSummary = randomStr + '13129';
             let newCaseTemplate1 = await apiHelper.createCaseTemplate(casetemplateData);
-            await apiHelper.createDynamicDataOnTemplate(newCaseTemplate1.id, 'DynamicGroupFieldDRDMV13129Data2');
+            await apiHelper.createDynamicDataOnTemplate(newCaseTemplate1.id, 'DynamicGroupFieldDRDMV13129Data1');
+            casetemplateData.templateName = caseTemplate2;
+            casetemplateData.templateSummary = caseTemplate2 + ' summary';
+            let newCaseTemplate2 = await apiHelper.createCaseTemplate(casetemplateData);
+            await apiHelper.createDynamicDataOnTemplate(newCaseTemplate2.id, 'DynamicGroupFieldDRDMV13129Data2');
         });
         it('[DRDMV-13129]: [Dynamic Data] - Change Case Template having dynamic fields and groups from Case', async () => {
             await navigationPage.gotoCreateCase();
@@ -884,7 +886,7 @@ describe('Dynamic Hidden Data', () => {
             expect(await viewCasePo.isDynamicFieldDisplayed('FieldGroup1')).toBeFalsy();
             await viewCasePo.clickEditCaseButton();
             await editCasePo.clickOnSelectCaseTemplate();
-            await selectCasetemplateBladePo.selectCaseTemplate(randomStr + 'caseTemplateDRDMV-13129');
+            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplate1);
             await editCasePo.clickOnAssignToMe();
             await editCasePo.clickSaveCase();
             expect(await viewCasePo.isDynamicFieldDisplayed('FieldGroup1')).toBeTruthy();
@@ -901,7 +903,7 @@ describe('Dynamic Hidden Data', () => {
         it('[DRDMV-13129]: [Dynamic Data] - Change Case Template having dynamic fields and groups from Case', async () => {
             await viewCasePo.clickEditCaseButton();
             await editCasePo.clickOnChangeCaseTemplate();
-            await selectCasetemplateBladePo.selectCaseTemplate(randomStr + '13129');
+            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplate2);
             await editCasePo.clickOnAssignToMe();
             await editCasePo.clickSaveCase();
             expect(await viewCasePo.isDynamicFieldDisplayed('FieldGroup1')).toBeTruthy();
