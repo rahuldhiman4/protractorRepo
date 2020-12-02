@@ -1049,5 +1049,5 @@ export const KNOWLEDGE_APPROVAL_MAPPING_DATA = {
 export const KNOWLEDGE_APPROVAL_FLOW_DATA = {
     "flowName": "Preset Filter",
     "approver": "idphylumkuser",
-    "qualification": "'Operational Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.cddc9f6098ac421a1aa40ec9be503abb0fda61530bc9dbb22e7049cba9c5839018ba7205a392cd9f37141091bbe33e28405caff795929e4d805fa787dfea2c0c.304405421}"
+    "qualification": "'Operational Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.4bae23c056ea5678c965c0ac99a0d42129fac36dad17734f4cccf72ed0728970484abbb531b3257310f5218d372e9f858c4dab28b02703e23a18a069d7cc079c.304405421}"
 }
