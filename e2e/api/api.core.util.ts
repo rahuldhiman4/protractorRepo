@@ -65,11 +65,11 @@ class ApiCoreUtil {
         return allRecords.data.data.length >= 1 ? allRecords.data.data[0]['signatureInstanceID'] || null : null;
     }
 
-    async getNotificationEventGuid(eventName: string, company?: string): Promise<string> {
+    async getNotificationEventGuid(eventName: string, lob: string, company?: string): Promise<string> {
         let allRecords = await this.getGuid("com.bmc.dsm.notification-lib:NotificationEvent");
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
-            if (company) return obj[301718200] === eventName && obj[301566300] === company;
-            else return obj[301718200] === eventName;
+            if (company) return obj[301718200] === eventName && obj[301566300] === company && obj[450000420] === lob;
+            else return obj[301718200] === eventName && obj[450000420] === lob;
         });
         return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
     }
@@ -191,12 +191,12 @@ class ApiCoreUtil {
 
     async getFunctionalRoleGuid(functionalRole: string): Promise<string> {
         let dataPageUri = "api/rx/application/datapage?dataPageType=com.bmc.arsys.rx.application.functionalrole.datapage.FunctionalRoleDataPageQuery"
-            + "&pageSize=50&startIndex=0"        
-            let allRecords = await axios.get(
+            + "&pageSize=50&startIndex=0"
+        let allRecords = await axios.get(
             dataPageUri
-        );        
-        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {           
-            return obj['name'] === functionalRole;       
+        );
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj['name'] === functionalRole;
         });
         return entityObj.length >= 1 ? entityObj[0]['id'] || null : null;
     }

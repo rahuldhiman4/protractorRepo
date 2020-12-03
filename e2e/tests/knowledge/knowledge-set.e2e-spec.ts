@@ -150,7 +150,7 @@ describe('Knowledge Article Set', () => {
             await loginPage.login('qtao');
             await navigationPage.switchToApplication(knowledgeManagementApp);
             await navigationPage.gotoCreateKnowledge();
-            expect(await createKnowledgePage.isTemplatePresent(knowledgeTemplateStr)).toBeFalsy(`Template ${knowledgeTemplateStr} is not present`);
+            expect(await createKnowledgePage.isTemplatePresent(knowledgeTemplateStr)).toBeTruthy(`Template ${knowledgeTemplateStr} is not present`);
         });
         it('[DRDMV-7022]:Knowledge Article Template visibility contains Knowledge Set associated with KM and BWF', async () => {
             await navigationPage.signOut();
@@ -163,7 +163,7 @@ describe('Knowledge Article Set', () => {
             await utilCommon.closePopUpMessage();
             await utilCommon.closeBladeOnSettings();
             await navigationPage.signOut();
-            await loginPage.login('elizabeth');
+            await loginPage.login('fritz'); // Knowledge set created under LOB: HR should not visible to user belonging to LOB: Finance
             await navigationPage.switchToApplication(knowledgeManagementApp);
             await navigationPage.gotoCreateKnowledge();
             expect(await createKnowledgePage.isTemplatePresent(knowledgeTemplateStr)).toBeFalsy(`Template ${knowledgeTemplateStr} is not present`);

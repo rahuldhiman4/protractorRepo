@@ -25,7 +25,7 @@ describe("Notification Template", () => {
             company: 'Petramco'
         }
         await apiHelper.apiLogin('qkatawazi');
-        if (await coreApi.getNotificationEventGuid(eventName, 'Petramco') == null || undefined) {
+        if (await coreApi.getNotificationEventGuid(eventName, 'Human Resource', 'Petramco') == null || undefined) {
             await apiHelper.createNotificationEvent(eventData);
         }
     });
