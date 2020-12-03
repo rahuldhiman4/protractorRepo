@@ -553,7 +553,7 @@ class ActivityTabPage {
         for (let i: number = 0; i < countVal; i++) {
             activityValue = activityValue + await $$(this.selectors.activityLog).get(i).getText();
         }
-        return await activityValue.includes(caseActivityLogText);
+        return activityValue.includes(caseActivityLogText);
     }
 
     async isTextPresentInNote(bodyText: string): Promise<boolean> {

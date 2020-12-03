@@ -17,8 +17,7 @@ class MenuItemsConfigEditPage {
     }
 
     async isMenuNameDropDownEnabled(): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.menuNameDropDown)));
-        return await $(this.selectors.menuNameDropDown).isEnabled();
+        return await $(this.selectors.menuNameDropDown).getAttribute("disabled") == "false";
     }
 
     async clickOnSaveButton(): Promise<void> {

@@ -35,9 +35,16 @@ import utilityGrid from '../../utils/utility.grid';
 describe('Dynamic data', () => {
     const manageNotificationTempNavigation = 'Notification Configuration--Manage Templates';
     const notifTempGridPageTitle = 'Manage Notification Template - Business Workflows';
+    const petramcoEventName = 'Petramco Event';
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
+        let eventData = {
+            eventName: petramcoEventName,
+            company: 'Petramco'
+        }
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.createNotificationEvent(eventData);
     });
 
     afterAll(async () => {
@@ -108,7 +115,7 @@ describe('Dynamic data', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
             await consoleNotificationTemplatePo.clickOnCreateNotificationTemplate();
-            await createNotificationTemplatePo.selectEvent('Case Assignments');
+            await createNotificationTemplatePo.selectEvent('Agent Assignment');
             await createNotificationTemplatePo.selectModuleName('Cases');
             await createNotificationTemplatePo.clickOnInsertFieldOfAlert();
             await addFieldsPopPo.navigateToDynamicFieldInCaseTemplate(globalcaseTemplateName);
@@ -116,7 +123,7 @@ describe('Dynamic data', () => {
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('GlobalField2')).toBeTruthy();
             expect(await addFieldsPopPo.isCaseTemplatePresent(caseTemplateName)).toBeFalsy();
             await addFieldsPopPo.clickOnOkButtonOfEditor();
-            await createNotificationTemplatePo.selectEvent('Approval');
+            await createNotificationTemplatePo.selectEvent(petramcoEventName);
             await createNotificationTemplatePo.selectModuleName('Cases');
             await createNotificationTemplatePo.clickOnInsertFieldOfAlert();
             await addFieldsPopPo.navigateToDynamicFieldInCaseTemplate(caseTemplateName);
@@ -130,7 +137,7 @@ describe('Dynamic data', () => {
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('GlobalField1')).toBeTruthy();
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('GlobalField2')).toBeTruthy();
             await addFieldsPopPo.clickOnOkButtonOfEditor();
-            await createNotificationTemplatePo.selectEvent('Case Assignments');
+            await createNotificationTemplatePo.selectEvent('Agent Assignment');
             await createNotificationTemplatePo.selectModuleName('Tasks');
             await createNotificationTemplatePo.clickOnInsertFieldOfAlert();
             await addFieldsPopPo.navigateToDynamicFieldInTaskTemplate(globalTaskTemplateName);
@@ -138,7 +145,7 @@ describe('Dynamic data', () => {
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('GlobalTaskField2')).toBeTruthy();
             expect(await addFieldsPopPo.isCaseTemplatePresent(taskTemplateName)).toBeFalsy();
             await addFieldsPopPo.clickOnOkButtonOfEditor();
-            await createNotificationTemplatePo.selectEvent('Approval');
+            await createNotificationTemplatePo.selectEvent(petramcoEventName);
             await createNotificationTemplatePo.selectModuleName('Tasks');
             await createNotificationTemplatePo.clickOnInsertFieldOfAlert();
             await addFieldsPopPo.navigateToDynamicFieldInTaskTemplate(taskTemplateName);
@@ -431,7 +438,7 @@ describe('Dynamic data', () => {
     });
 
     describe('[DRDMV-13567]: [Dynamic Data] [Attachment] - Case UI when it has Dynamic Fields including Attachment', async () => {
-        const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateName = 'caseTemplateDRDMV-13567' + randomStr;
         let caseTemaplateSummary = 'caseTemplateDRDMV-13567' + randomStr;
         beforeAll(async () => {
@@ -1109,7 +1116,7 @@ describe('Dynamic data', () => {
         await dynamicFieldsPo.clickSaveButton();
         await utilCommon.closePopUpMessage();
         expect(await viewCasetemplatePo.isDynamicFieldDisplayed('NewUpdatedDescription' + randomStr)).toBeTruthy();
-    });//, 180 * 1000);
+    });
 
     //ptidke
     describe('[DRDMV-13132,DRDMV-13124]:[-ve] [Dynamic Data] [UI] - Update Case dynamic fields with invalid data', async () => {
@@ -1202,5 +1209,5 @@ describe('Dynamic data', () => {
         expect(await viewCasePo.isDynamicFieldDisplayed('attachment2')).toBeTruthy('dynamic fields not present');
         expect(await viewCasePo.isDynamicFieldDisplayed('attachment3')).toBeTruthy('dynamic fields not present');
         expect(await viewCasePo.isDynamicFieldDisplayed('dynamicList')).toBeTruthy('dynamic fields not present');
-    });//, 150 * 1000);
+    });
 });
