@@ -38,11 +38,11 @@ class GoalTypeConfigConsolePage {
     }
 
     async getGoalTypeGUID(): Promise<string> {
-        return await $$('[rx-view-component-id="781a6488-ff08-481b-86c7-7c78c577357b"] div.ui-grid-row .ui-grid-cell-contents').last().getText();
+        return await $$('[rx-view-component-id="72a09a55-57b4-440a-9e8d-e8ed1d30edc6"] div.ui-grid-row .ui-grid-cell-contents').last().getText();
     }
 
     async isFilteredRecordDisplayed(): Promise<boolean> {
-        return await $('[rx-view-component-id="781a6488-ff08-481b-86c7-7c78c577357b"]  div.ui-grid-row').isPresent();
+        return await $('[rx-view-component-id="72a09a55-57b4-440a-9e8d-e8ed1d30edc6"]  div.ui-grid-row').isPresent();
     }
 
     async clickRefreshIcon(): Promise<void> {
