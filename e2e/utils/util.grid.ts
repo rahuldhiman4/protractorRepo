@@ -245,17 +245,24 @@ export class GridOperation {
     }
 
     async searchRecord(id: string, guid?: string) {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.summaryField1)));
+        let summaryField: string = this.selectors.summaryField1;
+        let searchButton: string = this.selectors.searchButton1;
+        let gridRefreshButton: string = this.selectors.refreshButton;
         if (guid) {
-            await $(`[rx-view-component-id="${guid}"]` + this.selectors.summaryField1).clear();
-            await $(`[rx-view-component-id="${guid}"]` + this.selectors.summaryField1).sendKeys(id);
-            await $(`[rx-view-component-id="${guid}"]` + this.selectors.searchButton1).click();
-        } else {
-            await $(this.selectors.summaryField1).clear();
-            await $(this.selectors.summaryField1).sendKeys(id);
-            //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.searchButton1)));
-            await $(this.selectors.searchButton1).click();
-            //        await browser.sleep(3000);
+            summaryField = `[rx-view-component-id="${guid}"]` + summaryField;
+            searchButton = `[rx-view-component-id="${guid}"]` + searchButton;
+            gridRefreshButton = `[rx-view-component-id="${guid}"]` + gridRefreshButton;
+        }
+        for (let i: number = 0; i < 4; i++) {
+            console.log(id, "search angularJs grid count: ", i);
+            await $(summaryField).clear();
+            await $(gridRefreshButton).click();
+            await $(summaryField).sendKeys(id);
+            await $(searchButton).click();
+            let gridRecordCount: number = await this.getNumberOfRecordsInGrid(guid);
+            if (gridRecordCount == 0) {
+                await browser.sleep(10000); // workaround for performance issue, this can be removed when issue fixed
+            } else break;
         }
     }
 

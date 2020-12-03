@@ -86,9 +86,8 @@ describe('Automated Case Status Transition', () => {
     //asahitya
     describe('[DRDMV-17553]: Case manager - automatic case status transtion rule console validations', async () => {
         let configName1, configName2, randomStr = [...Array(7)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        beforeAll(async () => {
+        it('[DRDMV-17553]: Search and presence of existing rule test', async () => {
             await apiHelper.apiLogin('jbarnes');
-            await apiHelper.deleteAutomatedCaseStatusTransition();
 
             //Create first Record
             configName1 = AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.name = 'ConfigName1' + randomStr;

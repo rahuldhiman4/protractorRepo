@@ -55,11 +55,21 @@ export class GridOperations {
     }
 
     async searchRecordWithoutFilter(searchValue: string, guid?: string): Promise<void> {
-        await browser.sleep(30000); // workaround for performance issue
         let searchTextBoxLocator: string = this.selectors.searchTextBox;
-        if (guid) { searchTextBoxLocator = `[rx-view-component-id="${guid}"] ` + searchTextBoxLocator; }
-        await $(searchTextBoxLocator).clear();
-        await $(searchTextBoxLocator).sendKeys(searchValue + protractor.Key.ENTER);
+        let gridRecordsLocator: string = this.selectors.gridRowLinks;
+        if (guid) {
+            searchTextBoxLocator = `[rx-view-component-id="${guid}"] ` + searchTextBoxLocator;
+            gridRecordsLocator = `[rx-view-component-id='${guid}'] ` + gridRecordsLocator;
+        }
+        for (let i: number = 0; i < 4; i++) {
+            console.log(searchValue, "search angular grid count: ", i);
+            await $(searchTextBoxLocator).clear();
+            await $(searchTextBoxLocator).sendKeys(searchValue + protractor.Key.ENTER);
+            let gridRecordCount: number = await $$(gridRecordsLocator).count();
+            if (gridRecordCount == 0) {
+                await browser.sleep(10000); // workaround for performance issue, this can be removed when issue fixed
+            } else break;
+        }
     }
 
     async typeInFilterExperssion(date: string): Promise<void> {
@@ -383,11 +393,11 @@ export class GridOperations {
         let selectCheckbox = '.ui-chkbox-box';
         let selectRadioButton = '.radio__label input';
         if (guid) {
-            await this.searchRecord(recordName, guid);
+            await this.searchRecordWithoutFilter(recordName, guid);
             selectCheckbox = `[rx-view-component-id="${guid}"] ` + selectCheckbox;
             selectRadioButton = `[rx-view-component-id="${guid}"] ` + selectRadioButton;
         }
-        else await this.searchRecord(recordName);
+        else await this.searchRecordWithoutFilter(recordName);
         let checkboxLocator = await $(selectCheckbox);
         let radioButtonLocator = await $(selectRadioButton);
         if (await checkboxLocator.isPresent()) await checkboxLocator.click();
