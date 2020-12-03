@@ -119,11 +119,12 @@ class ApiHelper {
         };
     }
 
-    async updateNotificationEventStatus(eventName: string, status: string, company?: string): Promise<boolean> {
+    async updateNotificationEventStatus(eventName: string, lob: string, status: string, company?: string): Promise<boolean> {
         let notificationEventGuid;
+        let lobGuid: string = constants.LOB[lob];
         if (company)
-            notificationEventGuid = await apiCoreUtil.getNotificationEventGuid(eventName, company);
-        else notificationEventGuid = await apiCoreUtil.getNotificationEventGuid(eventName);
+            notificationEventGuid = await apiCoreUtil.getNotificationEventGuid(eventName, lobGuid, company);
+        else notificationEventGuid = await apiCoreUtil.getNotificationEventGuid(eventName, lobGuid);
         let updateStatusPayload = cloneDeep(NOTIFICATIONS_EVENT_STATUS_CHANGE);
         updateStatusPayload.id = notificationEventGuid;
         updateStatusPayload.fieldInstances[7].value = constants.NotificationEventStatus[status];
@@ -179,10 +180,10 @@ class ApiHelper {
 
     async createEmailBox(mailboxType: string, mailBoxConfigData?: IEmailMailboxConfig): Promise<IIDs> {
         let mailBoxData = undefined;
-        if(mailboxType == 'incoming') 
-        mailBoxData = cloneDeep(INCOMINGMAIL_DEFAULT); 
-        else if(mailboxType = 'outgoing')
-        mailBoxData = cloneDeep(EMAIL_OUTGOING)
+        if (mailboxType == 'incoming')
+            mailBoxData = cloneDeep(INCOMINGMAIL_DEFAULT);
+        else if (mailboxType = 'outgoing')
+            mailBoxData = cloneDeep(EMAIL_OUTGOING)
         if (mailBoxConfigData) {
             mailBoxData.fieldInstances[18037].value = mailBoxConfigData.mailBoxName;
         }
@@ -209,7 +210,7 @@ class ApiHelper {
         let updateLOBData = cloneDeep(UPDATE_EMAIL_PROFILE_ON_LOB);
         let lobGuid: string = await apiCoreUtil.getLineOfBusinessGuid(lobName);
         updateLOBData.id = lobGuid;
-        updateLOBData.fieldInstances[450000157].value = emailProfileName; 
+        updateLOBData.fieldInstances[450000157].value = emailProfileName;
         let updateLOBDataResponse = await apiCoreUtil.updateRecordInstance("com.bmc.dsm.shared-services-lib:Line of Business", lobGuid, updateLOBData);
         return updateLOBDataResponse.status == 204;
     }
@@ -1499,7 +1500,7 @@ class ApiHelper {
                 }
                 knowledgeArticleData.fieldInstances["302300513"] = assigneeData;
             }
-            
+
             knowledgeArticleResponse = await apiCoreUtil.createRecordInstance(knowledgeArticleData);
             console.log('Create Knowledge Article API Status =============>', knowledgeArticleResponse.status);
         }
@@ -2834,7 +2835,10 @@ class ApiHelper {
         let subjectBodyPayload = cloneDeep(EMAIL_ALERT_SUBJECT_BODY);
         notificationTemplatePayload.fieldInstances[8].value = data.description;
         notificationTemplatePayload.fieldInstances[301233800].value = data.module;
-        notificationTemplatePayload.fieldInstances[301718200].value = await apiCoreUtil.getNotificationEventGuid(data.eventName);
+        if (data.lineOfBusiness)
+            notificationTemplatePayload.fieldInstances[301718200].value = await apiCoreUtil.getNotificationEventGuid(data.eventName, await constants.LOB[data.lineOfBusiness]);
+        else
+            notificationTemplatePayload.fieldInstances[301718200].value = await apiCoreUtil.getNotificationEventGuid(data.eventName, await constants.LOB['Human Resource']);
         notificationTemplatePayload.fieldInstances[304412071].value = data.templateName;
         notificationTemplatePayload.fieldInstances[450000153].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : notificationTemplatePayload.fieldInstances[450000153].value;
         notificationTemplatePayload.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : notificationTemplatePayload.fieldInstances[450000420].value;
@@ -3162,10 +3166,10 @@ class ApiHelper {
         console.log("Delete Document Response =============>", deleteDocumentResponse.status);
     }
 
-    async deleteNotificationEvent(notificationEventName: string, company?: string): Promise<boolean> {
+    async deleteNotificationEvent(notificationEventName: string, lob: string, company?: string): Promise<boolean> {
         let notificationEventGuid: string = undefined;
         if (company) notificationEventGuid = await apiCoreUtil.getNotificationEventGuid(notificationEventName, company);
-        else notificationEventGuid = await apiCoreUtil.getNotificationEventGuid(notificationEventName);
+        else notificationEventGuid = await apiCoreUtil.getNotificationEventGuid(notificationEventName, await constants.LOB[lob]);
         if (notificationEventGuid) {
             let status = await apiCoreUtil.deleteRecordInstance('com.bmc.dsm.notification-lib%3ANotificationEvent', notificationEventGuid);
             console.log(`Notification Event: ${notificationEventName} deletion status ==> ${status}`);

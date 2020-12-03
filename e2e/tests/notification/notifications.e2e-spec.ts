@@ -64,7 +64,8 @@ describe("Notifications", () => {
                 "Business Unit": "Phylum Support Org1",
                 "Support Group": "Phylum Support Group1",
                 "Assignee": "idphylum1",
-                "Status": "2000"
+                "Status": "2000",
+                "Line of Business": "Finance"
             }
             let response = await apiHelper.createCase(caseData);
             await navigationPage.gotoCaseConsole();
@@ -77,7 +78,7 @@ describe("Notifications", () => {
             await apiHelper.updateCaseStatus(response.id, 'AfterResolved');
             await utilityCommon.refresh(); //Refreshing the page to reflect the notification
             await notificationPo.clickOnNotificationIcon();
-            expect(await notificationPo.isAlertPresent(`Watchlist Alert: ${response.displayId} Marked: AfterResolved by phylumfn2 phylumln2.`)).toBeTruthy();
+            expect(await notificationPo.isAlertPresent(`phylumfn2 phylumln2 changed the status of ${response.displayId} to AfterResolved`)).toBeTruthy();
         });
 
         afterAll(async () => {
