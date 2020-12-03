@@ -374,6 +374,8 @@ describe('Service Target Configs', () => {
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
+            await navigationPage.signOut();
+            await loginPage.login(caseBAUser);
         });
 
     });
@@ -777,7 +779,7 @@ describe('Service Target Configs', () => {
                 "Assignee": "qkatawazi",
             }
 
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             let response = await apiHelper.createCase(caseData);
             let caseId = response.displayId;
 
@@ -807,7 +809,7 @@ describe('Service Target Configs', () => {
                 "Assignee": "qkatawazi",
             }
 
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             let response = await apiHelper.createCase(caseData);
             let caseId = response.displayId;
 
@@ -953,7 +955,5 @@ describe('Service Target Configs', () => {
         });
 
     });
-
-
 
 });

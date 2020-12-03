@@ -51,7 +51,7 @@ class DateTimeSelector {
         for (let i: number = 0; i < 15; i++) {
             if (await $(this.selectors.yearLabel).getText() == yearName.toString()) break;
             else await $(this.selectors.previousYearSelector).click();
-            await browser.sleep(500);
+            await browser.sleep(1000);
         }
     }
 
@@ -59,7 +59,7 @@ class DateTimeSelector {
         for (let i: number = 0; i < 12; i++) {
             if (await $(this.selectors.yearLabel).getText() == yearName.toString()) break;
             else await $(this.selectors.nextYearSelector).click();
-            await browser.sleep(500);
+            await browser.sleep(1000);
         }
     }
 

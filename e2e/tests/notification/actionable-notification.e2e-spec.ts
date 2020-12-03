@@ -586,10 +586,10 @@ describe("Actionable Notifications", () => {
     //ptidke
     it('[DRDMV-22377]: Verify Alert at Requester On case submit , Case Pending-Customer Response Notification, Case Resolution and Case Canceled Notification', async () => {
         await apiHelper.apiLogin('qkatawazi');
-        await apiHelper.updateNotificationEventStatus('Case Pending - Customer Response - Requester Notification', 'Enabled');
-        await apiHelper.updateNotificationEventStatus('Case Canceled - Requester Notification', 'Enabled');
-        await apiHelper.updateNotificationEventStatus('Case Submitted - Requester Notification', 'Enabled');
-        await apiHelper.updateNotificationEventStatus('Case Resolved - Requester Notification', 'Enabled');
+        await apiHelper.updateNotificationEventStatus('Case Pending - Customer Response - Requester Notification', 'Human Resource', 'Enabled');
+        await apiHelper.updateNotificationEventStatus('Case Canceled - Requester Notification', 'Human Resource', 'Enabled');
+        await apiHelper.updateNotificationEventStatus('Case Submitted - Requester Notification', 'Human Resource', 'Enabled');
+        await apiHelper.updateNotificationEventStatus('Case Resolved - Requester Notification', 'Human Resource', 'Enabled');
         await apiHelper.apiLogin('qtao');
         let response1 = await apiHelper.createCase(caseData['actionableNotificationWithAssignee']);
         await apiHelper.updateCaseStatus(response1.id, 'InProgress');
@@ -940,7 +940,7 @@ describe("Actionable Notifications", () => {
             await loginPage.login('qkatawazi');
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteEmailOrNotificationTemplate('Actionable Notification', '- Global -');
-            await apiHelper.deleteNotificationEvent('Actionable Notification Event');
+            await apiHelper.deleteNotificationEvent('Actionable Notification Event', 'Human Resource');
             await apiHelper.deleteTaskTemplate('Actionable Notification template');
             await apiHelper.deleteDocumentAndProcessForActionableNotifications();
         });

@@ -282,7 +282,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await apiHelper.apiLogin(caseAgentUser);
             let knowledgeTemplateId = await apiCoreUtil.getKnowledgeTemplateGuid(knowledgeTemplateStr);
             let articleData = {
-                "knowledgeSet": `${knowledgeSetTitleStrPetramco}`,
+                "knowledgeSet": 'HR',
                 "title": `${knowledgeTitleStr}`,
                 "templateId": `${knowledgeTemplateId}`,
                 "categoryTier1": "Employee Relations",

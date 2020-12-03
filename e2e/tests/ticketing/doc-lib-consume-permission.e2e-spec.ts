@@ -7,8 +7,8 @@ import editCasePo from '../../pageobject/case/edit-case.po';
 import quickCasePo from '../../pageobject/case/quick-case.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
-import attachDocumentBladePo from '../../pageobject/common/attach-document-blade.po';
 import accessTabPo from '../../pageobject/common/access-tab.po';
+import attachDocumentBladePo from '../../pageobject/common/attach-document-blade.po';
 import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
 import loginPage from '../../pageobject/common/login.po';
 import navigationPage from "../../pageobject/common/navigation.po";
@@ -347,8 +347,12 @@ describe('Document Library Consume Permission', () => {
         let caseAgentuserData1, publishDocLibData1, draftDocLibData;
         let publish: string[];
         beforeAll(async () => {
-
             await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteAllEmailConfiguration();
+            let response = await apiHelper.createEmailBox('outgoing');
+            await apiHelper.createEmailProfile(response.id);
+            await apiHelper.updateLOBWithEmailProfile("Human Resource", "Email Profile for Outgoing");
+
             caseAgentuserData1 = {
                 "firstName": "CaseManager",
                 "lastName": "WithDocManager",
@@ -526,16 +530,16 @@ describe('Document Library Consume Permission', () => {
             expect(await attachDocumentBladePo.isPaginationPresent()).toBeTruthy('Failure: Pagination is missing');
             await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
 
-            expect(await resourcesTabPo.isValuePresentInDropdown('Operational Category 1', 'Total Rewards')).toBeTruthy('Failure: Operational Category 1 is missing');
+            expect(await resourcesTabPo.isValuePresentInDropdown('Operational Category 1', 'Employee Relations')).toBeTruthy('Failure: Operational Category 1 is missing');
             await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
             await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
-            expect(await resourcesTabPo.isValuePresentInDropdown('Operational Category 1', 'DemoCateg2')).toBeFalsy('Failure: Operational Category 2 is displayed');
+            expect(await resourcesTabPo.isValuePresentInDropdown('Operational Category 1', 'Compensation')).toBeFalsy('Failure: Operational Category 2 is displayed');
             await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
             await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
-            expect(await resourcesTabPo.isValuePresentInDropdown('Operational Category 1', 'DemoCateg3')).toBeFalsy('Failure: Operational Category 3 is displayed');
+            expect(await resourcesTabPo.isValuePresentInDropdown('Operational Category 1', 'Bonus')).toBeFalsy('Failure: Operational Category 3 is displayed');
             await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
             await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
-            expect(await resourcesTabPo.isValuePresentInDropdown('Operational Category 1', 'DemoCateg4')).toBeFalsy('Failure: Operational Category 4 is displayed');
+            expect(await resourcesTabPo.isValuePresentInDropdown('Operational Category 1', 'Retention Bonus')).toBeFalsy('Failure: Operational Category 4 is displayed');
             await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
             await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
             // Verify Category Tier 1/2/3/4  on UI
@@ -544,7 +548,7 @@ describe('Document Library Consume Permission', () => {
             expect(await resourcesTabPo.isAdvancedSearchFilterDropDownLabelDisplayed('Operational Category 3')).toBeFalsy('Failure: Operational Category 3 is missing');
             expect(await resourcesTabPo.isAdvancedSearchFilterDropDownLabelDisplayed('Operational Category 4')).toBeFalsy('Failure: Operational Category 4 is missing');
 
-            await resourcesTabPo.selectAdvancedSearchFilterOption('Operational Category Tier 1', 'Payroll');
+            await resourcesTabPo.selectAdvancedSearchFilterOption('Operational Category Tier 1', 'Employee Relations');
             await resourcesTabPo.selectAdvancedSearchFilterOption('Region', 'Australia');
             await resourcesTabPo.selectAdvancedSearchFilterOption('Site', 'Canberra');
             await resourcesTabPo.clickOnAdvancedSearchFiltersButton('Apply');
@@ -664,7 +668,7 @@ describe('Document Library Consume Permission', () => {
             expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('FailureMsg: bwfXlsx.xlsx File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfXlsx.xlsx');
             expect(await utilityCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailureMsg: bwfXlsx.xlsx File is not downloaded.');
-           await activityTabPo.clickPlusIconOnMultipleAttachmentInActivity();
+            await activityTabPo.clickPlusIconOnMultipleAttachmentInActivity();
             expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy('FailureMsg:bwfJpg.jpg Attached Document is displayed');
             expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('FailureMsg:bwfPdf.pdf Attached Document is displayed');
         });
