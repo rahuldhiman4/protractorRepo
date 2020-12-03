@@ -65,7 +65,7 @@ describe('Person Profile test', () => {
         expect(await personProfile.getCorporateID()).toBe('200003', 'Corporate Id does not match');
         expect(await personProfile.getEmployeeTypeValue()).toBe('Full time', 'Employee Type value does not match');
         expect(await personProfile.getLoginID()).toBe('Elizabeth', 'Login Id does not match');
-        expect(await personProfile.getFunctionalRoles()).toContain('Knowledge Coach, Case Business Analyst, Case Catalog Administrator, Human Resource');
+        expect(await personProfile.getFunctionalRoles()).toContain('Knowledge Coach, Case Business Analyst, Case Catalog Administrator, Human Resource', 'Functional Role are not matching');
         expect(await personProfile.isVIPTagPresent()).toBeTruthy('VIP tag is not present');
         expect(await personProfile.getCompany()).toContain("Petramco", "Company name mismatch");
         expect(await personProfile.getContactNumber()).toBe("+19255553456", "Phone number mismatch");
@@ -78,13 +78,13 @@ describe('Person Profile test', () => {
         await personProfile.clickOnTab("Related Cases");
         await personProfile.clickOnTab("Related Persons");
 
-        expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Hannah Haas', 'Manager')).toBeTruthy();
+        expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Hannah Haas', 'Manager')).toBeTruthy('Manager is not Hannah');
         await relatedTabPage.addRelatedPerson();
-        await addRelatedPopupPage.addPerson('Qianru Tao', 'Guardian');
+        await addRelatedPopupPage.addPerson('Qianru Tao', 'Related to');
         await relatedTabPage.clickRelatedPersonName('Qianru Tao');
         try {
             await utilityCommon.switchToNewTab(1);
-            expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Elizabeth Peters', 'Student')).toBeTruthy();
+            expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Elizabeth Peters', 'Related to')).toBeTruthy('Related to is not available');
         }
         catch (ex) { throw ex; }
         finally { await utilityCommon.switchToDefaultWindowClosingOtherTabs(); }
@@ -93,7 +93,7 @@ describe('Person Profile test', () => {
             await navigationPage.signOut();
             await loginPage.login('qtao');
             await navigationPage.gotoPersonProfile();
-            expect(await relatedTabPage.isRelatedPersonPresent('Elizabeth Peters')).toBeFalsy();
+            expect(await relatedTabPage.isRelatedPersonPresent('Elizabeth Peters')).toBeFalsy('Elizabeth is still Present');
         }
         catch (ex) { throw ex; }
         finally {

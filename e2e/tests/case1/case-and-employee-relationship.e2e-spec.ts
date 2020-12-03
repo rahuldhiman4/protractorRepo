@@ -93,12 +93,12 @@ describe('Case And Employee Relationship', () => {
         try {
             await utilityCommon.switchToNewTab(1);
             await relatedTabPage.addRelatedPerson();
-            await addRelatedPopupPage.addPerson('Bobby Hill', 'Former Manager');
+            await addRelatedPopupPage.addPerson('Bobby Hill', 'Related to');
             await relatedTabPage.waitUntilNewRelatedPersonAdded(1);
             expect(await relatedTabPage.getRelatedPersonCompanyName('Bobby Hill')).toBe('Petramco');
             expect(await relatedTabPage.getRelatedPersonEmail('Bobby Hill')).toBe('bhill@bwflabs.localdomain');
             expect(await relatedTabPage.getRelatedPersonPhoneNumber('Bobby Hill')).toBe('+556132296002');
-            expect(await relatedTabPage.getRelatedPersonRelationship('Bobby Hill')).toBe('Former Manager');
+            expect(await relatedTabPage.getRelatedPersonRelationship('Bobby Hill')).toBe('Related to');
             expect(await relatedTabPage.getRelatedPersonSite('Bobby Hill')).toBe('Brasília\nCorporate Financial Center\nSCN – Quadra 02- Bloco A 5º Andar Sala 53, Brasília, Distrito Federal, 70712-900, Brazil ');
             expect(await relatedTabPage.isEmailLinkNotPresent('Bobby Hill')).toBeTruthy('Email should not be a clickable link');
         }
@@ -256,7 +256,7 @@ describe('Case And Employee Relationship', () => {
         it('[DRDMV-16245]: Remove the Person from Case Related People tab and Person Profile Related People tab', async () => {
             await navigationPage.gotoPersonProfile();
             await relatedTabPage.addRelatedPerson();
-            await addRelatedPopupPage.addPerson('Brain Adams', 'Parent');
+            await addRelatedPopupPage.addPerson('Brain Adams', 'Related to');
             await relatedTabPage.removeRelatedPerson("Brain Adams");
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);

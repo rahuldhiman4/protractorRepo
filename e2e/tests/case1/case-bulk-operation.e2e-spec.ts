@@ -68,7 +68,7 @@ describe('Case Bulk Operation', () => {
         await apiHelper.apiLogin(qfengStr);
         let caseId: string[] = [];
         let caseDataForTest = caseData['bulkCaseAssignee_New'];
-        caseDataForTest.Summary = "DRDMV-15953 Bulk Case Assignee";
+        caseDataForTest.Summary = [...Array(6)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         for (let i: number = 0; i < 3; i++) {
             let response = await apiHelper.createCase(caseDataForTest);
             caseId[i] = response.displayId;
