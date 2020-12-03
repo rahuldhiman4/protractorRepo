@@ -22,7 +22,7 @@ import createKnowlegePo from '../../pageobject/knowledge/create-knowlege.po';
 import knowledgeArticlesConsolePo from '../../pageobject/knowledge/knowledge-articles-console.po';
 import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
 import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
-import consoleNotestemplatePo from '../../pageobject/settings/common/console-notestemplate.po';
+import consoleNotesTemplatePo from '../../pageobject/settings/common/console-notestemplate.po';
 import createNotesTemplate from '../../pageobject/settings/common/create-notestemplate.po';
 import editNotetemplate from '../../pageobject/settings/common/edit-notestemplate.po';
 import activityTabPo from '../../pageobject/social/activity-tab.po';
@@ -35,7 +35,6 @@ import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-
 
 let tableRowFieldIndex = 0;
 let tableColumnFieldIndex = 1;
@@ -858,12 +857,12 @@ describe('Notes template', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
             await utilGrid.clearFilter();
-            await consoleNotestemplatePo.addColumns(['Label', 'ID']);
+            await consoleNotesTemplatePo.addColumns(['Label', 'ID']);
             await utilGrid.searchOnGridConsole(notesTemplateInactiveData.templateName);
             expect(await utilGrid.getNumberOfRecordsInGrid()).toEqual(1);
-            templateGuid = await consoleNotestemplatePo.getGuidValue();
+            templateGuid = await consoleNotesTemplatePo.getGuidValue();
             await utilGrid.clearGridSearchBox();
-            expect(await consoleNotestemplatePo.isGridColumnSorted('Template Name')).toBeTruthy('Column is not sorted');
+            expect(await consoleNotesTemplatePo.isGridColumnSorted('Template Name')).toBeTruthy('Column is not sorted');
             await utilGrid.clearFilter();
             await utilGrid.addFilter('Company', 'Petramco', 'text');
             expect(await utilGrid.isGridRecordPresent(notesTemplatePetramcoData.templateName)).toBeTruthy('Petramco Company Filter is not applied');
@@ -890,7 +889,7 @@ describe('Notes template', () => {
             await utilGrid.addFilter('ID', templateGuid, 'text');
             expect(await utilGrid.isGridRecordPresent(notesTemplateInactiveData.templateName)).toBeTruthy('ID Filter is not applied');
             expect(await utilGrid.isGridRecordPresent(notesTemplateWithLabelData.templateName)).toBeFalsy('ID Filter is not applied');
-            await consoleNotestemplatePo.removeColumns(['Label', 'ID']);
+            await consoleNotesTemplatePo.removeColumns(['Label', 'ID']);
         });
 
         afterAll(async () => {
