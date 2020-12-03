@@ -52,8 +52,8 @@ describe('Case Data Store', () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
             casetemplateData = {
-                "templateName": randomStr + 'caseTemplateDRDMV-13123',
-                "templateSummary": randomStr + 'caseTemplateDRDMV-13123',
+                "templateName": randomStr + 'caseTemplateDRDMV13123',
+                "templateSummary": randomStr + 'caseTemplateDRDMV13123',
                 "templateStatus": "Active",
                 "assignee": "qkatawazi",
                 "company": "Petramco",

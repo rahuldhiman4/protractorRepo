@@ -475,10 +475,10 @@ describe('Email Configuration', () => {
     });
 
     describe('[DRDMV-9403,DRDMV-9402]: Add new acknowledgment template & Verify its getting pulled in email configuration acknowledgement template list', async () => {
-        let randomStr = Math.floor(Math.random() * 1000000);
+        let templateData, randomStr = Math.floor(Math.random() * 1000000);
         it('[DRDMV-9403,DRDMV-9402]: Add new acknowledgment template & Verify its getting pulled in email configuration acknowledgement template list', async () => {
 
-            let templateData = {
+            templateData = {
                 "templateName": 'GlobalCaseTemplateName' + randomStr,
                 "templateSummary": 'GlobalCaseTemplateSummary' + randomStr,
                 "resolveCaseonLastTaskCompletion": "1",
@@ -497,7 +497,7 @@ describe('Email Configuration', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
             await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
-            await createAcknowledgmentTemplatesPo.setTemplateName('GlobaltemplateName' + randomStr);
+            await createAcknowledgmentTemplatesPo.setTemplateName(templateData.templateName);
             await createAcknowledgmentTemplatesPo.selectCompanyDropDown('- Global -');
             await createAcknowledgmentTemplatesPo.selectStatusDropDown('Active');
             await createAcknowledgmentTemplatesPo.setDescription('description');
@@ -523,14 +523,14 @@ describe('Email Configuration', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(emailID);
-            expect(await editEmailConfigPo.isDefaultCaseTemplatetoUsePresent("GlobalCaseTemplateName" + randomStr)).toBeTruthy();
+            await editEmailConfigPo.selectDefaultCaseTemplate(templateData.templateName);
             await editEmailConfigPo.clickSaveButton();
             await utilGrid.searchAndOpenHyperlink(emailID);
             await editEmailConfigPo.selectTab("Acknowledgment Templates");
             await editEmailConfigPo.searchAndClickCheckboxOnAcknowledgementTemplateGrid("Closed");
             await editEmailConfigPo.clickAcknowledgementTemplateEditButton();
             expect(await editEmailConfigPo.isAcknowledgementDropDownPresent('templateName' + randomStr)).toBeTruthy();
-            expect(await editEmailConfigPo.isAcknowledgementPresentnDropDown('GlobaltemplateName' + randomStr)).toBeTruthy();
+            expect(await editEmailConfigPo.isAcknowledgementPresentnDropDown(templateData.templateName)).toBeTruthy();
         });
     });
 

@@ -1,7 +1,7 @@
 import { cloneDeep } from 'lodash';
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
-import { RESOLUTION_CODE_ACTIVE_ON_UI, SAMPLE_MENU_ITEM, SOURCE_ACTIVE_UI_FALSE, SOURCE_DEPRECATED, SOURCE_INACTIVE, SOURCE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
+import { RESOLUTION_CODE_ACTIVE_ON_UI, SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
 import caseConsolePo from '../../pageobject/case/case-console.po';
 import casePreviewPo from '../../pageobject/case/case-preview.po';
 import createCasePage from '../../pageobject/case/create-case.po';
@@ -80,7 +80,7 @@ describe('Menu Item', () => {
         let label = 'Legal' + randomStr;
         let label1 = 'legal' + randomStr;
         let label2 = 'leGAL' + randomStr;
-    
+
         it('[DRDMV-16173]: Create Menu Item label and Source', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
@@ -159,7 +159,7 @@ describe('Menu Item', () => {
             expect(await editMenuItemsConfigPo.isSaveButtonDisabled()).toBeTruthy();
             expect(await editMenuItemsConfigPo.isMenuItemsStatusDisabled()).toBeTruthy();
             expect(await editMenuItemsConfigPo.getSourceDisabledMessage()).toBe('Note: Source is disabled for editing.');
-            expect(await editMenuItemsConfigPo.isMenuNameDropDownEnabled()).toBeFalsy();
+            expect(await editMenuItemsConfigPo.isMenuNameDropDownEnabled()).toBeFalsy('MenuName drop down is editable');
             expect(await editMenuItemsConfigPo.isLocalizeLinkEnabled()).toBeFalsy();
             await editMenuItemsConfigPo.clickOnCancelButton();
 
@@ -179,7 +179,7 @@ describe('Menu Item', () => {
         });
         it('[DRDMV-16105,DRDMV-16106]: [Menu Items] - Update records AND grid Validation', async () => {
             await menuItemsConfigConsolePo.searchAndEditMenuOption(resolutionCode);
-            expect(await editMenuItemsConfigPo.isMenuNameDropDownEnabled()).toBeTruthy('MenuName drop down is editable');
+            expect(await editMenuItemsConfigPo.isMenuNameDropDownEnabled()).toBeFalsy('MenuName drop down is editable');
             await editMenuItemsConfigPo.clickOnLocalizeLink();
             await localizeValuePopPo.clearValueTextBox();
             await localizeValuePopPo.setLocalizeValue(resolutionCode);
@@ -222,7 +222,7 @@ describe('Menu Item', () => {
     describe('[DRDMV-16104]: [Menu Items] Create new records in Menu Items', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let lableRandVal = 'labelVal' + randomStr;
-        let sourcesActiveUiFalse, resolutionCodeRandVal = 'resolutionCodeVal' + randomStr;
+        let resolutionCodeRandVal = 'resolutionCodeVal' + randomStr;
 
         it('[DRDMV-16104]: Verify Create Menu Item UI', async () => {
             await navigationPage.gotoSettingsPage();
@@ -294,22 +294,22 @@ describe('Menu Item', () => {
                 "resolutionDescription": "0"
             }
             await apiHelper.apiLogin('qkatawazi');
-            caseTemplateName1 = caseTemplateData.templateName = 'DRDMV-17654_caseTemplateName_1' + randomStr;
+            caseTemplateName1 = caseTemplateData.templateName = randomStr + 'DRDMV17654_caseTemplateName_1';
             caseTemplateData.resolutionCode = "1"
             caseTemplateData.resolutionDescription = "0"
             await apiHelper.createCaseTemplate(caseTemplateData);
 
-            caseTemplateName2 = caseTemplateData.templateName = 'DRDMV-17654_caseTemplateName_2' + randomStr;
+            caseTemplateName2 = caseTemplateData.templateName = randomStr + 'DRDMV17654_caseTemplateName_2';
             caseTemplateData.resolutionCode = "0"
             caseTemplateData.resolutionDescription = "1"
             await apiHelper.createCaseTemplate(caseTemplateData);
 
-            caseTemplateName3 = caseTemplateData.templateName = 'DRDMV-17654_caseTemplateName_3' + randomStr;
+            caseTemplateName3 = caseTemplateData.templateName = randomStr + 'DRDMV17654_caseTemplateName_3';
             caseTemplateData.resolutionCode = "1"
             caseTemplateData.resolutionDescription = "1"
             await apiHelper.createCaseTemplate(caseTemplateData);
 
-            caseTemplateName4 = caseTemplateData.templateName = 'DRDMV-17654_caseTemplateName_4' + randomStr;
+            caseTemplateName4 = caseTemplateData.templateName = randomStr + 'DRDMV17654_caseTemplateName_4';
             caseTemplateData.resolutionCode = "0"
             caseTemplateData.resolutionDescription = "0"
             await apiHelper.createCaseTemplate(caseTemplateData);
@@ -407,6 +407,9 @@ describe('Menu Item', () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('Closed');
         });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
     });
 
     //kgaikwad
@@ -464,7 +467,6 @@ describe('Menu Item', () => {
         it('[DRDMV-16276]: Verify Label With Create Task', async () => {
             await viewCasePo.clickAddTaskButton();
             await manageTask.clickAddAdhocTaskButton();
-
             await adhoctaskTemplate.setDescription("Description");
             expect(await adhoctaskTemplate.isValuePresentInDropdown('Label', labelInactive)).toBeFalsy('Value is present in  label drop down');
             await adhoctaskTemplate.clickAssignToMeButton();
@@ -484,7 +486,6 @@ describe('Menu Item', () => {
             expect(await createCasetemplatePo.isValuePresentInDropdown('Label', labelInactive)).toBeFalsy('Value is present in  label drop down');
             await createCasetemplatePo.setCompanyName('Petramco');
             expect(await createCasetemplatePo.isValuePresentInDropdown('Label', labelDeprecated)).toBeFalsy('Value is present in  label drop down');
-
             await createCasetemplatePo.setCaseSummary(summary);
             await createCasetemplatePo.setPriorityValue('Low');
             await createCasetemplatePo.setLabelValue(labelActive1);
@@ -497,7 +498,6 @@ describe('Menu Item', () => {
             await selectTaskTemplate.clickOnManualTaskTemplateButton();
             await createTasktemplatePo.setTemplateName(title);
             await createTasktemplatePo.setTaskSummary(summary);
-
             expect(await createTasktemplatePo.isValuePresentInDropdown('Label', labelInactive)).toBeFalsy('Value is present in  label drop down');
             await createTasktemplatePo.selectTaskPriority('Low');
             expect(await createTasktemplatePo.isValuePresentInDropdown('Label', labelDeprecated)).toBeFalsy('Value is present in  label drop down');
@@ -511,14 +511,12 @@ describe('Menu Item', () => {
             await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
             await assignmentsConfigConsolePo.clickOnCreateAssignmentConfiguration();
             await createAssignmentsConfigPo.setAssignmentMapName(title);
-
             expect(await createAssignmentsConfigPo.isValuePresentInDropdown('Label', labelInactive)).toBeFalsy('Value is present in  label drop down');
             await createAssignmentsConfigPo.setCompany("Petramco");
             expect(await createAssignmentsConfigPo.isValuePresentInDropdown('Label', labelDeprecated)).toBeFalsy('Value is present in  label drop down');
             await createAssignmentsConfigPo.setSupportCompany("Petramco");
             await createAssignmentsConfigPo.setBusinessUnit('Canada Support');
             await createAssignmentsConfigPo.setSupportGroup("CA Support 1");
-
             await createAssignmentsConfigPo.setLabel(labelActive1);
             await createAssignmentsConfigPo.clickonSaveButton();
         });
@@ -533,7 +531,6 @@ describe('Menu Item', () => {
             expect(await addReadAccess.isValuePresentInDropdown('Label', labelInactive)).toBeFalsy('Value is present in  label drop down');
             await addReadAccess.selectBusinessUnit('Canada Support');
             expect(await addReadAccess.isValuePresentInDropdown('Label', labelDeprecated)).toBeFalsy('Value is present in  label drop down');
-
             await addReadAccess.selectSupportGroup('CA Support 1');
             await addReadAccess.selectLabel(labelActive1)
             await addReadAccess.clickOnSave();
@@ -570,7 +567,6 @@ describe('Menu Item', () => {
             await viewCasePo.clickEditCaseButton();
             await editCasePo.updateLabel(labelDeprecated);
             await editCasePo.updateLabel(labelActive1);
-
             await editCasePo.clickSaveCase();
             expect(await utilityCommon.isPopUpMessagePresent('The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
             await editCasePo.clickOnCancelCaseButton();
@@ -583,11 +579,9 @@ describe('Menu Item', () => {
             await editTaskPo.setLabel(labelInactive);
             await editTaskPo.clickOnSaveButton();
             expect(await utilityCommon.isPopUpMessagePresent('The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
-
             await editTaskPo.setLabel(labelDeprecated);
             await editTaskPo.clickOnSaveButton();
             expect(await utilityCommon.isPopUpMessagePresent('The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
-
             await editTaskPo.setLabel(labelActive2);
             await editTaskPo.clickOnSaveButton();
             await viewTaskPo.clickOnEditTask();
@@ -601,18 +595,14 @@ describe('Menu Item', () => {
         it('[DRDMV-16276]: Verify Label With Edit Case Template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
-
             await consoleCasetemplatePo.searchAndClickOnCaseTemplate(title);
             await viewCasetemplatePo.clickOnEditCaseTemplateButton();
-
             await editCasetemplatePo.changeLabelValue(labelInactive);
             await editCasetemplatePo.clickSaveCaseTemplate();
             expect(await utilCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
-
             await editCasetemplatePo.changeLabelValue(labelDeprecated);
             await editCasetemplatePo.clickSaveCaseTemplate();
             expect(await utilCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
-
             await editCasetemplatePo.changeLabelValue(labelActive2);
             await editCasetemplatePo.clickSaveCaseTemplate();
             await viewCasetemplatePo.clickOnEditCaseTemplateButton();
