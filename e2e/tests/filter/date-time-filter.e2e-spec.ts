@@ -100,23 +100,19 @@ describe('Date and Time Preset Filter', () => {
         });
         it('[DRDMV-23499,DRDMV-23511]: Validation for modified date, created date and target date', async () => {
             await navigationPage.gotoCaseConsole();
-            // Validate start date with Time
+            // Validate start and end date with Time
             await utilityGrid.clearFilter();
             await utilityGrid.clickFilterField("Target Date");
-            await dateTimeSelectorPo.selectPreviousMonthUsingAngularIcon("Sep");
-            await dateTimeSelectorPo.selectPreviousYearUsingAngularIcon(2015);
-            await dateTimeSelectorPo.selectDateOnCalender(17);
+            await dateTimeSelectorPo.selectPreviousMonthUsingAngularIcon("Feb");
+            await dateTimeSelectorPo.selectNextYearUsingAngularIcon(2022);
+            await dateTimeSelectorPo.selectDateOnCalender(21);
             await dateTimeSelectorPo.selectTimeToggle();
             expect(await dateTimeSelectorPo.getActiveTimeUnit()).toBe('HH');
-            await dateTimeSelectorPo.setHour('08');
-            await dateTimeSelectorPo.setMinute(23);
+            await dateTimeSelectorPo.setHour('02');
+            await dateTimeSelectorPo.setMinute(0);
             await dateTimeSelectorPo.clickMeridianValue("AM");
-            await $('body').sendKeys(protractor.Key.ESCAPE);
-            let date2: string[] = ["Target Date: Sep 17, 2015 8:23 AM"];
-            expect(await utilityGrid.isAppliedFilterMatches(date2)).toBeTruthy();
-            // Validate end date with Time
-            await utilityGrid.clearFilter();
-            await utilityGrid.clickFilterField("Target Date");
+            await dateTimeSelectorPo.selectTimeToggle();
+
             await dateTimeSelectorPo.clickEndDateTab();
             await dateTimeSelectorPo.selectPreviousMonthUsingAngularIcon("Feb");
             await dateTimeSelectorPo.selectNextYearUsingAngularIcon(2022);
@@ -124,10 +120,10 @@ describe('Date and Time Preset Filter', () => {
             await dateTimeSelectorPo.selectTimeToggle();
             expect(await dateTimeSelectorPo.getActiveTimeUnit()).toBe('HH');
             await dateTimeSelectorPo.setHour('03');
-            await dateTimeSelectorPo.setMinute(28);
+            await dateTimeSelectorPo.setMinute(0);
             await dateTimeSelectorPo.clickMeridianValue("AM");
             await $('body').sendKeys(protractor.Key.ESCAPE);
-            let date3: string[] = ["Target Date: Feb 21, 2022 3:28 AM"];
+            let date3: string[] = ["Target Date: Feb 21, 2022 2:00 AM - Feb 21, 2022 3:00 AM"];
             expect(await utilityGrid.isAppliedFilterMatches(date3)).toBeTruthy();
         });
         it('[DRDMV-23499,DRDMV-23511]: Validation for modified date, created date and target date', async () => {
@@ -141,7 +137,7 @@ describe('Date and Time Preset Filter', () => {
             await dateTimeSelectorPo.selectTimeToggle();
             expect(await dateTimeSelectorPo.getActiveTimeUnit()).toBe('HH');
             await dateTimeSelectorPo.setHour('08');
-            await dateTimeSelectorPo.setMinute(23);
+            await dateTimeSelectorPo.setMinute(0);
             await dateTimeSelectorPo.clickMeridianValue("AM");
             await dateTimeSelectorPo.selectTimeToggle();
             await await dateTimeSelectorPo.clickEndDateTab();
@@ -151,10 +147,10 @@ describe('Date and Time Preset Filter', () => {
             await dateTimeSelectorPo.selectTimeToggle();
             expect(await dateTimeSelectorPo.getActiveTimeUnit()).toBe('HH');
             await dateTimeSelectorPo.setHour('03');
-            await dateTimeSelectorPo.setMinute(28);
+            await dateTimeSelectorPo.setMinute(0);
             await dateTimeSelectorPo.clickMeridianValue("AM");
             await $('body').sendKeys(protractor.Key.ESCAPE);
-            let date4: string[] = ["Created Date: Sep 17, 2015 8:23 AM - Feb 17, 2016 3:28 AM"];
+            let date4: string[] = ["Created Date: Sep 17, 2015 8:00 AM - Feb 17, 2016 3:00 AM"];
             expect(await utilityGrid.isAppliedFilterMatches(date4)).toBeTruthy();
         });
         it('[DRDMV-23499,DRDMV-23511]: Validation for modified date, created date and target date', async () => {
@@ -199,9 +195,21 @@ describe('Date and Time Preset Filter', () => {
             await dateTimeSelectorPo.selectDateOnCalender(19);
             await dateTimeSelectorPo.selectTimeToggle();
             expect(await dateTimeSelectorPo.getActiveTimeUnit()).toBe('HH');
-            await dateTimeSelectorPo.setHour('06');
-            await dateTimeSelectorPo.setMinute(52);
-            await dateTimeSelectorPo.clickMeridianValue("AM");
+            await dateTimeSelectorPo.setHour('05');
+            await dateTimeSelectorPo.setMinute(0);
+            await dateTimeSelectorPo.clickMeridianValue("PM");
+
+            await dateTimeSelectorPo.selectTimeToggle();
+            await dateTimeSelectorPo.clickEndDateTab();
+            await dateTimeSelectorPo.selectPreviousMonthUsingAngularIcon("Jan");
+            await dateTimeSelectorPo.selectPreviousYearUsingAngularIcon(2020);
+            await dateTimeSelectorPo.selectDateOnCalender(19);
+            await dateTimeSelectorPo.selectTimeToggle();
+            expect(await dateTimeSelectorPo.getActiveTimeUnit()).toBe('HH');
+            await dateTimeSelectorPo.setHour('07');
+            await dateTimeSelectorPo.setMinute(0);
+            await dateTimeSelectorPo.clickMeridianValue("PM");
+            await $('body').sendKeys(protractor.Key.ESCAPE);
             await utilityGrid.clickRefreshIcon();
             await utilityGrid.searchRecordWithoutFilter('KA-000000000016');
             expect(await utilityGrid.isGridRecordPresent('KA-000000000016')).toBeTruthy('KA-000000000016');
@@ -269,7 +277,7 @@ describe('Date and Time Preset Filter', () => {
                 "summary": "Testing case creation with minimal input data, Human Resource"
             }
 
-            await apiHelper.apiLogin("qkatawazi")
+            await apiHelper.apiLogin("qkatawazi");
             caseId = await apiHelper.createCase(caseData);
             caseIdForDWP = await apiHelper.createCaseFromDwp(caseDataDWp);
         });
@@ -363,8 +371,18 @@ describe('Date and Time Preset Filter', () => {
             await dateTimeSelectorPo.selectPreviousYearUsingAngularIcon(2020);
             await dateTimeSelectorPo.selectDateOnCalender(13);
             await dateTimeSelectorPo.selectTimeToggle();
-            await dateTimeSelectorPo.setHour('05');
-            await dateTimeSelectorPo.setMinute(14);
+            await dateTimeSelectorPo.setHour('04');
+            await dateTimeSelectorPo.setMinute(0);
+            await dateTimeSelectorPo.clickMeridianValue("PM");
+
+            await dateTimeSelectorPo.selectTimeToggle();
+            await dateTimeSelectorPo.clickEndDateTab();
+            await dateTimeSelectorPo.selectPreviousMonthUsingAngularIcon("Oct");
+            await dateTimeSelectorPo.selectPreviousYearUsingAngularIcon(2020);
+            await dateTimeSelectorPo.selectDateOnCalender(13);
+            await dateTimeSelectorPo.selectTimeToggle();
+            await dateTimeSelectorPo.setHour('06');
+            await dateTimeSelectorPo.setMinute(0);
             await dateTimeSelectorPo.clickMeridianValue("PM");
             await $('body').sendKeys(protractor.Key.ESCAPE);
             await utilityGrid.clickRefreshIcon();
