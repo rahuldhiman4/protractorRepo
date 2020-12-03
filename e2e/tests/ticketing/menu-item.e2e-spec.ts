@@ -164,7 +164,7 @@ describe('Menu Item', () => {
             await editMenuItemsConfigPo.clickOnCancelButton();
 
             await menuItemsConfigConsolePo.searchAndEditMenuOption(label);
-            expect(await editMenuItemsConfigPo.isMenuNameDropDownEnabled()).toBeTruthy('MenuName drop down is editable');
+            expect(await editMenuItemsConfigPo.isMenuNameDropDownEnabled()).toBeFalsy('MenuName drop down is editable');
             await editMenuItemsConfigPo.clickOnLocalizeLink();
             await localizeValuePopPo.clearValueTextBox();
             await localizeValuePopPo.setLocalizeValue(label);

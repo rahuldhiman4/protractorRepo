@@ -235,7 +235,6 @@ describe('CKE Description', () => {
             expect(await ckeditorValidationPo.getTableCellAlignText("text-align: center;")).toContain(randomString);
             expect(await ckeditorValidationPo.isLinkDisplayedInCKE('youtube')).toBeTruthy('Link Text not present');
         });
-
         it('[DRDMV-22089,DRDMV-22090,DRDMV-22094,DRDMV-22102,DRDMV-22097,DRDMV-22101] Verify case description on case if we change case template from template1 to template2', async () => {
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('qdu');
@@ -274,12 +273,11 @@ describe('CKE Description', () => {
             await editCasePo.clickOnChangeCaseTemplate();
             await selectCasetemplateBladePo.selectCaseTemplate(copyCasetemplate);
             await editCasePo.clickSaveCase();
-            await browser.navigate().refresh(); // workaround for DRDMV-23816
+            await utilityCommon.refresh(); // workaround for DRDMV-23816
             await viewCasePo.clickDescriptionShowMore();
             expect(await viewCasePo.getCaseTemplateText()).toContain(copyCasetemplate);
             expect(await ckeditorValidationPo.isLinkDisplayedInCKE('Google')).toBeTruthy();
         });
-
         it('[DRDMV-22089,DRDMV-22090,DRDMV-22094,DRDMV-22102,DRDMV-22097,DRDMV-22101] Verify case description field on Case Template Preview', async () => {
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('qdu');
@@ -304,7 +302,6 @@ describe('CKE Description', () => {
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await previewCaseTemplateCasesPo.clickOnBackButton();
         });
-
         it('[DRDMV-22089,DRDMV-22090,DRDMV-22094,DRDMV-22102,DRDMV-22097,DRDMV-22101] Verify case description with login Case Manger', async () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
