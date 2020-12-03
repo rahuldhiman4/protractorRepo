@@ -56,6 +56,9 @@ describe('Case Cognitive', () => {
     });
 
     afterAll(async () => {
+        await apiHelper.apiLogin('tadmin');
+        let dataSetMappingDeleted = await apiHelper.deleteCognitiveDataSetMapping();
+        console.log("All DataSet Mapping Deleted =============> ", dataSetMappingDeleted);
         await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
@@ -492,7 +495,7 @@ describe('Case Cognitive', () => {
             expect(await createCognitiveCategorizationMappingPo.isSaveButtonDisabled()).toBe("true");
             await createCognitiveCategorizationMappingPo.setMappingName("Add Mapping" + randomStr);
             await createCognitiveCategorizationMappingPo.selectCompany("Petramco");
-            await createCognitiveCategorizationMappingPo.selectDataSet("Trained Category Data Set");
+            await createCognitiveCategorizationMappingPo.selectDataSet(categoryDataSet);
             await createCognitiveCategorizationMappingPo.setConfidentialsLevelOfCategorization("20");
             await createCognitiveCategorizationMappingPo.setConfidentialsLevelByAgent("10");
             await createCognitiveCategorizationMappingPo.clickCancelButton();
@@ -504,7 +507,7 @@ describe('Case Cognitive', () => {
             await consoleCognitivePo.clickAddDataSetMapping();
             await createCognitiveCategorizationMappingPo.setMappingName("Add Mapping" + randomStr);
             await createCognitiveCategorizationMappingPo.selectCompany("Petramco");
-            await createCognitiveCategorizationMappingPo.selectDataSet("Trained Category Data Set");
+            await createCognitiveCategorizationMappingPo.selectDataSet(categoryDataSet);
             await createCognitiveCategorizationMappingPo.setConfidentialsLevelOfCategorization("200");
             expect(await createCognitiveCategorizationMappingPo.getMaximumValueErrorMessage()).toContain("Maximum value is 100.");
             await createCognitiveCategorizationMappingPo.setConfidentialsLevelOfCategorization("20");
@@ -544,7 +547,7 @@ describe('Case Cognitive', () => {
             await consoleCognitivePo.clickAddDataSetMapping();
             await createCognitiveCategorizationMappingPo.setMappingName("Add Mapping Group " + randomStr);
             await createCognitiveCategorizationMappingPo.selectCompany("Petramco");
-            await createCognitiveCategorizationMappingPo.selectDataSet("Trained Category Data Set");
+            await createCognitiveCategorizationMappingPo.selectDataSet(categoryDataSet);
             await createCognitiveCategorizationMappingPo.setConfidentialsLevelOfCategorization("20");
             await createCognitiveCategorizationMappingPo.setConfidentialsLevelByAgent("10");
             await createCognitiveCategorizationMappingPo.clickSaveButton();
@@ -562,7 +565,7 @@ describe('Case Cognitive', () => {
             await consoleCognitivePo.clickAddDataSetMapping();
             await createCognitiveCategorizationMappingPo.setMappingName("Add Mapping Psilon" + randomStr);
             await createCognitiveCategorizationMappingPo.selectCompany("Psilon");
-            await createCognitiveCategorizationMappingPo.selectDataSet("Trained Category Data Set");
+            await createCognitiveCategorizationMappingPo.selectDataSet(categoryDataSet);
             await createCognitiveCategorizationMappingPo.setConfidentialsLevelOfCategorization("20");
             await createCognitiveCategorizationMappingPo.setConfidentialsLevelByAgent("10");
             await createCognitiveCategorizationMappingPo.clickSaveButton();
