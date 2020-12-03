@@ -491,8 +491,8 @@ describe('Case Data Store', () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
             casetemplateData = {
-                "templateName": randomStr + 'caseTemplateDRDMV-13131',
-                "templateSummary": randomStr + 'caseTemplateDRDMV-13131',
+                "templateName": randomStr + 'caseTemplateDRDMV13131',
+                "templateSummary": randomStr + 'caseTemplateDRDMV13131',
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "ownerBU": "United States Support",
@@ -532,8 +532,8 @@ describe('Case Data Store', () => {
         it('[DRDMV-13131]: [Dynamic Data] [UI] - Dynamic Fields and Groups display on Case and Similar Cases preview', async () => {
             // requester case template
             let casetemplateDataRequester = {
-                "templateName": randomStr + 'caseTemplateReqDRDMV-13131',
-                "templateSummary": randomStr + 'caseTemplateReqDRDMV-13131',
+                "templateName": randomStr + 'caseTemplateReqDRDMV13131',
+                "templateSummary": randomStr + 'caseTemplateReqDRDMV13131',
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "ownerBU": "United States Support",
