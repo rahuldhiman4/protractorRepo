@@ -283,6 +283,7 @@ describe('Email Task', () => {
             displayId = newCaseTemplate.displayId;
         });
         it('[DRDMV-19009]: Verify Subject of Email from Task Compose email', async () => {
+            await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(displayId);
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary);
@@ -346,11 +347,11 @@ describe('Email Task', () => {
 
     it('[DRDMV-19558]: Verify social notes other than email should not have reply and reply all options', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let taskTemplateName = 'Manual  task123' + randomStr;
+        let taskTemplateName = 'Manualtask123' + randomStr;
         let manualTaskSummary = 'ManualSummary123' + randomStr;
         let templateData = {
-            "templateName": `${taskTemplateName}`,
-            "templateSummary": `${taskTemplateName}`,
+            "templateName": taskTemplateName,
+            "templateSummary": manualTaskSummary,
             "templateStatus": "Active",
             "taskCompany": "Petramco",
             "ownerCompany": "Petramco",
@@ -378,7 +379,7 @@ describe('Email Task', () => {
         await expect(activityTabPo.getActivityReplyAllNotesText('Reply all')).toBeFalsy();
         await viewCasePo.clickAddTaskButton();
         await manageTaskBladePo.addTaskFromTaskTemplate(taskTemplateName);
-        await manageTaskBladePo.clickTaskLink(taskTemplateName);
+        await manageTaskBladePo.clickTaskLink(manualTaskSummary);
         await activityTabPo.addActivityNote('This is case notes templates');
         await activityTabPo.clickOnPostButton();
         await expect(activityTabPo.getActivityReplyNotesText('Reply')).toBeFalsy();
