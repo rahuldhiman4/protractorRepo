@@ -70,18 +70,30 @@ export class GridOperations {
     }
 
     async isGridRecordPresent(searchRecord: string, guid?: string): Promise<boolean> {
+        let booleanVal: boolean = false;
         let searchTextBoxLocator: string = this.selectors.searchTextBox;
-        let gridRowLinks: string = this.selectors.gridRowLinks;
+        let gridRowLocator: string = '.at-data-cell';
         if (guid) {
             searchTextBoxLocator = `[rx-view-component-id="${guid}"] ` + searchTextBoxLocator;
-            gridRowLinks = `[rx-view-component-id="${guid}"] ` + gridRowLinks;
+            gridRowLocator = `[rx-view-component-id="${guid}"] ` + gridRowLocator;
         }
         await $(searchTextBoxLocator).clear();
         await $(searchTextBoxLocator).sendKeys(searchRecord + protractor.Key.ENTER);
-        return await $(gridRowLinks).isPresent();
+        return await $(gridRowLocator).isPresent().then(async (isRecordPresent) => {
+            if (isRecordPresent) {
+                let recordCount = await $$(gridRowLocator).count();
+                for (let i = 0; i < recordCount; i++) {
+                    let getTextElement = await $$(gridRowLocator).get(i).getText();
+                    if (getTextElement.includes(searchRecord)) {
+                        booleanVal = true;
+                        break;
+                    }
+                }
+                return booleanVal;
+            }
+            else return false;
+        });
     }
-
-
 
     async clickCheckBoxOfValueInGrid(value: string, guid?: string): Promise<void> {
         let gridGuid: string = '';
@@ -431,6 +443,7 @@ export class GridOperations {
             (value, index) => (value === expetcedFilters[index])
         );
     }
+
     async clearSearchBox(): Promise<void> {
         await $(this.selectors.clearSearchBoxButton).click();
     }
