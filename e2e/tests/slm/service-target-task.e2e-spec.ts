@@ -48,10 +48,10 @@ describe('Service Target Tests for Tasks', () => {
                 "templateName": `manualTaskTemplateActive ${randomStr}`,
                 "templateSummary": `manualTaskTemplateActive ${randomStr}`,
                 "templateStatus": "Active",
-                "taskCompany": "Petramco",
+                "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             let templateData1 = {
                 "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
@@ -61,8 +61,8 @@ describe('Service Target Tests for Tasks', () => {
                 "processName": `Case Process 1 ${randomStr}`,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
 
             await apiHelper.apiLogin('qkatawazi');
