@@ -63,7 +63,6 @@ describe('Case Cognitive', () => {
         await navigationPage.signOut();
     });
 
-
     async function createCognitiveConfig() {
         let created = await apiHelper.addWatsonAccount(apiKey);
         console.log("Watson Account Added =============> ", created);
