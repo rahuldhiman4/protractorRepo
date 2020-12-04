@@ -1,4 +1,3 @@
-import { link } from 'fs';
 import { $, $$, Key, element, by, ElementFinder, browser, protractor, ProtractorExpectedConditions } from 'protractor';
 import utilityCommon from '../utils/utility.common';
 
@@ -43,13 +42,13 @@ export class GridOperations {
             gridRecordsLocator = `[rx-view-component-id='${guid}'] ` + gridRecordsLocator;
         }
         await this.clearFilter();
-        for (let i: number = 0; i < 4; i++) {
+        for (let i: number = 0; i < 6; i++) {
             console.log(searchValue, "search angular grid count: ", i);
             await $(searchTextBoxLocator).clear();
             await $(searchTextBoxLocator).sendKeys(searchValue + protractor.Key.ENTER);
             let gridRecordCount: number = await $$(gridRecordsLocator).count();
             if (gridRecordCount == 0) {
-                await browser.sleep(10000); // workaround for performance issue, this can be removed when issue fixed
+                await browser.sleep(5000); // workaround for performance issue, this can be removed when issue fixed
             } else break;
         }
     }
@@ -61,13 +60,13 @@ export class GridOperations {
             searchTextBoxLocator = `[rx-view-component-id="${guid}"] ` + searchTextBoxLocator;
             gridRecordsLocator = `[rx-view-component-id='${guid}'] ` + gridRecordsLocator;
         }
-        for (let i: number = 0; i < 4; i++) {
+        for (let i: number = 0; i < 6; i++) {
             console.log(searchValue, "search angular grid count: ", i);
             await $(searchTextBoxLocator).clear();
             await $(searchTextBoxLocator).sendKeys(searchValue + protractor.Key.ENTER);
             let gridRecordCount: number = await $$(gridRecordsLocator).count();
             if (gridRecordCount == 0) {
-                await browser.sleep(10000); // workaround for performance issue, this can be removed when issue fixed
+                await browser.sleep(5000); // workaround for performance issue, this can be removed when issue fixed
             } else break;
         }
     }
