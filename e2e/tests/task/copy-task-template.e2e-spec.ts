@@ -384,19 +384,19 @@ describe('Copy Task Template', () => {
 
     describe('[DRDMV-14221]: Copy Automated template with same process Name and different field data', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let updatedTaskTemplate = 'DRDMV14221UpdatedTask' + randomStr;
+        let updatedTaskTemplate = randomStr+'DRDMV14221UpdatedTask';
         let templateData;
         beforeAll(async () => {
             templateData = {
-                "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
-                "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
+                "templateName": `${randomStr}AutomatedTaskTemplateActive`,
+                "templateSummary": `${randomStr}AutomatedTaskTemplateActive`,
                 "templateStatus": "Active",
                 "processBundle": "com.petramco.human-resource",
                 "processName": 'DRDMV14221Process' + randomStr,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "United States Support",
-                "ownerGroup": "US Support 1"
+                "ownerGroup": "US Support 3"
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createAutomatedTaskTemplate(templateData);
@@ -404,7 +404,7 @@ describe('Copy Task Template', () => {
         it('[DRDMV-14221]: Copy Automated Task template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-            await selectTaskTemplate.searchAndOpenTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
+            await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName)
             await viewTaskTemplate.clickOnCopyTemplate();
             await copyTemplatePage.setTemplateName(updatedTaskTemplate);
             await copyTemplatePage.setNewProcessName(templateData.processName);

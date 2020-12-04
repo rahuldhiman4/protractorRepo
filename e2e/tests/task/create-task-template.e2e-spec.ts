@@ -179,7 +179,7 @@ describe('Create Task Template', () => {
             let templateData1 = {
                 "templateName": 'manualTaskTemplate' + randomStr,
                 "templateSummary": 'manualTaskSummary' + randomStr,
-                "templateStatus": "Active",
+                "templateStatus": "Draft",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "United States Support",
@@ -192,11 +192,6 @@ describe('Create Task Template', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate('manualTaskTemplate' + randomStr);
-            await editTaskTemplate.clickOnEditMetadataLink();
-            await editTaskTemplate.selectTemplateStatus("Draft");
-            await editTaskTemplate.clickOnSaveMetadata();
-        });
-        it('[DRDMV-12567]: Create Manual Task template', async () => {
             await viewTaskTemplate.clickOnEditLink();
             await editTaskTemplate.setSummary('updateSummary' + randomStr);
             await editTaskTemplate.setDescription('Description' + randomStr);
