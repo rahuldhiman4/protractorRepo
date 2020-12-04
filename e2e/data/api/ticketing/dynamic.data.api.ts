@@ -1504,8 +1504,7 @@ export const ALL_DATA_TYPE = {
         "active": true,
         "attachmentGroupId": null,
         "type": "SIMPLE_FIELD",
-        "hidden": false,
-        "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+        "hidden": false
     },
     {
         "name": "hiddenFieldTrue",
@@ -1518,8 +1517,7 @@ export const ALL_DATA_TYPE = {
         "active": true,
         "attachmentGroupId": null,
         "type": "SIMPLE_FIELD",
-        "hidden": true,
-        "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+        "hidden": true
     }]
 };
 

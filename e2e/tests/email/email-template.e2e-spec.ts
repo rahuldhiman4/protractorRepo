@@ -13,6 +13,7 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import { async } from 'q';
 
 describe('Email Template', () => {
     const emailTemplateData = require('../../data/ui/email/email.template.api.json');
@@ -274,7 +275,7 @@ describe('Email Template', () => {
 
     //ankagraw
     it('[DRDMV-10799,DRDMV-10800]: Email Template : If user goes away from both edit and create view warning should be appeared	', async () => {
-       let emailTemplateName, randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let emailTemplateName, randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await apiHelper.apiLogin('qkatawazi');
         emailTemplateName = emailTemplateData['emailTemplateWithMandatoryField'].TemplateName = await emailTemplateData['emailTemplateWithMandatoryField'].TemplateName + randomStr;
         await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateWithMandatoryField']);
@@ -299,14 +300,13 @@ describe('Email Template', () => {
     });
 
     //ankagraw
-    describe('[DRDMV-10385]: Active Email Temlate list in Grid', async () => {
-        let filePath1 = 'e2e/data/ui/attachment/bwfJpg1.jpg';
-        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+    describe('[DRDMV-10385]: Active Email Template list in Grid', async () => {
+        let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseData, newCase, emailTemplateNamePsilon, emailTemplateNameDraft, emailTemplateName;
         beforeAll(async () => {
             caseData = {
                 "Requester": "qtao",
-                "Summary": "Test case for DRDMV-21499RandVal" + summary,
+                "Summary": "Test case for DRDMV-21499RandVal" + randomStr,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
@@ -315,14 +315,14 @@ describe('Email Template', () => {
             await apiHelper.apiLogin('qkatawazi');
             newCase = await apiHelper.createCase(caseData);
             //create an email template
-            emailTemplateName = await emailTemplateData['emailTemplateToComposeEmail'].TemplateName + summary;
+            emailTemplateName = await emailTemplateData['emailTemplateToComposeEmail'].TemplateName + randomStr;
             emailTemplateData['emailTemplateToComposeEmail'].TemplateName = emailTemplateName;
             await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateToComposeEmail']);
-            emailTemplateNameDraft = await emailTemplateData['emailTemplateToComposeEmail'].TemplateName + summary;
-            emailTemplateData['emailTemplateToComposeEmail'].TemplateName = emailTemplateNameDraft;
-            await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateToComposeEmail']);
+            emailTemplateNameDraft = await emailTemplateData['emailTemplateDraft'].TemplateName + randomStr;
+            emailTemplateData['emailTemplateDraft'].TemplateName = emailTemplateNameDraft;
+            await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateDraft']);
             await apiHelper.apiLogin('gwixillian');
-            emailTemplateNamePsilon = await emailTemplateData['emailTemplatePsilon'].TemplateName + summary;
+            emailTemplateNamePsilon = await emailTemplateData['emailTemplatePsilon'].TemplateName + randomStr;
             emailTemplateData['emailTemplatePsilon'].TemplateName = emailTemplateNamePsilon;
             await apiHelper.createEmailTemplate(emailTemplateData['emailTemplatePsilon']);
         });
@@ -334,10 +334,11 @@ describe('Email Template', () => {
             expect(await selectEmailTemplateBladePo.getGridRecordValue(emailTemplateName)).toBeTruthy("emailTemplateName");
             expect(await selectEmailTemplateBladePo.isRecordPresent(emailTemplateNameDraft)).toBeFalsy();
             expect(await selectEmailTemplateBladePo.isRecordPresent(emailTemplateNamePsilon)).toBeFalsy();
+        });
+        afterAll(async () => {
             await selectEmailTemplateBladePo.clickOnCancelButton();
             await composeMailPo.clickOnDiscardButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
-            
         });
     });
 });

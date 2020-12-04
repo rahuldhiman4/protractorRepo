@@ -46,7 +46,7 @@ describe('Email Configuration', () => {
         await loginPage.login("qkatawazi");
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteAllEmailConfiguration();
-        await apiHelper.createEmailBox('incoming',incomingEmail);
+        await apiHelper.createEmailBox('incoming', incomingEmail);
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createEmailConfiguration(emailConfig);
         await foundationData("Petramco", "BusinessUnitData10410", "SuppGrpData10410");
@@ -160,7 +160,7 @@ describe('Email Configuration', () => {
             expect(await utilGrid.isGridRecordPresent(emailID)).toBeFalsy();
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteAllEmailConfiguration();
-            await apiHelper.createEmailBox('incoming',incomingEmail);
+            await apiHelper.createEmailBox('incoming', incomingEmail);
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createEmailConfiguration(emailConfig);
 
@@ -252,7 +252,7 @@ describe('Email Configuration', () => {
             await loginPage.login('fritz');
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteAllEmailConfiguration();
-            await apiHelper.createEmailBox('incoming',incomingEmail);
+            await apiHelper.createEmailBox('incoming', incomingEmail);
             await apiHelper.apiLogin('fritz');
             await apiHelper.createEmailConfiguration(emailConfigFacilities);
             await apiHelper.createEmailConfiguration(differntEmailConfigFacilities);
@@ -294,7 +294,7 @@ describe('Email Configuration', () => {
             await loginPage.login('gwixillian');
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteAllEmailConfiguration();
-            await apiHelper.createEmailBox('incoming',incomingEmail);
+            await apiHelper.createEmailBox('incoming', incomingEmail);
             await apiHelper.apiLogin('gwixillian');
             await apiHelper.createEmailConfiguration({ "email": "psilon@gmail.com", "incomingMailBoxName": incomingEmail.mailBoxName, "company": "Psilon" });
             await navigationPage.gotoSettingsPage();
@@ -329,7 +329,7 @@ describe('Email Configuration', () => {
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteAllEmailConfiguration();
-            await apiHelper.createEmailBox('incoming',incomingEmail);
+            await apiHelper.createEmailBox('incoming', incomingEmail);
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createEmailConfiguration(emailConfig);
         });
@@ -369,7 +369,7 @@ describe('Email Configuration', () => {
             await loginPage.login('fritz');
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteAllEmailConfiguration();
-            await apiHelper.createEmailBox('incoming',incomingEmail);
+            await apiHelper.createEmailBox('incoming', incomingEmail);
             await apiHelper.apiLogin('fritz');
             await apiHelper.createEmailConfiguration(emailConfigFacilities);
         });
@@ -392,7 +392,7 @@ describe('Email Configuration', () => {
             await loginPage.login('gwixillian');
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteAllEmailConfiguration();
-            await apiHelper.createEmailBox('incoming',incomingEmail);
+            await apiHelper.createEmailBox('incoming', incomingEmail);
             await apiHelper.apiLogin('gwixillian');
             await apiHelper.createEmailConfiguration({ "email": "psilon@gmail.com", "incomingMailBoxName": incomingEmail.mailBoxName, "company": "Psilon" });
 
@@ -505,7 +505,6 @@ describe('Email Configuration', () => {
             await createAcknowledgmentTemplatesPo.clickOnSaveButton();
             await utilCommon.closePopUpMessage();
         });
-
         it('[DRDMV-9403,DRDMV-9402]: Add new acknowledgment template & Verify its getting pulled in email configuration acknowledgement template list', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
@@ -518,13 +517,13 @@ describe('Email Configuration', () => {
             await createAcknowledgmentTemplatesPo.clickOnSaveButton();
             await utilCommon.closePopUpMessage();
         });
-
         it('[DRDMV-9403,DRDMV-9402]: Add new acknowledgment template & Verify its getting pulled in email configuration acknowledgement template list', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(emailID);
             await editEmailConfigPo.selectDefaultCaseTemplate(templateData.templateName);
             await editEmailConfigPo.clickSaveButton();
+            await utilityCommon.closeAllBlades();
             await utilGrid.searchAndOpenHyperlink(emailID);
             await editEmailConfigPo.selectTab("Acknowledgment Templates");
             await editEmailConfigPo.searchAndClickCheckboxOnAcknowledgementTemplateGrid("Closed");
