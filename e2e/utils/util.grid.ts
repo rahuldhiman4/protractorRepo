@@ -253,7 +253,7 @@ export class GridOperation {
             searchButton = `[rx-view-component-id="${guid}"]` + searchButton;
             gridRefreshButton = `[rx-view-component-id="${guid}"]` + gridRefreshButton;
         }
-        for (let i: number = 0; i < 4; i++) {
+        for (let i: number = 0; i < 6; i++) {
             console.log(id, "search angularJs grid count: ", i);
             await $(summaryField).clear();
             await $(gridRefreshButton).click();
@@ -261,7 +261,7 @@ export class GridOperation {
             await $(searchButton).click();
             let gridRecordCount: number = await this.getNumberOfRecordsInGrid(guid);
             if (gridRecordCount == 0) {
-                await browser.sleep(10000); // workaround for performance issue, this can be removed when issue fixed
+                await browser.sleep(5000); // workaround for performance issue, this can be removed when issue fixed
             } else break;
         }
     }
@@ -275,7 +275,7 @@ export class GridOperation {
             gridRefreshButton = `[rx-view-component-id="${guid}"] ` + gridRefreshButton;
             gridSearchIcon = `[rx-view-component-id="${guid}"] ` + gridSearchIcon;
         }
-        for (let i: number = 0; i < 4; i++) {
+        for (let i: number = 0; i < 6; i++) {
             console.log(searchValue, "search angularJs grid count: ", i);
             await $(searchBoxInput).clear();
             await $(gridRefreshButton).click();
@@ -283,7 +283,7 @@ export class GridOperation {
             await $(gridSearchIcon).click();
             let gridRecordCount: number = await this.getNumberOfRecordsInGrid(guid);
             if (gridRecordCount == 0) {
-                await browser.sleep(10000); // workaround for performance issue, this can be removed when issue fixed
+                await browser.sleep(5000); // workaround for performance issue, this can be removed when issue fixed
             } else break;
         }
     }
