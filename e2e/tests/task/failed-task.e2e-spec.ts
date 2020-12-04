@@ -138,7 +138,7 @@ describe('Failed Task', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplatePetramco, newCaseTemplate, manualTaskTemplateData, automatedTaskTemplateSummary1, automatedTaskTemplateSummary2, caseResponse, caseDisplayId;
         beforeAll(async () => {
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             caseTemplatePetramco = {
                 "templateName": 'caseTemplateName DRDMV-10056' + randomStr,
                 "templateSummary": 'caseTemplateName DRDMV-10056' + randomStr,

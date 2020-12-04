@@ -1,6 +1,5 @@
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
-import coreApi from '../../api/api.core.util';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import notificationEventConsolePage from '../../pageobject/settings/notification-config/console-notification-event.po';
@@ -19,15 +18,8 @@ describe("Notification Template", () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
-        let eventName = 'Email Based Approval';
-        let eventData = {
-            eventName: eventName,
-            company: 'Petramco'
-        }
-        await apiHelper.apiLogin('qkatawazi');
-        if (await coreApi.getNotificationEventGuid(eventName, 'Human Resource', 'Petramco') == null || undefined) {
-            await apiHelper.createNotificationEvent(eventData);
-        }
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Notification Template - Business Workflows');
     });
 
     afterAll(async () => {
@@ -39,8 +31,6 @@ describe("Notification Template", () => {
     describe('[DRDMV-19109]: [Copy Notification] - UI behavior when copying a notification template', async () => {
         let notificationTemplateName = 'DRDMV-19109_CopiedTemplate';
         it('[DRDMV-19109]: [Copy Notification] - UI behavior when copying a notification template', async () => {
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Notification Template - Business Workflows');
             await expect(notificationTempGridPage.isCopyTemplateButtonDisabled()).toBeTruthy();
             await utilGrid.searchAndSelectGridRecord("Task SLA Missed");
             await notificationTempGridPage.clickCopyTemplate();
@@ -229,7 +219,7 @@ describe("Notification Template", () => {
             expect(await createNotificationTemplatePage.isEmailBasedApprovalFlagDisplayed()).toBeFalsy('Email based approval flag is displayed');
             await createNotificationTemplatePage.setTemplateName('Email Based Approval DRDMV-16012');
             await createNotificationTemplatePage.selectModuleName('Case - Approval');
-            await createNotificationTemplatePage.selectNthEvent('Email Based Approval', 2);
+            await createNotificationTemplatePage.selectNthEvent('Email Based Approval', 1);
             await createNotificationTemplatePage.selectEmailBasedApprovalToggle(true);
             expect(await createNotificationTemplatePage.areRecipientsMatches(["Approvers"])).toBeTruthy('Recipient List of Case Approval Module is not matching');
             await createNotificationTemplatePage.setDescription('Description');
@@ -271,7 +261,7 @@ describe("Notification Template", () => {
             await notificationTempGridPage.clickOnCreateNotificationTemplate();
             await createNotificationTemplatePage.setTemplateName('Email Based Approval DRDMV-16012_2');
             await createNotificationTemplatePage.selectModuleName('Case - Approval');
-            await createNotificationTemplatePage.selectNthEvent('Email Based Approval', 2);
+            await createNotificationTemplatePage.selectNthEvent('Email Based Approval', 1);
             await createNotificationTemplatePage.selectEmailBasedApprovalToggle(false);
             await createNotificationTemplatePage.setDescription('Description2');
             await createNotificationTemplatePage.setAlertMessage('Sample Alert Text2');
@@ -289,7 +279,7 @@ describe("Notification Template", () => {
             await notificationTempGridPage.clickOnCreateNotificationTemplate();
             await createNotificationTemplatePage.setTemplateName('Email Based Approval DRDMV-16012_3');
             await createNotificationTemplatePage.selectModuleName('Case - Approval');
-            await createNotificationTemplatePage.selectNthEvent('Email Based Approval', 2);
+            await createNotificationTemplatePage.selectNthEvent('Email Based Approval', 1);
             await createNotificationTemplatePage.setDescription('Description3');
             await createNotificationTemplatePage.setAlertMessage('Sample Alert Text3');
             await createNotificationTemplatePage.clickOnEmailTab();

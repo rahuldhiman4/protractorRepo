@@ -423,8 +423,8 @@ describe('Create Case Task', () => {
     //ankagraw
     describe('[DRDMV-12558]: Task Template submitter from different company of owner group can edit the template', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let TaskTemplate = 'Manual task' + randomStr;
-        let TaskSummary = 'Summary' + randomStr;
+        let TaskTemplate = randomStr+ 'Manual task';
+        let TaskSummary = randomStr+'Summary' ;
         let userData, description = 'description' + randomStr;
 
         beforeAll(async () => {
@@ -1296,7 +1296,6 @@ describe('Create Case Task', () => {
                 "categoryTier2": "Compensation",
                 "categoryTier3": "Bonus",
                 "casePriority": "Low",
-                "caseStatus": "New",
                 "company": "Petramco",
                 "businessUnit": "United States Support",
                 "supportGroup": "US Support 1",
