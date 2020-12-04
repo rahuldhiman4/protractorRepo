@@ -468,8 +468,8 @@ describe('Dynamic Hidden Data', () => {
         let caseId, templateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             templateData = {
-                "templateName": `manualTaskTemplate1 ${randomStr}`,
-                "templateSummary": `manualTaskTemplateSummary1 ${randomStr}`,
+                "templateName": randomStr + 'manualTaskTemplate1',
+                "templateSummary": randomStr + 'manualTaskTemplateSummary1',
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
@@ -530,6 +530,7 @@ describe('Dynamic Hidden Data', () => {
             await utilityCommon.closeAllBlades();
         });
     });
+
     //ankagraw
     describe('[DRDMV-21417]: Verify hidden dynamic group field should not refect in case via case template', async () => {
         let caseTemplateData, caseId, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');

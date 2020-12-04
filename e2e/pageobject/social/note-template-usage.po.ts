@@ -13,7 +13,7 @@ class notesTemplateUsage {
 
     async clickAddNoteAndAddNoteTemplate(notesTemplate: string) {
         await activityTab.clickActivityNoteTextBox();
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.notesTemplateButton)),7000);
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.notesTemplateButton)),5000);
         await $(this.selectors.notesTemplateButton).click();
         await utilityGrid.searchAndSelectGridRecord(notesTemplate);
         await $(this.selectors.applyButton).click();

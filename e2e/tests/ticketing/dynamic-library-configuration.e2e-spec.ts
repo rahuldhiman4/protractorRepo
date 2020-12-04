@@ -396,13 +396,13 @@ describe('Dynamic Library Configuration', () => {
     });
 
     describe('[DRDMV-13150]: [Dynamic Data] [UI] - Behavior of different dynamic fields from Task Edit view', async () => {
-        let templateData, caseId, randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let templateData, randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
             templateData = {
-                "templateName": `manualTaskTemplate ${randomStr}`,
-                "templateSummary": `manualTaskTemplateSummary ${randomStr}`,
+                "templateName": randomStr + 'manualTaskTemplate',
+                "templateSummary": randomStr + 'manualTaskTemplateSummary',
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
@@ -420,7 +420,6 @@ describe('Dynamic Library Configuration', () => {
             await createCasePo.clickAssignToMeButton();
             await createCasePo.clickSaveCaseButton();
             await casePreviewPo.clickGoToCaseButton();
-            caseId = await viewCasePo.getCaseID();
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(templateData.templateName);
             await manageTaskBladePo.clickTaskLink(templateData.templateSummary);
@@ -450,7 +449,7 @@ describe('Dynamic Library Configuration', () => {
     });
 
     describe('[DRDMV-13110]: [Dynamic Data]- Add Dynamic Fields and Groups to Case Template', async () => {
-        let casetemplateData, caseId, randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let casetemplateData, randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();

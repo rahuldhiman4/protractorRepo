@@ -480,6 +480,9 @@ describe('Case Cognitive', () => {
         beforeAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('tadmin');
+            await apiHelper.apiLogin('tadmin');
+            let dataSetMappingDeleted = await apiHelper.deleteCognitiveDataSetMapping();
+            console.log("All DataSet Mapping Deleted =============> ", dataSetMappingDeleted);    
         });
         it('[DRDMV-8973,DRDMV-8971,DRDMV-8972,DRDMV-8977,DRDMV-8974,DRDMV-8975]:[Cognitive] - Add Data Set Mapping for Categorization', async () => {
             await navigationPage.gotoSettingsPage();
@@ -610,6 +613,11 @@ describe('Case Cognitive', () => {
     //ankagraw
     describe('[DRDMV-8454,DRDMV-8453,DRDMV-8464,DRDMV-8455,DRDMV-8456,DRDMV-8457]:[Cognitive] - Data Set Mapping for Templates UI validation', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        beforeAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            let dataSetMappingDeleted = await apiHelper.deleteCognitiveDataSetMapping();
+            console.log("All DataSet Mapping Deleted =============> ", dataSetMappingDeleted);    
+        });
         it('[DRDMV-8454,DRDMV-8453,DRDMV-8464,DRDMV-8455,DRDMV-8456,DRDMV-8457]:[Cognitive] - Data Set Mapping for Templates UI validation', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Cognitive--Template', 'Template Configuration - Business Workflows');

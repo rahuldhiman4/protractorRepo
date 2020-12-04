@@ -1351,7 +1351,7 @@ describe('Notes template', () => {
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(templateName);
             await activityTabPo.addActivityNote(randomString);
             await activityTabPo.clickOnPostButton();
-            await activityTabPo.clickOnRefreshButton();
+            await utilityCommon.refresh(); // workaround for DRDMV-23816
             await activityTabPo.clickShowMoreLinkInActivity(1);
             expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
             expect(await activityTabPo.isItalicTextDisplayedInActivity(italicText, 1)).toBeTruthy('FailureMsg Italic Text is missing In Activity');
@@ -2424,9 +2424,8 @@ describe('Notes template', () => {
                 "templateName": 'caseTemplateName' + randomString,
                 "templateSummary": 'caseTemplateName' + randomString,
                 "templateStatus": "Active",
-                "categoryTier1": "Purchasing Card",
-                "categoryTier2": "Policies",
-                "categoryTier3": "Card Issuance",
+                "categoryTier1": "Total Rewards",
+                "categoryTier2": "Leave",
                 "casePriority": "Low",
                 "caseStatus": "New",
                 "company": "Petramco",
@@ -2479,6 +2478,8 @@ describe('Notes template', () => {
             }
             readAccessMappingData = {
                 "configName": randomString + '1ReadAccessMappingName',
+                "category1": "Total Rewards",
+                "category2": "Leave",
                 "assignedCompany": 'Petramco',
                 "businessUnit": 'Canada Support',
                 "supportGroup": 'CA Support 3',

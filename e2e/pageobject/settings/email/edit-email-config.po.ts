@@ -112,6 +112,7 @@ export class EditEmailConfig {
 
     async selectDefaultCaseTemplate(tabValue: string): Promise<void> {
         await utilCommon.selectDropDown(this.selectors.defaultCaseTemplateGuid, tabValue);
+        await browser.sleep(500); // case template save takes little time ('save' word appears below the dropdown)
     }
 
     async clickSaveAcknowledgementTemplate(): Promise<void> {
