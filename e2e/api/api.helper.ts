@@ -54,6 +54,7 @@ import { ICaseTemplate, IEmailTemplate, INotesTemplate, ITaskTemplate } from '..
 import loginPage from "../pageobject/common/login.po";
 import { NOTES_TEMPLATE } from '../data/api/social/notes.template.api';
 import { FLOWSET_TEMPLATE } from '../data/api/case/flowset.api';
+import { RELATIONSHIPS } from '../data/api/shared-services/relationship.api';
 let fs = require('fs');
 
 axios.defaults.baseURL = browser.baseUrl;
@@ -3232,6 +3233,19 @@ class ApiHelper {
         let updateIdentitiy = await apiCoreUtil.updateRecordInstance("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid, updatePayload);
         console.log("Updated Identity =============>", updateIdentitiy.status);
         return updateIdentitiy.status;
+    }
+    
+    async addRelationShip(relationshipName: string, reverseRelationshipName: string, relationshipType: string): Promise<boolean> {
+        let relationship = cloneDeep(RELATIONSHIPS);
+        relationship.fieldInstances[450000152].value = relationshipName;
+        relationship.fieldInstances[450000154].value = relationshipName;
+        relationship.fieldInstances[450000155].value = reverseRelationshipName;
+        relationship.fieldInstances[450000156].value = reverseRelationshipName;
+        relationship.fieldInstances[450000153].value = relationship.fieldInstances[450000153].value + relationshipType;
+        
+        let relationshipResponse: AxiosResponse = await apiCoreUtil.createRecordInstance(relationship);
+        console.log('Relationship status =============> ', relationshipResponse.status);
+        return relationshipResponse.status == 201;
     }
 }
 
