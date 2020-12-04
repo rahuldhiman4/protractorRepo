@@ -440,8 +440,8 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             "userId": "caseManager",
             "userPermission": ["Case Manager","Foundation Read","Document Manager","Human Resource"]
         }
-        let title = `Document-${new Date().valueOf()}`;
-        let title1 = `Document1-${new Date().valueOf()}`;
+        let title = `Document_${new Date().valueOf()}`;
+        let title1 = `Document1_${new Date().valueOf()}`;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.createNewUser(caseAgentuserData);
@@ -510,7 +510,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
                 .toEqual('Document Library Console - Business Workflows');
             await createDocumentLibraryPage.openAddNewDocumentBlade();
             await createDocumentLibraryPage.addAttachment(filePath);
-            let title2 = `Document2-${new Date().valueOf()}`;
+            let title2 = `Document2_${new Date().valueOf()}`;
             await createDocumentLibraryPage.setTitle(title2);
             await createDocumentLibraryPage.selectCompany(companyStr);
             await createDocumentLibraryPage.selectBusinessUnit(hrSupportStr);
