@@ -75,12 +75,7 @@ describe('Knowledge Article Template', () => {
         await createKnowledgeArticleTemplatePo.setSectionTitle('Section Title');
         await createKnowledgeArticleTemplatePo.clickOnSaveButton();
         expect(await utilCommon.isPopUpMessagePresent('ERROR (222061): Template already exists.')).toBeTruthy();
-
-        afterAll(async () => {
-            await utilityCommon.closeAllBlades();
-            await navigationPage.signOut();
-            await loginPage.login('kWilliamson');
-        });
+        await utilCommon.switchToDefaultWindowClosingOtherTabs();
     });
 
     describe('[DRDMV-619,DRDMV-1065,DRDMV-1180]: [Create Mode] Create a template for Knowledge article', () => {
@@ -106,6 +101,8 @@ describe('Knowledge Article Template', () => {
         });
 
         it('[DRDMV-619,DRDMV-1065,DRDMV-1180]: Create templates for Knowledge article', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('kWilliamson');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', 'Knowledge Article Templates');
             await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();

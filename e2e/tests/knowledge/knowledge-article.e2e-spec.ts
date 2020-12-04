@@ -2400,7 +2400,7 @@ describe('Knowledge Article', () => {
             await apiHelper.apiLogin('qkatawazi');
             let articleData = {
                 "knowledgeSet": "HR",
-                "title": 'DRDMV-753 KnowledgeArticle_KA ' + randomStr,
+                "title": randomStr+'DRDMV753KnowledgeArticleKA',
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
@@ -2409,22 +2409,22 @@ describe('Knowledge Article', () => {
             }
             kaDetails1 = await apiHelper.createKnowledgeArticle(articleData);
             let knowledgeArticleGUID1 = kaDetails1.id;
-            articleData.title = 'DRDMV-753 KnowledgeArticle_KA ' + randomStr;
+            articleData.title = randomStr+'DRDMV753KnowledgeArticleKA';
             kaDetails2 = await apiHelper.createKnowledgeArticle(articleData);
             let knowledgeArticleGUID2 = kaDetails2.id;
-            articleData.title = 'DRDMV-753 KnowledgeArticle_KA ' + randomStr;
+            articleData.title = randomStr+'DRDMV753KnowledgeArticleKA';
             kaDetails3 = await apiHelper.createKnowledgeArticle(articleData);
             let knowledgeArticleGUID3 = kaDetails3.id;
-            articleData.title = 'DRDMV-753 KnowledgeArticle_KA ' + randomStr;
+            articleData.title = randomStr+'DRDMV753KnowledgeArticleKA';
             kaDetails4 = await apiHelper.createKnowledgeArticle(articleData);
             let knowledgeArticleGUID4 = kaDetails4.id;
-            articleData.title = 'DRDMV-753 KnowledgeArticle_KA ' + randomStr;
+            articleData.title = randomStr+'DRDMV753KnowledgeArticleKA';
             kaDetails5 = await apiHelper.createKnowledgeArticle(articleData);
             let knowledgeArticleGUID5 = kaDetails5.id;
-            articleData.title = 'DRDMV-753 KnowledgeArticle_KA ' + randomStr;
+            articleData.title = randomStr+'DRDMV753KnowledgeArticleKA';
             kaDetails6 = await apiHelper.createKnowledgeArticle(articleData);
             let knowledgeArticleGUID6 = kaDetails6.id;
-            articleData.title = 'DRDMV-753 KnowledgeArticle_KA ' + randomStr;
+            articleData.title = randomStr+'DRDMV753KnowledgeArticleKA';
             kaDetails7 = await apiHelper.createKnowledgeArticle(articleData);
             let knowledgeArticleGUID7 = kaDetails7.id;
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID1, 'Draft')).toBeTruthy('Status Not Set');
@@ -2451,7 +2451,7 @@ describe('Knowledge Article', () => {
             await utilityGrid.searchAndOpenHyperlink(kaDetails2.displayId);
             await viewKnowledgeArticlePo.clickOnTab('Resources');
             await resources.clickOnAdvancedSearchOptions();
-            await resources.enterAdvancedSearchText("DRDMV-753 KnowledgeArticle_KA");
+            await resources.enterAdvancedSearchText(randomStr+'DRDMV753KnowledgeArticleKA');
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton("Apply");
             await resources.pinRecommendedKnowledgeArticles(1);
@@ -2462,7 +2462,7 @@ describe('Knowledge Article', () => {
             await utilityGrid.searchAndOpenHyperlink(kaDetails2.displayId);
             await viewKnowledgeArticlePo.clickOnTab("Resources");
             await resources.clickOnAdvancedSearchOptions();
-            await resources.enterAdvancedSearchText("DRDMV-753 KnowledgeArticle_KA");
+            await resources.enterAdvancedSearchText(randomStr+'DRDMV753KnowledgeArticleKA');
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton("Apply");
             expect(await resources.isFirstPinnedArticleDisplayed()).toBeTruthy();
@@ -2489,7 +2489,7 @@ describe('Knowledge Article', () => {
             await utilityGrid.searchAndOpenHyperlink(kaDetails2.displayId);
             await viewKnowledgeArticlePo.clickOnTab("Resources");
             await resources.clickOnAdvancedSearchOptions();
-            await resources.enterAdvancedSearchText("DRDMV-753 KnowledgeArticle_KA");
+            await resources.enterAdvancedSearchText(randomStr+'DRDMV753KnowledgeArticleKA');
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton("Apply");
             await resources.pinRecommendedKnowledgeArticles(2);
