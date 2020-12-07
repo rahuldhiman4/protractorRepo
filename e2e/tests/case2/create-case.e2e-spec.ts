@@ -740,19 +740,17 @@ describe("Create Case", () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Summary' + randomStr);
-            await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            await updateStatusBladePo.changeCaseStatus('In Progress');
-            await updateStatusBladePo.clickSaveStatus();
-            await utilityCommon.closePopUpMessage();
             await viewCasePage.clickEditCaseButton();
             await editCasePage.clickChangeAssignmentButton();
+            await changeAssignmentPage.selectBusinessUnit('United States Support')
+            await changeAssignmentPage.selectSupportGroup('US Support 3');
             await changeAssignmentPage.selectAssignToSupportGroup();
             await changeAssignmentPage.clickOnAssignButton();
             await editCasePage.clickSaveCase();
             expect(await viewCasePage.getAssignedGroupText()).toBe('US Support 3');
-            await viewCasePage.clickOnStatus();
+            await updateStatusBladePo.changeCaseStatus('In Progress');       
             expect(await viewCasePage.getErrorMsgOfInprogressStatus()).toBe('Assignee is required for this case status.  Please select an assignee. ');
             await updateStatusBladePo.clickCancelButton();
         });
@@ -1020,6 +1018,9 @@ describe("Create Case", () => {
             await createCaseTemplate.setCaseSummary(caseTemplateSummary1);
             await createCaseTemplate.setAllowCaseReopenValue('Yes');
             await createCaseTemplate.setTemplateStatusDropdownValue('Active');
+            await createCaseTemplate.setCaseStatusValue("Assigned");
+            await createCaseTemplate.clickOnChangeAssignmentButton();
+            await changAssignmentOldPage.setAssignee('Petramco', 'United States Support', 'US Support 3', 'Qadim Katawazi')
             await createCaseTemplate.clickSaveCaseTemplate();
         });
 
