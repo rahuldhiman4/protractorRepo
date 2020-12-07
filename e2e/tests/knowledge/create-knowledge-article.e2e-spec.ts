@@ -306,7 +306,7 @@ describe('Knowledge Article', () => {
             await navigationPage.gotoKnowledgeConsole();
             await utilityGrid.clearFilter();
             await knowledgeArticlesConsolePo.searchKnowledgeArticle(knowledgeTitle);
-            await expect(utilityGrid.isGridRecordPresent(knowledgeIdValue.trim())).toBeTruthy("Knowledge Article is not displayed");
+            await expect(utilityGrid.isGridRecordPresent(knowledgeIdValue.trim())).toBeTruthy(`${knowledgeIdValue.trim()} is not present`);
         } catch (error) {
             throw error;
         }

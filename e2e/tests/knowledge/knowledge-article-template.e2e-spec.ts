@@ -87,8 +87,8 @@ describe('Knowledge Article Template', () => {
                 company: 'Petramco'
             }
 
-            await apiHelper.deleteArticleTemplate('DRDMV_1065');
-            await apiHelper.deleteArticleTemplate('DRDMV_619');
+            await apiHelper.deleteArticleTemplate('DRDMV1065');
+            await apiHelper.deleteArticleTemplate('DRDMV619');
             await apiHelper.deleteArticleTemplate('Article Template Name Petramco');
             await apiHelper.deleteKnowledgeSet('Knowledge Set Petramco Title');
             await apiHelper.createKnowledgeSet(knowledgeSetData);
@@ -106,7 +106,7 @@ describe('Knowledge Article Template', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', 'Knowledge Article Templates');
             await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
-            await createKnowledgeArticleTemplatePo.setTemplateName('DRDMV_1065');
+            await createKnowledgeArticleTemplatePo.setTemplateName('DRDMV1065');
             await createKnowledgeArticleTemplatePo.clickOnAddSection();
             expect(await createKnowledgeArticleTemplatePo.getfieldLabel('Section Title')).toBe('Section Title');
             await createKnowledgeArticleTemplatePo.setSectionTitle('Section Title1');
@@ -146,20 +146,20 @@ describe('Knowledge Article Template', () => {
             expect(await utilCommon.isPopUpMessagePresent('Knowledge Template : DRDMV_1065 has been successfully created')).toBeTruthy('Success message does not match');
 
             await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
-            await createKnowledgeArticleTemplatePo.setTemplateName('DRDMV_619');
+            await createKnowledgeArticleTemplatePo.setTemplateName('DRDMV619');
             await createKnowledgeArticleTemplatePo.clickOnAddSection();
             await createKnowledgeArticleTemplatePo.setSectionTitle('Section Title_1');
             await createKnowledgeArticleTemplatePo.clickOnSaveButton();
-            expect(await utilGrid.isGridRecordPresent('DRDMV_1065')).toBeTruthy('Record does not exist');
-            expect(await utilGrid.isGridRecordPresent('DRDMV_619')).toBeTruthy('Record does not exist');
+            expect(await utilGrid.isGridRecordPresent('DRDMV1065')).toBeTruthy('Record does not exist');
+            expect(await utilGrid.isGridRecordPresent('DRDMV619')).toBeTruthy('Record does not exist');
             await utilCommon.switchToNewWidnow(1);
             await navigationPage.switchToApplication("Knowledge Management");
             await navigationPage.gotoCreateKnowledge();
         });
 
         it('[DRDMV-619,DRDMV-1065,DRDMV-1180]: [Create Mode] Create a template for Knowledge article', async () => {
-            expect(await createKnowledgePage.isTemplatePresent('DRDMV_1065')).toBeTruthy('Template DRDMV_1065 is not present');
-            expect(await createKnowledgePage.isTemplatePresent('DRDMV_619')).toBeTruthy('Template DRDMV_619 is not present');
+            expect(await createKnowledgePage.isTemplatePresent('DRDMV1065')).toBeTruthy('Template DRDMV_1065 is not present');
+            expect(await createKnowledgePage.isTemplatePresent('DRDMV619')).toBeTruthy('Template DRDMV_619 is not present');
 
             expect(await createKnowledgePage.isTemplateDescriptionPresent('KCS Template')).toBeTruthy('Template Description is missing');
             expect(await createKnowledgePage.isSectionTitleVisibleOnPreview('Problem')).toBeTruthy('Section title is missing');
@@ -177,7 +177,7 @@ describe('Knowledge Article Template', () => {
             await createKnowledgePage.clickBackBtn();
             await utilityCommon.closeAllBlades();
             await navigationPage.gotoCreateKnowledge();
-            await createKnowledgePage.clickOnTemplate('DRDMV_619');
+            await createKnowledgePage.clickOnTemplate('DRDMV619');
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
             await createKnowledgePage.addTextInKnowlegeTitleField('Article Title 619');
             await createKnowledgePage.selectKnowledgeSet('Policy');
@@ -189,6 +189,7 @@ describe('Knowledge Article Template', () => {
             await utilityGrid.clickRefreshIcon();
             await utilityGrid.clearFilter();
             expect(await utilityGrid.isGridRecordPresent('Article Title KCS')).toBeTruthy('Article is not present');
+            await utilityGrid.clickRefreshIcon();
             expect(await utilityGrid.isGridRecordPresent('Article Title 619')).toBeTruthy('Article is not present');
             await navigationPage.signOut();
             await loginPage.login('fritz');
