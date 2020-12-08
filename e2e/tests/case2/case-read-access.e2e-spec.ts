@@ -409,7 +409,7 @@ describe("Case Read Access", () => {
     });
 
     describe('[DRDMV-2004]: [Read Access] Applying mapping with flowset in case of best match', async () => {
-        const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let readAccessMappingData1, readAccessMappingData2, readAccessMappingData3, caseTemplateData, caseTemplateData1;
         beforeAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
@@ -440,7 +440,7 @@ describe("Case Read Access", () => {
                 "company": 'Petramco',
             }
             caseTemplateData = {
-                "templateName": `${randomStr}1Case template`,
+                "templateName": `${randomStr}1CaseTemplate`,
                 "templateStatus": "Draft",
                 "templateSummary": `${randomStr}Summary`,
                 "caseStatus": "New",
