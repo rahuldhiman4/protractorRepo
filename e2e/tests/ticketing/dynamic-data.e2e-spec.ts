@@ -439,8 +439,8 @@ describe('Dynamic data', () => {
 
     describe('[DRDMV-13567]: [Dynamic Data] [Attachment] - Case UI when it has Dynamic Fields including Attachment', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let caseTemplateName = 'caseTemplateDRDMV-13567' + randomStr;
-        let caseTemaplateSummary = 'caseTemplateDRDMV-13567' + randomStr;
+        let caseTemplateName = 'caseTemplateDRDMV13567' + randomStr;
+        let caseTemaplateSummary = 'caseTemplateDRDMV13567' + randomStr;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();

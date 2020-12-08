@@ -454,8 +454,8 @@ describe('Dynamic Library Configuration', () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
             casetemplateData = {
-                "templateName": randomStr + 'caseTemplateDRDMV-13128',
-                "templateSummary": randomStr + 'caseTemplateDRDMV-13128',
+                "templateName": randomStr + 'caseTemplateDRDMV13128',
+                "templateSummary": randomStr + 'caseTemplateDRDMV13128',
                 "templateStatus": "Active",
                 "assignee": "qkatawazi",
                 "company": "Petramco",
@@ -481,7 +481,7 @@ describe('Dynamic Library Configuration', () => {
         it('[DRDMV-13110]: [Dynamic Data]- Add Dynamic Fields and Groups to Case Template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
-            await utilGrid.searchAndOpenHyperlink(randomStr + 'caseTemplateDRDMV-13128');
+            await utilGrid.searchAndOpenHyperlink(randomStr + 'caseTemplateDRDMV13128');
             expect(await viewCasetemplatePo.isManageDynamicFieldLinkDisplayed()).toBeFalsy();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
