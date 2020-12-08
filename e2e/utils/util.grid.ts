@@ -251,7 +251,7 @@ export class GridOperation {
         if (guid) {
             summaryField = `[rx-view-component-id="${guid}"]` + summaryField;
             searchButton = `[rx-view-component-id="${guid}"]` + searchButton;
-            gridRefreshButton = `[rx-view-component-id="${guid}"]` + gridRefreshButton;
+            gridRefreshButton = `[rx-view-component-id="${guid}"] button.d-icon-refresh`;
         }
         for (let i: number = 0; i < 6; i++) {
             console.log(id, "search angularJs grid count: ", i);
