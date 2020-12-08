@@ -15,6 +15,8 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import createCasePo from '../../pageobject/case/create-case.po';
+import casePreviewPo from '../../pageobject/case/case-preview.po';
 
 let userData1 = undefined;
 const caseApprovalRecordDefinition = 'com.bmc.dsm.case-lib:Case';

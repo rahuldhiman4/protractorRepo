@@ -27,7 +27,7 @@ import consoleReadAcess from '../../pageobject/settings/case-management/read-acc
 import viewCasetemplatePo from '../../pageobject/settings/case-management/view-casetemplate.po';
 import serviceTargetConfig from '../../pageobject/settings/slm/service-target-blade.po';
 import SlmExpressionBuilder from '../../pageobject/settings/slm/slm-expressionbuilder.pop.po';
-import { default as consoleTasktemplatePo, default as selectTaskTemplate } from "../../pageobject/settings/task-management/console-tasktemplate.po";
+import consoleTasktemplatePo from "../../pageobject/settings/task-management/console-tasktemplate.po";
 import createTasktemplatePo from '../../pageobject/settings/task-management/create-tasktemplate.po';
 import editTasktemplatePo from '../../pageobject/settings/task-management/edit-tasktemplate.po';
 import viewTasktemplatePo from '../../pageobject/settings/task-management/view-tasktemplate.po';
@@ -495,7 +495,7 @@ describe('Menu Item', () => {
         it('[DRDMV-16276]: Verify Label With Create Task Template', async () => {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows')).toEqual('Task Templates - Business Workflows');
-            await selectTaskTemplate.clickOnManualTaskTemplateButton();
+            await consoleTasktemplatePo.clickOnManualTaskTemplateButton();
             await createTasktemplatePo.setTemplateName(title);
             await createTasktemplatePo.setTaskSummary(summary);
             expect(await createTasktemplatePo.isValuePresentInDropdown('Label', labelInactive)).toBeFalsy('Value is present in  label drop down');

@@ -384,7 +384,7 @@ describe('Copy Task Template', () => {
 
     describe('[DRDMV-14221]: Copy Automated template with same process Name and different field data', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let updatedTaskTemplate = randomStr+'DRDMV14221UpdatedTask';
+        let updatedTaskTemplate = randomStr + 'DRDMV14221UpdatedTask';
         let templateData;
         beforeAll(async () => {
             templateData = {

@@ -927,8 +927,8 @@ describe('Dynamic Hidden Data', () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
             casetemplateData = {
-                "templateName": randomStr + 'caseTemplateDRDMV-17916',
-                "templateSummary": randomStr + 'caseTemplateSummaryDRDMV-17916',
+                "templateName": randomStr + 'caseTemplateDRDMV17916',
+                "templateSummary": randomStr + 'caseTemplateSummaryDRDMV17916',
                 "caseStatus": "InProgress",
                 "templateStatus": "Draft",
                 "assignee": "qkatawazi",
@@ -1106,8 +1106,8 @@ describe('Dynamic Hidden Data', () => {
             await apiHelper.deleteDynamicFieldAndGroup();
 
             casetemplateData = {
-                "templateName": randomStr + 'caseTemplateDRDMV-13136',
-                "templateSummary": randomStr + 'caseTemplateSummaryDRDMV-13136',
+                "templateName": randomStr + 'caseTemplateDRDMV13136',
+                "templateSummary": randomStr + 'caseTemplateSummaryDRDMV13136',
                 "templateStatus": "Active",
                 "caseStatus": "InProgress",
                 "company": "Petramco",
