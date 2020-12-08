@@ -79,7 +79,7 @@ describe('Automated Case Status Transition', () => {
         afterAll(async () => {
             await utilCommon.closeBladeOnSettings();
             await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
+            await loginPage.login('jbarnes');
         });
     });
 
@@ -88,7 +88,8 @@ describe('Automated Case Status Transition', () => {
         let configName1, configName2, randomStr = [...Array(7)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         it('[DRDMV-17553]: Search and presence of existing rule test', async () => {
             await apiHelper.apiLogin('jbarnes');
-
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', 'Configure Automated Status Transitions - Business Workflows');
             //Create first Record
             configName1 = AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.name = 'ConfigName1' + randomStr;
             AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.changeStatusAfter = Math.floor(Math.random() * 180) + 1;
@@ -105,6 +106,7 @@ describe('Automated Case Status Transition', () => {
         it('[DRDMV-17553]: Search and presence of existing rule test', async () => {
             await navigationPage.signOut();
             await loginPage.login('frieda');
+            await navigationPage.gotoCaseConsole();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', 'Configure Automated Status Transitions - Business Workflows');
             expect(await automatedStatusTransitionConsole.isAddAutomatedStatusTransitionBtnPresent()).toBeFalsy('Add button is available');

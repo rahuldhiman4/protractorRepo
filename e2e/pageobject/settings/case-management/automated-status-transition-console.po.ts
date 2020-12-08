@@ -12,7 +12,14 @@ class AutomatedStatusTransitionConfigConsolePage {
     }
 
     async isAddAutomatedStatusTransitionBtnPresent(): Promise<boolean> {
-        return await $(this.selectors.addAutomatedTransitionButton).isPresent();
+        return await $(this.selectors.addAutomatedTransitionButton).isPresent().then(async (result) => {
+            if (result) {
+                return  await $(this.selectors.addAutomatedTransitionButton).isDisplayed();
+            } else {
+                console.log("dynamic data not present");
+                return false;
+            }
+        });
     }
 
     async isDeleteAutomatedStatusTransitionBtnPresent(): Promise<boolean> {
