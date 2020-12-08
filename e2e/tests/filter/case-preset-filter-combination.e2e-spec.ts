@@ -177,8 +177,8 @@ describe('Case Console Filter Combinations', () => {
             expect(await utilityGrid.isGridColumnSorted('Request ID', 'desc')).toBeTruthy('Descendigly not sorted');
             expect(await utilityGrid.isGridColumnSorted('Priority', 'asc')).toBeTruthy('Ascendigly not sorted');
             expect(await utilityGrid.isGridColumnSorted('Priority', 'desc')).toBeTruthy('Descendigly not sorted');
-            expect(await utilityGrid.isGridColumnSorted('Modified Date', 'asc')).toBeTruthy('Ascendigly not sorted');
-            expect(await utilityGrid.isGridColumnSorted('Modified Date', 'desc')).toBeTruthy('Descendigly not sorted');
+            expect(await utilityGrid.isGridColumnSorted('Assignee', 'asc')).toBeTruthy('Ascendigly not sorted');
+            expect(await utilityGrid.isGridColumnSorted('Assignee', 'desc')).toBeTruthy('Descendigly not sorted');
         });
         afterAll(async () => {
             await utilityGrid.clearFilter();

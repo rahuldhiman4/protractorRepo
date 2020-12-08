@@ -130,8 +130,8 @@ describe('Service Target Tests for Tasks', () => {
             await updateStatusBladePo.setStatusReason('Successful');
             await updateStatusBladePo.clickSaveStatus();
             await viewTask.clickOnViewCase();
-            await viewCasePage.openTaskCard(1);
-            await viewCasePage.clickOnTaskLink(automatedTaskTemp);
+            await navigationPage.gotoTaskConsole();
+            await taskConsolePage.searchAndOpenTask(automatedTaskTemp);
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBe(false);
         });
         afterAll(async () => {
@@ -225,8 +225,8 @@ describe('Service Target Tests for Tasks', () => {
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('due on');
             await viewTask.getTaskTypeValue();
             await viewTask.clickOnViewCase();
-            await viewCasePage.openTaskCard(1);
-            await viewCasePage.clickOnTaskLink(manualTaskTemp);
+            await navigationPage.gotoTaskConsole();
+            await taskConsolePage.searchAndOpenTask(manualTaskTemp);
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBe(false);
         });
         afterAll(async () => {
@@ -238,7 +238,7 @@ describe('Service Target Tests for Tasks', () => {
 
     //skhobrag
     describe('[DRDMV-13064]: UI Validation for Qualification builder for Task SVT', async () => {
-        let firstLevelAssociationFields: string[] = ["Assigned Business Unit", "Assigned Department", "Assigned Group", "Category Tier 1", "Category Tier 2", "Category Tier 3", "Category Tier 4", "Created Date", "Label", "Modified By", "Priority", "Status", "Status Reason", "Task Region", "Task Type"];
+        let firstLevelAssociationFields: string[] = ["Assigned Business Unit", "Assigned Department", "Assigned Group", "Category Tier 1", "Category Tier 2", "Category Tier 3", "Category Tier 4", "Created Date", "Label", "Modified By", "Priority", "Status", "Status Reason","Target Date", "Task Region", "Task Type"];
         let secondLevelAssociationFields: string[] = ["Assigned Company", "Company", "Requester", "Site"];
         let expressionOperatorFields: string[] = ["(", ")", ">", "<", "=", "!=", ">=", "<=", "LIKE", "AND", "OR", "NOT", "NEW VALUE", "OLD VALUE"];
         it('[DRDMV-13064]: Verify Qualification Builder UI for Task SVT', async () => {
@@ -420,6 +420,7 @@ describe('Service Target Tests for Tasks', () => {
         });
     });
 
+    //defect DRDMV-24286    
     describe('[DRDMV-13058]: Create a SVT for Task where build expression has Custom Status', async () => {
         let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
         beforeAll(async () => {

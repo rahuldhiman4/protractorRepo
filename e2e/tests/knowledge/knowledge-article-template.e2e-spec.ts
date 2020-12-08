@@ -143,7 +143,7 @@ describe('Knowledge Article Template', () => {
             expect(await utilCommon.isButtonVisible('Cancel')).toBeTruthy('Cancel button is not visible');
 
             await createKnowledgeArticleTemplatePo.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Knowledge Template : DRDMV_1065 has been successfully created')).toBeTruthy('Success message does not match');
+            expect(await utilCommon.isPopUpMessagePresent('Knowledge Template : DRDMV1065 has been successfully created')).toBeTruthy('Success message does not match');
 
             await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
             await createKnowledgeArticleTemplatePo.setTemplateName('DRDMV619');
