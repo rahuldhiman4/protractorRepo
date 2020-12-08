@@ -278,7 +278,7 @@ describe('Case Console', () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.addColumns(defaultCaseColumns);
             await utilityGrid.searchRecord(newCase2.displayId);
-            await utilityGrid.addFilter('SLM Status', 'Service Targets Not Attached', 'checkbox');
+            await utilityGrid.addFilter('SLM Status', 'Within Time Limit', 'checkbox');
             expect(await utilityGrid.isGridRecordPresent(newCase2.displayId)).toBeTruthy(newCase2.displayId);
             await utilityGrid.searchRecord(newCase1.displayId);
             await utilityGrid.addFilter('Priority', 'Low', 'checkbox');

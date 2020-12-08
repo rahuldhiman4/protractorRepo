@@ -534,6 +534,7 @@ describe("Case Read Access", () => {
             await apiHelper.deleteReadAccessOrAssignmentMapping(readAccessMappingData1.configName);
             await apiHelper.deleteReadAccessOrAssignmentMapping(readAccessMappingData2.configName);
             await apiHelper.deleteReadAccessOrAssignmentMapping(readAccessMappingData3.configName);
+            await utilityCommon.closeAllBlades();
             await navigationPo.signOut();
             await loginPage.login('qkatawazi');
         });
