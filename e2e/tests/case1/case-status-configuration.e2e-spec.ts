@@ -260,7 +260,7 @@ describe('Case Status Configuration', () => {
     });
 
     //asahitya
-    describe('[DRDMV-13632]: Verify User not able to delete mandatory status for Knowledge', () => {
+    xdescribe('[DRDMV-13632]: Verify User not able to delete mandatory status for Knowledge', () => {
         it('[DRDMV-13632]: Verify User not able to delete mandatory status for Knowledge', async () => {
             await navigationPage.signOut();
             await loginPage.login(personData3.userId+"@petramco.com", 'Password_1234');
