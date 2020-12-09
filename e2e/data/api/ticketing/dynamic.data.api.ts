@@ -79,69 +79,61 @@ export const TASK_TEMPLATE__DYNAMIC_FIELDS =
     "name": "case template",
     "templateRecordDefinition": "com.bmc.dsm.task-lib:Task Template",
     "templateId": "nnn",
+    "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
     "attributeDefinitions": [
         {
             "name": "temp",
             "description": "temp",
             "dataType": "TEXT",
             "dataProviderUserRole": "Agent",
-            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
         },
         {
             "name": "temp1",
             "description": "temp1",
             "dataType": "NUMBER",
             "dataProviderUserRole": "Agent",
-            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
         },
         {
             "name": "temp2",
             "description": "temp2",
             "dataType": "DATE",
             "dataProviderUserRole": "Agent",
-            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
         },
         {
             "name": "temp3",
             "description": "temp3",
             "dataType": "BOOLEAN",
             "dataProviderUserRole": "Agent",
-            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
         },
         {
             "name": "temp4",
             "description": "temp4",
             "dataType": "DATE_TIME",
             "dataProviderUserRole": "Agent",
-            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
         },
         {
             "name": "temp5",
             "description": "temp5",
             "dataType": "TIME",
             "dataProviderUserRole": "Agent",
-            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
         },
         {
             "name": "attachment1",
             "description": "attachment1",
             "dataType": "ATTACHMENT",
             "dataProviderUserRole": "Agent",
-            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
         },
         {
             "name": "attachment2",
             "description": "attachment2",
             "dataType": "ATTACHMENT",
             "dataProviderUserRole": "Agent",
-            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
         },
         {
             "name": "attachment3",
             "description": "attachment3",
             "dataType": "ATTACHMENT",
             "dataProviderUserRole": "Agent",
-            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
         }
     ]
 };

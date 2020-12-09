@@ -223,7 +223,7 @@ class ViewCaseTemplate {
     }
 
     async isTaskFlowBtnEnabled(): Promise<boolean> {
-        return await $(this.selectors.taskFlowButton).isEnabled();
+        return await $(this.selectors.taskFlowButton).getAttribute("disabled") ? false : true;
     }
 
     async isTaskFlowPresentInTaskSection(): Promise<boolean> {

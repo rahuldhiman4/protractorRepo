@@ -523,7 +523,7 @@ describe('Email Configuration', () => {
             await utilGrid.searchAndOpenHyperlink(emailID);
             await editEmailConfigPo.selectDefaultCaseTemplate(templateData.templateName);
             await editEmailConfigPo.clickSaveButton();
-            await utilityCommon.closeAllBlades();
+            await utilCommon.closeBladeOnSettings();
             await utilGrid.searchAndOpenHyperlink(emailID);
             await editEmailConfigPo.selectTab("Acknowledgment Templates");
             await editEmailConfigPo.searchAndClickCheckboxOnAcknowledgementTemplateGrid("Closed");
