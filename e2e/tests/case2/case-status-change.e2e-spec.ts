@@ -292,6 +292,7 @@ describe('Case Status Change', () => {
             await updateStatusBladePo.changeCaseStatus('Pending');
             await updateStatusBladePo.setStatusReason('Third Party');
             await updateStatusBladePo.clickSaveStatus();
+            await utilityCommon.closePopUpMessage();
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickTaskLink(manualSummary);
             expect(await viewTask.getTaskStatusValue()).toBe('Assigned', 'Assigned status not found');
@@ -302,6 +303,7 @@ describe('Case Status Change', () => {
             await updateStatusBladePo.changeCaseStatus('Resolved');
             await updateStatusBladePo.setStatusReason('Auto Resolved');
             await updateStatusBladePo.clickSaveStatus();
+            await utilityCommon.closePopUpMessage();
         });
         it('[DRDMV-1199]: [Case Status] Case status change from In Progress', async () => {
             await navigationPage.gotoCaseConsole();
@@ -316,6 +318,11 @@ describe('Case Status Change', () => {
             await viewCasePage.clickOnRefreshTaskList();
             await viewCasePage.clickOnTaskLink(manualSummary);       
             expect(await viewTask.getTaskStatusValue()).toBe('Canceled', 'canceled status not found');
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
         });
     });
 

@@ -668,7 +668,7 @@ describe("Create Case", () => {
         });
     });
 
-    it('[DRDMV-22772]:Assignment blade should list the agent names which are sorted alphabetically', async () => {
+    describe('[DRDMV-22772]:Assignment blade should list the agent names which are sorted alphabetically', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let CaseTemplateData = {
             "templateName": "CaseTemplate" + randomStr,
@@ -685,18 +685,27 @@ describe("Create Case", () => {
             "ownerBU": "United States Support",
             "ownerGroup": "US Support 3"
         }
-        await apiHelper.apiLogin('qkatawazi');
-        await apiHelper.createCaseTemplate(CaseTemplateData);
-        await navigationPage.gotoCreateCase();
-        await createCasePage.selectRequester('adam');
-        await createCasePage.setSummary('Summary' + randomStr);
-        await createCasePage.clickSelectCaseTemplateButton();
-        await selectCaseTemplateBlade.selectCaseTemplate(CaseTemplateData.templateName);
-        await createCasePage.clickSaveCaseButton();
-        await previewCasePo.clickGoToCaseButton();
-        await viewCasePage.clickEditCaseButton();
-        await editCasePage.clickChangeAssignmentButton();
-        expect(await changeAssignmentPage.isAgentListSorted()).toBeTruthy("Agent List is Sorted");
+        beforeAll(async () => {
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createCaseTemplate(CaseTemplateData);
+        });
+        it('[DRDMV-22772]:Assignment blade should list the agent names which are sorted alphabetically', async () => {
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester('adam');
+            await createCasePage.setSummary('Summary' + randomStr);
+            await createCasePage.clickSelectCaseTemplateButton();
+            await selectCaseTemplateBlade.selectCaseTemplate(CaseTemplateData.templateName);
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            await viewCasePage.clickEditCaseButton();
+            await editCasePage.clickChangeAssignmentButton();
+            expect(await changeAssignmentPage.isAgentListSorted()).toBeTruthy("Agent List is Sorted");
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
     });
 
     describe('[DRDMV-22293,DRDMV-22292,DRDMV-22294]: User Should not allow to remove assignee when case is in "In Progress" Status', async () => {
