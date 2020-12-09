@@ -338,8 +338,8 @@ describe('CKE Description', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await consoleTasktemplatePo.clickOnManualTaskTemplateButton();
-            await createTasktemplatePo.setTemplateName('taskTemplateNameDRDMV-22091' + randomString);
-            await createTasktemplatePo.setTaskSummary('taskTemplateSummaryDRDMV-22091' + randomString);
+            await createTasktemplatePo.setTemplateName('taskTemplateNameDRDMV22091' + randomString);
+            await createTasktemplatePo.setTaskSummary('taskTemplateSummaryDRDMV22091' + randomString);
             await createTasktemplatePo.selectCompanyByName('Petramco');
             // bold
             await createTasktemplatePo.updateTaskDescription("this is text");
@@ -462,7 +462,7 @@ describe('CKE Description', () => {
         it('[DRDMV-22091,DRDMV-22092,DRDMV-22093,DRDMV-22103] Verify detail on COPY task template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-            await utilGrid.searchAndOpenHyperlink('taskTemplateNameDRDMV-22091' + randomString);
+            await utilGrid.searchAndOpenHyperlink('taskTemplateNameDRDMV22091' + randomString);
             await viewTasktemplatePo.clickOnCopyTemplate();
             //verify detail on copy task template screen
             await copyTasktemplatePo.setTemplateName(randomString);
@@ -496,7 +496,7 @@ describe('CKE Description', () => {
             await casePreviewPo.clickGoToCaseButton();
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickAddTaskFromTemplateButton();
-            await utilityGrid.searchAndOpenHyperlink('taskTemplateNameDRDMV-22091' + randomString);
+            await utilityGrid.searchAndOpenHyperlink('taskTemplateNameDRDMV22091' + randomString);
             //task Preview
             await previewTaskTemplatePo.clickShowMoreDescriptionLink();
             expect(await ckeditorValidationPo.isBoldTextDisplayed(boldText)).toBeTruthy();
@@ -514,9 +514,9 @@ describe('CKE Description', () => {
             await browser.waitForAngularEnabled(true);
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await previewTaskTemplatePo.clickOnBackButton();
-            await utilityGrid.searchAndSelectGridRecord('taskTemplateNameDRDMV-22091' + randomString);
+            await utilityGrid.searchAndSelectGridRecord('taskTemplateNameDRDMV22091' + randomString);
             await manageTaskBladePo.clickTaskGridSaveButton();
-            await manageTaskBladePo.clickTaskLink('taskTemplateSummaryDRDMV-22091' + randomString);
+            await manageTaskBladePo.clickTaskLink('taskTemplateSummaryDRDMV22091' + randomString);
         });
         it('[[DRDMV-22091,DRDMV-22092,DRDMV-22093,DRDMV-22103] Verify task description field on Task', async () => {
             await viewTaskPo.clickShowMoreTaskDescription();
@@ -544,7 +544,7 @@ describe('CKE Description', () => {
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-            await utilGrid.searchAndOpenHyperlink('taskTemplateNameDRDMV-22091' + randomString);
+            await utilGrid.searchAndOpenHyperlink('taskTemplateNameDRDMV22091' + randomString);
             await viewTasktemplatePo.clickShowMoreDescriptionLink();
             expect(await viewTasktemplatePo.isBoldTextDisplayed(boldText)).toBeTruthy();
             expect(await viewTasktemplatePo.isUnderLineTextDisplayed(underLineText)).toBeTruthy();

@@ -3,6 +3,7 @@ import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
 import * as notesTemplateData from '../../data/ui/Social/notesTemplate.api';
 import addRelatedPopupPage from '../../pageobject/case/add-relation-pop.po';
+import caseConsolePo from '../../pageobject/case/case-console.po';
 import casePreviewPo from '../../pageobject/case/case-preview.po';
 import createCasePo from '../../pageobject/case/create-case.po';
 import quickCasePo from '../../pageobject/case/quick-case.po';
@@ -2638,7 +2639,8 @@ describe('Notes template', () => {
             expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
         });
         it('[DRDMV-22641,DRDMV-22645,DRDMV-22656]: Verify CKE functionality on Create and Edit Task Notes template', async () => {
-            await viewTaskPo.clickOnViewCase();
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
             await viewCasePage.openTaskCard(2);
             await manageTask.clickTaskLink(externaltemplateData.templateSummary);
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(templateName);
@@ -2662,7 +2664,8 @@ describe('Notes template', () => {
             expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
         });
         it('[DRDMV-22641,DRDMV-22645,DRDMV-22656]: Verify CKE functionality on Create and Edit Task Notes template', async () => {
-            await viewTaskPo.clickOnViewCase();
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
             await viewCasePage.openTaskCard(3);
             await manageTask.clickTaskLink(automatedtemplateData.templateSummary);
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(templateName);

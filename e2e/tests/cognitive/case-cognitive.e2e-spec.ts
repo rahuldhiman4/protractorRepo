@@ -59,6 +59,8 @@ describe('Case Cognitive', () => {
         await apiHelper.apiLogin('tadmin');
         let dataSetMappingDeleted = await apiHelper.deleteCognitiveDataSetMapping();
         console.log("All DataSet Mapping Deleted =============> ", dataSetMappingDeleted);
+        let dataSetDeleted = await apiHelper.deleteCognitiveDataSet();
+        console.log("All DataSet Deleted =============> ", dataSetDeleted);
         await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
