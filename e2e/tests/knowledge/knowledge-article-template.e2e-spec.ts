@@ -158,8 +158,8 @@ describe('Knowledge Article Template', () => {
         });
 
         it('[DRDMV-619,DRDMV-1065,DRDMV-1180]: [Create Mode] Create a template for Knowledge article', async () => {
-            expect(await createKnowledgePage.isTemplatePresent('DRDMV1065')).toBeTruthy('Template DRDMV_1065 is not present');
-            expect(await createKnowledgePage.isTemplatePresent('DRDMV619')).toBeTruthy('Template DRDMV_619 is not present');
+            expect(await createKnowledgePage.isTemplatePresent('DRDMV1065')).toBeTruthy('Template DRDMV1065 is not present');
+            expect(await createKnowledgePage.isTemplatePresent('DRDMV619')).toBeTruthy('Template DRDMV619 is not present');
 
             expect(await createKnowledgePage.isTemplateDescriptionPresent('KCS Template')).toBeTruthy('Template Description is missing');
             expect(await createKnowledgePage.isSectionTitleVisibleOnPreview('Problem')).toBeTruthy('Section title is missing');
@@ -190,6 +190,7 @@ describe('Knowledge Article Template', () => {
             await utilityGrid.clearFilter();
             expect(await utilityGrid.isGridRecordPresent('Article Title KCS')).toBeTruthy('Article is not present');
             await utilityGrid.clickRefreshIcon();
+            await utilityGrid.searchRecord('Article Title 619');
             expect(await utilityGrid.isGridRecordPresent('Article Title 619')).toBeTruthy('Article is not present');
             await navigationPage.signOut();
             await loginPage.login('fritz');
