@@ -1,5 +1,6 @@
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
+import { cloneDeep } from 'lodash';
 import caseConsole from '../../pageobject/case/case-console.po';
 import caseWatchlist from '../../pageobject/case/case-watchlist-blade.po';
 import editCase from '../../pageobject/case/edit-case.po';
@@ -831,10 +832,10 @@ describe('Case Watchlist', () => {
     });
 
     describe('[DRDMV-16061]: Verify that once user add the cases to watchlist from case console then they are still available in Case console and Agent could add them again without any error', async () => {
-        let caseDataForTest = caseData['caseWatchlist'];
-        caseDataForTest.Summary = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseDataForTest = cloneDeep (caseData['caseWatchlist']);
         let caseId: string[] = [];
         beforeAll(async () => {
+            caseDataForTest.Summary = [...Array(6)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             await apiHelper.apiLogin(qtaoStr);
             for (let i: number = 0; i < 3; i++) {
                 let response = await apiHelper.createCase(caseDataForTest);
@@ -844,6 +845,8 @@ describe('Case Watchlist', () => {
         it('[DRDMV-16061]: Verify that once user add the cases to watchlist from case console then they are still available in Case console and Agent could add them again without any error', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchRecord(caseDataForTest.Summary);
+            await browser.sleep(5000); // All the records to apper with same summary
+            await utilityGrid.clickRefreshIcon();
             //Adding the cases to watchlist
             for (let i: number = 0; i < 3; i++) {
                 await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
@@ -1001,11 +1004,11 @@ describe('Case Watchlist', () => {
     });
 
     describe('[DRDMV-16055]: Verify that user can edit the access from watchlist and it reflects(Assignment only to Assignment and Status', async () => {
-        let caseDataForTest = caseData['caseWatchlist'];
-        caseDataForTest.Summary = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseDataForTest = cloneDeep(caseData['caseWatchlist']);
         let caseId: string[] = [];
         let caseGuid: string[] = [];
         beforeAll(async () => {
+            caseDataForTest.Summary = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             await apiHelper.apiLogin(qtaoStr);
             for (let i: number = 0; i < 2; i++) {
                 let response = await apiHelper.createCase(caseDataForTest);

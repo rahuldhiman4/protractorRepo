@@ -183,13 +183,10 @@ describe('Knowledge Article Template', () => {
             await createKnowledgePage.selectKnowledgeSet('Policy');
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await createKnowledgePage.clickBackBtn();
-
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.switchToApplication("Knowledge Management");
-            await utilityGrid.clickRefreshIcon();
-            await utilityGrid.clearFilter();
+            await utilityGrid.searchRecord('Article Title KCS');
             expect(await utilityGrid.isGridRecordPresent('Article Title KCS')).toBeTruthy('Article is not present');
-            await utilityGrid.clickRefreshIcon();
             await utilityGrid.searchRecord('Article Title 619');
             expect(await utilityGrid.isGridRecordPresent('Article Title 619')).toBeTruthy('Article is not present');
             await navigationPage.signOut();
