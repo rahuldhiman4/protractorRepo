@@ -38,6 +38,7 @@ import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
+import utilGrid from '../../utils/util.grid';
 
 describe('Menu Item', () => {
     beforeAll(async () => {
@@ -80,7 +81,6 @@ describe('Menu Item', () => {
         let label = 'Legal' + randomStr;
         let label1 = 'legal' + randomStr;
         let label2 = 'leGAL' + randomStr;
-
         it('[DRDMV-16173]: Create Menu Item label and Source', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
@@ -93,7 +93,6 @@ describe('Menu Item', () => {
             await createMenuItems.selectAvailableOnUiToggleButton(true);
             await createMenuItems.clickOnSaveButton();
             await utilCommon.closePopUpMessage();
-
         });
         it('[DRDMV-16173]: Create Duplicate Menu Item Source and Label', async () => {
             await createMenuItems.clickOnMenuOptionLink();
@@ -119,10 +118,40 @@ describe('Menu Item', () => {
             await localizeValuePopPo.clickOnSaveButton();
             await createMenuItems.clickOnSaveButton();
             expect(await utilCommon.isPopUpMessagePresent('ERROR (222176): The Label already exists. Please select a different name.')).toBeTruthy();
-            await utilCommon.closePopUpMessage();
-
         });
-
+        it('[DRDMV-13113]: create same name record in same LOB', async () => {
+            //create same name record in same LOB
+            await navigationPage.signOut();
+            await loginPage.login('jbarnes');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            await createMenuItems.clickOnMenuOptionLink();
+            await createMenuItems.selectMenuNameDropDown('Label');
+            await createMenuItems.clickOnLocalizeLink();
+            await localizeValuePopPo.setLocalizeValue(label);
+            await localizeValuePopPo.clickOnSaveButton();
+            await createMenuItems.clickOnSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (222176): The Label already exists. Please select a different name.')).toBeTruthy("Error message absent");
+            await createMenuItems.clickOnCancelButton();
+            await utilCommon.clickOnWarningOk();
+        });
+        it('[DRDMV-13113]: create same name record in different LOB', async () => {
+            //create same name record in different LOB
+            await utilGrid.selectLineOfBusiness('Facilities');
+            await createMenuItems.clickOnMenuOptionLink();
+            await createMenuItems.selectMenuNameDropDown('Label');
+            await createMenuItems.clickOnLocalizeLink();
+            await localizeValuePopPo.setLocalizeValue(label);
+            await localizeValuePopPo.clickOnSaveButton();
+            await createMenuItems.clickOnSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
+            await utilGrid.selectLineOfBusiness('Human Resource');
+        });
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login("qkatawazi");
+        });
     });
 
     //kgaikwad

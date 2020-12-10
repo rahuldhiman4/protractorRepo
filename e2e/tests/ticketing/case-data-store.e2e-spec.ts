@@ -967,6 +967,45 @@ describe('Case Data Store', () => {
             expect(await dynamicFieldsPo.isDynamicFieldPresentInDynamicSection('LibNumberField')).toBeTruthy('field not present LibNumberField');
             await dynamicFieldsPo.clickCancelButton();
         });
+        it('[DRDMV-13113]: create same name record in same LOB', async () => {
+            //create same name record in same LOB
+            await navigationPage.signOut();
+            await loginPage.login('jbarnes');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', 'Field Management Console - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            await dynamicFieldLibraryConfigConsolePo.clickAddDynamicFieldButton();
+            await createDynamicFieldLibraryConfigPo.setFieldName('LibBooleanField');
+            await createDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
+            await localizeValuePopPo.setLocalizeValue('LibBooleanField');
+            await localizeValuePopPo.clickOnSaveButton();
+            await createDynamicFieldLibraryConfigPo.setStatusValue('Active');
+            await createDynamicFieldLibraryConfigPo.setInformationSourceValueType('Agent');
+            await createDynamicFieldLibraryConfigPo.setFieldValueType('BOOLEAN');
+            await createDynamicFieldLibraryConfigPo.clickOnSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (12423): Dynamic field with same name and line of business already exists.')).toBeTruthy("Error message absent");
+            await createDynamicFieldLibraryConfigPo.clickCancelButton();
+            await utilCommon.clickOnWarningOk();
+        });
+        it('[DRDMV-13113]: create same name record in different LOB', async () => {
+            //create same name record in different LOB
+            await utilGrid.selectLineOfBusiness('Facilities');
+            await dynamicFieldLibraryConfigConsolePo.clickAddDynamicFieldButton();
+            await createDynamicFieldLibraryConfigPo.setFieldName('LibBooleanField');
+            await createDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
+            await localizeValuePopPo.setLocalizeValue('LibBooleanField');
+            await localizeValuePopPo.clickOnSaveButton();
+            await createDynamicFieldLibraryConfigPo.setStatusValue('Active');
+            await createDynamicFieldLibraryConfigPo.setInformationSourceValueType('Agent');
+            await createDynamicFieldLibraryConfigPo.setFieldValueType('BOOLEAN');
+            await createDynamicFieldLibraryConfigPo.clickOnSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
+            await utilGrid.selectLineOfBusiness('Human Resource');
+        });
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login("qkatawazi");
+        });
     });
 
     //ptidke
