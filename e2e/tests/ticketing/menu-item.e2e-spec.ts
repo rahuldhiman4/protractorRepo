@@ -119,7 +119,7 @@ describe('Menu Item', () => {
             await createMenuItems.clickOnSaveButton();
             expect(await utilCommon.isPopUpMessagePresent('ERROR (222176): The Label already exists. Please select a different name.')).toBeTruthy();
         });
-        it('[DRDMV-13113]: create same name record in same LOB', async () => {
+        it('[DRDMV-16173]: create same name record in same LOB', async () => {
             //create same name record in same LOB
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
@@ -136,7 +136,7 @@ describe('Menu Item', () => {
             await createMenuItems.clickOnCancelButton();
             await utilCommon.clickOnWarningOk();
         });
-        it('[DRDMV-13113]: create same name record in different LOB', async () => {
+        it('[DRDMV-16173]: create same name record in different LOB', async () => {
             //create same name record in different LOB
             await utilGrid.selectLineOfBusiness('Facilities');
             await createMenuItems.clickOnMenuOptionLink();
