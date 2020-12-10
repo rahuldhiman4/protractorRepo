@@ -2703,7 +2703,8 @@ describe('Notes template', () => {
             expect(await activityTabPo.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
             expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
             expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
-            await viewTaskPo.clickOnViewCase();
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
             await viewCasePage.openTaskCard(3);
             await manageTask.clickTaskLink(automatedtemplateData.templateSummary);
             await activityTabPo.clickOnRefreshButton();
@@ -2715,7 +2716,8 @@ describe('Notes template', () => {
             expect(await activityTabPo.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
             expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
             expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
-            await viewTaskPo.clickOnViewCase();
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
             await viewCasePage.openTaskCard(2);
             await manageTask.clickTaskLink(externaltemplateData.templateSummary);
             await activityTabPo.clickOnRefreshButton();
@@ -2743,7 +2745,8 @@ describe('Notes template', () => {
             expect(await activityTabPo.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
             expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
             expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
-            await viewTaskPo.clickOnViewCase();
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
             await viewCasePage.openTaskCard(3);
             await manageTask.clickTaskLink(automatedtemplateData.templateSummary);
             await activityTabPo.clickOnRefreshButton();
@@ -2755,7 +2758,8 @@ describe('Notes template', () => {
             expect(await activityTabPo.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
             expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
             expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
-            await viewTaskPo.clickOnViewCase();
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
             await viewCasePage.openTaskCard(2);
             await manageTask.clickTaskLink(externaltemplateData.templateSummary);
             await activityTabPo.clickOnRefreshButton();
