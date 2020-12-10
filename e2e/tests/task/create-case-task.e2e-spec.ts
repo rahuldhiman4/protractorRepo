@@ -210,7 +210,7 @@ describe('Create Case Task', () => {
             //validate Automation Template
             await viewTask.clickOnViewCase();
             await viewCasePage.clickAddTaskButton();
-            await manageTaskBladePo.clickTaskLink(autmationTaskSummaryWithRequiredData);          
+            await manageTaskBladePo.clickTaskLink(autmationTaskSummaryWithRequiredData);
             expect(await viewTask.getTaskTypeValue()).toBe('Automated');
             expect(await viewTask.getProcessNameValue()).toBe(`com.petramco.human-resource:Get Request Status Data1 ${randomStr}`);
             expect(await viewTask.getDescriptionValue()).toBe('-', "getDescriptionValue");
@@ -423,8 +423,8 @@ describe('Create Case Task', () => {
     //ankagraw
     describe('[DRDMV-12558]: Task Template submitter from different company of owner group can edit the template', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let TaskTemplate = randomStr+ 'Manual task';
-        let TaskSummary = randomStr+'Summary' ;
+        let TaskTemplate = randomStr + 'Manual task';
+        let TaskSummary = randomStr + 'Summary';
         let userData, description = 'description' + randomStr;
 
         beforeAll(async () => {
@@ -978,11 +978,11 @@ describe('Create Case Task', () => {
 
     //ankagraw
     describe('[DRDMV-7145]: [Automatic task] - Task Activation based on its sequence no.', async () => {
-        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let templateData1, templateData2, templateData3, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
-            let templateData1 = {
-                "templateName": `manualTaskTemplate1 ${randomStr}`,
-                "templateSummary": `manualTaskTemplateSummary1 ${randomStr}`,
+            templateData1 = {
+                "templateName": 'manualTaskTemplate1' + randomStr,
+                "templateSummary": 'manualTaskTemplateSummary1' + randomStr,
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
@@ -990,9 +990,9 @@ describe('Create Case Task', () => {
                 "ownerGroup": "US Support 1"
             }
 
-            let templateData2 = {
-                "templateName": `manualTaskTemplate2 ${randomStr}`,
-                "templateSummary": `manualTaskTemplateSummary2 ${randomStr}`,
+            templateData2 = {
+                "templateName": 'manualTaskTemplate2' + randomStr,
+                "templateSummary": 'manualTaskTemplateSummary2' + randomStr,
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
@@ -1000,9 +1000,9 @@ describe('Create Case Task', () => {
                 "ownerGroup": "US Support 1"
             }
 
-            let templateData3 = {
-                "templateName": `manualTaskTemplate3 ${randomStr}`,
-                "templateSummary": `manualTaskTemplateSummary3 ${randomStr}`,
+            templateData3 = {
+                "templateName": 'manualTaskTemplate3' + randomStr,
+                "templateSummary": 'manualTaskTemplateSummary3' + randomStr,
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
@@ -1023,23 +1023,23 @@ describe('Create Case Task', () => {
             await previewCasePo.clickGoToCaseButton();
             await utilityCommon.closePopUpMessage();
             await viewCasePage.clickAddTaskButton();
-            await manageTask.addTaskFromTaskTemplate(`manualTaskTemplate1 ${randomStr}`);
-            await manageTask.addTaskFromTaskTemplate(`manualTaskTemplate2 ${randomStr}`);
-            await manageTask.addTaskFromTaskTemplate(`manualTaskTemplate3 ${randomStr}`);
+            await manageTask.addTaskFromTaskTemplate(templateData1.templateName);
+            await manageTask.addTaskFromTaskTemplate(templateData2.templateName);
+            await manageTask.addTaskFromTaskTemplate(templateData3.templateName);
             await manageTask.clickCloseButton();
             await viewCasePage.clickOnRefreshTaskList();
         });
         it('[DRDMV-7145]: Verify primary status of task', async () => {
             await viewCasePage.clickAddTaskButton();
-            await manageTask.clickTaskLink(`manualTaskTemplateSummary1 ${randomStr}`);   
+            await manageTask.clickTaskLink(templateData1.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
             await viewTask.clickOnViewCase();
             await viewCasePage.clickAddTaskButton();
-            await manageTask.clickTaskLink(`manualTaskTemplateSummary2 ${randomStr}`);
+            await manageTask.clickTaskLink(templateData2.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
             await viewTask.clickOnViewCase();
             await viewCasePage.clickAddTaskButton();
-            await manageTask.clickTaskLink(`manualTaskTemplateSummary3 ${randomStr}`);
+            await manageTask.clickTaskLink(templateData3.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
             await viewTask.clickOnViewCase();
         });
@@ -1048,7 +1048,7 @@ describe('Create Case Task', () => {
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
             await viewCasePage.clickAddTaskButton();
-            await manageTask.clickTaskLink(`manualTaskTemplateSummary1 ${randomStr}`);
+            await manageTask.clickTaskLink(templateData1.templateSummary);
             await viewTask.clickOnChangeStatus();
             expect(await viewTask.getTaskStatusValue()).toBe("Assigned");
             await viewTask.changeTaskStatus('Completed');
@@ -1059,12 +1059,15 @@ describe('Create Case Task', () => {
         });
         it('[DRDMV-7145]: verify second and third status of task', async () => {
             await viewCasePage.clickAddTaskButton();
-            await manageTask.clickTaskLink(`manualTaskTemplateSummary2 ${randomStr}`);
+            await manageTask.clickTaskLink(templateData2.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Assigned");
             await viewTask.clickOnViewCase();
             await viewCasePage.clickAddTaskButton();
-            await manageTask.clickTaskLink(`manualTaskTemplateSummary3 ${randomStr}`);
+            await manageTask.clickTaskLink(templateData3.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
         });
     });
 
