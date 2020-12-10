@@ -129,7 +129,7 @@ class AutomatedStatusTransitionConfigCreatePage {
         await utilCommon.isDrpDownvalueDisplayed(this.selectors.flowsetGuid, value);
     }
 
-    async clickOCancelBtn(): Promise<void> {
+    async clickCancelBtn(): Promise<void> {
         await $(this.selectors.cancelButton).click();
     }
 
