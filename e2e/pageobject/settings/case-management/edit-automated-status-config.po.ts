@@ -18,7 +18,8 @@ class AutomatedStatusTransitionConfigEditPage {
         categoryTier2: '[rx-view-component-id="b42ab1ca-2403-4c6e-8eae-86755b076207"] .ui-select-toggle',
         categoryTier3: '[rx-view-component-id="351b5992-11e0-4968-9432-266121ac614d"] .ui-select-toggle',
         categoryTier4: '[rx-view-component-id="0c98faa4-55ed-49c3-9162-d48f92ddff5d"] .ui-select-toggle',
-        enableToggleGuid: '2309d963-493b-41b2-8ace-89a9d64281ca'
+        enableToggleGuid: '2309d963-493b-41b2-8ace-89a9d64281ca',
+        lineofbusinessValue: '[rx-view-component-id="f49ae3e3-d357-4f09-9123-58bcaf46b808"] input.d-textfield__input',
     }
 
     async isAutomatedStatusTransitionNameEnabled(): Promise<boolean> {
@@ -85,6 +86,11 @@ class AutomatedStatusTransitionConfigEditPage {
 
     async selectEnableToggle(enableStatus: boolean): Promise<void> {
         await utilCommon.selectToggleButton(this.selectors.enableToggleGuid, enableStatus);
+    }
+
+    async updateConfigurationName(configName:string): Promise<void> {
+        await $(this.selectors.editName).clear();
+        await $(this.selectors.editName).sendKeys(configName);
     }
 }
 

@@ -292,6 +292,10 @@ class CreateCaseTemplate {
         }
         return await utilCommon.isValuePresentInDropDown(guid, value);
     }
+
+    async flowsetOptionsPresent(list: string[]): Promise<boolean> {
+        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.flowset, list);
+    }
 }
 
 export default new CreateCaseTemplate();
