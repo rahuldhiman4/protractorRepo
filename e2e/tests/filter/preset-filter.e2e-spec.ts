@@ -271,7 +271,7 @@ describe('Preset Filter Funcational Verification', () => {
         });
 
         it('[DRDMV-23485]: Add adhoc task', async () => {
-            await utilityGrid.searchAndOpenHyperlink(newCase.displayId);
+            await caseConsolePo.clickFirstLinkInCaseSearchGrid();
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickAddAdhocTaskButton();
             await createAdhocTaskPo.setSummary(`Summary DRDMV23485${randomStr}`);

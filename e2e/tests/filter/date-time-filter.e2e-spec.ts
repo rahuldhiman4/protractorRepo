@@ -203,7 +203,7 @@ describe('Date and Time Preset Filter', () => {
             await dateTimeSelectorPo.clickEndDateTab();
             await dateTimeSelectorPo.selectPreviousMonthUsingAngularIcon("Jan");
             await dateTimeSelectorPo.selectPreviousYearUsingAngularIcon(2020);
-            await dateTimeSelectorPo.selectDateOnCalender(19);
+            await dateTimeSelectorPo.selectDateOnCalender(18);
             await dateTimeSelectorPo.selectTimeToggle();
             expect(await dateTimeSelectorPo.getActiveTimeUnit()).toBe('HH');
             await dateTimeSelectorPo.setHour('07');

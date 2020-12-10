@@ -532,7 +532,9 @@ describe('Knowledge Console Preset Filter', () => {
         let dateForArticle3 = await utilityCommon.getOldDate(93);
         let dateEpochValueArticle3 = await dbConnectObj.dateEpochConverter(dateForArticle3);
         await dbConnectVar.query(`UPDATE t1332 SET c3 = '${dateEpochValueArticle3}' WHERE c302300507 = '${displayId3}'`);
-
+        await navigationPage.gotoCaseConsole();
+        await navigationPage.switchToApplication('Knowledge Management');
+        await utilityGrid.clearFilter();
         await utilityGrid.applyPresetFilter('All Articles In Last 3 months');
         let allTaskFilter: string[] = ['All Articles In Last 3 months'];
         expect(await utilityGrid.isAppliedFilterMatches(allTaskFilter)).toBeTruthy();
