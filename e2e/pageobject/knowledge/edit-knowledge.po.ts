@@ -56,6 +56,7 @@ class EditKnowledgePage {
 
     async setKnowledgeStatus(newStatus: string): Promise<void> {
         await $(this.selectors.statusChange).click();
+        await browser.sleep(500); // "may" required to let the status blade appear
         await utilityCommon.selectDropDown(this.selectors.statusChangeDrpDwnGuid, newStatus);
         await $(this.selectors.statusSaveBtn).click();
     }

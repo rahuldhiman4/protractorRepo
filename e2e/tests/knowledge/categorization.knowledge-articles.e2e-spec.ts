@@ -286,7 +286,6 @@ describe('Knowledge Articles - Categorization Tests', () => {
             expect(categoryTier1Val).toEqual(emptyStr);
             expect(categoryTier2Val).toEqual(emptyStr);
             expect(categoryTier3Val).toEqual(emptyStr);
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
         });
 
         it('[DRDMV-18999,DRDMV-19000,DRDMV-19002]:Verify the search functionality of knowledge articles console for category tiers 1,2 and 3', async () => {
@@ -317,7 +316,6 @@ describe('Knowledge Articles - Categorization Tests', () => {
             expect(categoryTier1Val).toEqual(emptyStr);
             expect(categoryTier2Val).toEqual(emptyStr);
             expect(categoryTier3Val).toEqual(emptyStr);
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
         });
         it('[DRDMV-18999,DRDMV-19000,DRDMV-19002]:Verify the search functionality of knowledge articles console for category tiers 1,2 and 3', async () => {
             //Login with knowledge Publisher
@@ -347,7 +345,6 @@ describe('Knowledge Articles - Categorization Tests', () => {
             expect(categoryTier1Val).toEqual(emptyStr);
             expect(categoryTier2Val).toEqual(emptyStr);
             expect(categoryTier3Val).toEqual(emptyStr);
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
         });
 
         it('[DRDMV-18999,DRDMV-19000,DRDMV-19002]:Verify the search functionality of knowledge articles console for category tiers 1,2 and 3', async () => {
@@ -378,11 +375,8 @@ describe('Knowledge Articles - Categorization Tests', () => {
             expect(categoryTier1Val).toEqual(emptyStr);
             expect(categoryTier2Val).toEqual(emptyStr);
             expect(categoryTier3Val).toEqual(emptyStr);
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
         });
-
         afterAll(async () => {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });

@@ -410,7 +410,7 @@ describe("Case Read Access", () => {
 
     describe('[DRDMV-2004]: [Read Access] Applying mapping with flowset in case of best match', async () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let readAccessMappingData1, readAccessMappingData2, readAccessMappingData3, caseTemplateData, caseTemplateData1;
+        let readAccessMappingData1, readAccessMappingData2, readAccessMappingData3, caseTemplateData2, caseTemplateData1;
         beforeAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
             readAccessMappingData1 = {
@@ -419,9 +419,9 @@ describe("Case Read Access", () => {
                 "businessUnit": 'HR Support',
                 "supportGroup": 'Compensation and Benefits',
                 "company": 'Petramco',
-                "categoryTier1": "Employee Relations",
-                "categoryTier2": "Compensation",
-                "categoryTier3": "Bonus",
+                "category1": "Employee Relations",
+                "category2": "Compensation",
+                "category3": "Bonus",
             }
             readAccessMappingData2 = {
                 "configName": randomStr + '2ReadAccessMappingName',
@@ -429,8 +429,8 @@ describe("Case Read Access", () => {
                 "businessUnit": 'Canada Support',
                 "supportGroup": 'CA Support 2',
                 "company": 'Petramco',
-                "categoryTier1": "Employee Relations",
-                "categoryTier2": "Compensation",
+                "category1": "Employee Relations",
+                "category2": "Compensation",
             }
             readAccessMappingData3 = {
                 "configName": randomStr + '3ReadAccessMappingName',
@@ -439,7 +439,7 @@ describe("Case Read Access", () => {
                 "supportGroup": 'LA Support 1',
                 "company": 'Petramco',
             }
-            caseTemplateData = {
+            caseTemplateData2 = {
                 "templateName": `${randomStr}1CaseTemplate`,
                 "templateStatus": "Draft",
                 "templateSummary": `${randomStr}Summary`,
@@ -455,7 +455,7 @@ describe("Case Read Access", () => {
                 "ownerBU": "United States Support",
                 "ownerGroup": "US Support 3"
             }
-            caseTemplateData1 = {
+            caseTemplateData2 = {
                 "templateName": `${randomStr}2CaseTemplate`,
                 "templateStatus": "Draft",
                 "templateSummary": `${randomStr}Summary`,
@@ -468,8 +468,8 @@ describe("Case Read Access", () => {
                 "ownerBU": "United States Support",
                 "ownerGroup": "US Support 3"
             }
-            await apiHelper.createCaseTemplate(caseTemplateData);
-            await apiHelper.createCaseTemplate(caseTemplateData1);
+            await apiHelper.createCaseTemplate(caseTemplateData2);
+            await apiHelper.createCaseTemplate(caseTemplateData2);
             await apiHelper.createReadAccessMapping(readAccessMappingData1);
             await apiHelper.createReadAccessMapping(readAccessMappingData2);
             await apiHelper.createReadAccessMapping(readAccessMappingData3);
@@ -487,7 +487,7 @@ describe("Case Read Access", () => {
             await editReadAccess.clickOnSave();
             await navigationPo.gotoSettingsPage();
             await navigationPo.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
-            await utilGrid.searchAndOpenHyperlink(caseTemplateData.templateName);
+            await utilGrid.searchAndOpenHyperlink(caseTemplateData2.templateName);
             await viewCaseTemplate.clickOnEditCaseTemplateButton();
             await editCasetemplatePo.changeFlowsetValue(flowsetGlobalFieldsData.flowsetName);
             await editCasetemplatePo.clickSaveCaseTemplate();
@@ -497,7 +497,7 @@ describe("Case Read Access", () => {
             await editCaseTemplate.clickOnSaveCaseTemplateMetadata();
             await utilCommon.closePopUpMessage();
             await utilCommon.clickOnBackArrow();
-            await utilGrid.searchAndOpenHyperlink(caseTemplateData1.templateName);
+            await utilGrid.searchAndOpenHyperlink(caseTemplateData2.templateName);
             await viewCaseTemplate.clickOnEditCaseTemplateButton();
             await editCasetemplatePo.changeFlowsetValue(flowsetGlobalFieldsData.flowsetName);
             await editCasetemplatePo.clickSaveCaseTemplate();
@@ -514,16 +514,16 @@ describe("Case Read Access", () => {
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('set summary');
             await createCasePage.clickSelectCaseTemplateButton();
-            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateData.templateName);
+            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateData2.templateName);
             await createCasePage.clickSaveCaseButton();
             await casePreviewPo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Case Access');
-            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('LA Support 1', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Compensation and Benefits', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
             await navigationPo.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('set summary');
             await createCasePage.clickSelectCaseTemplateButton();
-            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateData1.templateName);
+            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateData2.templateName);
             await createCasePage.clickSaveCaseButton();
             await casePreviewPo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Case Access');
