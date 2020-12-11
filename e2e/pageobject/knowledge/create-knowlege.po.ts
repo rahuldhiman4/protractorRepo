@@ -1,4 +1,4 @@
-import { $, $$, by, element, protractor, ProtractorExpectedConditions, browser } from "protractor";
+import { $, $$, by, element, ElementFinder, protractor, ProtractorExpectedConditions, browser } from "protractor";
 import utilityCommon from '../../utils/utility.common';
 
 class CreateKnowledgePage {
@@ -34,6 +34,7 @@ class CreateKnowledgePage {
         templatePreview: '.create-ka-template__preview',
         backBtn: '[rx-view-component-id="75d55491-37d4-40f2-83ef-35019670e355"] button',
         imageIcon: '[rx-view-component-id="7591fcfd-3d96-4155-a450-33c6e591dc2c"] .cke_toolgroup .cke_button__image',
+        lineOfBusiness: '[rx-view-component-id="9bcf3768-1f60-4b44-a300-3bad90b22651"] button[btn-type="tertiary"]'
     }
 
     async clickChangeTemplateButton(): Promise<void> {
@@ -90,7 +91,7 @@ class CreateKnowledgePage {
         }
     }
 
-    async   clickOnUseSelectedTemplateButton(): Promise<void> {
+    async clickOnUseSelectedTemplateButton(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable(element(by.buttonText('Use selected Template'))));
         await element(by.buttonText('Use selected Template')).click();
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.docEditorSection)));
@@ -226,14 +227,14 @@ class CreateKnowledgePage {
     }
 
     async isTemplateDescriptionPresent(description: string): Promise<boolean> {
-        return await element(by.cssContainingText('.template-description', description)).isPresent().then( async (result) => {
-            if(result) return await element(by.cssContainingText('.template-description', description)).isDisplayed();
+        return await element(by.cssContainingText('.template-description', description)).isPresent().then(async (result) => {
+            if (result) return await element(by.cssContainingText('.template-description', description)).isDisplayed();
         });
     }
 
     async isSectionTitleVisibleOnPreview(title: string): Promise<boolean> {
-        return await element(by.cssContainingText('.section-title', title)).isPresent().then( async (result) => {
-            if(result) return await element(by.cssContainingText('.section-title', title)).isDisplayed();
+        return await element(by.cssContainingText('.section-title', title)).isPresent().then(async (result) => {
+            if (result) return await element(by.cssContainingText('.section-title', title)).isDisplayed();
         });
     }
 
@@ -248,6 +249,44 @@ class CreateKnowledgePage {
     async clickOnImageIcon(): Promise<void> {
         await $(this.selectors.imageIcon).click();
     }
+    async getValueOfLineOFBusiness(): Promise<string> {
+        return (await $(this.selectors.lineOfBusiness).getText()).trim();
+    }
+
+    async isLineOfBusinessDisable(): Promise<boolean> {
+        return await $(this.selectors.lineOfBusiness).isDisplayed();
+    }
+    async isValuePresentInDropdown(DropDownName: string, value: string): Promise<boolean> {
+        let guid;
+        switch (DropDownName) {
+            case "Knowledge Set": {
+                guid = this.selectors.knowledgeSet;
+                break;
+            }
+            case "Category Tier 1": {
+                guid = this.selectors.categoryTier1Guid;
+                break;
+            }
+            case "Category Tier 2": {
+                guid = this.selectors.categoryTier2Guid;
+                break;
+            }
+            case "Category Tier 3": {
+                guid = this.selectors.categoryTier3Guid;
+                break;
+            }
+            case "Category Tier 4": {
+                guid = this.selectors.categoryTier4Guid;
+                break;
+            }
+            default: {
+                console.log('Drop Down name does not match');
+                break;
+            }
+        }
+        return await utilityCommon.isValuePresentInDropDown(guid, value);
+    }
+
 }
 
 export default new CreateKnowledgePage();

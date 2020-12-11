@@ -1,4 +1,5 @@
-import { $, $$, by, element, Key, protractor, ProtractorExpectedConditions, browser } from "protractor";
+import utilityCommon from '../../utils/utility.common';
+import { $, $$, by, element,ElementFinder, Key, protractor, ProtractorExpectedConditions, browser } from "protractor";
 
 class ChangeAssignmentBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -152,6 +153,10 @@ class ChangeAssignmentBlade {
         return arr.length === copy.length && arr.every(
             (value, index) => (value === copy[index])
         );
+    }
+    async isValuePresentInDropdown(dropDownLabel: string, dropDownValue: string): Promise<boolean> {
+        let elementDropdown:ElementFinder =  await element(by.cssContainingText('.form-control-label', dropDownLabel));
+        return await utilityCommon.isValuePresentInDropDown(elementDropdown, dropDownValue);
     }
 }
 
