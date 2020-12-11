@@ -140,17 +140,19 @@ class CKEditor {
     async clickOnLeftAlignIcon(guidId?: string): Promise<void> {
         if (guidId) await $(`[rx-view-component-id="${guidId}"] ` + this.selectors.leftAlignIcon).click();
         else await $(this.selectors.leftAlignIcon).click();
+        await browser.sleep(500); // Wait until text/cursor gets aligned
     }
 
     async clickOnRightAlignIcon(guidId?: string): Promise<void> {
         if (guidId) await $(`[rx-view-component-id="${guidId}"] ` + this.selectors.rightAlignIcon).click();
         else await $(this.selectors.rightAlignIcon).click();
+        await browser.sleep(500); // Wait until text/cursor gets aligned
     }
 
     async clickOnCenterAlignIcon(guidId?: string): Promise<void> {
         if (guidId) await $(`[rx-view-component-id="${guidId}"] ` + this.selectors.centerAlignIcon).click();
         else await $(this.selectors.centerAlignIcon).click();
-        await browser.sleep(1000); // To Wait Until Text/Cursor Gets With Center Allign.
+        await browser.sleep(500); // Wait until text/cursor gets aligned
     }
 
     async selectColor(colorValue: string, guidId?: string): Promise<void> {

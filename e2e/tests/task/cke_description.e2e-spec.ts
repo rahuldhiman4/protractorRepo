@@ -397,7 +397,7 @@ describe('CKE Description', () => {
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickMaximizeMinimizeIcon();
         });
-        it('[DDRDMV-22091,DRDMV-22092,DRDMV-22093,DRDMV-22103] Upload image with URL and local , Style text, Insert Link and Table', async () => {
+        it('[DRDMV-22091,DRDMV-22092,DRDMV-22093,DRDMV-22103] Upload image with URL and local , Style text, Insert Link and Table', async () => {
             //upload image with URL
             await ckeditorOpsPo.clickOnImageIcon();
             await ckeditorOpsPo.imageUploadWithURL(uploadURL, imageUrlFieldIndex, imageWidthFieldIndex, '200');
@@ -518,7 +518,7 @@ describe('CKE Description', () => {
             await manageTaskBladePo.clickTaskGridSaveButton();
             await manageTaskBladePo.clickTaskLink('taskTemplateSummaryDRDMV22091' + randomString);
         });
-        it('[[DRDMV-22091,DRDMV-22092,DRDMV-22093,DRDMV-22103] Verify task description field on Task', async () => {
+        it('[DRDMV-22091,DRDMV-22092,DRDMV-22093,DRDMV-22103] Verify task description field on Task', async () => {
             await viewTaskPo.clickShowMoreTaskDescription();
             expect(await ckeditorValidationPo.isLinkDisplayedInCKE('Google')).toBeTruthy();
             expect(await ckeditorValidationPo.isBoldTextDisplayed(boldText)).toBeTruthy();

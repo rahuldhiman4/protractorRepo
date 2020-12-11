@@ -410,7 +410,7 @@ describe("Case Read Access", () => {
 
     describe('[DRDMV-2004]: [Read Access] Applying mapping with flowset in case of best match', async () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let readAccessMappingData1, readAccessMappingData2, readAccessMappingData3, caseTemplateData2, caseTemplateData1;
+        let readAccessMappingData1, readAccessMappingData2, readAccessMappingData3, caseTemplateData1, caseTemplateData2;
         beforeAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
             readAccessMappingData1 = {
@@ -439,7 +439,7 @@ describe("Case Read Access", () => {
                 "supportGroup": 'LA Support 1',
                 "company": 'Petramco',
             }
-            caseTemplateData2 = {
+            caseTemplateData1 = {
                 "templateName": `${randomStr}1CaseTemplate`,
                 "templateStatus": "Draft",
                 "templateSummary": `${randomStr}Summary`,
@@ -468,7 +468,7 @@ describe("Case Read Access", () => {
                 "ownerBU": "United States Support",
                 "ownerGroup": "US Support 3"
             }
-            await apiHelper.createCaseTemplate(caseTemplateData2);
+            await apiHelper.createCaseTemplate(caseTemplateData1);
             await apiHelper.createCaseTemplate(caseTemplateData2);
             await apiHelper.createReadAccessMapping(readAccessMappingData1);
             await apiHelper.createReadAccessMapping(readAccessMappingData2);
@@ -487,7 +487,7 @@ describe("Case Read Access", () => {
             await editReadAccess.clickOnSave();
             await navigationPo.gotoSettingsPage();
             await navigationPo.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
-            await utilGrid.searchAndOpenHyperlink(caseTemplateData2.templateName);
+            await utilGrid.searchAndOpenHyperlink(caseTemplateData1.templateName);
             await viewCaseTemplate.clickOnEditCaseTemplateButton();
             await editCasetemplatePo.changeFlowsetValue(flowsetGlobalFieldsData.flowsetName);
             await editCasetemplatePo.clickSaveCaseTemplate();
@@ -514,7 +514,7 @@ describe("Case Read Access", () => {
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('set summary');
             await createCasePage.clickSelectCaseTemplateButton();
-            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateData2.templateName);
+            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateData1.templateName);
             await createCasePage.clickSaveCaseButton();
             await casePreviewPo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Case Access');
