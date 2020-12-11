@@ -161,7 +161,6 @@ describe("Task Approval Tests", () => {
             await loginPage.login('qliu');
             await navigationPage.switchToJSApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(autoTaskTemplateData.templateSummary, 'Approve');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await navigationPage.gotoTaskConsole();
@@ -198,7 +197,6 @@ describe("Task Approval Tests", () => {
             await loginPage.login('qkatawazi');
             await navigationPage.switchToJSApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(autoTaskTemplateData.templateSummary, 'Approve');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await navigationPage.gotoTaskConsole();
@@ -242,7 +240,6 @@ describe("Task Approval Tests", () => {
             await loginPage.login('qliu');
             await navigationPage.switchToJSApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(autoTaskTemplateData.templateSummary, 'Reject');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await navigationPage.gotoTaskConsole();
@@ -393,7 +390,6 @@ describe("Task Approval Tests", () => {
             await loginPage.login('qliu');
             await navigationPage.switchToJSApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(autoTaskTemplateData.templateSummary, 'Approve');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await navigationPage.gotoTaskConsole();
@@ -436,7 +432,6 @@ describe("Task Approval Tests", () => {
             await loginPage.login('qliu');
             await navigationPage.switchToJSApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(autoTaskTemplateData.templateSummary, 'Reject');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await navigationPage.gotoTaskConsole();

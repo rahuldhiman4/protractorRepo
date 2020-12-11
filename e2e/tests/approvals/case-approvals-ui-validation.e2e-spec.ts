@@ -166,7 +166,6 @@ describe("Case Approval UI Validations", () => {
             await loginPage.login('qliu');
             await navigationPage.switchToJSApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole('Automated One must Approval Case', 'Approve');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await utilityGrid.searchAndOpenHyperlink(caseId);
@@ -205,7 +204,6 @@ describe("Case Approval UI Validations", () => {
             await loginPage.login('qliu');
             await navigationPage.switchToJSApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole('Automated One must Approval Case', 'Reject');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await utilityGrid.searchAndOpenHyperlink(caseId);
@@ -377,7 +375,6 @@ describe("Case Approval UI Validations", () => {
             await loginPage.login('qliu');
             await navigationPage.switchToJSApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(caseSummary1, 'Approve');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await utilityGrid.searchAndOpenHyperlink(caseId);
@@ -412,7 +409,6 @@ describe("Case Approval UI Validations", () => {
             await loginPage.login('qkatawazi');
             await navigationPage.switchToJSApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(caseSummary1, 'Approve');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await utilityGrid.searchAndOpenHyperlink(caseId);
@@ -446,7 +442,6 @@ describe("Case Approval UI Validations", () => {
             await loginPage.login('qliu');
             await navigationPage.switchToJSApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(caseSummary2, 'Reject');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await utilityGrid.searchAndOpenHyperlink(caseId);
@@ -604,7 +599,6 @@ describe("Case Approval UI Validations", () => {
             await loginPage.login('elizabeth');
             await navigationPage.switchToJSApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(caseSummary, 'Approve');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await utilityGrid.searchAndOpenHyperlink(caseId);

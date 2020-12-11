@@ -509,7 +509,6 @@ describe("Create Case Assignment Mapping", () => {
             expect(viewTaskTemplate.getAssigneeDepartmentValue()).toBe(departmentData.orgName);
             expect(viewTaskTemplate.getBuisnessunitValue()).toBe(businessData.orgName);
             expect(viewTaskTemplate.getDepartmentValue()).toBe(departmentData.orgName);
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();

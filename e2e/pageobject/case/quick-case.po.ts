@@ -125,7 +125,7 @@ class QuickCasePage {
     }
 
     async clickArrowFirstRecommendedCaseTemplate(): Promise<void> {
-        await browser.sleep(2000); // hardwait to build case template hyperlink 
+        await browser.sleep(2000); // hardwait to build case template hyperlink
         await $(this.selectors.recommendedCaseTemplateGuid).$$('.flex-column bwf-search-result-fields div span').first().click();
     }
 
@@ -142,7 +142,9 @@ class QuickCasePage {
             await $(this.selectors.smartSearchTextBox).sendKeys(template);
             success = await browser.element(by.cssContainingText(this.selectors.caseTemplate, templateName)).isPresent().then(async (result) => {
                 if (result) {
+                    browser.sleep(500); // Wait to populate case template option
                     await browser.element(by.cssContainingText(this.selectors.caseTemplate, templateName)).click();
+                    browser.sleep(500); // Wait to populate recommended section
                     return true;
                 } else false;
             });
