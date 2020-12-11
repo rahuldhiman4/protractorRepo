@@ -19,6 +19,7 @@ class EditKnowledgePage {
         reviewPendingBtn: '[rx-view-component-id="f0cf7f67-da22-4149-a54d-ec3b95fe05e6"] button',
         editLinkKnowledgeMetadata: '[rx-view-component-id="56cc9627-6ef9-46f8-9b76-728349193ed2"] .float-right button',
         saveBtnEditMetadata: '[rx-view-component-id="15dcacfb-8cb2-49b7-a5db-fe0e16b311dc"] button',
+        cancelBtnEditMetadata: '[rx-view-component-id="ac1bd253-5d63-4175-b8a1-56293d1ef4d9"] button',
         knowledgeMetadataSection: '[rx-view-component-id="56cc9627-6ef9-46f8-9b76-728349193ed2"] label',
         saveButtonONKA: '[rx-view-component-id="813f61fe-28db-4d22-bfa5-4055e8a583fc"] button',
         editRegionGuid: 'd5c6cfef-2d53-48df-a03a-1a3e8381eef5',
@@ -111,6 +112,10 @@ class EditKnowledgePage {
         await $(this.selectors.saveBtnEditMetadata).click();
     }
 
+    async cancelKnowledgeMedataDataChanges(): Promise<void> {
+        await $(this.selectors.cancelBtnEditMetadata).click();
+    }
+
     async getKnowledgeMetaDataValue(fldName: string): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.knowledgeMetadataSection)));
         let fldsCount = await $$(this.selectors.knowledgeMetadataSection).count();
@@ -199,6 +204,9 @@ class EditKnowledgePage {
 
     async getCategoryTier1SelectedValue(): Promise<string> {
         return await utilityCommon.getSelectedFieldValue('254ef6b1-74fe-47ae-ab5f-701acbcb1fd5');
+    }
+    async getLineOfBusinessValue(): Promise<string> {
+        return await utilityCommon.getSelectedFieldValue('0cfb311c-db00-4b54-93dd-6c03e301e3ab');
     }
 
     async getRegionSelectedValue(fieldName: string): Promise<string> {
@@ -369,6 +377,29 @@ class EditKnowledgePage {
     async removeRegionValue(): Promise<void> {
         await utilityCommon.clearDropDown('6c3548bc-bd52-4da6-b365-f546ca7bd744', 'Clear');
     }
+    async isValuePresentInDropdown(DropDownName: string, value: string): Promise<boolean> {
+        let guid;
+        switch (DropDownName) {
+            case "Category Tier 1": {
+                guid = this.selectors.categoryTier1Guid;
+                break;
+            }
+            case "Category Tier 2": {
+                guid = this.selectors.categoryTier2Guid;
+                break;
+            }
+            case "Category Tier 3": {
+                guid = this.selectors.categoryTier3Guid;
+                break;
+            }
+            default: {
+                console.log('Drop Down name does not match');
+                break;
+            }
+        }
+        return await utilityCommon.isValuePresentInDropDown(guid, value);
+    }
+
 }
 
 export default new EditKnowledgePage();
