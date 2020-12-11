@@ -12,6 +12,7 @@ import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-ar
 import editKnowledgePo from '../../pageobject/knowledge/edit-knowledge.po';
 import knowledgeArticlesConsolePo from '../../pageobject/knowledge/knowledge-articles-console.po';
 import statusBladeKnowledgeArticlePo from '../../pageobject/knowledge/status-blade-knowledge-article.po';
+import utilityGrid from 'e2e/utils/utility.grid';
 
 describe('Knowledge Article Creation', () => {
     beforeAll(async () => {
@@ -97,6 +98,7 @@ describe('Knowledge Article Creation', () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoKnowledgeConsole();
+            await utilityGrid.clearFilter();
             expect(await knowledgeArticlesConsolePo.isGridRecordPresent(knowledgeSetTitle)).toBeFalsy('Artcile is present');
         });
     });
