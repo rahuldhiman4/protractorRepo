@@ -41,7 +41,7 @@ class ChangeAssignmentBlade {
         return await $$(this.selectors.filterDropdowns).get(0).isDisplayed();
     }
 
-    async isBuisnessUnitDrpDwnDisplayed(): Promise<boolean> {
+    async isBusinessUnitDrpDwnDisplayed(): Promise<boolean> {
         return await $$(this.selectors.filterDropdowns).get(1).isDisplayed();
     }
 
@@ -154,6 +154,15 @@ class ChangeAssignmentBlade {
             (value, index) => (value === copy[index])
         );
     }
+
+    async businessUnitOptionsPresent(businessUnit: string): Promise<boolean> {
+        const businessUnitDropDown = await $$(this.selectors.assignmentDropDownList).get(1);
+        await businessUnitDropDown.$('button').click();
+        await businessUnitDropDown.$('input').sendKeys(businessUnit);
+        let count =await $$(this.selectors.selectOptions).count();
+        if (count >= 1) { return true; } else { return false; }
+    }
+     
     async isValuePresentInDropdown(dropDownLabel: string, dropDownValue: string): Promise<boolean> {
         let elementDropdown:ElementFinder =  await element(by.cssContainingText('.form-control-label', dropDownLabel));
         return await utilityCommon.isValuePresentInDropDown(elementDropdown, dropDownValue);

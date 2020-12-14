@@ -173,5 +173,24 @@ class AccessTab {
     async clickOnResetToDefault(): Promise<void> {
         await $(this.selectors.resetToDefault).click();
     }
+
+    async isOptionsPresent(entityValue: string, dropDownList: string, isConfidential?: boolean): Promise<boolean> {
+        let dropDownListRows = 'ux-access-manager .support-group-form div.d-flex.flex-row';
+        let dropDownListCount: number = await $$('ux-access-manager .support-group-form div.d-flex.flex-row').count();
+        if (isConfidential) {
+            await utilityCommon.isValuePresentInDropDown(this.selectors.confidentialSupportGroupGuid, entityValue);
+        }
+        else {
+            for (let i: number = 0; i < dropDownListCount; i++) {
+                let dropDownName = await $$(dropDownListRows).get(i).$('.dropdown-toggle').getText();
+                if (dropDownName == dropDownList) {
+                    await $$(dropDownListRows).get(i).$('.dropdown-toggle').click();
+                    await $(this.selectors.searchInputField).sendKeys(entityValue);
+                    let count = await $$(this.selectors.dropdownList).count();
+                    if (count >= 1) { return true; } else { return false; }
+                }
+            }
+        }
+    }
 }
 export default new AccessTab();

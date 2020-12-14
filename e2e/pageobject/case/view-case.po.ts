@@ -69,7 +69,8 @@ class ViewCasePage {
         dynamicAttachmentValue: '[class="text-default bwf-attachment-container__file-name"]',
         text: 'p',
         refreshActivity: '.d-icon-left-refresh',
-        flowset: '[rx-view-component-id="73fb70b0-2992-4dc5-b7ed-3d3d13cc4d6b"] .read-only-content'
+        flowset: '[rx-view-component-id="73fb70b0-2992-4dc5-b7ed-3d3d13cc4d6b"] .read-only-content',
+        lineofbusiness: '[rx-view-component-id="694535e8-ab22-4ddc-8d2a-ceb017cf4fbf"] .read-only-content'
     }
 
     async clickDescriptionShowMore(): Promise<void> {
@@ -582,6 +583,10 @@ class ViewCasePage {
 
     async getFlowsetValue(): Promise<string> {
         return await $(this.selectors.flowset).getText();
+    }
+
+    async getLineOfBusinessValue(): Promise<string>{
+        return await $(this.selectors.lineofbusiness).getText();
     }
 }
 

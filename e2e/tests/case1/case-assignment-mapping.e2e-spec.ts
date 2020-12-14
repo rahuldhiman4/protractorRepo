@@ -82,7 +82,7 @@ describe("Create Case Assignment Mapping", () => {
         let departmentData = departmentDataFile[department];
         let suppGrpData = supportGrpDataFile[supportGroup];
         let personData = personDataFile[person];
-        personData.userPermission = ["Case Business Analyst", "Human Resource"]
+        personData.userPermission = ["Case Business Analyst", "Human Resource"];
         await apiHelper.createNewUser(personData);
         await apiHelper.associatePersonToCompany(personData.userId, company);
         let orgId = await apiCoreUtil.getOrganizationGuid(company);

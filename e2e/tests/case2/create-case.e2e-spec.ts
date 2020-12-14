@@ -240,7 +240,7 @@ describe("Create Case", () => {
             expect(await createCasePage.isClearTemplateButtonEnabled()).toBeFalsy("Clear Template is Disabled");
             expect(await createCasePage.isAutocategorizationEnabled()).toBeFalsy("Autocategorization is Disabled");
             expect(await createCasePage.isAssignedCompanyReadOnly()).toBeTruthy("Assigned Company read only");
-            expect(await createCasePage.isBuisnessUnitReadOnly()).toBeTruthy("BuisnessUnit read only");
+            expect(await createCasePage.isBusinessUnitReadOnly()).toBeTruthy("BuisnessUnit read only");
             expect(await createCasePage.isDepartmentReadOnly()).toBeTruthy("Department read only");
             expect(await createCasePage.isAssignedGroupReadOnly()).toBeTruthy("Assigned group read only");
             expect(await createCasePage.isAssigneeReadOnly()).toBeTruthy("Assignee read only");
