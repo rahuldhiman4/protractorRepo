@@ -151,7 +151,7 @@ describe('Knowledge Article', () => {
         await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
         await editKnowledgePage.clickChangeAssignmentButton();
         await changeAssignmentBlade.isCompanyDrpDwnDisplayed();
-        await changeAssignmentBlade.isBuisnessUnitDrpDwnDisplayed();
+        await changeAssignmentBlade.isBusinessUnitDrpDwnDisplayed();
         await changeAssignmentBlade.isDepartmentDrpDwnDisplayed();
         await expect(changeAssignmentBlade.isAssignButtonDisabled()).toBeTruthy();
         await changeAssignmentBlade.selectCompany(knowledgeData.Company);

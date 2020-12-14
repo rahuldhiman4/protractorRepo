@@ -107,6 +107,10 @@ class NotificationTemplateGridPage {
         return await $(this.selectors.createNotificationTemplate).isPresent();
     }
 
+    async isAddNotificationTemplateBtnEnabled(): Promise<boolean> {
+        return await $(this.selectors.createNotificationTemplate).isEnabled();
+    }
+
     async isDeleteNotificationTemplateBtnDisplayed(): Promise<boolean> {
         return await $(this.selectors.deleteButton).isPresent();
     }

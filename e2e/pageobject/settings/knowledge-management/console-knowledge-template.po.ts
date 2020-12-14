@@ -13,5 +13,9 @@ class ConsoleKnowledgeArticleTemplate {
     async clickCreateNewKATemplate(): Promise<void> {
         await $(this.selectors.newKATemplateButton).click();
     }
+
+    async isCreateNewKATemplateEnabled(): Promise<boolean> {
+       return await $(this.selectors.newKATemplateButton).isEnabled();
+    }
 }
 export default new ConsoleKnowledgeArticleTemplate();

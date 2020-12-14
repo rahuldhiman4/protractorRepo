@@ -31,7 +31,8 @@ class PreviewCaseTemplateBlade {
         showMoreDescriptionLink: '[rx-view-component-id="169adf6c-7674-448b-9732-0eecbebae380"] button',
         readOnlyFields: '[rx-view-component-id="47d6310c-8a6d-4676-8722-052933f94bbb"] .read-only-content',
         zoomInBtn: 'button.zoom-in',
-        zoomOutBtn: 'button.zoom-out'
+        zoomOutBtn: 'button.zoom-out',
+        lineOfBusiness: '[rx-view-component-id="9af5d1b9-4838-42ae-b36b-d9c913b91c82"] .read-only-content',
     }
 
     async isElementDisplayed(element: ElementFinder): Promise<boolean> {
@@ -207,7 +208,10 @@ class PreviewCaseTemplateBlade {
         let supportCompanyElement = await element(by.cssContainingText(this.selectors.supportCompanyName, supportCompany));
         return await this.isElementDisplayed(supportCompanyElement);
     }
-
+    
+    async getLineOfBusinessValue(): Promise<string> {
+        return await $(this.selectors.lineOfBusiness).getText();
+    }
 }
 
 export default new PreviewCaseTemplateBlade();

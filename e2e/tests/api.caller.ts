@@ -23,6 +23,17 @@ describe('Login and create case from API', () => {
         console.log("case is created===", newCaseTemplate.displayId);
     });
 
+    it('create lob', async () => {
+        let lob =
+        {
+            "lobName": "Checking1234",
+            "description": "checking1234 description",
+        }
+        await apiHelper.apiLogin('tadmin');
+        let newCaseTemplate = await apiHelper.createLineOfBuisness(lob);
+    
+    });
+
     it('create case with DWP', async () => {
         let caseData =
         {
@@ -148,7 +159,7 @@ describe('Login and create case from API', () => {
             "firstName": "Petramco2",
             "lastName": "Psilon2",
             "userId": "psilopetra2",
-            "userPermission": ["Case Business Analyst","Human Resource"]
+            "userPermission": ["Case Business Analyst", "Human Resource"]
         }
         await apiHelper.createNewUser(userData);
         await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
@@ -382,25 +393,25 @@ describe('Login and create case from API', () => {
 
     it('Create adhoc task', async () => {
         await apiHelper.apiLogin('qkatawazi');
-            let caseData = {
-                "Requester": "qdu",
-                "Summary": "Toggle False, case without template" + "_" + randomStr,
-                "Assigned Company": "Petramco",
-                "Business Unit": "United States Support",
-                "Support Group": "US Support 3",
-                "Assignee": "qfeng",
-            }
-            let taskData = {
-                "taskName": "Toggle False, task created without template" + "_" + randomStr,
-                "company": "Petramco",
-                "priority": "Low",
-                "businessUnit": "United States Support",
-                "supportGroup": "US Support 1",
-                "assignee": "qtao",
-            }
-            let newCase1 = await apiHelper.createCase(caseData);
-            newCase1.displayId;
-            await apiHelper.createAdhocTask(newCase1.id, taskData);
+        let caseData = {
+            "Requester": "qdu",
+            "Summary": "Toggle False, case without template" + "_" + randomStr,
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
+            "Assignee": "qfeng",
+        }
+        let taskData = {
+            "taskName": "Toggle False, task created without template" + "_" + randomStr,
+            "company": "Petramco",
+            "priority": "Low",
+            "businessUnit": "United States Support",
+            "supportGroup": "US Support 1",
+            "assignee": "qtao",
+        }
+        let newCase1 = await apiHelper.createCase(caseData);
+        newCase1.displayId;
+        await apiHelper.createAdhocTask(newCase1.id, taskData);
     });
 
     it('Create dynamic data', async () => {

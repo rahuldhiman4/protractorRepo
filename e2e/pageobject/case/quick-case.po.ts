@@ -257,5 +257,9 @@ class QuickCasePage {
         }
         return success;
     }
+
+    async clickFirstRecommendedCases(): Promise<void> {
+        await $(this.selectors.recommendedCaseGuid).$$('.flex-column bwf-search-result-fields div span').first().click();
+    }
 }
 export default new QuickCasePage();

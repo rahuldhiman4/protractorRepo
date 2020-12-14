@@ -13,6 +13,10 @@ class ApprovalMappingConsole {
         await $(this.selectors.createApprovalMapping).click();
     }
 
+    async isCreateApprovalMappingBtnEnabled(): Promise<boolean> {
+      return  await $(this.selectors.createApprovalMapping).isEnabled();
+    }
+
     async clickDeleteApprovalMapping():Promise<void>{
         await $(this.selectors.deleteButton).click();
     }

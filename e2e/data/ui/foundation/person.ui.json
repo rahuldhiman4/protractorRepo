@@ -239,5 +239,34 @@
             "Case Business Analyst",
             "Human Resource"
         ]
+    },
+    "HRCBALOBCBA": {
+        "firstName": "personCBAHRLOB",
+        "lastName": "personCBAHRLOB",
+        "userId": "personCBAHRLOB",
+        "company": "Psilon",
+        "userPermission": [
+            "Case Business Analyst",
+            "HR"
+        ]
+    },
+    "HRCALOBCBA": {
+        "firstName": "personCAHRLOB",
+        "lastName": "personCAHRLOB",
+        "userId": "personCAHRLOB",
+        "company": "Psilon",
+        "userPermission": [
+            "Case Agent",
+            "HR"
+        ]
+    },"HRCMLOBCBA": {
+        "firstName": "personCMHRLOB",
+        "lastName": "personCMHRLOB",
+        "userId": "personCMHRLOB",
+        "company": "Psilon",
+        "userPermission": [
+            "Case Manager",
+            "HR"
+        ]
     }
 }

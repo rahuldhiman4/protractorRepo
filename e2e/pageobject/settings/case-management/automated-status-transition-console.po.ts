@@ -14,7 +14,7 @@ class AutomatedStatusTransitionConfigConsolePage {
     async isAddAutomatedStatusTransitionBtnPresent(): Promise<boolean> {
         return await $(this.selectors.addAutomatedTransitionButton).isPresent().then(async (result) => {
             if (result) {
-                return  await $(this.selectors.addAutomatedTransitionButton).isDisplayed();
+                return await $(this.selectors.addAutomatedTransitionButton).isDisplayed();
             } else {
                 console.log("dynamic data not present");
                 return false;
@@ -23,25 +23,30 @@ class AutomatedStatusTransitionConfigConsolePage {
     }
 
     async isDeleteAutomatedStatusTransitionBtnPresent(): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.deleteButton)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.deleteButton)));
         return await $(this.selectors.deleteButton).isPresent();
     }
 
     async clickAddAutomatedStatusTransitionBtn(): Promise<void> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.addAutomatedTransitionButton)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.addAutomatedTransitionButton)));
         await $(this.selectors.addAutomatedTransitionButton).click();
+    }
+
+    async isAddAutomatedStatusTransitionBtnEnabled(): Promise<boolean> {
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.addAutomatedTransitionButton)));
+        return await $(this.selectors.addAutomatedTransitionButton).isEnabled();
     }
 
     async openAutomatedTransitionConfig(configName: string): Promise<void> {
         await utilGrid.searchAndOpenHyperlink(configName);
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.editAutomatedStatusConfigBlade)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.editAutomatedStatusConfigBlade)));
     }
 
     async addGridColumns(data: string[]): Promise<void> {
         await utilGrid.addGridColumn(this.selectors.guid, data);
     }
 
-    async areGridColumnMatches(data: string[]): Promise<boolean>{
+    async areGridColumnMatches(data: string[]): Promise<boolean> {
         return await utilGrid.areColumnHeaderMatches(this.selectors.guid, data);
     }
 
@@ -49,11 +54,11 @@ class AutomatedStatusTransitionConfigConsolePage {
         await utilGrid.removeGridColumn(this.selectors.guid, data);
     }
 
-    async isGridColumnSorted(columnName: string): Promise<boolean>{
+    async isGridColumnSorted(columnName: string): Promise<boolean> {
         return await utilGrid.isGridColumnSorted(columnName, 'descending', this.selectors.guid);
     }
 
-    async getEnabledColumnValueOfRule(configName: string): Promise<string>{
+    async getEnabledColumnValueOfRule(configName: string): Promise<string> {
         await utilGrid.searchRecord(configName);
         return await utilGrid.getSelectedGridRecordValue(this.selectors.guid, 'Enabled');
     }

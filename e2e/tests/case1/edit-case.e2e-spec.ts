@@ -77,7 +77,7 @@ describe('Edit Case', () => {
         await editCasePage.clickChangeAssignmentButton();
         await expect(changeAssignmentPage.isCompanyDrpDwnDisplayed()).toBeTruthy();
         await expect(changeAssignmentPage.isDepartmentDrpDwnDisplayed()).toBeTruthy();
-        await expect(changeAssignmentPage.isBuisnessUnitDrpDwnDisplayed()).toBeTruthy();
+        await expect(changeAssignmentPage.isBusinessUnitDrpDwnDisplayed()).toBeTruthy();
         await expect(changeAssignmentPage.isSupportGroupDrpDwnDisplayed()).toBeTruthy();
         await expect(changeAssignmentPage.isAssigneeListPresent()).toBeTruthy();
         await changeAssignmentPage.clickOnCancelButton();

@@ -12,17 +12,22 @@ class ReadAccessConsolePage {
     }
 
     async isAddButtonDisplayed(): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.addReadAccessBtn)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.addReadAccessBtn)));
         return await $(this.selectors.addReadAccessBtn).isPresent();
     }
 
+    async isAddButtonEnabled(): Promise<boolean> {
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.addReadAccessBtn)));
+        return await $(this.selectors.addReadAccessBtn).isEnabled();
+    }
+
     async isDeleteButtonDisplayed(): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.deleteButton)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.deleteButton)));
         return await $(this.selectors.deleteButton).isPresent();
     }
 
     async clickOnReadAccessConfiguration(): Promise<void> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.addReadAccessBtn)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.addReadAccessBtn)));
         await $(this.selectors.addReadAccessBtn).click();
     }
 
@@ -34,8 +39,8 @@ class ReadAccessConsolePage {
         await utilGrid.removeGridColumn(this.selectors.consoleReadAccessGuid, columnNames);
     }
 
-    async getValueOnReadAccessConfigGrid(columnName:string): Promise<string>{
-        return await utilGrid.getSelectedGridRecordValue(this.selectors.consoleReadAccessGuid,columnName);
+    async getValueOnReadAccessConfigGrid(columnName: string): Promise<string> {
+        return await utilGrid.getSelectedGridRecordValue(this.selectors.consoleReadAccessGuid, columnName);
     }
 
     async clickDeleteButton(): Promise<void> {
@@ -61,7 +66,7 @@ class ReadAccessConsolePage {
                 await utilCommon.clickOnWarningOk();
                 await utilCommon.closePopUpMessage();
                 await utilGrid.clearFilter();
-                console.log("Record is Deleted");                
+                console.log("Record is Deleted");
             } else {
                 await utilGrid.clearFilter();
                 console.log("Record is Not Present");

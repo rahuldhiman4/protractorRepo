@@ -12,6 +12,10 @@ class NotificationEventConsolePage {
         await $(this.selectors.addNotificationEventButton).click();
     }
 
+    async isAddNotificationEventBtnEnabled(): Promise<boolean> {
+      return  await $(this.selectors.addNotificationEventButton).isEnabled();
+    }
+
     async getDescriptionValue(): Promise<string> {
         return await utilGrid.getSelectedGridRecordValue(this.selectors.guid, 'Description');
     }

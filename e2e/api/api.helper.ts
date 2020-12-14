@@ -45,7 +45,7 @@ import { ICaseApprovalMapping, IKnowledgeApprovalMapping, ITaskApprovalMapping }
 import { ICaseAssignmentMapping, ICaseUpdate, ICreateCase, ICreateCaseDWP, IReadAccess, IUpdateCaseAccess } from '../data/interface/case.interface';
 import { ICognitiveDataSet, ICognitiveDataSetMapping } from '../data/interface/cognitive.interface';
 import { IFlowset, IFlowsetProcess, IFlowsetProcessMapping } from '../data/interface/flowset.interface';
-import { IBusinessUnit, IDepartment, IDomainTag, IFoundationEntity, IMenuItem, IPerson, ISupportGroup } from '../data/interface/foundation.interface';
+import { IBusinessUnit, IDepartment, IDomainTag, IFoundationEntity, IMenuItem, IPerson, ISupportGroup, ILOB } from '../data/interface/foundation.interface';
 import { IDocumentLib, IDocumentTemplate, IKnowledgeArticles, IKnowledgeArticleTemplate, IKnowledgeSet, IknowledgeSetPermissions, IUpdateKnowledgeArticle } from '../data/interface/knowledge.interface';
 import { IEmailConfig, INotificationEvent, INotificationTemplate, IEmailMailboxConfig } from '../data/interface/notification.interface';
 import { ICreateSVT, ICreateSVTGroup } from '../data/interface/svt.interface';
@@ -55,6 +55,7 @@ import loginPage from "../pageobject/common/login.po";
 import { NOTES_TEMPLATE } from '../data/api/social/notes.template.api';
 import { FLOWSET_TEMPLATE } from '../data/api/case/flowset.api';
 import { RELATIONSHIPS } from '../data/api/shared-services/relationship.api';
+import { UpdateLOB, CreateLOB } from '../data/api/foundation/lob.api';
 let fs = require('fs');
 
 axios.defaults.baseURL = browser.baseUrl;
@@ -959,6 +960,32 @@ class ApiHelper {
             console.log('New Support Group API Status =============> Support group already exists =============> ', supportGroupGuid);
             return supportGroupGuid;
         }
+    }
+
+    async createLineOfBuisness(data: ILOB): Promise<string> {
+        let lobData = CreateLOB;
+        lobData.fieldInstances[450000152].value = data.lobName;
+        lobData.fieldInstances[8].value = data.description
+        const newLOB = await apiCoreUtil.createRecordInstance(lobData);
+        console.log('Create New LOB API Status =============>', newLOB.status);
+
+        const lobDetails = await axios.get(
+            newLOB.headers.location);
+        console.log('Get New Support Group Details API Status =============>', lobDetails.status);
+        let recordGUID: string = lobDetails.data.id;
+        // this time required because lob creation took time to reflection
+        await browser.sleep(30000);
+
+        await this.updateLineOfBuisness(data); 
+        return recordGUID;
+    }
+
+    async updateLineOfBuisness(data: ILOB): Promise<boolean> {
+        let lobGuid = await apiCoreUtil.getLineOfBusinessGuid(data.lobName);
+        let updateLobPayload = cloneDeep(UpdateLOB);
+        updateLobPayload[7].value = constants.LOBStatus[data.status];
+        const updateLOB: AxiosResponse = await apiCoreUtil.updateRecordInstance("com.bmc.dsm.shared-services-lib%3ALine%20of%20Business", lobGuid, updateLobPayload)
+        return updateLOB.status == 204;;
     }
 
     async createNewUser(data: IPerson, userStatus?: string): Promise<string> {
@@ -3234,7 +3261,7 @@ class ApiHelper {
         console.log("Updated Identity =============>", updateIdentitiy.status);
         return updateIdentitiy.status;
     }
-    
+
     async addRelationShip(relationshipName: string, reverseRelationshipName: string, relationshipType: string): Promise<boolean> {
         let relationship = cloneDeep(RELATIONSHIPS);
         relationship.fieldInstances[450000152].value = relationshipName;
@@ -3242,7 +3269,7 @@ class ApiHelper {
         relationship.fieldInstances[450000155].value = reverseRelationshipName;
         relationship.fieldInstances[450000156].value = reverseRelationshipName;
         relationship.fieldInstances[450000153].value = relationship.fieldInstances[450000153].value + relationshipType;
-        
+
         let relationshipResponse: AxiosResponse = await apiCoreUtil.createRecordInstance(relationship);
         console.log('Relationship status =============> ', relationshipResponse.status);
         return relationshipResponse.status == 201;

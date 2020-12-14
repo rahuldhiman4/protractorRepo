@@ -63,5 +63,10 @@
         "orgName": "UI-Phylum-Deprt6",
         "relatedOrgId": null,
         "domainTag": "Human Resource"
+    },
+    "PsilonDepartmentHRLOB": {
+        "orgName": "HRLOB-Department",
+        "relatedOrgId": null,
+        "domainTag": "HR"
     }
 }

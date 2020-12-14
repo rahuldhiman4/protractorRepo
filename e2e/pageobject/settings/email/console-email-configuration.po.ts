@@ -13,6 +13,10 @@ export class ConsoleEmailConfig {
         await $(this.selectors.addNewEmailConfiguration).click();
     }
 
+    async isNewEmailConfigurationEnabled(): Promise<boolean> {
+      return  await $(this.selectors.addNewEmailConfiguration).isEnabled();
+    }
+
     async deleteConfigurationEmail(): Promise<void> {
         await $(this.selectors.deleteButton).click();
     }

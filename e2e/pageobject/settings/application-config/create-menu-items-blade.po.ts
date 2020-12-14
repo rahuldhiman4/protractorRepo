@@ -27,31 +27,31 @@ class CreateNewMenuOptionPage {
     }
 
     async isCreateNewMenuOptionBladeDisplayed(): Promise<boolean> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.createNewMenuOptionDialogueBox)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.createNewMenuOptionDialogueBox)));
         return await $(this.selectors.createNewMenuOptionDialogueBox).isEnabled();
     }
-    
+
     async clickOnSaveButton(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
     }
 
     async clickOnCancelButton(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         await $(this.selectors.cancelButton).click();
     }
 
     async clickOnLocalizeLink(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.localizeLink)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.localizeLink)));
         await $(this.selectors.localizeLink).click();
     }
 
-    async selectMenuNameDropDown(value:string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.menuNameDropDownGuid,value);
+    async selectMenuNameDropDown(value: string): Promise<void> {
+        await utilCommon.selectDropDown(this.selectors.menuNameDropDownGuid, value);
     }
 
-    async selectStatusDropDown(value:string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.statusDropDownGuid,value);
+    async selectStatusDropDown(value: string): Promise<void> {
+        await utilCommon.selectDropDown(this.selectors.statusDropDownGuid, value);
     }
 
     async isToggleButtonDisplayed(): Promise<boolean> {
@@ -61,29 +61,33 @@ class CreateNewMenuOptionPage {
         });
     }
 
-    async selectAvailableOnUiToggleButton(booleanVal:boolean): Promise<void> {
-        await utilCommon.selectToggleButton(this.selectors.toggleButtonGuid,booleanVal);
+    async selectAvailableOnUiToggleButton(booleanVal: boolean): Promise<void> {
+        await utilCommon.selectToggleButton(this.selectors.toggleButtonGuid, booleanVal);
     }
 
     async isStatusDropDownPresent(): Promise<boolean> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusDropDown)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusDropDown)));
         return await $(this.selectors.statusDropDown).isDisplayed();
     }
 
     async isMenuNameDropDownPresent(): Promise<boolean> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.menuNameDropDown)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.menuNameDropDown)));
         return await $(this.selectors.menuNameDropDown).isDisplayed();
     }
 
     async isMenuOptionTextBoxPresent(): Promise<boolean> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.menuOptionId)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.menuOptionId)));
         let menuOptionstr = $(this.selectors.menuOptionId);
         return await (menuOptionstr.$(this.selectors.menuOption)).isDisplayed();
     }
 
     async clickOnMenuOptionLink(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.menuOptionLink)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.menuOptionLink)));
         await $(this.selectors.menuOptionLink).click();
+    }
+
+    async isMenuOptionLinkEnabled(): Promise<boolean> {
+        return await $(this.selectors.menuOptionLink).isEnabled();
     }
 
     async isSaveButtonDisplayed(): Promise<boolean> {
@@ -113,7 +117,7 @@ class CreateNewMenuOptionPage {
     }
 
     async isMenuOptionFieldRequired(): Promise<boolean> {
-        let menuOptionElementRequiredTag= await $('[rx-view-component-id="d40aa6f2-090d-4641-9779-ae724673575c"] span.d-textfield__item');
+        let menuOptionElementRequiredTag = await $('[rx-view-component-id="d40aa6f2-090d-4641-9779-ae724673575c"] span.d-textfield__item');
         return await utilCommon.isRequiredTagToFieldElement(menuOptionElementRequiredTag);
     }
 
