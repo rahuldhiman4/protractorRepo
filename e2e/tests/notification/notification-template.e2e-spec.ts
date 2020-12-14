@@ -11,6 +11,7 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
+import { async } from 'q';
 
 describe("Notification Template", () => {
     let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -213,8 +214,8 @@ describe("Notification Template", () => {
         await utilCommon.closeBladeOnSettings();
     });
 
-    describe('[DRDMV-16012,DRDMV-16038,DRDMV-16037]: Verify Able to define Notification template which allow to be used for Email based approval', () => {
-        it('[DRDMV-16012,DRDMV-16038,DRDMV-16037]: Verify Able to define Notification template which allow to be used for Email based approval', async () => {
+    describe('[DRDMV-16012]: Verify Able to define Notification template which allow to be used for Email based approval', async () => {
+        it('[DRDMV-16012]: Verify Able to define Notification template which allow to be used for Email based approval', async () => {
             await notificationTempGridPage.clickOnCreateNotificationTemplate();
             expect(await createNotificationTemplatePage.isEmailBasedApprovalFlagDisplayed()).toBeFalsy('Email based approval flag is displayed');
             await createNotificationTemplatePage.setTemplateName('Email Based Approval DRDMV-16012');
@@ -222,81 +223,17 @@ describe("Notification Template", () => {
             await createNotificationTemplatePage.selectNthEvent('Email Based Approval', 1);
             await createNotificationTemplatePage.selectEmailBasedApprovalToggle(true);
             expect(await createNotificationTemplatePage.areRecipientsMatches(["Approvers"])).toBeTruthy('Recipient List of Case Approval Module is not matching');
+            await createNotificationTemplatePage.selectEmailBasedApprovalToggle(false);
+            expect(await createNotificationTemplatePage.areRecipientsMatches(["Assigned Group's Manager", "Assignee", "Assignee's Manager", "Assigned Group", "Approvers"])).toBeTruthy('Recipient List of Case Approval Module is not matching');
             await createNotificationTemplatePage.setDescription('Description');
             await createNotificationTemplatePage.setAlertMessage('Sample Alert Text');
             await createNotificationTemplatePage.clickOnEmailTab();
             await createNotificationTemplatePage.setSubject('Sample Subject text');
             await createNotificationTemplatePage.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
-            await utilityCommon.closeAllBlades();
-
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink('Email Based Approval DRDMV-16012');
-            expect(await editNotificationTemplate.getEventName()).toBe('Email Based Approval');
-            expect(await editNotificationTemplate.isEmailBasedApprovalFlagEnabled()).toBeFalsy('Toggle is enabled');
-            expect(await editNotificationTemplate.isNotificationMethodDisabled()).toBeTruthy('Notification Method is enabled');
-            await editNotificationTemplate.updateDescription('Updated description');
-            await editNotificationTemplate.openAlertEditMessageText();
-            await editNotificationTemplate.updateAlertEmailMsgs('Updated Alert Subject');
-            await editNotificationTemplate.saveEmailAlertMsg();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
-            await editNotificationTemplate.clickOnEmailTab();
-            await editNotificationTemplate.openEmailBodyEditMessageText();
-            await editNotificationTemplate.updateAlertEmailMsgs('Updated Email Body');
-            await editNotificationTemplate.saveEmailAlertMsg();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
-            await editNotificationTemplate.openEmailSubjectEditMessageText();
-            await editNotificationTemplate.updateEmailSubject('Updated Email Subject');
-            await editNotificationTemplate.saveEmailAlertMsg();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
-            await editNotificationTemplate.clickOnSaveButton();
-            await utilCommon.closeBladeOnSettings();
-            await utilGrid.clearGridSearchBox();
-            await utilGrid.searchAndSelectGridRecord('Email Based Approval DRDMV-16012');
-            await notificationTempGridPage.deleteTemplate();
-            expect(await utilCommon.isPopUpMessagePresent('Record(s) deleted successfully.')).toBeTruthy();
-        });
-        it('[DRDMV-16012,DRDMV-16038,DRDMV-16037]: Verify Able to define Notification template which allow to be used for Email based approval', async () => {
-            //Create the notification template with Email Based Approval Flag as No
-            await notificationTempGridPage.clickOnCreateNotificationTemplate();
-            await createNotificationTemplatePage.setTemplateName('Email Based Approval DRDMV-16012_2');
-            await createNotificationTemplatePage.selectModuleName('Case - Approval');
-            await createNotificationTemplatePage.selectNthEvent('Email Based Approval', 1);
-            await createNotificationTemplatePage.selectEmailBasedApprovalToggle(false);
-            await createNotificationTemplatePage.setDescription('Description2');
-            await createNotificationTemplatePage.setAlertMessage('Sample Alert Text2');
-            await createNotificationTemplatePage.clickOnEmailTab();
-            await createNotificationTemplatePage.setSubject('Sample Subject text2');
-            await createNotificationTemplatePage.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
-            await utilityCommon.closeAllBlades();
-            await utilGrid.clearGridSearchBox();
-            await utilGrid.searchAndSelectGridRecord('Email Based Approval DRDMV-16012_2');
-            await notificationTempGridPage.deleteTemplate();
-            expect(await utilCommon.isPopUpMessagePresent('Record(s) deleted successfully.')).toBeTruthy();
-
-            //Create the notification template without selecting Email Based Approval
-            await notificationTempGridPage.clickOnCreateNotificationTemplate();
-            await createNotificationTemplatePage.setTemplateName('Email Based Approval DRDMV-16012_3');
-            await createNotificationTemplatePage.selectModuleName('Case - Approval');
-            await createNotificationTemplatePage.selectNthEvent('Email Based Approval', 1);
-            await createNotificationTemplatePage.setDescription('Description3');
-            await createNotificationTemplatePage.setAlertMessage('Sample Alert Text3');
-            await createNotificationTemplatePage.clickOnEmailTab();
-            await createNotificationTemplatePage.setSubject('Sample Subject text3');
-            await createNotificationTemplatePage.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
-            await utilityCommon.closeAllBlades();
-            await utilGrid.clearGridSearchBox();
-            await utilGrid.searchAndSelectGridRecord('Email Based Approval DRDMV-16012_3');
-            await notificationTempGridPage.deleteTemplate();
-            expect(await utilCommon.isPopUpMessagePresent('Record(s) deleted successfully.')).toBeTruthy();
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (222107): A template already exists for the selected combination of event, module, and line of business. Specify a different combination.')).toBeTruthy();
         });
         afterAll(async () => {
-            await apiHelper.apiLogin('qkatawazi');
-            await apiHelper.deleteEmailOrNotificationTemplate('Email Based Approval DRDMV-16012');
-            await apiHelper.deleteEmailOrNotificationTemplate('Email Based Approval DRDMV-16012_2');
-            await apiHelper.deleteEmailOrNotificationTemplate('Email Based Approval DRDMV-16012_3');
+            await utilCommon.closeBladeOnSettings();
         });
     });
 

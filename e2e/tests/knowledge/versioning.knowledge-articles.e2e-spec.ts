@@ -35,7 +35,6 @@ let knowledgeCoachUser = 'kWilliamson';
 let versionColumn = 'Version';
 let knowledgeManagementApp = "Knowledge Management";
 let knowledgeArticlesTitleStr = "Knowledge Articles";
-let knowledgeArticlesStr = "Knowledge Articles ";
 let applyBtn = "Apply";
 let emptyStr = '';
 let articleInDraftStatus = 'DRDMV-19004 KnowledgeArticle_Draft';
@@ -43,7 +42,6 @@ let minorEditOption = 'Minor Edit';
 let majorEditOption = 'Major Edit';
 let versionField = "Version";
 let versionFieldVal = "1";
-let RecommendedKnowledgeStr = "Recommended Knowledge ";
 let resourcesTabStr = "Resources";
 let activityTabStr = "Activity";
 
@@ -364,7 +362,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await utilityGrid.addFilter(versionField, versionFieldVal, 'counter');
             expect(await utilityGrid.isGridRecordPresent(knowledgeTitleStr)).toBeTruthy();
         });
-        
+
         it('[DRDMV-20746]: Verify the search based on version on knowledge article console', async () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgeContributorUser);
@@ -402,7 +400,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await utilityGrid.addFilter(versionField, versionFieldVal, 'counter');
             expect(await utilityGrid.isGridRecordPresent(knowledgeTitleStr)).toBeTruthy();
         });
-        
+
         it('[DRDMV-20746]: Verify the search based on version on knowledge article console', async () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
@@ -1579,7 +1577,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
                 knowledgeSetTitle: `${knowledgeSetTitleStrPhylum}`,
                 knowledgeSetDesc: `${knowledgeSetTitleStrPhylum}_Desc`,
                 company: 'Phylum',
-                lineOfBusiness:"Finance"
+                lineOfBusiness: "Finance"
             }
             await navigationPage.signOut();
             await loginPage.login("idphylumkuser@petramco.com", "Password_1234");

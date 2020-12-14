@@ -49,8 +49,8 @@ describe('Conditional Task', () => {
         beforeAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
             inactiveCaseTemplatePetramcoData = {
-                "templateName": `DRDMV14901 Case Template ${randomStr}`,
-                "templateSummary": `DRDMV14901 Case Template${randomStr}`,
+                "templateName": randomStr + 'DRDMV14901CaseTemplate',
+                "templateSummary": randomStr + 'DRDMV14901CaseTemplate',
                 "templateStatus": "Inactive",
                 "casePriority": "Low",
                 "company": "Petramco",

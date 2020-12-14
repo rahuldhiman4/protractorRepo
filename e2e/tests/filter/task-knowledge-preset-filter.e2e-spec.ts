@@ -3,19 +3,15 @@ import apiHelper from "../../api/api.helper";
 import * as taskData from "../../data/ui/case/filter-combination.data.ui";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import statusConfig from "../../pageobject/settings/common/status-config.po";
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
-import dbConnectObj from '../../utils/utility.db-connect';
 import utilityGrid from "../../utils/utility.grid";
 import { SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
 import { cloneDeep } from 'lodash';
 import serviceTargetConfig from '../../pageobject/settings/slm/service-target-blade.po';
-import slmProgressBar from '../../pageobject/slm/slm-progressbar.po';
 import SlmExpressionBuilder from '../../pageobject/settings/slm/slm-expressionbuilder.pop.po';
 
 describe('Task and Knowledge Console Filter Combinations', () => {
-    const caseModule = 'Case';
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("elizabeth");
