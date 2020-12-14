@@ -74,6 +74,10 @@ class AcknowledgmentTemplateConsolePage {
         return await $(this.selectors.addAckTemplates).isPresent();
     }
 
+    async isAddAcknowledgeTemplateButtonEnabled(): Promise<boolean>{
+        return await $(this.selectors.addAckTemplates).isEnabled();
+    }
+
     async isDeleteAcknowledgementTemplateButtonDisplayed(): Promise<boolean>{
         return await $(this.selectors.delete).isPresent();
     }

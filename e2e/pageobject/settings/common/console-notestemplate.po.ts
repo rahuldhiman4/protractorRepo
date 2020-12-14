@@ -17,6 +17,11 @@ class ConsoleNotesTemplate {
         refreshButton: '.d-icon-refresh',
     }
 
+    async isCreateNotesTemplateEnabled(): Promise<boolean> {
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.notesTemplate)));
+      return  await $(this.selectors.notesTemplate).isEnabled();
+    }
+
     async clickOnCreateNotesTemplate(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.notesTemplate)));
         await $(this.selectors.notesTemplate).click();

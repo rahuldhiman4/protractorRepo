@@ -74,6 +74,10 @@ class ConsoleEmailTemplate {
         return await $(this.selectors.addEmailTemplate).isPresent();
     }
 
+    async isAddEmailTemplateButtonEnabled(): Promise<boolean>{
+        return await $(this.selectors.addEmailTemplate).isEnabled();
+    }
+
     async isDeleteEmailTemplateButtonDisplayed(): Promise<boolean>{
         return await $(this.selectors.delete).isPresent();
     }

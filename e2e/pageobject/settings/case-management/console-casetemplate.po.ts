@@ -16,13 +16,18 @@ class CaseTemplateConsole {
     }
 
     async clickOnCreateCaseTemplateButton(): Promise<void> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.createCaseTemplate)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.createCaseTemplate)));
         await $(this.selectors.createCaseTemplate).click();
     }
 
+    async isCreateCaseTemplateEnabled(): Promise<boolean> {
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.createCaseTemplate)));
+        return await $(this.selectors.createCaseTemplate).isEnabled();
+    }
+
     async clickOnCopyCaseTemplate(): Promise<void> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.copyCaseTemplate)));
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.copyCaseTemplate)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.copyCaseTemplate)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.copyCaseTemplate)));
         await $(this.selectors.copyCaseTemplate).click();
     }
 
@@ -35,7 +40,7 @@ class CaseTemplateConsole {
     }
 
     async getCaseTemplateNamePresentOnGrid(templateName: string): Promise<string> {
-//        await browser.wait(this.EC.visibilityOf(element(by.cssContainingText((this.selectors.gridLink), templateName))));
+        //        await browser.wait(this.EC.visibilityOf(element(by.cssContainingText((this.selectors.gridLink), templateName))));
         return await element(by.cssContainingText((this.selectors.gridLink), templateName)).getText();
     }
 
@@ -56,7 +61,7 @@ class CaseTemplateConsole {
     }
 
     async moreRecordsArePresentAfterClear(): Promise<number> {
-//        await utilCommon.waitUntilSpinnerToHide();
+        //        await utilCommon.waitUntilSpinnerToHide();
         return await $$(this.selectors.recordvalue).count();
     }
 

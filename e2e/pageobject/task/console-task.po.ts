@@ -19,6 +19,7 @@ class TaskGridPage {
         taskTitle: '[rx-view-component-id="3ebf9e95-a77a-47f7-a531-c4c549e42333"] span',
         taskGuid: '9e02c1c1-6544-4d92-9114-823a9ff9fdcd',
         columnHeaders: '.c-header-container .c-header-name',
+        LineOfBuisnessText: '[rx-view-component-id="dcba1505-ab0f-4af0-8e3a-3810413f32c1"] button'
     }
 
     async getSortedValueFromColumn(columnHeader: string): Promise<string> {
@@ -33,6 +34,14 @@ class TaskGridPage {
 
     async clickonColumnHeader(value: string): Promise<void> {
         await element(by.cssContainingText(this.selectors.columnHeaders, value)).click();
+    }
+
+    async getLineOfBuisnessText(): Promise<string> {
+        return await $(this.selectors.LineOfBuisnessText).getText();
+    }
+
+    async isLineOfBuisnessEnable(): Promise<boolean> {
+        return await $(this.selectors.LineOfBuisnessText).isEnabled();
     }
 
     async isTaskTypeFilterValue(taskTypeValue: string): Promise<boolean> {

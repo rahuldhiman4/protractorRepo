@@ -20,10 +20,19 @@ class KnowledgeArticlesGridConsole {
         removeFilter: '.advanced-filter__actions-buttons button',
         tableValue: '.c-header-container [class="c-header-name"]',
         getAccessText: '[rx-view-component-id="234d397b-5a98-400a-8c72-9de75e6659d9"]',
+        LineOfBuisnessText: '[rx-view-component-id="c94e04ed-5bbe-4139-ba0c-2b19aa0ab348"] button'
     }
 
     async searchAndOpenKnowledgeArticle(knowledgeId: string): Promise<void> {
         await utilityGrid.searchAndOpenHyperlink(knowledgeId);
+    }
+
+    async getLineOfBuisnessText(): Promise<string> {
+        return await $(this.selectors.LineOfBuisnessText).getText();
+    }
+
+    async isLineOfBuisnessEnable(): Promise<boolean> {
+        return await $(this.selectors.LineOfBuisnessText).isEnabled();
     }
 
     async getKnowledgeArticleConsoleTitle(): Promise<string> {

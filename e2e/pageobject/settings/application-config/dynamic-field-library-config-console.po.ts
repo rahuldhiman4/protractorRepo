@@ -26,6 +26,10 @@ class DynamicFieldLibraryConsole {
         await $(this.selectors.addDynamicFieldBtn).click();
     }
 
+    async isAddDynamicFieldButtonEnabled(): Promise<boolean> {
+       return await $(this.selectors.addDynamicFieldBtn).isEnabled();
+    }
+
     async areRequestedColumnMatches(columnNames: string[]): Promise<boolean> {
         return await utilGrid.areColumnHeaderMatches( this.selectors.gridGuid,columnNames);
     }
