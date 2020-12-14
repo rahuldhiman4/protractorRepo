@@ -251,7 +251,7 @@ export class GridOperation {
         if (guid) {
             summaryField = `[rx-view-component-id="${guid}"]` + summaryField;
             searchButton = `[rx-view-component-id="${guid}"]` + searchButton;
-            gridRefreshButton = `[rx-view-component-id="${guid}"]` + gridRefreshButton;
+            gridRefreshButton = `[rx-view-component-id="${guid}"] button.d-icon-refresh`;
         }
         for (let i: number = 0; i < 6; i++) {
             console.log(id, "search angularJs grid count: ", i);
@@ -275,7 +275,7 @@ export class GridOperation {
             gridRefreshButton = `[rx-view-component-id="${guid}"] ` + gridRefreshButton;
             gridSearchIcon = `[rx-view-component-id="${guid}"] ` + gridSearchIcon;
         }
-        for (let i: number = 0; i < 6; i++) {
+        for (let i: number = 0; i < 7; i++) {
             console.log(searchValue, "search angularJs grid count: ", i);
             await $(searchBoxInput).clear();
             await $(gridRefreshButton).click();

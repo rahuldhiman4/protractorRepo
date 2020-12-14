@@ -203,7 +203,7 @@ describe('Date and Time Preset Filter', () => {
             await dateTimeSelectorPo.clickEndDateTab();
             await dateTimeSelectorPo.selectPreviousMonthUsingAngularIcon("Jan");
             await dateTimeSelectorPo.selectPreviousYearUsingAngularIcon(2020);
-            await dateTimeSelectorPo.selectDateOnCalender(19);
+            await dateTimeSelectorPo.selectDateOnCalender(18);
             await dateTimeSelectorPo.selectTimeToggle();
             expect(await dateTimeSelectorPo.getActiveTimeUnit()).toBe('HH');
             await dateTimeSelectorPo.setHour('07');
@@ -268,7 +268,7 @@ describe('Date and Time Preset Filter', () => {
                 "Source": "Agent",
                 "Origin": "Agent",
                 "Label": menuItemName,
-                "Target Date": "2020-10-13T11:44:00.000Z",
+                "Target Date": "2020-12-16T18:25:00.000Z",
             }
 
             caseDataDWp =
@@ -288,12 +288,12 @@ describe('Date and Time Preset Filter', () => {
             expect(await utilityGrid.isGridRecordPresent(caseIdForDWP.displayId)).toBeTruthy();
             await utilityGrid.clearFilter();
             await utilityGrid.clickFilterField("Target Date");
-            await dateTimeSelectorPo.selectPreviousMonthUsingAngularIcon("Aug");
+            await dateTimeSelectorPo.selectPreviousMonthUsingAngularIcon("Dec");
             await dateTimeSelectorPo.selectPreviousYearUsingAngularIcon(2020);
-            await dateTimeSelectorPo.selectDateOnCalender(13);
+            await dateTimeSelectorPo.selectDateOnCalender(16);
             await dateTimeSelectorPo.selectTimeToggle();
-            await dateTimeSelectorPo.setHour('05');
-            await dateTimeSelectorPo.setMinute(14);
+            await dateTimeSelectorPo.setHour('11');
+            await dateTimeSelectorPo.setMinute(55);
             await dateTimeSelectorPo.clickMeridianValue("PM");
             await $('body').sendKeys(protractor.Key.ESCAPE);
             await utilityGrid.clickRefreshIcon();
@@ -344,7 +344,7 @@ describe('Date and Time Preset Filter', () => {
                 "category1": "Employee Relations",
                 "category2": "Compensation",
                 "category3": "Bonus",
-                "targetDate": "2020-10-13T11:44:00.000Z",
+                "targetDate": "2020-10-13T18:25:00.000Z",
             };
             let caseData1 = {
                 "Requester": "qdu",
@@ -371,8 +371,8 @@ describe('Date and Time Preset Filter', () => {
             await dateTimeSelectorPo.selectPreviousYearUsingAngularIcon(2020);
             await dateTimeSelectorPo.selectDateOnCalender(13);
             await dateTimeSelectorPo.selectTimeToggle();
-            await dateTimeSelectorPo.setHour('04');
-            await dateTimeSelectorPo.setMinute(0);
+            await dateTimeSelectorPo.setHour('11');
+            await dateTimeSelectorPo.setMinute(55);
             await dateTimeSelectorPo.clickMeridianValue("PM");
 
             await dateTimeSelectorPo.selectTimeToggle();
@@ -381,8 +381,8 @@ describe('Date and Time Preset Filter', () => {
             await dateTimeSelectorPo.selectPreviousYearUsingAngularIcon(2020);
             await dateTimeSelectorPo.selectDateOnCalender(13);
             await dateTimeSelectorPo.selectTimeToggle();
-            await dateTimeSelectorPo.setHour('06');
-            await dateTimeSelectorPo.setMinute(0);
+            await dateTimeSelectorPo.setHour('11');
+            await dateTimeSelectorPo.setMinute(59);
             await dateTimeSelectorPo.clickMeridianValue("PM");
             await $('body').sendKeys(protractor.Key.ESCAPE);
             await utilityGrid.clickRefreshIcon();

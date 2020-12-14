@@ -341,126 +341,6 @@ describe('Document Library Consume Permission', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-13508]: Compose Email - Case manager attaches published document from document library where case manager is author of the document', async () => {
-        let loginId2 = 'casemanagerwithdocmanager';
-        let password = 'Password_1234';
-        let caseAgentuserData1, publishDocLibData1, draftDocLibData;
-        let publish: string[];
-        beforeAll(async () => {
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteAllEmailConfiguration();
-            let response = await apiHelper.createEmailBox('outgoing');
-            await apiHelper.createEmailProfile(response.id);
-            await apiHelper.updateLOBWithEmailProfile("Human Resource", "Email Profile for Outgoing");
-
-            caseAgentuserData1 = {
-                "firstName": "CaseManager",
-                "lastName": "WithDocManager",
-                "userId": loginId2,
-                "userPermission": ["Case Manager", "Foundation Read", "Document Manager", "Human Resource"]
-            }
-            await apiHelper.createNewUser(caseAgentuserData1);
-            await apiHelper.associatePersonToCompany(caseAgentuserData1.userId, "Petramco");
-            await apiHelper.associatePersonToSupportGroup(caseAgentuserData1.userId, 'Compensation and Benefits');
-
-            publishDocLibData1 = {
-                docLibTitle: 'drdmv13508_publish_document3',
-                company: 'Petramco',
-                businessUnit: 'HR Support',
-                ownerGroup: 'Staffing',
-            }
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteDocumentLibrary(publishDocLibData1.docLibTitle);
-            await apiHelper.apiLogin('elizabeth');
-            let docLib3 = await apiHelper.createDocumentLibrary(publishDocLibData1, filePath3);
-            await apiHelper.publishDocumentLibrary(docLib3);
-
-            publish = ['drdmv13508_publish_document1', 'drdmv13508_publish_document2', 'drdmv13508_publish_document5'];
-            let files1: string[] = [filePath1, filePath2, filePath5];
-            for (let i = 0; i < publish.length; i++) {
-                let publishDocLibData2 = {
-                    docLibTitle: publish[i],
-                    company: 'Petramco',
-                    businessUnit: 'HR Support',
-                    ownerGroup: 'Staffing',
-                    shareExternally: true
-                }
-                await apiHelper.apiLogin('tadmin');
-                await apiHelper.deleteDocumentLibrary(publishDocLibData2.docLibTitle);
-                await apiHelper.apiLogin(caseAgentuserData.userId + "@petramco.com", password);
-                let getFilePath1 = files1[i];
-                let docLib = await apiHelper.createDocumentLibrary(publishDocLibData2, getFilePath1);
-                await apiHelper.publishDocumentLibrary(docLib);
-            }
-            draftDocLibData = {
-                docLibTitle: 'drdmv13508_draft_document',
-                company: 'Petramco',
-                businessUnit: 'HR Support',
-                ownerGroup: 'Compensation and Benefits',
-                shareExternally: true
-            }
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteDocumentLibrary(draftDocLibData.docLibTitle);
-            await apiHelper.apiLogin(caseAgentuserData1.userId + "@petramco.com", password);
-            await apiHelper.createDocumentLibrary(draftDocLibData, filePath4);
-        });
-        it('[DRDMV-13508]: Compose Email - Case manager attaches published document from document library where case manager is author of the document', async () => {
-            await navigationPage.signOut();
-            await loginPage.login(caseAgentuserData1.userId + "@petramco.com", password);
-            await navigationPage.gotoCreateCase();
-            await createCasePo.selectRequester('qtao');
-            await createCasePo.setSummary(caseSummary);
-            await createCasePo.clickSaveCaseButton();
-            await previewCasePo.clickGoToCaseButton();
-            await viewCasePo.clickOnEmailLink();
-            await composeMailPo.clickOnAttachmentLink();
-
-            await attachDocumentBladePo.clickOnAdvanceSearchButton();
-            await attachDocumentBladePo.searchRecord(publishDocLibData1.docLibTitle);
-            expect(await attachDocumentBladePo.isDocumentLibaryPresent(publishDocLibData1.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13508_publish_document3 doc is displayed');
-            await attachDocumentBladePo.searchRecord(draftDocLibData.docLibTitle);
-            expect(await attachDocumentBladePo.isDocumentLibaryPresent(draftDocLibData.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13508_draft_document doc is displayed');
-        });
-        it('[DRDMV-13508]: Compose Email - Case manager attaches published document from document library where case manager is author of the document', async () => {
-            await attachDocumentBladePo.searchRecord(publish[0]);
-            await attachDocumentBladePo.selectDocument(publish[0]);
-            await attachDocumentBladePo.clickOnAttachButton();
-            await composeMailPo.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
-            await composeMailPo.clickOnSendButton();
-
-            expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg Attached Document is missing');
-            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is delete sucessfully');
-            await activityTabPo.clickAndDownloadAttachmentFile('bwfJpg.jpg');
-            expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is not downloaded.');
-        });
-        it('[DRDMV-13508]: Compose Email - Case manager attaches published document from document library where case manager is author of the document', async () => {
-            await viewCasePo.clickOnEmailLink();
-            await composeMailPo.clickOnAttachmentLink();
-            await attachDocumentBladePo.searchAndAttachDocument(publish[1]);
-            await composeMailPo.clickOnAttachmentLink();
-            await attachDocumentBladePo.searchAndAttachDocument(publish[2]);
-            await composeMailPo.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
-            await composeMailPo.clickOnSendButton();
-        });
-        it('[DRDMV-13508]: Compose Email - Case manager attaches published document from document library where case manager is author of the document', async () => {
-            expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf Attached Document is missing');
-            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is delete sucessfully');
-            await activityTabPo.clickAndDownloadAttachmentFile('bwfPdf.pdf');
-            expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is not downloaded.');
-            expect(await activityTabPo.isAttachedFileNameDisplayed('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx Attached Document is missing');
-            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is delete sucessfully');
-            await activityTabPo.clickAndDownloadAttachmentFile('bwfXlsx.xlsx');
-            expect(await utilityCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is not downloaded.');
-        });
-        afterAll(async () => {
-            await composeMailPo.clickOnDiscardButton();
-            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
-        });
-    });
-
-    //kgaikwad
     describe('[DRDMV-13534]: Search and UI Validation of document library search view', async () => {
         let addNoteText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         // create 11 doc lib to see pagination
@@ -673,6 +553,126 @@ describe('Document Library Consume Permission', () => {
             expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('FailureMsg:bwfPdf.pdf Attached Document is displayed');
         });
         afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+    });
+
+    //kgaikwad
+    describe('[DRDMV-13508]: Compose Email - Case manager attaches published document from document library where case manager is author of the document', async () => {
+        let loginId2 = 'casemanagerwithdocmanager';
+        let password = 'Password_1234';
+        let caseAgentuserData1, publishDocLibData1, draftDocLibData;
+        let publish: string[];
+        beforeAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteAllEmailConfiguration();
+            let response = await apiHelper.createEmailBox('outgoing');
+            await apiHelper.createEmailProfile(response.id);
+            await apiHelper.updateLOBWithEmailProfile("Human Resource", "Email Profile for Outgoing");
+
+            caseAgentuserData1 = {
+                "firstName": "CaseManager",
+                "lastName": "WithDocManager",
+                "userId": loginId2,
+                "userPermission": ["Case Manager", "Foundation Read", "Document Manager", "Human Resource"]
+            }
+            await apiHelper.createNewUser(caseAgentuserData1);
+            await apiHelper.associatePersonToCompany(caseAgentuserData1.userId, "Petramco");
+            await apiHelper.associatePersonToSupportGroup(caseAgentuserData1.userId, 'Compensation and Benefits');
+
+            publishDocLibData1 = {
+                docLibTitle: 'drdmv13508_publish_document3',
+                company: 'Petramco',
+                businessUnit: 'HR Support',
+                ownerGroup: 'Staffing',
+            }
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteDocumentLibrary(publishDocLibData1.docLibTitle);
+            await apiHelper.apiLogin('elizabeth');
+            let docLib3 = await apiHelper.createDocumentLibrary(publishDocLibData1, filePath3);
+            await apiHelper.publishDocumentLibrary(docLib3);
+
+            publish = ['drdmv13508_publish_document1', 'drdmv13508_publish_document2', 'drdmv13508_publish_document5'];
+            let files1: string[] = [filePath1, filePath2, filePath5];
+            for (let i = 0; i < publish.length; i++) {
+                let publishDocLibData2 = {
+                    docLibTitle: publish[i],
+                    company: 'Petramco',
+                    businessUnit: 'HR Support',
+                    ownerGroup: 'Staffing',
+                    shareExternally: true
+                }
+                await apiHelper.apiLogin('tadmin');
+                await apiHelper.deleteDocumentLibrary(publishDocLibData2.docLibTitle);
+                await apiHelper.apiLogin(caseAgentuserData.userId + "@petramco.com", password);
+                let getFilePath1 = files1[i];
+                let docLib = await apiHelper.createDocumentLibrary(publishDocLibData2, getFilePath1);
+                await apiHelper.publishDocumentLibrary(docLib);
+            }
+            draftDocLibData = {
+                docLibTitle: 'drdmv13508_draft_document',
+                company: 'Petramco',
+                businessUnit: 'HR Support',
+                ownerGroup: 'Compensation and Benefits',
+                shareExternally: true
+            }
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteDocumentLibrary(draftDocLibData.docLibTitle);
+            await apiHelper.apiLogin(caseAgentuserData1.userId + "@petramco.com", password);
+            await apiHelper.createDocumentLibrary(draftDocLibData, filePath4);
+        });
+        it('[DRDMV-13508]: Compose Email - Case manager attaches published document from document library where case manager is author of the document', async () => {
+            await navigationPage.signOut();
+            await loginPage.login(caseAgentuserData1.userId + "@petramco.com", password);
+            await navigationPage.gotoCreateCase();
+            await createCasePo.selectRequester('qtao');
+            await createCasePo.setSummary(caseSummary);
+            await createCasePo.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            await viewCasePo.clickOnEmailLink();
+            await composeMailPo.clickOnAttachmentLink();
+
+            await attachDocumentBladePo.clickOnAdvanceSearchButton();
+            await attachDocumentBladePo.searchRecord(publishDocLibData1.docLibTitle);
+            expect(await attachDocumentBladePo.isDocumentLibaryPresent(publishDocLibData1.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13508_publish_document3 doc is displayed');
+            await attachDocumentBladePo.searchRecord(draftDocLibData.docLibTitle);
+            expect(await attachDocumentBladePo.isDocumentLibaryPresent(draftDocLibData.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13508_draft_document doc is displayed');
+        });
+        it('[DRDMV-13508]: Compose Email - Case manager attaches published document from document library where case manager is author of the document', async () => {
+            await attachDocumentBladePo.searchRecord(publish[0]);
+            await attachDocumentBladePo.selectDocument(publish[0]);
+            await attachDocumentBladePo.clickOnAttachButton();
+            await composeMailPo.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
+            await composeMailPo.clickOnSendButton();
+
+            expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is delete sucessfully');
+            await activityTabPo.clickAndDownloadAttachmentFile('bwfJpg.jpg');
+            expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is not downloaded.');
+        });
+        it('[DRDMV-13508]: Compose Email - Case manager attaches published document from document library where case manager is author of the document', async () => {
+            await viewCasePo.clickOnEmailLink();
+            await composeMailPo.clickOnAttachmentLink();
+            await attachDocumentBladePo.searchAndAttachDocument(publish[1]);
+            await composeMailPo.clickOnAttachmentLink();
+            await attachDocumentBladePo.searchAndAttachDocument(publish[2]);
+            await composeMailPo.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
+            await composeMailPo.clickOnSendButton();
+        });
+        it('[DRDMV-13508]: Compose Email - Case manager attaches published document from document library where case manager is author of the document', async () => {
+            expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is delete sucessfully');
+            await activityTabPo.clickAndDownloadAttachmentFile('bwfPdf.pdf');
+            expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is not downloaded.');
+            expect(await activityTabPo.isAttachedFileNameDisplayed('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx Attached Document is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is delete sucessfully');
+            await activityTabPo.clickAndDownloadAttachmentFile('bwfXlsx.xlsx');
+            expect(await utilityCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is not downloaded.');
+        });
+        afterAll(async () => {
+            await composeMailPo.clickOnDiscardButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });

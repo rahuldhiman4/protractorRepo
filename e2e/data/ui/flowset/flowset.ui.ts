@@ -12,6 +12,13 @@ export const flowsetGlobalFields = {
     "description": "test description"
 };
 
+export const flowsetGlobalInActiveFields = {
+    "flowsetName": "Test Flowset Global InActive name",
+    "flowsetStatus": 20,
+    "company": "- Global -",
+    "description": "test description"
+};
+
 export const flowsetPhylumFields = {
     "flowsetName": "Test Flowset Phylum name",
     "flowsetStatus": 10,

@@ -68,7 +68,8 @@ class ViewCasePage {
         description: '9d3ef0fc-c49f-425f-a9e1-52422ba87f4f',
         dynamicAttachmentValue: '[class="text-default bwf-attachment-container__file-name"]',
         text: 'p',
-        refreshActivity: '.d-icon-left-refresh'
+        refreshActivity: '.d-icon-left-refresh',
+        flowset: '[rx-view-component-id="73fb70b0-2992-4dc5-b7ed-3d3d13cc4d6b"] .read-only-content'
     }
 
     async clickDescriptionShowMore(): Promise<void> {
@@ -577,6 +578,10 @@ class ViewCasePage {
 
     async clickDynamicAttachmentValue(fileName: string): Promise<void> {
         await element(by.cssContainingText(this.selectors.dynamicAttachmentValue, fileName)).click();
+    }
+
+    async getFlowsetValue(): Promise<string> {
+        return await $(this.selectors.flowset).getText();
     }
 }
 

@@ -668,7 +668,7 @@ describe("Create Case", () => {
         });
     });
 
-    it('[DRDMV-22772]:Assignment blade should list the agent names which are sorted alphabetically', async () => {
+    describe('[DRDMV-22772]:Assignment blade should list the agent names which are sorted alphabetically', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let CaseTemplateData = {
             "templateName": "CaseTemplate" + randomStr,
@@ -685,18 +685,27 @@ describe("Create Case", () => {
             "ownerBU": "United States Support",
             "ownerGroup": "US Support 3"
         }
-        await apiHelper.apiLogin('qkatawazi');
-        await apiHelper.createCaseTemplate(CaseTemplateData);
-        await navigationPage.gotoCreateCase();
-        await createCasePage.selectRequester('adam');
-        await createCasePage.setSummary('Summary' + randomStr);
-        await createCasePage.clickSelectCaseTemplateButton();
-        await selectCaseTemplateBlade.selectCaseTemplate(CaseTemplateData.templateName);
-        await createCasePage.clickSaveCaseButton();
-        await previewCasePo.clickGoToCaseButton();
-        await viewCasePage.clickEditCaseButton();
-        await editCasePage.clickChangeAssignmentButton();
-        expect(await changeAssignmentPage.isAgentListSorted()).toBeTruthy("Agent List is Sorted");
+        beforeAll(async () => {
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createCaseTemplate(CaseTemplateData);
+        });
+        it('[DRDMV-22772]:Assignment blade should list the agent names which are sorted alphabetically', async () => {
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester('adam');
+            await createCasePage.setSummary('Summary' + randomStr);
+            await createCasePage.clickSelectCaseTemplateButton();
+            await selectCaseTemplateBlade.selectCaseTemplate(CaseTemplateData.templateName);
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            await viewCasePage.clickEditCaseButton();
+            await editCasePage.clickChangeAssignmentButton();
+            expect(await changeAssignmentPage.isAgentListSorted()).toBeTruthy("Agent List is Sorted");
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
     });
 
     describe('[DRDMV-22293,DRDMV-22292,DRDMV-22294]: User Should not allow to remove assignee when case is in "In Progress" Status', async () => {
@@ -740,19 +749,10 @@ describe("Create Case", () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Summary' + randomStr);
-            await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            await updateStatusBladePo.changeCaseStatus('In Progress');
-            await updateStatusBladePo.clickSaveStatus();
-            await utilityCommon.closePopUpMessage();
-            await viewCasePage.clickEditCaseButton();
-            await editCasePage.clickChangeAssignmentButton();
-            await changeAssignmentPage.selectAssignToSupportGroup();
-            await changeAssignmentPage.clickOnAssignButton();
-            await editCasePage.clickSaveCase();
-            expect(await viewCasePage.getAssignedGroupText()).toBe('US Support 3');
-            await viewCasePage.clickOnStatus();
+            expect(await viewCasePage.getAssignedGroupText()).toBe('Workforce Administration');
+            await updateStatusBladePo.changeCaseStatus('In Progress');       
             expect(await viewCasePage.getErrorMsgOfInprogressStatus()).toBe('Assignee is required for this case status.  Please select an assignee. ');
             await updateStatusBladePo.clickCancelButton();
         });
@@ -1005,7 +1005,7 @@ describe("Create Case", () => {
     //ankagraw
     describe('[DRDMV-15974]: Verify the status transition Closed->New is available only when Closed case is Reopened', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let caseTemplate1 = 'Case Template 1' + randomStr;
+        let caseTemplate = randomStr + 'CaseTemplate';
         let caseTemplateSummary1 = 'Summary 1' + randomStr;
 
         it('[DRDMV-15974]: Verify the status transition Closed->New is available only when Closed case is Reopened', async () => {
@@ -1015,11 +1015,14 @@ describe("Create Case", () => {
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             //case template with reopen case
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
-            await createCaseTemplate.setTemplateName(caseTemplate1);
+            await createCaseTemplate.setTemplateName(caseTemplate);
             await createCaseTemplate.setCompanyName('Petramco');
             await createCaseTemplate.setCaseSummary(caseTemplateSummary1);
             await createCaseTemplate.setAllowCaseReopenValue('Yes');
             await createCaseTemplate.setTemplateStatusDropdownValue('Active');
+            await createCaseTemplate.setCaseStatusValue("Assigned");
+            await createCaseTemplate.clickOnChangeAssignmentButton();
+            await changAssignmentOldPage.setAssignee('Petramco', 'United States Support', 'US Support 3', 'Qadim Katawazi')
             await createCaseTemplate.clickSaveCaseTemplate();
         });
 
@@ -1029,7 +1032,7 @@ describe("Create Case", () => {
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Summary 2');
             await createCasePage.clickSelectCaseTemplateButton();
-            await selectCaseTemplateBlade.selectCaseTemplate(caseTemplate1);
+            await selectCaseTemplateBlade.selectCaseTemplate(caseTemplate);
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
@@ -1053,7 +1056,7 @@ describe("Create Case", () => {
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Summary');
             await createCasePage.clickSelectCaseTemplateButton();
-            await selectCaseTemplateBlade.selectCaseTemplate(caseTemplate1);
+            await selectCaseTemplateBlade.selectCaseTemplate(caseTemplate);
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();

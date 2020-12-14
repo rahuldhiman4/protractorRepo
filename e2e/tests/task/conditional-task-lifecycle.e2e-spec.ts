@@ -216,6 +216,7 @@ describe('Conditional Task Life Cycle', () => {
         });
         it('[DRDMV-14996]: [Task] Case created with CaseTemplate (with no TaskFlow) and without CaseTemplate', async () => {
             //Update Adhoc task to Completed and check manual task status(CASE 1)
+            await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(responseCaseDNP.displayId);
             await viewCasePage.openTaskCard(1);
             expect(await manageTaskBlade.getTaskStatus(adhocTaskData.taskName)).toContain(completedStr);
@@ -258,7 +259,7 @@ describe('Conditional Task Life Cycle', () => {
             await updateStatusBlade.setStatusReason('Auto Resolved');
             await updateStatusBlade.clickSaveStatus();
             expect(await utilityCommon.isPopUpMessagePresent('The case contains active tasks. Please close all the tasks and resolve the case.')).toBeTruthy();
-            await manageTaskBlade.clickCloseButton();
+            await updateStatusBlade.clickCancelButton();
         });
         it('[DRDMV-14996]: [Task] Case created with CaseTemplate (with no TaskFlow) and without CaseTemplate', async () => {
             //Update Adhoc task to Completed and check manual task status(CASE 3)

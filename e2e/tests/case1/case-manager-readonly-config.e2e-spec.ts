@@ -402,14 +402,14 @@ describe('Case Manager Read-only Config', () => {
             "goalTimeMinutes": "4",
             "dataSource": "Case Management",
             "company": "Petramco",
-            "svtName": "DRDMV-18170"
+            "svtName": "DRDMV18170"
         }
-        svtData.svtName = "DRDMV-18170" + randomStr;
+        svtData.svtName = "DRDMV18170" + randomStr;
         await apiHelper.createSVT(svtData);
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
         expect(await serviceTargetConsolePage.isAddSVTButtonEnabled()).toBeFalsy('Add SVT button is enabled');
-        await utilGrid.searchAndOpenHyperlink("DRDMV-18170" + randomStr);
+        await utilGrid.searchAndOpenHyperlink("DRDMV18170" + randomStr);
         expect(await editServiceTargetConfigPage.isStatusFieldDisabled()).toBeTruthy('Status field is enabled');
         expect(await editServiceTargetConfigPage.isBuildExpressionButtonEnabled()).toBeFalsy('Build Expression button is enabled');
         expect(await editServiceTargetConfigPage.isDescriptionFieldEnabled()).toBeFalsy('Description field is enabled');
@@ -527,10 +527,10 @@ describe('Case Manager Read-only Config', () => {
             await apiHelper.createEmailConfiguration();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
-            await utilGrid.searchAndSelectGridRecord('bmctemptestemail@gmail.com');
+            await utilGrid.searchAndSelectGridRecord('test@gmail.com');
             expect(await emailConfigurationConsole.isDeleteBtnDisplayed()).toBeFalsy('Delete Button is displayed');
             await utilGrid.clearGridSearchBox();
-            await utilGrid.searchAndOpenHyperlink('bmctemptestemail@gmail.com');
+            await utilGrid.searchAndOpenHyperlink('test@gmail.com');
             expect(await editEmailConfiguration.isDefaultCaseTemplateToUseBtnDisabled()).toBeTruthy('Default Case Template field is enabled');
             expect(await editEmailConfiguration.isAddNewRuleBtnEnabled()).toBeFalsy('Add New Rule button is enabled');
             expect(await editEmailConfiguration.isAddAvailableGlobalSubjectBtnEnabled()).toBeFalsy('Add available Global Subject button is enabled');
@@ -540,9 +540,6 @@ describe('Case Manager Read-only Config', () => {
             await editEmailConfiguration.selectTab("Acknowledgment Templates");
             await editEmailConfiguration.searchAndClickCheckboxOnAcknowledgementTemplateGrid('Task Update Ack Template');
             expect(await editEmailConfiguration.isAcknowledgementTemplateEditBtnEnabled()).toBeFalsy('Acknowledge Template Edit button is enabled');
-            await editEmailConfiguration.selectTab("Associated Support Groups");
-            await editEmailConfiguration.selectBusinessUnitInAssociatedSupportGroupTab("Facilities Support");
-            expect(await editEmailConfiguration.isAssociatedGroupSGSelectCheckboxDisabled()).toBeTruthy('Support Group checkbox is enabled');
             await editEmailConfiguration.selectTab("Trusted Email");
             expect(await editEmailConfiguration.isAddNewRuleBtnEnabled()).toBeFalsy('Add Trusted Email button is enabled');
             await editEmailConfiguration.selectTab("Blocked Email");

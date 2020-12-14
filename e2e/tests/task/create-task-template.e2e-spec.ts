@@ -179,7 +179,7 @@ describe('Create Task Template', () => {
             let templateData1 = {
                 "templateName": 'manualTaskTemplate' + randomStr,
                 "templateSummary": 'manualTaskSummary' + randomStr,
-                "templateStatus": "Active",
+                "templateStatus": "Draft",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "United States Support",
@@ -192,11 +192,6 @@ describe('Create Task Template', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate('manualTaskTemplate' + randomStr);
-            await editTaskTemplate.clickOnEditMetadataLink();
-            await editTaskTemplate.selectTemplateStatus("Draft");
-            await editTaskTemplate.clickOnSaveMetadata();
-        });
-        it('[DRDMV-12567]: Create Manual Task template', async () => {
             await viewTaskTemplate.clickOnEditLink();
             await editTaskTemplate.setSummary('updateSummary' + randomStr);
             await editTaskTemplate.setDescription('Description' + randomStr);
@@ -520,7 +515,7 @@ describe('Create Task Template', () => {
         });
         it('[DRDMV-5284]: Update the task to cancel', async () => {
             await updateStatusBladePo.changeCaseStatus("Canceled");
-            await updateStatusBladePo.setStatusReason("Approval Rejected");
+            await updateStatusBladePo.setStatusReason("Customer Canceled");
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.openTaskCard(1);
             await manageTask.clickTaskLink('manualTaskTemplateAssigned' + randomStr);
@@ -550,9 +545,11 @@ describe('Create Task Template', () => {
             await viewCasePage.clickAddTaskButton();
             await manageTask.addTaskFromTaskTemplate('manualTaskTemplate' + randomStr);
             await manageTask.addTaskFromTaskTemplate('manualTaskTemplate1' + randomStr);
-            await manageTask.clickCloseButton();
+            await manageTask.clickTaskLink('manualTaskSummary' + randomStr);
+            await viewTask.clickOnViewCase();
             await updateStatusBladePo.changeCaseStatus("In Progress");
             await updateStatusBladePo.clickSaveStatus();
+            await utilityCommon.closeAllBlades();
             await viewCasePage.openTaskCard(1);
             await manageTask.clickTaskLink('manualTaskSummary' + randomStr);
             await viewTask.clickOnEditTask();
@@ -564,6 +561,7 @@ describe('Create Task Template', () => {
             await updateStatusBladePo.changeStatus("Completed");
             await updateStatusBladePo.setStatusReason("Successful")
             await updateStatusBladePo.clickSaveStatus();
+            await utilityCommon.closeAllBlades();
             await viewTask.clickOnViewCase();
             await viewCasePage.openTaskCard(1);
             await manageTask.clickTaskLink('manualTaskSummary1' + randomStr);
@@ -577,6 +575,7 @@ describe('Create Task Template', () => {
             await updateStatusBladePo.setStatusReason("Successful")
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
+            await utilityCommon.closeAllBlades();
             await browser.sleep(1000); // required to udpated case stauts after completing all tasks
             await viewTask.clickOnViewCase();
             expect(await viewCasePage.getCaseStatusValue()).toBe("Resolved");

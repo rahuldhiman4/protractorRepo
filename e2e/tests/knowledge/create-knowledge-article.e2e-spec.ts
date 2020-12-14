@@ -83,8 +83,8 @@ describe('Knowledge Article', () => {
             await createKnowledgePage.clickAssignToMeButton();
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
-            expect (await editKnowledgePage.getKnowledgeMetaDataValue('Assignee')).toBe('Qadim Katawazi');
-            expect (await editKnowledgePage.getKnowledgeMetaDataValue('Assigned Group')).toBe('US Support 3');
+            expect(await editKnowledgePage.getKnowledgeMetaDataValue('Assignee')).toBe('Qadim Katawazi');
+            expect(await editKnowledgePage.getKnowledgeMetaDataValue('Assigned Group')).toBe('US Support 3');
         }
         catch (error) {
             throw error;
@@ -162,8 +162,8 @@ describe('Knowledge Article', () => {
         await changeAssignmentBlade.clickOnAssignButton();
         await editKnowledgePage.saveKnowledgeMedataDataChanges();
         let assigneeFullName = personData.firstName + " " + personData.lastName;
-        expect (await editKnowledgePage.getKnowledgeMetaDataValue('Assignee')).toBe(assigneeFullName);
-        expect (await editKnowledgePage.getKnowledgeMetaDataValue('Assigned Group')).toBe(suppGrpData.orgName);
+        expect(await editKnowledgePage.getKnowledgeMetaDataValue('Assignee')).toBe(assigneeFullName);
+        expect(await editKnowledgePage.getKnowledgeMetaDataValue('Assigned Group')).toBe(suppGrpData.orgName);
     });
 
     it('[DRDMV-19081]: Assignment fields is not available on Status Change blade except when Status= SME Review', async () => {
@@ -305,8 +305,9 @@ describe('Knowledge Article', () => {
             await previewKnowledgePo.clickOnBackButton();
             await navigationPage.gotoKnowledgeConsole();
             await utilityGrid.clearFilter();
+            await browser.sleep(50000); //time required for article to be visible on knowledge console
             await knowledgeArticlesConsolePo.searchKnowledgeArticle(knowledgeTitle);
-            await expect(utilityGrid.isGridRecordPresent(knowledgeIdValue.trim())).toBeTruthy("Knowledge Article is not displayed");
+            await expect(utilityGrid.isGridRecordPresent(knowledgeIdValue.trim())).toBeTruthy(`${knowledgeIdValue.trim()} is not present`);
         } catch (error) {
             throw error;
         }
@@ -315,7 +316,7 @@ describe('Knowledge Article', () => {
             await loginPage.login('peter');
         }
     });
-//pass
+    //pass
     it('[DRDMV-5058]: Review article in SME Review status & Approve article', async () => {
         try {
             let knowledgeTitile = 'knowledge5058' + randomStr;
@@ -371,7 +372,7 @@ describe('Knowledge Article', () => {
             await loginPage.login('peter');
         }
     });
-//pass
+    //pass
     it('[DRDMV-5059]: Review article in SME Review status & Reject article', async () => {
         try {
             let knowledgeTitile = 'knowledge5059' + randomStr;
@@ -424,7 +425,7 @@ describe('Knowledge Article', () => {
             await loginPage.login('peter');
         }
     });
-//pass
+    //pass
     it('[DRDMV-2433]: Assign SME - Reviewer assignment UI validation', async () => {
         try {
             let knowledgeTitile = 'knowledge2433' + randomStr;
@@ -469,7 +470,7 @@ describe('Knowledge Article', () => {
             await loginPage.login('peter');
         }
     });
-//pass
+    //pass
     it('[DRDMV-1914]: [Article Creation] Ability to select the knowledge set during article creation', async () => {
         let knowledgeTitle = 'knowledgeCoachUser1914' + randomStr;
         await navigationPage.gotoKnowledgeConsole();
@@ -501,7 +502,7 @@ describe('Knowledge Article', () => {
         await utilityGrid.searchRecord(knowledgeTitle);
         expect(await knowledgeArticlesConsolePo.isValueDisplayedInGrid('Knowledge Set')).toContain('HR', 'HR not display on Knowledge Console');
     });
-//pass
+    //pass
     it('[DRDMV-1783]: [Knowledge Article] Access to the Create Knowledge view (Negative)', async () => {
         try {
             await navigationPage.signOut();
@@ -517,7 +518,7 @@ describe('Knowledge Article', () => {
             await loginPage.login('peter');
         }
     });
-//Pass
+    //Pass
     it('[DRDMV-2887]: [Knowledge Article] Adding/Modifying location data while creating knowledge articles - site, region', async () => {
         try {
             let knowledgeTitle = 'knowledge2887' + randomStr;
@@ -566,7 +567,7 @@ describe('Knowledge Article', () => {
             await loginPage.login('peter');
         }
     });
-//pass
+    //pass
     describe('[DRDMV-1152]: [Permissions] Settings menu for Knowledge Functional Roles', () => {
         it('[DRDMV-1152]: [Permissions] Settings menu for Knowledge Functional Roles', async () => {
             //Validation of Knowledge Coach Settings Permission
@@ -609,7 +610,7 @@ describe('Knowledge Article', () => {
             expect(await navigationPage.isSettingPanelTextMatches("Configuration options not created for these settings.")).toBeTruthy();
         });
     });
-//issue
+    //issue
     describe('[DRDMV-2985]: Article creation and possible status changes - Knowledge Publisher & Coach', async () => {
         let KADetails, KACoachDetails, articleDataCoach;
         beforeAll(async () => {

@@ -1,4 +1,5 @@
-import { $, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, ElementFinder, protractor, ProtractorExpectedConditions } from "protractor";
+import ckeditorValidationPo from '../../../pageobject/common/ck-editor/ckeditor-validation.po';
 import util from "../../../utils/util.common";
 
 class Copytaskpage {
@@ -21,6 +22,7 @@ class Copytaskpage {
         ownerGroupValueOnCopy: '[rx-view-component-id="61278673-8106-419c-83e4-a9e00f12f835"] .ui-select-match-text',
         ownerBusinessUnitGuid: 'a81cc2df-7b89-4367-81f7-f0ad5e786ca2',
         showMoreDescriptionLink: '[rx-view-component-id="cce67ce7-e6a5-4ed6-aa50-c57ea75d2854"] button.more',
+        rightAlignLocator: '[rx-view-component-id="b9b752cf-8cef-4598-9a8d-85748b13f0d7"] div[style="text-align: right;"]',
     }
 
     async unSelectCopyExistingProcess(): Promise<string> {
@@ -89,6 +91,11 @@ class Copytaskpage {
 
     async clickShowMoreDescriptionLink(): Promise<void> {
         return await $(this.selectors.showMoreDescriptionLink).click();
+    }
+
+    async isTextRightAlignInCkEditorTextArea(rightAlignText: string): Promise<boolean> {
+        let rightAlignLocator: ElementFinder = await $(this.selectors.rightAlignLocator);
+        return await ckeditorValidationPo.isTextRightAlignInCkEditorTextArea(rightAlignText, rightAlignLocator);
     }
 }
 

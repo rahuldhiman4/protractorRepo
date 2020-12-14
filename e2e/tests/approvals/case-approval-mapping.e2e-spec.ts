@@ -37,7 +37,7 @@ describe("Case Approval Mapping Tests", () => {
             "lastName": "Psilon",
             "userId": "copytask",
             "emailId": "copytask@petramco.com",
-            "userPermission": ["Case Business Analyst","Human Resource"]
+            "userPermission": ["Case Business Analyst", "Human Resource"]
         }
         await apiHelper.apiLogin("tadmin");
         await apiHelper.createNewUser(twoCompanyUser);
@@ -375,6 +375,41 @@ describe("Case Approval Mapping Tests", () => {
             expect(await editApprovalMappingPage.getSelectedCompany()).toBe('- Global -');
             expect(await editApprovalMappingPage.getApprovalMappingName()).toBe(approvalMappingName);
             expect(await editApprovalMappingPage.isCaseCreatedUsingTemplateGoInApprovalToggleFalse()).toBeTruthy('Cases created without using any template is toggle values is true.');
+        });
+        it('[DRDMV-11881,DRDMV-22947]: create same name record in same LOB', async () => {
+            //create same name record in same LOB
+            await navigationPage.signOut();
+            await loginPage.login('jbarnes');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', 'Configure Case Approvals - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
+            await createApprovalMappingPage.setApprovalMappingName(approvalMappingName);
+            await createApprovalMappingPage.selectCompany('- Global -');
+            await createApprovalMappingPage.selectStatusMappingApproved('In Progress');
+            await createApprovalMappingPage.selectStatusMappingRejected('Canceled');
+            await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Pending');
+            await createApprovalMappingPage.selectStatusMappingError('New');
+            await createApprovalMappingPage.clickSaveApprovalMappingBtn();
+            //uncomment after QCert Dec 20
+            //expect(await utilCommon.isPopUpMessagePresent('ERROR (222099): The combination of Company, Line of Business, Flowset and Status to trigger already exists for this record definition. Please enter unique values for these fields.')).toBeTruthy("Error message absent");
+            await createApprovalMappingPage.clickCancelApprovalMappingBtn();
+            await utilCommon.clickOnWarningOk();
+        });
+        it('[DRDMV-11881,DRDMV-22947]: create same name record in different LOB', async () => {
+            //create same name record in different LOB
+            await utilGrid.selectLineOfBusiness('Facilities');
+            await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
+            await createApprovalMappingPage.setApprovalMappingName(approvalMappingName);
+            await createApprovalMappingPage.selectCompany('- Global -');
+            await createApprovalMappingPage.selectStatusMappingApproved('In Progress');
+            await createApprovalMappingPage.selectStatusMappingRejected('Canceled');
+            await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Pending');
+            await createApprovalMappingPage.selectStatusMappingError('New');
+            await createApprovalMappingPage.clickSaveApprovalMappingBtn();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
+            await editApprovalMappingPage.clickCancelApprovalMappingBtn();
+            await utilGrid.selectLineOfBusiness('Human Resource');
         });
         afterAll(async () => {
             await apiHelper.apiLogin('qkatawazi');

@@ -3,6 +3,7 @@ import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
 import * as notesTemplateData from '../../data/ui/Social/notesTemplate.api';
 import addRelatedPopupPage from '../../pageobject/case/add-relation-pop.po';
+import caseConsolePo from '../../pageobject/case/case-console.po';
 import casePreviewPo from '../../pageobject/case/case-preview.po';
 import createCasePo from '../../pageobject/case/create-case.po';
 import quickCasePo from '../../pageobject/case/quick-case.po';
@@ -1351,7 +1352,7 @@ describe('Notes template', () => {
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(templateName);
             await activityTabPo.addActivityNote(randomString);
             await activityTabPo.clickOnPostButton();
-            await activityTabPo.clickOnRefreshButton();
+            await utilityCommon.refresh(); // workaround for DRDMV-23816
             await activityTabPo.clickShowMoreLinkInActivity(1);
             expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
             expect(await activityTabPo.isItalicTextDisplayedInActivity(italicText, 1)).toBeTruthy('FailureMsg Italic Text is missing In Activity');
@@ -2417,16 +2418,15 @@ describe('Notes template', () => {
     });
 
     describe('[DRDMV-22641,DRDMV-22645,DRDMV-22656]: Verify CKE functionality on Create and Edit Task Notes template', async () => {
-        let templateName: string, templateData, casetemplatePetramco, externaltemplateData, newCaseTemplate, automatedtemplateData, readAccessMappingData, caseId, randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let templateName: string, manualTaskTemplateData, casetemplatePetramco, externaltemplateData, newCaseTemplate, automatedtemplateData, readAccessMappingData, caseId, randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
             casetemplatePetramco = {
                 "templateName": 'caseTemplateName' + randomString,
                 "templateSummary": 'caseTemplateName' + randomString,
                 "templateStatus": "Active",
-                "categoryTier1": "Purchasing Card",
-                "categoryTier2": "Policies",
-                "categoryTier3": "Card Issuance",
+                "categoryTier1": "Total Rewards",
+                "categoryTier2": "Leave",
                 "casePriority": "Low",
                 "caseStatus": "New",
                 "company": "Petramco",
@@ -2437,7 +2437,7 @@ describe('Notes template', () => {
                 "ownerGroup": "US Support 3"
             }
             newCaseTemplate = await apiHelper.createCaseTemplate(casetemplatePetramco);
-            templateData = {
+            manualTaskTemplateData = {
                 "templateName": 'Manual task' + randomString,
                 "templateSummary": 'Manual task' + randomString,
                 "templateStatus": "Active",
@@ -2449,7 +2449,7 @@ describe('Notes template', () => {
                 "supportGroup": "US Support 3",
                 "assignee": "qkatawazi",
             }
-            let manualTaskTemplate = await apiHelper.createManualTaskTemplate(templateData);
+            let manualTaskTemplate = await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
             externaltemplateData = {
                 "templateName": 'External task' + randomString,
                 "templateSummary": 'External task' + randomString,
@@ -2479,6 +2479,8 @@ describe('Notes template', () => {
             }
             readAccessMappingData = {
                 "configName": randomString + '1ReadAccessMappingName',
+                "category1": "Total Rewards",
+                "category2": "Leave",
                 "assignedCompany": 'Petramco',
                 "businessUnit": 'Canada Support',
                 "supportGroup": 'CA Support 3',
@@ -2614,7 +2616,8 @@ describe('Notes template', () => {
             await viewCasePage.clickOnTab('Case Access');
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('CA Support 3', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
             await viewCasePage.clickOnTab('Tasks');
-            await viewCasePage.clickOnTaskLink(templateData.templateName);
+            await viewCasePage.openTaskCard(1);
+            await manageTask.clickTaskLink(manualTaskTemplateData.templateSummary);
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(templateName);
             await activityTabPo.addActivityNote(randomString);
             expect(await ckeditorValidationPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
@@ -2634,10 +2637,12 @@ describe('Notes template', () => {
             expect(await activityTabPo.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
             expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
             expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
-            await viewTaskPo.clickOnViewCase();
         });
         it('[DRDMV-22641,DRDMV-22645,DRDMV-22656]: Verify CKE functionality on Create and Edit Task Notes template', async () => {
-            await viewCasePage.clickOnTaskLink(externaltemplateData.templateName);
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
+            await viewCasePage.openTaskCard(2);
+            await manageTask.clickTaskLink(externaltemplateData.templateSummary);
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(templateName);
             await activityTabPo.addActivityNote(randomString);
             expect(await ckeditorValidationPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
@@ -2657,11 +2662,12 @@ describe('Notes template', () => {
             expect(await activityTabPo.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
             expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
             expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
-            await viewTaskPo.clickOnViewCase();
-            await activityTabPo.clickOnShowMore();
         });
         it('[DRDMV-22641,DRDMV-22645,DRDMV-22656]: Verify CKE functionality on Create and Edit Task Notes template', async () => {
-            await viewCasePage.clickOnTaskLink(automatedtemplateData.templateName);
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
+            await viewCasePage.openTaskCard(3);
+            await manageTask.clickTaskLink(automatedtemplateData.templateSummary);
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(templateName);
             await activityTabPo.addActivityNote(randomString);
             expect(await ckeditorValidationPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
@@ -2681,13 +2687,13 @@ describe('Notes template', () => {
             expect(await activityTabPo.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
             expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
             expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
-            await viewTaskPo.clickOnViewCase();
         });
         it('[DRDMV-22641,DRDMV-22645,DRDMV-22656]: Verify CKE functionality on Create and Edit Task Notes template', async () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await utilityGrid.searchAndOpenHyperlink(caseId);
-            await viewCasePage.clickOnTaskLink(templateData.templateName);
+            await viewCasePage.openTaskCard(1);
+            await manageTask.clickTaskLink(manualTaskTemplateData.templateSummary);
             await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
@@ -2697,8 +2703,10 @@ describe('Notes template', () => {
             expect(await activityTabPo.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
             expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
             expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
-            await viewTaskPo.clickOnViewCase();
-            await viewCasePage.clickOnTaskLink(automatedtemplateData.templateName);
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
+            await viewCasePage.openTaskCard(3);
+            await manageTask.clickTaskLink(automatedtemplateData.templateSummary);
             await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
@@ -2708,8 +2716,10 @@ describe('Notes template', () => {
             expect(await activityTabPo.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
             expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
             expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
-            await viewTaskPo.clickOnViewCase();
-            await viewCasePage.clickOnTaskLink(externaltemplateData.templateName);
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
+            await viewCasePage.openTaskCard(2);
+            await manageTask.clickTaskLink(externaltemplateData.templateSummary);
             await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
@@ -2719,13 +2729,13 @@ describe('Notes template', () => {
             expect(await activityTabPo.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
             expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
             expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
-            await viewTaskPo.clickOnViewCase();
         });
         it('[DRDMV-22641,DRDMV-22645,DRDMV-22656]: Verify CKE functionality on Create and Edit Task Notes template', async () => {
             await navigationPage.signOut();
             await loginPage.login('qheroux');
             await utilityGrid.searchAndOpenHyperlink(caseId);
-            await viewCasePage.clickOnTaskLink(templateData.templateName);
+            await viewCasePage.openTaskCard(1);
+            await manageTask.clickTaskLink(manualTaskTemplateData.templateSummary);
             await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
@@ -2735,8 +2745,10 @@ describe('Notes template', () => {
             expect(await activityTabPo.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
             expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
             expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
-            await viewTaskPo.clickOnViewCase();
-            await viewCasePage.clickOnTaskLink(automatedtemplateData.templateName);
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
+            await viewCasePage.openTaskCard(3);
+            await manageTask.clickTaskLink(automatedtemplateData.templateSummary);
             await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
@@ -2746,8 +2758,10 @@ describe('Notes template', () => {
             expect(await activityTabPo.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
             expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
             expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
-            await viewTaskPo.clickOnViewCase();
-            await viewCasePage.clickOnTaskLink(externaltemplateData.templateName);
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
+            await viewCasePage.openTaskCard(2);
+            await manageTask.clickTaskLink(externaltemplateData.templateSummary);
             await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
@@ -2757,7 +2771,6 @@ describe('Notes template', () => {
             expect(await activityTabPo.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 1)).toBeTruthy('FailureMsg Link Text is missing In Activity');
             expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
             expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
-            await viewTaskPo.clickOnViewCase();
         });
     });
 });

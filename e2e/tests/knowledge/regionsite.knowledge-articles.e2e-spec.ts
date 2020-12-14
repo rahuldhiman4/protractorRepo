@@ -203,11 +203,10 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await utilityGrid.searchRecord(regionFieldVal);
             regionVal = await knowledgeConsole.getSelectedGridRecordValue(regionField);
             expect(regionVal).toEqual(emptyStr);
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
-            await navigationPage.signOut();
         });
-
+        
         it('[DRDMV-19569,DRDMV-19570,DRDMV-19571]:Verify the search functionality of knowledge articles console for Region', async () => {
+            await navigationPage.signOut();
             await loginPage.login(knowledgeContributorUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
             await knowledgeConsole.addColumnOnGrid(regionFieldColumn);
@@ -373,7 +372,6 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await editKnowledgePo.selectRegionDropDownOption(regionFieldVal2);
             await editKnowledgePo.selectSiteDropDownOption(siteFieldVal1);
             await editKnowledgePo.saveKnowledgeMedataDataChanges();
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
 
             //Login with Knowledge Publisher
@@ -440,8 +438,8 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             "userId": "caseManager",
             "userPermission": ["Case Manager","Foundation Read","Document Manager","Human Resource"]
         }
-        let title = `Document-${new Date().valueOf()}`;
-        let title1 = `Document1-${new Date().valueOf()}`;
+        let title = `Document_${new Date().valueOf()}`;
+        let title1 = `Document1_${new Date().valueOf()}`;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.createNewUser(caseAgentuserData);
@@ -510,7 +508,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
                 .toEqual('Document Library Console - Business Workflows');
             await createDocumentLibraryPage.openAddNewDocumentBlade();
             await createDocumentLibraryPage.addAttachment(filePath);
-            let title2 = `Document2-${new Date().valueOf()}`;
+            let title2 = `Document2_${new Date().valueOf()}`;
             await createDocumentLibraryPage.setTitle(title2);
             await createDocumentLibraryPage.selectCompany(companyStr);
             await createDocumentLibraryPage.selectBusinessUnit(hrSupportStr);
@@ -529,8 +527,6 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         });
 
         afterAll(async () => {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
-            await utilityCommon.refresh();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });
@@ -1510,7 +1506,6 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await expect(await resources.getAdvancedSearchResultForParticularSection(articleInCanceledStatus)).toEqual(articleInCanceledStatus);
         });
         afterAll(async () => {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);

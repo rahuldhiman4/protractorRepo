@@ -336,14 +336,14 @@ describe('Document Library', () => {
             await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Company');
             expect(await utilCommon.isPopUpMessagePresent('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.')).toBeTruthy('Message of permission denined for group access remove not displayed');
             await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
-            await editDocumentLibraryPo.selectAddBusinessUnitDropDownOfReadAccess('ESM');
+            await editDocumentLibraryPo.selectAddBusinessUnitDropDownOfReadAccess('Australia Support');
             await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Business Unit');
             expect(await utilCommon.isPopUpMessagePresent('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.')).toBeTruthy('Message of permission denined for group access remove not displayed');
         });
         it('[DRDMV-13041]: Verify Support Group Level Read access of Document	', async () => {
             await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
-            await editDocumentLibraryPo.selectAddBusinessUnitDropDownOfReadAccess('Engineering');
-            await editDocumentLibraryPo.selectAddSupportDepartmentDropDownOfReadAccess('Development');
+            await editDocumentLibraryPo.selectAddBusinessUnitDropDownOfReadAccess('UI-BusinessUnit');
+            await editDocumentLibraryPo.selectAddSupportDepartmentDropDownOfReadAccess('UI-Department');
             await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Support Department');
             expect(await utilCommon.isPopUpMessagePresent('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.')).toBeTruthy('Message of permission denined for group access remove not displayed');
             await editDocumentLibraryPo.clickOnSupportGroupAccessButton();

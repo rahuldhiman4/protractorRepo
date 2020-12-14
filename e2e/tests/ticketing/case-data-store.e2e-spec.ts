@@ -13,6 +13,7 @@ import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import createDynamicFieldLibraryConfigPo from '../../pageobject/settings/application-config/create-dynamic-field-library-config.po';
 import dynamicFieldLibraryConfigConsolePo from '../../pageobject/settings/application-config/dynamic-field-library-config-console.po';
+import editDynamicFieldLibraryConfigPo from '../../pageobject/settings/application-config/edit-dynamic-field-library-config.po';
 import editCasetemplatePo from '../../pageobject/settings/case-management/edit-casetemplate.po';
 import previewCaseTemplateCasesPo from '../../pageobject/settings/case-management/preview-case-template.po';
 import viewCasetemplatePo from '../../pageobject/settings/case-management/view-casetemplate.po';
@@ -27,9 +28,6 @@ import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-import dynamicGroupLibraryConfigConsolePo from '../../pageobject/settings/application-config/dynamic-group-library-config-console.po';
-import createDynamicGroupLibraryConfigPo from '../../pageobject/settings/application-config/create-dynamic-group-library-config.po';
-import editDynamicFieldLibraryConfigPo from '../../pageobject/settings/application-config/edit-dynamic-field-library-config.po';
 
 describe('Case Data Store', () => {
     beforeAll(async () => {
@@ -116,8 +114,8 @@ describe('Case Data Store', () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
             casetemplateData = {
-                "templateName": randomStr + 'caseTemplateDRDMV-13126',
-                "templateSummary": randomStr + 'caseTemplateDRDMV-13126',
+                "templateName": randomStr + 'caseTemplateDRDMV13126',
+                "templateSummary": randomStr + 'caseTemplateDRDMV13126',
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "ownerBU": "United States Support",
@@ -424,8 +422,8 @@ describe('Case Data Store', () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
             casetemplateData = {
-                "templateName": randomStr + 'caseTemplateDRDMV-13122',
-                "templateSummary": randomStr + 'caseTemplateDRDMV-13122',
+                "templateName": randomStr + 'caseTemplateDRDMV13122',
+                "templateSummary": randomStr + 'caseTemplateDRDMV13122',
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "ownerBU": "United States Support",
@@ -578,8 +576,8 @@ describe('Case Data Store', () => {
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteDynamicFieldAndGroup();
         let casetemplateData = {
-            "templateName": randomStr + 'caseTemplateDRDMV-13114',
-            "templateSummary": randomStr + 'caseTemplateDRDMV-13114',
+            "templateName": randomStr + 'caseTemplateDRDMV13114',
+            "templateSummary": randomStr + 'caseTemplateDRDMV13114',
             "templateStatus": "Draft",
             "assignee": "qkatawazi",
             "company": "Petramco",
@@ -854,8 +852,8 @@ describe('Case Data Store', () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
             caseTemplateData = {
-                "templateName": randomStr + 'caseTemplateDRDMV-13113',
-                "templateSummary": randomStr + 'caseTemplateDRDMV-13113',
+                "templateName": randomStr + 'caseTemplateDRDMV13113',
+                "templateSummary": randomStr + 'caseTemplateDRDMV13113',
                 "templateStatus": "Draft",
                 "assignee": "qkatawazi",
                 "company": "Petramco",
@@ -969,19 +967,58 @@ describe('Case Data Store', () => {
             expect(await dynamicFieldsPo.isDynamicFieldPresentInDynamicSection('LibNumberField')).toBeTruthy('field not present LibNumberField');
             await dynamicFieldsPo.clickCancelButton();
         });
+        it('[DRDMV-13113]: create same name record in same LOB', async () => {
+            //create same name record in same LOB
+            await navigationPage.signOut();
+            await loginPage.login('jbarnes');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', 'Field Management Console - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            await dynamicFieldLibraryConfigConsolePo.clickAddDynamicFieldButton();
+            await createDynamicFieldLibraryConfigPo.setFieldName('LibBooleanField');
+            await createDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
+            await localizeValuePopPo.setLocalizeValue('LibBooleanField');
+            await localizeValuePopPo.clickOnSaveButton();
+            await createDynamicFieldLibraryConfigPo.setStatusValue('Active');
+            await createDynamicFieldLibraryConfigPo.setInformationSourceValueType('Agent');
+            await createDynamicFieldLibraryConfigPo.setFieldValueType('BOOLEAN');
+            await createDynamicFieldLibraryConfigPo.clickOnSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (12423): Dynamic field with same name and line of business already exists.')).toBeTruthy("Error message absent");
+            await createDynamicFieldLibraryConfigPo.clickCancelButton();
+            await utilCommon.clickOnWarningOk();
+        });
+        it('[DRDMV-13113]: create same name record in different LOB', async () => {
+            //create same name record in different LOB
+            await utilGrid.selectLineOfBusiness('Facilities');
+            await dynamicFieldLibraryConfigConsolePo.clickAddDynamicFieldButton();
+            await createDynamicFieldLibraryConfigPo.setFieldName('LibBooleanField');
+            await createDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
+            await localizeValuePopPo.setLocalizeValue('LibBooleanField');
+            await localizeValuePopPo.clickOnSaveButton();
+            await createDynamicFieldLibraryConfigPo.setStatusValue('Active');
+            await createDynamicFieldLibraryConfigPo.setInformationSourceValueType('Agent');
+            await createDynamicFieldLibraryConfigPo.setFieldValueType('BOOLEAN');
+            await createDynamicFieldLibraryConfigPo.clickOnSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
+            await utilGrid.selectLineOfBusiness('Human Resource');
+        });
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login("qkatawazi");
+        });
     });
 
     //ptidke
     describe('[DRDMV-13112]: [Dynamic Data] Verify Dynamic Field On Case Template Edit view UI', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateData, inactiveTemplateName, draftTemplateName, activeTemplateName;
-        let caseTemplateName = randomStr + 'caseTemplateDRDMV-13112';
+        let caseTemplateName = randomStr + 'caseTemplateDRDMV13112';
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
             templateData = {
                 "templateName": caseTemplateName,
-                "templateSummary": randomStr + 'caseTemplateDRDMV-13112',
+                "templateSummary": randomStr + 'caseTemplateDRDMV13112',
                 "templateStatus": "Active",
                 "assignee": "qkatawazi",
                 "company": "Petramco",

@@ -178,7 +178,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await editKnowledgePage.clickArticleCancelButton();
             await utilCommon.clickOnWarningOk();
             await statusBladeKnowledgeArticlePo.setKnowledgeStatusWithReviewerDetails('SME Review', 'Petramco', 'Australia Support', 'AU Support 3', 'Kane Williamson');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
         });
 
         it('[DRDMV-20742]: Verify the functionality of Edit article with Minor Edit button', async () => {
@@ -263,7 +262,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
         });
 
         afterAll(async () => {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });
@@ -365,11 +363,10 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(versionVal).toEqual(emptyStr);
             await utilityGrid.addFilter(versionField, versionFieldVal, 'counter');
             expect(await utilityGrid.isGridRecordPresent(knowledgeTitleStr)).toBeTruthy();
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
-            await navigationPage.signOut();
         });
-
+        
         it('[DRDMV-20746]: Verify the search based on version on knowledge article console', async () => {
+            await navigationPage.signOut();
             await loginPage.login(knowledgeContributorUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
@@ -386,9 +383,8 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(versionVal).toEqual(emptyStr);
             await utilityGrid.addFilter(versionField, versionFieldVal, 'counter');
             expect(await utilityGrid.isGridRecordPresent(knowledgeTitleStr)).toBeTruthy();
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
-            await navigationPage.signOut();
 
+            await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
@@ -405,11 +401,10 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(versionVal).toEqual(emptyStr);
             await utilityGrid.addFilter(versionField, versionFieldVal, 'counter');
             expect(await utilityGrid.isGridRecordPresent(knowledgeTitleStr)).toBeTruthy();
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
-            await navigationPage.signOut();
         });
-
+        
         it('[DRDMV-20746]: Verify the search based on version on knowledge article console', async () => {
+            await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);
@@ -426,11 +421,9 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(versionVal).toEqual(emptyStr);
             await utilityGrid.addFilter(versionField, versionFieldVal, 'counter');
             expect(await utilityGrid.isGridRecordPresent(knowledgeTitleStr)).toBeTruthy();
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
         });
 
         afterAll(async () => {
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         })
@@ -564,7 +557,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
         });
 
         afterAll(async () => {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });
@@ -647,7 +639,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
         });
 
         it('[DRDMV-20743,DRDMV-20735]: Verify the functionality of Edit article with Major Edit button', async () => {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -715,9 +706,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await editKnowledgePage.updateKnowledgeArticleTitle(updatedArticleTitle);
             await editKnowledgePage.updateKnowledgeArticleDescription(updatedArticleDesc);
             await editKnowledgePage.clickArticleMajorEditSaveButton();
-            await navigationPage.gotoKnowledgeConsole(true);
-            await utilityGrid.sortGridColumn('Created Date', 'desc');
-            await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             let updatedVersion = "Version " + "2" + " - " + actualDate;
             expect(await viewKnowledgeArticlePo.getArticleVersion()).toBe(updatedVersion);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(updatedArticleTitle);
@@ -775,7 +763,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
         });
 
         afterAll(async () => {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });
@@ -840,7 +827,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await editKnowledgePage.clickArticleCancelButton();
             await utilCommon.clickOnWarningOk();
             await statusBladeKnowledgeArticlePo.setKnowledgeStatusWithReviewerDetails('SME Review', 'Petramco', 'Australia Support', 'AU Support 3', 'Kane Williamson');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -900,7 +886,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
         });
 
         afterAll(async () => {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });
@@ -966,10 +951,9 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await editKnowledgePage.clickArticleCancelButton();
             await utilCommon.clickOnWarningOk();
             await statusBladeKnowledgeArticlePo.setKnowledgeStatusWithReviewerDetails('SME Review', 'Petramco', 'Australia Support', 'AU Support 3', 'Kane Williamson');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
-            await navigationPage.signOut();
         });
         it('[DRDMV-20752]: Verify the behavior when the user who does not have access to view current article version and he tries to create or update existing version', async () => {
+            await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
             await browser.sleep(3000); //Hard wait to laod the tab completely
@@ -1112,7 +1096,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await editKnowledgePage.clickArticleCancelButton();
             await utilCommon.clickOnWarningOk();
             await statusBladeKnowledgeArticlePo.setKnowledgeStatusWithReviewerDetails('SME Review', 'Petramco', 'Australia Support', 'AU Support 3', 'Kane Williamson');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -1160,9 +1143,8 @@ describe('Knowledge Articles - Versioning Tests', () => {
             console.log(await viewKnowledgeArticlePo.getArticleVersion());
 
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(updatedArticleTitle);
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
-            await navigationPage.signOut();
 
+            await navigationPage.signOut();
             await loginPage.login('elizabeth');
             await navigationPage.gotoKnowledgeConsole();
             await browser.sleep(5000);// Hard wait to load the tab properly
@@ -1179,7 +1161,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
         });
 
         afterAll(async () => {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });
@@ -1259,7 +1240,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
         });
         it('[DRDMV-20753]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', async () => {
             await statusBladeKnowledgeArticlePo.setKnowledgeStatusWithReviewerDetails('SME Review', 'Petramco', 'Australia Support', 'AU Support 3', 'Kane Williamson');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -1330,10 +1310,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await editKnowledgePage.clickArticleMajorEditSaveButton();
         });
         it('[DRDMV-20753]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', async () => {
-            await navigationPage.gotoKnowledgeConsole(true);
-            await utilityGrid.sortGridColumn('Created Date', 'desc');
-            await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
-            await utilityCommon.refresh(); // Refresh needed to reflect version update.
+            //await utilityCommon.refresh(); // Refresh needed to reflect version update.
             await browser.sleep(2000);
 
             updatedVersion = "Version " + "2" + " - " + actualDate;
@@ -1398,8 +1375,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await browser.sleep(2000);
         });
         it('[DRDMV-20753]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', async () => {
-            await navigationPage.gotoKnowledgeConsole(true);
-            await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             updatedVersion = "Version " + "3" + " - " + actualDate;
             expect(await viewKnowledgeArticlePo.getArticleVersion()).toBe(updatedVersion);
             expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Article is updated with Published status.');
@@ -1434,7 +1409,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
         });
 
         afterAll(async () => {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });
@@ -1532,7 +1506,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await editKnowledgePage.clickArticleCancelButton();
             await utilCommon.clickOnWarningOk();
             await statusBladeKnowledgeArticlePo.setKnowledgeStatusWithReviewerDetails('SME Review', 'Petramco', 'Australia Support', 'AU Support 3', 'Kane Williamson');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
         });
 
         it('[DRDMV-20748]:  Verify whether the user with appropriate knowledge permission roles can able to update the article with updated / new version', async () => {
@@ -1569,7 +1542,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await flagUnflagKnowledgePo.setTextInTellUsMore(articleDetails.displayId);
             await flagUnflagKnowledgePo.clickOnFlageButtonOnBlade();
 
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -1587,7 +1559,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
         });
 
         afterAll(async () => {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });
@@ -1624,8 +1595,8 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await statusConfigPO.renameExistingStatus('Released');
             await statusConfigPO.clickOnBackButton();
             await statusConfigPO.clickEditLifeCycleLink();
-            // await statusConfigPO.addCustomStatus('SME Review', 'Publish Approval', 'BeforePublished'); this custom status already created in knowledge-preset-filter.e2e-spec
-            // await statusConfigPO.addCustomStatus('Released', 'Retire Approval', 'AfterPublished'); which executes before this class
+            await statusConfigPO.addCustomStatus('SME Review', 'Publish Approval', 'BeforePublished'); //this custom status already created in knowledge-preset-filter.e2e-spec
+            await statusConfigPO.addCustomStatus('Released', 'Retire Approval', 'AfterPublished'); //which executes before this class
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.switchToApplication(knowledgeManagementApp);
             await utilityCommon.switchToNewTab(1);

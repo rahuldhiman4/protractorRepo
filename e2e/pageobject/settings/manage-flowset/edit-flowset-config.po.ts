@@ -130,7 +130,7 @@ class EditFlowsetPage {
     }
 
     async searchProcessMappingName(processMappingName: string): Promise<boolean> {
-        await utilGrid.searchRecord(processMappingName, this.selectors.processMappingConsoleGuid);
+        await utilGrid.isGridRecordPresent(processMappingName, this.selectors.processMappingConsoleGuid);
         return await element(by.cssContainingText('[rx-view-component-id="0e25a330-f284-4892-9777-84ae2a5583ff"] .ui-grid__link', processMappingName)).isPresent().then(async (result) => {
             if (result) {
                 return await element(by.cssContainingText('[rx-view-component-id="0e25a330-f284-4892-9777-84ae2a5583ff"] .ui-grid__link', processMappingName)).getText() == processMappingName ? true : false;

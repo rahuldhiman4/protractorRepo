@@ -8,6 +8,7 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import dbConnectObj from '../../utils/utility.db-connect';
 import utilityGrid from "../../utils/utility.grid";
+import { cloneDeep } from 'lodash';
 
 describe('Knowledge Console Preset Filter', () => {
     let userIdKnowledgeCoach = "idphylumkuser@petramco.com";
@@ -70,64 +71,67 @@ describe('Knowledge Console Preset Filter', () => {
         it('[DRDMV-20894]: Article data creation with multiple status 1', async () => {
             await apiHelper.apiLogin(userIdKnowledgeCoach, passwordKnowledgeCoach);
 
-            ARTICLE_DATA_ASSIGNTOME.knowledgeSet = knowledgeSetTitle;
-            ARTICLE_DATA_ASSIGNTOGROUP.knowledgeSet = knowledgeSetTitle;
-            ARTICLE_DATA_ASSIGNTOANOTHERUSER.knowledgeSet = knowledgeSetTitle;
+            let assignToMeVar = cloneDeep(ARTICLE_DATA_ASSIGNTOME);
+            let assignToGrpVar = cloneDeep(ARTICLE_DATA_ASSIGNTOGROUP);
+            let assignToAnotherUserVar = cloneDeep(ARTICLE_DATA_ASSIGNTOANOTHERUSER);
+            assignToMeVar.knowledgeSet = knowledgeSetTitle;
+            assignToGrpVar.knowledgeSet = knowledgeSetTitle;
+            assignToAnotherUserVar.knowledgeSet = knowledgeSetTitle;
 
             //Create article in In Progress status
-            ARTICLE_DATA_ASSIGNTOGROUP.title = title + "_In Progress";
-            let knowledgeArticleData13 = await apiHelper.createKnowledgeArticle(ARTICLE_DATA_ASSIGNTOGROUP);
+            assignToGrpVar.title = title + "_In Progress";
+            let knowledgeArticleData13 = await apiHelper.createKnowledgeArticle(assignToGrpVar);
 
             //Create article in In Progress status
-            ARTICLE_DATA_ASSIGNTOME.title = title + "_In Progress";
-            let knowledgeArticleData1 = await apiHelper.createKnowledgeArticle(ARTICLE_DATA_ASSIGNTOME);
+            assignToMeVar.title = title + "_In Progress";
+            let knowledgeArticleData1 = await apiHelper.createKnowledgeArticle(assignToMeVar);
             knowledgeId.push(knowledgeArticleData1.displayId);
 
             //Create article in Draft status
-            ARTICLE_DATA_ASSIGNTOME.title = title + "_Draft";
-            let knowledgeArticleData2 = await apiHelper.createKnowledgeArticle(ARTICLE_DATA_ASSIGNTOME);
+            assignToMeVar.title = title + "_Draft";
+            let knowledgeArticleData2 = await apiHelper.createKnowledgeArticle(assignToMeVar);
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData2.id, 'Draft');
             knowledgeId.push(knowledgeArticleData2.displayId);
 
             //Create article in SME Review status
-            ARTICLE_DATA_ASSIGNTOME.title = title + "_SME Review";
-            let knowledgeArticleData5 = await apiHelper.createKnowledgeArticle(ARTICLE_DATA_ASSIGNTOME);
+            assignToMeVar.title = title + "_SME Review";
+            let knowledgeArticleData5 = await apiHelper.createKnowledgeArticle(assignToMeVar);
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData5.id, 'Draft');
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData5.id, 'SMEReview', 'idphylumkuser', 'Phylum Support Group1', 'Phylum');
             knowledgeId.push(knowledgeArticleData5.displayId);
 
             //Create article in Publish Approval status
-            ARTICLE_DATA_ASSIGNTOME.title = title + "_Publish Approval";
-            let knowledgeArticleData6 = await apiHelper.createKnowledgeArticle(ARTICLE_DATA_ASSIGNTOME);
+            assignToMeVar.title = title + "_Publish Approval";
+            let knowledgeArticleData6 = await apiHelper.createKnowledgeArticle(assignToMeVar);
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData6.id, 'Draft');
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData6.id, 'PublishApproval', 'idphylumkuser', 'Phylum Support Group1', 'Phylum');
             knowledgeId.push(knowledgeArticleData6.displayId);
 
             //Create article in BeforePublished(Custom status 1) status
-            ARTICLE_DATA_ASSIGNTOME.title = title + "_Before Published";
-            let knowledgeArticleData7 = await apiHelper.createKnowledgeArticle(ARTICLE_DATA_ASSIGNTOME);
+            assignToMeVar.title = title + "_Before Published";
+            let knowledgeArticleData7 = await apiHelper.createKnowledgeArticle(assignToMeVar);
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData7.id, 'Draft');
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData7.id, 'SMEReview', 'idphylumkuser', 'Phylum Support Group1', 'Phylum');
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData7.id, 'BeforePublished');
             knowledgeId.push(knowledgeArticleData7.displayId);
 
             //Create article in Cancel Approval status
-            ARTICLE_DATA_ASSIGNTOME.title = title + "_Cancel Approval";
-            let knowledgeArticleData3 = await apiHelper.createKnowledgeArticle(ARTICLE_DATA_ASSIGNTOME);
+            assignToMeVar.title = title + "_Cancel Approval";
+            let knowledgeArticleData3 = await apiHelper.createKnowledgeArticle(assignToMeVar);
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData3.id, 'CancelApproval', 'idphylumkuser', 'Phylum Support Group1', 'Phylum');
             knowledgeId.push(knowledgeArticleData3.displayId);
 
             //Create article in Cancel status
-            ARTICLE_DATA_ASSIGNTOME.title = title + "_Cancel";
-            let knowledgeArticleData4 = await apiHelper.createKnowledgeArticle(ARTICLE_DATA_ASSIGNTOME);
+            assignToMeVar.title = title + "_Cancel";
+            let knowledgeArticleData4 = await apiHelper.createKnowledgeArticle(assignToMeVar);
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData4.id, 'Draft');
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData4.id, 'CancelApproval', 'idphylumkuser', 'Phylum Support Group1', 'Phylum');
             await apiHelper.approverAction(knowledgeArticleData4.id, 'Approved');
             knowledgeId.push(knowledgeArticleData4.displayId);
 
             //Create article in Published status
-            ARTICLE_DATA_ASSIGNTOME.title = title + "_Published";
-            let knowledgeArticleData8 = await apiHelper.createKnowledgeArticle(ARTICLE_DATA_ASSIGNTOME);
+            assignToMeVar.title = title + "_Published";
+            let knowledgeArticleData8 = await apiHelper.createKnowledgeArticle(assignToMeVar);
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData8.id, 'Draft');
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData8.id, 'PublishApproval', 'idphylumkuser', 'Phylum Support Group1', 'Phylum');
             await apiHelper.approverAction(knowledgeArticleData8.id, 'Approved');
@@ -136,9 +140,12 @@ describe('Knowledge Console Preset Filter', () => {
             knowledgeId.push(knowledgeArticleData13.displayId);
         });
         it('[DRDMV-20894]: Article data creation with multiple status 2', async () => {
+            let assignToMe = cloneDeep(ARTICLE_DATA_ASSIGNTOME);
+            assignToMe.knowledgeSet = knowledgeSetTitle;
+
             //Create article in Closed status
-            ARTICLE_DATA_ASSIGNTOME.title = title + "_Closed";
-            let knowledgeArticleData9 = await apiHelper.createKnowledgeArticle(ARTICLE_DATA_ASSIGNTOME);
+            assignToMe.title = title + "_Closed";
+            let knowledgeArticleData9 = await apiHelper.createKnowledgeArticle(assignToMe);
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData9.id, 'Draft');
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData9.id, 'PublishApproval', 'idphylumkuser', 'Phylum Support Group1', 'Phylum');
             await apiHelper.approverAction(knowledgeArticleData9.id, 'Approved');
@@ -151,8 +158,8 @@ describe('Knowledge Console Preset Filter', () => {
             knowledgeId.push(knowledgeArticleData9.displayId);
 
             //Create article in After Published status
-            ARTICLE_DATA_ASSIGNTOME.title = title + "_After Published";
-            let knowledgeArticleData10 = await apiHelper.createKnowledgeArticle(ARTICLE_DATA_ASSIGNTOME);
+            assignToMe.title = title + "_After Published";
+            let knowledgeArticleData10 = await apiHelper.createKnowledgeArticle(assignToMe);
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData10.id, 'Draft');
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData10.id, 'PublishApproval', 'idphylumkuser', 'Phylum Support Group1', 'Phylum');
             await apiHelper.approverAction(knowledgeArticleData10.id, 'Approved');
@@ -161,9 +168,14 @@ describe('Knowledge Console Preset Filter', () => {
             knowledgeId.push(knowledgeArticleData10.displayId);
         });
         it('[DRDMV-20894]: Article data creation with multiple status 3', async () => {
+            let assignToMeVar = cloneDeep(ARTICLE_DATA_ASSIGNTOME);
+            let assignToAnotherUserVar = cloneDeep(ARTICLE_DATA_ASSIGNTOANOTHERUSER);
+            assignToMeVar.knowledgeSet = knowledgeSetTitle;
+            assignToAnotherUserVar.knowledgeSet = knowledgeSetTitle;
+            
             //Create article in Retire Approval status
-            ARTICLE_DATA_ASSIGNTOME.title = title + "_Retire Approval";
-            let knowledgeArticleData11 = await apiHelper.createKnowledgeArticle(ARTICLE_DATA_ASSIGNTOME);
+            assignToMeVar.title = title + "_Retire Approval";
+            let knowledgeArticleData11 = await apiHelper.createKnowledgeArticle(assignToMeVar);
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData11.id, 'Draft');
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData11.id, 'PublishApproval', 'idphylumkuser', 'Phylum Support Group1', 'Phylum');
             await apiHelper.approverAction(knowledgeArticleData11.id, 'Approved');
@@ -173,8 +185,8 @@ describe('Knowledge Console Preset Filter', () => {
             knowledgeId.push(knowledgeArticleData11.displayId);
 
             //Create article in Retired status
-            ARTICLE_DATA_ASSIGNTOME.title = title + "_Retired";
-            let knowledgeArticleData12 = await apiHelper.createKnowledgeArticle(ARTICLE_DATA_ASSIGNTOME);
+            assignToMeVar.title = title + "_Retired";
+            let knowledgeArticleData12 = await apiHelper.createKnowledgeArticle(assignToMeVar);
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData12.id, 'Draft');
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData12.id, 'PublishApproval', 'idphylumkuser', 'Phylum Support Group1', 'Phylum');
             await apiHelper.approverAction(knowledgeArticleData12.id, 'Approved');
@@ -185,8 +197,8 @@ describe('Knowledge Console Preset Filter', () => {
             knowledgeId.push(knowledgeArticleData12.displayId);
 
             //Create article in In Progress status
-            ARTICLE_DATA_ASSIGNTOANOTHERUSER.title = title + "_In Progress";
-            let knowledgeArticleData14 = await apiHelper.createKnowledgeArticle(ARTICLE_DATA_ASSIGNTOANOTHERUSER);
+            assignToAnotherUserVar.title = title + "_In Progress";
+            let knowledgeArticleData14 = await apiHelper.createKnowledgeArticle(assignToAnotherUserVar);
             knowledgeId.push(knowledgeArticleData14.displayId);
         });
         it('[DRDMV-20894]: Validate the My Open Articles filter after applying and removing the filter', async () => {
@@ -214,61 +226,65 @@ describe('Knowledge Console Preset Filter', () => {
         let title = 'KnowledgeArticle';
 
         it('[DRDMV-20890]: Article data creation for different status 1', async () => {
+            let assignToMeVar = cloneDeep(ARTICLE_DATA_ASSIGNTOME);
+            let assignToGrpVar = cloneDeep(ARTICLE_DATA_ASSIGNTOGROUP);
+            let assignToAnotherUserVar = cloneDeep(ARTICLE_DATA_ASSIGNTOANOTHERUSER);
+
             await apiHelper.apiLogin(userIdKnowledgeCoach, passwordKnowledgeCoach);
-            ARTICLE_DATA_ASSIGNTOME.knowledgeSet = knowledgeSetTitle;
-            ARTICLE_DATA_ASSIGNTOGROUP.knowledgeSet = knowledgeSetTitle;
-            ARTICLE_DATA_ASSIGNTOANOTHERUSER.knowledgeSet = knowledgeSetTitle;
+            assignToMeVar.knowledgeSet = knowledgeSetTitle;
+            assignToGrpVar.knowledgeSet = knowledgeSetTitle;
+            assignToAnotherUserVar.knowledgeSet = knowledgeSetTitle;
 
             //Create article in In Progress status
-            ARTICLE_DATA_ASSIGNTOME.title = title + "_In Progress";
-            let knowledgeArticleData1 = await apiHelper.createKnowledgeArticle(ARTICLE_DATA_ASSIGNTOME);
+            assignToMeVar.title = title + "_In Progress";
+            let knowledgeArticleData1 = await apiHelper.createKnowledgeArticle(assignToMeVar);
             knowledgeId.push(knowledgeArticleData1.displayId);
 
             //Create article in Draft status
-            ARTICLE_DATA_ASSIGNTOME.title = title + "_Draft";
-            let knowledgeArticleData2 = await apiHelper.createKnowledgeArticle(ARTICLE_DATA_ASSIGNTOME);
+            assignToMeVar.title = title + "_Draft";
+            let knowledgeArticleData2 = await apiHelper.createKnowledgeArticle(assignToMeVar);
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData2.id, 'Draft');
             knowledgeId.push(knowledgeArticleData2.displayId);
 
             //Create article in Cancel Approval status
-            ARTICLE_DATA_ASSIGNTOME.title = title + "_Cancel Approval";
-            let knowledgeArticleData3 = await apiHelper.createKnowledgeArticle(ARTICLE_DATA_ASSIGNTOME);
+            assignToMeVar.title = title + "_Cancel Approval";
+            let knowledgeArticleData3 = await apiHelper.createKnowledgeArticle(assignToMeVar);
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData3.id, 'CancelApproval');
             knowledgeId.push(knowledgeArticleData3.displayId);
 
             //Create article in Cancel status
-            ARTICLE_DATA_ASSIGNTOME.title = title + "_Cancel";
-            let knowledgeArticleData4 = await apiHelper.createKnowledgeArticle(ARTICLE_DATA_ASSIGNTOME);
+            assignToMeVar.title = title + "_Cancel";
+            let knowledgeArticleData4 = await apiHelper.createKnowledgeArticle(assignToMeVar);
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData4.id, 'Draft');
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData4.id, 'CancelApproval');
             await apiHelper.approverAction(knowledgeArticleData4.id, 'Approved');
             knowledgeId.push(knowledgeArticleData4.displayId);
 
             //Create article in SME Review status
-            ARTICLE_DATA_ASSIGNTOME.title = title + "_SME Review";
-            let knowledgeArticleData5 = await apiHelper.createKnowledgeArticle(ARTICLE_DATA_ASSIGNTOME);
+            assignToMeVar.title = title + "_SME Review";
+            let knowledgeArticleData5 = await apiHelper.createKnowledgeArticle(assignToMeVar);
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData5.id, 'Draft');
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData5.id, 'SMEReview', 'idphylumkuser', 'Phylum Support Group1', 'Phylum');
             knowledgeId.push(knowledgeArticleData5.displayId);
 
             //Create article in Publish Approval status
-            ARTICLE_DATA_ASSIGNTOME.title = title + "_Publish Approval";
-            let knowledgeArticleData6 = await apiHelper.createKnowledgeArticle(ARTICLE_DATA_ASSIGNTOME);
+            assignToMeVar.title = title + "_Publish Approval";
+            let knowledgeArticleData6 = await apiHelper.createKnowledgeArticle(assignToMeVar);
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData6.id, 'Draft');
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData6.id, 'PublishApproval', 'idphylumkuser', 'Phylum Support Group1', 'Phylum');
             knowledgeId.push(knowledgeArticleData6.displayId);
 
             //Create article in BeforePublished(Custom status 1) status
-            ARTICLE_DATA_ASSIGNTOME.title = title + "_Before Published";
-            let knowledgeArticleData7 = await apiHelper.createKnowledgeArticle(ARTICLE_DATA_ASSIGNTOME);
+            assignToMeVar.title = title + "_Before Published";
+            let knowledgeArticleData7 = await apiHelper.createKnowledgeArticle(assignToMeVar);
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData7.id, 'Draft');
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData7.id, 'SMEReview', 'idphylumkuser', 'Phylum Support Group1', 'Phylum');
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData7.id, 'BeforePublished');
             knowledgeId.push(knowledgeArticleData7.displayId);
 
             //Create article in Closed status
-            ARTICLE_DATA_ASSIGNTOME.title = title + "_Closed";
-            let knowledgeArticleData9 = await apiHelper.createKnowledgeArticle(ARTICLE_DATA_ASSIGNTOME);
+            assignToMeVar.title = title + "_Closed";
+            let knowledgeArticleData9 = await apiHelper.createKnowledgeArticle(assignToMeVar);
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData9.id, 'Draft');
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData9.id, 'PublishApproval', 'idphylumkuser', 'Phylum Support Group1', 'Phylum');
             await apiHelper.approverAction(knowledgeArticleData9.id, 'Approved');
@@ -282,9 +298,12 @@ describe('Knowledge Console Preset Filter', () => {
         });
 
         it('[DRDMV-20890]: Article data creation for different status 2', async () => {
+            let assignToMeVar = cloneDeep(ARTICLE_DATA_ASSIGNTOME);
+            assignToMeVar.knowledgeSet = knowledgeSetTitle;
+
             //Create article in After Published status
-            ARTICLE_DATA_ASSIGNTOME.title = title + "_After Published";
-            let knowledgeArticleData10 = await apiHelper.createKnowledgeArticle(ARTICLE_DATA_ASSIGNTOME);
+            assignToMeVar.title = title + "_After Published";
+            let knowledgeArticleData10 = await apiHelper.createKnowledgeArticle(assignToMeVar);
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData10.id, 'Draft');
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData10.id, 'PublishApproval', 'idphylumkuser', 'Phylum Support Group1', 'Phylum');
             await apiHelper.approverAction(knowledgeArticleData10.id, 'Approved');
@@ -293,8 +312,8 @@ describe('Knowledge Console Preset Filter', () => {
             knowledgeId.push(knowledgeArticleData10.displayId);
 
             //Create article in Retire Approval status
-            ARTICLE_DATA_ASSIGNTOME.title = title + "_Retire Approval";
-            let knowledgeArticleData11 = await apiHelper.createKnowledgeArticle(ARTICLE_DATA_ASSIGNTOME);
+            assignToMeVar.title = title + "_Retire Approval";
+            let knowledgeArticleData11 = await apiHelper.createKnowledgeArticle(assignToMeVar);
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData11.id, 'Draft');
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData11.id, 'PublishApproval', 'idphylumkuser', 'Phylum Support Group1', 'Phylum');
             await apiHelper.approverAction(knowledgeArticleData11.id, 'Approved');
@@ -305,9 +324,12 @@ describe('Knowledge Console Preset Filter', () => {
         });
 
         it('[DRDMV-20890]: Article data creation for different status 3', async () => {
+            let assignToMeVar = cloneDeep(ARTICLE_DATA_ASSIGNTOME);
+            assignToMeVar.knowledgeSet = knowledgeSetTitle;
+
             //Create article in Retired status
-            ARTICLE_DATA_ASSIGNTOME.title = title + "_Retired";
-            let knowledgeArticleData12 = await apiHelper.createKnowledgeArticle(ARTICLE_DATA_ASSIGNTOME);
+            assignToMeVar.title = title + "_Retired";
+            let knowledgeArticleData12 = await apiHelper.createKnowledgeArticle(assignToMeVar);
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData12.id, 'Draft');
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData12.id, 'PublishApproval', 'idphylumkuser', 'Phylum Support Group1', 'Phylum');
             await apiHelper.approverAction(knowledgeArticleData12.id, 'Approved');
@@ -319,16 +341,16 @@ describe('Knowledge Console Preset Filter', () => {
             knowledgeId.push(knowledgeArticleData12.displayId);
 
             //Create article in Published status and mark it as External
-            ARTICLE_DATA_ASSIGNTOME.title = title + "_Published";
-            let knowledgeArticleData13 = await apiHelper.createKnowledgeArticle(ARTICLE_DATA_ASSIGNTOME);
+            assignToMeVar.title = title + "_Published";
+            let knowledgeArticleData13 = await apiHelper.createKnowledgeArticle(assignToMeVar);
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData13.id, 'Draft');
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData13.id, 'PublishApproval', 'idphylumkuser', 'Phylum Support Group1', 'Phylum');
             await apiHelper.approverAction(knowledgeArticleData13.id, 'Approved');
             knowledgeId.push(knowledgeArticleData13.displayId);
 
             //Create article in Published status
-            ARTICLE_DATA_ASSIGNTOME.title = title + "_Published";
-            let knowledgeArticleData8 = await apiHelper.createKnowledgeArticle(ARTICLE_DATA_ASSIGNTOME);
+            assignToMeVar.title = title + "_Published";
+            let knowledgeArticleData8 = await apiHelper.createKnowledgeArticle(assignToMeVar);
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData8.id, 'Draft');
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData8.id, 'PublishApproval', 'idphylumkuser', 'Phylum Support Group1', 'Phylum');
             await apiHelper.approverAction(knowledgeArticleData8.id, 'Approved');
@@ -359,22 +381,23 @@ describe('Knowledge Console Preset Filter', () => {
     });
 
     it('[DRDMV-20893]: Validate the All Externally Published Articles filter after applying and removing the filter', async () => {
+        let assignToMeVar = cloneDeep(ARTICLE_DATA_ASSIGNTOME);
         await apiHelper.apiLogin(userIdKnowledgeCoach, passwordKnowledgeCoach);
         let knowledgeId: string[] = [];
         let title = 'KnowledgeArticle';
-        ARTICLE_DATA_ASSIGNTOME.knowledgeSet = knowledgeSetTitle;
+        assignToMeVar.knowledgeSet = knowledgeSetTitle;
 
         //Create article in Published status
-        ARTICLE_DATA_ASSIGNTOME.title = title + "_Published";
-        let knowledgeArticleData2 = await apiHelper.createKnowledgeArticle(ARTICLE_DATA_ASSIGNTOME);
+        assignToMeVar.title = title + "_Published";
+        let knowledgeArticleData2 = await apiHelper.createKnowledgeArticle(assignToMeVar);
         await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData2.id, 'Draft');
         await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData2.id, 'PublishApproval', 'idphylumkuser', 'Phylum Support Group1', 'Phylum');
         await apiHelper.approverAction(knowledgeArticleData2.id, 'Approved');
         knowledgeId.push(knowledgeArticleData2.displayId);
 
         //Create article in Published status
-        ARTICLE_DATA_ASSIGNTOME.title = title + "_Published";
-        let knowledgeArticleData1 = await apiHelper.createKnowledgeArticle(ARTICLE_DATA_ASSIGNTOME);
+        assignToMeVar.title = title + "_Published";
+        let knowledgeArticleData1 = await apiHelper.createKnowledgeArticle(assignToMeVar);
         await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData1.id, 'Draft');
         await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData1.id, 'PublishApproval', 'idphylumkuser', 'Phylum Support Group1', 'Phylum');
         await apiHelper.approverAction(knowledgeArticleData1.id, 'Approved');
@@ -396,15 +419,17 @@ describe('Knowledge Console Preset Filter', () => {
     });
 
     it('[DRDMV-20895]: Validate the All Articles In Last 1 month filter after applying and removing the filter', async () => {
+        let assignToMeVar = cloneDeep(ARTICLE_DATA_ASSIGNTOME);
+
         let dbConnectVar = await dbConnectObj.dbConnect();
         await apiHelper.apiLogin(userIdKnowledgeCoach, passwordKnowledgeCoach);
         let knowledgeId: string[] = [];
         let title = 'KnowledgeArticle';
-        ARTICLE_DATA_ASSIGNTOME.knowledgeSet = knowledgeSetTitle;
+        assignToMeVar.knowledgeSet = knowledgeSetTitle;
 
         //Create article in Draft status and update the created date below 1 month
-        ARTICLE_DATA_ASSIGNTOME.title = title + "_Draft";
-        let knowledgeArticleData1 = await apiHelper.createKnowledgeArticle(ARTICLE_DATA_ASSIGNTOME);
+        assignToMeVar.title = title + "_Draft";
+        let knowledgeArticleData1 = await apiHelper.createKnowledgeArticle(assignToMeVar);
         await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData1.id, 'Draft');
         let displayId1 = knowledgeArticleData1.displayId;
         knowledgeId.push(displayId1);
@@ -414,8 +439,8 @@ describe('Knowledge Console Preset Filter', () => {
         await dbConnectVar.query(`UPDATE t1332 SET c3 = '${dateEpochValueArticle1}' WHERE c302300507 = '${displayId1}'`);
 
         //Create article in Published status and update the created date below 1 month
-        ARTICLE_DATA_ASSIGNTOME.title = title + "_Published";
-        let knowledgeArticleData2 = await apiHelper.createKnowledgeArticle(ARTICLE_DATA_ASSIGNTOME);
+        assignToMeVar.title = title + "_Published";
+        let knowledgeArticleData2 = await apiHelper.createKnowledgeArticle(assignToMeVar);
         await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData2.id, 'Draft');
         await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData2.id, 'PublishApproval', 'idphylumkuser', 'Phylum Support Group1', 'Phylum');
         await apiHelper.approverAction(knowledgeArticleData2.id, 'Approved');
@@ -427,8 +452,8 @@ describe('Knowledge Console Preset Filter', () => {
         await dbConnectVar.query(`UPDATE t1332 SET c3 = '${dateEpochValueArticle2}' WHERE c302300507 = '${displayId2}'`);
 
         //Create article in Draft status and update the created date above 1 month
-        ARTICLE_DATA_ASSIGNTOME.title = title + "_Draft";
-        let knowledgeArticleData3 = await apiHelper.createKnowledgeArticle(ARTICLE_DATA_ASSIGNTOME);
+        assignToMeVar.title = title + "_Draft";
+        let knowledgeArticleData3 = await apiHelper.createKnowledgeArticle(assignToMeVar);
         await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData3.id, 'Draft');
         let displayId3 = knowledgeArticleData3.displayId;
         knowledgeId.push(displayId3);
@@ -438,8 +463,8 @@ describe('Knowledge Console Preset Filter', () => {
         await dbConnectVar.query(`UPDATE t1332 SET c3 = '${dateEpochValueArticle3}' WHERE c302300507 = '${displayId3}'`);
 
         //Create article in Published status and update the created date below 1 month
-        ARTICLE_DATA_ASSIGNTOME.title = title + "_Published";
-        let knowledgeArticleData4 = await apiHelper.createKnowledgeArticle(ARTICLE_DATA_ASSIGNTOME);
+        assignToMeVar.title = title + "_Published";
+        let knowledgeArticleData4 = await apiHelper.createKnowledgeArticle(assignToMeVar);
         await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData4.id, 'Draft');
         await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData4.id, 'PublishApproval', 'idphylumkuser', 'Phylum Support Group1', 'Phylum');
         await apiHelper.approverAction(knowledgeArticleData4.id, 'Approved');
@@ -467,15 +492,17 @@ describe('Knowledge Console Preset Filter', () => {
     });
 
     it('[DRDMV-20902]: Validate the All Articles In Last 3 months filter after applying and removing the filter	', async () => {
+        let assignToMeVar = cloneDeep(ARTICLE_DATA_ASSIGNTOME);
+
         let dbConnectVar = await dbConnectObj.dbConnect();
         await apiHelper.apiLogin(userIdKnowledgeCoach, passwordKnowledgeCoach);
         let knowledgeId: string[] = [];
         let title = 'KnowledgeArticle';
-        ARTICLE_DATA_ASSIGNTOME.knowledgeSet = knowledgeSetTitle;
+        assignToMeVar.knowledgeSet = knowledgeSetTitle;
 
         //Create article with the created date below 1 month
-        ARTICLE_DATA_ASSIGNTOME.title = title + "_Draft";
-        let knowledgeArticleData1 = await apiHelper.createKnowledgeArticle(ARTICLE_DATA_ASSIGNTOME);
+        assignToMeVar.title = title + "_Draft";
+        let knowledgeArticleData1 = await apiHelper.createKnowledgeArticle(assignToMeVar);
         await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData1.id, 'Draft');
         let displayId1 = knowledgeArticleData1.displayId;
         knowledgeId.push(displayId1);
@@ -485,8 +512,8 @@ describe('Knowledge Console Preset Filter', () => {
         await dbConnectVar.query(`UPDATE t1332 SET c3 = '${dateEpochValueArticle1}' WHERE c302300507 = '${displayId1}'`);
 
         //Create article with the created date above 1 month and below 3 months
-        ARTICLE_DATA_ASSIGNTOME.title = title + "_Draft";
-        let knowledgeArticleData2 = await apiHelper.createKnowledgeArticle(ARTICLE_DATA_ASSIGNTOME);
+        assignToMeVar.title = title + "_Draft";
+        let knowledgeArticleData2 = await apiHelper.createKnowledgeArticle(assignToMeVar);
         await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData2.id, 'Draft');
         let displayId2 = knowledgeArticleData2.displayId;
         knowledgeId.push(displayId2);
@@ -496,8 +523,8 @@ describe('Knowledge Console Preset Filter', () => {
         await dbConnectVar.query(`UPDATE t1332 SET c3 = '${dateEpochValueArticle2}' WHERE c302300507 = '${displayId2}'`);
 
         //Create article with the created date above 3 months
-        ARTICLE_DATA_ASSIGNTOME.title = title + "_Draft";
-        let knowledgeArticleData3 = await apiHelper.createKnowledgeArticle(ARTICLE_DATA_ASSIGNTOME);
+        assignToMeVar.title = title + "_Draft";
+        let knowledgeArticleData3 = await apiHelper.createKnowledgeArticle(assignToMeVar);
         await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData3.id, 'Draft');
         let displayId3 = knowledgeArticleData3.displayId;
         knowledgeId.push(displayId3);
@@ -505,7 +532,9 @@ describe('Knowledge Console Preset Filter', () => {
         let dateForArticle3 = await utilityCommon.getOldDate(93);
         let dateEpochValueArticle3 = await dbConnectObj.dateEpochConverter(dateForArticle3);
         await dbConnectVar.query(`UPDATE t1332 SET c3 = '${dateEpochValueArticle3}' WHERE c302300507 = '${displayId3}'`);
-
+        await navigationPage.gotoCaseConsole();
+        await navigationPage.switchToApplication('Knowledge Management');
+        await utilityGrid.clearFilter();
         await utilityGrid.applyPresetFilter('All Articles In Last 3 months');
         let allTaskFilter: string[] = ['All Articles In Last 3 months'];
         expect(await utilityGrid.isAppliedFilterMatches(allTaskFilter)).toBeTruthy();
@@ -521,15 +550,17 @@ describe('Knowledge Console Preset Filter', () => {
     });
 
     it('[DRDMV-22112]: Validate the All Articles In Last 6 months filter after applying and removing the filter	', async () => {
+        let assignToMeVar = cloneDeep(ARTICLE_DATA_ASSIGNTOME);
+
         let dbConnectVar = await dbConnectObj.dbConnect();
         await apiHelper.apiLogin(userIdKnowledgeCoach, passwordKnowledgeCoach);
         let knowledgeId: string[] = [];
         let title = 'KnowledgeArticle';
-        ARTICLE_DATA_ASSIGNTOME.knowledgeSet = knowledgeSetTitle;
+        assignToMeVar.knowledgeSet = knowledgeSetTitle;
 
         //Create article with the created date below 1 month
-        ARTICLE_DATA_ASSIGNTOME.title = title + "_Draft";
-        let knowledgeArticleData1 = await apiHelper.createKnowledgeArticle(ARTICLE_DATA_ASSIGNTOME);
+        assignToMeVar.title = title + "_Draft";
+        let knowledgeArticleData1 = await apiHelper.createKnowledgeArticle(assignToMeVar);
         await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData1.id, 'Draft');
         let displayId1 = knowledgeArticleData1.displayId;
         knowledgeId.push(displayId1);
@@ -539,8 +570,8 @@ describe('Knowledge Console Preset Filter', () => {
         await dbConnectVar.query(`UPDATE t1332 SET c3 = '${dateEpochValueArticle1}' WHERE c302300507 = '${displayId1}'`);
 
         //Create article with the created date above 1 month and below 3 months
-        ARTICLE_DATA_ASSIGNTOME.title = title + "_Draft";
-        let knowledgeArticleData2 = await apiHelper.createKnowledgeArticle(ARTICLE_DATA_ASSIGNTOME);
+        assignToMeVar.title = title + "_Draft";
+        let knowledgeArticleData2 = await apiHelper.createKnowledgeArticle(assignToMeVar);
         await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData2.id, 'Draft');
         let displayId2 = knowledgeArticleData2.displayId;
         knowledgeId.push(displayId2);
@@ -550,8 +581,8 @@ describe('Knowledge Console Preset Filter', () => {
         await dbConnectVar.query(`UPDATE t1332 SET c3 = '${dateEpochValueArticle2}' WHERE c302300507 = '${displayId2}'`);
 
         //Create article with the created date above 3 months and below 6 months
-        ARTICLE_DATA_ASSIGNTOME.title = title + "_Draft";
-        let knowledgeArticleData3 = await apiHelper.createKnowledgeArticle(ARTICLE_DATA_ASSIGNTOME);
+        assignToMeVar.title = title + "_Draft";
+        let knowledgeArticleData3 = await apiHelper.createKnowledgeArticle(assignToMeVar);
         await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData3.id, 'Draft');
         let displayId3 = knowledgeArticleData3.displayId;
         knowledgeId.push(displayId3);
@@ -561,8 +592,8 @@ describe('Knowledge Console Preset Filter', () => {
         await dbConnectVar.query(`UPDATE t1332 SET c3 = '${dateEpochValueArticle3}' WHERE c302300507 = '${displayId3}'`);
 
         //Create article with the created date above 3 months and below 6 months
-        ARTICLE_DATA_ASSIGNTOME.title = title + "_Draft";
-        let knowledgeArticleData4 = await apiHelper.createKnowledgeArticle(ARTICLE_DATA_ASSIGNTOME);
+        assignToMeVar.title = title + "_Draft";
+        let knowledgeArticleData4 = await apiHelper.createKnowledgeArticle(assignToMeVar);
         await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData4.id, 'Draft');
         let displayId4 = knowledgeArticleData4.displayId;
         knowledgeId.push(displayId4);
@@ -570,7 +601,8 @@ describe('Knowledge Console Preset Filter', () => {
         let dateForArticle4 = await utilityCommon.getOldDate(200);
         let dateEpochValueArticle4 = await dbConnectObj.dateEpochConverter(dateForArticle4);
         await dbConnectVar.query(`UPDATE t1332 SET c3 = '${dateEpochValueArticle4}' WHERE c302300507 = '${displayId4}'`);
-
+        await navigationPage.switchToApplication('Knowledge Management');
+        await utilityGrid.clearFilter();
         await utilityGrid.applyPresetFilter('All Articles In Last 6 months');
         let allTaskFilter: string[] = ['All Articles In Last 6 months'];
         expect(await utilityGrid.isAppliedFilterMatches(allTaskFilter)).toBeTruthy();

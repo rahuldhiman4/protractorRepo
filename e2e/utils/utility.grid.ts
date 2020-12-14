@@ -36,13 +36,13 @@ export class GridOperations {
 
     async searchRecord(searchValue: string, guid?: string): Promise<void> {
         let searchTextBoxLocator: string = this.selectors.searchTextBox;
-        let gridRecordsLocator: string = this.selectors.gridRowLinks;
+        let gridRecordsLocator: string = this.selectors.gridRows;
         if (guid) {
             searchTextBoxLocator = `[rx-view-component-id="${guid}"] ` + searchTextBoxLocator;
             gridRecordsLocator = `[rx-view-component-id='${guid}'] ` + gridRecordsLocator;
         }
         await this.clearFilter();
-        for (let i: number = 0; i < 6; i++) {
+        for (let i: number = 0; i < 7; i++) {
             console.log(searchValue, "search angular grid count: ", i);
             await $(searchTextBoxLocator).clear();
             await $(searchTextBoxLocator).sendKeys(searchValue + protractor.Key.ENTER);
@@ -55,7 +55,7 @@ export class GridOperations {
 
     async searchRecordWithoutFilter(searchValue: string, guid?: string): Promise<void> {
         let searchTextBoxLocator: string = this.selectors.searchTextBox;
-        let gridRecordsLocator: string = this.selectors.gridRowLinks;
+        let gridRecordsLocator: string = this.selectors.gridRows;
         if (guid) {
             searchTextBoxLocator = `[rx-view-component-id="${guid}"] ` + searchTextBoxLocator;
             gridRecordsLocator = `[rx-view-component-id='${guid}'] ` + gridRecordsLocator;
@@ -152,7 +152,7 @@ export class GridOperations {
             refreshIcon = gridGuid + refreshIcon;
         }
         let hiddentFilter1 = await $('.adapt-table-toolbar-hidden-items-dropdown .d-icon-ellipsis').isPresent();
-        if(hiddentFilter1 == true){
+        if (hiddentFilter1 == true) {
             await $('.adapt-table-toolbar-hidden-items-dropdown .d-icon-ellipsis').click();
         }
         await $(appliedPresetFilter).isPresent().then(async (result) => {
@@ -161,9 +161,9 @@ export class GridOperations {
                 await $$(clearBtn).first().click();
                 await $(refreshIcon).click();
                 let hiddentFilter2 = await $('.adapt-table-toolbar-hidden-items-dropdown .d-icon-ellipsis').isPresent();
-                if(hiddentFilter2 == true){
+                if (hiddentFilter2 == true) {
                     await $('.adapt-table-toolbar-hidden-items-dropdown .d-icon-ellipsis').click();
-                } 
+                }
             } else {
                 console.log("Filters are already cleared");
             }
@@ -333,7 +333,7 @@ export class GridOperations {
             refreshIcon = `[rx-view-component-id="${guid}"] ` + refreshIcon;
         }
         let hiddentFilter = await $('.adapt-table-toolbar-hidden-items-dropdown .d-icon-ellipsis').isPresent();
-        if(hiddentFilter == true){
+        if (hiddentFilter == true) {
             await $('.adapt-table-toolbar-hidden-items-dropdown .d-icon-ellipsis').click();
         }
         await $(guidId + this.selectors.filterPresetBtn).click();
@@ -372,7 +372,7 @@ export class GridOperations {
         }
         await $(refreshIcon).click();
 
-        if(hiddentFilter == true){
+        if (hiddentFilter == true) {
             await $('.adapt-table-toolbar-hidden-items-dropdown .d-icon-ellipsis').click();
         }
     }

@@ -15,12 +15,58 @@ import utilityCommon from '../../utils/utility.common';
 describe('Document Template', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
-        await loginPage.login('jbarnes');
+        await loginPage.login('qkatawazi');
     });
 
     afterAll(async () => {
         await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
+    });
+
+    //kgaikwad
+    describe('[DRDMV-14977]: Verify UI for Document template create ,edit, view mode', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let documentName = "DocumentTemplate" + randomStr;
+        let documentDescription = "description" + randomStr;
+        let documentBody = "documentBody" + randomStr;
+        let label1 = "POSH";
+        let label2 = "Payroll";
+
+        it('[DRDMV-14977]: Verify Create Document Template UI', async () => {
+            // Goto document template
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Document Management--Templates', 'Document Templates - Business Workflows');
+
+            await createDocumentTemplatePo.clickOnAddTemplate();
+            expect(await createDocumentTemplatePo.isHeaderDisplayed('Create Document Template')).toBeTruthy('Create document template header is missing');
+            expect(await createDocumentTemplatePo.isFieldRequired('Template Name')).toBeTruthy('FailureMsg: Required tag is missing for Template Name')
+            expect(await createDocumentTemplatePo.isFieldRequired('Company')).toBeTruthy('FailureMsg: Required tag is missing for Company')
+            expect(await createDocumentTemplatePo.isFieldRequired('Description')).toBeTruthy('FailureMsg: Required tag is missing for Description')
+            expect(await createDocumentTemplatePo.isFieldRequired('Document Body')).toBeTruthy('FailureMsg: Required tag is missing for Document Body')
+            expect(await createDocumentTemplatePo.isFieldRequired('Label')).toBeFalsy('FailureMsg: Required tag is displayed for Label')
+
+            await createDocumentTemplatePo.setTemplateName(documentName);
+            await createDocumentTemplatePo.setCompany('Petramco');
+            await createDocumentTemplatePo.selectLabelDropDown(label1);
+            await createDocumentTemplatePo.setDescription(documentDescription);
+            await createDocumentTemplatePo.setDocumentBody(documentBody);
+            await createDocumentTemplatePo.clickOnSaveButton();
+        });
+        it('[DRDMV-14977]: Updated new Label and verify on console', async () => {
+            await documentTemplateConsolePo.clickOnGridRefreshButton();
+            await documentTemplateConsolePo.addColumnOnGrid(['Label']);
+            await documentTemplateConsolePo.searchOnGridConsole(documentName);
+            expect(await documentTemplateConsolePo.getSelectedGridRecordValue('Template Name')).toBe(documentName, 'FailureMsg: Template name is missing on Grid');
+            expect(await documentTemplateConsolePo.getSelectedGridRecordValue('Company')).toBe('Petramco', 'FailureMsg: Petramco  Company name is missing on Grid');
+            expect(await documentTemplateConsolePo.getSelectedGridRecordValue('Label')).toBe(label1, 'FailureMsg: Label is missing on Grid');
+
+            await documentTemplateConsolePo.searchAndOpenDocumentTemplate(documentName);
+            await editDocumentTemplatePo.selectLabelDropDown(label2);
+            await editDocumentTemplatePo.clickOnSaveButton();
+            await documentTemplateConsolePo.searchOnGridConsole(documentName);
+            expect(await documentTemplateConsolePo.getSelectedGridRecordValue('Label')).toBe(label2, 'Label is missing on Grid');
+            expect(await documentTemplateConsolePo.isGridColumnSorted('Label', 'descending')).toBeTruthy('Label is not get sorted with descending order');
+        });
     });
 
     //kgaikwad
@@ -36,6 +82,8 @@ describe('Document Template', () => {
         let facilitiesLabel1 = 'Pantry';
         let facilitiesLabel2 = 'Cleaning';
         it('[DRDMV-14970,DRDMV-14974,DRDMV-14971,DRDMV-14972]: Create document template', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Templates', 'Document Templates - Business Workflows');
             await utilGrid.selectLineOfBusiness("Facilities");
@@ -123,100 +171,55 @@ describe('Document Template', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-14977]: Verify UI for Document template create ,edit, view mode', async () => {
-        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let documentName = "DocumentTemplate" + randomStr;
-        let documentDescription = "description" + randomStr;
-        let documentBody = "documentBody" + randomStr;
-        let label1 = "POSH";
-        let label2 = "Payroll";
-
-        it('[DRDMV-14977]: Verify Create Document Template UI', async () => {
-            // Goto document template
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Document Management--Templates', 'Document Templates - Business Workflows');
-
-            await createDocumentTemplatePo.clickOnAddTemplate();
-            expect(await createDocumentTemplatePo.isHeaderDisplayed('Create Document Template')).toBeTruthy('Create document template header is missing');
-            expect(await createDocumentTemplatePo.isFieldRequired('Template Name')).toBeTruthy('FailureMsg: Required tag is missing for Template Name')
-            expect(await createDocumentTemplatePo.isFieldRequired('Company')).toBeTruthy('FailureMsg: Required tag is missing for Company')
-            expect(await createDocumentTemplatePo.isFieldRequired('Description')).toBeTruthy('FailureMsg: Required tag is missing for Description')
-            expect(await createDocumentTemplatePo.isFieldRequired('Document Body')).toBeTruthy('FailureMsg: Required tag is missing for Document Body')
-            expect(await createDocumentTemplatePo.isFieldRequired('Label')).toBeFalsy('FailureMsg: Required tag is displayed for Label')
-
-            await createDocumentTemplatePo.setTemplateName(documentName);
-            await createDocumentTemplatePo.setCompany('Petramco');
-            await createDocumentTemplatePo.selectLabelDropDown(label1);
-            await createDocumentTemplatePo.setDescription(documentDescription);
-            await createDocumentTemplatePo.setDocumentBody(documentBody);
-            await createDocumentTemplatePo.clickOnSaveButton();
-        });
-        it('[DRDMV-14977]: Updated new Label and verify on console', async () => {
-            await documentTemplateConsolePo.clickOnGridRefreshButton();
-            await documentTemplateConsolePo.addColumnOnGrid(['Label']);
-            await documentTemplateConsolePo.searchOnGridConsole(documentName);
-            expect(await documentTemplateConsolePo.getSelectedGridRecordValue('Template Name')).toBe(documentName, 'FailureMsg: Template name is missing on Grid');
-            expect(await documentTemplateConsolePo.getSelectedGridRecordValue('Company')).toBe('Petramco', 'FailureMsg: Petramco  Company name is missing on Grid');
-            expect(await documentTemplateConsolePo.getSelectedGridRecordValue('Label')).toBe(label1, 'FailureMsg: Label is missing on Grid');
-
-            await documentTemplateConsolePo.searchAndOpenDocumentTemplate(documentName);
-            await editDocumentTemplatePo.selectLabelDropDown(label2);
-            await editDocumentTemplatePo.clickOnSaveButton();
-            await documentTemplateConsolePo.searchOnGridConsole(documentName);
-            expect(await documentTemplateConsolePo.getSelectedGridRecordValue('Label')).toBe(label2, 'Label is missing on Grid');
-            expect(await documentTemplateConsolePo.isGridColumnSorted('Label', 'descending')).toBeTruthy('Label is not get sorted with descending order');
-        });
-    });
-
-    //kgaikwad
     describe('[DRDMV-14973]: Verify document body expression editor will list dynamic fields along with Case fields.', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateData;
-        let documentName1 = '1Document' + randomStr;
-        let documentName2 = '2Document' + randomStr;
-        let documentName3 = '3Document' + randomStr;
-        let caseTempateName1 = '1caseTemplateName' + randomStr;
-        let caseTempateName2 = '2caseTemplateName' + randomStr;
-        let caseTempateName3 = '3caseTemplateName' + randomStr;
-
-        let caseTemplateSummary = 'CaseSummaryName' + randomStr;
+        let documentName1 = randomStr + 'Document1';
+        let documentName2 = randomStr + 'Document2';
+        let documentName3 = randomStr + 'Document3';
+        let caseTempateName1 = randomStr + 'caseTemplateName1';
+        let caseTempateName2 = randomStr + 'caseTemplateName2';
+        let caseTempateName3 = randomStr + 'caseTemplateName3';
+        let caseTemplateSummary1 = randomStr + 'CaseSummarySummary1';
+        let caseTemplateSummary2 = randomStr + 'CaseSummarySummary2';
+        let caseTemplateSummary3 = randomStr + 'CaseSummarySummary3';
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
 
             caseTemplateData = {
-                "templateName": 'caseTempateName',
-                "templateSummary": caseTemplateSummary,
+                "templateName": randomStr + 'CaseSummaryName',
+                "templateSummary": randomStr + 'CaseSummarySummary',
                 "caseStatus": "InProgress",
                 "templateStatus": "Active",
+                "company": "Petramco",
                 "businessUnit": "United States Support",
                 "supportGroup": "US Support 3",
-                "assignee": "qkatawazi",
+                "ownerCompany": "Petramco",
                 "ownerBU": 'United States Support',
                 "ownerGroup": "US Support 3",
+                "assignee": "qkatawazi",
             }
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteDynamicFieldAndGroup();
-
             await apiHelper.apiLogin('qkatawazi');
             caseTemplateData.templateName = caseTempateName1;
+            caseTemplateData.templateSummary = caseTemplateSummary1;
             let newCaseTemplate1 = await apiHelper.createCaseTemplate(caseTemplateData);
 
             caseTemplateData.templateName = caseTempateName2;
+            caseTemplateData.templateSummary = caseTemplateSummary2;
             let newCaseTemplate2 = await apiHelper.createCaseTemplate(caseTemplateData);
 
             caseTemplateData.templateName = caseTempateName3;
+            caseTemplateData.templateSummary = caseTemplateSummary3;
             await apiHelper.createCaseTemplate(caseTemplateData);
 
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate1.id, 'DynamicGroupField');
-
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate2.id, 'ALL_DATA_TYPE');
         });
 
         it('[DRDMV-14973]: Verify Document Template With Case Dynamic Field ', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Templates', 'Document Templates - Business Workflows');
-
             await createDocumentTemplatePo.clickOnAddTemplate();
             await createDocumentTemplatePo.setTemplateName(documentName1);
             await createDocumentTemplatePo.setCompany("Petramco");
@@ -350,4 +353,3 @@ describe('Document Template', () => {
         });
     });
 });
-

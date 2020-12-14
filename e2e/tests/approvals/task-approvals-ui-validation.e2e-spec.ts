@@ -206,7 +206,6 @@ describe("Task Approval UI Validations", () => {
             await loginPage.login('qliu');
             await navigationPage.switchToJSApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(manualTaskTemplateData.templateSummary, 'Approve');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qstrong');
             await navigationPage.gotoTaskConsole();

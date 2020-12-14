@@ -141,7 +141,7 @@ export class Resources {
     }
 
     async isResourcePresent(resourceName: string): Promise<boolean> {
-        // need to wait until spinner to hide (three dots)
+        await browser.sleep(1000); // need to wait until spinner to hide (three dots)
         return await $(`[title="${resourceName}"]`).isPresent().then(async (link) => {
             if (link) return await $(`[title="${resourceName}"]`).isDisplayed();
             else return false;

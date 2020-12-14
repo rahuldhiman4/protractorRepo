@@ -27,7 +27,7 @@ import consoleReadAcess from '../../pageobject/settings/case-management/read-acc
 import viewCasetemplatePo from '../../pageobject/settings/case-management/view-casetemplate.po';
 import serviceTargetConfig from '../../pageobject/settings/slm/service-target-blade.po';
 import SlmExpressionBuilder from '../../pageobject/settings/slm/slm-expressionbuilder.pop.po';
-import { default as consoleTasktemplatePo, default as selectTaskTemplate } from "../../pageobject/settings/task-management/console-tasktemplate.po";
+import consoleTasktemplatePo from "../../pageobject/settings/task-management/console-tasktemplate.po";
 import createTasktemplatePo from '../../pageobject/settings/task-management/create-tasktemplate.po';
 import editTasktemplatePo from '../../pageobject/settings/task-management/edit-tasktemplate.po';
 import viewTasktemplatePo from '../../pageobject/settings/task-management/view-tasktemplate.po';
@@ -38,6 +38,7 @@ import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
+import utilGrid from '../../utils/util.grid';
 
 describe('Menu Item', () => {
     beforeAll(async () => {
@@ -80,7 +81,6 @@ describe('Menu Item', () => {
         let label = 'Legal' + randomStr;
         let label1 = 'legal' + randomStr;
         let label2 = 'leGAL' + randomStr;
-
         it('[DRDMV-16173]: Create Menu Item label and Source', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
@@ -93,7 +93,6 @@ describe('Menu Item', () => {
             await createMenuItems.selectAvailableOnUiToggleButton(true);
             await createMenuItems.clickOnSaveButton();
             await utilCommon.closePopUpMessage();
-
         });
         it('[DRDMV-16173]: Create Duplicate Menu Item Source and Label', async () => {
             await createMenuItems.clickOnMenuOptionLink();
@@ -119,10 +118,40 @@ describe('Menu Item', () => {
             await localizeValuePopPo.clickOnSaveButton();
             await createMenuItems.clickOnSaveButton();
             expect(await utilCommon.isPopUpMessagePresent('ERROR (222176): The Label already exists. Please select a different name.')).toBeTruthy();
-            await utilCommon.closePopUpMessage();
-
         });
-
+        it('[DRDMV-16173]: create same name record in same LOB', async () => {
+            //create same name record in same LOB
+            await navigationPage.signOut();
+            await loginPage.login('jbarnes');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            await createMenuItems.clickOnMenuOptionLink();
+            await createMenuItems.selectMenuNameDropDown('Label');
+            await createMenuItems.clickOnLocalizeLink();
+            await localizeValuePopPo.setLocalizeValue(label);
+            await localizeValuePopPo.clickOnSaveButton();
+            await createMenuItems.clickOnSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (222176): The Label already exists. Please select a different name.')).toBeTruthy("Error message absent");
+            await createMenuItems.clickOnCancelButton();
+            await utilCommon.clickOnWarningOk();
+        });
+        it('[DRDMV-16173]: create same name record in different LOB', async () => {
+            //create same name record in different LOB
+            await utilGrid.selectLineOfBusiness('Facilities');
+            await createMenuItems.clickOnMenuOptionLink();
+            await createMenuItems.selectMenuNameDropDown('Label');
+            await createMenuItems.clickOnLocalizeLink();
+            await localizeValuePopPo.setLocalizeValue(label);
+            await localizeValuePopPo.clickOnSaveButton();
+            await createMenuItems.clickOnSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
+            await utilGrid.selectLineOfBusiness('Human Resource');
+        });
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login("qkatawazi");
+        });
     });
 
     //kgaikwad
@@ -495,7 +524,7 @@ describe('Menu Item', () => {
         it('[DRDMV-16276]: Verify Label With Create Task Template', async () => {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows')).toEqual('Task Templates - Business Workflows');
-            await selectTaskTemplate.clickOnManualTaskTemplateButton();
+            await consoleTasktemplatePo.clickOnManualTaskTemplateButton();
             await createTasktemplatePo.setTemplateName(title);
             await createTasktemplatePo.setTaskSummary(summary);
             expect(await createTasktemplatePo.isValuePresentInDropdown('Label', labelInactive)).toBeFalsy('Value is present in  label drop down');
