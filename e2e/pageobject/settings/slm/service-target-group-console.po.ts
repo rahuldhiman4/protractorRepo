@@ -14,6 +14,10 @@ class ServiceTargetGroupConsolePage {
         return await $(this.selectors.deleteButton).isEnabled();
     }
 
+    async clickAddServiceTargetGroupBtn(): Promise<void> {
+        await $(this.selectors.addServiceTargetGroup).click();
+    }
+
 }
 
 export default new ServiceTargetGroupConsolePage();

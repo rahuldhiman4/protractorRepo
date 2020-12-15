@@ -21,6 +21,18 @@ export class ConsoleEmailConfig {
         await $(this.selectors.deleteButton).click();
     }
 
+    async isClickNewEmailConfigurationBtnPresent(): Promise<boolean> {
+       return await $(this.selectors.deleteButton).isPresent();
+    }
+
+    async isDeleteConfigurationEmailBtnEnable(): Promise<boolean> {
+        return await $(this.selectors.deleteButton).isEnabled();
+     }
+
+     async isDeleteConfigurationEmailBtnPresent(): Promise<boolean> {
+        return await $(this.selectors.deleteButton).isPresent();
+     }
+
     async getColumnHeaderValue(header:string): Promise<string> {
      return await utilGrid.getSelectedGridRecordValue(this.selectors.emailConfigGuid,header);
     }

@@ -176,6 +176,10 @@ class CaseEditPage {
         await utilityCommon.selectDropDown(this.selectors.resolutionCodeGuid, resolutionCode);
     }
 
+    async isResolutionCodePresent(resolutionCode: string): Promise<boolean> {
+     return await utilityCommon.isValuePresentInDropDown(this.selectors.resolutionCodeGuid, resolutionCode);
+    }
+
     async isValuePresentInResolutionCode(resolutionCode: string): Promise<void> {
         await utilityCommon.isValuePresentInDropDown(this.selectors.resolutionCodeGuid, resolutionCode);
     }

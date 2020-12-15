@@ -15,6 +15,9 @@ class MenuItemsConsolePage {
 //        await utilCommon.waitUntilSpinnerToHide();
     }
 
+    async isMenuItemRecordPresentOnGridConsole(value: string): Promise<void> {
+        await utilGrid.isGridRecordPresent(value);
+    }
     async addColumnOnGrid(columnHeader: string[]): Promise<void> {
         await utilGrid.addGridColumn(this.selectors.gridGuid, columnHeader);
 //        await utilCommon.waitUntilSpinnerToHide();

@@ -58,6 +58,7 @@ export class EditEmailConfig {
         editTrustedEmailCancelButton: '[rx-view-component-id="43790bdf-8e59-47d1-9b11-8577140da637"]  button',
         setEmailidOnEditTrusted: '[rx-view-component-id="ac869aba-620e-42a5-af4d-5ed1bd580a6e"] input',
         dropDownOption: '[rx-view-component-id="5021ef29-9cae-4538-bf9b-2907936a8c78"].ui-select-choices-row-inner *',
+        description: '[rx-view-component-id="9d3c4cbf-faa9-4f65-834f-474b7c5c2a12"] input',
     }
 
     async clickDefaultMailIdCheckbox(value: string): Promise<void> {
@@ -373,6 +374,11 @@ export class EditEmailConfig {
     async setEmailOnEditTrustedEmail(email: string): Promise<void> {
         await $(this.selectors.setEmailidOnEditTrusted).clear();
         await $(this.selectors.setEmailidOnEditTrusted).sendKeys(email);
+    }
+
+    async setDescription(descri: string): Promise<void> {
+        await $(this.selectors.description).clear();
+        await $(this.selectors.description).sendKeys(descri);
     }
 
 }
