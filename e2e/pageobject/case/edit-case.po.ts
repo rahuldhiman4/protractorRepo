@@ -68,6 +68,7 @@ class CaseEditPage {
         dynamicAttachmentField: '[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .bwf-attachment-button input',
         tabText: '.nav-link-wrapper',
         dynamciFieldDownLoadIcon: '.bwf-text-color-active',
+        lobValue: '[rx-view-component-id="694535e8-ab22-4ddc-8d2a-ceb017cf4fbf"] button',
         lineofbusiness: '[rx-view-component-id="694535e8-ab22-4ddc-8d2a-ceb017cf4fbf"] .adapt-select',
     }
 
@@ -176,8 +177,16 @@ class CaseEditPage {
         await utilityCommon.selectDropDown(this.selectors.resolutionCodeGuid, resolutionCode);
     }
 
+    async isResolutionCodePresent(resolutionCode: string): Promise<boolean> {
+     return await utilityCommon.isValuePresentInDropDown(this.selectors.resolutionCodeGuid, resolutionCode);
+    }
+
     async isValuePresentInResolutionCode(resolutionCode: string): Promise<void> {
         await utilityCommon.isValuePresentInDropDown(this.selectors.resolutionCodeGuid, resolutionCode);
+    }
+
+    async isValuePresentInCategoryTier1(categoryTier1: string): Promise<void> {
+        await utilityCommon.isValuePresentInDropDown(this.selectors.categoryTier1Guid, categoryTier1);
     }
 
     async setResolutionDescription(resolutionDescription: string): Promise<void> {
@@ -406,8 +415,43 @@ class CaseEditPage {
         await $$(this.selectors.dynamciFieldDownLoadIcon).get(downloadButtonNumber -1).click();
     }
 
+    async getLobValue(): Promise<string> {
+        return await $(this.selectors.lobValue).getText();
+    };
+
     async isLineOfBusinessReadOnly(): Promise<boolean> {
         return await $(this.selectors.lineofbusiness).getAttribute('aria-readonly') == 'true';
+    }
+
+    async isValuePresentInDropdown(DropDownName: string, value: string): Promise<boolean> {
+        let guid;
+        switch (DropDownName) {
+            case "Label": {
+                guid = this.selectors.labelGuid;
+                break;
+            }
+            case "Category Tier 1": {
+                guid = this.selectors.categoryTier1Guid;
+                break;
+            }
+            case "Category Tier 2": {
+                guid = this.selectors.categoryTier2Guid;
+                break;
+            }
+            case "Category Tier 3": {
+                guid = this.selectors.categoryTier3Guid;
+                break;
+            }
+            case "Category Tier 4": {
+                guid = this.selectors.categoryTier4Guid;
+                break;
+            }
+            default: {
+                console.log('Drop Down name does not match');
+                break;
+            }
+        }
+        return await utilityCommon.isValuePresentInDropDown(guid, value);
     }
 }
 

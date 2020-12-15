@@ -122,6 +122,7 @@ class ChangeAssignmentBlade {
 
     async selectAssignee(name: string): Promise<void> {
         await $(this.selectors.searchAsignee).click();
+        await $(this.selectors.searchAsignee).clear();
         await $(this.selectors.searchAsignee).sendKeys(name + Key.ENTER);
         await element(by.cssContainingText(this.selectors.assignee, name)).click();
     }
@@ -164,8 +165,18 @@ class ChangeAssignmentBlade {
     }
      
     async isValuePresentInDropdown(dropDownLabel: string, dropDownValue: string): Promise<boolean> {
-        let elementDropdown:ElementFinder =  await element(by.cssContainingText('.form-control-label', dropDownLabel));
+        let elementDropdown:ElementFinder = await element(by.cssContainingText('.assignment-component-wrapper bwf-select-with-pagination button', `Select ${dropDownLabel}`));
         return await utilityCommon.isValuePresentInDropDown(elementDropdown, dropDownValue);
+    }
+
+    async isPersonAvailableOnAssignBlade(name: string): Promise<boolean> {
+        await $(this.selectors.searchAsignee).click();
+        await $(this.selectors.searchAsignee).clear();
+        await $(this.selectors.searchAsignee).sendKeys(name + Key.ENTER);
+        return await element(by.cssContainingText(this.selectors.assignee, name)).isPresent().then(async (result) => {
+            if(result) return await element(by.cssContainingText(this.selectors.assignee, name)).isDisplayed();
+            else return false;
+        });
     }
 }
 

@@ -37,6 +37,7 @@ class CreateAdhocTaskTemplatePage {
         adHocTaskTextArea: '[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] .cke_editable_themed',
         numberIcon: '[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] .cke_button__numberedlist_icon',
         bulletIcon: '[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] .cke_button__bulletedlist_icon',
+        lineOfBussiness: '[rx-view-component-id="832baf9f-dd74-44f2-b63d-6f240baaab9b"] input'
     }
 
     async addAttachment(fileToUpload: string[]): Promise<void> {
@@ -302,6 +303,10 @@ class CreateAdhocTaskTemplatePage {
 
     async clickOnImageIcon():Promise<void>{
         await ckeditorOpsPo.clickOnImageIcon(this.selectors.descriptionGuid);
+    }
+
+    async getLineOfBussinessValue(): Promise<string> {
+    return await $(this.selectors.lineOfBussiness).getAttribute('placeholder');
     }
 }
 

@@ -11,7 +11,7 @@ class UpdateStatus {
         caseStatusReasonRequired: '[rx-view-component-id="049c43a1-4cbd-482d-980d-5db4ed78f295"] .form-control-label',
         taskStatusReasonDropDownGuid: 'baf69b56-c37b-4a0b-9e68-f18558738ebb',
         caseStatusReasonDropDown: '[rx-view-component-id="7128b36c-5d4f-4333-8ee4-2a5163258a45"] button',
-        resolutionCodeDropDownGuid: '9bf39167-6499-49b6-b9e1-a3c869ae5696',
+        resolutionCodeDropDownGuid: 'b3daf229-5921-4863-ba22-8f5240f006a5',
         resolutionCodeRequiredTagGuid: '9bf39167-6499-49b6-b9e1-a3c869ae5696',
         saveUpdateStatus: '[rx-view-component-id="ee5dd503-a10e-4d22-9ac5-99c400892bb7"] button, [rx-view-component-id="6759ba60-df0d-4d5e-8eb9-5101490fd4d4"] button',
         cancelUpdateStatus: '[rx-view-component-id="7cffd3f8-5b84-4e7f-a4b3-6c0a3dd27855"] button, [rx-view-component-id="debcdc88-fb42-4003-96d6-1eeb807206b7"] button',
@@ -69,6 +69,13 @@ class UpdateStatus {
         if (await $(`[rx-view-component-id="${this.selectors.resolutionCodeRequiredTagGuid}"] .form-control-label`).isPresent())
             await utilityCommon.selectDropDown(this.selectors.resolutionCodeRequiredTagGuid, resolutionCode);
         else await utilityCommon.selectDropDown(this.selectors.resolutionCodeDropDownGuid, resolutionCode);
+    }
+
+    async isResolutionoCodeDropDownValueDisplayed(value: string): Promise<boolean> {
+        return await $(`[rx-view-component-id="${this.selectors.resolutionCodeRequiredTagGuid}"] .form-control-label`).isPresent().then(async (result) => {
+            if (result) return await utilityCommon.isValuePresentInDropDown(this.selectors.resolutionCodeRequiredTagGuid, value);
+            else return await utilityCommon.isValuePresentInDropDown(this.selectors.resolutionCodeDropDownGuid, value);
+        })
     }
 
     async isStatusReasonRequiredTextPresent(): Promise<boolean> {
