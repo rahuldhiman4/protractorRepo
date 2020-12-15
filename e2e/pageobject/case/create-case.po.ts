@@ -13,7 +13,7 @@ class CreateCasePage {
         autoCategorization: '[rx-view-component-id="cfb3cc65-210c-4530-b529-3bc414b6d8dc"] button',
         changeAssignment: '[rx-view-component-id="6041cce1-05bd-458d-b097-eb310507cae3"] button',
         assignedCompany: '[rx-view-component-id="8ac19557-eebc-4c14-9304-efc60d01e09f"] .adapt-select',
-        buisnessUnit: '[rx-view-component-id="3c0986c0-c2b1-44e3-bd29-ac4757e55a66"] .adapt-select',
+        businessUnit: '[rx-view-component-id="3c0986c0-c2b1-44e3-bd29-ac4757e55a66"] .adapt-select',
         department: '[rx-view-component-id="a2a501d1-ac3c-460f-8422-2a559be7445e"] .adapt-select',
         assignedGroup: '[rx-view-component-id="79750d81-d8e5-447e-b923-94c54f2d3310"] .adapt-select',
         assignee: '[rx-view-component-id="43c3e9ee-dde2-4e10-94e9-c6ee68217cda"] .dropdown-toggle',
@@ -53,6 +53,7 @@ class CreateCasePage {
         categoryTier2Value: '[rx-view-component-id="20067485-2b38-44a0-a6ed-aec998df377b"] .dropdown-toggle',
         categoryTier3Value: '[rx-view-component-id="9bfb3795-0543-4a17-a374-28dc586d1e03"] .dropdown-toggle',
         categoryTier4Value: '[rx-view-component-id="ba093458-4486-4619-8587-4d3edbd45e45"] .dropdown-toggle',
+        lineofbusiness: '[rx-view-component-id="48f20aa3-5805-4a73-9118-ec32fab2a134"] .form-control',
     }
 
     async addDescriptionAttachment(fileToUpload: string[]): Promise<void> {
@@ -121,8 +122,8 @@ class CreateCasePage {
         return await $(this.selectors.assignedCompany).getAttribute('aria-readonly') == 'true';
     }
 
-    async isBuisnessUnitReadOnly(): Promise<boolean> {
-        return await $(this.selectors.buisnessUnit).getAttribute('aria-readonly') == 'true';
+    async isBusinessUnitReadOnly(): Promise<boolean> {
+        return await $(this.selectors.businessUnit).getAttribute('aria-readonly') == 'true';
     }
 
     async isDepartmentReadOnly(): Promise<boolean> {
@@ -341,6 +342,14 @@ class CreateCasePage {
             }
         }
         return await utilityCommon.isValuePresentInDropDown(guid, value);
+    }
+
+    async isLineOfBusinessDisabled(): Promise<boolean> {
+        return await $(this.selectors.lineofbusiness).getAttribute("disabled") == "true";
+    }
+
+    async getLineOfBusinessValue(): Promise<string>{
+        return await $(this.selectors.lineofbusiness).getAttribute("placeholder");
     }
 }
 

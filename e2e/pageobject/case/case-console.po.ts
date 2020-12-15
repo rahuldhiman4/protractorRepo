@@ -20,7 +20,8 @@ class CaseConsolePage {
         allCheckboxes: '[rx-view-component-id="d628a20f-e852-4a84-87e6-f5191f77ddf6"] .ui-chkbox-box',
         selectAllrows: '[rx-view-component-id="d628a20f-e852-4a84-87e6-f5191f77ddf6"] .checkbox__input',
         selectedCheckboxes: '[rx-view-component-id="d628a20f-e852-4a84-87e6-f5191f77ddf6"] .pi-check',
-        unselectedCheckboxes: '[rx-view-component-id="d628a20f-e852-4a84-87e6-f5191f77ddf6"] .ui-state-default :not(.pi-check)',
+        unselectedCheckboxes: '[rx-view-component-id="d628a20f  -e852-4a84-87e6-f5191f77ddf6"] .ui-state-default :not(.pi-check)',
+        LineOfBuisnessText: '[rx-view-component-id="48502f73-98fe-4958-ada3-9abcf698438f"] button'
     }
 
     async setCaseSearchBoxValue(input: string): Promise<void> {
@@ -37,6 +38,14 @@ class CaseConsolePage {
 
     async getCaseTitle(): Promise<string> {
         return await $(this.selectors.caseTitle).getText();
+    }
+
+    async getLineOfBuisnessText(): Promise<string> {
+        return await $(this.selectors.LineOfBuisnessText).getText();
+    }
+
+    async isLineOfBuisnessEnable(): Promise<boolean> {
+        return await $(this.selectors.LineOfBuisnessText).isEnabled();
     }
 
     async clickFirstCheckBoxInCaseSearchGrid(): Promise<void> {

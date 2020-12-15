@@ -44,6 +44,12 @@ export interface ISupportGroup {
     status?: string
 };
 
+export interface ILOB {
+    lobName: string,
+    description: string,
+    status?: string,
+};
+
 export interface IMenuItem {
     menuItemName: string;
     menuItemStatus: string;

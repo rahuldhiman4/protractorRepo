@@ -26,17 +26,49 @@ import consoleEmailTemplatePo from '../../pageobject/settings/email/console-emai
 import createEmailTemplatePo from '../../pageobject/settings/email/create-email-template.po';
 import createAcknowledgmentTemplatesPo from '../../pageobject/settings/email/create-acknowledgment-template.po';
 import consoleAcknowledgmentTemplatePo from '../../pageobject/settings/email/console-acknowledgment-template.po';
+import createCasePo from '../../pageobject/case/create-case.po';
+import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
+import editCasePo from '../../pageobject/case/edit-case.po';
+import utilityGrid from '../../utils/utility.grid';
+import quickCasePo from '../../pageobject/case/quick-case.po';
+import previewCaseTemplateCasesPo from '../../pageobject/settings/case-management/preview-case-template.po';
+import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
+import resourcesPo from '../../pageobject/common/resources-tab.po';
+import accessTabPo from '../../pageobject/common/access-tab.po';
 
+let userData1;
 describe('Create Process in Flowset', () => {
+    let personDataFile = require('../../data/ui/foundation/person.ui.json');
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
+        await createNewUsers();
     });
 
     afterAll(async () => {
         await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
+
+    async function createNewUsers() {
+        await apiHelper.apiLogin('tadmin');
+        userData1 = {
+            "firstName": "Petramco",
+            "lastName": "SGUser1",
+            "userId": "13550User1",
+            "userPermission": ["Case Business Analyst", "Human Resource"]
+        }
+        await apiHelper.createNewUser(userData1);
+        await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
+        await apiHelper.associatePersonToCompany(userData1.userId, "- Global -");
+        await apiHelper.associatePersonToCompany(userData1.userId, "Psilon");
+        await apiHelper.associatePersonToSupportGroup(userData1.userId, "Psilon Support Group1");
+        await browser.sleep(3000); // timeout requried to reflect data on UI
+        let personData1 = personDataFile['PhylumCaseAgent1'];
+        await apiHelper.createNewUser(personData1);
+        await apiHelper.associatePersonToSupportGroup(personData1.userId, 'Phylum Support Group1');
+        await apiHelper.associatePersonToCompany(personData1.userId, 'Phylum');
+    }
 
     //apurva
     describe('[DRDMV-17555]: Create new automatic case status transition rule for one line of Business', async () => {
@@ -207,6 +239,233 @@ describe('Create Process in Flowset', () => {
             expect(await createCasetemplatePo.flowsetOptionsPresent(flowsetValues)).toBeFalsy('Status in dropdown does not match');
         });
         afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+    });
+
+    //apurva
+    describe('[DRDMV-23519]: LOB updates for agent must reflect permissions on Email Configurations.', async () => {
+        let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let templateName = 'Private' + randomStr;
+        let templateName1 = 'TemplateName1' + randomStr;
+        let emailID = "bmctemptestemail@gmail.com";
+        beforeAll(async () => {
+            let incomingEmail = {
+                'mailBoxName': 'testEmail@gmail.com'
+            }
+            let emailConfigFacilities = {
+                email: emailID,
+                incomingMailBoxName: incomingEmail.mailBoxName,
+                lineOfBusiness: "Facilities"
+            }
+            await navigationPage.signOut();
+            await loginPage.login('jbarnes');
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteAllEmailConfiguration();
+            await apiHelper.createEmailBox('incoming', incomingEmail);
+            await apiHelper.apiLogin('jbarnes');
+            await apiHelper.createEmailConfiguration(emailConfigFacilities);
+        });
+        it('[DRDMV-23519]: LOB updates for agent must reflect permissions on Email Configurations.', async () => {
+            await navigationPage.gotoSettingsPage();
+            expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
+            await utilGrid.selectLineOfBusiness('Facilities');
+            expect(await utilGrid.isGridRecordPresent(emailID)).toBeTruthy();
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilGrid.isGridRecordPresent(emailID)).toBeFalsy();
+        });
+        it('[DRDMV-23519]: LOB updates for agent must reflect permissions on Email Configurations.', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Facilities');
+            await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
+            await createAcknowledgmentTemplatesPo.setTemplateName(templateName);
+            await createAcknowledgmentTemplatesPo.selectCompanyDropDown('Petramco');
+            await createAcknowledgmentTemplatesPo.selectStatusDropDown('Active');
+            await createAcknowledgmentTemplatesPo.setDescription(templateName);
+            await createAcknowledgmentTemplatesPo.setSubject(templateName);
+            await createAcknowledgmentTemplatesPo.setBody(templateName);
+            await createAcknowledgmentTemplatesPo.clickOnSaveButton();
+            await utilCommon.closePopUpMessage();
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy();
+        });
+        it('[DRDMV-23519]: LOB updates for agent must reflect permissions on Email Configurations.', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Facilities');
+            await consoleEmailTemplatePo.clickOnAddEmailTemplateButton();
+            await createEmailTemplatePo.setTemplateName(templateName1);
+            await createEmailTemplatePo.selectCompany('Petramco');
+            await createEmailTemplatePo.selectStatusDropDown('Active');
+            await createEmailTemplatePo.setDescription(templateName1);
+            await createEmailTemplatePo.setSubject(templateName1);
+            await createEmailTemplatePo.setBody(templateName1);
+            await createEmailTemplatePo.clickOnSaveButton();
+            await utilCommon.closePopUpMessage();
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilGrid.isGridRecordPresent(templateName1)).toBeFalsy();
+        });
+        it('[DRDMV-23519]: LOB updates for agent must reflect permissions on Email Configurations.', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(templateName1)).toBeTruthy();
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(templateName)).toBeTruthy();
+            await navigationPage.gotoSettingsPage();
+            expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
+            expect(await utilGrid.isGridRecordPresent(emailID)).toBeTruthy();          
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.updateFoundationEntity('Person', 'Fritz', { functionalRole: "Facilities" });
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(templateName1)).toBeFalsy();
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy();
+            await navigationPage.gotoSettingsPage();
+            expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
+            expect(await utilGrid.isGridRecordPresent(emailID)).toBeFalsy();
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.updateFoundationEntity('Person', 'Fritz', { functionalRole: "Facilities" });
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+    });
+
+    //apurva
+    describe('[DRDMV-23486]:[Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
+        let randomStr = Math.floor(Math.random() * 1000000);
+        let caseTemplateDataFacilities;
+        let confidentialSupportGroup = "Employee Relations Sensitive Data Access";
+        beforeAll(async () => {
+            caseTemplateDataFacilities = {
+                "templateName": `Casetemplate1${randomStr}`,
+                "templateStatus": "Active",
+                "templateSummary": `Summary1${randomStr}`,
+                "caseStatus": "New",
+                "casePriority": "Medium",
+                "ownerBU": "Facilities Support",
+                "ownerGroup": "Facilities",
+                "lineOfBusiness": "Facilities"
+            }
+            await apiHelper.apiLogin('fritz');
+            await apiHelper.createCaseTemplate(caseTemplateDataFacilities);
+        });
+        it('[DRDMV-23486]:[Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester('adam');
+            expect(await createCasePage.isLineOfBusinessDisabled()).toBeTruthy('Line of Buisness Field is Enabled');
+            expect(await createCasePage.getLineOfBusinessValue()).toBe('Facilities', 'Line of Buisness Field is Enabled');
+            await createCasePage.setSummary('DRDMV-23519Summary' + randomStr);
+            expect(await createCasePage.isValuePresentInDropdown("Category Tier 1", 'Employee Relations')).toBeFalsy('Value is present in  Category Tier 1 drop down');
+            await createCasePage.clickAssignToMeButton();
+            expect(await createCasePage.isValuePresentInDropdown("Category Tier 1", 'Facilities')).toBeTruthy('Value is present in  Category Tier 1 drop down');
+            await createCasePage.setPriority('Low');
+            await createCasePage.selectCategoryTier1("Facilities");
+            await createCasePage.selectCategoryTier2("Conference Room");
+            await createCasePage.selectCategoryTier3("Furniture");
+            await createCasePage.selectCategoryTier4("Chair");
+            expect(await createCasePo.getCategoryTier1Value()).toBe('Facilities');
+            expect(await createCasePo.getCategoryTier2Value()).toBe('Conference Room');
+            expect(await createCasePo.getCategoryTier3Value()).toBe('Furniture');
+            expect(await createCasePo.getCategoryTier4Value()).toBe('Chair');
+        });
+        it('[DRDMV-23486]:[Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
+            await createCasePage.clickChangeAssignmentButton();
+            expect(await changeAssignmentBladePo.businessUnitOptionsPresent('United States Support')).toBeFalsy();
+            await changeAssignmentBladePo.clickOnCancelButton();
+            await createCasePage.clickChangeAssignmentButton();
+            expect(await changeAssignmentBladePo.businessUnitOptionsPresent('Facilities Support')).toBeTruthy();
+            await changeAssignmentBladePo.clickOnCancelButton();
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePage.clickGoToCaseButton();
+            await viewCasePage.clickEditCaseButton();
+            await editCasePo.clickOnSelectCaseTemplate();
+            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateDataFacilities.templateName);
+            await editCasePo.clickSaveCase();
+            expect(await viewCasePage.getCaseTemplateText()).toBe(caseTemplateDataFacilities.templateName);
+            expect(await viewCasePage.getLineOfBusinessValue()).toBe('Facilities');
+        });
+        it('[DRDMV-23486]:[Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
+            await viewCasePage.clickEditCaseButton();
+            expect(await createCasePage.isValuePresentInDropdown("Category Tier 1", 'Employee Relations')).toBeFalsy('Value is present in  Category Tier 1 drop down');
+            expect(await editCasePo.isLineOfBusinessReadOnly()).toBeTruthy('Field is enabled');
+            await editCasePo.updateCasePriority('High');
+            await editCasePo.updateCaseCategoryTier1('Phones');
+            await editCasePo.updateCaseCategoryTier2('Cellular Phones');
+            await editCasePo.updateCaseCategoryTier3('Service');
+            await editCasePo.clickChangeAssignmentButton();
+            expect(await changeAssignmentBladePo.businessUnitOptionsPresent('United States Support')).toBeFalsy();
+            await changeAssignmentBladePo.clickOnCancelButton();
+            await createCasePage.clickChangeAssignmentButton();
+            await changeAssignmentBladePo.selectBusinessUnit('Facilities Support');
+            await changeAssignmentBladePo.selectSupportGroup('Pantry Service');
+            await changeAssignmentBladePo.selectAssignee('Qing Yuan');
+            await changeAssignmentBladePo.clickOnAssignButton();
+            await editCasePo.clickSaveCase();
+            expect(await viewCasePage.getCategoryTier1Value()).toBe('Phones');
+            expect(await viewCasePage.getCategoryTier2Value()).toBe('Cellular Phones');
+            expect(await viewCasePage.getCategoryTier3Value()).toBe('Service');
+            expect(await viewCasePage.getAssignedGroupText()).toBe("Pantry Service");
+            expect(await viewCasePage.getAssigneeText()).toBe("Qing Yuan");
+        });
+        it('[DRDMV-23486]:[Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
+            await viewCasePage.clickOnTab('Case Access');
+            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Case');
+            await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
+            expect(await accessTabPo.isOptionsPresent('United States Support', 'Select Business Unit')).toBeFalsy();
+            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Case');
+            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Case');
+            await accessTabPo.selectAccessEntityDropDown('Facilities Support', 'Select Business Unit');
+            await accessTabPo.clickAccessEntitiyAddButton('Business Unit');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Facilities Support', 'Read')).toBeTruthy('FailuerMsg1: Agent Name is missing');
+            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Confidential Group');
+            expect(await accessTabPo.isOptionsPresent(confidentialSupportGroup, 'Select Support Group', true)).toBeFalsy();
+        });
+        it('[DRDMV-23486]:[Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchRecord('DRDMV-23519Summary' + randomStr);
+            expect(await utilityGrid.isGridRecordPresent('DRDMV-23519Summary' + randomStr)).toBeFalsy('DRDMV-23519Summary' + randomStr);
+            await navigationPage.gotoQuickCase();
+            await quickCasePo.selectRequesterName('adam');
+            await quickCasePo.setCaseSummary('new case');
+            await quickCasePo.createCaseButton();
+            await utilityCommon.closePopUpMessage();
+            await quickCasePo.gotoCaseButton();
+            await viewCasePage.clickOnTab('Case Access');
+            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Confidential Group');
+            expect(await accessTabPo.isOptionsPresent(confidentialSupportGroup, 'Select Support Group', true)).toBeTruthy();
+        });
+        it('[DRDMV-23486]:[Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.updateFoundationEntity('Person', 'Fritz', { functionalRole: "Facilities" });
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchRecord('DRDMV-23519Summary' + randomStr);
+            expect(await utilityGrid.isGridRecordPresent('DRDMV-23519Summary' + randomStr)).toBeFalsy('DRDMV-23519Summary' + randomStr);
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.updateFoundationEntity('Person', 'Fritz', { functionalRole: "Facilities" });
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchRecord('DRDMV-23519Summary' + randomStr);
+            expect(await utilityGrid.isGridRecordPresent('DRDMV-23519Summary' + randomStr)).toBeTruthy('DRDMV-23519Summary' + randomStr);
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });

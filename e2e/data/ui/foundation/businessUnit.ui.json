@@ -75,5 +75,10 @@
         "orgName": "UI-BusinessUnitHR",
         "relatedOrgId": null,
         "domainTag": "Human Resource"
+    },
+    "PsilonBusinessUnitHRLOB": {
+        "orgName": "HRLOB-BusinessUnit",
+        "relatedOrgId": null,
+        "domainTag": "HR"
     }
 }

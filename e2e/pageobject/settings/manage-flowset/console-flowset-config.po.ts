@@ -17,6 +17,10 @@ class ConsoleFlowset {
         return await $(this.selectors.addFlowsetButton).isPresent();
     }
 
+    async isAddFlowsetButtonEnabled(): Promise<boolean> {
+        return await $(this.selectors.addFlowsetButton).isEnabled();
+    }
+
     async clickOnAddFlowset(): Promise<void> {
         await $(this.selectors.addFlowsetButton).click();
     }

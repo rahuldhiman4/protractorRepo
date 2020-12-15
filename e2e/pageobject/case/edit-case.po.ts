@@ -68,6 +68,7 @@ class CaseEditPage {
         dynamicAttachmentField: '[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .bwf-attachment-button input',
         tabText: '.nav-link-wrapper',
         dynamciFieldDownLoadIcon: '.bwf-text-color-active',
+        lineofbusiness: '[rx-view-component-id="694535e8-ab22-4ddc-8d2a-ceb017cf4fbf"] .adapt-select',
     }
 
     async removeAttachment(): Promise<void> {
@@ -403,6 +404,10 @@ class CaseEditPage {
 	
 	async clickDownloadDynamicFile(downloadButtonNumber:number): Promise<void> {
         await $$(this.selectors.dynamciFieldDownLoadIcon).get(downloadButtonNumber -1).click();
+    }
+
+    async isLineOfBusinessReadOnly(): Promise<boolean> {
+        return await $(this.selectors.lineofbusiness).getAttribute('aria-readonly') == 'true';
     }
 }
 

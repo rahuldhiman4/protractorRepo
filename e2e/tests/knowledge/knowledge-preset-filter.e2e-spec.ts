@@ -1,3 +1,4 @@
+import { cloneDeep } from 'lodash';
 import { browser } from "protractor";
 import apiHelper from "../../api/api.helper";
 import { ARTICLE_DATA_ASSIGNTOANOTHERUSER, ARTICLE_DATA_ASSIGNTOGROUP, ARTICLE_DATA_ASSIGNTOME, KNOWLEDGE_APPROVAL_FLOW_DATA, KNOWLEDGE_APPROVAL_MAPPING_DATA, KNOWLEDGE_SET_DATA } from "../../data/ui/case/presetFilter.data.ui";
@@ -8,7 +9,6 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import dbConnectObj from '../../utils/utility.db-connect';
 import utilityGrid from "../../utils/utility.grid";
-import { cloneDeep } from 'lodash';
 
 describe('Knowledge Console Preset Filter', () => {
     let userIdKnowledgeCoach = "idphylumkuser@petramco.com";
@@ -172,7 +172,7 @@ describe('Knowledge Console Preset Filter', () => {
             let assignToAnotherUserVar = cloneDeep(ARTICLE_DATA_ASSIGNTOANOTHERUSER);
             assignToMeVar.knowledgeSet = knowledgeSetTitle;
             assignToAnotherUserVar.knowledgeSet = knowledgeSetTitle;
-            
+
             //Create article in Retire Approval status
             assignToMeVar.title = title + "_Retire Approval";
             let knowledgeArticleData11 = await apiHelper.createKnowledgeArticle(assignToMeVar);
@@ -539,12 +539,14 @@ describe('Knowledge Console Preset Filter', () => {
         let allTaskFilter: string[] = ['All Articles In Last 3 months'];
         expect(await utilityGrid.isAppliedFilterMatches(allTaskFilter)).toBeTruthy();
         for (let i = 0; i < 2; i++) {
+            await browser.sleep(1000);// required in loop search
             expect(await utilityGrid.isGridRecordPresent(knowledgeId[i])).toBeTruthy(knowledgeId[i] + ' :Record is not available');
         }
 
         expect(await utilityGrid.isGridRecordPresent(knowledgeId[2])).toBeFalsy(knowledgeId[2] + ' :Record is available');
         await utilityGrid.clearFilter();
         for (let i: number = 0; i < 3; i++) {
+            await browser.sleep(500);// required in loop search
             expect(await utilityGrid.isGridRecordPresent(knowledgeId[i])).toBeTruthy(knowledgeId[i] + ' :Record is not available');
         }
     });
@@ -601,7 +603,6 @@ describe('Knowledge Console Preset Filter', () => {
         let dateForArticle4 = await utilityCommon.getOldDate(200);
         let dateEpochValueArticle4 = await dbConnectObj.dateEpochConverter(dateForArticle4);
         await dbConnectVar.query(`UPDATE t1332 SET c3 = '${dateEpochValueArticle4}' WHERE c302300507 = '${displayId4}'`);
-        await navigationPage.switchToApplication('Knowledge Management');
         await utilityGrid.clearFilter();
         await utilityGrid.applyPresetFilter('All Articles In Last 6 months');
         let allTaskFilter: string[] = ['All Articles In Last 6 months'];

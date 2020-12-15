@@ -34,6 +34,7 @@ class CasePreview {
         dynamicFieldsName: '[rx-view-component-id="40c6dac1-3d7a-402d-9d78-6ba29bb1c1f1"] label',
         backButton: '[rx-view-component-id="1483f92a-0736-4316-b2e5-084927069d38"] button',
         showMoreDescription:'.bwf-description-read-state button',
+        lineOfBusiness: '[rx-view-component-id="2c8feca5-233a-4b48-b2bb-8f8d6ea454ad"] div[title]'
     }
 
     async isFieldLabelDisplayed(labelName: string): Promise<boolean> {
@@ -195,6 +196,10 @@ class CasePreview {
 
     async clickBackButton(): Promise<void> {
         await $(this.selectors.backButton).click();
+    }
+
+    async getLineOfBusinessValue(): Promise<string> {
+        return await $(this.selectors.lineOfBusiness).getText();
     }
 }
 

@@ -32,6 +32,11 @@ class CreateDocumentTemplate {
         await $(this.selectors.addTemplate).click();
     }
 
+    async isAddTemplateEnabled(): Promise<boolean> {
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addTemplate)));
+        return await $(this.selectors.addTemplate).isEnabled();
+    }
+
     async getDynamicFieldOnBody(): Promise<string> {
         return (await $(this.selectors.dynamicField).getText()).trim();
     }

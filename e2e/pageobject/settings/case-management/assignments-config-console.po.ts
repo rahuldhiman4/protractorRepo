@@ -12,12 +12,12 @@ class AssignmentsConfigConsolePage {
     }
 
     async isAddAssignmentsBtnDisplayed(): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.addAssignmentBtn)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.addAssignmentBtn)));
         return await $(this.selectors.addAssignmentBtn).isPresent();
     }
 
     async isDeleteAssignmentConfigBtnDisplayed(): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.deleteButton)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.deleteButton)));
         return await $(this.selectors.deleteButton).isPresent();
     }
 
@@ -29,20 +29,24 @@ class AssignmentsConfigConsolePage {
         await utilGrid.searchAndSelectGridRecord(caseTemplateValue, this.selectors.guid);
     }
 
-    async selectAllRecordsAssignmentConfig(): Promise<void>{
-       await utilGrid.selectAllCheckBox(); 
+    async selectAllRecordsAssignmentConfig(): Promise<void> {
+        await utilGrid.selectAllCheckBox();
     }
 
     async searchAssignmentConfig(assignmentMappingName: string): Promise<void> {
         await utilGrid.searchOnGridConsole(assignmentMappingName);
     }
 
-    async getValueOnAssignmentConfigGrid(columnName:string): Promise<string>{
-        return await utilGrid.getSelectedGridRecordValue(this.selectors.guid,columnName);
+    async getValueOnAssignmentConfigGrid(columnName: string): Promise<string> {
+        return await utilGrid.getSelectedGridRecordValue(this.selectors.guid, columnName);
     }
 
     async clickOnCreateAssignmentConfiguration(): Promise<void> {
-                await $(this.selectors.addAssignmentBtn).click();
+        await $(this.selectors.addAssignmentBtn).click();
+    }
+
+    async isCreateAssignmentConfigurationEnabled(): Promise<boolean> {
+        return await $(this.selectors.addAssignmentBtn).isEnabled();
     }
 
     async areCaseAssignmentGridColumnMatches(columnNames: string[]): Promise<boolean> {
@@ -61,26 +65,26 @@ class AssignmentsConfigConsolePage {
         await $(this.selectors.deleteButton).click();
     }
 
-    async clickDeleteButtonOnlyIfRecordsPresent(): Promise<void>{
+    async clickDeleteButtonOnlyIfRecordsPresent(): Promise<void> {
         let recordsCount = await utilGrid.getNumberOfRecordsInGrid(this.selectors.guid);
-        if(recordsCount>0){
+        if (recordsCount > 0) {
             await utilGrid.selectAllCheckBox();
             await $(this.selectors.deleteButton).click();
             await utilCommon.clickOnWarningOk();
         }
-        else{
+        else {
             console.log("No records to delete")
         }
     }
 
-    async addFilter(fieldName: string, textValue: string,type:string): Promise<void> {
-        await utilGrid.addFilter(fieldName,textValue,type);
-//        await utilCommon.waitUntilSpinnerToHide();
+    async addFilter(fieldName: string, textValue: string, type: string): Promise<void> {
+        await utilGrid.addFilter(fieldName, textValue, type);
+        //        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async clearFilter(): Promise<void> {
         await utilGrid.clearFilter();
-//        await utilCommon.waitUntilSpinnerToHide();
+        //        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async deleteDefaultAssignmentConfig(): Promise<void> {

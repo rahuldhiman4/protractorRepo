@@ -19,6 +19,10 @@ class DynamicGroupLibraryConsole {
     async clickAddDynamicGroupButton(): Promise<void> {
         await $(this.selectors.addDynamicGroupBtn).click();
     }
+
+    async isAddDynamicGroupButtonEnabled(): Promise<boolean> {
+      return await $(this.selectors.addDynamicGroupBtn).isEnabled();
+    }
 }
 
 export default new DynamicGroupLibraryConsole();

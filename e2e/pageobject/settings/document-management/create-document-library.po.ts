@@ -159,6 +159,12 @@ class DocumentLibraryPage {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.titleField)));
     }
 
+    async isAddNewDocumentBladeEnabled(): Promise<boolean> {
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addDocumentButton)));
+       return await $(this.selectors.addDocumentButton).isEnabled();
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.titleField)));
+    }
+
     async setTitle(title: string): Promise<void> {
         await $(this.selectors.titleField).sendKeys(title);
     }

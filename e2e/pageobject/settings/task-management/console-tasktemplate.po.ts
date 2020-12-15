@@ -48,12 +48,25 @@ class TaskTemplateGridPage {
         await $(this.selectors.manualTaskTemplateButton).click();
     }
 
+    async isManualTaskTemplateButtonEnabled(): Promise<boolean> {
+        return await $(this.selectors.manualTaskTemplateButton).isEnabled();
+    }
+
     async clickOnAutomationTaskTemplateButton(): Promise<void> {
         await $(this.selectors.automationtaskTemplateButton).click();
     }
 
+    async isAutomationTaskTemplateButtonEnabled(): Promise<boolean> {
+      return await $(this.selectors.automationtaskTemplateButton).isEnabled();
+    }
+
+
     async clickOnExtrnalTaskTemplateButton(): Promise<void> {
         await $(this.selectors.externalTaskTemplateButton).click();
+    }
+
+    async isExtrnalTaskTemplateButtonEnabled(): Promise<boolean> {
+      return await $(this.selectors.externalTaskTemplateButton).isEnabled();
     }
 
     async clickOnCopyTaskTemplateButton(): Promise<void> {
@@ -102,7 +115,7 @@ class TaskTemplateGridPage {
         return await utilGrid.isGridColumnSorted(column, 'descending', this.selectors.taskTemplateGuid);
     }
 
-    async getFirstRecordValue(columnName: string) : Promise<string> {
+    async getFirstRecordValue(columnName: string): Promise<string> {
         return await utilGrid.getSelectedGridRecordValue(this.selectors.taskTemplateGuid, columnName);
     }
 

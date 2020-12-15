@@ -80,5 +80,10 @@
         "orgName": "UI-SupportGroupHR",
         "relatedOrgId": null,
         "domainTag": "Human Resource"
+    },
+    "PsilonSuppGrpHRLOB": {
+        "orgName": "HRLOB-SuppGrp",
+        "relatedOrgId": null,
+        "domainTag": "HR"
     }
 }

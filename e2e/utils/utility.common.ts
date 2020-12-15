@@ -28,7 +28,10 @@ export class Utility {
         clearDateTimePicker: '.btn-secondary',
         ckEditor: 'bwf-rich-text-editor[style="display: block;"], .activity-feed-note-text-container,.doc-editor',
         ckEditorTextArea: '.cke_enable_context_menu',
-        fieldParentLocator: '[rx-configuration="configuration"] .d-textfield'
+        fieldParentLocator: '[rx-configuration="configuration"] .d-textfield',
+        closedWarningTab: '.btn-cross',
+        warningText: '.d-modal__content p',
+
     }
 
     async selectDropDown(guid: string | ElementFinder, value: string): Promise<void> {
@@ -52,6 +55,14 @@ export class Utility {
             await option.click();
         }
 
+    }
+
+    async getWarningTextOfLineOfBuisness(): Promise<string> {
+        return await $(this.selectors.warningText).getText();
+    }
+
+    async closedWarningTextOfLineOfBuisness(): Promise<void> {
+        await $(this.selectors.warningText).click();
     }
 
     async clearDropDown(guid: string, optionValue: string): Promise<void> {
@@ -482,8 +493,8 @@ export class Utility {
         return fieldValue;
     }
 
-    async getTextFromAfterTag(nameElement:ElementFinder): Promise<string>{
-        let textAfterTag:string = await browser.executeScript('return window.getComputedStyle(arguments[0], ":after").content;', nameElement.getWebElement());
+    async getTextFromAfterTag(nameElement: ElementFinder): Promise<string> {
+        let textAfterTag: string = await browser.executeScript('return window.getComputedStyle(arguments[0], ":after").content;', nameElement.getWebElement());
         return textAfterTag;
     }
 }

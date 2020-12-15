@@ -6,6 +6,7 @@ import createCasePage from '../../pageobject/case/create-case.po';
 import editCasePage from '../../pageobject/case/edit-case.po';
 import quickCase from '../../pageobject/case/quick-case.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
+import attachDocumentBladePO from '../../pageobject/common/attach-document-blade.po';
 import changeAssignmentBlade from "../../pageobject/common/change-assignment-blade.po";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
@@ -19,10 +20,8 @@ import createDocumentLibraryPage from '../../pageobject/settings/document-manage
 import documentLibraryConsolePage from '../../pageobject/settings/document-management/document-library-console.po';
 import editDocumentLibraryPage from '../../pageobject/settings/document-management/edit-document-library.po';
 import { BWF_BASE_URL } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from "../../utils/utility.grid";
-import attachDocumentBladePO from '../../pageobject/common/attach-document-blade.po';
 
 let caseBAUser = 'qkatawazi';
 let caseAgentUser = 'qtao';
@@ -168,6 +167,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
         await browser.sleep(9000); //waiting for data to be reflected on UI
         await apiHelper.associatePersonToSupportGroup('dbomei', suppGrpData.orgName);
         await apiHelper.associateCategoryUnderDomainTag('Applications', domainTag);
+        await browser.sleep(2000); //waiting for data to be reflected on UI
     }
 
     describe('[DRDMV-18999,DRDMV-19000,DRDMV-19002]:Verify the search functionality of knowledge articles console for category tiers 1,2 and 3', () => {

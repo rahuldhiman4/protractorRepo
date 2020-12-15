@@ -10,6 +10,10 @@ class ConsoleKnowledgeSet {
         await $(this.selectors.addKnowledgeSetButton).click();
     }
 
+    async isAddKnowledgeSetBtnEnabled(): Promise<boolean>{
+       return await $(this.selectors.addKnowledgeSetButton).isEnabled();
+    }
+
 }
 
 export default new ConsoleKnowledgeSet();

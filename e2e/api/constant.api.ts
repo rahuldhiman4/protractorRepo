@@ -19,6 +19,12 @@ export enum TaskTemplate {
     Inactive = 3000,
 };
 
+export enum LOBStatus {
+    Active = 1,
+    Draft = 0,
+    Inactive = 2,
+};
+
 export enum Case {
     Assigned = 2000,
     New = 1000,
