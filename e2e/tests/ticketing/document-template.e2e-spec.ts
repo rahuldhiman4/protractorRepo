@@ -67,6 +67,45 @@ describe('Document Template', () => {
             expect(await documentTemplateConsolePo.getSelectedGridRecordValue('Label')).toBe(label2, 'Label is missing on Grid');
             expect(await documentTemplateConsolePo.isGridColumnSorted('Label', 'descending')).toBeTruthy('Label is not get sorted with descending order');
         });
+        it('[DRDMV-14977]: create same name record in same LOB', async () => {
+            //create same name record in same LOB
+            await navigationPage.signOut();
+            await loginPage.login('jbarnes');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Document Management--Templates', 'Document Templates - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            await createDocumentTemplatePo.clickOnAddTemplate();
+            await createDocumentTemplatePo.setTemplateName(documentName);
+            await createDocumentTemplatePo.setCompany('Petramco');
+            await createDocumentTemplatePo.setDescription(documentDescription);
+            await createDocumentTemplatePo.setDocumentBody(documentBody);
+            await createDocumentTemplatePo.clickOnSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent(`ERROR (2220154): Template Already exist with given name:${documentName}`)).toBeTruthy("Error message absent");
+            await createDocumentTemplatePo.clickOnCancelButton();
+            await utilCommon.clickOnWarningOk();
+        });
+        it('[DRDMV-14977]: create same name record in different LOB', async () => {
+            //create same name record in different LOB
+            await utilGrid.selectLineOfBusiness('Facilities');
+            await createDocumentTemplatePo.clickOnAddTemplate();
+            await createDocumentTemplatePo.setTemplateName(documentName);
+            await createDocumentTemplatePo.setCompany('Petramco');
+            await createDocumentTemplatePo.setDescription(documentDescription);
+            await createDocumentTemplatePo.setDocumentBody(documentBody);
+            // verify LOB is there
+            expect(await createDocumentTemplatePo.getLobValue()).toBe("Facilities");
+            await createDocumentTemplatePo.clickOnSaveButton();
+            //expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent"); NO SUCCESS MESSAGE ON UI
+            // open the record and verify LOB is on edit screen
+            await documentTemplateConsolePo.searchAndOpenDocumentTemplate(documentName);
+            expect(await editDocumentTemplatePo.getLobValue()).toBe("Facilities");
+            await editDocumentTemplatePo.clickOnCancelButton();
+            await utilGrid.selectLineOfBusiness('Human Resource');
+        });
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login("qkatawazi");
+        });
     });
 
     //kgaikwad

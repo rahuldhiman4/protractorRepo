@@ -281,11 +281,12 @@ describe('Notes template', () => {
 
     //ptidke
     describe('[DRDMV-16111]: [Design Time] Verify warning Message for locale values', async () => {
+        let caseNotesTemplate, peopleNotesTemplate, taskNotesTemplate, knowledgeNotesTemplate;
         it('[DRDMV-16111]: Case and People Notes template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
-            let caseNotesTemplate1 = await createNotesTemplate.createNotesTemplate('Petramco');
-            await consoleNotesTemplatePo.searchAndClickOnNotesTemplate(caseNotesTemplate1);
+            caseNotesTemplate = await createNotesTemplate.createNotesTemplate('Petramco');
+            await consoleNotesTemplatePo.searchAndClickOnNotesTemplate(caseNotesTemplate);
             await editNotetemplate.changeLanguageValue('Italian (Italy)');
             expect(await editNotetemplate.getLocaleNotPresentMessage()).toContain('Please add the required localized message.');
             await editNotetemplate.clickOnCancelButton();
@@ -294,8 +295,8 @@ describe('Notes template', () => {
         it('[DRDMV-16111]: Case and People Notes template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'Activity Notes Template Console - Person - Business Workflows');
-            let caseNotesTemplate2 = await createNotesTemplate.createNotesTemplate('Petramco');
-            await consoleNotesTemplatePo.searchAndClickOnNotesTemplate(caseNotesTemplate2);
+            peopleNotesTemplate = await createNotesTemplate.createNotesTemplate('Petramco');
+            await consoleNotesTemplatePo.searchAndClickOnNotesTemplate(peopleNotesTemplate);
             await editNotetemplate.changeLanguageValue('Italian (Italy)');
             expect(await editNotetemplate.getLocaleNotPresentMessage()).toContain('Please add the required localized message.')
             await editNotetemplate.clickOnCancelButton();
@@ -304,8 +305,8 @@ describe('Notes template', () => {
         it('[DRDMV-16111]: [Design Time] Verify warning Message for locale values if template message is not configured against that locale value', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', 'Activity Notes Template Console - Task - Business Workflows');
-            let caseNotesTemplate3 = await createNotesTemplate.createNotesTemplate('Petramco');
-            await consoleNotesTemplatePo.searchAndClickOnNotesTemplate(caseNotesTemplate3);
+            taskNotesTemplate = await createNotesTemplate.createNotesTemplate('Petramco');
+            await consoleNotesTemplatePo.searchAndClickOnNotesTemplate(taskNotesTemplate);
             await editNotetemplate.changeLanguageValue('Italian (Italy)');
             expect(await editNotetemplate.getLocaleNotPresentMessage()).toContain('Please add the required localized message.');
             await editNotetemplate.clickOnCancelButton();
@@ -314,12 +315,139 @@ describe('Notes template', () => {
         it('[DRDMV-16111]: [Design Time] Verify warning Message for locale values if template message is not configured against that locale value', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Notes Template', 'Activity Notes Template Console - Knowledge - Business Workflows');
-            let caseNotesTemplate4 = await createNotesTemplate.createNotesTemplate('Petramco');
-            await consoleNotesTemplatePo.searchAndClickOnNotesTemplate(caseNotesTemplate4);
+            knowledgeNotesTemplate = await createNotesTemplate.createNotesTemplate('Petramco');
+            await consoleNotesTemplatePo.searchAndClickOnNotesTemplate(knowledgeNotesTemplate);
             await editNotetemplate.changeLanguageValue('Italian (Italy)');
             expect(await editNotetemplate.getLocaleNotPresentMessage()).toContain('Please add the required localized message.');
             await editNotetemplate.clickOnCancelButton();
             await utilCommon.clickOnWarningOk();
+        });
+        it('[DRDMV-16111]: Case Notes template create same name record in same LOB', async () => {
+            //create same name record in same LOB
+            await navigationPage.signOut();
+            await loginPage.login('jbarnes');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            await consoleNotesTemplatePo.clickOnCreateNotesTemplate();
+            await createNotesTemplate.setTemplateName(caseNotesTemplate);
+            await createNotesTemplate.setCompanyValue('Petramco');
+            await createNotesTemplate.setBody("This is new notes template");
+            await createNotesTemplate.clickOnSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent(`ERROR (222106): Template with the given name already exists:${caseNotesTemplate}`)).toBeTruthy("Error message absent");
+            await createNotesTemplate.clickCancelButton();
+            await utilCommon.clickOnWarningOk();
+        });
+        it('[DRDMV-16111]: People Notes template create same name record in same LOB', async () => {
+            //create same name record in same LOB
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'Activity Notes Template Console - Person - Business Workflows');
+            await consoleNotesTemplatePo.clickOnCreateNotesTemplate();
+            await createNotesTemplate.setTemplateName(peopleNotesTemplate);
+            await createNotesTemplate.setCompanyValue('Petramco');
+            await createNotesTemplate.setBody("This is new notes template");
+            await createNotesTemplate.clickOnSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent(`ERROR (222106): Template with the given name already exists:${peopleNotesTemplate}`)).toBeTruthy("Error message absent");
+            await createNotesTemplate.clickCancelButton();
+            await utilCommon.clickOnWarningOk();
+        });
+        it('[DRDMV-16111]: Task Notes template create same name record in same LOB', async () => {
+            //create same name record in same LOB
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', 'Activity Notes Template Console - Task - Business Workflows');
+            await consoleNotesTemplatePo.clickOnCreateNotesTemplate();
+            await createNotesTemplate.setTemplateName(taskNotesTemplate);
+            await createNotesTemplate.setCompanyValue('Petramco');
+            await createNotesTemplate.setBody("This is new notes template");
+            await createNotesTemplate.clickOnSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent(`ERROR (222106): Template with the given name already exists:${taskNotesTemplate}`)).toBeTruthy("Error message absent");
+            await createNotesTemplate.clickCancelButton();
+            await utilCommon.clickOnWarningOk();
+        });
+        it('[DRDMV-16111]: Knowledge Notes template create same name record in same LOB', async () => {
+            //create same name record in same LOB
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Notes Template', 'Activity Notes Template Console - Knowledge - Business Workflows');
+            await consoleNotesTemplatePo.clickOnCreateNotesTemplate();
+            await createNotesTemplate.setTemplateName(knowledgeNotesTemplate);
+            await createNotesTemplate.setCompanyValue('Petramco');
+            await createNotesTemplate.setBody("This is new notes template");
+            await createNotesTemplate.clickOnSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent(`ERROR (222106): Template with the given name already exists:${knowledgeNotesTemplate}`)).toBeTruthy("Error message absent");
+            await createNotesTemplate.clickCancelButton();
+            await utilCommon.clickOnWarningOk();
+        });
+        it('[DRDMV-16111]: Case Notes template create same name record in different LOB', async () => {
+            //create same name record in different LOB
+            await utilGrid.selectLineOfBusiness('Facilities');
+            await consoleNotesTemplatePo.clickOnCreateNotesTemplate();
+            await createNotesTemplate.setTemplateName(caseNotesTemplate);
+            await createNotesTemplate.setCompanyValue('Petramco');
+            await createNotesTemplate.setBody("This is new notes template");
+            // verify LOB is there
+            expect(await createNotesTemplate.getLobValue()).toBe("Facilities");
+            await createNotesTemplate.clickOnSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
+            // open the record and verify LOB is on edit screen
+            await consoleNotesTemplatePo.searchAndClickOnNotesTemplate(caseNotesTemplate);
+            expect(await editNotetemplate.getLobValue()).toBe("Facilities");
+            await editNotetemplate.clickOnCancelButton();
+        });
+        it('[DRDMV-16111]: People Notes template create same name record in different LOB', async () => {
+            //create same name record in different LOB
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'Activity Notes Template Console - Person - Business Workflows');
+            await consoleNotesTemplatePo.clickOnCreateNotesTemplate();
+            await createNotesTemplate.setTemplateName(peopleNotesTemplate);
+            await createNotesTemplate.setCompanyValue('Petramco');
+            await createNotesTemplate.setBody("This is new notes template");
+            // verify LOB is there
+            expect(await createNotesTemplate.getLobValue()).toBe("Facilities");
+            await createNotesTemplate.clickOnSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
+            // open the record and verify LOB is on edit screen
+            await consoleNotesTemplatePo.searchAndClickOnNotesTemplate(peopleNotesTemplate);
+            expect(await editNotetemplate.getLobValue()).toBe("Facilities");
+            await editNotetemplate.clickOnCancelButton();
+        });
+        it('[DRDMV-16111]: Task Notes template create same name record in different LOB', async () => {
+            //create same name record in different LOB
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', 'Activity Notes Template Console - Task - Business Workflows');
+            await consoleNotesTemplatePo.clickOnCreateNotesTemplate();
+            await createNotesTemplate.setTemplateName(taskNotesTemplate);
+            await createNotesTemplate.setCompanyValue('Petramco');
+            await createNotesTemplate.setBody("This is new notes template");
+            // verify LOB is there
+            expect(await createNotesTemplate.getLobValue()).toBe("Facilities");
+            await createNotesTemplate.clickOnSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
+            // open the record and verify LOB is on edit screen
+            await consoleNotesTemplatePo.searchAndClickOnNotesTemplate(taskNotesTemplate);
+            expect(await editNotetemplate.getLobValue()).toBe("Facilities");
+            await editNotetemplate.clickOnCancelButton();
+        });
+        it('[DRDMV-16111]: Knowledge Notes template create same name record in different LOB', async () => {
+            //create same name record in different LOB
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Notes Template', 'Activity Notes Template Console - Knowledge - Business Workflows');
+            await consoleNotesTemplatePo.clickOnCreateNotesTemplate();
+            await createNotesTemplate.setTemplateName(knowledgeNotesTemplate);
+            await createNotesTemplate.setCompanyValue('Petramco');
+            await createNotesTemplate.setBody("This is new notes template");
+            // verify LOB is there
+            expect(await createNotesTemplate.getLobValue()).toBe("Facilities");
+            await createNotesTemplate.clickOnSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
+            // open the record and verify LOB is on edit screen
+            await consoleNotesTemplatePo.searchAndClickOnNotesTemplate(knowledgeNotesTemplate);
+            expect(await editNotetemplate.getLobValue()).toBe("Facilities");
+            await editNotetemplate.clickOnCancelButton();
+            await utilGrid.selectLineOfBusiness('Human Resource');
+        });
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login("elizabeth");
         });
     });
 

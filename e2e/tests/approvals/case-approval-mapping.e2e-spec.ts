@@ -386,13 +386,14 @@ describe("Case Approval Mapping Tests", () => {
             await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
             await createApprovalMappingPage.setApprovalMappingName(approvalMappingName);
             await createApprovalMappingPage.selectCompany('- Global -');
+            await createApprovalMappingPage.selectStatusTrigger('Assigned');
+            await createApprovalMappingPage.selectFlowset("Benefits");
             await createApprovalMappingPage.selectStatusMappingApproved('In Progress');
             await createApprovalMappingPage.selectStatusMappingRejected('Canceled');
             await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Pending');
             await createApprovalMappingPage.selectStatusMappingError('New');
             await createApprovalMappingPage.clickSaveApprovalMappingBtn();
-            //uncomment after QCert Dec 20
-            //expect(await utilCommon.isPopUpMessagePresent('ERROR (222099): The combination of Company, Line of Business, Flowset and Status to trigger already exists for this record definition. Please enter unique values for these fields.')).toBeTruthy("Error message absent");
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (222099): The combination of Company, Line of Business, Flowset and Status to trigger already exists for this record definition. Please enter unique values for these fields.')).toBeTruthy("Error message absent");
             await createApprovalMappingPage.clickCancelApprovalMappingBtn();
             await utilCommon.clickOnWarningOk();
         });
@@ -406,8 +407,12 @@ describe("Case Approval Mapping Tests", () => {
             await createApprovalMappingPage.selectStatusMappingRejected('Canceled');
             await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Pending');
             await createApprovalMappingPage.selectStatusMappingError('New');
+            // verify LOB present
+            expect(await createApprovalMappingPage.getLobValue()).toBe("Facilities");
             await createApprovalMappingPage.clickSaveApprovalMappingBtn();
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
+            // open the record and verify LOB is on edit screen
+            expect(await editApprovalMappingPage.getLobValue()).toBe("Facilities");
             await editApprovalMappingPage.clickCancelApprovalMappingBtn();
             await utilGrid.selectLineOfBusiness('Human Resource');
         });

@@ -37,7 +37,8 @@ class EditApprovalMapping {
         selectCaseTemplate: 'div .d-icon-square_o',
         caseTemplateSelectionArea: '.list-container',
         searchedCaseTemplatesRecords: '.record-list-item',
-        casesCreatedWithoutTemplateToggleBtnGuid: '3e737bb6-57aa-48e3-8a0c-993d9d2f6643'
+        casesCreatedWithoutTemplateToggleBtnGuid: '3e737bb6-57aa-48e3-8a0c-993d9d2f6643',
+        lobValue: '[rx-view-component-id="a8ef078e-4681-420b-acbb-2c4aaebcf5bc"] .pull-left'
     }
 
     async getEditApprovalMappingHeaderText(): Promise<string> {
@@ -282,6 +283,10 @@ class EditApprovalMapping {
 
     async setCaseCreatedUsingTemplateGoInApprovalToggle(enable: boolean): Promise<void> {
         await utilCommon.selectToggleButton(this.selectors.casesCreatedWithoutTemplateToggleBtnGuid, enable);
+    }
+
+    async getLobValue(): Promise<string> {
+        return await $(this.selectors.lobValue).getText();
     }
 }
 

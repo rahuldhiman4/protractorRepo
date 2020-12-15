@@ -1,4 +1,6 @@
-import { $, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+
+
+import { $, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../../utils/util.common';
 
 class EditDocumentTemplatePage {
@@ -15,6 +17,7 @@ class EditDocumentTemplatePage {
         pageHeader: '.modal-title',
         documentBodyImg: '[rx-view-component-id="f6baa44c-1e91-49be-9164-1c56077900d8"] .cke_contents_ltr img',
         dynamicField: '[class="cke_contents cke_reset"] span',
+        lobValue: '[rx-view-component-id="d4c80fc3-8379-4215-8312-23d9201a3ff7"] .pull-left'
     }
 
     async isDocumentBodyImgDisplay(): Promise<boolean> {
@@ -92,6 +95,9 @@ class EditDocumentTemplatePage {
         return await $(this.selectors.saveButton).isEnabled();
     }
     
+    async getLobValue(): Promise<string> {
+        return await $(this.selectors.lobValue).getText();
+    }
 }
 
 export default new EditDocumentTemplatePage()

@@ -24,6 +24,7 @@ class createNotesTemplate {
         settingsButton: 'rx-shell .d-n-action__settings',
         languageDD: '[rx-view-component-id="951065ca-a003-4465-aed5-9623a689fd4f"] .d-textfield__label',
         fieldValueInBody:'[rx-view-component-id="55da6dac-fe85-435e-9937-5b917d4b7971"] .cke_wysiwyg_div span',
+        lobValue: '[rx-view-component-id="8ff2fad8-1b60-49eb-8664-618ae54d359e"] .pull-left'
     }
 
     async setTemplateName(templateNameValue: string): Promise<void> {
@@ -107,6 +108,14 @@ class createNotesTemplate {
 
     async isDynamicFieldDisplayedInBody(value:string):Promise<boolean>{
         return await element(by.cssContainingText(this.selectors.fieldValueInBody, value)).isDisplayed();
+    }
+
+    async clickCancelButton():Promise<void>{
+        await $(this.selectors.cancelButton).click();
+    }
+
+    async getLobValue(): Promise<string> {
+        return await $(this.selectors.lobValue).getText();
     }
 }
 export default new createNotesTemplate();
