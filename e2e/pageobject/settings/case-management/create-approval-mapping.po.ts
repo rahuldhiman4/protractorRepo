@@ -1,6 +1,5 @@
-import { $, protractor, ProtractorExpectedConditions, $$, browser, element, by } from 'protractor';
+import { $, protractor, ProtractorExpectedConditions } from 'protractor';
 import utilCommon from "../../../utils/util.common";
-import utilityCommon, { Utility } from '../../../utils/utility.common';
 
 class CreateApprovalMapping {
 
@@ -28,7 +27,8 @@ class CreateApprovalMapping {
         statusMappingLabel: '[rx-view-component-id="df2b908d-1a52-456b-81bb-ec47d0446994"] span',
         approvalMappingFields: '1e161c6a-3b3d-42c3-8119-83207d9fbbc0',
         saveButton: '[rx-view-component-id="c86fc373-e406-4e48-9001-5571ffc1772e"] button',
-        cancelButton: '[rx-view-component-id="937e9d73-4012-4b1f-bab7-a9e49e63a520"] button'
+        cancelButton: '[rx-view-component-id="937e9d73-4012-4b1f-bab7-a9e49e63a520"] button',
+        lobValue: '[rx-view-component-id="14938de7-54b1-4916-89a9-7d1ca1886fca"] .pull-left'
     }
 
     async getCreateApprovalMappingHeaderText(): Promise<string> {
@@ -89,8 +89,8 @@ class CreateApprovalMapping {
         return await utilCommon.isRequiredTagToField(this.selectors.statusMappingError);
     }
 
-    async getDefaultSelectedStatusTriggerOption():Promise<string>{
-       return await $(this.selectors.statusTriggerDefaultOption).getText();
+    async getDefaultSelectedStatusTriggerOption(): Promise<string> {
+        return await $(this.selectors.statusTriggerDefaultOption).getText();
     }
 
     async selectCompany(company: string): Promise<void> {
@@ -120,11 +120,6 @@ class CreateApprovalMapping {
     async clickStatusMappingErrorDropDown(): Promise<void> {
         await $(this.selectors.statusMappingErrorDropDownField).click();
     }
-
-
-
-
-
 
     async selectStatusTrigger(approvalStatusTrigger: string): Promise<void> {
         await utilCommon.selectDropDown(this.selectors.statusTriggerDropDownGuid, approvalStatusTrigger);
@@ -185,9 +180,9 @@ class CreateApprovalMapping {
         await $(this.selectors.cancelButton).click();
     }
 
-
-
-
+    async getLobValue(): Promise<string> {
+        return await $(this.selectors.lobValue).getText();
+    }
 }
 
 export default new CreateApprovalMapping();

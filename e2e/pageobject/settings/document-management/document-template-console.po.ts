@@ -10,6 +10,10 @@ class DocumentTemplateConsolePage {
             addDocumentTemplateBtn: '[rx-view-component-id="3acdcc85-9981-433a-84dd-6891fedcc243"] button'
     }
 
+    async clickCreateDocumentTemplate(): Promise<void> {
+        await $(this.selectors.addDocumentTemplateBtn).click();
+    }
+
     async selectCheckBox(record:string): Promise<void> {
 //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.deleteButton)));
         await utilGrid.searchAndSelectGridRecord(record);

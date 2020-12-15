@@ -47,6 +47,7 @@ class CreateCaseTemplate {
         ckEditor: '.cke_inner',
         ckEditorTextArea: '.cke_editable_themed',
         flowsetVal: '[rx-view-component-id="e29c6d30-5ac3-4f18-a4c6-9192017d46ed"] .ui-select-toggle .ui-select-match-text',
+        lobValue: '[rx-view-component-id="57676226-5e27-4010-968d-2e6ccf27229c"] .pull-left'
     }
 
     async setCompanyName(companyValue: string): Promise<void> {
@@ -295,6 +296,10 @@ class CreateCaseTemplate {
 
     async flowsetOptionsPresent(list: string[]): Promise<boolean> {
         return await utilCommon.isDrpDownvalueDisplayed(this.selectors.flowset, list);
+    }
+
+    async getLobValue(): Promise<string> {
+        return await $(this.selectors.lobValue).getText();
     }
 }
 

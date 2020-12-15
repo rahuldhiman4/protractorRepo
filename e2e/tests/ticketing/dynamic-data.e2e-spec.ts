@@ -16,7 +16,7 @@ import updateStatusBladePo from '../../pageobject/common/update.status.blade.po'
 import viewCasetemplatePo from '../../pageobject/settings/case-management/view-casetemplate.po';
 import consoleNotestemplatePo from '../../pageobject/settings/common/console-notestemplate.po';
 import createNotestemplatePo from '../../pageobject/settings/common/create-notestemplate.po';
-import consoleDocumentTemplatePo from '../../pageobject/settings/document-management/console-document-template.po';
+import consoleDocumentTemplatePo from '../../pageobject/settings/document-management/document-template-console.po';
 import createDocumentTemplatePo from '../../pageobject/settings/document-management/create-document-template.po';
 import consoleEmailTemplatePo from '../../pageobject/settings/email/console-email-template.po';
 import createEmailTemplatePo from '../../pageobject/settings/email/create-email-template.po';
@@ -164,7 +164,7 @@ describe('Dynamic data', () => {
             await browser.navigate().back();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Templates', 'Document Templates - Business Workflows');
-            await consoleDocumentTemplatePo.clickOnCreateDocumentTemplate();
+            await consoleDocumentTemplatePo.clickCreateDocumentTemplate();
             await createDocumentTemplatePo.setCompany('- Global -');
             await createDocumentTemplatePo.setTemplateName(randomStr);
             await createDocumentTemplatePo.clickOnInsertFieldOfDocumentBody();

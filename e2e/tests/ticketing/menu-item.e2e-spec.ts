@@ -144,8 +144,14 @@ describe('Menu Item', () => {
             await createMenuItems.clickOnLocalizeLink();
             await localizeValuePopPo.setLocalizeValue(label);
             await localizeValuePopPo.clickOnSaveButton();
+            // verify LOB is there
+            expect(await createMenuItems.getLobValue()).toBe("Facilities");
             await createMenuItems.clickOnSaveButton();
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
+            // open the record and verify LOB is on edit screen
+            await menuItemsConfigConsolePo.searchAndEditMenuOption(label);
+            expect(await editMenuItemsConfigPo.getLobValue()).toBe("Facilities");
+            await editMenuItemsConfigPo.clickOnCancelButton();
             await utilGrid.selectLineOfBusiness('Human Resource');
         });
         afterAll(async () => {

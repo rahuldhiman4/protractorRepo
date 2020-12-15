@@ -1,5 +1,4 @@
-import { $, $$, by, element, protractor, ProtractorExpectedConditions } from "protractor";
-import utilGrid from '../../../utils/util.grid';
+import { $, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../../utils/util.common';
 
 class EditDynamicFieldLibrary {
@@ -18,6 +17,7 @@ class EditDynamicFieldLibrary {
         saveButton: '[rx-view-component-id="cca7e4ea-99f5-4d56-9b21-ecf1a45b7ff3"] button',
         activeConfidentialsCheckbox: '[rx-view-component-id="cca7e4ea-99f5-4d56-9b21-ecf1a45b7ff3"] button[uib-btn-radio="trueValue"]',
         enabledRequiredRadioButton: '[rx-view-component-id="635e3839-5821-4960-9551-0f4843f5a666"] [uib-btn-radio="trueValue"]',
+        lobValue: '[rx-view-component-id="ffd8033c-5dc5-4f97-82e4-ad62bf9cdd4c"] .pull-left'
     }
 
     async clickOnSaveButton(): Promise<void> {
@@ -95,6 +95,10 @@ class EditDynamicFieldLibrary {
 
     async clickCancelButton(): Promise<void> {
         await $(this.selectors.cancelButton).click();
+    }
+
+    async getLobValue(): Promise<string> {
+        return await $(this.selectors.lobValue).getText();
     }
 }
 

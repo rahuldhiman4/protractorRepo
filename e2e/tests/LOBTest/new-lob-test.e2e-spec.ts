@@ -82,7 +82,7 @@ describe('Create Process in Flowset', () => {
 
     //apurva
     describe('[DRDMV-17555]: Create new automatic case status transition rule for one line of Business', async () => {
-        let configName1, randomStr = [...Array(7)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let tempData, configName1, randomStr = [...Array(7)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         it('[DRDMV-17555]: Create record', async () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.deleteAutomatedCaseStatusTransition();
@@ -129,6 +129,35 @@ describe('Create Process in Flowset', () => {
             await utilGrid.selectLineOfBusiness("Facilities");
             await utilGrid.clearFilter();
             expect(await utilGrid.isGridRecordPresent('UpdatedConfigName1' + randomStr)).toBeFalsy();
+        });
+        xit('[DRDMV-17555]: create same name record in same LOB', async () => {
+            //create same name record in same LOB
+            tempData = cloneDeep(AUTO_STATUS_TRANSITION_MANDATORY_FIELDS);
+            tempData.name = 'UpdatedConfigName1' + randomStr;
+            tempData.changeStatusAfter = 3;
+            tempData.fromStatus = "In Progress";
+            tempData.toStatus = "Pending";
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            await automatedStatusTransitionConsole.clickAddAutomatedStatusTransitionBtn();
+            await automatedStatusTransitionCreatePage.createAutomatedStatusTransition(tempData);
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (10000): Automated Status Configuration with same name already exists. Please select a different name.')).toBeTruthy("Error message absent");
+            await automatedStatusTransitionCreatePage.clickCancelBtn();
+            await utilCommon.clickOnWarningOk();
+        });
+        xit('[DRDMV-17555]: create same name record in different LOB', async () => {
+            //create same name record in different LOB
+            await utilGrid.selectLineOfBusiness('Facilities');
+            await automatedStatusTransitionConsole.clickAddAutomatedStatusTransitionBtn();
+            // await automatedStatusTransitionCreatePage.setName(tempData.name);
+            // await automatedStatusTransitionCreatePage.setCompany(tempData.company);
+            // await automatedStatusTransitionCreatePage.setFromStatus(tempData.fromStatus);
+            // await automatedStatusTransitionCreatePage.setToStatus(tempData.toStatus);
+            // await automatedStatusTransitionCreatePage.setChangeStatusAfter(tempData.changeStatusAfter.toString());
+            // verify LOB is there
+            // await automatedStatusTransitionCreatePage.saveConfig();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
+            // open the record and verify LOB is on edit screen
+            await utilGrid.selectLineOfBusiness('Human Resource');
         });
         afterAll(async () => {
             await utilCommon.closeBladeOnSettings();

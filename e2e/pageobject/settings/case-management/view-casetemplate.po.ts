@@ -45,6 +45,7 @@ class ViewCaseTemplate {
         taskFlowSectionSizeLocator: '.paper-scroller-background',
         tab: '.rx-tab',
         copyCaseTemplate: '[rx-view-component-id="0bb1dd3b-639f-4019-adbd-96faae6920ef"] button',
+        lobValue: '[rx-view-component-id="bcd748fb-6503-44e4-b1db-2ad97b8fb088"] p'
     }
 
     async selectTab(tabValue: string): Promise<void> {
@@ -259,6 +260,9 @@ class ViewCaseTemplate {
         };
     }
 
+    async getLobValue(): Promise<string> {
+        return await $(this.selectors.lobValue).getText();
+    }
 }
 
 export default new ViewCaseTemplate();

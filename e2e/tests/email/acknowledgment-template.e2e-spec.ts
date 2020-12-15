@@ -9,8 +9,6 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
-import { SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
-import { cloneDeep } from 'lodash';
 
 describe('Email Acknowledgment Template', () => {
     let label = "POSH";
@@ -177,7 +175,7 @@ describe('Email Acknowledgment Template', () => {
             // DRDMV-10924
             await consoleAcknowledgmentTemplatePo.clearGridFilter();
             await consoleAcknowledgmentTemplatePo.clearGridSearchBox();
-           await consoleAcknowledgmentTemplatePo.addColumnOnGrid(arr2);
+            await consoleAcknowledgmentTemplatePo.addColumnOnGrid(arr2);
             await consoleAcknowledgmentTemplatePo.addFilter('Template Name', templateName2, 'text');
             expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Template Name')).toBe(templateName2, 'Filter Template Name is missing in column');
             await utilGrid.clearFilter();
@@ -265,6 +263,45 @@ describe('Email Acknowledgment Template', () => {
             await utilCommon.closePopUpMessage();
             await createAcknowledgmentTemplatesPo.clickOnCancelButton();
             await utilCommon.clickOnWarningOk();
+        });
+
+        it('[DRDMV-10902]: create same name record in same LOB', async () => {
+            //create same name record in same LOB
+            await navigationPage.signOut();
+            await loginPage.login('jbarnes');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
+            await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
+            await createAcknowledgmentTemplatesPo.setTemplateName(templateName4);
+            await createAcknowledgmentTemplatesPo.selectCompanyDropDown('Petramco');
+            await createAcknowledgmentTemplatesPo.setDescription(description);
+            await createAcknowledgmentTemplatesPo.setSubject(subject);
+            await createAcknowledgmentTemplatesPo.clickOnSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent(`ERROR (222108): Template Already exist with given name:${templateName4}`)).toBeTruthy("Error message absent");
+            await createAcknowledgmentTemplatesPo.clickOnCancelButton();
+            await utilCommon.clickOnWarningOk();
+        });
+        it('[DRDMV-10902]: create same name record in different LOB', async () => {
+            //create same name record in different LOB
+            await utilGrid.selectLineOfBusiness('Facilities');
+            await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
+            await createAcknowledgmentTemplatesPo.setTemplateName(templateName4);
+            await createAcknowledgmentTemplatesPo.selectCompanyDropDown('Petramco');
+            await createAcknowledgmentTemplatesPo.setDescription(description);
+            await createAcknowledgmentTemplatesPo.setSubject(subject);
+            // verify LOB is there
+            expect(await createAcknowledgmentTemplatesPo.getLobValue()).toBe("Facilities");
+            await createAcknowledgmentTemplatesPo.clickOnSaveButton();
+            //expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent"); NO SUCCESS MESSAGE ON UI
+            // open the record and verify LOB is on edit screen
+            await consoleAcknowledgmentTemplatePo.searchAndOpenAcknowledgmentTemplate(templateName4);
+            expect(await editAcknowledgmentTemplatePo.getLobValue()).toBe("Facilities");
+            await editAcknowledgmentTemplatePo.clickOnCancelButton();
+            await utilGrid.selectLineOfBusiness('Human Resource');
+        });
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login("qkatawazi");
         });
     });
 });
