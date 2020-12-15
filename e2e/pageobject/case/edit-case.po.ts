@@ -68,6 +68,7 @@ class CaseEditPage {
         dynamicAttachmentField: '[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .bwf-attachment-button input',
         tabText: '.nav-link-wrapper',
         dynamciFieldDownLoadIcon: '.bwf-text-color-active',
+        lobValue: '[rx-view-component-id="694535e8-ab22-4ddc-8d2a-ceb017cf4fbf"] button',
         lineofbusiness: '[rx-view-component-id="694535e8-ab22-4ddc-8d2a-ceb017cf4fbf"] .adapt-select',
     }
 
@@ -182,6 +183,10 @@ class CaseEditPage {
 
     async isValuePresentInResolutionCode(resolutionCode: string): Promise<void> {
         await utilityCommon.isValuePresentInDropDown(this.selectors.resolutionCodeGuid, resolutionCode);
+    }
+
+    async isValuePresentInCategoryTier1(categoryTier1: string): Promise<void> {
+        await utilityCommon.isValuePresentInDropDown(this.selectors.categoryTier1Guid, categoryTier1);
     }
 
     async setResolutionDescription(resolutionDescription: string): Promise<void> {
@@ -409,6 +414,10 @@ class CaseEditPage {
 	async clickDownloadDynamicFile(downloadButtonNumber:number): Promise<void> {
         await $$(this.selectors.dynamciFieldDownLoadIcon).get(downloadButtonNumber -1).click();
     }
+
+    async getLobValue(): Promise<string> {
+        return await $(this.selectors.lobValue).getText();
+    };
 
     async isLineOfBusinessReadOnly(): Promise<boolean> {
         return await $(this.selectors.lineofbusiness).getAttribute('aria-readonly') == 'true';

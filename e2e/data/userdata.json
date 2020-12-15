@@ -154,5 +154,17 @@
 	"jbarnes": {
 		"userName": "jbarnes@petramco.com",
 		"userPassword": "Password_1234"
+	},
+	"ppeter": {
+		"userName": "ppeter@petramco.com",
+		"userPassword": "Password_1234"
+	},
+	"monika": {
+		"userName": "Monika@petramco.com",
+		"userPassword": "Password_1234"
+	},
+	"ncage": {
+		"userName": "ncage@petramco.com",
+		"userPassword": "Password_1234"
 	}
 }
