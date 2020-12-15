@@ -130,7 +130,7 @@ describe('Create Process in Flowset', () => {
             await utilGrid.clearFilter();
             expect(await utilGrid.isGridRecordPresent('UpdatedConfigName1' + randomStr)).toBeFalsy();
         });
-        it('[DRDMV-17555]: create same name record in same LOB', async () => {
+        xit('[DRDMV-17555]: create same name record in same LOB', async () => {
             //create same name record in same LOB
             tempData = cloneDeep(AUTO_STATUS_TRANSITION_MANDATORY_FIELDS);
             tempData.name = 'UpdatedConfigName1' + randomStr;
@@ -144,7 +144,7 @@ describe('Create Process in Flowset', () => {
             await automatedStatusTransitionCreatePage.clickCancelBtn();
             await utilCommon.clickOnWarningOk();
         });
-        it('[DRDMV-17555]: create same name record in different LOB', async () => {
+        xit('[DRDMV-17555]: create same name record in different LOB', async () => {
             //create same name record in different LOB
             await utilGrid.selectLineOfBusiness('Facilities');
             await automatedStatusTransitionConsole.clickAddAutomatedStatusTransitionBtn();
