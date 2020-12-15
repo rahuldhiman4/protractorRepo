@@ -36,7 +36,15 @@
     "EmailMessageSubject": "Declared Company Holidays",
     "EmailMessageBody": "Hi Team ,Company Financial Calender will be from March. Thanks."
   },
-
+  "emailTemplateToComposeEmailGlobal": {
+    "TemplateName": "Company Global Calender",
+    "Company": "- Global -",
+    "Status": 1,
+    "Module": "Cases",
+    "Description": "Company details",
+    "EmailMessageSubject": "Declared Company Holidays",
+    "EmailMessageBody": "Hi Team ,Company Financial Calender will be from March. Thanks."
+  },
   "emailTemplateDraft": {
     "TemplateName": "Company Draft",
     "Company": "Petramco",
