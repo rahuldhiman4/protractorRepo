@@ -379,6 +379,10 @@ class CreateCasePage {
         await utilityCommon.selectDropDown(this.selectors.lobGuid, value);
     }
 
+    async isValuePresentInLineOfBusinessDropDown(value: string): Promise<boolean> {
+        return await utilityCommon.isValuePresentInDropDown(this.selectors.lobGuid, value);
+    }
+
     async getAssigneeGroupValue(): Promise<string> {
         return await $(this.selectors.assignedSupportGroupValue).getText();
     }
