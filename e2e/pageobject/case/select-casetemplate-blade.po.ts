@@ -20,6 +20,7 @@ class SelectCaseTemplateBlade {
         searchResult: '[rx-view-component-id="5015968d-5d4f-4630-8b31-a69e9fedb82a"] [role="listitem"]',
         recommendedApplyBtn: '[rx-view-component-id="39321025-7d92-4284-8498-a0c6fc44f6cd"] button',
         recommendedCancelBtn: '[rx-view-component-id="befd164d-2508-4b8e-9445-3ace011022b7"] button',
+        gridGuid: 'c61478d4-1d46-4d0d-9450-c90885aab77e'
     }
 
     async clickOnRecommendedTemplateTab(): Promise<void> {
@@ -113,6 +114,10 @@ class SelectCaseTemplateBlade {
                 if (present) return $$('div[role="listitem"]').get(i).$(`[title="${caseSummary}"]`).isDisplayed();
             });
         }
+    }
+
+    async isRecordPresent(record: string): Promise<boolean> {
+        return await utilityGrid.isGridRecordPresent(record, this.selectors.gridGuid);
     }
 }
 
