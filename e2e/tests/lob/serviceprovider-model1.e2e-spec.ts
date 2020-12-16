@@ -125,7 +125,7 @@ describe('Create Process in Flowset', () => {
             await apiHelper.createNewMenuItem(resolutionCodeActiveOnUIData);
 
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-            
+
             await apiHelper.apiLogin(oracleUserName, password);
             // Create Data with Oracle HR 
             emailTemplateOracle = {
