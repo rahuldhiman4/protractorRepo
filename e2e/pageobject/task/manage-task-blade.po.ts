@@ -136,6 +136,10 @@ class ManageTaskBlade {
     async getGridRecordValue(columnHeader: string): Promise<string> {
         return await utilityGrid.getFirstGridRecordColumnValue(columnHeader, this.selectors.gridGuid);
     }
+
+    async isRecordPresent(record: string): Promise<boolean> {
+        return await utilityGrid.isGridRecordPresent(record, this.selectors.gridGuid);
+    }
 }
 
 export default new ManageTaskBlade();

@@ -20,14 +20,14 @@ class ApplicationConfiguration {
     async setConfigurationValueText(value: string): Promise<void> {
         await $(this.selectors.configurationValueText).sendKeys(value);
     }
-    
+
     async getColoumnValue(): Promise<string> {
         return await $(this.selectors.columnValue).getText();
-      }
+    }
 
-      async getconfigurationHeaderValue(): Promise<string> {
+    async getconfigurationHeaderValue(): Promise<string> {
         return await $(this.selectors.configurationHeaderValue).getText();
-      }
+    }
 
     async selectCompany(value: string): Promise<void> {
         await $(this.selectors.companyDropDown).click();
@@ -60,6 +60,14 @@ class ApplicationConfiguration {
 
     async getConfigurationDefaultValue(): Promise<string> {
         return await $(this.selectors.configurationDefaultValue).getText();
+    }
+
+    async isConfigValuesDisplayed(configName: string): Promise<boolean> {
+        return await element(by.cssContainingText(this.selectors.columnValue, configName)).isPresent().then(async (ele) => {
+            if (ele) {
+                return await element(by.cssContainingText(this.selectors.columnValue, configName)).isDisplayed();
+            } else return false;
+        });
     }
 }
 

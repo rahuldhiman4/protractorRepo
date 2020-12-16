@@ -11,6 +11,8 @@ import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 import viewCasePo from '../../pageobject/case/view-case.po';
+let userData, userData1, userData2 = undefined;
+
 
 describe("Case Approval Mapping Tests", () => {
     const approvalMappingNameStr = "Approval Mapping Name";
@@ -44,6 +46,26 @@ describe("Case Approval Mapping Tests", () => {
         await apiHelper.associatePersonToCompany(twoCompanyUser.userId, "Petramco");
         await apiHelper.associatePersonToCompany(twoCompanyUser.userId, "Psilon");
         await apiHelper.associatePersonToSupportGroup(twoCompanyUser.userId, "US Support 3");
+        userData1 = {
+            "firstName": "caseBA",
+            "lastName": "MultiLOB",
+            "userId": "caseBAMultiLOB",
+            "userPermission": ["Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
+        }
+        await apiHelper.createNewUser(userData1);
+        await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
+        await apiHelper.associatePersonToSupportGroup(userData1.userId, "US Support 3");
+
+        userData2 = {
+            "firstName": "caseMngr",
+            "lastName": "MultiLOB",
+            "userId": "caseMngrMultiLOB",
+            "userPermission": ["Case Manager", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
+        }
+        await apiHelper.createNewUser(userData2);
+        await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
+        await apiHelper.associatePersonToSupportGroup(userData2.userId, "US Support 3");
+
     });
 
     afterAll(async () => {
@@ -76,6 +98,8 @@ describe("Case Approval Mapping Tests", () => {
         let statusMappingRejectedWhenStatusTriggerCanceled: string[] = ["New", "Assigned", "In Progress", "Pending", "Resolved", "Canceled", "Approval Rejected"];
         let statusMappingErrorWhenStatusTriggerCanceled: string[] = ["New", "Assigned", "In Progress", "Resolved", "Canceled"];
         let flowsetValues: string[] = ["Human Resources"]
+        let approvalMappingName2 = 'Approval Mapping2' + randomStr;
+        let globalApprovalMapping = 'Approval Mapping Global' + randomStr;
 
         beforeAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
@@ -162,7 +186,6 @@ describe("Case Approval Mapping Tests", () => {
             await editApprovalMappingPage.clickCancelApprovalMappingBtn();
         });
         it('[DRDMV-10698,DRDMV-10710,DRDMV-10700,DRDMV-10701]: [Approval Mapping] - Create a new Approval Mapping with all fields', async () => {
-            let approvalMappingName2 = 'Approval Mapping2' + randomStr;
             await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
             await createApprovalMappingPage.setApprovalMappingName(approvalMappingName2);
             await createApprovalMappingPage.selectCompany('Petramco');
@@ -191,6 +214,101 @@ describe("Case Approval Mapping Tests", () => {
             expect(await approvalMappingConsolePage.isRecordPresent('Human Resources')).toBeTruthy();
             await approvalMappingConsolePage.removeColumnFromGrid(['ID', 'Flowset']);
         });
+
+        it('[DRDMV-10698,DRDMV-10710,DRDMV-10700,DRDMV-10701]: Verify Global approval mapping creation', async () => {
+            await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
+            await createApprovalMappingPage.setApprovalMappingName(globalApprovalMapping);
+            await createApprovalMappingPage.selectCompany('- Global -');
+            await createApprovalMappingPage.selectStatusTrigger('Resolved');
+            await createApprovalMappingPage.selectFlowset('Human Resources');
+            await createApprovalMappingPage.selectStatusMappingApproved('In Progress');
+            await createApprovalMappingPage.selectStatusMappingRejected('Canceled');
+            await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Pending');
+            await createApprovalMappingPage.selectStatusMappingError('New');
+            expect(await createApprovalMappingPage.isSaveApprovalMappingBtnEnabled()).toBeFalsy();
+            await createApprovalMappingPage.clickSaveApprovalMappingBtn();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            await editApprovalMappingPage.clickCancelApprovalMappingBtn();
+        });
+
+        it('[DRDMV-10698,DRDMV-10710,DRDMV-10700,DRDMV-10701]: Verify if case approval mappings are accessible to same LOB Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qdu');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', 'Configure Case Approvals - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(approvalMappingName)).toBeTruthy('Human Resources LOB case approval mapping is not visible to same LOB case manager');
+            expect(await utilGrid.isGridRecordPresent(approvalMappingName2)).toBeTruthy('Human Resources LOB case approval mapping is not visible to same LOB case manager');
+            expect(await utilGrid.isGridRecordPresent(globalApprovalMapping)).toBeTruthy('Human Resources LOB case approval mapping is not visible to same LOB case manager');
+        });
+
+        it('[DRDMV-10698,DRDMV-10710,DRDMV-10700,DRDMV-10701]: Verify if case approval mappings are accessible to different LOB Case BA', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', 'Configure Case Approvals - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(approvalMappingName)).toBeFalsy('Human Resources LOB case approval mapping is not visible to different LOB case BA');
+            expect(await utilGrid.isGridRecordPresent(approvalMappingName2)).toBeFalsy('Human Resources LOB case approval mapping is not visible to different LOB case BA');
+            expect(await utilGrid.isGridRecordPresent(globalApprovalMapping)).toBeFalsy('Human Resources LOB case approval mapping is not visible to different LOB case BA');
+
+        });
+
+        it('[DRDMV-10698,DRDMV-10710,DRDMV-10700,DRDMV-10701]: Verify if case approval mappings are accessible to different LOB Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('frieda');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', 'Configure Case Approvals - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(approvalMappingName)).toBeFalsy('Human Resources LOB case approval mapping is not visible to different LOB case manager');
+            expect(await utilGrid.isGridRecordPresent(approvalMappingName2)).toBeFalsy('Human Resources LOB case approval mapping is not visible to different LOB case manager');
+            expect(await utilGrid.isGridRecordPresent(globalApprovalMapping)).toBeFalsy('Human Resources LOB case approval mapping is not visible to different LOB case manager');
+        });
+
+        it('[DRDMV-10698,DRDMV-10710,DRDMV-10700,DRDMV-10701]: Verify if case approval mappings are accessible to Case BA belonging to different company with same LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('gwixillian');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', 'Configure Case Approvals - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(approvalMappingName)).toBeTruthy('Human Resources LOB case approval mapping is not visible to same LOB with different case BA');
+            expect(await utilGrid.isGridRecordPresent(approvalMappingName2)).toBeTruthy('Human Resources LOB case approval mapping is not visible to same LOB with different case BA');
+            expect(await utilGrid.isGridRecordPresent(globalApprovalMapping)).toBeTruthy('Human Resources LOB case approval mapping is not visible to same LOB with different case BA');
+        });
+
+        it('[DRDMV-10698,DRDMV-10710,DRDMV-10700,DRDMV-10701]: Verify if case approval mappings are accessible to Case Manager user having access to multiple LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', 'Configure Case Approvals - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilGrid.isGridRecordPresent(approvalMappingName)).toBeTruthy('Human Resources LOB case approval mapping is not visible to case manager with multiple LOB access');
+            expect(await utilGrid.isGridRecordPresent(approvalMappingName2)).toBeTruthy('Human Resources LOB case approval mapping is not visible to case manager with multiple LOB access');
+            expect(await utilGrid.isGridRecordPresent(globalApprovalMapping)).toBeTruthy('Human Resources LOB case approval mapping is not visible to case manager with multiple LOB access');
+            await utilGrid.selectLineOfBusiness('Facilities');
+            expect(await utilGrid.isGridRecordPresent(approvalMappingName)).toBeFalsy('Human Resources LOB case approval mapping is visible to case manager with multiple LOB access');
+            expect(await utilGrid.isGridRecordPresent(approvalMappingName2)).toBeFalsy('Human Resources LOB case approval mapping is visible to case manager with multiple LOB access');
+            expect(await utilGrid.isGridRecordPresent(globalApprovalMapping)).toBeFalsy('Human Resources LOB case approval mapping is visible to case manager with multiple LOB access');
+
+        });
+
+        it('[DRDMV-10698,DRDMV-10710,DRDMV-10700,DRDMV-10701]: Verify if case approval mappings are accessible to Case BA user having access to multiple LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', 'Configure Case Approvals - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Facilities');
+            expect(await utilGrid.isGridRecordPresent(approvalMappingName)).toBeFalsy('Human Resources LOB case approval mapping is visible to case BA with multiple LOB access');
+            expect(await utilGrid.isGridRecordPresent(approvalMappingName2)).toBeFalsy('Human Resources LOB case approval mapping is visible to case BA with multiple LOB access');
+            expect(await utilGrid.isGridRecordPresent(globalApprovalMapping)).toBeFalsy('Human Resources LOB case approval mapping is visible to case BA with multiple LOB access');
+
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilGrid.isGridRecordPresent(approvalMappingName)).toBeTruthy('Human Resources LOB case approval mapping is not visible to case BA with multiple LOB access');
+            expect(await utilGrid.isGridRecordPresent(approvalMappingName2)).toBeTruthy('Human Resources LOB case approval mapping is not visible to case BA with multiple LOB access');
+            expect(await utilGrid.isGridRecordPresent(globalApprovalMapping)).toBeTruthy('Human Resources LOB case approval mapping is not visible to case BA with multiple LOB access');
+
+            await utilGrid.searchOnGridConsole(approvalMappingName);
+            await editApprovalMappingPage.setApprovalMappingName(approvalMappingName+"_updated");
+            await editApprovalMappingPage.clickSaveApprovalMappingBtn();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+        });
+
         afterAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.deleteApprovalMapping(caseModule);

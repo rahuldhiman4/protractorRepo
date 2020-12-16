@@ -636,6 +636,9 @@ describe('Case Template', () => {
 
     describe('[DRDMV-1216]: [Case Template] Create Case Template with all fields data populated', async () => {
         let casetemplatePetramco, randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseTemplateGlobal = "CaseTempateHRGlobal_"+randomStr;
+        let caseTemplateCompany = "CaseTempateHRCompany_"+randomStr;
+        
         beforeAll(async () => {
             casetemplatePetramco = {
                 "templateName": 'caseTemplateName' + randomStr,
@@ -672,6 +675,7 @@ describe('Case Template', () => {
             expect(await viewCaseTemplate.getCategoryTier1()).toBe("Employee Relations");
             expect(await viewCaseTemplate.getOwnerCompanyValue()).toBe("Petramco");
         });
+
         it('[DRDMV-1216]: [Case Template] Create Case Template with all fields data populated', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qkatawazi');
@@ -686,6 +690,106 @@ describe('Case Template', () => {
             expect(await viewCasePo.getCategoryTier3Value()).toBe("Bonus");
             expect(await viewCasePo.getAssignedCompanyText()).toBe('Petramco');
         });
+
+        it('[DRDMV-1216]: [Case Template] Configuring an Assignment Mapping for Human Resource Line of Business', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
+            await createCaseTemplate.setTemplateName(caseTemplateCompany);
+            await createCaseTemplate.setCompanyName('Petramco');
+            await createCaseTemplate.setCaseSummary(caseTemplateCompany+' summary');
+            await createCaseTemplate.setPriorityValue('High');
+            await createCaseTemplate.isResolveCaseOnLastTaskCompletion(true);
+            await createCaseTemplate.setBusinessUnitDropdownValue('United States Support');
+            await createCaseTemplate.setOwnerGroupDropdownValue('US Support 3');
+            await createCaseTemplate.setTemplateStatusDropdownValue('Draft')
+            await createCaseTemplate.clickSaveCaseTemplate();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+
+            await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
+            await createCaseTemplate.setTemplateName(caseTemplateGlobal);
+            await createCaseTemplate.setCompanyName('Petramco');
+            await createCaseTemplate.setCaseSummary(caseTemplateGlobal+' summary');
+            await createCaseTemplate.setPriorityValue('Low');
+            await createCaseTemplate.isResolveCaseOnLastTaskCompletion(true);
+            await createCaseTemplate.setBusinessUnitDropdownValue('United States Support');
+            await createCaseTemplate.setOwnerGroupDropdownValue('US Support 3');
+            await createCaseTemplate.setTemplateStatusDropdownValue('Active')
+            await createCaseTemplate.clickSaveCaseTemplate();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+        });
+
+        it('[DRDMV-1216]: Verify if case template is accessible to same LOB Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qdu');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(caseTemplateGlobal)).toBeTruthy('Case Template is not displayed to same LOB Case manager.');
+            expect(await utilGrid.isGridRecordPresent(caseTemplateCompany)).toBeTruthy('Case Template is not displayed to same LOB Case manager.');
+        });
+
+        it('[DRDMV-1216]: Verify if case template is accessible to different LOB Case BA', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(caseTemplateGlobal)).toBeFalsy('Case Template is not displayed to different LOB Case BA.');
+            expect(await utilGrid.isGridRecordPresent(caseTemplateCompany)).toBeFalsy('Case Template is not displayed to different LOB Case BA.');
+        });
+
+        it('[DRDMV-1216]: Verify if case template is accessible to different LOB Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('frieda');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(caseTemplateGlobal)).toBeFalsy('Case Template is not displayed to different LOB Case manager.');
+            expect(await utilGrid.isGridRecordPresent(caseTemplateCompany)).toBeFalsy('Case Template is not displayed to different LOB Case manager.');
+        });
+
+        it('[DRDMV-1216]: Verify if case template is accessible to Case BA belonging to different company with same LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('gwixillian');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(caseTemplateGlobal)).toBeTruthy('Case Template is not displayed to same LOB and different company Case BA.');
+            expect(await utilGrid.isGridRecordPresent(caseTemplateCompany)).toBeTruthy('Case Template is not displayed to same LOB and different company Case BA.');
+        });
+
+        it('[DRDMV-1216]: Verify if case template is accessible to Case Manager user having access to multiple LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilGrid.isGridRecordPresent(caseTemplateGlobal)).toBeTruthy('Case Template is not displayed to Case BA having access to multiple LOBs.');
+            expect(await utilGrid.isGridRecordPresent(caseTemplateCompany)).toBeTruthy('Case Template is not displayed to Case BA having access to multiple LOBs');
+            await utilGrid.selectLineOfBusiness('Facilities');
+            expect(await utilGrid.isGridRecordPresent(caseTemplateGlobal)).toBeFalsy('Case Template is displayed to Case BA having access to multiple LOBs.');
+            expect(await utilGrid.isGridRecordPresent(caseTemplateCompany)).toBeFalsy('Case Template is displayed to Case BA having access to multiple LOBs');
+        });
+
+        it('[DRDMV-1216]: Verify if case template is accessible to Case BA user having access to multiple LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Facilities');
+            expect(await utilGrid.isGridRecordPresent(caseTemplateGlobal)).toBeFalsy('Case Template is displayed to Case BA having access to multiple LOBs.');
+            expect(await utilGrid.isGridRecordPresent(caseTemplateCompany)).toBeFalsy('Case Template is displayed to Case BA having access to multiple LOBs');
+
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilGrid.isGridRecordPresent(caseTemplateGlobal)).toBeTruthy('Case Template is not displayed to Case BA having access to multiple LOBs.');
+            expect(await utilGrid.isGridRecordPresent(caseTemplateCompany)).toBeTruthy('Case Template is not displayed to Case BA having access to multiple LOBs');
+
+            await utilGrid.searchAndOpenHyperlink(caseTemplateCompany);
+            await editCasetemplatePo.clickEditCaseTemplate();
+            await editCasetemplatePo.changeCaseSummary('Updated Summary');
+            await editCasetemplatePo.clickSaveCaseTemplate();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            await utilCommon.closePopUpMessage();
+        });
+
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');

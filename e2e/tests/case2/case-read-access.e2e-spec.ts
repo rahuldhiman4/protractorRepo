@@ -31,6 +31,8 @@ import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import { flowsetGlobalFields } from '../../data/ui/flowset/flowset.ui';
 import { cloneDeep } from 'lodash';
 let flowsetGlobalFieldsData = undefined;
+let userData, userData1, userData2 = undefined;
+
 describe("Case Read Access", () => {
     const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
     const departmentDataFile = require('../../data/ui/foundation/department.ui.json');
@@ -47,6 +49,29 @@ describe("Case Read Access", () => {
         flowsetGlobalFieldsData = cloneDeep(flowsetGlobalFields);
         flowsetGlobalFieldsData.flowsetName = flowsetGlobalFieldsData.flowsetName = randomStr;
         await apiHelper.createNewFlowset(flowsetGlobalFieldsData);
+
+        await apiHelper.apiLogin('tadmin');
+
+        userData1 = {
+            "firstName": "caseBA",
+            "lastName": "MultiLOB",
+            "userId": "caseBAMultiLOB",
+            "userPermission": ["Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
+        }
+        await apiHelper.createNewUser(userData1);
+        await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
+        await apiHelper.associatePersonToSupportGroup(userData1.userId, "US Support 3");
+
+        userData2 = {
+            "firstName": "caseMngr",
+            "lastName": "MultiLOB",
+            "userId": "caseMngrMultiLOB",
+            "userPermission": ["Case Manager", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
+        }
+        await apiHelper.createNewUser(userData2);
+        await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
+        await apiHelper.associatePersonToSupportGroup(userData2.userId, "US Support 3");
+
     });
 
     afterAll(async () => {
@@ -286,6 +311,60 @@ describe("Case Read Access", () => {
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed(suppGrpData1.orgName, 'Read')).toBeTruthy('FailuerMsg1: Agent Name is missing');
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('fnPerson19501 lnPerson19501', 'Write')).toBeTruthy('Support Group does not have write access');
         });
+        it('[DRDMV-7061,DRDMV-6998]: Verify if Case read access mapping is accessible to same LOB Case Manager', async () => {
+            await navigationPo.signOut();
+            await loginPage.login('qdu');
+            await navigationPo.gotoSettingsPage();
+            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent("ReadAccess" + randomStr)).toBeTruthy('Case read access mapping is displayed to same LOB with different company Case BA.');
+        });
+
+        it('[DRDMV-7061,DRDMV-6998]: Verify if Case read access mapping is accessible to different LOB Case BA', async () => {
+            await navigationPo.signOut();
+            await loginPage.login('fritz');
+            await navigationPo.gotoSettingsPage();
+            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent("ReadAccess" + randomStr)).toBeFalsy('Case read access mapping is dispayed to different LOB case BA');
+        });
+
+        it('[DRDMV-7061,DRDMV-6998]: Verify if Case read access mapping is accessible to different LOB Case Manager', async () => {
+            await navigationPo.signOut();
+            await loginPage.login('frieda');
+            await navigationPo.gotoSettingsPage();
+            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent("ReadAccess" + randomStr)).toBeFalsy('Case read access mapping is dispayed to different LOB case manager');
+        });
+
+        it('[DRDMV-7061,DRDMV-6998]: Verify if Case read access mapping is accessible to Case BA belonging to different company with same LOB', async () => {
+            await navigationPo.signOut();
+            await loginPage.login('gwixillian');
+            await navigationPo.gotoSettingsPage();
+            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent("ReadAccess" + randomStr)).toBeTruthy('Case read access mapping is not dispayed to same LOB and different company case BA');
+        });
+
+        it('[DRDMV-7061,DRDMV-6998]: Verify Case read access mapping is accessible to Case Manager user having access to multiple LOB', async () => {
+            await navigationPo.signOut();
+            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            await navigationPo.gotoSettingsPage();
+            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilGrid.isGridRecordPresent("ReadAccess" + randomStr)).toBeTruthy('Case read access mapping is dispayed to user with multiple LOB case manager');
+            await utilGrid.selectLineOfBusiness('Facilities');
+            expect(await utilGrid.isGridRecordPresent("ReadAccess" + randomStr)).toBeFalsy('Case read access mapping is not dispayed to user with multiple LOB case manager');
+        });
+
+        it('[DRDMV-7061,DRDMV-6998]: Verify if Case read access mapping is accessible to Case BA user having access to multiple LOB', async () => {
+            await navigationPo.signOut();
+            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await navigationPo.gotoSettingsPage();
+            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilGrid.isGridRecordPresent("ReadAccess" + randomStr)).toBeTruthy('Case read access mapping is dispayed to user with multiple LOB case manager');
+            await utilGrid.selectLineOfBusiness('Facilities');
+            expect(await utilGrid.isGridRecordPresent("ReadAccess" + randomStr)).toBeFalsy('Case read access mapping is not dispayed to user with multiple LOB case manager');
+        });
+
         afterAll(async () => {
             await navigationPo.signOut();
             await loginPage.login('qkatawazi');
@@ -562,14 +641,14 @@ describe("Case Read Access", () => {
             //Bulk Read Access
             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Case');
             await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
-            await accessTabPo.selectAccessEntityDropDown('United States Support', 'Select Business Unit');
+            await accessTabPo.selectAccessEntityDropDown('United Kingdom Support', 'Select Business Unit');
             await accessTabPo.clickAccessEntitiyAddButton('Business Unit');
             await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
             await accessTabPo.selectAccessEntityDropDown('United States Support', 'Select Business Unit');
             await accessTabPo.selectAccessEntityDropDown('US Support 1', 'Select Support Group');
             await accessTabPo.clickAccessEntitiyAddButton('Support Group');
             await accessTabPo.clickToExpandAccessEntitiySearch('Agent Access', 'Case');
-            await accessTabPo.selectAgent('Adam Warlock', 'Agent');
+            await accessTabPo.selectAgent('Quanah George', 'Agent');
             await accessTabPo.clickAccessEntitiyAddButton('Agent');
             expect(await activityTabPo.getGrantedReadAccessCount('granted read access')).toBe(3);
         });

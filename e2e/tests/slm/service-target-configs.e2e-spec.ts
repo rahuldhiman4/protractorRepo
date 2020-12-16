@@ -30,12 +30,35 @@ let caseBAUser = 'qkatawazi';
 
 describe('Service Target Configs', () => {
     const caseModule = 'Case';
+    let userData, userData1, userData2 = undefined;
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login(caseBAUser);
         await apiHelper.apiLogin(caseBAUser);
         await apiHelper.deleteApprovalMapping(caseModule);
+        await apiHelper.apiLogin('tadmin');
+
+        userData1 = {
+            "firstName": "caseBA",
+            "lastName": "MultiLOB",
+            "userId": "caseBAMultiLOB",
+            "userPermission": ["Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
+        }
+        await apiHelper.createNewUser(userData1);
+        await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
+        await apiHelper.associatePersonToSupportGroup(userData1.userId, "US Support 3");
+
+        userData2 = {
+            "firstName": "caseMngr",
+            "lastName": "MultiLOB",
+            "userId": "caseMngrMultiLOB",
+            "userPermission": ["Case Manager", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
+        }
+        await apiHelper.createNewUser(userData2);
+        await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
+        await apiHelper.associatePersonToSupportGroup(userData2.userId, "US Support 3");
+
     });
 
     afterAll(async () => {
@@ -821,6 +844,66 @@ describe('Service Target Configs', () => {
             expect(await viewCasePage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
             expect(await viewCasePage.getCaseSummary()).toBe(caseData.Summary);
         });
+
+        it('[DRDMV-6148]: Verify if SVT with milestone is accessible to same LOB Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qdu');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(svttile)).toBeTruthy('SVT with milestone is displayed to same LOB with different company Case BA.');
+        });
+
+        it('[DRDMV-6148]: Verify if SVT with milestone is accessible to different LOB Case BA', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(svttile)).toBeFalsy('SVT with milestone is dispayed to different LOB case BA');
+        });
+
+        it('[DRDMV-6148]: Verify if SVT with milestone is accessible to different LOB Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('frieda');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(svttile)).toBeFalsy('SVT with milestone is dispayed to different LOB case manager');
+        });
+
+        it('[DRDMV-6148]: Verify if SVT with milestone is accessible to Case BA belonging to different company with same LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('gwixillian');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(svttile)).toBeTruthy('SVT with milestone is not dispayed to same LOB and different company case BA');
+        });
+
+        it('[DRDMV-6148]: Verify if SVT with milestone is accessible to Case Manager user having access to multiple LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilGrid.isGridRecordPresent(svttile)).toBeTruthy('SVT with milestone is dispayed to user with multiple LOB case manager');
+            await utilGrid.selectLineOfBusiness('Facilities');
+            expect(await utilGrid.isGridRecordPresent(svttile)).toBeFalsy('SVT with milestone is not dispayed to user with multiple LOB case manager');
+        });
+
+        it('[DRDMV-6148]: Verify if SVT with milestone is accessible to Case BA user having access to multiple LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilGrid.isGridRecordPresent(svttile)).toBeTruthy('SVT with milestone is dispayed to user with multiple LOB case manager');
+            await utilGrid.selectLineOfBusiness('Facilities');
+            expect(await utilGrid.isGridRecordPresent(svttile)).toBeFalsy('SVT with milestone is not dispayed to user with multiple LOB case manager');
+        });
+
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+
 
     });
 

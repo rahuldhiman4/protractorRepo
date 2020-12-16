@@ -29,7 +29,6 @@ describe('Multi Search Validation', () => {
         let month: string;
         let date: string;
 
-
         let objDate: Date = new Date();
         let numYear: number = objDate.getFullYear();
         year = new Number(numYear).toString();
@@ -322,7 +321,7 @@ describe('Multi Search Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(`${inactiveFirstName} ${nonMatchingLastName}`, peopleModule)).toBeFalsy(`FailureMsg4: ${firstName} ${lastName} 1 People is Displayed`);
         });
 
-        it('[DRDMV-16124]: Verify saerch people with other company user', async () => {
+        it('[DRDMV-16124]: Verify search people with other company user', async () => {
             await navigationPage.signOut();
             await loginPage.login('werusha')
             await navigationPage.gotoSearch();
@@ -341,6 +340,66 @@ describe('Multi Search Validation', () => {
             await searchPo.searchRecord(nonAccessLastName);
             expect(await searchPo.isModuleTitleDisplayed(nonAccessLastName, 'People (0)', peopleModule)).toBeTruthy('FailureMsg69: people module title is missing');
             expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(peopleModule)).toBeTruthy(`FailureMsg70: No result found validation is missing`);
+        });
+
+        it('[DRDMV-16124]: Verify person record is accessible to other Line of business Case BA', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await navigationPage.gotoSearch();
+            expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
+            await searchPo.selectCategoryDropDownValue('People');
+            await searchPo.searchRecord('Qadim');
+            expect(await searchPo.isModuleTitleDisplayed(firstName, 'People (1)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel('qkatawazi@petramco.com', peopleModule, 1)).toBeTruthy(`${emailId} emailId is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel('Qadim Katawazi', peopleModule, 1)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName} 1 Person Name is missing`);
+        });
+
+        it('[DRDMV-16124]: Verify person record is accessible to other Line of business Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('frieda');
+            await navigationPage.gotoSearch();
+            expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
+            await searchPo.selectCategoryDropDownValue('People');
+            await searchPo.searchRecord('Qadim');
+            expect(await searchPo.isModuleTitleDisplayed(firstName, 'People (1)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel('qkatawazi@petramco.com', peopleModule, 1)).toBeTruthy(`${emailId} emailId is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel('Qadim Katawazi', peopleModule, 1)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName} 1 Person Name is missing`);
+        });
+
+        it('[DRDMV-16124]: Verify person record is accessible to other Line of business Case Agent', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('franz');
+            await navigationPage.gotoSearch();
+            expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
+            await searchPo.selectCategoryDropDownValue('People');
+            await searchPo.searchRecord('Qadim');
+            expect(await searchPo.isModuleTitleDisplayed(firstName, 'People (1)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel('qkatawazi@petramco.com', peopleModule, 1)).toBeTruthy(`${emailId} emailId is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel('Qadim Katawazi', peopleModule, 1)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName} 1 Person Name is missing`);
+        });
+
+        it('[DRDMV-16124]: Verify person record are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseMngrMultiLOB@petramco.com','Password_1234');
+            await navigationPage.gotoSearch();
+            expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
+            await searchPo.selectCategoryDropDownValue('People');
+            await searchPo.searchRecord('Qadim');
+            expect(await searchPo.isModuleTitleDisplayed(firstName, 'People (1)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel('qkatawazi@petramco.com', peopleModule, 1)).toBeTruthy(`${emailId} emailId is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel('Qadim Katawazi', peopleModule, 1)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName} 1 Person Name is missing`);
+        });
+
+        it('[DRDMV-16124]: Verify person record are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseBAMultiLOB@petramco.com','Password_1234');
+            await navigationPage.gotoSearch();
+            expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
+            await searchPo.selectCategoryDropDownValue('People');
+            await searchPo.searchRecord('Qadim');
+            expect(await searchPo.isModuleTitleDisplayed(firstName, 'People (1)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel('qkatawazi@petramco.com', peopleModule, 1)).toBeTruthy(`${emailId} emailId is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel('Qadim Katawazi', peopleModule, 1)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName} 1 Person Name is missing`);
         });
         
         afterAll(async () => {

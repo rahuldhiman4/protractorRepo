@@ -4,7 +4,8 @@ class EditKnowledgeSet {
 
     selectors = {
         listedApplicationNames: '.rx-record-preview-card__value',
-        saveButton: '[rx-view-component-id="9845bc7c-ac13-4989-aba2-4751bbba8c6c"] button'
+        saveButton: '[rx-view-component-id="9845bc7c-ac13-4989-aba2-4751bbba8c6c"] button',
+        knowledgeSetInput: '[rx-view-component-id="19901ec7-e019-4c63-a5c5-c02074086645"] input',
     }
 
     async isApplicationNameListed(applicationName: string): Promise<boolean> {
@@ -21,6 +22,11 @@ class EditKnowledgeSet {
     async clickSaveButton():Promise<void>{
         await $(this.selectors.saveButton).click();
     }
+
+    async setKnowledgeSetName(name: string): Promise<void> {
+        await $(this.selectors.knowledgeSetInput).sendKeys(name);
+    }
+
 }
 
 export default new EditKnowledgeSet();
