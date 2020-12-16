@@ -15,12 +15,35 @@ let caseBAUser = 'qkatawazi';
 describe('Service Level Management - Goal Type Tests', () => {
     const caseModule = 'Case';
     let goalTypeConsoleGUID: '781a6488-ff08-481b-86c7-7c78c577357b';
+    let userData, userData1, userData2 = undefined;
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login(caseBAUser);
         await apiHelper.apiLogin(caseBAUser);
         await apiHelper.deleteApprovalMapping(caseModule);
+        await apiHelper.apiLogin('tadmin');
+
+        userData1 = {
+            "firstName": "caseBA",
+            "lastName": "MultiLOB",
+            "userId": "caseBAMultiLOB",
+            "userPermission": ["Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
+        }
+        await apiHelper.createNewUser(userData1);
+        await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
+        await apiHelper.associatePersonToSupportGroup(userData1.userId, "US Support 3");
+
+        userData2 = {
+            "firstName": "caseMngr",
+            "lastName": "MultiLOB",
+            "userId": "caseMngrMultiLOB",
+            "userPermission": ["Case Manager", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
+        }
+        await apiHelper.createNewUser(userData2);
+        await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
+        await apiHelper.associatePersonToSupportGroup(userData2.userId, "US Support 3");
+
     });
 
     afterAll(async () => {
@@ -63,6 +86,72 @@ describe('Service Level Management - Goal Type Tests', () => {
             await utilGrid.searchAndOpenHyperlink(goalTypeTitle);
             expect(await editGoalType.getStatusDropDownFieldValue()).toBe('InActive');
         });
+
+        it('[DRDMV-2247]: Verify if SVT Goal Type is accessible to same LOB Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qdu');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Service Level Management--Goal Type', 'Goal Type');
+            expect(await utilGrid.isGridRecordPresent(goalTypeTitle)).toBeTruthy('SVT Goal Type is displayed to same LOB with different company Case BA.');
+        });
+
+        it('[DRDMV-2247]: Verify if SVT Goal Type  is accessible to different LOB Case BA', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Service Level Management--Goal Type', 'Goal Type');
+            expect(await utilGrid.isGridRecordPresent(goalTypeTitle)).toBeFalsy('SVT Goal Type is dispayed to different LOB case BA');
+        });
+
+        it('[DRDMV-2247]: Verify if SVT Goal Type is accessible to different LOB Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('frieda');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Service Level Management--Goal Type', 'Goal Type');
+            expect(await utilGrid.isGridRecordPresent(goalTypeTitle)).toBeFalsy('SVT Goal Type is dispayed to different LOB case manager');
+        });
+
+        it('[DRDMV-2247]: Verify if SVT Goal Type is accessible to Case BA belonging to different company with same LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('gwixillian');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Service Level Management--Goal Type', 'Goal Type');
+            expect(await utilGrid.isGridRecordPresent(goalTypeTitle)).toBeTruthy('SVT Goal Type is not dispayed to same LOB and different company case BA');
+        });
+
+        it('[DRDMV-2247]: Verify if SVT Goal Type is accessible to Case Manager user having access to multiple LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Service Level Management--Goal Type', 'Goal Type');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilGrid.isGridRecordPresent(goalTypeTitle)).toBeTruthy('SVT Goal Type is dispayed to user with multiple LOB case manager');
+            await utilGrid.selectLineOfBusiness('Facilities');
+            expect(await utilGrid.isGridRecordPresent(goalTypeTitle)).toBeFalsy('SVT Goal Type is not dispayed to user with multiple LOB case manager');
+        });
+
+        it('[DRDMV-2247]: Verify if SVT Goal Type is accessible to Case BA user having access to multiple LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Service Level Management--Goal Type', 'Goal Type');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilGrid.isGridRecordPresent(goalTypeTitle)).toBeTruthy('SVT Goal Type is dispayed to user with multiple LOB case manager');
+            await utilGrid.selectLineOfBusiness('Facilities');
+            expect(await utilGrid.isGridRecordPresent(goalTypeTitle)).toBeFalsy('SVT Goal Type is not dispayed to user with multiple LOB case manager');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            await utilGrid.searchAndOpenHyperlink(goalTypeTitle);
+            await editGoalType.selectGoalTypeStatus('Active');
+            await editGoalType.clickSaveGoalTypeButton();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+        });
+
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+
+
     });
 
     //skhobrag

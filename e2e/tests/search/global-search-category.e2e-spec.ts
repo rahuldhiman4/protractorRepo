@@ -13,6 +13,8 @@ import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 
+let userData1, userData2 = undefined;
+
 export interface IIDs {
     id: string;
     displayId: string;
@@ -31,7 +33,6 @@ describe('Global Search Category Validation', () => {
         let month: string;
         let date: string;
 
-
         let objDate: Date = new Date();
         let numYear: number = objDate.getFullYear();
         year = new Number(numYear).toString();
@@ -45,6 +46,31 @@ describe('Global Search Category Validation', () => {
         date = date1.toString();
 
         updatedDate = month + " " + date + ", " + year;
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteApprovalMapping(caseModule);
+
+        userData1 = {
+            "firstName": "caseBA",
+            "lastName": "MultiLOB",
+            "userId": "caseBAMultiLOB",
+            "userPermission": ["Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
+        }
+        await apiHelper.createNewUser(userData1);
+        await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
+        await apiHelper.associatePersonToSupportGroup(userData1.userId, "US Support 3");
+        await apiHelper.associatePersonToSupportGroup(userData1.userId, "CA Support 1");
+
+        userData2 = {
+            "firstName": "caseMngr",
+            "lastName": "MultiLOB",
+            "userId": "caseMngrMultiLOB",
+            "userPermission": ["Case Manager", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
+        }
+        await apiHelper.createNewUser(userData2);
+        await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
+        await apiHelper.associatePersonToSupportGroup(userData2.userId, "US Support 3");
+        await apiHelper.associatePersonToSupportGroup(userData1.userId, "CA Support 1");
+
     });
 
     afterAll(async () => {
@@ -249,7 +275,7 @@ describe('Global Search Category Validation', () => {
             expect(await searchPo.isPaginationDisplayed(caseModule)).toBeTruthy('FailureMsg3: Pagination is missing for CaseModule');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[0], caseModule)).toBeTruthy(`FailureMsg4: ${caseDisplayId1[0]} case id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(summary, caseModule)).toBeTruthy(`FailureMsg5: ${summary} case summary is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, caseModule,)).toBeTruthy(`${updatedDate} updatedDate is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, caseModule)).toBeTruthy(`${updatedDate} updatedDate is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[1], caseModule)).toBeTruthy(`FailureMsg6: ${caseDisplayId1[1]} case id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[2], caseModule)).toBeTruthy(`FailureMsg7: ${caseDisplayId1[2]} case id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[3], caseModule)).toBeTruthy(`FailureMsg8: ${caseDisplayId1[3]} case id  is missing`);
@@ -438,6 +464,86 @@ describe('Global Search Category Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId3, caseModule)).toBeFalsy(`FailureMsg109: ${caseDisplayId3} case id  is displayed`);
         });
 
+        it('[DRDMV-16102]: Verify Cases are accessible to other Line of business Case BA', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await navigationPage.gotoSearch();
+            await searchPo.selectCategoryDropDownValue(taskModule);
+            await searchPo.searchRecord(summary);
+            expect(await searchPo.isModuleTitleDisplayed(summary, 'Cases (0)', caseModule)).toBeTruthy('FailureMsg105: Case module title is missing');
+            expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(caseModule)).toBeTruthy(`FailureMsg106: No result found validation is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[0], caseModule)).toBeFalsy(`FailureMsg107: ${caseDisplayId1[0]} case id  is displayed`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId2[0], caseModule)).toBeFalsy(`FailureMsg108: ${caseDisplayId1[0]} case id  is displayed`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId3, caseModule)).toBeFalsy(`FailureMsg109: ${caseDisplayId3} case id  is displayed`);
+        });
+
+        it('[DRDMV-16102]: Verify Cases are accessible to other Line of business Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('frieda');
+            await navigationPage.gotoSearch();
+            await searchPo.selectCategoryDropDownValue(taskModule);
+            await searchPo.searchRecord(summary);
+            expect(await searchPo.isModuleTitleDisplayed(summary, 'Cases (0)', caseModule)).toBeTruthy('FailureMsg105: Case module title is missing');
+            expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(caseModule)).toBeTruthy(`FailureMsg106: No result found validation is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[0], caseModule)).toBeFalsy(`FailureMsg107: ${caseDisplayId1[0]} case id  is displayed`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId2[0], caseModule)).toBeFalsy(`FailureMsg108: ${caseDisplayId1[0]} case id  is displayed`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId3, caseModule)).toBeFalsy(`FailureMsg109: ${caseDisplayId3} case id  is displayed`);
+        });
+
+        it('[DRDMV-16102]: Verify Cases are accessible to user belonging to multiple Line of business Case BA', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseBAMultiLOB@petramco.com','Password_1234');
+            await navigationPage.gotoSearch();
+            await searchPo.selectCategoryDropDownValue(caseModule);
+            await searchPo.searchRecord(summary);
+            expect(await searchPo.isModuleTitleDisplayed(summary, 'Cases (10)', caseModule)).toBeTruthy('FailureMsg2: Case module title is missing');
+            expect(await searchPo.isPaginationDisplayed(caseModule)).toBeTruthy('FailureMsg3: Pagination is missing for CaseModule');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[0], caseModule)).toBeTruthy(`FailureMsg4: ${caseDisplayId1[0]} case id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(summary, caseModule)).toBeTruthy(`FailureMsg5: ${summary} case summary is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, caseModule)).toBeTruthy(`${updatedDate} updatedDate is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[1], caseModule)).toBeTruthy(`FailureMsg6: ${caseDisplayId1[1]} case id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[2], caseModule)).toBeTruthy(`FailureMsg7: ${caseDisplayId1[2]} case id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[3], caseModule)).toBeTruthy(`FailureMsg8: ${caseDisplayId1[3]} case id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[4], caseModule)).toBeTruthy(`FailureMsg9: ${caseDisplayId1[4]} case id  is missing`);
+
+            await searchPo.clickOnPaginationPageNo(caseModule, "2");
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId2[0], caseModule)).toBeTruthy(`FailureMsg10: ${caseDisplayId2[0]} case id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId2[1], caseModule)).toBeTruthy(`FailureMsg11: ${caseDisplayId2[1]} case id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId2[2], caseModule)).toBeTruthy(`FailureMsg12: ${caseDisplayId2[2]} case id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId2[3], caseModule)).toBeTruthy(`FailureMsg13: ${caseDisplayId2[3]} case id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId2[4], caseModule)).toBeTruthy(`FailureMsg14: ${caseDisplayId2[4]} case id  is missing`);
+
+            await searchPo.clickOnPaginationPageNo(caseModule, "1");
+        });
+
+        it('[DRDMV-16102]: Verify Cases are accessible to user belonging to multiple Line of business Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseMngrMultiLOB@petramco.com','Password_1234');
+            await navigationPage.gotoSearch();
+            await searchPo.selectCategoryDropDownValue(caseModule);
+            await searchPo.searchRecord(summary);
+            await searchPo.searchRecord(summary);
+            expect(await searchPo.isModuleTitleDisplayed(summary, 'Cases (10)', caseModule)).toBeTruthy('FailureMsg2: Case module title is missing');
+            expect(await searchPo.isPaginationDisplayed(caseModule)).toBeTruthy('FailureMsg3: Pagination is missing for CaseModule');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[0], caseModule)).toBeTruthy(`FailureMsg4: ${caseDisplayId1[0]} case id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(summary, caseModule)).toBeTruthy(`FailureMsg5: ${summary} case summary is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, caseModule)).toBeTruthy(`${updatedDate} updatedDate is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[1], caseModule)).toBeTruthy(`FailureMsg6: ${caseDisplayId1[1]} case id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[2], caseModule)).toBeTruthy(`FailureMsg7: ${caseDisplayId1[2]} case id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[3], caseModule)).toBeTruthy(`FailureMsg8: ${caseDisplayId1[3]} case id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[4], caseModule)).toBeTruthy(`FailureMsg9: ${caseDisplayId1[4]} case id  is missing`);
+
+            await searchPo.clickOnPaginationPageNo(caseModule, "2");
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId2[0], caseModule)).toBeTruthy(`FailureMsg10: ${caseDisplayId2[0]} case id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId2[1], caseModule)).toBeTruthy(`FailureMsg11: ${caseDisplayId2[1]} case id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId2[2], caseModule)).toBeTruthy(`FailureMsg12: ${caseDisplayId2[2]} case id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId2[3], caseModule)).toBeTruthy(`FailureMsg13: ${caseDisplayId2[3]} case id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId2[4], caseModule)).toBeTruthy(`FailureMsg14: ${caseDisplayId2[4]} case id  is missing`);
+
+            await searchPo.clickOnPaginationPageNo(caseModule, "1");
+        });
+
+
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('qtao');
@@ -488,7 +594,7 @@ describe('Global Search Category Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[0], taskModule)).toBeTruthy(`FailureMsg4: ${taskDisplayId[0]} task id  is missing`);
 
             expect(await searchPo.isRecordDisplayedOnLeftPannel(summary, taskModule)).toBeTruthy(`FailureMsg5: ${summary} Task summary is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, taskModule,)).toBeTruthy(`${updatedDate} updatedDate is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, taskModule)).toBeTruthy(`${updatedDate} updatedDate is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[1], taskModule)).toBeTruthy(`FailureMsg6: ${taskDisplayId[1]} task id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[2], taskModule)).toBeTruthy(`FailureMsg7: ${taskDisplayId[2]} task id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[3], taskModule)).toBeTruthy(`FailureMsg8: ${taskDisplayId[3]} task id  is missing`);
@@ -606,7 +712,7 @@ describe('Global Search Category Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId2, taskModule)).toBeTruthy(`FailureMsg48: ${taskDisplayId2} task id  is missing`);
         });
 
-        it('[DRDMV-16115]: Verify saerch task with other group user', async () => {
+        it('[DRDMV-16115]: Verify search task with other group user', async () => {
             await navigationPage.signOut();
             await loginPage.login('qheroux');
             await navigationPage.gotoSearch();
@@ -624,6 +730,71 @@ describe('Global Search Category Validation', () => {
             expect(await searchPo.isModuleTitleDisplayed(summary, 'Tasks (0)', taskModule)).toBeTruthy('FailureMsg58: Task module title is missing');
             expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(taskModule)).toBeTruthy(`FailureMsg59: No result found validation is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[0], taskModule)).toBeFalsy(`FailureMsg48: ${taskDisplayId[0]} task id  is displayed`);
+        });
+
+        it('[DRDMV-16115]: Verify search Task with case assignee user ', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qdu');
+            await navigationPage.gotoSearch();
+            await searchPo.selectCategoryDropDownValue(taskModule);
+
+            await searchPo.searchRecord(summary);
+            expect(await searchPo.isModuleTitleDisplayed(summary, 'Tasks (5)', taskModule)).toBeTruthy('FailureMsg42: Task module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[0], taskModule)).toBeTruthy(`FailureMsg6: ${taskDisplayId[0]} task id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[1], taskModule)).toBeTruthy(`FailureMsg6: ${taskDisplayId[1]} task id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[2], taskModule)).toBeTruthy(`FailureMsg7: ${taskDisplayId[2]} task id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[3], taskModule)).toBeTruthy(`FailureMsg8: ${taskDisplayId[3]} task id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[4], taskModule)).toBeTruthy(`FailureMsg9: ${taskDisplayId[4]} task id  is missing`);
+        });
+
+        it('[DRDMV-16115]: Verify Tasks are accessible to other Line of business Case BA', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await navigationPage.gotoSearch();
+            await searchPo.selectCategoryDropDownValue(taskModule);
+            await searchPo.searchRecord(summary);
+            expect(await searchPo.isModuleTitleDisplayed(summary, 'Tasks (0)', taskModule)).toBeTruthy('FailureMsg58: Task module title is missing');
+            expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(taskModule)).toBeTruthy(`FailureMsg59: No result found validation is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[0], taskModule)).toBeFalsy(`FailureMsg48: ${taskDisplayId[0]} task id  is displayed`);
+        });
+
+        it('[DRDMV-16115]: Verify Tasks are accessible to other Line of business Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('frieda');
+            await navigationPage.gotoSearch();
+            await searchPo.selectCategoryDropDownValue(taskModule);
+            await searchPo.searchRecord(summary);
+            expect(await searchPo.isModuleTitleDisplayed(summary, 'Tasks (0)', taskModule)).toBeTruthy('FailureMsg58: Task module title is missing');
+            expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(taskModule)).toBeTruthy(`FailureMsg59: No result found validation is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[0], taskModule)).toBeFalsy(`FailureMsg48: ${taskDisplayId[0]} task id  is displayed`);
+        });
+
+        it('[DRDMV-16115]: Verify Tasks are accessible to user belonging to multiple Line of business Case BA', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseBAMultiLOB@petramco.com','Password_1234');
+            await navigationPage.gotoSearch();
+            await searchPo.selectCategoryDropDownValue(taskModule);
+            await searchPo.searchRecord(summary);
+            expect(await searchPo.isModuleTitleDisplayed(summary, 'Tasks (5)', taskModule)).toBeTruthy('FailureMsg42: Task module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[0], taskModule)).toBeTruthy(`FailureMsg6: ${taskDisplayId[0]} task id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[1], taskModule)).toBeTruthy(`FailureMsg6: ${taskDisplayId[1]} task id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[2], taskModule)).toBeTruthy(`FailureMsg7: ${taskDisplayId[2]} task id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[3], taskModule)).toBeTruthy(`FailureMsg8: ${taskDisplayId[3]} task id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[4], taskModule)).toBeTruthy(`FailureMsg9: ${taskDisplayId[4]} task id  is missing`);
+        });
+
+        it('[DRDMV-16115]: Verify Tasks are accessible to user belonging to multiple Line of business Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseMngrMultiLOB@petramco.com','Password_1234');
+            await navigationPage.gotoSearch();
+            await searchPo.selectCategoryDropDownValue(taskModule);
+            await searchPo.searchRecord(summary);
+            expect(await searchPo.isModuleTitleDisplayed(summary, 'Tasks (5)', taskModule)).toBeTruthy('FailureMsg42: Task module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[0], taskModule)).toBeTruthy(`FailureMsg6: ${taskDisplayId[0]} task id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[1], taskModule)).toBeTruthy(`FailureMsg6: ${taskDisplayId[1]} task id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[2], taskModule)).toBeTruthy(`FailureMsg7: ${taskDisplayId[2]} task id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[3], taskModule)).toBeTruthy(`FailureMsg8: ${taskDisplayId[3]} task id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[4], taskModule)).toBeTruthy(`FailureMsg9: ${taskDisplayId[4]} task id  is missing`);
         });
 
         afterAll(async () => {
@@ -726,7 +897,7 @@ describe('Global Search Category Validation', () => {
             expect(await searchPo.isModuleTitleDisplayed(summary1, 'Knowledge Articles (5)', KAModule)).toBeTruthy('FailureMsg2: KA module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId1[0], KAModule)).toBeTruthy(`FailureMsg4: ${kaDisplayId1[0]} Knowledge Article id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(summary1, KAModule)).toBeTruthy(`FailureMsg5: ${summary1} Knowledge Article summary is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, KAModule,)).toBeTruthy(`${updatedDate} updatedDate is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, KAModule)).toBeTruthy(`${updatedDate} updatedDate is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId1[1], KAModule)).toBeTruthy(`FailureMsg6: ${kaDisplayId1[1]} Knowledge Article id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId1[2], KAModule)).toBeTruthy(`FailureMsg7: ${kaDisplayId1[2]} Knowledge Article id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId1[3], KAModule)).toBeTruthy(`FailureMsg8: ${kaDisplayId1[3]} Knowledge Article id  is missing`);
@@ -877,6 +1048,35 @@ describe('Global Search Category Validation', () => {
             expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(KAModule)).toBeTruthy(`FailureMsg10: No result found validation missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId4, KAModule)).toBeFalsy(`FailureMsg11: ${kaDisplayId4} KA id  is displayed`);
         });
+
+        it('[DRDMV-16114]: Verify article search with different LOB case manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('frieda');
+            await navigationPage.gotoSearch();
+
+            await searchPo.searchRecord(summary1);
+            expect(await searchPo.isModuleTitleDisplayed(summary1, 'Knowledge Articles (5)', KAModule)).toBeTruthy('FailureMsg42: Task module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId1[0], KAModule)).toBeTruthy(`FailureMsg6: ${kaDisplayId1[0]} KA id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId1[1], KAModule)).toBeTruthy(`FailureMsg6: ${kaDisplayId1[1]} KA id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId1[2], KAModule)).toBeTruthy(`FailureMsg7: ${kaDisplayId1[2]} KA id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId1[3], KAModule)).toBeTruthy(`FailureMsg8: ${kaDisplayId1[3]} KA id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId1[4], KAModule)).toBeTruthy(`FailureMsg9: ${kaDisplayId1[4]} KA id  is missing`);
+        });
+
+        it('[DRDMV-16114]: Verify article search with different LOB case BA', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await navigationPage.gotoSearch();
+
+            await searchPo.searchRecord(summary1);
+            expect(await searchPo.isModuleTitleDisplayed(summary1, 'Knowledge Articles (5)', KAModule)).toBeTruthy('FailureMsg42: Task module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId1[0], KAModule)).toBeTruthy(`FailureMsg6: ${kaDisplayId1[0]} KA id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId1[1], KAModule)).toBeTruthy(`FailureMsg6: ${kaDisplayId1[1]} KA id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId1[2], KAModule)).toBeTruthy(`FailureMsg7: ${kaDisplayId1[2]} KA id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId1[3], KAModule)).toBeTruthy(`FailureMsg8: ${kaDisplayId1[3]} KA id  is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId1[4], KAModule)).toBeTruthy(`FailureMsg9: ${kaDisplayId1[4]} KA id  is missing`);
+        });
+
 
         afterAll(async () => {
             await navigationPage.signOut();

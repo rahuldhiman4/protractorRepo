@@ -51,6 +51,11 @@ describe("Compose Email", () => {
             incomingMailBoxName: "IncomingMail",
         }
 
+        let emailConfigFacilities = {
+            email: "bwfqa2019@gmail.com",
+            incomingMailBoxName: "IncomingMail",
+        }
+
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qtao");
         await apiHelper.apiLogin('tadmin');

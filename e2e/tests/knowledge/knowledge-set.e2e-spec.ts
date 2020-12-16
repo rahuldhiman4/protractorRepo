@@ -31,53 +31,142 @@ describe('Knowledge Article Set', () => {
         await navigationPage.signOut();
     });
 
-    it('[DRDMV-1105]: Knowledge set_Tenant Administrator creates knowledge set', async () => {
+    describe('[DRDMV-1105]: Knowledge set_Tenant Administrator creates knowledge set', async () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', 'Knowledge Set Console');
-        await consoleKnowledgeSetPo.clickOnAddKnowledgeSetBtn();
-        expect(await createKnowledgeSetPo.isFieldRequired('Knowledge Set')).toBeTruthy('Knowledge Set field is not tagged as required');
-        expect(await createKnowledgeSetPo.isFieldRequired('Description')).toBeTruthy('Description field is not tagged as required');
-        expect(await createKnowledgeSetPo.isFieldRequired('Company')).toBeTruthy('Company field is not tagged as required');
-        await createKnowledgeSetPo.clickCreateNewButton();
-        expect(await createKnowledgeSetPo.getDescriptionLabel()).toBe('Description');
-        expect(await createKnowledgeSetPo.getApplicationIDLabel()).toBe('Application ID');
-        expect(await createKnowledgeSetPo.getApplicationBundleLabel()).toBe('Application Bundle ID');
-        expect(await createKnowledgeSetPo.isFieldRequired('Application Description')).toBeTruthy('Application Description field is not tagged as required');
-        expect(await createKnowledgeSetPo.isFieldRequired('Application ID')).toBeTruthy('Application ID field is not tagged as required');
-        expect(await createKnowledgeSetPo.isFieldRequired('Application Bundle ID')).toBeTruthy('Application Bundle ID field is not tagged as required');
-        await createKnowledgeSetPo.clickCreateNewApplicationCancelBtn();
-        await createKnowledgeSetPo.setKnowledgeSetName('DRDMV-1062' + randomStr);
-        await createKnowledgeSetPo.setCompanyValue('Petramco');
-        await createKnowledgeSetPo.setDescriptionValue('Sample Description' + randomStr);
-        await createKnowledgeSetPo.addNewApplication('Approval', 'desc1' + randomStr);
-        await createKnowledgeSetPo.addNewApplication('Assignment', 'desc2' + randomStr);
-        await createKnowledgeSetPo.addNewApplication('Case Management Service', 'desc3' + randomStr);
-        await createKnowledgeSetPo.clickAssociateBtn();
-        expect(await createKnowledgeSetPo.isApplicationAvaialableForAssociation('com.bmc.arsys.rx.approval')).toBeTruthy('Approval Application is not present');
-        expect(await createKnowledgeSetPo.isApplicationAvaialableForAssociation('com.bmc.arsys.rx.assignment')).toBeTruthy('Assignment Application is not present');
-        expect(await createKnowledgeSetPo.isApplicationAvaialableForAssociation('com.bmc.dsm.case-lib')).toBeTruthy('Case Management Application is not present');
-        await createKnowledgeSetPo.checkApplicationCheckboxes(['com.bmc.arsys.rx.approval', 'com.bmc.arsys.rx.assignment', 'com.bmc.dsm.case-lib']);
-        await createKnowledgeSetPo.clickSelectBtn();
-        await createKnowledgeSetPo.clickSaveBtn();
-        await utilCommon.closeBladeOnSettings();
-        expect(await utilGrid.isGridRecordPresent('DRDMV-1062' + randomStr)).toBeTruthy('Record is not Present');
-        await utilGrid.searchAndOpenHyperlink('DRDMV-1062' + randomStr);
-        expect(await editKnowledgeSet.isApplicationNameListed('com.bmc.arsys.rx.approval')).toBeTruthy('Approval Application is not present');
-        expect(await editKnowledgeSet.isApplicationNameListed('com.bmc.arsys.rx.assignment')).toBeTruthy('Assignment Application is not present');
-        expect(await editKnowledgeSet.isApplicationNameListed('com.bmc.dsm.case-lib')).toBeTruthy('Case Management Application is not present');
-        await utilCommon.closeBladeOnSettings();
-        await consoleKnowledgeSetPo.clickOnAddKnowledgeSetBtn();
-        await createKnowledgeSetPo.setKnowledgeSetName('DRDMV-1062_1' + randomStr);
-        await createKnowledgeSetPo.setCompanyValue('Petramco');
-        await createKnowledgeSetPo.setDescriptionValue('Sample Description1' + randomStr);
-        await createKnowledgeSetPo.clickAssociateBtn();
-        await createKnowledgeSetPo.checkApplicationCheckboxes(['com.bmc.dsm.bwfa']);
-        await createKnowledgeSetPo.clickSelectBtn();
-        await createKnowledgeSetPo.clickSaveBtn();
-        await utilCommon.closeBladeOnSettings();
-        expect(await utilGrid.isGridRecordPresent('DRDMV-1062_1' + randomStr)).toBeTruthy('Record is not Present');
+        let knowledgesetFacilities= "knowledgeSetFacilities_"+randomStr;
+
+        it('[DRDMV-1105]: Knowledge set_Tenant Administrator creates knowledge set', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', 'Knowledge Set Console');
+            await consoleKnowledgeSetPo.clickOnAddKnowledgeSetBtn();
+            expect(await createKnowledgeSetPo.isFieldRequired('Knowledge Set')).toBeTruthy('Knowledge Set field is not tagged as required');
+            expect(await createKnowledgeSetPo.isFieldRequired('Description')).toBeTruthy('Description field is not tagged as required');
+            expect(await createKnowledgeSetPo.isFieldRequired('Company')).toBeTruthy('Company field is not tagged as required');
+            await createKnowledgeSetPo.clickCreateNewButton();
+            expect(await createKnowledgeSetPo.getDescriptionLabel()).toBe('Description');
+            expect(await createKnowledgeSetPo.getApplicationIDLabel()).toBe('Application ID');
+            expect(await createKnowledgeSetPo.getApplicationBundleLabel()).toBe('Application Bundle ID');
+            expect(await createKnowledgeSetPo.isFieldRequired('Application Description')).toBeTruthy('Application Description field is not tagged as required');
+            expect(await createKnowledgeSetPo.isFieldRequired('Application ID')).toBeTruthy('Application ID field is not tagged as required');
+            expect(await createKnowledgeSetPo.isFieldRequired('Application Bundle ID')).toBeTruthy('Application Bundle ID field is not tagged as required');
+            await createKnowledgeSetPo.clickCreateNewApplicationCancelBtn();
+            await createKnowledgeSetPo.setKnowledgeSetName('DRDMV-1062' + randomStr);
+            await createKnowledgeSetPo.setCompanyValue('Petramco');
+            await createKnowledgeSetPo.setDescriptionValue('Sample Description' + randomStr);
+            await createKnowledgeSetPo.addNewApplication('Approval', 'desc1' + randomStr);
+            await createKnowledgeSetPo.addNewApplication('Assignment', 'desc2' + randomStr);
+            await createKnowledgeSetPo.addNewApplication('Case Management Service', 'desc3' + randomStr);
+            await createKnowledgeSetPo.clickAssociateBtn();
+            expect(await createKnowledgeSetPo.isApplicationAvaialableForAssociation('com.bmc.arsys.rx.approval')).toBeTruthy('Approval Application is not present');
+            expect(await createKnowledgeSetPo.isApplicationAvaialableForAssociation('com.bmc.arsys.rx.assignment')).toBeTruthy('Assignment Application is not present');
+            expect(await createKnowledgeSetPo.isApplicationAvaialableForAssociation('com.bmc.dsm.case-lib')).toBeTruthy('Case Management Application is not present');
+            await createKnowledgeSetPo.checkApplicationCheckboxes(['com.bmc.arsys.rx.approval', 'com.bmc.arsys.rx.assignment', 'com.bmc.dsm.case-lib']);
+            await createKnowledgeSetPo.clickSelectBtn();
+            await createKnowledgeSetPo.clickSaveBtn();
+            await utilCommon.closeBladeOnSettings();
+            expect(await utilGrid.isGridRecordPresent('DRDMV-1062' + randomStr)).toBeTruthy('Record is not Present');
+            await utilGrid.searchAndOpenHyperlink('DRDMV-1062' + randomStr);
+            expect(await editKnowledgeSet.isApplicationNameListed('com.bmc.arsys.rx.approval')).toBeTruthy('Approval Application is not present');
+            expect(await editKnowledgeSet.isApplicationNameListed('com.bmc.arsys.rx.assignment')).toBeTruthy('Assignment Application is not present');
+            expect(await editKnowledgeSet.isApplicationNameListed('com.bmc.dsm.case-lib')).toBeTruthy('Case Management Application is not present');
+            await utilCommon.closeBladeOnSettings();
+            await consoleKnowledgeSetPo.clickOnAddKnowledgeSetBtn();
+            await createKnowledgeSetPo.setKnowledgeSetName('DRDMV-1062_1' + randomStr);
+            await createKnowledgeSetPo.setCompanyValue('Petramco');
+            await createKnowledgeSetPo.setDescriptionValue('Sample Description1' + randomStr);
+            await createKnowledgeSetPo.clickAssociateBtn();
+            await createKnowledgeSetPo.checkApplicationCheckboxes(['com.bmc.dsm.bwfa']);
+            await createKnowledgeSetPo.clickSelectBtn();
+            await createKnowledgeSetPo.clickSaveBtn();
+            await utilCommon.closeBladeOnSettings();
+            expect(await utilGrid.isGridRecordPresent('DRDMV-1062_1' + randomStr)).toBeTruthy('Record is not Present');
+        });
+
+        it('[DRDMV-1105]: Verify if case assignment mapping is accessible to different LOB Case BA', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', 'Knowledge Set Console');
+            expect(await utilGrid.isGridRecordPresent('DRDMV-1062' + randomStr)).toBeFalsy('Knowledge set are displayed to different LOB Case BA.');
+            expect(await utilGrid.isGridRecordPresent('DRDMV-1062_1' + randomStr)).toBeFalsy('Knowledge set are displayed to different LOB Case BA.');
+            await consoleKnowledgeSetPo.clickOnAddKnowledgeSetBtn();
+            await createKnowledgeSetPo.setKnowledgeSetName(knowledgesetFacilities);
+            await createKnowledgeSetPo.setCompanyValue('Petramco');
+            await createKnowledgeSetPo.setDescriptionValue('Sample Description1' + randomStr);
+            await createKnowledgeSetPo.clickAssociateBtn();
+            await createKnowledgeSetPo.checkApplicationCheckboxes(['com.bmc.dsm.bwfa']);
+            await createKnowledgeSetPo.clickSelectBtn();
+            await createKnowledgeSetPo.clickSaveBtn();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            await utilCommon.closeBladeOnSettings();            
+            expect(await utilGrid.isGridRecordPresent(knowledgesetFacilities)).toBeTruthy('Record is not Present');
+        });
+
+        it('[DRDMV-1105]: Verify if case assignment mapping is accessible to different LOB Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('frieda');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', 'Knowledge Set Console');
+            expect(await utilGrid.isGridRecordPresent('DRDMV-1062' + randomStr)).toBeFalsy('Knowledge set are displayed to different LOB Case Manager.');
+            expect(await utilGrid.isGridRecordPresent('DRDMV-1062_1' + randomStr)).toBeFalsy('Knowledge set are displayed to different LOB Case Manager.');
+            expect(await utilGrid.isGridRecordPresent(knowledgesetFacilities)).toBeTruthy('Knowledge set are displayed to same LOB Case Manager.');
+        });
+
+        it('[DRDMV-1105]: Verify if case assignment mapping is accessible to Case BA belonging to different company with same LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('gwixillian');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', 'Knowledge Set Console');
+            expect(await utilGrid.isGridRecordPresent('DRDMV-1062' + randomStr)).toBeTruthy('Knowledge set are not displayed to Case BA with same LOB and differrent Company.');
+            expect(await utilGrid.isGridRecordPresent('DRDMV-1062_1' + randomStr)).toBeTruthy('Knowledge set are not displayed to Case BA with same LOB and differrent Company');
+            expect(await utilGrid.isGridRecordPresent(knowledgesetFacilities)).toBeFalsy('Knowledge set are displayed to same LOB Case BA.');
+        });
+
+        it('[DRDMV-1105]: Verify if case assignment mapping is accessible to Case Manager user having access to multiple LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', 'Knowledge Set Console');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilGrid.isGridRecordPresent('DRDMV-1062' + randomStr)).toBeTruthy('Knowledge set are not displayed to Case BA with multiple LOB access');
+            expect(await utilGrid.isGridRecordPresent('DRDMV-1062_1' + randomStr)).toBeTruthy('Knowledge set are not displayed to Case BA with multiple LOB access');
+            expect(await utilGrid.isGridRecordPresent(knowledgesetFacilities)).toBeFalsy('Knowledge set are displayed to Case BA with multiple LOB access');
+            await utilGrid.selectLineOfBusiness('Facilities');
+            expect(await utilGrid.isGridRecordPresent('DRDMV-1062' + randomStr)).toBeFalsy('Knowledge set are displayed to Case BA with multiple LOB access');
+            expect(await utilGrid.isGridRecordPresent('DRDMV-1062_1' + randomStr)).toBeFalsy('Knowledge set are displayed to Case BA with multiple LOB access');
+            expect(await utilGrid.isGridRecordPresent(knowledgesetFacilities)).toBeTruthy('Knowledge set are not displayed to Case BA with multiple LOB access');
+        });
+
+        it('[DRDMV-1105]: Verify if case assignment mapping is accessible to Case BA user having access to multiple LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', 'Knowledge Set Console');
+            await utilGrid.selectLineOfBusiness('Facilities');
+            expect(await utilGrid.isGridRecordPresent('DRDMV-1062' + randomStr)).toBeFalsy('Knowledge set are displayed to Case BA with multiple LOB access');
+            expect(await utilGrid.isGridRecordPresent('DRDMV-1062_1' + randomStr)).toBeFalsy('Knowledge set are displayed to Case BA with multiple LOB access');
+            expect(await utilGrid.isGridRecordPresent(knowledgesetFacilities)).toBeTruthy('Knowledge set are not displayed to Case BA with multiple LOB access');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilGrid.isGridRecordPresent('DRDMV-1062' + randomStr)).toBeTruthy('Knowledge set are not displayed to Case BA with multiple LOB access');
+            expect(await utilGrid.isGridRecordPresent('DRDMV-1062_1' + randomStr)).toBeTruthy('Knowledge set are not displayed to Case BA with multiple LOB access');
+            expect(await utilGrid.isGridRecordPresent(knowledgesetFacilities)).toBeFalsy('Knowledge set are displayed to Case BA with multiple LOB access');
+
+            await utilGrid.searchAndOpenHyperlink('DRDMV-1062' + randomStr);
+            await editKnowledgeSet.setKnowledgeSetName('DRDMV-1062_updated' + randomStr);
+            await editKnowledgeSet.removeApplicationAssociation('com.bmc.dsm.bwfa');
+            await editKnowledgeSet.clickSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            await utilCommon.closePopUpMessage();
+            await utilCommon.closeBladeOnSettings();
+        });
+
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('elizabeth');
+        });
+
     });
+
 
     describe('[DRDMV-7022]:Knowledge Article Template visibility contains Knowledge Set associated with KM and BWF', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');

@@ -379,34 +379,161 @@ describe("Create Case Assignment Mapping", () => {
     //radhiman
     describe('[DRDMV-1212]: [Assignment Mapping] Configuring an Assignment Mapping', async () => {
         let templateData, randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let globalAssignmentMappingName = "GlobalDRDMV-1212_CaseAssignmentMapping_" + randomStr;
+        let companyAssignmentMappingName = "PetramcoDRDMV-1212_CaseAssignmentMapping_" + randomStr;
+        let facilitiesAssignmentMappingName = "FacilitiesDRDMV-1212_CaseAssignmentMapping_" + randomStr;
+
         beforeAll(async () => {
             templateData = {
                 "templateName": 'caseTemplateName' + randomStr,
                 "templateSummary": 'caseTemplateSummary' + randomStr,
                 "categoryTier1": "Employee Relations",
-                "categoryTier2": "Compensation",
-                "categoryTier3": "Bonus",
-                "casePriority": "Low",
                 "templateStatus": "Active",
                 "company": "Petramco",
-                "businessUnit": "United States Support",
-                "supportGroup": "US Support 3",
-                "assignee": "qkatawazi",
                 "ownerBU": "United States Support",
                 "ownerGroup": "US Support 3"
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createCaseTemplate(templateData);
         });
-        it('[DRDMV-1212]: [Assignment Mapping] Configuring an Assignment Mapping', async () => {
-            await navigationPage.gotoQuickCase();
-            await QuickCasePage.selectRequesterName("adam");
-            await QuickCasePage.selectCaseTemplate(templateData.templateName);
-            await QuickCasePage.saveCase();
-            await QuickCasePage.gotoCaseButton();
-            expect(await viewCasePo.getAssignedGroupText()).toBe("US Support 3");
-            expect(await viewCasePo.getAssigneeText()).toBe("Qadim Katawazi");
+
+        it('[DRDMV-1212]: [Assignment Mapping] Configuring an Assignment Mapping for Human Resource Line of Business', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
+            await assignmentConfigConsolePage.clearFilter();
+            await assignmentConfigConsolePage.clickOnCreateAssignmentConfiguration();
+            await assignmentConfigCreatePage.setAssignmentMapName(globalAssignmentMappingName);
+            await assignmentConfigCreatePage.setCompany("- Global -");
+            await assignmentConfigCreatePage.setCategoryTier1("Applications");
+            await assignmentConfigCreatePage.setSupportCompany("Petramco");
+            await assignmentConfigCreatePage.setBusinessUnit('Australia Support');
+            await assignmentConfigCreatePage.setSupportGroup("AU Support 2");
+            await assignmentConfigCreatePage.clickonSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+
+            await assignmentConfigConsolePage.clickOnCreateAssignmentConfiguration();
+            await assignmentConfigCreatePage.setAssignmentMapName(companyAssignmentMappingName);
+            await assignmentConfigCreatePage.setCompany("Petramco");
+            await assignmentConfigCreatePage.setCategoryTier1("Applications");
+            await assignmentConfigCreatePage.setSupportCompany("Petramco");
+            await assignmentConfigCreatePage.setBusinessUnit('Australia Support');
+            await assignmentConfigCreatePage.setSupportGroup("AU Support 3");
+            await assignmentConfigCreatePage.clickonSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
+
+        it('[DRDMV-1212]: Verify if case assignment mapping is accessible to same LOB Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qdu');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(globalAssignmentMappingName)).toBeTruthy('Case Assignment Mapping are not displayed to same LOB Case manager.');
+            expect(await utilGrid.isGridRecordPresent(companyAssignmentMappingName)).toBeTruthy('Case Assignment Mapping are not displayed to same LOB Case manager.');
+        });
+
+        it('[DRDMV-1212]: Verify if case assignment mapping is accessible to different LOB Case BA', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(globalAssignmentMappingName)).toBeFalsy('Case Assignment Mapping are displayed to different LOB Case BA.');
+            expect(await utilGrid.isGridRecordPresent(companyAssignmentMappingName)).toBeFalsy('Case Assignment Mapping are displayed to different LOB Case BA.');
+            await assignmentConfigConsolePage.clickOnCreateAssignmentConfiguration();
+            await assignmentConfigCreatePage.setAssignmentMapName(facilitiesAssignmentMappingName);
+            await assignmentConfigCreatePage.setCompany("Petramco");
+            await assignmentConfigCreatePage.setCategoryTier1("Applications");
+            await assignmentConfigCreatePage.setSupportCompany("Petramco");
+            await assignmentConfigCreatePage.setBusinessUnit('Facilities Support');
+            await assignmentConfigCreatePage.setSupportGroup("Facilities");
+            await assignmentConfigCreatePage.clickonSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+        });
+
+        it('[DRDMV-1212]: Verify if case assignment mapping is accessible to different LOB Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('frieda');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(globalAssignmentMappingName)).toBeFalsy('Case Assignment Mapping are displayed to different LOB Case Manager.');
+            expect(await utilGrid.isGridRecordPresent(companyAssignmentMappingName)).toBeFalsy('Case Assignment Mapping are displayed to different LOB Case Manager.');
+            expect(await utilGrid.isGridRecordPresent(facilitiesAssignmentMappingName)).toBeTruthy('Case Assignment Mapping are displayed to same LOB Case Manager.');
+        });
+
+        it('[DRDMV-1212]: Verify if case assignment mapping is accessible to Case BA belonging to different company with same LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('gwixillian');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(globalAssignmentMappingName)).toBeTruthy('Case Assignment Mapping are not displayed to same LOB Case BA.');
+            expect(await utilGrid.isGridRecordPresent(companyAssignmentMappingName)).toBeTruthy('Case Assignment Mapping are not displayed to same LOB Case BA.');
+        });
+
+        it('[DRDMV-1212]: Verify if case assignment mapping is accessible to Case Manager user having access to multiple LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilGrid.isGridRecordPresent(globalAssignmentMappingName)).toBeTruthy('Case Assignment Mapping are not displayed to multiple LOB Case manager.');
+            expect(await utilGrid.isGridRecordPresent(companyAssignmentMappingName)).toBeTruthy('Case Assignment Mapping are not displayed to multiple LOB Case manager.');
+            expect(await utilGrid.isGridRecordPresent(facilitiesAssignmentMappingName)).toBeFalsy('Case Assignment Mapping are displayed to multiple LOB Case Manager.');
+            await utilGrid.selectLineOfBusiness('Facilities');
+            expect(await utilGrid.isGridRecordPresent(globalAssignmentMappingName)).toBeFalsy('Case Assignment Mapping are displayed to multiple LOB Case Manager.');
+            expect(await utilGrid.isGridRecordPresent(companyAssignmentMappingName)).toBeFalsy('Case Assignment Mapping are displayed to multiple LOB Case Manager.');
+            expect(await utilGrid.isGridRecordPresent(facilitiesAssignmentMappingName)).toBeTruthy('Case Assignment Mapping are not displayed to multiple LOB Case Manager.');
+        });
+
+        it('[DRDMV-1212]: Verify if case assignment mapping is accessible to Case BA user having access to multiple LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Facilities');
+            expect(await utilGrid.isGridRecordPresent(globalAssignmentMappingName)).toBeFalsy('Case Assignment Mapping are displayed to multiple LOB Case BA.');
+            expect(await utilGrid.isGridRecordPresent(companyAssignmentMappingName)).toBeFalsy('Case Assignment Mapping are displayed to multiple LOB Case BA.');
+            expect(await utilGrid.isGridRecordPresent(facilitiesAssignmentMappingName)).toBeTruthy('Case Assignment Mapping are not displayed to multiple LOB Case BA.');
+
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilGrid.isGridRecordPresent(globalAssignmentMappingName)).toBeTruthy('Case Assignment Mapping are not displayed to multiple LOB Case BA.');
+            expect(await utilGrid.isGridRecordPresent(companyAssignmentMappingName)).toBeTruthy('Case Assignment Mapping are not displayed to multiple LOB Case BA.');
+            expect(await utilGrid.isGridRecordPresent(facilitiesAssignmentMappingName)).toBeFalsy('Case Assignment Mapping are displayed to multiple LOB Case BA.');
+            await assignmentConfigConsolePage.searchAssignmentConfig(companyAssignmentMappingName);
+            await assignmentConfigEditPage.setAssignee('RA3 Liu');
+            await assignmentConfigEditPage.clickonSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+        });
+
+        it('[DRDMV-1212]: Verify if case assignment mapping is applied to the case created', async () => {
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester("adam");
+            await createCasePage.setSummary("DRDMV-1212 Case Summary");
+            await createCasePage.selectCategoryTier1("Applications");
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            await viewCasePo.clickOnTab('Case Access');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('RA3 Liu', 'Write')).toBeTruthy('FailuerMsg1: Agent Name is missing');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('AU Support 2', 'Write')).toBeTruthy('Support Group does not have write access');
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteReadAccessOrAssignmentMapping(companyAssignmentMappingName);
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester("adam");
+            await createCasePage.setSummary("DRDMV-1212 Case Summary");
+            await createCasePage.selectCategoryTier1("Applications");
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            await viewCasePo.clickOnTab('Case Access');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('AU Support 1', 'Write')).toBeTruthy('Support Group does not have write access');
+        });
+
+        afterAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteReadAccessOrAssignmentMapping(globalAssignmentMappingName);
+            await apiHelper.deleteReadAccessOrAssignmentMapping(facilitiesAssignmentMappingName);
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+
+
     });
 
     describe('[DRDMV-11825,DRDMV-11826,DRDMV-11827,DRDMV-11828,DRDMV-11978]: Verify Company and Support Group selection hierarchy.', async () => {
@@ -1269,7 +1396,7 @@ describe("Create Case Assignment Mapping", () => {
             expect(await viewCasePo.getAssignedGroupText()).toBe(suppGrpData3.orgName);
             expect(await viewCasePo.getAssigneeText()).toBe("phylumfn6 phylumln6");
         });
-        it('[DRDMV-1206,DRDMV-1208]:[Assignment Mapping] Applying Assignment Mappings to cases with partial match', async () => {   
+        it('[DRDMV-1206,DRDMV-1208]:[Assignment Mapping] Applying Assignment Mappings to cases with partial match', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Anna');
             await createCasePage.setSummary('Summary3');

@@ -22,12 +22,43 @@ describe("Task Approval Mapping Tests", () => {
     const approvalMappingMsg = "Mapping the result of the approval process to the task status.";
     const approvalStatusMappingLabel = "Status mapping:";
     let taskModule = 'Task';
+    let userData, userData1, userData2 = undefined;
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
-        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteApprovalMapping(taskModule);
+        userData = {
+            "firstName": "Petramco",
+            "lastName": "SGUser1",
+            "userId": "22653User",
+            "userPermission": ["Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource"]
+        }
+        await apiHelper.createNewUser(userData);
+        await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
+        await apiHelper.associatePersonToSupportGroup(userData.userId, "US Support 3");
+
+        userData1 = {
+            "firstName": "caseBA",
+            "lastName": "MultiLOB",
+            "userId": "caseBAMultiLOB",
+            "userPermission": ["Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
+        }
+        await apiHelper.createNewUser(userData1);
+        await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
+        await apiHelper.associatePersonToSupportGroup(userData1.userId, "US Support 3");
+
+        userData2 = {
+            "firstName": "caseMngr",
+            "lastName": "MultiLOB",
+            "userId": "caseMngrMultiLOB",
+            "userPermission": ["Case Manager", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
+        }
+        await apiHelper.createNewUser(userData2);
+        await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
+        await apiHelper.associatePersonToSupportGroup(userData2.userId, "US Support 3");
+
     });
 
     afterAll(async () => {
@@ -73,7 +104,8 @@ describe("Task Approval Mapping Tests", () => {
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerGroup": "Facilities",
+                "lineOfBusiness":"Facilities"
             }
 
             psilonManualTaskTemplateData = {
@@ -83,7 +115,8 @@ describe("Task Approval Mapping Tests", () => {
                 "taskCompany": 'Psilon',
                 "ownerCompany": "Psilon",
                 "ownerBusinessUnit": "Psilon Support Org1",
-                "ownerGroup": "Psilon Support Group1"
+                "ownerGroup": "Psilon Support Group1",
+                "lineOfBusiness":"Facilities"
             }
 
             manualTaskGlobalTemplateData = {
@@ -93,7 +126,8 @@ describe("Task Approval Mapping Tests", () => {
                 "taskCompany": '- Global -',
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerGroup": "Facilities",
+                "lineOfBusiness":"Facilities"
             }
 
             manualTaskTemplateDraftData = {
@@ -103,7 +137,8 @@ describe("Task Approval Mapping Tests", () => {
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerGroup": "Facilities",
+                "lineOfBusiness":"Facilities"
             }
 
             manualTaskTemplateInactiveData = {
@@ -113,7 +148,8 @@ describe("Task Approval Mapping Tests", () => {
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerGroup": "Facilities",
+                "lineOfBusiness":"Facilities"
             }
 
             autoTaskTemplateData = {
@@ -125,9 +161,10 @@ describe("Task Approval Mapping Tests", () => {
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerGroup": "Facilities",
+                "lineOfBusiness":"Facilities"
             }
-            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.apiLogin('fritz');
             await apiHelper.createAutomatedTaskTemplate(autoTaskTemplateData);
             await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
             await apiHelper.createManualTaskTemplate(manualTaskGlobalTemplateData);
@@ -139,6 +176,8 @@ describe("Task Approval Mapping Tests", () => {
         })
 
         it('[DRDMV-21582,DRDMV-22120]: Create Task Approval Mapping UI Validation', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Approvals', 'Task Approval Mappings - Business Workflows');
             await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
@@ -270,9 +309,78 @@ describe("Task Approval Mapping Tests", () => {
             await editApprovalMappingPage.clickCancelApprovalMappingBtn();
         });
 
+        it('[DRDMV-21582,DRDMV-22120]: Verify Task Approval Mapping is accessible to Line of business Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('frieda');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Task Management--Approvals', 'Task Approval Mappings - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(taskApprovalMappingStr)).toBeTruthy('Task Approval Mapping for Facilities LOB are displayed to the Case Manager of same LOB');
+        });
+
+        it('[DRDMV-21582,DRDMV-22120]: Verify Task Approval Mapping is accessible to other Line of business Case BA', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Task Management--Approvals', 'Task Approval Mappings - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(taskApprovalMappingStr)).toBeFalsy('Task Approval Mapping for Facilities LOB are displayed to Human Resource LOB User.');
+        });
+
+        it('[DRDMV-21582,DRDMV-22120]: Verify Task Approval Mapping is accessible to other Line of business Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qdu');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Task Management--Approvals', 'Task Approval Mappings - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(taskApprovalMappingStr)).toBeFalsy('Task Approval Mapping for Facilities LOB are displayed to Human Resource LOB User.');
+        });
+
+        it('[DRDMV-21582,DRDMV-22120]: Verify Task Approval Mapping are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseBAMultiLOB@petramco.com','Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Task Management--Approvals', 'Task Approval Mappings - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilGrid.isGridRecordPresent(taskApprovalMappingStr)).toBeFalsy('Task Approval Mapping for Facilities LOB are displayed to Human Resource LOB User.');
+
+            await utilGrid.selectLineOfBusiness('Facilities');
+            expect(await utilGrid.isGridRecordPresent(taskApprovalMappingStr)).toBeTruthy('Task Approval Mapping for Facilities LOB are not displayed to Human Resource LOB User.');
+            await utilGrid.searchAndOpenHyperlink(taskApprovalMappingStr);
+            expect(await editApprovalMappingPage.getApprovalMappingName()).toBe(taskApprovalMappingStr);
+            expect(await editApprovalMappingPage.getSelectedCompany()).toBe('Petramco');
+            expect(await editApprovalMappingPage.getSelectedStatusTriggerOption()).toBe('Assigned');
+            expect(await editApprovalMappingPage.getStatusMappingApprovedOption()).toBe('In Progress');
+            expect(await editApprovalMappingPage.getSatusMappingNoApprovalFoundOption()).toBe('Assigned');
+            expect(await editApprovalMappingPage.getStatusMappingRejectedOption()).toBe('Approval Rejected');
+            expect(await editApprovalMappingPage.getStatusMappingErrorOption()).toBe('Canceled');
+
+            await editApprovalMappingPage.setApprovalMappingName(taskApprovalMappingStr+'_update');
+            await editApprovalMappingPage.selectStatusMappingApproved('Completed');
+            await editApprovalMappingPage.searchAssociatedTaskTemplate(manualTaskGlobalTemplateData.templateName);
+            await editApprovalMappingPage.selectAssociatedTaskTemplateCheckbox();
+            expect(await editApprovalMappingPage.isSelectTaskTemplateforApprovalRightArrawBtnEnabled()).toBeFalsy('Right Arrow button to select task template is disabled');
+            await editApprovalMappingPage.clickTaskTemplateforApprovalLeftArrawBtn();
+            await editApprovalMappingPage.searchTaskTemplate(manualTaskGlobalTemplateData.templateName);
+            expect(await editApprovalMappingPage.isSearchedTaskTemplateDisplayed()).toBeTruthy('Searched task template is not displayed.');
+            await editApprovalMappingPage.clickSaveApprovalMappingBtn();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+        });
+
+        it('[DRDMV-21582,DRDMV-22120]: Verify Task Approval Mapping are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseMngrMultiLOB@petramco.com','Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Task Management--Approvals', 'Task Approval Mappings - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilGrid.isGridRecordPresent(taskApprovalMappingStr)).toBeFalsy('Task Approval Mapping for Facilities LOB are displayed to Human Resource LOB User.');
+
+            await utilGrid.selectLineOfBusiness('Facilities');
+            expect(await utilGrid.isGridRecordPresent(taskApprovalMappingStr)).toBeTruthy('Task Approval Mapping for Facilities LOB are not displayed to Human Resource LOB User.');
+        });
+
         afterAll(async () => {
             await utilCommon.closeBladeOnSettings();
-            await apiHelper.apiLogin('qkatawazi');
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+            await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteApprovalMapping(taskModule);
         });
     });

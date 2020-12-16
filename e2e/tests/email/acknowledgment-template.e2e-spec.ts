@@ -9,6 +9,8 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
+let userData, userData1, userData2 = undefined;
+
 
 describe('Email Acknowledgment Template', () => {
     let label = "POSH";
@@ -16,6 +18,29 @@ describe('Email Acknowledgment Template', () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
         await apiHelper.apiLogin('qkatawazi');
+
+        await apiHelper.apiLogin('tadmin');
+
+        userData1 = {
+            "firstName": "caseBA",
+            "lastName": "MultiLOB",
+            "userId": "caseBAMultiLOB",
+            "userPermission": ["Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
+        }
+        await apiHelper.createNewUser(userData1);
+        await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
+        await apiHelper.associatePersonToSupportGroup(userData1.userId, "US Support 3");
+
+        userData2 = {
+            "firstName": "caseMngr",
+            "lastName": "MultiLOB",
+            "userId": "caseMngrMultiLOB",
+            "userPermission": ["Case Manager", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
+        }
+        await apiHelper.createNewUser(userData2);
+        await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
+        await apiHelper.associatePersonToSupportGroup(userData2.userId, "US Support 3");
+
     });
 
     afterAll(async () => {
@@ -83,6 +108,7 @@ describe('Email Acknowledgment Template', () => {
             await createAcknowledgmentTemplatesPo.clickOnSaveButton();
             await utilCommon.closePopUpMessage();
         });
+
         it('[DRDMV-10896,DRDMV-10901,DRDMV-10922]: Acknowledgment Template : Acknowledgment Template creation', async () => {
             await consoleAcknowledgmentTemplatePo.searchOnGridConsole(templateName2);
             expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Template Name')).toBe(templateName2, 'Public template name is missing');
@@ -99,7 +125,106 @@ describe('Email Acknowledgment Template', () => {
             await consoleAcknowledgmentTemplatePo.searchAndSelectGridRecord(templateName2);
             await consoleAcknowledgmentTemplatePo.clickOnDeleteButton();
             expect(await consoleAcknowledgmentTemplatePo.isGridRecordPresent(templateName2)).toBeFalsy('Public template name is preset on grid')
+
+            // petramco ack template
+            await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
+            await createAcknowledgmentTemplatesPo.setTemplateName(templateName);
+            await createAcknowledgmentTemplatesPo.selectCompanyDropDown('Petramco');
+            await createAcknowledgmentTemplatesPo.selectStatusDropDown('Active');
+            await createAcknowledgmentTemplatesPo.selectLabelDropDown(label);
+            await createAcknowledgmentTemplatesPo.setDescription(description);
+            await createAcknowledgmentTemplatesPo.setSubject(subject);
+            await createAcknowledgmentTemplatesPo.setBody(body);
+            await createAcknowledgmentTemplatesPo.clickOnSaveButton();
+            await utilCommon.closePopUpMessage();
+
+            // Global ack template
+            await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
+            await createAcknowledgmentTemplatesPo.setTemplateName(templateName2);
+            await createAcknowledgmentTemplatesPo.selectCompanyDropDown('- Global -');
+            await createAcknowledgmentTemplatesPo.selectStatusDropDown('Active');
+            await createAcknowledgmentTemplatesPo.selectLabelDropDown(label);
+            await createAcknowledgmentTemplatesPo.setDescription(description);
+            await createAcknowledgmentTemplatesPo.setSubject(subject);
+            await createAcknowledgmentTemplatesPo.setBody(body);
+            await createAcknowledgmentTemplatesPo.clickOnSaveButton();
+            await utilCommon.closePopUpMessage();
         });
+
+        it('[DRDMV-10896,DRDMV-10901,DRDMV-10922]: Verify if acknowledgment templates are accessible to same LOB Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qdu');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(templateName)).toBeTruthy('Human Resources LOB email ack template is not visible to same LOB case manager');
+            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email ack template is not visible to same LOB case manager');
+        });
+
+        it('[DRDMV-10896,DRDMV-10901,DRDMV-10922]: Verify if acknowledgment templates are accessible to different LOB Case BA', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy('Human Resources LOB email ack template is not visible to different LOB case BA');
+            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email ack template is not visible to different LOB case BA');
+
+        });
+
+        it('[DRDMV-10896,DRDMV-10901,DRDMV-10922]: Verify if acknowledgment templates are accessible to different LOB Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('frieda');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy('Human Resources LOB email ack template is not visible to different LOB case manager');
+            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email ack template is not visible to different LOB case manager');
+        });
+
+        it('[DRDMV-10896,DRDMV-10901,DRDMV-10922]: Verify if acknowledgment templates are accessible to Case BA belonging to different company with same LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('gwixillian');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(templateName)).toBeTruthy('Human Resources LOB email ack template is not visible to same LOB with different case BA');
+            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email ack template is not visible to same LOB with different case BA');
+        });
+
+        it('[DRDMV-10896,DRDMV-10901,DRDMV-10922]: Verify if acknowledgment templates are accessible to Case Manager user having access to multiple LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilGrid.isGridRecordPresent(templateName)).toBeTruthy('Human Resources LOB email ack template is not visible to case manager with multiple LOB access');
+            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email ack template is not visible to case manager with multiple LOB access');
+            await utilGrid.selectLineOfBusiness('Facilities');
+            expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy('Human Resources LOB email ack template is visible to case manager with multiple LOB access');
+            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email ack template is visible to case manager with multiple LOB access');
+        });
+
+        it('[DRDMV-10896,DRDMV-10901,DRDMV-10922]: Verify if acknowledgment templates are accessible to Case BA user having access to multiple LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Facilities');
+            expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy('Human Resources LOB email ack template is visible to case BA with multiple LOB access');
+            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email ack template is visible to case BA with multiple LOB access');
+
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilGrid.isGridRecordPresent(templateName)).toBeTruthy('Human Resources LOB email ack template is not visible to case BA with multiple LOB access');
+            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email ack template is not visible to case BA with multiple LOB access');
+            await consoleAcknowledgmentTemplatePo.searchOnGridConsole(templateName2);
+            await editAcknowledgmentTemplatePo.selectStatusDropDown('Inactive');
+            await editAcknowledgmentTemplatePo.clickOnSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+        });
+
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades(); // escape is working on these settings pages
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+
     });
 
     //kgaikwad
