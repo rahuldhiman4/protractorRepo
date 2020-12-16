@@ -371,9 +371,11 @@ class CreateCasePage {
         return await $(this.selectors.lineofbusiness).getAttribute("disabled") == "true";
     }
 
-    async getLineOfBusinessValue(): Promise<string>{
-        return await $(this.selectors.lineofbusiness).getAttribute("placeholder");
-    }
+    async getLineOfBusinessValue(): Promise<string> {
+        let elementPresent = await $(this.selectors.lineofbusiness).isPresent()
+          if (elementPresent == true) return await $(this.selectors.lineofbusiness).getAttribute("placeholder");
+          else return await $('[rx-view-component-id="6f8f65cd-23eb-437f-b43e-e725bdbcf089"] .dropdown-toggle').getText();
+      }
 
     async selectLineOfBusiness(value: string): Promise<void> {
         await utilityCommon.selectDropDown(this.selectors.lobGuid, value);
