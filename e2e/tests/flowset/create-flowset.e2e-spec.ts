@@ -10,13 +10,36 @@ import editFlowset from '../../pageobject/settings/manage-flowset/edit-flowset-c
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
-import { flowsetMandatoryFields } from '../../data/ui/flowset/flowset.ui';
+import { flowsetMandatoryFields, flowsetGlobalFields } from '../../data/ui/flowset/flowset.ui';
 import { cloneDeep } from 'lodash';
+let userData, userData1, userData2 = undefined;
 
 describe('Create Flowset', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
+        await apiHelper.apiLogin('tadmin');
+
+        userData1 = {
+            "firstName": "caseBA",
+            "lastName": "MultiLOB",
+            "userId": "caseBAMultiLOB",
+            "userPermission": ["Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
+        }
+        await apiHelper.createNewUser(userData1);
+        await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
+        await apiHelper.associatePersonToSupportGroup(userData1.userId, "US Support 3");
+
+        userData2 = {
+            "firstName": "caseMngr",
+            "lastName": "MultiLOB",
+            "userId": "caseMngrMultiLOB",
+            "userPermission": ["Case Manager", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
+        }
+        await apiHelper.createNewUser(userData2);
+        await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
+        await apiHelper.associatePersonToSupportGroup(userData2.userId, "US Support 3");
+
     });
 
     afterAll(async () => {
@@ -174,7 +197,7 @@ describe('Create Flowset', () => {
     //ankagraw
     describe('[DRDMV-1259]: [Permissions] Flowsets access', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let flowsetMandatoryFieldsData = undefined;
+        let flowsetMandatoryFieldsData, flowsetWithGlobalFieldsData = undefined;
 
         beforeAll(async () => {
             //API call to create the flowset
@@ -183,6 +206,11 @@ describe('Create Flowset', () => {
             flowsetMandatoryFieldsData.flowsetName = flowsetMandatoryFieldsData.flowsetName + randomStr;
             flowsetMandatoryFieldsData["lineOfBusiness"] = "Facilities";
             await apiHelper.createNewFlowset(flowsetMandatoryFieldsData);
+
+            flowsetWithGlobalFieldsData = cloneDeep(flowsetGlobalFields);
+            flowsetWithGlobalFieldsData.flowsetName = flowsetWithGlobalFieldsData.flowsetName + randomStr;
+            flowsetWithGlobalFieldsData["lineOfBusiness"] = "Facilities";
+            await apiHelper.createNewFlowset(flowsetWithGlobalFieldsData);
         });
 
         it('[DRDMV-1259]: [Permissions] Flowsets access', async () => {
@@ -205,6 +233,33 @@ describe('Create Flowset', () => {
             await expect(navigationPage.isSettingMenuPresent('Manage Flowsets')).toBeFalsy("Setting menu present");
         });
 
+        it('[DRDMV-1259]: Verify if flowset is accessible to Case Manager user having access to multiple LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', 'Flowsets - Console - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            await expect(consoleFlowset.isFlowsetPresentOnGrid(flowsetMandatoryFieldsData.flowsetName)).toBeFalsy(" Flowset is present ");
+            await expect(consoleFlowset.isFlowsetPresentOnGrid(flowsetWithGlobalFieldsData.flowsetName)).toBeFalsy(" Flowset is present ");
+
+            await utilGrid.selectLineOfBusiness('Facilities');
+            await expect(consoleFlowset.isFlowsetPresentOnGrid(flowsetMandatoryFieldsData.flowsetName)).toBeTruthy("Flowset is not displayed to other LOB");
+            await expect(consoleFlowset.isFlowsetPresentOnGrid(flowsetWithGlobalFieldsData.flowsetName)).toBeTruthy(" Flowset is not displayed to other LOB");
+        });
+
+        it('[DRDMV-1259]: Verify if flowset is accessible to Case BA user having access to multiple LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            await expect(consoleFlowset.isFlowsetPresentOnGrid(flowsetMandatoryFieldsData.flowsetName)).toBeFalsy(" Flowset is present ");
+            await expect(consoleFlowset.isFlowsetPresentOnGrid(flowsetWithGlobalFieldsData.flowsetName)).toBeFalsy(" Flowset is present ");
+
+            await utilGrid.selectLineOfBusiness('Facilities');
+            await expect(consoleFlowset.isFlowsetPresentOnGrid(flowsetMandatoryFieldsData.flowsetName)).toBeTruthy("Flowset is not displayed to other LOB");
+            await expect(consoleFlowset.isFlowsetPresentOnGrid(flowsetWithGlobalFieldsData.flowsetName)).toBeTruthy(" Flowset is not displayed to other LOB");
+        });
+
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
@@ -212,30 +267,95 @@ describe('Create Flowset', () => {
     });
 
     //ankagraw
-    it('[DRDMV-6213]: [Flowsets] Flowsets Console verification', async () => {
+    describe('[DRDMV-6213]: [Flowsets] Flowsets Console verification', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let randomStr1 = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let availableValues: string[] = ['Company', 'Description', 'Display ID', 'Flowset Name', 'ID', 'Status'];
 
-        //API call to create the flowset
-        await apiHelper.apiLogin('qkatawazi');
-        let flowsetMandatoryFieldsData = cloneDeep(flowsetMandatoryFields);
-        flowsetMandatoryFieldsData.flowsetName = flowsetMandatoryFieldsData.flowsetName + randomStr;
-        await apiHelper.createNewFlowset(flowsetMandatoryFieldsData);
+        it('[DRDMV-6213]: [Flowsets] Flowsets Console verification', async () => {
 
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', 'Flowsets - Console - Business Workflows');
-        await consoleFlowset.addColumn(["ID", 'Display ID']);
-        await expect(consoleFlowset.isAllVisibleColumnPresent(availableValues)).toBeTruthy("Available value is not present");
-        await consoleFlowset.searchAndSelectFlowset(flowsetMandatoryFieldsData.flowsetName);
-        await editFlowset.setFlowset("edit Flowset" + randomStr);
-        await editFlowset.clickSaveBtn();
-        await consoleFlowset.clickGridRefreshButton();
-        await consoleFlowset.isFlowsetPresentOnGrid("edit Flowset" + randomStr);
-        await consoleFlowset.clearSearcBox();
-        await consoleFlowset.clickGridRefreshButton();
-        await expect(consoleFlowset.getSortedValuesFromColumn("Flowset Name")).toBeTruthy("Sorted not possible");
+            //API call to create the flowset
+            await apiHelper.apiLogin('qkatawazi');
+            let flowsetMandatoryFieldsData = cloneDeep(flowsetMandatoryFields);
+            flowsetMandatoryFieldsData.flowsetName = flowsetMandatoryFieldsData.flowsetName + randomStr;
+            await apiHelper.createNewFlowset(flowsetMandatoryFieldsData);
+
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', 'Flowsets - Console - Business Workflows');
+            await consoleFlowset.addColumn(["ID", 'Display ID']);
+            await expect(consoleFlowset.isAllVisibleColumnPresent(availableValues)).toBeTruthy("Available value is not present");
+            await consoleFlowset.searchAndSelectFlowset(flowsetMandatoryFieldsData.flowsetName);
+            await editFlowset.setFlowset("edit Flowset" + randomStr);
+            await editFlowset.clickSaveBtn();
+            await consoleFlowset.clickGridRefreshButton();
+            expect(await consoleFlowset.isFlowsetPresentOnGrid("edit Flowset" + randomStr)).toBeTruthy();
+            await consoleFlowset.clearSearcBox();
+            await consoleFlowset.clickGridRefreshButton();
+            await expect(consoleFlowset.getSortedValuesFromColumn("Flowset Name")).toBeTruthy("Sorted not possible");
+        });
+
+        it('[DRDMV-6213]: Verify if flowset is accessible to same LOB Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qdu');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', 'Flowsets - Console - Business Workflows');
+            expect(await consoleFlowset.isFlowsetPresentOnGrid("edit Flowset" + randomStr)).toBeTruthy('Flowset is not dispayed to same LOB case manager');
+        });
+
+        it('[DRDMV-6213]: Verify if flowset  is accessible to different LOB Case BA', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', 'Flowsets - Console - Business Workflows');
+            expect(await consoleFlowset.isFlowsetPresentOnGrid("edit Flowset" + randomStr)).toBeFalsy('Flowset is dispayed to different LOB case BA');
+        });
+
+        it('[DRDMV-6213]: Verify if flowset is accessible to different LOB Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('frieda');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', 'Flowsets - Console - Business Workflows');
+            expect(await consoleFlowset.isFlowsetPresentOnGrid("edit Flowset" + randomStr)).toBeFalsy('Flowset is dispayed to different LOB case manager');
+        });
+
+        it('[DRDMV-6213]: Verify if flowset is accessible to Case BA belonging to different company with same LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('gwixillian');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', 'Flowsets - Console - Business Workflows');
+            expect(await consoleFlowset.isFlowsetPresentOnGrid("edit Flowset" + randomStr)).toBeTruthy('Flowset is not dispayed to same LOB and different company case BA');
+        });
+
+        it('[DRDMV-6213]: Verify if flowset is accessible to Case Manager user having access to multiple LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', 'Flowsets - Console - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await consoleFlowset.isFlowsetPresentOnGrid("edit Flowset" + randomStr)).toBeTruthy('Flowset is dispayed to user with multiple LOB case manager');
+            await utilGrid.selectLineOfBusiness('Facilities');
+            expect(await consoleFlowset.isFlowsetPresentOnGrid("edit Flowset" + randomStr)).toBeFalsy('Flowset is not dispayed to user with multiple LOB case manager');
+        });
+
+        it('[DRDMV-6213]: Verify if flowset is accessible to Case BA user having access to multiple LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', 'Flowsets - Console - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await consoleFlowset.isFlowsetPresentOnGrid("edit Flowset" + randomStr)).toBeTruthy('Flowset is dispayed to user with multiple LOB case manager');
+            await utilGrid.selectLineOfBusiness('Facilities');
+            expect(await consoleFlowset.isFlowsetPresentOnGrid("edit Flowset" + randomStr)).toBeFalsy('Flowset is not dispayed to user with multiple LOB case manager');
+        });
+
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+
+
     });
+
 
     //ankagraw
     describe('[DRDMV-6214]: [Flowsets] Filter menu verification on Define Flowsets Console	', () => {

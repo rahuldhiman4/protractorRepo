@@ -31,6 +31,8 @@ describe("Notification Template", () => {
     //radhiman
     describe('[DRDMV-19109]: [Copy Notification] - UI behavior when copying a notification template', async () => {
         let notificationTemplateName = 'DRDMV-19109_CopiedTemplate';
+        let notificationTemplateNameUpdated = 'DRDMV-19109_CopiedTemplate_Updated';
+
         it('[DRDMV-19109]: [Copy Notification] - UI behavior when copying a notification template', async () => {
             await expect(notificationTempGridPage.isCopyTemplateButtonDisabled()).toBeTruthy();
             await utilGrid.searchAndSelectGridRecord("Task SLA Missed");
@@ -58,6 +60,81 @@ describe("Notification Template", () => {
             await utilGrid.clearFilter();
             expect(await utilGrid.isGridRecordPresent(notificationTemplateName)).toBeTruthy("Notification template not copied");
         });
+
+        it('[DRDMV-19109]: [Copy Notification] - UI behavior when copying a notification template', async () => {
+            await utilGrid.searchAndSelectGridRecord("Case Group Assignment");
+            await notificationTempGridPage.clickCopyTemplate();
+            //Select Company drpdown value again, and click Copy Template button
+            await notificationTempGridPage.setCompanyDropDownValPresentInCopyTempWindow("Petramco");
+            await notificationTempGridPage.setTemplateNamePresentInCopyTempWindow(notificationTemplateNameUpdated);
+            await notificationTempGridPage.clickCopyTemplateButtonInCopyTempWindow();
+            expect(await utilCommon.isPopUpMessagePresent('Template is copied successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            await editNotificationTemplate.clickOnCancelButton();
+            await utilGrid.clearFilter();
+            expect(await utilGrid.isGridRecordPresent(notificationTemplateNameUpdated)).toBeTruthy("Notification template not copied");
+        });
+
+        it('[DRDMV-19109]: Verify if copied notification templates are accessible to same LOB Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qdu');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Notification Template - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(notificationTemplateNameUpdated)).toBeTruthy('Human Resources LOB copied notification templates is not visible to same LOB case manager');
+        });
+
+        it('[DRDMV-19109]: Verify if copied notification templates are accessible to different LOB Case BA', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Notification Template - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(notificationTemplateNameUpdated)).toBeFalsy('Human Resources LOB copied notification templates is not visible to different LOB case BA');
+        });
+
+        it('[DRDMV-19109]: Verify if copied notification templates are accessible to different LOB Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('frieda');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Notification Template - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(notificationTemplateNameUpdated)).toBeFalsy('Human Resources LOB copied notification templates is not visible to different LOB case manager');
+        });
+
+        it('[DRDMV-19109]: Verify if copied notification templates are accessible to Case BA belonging to different company with same LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('gwixillian');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Notification Template - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(notificationTemplateNameUpdated)).toBeTruthy('Human Resources LOB copied notification templates is not visible to same LOB with different case BA');
+        });
+
+        it('[DRDMV-19109]: Verify if copied notification templates are accessible to Case Manager user having access to multiple LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Notification Template - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilGrid.isGridRecordPresent(notificationTemplateNameUpdated)).toBeTruthy('Human Resources LOB copied notification templates is not visible to case manager with multiple LOB access');
+
+            await utilGrid.selectLineOfBusiness('Facilities');
+            expect(await utilGrid.isGridRecordPresent(notificationTemplateNameUpdated)).toBeFalsy('Human Resources LOB copied notification templates is visible to case manager with multiple LOB access');
+        });
+
+        it('[DRDMV-19109]: Verify if copied notification templates are accessible to Case BA user having access to multiple LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Notification Template - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Facilities');
+            expect(await utilGrid.isGridRecordPresent(notificationTemplateNameUpdated)).toBeFalsy('Human Resources LOB copied notification templates is visible to case BA with multiple LOB access');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilGrid.isGridRecordPresent(notificationTemplateNameUpdated)).toBeTruthy('Human Resources LOB copied notification templates is not visible to case BA with multiple LOB access');
+            await utilGrid.searchOnGridConsole(notificationTemplateNameUpdated);
+            await editNotificationTemplate.clickRecipientsCheckbox("Assignee's Manager", "BCC");
+            await editNotificationTemplate.clickRecipientsCheckbox("External Requester", "TO");
+            await editNotificationTemplate.clickRecipientsCheckbox("Assigned Group", "CC");
+            await createNotificationTemplatePage.clickOnSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+        });
+
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteEmailOrNotificationTemplate(notificationTemplateName);

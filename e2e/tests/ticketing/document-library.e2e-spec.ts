@@ -24,12 +24,34 @@ describe('Document Library', () => {
     const departmentDataFile = require('../../data/ui/foundation/department.ui.json');
     const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
     const personDataFile = require('../../data/ui/foundation/person.ui.json');
-
+    let userData, userData1, userData2 = undefined;
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
         await apiHelper.apiLogin('tadmin');
         await foundationData('Petramco');
+
+        userData1 = {
+            "firstName": "caseBA",
+            "lastName": "MultiLOB",
+            "userId": "caseBAMultiLOB",
+            "userPermission": ["Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
+        }
+        await apiHelper.createNewUser(userData1);
+        await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
+        await apiHelper.associatePersonToSupportGroup(userData1.userId, "US Support 3");
+
+        userData2 = {
+            "firstName": "caseMngr",
+            "lastName": "MultiLOB",
+            "userId": "caseMngrMultiLOB",
+            "userPermission": ["Case Manager", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
+        }
+        await apiHelper.createNewUser(userData2);
+        await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
+        await apiHelper.associatePersonToSupportGroup(userData2.userId, "US Support 3");
+
+
     });
 
     afterAll(async () => {
@@ -91,31 +113,99 @@ describe('Document Library', () => {
     });
 
     //kgaikwad
-    it('[DRDMV-13045,DRDMV-13014,DRDMV-13017]: Verify Delete button on document', async () => {
+    describe('[DRDMV-13045,DRDMV-13014,DRDMV-13017]: Verify Delete button on document', async () => {
         let filePath = '../../../data/ui/attachment/demo.txt';
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
-        await createDocumentLibraryPo.openAddNewDocumentBlade();
-        await createDocumentLibraryPo.addAttachment(filePath);
-        await createDocumentLibraryPo.setTitle(titleRandVal);
-        await createDocumentLibraryPo.selectCompany('Petramco');
-        await createDocumentLibraryPo.selectBusinessUnit('HR Support');
-        await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
-        await createDocumentLibraryPo.clickOnSaveButton();
-        await utilCommon.closePopUpMessage();
-        await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
-        expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Draft'), 'status is not in draft status';
-        await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
-        expect(await editDocumentLibraryPo.isDeleteButtonEnabled).toBeTruthy('Delete Button is not enabled');
-        await editDocumentLibraryPo.selectStatus('Published');
-        await editDocumentLibraryPo.clickOnSaveButton();
-        await utilCommon.closePopUpMessage();
-        await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
-        expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Published'), 'status is not in Published status';
-        await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
-        expect(await editDocumentLibraryPo.isDeleteButtonEnabled()).toBeFalsy('Delete buttton is enabled');
+
+        it('[DRDMV-13045,DRDMV-13014,DRDMV-13017]: Verify Delete button on document', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+            await createDocumentLibraryPo.openAddNewDocumentBlade();
+            await createDocumentLibraryPo.addAttachment(filePath);
+            await createDocumentLibraryPo.setTitle(titleRandVal);
+            await createDocumentLibraryPo.selectCompany('Petramco');
+            await createDocumentLibraryPo.selectBusinessUnit('HR Support');
+            await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
+            await createDocumentLibraryPo.clickOnSaveButton();
+            await utilCommon.closePopUpMessage();
+            await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
+            expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Draft'), 'status is not in draft status';
+            await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
+            expect(await editDocumentLibraryPo.isDeleteButtonEnabled).toBeTruthy('Delete Button is not enabled');
+            await editDocumentLibraryPo.selectStatus('Published');
+            await editDocumentLibraryPo.clickOnSaveButton();
+            await utilCommon.closePopUpMessage();
+            await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
+            expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Published'), 'status is not in Published status';
+            await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
+            expect(await editDocumentLibraryPo.isDeleteButtonEnabled()).toBeFalsy('Delete buttton is enabled');
+        });
+
+        it('[DRDMV-13045,DRDMV-13014,DRDMV-13017]: Verify if document library is accessible to same LOB Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qdu');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(titleRandVal)).toBeTruthy('Human Resources LOB document library is not visible to same LOB case manager');
+
+        });
+
+        it('[DRDMV-13045,DRDMV-13014,DRDMV-13017]: Verify if document library is accessible to different LOB Case BA', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(titleRandVal)).toBeFalsy('Human Resources LOB case document library is not visible to different LOB case BA');
+        });
+
+        it('[DRDMV-13045,DRDMV-13014,DRDMV-13017]: Verify if document library is accessible to different LOB Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('frieda');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(titleRandVal)).toBeFalsy('Human Resources LOB document library is not visible to different LOB case manager');
+        });
+
+        it('[DRDMV-13045,DRDMV-13014,DRDMV-13017]: Verify if document library is accessible to Case BA belonging to different company with same LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('gwixillian');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(titleRandVal)).toBeFalsy('Human Resources LOB document library is not visible to same LOB with different case BA');
+        });
+
+        it('[DRDMV-13045,DRDMV-13014,DRDMV-13017]: Verify if document library is accessible to Case Manager user having access to multiple LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilGrid.isGridRecordPresent(titleRandVal)).toBeTruthy('Human Resources LOB document library is not visible to case manager with multiple LOB access');
+            await utilGrid.selectLineOfBusiness('Facilities');
+            expect(await utilGrid.isGridRecordPresent(titleRandVal)).toBeFalsy('Human Resources LOB document library is visible to case manager with multiple LOB access');
+
+        });
+
+        it('[DRDMV-13045,DRDMV-13014,DRDMV-13017]: Verify if document library is accessible to Case BA user having access to multiple LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Facilities');
+            expect(await utilGrid.isGridRecordPresent(titleRandVal)).toBeFalsy('Human Resources LOB document library is visible to case BA with multiple LOB access');
+
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilGrid.isGridRecordPresent(titleRandVal)).toBeTruthy('Human Resources LOB document libraryssssss is not visible to case BA with multiple LOB access');
+
+            await utilGrid.searchOnGridConsole(titleRandVal);
+            await editDocumentLibraryPo.selectStatus('Published');
+            await editDocumentLibraryPo.clickOnSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            await utilCommon.closePopUpMessage();
+        });
+
     });
+
 
     //kgaikwad
     it('[DRDMV-13074]: Verify Document Managment Grid Console', async () => {

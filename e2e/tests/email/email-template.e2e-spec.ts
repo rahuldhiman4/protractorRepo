@@ -13,6 +13,8 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import utilGrid from '../../utils/util.grid';
+let userData, userData1, userData2 = undefined;
 
 describe('Email Template', () => {
     const emailTemplateData = require('../../data/ui/email/email.template.api.json');
@@ -20,6 +22,28 @@ describe('Email Template', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
+        await apiHelper.apiLogin('tadmin');
+
+        userData1 = {
+            "firstName": "caseBA",
+            "lastName": "MultiLOB",
+            "userId": "caseBAMultiLOB",
+            "userPermission": ["Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
+        }
+        await apiHelper.createNewUser(userData1);
+        await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
+        await apiHelper.associatePersonToSupportGroup(userData1.userId, "US Support 3");
+
+        userData2 = {
+            "firstName": "caseMngr",
+            "lastName": "MultiLOB",
+            "userId": "caseMngrMultiLOB",
+            "userPermission": ["Case Manager", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
+        }
+        await apiHelper.createNewUser(userData2);
+        await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
+        await apiHelper.associatePersonToSupportGroup(userData2.userId, "US Support 3");
+
     });
 
     afterAll(async () => {
@@ -101,12 +125,89 @@ describe('Email Template', () => {
             await editEmailTemplatePo.searchOnGridConsole('subject');
             expect(await editEmailTemplatePo.getSelectedGridRecordValue('Message Type')).toBe('subject', 'subject is missing from Grid');
         });
+
+        it('[DRDMV-10813,DRDMV-10796,DRDMV-10787,DRDMV-10804,DRDMV-10789]: Verify if email templates are accessible to same LOB Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qdu');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(templateName1)).toBeTruthy('Human Resources LOB email template is not visible to same LOB case manager');
+            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email template is not visible to same LOB case manager');
+        });
+
+        it('[DRDMV-10813,DRDMV-10796,DRDMV-10787,DRDMV-10804,DRDMV-10789]: Verify if email templates are accessible to different LOB Case BA', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(templateName1)).toBeFalsy('Human Resources LOB email template is not visible to different LOB case BA');
+            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email template is not visible to different LOB case BA');
+
+        });
+
+        it('[DRDMV-10813,DRDMV-10796,DRDMV-10787,DRDMV-10804,DRDMV-10789]: Verify if email templates are accessible to different LOB Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('frieda');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(templateName1)).toBeFalsy('Human Resources LOB email template is not visible to different LOB case manager');
+            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email template is not visible to different LOB case manager');
+        });
+
+        it('[DRDMV-10813,DRDMV-10796,DRDMV-10787,DRDMV-10804,DRDMV-10789]: Verify if email templates are accessible to Case BA belonging to different company with same LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('gwixillian');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(templateName1)).toBeTruthy('Human Resources LOB email template is not visible to same LOB with different case BA');
+            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email template is not visible to same LOB with different case BA');
+        });
+
+        it('[DRDMV-10813,DRDMV-10796,DRDMV-10787,DRDMV-10804,DRDMV-10789]: Verify if email templates are accessible to Case Manager user having access to multiple LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilGrid.isGridRecordPresent(templateName1)).toBeTruthy('Human Resources LOB email template is not visible to case manager with multiple LOB access');
+            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email template is not visible to case manager with multiple LOB access');
+            await utilGrid.selectLineOfBusiness('Facilities');
+            expect(await utilGrid.isGridRecordPresent(templateName1)).toBeFalsy('Human Resources LOB email template is visible to case manager with multiple LOB access');
+            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email template is visible to case manager with multiple LOB access');
+        });
+
+        it('[DRDMV-10813,DRDMV-10796,DRDMV-10787,DRDMV-10804,DRDMV-10789]: Verify if email templates are accessible to Case BA user having access to multiple LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Facilities');
+            expect(await utilGrid.isGridRecordPresent(templateName1)).toBeFalsy('Human Resources LOB email template is visible to case BA with multiple LOB access');
+            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email template is visible to case BA with multiple LOB access');
+
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilGrid.isGridRecordPresent(templateName1)).toBeTruthy('Human Resources LOB email template is not visible to case BA with multiple LOB access');
+            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email template is not visible to case BA with multiple LOB access');
+            await consoleEmailTemplatePo.searchAndOpenEmailTemplate(templateName1);
+            await editEmailTemplatePo.updateDescription(description);
+            await editEmailTemplatePo.selectStatusDropDown('Active');
+            await editEmailTemplatePo.clickOnSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+        });
+
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades(); // escape is working on these settings pages
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+
     });
 
     //kgaikwad
     describe('[DRDMV-10801,DRDMV-10805,DRDMV-10786,DRDMV-11092,DRDMV-11093,DRDMV-11091,DRDMV-10798]: Email Template : User Is able to delete Email Template', async () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateName1 = 'TemplateName1' + randomStr;
+        let templateName2 = 'TemplateName2' + randomStr;
         let description1 = 'Description1' + randomStr;
         let description2 = 'Description2' + randomStr;
         let subject1 = 'Subject1' + randomStr;
@@ -122,6 +223,16 @@ describe('Email Template', () => {
             await consoleEmailTemplatePo.clickOnAddEmailTemplateButton();
             await createEmailTemplatePo.setTemplateName(templateName1);
             await createEmailTemplatePo.selectCompany('Petramco');
+            await createEmailTemplatePo.selectStatusDropDown('Active');
+            await createEmailTemplatePo.selectLabelDropDown(label);
+            await createEmailTemplatePo.setDescription(description1);
+            await createEmailTemplatePo.setSubject(subject1);
+            await createEmailTemplatePo.setBody(body1);
+            await createEmailTemplatePo.clickOnSaveButton();
+
+            await consoleEmailTemplatePo.clickOnAddEmailTemplateButton();
+            await createEmailTemplatePo.setTemplateName(templateName2);
+            await createEmailTemplatePo.selectCompany('- Global -');
             await createEmailTemplatePo.selectStatusDropDown('Active');
             await createEmailTemplatePo.selectLabelDropDown(label);
             await createEmailTemplatePo.setDescription(description1);
@@ -210,7 +321,88 @@ describe('Email Template', () => {
             await consoleEmailTemplatePo.searchAndSelectGridRecord(templateName1);
             await consoleEmailTemplatePo.clickOnDeleteButton();
             expect(await consoleEmailTemplatePo.isGridRecordPresent(templateName1)).toBeFalsy('Public template name is preset on grid')
+
+            //create email template
+            await consoleEmailTemplatePo.clickOnAddEmailTemplateButton();
+            await createEmailTemplatePo.setTemplateName(templateName1);
+            await createEmailTemplatePo.selectCompany('Petramco');
+            await createEmailTemplatePo.selectStatusDropDown('Active');
+            await createEmailTemplatePo.selectLabelDropDown(label);
+            await createEmailTemplatePo.setDescription(description1);
+            await createEmailTemplatePo.setSubject(subject1);
+            await createEmailTemplatePo.setBody(body1);
+            await createEmailTemplatePo.clickOnSaveButton();
         });
+        it('[DRDMV-10801,DRDMV-10805,DRDMV-10786,DRDMV-11092,DRDMV-11093,DRDMV-11091,DRDMV-10798]: Verify if email templates are accessible to same LOB Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qdu');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(templateName1)).toBeTruthy('Human Resources LOB email template is not visible to same LOB case manager');
+            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email template is not visible to same LOB case manager');
+        });
+
+        it('[DRDMV-10801,DRDMV-10805,DRDMV-10786,DRDMV-11092,DRDMV-11093,DRDMV-11091,DRDMV-10798]: Verify if email templates are accessible to different LOB Case BA', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(templateName1)).toBeFalsy('Human Resources LOB email template is not visible to different LOB case BA');
+            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email template is not visible to different LOB case BA');
+
+        });
+
+        it('[DRDMV-10801,DRDMV-10805,DRDMV-10786,DRDMV-11092,DRDMV-11093,DRDMV-11091,DRDMV-10798]: Verify if email templates are accessible to different LOB Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('frieda');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(templateName1)).toBeFalsy('Human Resources LOB email template is not visible to different LOB case manager');
+            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email template is not visible to different LOB case manager');
+        });
+
+        it('[DRDMV-10801,DRDMV-10805,DRDMV-10786,DRDMV-11092,DRDMV-11093,DRDMV-11091,DRDMV-10798]: Verify if email templates are accessible to Case BA belonging to different company with same LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('gwixillian');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(templateName1)).toBeTruthy('Human Resources LOB email template is not visible to same LOB with different case BA');
+            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email template is not visible to same LOB with different case BA');
+        });
+
+        it('[DRDMV-10801,DRDMV-10805,DRDMV-10786,DRDMV-11092,DRDMV-11093,DRDMV-11091,DRDMV-10798]: Verify if email templates are accessible to Case Manager user having access to multiple LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilGrid.isGridRecordPresent(templateName1)).toBeTruthy('Human Resources LOB email template is not visible to case manager with multiple LOB access');
+            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email template is not visible to case manager with multiple LOB access');
+            await utilGrid.selectLineOfBusiness('Facilities');
+            expect(await utilGrid.isGridRecordPresent(templateName1)).toBeFalsy('Human Resources LOB email template is visible to case manager with multiple LOB access');
+            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email template is visible to case manager with multiple LOB access');
+        });
+
+        it('[DRDMV-10801,DRDMV-10805,DRDMV-10786,DRDMV-11092,DRDMV-11093,DRDMV-11091,DRDMV-10798]: Verify if email templates are accessible to Case BA user having access to multiple LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Facilities');
+            expect(await utilGrid.isGridRecordPresent(templateName1)).toBeFalsy('Human Resources LOB email template is visible to case BA with multiple LOB access');
+            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email template is visible to case BA with multiple LOB access');
+
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilGrid.isGridRecordPresent(templateName1)).toBeTruthy('Human Resources LOB email template is not visible to case BA with multiple LOB access');
+            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email template is not visible to case BA with multiple LOB access');
+        });
+
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades(); // escape is working on these settings pages
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+
     });
 
     //tzope

@@ -37,11 +37,34 @@ import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import applicationConfigPo from '../../pageobject/common/common-services/application-config.po';
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
+let userData, userData1 = undefined, userData2;
 
 describe('Dynamic Hidden Data', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
+        await apiHelper.apiLogin('tadmin');
+
+        userData1 = {
+            "firstName": "caseBA",
+            "lastName": "MultiLOB",
+            "userId": "caseBAMultiLOB",
+            "userPermission": ["Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
+        }
+        await apiHelper.createNewUser(userData1);
+        await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
+        await apiHelper.associatePersonToSupportGroup(userData1.userId, "US Support 3");
+
+        userData2 = {
+            "firstName": "caseMngr",
+            "lastName": "MultiLOB",
+            "userId": "caseMngrMultiLOB",
+            "userPermission": ["Case Manager", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
+        }
+        await apiHelper.createNewUser(userData2);
+        await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
+        await apiHelper.associatePersonToSupportGroup(userData2.userId, "US Support 3");
+
     });
 
     afterAll(async () => {
@@ -1034,21 +1057,17 @@ describe('Dynamic Hidden Data', () => {
             await applicationConfigPo.clickConfigurationDropDownArrow();
             expect(await applicationConfigPo.getColoumnValue()).toContain('dd MMM yyyy hh:mm:ss a');
             await applicationConfigPo.clickAddConfigurationValue();
-            await applicationConfigPo.setConfigurationValueText("test 1");
+            await applicationConfigPo.setConfigurationValueText("yyyy-mm-dd hh:mm:ss.s");
             await applicationConfigPo.selectCompany('Petramco');
             await applicationConfigPo.clickSaveButton();
         });
         it('[DRDMV-22354]: [PDF Config] - Date Time common config are available OOB and BA can add remove config', async () => {
-            expect(await applicationConfigPo.getColoumnValue()).toContain('test 1');
-            await applicationConfigPo.clickRemoveButton();
-            await utilCommon.clickOnWarningOk();
+            expect(await applicationConfigPo.getColoumnValue()).toContain('yyyy-mm-dd hh:mm:ss.s');
             await applicationConfigPo.clickAddConfigurationValue();
-            await applicationConfigPo.setConfigurationValueText("test 2");
+            await applicationConfigPo.setConfigurationValueText("yyyy-mm-dd hh:mm");
             await applicationConfigPo.selectCompany('- Global -');
             await applicationConfigPo.clickSaveButton();
-            expect(await applicationConfigPo.getColoumnValue()).toContain('test 2');
-            await applicationConfigPo.clickRemoveButton();
-            await utilCommon.clickOnWarningOk();
+            expect(await applicationConfigPo.getColoumnValue()).toContain('yyyy-mm-dd hh:mm');
         });
 
         it('[DRDMV-22354]: [PDF Config] - Date Time common config are available OOB and BA can add remove config', async () => {
@@ -1057,21 +1076,17 @@ describe('Dynamic Hidden Data', () => {
             await applicationConfigPo.clickConfigurationDropDownArrow();
             expect(await applicationConfigPo.getColoumnValue()).toContain('dd MMM yyyy');
             await applicationConfigPo.clickAddConfigurationValue();
-            await applicationConfigPo.setConfigurationValueText("test 1");
+            await applicationConfigPo.setConfigurationValueText("yyyy/mm/dd");
             await applicationConfigPo.selectCompany('Petramco');
             await applicationConfigPo.clickSaveButton();
         });
         it('[DRDMV-22354]: [PDF Config] - Date Time common config are available OOB and BA can add remove config', async () => {
-            expect(await applicationConfigPo.getColoumnValue()).toContain('test 1');
-            await applicationConfigPo.clickRemoveButton();
-            await utilCommon.clickOnWarningOk();
+            expect(await applicationConfigPo.getColoumnValue()).toContain('yyyy/mm/dd');
             await applicationConfigPo.clickAddConfigurationValue();
-            await applicationConfigPo.setConfigurationValueText("test 2");
+            await applicationConfigPo.setConfigurationValueText("yy/mm/dd");
             await applicationConfigPo.selectCompany('- Global -');
             await applicationConfigPo.clickSaveButton();
-            expect(await applicationConfigPo.getColoumnValue()).toContain('test 2');
-            await applicationConfigPo.clickRemoveButton();
-            await utilCommon.clickOnWarningOk();
+            expect(await applicationConfigPo.getColoumnValue()).toContain('yy/mm/dd');
         });
 
         it('[DRDMV-22354]: [PDF Config] - Date Time common config are available OOB and BA can add remove config', async () => {
@@ -1080,22 +1095,78 @@ describe('Dynamic Hidden Data', () => {
             await applicationConfigPo.clickConfigurationDropDownArrow();
             expect(await applicationConfigPo.getColoumnValue()).toContain('UTC');
             await applicationConfigPo.clickAddConfigurationValue();
-            await applicationConfigPo.setConfigurationValueText("test 1");
+            await applicationConfigPo.setConfigurationValueText("IST");
             await applicationConfigPo.selectCompany('Petramco');
             await applicationConfigPo.clickSaveButton();
         });
         it('[DRDMV-22354]: [PDF Config] - Date Time common config are available OOB and BA can add remove config', async () => {
-            expect(await applicationConfigPo.getColoumnValue()).toContain('test 1');
-            await applicationConfigPo.clickRemoveButton();
-            await utilCommon.clickOnWarningOk();
+            expect(await applicationConfigPo.getColoumnValue()).toContain('IST');
             await applicationConfigPo.clickAddConfigurationValue();
-            await applicationConfigPo.setConfigurationValueText("test 2");
+            await applicationConfigPo.setConfigurationValueText("GMT");
             await applicationConfigPo.selectCompany('- Global -');
             await applicationConfigPo.clickSaveButton();
-            expect(await applicationConfigPo.getColoumnValue()).toContain('test 2');
+            expect(await applicationConfigPo.getColoumnValue()).toContain('GMT');
+        });
+
+        it('[DRDMV-22354]: Verify PDF Configs - Date Time Format are accessible to other Line of business Case BA', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Common Configurations', 'Common Configurations - Business Workflows');
+            await applicationConfigPo.clickApplicationConfiguration('DATE_TIME_FORMAT');
+            expect(await applicationConfigPo.getconfigurationHeaderValue()).toContain('DATE_TIME_FORMAT');
+            expect(await applicationConfigPo.isConfigValuesDisplayed('dd MMM yyyy hh:mm:ss a')).toBeTruthy();
+            expect(await applicationConfigPo.isConfigValuesDisplayed('yyyy-mm-dd hh:mm:ss.s')).toBeTruthy();
+            expect(await applicationConfigPo.isConfigValuesDisplayed('yyyy-mm-dd hh:mm')).toBeTruthy();
+
+            await applicationConfigPo.clickApplicationConfiguration('DATE_FORMAT');
+            expect(await applicationConfigPo.getconfigurationHeaderValue()).toContain('DATE_FORMAT');
+            expect(await applicationConfigPo.isConfigValuesDisplayed('dd MMM yyyy')).toBeTruthy();
+            expect(await applicationConfigPo.isConfigValuesDisplayed('yyyy/mm/dd')).toBeTruthy();
+            expect(await applicationConfigPo.isConfigValuesDisplayed('yy/mm/dd')).toBeTruthy();
+
+            await applicationConfigPo.clickApplicationConfiguration('ZONE_ID');
+            expect(await applicationConfigPo.getconfigurationHeaderValue()).toContain('ZONE_ID');
+            expect(await applicationConfigPo.isConfigValuesDisplayed('UTC')).toBeTruthy();
+            expect(await applicationConfigPo.isConfigValuesDisplayed('IST')).toBeTruthy();
+            expect(await applicationConfigPo.isConfigValuesDisplayed('GMT')).toBeTruthy();
+        });
+        it('[DRDMV-22354]:  Verify PDF Configs - Date Time Format are accessible to multiple (HR,Finance) LOBs', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Common Configurations', 'Common Configurations - Business Workflows');
+            await applicationConfigPo.clickApplicationConfiguration('DATE_TIME_FORMAT');
+            expect(await applicationConfigPo.getconfigurationHeaderValue()).toContain('DATE_TIME_FORMAT');
+            expect(await applicationConfigPo.isConfigValuesDisplayed('dd MMM yyyy hh:mm:ss a')).toBeTruthy();
+            expect(await applicationConfigPo.isConfigValuesDisplayed('yyyy-mm-dd hh:mm:ss.s')).toBeTruthy();
+            expect(await applicationConfigPo.isConfigValuesDisplayed('yyyy-mm-dd hh:mm')).toBeTruthy();
+            await applicationConfigPo.clickRemoveButton();
+            await utilCommon.clickOnWarningOk();
+            await applicationConfigPo.clickRemoveButton();
+            await utilCommon.clickOnWarningOk();
+
+            await applicationConfigPo.clickApplicationConfiguration('DATE_FORMAT');
+            expect(await applicationConfigPo.getconfigurationHeaderValue()).toContain('DATE_FORMAT');
+            expect(await applicationConfigPo.isConfigValuesDisplayed('dd MMM yyyy')).toBeTruthy();
+            expect(await applicationConfigPo.isConfigValuesDisplayed('yyyy/mm/dd')).toBeTruthy();
+            expect(await applicationConfigPo.isConfigValuesDisplayed('yy/mm/dd')).toBeTruthy();
+            await applicationConfigPo.clickRemoveButton();
+            await utilCommon.clickOnWarningOk();
+            await applicationConfigPo.clickRemoveButton();
+            await utilCommon.clickOnWarningOk();
+
+            await applicationConfigPo.clickApplicationConfiguration('ZONE_ID');
+            expect(await applicationConfigPo.getconfigurationHeaderValue()).toContain('ZONE_ID');
+            expect(await applicationConfigPo.isConfigValuesDisplayed('UTC')).toBeTruthy();
+            expect(await applicationConfigPo.isConfigValuesDisplayed('IST')).toBeTruthy();
+            expect(await applicationConfigPo.isConfigValuesDisplayed('GMT')).toBeTruthy();
+            await applicationConfigPo.clickRemoveButton();
+            await utilCommon.clickOnWarningOk();
             await applicationConfigPo.clickRemoveButton();
             await utilCommon.clickOnWarningOk();
         });
+
     });
 
     //ptidke

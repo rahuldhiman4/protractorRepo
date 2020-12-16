@@ -402,6 +402,97 @@ describe('Global Search Template', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId5, caseTemplateModule)).toBeTruthy(`FailureMsg4: ${caseTemplateDisplayId5} case id  is missing`);
         });
 
+        it('[DRDMV-16116]: Verify case template record is accessible to other Line of business Case BA', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await navigationPage.gotoSearch();
+            expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
+            await searchPo.selectCategoryDropDownValue('Case Template');
+
+            // Verify Global Template
+            await searchPo.searchRecord(summary4);
+            expect(await searchPo.isModuleTitleDisplayed(summary4, 'Case Templates (0)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId5, caseTemplateModule)).toBeFalsy(`FailureMsg4: ${caseTemplateDisplayId5} case template is displayed for different line of business.`);
+
+            // Verify with case template title
+            await searchPo.searchRecord(templateName + '1');
+            expect(await searchPo.isModuleTitleDisplayed(templateName + '1', 'Case Templates (0)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId1[1], caseTemplateModule)).toBeFalsy(`FailureMsg4: ${caseTemplateDisplayId1[0]} case template is displayed for different line of business.`);
+        });
+
+        it('[DRDMV-16116]: Verify case template record is accessible to other Line of business Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('frieda');
+            await navigationPage.gotoSearch();
+            expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
+            await searchPo.selectCategoryDropDownValue('Case Template');
+
+            // Verify Global Template
+            await searchPo.searchRecord(summary4);
+            expect(await searchPo.isModuleTitleDisplayed(summary4, 'Case Templates (0)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId5, caseTemplateModule)).toBeFalsy(`FailureMsg4: ${caseTemplateDisplayId5} case template is displayed for different line of business.`);
+
+            // Verify with case template title
+            await searchPo.searchRecord(templateName + '1');
+            expect(await searchPo.isModuleTitleDisplayed(templateName + '1', 'Case Templates (0)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId1[1], caseTemplateModule)).toBeFalsy(`FailureMsg4: ${caseTemplateDisplayId1[0]} case template is displayed for different line of business.`);
+        });
+
+        it('[DRDMV-16116]: Verify case template record is accessible to other Line of business Case Agent', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('franz');
+            await navigationPage.gotoSearch();
+            expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
+            await searchPo.selectCategoryDropDownValue('Case Template');
+
+            // Verify Global Template
+            await searchPo.searchRecord(summary4);
+            expect(await searchPo.isModuleTitleDisplayed(summary4, 'Case Templates (0)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId5, caseTemplateModule)).toBeFalsy(`FailureMsg4: ${caseTemplateDisplayId5} case template is displayed for different line of business.`);
+
+            // Verify with case template title
+            await searchPo.searchRecord(templateName + '1');
+            expect(await searchPo.isModuleTitleDisplayed(templateName + '1', 'Case Templates (0)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId1[1], caseTemplateModule)).toBeFalsy(`FailureMsg4: ${caseTemplateDisplayId1[0]} case template is displayed for different line of business.`);
+        });
+
+        it('[DRDMV-16116]: Verify case template record are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseMngrMultiLOB@petramco.com','Password_1234');
+            await navigationPage.gotoSearch();
+            expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
+            await searchPo.selectCategoryDropDownValue('Case Template');
+
+            // Verify Global Template
+            await searchPo.searchRecord(summary4);
+            expect(await searchPo.isModuleTitleDisplayed(summary4, 'Case Templates (1)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId5, caseTemplateModule)).toBeTruthy(`FailureMsg4: ${caseTemplateDisplayId5} case id  is missing`);
+
+            // Verify with case template title
+            await searchPo.searchRecord(templateName + '1');
+            expect(await searchPo.isModuleTitleDisplayed(templateName + '1', 'Case Templates (1)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId1[1], caseTemplateModule)).toBeTruthy(`FailureMsg4: ${caseTemplateDisplayId1[0]} case id  is missing`);
+        });
+
+        it('[DRDMV-16116]: Verify case template record are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseBAMultiLOB@petramco.com','Password_1234');
+            await navigationPage.gotoSearch();
+            expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
+            await searchPo.selectCategoryDropDownValue('Case Template');
+
+            // Verify Global Template
+            await searchPo.searchRecord(summary4);
+            expect(await searchPo.isModuleTitleDisplayed(summary4, 'Case Templates (1)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId5, caseTemplateModule)).toBeTruthy(`FailureMsg4: ${caseTemplateDisplayId5} case id  is missing`);
+
+            // Verify with case template title
+            await searchPo.searchRecord(templateName + '1');
+            expect(await searchPo.isModuleTitleDisplayed(templateName + '1', 'Case Templates (1)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId1[1], caseTemplateModule)).toBeTruthy(`FailureMsg4: ${caseTemplateDisplayId1[0]} case id  is missing`);
+        });
+
+
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi')
@@ -628,6 +719,96 @@ describe('Global Search Template', () => {
             await searchPo.searchRecord(templateName + 9);
             expect(await searchPo.isModuleTitleDisplayed(templateName + 9, 'Task Templates (1)', taskTemplateModule)).toBeTruthy('FailureMsg5: Task module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId5, taskTemplateModule)).toBeTruthy(`FailureMsg6: ${taskTemplateDisplayId5} task id  is missing`);
+        });
+
+        it('[DRDMV-16118]: Verify task template record is accessible to other Line of business Case BA', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await navigationPage.gotoSearch();
+            expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
+            await searchPo.selectCategoryDropDownValue('Task Template');
+
+            // Verify Global Template
+            await searchPo.searchRecord(templateName + 9);
+            expect(await searchPo.isModuleTitleDisplayed(templateName + 9, 'Task Templates (0)', taskTemplateModule)).toBeTruthy('FailureMsg2: Task Template module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId5, taskTemplateModule)).toBeFalsy(`FailureMsg4: ${taskTemplateDisplayId5} task template is displayed for different line of business`);
+
+            // Verify with task template title
+            await searchPo.searchRecord(templateName + '1');
+            expect(await searchPo.isModuleTitleDisplayed(templateName + '1', 'Task Templates (0)', taskTemplateModule)).toBeTruthy('FailureMsg2: Task module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId1[1], taskTemplateModule)).toBeFalsy(`FailureMsg4: ${taskTemplateDisplayId1[0]} task template is displayed for different line of business`);
+        });
+
+        it('[DRDMV-16118]: Verify task template record is accessible to other Line of business Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('frieda');
+            await navigationPage.gotoSearch();
+            expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
+            await searchPo.selectCategoryDropDownValue('Task Template');
+
+            // Verify Global Template
+            await searchPo.searchRecord(templateName + 9);
+            expect(await searchPo.isModuleTitleDisplayed(templateName + 9, 'Task Templates (0)', taskTemplateModule)).toBeTruthy('FailureMsg2: Task Template module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId5, taskTemplateModule)).toBeFalsy(`FailureMsg4: ${taskTemplateDisplayId5} task template is displayed for different line of business`);
+
+            // Verify with task template title
+            await searchPo.searchRecord(templateName + '1');
+            expect(await searchPo.isModuleTitleDisplayed(templateName + '1', 'Task Templates (0)', taskTemplateModule)).toBeTruthy('FailureMsg2: Task module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId1[1], taskTemplateModule)).toBeFalsy(`FailureMsg4: ${taskTemplateDisplayId1[0]} task template is displayed for different line of business`);
+        });
+
+        it('[DRDMV-16118]: Verify task template record is accessible to other Line of business Case Agent', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('franz');
+            await navigationPage.gotoSearch();
+            expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
+            await searchPo.selectCategoryDropDownValue('Task Template');
+
+            // Verify Global Template
+            await searchPo.searchRecord(templateName + 9);
+            expect(await searchPo.isModuleTitleDisplayed(templateName + 9, 'Task Templates (0)', taskTemplateModule)).toBeTruthy('FailureMsg2: Task Template module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId5, taskTemplateModule)).toBeFalsy(`FailureMsg4: ${taskTemplateDisplayId5} task template is displayed for different line of business`);
+
+            // Verify with task template title
+            await searchPo.searchRecord(templateName + '1');
+            expect(await searchPo.isModuleTitleDisplayed(templateName + '1', 'Task Templates (0)', taskTemplateModule)).toBeTruthy('FailureMsg2: Task module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId1[1], taskTemplateModule)).toBeFalsy(`FailureMsg4: ${taskTemplateDisplayId1[0]} task template is displayed for different line of business`);
+        });
+
+        it('[DRDMV-16118]: Verify task template record are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseMngrMultiLOB@petramco.com','Password_1234');
+            await navigationPage.gotoSearch();
+            expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
+            await searchPo.selectCategoryDropDownValue('Task Template');
+
+            // Verify Global Template
+            await searchPo.searchRecord(templateName + 9);
+            expect(await searchPo.isModuleTitleDisplayed(templateName + 9, 'Task Templates (1)', taskTemplateModule)).toBeTruthy('FailureMsg2: Task Template module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId5, taskTemplateModule)).toBeTruthy(`FailureMsg4: ${taskTemplateDisplayId5} task id  is missing`);
+
+            // Verify with task template title
+            await searchPo.searchRecord(templateName + '1');
+            expect(await searchPo.isModuleTitleDisplayed(templateName + '1', 'Task Templates (1)', taskTemplateModule)).toBeTruthy('FailureMsg2: Task module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId1[1], taskTemplateModule)).toBeTruthy(`FailureMsg4: ${taskTemplateDisplayId1[0]} task id  is missing`);
+        });
+
+        it('[DRDMV-16118]: Verify task template record are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseBAMultiLOB@petramco.com','Password_1234');
+            await navigationPage.gotoSearch();
+            expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
+            await searchPo.selectCategoryDropDownValue('Task Template');
+
+            // Verify Global Template
+            await searchPo.searchRecord(templateName + 9);
+            expect(await searchPo.isModuleTitleDisplayed(templateName + 9, 'Task Templates (1)', taskTemplateModule)).toBeTruthy('FailureMsg2: Task Template module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId5, taskTemplateModule)).toBeTruthy(`FailureMsg4: ${taskTemplateDisplayId5} task id  is missing`);
+
+            // Verify with task template title
+            await searchPo.searchRecord(templateName + '1');
+            expect(await searchPo.isModuleTitleDisplayed(templateName + '1', 'Task Templates (1)', taskTemplateModule)).toBeTruthy('FailureMsg2: Task module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId1[1], taskTemplateModule)).toBeTruthy(`FailureMsg4: ${taskTemplateDisplayId1[0]} task id  is missing`);
         });
 
         afterAll(async () => {
@@ -862,6 +1043,61 @@ describe('Global Search Template', () => {
             await searchPo.searchRecord(nonAccessDocName);
             expect(await searchPo.isModuleTitleDisplayed(nonAccessDocName, 'Documents (1)', documentModule)).toBeTruthy('FailureMsg2: Document module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(nonAccessDocName, documentModule)).toBeTruthy(`FailureMsg4: ${nonAccessDocName} 1 non access Doc Name is missing`);
+        });
+
+        it('[DRDMV-16123]: Verify document library record is accessible to other Line of business Case BA', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await navigationPage.gotoSearch();
+            expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
+            await searchPo.selectCategoryDropDownValue('Document');
+            await searchPo.searchRecord(docName1);
+            expect(await searchPo.isModuleTitleDisplayed(docName1, 'Documents (0)', documentModule)).toBeTruthy('FailureMsg2: Document module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(docName1, documentModule, 1)).toBeFalsy(`FailureMsg4: ${docName1} 1 Document is searched for different Line of business.`);
+        });
+
+        it('[DRDMV-16123]: Verify document library record is accessible to other Line of business Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('frieda');
+            await navigationPage.gotoSearch();
+            expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
+            await searchPo.selectCategoryDropDownValue('Document');
+            await searchPo.searchRecord(docName1);
+            expect(await searchPo.isModuleTitleDisplayed(docName1, 'Documents (0)', documentModule)).toBeTruthy('FailureMsg2: Document module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(docName1, documentModule, 1)).toBeFalsy(`FailureMsg4: ${docName1} 1 Document is searched for different Line of business.`);
+        });
+
+        it('[DRDMV-16123]: Verify document library record is accessible to other Line of business Case Agent', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('franz');
+            await navigationPage.gotoSearch();
+            expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
+            await searchPo.selectCategoryDropDownValue('Document');
+            await searchPo.searchRecord(docName1);
+            expect(await searchPo.isModuleTitleDisplayed(docName1, 'Documents (0)', documentModule)).toBeTruthy('FailureMsg2: Document module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(docName1, documentModule, 1)).toBeFalsy(`FailureMsg4: ${docName1} 1 Document is searched for different Line of business.`);
+        });
+
+        it('[DRDMV-16123]: Verify document library record are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseMngrMultiLOB@petramco.com','Password_1234');
+            await navigationPage.gotoSearch();
+            expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
+            await searchPo.selectCategoryDropDownValue('Document');
+            await searchPo.searchRecord(docName1);
+            expect(await searchPo.isModuleTitleDisplayed(docName1, 'Documents (0)', documentModule)).toBeTruthy('FailureMsg2: Document module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(docName1, documentModule, 1)).toBeFalsy(`FailureMsg4: ${docName1} 1 Document is searched for different Line of business.`);
+        });
+
+        it('[DRDMV-16123]: Verify document library record are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseBAMultiLOB@petramco.com','Password_1234');
+            await navigationPage.gotoSearch();
+            expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
+            await searchPo.selectCategoryDropDownValue('Document');
+            await searchPo.searchRecord(docName1);
+            expect(await searchPo.isModuleTitleDisplayed(docName1, 'Documents (0)', documentModule)).toBeTruthy('FailureMsg2: Document module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(docName1, documentModule, 1)).toBeFalsy(`FailureMsg4: ${docName1} 1 Document is searched for different Line of business.`);
         });
 
         afterAll(async () => {

@@ -26,11 +26,34 @@ import statusBladePo from '../../pageobject/common/update.status.blade.po';
 import composeEmailPo from '../../pageobject/email/compose-mail.po';
 import { flowsetMandatoryFields, flowsetGlobalFields } from '../../data/ui/flowset/flowset.ui';
 import { cloneDeep } from 'lodash';
+let userData, userData1, userData2 = undefined;
 
 describe('Create Process in Flowset', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
+        await apiHelper.apiLogin('tadmin');
+
+        userData1 = {
+            "firstName": "caseBA",
+            "lastName": "MultiLOB",
+            "userId": "caseBAMultiLOB",
+            "userPermission": ["Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
+        }
+        await apiHelper.createNewUser(userData1);
+        await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
+        await apiHelper.associatePersonToSupportGroup(userData1.userId, "US Support 3");
+
+        userData2 = {
+            "firstName": "caseMngr",
+            "lastName": "MultiLOB",
+            "userId": "caseMngrMultiLOB",
+            "userPermission": ["Case Manager", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
+        }
+        await apiHelper.createNewUser(userData2);
+        await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
+        await apiHelper.associatePersonToSupportGroup(userData2.userId, "US Support 3");
+
     });
 
     afterAll(async () => {
@@ -39,53 +62,128 @@ describe('Create Process in Flowset', () => {
     });
 
     //ankagraw
-    it('[DRDMV-6216]: [Flowsets] Create new Register Process', async () => {
+
+    describe('[DRDMV-6216]: [Flowsets] Create new Register Process', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let drpDownStatus: string[] = ['Draft', 'Active', 'Inactive'];
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
+        let processName = undefined;
 
-        await apiHelper.apiLogin('tadmin');
-        let case_management = CASE_MANAGEMENT_LIB_PROCESS;
-        let case_Management_Process = case_management.name + randomStr;
-        case_management.name = case_Management_Process;
-        await apiCoreUtil.createProcess(case_management);
+        it('[DRDMV-6216]: [Flowsets] Create new Register Process', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
 
-        let processName = case_Management_Process.split(':')[1];
+            await apiHelper.apiLogin('tadmin');
+            let case_management = CASE_MANAGEMENT_LIB_PROCESS;
+            let case_Management_Process = case_management.name + randomStr;
+            case_management.name = case_Management_Process;
+            await apiCoreUtil.createProcess(case_management);
 
-        await expect(consoleFlowsetProcessLibrary.isRegisterProcessEnable()).toBeTruthy("Add flowset register Process is disabled");
-        await consoleFlowsetProcessLibrary.clickOnRegisterProcess();
+            processName = case_Management_Process.split(':')[1];
 
-        //verify the Titles
-        await expect(createFlowsetProcessLibrary.isCompanyTitleDisplayed('Company')).toBeTruthy(" Company Title is not present");
-        await expect(createFlowsetProcessLibrary.isProcessNameTitleDisplayed('Process Name')).toBeTruthy(" Process Name Title is not present");
-        await expect(createFlowsetProcessLibrary.isDescriptionTitleDisplayed('Description')).toBeTruthy(" Description Title is not present");
-        await expect(createFlowsetProcessLibrary.isStatusTitleDisplayed('Status')).toBeTruthy(" Status Title is not present");
-        await expect(createFlowsetProcessLibrary.isProcessAliasTitleDisplayed('Process Alias Name')).toBeTruthy(" Process Alias Title is not present");
-        await expect(createFlowsetProcessLibrary.isApplicationTitleDisplayed('Application Services Library')).toBeTruthy(" Application Service Title is not present");
-        await createFlowsetProcessLibrary.clickOnStatus();
-        await createFlowsetProcessLibrary.statusDropDownValuesDisplayed(drpDownStatus);
+            await expect(consoleFlowsetProcessLibrary.isRegisterProcessEnable()).toBeTruthy("Add flowset register Process is disabled");
+            await consoleFlowsetProcessLibrary.clickOnRegisterProcess();
 
-        //verify the Required Fields
-        await expect(createFlowsetProcessLibrary.isCompanyRequiredTextDisplayed()).toBeTruthy(" Company Required text not present ");
-        await expect(createFlowsetProcessLibrary.isProcessRequiredTextDisplayed()).toBeTruthy(" Process Name Required text not present ");
-        await expect(createFlowsetProcessLibrary.isDescriptionRequiredTextDisplayed()).toBeTruthy(" Description Required text not present ");
-        await expect(createFlowsetProcessLibrary.isStatusRequiredTextDisplayed()).toBeTruthy(" Status Required text not present ");
-        await expect(createFlowsetProcessLibrary.isProcessAliasRequiredTextDisplayed()).toBeTruthy(" Process Alias Required text not present ");
-        await createFlowsetProcessLibrary.clickSaveButton();
-        await expect(createFlowsetProcessLibrary.isErrorMsgPresent()).toBeTruthy("Error msg not present");
+            //verify the Titles
+            await expect(createFlowsetProcessLibrary.isCompanyTitleDisplayed('Company')).toBeTruthy(" Company Title is not present");
+            await expect(createFlowsetProcessLibrary.isProcessNameTitleDisplayed('Process Name')).toBeTruthy(" Process Name Title is not present");
+            await expect(createFlowsetProcessLibrary.isDescriptionTitleDisplayed('Description')).toBeTruthy(" Description Title is not present");
+            await expect(createFlowsetProcessLibrary.isStatusTitleDisplayed('Status')).toBeTruthy(" Status Title is not present");
+            await expect(createFlowsetProcessLibrary.isProcessAliasTitleDisplayed('Process Alias Name')).toBeTruthy(" Process Alias Title is not present");
+            await expect(createFlowsetProcessLibrary.isApplicationTitleDisplayed('Application Services Library')).toBeTruthy(" Application Service Title is not present");
+            await createFlowsetProcessLibrary.clickOnStatus();
+            await createFlowsetProcessLibrary.statusDropDownValuesDisplayed(drpDownStatus);
 
-        //add Flowsets
-        await createFlowsetProcessLibrary.selectCompany('Petramco');
-        await createFlowsetProcessLibrary.selectApplicationService("Case Management Service");
-        await createFlowsetProcessLibrary.setDescription("description" + randomStr);
-        await createFlowsetProcessLibrary.selectStatus("Active");
-        await createFlowsetProcessLibrary.selectProcessName(processName);
-        await createFlowsetProcessLibrary.setAliasName("Alias" + randomStr);
-        await createFlowsetProcessLibrary.clickSaveButton();
-        await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
-        expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid("Alias" + randomStr)).toBeTruthy("Alias" + randomStr + "name is not present");
+            //verify the Required Fields
+            await expect(createFlowsetProcessLibrary.isCompanyRequiredTextDisplayed()).toBeTruthy(" Company Required text not present ");
+            await expect(createFlowsetProcessLibrary.isProcessRequiredTextDisplayed()).toBeTruthy(" Process Name Required text not present ");
+            await expect(createFlowsetProcessLibrary.isDescriptionRequiredTextDisplayed()).toBeTruthy(" Description Required text not present ");
+            await expect(createFlowsetProcessLibrary.isStatusRequiredTextDisplayed()).toBeTruthy(" Status Required text not present ");
+            await expect(createFlowsetProcessLibrary.isProcessAliasRequiredTextDisplayed()).toBeTruthy(" Process Alias Required text not present ");
+            await createFlowsetProcessLibrary.clickSaveButton();
+            await expect(createFlowsetProcessLibrary.isErrorMsgPresent()).toBeTruthy("Error msg not present");
+
+            //add Flowsets
+            await createFlowsetProcessLibrary.selectCompany('Petramco');
+            await createFlowsetProcessLibrary.selectApplicationService("Case Management Service");
+            await createFlowsetProcessLibrary.setDescription("description" + randomStr);
+            await createFlowsetProcessLibrary.selectStatus("Active");
+            await createFlowsetProcessLibrary.selectProcessName(processName);
+            await createFlowsetProcessLibrary.setAliasName(processName + randomStr);
+            await createFlowsetProcessLibrary.clickSaveButton();
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
+            expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid(processName + randomStr)).toBeTruthy(processName + randomStr + "name is not present");
+        });
+
+        it('[DRDMV-6216]: Verify if flowset register process is accessible to same LOB Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qdu');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
+            expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid(processName + randomStr)).toBeTruthy(processName + randomStr + "name is not present");
+        });
+
+        it('[DRDMV-6216]: Verify if flowset register process is accessible to different LOB Case BA', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
+            expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid(processName + randomStr)).toBeFalsy(processName + randomStr + "register process is displayed for different LOB Case BA");
+        });
+
+        it('[DRDMV-6216]: Verify if flowset register process is accessible to different LOB Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('frieda');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
+            expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid(processName + randomStr)).toBeFalsy(processName + randomStr + "register process is displayed for different LOB Case manager");
+        });
+
+        it('[DRDMV-6216]: Verify if flowset register process is accessible to Case BA belonging to different company with same LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('gwixillian');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
+            expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid(processName + randomStr)).toBeTruthy(processName + randomStr + "register process is displayed for same LOB and different company Case BA");
+        });
+
+        it('[DRDMV-6216]: Verify if flowset register process is accessible to Case Manager user having access to multiple LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid(processName + randomStr)).toBeTruthy(processName + randomStr + "register process is displayed for different LOB Case manager");
+            await utilGrid.selectLineOfBusiness('Facilities');
+            expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid(processName + randomStr)).toBeFalsy(processName + randomStr + "register process is not displayed for same LOB Case manager");
+        });
+
+        it('[DRDMV-6216]: Verify if flowset register process is accessible to Case BA user having access to multiple LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid(processName + randomStr)).toBeTruthy(processName + randomStr + "register process is displayed for different LOB Case BA");
+            await utilGrid.selectLineOfBusiness('Facilities');
+            expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid(processName + randomStr)).toBeFalsy(processName + randomStr + "register process is not displayed for same LOB Case BA");
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            await consoleFlowsetProcessLibrary.searchAndSelectFlowset(processName + randomStr);
+            await editFlowsetProcessLibrary.setAliasName('UpdateAlias' + randomStr);
+            await editFlowsetProcessLibrary.setDescription('UpdataDescription' + randomStr);
+            await editFlowsetProcessLibrary.selectStatus('Draft');
+            await editFlowsetProcessLibrary.clickOnSaveButton();
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
+            await expect(consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid('UpdateAlias' + randomStr)).toBeTruthy('UpdateAlias' + randomStr + "name is not present");    
+        });
+
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+
+
     });
+
 
     it('[DRDMV-1269,DRDMV-1295]: [Flowsets] Search Register Process on Console', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -198,41 +296,107 @@ describe('Create Process in Flowset', () => {
         });
     });
 
-    it('[DRDMV-1298]: [Flowsets] Flowsets Console verification', async () => {
+    describe('[DRDMV-1298]: [Flowsets] Flowsets Console verification', async () => {
+
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let allHeaders: string[] = ['Application', 'Company', 'ID', 'Process Alias Name', 'Process Description', 'Process Name', 'Status'];
         let remainingHeaders: string[] = ['Application', 'Company', 'ID', 'Process Alias Name', 'Process Description', 'Status'];
-        await apiHelper.apiLogin('tadmin');
         let social_Service = SOCIAL_SERVICE_PROCESS;
         let social_Service_Process = social_Service.name + randomStr;
         social_Service.name = social_Service_Process;
-        await apiCoreUtil.createProcess(social_Service);
-        let processLibConfData1 = {
-            applicationServicesLib: "com.bmc.dsm.social-lib",
-            processName: social_Service_Process,
-            processAliasName: `Process${randomStr}`,
-            company: "Petramco",
-            description: `description${randomStr}`,
-            status: "Active"
-        }
-        await apiHelper.createProcessLibConfig(processLibConfData1);
+        let processLibConfData1 = undefined;
 
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
-        await consoleFlowsetProcessLibrary.addColumn(["Application", "ID", "Process Name"]);
-        expect(await consoleFlowsetProcessLibrary.isAllVisibleColumnPresent(allHeaders)).toBeTruthy("Available value is not present");
-        await consoleFlowsetProcessLibrary.removeColumn(["Process Name"]);
-        expect(await consoleFlowsetProcessLibrary.isAllVisibleColumnPresent(remainingHeaders)).toBeTruthy("Available value is not present");
-        await consoleFlowsetProcessLibrary.searchAndSelectFlowset(`Process${randomStr}`);
-        await editFlowsetProcessLibrary.setAliasName('UpdateAlias' + randomStr);
-        await editFlowsetProcessLibrary.clickOnSaveButton();
-        expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid('UpdateAlias' + randomStr)).toBeTruthy('UpdateAlias' + randomStr + "name is not present");
-        await consoleFlowsetProcessLibrary.clearSearchBox();
-        await consoleFlowsetProcessLibrary.clickOnRefreshButton();
-        expect(await consoleFlowsetProcessLibrary.getSortedValuesFromColumn("Process Alias Name")).toBeTruthy("Sorted not possible");
-        await apiHelper.apiLogin('tadmin');
-        let processName = 'com.bmc.dsm.social-lib:Social - Sample Activity Update By User';
-        await apiHelper.deleteFlowsetProcessLibConfig(processName);
+        it('[DRDMV-1298]: [Flowsets] Flowsets Console verification', async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiCoreUtil.createProcess(social_Service);
+            processLibConfData1 = {
+                applicationServicesLib: "com.bmc.dsm.social-lib",
+                processName: social_Service_Process,
+                processAliasName: `Process${randomStr}`,
+                company: "Petramco",
+                description: `description${randomStr}`,
+                status: "Active"
+            }
+            await apiHelper.createProcessLibConfig(processLibConfData1);
+
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
+            await consoleFlowsetProcessLibrary.addColumn(["Application", "ID", "Process Name"]);
+            expect(await consoleFlowsetProcessLibrary.isAllVisibleColumnPresent(allHeaders)).toBeTruthy("Available value is not present");
+            await consoleFlowsetProcessLibrary.removeColumn(["Process Name"]);
+            expect(await consoleFlowsetProcessLibrary.isAllVisibleColumnPresent(remainingHeaders)).toBeTruthy("Available value is not present");
+            await consoleFlowsetProcessLibrary.searchAndSelectFlowset(`Process${randomStr}`);
+            await editFlowsetProcessLibrary.setAliasName('UpdateAlias' + randomStr);
+            await editFlowsetProcessLibrary.clickOnSaveButton();
+            expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid('UpdateAlias' + randomStr)).toBeTruthy('UpdateAlias' + randomStr + "name is not present");
+            await consoleFlowsetProcessLibrary.clearSearchBox();
+            await consoleFlowsetProcessLibrary.clickOnRefreshButton();
+            expect(await consoleFlowsetProcessLibrary.getSortedValuesFromColumn("Process Alias Name")).toBeTruthy("Sorted not possible");
+        });
+
+        it('[DRDMV-1298]: Verify if flowset process is accessible to same LOB Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qdu');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent('UpdateAlias' + randomStr)).toBeTruthy('Flowset process are not displayed to same LOB Case manager.');
+        });
+
+        it('[DRDMV-1298]: Verify if flowset process is accessible to different LOB Case BA', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent('UpdateAlias' + randomStr)).toBeFalsy('Flowset process is displayed to different LOB Case BA.');
+        });
+
+        it('[DRDMV-1298]: Verify if flowset process is accessible to different LOB Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('frieda');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent('UpdateAlias' + randomStr)).toBeFalsy('Flowset process is displayed to different LOB Case manager.');
+        });
+
+        it('[DRDMV-1298]: Verify if flowset process is accessible to Case BA belonging to different company with same LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('gwixillian');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent('UpdateAlias' + randomStr)).toBeTruthy('Flowset process is displayed to same LOB with different company Case BA.');
+        });
+
+        it('[DRDMV-1298]: Verify if flowset process is accessible to Case Manager user having access to multiple LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilGrid.isGridRecordPresent('UpdateAlias' + randomStr)).toBeTruthy('Flowset process is not displayed to Case manager havin access to multiple LOB.');
+            await utilGrid.selectLineOfBusiness('Facilities');
+            expect(await utilGrid.isGridRecordPresent('UpdateAlias' + randomStr)).toBeFalsy('Flowset process is displayed to Case manager havin access to multiple LOB');
+        });
+
+        it('[DRDMV-1298]: Verify if flowset process is accessible to Case BA user having access to multiple LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilGrid.isGridRecordPresent('UpdateAlias' + randomStr)).toBeTruthy('Flowset process is not displayed to Case BA havin access to multiple LOB.');
+            await utilGrid.selectLineOfBusiness('Facilities');
+            expect(await utilGrid.isGridRecordPresent('UpdateAlias' + randomStr)).toBeFalsy('Flowset process is displayed to Case BA havin access to multiple LOB');
+        });
+
+        afterAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            let processName = 'com.bmc.dsm.social-lib:Social - Sample Activity Update By User';
+            await apiHelper.deleteFlowsetProcessLibConfig(processName);
+
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+
     });
 
     //asahitya

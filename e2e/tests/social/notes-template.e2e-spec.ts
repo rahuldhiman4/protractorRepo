@@ -61,7 +61,7 @@ let justifyAlignText = "this is text Justify align";
 let strikeThroughText = "this is text strikeThrough";
 let imageSource, imageSource1, imageSource2;
 let uploadURL = "https://www.google.com/homepage/images/hero-dhp-chrome-win.jpg?mmfb=90bec8294f441f5c41987596ca1b8cff";
-let userData, userData1 = undefined;
+let userData, userData1 = undefined, userData2;
 describe('Notes template', () => {
     beforeAll(async () => {
         const caseModule = 'Case';
@@ -78,6 +78,26 @@ describe('Notes template', () => {
         await apiHelper.createNewUser(userData);
         await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
         await apiHelper.associatePersonToSupportGroup(userData.userId, "US Support 3");
+
+        userData1 = {
+            "firstName": "caseBA",
+            "lastName": "MultiLOB",
+            "userId": "caseBAMultiLOB",
+            "userPermission": ["Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
+        }
+        await apiHelper.createNewUser(userData1);
+        await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
+        await apiHelper.associatePersonToSupportGroup(userData1.userId, "US Support 3");
+
+        userData2 = {
+            "firstName": "caseMngr",
+            "lastName": "MultiLOB",
+            "userId": "caseMngrMultiLOB",
+            "userPermission": ["Case Manager", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
+        }
+        await apiHelper.createNewUser(userData2);
+        await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
+        await apiHelper.associatePersonToSupportGroup(userData2.userId, "US Support 3");
     });
 
     afterAll(async () => {
@@ -117,116 +137,74 @@ describe('Notes template', () => {
     });
 
     //ptidke
-    it('[DRDMV-16010]: [Design Time] Verify that case Business analyst is able create ,edit and delete case Notes template', async () => {
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
-        await consoleNotesTemplatePo.clickOnCreateNotesTemplate();
-        let templateName: string = "activityNotesTemplate" + Math.floor(Math.random() * 100000);
-        await createNotesTemplate.setTemplateName(templateName);
-        await createNotesTemplate.setStatusValue('Active');
-        await createNotesTemplate.setCompanyValue('Petramco');
-        await createNotesTemplate.setLanguageValue('English (United States)');
-        await createNotesTemplate.clickOnInsertFieldLink();
-        await addFieldPo.setValueOfField('Case', 'Company');
-        await addFieldPo.clickOnOkButtonOfEditor();
-        await createNotesTemplate.setBody("this is new actiivty notes template");
-        await createNotesTemplate.clickOnSaveButton();
-        await consoleNotesTemplatePo.searchAndClickOnNotesTemplate(templateName);
-        let updateBody: string = "UpdateNotesTemplate" + Math.floor(Math.random() * 100000);
-        await editNotetemplate.changeStatusValue('Inactive');
-        await editNotetemplate.updateBody(updateBody);
-        await editNotetemplate.clickOnSaveButton();
-        await consoleNotesTemplatePo.searchAndClickOnNotesTemplate(templateName);
-        expect(await editNotetemplate.getStatusValue()).toContain('Inactive');
-        expect(await editNotetemplate.getBodyValue()).toContain(updateBody);
-        await editNotetemplate.clickOnCancelButton();
-        await utilCommon.clickOnWarningOk();
-        await consoleNotesTemplatePo.searchAndClickNotesTemplateCheckBox(templateName);
-        await consoleNotesTemplatePo.clickOnDeleteButton();
-        await utilCommon.clickOnWarningOk();
-        expect(await utilCommon.isPopupMsgsMatches(['Record deleted successfully.'])).toBeTruthy('Record deleted successfully. pop up message missing');
-    });
 
-    //ptidke
-    it('[DRDMV-16028]: [Design Time] Verify case Business analyst is able create ,edit and delete People Notes template', async () => {
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'Activity Notes Template Console - Person - Business Workflows');
-        await consoleNotesTemplatePo.clickOnCreateNotesTemplate();
-        let templateName: string = "activityNotesTemplate" + Math.floor(Math.random() * 100000);
-        await createNotesTemplate.setTemplateName(templateName);
-        await createNotesTemplate.setStatusValue('Active');
-        await createNotesTemplate.setCompanyValue('Petramco');
-        await createNotesTemplate.setLanguageValue('English (United States)');
-        await createNotesTemplate.clickOnInsertFieldLink();
-        await addFieldPo.setValueOfField('Person', 'Agent');
-        await addFieldPo.clickOnOkButtonOfEditor();
-        await createNotesTemplate.setBody("this is new actiivty notes template");
-        await createNotesTemplate.clickOnSaveButton();
-        await consoleNotesTemplatePo.searchAndClickOnNotesTemplate(templateName);
-        let updateBody: string = "UpdateNotesTemplate" + Math.floor(Math.random() * 100000);
-        await editNotetemplate.changeStatusValue('Inactive');
-        await editNotetemplate.updateBody(updateBody);
-        await editNotetemplate.clickOnSaveButton();
-        await consoleNotesTemplatePo.searchAndClickOnNotesTemplate(templateName);
-        expect(await editNotetemplate.getStatusValue()).toContain('Inactive');
-        expect(await editNotetemplate.getBodyValue()).toContain(updateBody);
-        await editNotetemplate.clickOnCancelButton();
-        await utilCommon.clickOnWarningOk();
-        await consoleNotesTemplatePo.searchAndClickNotesTemplateCheckBox(templateName);
-        await consoleNotesTemplatePo.clickOnDeleteButton();
-        await utilCommon.clickOnWarningOk();
-        expect(await utilCommon.isPopupMsgsMatches(['Record deleted successfully.'])).toBeTruthy('Record deleted successfully. pop up message missing');
-    });
+    describe('[DRDMV-16010]: [Design Time] Verify that case Business analyst is able create ,edit and delete case Notes template', async () => {
 
-    //ptidke
-    it('[DRDMV-16027]: [Design Time] Verify case Business analyst is able create, edit and delete Task Notes template', async () => {
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', 'Activity Notes Template Console - Task - Business Workflows');
-        await consoleNotesTemplatePo.clickOnCreateNotesTemplate();
         let templateName: string = "activityNotesTemplate" + Math.floor(Math.random() * 100000);
-        await createNotesTemplate.setTemplateName(templateName);
-        await createNotesTemplate.setStatusValue('Active');
-        await createNotesTemplate.setCompanyValue('- Global -');
-        await createNotesTemplate.setLanguageValue('English (United States)');
-        await createNotesTemplate.clickOnInsertFieldLink();
-        await addFieldPo.setValueOfField('Task', 'Assignee');
-        await addFieldPo.clickOnOkButtonOfEditor();
-        await createNotesTemplate.setBody("this is new actiivty notes template");
-        await createNotesTemplate.clickOnSaveButton();
-        await consoleNotesTemplatePo.searchAndClickOnNotesTemplate(templateName);
-        let updateBody: string = "UpdateNotesTemplate" + Math.floor(Math.random() * 100000);
-        await editNotetemplate.changeStatusValue('Inactive');
-        await editNotetemplate.updateBody(updateBody);
-        await editNotetemplate.clickOnSaveButton();
-        await consoleNotesTemplatePo.searchAndClickOnNotesTemplate(templateName);
-        expect(await editNotetemplate.getStatusValue()).toContain('Inactive');
-        expect(await editNotetemplate.getBodyValue()).toContain(updateBody);
-        await editNotetemplate.clickOnCancelButton();
-        await utilCommon.clickOnWarningOk();
-        await consoleNotesTemplatePo.searchAndClickNotesTemplateCheckBox(templateName);
-        await consoleNotesTemplatePo.clickOnDeleteButton();
-        await utilCommon.clickOnWarningOk();
-        expect(await utilCommon.isPopupMsgsMatches(['Record deleted successfully.'])).toBeTruthy('Record deleted successfully. pop up message missing');
-    });
 
-    //ptidke
-    it('[DRDMV-16181]: [Design Time] Knowledge user is able to create, edit and Delete Knowledge Notes Template', async () => {
-        try {
+        it('[DRDMV-16010]: [Design Time] Verify that case Business analyst is able create ,edit and delete case Notes template', async () => {
             await navigationPage.signOut();
-            await loginPage.login("khardison");
+            await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Notes Template', 'Activity Notes Template Console - Knowledge - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
             await consoleNotesTemplatePo.clickOnCreateNotesTemplate();
-            let templateName: string = "activityNotesTemplate" + Math.floor(Math.random() * 100000);
             await createNotesTemplate.setTemplateName(templateName);
             await createNotesTemplate.setStatusValue('Active');
             await createNotesTemplate.setCompanyValue('Petramco');
             await createNotesTemplate.setLanguageValue('English (United States)');
             await createNotesTemplate.clickOnInsertFieldLink();
-            await addFieldPo.setValueOfField('Knowledge Article', 'Assignee');
+            await addFieldPo.setValueOfField('Case', 'Company');
             await addFieldPo.clickOnOkButtonOfEditor();
             await createNotesTemplate.setBody("this is new actiivty notes template");
             await createNotesTemplate.clickOnSaveButton();
+        });
+
+        it('[DRDMV-16010]: Verify case notes template is accessible to other Line of business Case BA', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy('case notes template for Facilities LOB are displayed to Human Resource LOB User.');
+        });
+
+        it('[DRDMV-16010]: Verify case notes template is accessible to different company user with same Line of business Case BA', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('gwixillian');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy('case notes template for Facilities LOB are displayed to Human Resource LOB User.');
+        });
+
+        it('[DRDMV-16010]: Verify case notes template is accessible to other Line of business Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qdu');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy('case notes template for Facilities LOB are displayed to Human Resource LOB User.');
+        });
+
+        it('[DRDMV-16010]: Verify case notes template are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy('case notes template for Facilities LOB are displayed to Human Resource LOB User.');
+
+            await utilGrid.selectLineOfBusiness('Facilities');
+            expect(await utilGrid.isGridRecordPresent(templateName)).toBeTruthy('case notes template for Facilities LOB are not displayed to Human Resource LOB User.');
+        });
+
+        it('[DRDMV-16010]: Verify case notes template are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy('case notes template for Facilities LOB are displayed to Human Resource LOB User.');
+
+            await utilGrid.selectLineOfBusiness('Facilities');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
             await consoleNotesTemplatePo.searchAndClickOnNotesTemplate(templateName);
             let updateBody: string = "UpdateNotesTemplate" + Math.floor(Math.random() * 100000);
             await editNotetemplate.changeStatusValue('Inactive');
@@ -240,15 +218,300 @@ describe('Notes template', () => {
             await consoleNotesTemplatePo.searchAndClickNotesTemplateCheckBox(templateName);
             await consoleNotesTemplatePo.clickOnDeleteButton();
             await utilCommon.clickOnWarningOk();
-            expect(await utilCommon.isPopupMsgsMatches(['Record deleted successfully.'])).toBeTruthy('Record deleted successfully. pop up message missing');
-        }
-        catch (e) {
-            throw e;
-        }
-        finally {
+            expect(await utilCommon.isPopUpMessagePresent('Record deleted successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+        });
+
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('elizabeth');
+        });
+    });
+
+    //ptidke
+    describe('[DRDMV-16028]: [Design Time] Verify case Business analyst is able create ,edit and delete People Notes template', async () => {
+        let templateName: string = "activityNotesTemplate" + Math.floor(Math.random() * 100000);
+
+        it('[DRDMV-16028]: [Design Time] Verify case Business analyst is able create ,edit and delete People Notes template', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'Activity Notes Template Console - Person - Business Workflows');
+            await consoleNotesTemplatePo.clickOnCreateNotesTemplate();
+            await createNotesTemplate.setTemplateName(templateName);
+            await createNotesTemplate.setStatusValue('Active');
+            await createNotesTemplate.setCompanyValue('Petramco');
+            await createNotesTemplate.setLanguageValue('English (United States)');
+            await createNotesTemplate.clickOnInsertFieldLink();
+            await addFieldPo.setValueOfField('Person', 'Agent');
+            await addFieldPo.clickOnOkButtonOfEditor();
+            await createNotesTemplate.setBody("this is new actiivty notes template");
+            await createNotesTemplate.clickOnSaveButton();
+        });
+
+        it('[DRDMV-16028]: Verify people notes template is accessible to other Line of business Case BA', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'people notes template Console - Person - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy('people notes template for Facilities LOB are displayed to Human Resource LOB User.');
+        });
+
+        it('[DRDMV-16028]: Verify people notes template is accessible to different company user with same Line of business Case BA', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('gwixillian');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'Activity Notes Template Console - Person - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy('people notes template for Facilities LOB are displayed to Human Resource LOB User.');
+        });
+
+        it('[DRDMV-16028]: Verify people notes template is accessible to other Line of business Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qdu');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'Activity Notes Template Console - Person - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy('people notes template for Facilities LOB are displayed to Human Resource LOB User.');
+        });
+
+        it('[DRDMV-16028]: Verify people notes template are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'Activity Notes Template Console - Person - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy('people notes template for Facilities LOB are displayed to Human Resource LOB User.');
+
+            await utilGrid.selectLineOfBusiness('Facilities');
+            expect(await utilGrid.isGridRecordPresent(templateName)).toBeTruthy('people notes template for Facilities LOB are not displayed to Human Resource LOB User.');
+        });
+
+        it('[DRDMV-16028]: Verify people notes template are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'Activity Notes Template Console - Person - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy('people notes template for Facilities LOB are displayed to Human Resource LOB User.');
+
+            await utilGrid.selectLineOfBusiness('Facilities');
+            await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'Activity Notes Template Console - Person - Business Workflows');
+            await consoleNotesTemplatePo.searchAndClickOnNotesTemplate(templateName);
+            let updateBody: string = "UpdateNotesTemplate" + Math.floor(Math.random() * 100000);
+            await editNotetemplate.changeStatusValue('Inactive');
+            await editNotetemplate.updateBody(updateBody);
+            await editNotetemplate.clickOnSaveButton();
+            await consoleNotesTemplatePo.searchAndClickOnNotesTemplate(templateName);
+            expect(await editNotetemplate.getStatusValue()).toContain('Inactive');
+            expect(await editNotetemplate.getBodyValue()).toContain(updateBody);
+            await editNotetemplate.clickOnCancelButton();
+            await utilCommon.clickOnWarningOk();
+            await consoleNotesTemplatePo.searchAndClickNotesTemplateCheckBox(templateName);
+            await consoleNotesTemplatePo.clickOnDeleteButton();
+            await utilCommon.clickOnWarningOk();
+            expect(await utilCommon.isPopUpMessagePresent('Record deleted successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+        });
+
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('elizabeth');
+        });
+
+    });
+
+    //ptidke
+    describe('[DRDMV-16027]: [Design Time] Verify case Business analyst is able create, edit and delete Task Notes template', async () => {
+        let templateName: string = "activityNotesTemplate" + Math.floor(Math.random() * 100000);
+
+        it('[DRDMV-16027]: [Design Time] Verify case Business analyst is able create, edit and delete Task Notes template', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', 'Activity Notes Template Console - Task - Business Workflows');
+            await consoleNotesTemplatePo.clickOnCreateNotesTemplate();
+            await createNotesTemplate.setTemplateName(templateName);
+            await createNotesTemplate.setStatusValue('Active');
+            await createNotesTemplate.setCompanyValue('- Global -');
+            await createNotesTemplate.setLanguageValue('English (United States)');
+            await createNotesTemplate.clickOnInsertFieldLink();
+            await addFieldPo.setValueOfField('Task', 'Assignee');
+            await addFieldPo.clickOnOkButtonOfEditor();
+            await createNotesTemplate.setBody("this is new actiivty notes template");
+            await createNotesTemplate.clickOnSaveButton();
+        });
+
+        it('[DRDMV-16027]: Verify task notes template is accessible to other Line of business Case BA', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', 'Activity Notes Template Console - Task - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy('task notes template for Facilities LOB are displayed to Human Resource LOB User.');
+
+        });
+
+        it('[DRDMV-16028]: Verify task notes template is accessible to different company user with same Line of business Case BA', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('gwixillian');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', 'Activity Notes Template Console - Task - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy('task notes template for Facilities LOB are displayed to Human Resource LOB User.');
+        });
+
+        it('[DRDMV-16027]: Verify task notes template is accessible to other Line of business Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qdu');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', 'Activity Notes Template Console - Task - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy('task notes template for Facilities LOB are displayed to Human Resource LOB User.');
+        });
+
+        it('[DRDMV-16027]: Verify task notes template are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', 'Activity Notes Template Console - Task - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy('task notes template for Facilities LOB are displayed to Human Resource LOB User.');
+
+            await utilGrid.selectLineOfBusiness('Facilities');
+            expect(await utilGrid.isGridRecordPresent(templateName)).toBeTruthy('task notes template for Facilities LOB are not displayed to Human Resource LOB User.');
+        });
+
+        it('[DRDMV-16027]: Verify task notes template are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', 'Activity Notes Template Console - Task - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy('people notes template for Facilities LOB are displayed to Human Resource LOB User.');
+
+            await utilGrid.selectLineOfBusiness('Facilities');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', 'Activity Notes Template Console - Task - Business Workflows');
+            await consoleNotesTemplatePo.searchAndClickOnNotesTemplate(templateName);
+            let updateBody: string = "UpdateNotesTemplate" + Math.floor(Math.random() * 100000);
+            await editNotetemplate.changeStatusValue('Inactive');
+            await editNotetemplate.updateBody(updateBody);
+            await editNotetemplate.clickOnSaveButton();
+            await consoleNotesTemplatePo.searchAndClickOnNotesTemplate(templateName);
+            expect(await editNotetemplate.getStatusValue()).toContain('Inactive');
+            expect(await editNotetemplate.getBodyValue()).toContain(updateBody);
+            await editNotetemplate.clickOnCancelButton();
+            await utilCommon.clickOnWarningOk();
+            await consoleNotesTemplatePo.searchAndClickNotesTemplateCheckBox(templateName);
+            await consoleNotesTemplatePo.clickOnDeleteButton();
+            await utilCommon.clickOnWarningOk();
+            expect(await utilCommon.isPopUpMessagePresent('Record deleted successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+        });
+
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('elizabeth');
+        });
+
+    });
+
+    //ptidke
+    describe('[DRDMV-16181]: [Design Time] Knowledge user is able to create, edit and Delete Knowledge Notes Template', async () => {
+        let templateName: string = "activityNotesTemplate" + Math.floor(Math.random() * 100000);
+        let globalNotesTemplateName: string = "GlobalActivityNotesTemplate" + Math.floor(Math.random() * 100000);
+
+        it('[DRDMV-16181]: [Design Time] Knowledge user is able to create, edit and Delete Knowledge Notes Template', async () => {
+            await navigationPage.signOut();
+            await loginPage.login("khardison");
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Notes Template', 'Activity Notes Template Console - Knowledge - Business Workflows');
+            await consoleNotesTemplatePo.clickOnCreateNotesTemplate();
+            await createNotesTemplate.setTemplateName(templateName);
+            await createNotesTemplate.setStatusValue('Active');
+            await createNotesTemplate.setCompanyValue('Petramco');
+            await createNotesTemplate.setLanguageValue('English (United States)');
+            await createNotesTemplate.clickOnInsertFieldLink();
+            await addFieldPo.setValueOfField('Knowledge Article', 'Assignee');
+            await addFieldPo.clickOnOkButtonOfEditor();
+            await createNotesTemplate.setBody("this is new actiivty notes template");
+            await createNotesTemplate.clickOnSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+
+            await consoleNotesTemplatePo.clickOnCreateNotesTemplate();
+            await createNotesTemplate.setTemplateName(globalNotesTemplateName);
+            await createNotesTemplate.setStatusValue('Active');
+            await createNotesTemplate.setCompanyValue('- Global -');
+            await createNotesTemplate.setLanguageValue('English (United States)');
+            await createNotesTemplate.clickOnInsertFieldLink();
+            await addFieldPo.setValueOfField('Knowledge Article', 'Assignee');
+            await addFieldPo.clickOnOkButtonOfEditor();
+            await createNotesTemplate.setBody("this is new actiivty notes template");
+            await createNotesTemplate.clickOnSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+
+        });
+
+        it('[DRDMV-16181]: Verify Knowledge Article Notes Template is accessible to other Line of business Case BA', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Notes Template', 'Activity Notes Template Console - Knowledge - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy('Knowledge Article Notes Template for Facilities LOB are displayed to Human Resource LOB User.');
+            expect(await utilGrid.isGridRecordPresent(globalNotesTemplateName)).toBeFalsy('Global Knowledge Article Notes Template for Facilities LOB are displayed to Human Resource LOB User.');
+
+        });
+
+        it('[DRDMV-16181]: Verify Knowledge Article Notes Template are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Notes Template', 'Activity Notes Template Console - Knowledge - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Facilities');
+            expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy('Knowledge Article Notes Template for Facilities LOB are displayed to Human Resource LOB User.');
+            expect(await utilGrid.isGridRecordPresent(globalNotesTemplateName)).toBeFalsy('Global Knowledge Article Notes Template for Facilities LOB are displayed to Human Resource LOB User.');
+
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilGrid.isGridRecordPresent(templateName)).toBeTruthy('Knowledge Article Notes Template for Human Resource LOB are not displayed to Facilities LOB User.');
+            expect(await utilGrid.isGridRecordPresent(globalNotesTemplateName)).toBeTruthy('Knowledge Article Notes Template for Human Resource LOB are not displayed to Facilities LOB User.');
+        });
+
+        it('[DRDMV-16181]: Verify Knowledge Article Notes Template are accessible to Case BA from different company with same LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('gwixillian');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Notes Template', 'Activity Notes Template Console - Knowledge - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(templateName)).toBeTruthy('Knowledge Article Notes Template for Human Resource LOB are not displayed to Facilities LOB User.');
+            expect(await utilGrid.isGridRecordPresent(globalNotesTemplateName)).toBeTruthy('Global Knowledge Article Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
+        });
+
+        it('[DRDMV-16181]: Verify Knowledge Article Notes Template are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Notes Template', 'Activity Notes Template Console - Knowledge - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Facilities');
+            expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy('Knowledge Article Notes Template for Facilities LOB are displayed to Human Resource LOB User.');
+            expect(await utilGrid.isGridRecordPresent(globalNotesTemplateName)).toBeFalsy(' Global Knowledge Article Notes Template for Facilities LOB are displayed to Human Resource LOB User.');
+
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilGrid.isGridRecordPresent(templateName)).toBeTruthy('Knowledge Article Notes Template for Facilities LOB are not displayed to Human Resource LOB User.');
+            expect(await utilGrid.isGridRecordPresent(globalNotesTemplateName)).toBeTruthy('Global Knowledge Article Notes Template for Facilities LOB are not displayed to Human Resource LOB User.');
+
+            await consoleNotesTemplatePo.searchAndClickOnNotesTemplate(templateName);
+            let updateBody: string = "UpdateNotesTemplate" + Math.floor(Math.random() * 100000);
+            await editNotetemplate.changeStatusValue('Inactive');
+            await editNotetemplate.updateBody(updateBody);
+            await editNotetemplate.clickOnSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            await consoleNotesTemplatePo.searchAndClickOnNotesTemplate(templateName);
+            expect(await editNotetemplate.getStatusValue()).toContain('Inactive');
+            expect(await editNotetemplate.getBodyValue()).toContain(updateBody);
+            await editNotetemplate.clickOnCancelButton();
+            await utilCommon.clickOnWarningOk();
+            await consoleNotesTemplatePo.searchAndClickNotesTemplateCheckBox(templateName);
+            await consoleNotesTemplatePo.clickOnDeleteButton();
+            await utilCommon.clickOnWarningOk();
+            expect(await utilCommon.isPopUpMessagePresent('Record deleted successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+        });
+
+        afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login("elizabeth");
-        }
+        });
+
     });
 
     //ptidke
@@ -1303,13 +1566,14 @@ describe('Notes template', () => {
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
-                "Assignee": "Qadim Katawazi"
+                "Assignee": "Qiao Feng",
+                "priority": "Low",
             };
             readAccessMappingData = {
                 "configName": randomString + '1ReadAccessMappingName',
                 "assignedCompany": 'Petramco',
-                "businessUnit": 'United States Support',
-                "supportGroup": 'US Support 3',
+                "businessUnit": 'Australia Support',
+                "supportGroup": 'AU Support 1',
                 "company": 'Petramco',
                 "priority": "Low",
             }
@@ -1477,6 +1741,7 @@ describe('Notes template', () => {
             await casePreviewPo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Case Access');
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('US Support 3', 'Write')).toBeTruthy('Support Group does not have read access');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('AU Support 1', 'Read')).toBeTruthy('Support Group does not have read access');
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(templateName);
             await activityTabPo.addActivityNote(randomString);
             await activityTabPo.clickOnPostButton();
@@ -1491,10 +1756,18 @@ describe('Notes template', () => {
             expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
             expect(await ckeditorValidationPo.isTableCaptionDisplayedInCkEditorTextArea('tableSummary', 'new' + randomString)).toBeTruthy('Text is not Left Align In Ck Editor');
             expect(await ckeditorValidationPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('Text is not Left Align In Ck Editor');
+
+            await viewCasePage.clickOnTab('Case Access');
+            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Case');
+            await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
+            await accessTabPo.selectAccessEntityDropDown('United Kingdom Support', 'Select Business Unit');
+            await accessTabPo.selectAccessEntityDropDown('GB Support 2', 'Select Support Group');
+            await accessTabPo.clickAssignWriteAccessCheckbox('Support Group');
+            await accessTabPo.clickAccessEntitiyAddButton('Support Group');
         });
         it('[DRDMV-22642,DRDMV-22646,DRDMV-22657]: Verify CKE functionality on Create and Edit Case Notes template', async () => {
             await navigationPage.signOut();
-            await loginPage.login('qfeng');
+            await loginPage.login('qliu');
             await utilityGrid.searchAndOpenHyperlink('NotesTemplateCase1' + randomString);
             await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickShowMoreLinkInActivity(2);
@@ -1508,17 +1781,10 @@ describe('Notes template', () => {
             expect(await ckeditorValidationPo.isTableCaptionDisplayedInCkEditorTextArea('tableSummary', 'new' + randomString)).toBeTruthy('FailureMsg8: Text is not Left Align In Ck Editor');
             expect(await ckeditorValidationPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('FailureMsg9: Text is not Left Align In Ck Editor');
 
-            await viewCasePage.clickOnTab('Case Access');
-            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Case');
-            await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
-            await accessTabPo.selectAccessEntityDropDown('United States Support', 'Select Business Unit');
-            await accessTabPo.selectAccessEntityDropDown('US Support 1', 'Select Support Group');
-            await accessTabPo.clickAssignWriteAccessCheckbox('Support Group');
-            await accessTabPo.clickAccessEntitiyAddButton('Support Group');
         });
         it('[DRDMV-22642,DRDMV-22646,DRDMV-22657]: Verify CKE functionality on Create and Edit Case Notes template', async () => {
             await navigationPage.signOut();
-            await loginPage.login('qtao');
+            await loginPage.login('qstrong');
             await utilityGrid.searchAndOpenHyperlink('NotesTemplateCase1' + randomString);
             await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickShowMoreLinkInActivity(4);
@@ -1532,6 +1798,66 @@ describe('Notes template', () => {
             expect(await ckeditorValidationPo.isTableCaptionDisplayedInCkEditorTextArea('tableSummary', 'new' + randomString)).toBeTruthy('FailureMsg16: Text is not Left Align In Ck Editor');
             expect(await ckeditorValidationPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('FailureMsg17: Text is not Left Align In Ck Editor');
         });
+
+        it('[DRDMV-22642,DRDMV-22646,DRDMV-22657]: Verify if case notes templates are accessible to same LOB Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qdu');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(templateName)).toBeTruthy('Human Resources LOB case notes template is not visible to same LOB case manager');
+        });
+
+        it('[DRDMV-22642,DRDMV-22646,DRDMV-22657]: Verify if case notes templates are accessible to different LOB Case BA', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy('Human Resources LOB case notes template is not visible to different LOB case BA');
+        });
+
+        it('[DRDMV-22642,DRDMV-22646,DRDMV-22657]: Verify if case notes templates are accessible to different LOB Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('frieda');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy('Human Resources LOB case notes template is not visible to different LOB case manager');
+        });
+
+        it('[DRDMV-22642,DRDMV-22646,DRDMV-22657]: Verify if case notes templates are accessible to Case BA belonging to different company with same LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('gwixillian');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(templateName)).toBeTruthy('Human Resources LOB case notes template is not visible to same LOB with different case BA');
+        });
+
+        it('[DRDMV-22642,DRDMV-22646,DRDMV-22657]: Verify if case notes templates are accessible to Case Manager user having access to multiple LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilGrid.isGridRecordPresent(templateName)).toBeTruthy('Human Resources LOB case notes template is not visible to case manager with multiple LOB access');
+
+            await utilGrid.selectLineOfBusiness('Facilities');
+            expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy('Human Resources LOB case notes template is visible to case manager with multiple LOB access');
+        });
+
+        it('[DRDMV-22642,DRDMV-22646,DRDMV-22657]: Verify if case notes templates are accessible to Case BA user having access to multiple LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Facilities');
+            expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy('Human Resources LOB case notes template is visible to case BA with multiple LOB access');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilGrid.isGridRecordPresent(templateName)).toBeTruthy('Human Resources LOB case notes template is not visible to case BA with multiple LOB access');
+            await utilGrid.searchOnGridConsole(templateName);
+            await editNotetemplate.changeStatusValue('Inactive');
+            await editNotetemplate.clickOnSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+        });
+
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
@@ -2539,6 +2865,135 @@ describe('Notes template', () => {
             await editNotetemplate.clickOnCancelButton();
             await utilCommon.clickOnWarningOk();
         });
+
+        it('[DRDMV-22659]: Verify Case / Task Notes Templates are accessible to other Line of business Case BA', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(caseTemplateName)).toBeFalsy('Case Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
+
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', 'Activity Notes Template Console - Task - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(taskTemplateName)).toBeFalsy('Task Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
+        });
+
+        it('[DRDMV-22659]: Verify Person / Knowledge Notes Templates are accessible to other Line of business Case BA', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'Activity Notes Template Console - Person - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(peopleTemplateName)).toBeFalsy('Person Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
+
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Notes Template', 'Activity Notes Template Console - Knowledge - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(knowledgeTemplateName)).toBeFalsy('Knowledge Article Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
+        });
+
+        it('[DRDMV-22659]: Verify Case / Task / Knowledge / Person Notes Templates are accessible to other Line of business Case Manager user', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('frieda');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(caseTemplateName)).toBeFalsy('Case Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
+
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', 'Activity Notes Template Console - Task - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(taskTemplateName)).toBeFalsy('Task Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
+        });
+
+        it('[DRDMV-22659]: Verify Knowledge / Person Notes Templates are accessible to other Line of business Case Manager user', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'Activity Notes Template Console - Person - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(peopleTemplateName)).toBeFalsy('Person Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
+
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Notes Template', 'Activity Notes Template Console - Knowledge - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(knowledgeTemplateName)).toBeFalsy('Knowledge Article Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
+        });
+
+        it('[DRDMV-22659]: Verify Case / Task Notes Templates are accessible to Case BA user who has access to multiple (HR,Finance) LOBs', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Facilities');
+            expect(await utilGrid.isGridRecordPresent(caseTemplateName)).toBeFalsy('Case Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
+
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', 'Activity Notes Template Console - Task - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(taskTemplateName)).toBeFalsy('Task Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
+        });
+
+        it('[DRDMV-22659]: Verify Person / Knowledge Notes Templates are accessible to Case BA user who has access to multiple (HR,Finance) LOBs', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'Activity Notes Template Console - Person - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(peopleTemplateName)).toBeFalsy('Person Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
+
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Notes Template', 'Activity Notes Template Console - Knowledge - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(knowledgeTemplateName)).toBeFalsy('Knowledge Article Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
+        });
+
+        it('[DRDMV-22659]: Verify Case / Task / Knowledge / Person Notes Templates are accessible to Case BA user who has access to multiple (HR,Finance) LOBs', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilGrid.isGridRecordPresent(caseTemplateName)).toBeTruthy('Case Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
+
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', 'Activity Notes Template Console - Task - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(taskTemplateName)).toBeTruthy('Task Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
+
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'Activity Notes Template Console - Person - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(peopleTemplateName)).toBeTruthy('Person Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
+
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Notes Template', 'Activity Notes Template Console - Knowledge - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(knowledgeTemplateName)).toBeTruthy('Knowledge Article Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
+        });
+
+        it('[DRDMV-22659]: Verify Case / Task / Knowledge / Person Notes Templates are accessible to Case Manager user who has access to multiple (HR,Finance) LOBs', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Facilities');
+            expect(await utilGrid.isGridRecordPresent(caseTemplateName)).toBeFalsy('Case Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
+
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', 'Activity Notes Template Console - Task - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(taskTemplateName)).toBeFalsy('Task Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
+        });
+
+        it('[DRDMV-22659]: Verify Knowledge / Person Notes Templates are accessible to Case Manager user who has access to multiple (HR,Finance) LOBs', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'Activity Notes Template Console - Person - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(peopleTemplateName)).toBeFalsy('Person Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
+
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Notes Template', 'Activity Notes Template Console - Knowledge - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(knowledgeTemplateName)).toBeFalsy('Knowledge Article Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
+        });
+
+        it('[DRDMV-22659]: Verify Case / Task / Knowledge / Person Notes Templates are accessible to Case Manager user who has access to multiple (HR,Finance) LOBs', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilGrid.isGridRecordPresent(caseTemplateName)).toBeTruthy('Case Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
+
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', 'Activity Notes Template Console - Task - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(taskTemplateName)).toBeTruthy('Task Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
+
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'Activity Notes Template Console - Person - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(peopleTemplateName)).toBeTruthy('Person Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
+
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Notes Template', 'Activity Notes Template Console - Knowledge - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(knowledgeTemplateName)).toBeTruthy('Knowledge Article Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
+        });
+
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
