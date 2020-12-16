@@ -30,7 +30,9 @@ export class Utility {
         ckEditorTextArea: '.cke_enable_context_menu',
         fieldParentLocator: '[rx-configuration="configuration"] .d-textfield',
         closedWarningTab: '.btn-cross',
-        warningText: '.d-modal__content p',
+        warningText: '.modal-content p',
+        warningWindowCloseBtn: '.modal-content button',
+
 
     }
 
@@ -62,7 +64,7 @@ export class Utility {
     }
 
     async closedWarningTextOfLineOfBuisness(): Promise<void> {
-        await $(this.selectors.warningText).click();
+        await $(this.selectors.warningWindowCloseBtn).click();
     }
 
     async clearDropDown(guid: string, optionValue: string): Promise<void> {
