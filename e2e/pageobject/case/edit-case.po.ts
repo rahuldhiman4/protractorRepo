@@ -70,6 +70,7 @@ class CaseEditPage {
         dynamciFieldDownLoadIcon: '.bwf-text-color-active',
         lobValue: '[rx-view-component-id="694535e8-ab22-4ddc-8d2a-ceb017cf4fbf"] button',
         lineofbusiness: '[rx-view-component-id="694535e8-ab22-4ddc-8d2a-ceb017cf4fbf"] .adapt-select',
+        assigneeValue: '[rx-view-component-id="7f1c67bf-9c39-4c46-b9ff-8d21ebaff4cb"] button'
     }
 
     async removeAttachment(): Promise<void> {
@@ -407,8 +408,24 @@ class CaseEditPage {
         await $(this.selectors.dynamicFieldTime).sendKeys(value);
     }
 
+    async getCategoryTier1(): Promise<string> {
+        return await $(`[rx-view-component-id="${this.selectors.categoryTier1Guid}"] button`).getText();
+    }
+
+    async getCategoryTier2(): Promise<string> {
+        return await $(`[rx-view-component-id="${this.selectors.categoryTier2Guid}"] button`).getText();
+    }
+
+    async getCategoryTier3(): Promise<string> {
+        return await $(`[rx-view-component-id="${this.selectors.categoryTier3Guid}"] button`).getText();
+    }
+
     async getCategoryTier4(): Promise<string> {
         return await $(`[rx-view-component-id="${this.selectors.categoryTier4Guid}"] button`).getText();
+    }
+
+    async getAssigneeValue(): Promise<string> {
+        return await $(this.selectors.assigneeValue).getText();
     }
 	
 	async clickDownloadDynamicFile(downloadButtonNumber:number): Promise<void> {
