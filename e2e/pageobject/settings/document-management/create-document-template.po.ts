@@ -1,4 +1,4 @@
-import { $, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../../utils/util.common';
 
 class CreateDocumentTemplate {
@@ -16,6 +16,7 @@ class CreateDocumentTemplate {
         insertFieldLinkOnDocumentBody: '[rx-view-component-id="4c08281f-b2ce-4aeb-a0f5-13a4a4d98a7c"] .cke_button__expressioneditor_icon',
         clickImageButton: '[rx-view-component-id="4c08281f-b2ce-4aeb-a0f5-13a4a4d98a7c"] .cke_button__image',
         dynamicField: '[class="cke_contents cke_reset"] span',
+        lobValue: '[rx-view-component-id="bdee70fc-d43c-4b44-9422-c344d62676c7"] .pull-left'
     }
     async clickOnDocumentBodyImageButton(): Promise<void> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.clickImageButton)));
@@ -112,6 +113,10 @@ class CreateDocumentTemplate {
             }
         }
         return await utilCommon.isRequiredTagToField(guid);
+    }
+
+    async getLobValue(): Promise<string> {
+        return await $(this.selectors.lobValue).getText();
     }
 }
 

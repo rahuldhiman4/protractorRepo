@@ -76,17 +76,20 @@ export class Utility {
 
     async isValuePresentInDropDown(guid: string | ElementFinder, value: string): Promise<boolean> {
         let count;
+        let dropDownBoxElement: ElementFinder = undefined;
         if (typeof guid === 'string') {
             const dropDown = await $(`[rx-view-component-id="${guid}"]`);
-            const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
+            dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
             const dropDownInputElement = await dropDown.$(this.selectors.dropDownInput);
             await dropDownBoxElement.click();
             await dropDownInputElement.sendKeys(value);
             count = await dropDown.$$(this.selectors.dropDownOption).count();
+            await dropDownBoxElement.click();
         } else {
             await guid.click();
-            await $(this.selectors.dropDownInput).sendKeys(value);
+            await $$(this.selectors.dropDownInput).last().sendKeys(value);
             count = await $$(this.selectors.dropDownOption).count();
+            await guid.click();
         }
         if (count >= 1) { return true; } else { return false; }
     }

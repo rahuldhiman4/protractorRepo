@@ -1,4 +1,4 @@
-import { $, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../../utils/util.common';
 
 class CreateAcknowledgmentTemplateBlade {
@@ -17,6 +17,7 @@ class CreateAcknowledgmentTemplateBlade {
         cancelButton: '[rx-view-component-id="9aeef4d7-1a10-4ffd-aa3a-22665c32883c"] button',
         lineOfBusiness: '[rx-view-component-id="14c47289-52da-433a-b297-de2e8a7402a0"] input',
         locale: '[rx-view-component-id="62a33fa8-7786-46e6-aa43-ce75e06a3338"] .btn-default',
+        lobValue: '[rx-view-component-id="14c47289-52da-433a-b297-de2e8a7402a0"] .pull-left'
     }
 
     async setTemplateName(templateName: string): Promise<void> {
@@ -28,7 +29,7 @@ class CreateAcknowledgmentTemplateBlade {
     }
 
     async islineOfBusinessDisabled(): Promise<string> {
-       return await $(this.selectors.lineOfBusiness).getAttribute("disabled");
+        return await $(this.selectors.lineOfBusiness).getAttribute("disabled");
     }
 
     async isLocaleDisabled(): Promise<string> {
@@ -36,15 +37,15 @@ class CreateAcknowledgmentTemplateBlade {
     }
 
     async isCompanyRequired(): Promise<boolean> {
-        return   await utilCommon.isRequiredTagToField(this.selectors.companyGuid);
+        return await utilCommon.isRequiredTagToField(this.selectors.companyGuid);
     }
 
     async isTemplateNameRequired(): Promise<boolean> {
-      return  await utilCommon.isRequiredTagToField(this.selectors.templateNameGuid);
+        return await utilCommon.isRequiredTagToField(this.selectors.templateNameGuid);
     }
 
     async isStatusRequired(): Promise<boolean> {
-        return  await utilCommon.isRequiredTagToField(this.selectors.statusGuid);
+        return await utilCommon.isRequiredTagToField(this.selectors.statusGuid);
     }
 
     async isSubjectRequired(): Promise<boolean> {
@@ -77,6 +78,10 @@ class CreateAcknowledgmentTemplateBlade {
 
     async clickOnCancelButton(): Promise<void> {
         await $(this.selectors.cancelButton).click();
+    }
+
+    async getLobValue(): Promise<string> {
+        return await $(this.selectors.lobValue).getText();
     }
 }
 

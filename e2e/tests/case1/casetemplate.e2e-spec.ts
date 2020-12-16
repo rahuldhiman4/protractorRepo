@@ -1,6 +1,8 @@
+import { cloneDeep } from 'lodash';
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
 import { ALL_FIELD, MANDATORY_FIELD } from '../../data/ui/case/casetemplate.data.ui';
+import { flowsetGlobalFields, flowsetMandatoryFields } from '../../data/ui/flowset/flowset.ui';
 import caseConsolePo from '../../pageobject/case/case-console.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePo from '../../pageobject/case/create-case.po';
@@ -24,8 +26,6 @@ import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-import { flowsetMandatoryFields, flowsetGlobalFields } from '../../data/ui/flowset/flowset.ui';
-import { cloneDeep } from 'lodash';
 
 describe('Case Template', () => {
     let userData = undefined;
@@ -38,7 +38,7 @@ describe('Case Template', () => {
             "lastName": "Company",
             "userId": "nosg",
             "emailId": "nosg@petramco.com",
-            "userPermission": ["Case Agent", "Foundation Read", "Document Manager", "Case Business Analyst","Human Resource"]
+            "userPermission": ["Case Agent", "Foundation Read", "Document Manager", "Case Business Analyst", "Human Resource"]
         }
         await apiHelper.createNewUser(userData);
         await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
@@ -98,22 +98,65 @@ describe('Case Template', () => {
     });
 
     //ptidke
-    it('[DRDMV-10469]: Case Template creation with Template validation as ENFORCED', async () => {
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
-        ALL_FIELD.templateName = ALL_FIELD.templateName + Math.floor(Math.random() * 100000);
-        await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
-        await createCaseTemplate.setTemplateName(ALL_FIELD.templateName);
-        await createCaseTemplate.setCompanyName(ALL_FIELD.company);
-        await createCaseTemplate.setCaseSummary(ALL_FIELD.templateSummary);
-        await createCaseTemplate.setPriorityValue(ALL_FIELD.casePriority);
-        await createCaseTemplate.setBusinessUnitDropdownValue(ALL_FIELD.ownerBusinessUnit);
-        await createCaseTemplate.setOwnerGroupDropdownValue(ALL_FIELD.ownerGroup);
-        await createCaseTemplate.setTemplateStatusDropdownValue(ALL_FIELD.templateStatus)
-        await createCaseTemplate.setIdentityValidationValue('Enforced')
-        await createCaseTemplate.clickSaveCaseTemplate();
-        expect(await viewCaseTemplate.getCaseTemplateNameValue()).toContain(ALL_FIELD.templateName);
-        expect(await viewCaseTemplate.getIdentityValdationValue()).toContain('Enforced');
+    describe('[DRDMV-10469]: Case Template creation with Template validation as ENFORCED', async () => {
+        it('[DRDMV-10469]: Case Template creation with Template validation as ENFORCED', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            ALL_FIELD.templateName = ALL_FIELD.templateName + Math.floor(Math.random() * 100000);
+            await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
+            await createCaseTemplate.setTemplateName(ALL_FIELD.templateName);
+            await createCaseTemplate.setCompanyName(ALL_FIELD.company);
+            await createCaseTemplate.setCaseSummary(ALL_FIELD.templateSummary);
+            await createCaseTemplate.setPriorityValue(ALL_FIELD.casePriority);
+            await createCaseTemplate.setBusinessUnitDropdownValue(ALL_FIELD.ownerBusinessUnit);
+            await createCaseTemplate.setOwnerGroupDropdownValue(ALL_FIELD.ownerGroup);
+            await createCaseTemplate.setTemplateStatusDropdownValue(ALL_FIELD.templateStatus)
+            await createCaseTemplate.setIdentityValidationValue('Enforced')
+            await createCaseTemplate.clickSaveCaseTemplate();
+            expect(await viewCaseTemplate.getCaseTemplateNameValue()).toContain(ALL_FIELD.templateName);
+            expect(await viewCaseTemplate.getIdentityValdationValue()).toContain('Enforced');
+        });
+        it('[DRDMV-10469]: create same name record in same LOB', async () => {
+            //create same name record in same LOB
+            await navigationPage.signOut();
+            await loginPage.login('jbarnes');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
+            await createCaseTemplate.setTemplateName(ALL_FIELD.templateName);
+            await createCaseTemplate.setCompanyName(ALL_FIELD.company);
+            await createCaseTemplate.setCaseSummary(ALL_FIELD.templateSummary);
+            await createCaseTemplate.clickSaveCaseTemplate();
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (10000): The Template Name already exists. Please select a different name.')).toBeTruthy("Error message absent");
+            await createCaseTemplate.clickOnCancelButton();
+            await utilCommon.clickOnWarningOk();
+        });
+        it('[DRDMV-10469]: create same name record in different LOB', async () => {
+            //create same name record in different LOB
+            await utilGrid.selectLineOfBusiness('Facilities');
+            await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
+            await createCaseTemplate.setTemplateName(ALL_FIELD.templateName);
+            await createCaseTemplate.setCompanyName(ALL_FIELD.company);
+            await createCaseTemplate.setCaseSummary(ALL_FIELD.templateSummary);
+            await createCaseTemplate.setOwnerCompanyValue(ALL_FIELD.ownerCompany);
+            await createCaseTemplate.setBusinessUnitDropdownValue('Facilities Support');
+            await createCaseTemplate.setOwnerGroupDropdownValue('Facilities');
+            // verify LOB is there
+            expect(await createCaseTemplate.getLobValue()).toBe("Facilities");
+            await createCaseTemplate.clickSaveCaseTemplate();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
+            // open the record and verify LOB is on edit screen
+            await viewCaseTemplate.clickBackArrowBtn();
+            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(ALL_FIELD.templateName);
+            expect(await viewCaseTemplate.getLobValue()).toBe("Facilities");
+            await viewCaseTemplate.clickBackArrowBtn();
+            await utilGrid.selectLineOfBusiness('Human Resource');
+        });
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login("qkatawazi");
+        });
     });
 
     //ptidke
@@ -501,7 +544,7 @@ describe('Case Template', () => {
                 "assignee": "gderuno",
                 "description": 'description' + randomStr,
                 "ownerBU": "Psilon Support Org1",
-                "ownerGroup":"Psilon Support Group1",
+                "ownerGroup": "Psilon Support Group1",
             }
             await apiHelper.apiLogin('gderuno');
             await apiHelper.createCaseTemplate(casetemplatePsilon);

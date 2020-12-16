@@ -12,6 +12,7 @@ export class CreateEmailConfig {
         saveButton: '[rx-view-component-id="cb16fd71-146e-4e5f-9e18-854ddd185d5e"] button',
         cancelButton: '[rx-view-component-id="daad4496-bc8a-4de8-8a2e-cc7665ff8813"] button',
         incomingMailBoxNameGuid: '948378d1-5e37-4de0-a1fa-213c09c35000',
+        lob: '[rx-view-component-id="fb1732ed-a706-452a-99aa-a7262fb7409f"] input'
     }
 
     async setDescription(description: string): Promise<void> {
@@ -21,6 +22,10 @@ export class CreateEmailConfig {
 
     async clickSave(): Promise<void> {
         await $(this.selectors.saveButton).click();
+    }
+
+    async isLineOfBusinessEnabled(): Promise<boolean> {
+      return  await $(this.selectors.lob).isEnabled();
     }
 
     async clickCancel(): Promise<void> {

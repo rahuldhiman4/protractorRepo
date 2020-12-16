@@ -998,8 +998,14 @@ describe('Case Data Store', () => {
             await createDynamicFieldLibraryConfigPo.setStatusValue('Active');
             await createDynamicFieldLibraryConfigPo.setInformationSourceValueType('Agent');
             await createDynamicFieldLibraryConfigPo.setFieldValueType('BOOLEAN');
+            // verify LOB is there
+            expect(await createDynamicFieldLibraryConfigPo.getLobValue()).toBe("Facilities");
             await createDynamicFieldLibraryConfigPo.clickOnSaveButton();
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
+            // open the record and verify LOB is on edit screen
+            await utilGrid.searchAndOpenHyperlink('LibBooleanField');
+            expect(await editDynamicFieldLibraryConfigPo.getLobValue()).toBe("Facilities");
+            await editDynamicFieldLibraryConfigPo.clickCancelButton();
             await utilGrid.selectLineOfBusiness('Human Resource');
         });
         afterAll(async () => {

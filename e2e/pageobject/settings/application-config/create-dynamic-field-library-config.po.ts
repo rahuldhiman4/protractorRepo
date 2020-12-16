@@ -1,5 +1,4 @@
-import { $, $$, by, element, protractor, ProtractorExpectedConditions } from "protractor";
-import utilGrid from '../../../utils/util.grid';
+import { $, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../../utils/util.common';
 
 class CreateDynamicFieldLibrary {
@@ -18,6 +17,7 @@ class CreateDynamicFieldLibrary {
         saveButton: '[rx-view-component-id="2f8db2c3-2352-4732-81b9-fdaf46ccbde7"] button',
         activeConfidentialsCheckbox: '[rx-view-component-id="067cbf9a-a1db-4268-8f6b-3132270f6356"] button[uib-btn-radio="trueValue"]',
         requiredWarningmessage: '.localized-character-field-design div',
+        lobValue: '[rx-view-component-id="a9446eac-d1a5-4bff-8915-51aac36918e6"] .pull-left'
     }
 
     async clickOnSaveButton(): Promise<void> {
@@ -98,6 +98,10 @@ class CreateDynamicFieldLibrary {
 
     async clickCancelButton(): Promise<void> {
         await $(this.selectors.cancelButton).click();
+    }
+
+    async getLobValue(): Promise<string> {
+        return await $(this.selectors.lobValue).getText();
     }
 }
 

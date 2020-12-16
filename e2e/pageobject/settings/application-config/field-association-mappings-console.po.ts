@@ -7,7 +7,6 @@ class FieldAssociationMappingConsole {
             gridGuid: '2f422268-a7c7-436c-8490-57cc4294018a',
             pageHeader: '[rx-view-component-id="3ef28d37-3f56-4bba-ba13-9f102071b34b"] p span',
             deleteButton: '[rx-view-component-id="5c759d50-8e78-4805-b0c2-29e972b0b118"] button',
-            addDocumentTemplateBtn: '[rx-view-component-id="3acdcc85-9981-433a-84dd-6891fedcc243"] button',
             addFieldAssociationMapping: '[rx-view-component-id="50b53a4f-9c57-4909-b395-f0b5afbf8c60"] span',
     }
 

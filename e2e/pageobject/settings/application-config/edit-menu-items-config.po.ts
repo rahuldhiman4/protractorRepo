@@ -1,4 +1,4 @@
-import { $, $$, browser, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../../utils/util.common';
 
 class MenuItemsConfigEditPage {
@@ -14,6 +14,7 @@ class MenuItemsConfigEditPage {
         statusDropDownGuid: '42deb4bb-67da-4350-b92a-60b620d9d271',
         toggleButtonGuid: 'd2fb228a-e6ca-4906-8b60-80537b45d75f',
         sourceDisableMessage: '[rx-view-component-id="ecfcd0c5-121a-47c0-ba8f-4e97c8c40483"] span',
+        lobValue: '[rx-view-component-id="7878abb1-a138-4721-9717-14641148a87d"] .pull-left'
     }
 
     async isMenuNameDropDownEnabled(): Promise<boolean> {
@@ -72,7 +73,9 @@ class MenuItemsConfigEditPage {
         return await $(this.selectors.sourceDisableMessage).getText();;
     }
 
-
+    async getLobValue(): Promise<string> {
+        return await $(this.selectors.lobValue).getText();
+    }
 }
 
 export default new MenuItemsConfigEditPage();

@@ -53,8 +53,14 @@ class CreateCasePage {
         categoryTier2Value: '[rx-view-component-id="20067485-2b38-44a0-a6ed-aec998df377b"] .dropdown-toggle',
         categoryTier3Value: '[rx-view-component-id="9bfb3795-0543-4a17-a374-28dc586d1e03"] .dropdown-toggle',
         categoryTier4Value: '[rx-view-component-id="ba093458-4486-4619-8587-4d3edbd45e45"] .dropdown-toggle',
+        lobLabel: '[rx-view-component-id="6f8f65cd-23eb-437f-b43e-e725bdbcf089"] .form-control-label span',
+        lobValue: '[rx-view-component-id="6f8f65cd-23eb-437f-b43e-e725bdbcf089"] button',
+        lobSection: '[rx-view-component-id="6f8f65cd-23eb-437f-b43e-e725bdbcf089"] adapt-select',
         lineofbusiness: '[rx-view-component-id="48f20aa3-5805-4a73-9118-ec32fab2a134"] .form-control',
-        lineOfBusinessGuid: '6f8f65cd-23eb-437f-b43e-e725bdbcf089'
+        lobGuid: '6f8f65cd-23eb-437f-b43e-e725bdbcf089',
+        assignedBusinessUnitValue: '[rx-view-component-id="3c0986c0-c2b1-44e3-bd29-ac4757e55a66"] button',
+        assignedSupportGroupValue: '[rx-view-component-id="79750d81-d8e5-447e-b923-94c54f2d3310"] button',
+        assigneeValue: '[rx-view-component-id="43c3e9ee-dde2-4e10-94e9-c6ee68217cda"] button'
     }
 
     async addDescriptionAttachment(fileToUpload: string[]): Promise<void> {
@@ -111,6 +117,18 @@ class CreateCasePage {
         return await utilityCommon.isRequiredTagToField('a7cfc996-f8c8-4ef0-afe4-18ca7e1fef88');
     }
 
+    async getLineOfBusinessLabel(): Promise<string> {
+        return await $(this.selectors.lobLabel).getText();
+    }
+
+    async isLineOfBusinessFieldEnabled(): Promise<boolean> {
+        return await $(this.selectors.lobSection).isEnabled();
+    }
+
+    async getLineOfBusinessFieldValue(): Promise<string> {
+        return await $(this.selectors.lobValue).getText();
+    }
+
     async isSelectCaseTemplateButtonEnabled(): Promise<boolean> {
         return await $(this.selectors.selectCaseTemplateButton).isEnabled();
     }
@@ -137,10 +155,6 @@ class CreateCasePage {
 
     async isAssigneeReadOnly(): Promise<boolean> {
         return await $(this.selectors.assignee).isEnabled() == false ? true : false;
-    }
-
-    async selectLineOfBusiness(lobName: string): Promise<void> {
-        await utilityCommon.selectDropDown(this.selectors.lineOfBusinessGuid, lobName);
     }
 
     async selectRequester(requester: string): Promise<void> {
@@ -357,15 +371,25 @@ class CreateCasePage {
         return await $(this.selectors.lineofbusiness).getAttribute("disabled") == "true";
     }
 
-    // async getLineOfBusinessValue(): Promise<string>{
-    //     return await $(this.selectors.lineofbusiness).getAttribute("placeholder");
-    // }
+    async getLineOfBusinessValue(): Promise<string>{
+        return await $(this.selectors.lineofbusiness).getAttribute("placeholder");
+    }
 
-    async getLineOfBusinessValue(): Promise<string> {
-          let elementPresent = await $(this.selectors.lineofbusiness).isPresent()
-            if (elementPresent == true) return await $(this.selectors.lineofbusiness).getAttribute("placeholder");
-            else return await $('[rx-view-component-id="6f8f65cd-23eb-437f-b43e-e725bdbcf089"] .dropdown-toggle').getText();
-        }
+    async selectLineOfBusiness(value: string): Promise<void> {
+        await utilityCommon.selectDropDown(this.selectors.lobGuid, value);
+    }
+
+    async getAssigneeGroupValue(): Promise<string> {
+        return await $(this.selectors.assignedSupportGroupValue).getText();
+    }
+
+    async getAssigneeBusinessUnitValue(): Promise<string> {
+        return await $(this.selectors.assignedBusinessUnitValue).getText();
+    }
+
+    async getAssigneeValue(): Promise<string> {
+        return await $(this.selectors.assigneeValue).getText();
+    }
 }
 
 export default new CreateCasePage();

@@ -1,4 +1,4 @@
-import { $, $$ } from "protractor";
+import { $, $$, element, by } from "protractor";
 
 class BusinessTimeSegmentConfigEditPage {
 
@@ -6,11 +6,16 @@ class BusinessTimeSegmentConfigEditPage {
         svtGroupName: 'input[ng-model*="groupName"]',
         svtSelect: '.slm-group__list i',
         saveButton: 'button[ng-click*="submitForm"]',
-        closeButton: '.slm-modal-footer button'
+        closeButton: '.slm-modal-footer button',
+        selectAvailabelServiceTargetIcon: '.slm-group-list-item__icon-container i'
     }
 
     async isSVTGroupNameEnabled(): Promise<boolean> {
         return await $(this.selectors.svtGroupName).isEnabled();
+    }
+
+    async selectAvailableServiceTarget(serviceTarget: string): Promise<void> {
+        await $(this.selectors.selectAvailabelServiceTargetIcon).click();
     }
 
     async isSVTSelectRadioBtnDisabled(): Promise<boolean> {
@@ -23,6 +28,10 @@ class BusinessTimeSegmentConfigEditPage {
 
     async clickClose(): Promise<void> {
         await $$(this.selectors.closeButton).last().click();
+    }
+
+    async clickSaveButton(): Promise<void> {
+        await $(this.selectors.saveButton).first().click();
     }
 
 }

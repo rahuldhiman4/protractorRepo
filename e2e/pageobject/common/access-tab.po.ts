@@ -15,6 +15,7 @@ class AccessTab {
         closeKnowledgeAccessBlade: '[rx-view-component-id="0d8d9c7d-7e85-4277-9452-64fbba8df10d"] button',
         knowledgeAccess: '[rx-view-component-id="a99704e0-5441-4ddc-8357-bd4fc7d078d4"] .bwf-access-manager .access-group .btn-title',
         confidencialAccess: '[rx-view-component-id="b1606736-7480-4368-aac6-a8273f0ff0d5"] .bwf-access-manager .access-group .btn-title',
+        entityDropDown: '.support-group-form button.dropdown-toggle'
     }
 
     async clickToExpandAccessEntitiySearch(accessName: string, moduleName:string): Promise<void> {
@@ -93,6 +94,16 @@ class AccessTab {
         }
     }
 
+    async isAgentPresent(agentName: string): Promise<boolean> {
+        await $$('.person-field input').last().clear();
+        await $$('.person-field input').last().sendKeys(agentName);
+        return await $('.rx-typeahead-popup-content').isPresent().then(async (result) => {
+            if(result) return await $('.rx-typeahead-popup-content').isDisplayed();
+            else return false;
+        })
+
+     }
+
     async clickAccessEntitiyAddButton(dropdownName: string): Promise<void> {
         let accessList = 'ux-access-manager .access-group div.d-flex.flex-row';
         let accessCount: number = await $$('ux-access-manager .access-group div.d-flex.flex-row').count();
@@ -168,6 +179,33 @@ class AccessTab {
                 await $$(accessCrossIcon).get(i).click();
             }
         }
+    }
+
+    async isValuePresentInDropdown(dropDownLabel: string, dropDownValue: string): Promise<boolean> {
+        let locator: ElementFinder = undefined;
+        switch (dropDownLabel) {
+            case "Company": {
+                locator = await $$(this.selectors.entityDropDown).get(4);
+                break;
+            }
+            case "Business Unit": {
+                locator = await $$(this.selectors.entityDropDown).get(5);
+                break;
+            }
+            case "Business Unit": {
+                locator = await $$(this.selectors.entityDropDown).get(5);
+                break;
+            }
+            case "Support Group": {
+                locator = await $$(this.selectors.entityDropDown).get(7);
+                break;
+            }
+            default: {
+                console.log(dropDownLabel, ' is not a valid parameter');
+                break;
+            }
+        }
+        return await utilityCommon.isValuePresentInDropDown(locator, dropDownValue);
     }
 
     async clickOnResetToDefault(): Promise<void> {

@@ -53,6 +53,7 @@ class EditKnowledgePage {
         closedTip: '.bwf-attachment-container__remove .d-icon-cross',
         closedStatusChangeGuid: 'b71875a3-b23a-4fc4-8f0f-0e29f2e6eb74',
         changeAssignment: '[rx-view-component-id="3da1754d-3c41-4b04-9e1c-f5f5a6b3226f"] button',
+        lobSection: '[rx-view-component-id="0cfb311c-db00-4b54-93dd-6c03e301e3ab"] adapt-select'
     }
 
     async setKnowledgeStatus(newStatus: string): Promise<void> {
@@ -400,6 +401,9 @@ class EditKnowledgePage {
         return await utilityCommon.isValuePresentInDropDown(guid, value);
     }
 
+    async isLobSectionEnabled(): Promise<boolean> {
+        return await $(this.selectors.lobSection).isEnabled();
+    }
 }
 
 export default new EditKnowledgePage();
