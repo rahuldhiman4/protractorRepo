@@ -54,6 +54,7 @@ class CreateCasePage {
         categoryTier3Value: '[rx-view-component-id="9bfb3795-0543-4a17-a374-28dc586d1e03"] .dropdown-toggle',
         categoryTier4Value: '[rx-view-component-id="ba093458-4486-4619-8587-4d3edbd45e45"] .dropdown-toggle',
         lineofbusiness: '[rx-view-component-id="48f20aa3-5805-4a73-9118-ec32fab2a134"] .form-control',
+        lineOfBusinessGuid: '6f8f65cd-23eb-437f-b43e-e725bdbcf089'
     }
 
     async addDescriptionAttachment(fileToUpload: string[]): Promise<void> {
@@ -138,6 +139,10 @@ class CreateCasePage {
         return await $(this.selectors.assignee).isEnabled() == false ? true : false;
     }
 
+    async selectLineOfBusiness(lobName: string): Promise<void> {
+        await utilityCommon.selectDropDown(this.selectors.lineOfBusinessGuid, lobName);
+    }
+
     async selectRequester(requester: string): Promise<void> {
         await $(this.selectors.requesterInput).sendKeys(requester);
         await $$(this.selectors.requesters).first().click();
@@ -185,6 +190,10 @@ class CreateCasePage {
 
     async setDescription(description: string): Promise<void> {
         await utilityCommon.setCKEditor(description, this.selectors.descriptionGuid);
+    }
+
+    async isCategoryTier1DropDownValueDisplayed(categValue: string): Promise<boolean> {
+        return await utilityCommon.isValuePresentInDropDown(this.selectors.categoryTier1Guid, categValue);
     }
 
     async selectCategoryTier1(categValue: string): Promise<void> {
@@ -348,9 +357,15 @@ class CreateCasePage {
         return await $(this.selectors.lineofbusiness).getAttribute("disabled") == "true";
     }
 
-    async getLineOfBusinessValue(): Promise<string>{
-        return await $(this.selectors.lineofbusiness).getAttribute("placeholder");
-    }
+    // async getLineOfBusinessValue(): Promise<string>{
+    //     return await $(this.selectors.lineofbusiness).getAttribute("placeholder");
+    // }
+
+    async getLineOfBusinessValue(): Promise<string> {
+          let elementPresent = await $(this.selectors.lineofbusiness).isPresent()
+            if (elementPresent == true) return await $(this.selectors.lineofbusiness).getAttribute("placeholder");
+            else return await $('[rx-view-component-id="6f8f65cd-23eb-437f-b43e-e725bdbcf089"] .dropdown-toggle').getText();
+        }
 }
 
 export default new CreateCasePage();
