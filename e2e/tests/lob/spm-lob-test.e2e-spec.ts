@@ -683,7 +683,7 @@ describe('Create Process in Flowset', () => {
             await apiHelper.createCaseTemplate(caseTemplateDataKingstoneLegal);
         });
 
-        fit('[DRDMV-23681]: Verify Negative Scenrio for Oracle HR and Kingston Leagal data but Finance LOB for category diffrence', async () => {
+        it('[DRDMV-23681]: Verify Negative Scenrio for Oracle HR and Kingston Leagal data but Finance LOB for category diffrence', async () => {
             await navigationPage.gotoCaseConsole();
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Ueshiba Morihei');
@@ -787,7 +787,7 @@ describe('Create Process in Flowset', () => {
             expect (await createCasePage.getCategoryTier3Value()).toBe('Bonus');
             expect (await createCasePage.getAssigneeBusinessUnitValue()).toBe('Kingston HR');
             expect (await createCasePage.getAssigneeBusinessUnitValue()).toBe('Kingston AskHR');
-            expect (await createCasePage.getAssigneeValue()).toBe('Unamuno Miguel de');
+            expect (await createCasePage.getAssigneeValue()).toBe('Samara Moran');
 
             await createCasePage.clickSaveCaseButton();
             await previewCasePage.clickGoToCaseButton();
