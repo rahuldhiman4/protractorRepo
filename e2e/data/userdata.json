@@ -166,5 +166,17 @@
 	"ncage": {
 		"userName": "ncage@petramco.com",
 		"userPassword": "Password_1234"
+	},
+	"rwillie":{
+		"userName": "rwillie@petramco.com",
+		"userPassword": "Password_1234"
+	},
+	"sbruce":{
+		"userName": "sbruce@petramco.com",
+		"userPassword": "Password_1234"
+	},
+	"ttristan":{
+		"userName": "ttristan@petramco.com",
+		"userPassword": "Password_1234"
 	}
 }
