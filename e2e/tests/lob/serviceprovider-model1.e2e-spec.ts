@@ -32,7 +32,7 @@ describe('Create Process in Flowset', () => {
     let password = 'Password_1234';
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
-        await loginPage.login(kingstoneUserName, password);
+        await loginPage.login(kingstoneOracleLOBUserName, password);
     });
 
     afterAll(async () => {

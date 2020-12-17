@@ -518,7 +518,7 @@ describe('Operating Orgnization Data Model Tests', () => {
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateDataPetramcoHR.templateName);
 
             await createCasePage.clickChangeAssignmentButton();
-            expect(await changeAssignmentBlade.isValuePresentInDropdown('Company', 'Psilon')).toBeFalsy();
+            expect(await changeAssignmentBlade.isValuePresentInDropdown('Petramco', 'Psilon')).toBeFalsy();
             await changeAssignmentBlade.clickOnCancelButton();
             await createCasePage.clickSaveCaseButton();
 
@@ -1133,6 +1133,7 @@ describe('Operating Orgnization Data Model Tests', () => {
             expect(await utilityGrid.isGridRecordPresent(caseTemplateData.templateName)).toBeTruthy('DRDMV-23519Summary' + randomStr);
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();            
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
