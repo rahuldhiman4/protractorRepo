@@ -30,9 +30,9 @@ describe("Notification Template", () => {
 
     //radhiman
     describe('[DRDMV-19109]: [Copy Notification] - UI behavior when copying a notification template', async () => {
-        let notificationTemplateName = 'DRDMV-19109_CopiedTemplate';
-        let notificationTemplateNameUpdated = 'DRDMV-19109_CopiedTemplate_Updated';
-
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let notificationTemplateName = 'DRDMV-19109_CopiedTemplate' + randomStr;
+        let notificationTemplateNameUpdated = 'DRDMV-19109_CopiedTemplate_Updated' + randomStr;
         it('[DRDMV-19109]: [Copy Notification] - UI behavior when copying a notification template', async () => {
             await expect(notificationTempGridPage.isCopyTemplateButtonDisabled()).toBeTruthy();
             await utilGrid.searchAndSelectGridRecord("Task SLA Missed");

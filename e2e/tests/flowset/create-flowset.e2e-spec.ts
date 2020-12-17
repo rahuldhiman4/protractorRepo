@@ -251,6 +251,7 @@ describe('Create Flowset', () => {
             await navigationPage.signOut();
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', 'Flowsets - Console - Business Workflows');
             await utilGrid.selectLineOfBusiness('Human Resource');
             await expect(consoleFlowset.isFlowsetPresentOnGrid(flowsetMandatoryFieldsData.flowsetName)).toBeFalsy(" Flowset is present ");
             await expect(consoleFlowset.isFlowsetPresentOnGrid(flowsetWithGlobalFieldsData.flowsetName)).toBeFalsy(" Flowset is present ");

@@ -381,7 +381,7 @@ describe('Create Process in Flowset', () => {
             await navigationPage.signOut();
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
             await utilGrid.selectLineOfBusiness('Human Resource');
             expect(await utilGrid.isGridRecordPresent('UpdateAlias' + randomStr)).toBeTruthy('Flowset process is not displayed to Case BA havin access to multiple LOB.');
             await utilGrid.selectLineOfBusiness('Facilities');

@@ -39,7 +39,7 @@ describe("Create Case Assignment Mapping", () => {
     const departmentDataFile = require('../../data/ui/foundation/department.ui.json');
     const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
     const personDataFile = require('../../data/ui/foundation/person.ui.json');
-    let userData = undefined, userData1 = undefined;
+    let userData = undefined, userData1 = undefined, userData2 = undefined;
     const userId1 = "idphylum4@petramco.com";
     let flowsetGlobalFieldsData = undefined;
     beforeAll(async () => {
@@ -125,6 +125,15 @@ describe("Create Case Assignment Mapping", () => {
         await apiHelper.associatePersonToSupportGroup(personData1.userId, 'Phylum Support Group1');
         await apiHelper.associatePersonToCompany(personData1.userId, 'Phylum');
         await apiHelper.associatePersonToCompany('gderuno', 'Petramco');
+        userData2 = {
+            "firstName": "caseBA",
+            "lastName": "MultiLOB",
+            "userId": "caseBAMultiLOB",
+            "userPermission": ["Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
+        }
+        await apiHelper.createNewUser(userData2);
+        await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
+        await apiHelper.associatePersonToSupportGroup(userData2.userId, "US Support 3");
     }
 
     afterAll(async () => {
@@ -394,6 +403,7 @@ describe("Create Case Assignment Mapping", () => {
                 "ownerGroup": "US Support 3"
             }
             await apiHelper.apiLogin('qkatawazi');
+            await createNewUsers();
             await apiHelper.createCaseTemplate(templateData);
         });
 
@@ -497,7 +507,7 @@ describe("Create Case Assignment Mapping", () => {
             expect(await utilGrid.isGridRecordPresent(globalAssignmentMappingName)).toBeTruthy('Case Assignment Mapping are not displayed to multiple LOB Case BA.');
             expect(await utilGrid.isGridRecordPresent(companyAssignmentMappingName)).toBeTruthy('Case Assignment Mapping are not displayed to multiple LOB Case BA.');
             expect(await utilGrid.isGridRecordPresent(facilitiesAssignmentMappingName)).toBeFalsy('Case Assignment Mapping are displayed to multiple LOB Case BA.');
-            await assignmentConfigConsolePage.searchAssignmentConfig(companyAssignmentMappingName);
+            await assignmentConfigConsolePage.searchAndClickOnAssignmentConfig(companyAssignmentMappingName);
             await assignmentConfigEditPage.setAssignee('RA3 Liu');
             await assignmentConfigEditPage.clickonSaveButton();
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
@@ -511,8 +521,8 @@ describe("Create Case Assignment Mapping", () => {
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await viewCasePo.clickOnTab('Case Access');
-            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('RA3 Liu', 'Write')).toBeTruthy('FailuerMsg1: Agent Name is missing');
-            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('AU Support 2', 'Write')).toBeTruthy('Support Group does not have write access');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('caseBA MultiLOB', 'Write')).toBeTruthy('FailuerMsg1: Agent Name is missing');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('AU Support 3', 'Write')).toBeTruthy('Support Group does not have write access');
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteReadAccessOrAssignmentMapping(companyAssignmentMappingName);
             await navigationPage.gotoCreateCase();
@@ -522,7 +532,7 @@ describe("Create Case Assignment Mapping", () => {
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await viewCasePo.clickOnTab('Case Access');
-            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('AU Support 1', 'Write')).toBeTruthy('Support Group does not have write access');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('AU Support 3', 'Write')).toBeTruthy('Support Group does not have write access');
         });
 
         afterAll(async () => {

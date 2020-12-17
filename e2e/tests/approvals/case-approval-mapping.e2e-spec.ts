@@ -210,7 +210,6 @@ describe("Case Approval Mapping Tests", () => {
             await editApprovalMappingPage.clickCancelApprovalMappingBtn();
             //Below are the validation for [DRDMV-10704]
             await approvalMappingConsolePage.addColumnOnGrid(['ID', 'Flowset']);
-            await approvalMappingConsolePage.searchValueOnGrid('Human Resources');
             expect(await approvalMappingConsolePage.isRecordPresent('Human Resources')).toBeTruthy();
             await approvalMappingConsolePage.removeColumnFromGrid(['ID', 'Flowset']);
         });
@@ -220,7 +219,7 @@ describe("Case Approval Mapping Tests", () => {
             await createApprovalMappingPage.setApprovalMappingName(globalApprovalMapping);
             await createApprovalMappingPage.selectCompany('- Global -');
             await createApprovalMappingPage.selectStatusTrigger('Resolved');
-            await createApprovalMappingPage.selectFlowset('Human Resources');
+            await createApprovalMappingPage.selectFlowset('Benefits');
             await createApprovalMappingPage.selectStatusMappingApproved('In Progress');
             await createApprovalMappingPage.selectStatusMappingRejected('Canceled');
             await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Pending');
@@ -303,7 +302,7 @@ describe("Case Approval Mapping Tests", () => {
             expect(await utilGrid.isGridRecordPresent(approvalMappingName2)).toBeTruthy('Human Resources LOB case approval mapping is not visible to case BA with multiple LOB access');
             expect(await utilGrid.isGridRecordPresent(globalApprovalMapping)).toBeTruthy('Human Resources LOB case approval mapping is not visible to case BA with multiple LOB access');
 
-            await utilGrid.searchOnGridConsole(approvalMappingName);
+            await utilGrid.searchAndOpenHyperlink(approvalMappingName);
             await editApprovalMappingPage.setApprovalMappingName(approvalMappingName+"_updated");
             await editApprovalMappingPage.clickSaveApprovalMappingBtn();
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
