@@ -127,6 +127,16 @@ class ChangeAssignmentBlade {
         await element(by.cssContainingText(this.selectors.assignee, name)).click();
     }
 
+    async isAssigneeDisplayed(name: string): Promise<boolean> {
+        await $(this.selectors.searchAsignee).click();
+        await $(this.selectors.searchAsignee).clear();
+        await $(this.selectors.searchAsignee).sendKeys(name + Key.ENTER);
+        return await element(by.cssContainingText(this.selectors.assignee, name)).isPresent().then(async (link) => {
+            if (link) return await element(by.cssContainingText(this.selectors.assignee, name)).isDisplayed();
+            else return false;
+        });
+    }
+
     async setAssignee(company: string, bu: string, group: string, assignee: string): Promise<void> {
         await this.selectCompany(company);
         await this.selectBusinessUnit(bu);

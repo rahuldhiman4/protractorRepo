@@ -27,11 +27,12 @@ describe('Create Process in Flowset', () => {
     let oracleUserName = 'umiguelde@petramco.com';
     let kingstoneLegalUserName = 'yhenny@petramco.com';
     let kingstoneOracleLOBUserName = 'jstuart@petramco.com';
+    let financeBackOfficeUserName = 'wsteven@petramco.com';
 
     let password = 'Password_1234';
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
-        await loginPage.login(kingstoneOracleLOBUserName, password);
+        await loginPage.login(kingstoneUserName, password);
     });
 
     afterAll(async () => {
@@ -857,6 +858,681 @@ describe('Create Process in Flowset', () => {
             await utilityGrid.clearFilter();
             expect (await utilityGrid.isGridRecordPresent(caseIdOracleHR)).toBeFalsy('caseIdOracleHR Missing on grid');
             expect (await utilityGrid.isGridRecordPresent(caseIdKingstoneHR)).toBeTruthy('caseIdKingstoneHR Missing on grid');
+        });
+
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login(kingstoneLegalUserName, password);
+        });
+    });
+
+    //kiran
+    describe('[DRDMV-23760]: [Service Provider Model][Create Case]: Verify the behavior when the case agent is able to create a case when one of the supporting organization supports a Line of Business for its own.', () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseIdKingstoneLegal, caseIdFinance, caseTemplateDataGlobalKingstoneLegal, caseTemplateDataKingstoneLegal , caseTemplateDataGlobalFinanceBackOffice, caseTemplateDataFinanceBackOffice;
+        let taskTemplateNameSummaryKingstoneLegal = "1taskTemplateNameSummaryDRDMV23760" + randomStr;
+        let taskTemplateNameSummaryFinanceBackOffice = "2taskTemplateNameSummaryDRDMV23760" + randomStr;
+        
+        beforeAll(async () => {
+            // Create Data with Kingston HR LOB
+            await apiHelper.apiLogin(kingstoneLegalUserName, password);
+            caseTemplateDataGlobalKingstoneLegal = {
+                "templateName": 'GlobalcaseTemplateNameKingstoneLegal' + randomStr,
+                "templateSummary": 'GlobalCaseTemplateSummaryKingstonLegal' + randomStr,
+                "categoryTier1": 'Employee Relations',
+                "categoryTier2": 'Compensation',
+                "categoryTier3": 'Bonus',
+                "casePriority": "Low",
+                "templateStatus": "Active",
+                "company": "- Global -",
+                "businessUnit": "Kingston Legal",
+                "supportGroup": "Legal Support",
+                "assignee": "yhenny",
+                "ownerBU": "Kingston Legal",
+                "ownerGroup": "Legal Support",
+                "lineOfBusiness": "Kingston Legal"
+            }
+            await apiHelper.createCaseTemplate(caseTemplateDataGlobalKingstoneLegal);
+
+            caseTemplateDataKingstoneLegal = {
+                "templateName": 'caseTemplateNameKingstonLegal' + randomStr,
+                "templateSummary": 'caseTemplateSummaryKingstonLegal' + randomStr,
+                "categoryTier1": 'Workforce Administration',
+                "categoryTier2": 'HR Operations',
+                "categoryTier3": 'Adjustments',
+                "casePriority": "High",
+                "templateStatus": "Active",
+                "company": "Kingston",
+                "businessUnit": "Kingston Legal",
+                "supportGroup": "Legal Support",
+                "assignee": "ytylershell",
+                "ownerBU": "Kingston Legal",
+                "ownerGroup": "Legal Support",
+                "lineOfBusiness": "Kingston Legal"
+            }
+            let newCaseTemplate = await apiHelper.createCaseTemplate(caseTemplateDataKingstoneLegal);
+
+            let taskTemplateDataSet = {
+                "templateName": `${taskTemplateNameSummaryKingstoneLegal}`,
+                "templateSummary": `${taskTemplateNameSummaryKingstoneLegal}`,
+                "templateStatus": "Active",
+                "taskCompany": 'Kingston',
+                "assignee": "ytylershell",
+                "businessUnit": "Kingston Legal",
+                "supportGroup": "Legal Support",
+                "ownerCompany": "Kingston",
+                "ownerBusinessUnit": "Kingston Legal",
+                "ownerGroup": "Legal Support",
+                "lineOfBusiness": "Kingston Legal"
+            }
+            let manualTaskTemplate = await apiHelper.createManualTaskTemplate(taskTemplateDataSet);
+            await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId);
+
+    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        // Create data with Oracle Finance HR Data 
+            await apiHelper.apiLogin(kingstoneOracleLOBUserName, password);
+            caseTemplateDataGlobalFinanceBackOffice = {
+                "templateName": 'GlobalcaseTemplateNameOracleHR' + randomStr,
+                "templateSummary": 'GlobalCaseTemplateSummaryOracleHR' + randomStr,
+                "categoryTier1": 'General Ledger',
+                "categoryTier2": 'Expenses',
+                "casePriority": "Low",
+                "templateStatus": "Active",
+                "company": "- Global -",
+                "businessUnit": "Finance Back Office",
+                "supportGroup": "Finance Back Support",
+                "assignee": "wsteven",
+                "ownerBU": "Finance Back Office",
+                "ownerGroup": "Finance Back Support",
+                "lineOfBusiness": "KingstonOracle Finance"
+            }
+            await apiHelper.createCaseTemplate(caseTemplateDataGlobalFinanceBackOffice);
+
+            caseTemplateDataFinanceBackOffice = {
+                "templateName": '2caseTemplateNameOracleHR' + randomStr,
+                "templateSummary": '2caseTemplateSummaryOracleHR' + randomStr,
+                "categoryTier1": 'General Ledger',
+                "categoryTier2": 'Assets',
+                "casePriority": "High",
+                "templateStatus": "Active",
+                "company": "Phyto",
+                "businessUnit": "Finance Back Office",
+                "supportGroup": "Finance Back Support",
+                "assignee": "rtownsend",
+                "ownerBU": "Finance Back Office",
+                "ownerGroup": "Finance Back Support",
+                "lineOfBusiness": "KingstonOracle Finance"
+            }
+            let newCaseTemplate2 = await apiHelper.createCaseTemplate(caseTemplateDataFinanceBackOffice);
+
+            let taskTemplateDataSet2 = {
+                "templateName": `${taskTemplateNameSummaryFinanceBackOffice}`,
+                "templateSummary": `${taskTemplateNameSummaryFinanceBackOffice}`,
+                "templateStatus": "Active",
+                "taskCompany": 'Phyto',
+                "assignee": "umorihei",
+                "businessUnit": "Finance Back Office",
+                "supportGroup": "Finance Back Support",
+                "ownerCompany": "Phyto",
+                "ownerBusinessUnit": "Finance Back Office",
+                "ownerGroup": "Finance Back Support",
+                "lineOfBusiness": "KingstonOracle Finance"
+            }
+            let manualTaskTemplate2 = await apiHelper.createManualTaskTemplate(taskTemplateDataSet2);
+            await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate2.displayId, manualTaskTemplate2.displayId);
+        });
+
+        it('[DRDMV-23760]: Create case without case template', async () => {
+            await navigationPage.gotoCaseConsole();
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester('Young Neil');
+            expect (await createCasePage.getCompany()).toBe('Kingston');
+            expect (await createCasePage.getLineOfBusinessValue()).toBe('Kingston Legal');
+            expect(await createCasePage.isLineOfBusinessDisabled).toBeTruthy('LOB is not disabled');
+            await createCasePage.setSummary('DRDMV23760CaseSummary');
+            await createCasePage.selectCategoryTier1('Applications');
+            await createCasePage.selectCategoryTier2('Help Desk');
+            await createCasePage.selectCategoryTier3('Incident');
+            await createCasePage.clickChangeAssignmentButton();
+            await changeAssignmentBladePo.setAssignee('Kingston', 'Kingston Legal', 'Legal Support', 'Youngman Henny');
+            
+            // Verify  category of finance with kingston legal as it should not display
+            expect (await createCasePage.isCategoryTier1DropDownValueDisplayed('General Ledger')).toBeFalsy('General Ledger CategoryTier1 drop down value displayed');
+
+            expect (await createCasePage.getCategoryTier1Value()).toBe('Applications');
+            expect (await createCasePage.getCategoryTier2Value()).toBe('Help Desk');
+            expect (await createCasePage.getCategoryTier3Value()).toBe('Incident');
+
+            expect (await createCasePage.getAssigneeBusinessUnitValue()).toBe('Kingston Legal');
+            expect (await createCasePage.getAssigneeGroupValue()).toBe('Legal Support');
+            expect (await createCasePage.getAssigneeValue()).toBe('Youngman Henny');
+
+            // Verify negative scenario for Finance LOB for change assignment
+            await createCasePage.clickChangeAssignmentButton();
+            await changeAssignmentBladePo.selectCompany('Phyto')
+            expect (await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Finance Back Office')).toBeFalsy('BU is diaplayed');
+            expect (await changeAssignmentBladePo.isValuePresentInDropdown('Support', 'Finance Back Support')).toBeFalsy('Support Group is displayed');
+            await changeAssignmentBladePo.clickOnCancelButton();
+
+            await createCasePage.clickSaveCaseButton();
+            expect (await casePreviewPo.getLineOfBusinessValue()).toBe('Kingston Legal');
+            await casePreviewPo.clickOncreateNewCaseButton();
+        });
+
+        it('[DRDMV-23760]: Create case with case template', async () => {
+            await createCasePage.selectRequester('Young Edward');
+            expect (await createCasePage.getLineOfBusinessValue()).toBe('Kingston Legal');
+            await createCasePage.setSummary('DRDMV23760CaseSummary');
+
+            await createCasePage.clickSelectCaseTemplateButton();
+            await selectCasetemplateBladePo.clickOnAllTemplateTab();
+
+            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataFinanceBackOffice.templateName)).toBeFalsy('caseTemplateDataFinanceBackOffice is missing');
+            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalFinanceBackOffice.templateName)).toBeFalsy('caseTemplateDataGlobalFinanceBackOffice is missing');
+
+            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataKingstoneLegal.templateName)).toBeTruthy('caseTemplateDataKingstoneLegal is missing');
+            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalKingstoneLegal.templateName)).toBeTruthy('caseTemplateDataGlobalKingstoneLegal is missing');
+         
+            await selectCasetemplateBladePo.searchAndOpenCaseTemplate(caseTemplateDataKingstoneLegal.templateName); 
+            expect(await previewCaseTemplatePo.isLabelTitleDisplayed('Case Summary')).toBeTruthy('Case Summary label is missing'); 
+            await previewCaseTemplatePo.clickOnBackButton();
+            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateDataGlobalKingstoneLegal.templateName);
+
+            expect (await createCasePage.getCategoryTier1Value()).toBe('Employee Relations');
+            expect (await createCasePage.getCategoryTier2Value()).toBe('Compensation');
+            expect (await createCasePage.getCategoryTier3Value()).toBe('Bonus');
+
+            expect (await createCasePage.getAssigneeBusinessUnitValue()).toBe('Kingston Legal');
+            expect (await createCasePage.getAssigneeGroupValue()).toBe('Legal Support');
+            expect (await createCasePage.getAssigneeValue()).toBe('Youngman Henny');
+
+            expect (await createCasePage.isCategoryTier1DropDownValueDisplayed('General Ledger')).toBeFalsy('General Ledger CategoryTier1 drop down value displayed');
+
+            // Verify negative scenario for Finance LOB for change assignment
+            await createCasePage.clickChangeAssignmentButton();
+            await changeAssignmentBladePo.selectCompany('Phyto')
+            expect (await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Finance Back Office')).toBeFalsy('BU is diaplayed');
+            expect (await changeAssignmentBladePo.isValuePresentInDropdown('Support', 'Finance Back Support')).toBeFalsy('Support Group is displayed');
+            await changeAssignmentBladePo.clickOnCancelButton();
+            
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePage.clickGoToCaseButton();
+            caseIdKingstoneLegal = await viewCasePage.getCaseID();
+        });
+
+        it('[DRDMV-23760]: Verify Edit Case Page', async () => {
+            await viewCasePage.clickEditCaseButton();
+            expect (await editCasePo.isLineOfBusinessReadOnly()).toBeTruthy('Line of business is not readonly');
+            await editCasePo.updateCaseCategoryTier1('Total Rewards');
+            await editCasePo.updateCaseCategoryTier2('Benefits');
+            await editCasePo.updateCaseCategoryTier3('Beneficiaries');
+
+            await editCasePo.clickOnChangeCaseTemplate();
+            await selectCasetemplateBladePo.clickOnAllTemplateTab();
+            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataFinanceBackOffice.templateName)).toBeFalsy('caseTemplateDataFinanceBackOffice is missing');
+            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalFinanceBackOffice.templateName)).toBeFalsy('caseTemplateDataGlobalFinanceBackOffice is missing');
+
+            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataKingstoneLegal.templateName)).toBeTruthy('caseTemplateDataKingstoneLegal is missing');
+            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalKingstoneLegal.templateName)).toBeTruthy('caseTemplateDataGlobalKingstoneLegal is missing');
+            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateDataKingstoneLegal.templateName);      
+
+            expect (await editCasePo.getCategoryTier1()).toBe('Workforce Administration');
+            expect (await editCasePo.getCategoryTier2()).toBe('HR Operations');
+            expect (await editCasePo.getCategoryTier3()).toBe('Adjustments');
+
+            expect (await editCasePo.getAssigneeValue()).toBe('Young Tyler Shell');
+
+            await editCasePo.clickChangeAssignmentButton();
+            await changeAssignmentBladePo.setAssignee('Kingston', 'Kingston Legal', 'Legal Support', 'Young Neil');
+            expect (await editCasePo.getAssigneeValue()).toBe('Young Neil');
+
+            await editCasePo.clickSaveCase();
+            await viewCasePage.clickAddTaskButton();
+            await manageTaskBladePo.clickCloseButton();
+            await viewCasePage.clickOnTaskLink(taskTemplateNameSummaryKingstoneLegal);
+        });
+
+        it('[DRDMV-23760]: Login And Create case With Finance Back Office User and verify data', async () => {
+            await navigationPage.signOut();
+            await loginPage.login(financeBackOfficeUserName, password);
+            await navigationPage.gotoCaseConsole();
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester('Wright Steven');
+            expect (await createCasePage.getLineOfBusinessValue()).toBe('KingstonOracle Finance');
+            await createCasePage.setSummary('DRDMV23760CaseSummary');
+            expect (await createCasePage.isCategoryTier1DropDownValueDisplayed('General Ledger')).toBeTruthy('General Ledger CategoryTier1 drop down value displayed');
+            
+            await createCasePage.clickSelectCaseTemplateButton();
+            await selectCasetemplateBladePo.clickOnAllTemplateTab();
+            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataKingstoneLegal.templateName)).toBeFalsy('caseTemplateDataKingstoneLegal is missing');
+            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalKingstoneLegal.templateName)).toBeFalsy('caseTemplateDataGlobalKingstoneLegal is missing');
+            
+            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataFinanceBackOffice.templateName)).toBeTruthy('caseTemplateDataFinanceBackOffice is missing');
+            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalFinanceBackOffice.templateName)).toBeTruthy('caseTemplateDataGlobalFinanceBackOffice is missing');
+
+
+            await selectCasetemplateBladePo.searchAndOpenCaseTemplate(caseTemplateDataFinanceBackOffice.templateName); 
+            expect(await previewCaseTemplatePo.isLabelTitleDisplayed('Case Summary')).toBeTruthy('Case Summary label is missing'); 
+            await previewCaseTemplatePo.clickOnBackButton();
+            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateDataFinanceBackOffice.templateName);
+
+            expect (await createCasePage.getCategoryTier1Value()).toBe('General Ledger');
+            expect (await createCasePage.getCategoryTier2Value()).toBe('Assets');
+
+            expect (await createCasePage.getAssigneeBusinessUnitValue()).toBe('Finance Back Office');
+            expect (await createCasePage.getAssigneeGroupValue()).toBe('Finance Back Support');
+            expect (await createCasePage.getAssigneeValue()).toBe('Russell Townsend');
+
+            // Verify negative scenario for Finance LOB for change assignment
+            await createCasePage.clickChangeAssignmentButton();
+            await changeAssignmentBladePo.selectCompany('Kingston')
+            expect (await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Kingston Legal')).toBeFalsy('BU is diaplayed');
+            expect (await changeAssignmentBladePo.isValuePresentInDropdown('Support', 'Legal Support')).toBeFalsy('Support Group is displayed');
+            await changeAssignmentBladePo.clickOnCancelButton();
+            
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePage.clickGoToCaseButton();
+
+            caseIdFinance = await viewCasePage.getCaseID();
+            await viewCasePage.clickOnTaskLink(taskTemplateNameSummaryFinanceBackOffice);
+        });
+
+        it('[DRDMV-23760]: Verify KingstoneHR case access to Oracle HR LOB', async () => {
+            await navigationPage.gotoCaseConsole(); 
+            await utilityGrid.clearFilter();
+            expect (await utilityGrid.isGridRecordPresent(caseIdFinance)).toBeTruthy('caseIdFinance Missing on grid');
+            expect (await utilityGrid.isGridRecordPresent(caseIdKingstoneLegal)).toBeFalsy('caseIdKingstoneLegal Missing on grid');
+
+            await navigationPage.signOut();
+            await loginPage.login(kingstoneLegalUserName, password);
+            
+            await utilityGrid.clearFilter();
+            expect (await utilityGrid.isGridRecordPresent(caseIdFinance)).toBeFalsy('caseIdFinance Missing on grid');
+            expect (await utilityGrid.isGridRecordPresent(caseIdKingstoneLegal)).toBeTruthy('caseIdKingstoneLegal Missing on grid');
+        });
+
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login(kingstoneOracleLOBUserName, password);
+        });
+    });
+
+    //kiran
+    describe('[DRDMV-23744]: [Service Provider Model][Create Case]: Verify the behavior when the case agent is able to create a case when a single line of business is shared between multiple organizations', () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseTemplateDataFinanceBackOffice, caseTemplateDataGlobalFinanceBackOffice, caseIdFinance, caseIdOracleHR, caseTemplateDataOracleHR, caseTemplateDataGlobalOracleHR, caseTemplateDataGlobalKingstoneLegal, caseTemplateDataKingstoneLegal;
+        
+        let taskTemplateNameSummaryFinanceBackOffice = "1taskTemplateNameSummaryDRDMV23744" + randomStr;
+        let taskTemplateNameSummaryOracleHR = "3taskTemplateNameSummaryDRDMV23744" + randomStr;
+        
+        beforeAll(async () => {
+            // Create Data with Kingston HR LOB
+            await apiHelper.apiLogin(kingstoneOracleLOBUserName, password);
+
+            caseTemplateDataGlobalFinanceBackOffice = {
+                "templateName": 'GlobalcaseTemplateNameFinanceBackOffice' + randomStr,
+                "templateSummary": 'GlobalCaseTemplateSummaryFinanceBackOffice' + randomStr,
+                "categoryTier1": 'General Ledger',
+                "categoryTier2": 'Expenses',
+                "casePriority": "Low",
+                "templateStatus": "Active",
+                "company": "- Global -",
+                "businessUnit": "Finance Back Office",
+                "supportGroup": "Finance Back Support",
+                "assignee": "wsteven",
+                "ownerBU": "Finance Back Office",
+                "ownerGroup": "Finance Back Support",
+                "lineOfBusiness": "KingstonOracle Finance"
+            }
+            await apiHelper.createCaseTemplate(caseTemplateDataGlobalFinanceBackOffice);
+
+            caseTemplateDataFinanceBackOffice = {
+                "templateName": '2caseTemplateNameFinanceBackOffice' + randomStr,
+                "templateSummary": '2caseTemplateSummaryFinanceBackOffice' + randomStr,
+                "categoryTier1": 'General Ledger',
+                "categoryTier2": 'Assets',
+                "casePriority": "High",
+                "templateStatus": "Active",
+                "company": "Phyto",
+                "businessUnit": "Finance Back Office",
+                "supportGroup": "Finance Back Support",
+                "assignee": "wfranklloyd",
+                "ownerBU": "Finance Back Office",
+                "ownerGroup": "Finance Back Support",
+                "lineOfBusiness": "KingstonOracle Finance"
+            }
+            let newCaseTemplate = await apiHelper.createCaseTemplate(caseTemplateDataFinanceBackOffice);
+
+            let taskTemplateDataSet = {
+                "templateName": `${taskTemplateNameSummaryFinanceBackOffice}`,
+                "templateSummary": `${taskTemplateNameSummaryFinanceBackOffice}`,
+                "templateStatus": "Active",
+                "taskCompany": 'Phyto',
+                "assignee": "wfranklloyd",
+                "businessUnit": "Finance Back Office",
+                "supportGroup": "Finance Back Support",
+                "ownerCompany": "Phyto",
+                "ownerBusinessUnit": "Finance Back Office",
+                "ownerGroup": "Finance Back Support",
+                "lineOfBusiness": "KingstonOracle Finance"
+            }
+            let manualTaskTemplate = await apiHelper.createManualTaskTemplate(taskTemplateDataSet);
+            await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId);
+
+    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+            // Create data with Oracle HR Data
+            caseTemplateDataGlobalOracleHR = {
+                "templateName": 'GlobalcaseTemplateNameOracleHR' + randomStr,
+                "templateSummary": 'GlobalCaseTemplateSummaryOracleHR' + randomStr,
+                "categoryTier1": 'Employee Relations',
+                "categoryTier2": 'Compensation',
+                "categoryTier3": 'Bonus',
+                "casePriority": "Low",
+                "templateStatus": "Active",
+                "company": "- Global -",
+                "businessUnit": "Oracle HR",
+                "supportGroup": "Oracle AskHR",
+                "assignee": "umiguelde",
+                "ownerBU": "Oracle HR",
+                "ownerGroup": "Oracle AskHR",
+                "lineOfBusiness": "Oracle HR"
+            }
+            await apiHelper.createCaseTemplate(caseTemplateDataGlobalOracleHR);
+
+            caseTemplateDataOracleHR = {
+                "templateName": '2caseTemplateNameOracleHR' + randomStr,
+                "templateSummary": '2caseTemplateSummaryOracleHR' + randomStr,
+                "categoryTier1": 'Workforce Administration',
+                "categoryTier2": 'HR Operations',
+                "categoryTier3": 'Adjustments',
+                "casePriority": "High",
+                "templateStatus": "Active",
+                "company": "Phyto",
+                "businessUnit": "Oracle HR",
+                "supportGroup": "Oracle AskHR",
+                "assignee": "umiguelde",
+                "ownerBU": "Oracle HR",
+                "ownerGroup": "Oracle AskHR",
+                "lineOfBusiness": "Oracle HR"
+            }
+            let newCaseTemplate2 = await apiHelper.createCaseTemplate(caseTemplateDataOracleHR);
+
+            let taskTemplateDataSet2 = {
+                "templateName": `${taskTemplateNameSummaryOracleHR}`,
+                "templateSummary": `${taskTemplateNameSummaryOracleHR}`,
+                "templateStatus": "Active",
+                "taskCompany": 'Phyto',
+                "assignee": "umorihei",
+                "businessUnit": "Oracle HR",
+                "supportGroup": "Oracle AskHR",
+                "ownerCompany": "Phyto",
+                "ownerBusinessUnit": "Oracle HR",
+                "ownerGroup": "Oracle AskHR",
+                "lineOfBusiness": "Oracle HR"
+            }
+            let manualTaskTemplate2 = await apiHelper.createManualTaskTemplate(taskTemplateDataSet2);
+            await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate2.displayId, manualTaskTemplate2.displayId);
+
+    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+            // Create data with Kingstone Legal Data
+            await apiHelper.apiLogin(kingstoneLegalUserName, password);
+            caseTemplateDataGlobalKingstoneLegal = {
+                "templateName": 'GlobalcaseTemplateNameKingstoneLegal' + randomStr,
+                "templateSummary": 'GlobalCaseTemplateSummaryKingstonLegal' + randomStr,
+                "categoryTier1": 'Employee Relations',
+                "categoryTier2": 'Compensation',
+                "categoryTier3": 'Bonus',
+                "casePriority": "Low",
+                "templateStatus": "Active",
+                "company": "- Global -",
+                "businessUnit": "Kingston Legal",
+                "supportGroup": "Legal Support",
+                "assignee": "yhenny",
+                "ownerBU": "Kingston Legal",
+                "ownerGroup": "Legal Support",
+                "lineOfBusiness": "Kingston Legal"
+            }
+            await apiHelper.createCaseTemplate(caseTemplateDataGlobalKingstoneLegal);
+
+            caseTemplateDataKingstoneLegal = {
+                "templateName": '3caseTemplateNameKingstonLegal' + randomStr,
+                "templateSummary": '2caseTemplateSummaryKingstonLegal' + randomStr,
+                "categoryTier1": 'Workforce Administration',
+                "categoryTier2": 'HR Operations',
+                "categoryTier3": 'Adjustments',
+                "casePriority": "High",
+                "templateStatus": "Active",
+                "company": "Kingston",
+                "businessUnit": "Kingston Legal",
+                "supportGroup": "Legal Support",
+                "assignee": "yhenny",
+                "ownerBU": "Kingston Legal",
+                "ownerGroup": "Legal Support",
+                "lineOfBusiness": "Kingston Legal"
+            }
+            await apiHelper.createCaseTemplate(caseTemplateDataKingstoneLegal);
+        });
+
+        it('[DRDMV-23744]: Verify Negative Scenrio for Finance HR, Oracle HR and Kingston Leagal data but used Finance LOB for category diffrence', async () => {
+            await navigationPage.gotoCaseConsole();
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectLineOfBusiness('KingstonOracle Finance');
+            await createCasePage.selectRequester('Wright Steven');
+            
+            await createCasePage.setSummary('DRDMV23744CaseSummary');
+            // Verify negative scenario for Kingston Legal and Kingston HR LOB case template should not display
+            await createCasePage.clickSelectCaseTemplateButton();
+            await selectCasetemplateBladePo.clickOnAllTemplateTab();
+            
+            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataKingstoneLegal.templateName)).toBeFalsy('caseTemplateDataKingstoneHR is display');
+            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalKingstoneLegal.templateName)).toBeFalsy('caseTemplateDataGlobalKingstonHR is display');
+
+            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataOracleHR.templateName)).toBeFalsy('caseTemplateDataOracleHR.templateName is display');
+            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalOracleHR.templateName)).toBeFalsy('caseTemplateDataGlobalOracleHR.templateName is display');
+
+            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalFinanceBackOffice.templateName)).toBeTruthy('caseTemplateDataGlobalKingstoneLegal.templateName is missing');
+            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataFinanceBackOffice.templateName)).toBeTruthy('caseTemplateDataGlobalKingstoneLegal.templateName is missing');
+
+            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateDataFinanceBackOffice.templateName);
+            
+            expect (await createCasePage.getCategoryTier1Value()).toBe('General Ledger');
+            expect (await createCasePage.getCategoryTier2Value()).toBe('Assets');
+
+            expect (await createCasePage.getAssigneeBusinessUnitValue()).toBe('Finance Back Office');
+            expect (await createCasePage.getAssigneeGroupValue()).toBe('Finance Back Support');
+            expect (await createCasePage.getAssigneeValue()).toBe('Wright Frank Lloyd');
+
+            // Verify negative scenario for Kingston Legal LOB should not display
+            expect (await createCasePage.isValuePresentInLineOfBusinessDropDown('Kingston Legal')).toBeFalsy ('Kingston lob is displayed');
+
+            // Verify negative scenario for Kingston Legal and Oracle HR LOB for change assignment
+            await createCasePage.clickChangeAssignmentButton();
+            await changeAssignmentBladePo.selectCompany('Kingston')
+            expect (await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Kingston Legal')).toBeFalsy('BU is diaplayed');
+            expect (await changeAssignmentBladePo.isValuePresentInDropdown('Support', 'Legal Support')).toBeFalsy('Support Group is displayed');
+            await changeAssignmentBladePo.clickOnCancelButton();
+
+            await createCasePage.clickChangeAssignmentButton();
+            await changeAssignmentBladePo.selectCompany('Phyto');
+            await changeAssignmentBladePo.selectBusinessUnit('Oracle HR');
+            await changeAssignmentBladePo.selectSupportGroup('Oracle AskHR');
+            expect (await changeAssignmentBladePo.isAssigneeDisplayed('Ueshiba Morihei')).toBeFalsy('Assignee name is displayed');
+            await changeAssignmentBladePo.clickOnCancelButton();
+
+            await createCasePage.clickChangeAssignmentButton();
+            await changeAssignmentBladePo.setAssignee('Phyto', 'Finance Back Office', 'Finance Back Support', 'Yourcenar Marguerite');
+            
+            expect (await createCasePage.getAssigneeValue()).toBe('Yourcenar Marguerite');
+            
+            // Change verify with change LOB and should be clear all selected values
+            await createCasePage.selectLineOfBusiness('Oracle HR');
+
+            expect (await createCasePage.getCategoryTier1Value()).toBe('Select');
+            expect (await createCasePage.getCategoryTier2Value()).toBe('Select');
+            expect (await createCasePage.getCategoryTier3Value()).toBe('Select');
+
+            expect (await createCasePage.getAssigneeBusinessUnitValue()).toBe('');
+            expect (await createCasePage.getAssigneeBusinessUnitValue()).toBe('');
+            expect (await createCasePage.getAssigneeValue()).toBe('Select');
+
+            expect (await createCasePage.isCategoryTier1DropDownValueDisplayed('General Ledger')).toBeFalsy('General Ledger CategoryTier1 drop down value display');
+        });
+
+        it('[DRDMV-23744]: Create case without case template', async () => {
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.selectLineOfBusiness('KingstonOracle Finance');
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester('Wright Steven');
+            await createCasePage.selectLineOfBusiness('KingstonOracle Finance');
+            await createCasePage.setSummary('DRDMV23744CaseSummary');
+            await createCasePage.selectCategoryTier1('General Ledger');
+            await createCasePage.selectCategoryTier2('Equity');
+            await createCasePage.clickChangeAssignmentButton();
+            await changeAssignmentBladePo.setAssignee('Phyto', 'Finance Back Office', 'Finance Back Support', 'Wright Frank Lloyd');
+
+            expect (await createCasePage.getCategoryTier1Value()).toBe('General Ledger');
+            expect (await createCasePage.getCategoryTier2Value()).toBe('Equity');
+
+            expect (await createCasePage.getAssigneeBusinessUnitValue()).toBe('Finance Back Office');
+            expect (await createCasePage.getAssigneeGroupValue()).toBe('Finance Back Support');
+            expect (await createCasePage.getAssigneeValue()).toBe('Wright Frank Lloyd');
+
+            await createCasePage.clickSaveCaseButton();
+            expect (await casePreviewPo.getLineOfBusinessValue()).toBe('KingstonOracle Finance');
+            await casePreviewPo.clickOncreateNewCaseButton();
+        });
+
+        it('[DRDMV-23744]: Create case with case template', async () => {
+            await createCasePage.selectRequester('Yourcenar Marguerite');
+            expect (await createCasePage.getLineOfBusinessValue()).toBe('KingstonOracle Finance');
+            await createCasePage.setSummary('DRDMV23744CaseSummary');
+
+            await createCasePage.clickSelectCaseTemplateButton();
+            await selectCasetemplateBladePo.clickOnAllTemplateTab();
+
+            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataKingstoneLegal.templateName)).toBeFalsy('caseTemplateDataKingstoneHR is display');
+            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalKingstoneLegal.templateName)).toBeFalsy('caseTemplateDataGlobalKingstonHR is display');
+
+            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataOracleHR.templateName)).toBeFalsy('caseTemplateDataOracleHR.templateName is display');
+            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalOracleHR.templateName)).toBeFalsy('caseTemplateDataGlobalOracleHR.templateName is display');
+
+            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalFinanceBackOffice.templateName)).toBeTruthy('caseTemplateDataGlobalKingstoneLegal.templateName is missing');
+            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataFinanceBackOffice.templateName)).toBeTruthy('caseTemplateDataGlobalKingstoneLegal.templateName is missing');
+            
+            await selectCasetemplateBladePo.searchAndOpenCaseTemplate(caseTemplateDataFinanceBackOffice.templateName); 
+            expect(await previewCaseTemplatePo.isLabelTitleDisplayed('Case Summary')).toBeTruthy('Case Summary label is missing'); 
+            await previewCaseTemplatePo.clickOnBackButton();
+            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateDataGlobalFinanceBackOffice.templateName);
+
+            expect (await createCasePage.getCategoryTier1Value()).toBe('General Ledger');
+            expect (await createCasePage.getCategoryTier2Value()).toBe('Expenses');
+
+            expect (await createCasePage.getAssigneeBusinessUnitValue()).toBe('Finance Back Office');
+            expect (await createCasePage.getAssigneeGroupValue()).toBe('Finance Back Support');
+            expect (await createCasePage.getAssigneeValue()).toBe('Wright Steven');
+
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePage.clickGoToCaseButton();
+            caseIdFinance = await viewCasePage.getCaseID();
+        });
+
+        it('[DRDMV-23744]: Verify Edit Case Page', async () => {
+            await viewCasePage.clickEditCaseButton();
+            expect (await editCasePo.isLineOfBusinessReadOnly()).toBeTruthy('Line of business is not readonly');
+            await editCasePo.updateCaseCategoryTier1('Applications');
+            await editCasePo.updateCaseCategoryTier2('Help Desk');
+            await editCasePo.updateCaseCategoryTier3('Incident');
+
+            await editCasePo.clickOnChangeCaseTemplate();
+            await selectCasetemplateBladePo.clickOnAllTemplateTab();
+
+
+            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataKingstoneLegal.templateName)).toBeFalsy('caseTemplateDataKingstoneHR is display');
+            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalKingstoneLegal.templateName)).toBeFalsy('caseTemplateDataGlobalKingstonHR is display');
+
+            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataOracleHR.templateName)).toBeFalsy('caseTemplateDataOracleHR.templateName is display');
+            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalOracleHR.templateName)).toBeFalsy('caseTemplateDataGlobalOracleHR.templateName is display');
+
+            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalFinanceBackOffice.templateName)).toBeTruthy('caseTemplateDataGlobalKingstoneLegal.templateName is missing');
+            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataFinanceBackOffice.templateName)).toBeTruthy('caseTemplateDataGlobalKingstoneLegal.templateName is missing');
+
+            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateDataFinanceBackOffice.templateName);
+            
+            expect (await editCasePo.getCategoryTier1()).toBe('General Ledger');
+            expect (await editCasePo.getCategoryTier2()).toBe('Assets');
+            expect (await editCasePo.getAssigneeValue()).toBe('Wright Frank Lloyd');
+
+            await editCasePo.clickChangeAssignmentButton();
+            await changeAssignmentBladePo.setAssignee('Phyto', 'Finance Back Office', 'Finance Back Support', 'Jack Torrance');
+            expect (await editCasePo.getAssigneeValue()).toBe('Jack Torrance');
+
+            await editCasePo.clickSaveCase();
+            await viewCasePage.clickOnTaskLink(taskTemplateNameSummaryFinanceBackOffice);
+        });
+
+        it('[DRDMV-23744]: Create case With Oracle HR User and verify data', async () => {
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.selectLineOfBusiness('Oracle HR');
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester('Vixie Paul');
+            expect (await createCasePage.getLineOfBusinessValue()).toBe('Oracle HR');
+            await createCasePage.setSummary('DRDMV23744CaseSummary');
+            expect (await createCasePage.isCategoryTier1DropDownValueDisplayed('General Ledger')).toBeFalsy('General Ledger CategoryTier1 drop down value displayed');
+            
+            await createCasePage.clickSelectCaseTemplateButton();
+            await selectCasetemplateBladePo.clickOnAllTemplateTab();
+
+            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataKingstoneLegal.templateName)).toBeFalsy('caseTemplateDataKingstoneHR is display');
+            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalKingstoneLegal.templateName)).toBeFalsy('caseTemplateDataGlobalKingstonHR is display');
+
+            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalFinanceBackOffice.templateName)).toBeFalsy('caseTemplateDataGlobalKingstoneLegal.templateName is display');
+            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataFinanceBackOffice.templateName)).toBeFalsy('caseTemplateDataGlobalKingstoneLegal.templateName is display');
+            
+            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataOracleHR.templateName)).toBeTruthy('caseTemplateDataOracleHR.templateName is missing');
+            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalOracleHR.templateName)).toBeTruthy('caseTemplateDataGlobalOracleHR.templateName is missing');
+
+            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateDataOracleHR.templateName);
+
+            expect (await createCasePage.getCategoryTier1Value()).toBe('Workforce Administration');
+            expect (await createCasePage.getCategoryTier2Value()).toBe('HR Operations');
+            expect (await createCasePage.getCategoryTier3Value()).toBe('Adjustments');
+
+            expect (await createCasePage.getAssigneeBusinessUnitValue()).toBe('Oracle HR');
+            expect (await createCasePage.getAssigneeGroupValue()).toBe('Oracle AskHR');
+            expect (await createCasePage.getAssigneeValue()).toBe('Unamuno Miguel de');
+
+            // Verify negative scenario for Kingston Legal and Finance HR LOB for change assignment
+            await createCasePage.clickChangeAssignmentButton();
+            await changeAssignmentBladePo.selectCompany('Kingston')
+            expect (await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Kingston Legal')).toBeFalsy('BU is diaplayed');
+            expect (await changeAssignmentBladePo.isValuePresentInDropdown('Support', 'Legal Support')).toBeFalsy('Support Group is displayed');
+            await changeAssignmentBladePo.clickOnCancelButton();
+
+            await createCasePage.clickChangeAssignmentButton();
+            await changeAssignmentBladePo.selectCompany('Phyto');
+            await changeAssignmentBladePo.selectBusinessUnit('Finance Back Office');
+            await changeAssignmentBladePo.selectSupportGroup('Finance Back Support');
+            expect (await changeAssignmentBladePo.isAssigneeDisplayed('Wright Steven')).toBeFalsy('Assignee name is displayed');
+            await changeAssignmentBladePo.clickOnCancelButton();
+
+            await createCasePage.clickSaveCaseButton();
+
+            await previewCasePage.clickGoToCaseButton();
+            caseIdOracleHR = await viewCasePage.getCaseID();
+            await viewCasePage.clickOnTaskLink(taskTemplateNameSummaryOracleHR);
+        });
+
+        it('[DRDMV-23744]: Verify KingstoneHR case access to Oracle HR LOB', async () => {
+            await navigationPage.gotoCaseConsole(); 
+            await utilityGrid.selectLineOfBusiness('Oracle HR');
+            await utilityGrid.clearFilter();
+            expect (await utilityGrid.isGridRecordPresent(caseIdOracleHR)).toBeTruthy('caseIdOracleHR Missing on grid');
+            expect (await utilityGrid.isGridRecordPresent(caseIdFinance)).toBeFalsy('caseIdKingstoneHR Missing on grid');
+
+            await utilityGrid.selectLineOfBusiness('KingstonOracle Finance');
+            await utilityGrid.clearFilter();
+            expect (await utilityGrid.isGridRecordPresent(caseIdOracleHR)).toBeFalsy('caseIdOracleHR Missing on grid');
+            expect (await utilityGrid.isGridRecordPresent(caseIdFinance)).toBeTruthy('caseIdKingstoneHR Missing on grid');
         });
 
         afterAll(async () => {
