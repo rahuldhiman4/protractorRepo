@@ -23,7 +23,7 @@ import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate
 import previewCaseTemplatePo from '../../pageobject/settings/case-management/preview-case-template.po';
 
 describe('Create Process in Flowset', () => {
-    let kingstoneUserName = 'smoran@petramco.com';
+    let kingstoneHRUserName = 'smoran@petramco.com';
     let oracleUserName = 'umiguelde@petramco.com';
     let kingstoneLegalUserName = 'yhenny@petramco.com';
     let kingstoneOracleLOBUserName = 'jstuart@petramco.com';
@@ -32,7 +32,7 @@ describe('Create Process in Flowset', () => {
     let password = 'Password_1234';
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
-        await loginPage.login(kingstoneUserName, password);
+        await loginPage.login(kingstoneHRUserName, password);
     });
 
     afterAll(async () => {
@@ -63,7 +63,7 @@ describe('Create Process in Flowset', () => {
 
         beforeAll(async () => {
             // Create Data with Kingston HR LOB
-            await apiHelper.apiLogin(kingstoneUserName, password);
+            await apiHelper.apiLogin(kingstoneHRUserName, password);
 
             // create an email template
             emailTemplateDataKingston = {
@@ -463,7 +463,7 @@ describe('Create Process in Flowset', () => {
 
         it('[DRDMV-23763]: Create Case and verify email template on select email template blade grid', async () => {
             await navigationPage.signOut();
-            await loginPage.login(kingstoneUserName, password);
+            await loginPage.login(kingstoneHRUserName, password);
 
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('David Kramer');
@@ -1166,7 +1166,7 @@ describe('Create Process in Flowset', () => {
         let taskTemplateNameSummaryOracleHR = "3taskTemplateNameSummaryDRDMV23744" + randomStr;
         
         beforeAll(async () => {
-            // Create Data with Kingston HR LOB
+            // Create Data with Finance LOB
             await apiHelper.apiLogin(kingstoneOracleLOBUserName, password);
 
             caseTemplateDataGlobalFinanceBackOffice = {
@@ -1537,7 +1537,7 @@ describe('Create Process in Flowset', () => {
 
         afterAll(async () => {
             await navigationPage.signOut();
-            await loginPage.login(kingstoneUserName, password);
+            await loginPage.login(kingstoneHRUserName, password);
         });
     });
 });
