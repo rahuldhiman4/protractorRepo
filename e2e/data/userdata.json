@@ -178,5 +178,9 @@
 	"ttristan":{
 		"userName": "ttristan@petramco.com",
 		"userPassword": "Password_1234"
+	},
+	"sherbert": {
+		"userName": "sherbert@petramco.com",
+		"userPassword": "Password_1234"
 	}
 }
