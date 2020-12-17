@@ -7,28 +7,29 @@ class CreateKATemplate {
         templateName: '[name="templateName"]',
         knowledgeSet: '[name="knowledgeSet"]',
         disabledEnabledCheck: 'div.templateAttributes div:nth-of-type(2) .d-checkbox__item',
-        addsection:'.d-icon-left-plus_circle',
-        sectionTitle:'.rx-template-editor-text-fields input',
-        templateDescription:'.d-textfield textarea',
+        addsection: '.d-icon-left-plus_circle',
+        sectionTitle: '.rx-template-editor-text-fields input',
+        templateDescription: '.d-textfield textarea',
         saveButton: 'button[type="submit"]',
-        removeSection:'.remove-button',
+        removeSection: '.remove-button',
         cancelBtn: '.template-editor-action-buttons button.d-button_secondary',
         upArrowCollapse: '.d-icon-right-angle_up',
         downArrowExpand: '.d-icon-right-angle_down',
         expandCollapseAllBtn: '.expand-collapse-buttons button',
+        lobValue: '[title="Line of Business"] .pull-left'
     }
 
-    async setTemplateName(value:string): Promise<void> {
+    async setTemplateName(value: string): Promise<void> {
         await $(this.selectors.templateName).sendKeys(value);
     }
 
-    async setDescription(value:string): Promise<void> {
+    async setDescription(value: string): Promise<void> {
         await $(this.selectors.templateDescription).sendKeys(value);
     }
 
-    async setKnowledgeSetValue(value:string): Promise<void> {
+    async setKnowledgeSetValue(value: string): Promise<void> {
         await $(this.selectors.knowledgeSet).click();
-        let customXpath=`[title='${value}']`;
+        let customXpath = `[title='${value}']`;
         await $(customXpath).click();
     }
 
@@ -40,8 +41,8 @@ class CreateKATemplate {
         await $(this.selectors.addsection).click();
     }
 
-    async setSectionTitle(value:string, position?: number):Promise<void>{
-        if(position) await $$(this.selectors.sectionTitle).get(position-1).sendKeys(value);
+    async setSectionTitle(value: string, position?: number): Promise<void> {
+        if (position) await $$(this.selectors.sectionTitle).get(position - 1).sendKeys(value);
         else await $(this.selectors.sectionTitle).sendKeys(value);
     }
 
@@ -66,7 +67,7 @@ class CreateKATemplate {
     }
 
     async isSectionVisible(position?: number): Promise<boolean> {
-        if(position) return await $$(this.selectors.sectionTitle).get(position-1).isDisplayed();
+        if (position) return await $$(this.selectors.sectionTitle).get(position - 1).isDisplayed();
         else return await $$(this.selectors.sectionTitle).get(0).isDisplayed();
     }
 
@@ -81,6 +82,10 @@ class CreateKATemplate {
     async getfieldLabel(fieldName: string): Promise<string> {
         let fieldLocator = `[aria-label="${fieldName}"] .d-textfield__item`;
         return await $(fieldLocator).getText();
+    }
+
+    async getLobValue(): Promise<string> {
+        return await $(this.selectors.lobValue).getText();
     }
 }
 export default new CreateKATemplate();

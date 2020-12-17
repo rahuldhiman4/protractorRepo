@@ -5,6 +5,7 @@ import navigationPage from '../../pageobject/common/navigation.po';
 import createKnowledgePage from '../../pageobject/knowledge/create-knowlege.po';
 import consoleKnowledgeTemplatePo from '../../pageobject/settings/knowledge-management/console-knowledge-template.po';
 import createKnowledgeArticleTemplatePo from '../../pageobject/settings/knowledge-management/create-knowledge-article-template.po';
+import editKnowledgeTemplatePo from '../../pageobject/settings/knowledge-management/edit-knowledge-article-template.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
@@ -48,8 +49,6 @@ describe('Knowledge Article Template', () => {
         }
         await apiHelper.apiLogin('jbarnes');
         await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateData);
-        knowledgeArticleTemplateData.lineOfBusiness = 'Facilities';
-        await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateData);
 
         await navigationPage.signOut();
         await loginPage.login('jbarnes');
@@ -73,8 +72,15 @@ describe('Knowledge Article Template', () => {
         await createKnowledgeArticleTemplatePo.setTemplateName(templateName);
         await createKnowledgeArticleTemplatePo.clickOnAddSection();
         await createKnowledgeArticleTemplatePo.setSectionTitle('Section Title');
+        // verify LOB is on create screen
+        expect(await createKnowledgeArticleTemplatePo.getLobValue()).toBe("Facilities");
         await createKnowledgeArticleTemplatePo.clickOnSaveButton();
-        expect(await utilCommon.isPopUpMessagePresent('ERROR (222061): Template already exists.')).toBeTruthy();
+        expect(await utilCommon.isPopUpMessagePresent(`Knowledge Template : ${templateName} has been successfully created`)).toBeTruthy();
+        // verify LOB is on edit screen
+        await utilGrid.searchAndOpenHyperlink(templateName);
+        expect(await editKnowledgeTemplatePo.getLobValue()).toBe("Facilities");
+        await editKnowledgeTemplatePo.clickOnCancelButton();
+        await utilGrid.selectLineOfBusiness('Human Resource');
     });
 
     describe('[DRDMV-619,DRDMV-1065,DRDMV-1180]: [Create Mode] Create a template for Knowledge article', () => {
