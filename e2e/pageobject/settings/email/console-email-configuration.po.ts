@@ -1,6 +1,5 @@
 import { $ } from 'protractor';
 import utilGrid from '../../../utils/util.grid';
-import utilCommon from '../../../utils/util.common';
 
 export class ConsoleEmailConfig {
     selectors = {

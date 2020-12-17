@@ -100,11 +100,42 @@ describe("Knowledge Approval Mapping Tests", () => {
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Approvals', 'Configure Knowledge Approval Mapping - Business Workflows');
             await utilGrid.selectLineOfBusiness('Human Resource');
             expect(await utilGrid.isGridRecordPresent(approvalMappingName)).toBeFalsy('Knowledge Approval Mapping for Facilities LOB are displayed to Human Resource LOB User.');
-
             await utilGrid.selectLineOfBusiness('Facilities');
             expect(await utilGrid.isGridRecordPresent(approvalMappingName)).toBeTruthy('Knowledge Approval Mapping for Facilities LOB are not displayed to Human Resource LOB User.');
         });
 
+        it('[DRDMV-20791]: create same name record in same LOB', async () => {
+            //create same name record in same LOB
+            await navigationPage.signOut();
+            await loginPage.login('jbarnes');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Approvals', 'Configure Knowledge Approval Mapping - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Facilities');
+            await approvalMappingConsoleKnowledgePo.clickCreateApprovalMappingBtn();
+            await createApprovalMappingKnowledgePo.setApprovalMappingName(approvalMappingName+'_update');
+            await createApprovalMappingKnowledgePo.selectCompany('Petramco');
+            await createApprovalMappingKnowledgePo.selectStatusTrigger('Retire Approval');
+            await createApprovalMappingKnowledgePo.clickSaveApprovalMappingBtn();
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (222099): The Approval Mapping Name already exists. Please select a different name.')).toBeTruthy("Error message absent");
+            await createApprovalMappingKnowledgePo.clickCancelApprovalMappingBtn();
+            await utilCommon.clickOnWarningOk();
+        });
+        it('[DRDMV-20791]: create same name record in different LOB', async () => {
+            //create same name record in different LOB
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            await approvalMappingConsoleKnowledgePo.clickCreateApprovalMappingBtn();
+            await createApprovalMappingKnowledgePo.setApprovalMappingName(approvalMappingName+'_update');
+            await createApprovalMappingKnowledgePo.selectCompany('Petramco');
+            await createApprovalMappingKnowledgePo.selectStatusTrigger('Retire Approval');            
+            // verify LOB is there
+            expect(await createApprovalMappingKnowledgePo.getLobValue()).toBe("Human Resource");
+            await createApprovalMappingKnowledgePo.clickSaveApprovalMappingBtn();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
+            // open the record and verify LOB is on edit screen
+            await utilGrid.searchAndOpenHyperlink(approvalMappingName+'_update');
+            expect(await editApprovalMappingKnowledgePo.getLobValue()).toBe("Human Resource");
+            await editApprovalMappingKnowledgePo.clickCancelApprovalMappingBtn();
+        });
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');

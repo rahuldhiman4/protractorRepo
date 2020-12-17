@@ -17,7 +17,9 @@ class CreateKnowledgeSet {
         associateButton: '[rx-configuration="associateButtonConfiguration"] button',
         applicationNames: '.ui-grid-cell-contents',
         selectBtn: '[rx-view-component-id="c2ce9041-fee1-46f4-ba92-9808055976a9"] button',
-        saveBtn: '[rx-view-component-id="ba009fba-499a-49c6-b5a5-0de6e6c8e402"] button'
+        saveBtn: '[rx-view-component-id="ba009fba-499a-49c6-b5a5-0de6e6c8e402"] button',
+        cancelBtn: '[rx-view-component-id="4bd4c11d-1c58-4674-8a11-4bafce192e1e"] button',
+        lobValue: '[rx-view-component-id="3cc1c59a-a73d-40a2-b598-e17d0d73873a"] .pull-left'
     }
 
     async clickCreateNewApplicationCancelBtn(): Promise<void> {
@@ -119,6 +121,10 @@ class CreateKnowledgeSet {
         await $(this.selectors.saveBtn).click();
     }
 
+    async clickCancelBtn(): Promise<void> {
+        await $(this.selectors.cancelBtn).click();
+    }
+
     async clickCheckBoxOfValueInGrid(value: string): Promise<void> {
         let size: number = await $$('[rx-view-component-id="74ec0fc2-6775-48aa-af50-e5e50508bcdd"] [role="gridcell"]').count();
         let cnt: number = 0;
@@ -130,6 +136,10 @@ class CreateKnowledgeSet {
         cnt = (cnt+1)/2;
         let checkbox: string = '[rx-view-component-id="74ec0fc2-6775-48aa-af50-e5e50508bcdd"] div[aria-label="Select row"]';
         await $$(checkbox).get(cnt-1).click();
+    }
+
+    async getLobValue(): Promise<string> {
+        return await $(this.selectors.lobValue).getText();
     }
 }
 

@@ -24,6 +24,7 @@ class AutomatedStatusTransitionConfigCreatePage {
         categoryTier2: '0ffc06aa-d9dd-4158-bb95-090b1a366577',
         categoryTier3: 'b9b68d67-302e-4e3c-815b-bdfd67698e7f',
         categoryTier4: '6f11bf75-31c3-4088-8e30-b539e385db0c',
+        lobValue: '[rx-view-component-id="6b1b5eda-4725-4fda-890a-57ad98995b33"] .pull-left'
     }
 
     async setName(name: string): Promise<void> {
@@ -133,6 +134,9 @@ class AutomatedStatusTransitionConfigCreatePage {
         await $(this.selectors.cancelButton).click();
     }
 
+    async getLobValue(): Promise<string> {
+        return await $(this.selectors.lobValue).getText();
+    }
 }
 
 export default new AutomatedStatusTransitionConfigCreatePage();

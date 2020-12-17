@@ -1,6 +1,5 @@
-import { $, protractor, ProtractorExpectedConditions, $$, browser, element, by } from 'protractor';
+import { $, protractor, ProtractorExpectedConditions } from 'protractor';
 import utilCommon from "../../../utils/util.common";
-import utilityCommon, { Utility } from '../../../utils/utility.common';
 
 class CreateApprovalMapping {
 
@@ -20,7 +19,8 @@ class CreateApprovalMapping {
         statusMappingHelptext: '[rx-view-component-id="8cb76e4f-cbe1-4eb8-8f42-2e5e94cd70e5"] p',
         statusMappingLabel: '[rx-view-component-id="b782b185-a19a-45ad-b5b3-13bf50c89e3c"] span',
         saveButton: '[rx-view-component-id="186c361c-6f73-4382-9313-90596e00d821"] button',
-        cancelButton: '[rx-view-component-id="6b11932f-40d7-4843-af52-a2ede371c470"] button'
+        cancelButton: '[rx-view-component-id="6b11932f-40d7-4843-af52-a2ede371c470"] button',
+        lobValue: '[rx-view-component-id="61db57c7-292e-40f9-a577-c7f90d2d5bb1"] .pull-left'
     }
 
     async getCreateApprovalMappingHeaderText(): Promise<string> {
@@ -35,7 +35,7 @@ class CreateApprovalMapping {
         await $(this.selectors.approvalMappingName).clear();
         await $(this.selectors.approvalMappingName).sendKeys(approvalMappingName);
     }
- 
+
 
     async isApprovalMappingNameFieldMandatory(): Promise<boolean> {
         return await utilCommon.isRequiredTagToField(this.selectors.approvalMappingNameGuid);
@@ -44,11 +44,11 @@ class CreateApprovalMapping {
     async isCompanyFieldMandatory(): Promise<boolean> {
         return await utilCommon.isRequiredTagToField(this.selectors.companyGuid);
     }
-  
+
     async isStatusTriggerFieldMandatory(): Promise<boolean> {
         return await utilCommon.isRequiredTagToField(this.selectors.statusTriggerDropDownGuid);
     }
-  
+
     async selectCompany(company: string): Promise<void> {
         await utilCommon.selectDropDown(this.selectors.companyGuid, company);
     }
@@ -66,13 +66,17 @@ class CreateApprovalMapping {
         await dropDownInputElement.sendKeys(approvalStatusTrigger);
         await dropDownCheckboxElement.click();
     }
-  
+
     async clickSaveApprovalMappingBtn(): Promise<void> {
         await $(this.selectors.saveButton).click();
     }
 
     async clickCancelApprovalMappingBtn(): Promise<void> {
         await $(this.selectors.cancelButton).click();
+    }
+
+    async getLobValue(): Promise<string> {
+        return await $(this.selectors.lobValue).getText();
     }
 }
 
