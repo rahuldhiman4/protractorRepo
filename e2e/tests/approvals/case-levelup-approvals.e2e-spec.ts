@@ -619,6 +619,7 @@ describe("Case Level Up Approval Tests", () => {
             caseId = response.displayId;
             await navigationPage.signOut();
             await loginPage.login('qfeng');
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
             expect(await viewCasePo.isShowApproversBannerDisplayed()).toBeTruthy('Show Approvers Banner is not displayed');

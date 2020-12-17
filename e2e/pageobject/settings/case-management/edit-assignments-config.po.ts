@@ -67,7 +67,7 @@ class AssignmentConfigEditPage {
     }
 
     async setAssignee(assignee: string): Promise<void> {
-        await utilCommon.selectDropDown(assignee,this.selectors.assigneeGuid);
+        await utilCommon.selectDropDown(this.selectors.assigneeGuid,assignee);
     }
     
     async setDefaultToggleButton(value: boolean): Promise<void> {
