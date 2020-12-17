@@ -32,6 +32,7 @@ class CreateEmailTemplate {
         saveButton: '[rx-view-component-id="093a0eeb-c1e0-4ed8-945f-da46d9bbde88"] button',
         cancelButton: '[rx-view-component-id="9aeef4d7-1a10-4ffd-aa3a-22665c32883c"] button',
         lineOfBusinessGuid: '14c47289-52da-433a-b297-de2e8a7402a0',
+        lobValue: '[rx-view-component-id="14c47289-52da-433a-b297-de2e8a7402a0"] .pull-left'
     }
 
     async setTemplateName(value: string): Promise<void> {
@@ -186,6 +187,10 @@ class CreateEmailTemplate {
         await $(locator).click();
         await browser.switchTo().defaultContent();
         await browser.waitForAngularEnabled(true);
+    }
+
+    async getLobValue(): Promise<string> {
+        return await $(this.selectors.lobValue).getText();
     }
 
 }

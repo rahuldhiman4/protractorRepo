@@ -1,4 +1,4 @@
-import { $, browser, element, by, protractor, ProtractorExpectedConditions, $$ } from "protractor";
+import { $, $$, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../../utils/util.common';
 import utilGrid from '../../../utils/util.grid';
 
@@ -30,7 +30,8 @@ class CreateEmailTemplateBlade {
         statusField: '[rx-view-component-id="a1e0042f-41e7-4c80-9cd8-014786f346e6"] .ui-select-match',
         attachLink: '.rx-attachment-attach-icon button',
         removeAttachment: '.rx-attachment-view-remove',
-        AttachedfileName: '.rx-attachment-view-name'
+        AttachedfileName: '.rx-attachment-view-name',
+        lobValue: '[rx-view-component-id="88459fe5-ba0c-445f-b99d-838351677590"] .pull-left'
     }
 
     async clickOnLocalizeMessageButton(): Promise<void> {
@@ -177,6 +178,10 @@ class CreateEmailTemplateBlade {
             if (link) return await element(by.cssContainingText(this.selectors.AttachedfileName, fileName)).isDisplayed();
             else return false;
         });
+    }
+
+    async getLobValue(): Promise<string> {
+        return await $(this.selectors.lobValue).getText();
     }
 }
 

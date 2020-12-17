@@ -15,8 +15,7 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
-let userData, userData1, userData2 = undefined;
-
+let userData1, userData2 = undefined;
 
 describe('Email Configuration', () => {
     let offlineSupportGroup, emailID = "bmctemptestemail@gmail.com";
@@ -107,7 +106,6 @@ describe('Email Configuration', () => {
 
     //ankagraw
     describe('[DRDMV-8528,DRDMV-8527]: [Email Configuration] Verify Email configuration Grid view', async () => {
-
         it('[DRDMV-8528,DRDMV-8527]: Verify Email configuration header', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
@@ -133,7 +131,6 @@ describe('Email Configuration', () => {
             await createEmailConfigPo.clickSave();
             expect(await utilCommon.isPopUpMessagePresent("Saved successfully.")).toBeTruthy();
         });
-
         it('[DRDMV-8528,DRDMV-8527]: Verify email configuration is accessible to Line of business Case Manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
@@ -141,7 +138,6 @@ describe('Email Configuration', () => {
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
             expect(await utilGrid.isGridRecordPresent(emailID)).toBeTruthy('Email Configuration for Human resource LOB are not displayed to the Case Manager of same LOB');
         });
-
         it('[DRDMV-8528,DRDMV-8527]: Verify email configuration is accessible to other Line of business Case BA', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
@@ -149,7 +145,6 @@ describe('Email Configuration', () => {
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
             expect(await utilGrid.isGridRecordPresent(emailID)).toBeFalsy('Email Configuration for Human resource LOB are not displayed to the Case Manager of Facilities LOB');
         });
-
         it('[DRDMV-8528,DRDMV-8527]: Verify email configuration is accessible to other Line of business Case Manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('frieda');
@@ -158,10 +153,9 @@ describe('Email Configuration', () => {
             expect(await utilGrid.isGridRecordPresent(emailID)).toBeFalsy('Email Configuration for Human resource LOB are not displayed to the Case Manager of Facilities LOB');
 
         });
-
         it('[DRDMV-8528,DRDMV-8527]: Verify email configuration are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseBAMultiLOB@petramco.com','Password_1234');
+            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
             await utilGrid.selectLineOfBusiness('Facilities');
@@ -169,12 +163,11 @@ describe('Email Configuration', () => {
 
             await utilGrid.selectLineOfBusiness('Human Resource');
             expect(await utilGrid.isGridRecordPresent(emailID)).toBeTruthy('Email Configuration for Human resource LOB is not displayed to the Case Manager havign access to multiple LOBs (Human Resource, Facilities)');
-            
-        });
 
+        });
         it('[DRDMV-8528,DRDMV-8527]: Verify email configuration are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseMngrMultiLOB@petramco.com','Password_1234');
+            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
             await utilGrid.selectLineOfBusiness('Facilities');
@@ -183,12 +176,47 @@ describe('Email Configuration', () => {
             await utilGrid.selectLineOfBusiness('Human Resource');
             expect(await utilGrid.isGridRecordPresent(emailID)).toBeTruthy('Email Configuration for Human resource LOB is not displayed to the Case Manager havign access to multiple LOBs (Human Resource, Facilities)');
         });
-
+        it('[DRDMV-8528,DRDMV-8527]: create same name record in same LOB', async () => {
+            //create same name record in same LOB
+            await navigationPage.signOut();
+            await loginPage.login('jbarnes');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            await consoleEmailConfig.clickNewEmailConfiguration();
+            await createEmailConfigPo.selectCompany("Petramco");
+            await createEmailConfigPo.setEmailID(emailID);
+            await createEmailConfigPo.selectIncomingMailBoxName(incomingEmail.mailBoxName);
+            await createEmailConfigPo.setDescription("test");
+            await createEmailConfigPo.clickSave();
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (10000): The alternate email IDs are already used. Specify different alternate email IDs.')).toBeTruthy("Error message absent");
+            await createEmailConfigPo.clickCancel();
+            await utilCommon.clickOnWarningOk();
+        });
+        it('[DRDMV-8528,DRDMV-8527]: create same name record in different LOB', async () => {
+            //create same name record in different LOB
+            let facilitiesEmail = "facilitymail@gmail.com"
+            await utilGrid.selectLineOfBusiness('Facilities');
+            await consoleEmailConfig.clickNewEmailConfiguration();
+            await createEmailConfigPo.selectCompany("Petramco");
+            await createEmailConfigPo.setEmailID(facilitiesEmail);
+            await createEmailConfigPo.selectIncomingMailBoxName(incomingEmail.mailBoxName);
+            await createEmailConfigPo.setDescription("test");
+            // verify LOB is there
+            expect(await createEmailConfigPo.getLobValue()).toBe("Facilities");
+            await createEmailConfigPo.clickSave();
+            // expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent"); SUCCESS MESSAGE IS NOT PRESENT ON UI
+            // open the record and verify LOB is on edit screen
+            await utilGrid.searchAndOpenHyperlink(facilitiesEmail);
+            expect(await editEmailConfigPo.getLobValue()).toBe("Facilities");
+            await editEmailConfigPo.cancelEditEmailConfig();
+            await utilGrid.selectLineOfBusiness('Human Resource');
+        });
         afterAll(async () => {
             await utilityCommon.closeAllBlades(); // escape is working on these settings pages
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
-        });    
+        });
     });
 
     //ankagraw
@@ -337,7 +365,7 @@ describe('Email Configuration', () => {
             await utilityCommon.closeAllBlades(); // escape is working on these settings pages
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
-        });    
+        });
     });
 
     //ankagraw
@@ -716,7 +744,7 @@ describe('Email Configuration', () => {
             expect(await utilGrid.isGridRecordPresent('templateName' + randomStr)).toBeFalsy('Company specific Email Acknowledgement template for Human Resource LOB are displayed to the Case BA of Facilities LOB');
 
             await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
-            await createAcknowledgmentTemplatesPo.setTemplateName('FacilitiesGlobalAckTemplate'+randomStr);
+            await createAcknowledgmentTemplatesPo.setTemplateName('FacilitiesGlobalAckTemplate' + randomStr);
             await createAcknowledgmentTemplatesPo.selectCompanyDropDown('- Global -');
             await createAcknowledgmentTemplatesPo.selectStatusDropDown('Active');
             await createAcknowledgmentTemplatesPo.setDescription('description');
@@ -740,26 +768,26 @@ describe('Email Configuration', () => {
             await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
             expect(await utilGrid.isGridRecordPresent(templateData.templateName)).toBeFalsy('Global Email Acknowledgement template for Human Resource LOB are displayed to the Case manager of Facilities LOB');
             expect(await utilGrid.isGridRecordPresent('templateName' + randomStr)).toBeFalsy('Company specific Email Acknowledgement template for Human Resource LOB are displayed to the Case manager of Facilities LOB');
-            expect(await utilGrid.isGridRecordPresent('FacilitiesGlobalAckTemplate'+randomStr)).toBeTruthy('Global Email Acknowledgement template for Facilities LOB are displayed to the Case manager of same LOB');
+            expect(await utilGrid.isGridRecordPresent('FacilitiesGlobalAckTemplate' + randomStr)).toBeTruthy('Global Email Acknowledgement template for Facilities LOB are displayed to the Case manager of same LOB');
             expect(await utilGrid.isGridRecordPresent('FacilitiesAckTemplate' + randomStr)).toBeTruthy('Company specific Email Acknowledgement template for Facilities LOB are displayed to the Case manager of same LOB');
 
         });
 
         it('[DRDMV-9403,DRDMV-9402]: Verify acknowledgment template are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseBAMultiLOB@petramco.com','Password_1234');
+            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
             await utilGrid.selectLineOfBusiness('Facilities');
             expect(await utilGrid.isGridRecordPresent(templateData.templateName)).toBeFalsy('Global Email Acknowledgement template for Human Resource LOB are displayed to the Case BA of Facilities LOB');
             expect(await utilGrid.isGridRecordPresent('templateName' + randomStr)).toBeFalsy('Company specific Email Acknowledgement template for Human Resource LOB are displayed to the Case BA of Facilities LOB');
-            expect(await utilGrid.isGridRecordPresent('FacilitiesGlobalAckTemplate'+randomStr)).toBeTruthy('Global Email Acknowledgement template for Facilities LOB are displayed to the Case BA of Human Resource LOB');
+            expect(await utilGrid.isGridRecordPresent('FacilitiesGlobalAckTemplate' + randomStr)).toBeTruthy('Global Email Acknowledgement template for Facilities LOB are displayed to the Case BA of Human Resource LOB');
             expect(await utilGrid.isGridRecordPresent('FacilitiesAckTemplate' + randomStr)).toBeTruthy('Company specific Email Acknowledgement template for Facilities LOB are displayed to the Case BA of Human Resource LOB');
 
             await utilGrid.selectLineOfBusiness('Human Resource');
             expect(await utilGrid.isGridRecordPresent(templateData.templateName)).toBeTruthy('Global Email Acknowledgement template for Human resource LOB are not displayed to the Case BA of Facilities LOB');
             expect(await utilGrid.isGridRecordPresent('templateName' + randomStr)).toBeTruthy('Company specific Email Acknowledgement template for Human resource LOB are not displayed to the Case BA of Facilities LOB');
-            expect(await utilGrid.isGridRecordPresent('FacilitiesGlobalAckTemplate'+randomStr)).toBeFalsy('Global Email Acknowledgement template for Facilities LOB are displayed to the Case BA of Human resource LOB');
+            expect(await utilGrid.isGridRecordPresent('FacilitiesGlobalAckTemplate' + randomStr)).toBeFalsy('Global Email Acknowledgement template for Facilities LOB are displayed to the Case BA of Human resource LOB');
             expect(await utilGrid.isGridRecordPresent('FacilitiesAckTemplate' + randomStr)).toBeFalsy('Company specific Email Acknowledgement template for Facilities LOB are displayed to the Case BA of Human resource LOB');
 
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
@@ -769,26 +797,26 @@ describe('Email Configuration', () => {
             await editEmailConfigPo.clickAcknowledgementTemplateEditButton();
             expect(await editEmailConfigPo.isAcknowledgementDropDownPresent('templateName' + randomStr)).toBeTruthy();
             expect(await editEmailConfigPo.isAcknowledgementPresentnDropDown(templateData.templateName)).toBeTruthy();
-            expect(await editEmailConfigPo.isAcknowledgementDropDownPresent('FacilitiesGlobalAckTemplate'+randomStr)).toBeFalsy();
+            expect(await editEmailConfigPo.isAcknowledgementDropDownPresent('FacilitiesGlobalAckTemplate' + randomStr)).toBeFalsy();
             expect(await editEmailConfigPo.isAcknowledgementPresentnDropDown('FacilitiesAckTemplate' + randomStr)).toBeFalsy();
-            
+
         });
 
         it('[DRDMV-9403,DRDMV-9402]: Verify acknowledgment template are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseMngrMultiLOB@petramco.com','Password_1234');
+            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
             await utilGrid.selectLineOfBusiness('Facilities');
             expect(await utilGrid.isGridRecordPresent(templateData.templateName)).toBeFalsy('Global Email Acknowledgement template for Human Resource LOB are displayed to the Case BA of Facilities LOB');
             expect(await utilGrid.isGridRecordPresent('templateName' + randomStr)).toBeFalsy('Company specific Email Acknowledgement template for Human Resource LOB are displayed to the Case BA of Facilities LOB');
-            expect(await utilGrid.isGridRecordPresent('FacilitiesGlobalAckTemplate'+randomStr)).toBeTruthy('Global Email Acknowledgement template for Facilities LOB are displayed to the Case BA of Human Resource LOB');
+            expect(await utilGrid.isGridRecordPresent('FacilitiesGlobalAckTemplate' + randomStr)).toBeTruthy('Global Email Acknowledgement template for Facilities LOB are displayed to the Case BA of Human Resource LOB');
             expect(await utilGrid.isGridRecordPresent('FacilitiesAckTemplate' + randomStr)).toBeTruthy('Company specific Email Acknowledgement template for Facilities LOB are displayed to the Case BA of Human Resource LOB');
 
             await utilGrid.selectLineOfBusiness('Human Resource');
             expect(await utilGrid.isGridRecordPresent(templateData.templateName)).toBeTruthy('Global Email Acknowledgement template for Human resource LOB are not displayed to the Case BA of Facilities LOB');
             expect(await utilGrid.isGridRecordPresent('templateName' + randomStr)).toBeTruthy('Company specific Email Acknowledgement template for Human resource LOB are not displayed to the Case BA of Facilities LOB');
-            expect(await utilGrid.isGridRecordPresent('FacilitiesGlobalAckTemplate'+randomStr)).toBeFalsy('Global Email Acknowledgement template for Facilities LOB are displayed to the Case BA of Human resource LOB');
+            expect(await utilGrid.isGridRecordPresent('FacilitiesGlobalAckTemplate' + randomStr)).toBeFalsy('Global Email Acknowledgement template for Facilities LOB are displayed to the Case BA of Human resource LOB');
             expect(await utilGrid.isGridRecordPresent('FacilitiesAckTemplate' + randomStr)).toBeFalsy('Company specific Email Acknowledgement template for Facilities LOB are displayed to the Case BA of Human resource LOB');
 
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
@@ -798,14 +826,14 @@ describe('Email Configuration', () => {
             await editEmailConfigPo.clickAcknowledgementTemplateEditButton();
             expect(await editEmailConfigPo.isAcknowledgementDropDownPresent('templateName' + randomStr)).toBeTruthy();
             expect(await editEmailConfigPo.isAcknowledgementPresentnDropDown(templateData.templateName)).toBeTruthy();
-            expect(await editEmailConfigPo.isAcknowledgementDropDownPresent('FacilitiesGlobalAckTemplate'+randomStr)).toBeFalsy();
+            expect(await editEmailConfigPo.isAcknowledgementDropDownPresent('FacilitiesGlobalAckTemplate' + randomStr)).toBeFalsy();
             expect(await editEmailConfigPo.isAcknowledgementPresentnDropDown('FacilitiesAckTemplate' + randomStr)).toBeFalsy();
         });
 
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
-        });    
+        });
 
     });
 

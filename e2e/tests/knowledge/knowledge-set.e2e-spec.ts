@@ -102,16 +102,6 @@ describe('Knowledge Article Set', () => {
             expect(await utilGrid.isGridRecordPresent(knowledgesetFacilities)).toBeTruthy('Record is not Present');
         });
 
-        it('[DRDMV-1105]: Verify if case assignment mapping is accessible to different LOB Case Manager', async () => {
-            await navigationPage.signOut();
-            await loginPage.login('frieda');
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', 'Knowledge Set Console');
-            expect(await utilGrid.isGridRecordPresent('DRDMV-1062' + randomStr)).toBeFalsy('Knowledge set are displayed to different LOB Case Manager.');
-            expect(await utilGrid.isGridRecordPresent('DRDMV-1062_1' + randomStr)).toBeFalsy('Knowledge set are displayed to different LOB Case Manager.');
-            expect(await utilGrid.isGridRecordPresent(knowledgesetFacilities)).toBeTruthy('Knowledge set are displayed to same LOB Case Manager.');
-        });
-
         it('[DRDMV-1105]: Verify if case assignment mapping is accessible to Case BA belonging to different company with same LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
@@ -159,7 +149,39 @@ describe('Knowledge Article Set', () => {
             await utilCommon.closePopUpMessage();
             await utilCommon.closeBladeOnSettings();
         });
-
+        it('[DRDMV-1105]: create same name record in same LOB', async () => {
+            //create same name record in same LOB
+            await navigationPage.signOut();
+            await loginPage.login('jbarnes');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', 'Knowledge Set Console');
+            await utilGrid.selectLineOfBusiness('Facilities');
+            await consoleKnowledgeSetPo.clickOnAddKnowledgeSetBtn();
+            await createKnowledgeSetPo.setKnowledgeSetName(knowledgesetFacilities);
+            await createKnowledgeSetPo.setCompanyValue('Petramco');
+            await createKnowledgeSetPo.setDescriptionValue('Sample Description1' + randomStr);
+            await createKnowledgeSetPo.clickSaveBtn();
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (222161): Knowledge Set with name asdf already exists for selected company.')).toBeTruthy("Error message absent");
+            await createKnowledgeSetPo.clickCancelBtn();
+            await utilCommon.clickOnWarningOk();
+        });
+        it('[DRDMV-1105]: create same name record in different LOB', async () => {
+            //create same name record in different LOB
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            await consoleKnowledgeSetPo.clickOnAddKnowledgeSetBtn();
+            await createKnowledgeSetPo.setKnowledgeSetName(knowledgesetFacilities);
+            await createKnowledgeSetPo.setCompanyValue('Petramco');
+            await createKnowledgeSetPo.setDescriptionValue('Sample Description1' + randomStr);
+            await createKnowledgeSetPo.clickSaveBtn();
+            // verify LOB is there
+            expect(await createKnowledgeSetPo.getLobValue()).toBe("Human Resource");
+            await createKnowledgeSetPo.clickSaveBtn();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('success message absent');
+            // open the record and verify LOB is on edit screen
+            await utilGrid.searchAndOpenHyperlink(knowledgesetFacilities);
+            expect(await editKnowledgeSet.getLobValue()).toBe("Human Resource");
+            await editKnowledgeSet.clickCancelButton();
+        });
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');

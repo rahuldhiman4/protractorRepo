@@ -20,6 +20,7 @@ class AutomatedStatusTransitionConfigEditPage {
         categoryTier4: '[rx-view-component-id="0c98faa4-55ed-49c3-9162-d48f92ddff5d"] .ui-select-toggle',
         enableToggleGuid: '2309d963-493b-41b2-8ace-89a9d64281ca',
         lineofbusinessValue: '[rx-view-component-id="f49ae3e3-d357-4f09-9123-58bcaf46b808"] input.d-textfield__input',
+        lobValue: '[rx-view-component-id="f49ae3e3-d357-4f09-9123-58bcaf46b808"] .pull-left'
     }
 
     async isAutomatedStatusTransitionNameEnabled(): Promise<boolean> {
@@ -91,6 +92,10 @@ class AutomatedStatusTransitionConfigEditPage {
     async updateConfigurationName(configName:string): Promise<void> {
         await $(this.selectors.editName).clear();
         await $(this.selectors.editName).sendKeys(configName);
+    }
+
+    async getLobValue(): Promise<string> {
+        return await $(this.selectors.lobValue).getText();
     }
 }
 

@@ -465,29 +465,70 @@ describe('Email Template', () => {
     });
 
     //ankagraw
-    it('[DRDMV-10799,DRDMV-10800]: Email Template : If user goes away from both edit and create view warning should be appeared	', async () => {
+    describe('[DRDMV-10799,DRDMV-10800]: Email Template:if user goes away from both edit and create view warning should be appeared', async () => {
         let emailTemplateName, randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        await apiHelper.apiLogin('qkatawazi');
-        emailTemplateName = emailTemplateData['emailTemplateWithMandatoryField'].TemplateName = await emailTemplateData['emailTemplateWithMandatoryField'].TemplateName + randomStr;
-        await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateWithMandatoryField']);
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
-        await consoleEmailTemplatePo.clickOnAddEmailTemplateButton();
-        expect(await createEmailTemplatePo.isTemplateRequiredTextPresent()).toBeTruthy();
-        expect(await createEmailTemplatePo.isCompanyRequiredTextPresent()).toBeTruthy();
-        expect(await createEmailTemplatePo.islineOfBusinessRequiredTextPresent()).toBeTruthy();
-        expect(await createEmailTemplatePo.isStatusRequiredTextPresent()).toBeTruthy();
-        expect(await createEmailTemplatePo.isDescriptionRequiredTextPresent()).toBeTruthy();
-        expect(await createEmailTemplatePo.isSubjectRequiredTextPresent()).toBeTruthy();
-        await createEmailTemplatePo.setTemplateName("templateName1");
-        await createEmailTemplatePo.clickOnCancelButton();
-        expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue without saving?');
-        await utilCommon.clickOnWarningOk();
-        await consoleEmailTemplatePo.searchAndOpenEmailTemplate(emailTemplateName);
-        await editEmailTemplatePo.updateDescription("test");
-        await editEmailTemplatePo.clickOnCancelButton();
-        expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue without saving?');
-        await utilCommon.clickOnWarningOk();
+        it('[DRDMV-10799,DRDMV-10800]: Email Template:if user goes away from both edit and create view warning should be appeared', async () => {
+            await apiHelper.apiLogin('qkatawazi');
+            emailTemplateName = emailTemplateData['emailTemplateWithMandatoryField'].TemplateName = await emailTemplateData['emailTemplateWithMandatoryField'].TemplateName + randomStr;
+            await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateWithMandatoryField']);
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
+            await consoleEmailTemplatePo.clickOnAddEmailTemplateButton();
+            expect(await createEmailTemplatePo.isTemplateRequiredTextPresent()).toBeTruthy();
+            expect(await createEmailTemplatePo.isCompanyRequiredTextPresent()).toBeTruthy();
+            expect(await createEmailTemplatePo.islineOfBusinessRequiredTextPresent()).toBeTruthy();
+            expect(await createEmailTemplatePo.isStatusRequiredTextPresent()).toBeTruthy();
+            expect(await createEmailTemplatePo.isDescriptionRequiredTextPresent()).toBeTruthy();
+            expect(await createEmailTemplatePo.isSubjectRequiredTextPresent()).toBeTruthy();
+            await createEmailTemplatePo.setTemplateName("templateName1");
+            await createEmailTemplatePo.clickOnCancelButton();
+            expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue without saving?');
+            await utilCommon.clickOnWarningOk();
+            await consoleEmailTemplatePo.searchAndOpenEmailTemplate(emailTemplateName);
+            await editEmailTemplatePo.updateDescription("test");
+            await editEmailTemplatePo.clickOnCancelButton();
+            expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue without saving?');
+            await utilCommon.clickOnWarningOk();
+        });
+        it('[DRDMV-10799,DRDMV-10800]: create same name record in same LOB', async () => {
+            //create same name record in same LOB
+            await navigationPage.signOut();
+            await loginPage.login('jbarnes');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            await consoleEmailTemplatePo.clickOnAddEmailTemplateButton();
+            await createEmailTemplatePo.setTemplateName(emailTemplateName);
+            await createEmailTemplatePo.selectCompany("Petramco");
+            await createEmailTemplatePo.setDescription("emailTemplateName");
+            await createEmailTemplatePo.setSubject("emailTemplateName");
+            await createEmailTemplatePo.clickOnSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent(`ERROR (222108): Template Already exist with given name:${emailTemplateName}`)).toBeTruthy("Error message absent");
+            await createEmailTemplatePo.clickOnCancelButton();
+            await utilCommon.clickOnWarningOk();
+        });
+        it('[DRDMV-10799,DRDMV-10800]: create same name record in different LOB', async () => {
+            //create same name record in different LOB
+            await utilGrid.selectLineOfBusiness('Facilities');
+            await consoleEmailTemplatePo.clickOnAddEmailTemplateButton();
+            await createEmailTemplatePo.setTemplateName(emailTemplateName);
+            await createEmailTemplatePo.selectCompany("Petramco");
+            await createEmailTemplatePo.setDescription("email desc");
+            await createEmailTemplatePo.setSubject("email subject");
+            // verify LOB is there
+            expect(await createEmailTemplatePo.getLobValue()).toBe("Facilities");
+            await createEmailTemplatePo.clickOnSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
+            // open the record and verify LOB is on edit screen
+            await consoleEmailTemplatePo.searchAndOpenEmailTemplate(emailTemplateName);
+            expect(await editEmailTemplatePo.getLobValue()).toBe("Facilities");
+            await editEmailTemplatePo.clickOnCancelButton();
+            await utilGrid.selectLineOfBusiness('Human Resource');
+        });
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
     });
 
     //ankagraw

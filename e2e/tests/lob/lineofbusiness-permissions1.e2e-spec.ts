@@ -929,7 +929,7 @@ describe('Line of Business Permission Tests', () => {
             await utilGrid.clearFilter();
             expect(await utilGrid.isGridRecordPresent('UpdatedConfigName1' + randomStr)).toBeFalsy();
         });
-        xit('[DRDMV-17555]: create same name record in same LOB', async () => {
+        it('[DRDMV-17555]: create same name record in same LOB', async () => {
             //create same name record in same LOB
             tempData = cloneDeep(AUTO_STATUS_TRANSITION_MANDATORY_FIELDS);
             tempData.name = 'UpdatedConfigName1' + randomStr;
@@ -943,19 +943,23 @@ describe('Line of Business Permission Tests', () => {
             await automatedStatusTransitionCreatePage.clickCancelBtn();
             await utilCommon.clickOnWarningOk();
         });
-        xit('[DRDMV-17555]: create same name record in different LOB', async () => {
+        it('[DRDMV-17555]: create same name record in different LOB', async () => {
             //create same name record in different LOB
             await utilGrid.selectLineOfBusiness('Facilities');
             await automatedStatusTransitionConsole.clickAddAutomatedStatusTransitionBtn();
-            // await automatedStatusTransitionCreatePage.setName(tempData.name);
-            // await automatedStatusTransitionCreatePage.setCompany(tempData.company);
-            // await automatedStatusTransitionCreatePage.setFromStatus(tempData.fromStatus);
-            // await automatedStatusTransitionCreatePage.setToStatus(tempData.toStatus);
-            // await automatedStatusTransitionCreatePage.setChangeStatusAfter(tempData.changeStatusAfter.toString());
-            // verify LOB is there
-            // await automatedStatusTransitionCreatePage.saveConfig();
+            await automatedStatusTransitionCreatePage.setName(tempData.name);
+            await automatedStatusTransitionCreatePage.setCompany(tempData.company);
+            await automatedStatusTransitionCreatePage.setFromStatus(tempData.fromStatus);
+            await automatedStatusTransitionCreatePage.setToStatus(tempData.toStatus);
+            await automatedStatusTransitionCreatePage.setChangeStatusAfter(tempData.changeStatusAfter.toString());
+            // verify LOB on create page
+            expect(await automatedStatusTransitionCreatePage.getLobValue()).toBe("Facilities");
+            await automatedStatusTransitionCreatePage.saveConfig();
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
-            // open the record and verify LOB is on edit screen
+            // verify LOB on edit page
+            await automatedStatusTransitionConsole.openAutomatedTransitionConfig(tempData.name);
+            expect(await automatedStatusTransitionEditPage.getLobValue()).toBe("Facilities");
+            await automatedStatusTransitionEditPage.clickCancel();
             await utilGrid.selectLineOfBusiness('Human Resource');
         });
         afterAll(async () => {
