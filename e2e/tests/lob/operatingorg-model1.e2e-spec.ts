@@ -707,7 +707,7 @@ describe('Operating Orgnization Data Model Tests', () => {
     });
 
     describe('[DRDMV-23488]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
-        let facilitiescaseData, facilitiesarticleData, caseTemplateDataGlobal, caseTemplateData, facilitiesTemplateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let facilitiescaseData, facilitiesGlobalTemplateData,facilitiesarticleData, caseTemplateDataGlobal, caseTemplateData, facilitiesTemplateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let commonName = randomStr + "Case DRDMV23488";
         let commonNameForOtherLoB = randomStr + "FacilitiesDRDMV23488";
         beforeAll(async () => {
@@ -773,8 +773,19 @@ describe('Operating Orgnization Data Model Tests', () => {
                 "assignee": "Fritz",
                 "casePriority": "Low",
             };
+            facilitiesGlobalTemplateData = {
+                "templateName": commonNameForOtherLoB,
+                "templateSummary": randomStr + "FacilitiesDRDMV23488",
+                "caseStatus": "Assigned",
+                "templateStatus": "Active",
+                "company": "- GLobal -",
+                "businessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
+                "assignee": "Fritz",
+                "casePriority": "Low",
+            };
             facilitiescaseData = {
-                "Requester": "qtao",
+                "Requester": "frieda",
                 "Summary": commonNameForOtherLoB,
                 "Assigned Company": "Petramco",
                 "Business Unit": "Facilities Support",
@@ -796,11 +807,13 @@ describe('Operating Orgnization Data Model Tests', () => {
             await apiHelper.apiLogin('fritz');
             await apiHelper.createCaseTemplate(facilitiesTemplateData);
             await apiHelper.createCase(caseData);
+            await apiHelper.createCaseTemplate(facilitiesGlobalTemplateData);
+            await apiHelper.createCase(facilitiescaseData);
             let knowledgeArticleData1 = await apiHelper.createKnowledgeArticle(articleData);
             let knowledgeArticleGUID1 = knowledgeArticleData1.id;
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID1, 'Draft')).toBeTruthy('Status Not Set');
-            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID1, 'SMEReview', 'qkatawazi', 'Compensation and Benefits', 'Petramco')).toBeTruthy("Article with SME Review status not updated.");
-            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID1, 'PublishApproval', 'qkatawazi', 'Compensation and Benefits', 'Petramco')).toBeTruthy('Status Not Set');
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID1, 'SMEReview', 'Fritz', 'Facilities', 'Petramco')).toBeTruthy("Article with SME Review status not updated.");
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID1, 'PublishApproval', 'Fritz', 'Facilities', 'Petramco')).toBeTruthy('Status Not Set');
         });
         it('[DRDMV-23488]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
             await navigationPage.gotoQuickCase();
@@ -824,6 +837,15 @@ describe('Operating Orgnization Data Model Tests', () => {
             await previewCasePage.clickBackButton();
             await quickCasePo.createCaseButton();
             await previewCasePage.clickGoToCaseButton();
+            await viewCasePage.clickEditCaseButton();
+            await viewCasePage.clickOnTab('Resources');
+            expect(await resourcesPo.getKnowledgeArticleInfo()).toContain('Human Resource', 'LOB is not correct');
+            await quickCasePo.clickFirstRecommendedCases();
+            expect(await previewCasePage.getLineOfBusinessValue()).toBe('Human Resource');
+            await previewCasePage.clickBackButton();
+            await quickCasePo.clickArrowFirstRecommendedCaseTemplate();
+            expect(await previewCaseTemplateCasesPo.getLineOfBusinessValue()).toBe('Human Resource');
+            await previewCaseTemplateCasesPo.clickOnBackButton();
         });
         it('[DRDMV-23488]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
             await viewCasePage.clickEditCaseButton();
@@ -864,6 +886,11 @@ describe('Operating Orgnization Data Model Tests', () => {
             await loginPage.login('fritz');
             await utilityGrid.clearFilter();
             expect(await utilityGrid.isGridRecordPresent(randomStr + "2Case DRDMV23488")).toBeFalsy('DRDMV-23519Summary' + randomStr);
+            await navigationPage.gotoQuickCase();
+            await quickCasePo.selectRequesterName('frieda');
+            await quickCasePo.setCaseSummary(commonName);
+            expect(await quickCasePo.selectCaseTemplate(caseTemplateDataGlobal.templateName)).toBeFalsy('template is present');
+            expect(await quickCasePo.selectCaseTemplate(caseTemplateData.templateName)).toBeFalsy('template is present');
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
             await navigationPage.gotoQuickCase();
@@ -897,6 +924,10 @@ describe('Operating Orgnization Data Model Tests', () => {
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('adam');
             await quickCasePo.selectCaseTemplate(facilitiesTemplateData.templateName);
+            expect(await resourcesPo.getKnowledgeArticleInfo()).toContain('Facilities', 'LOB is not correct');
+            await quickCasePo.clickFirstRecommendedCases();
+            expect(await previewCasePage.getLineOfBusinessValue()).toBe('Facilities');
+            await previewCasePage.clickBackButton();
             await quickCasePo.createCaseButton();
             await utilityCommon.closePopUpMessage();
             expect(await previewCasePage.getLineOfBusinessValue()).toBe('Facilities');
@@ -913,8 +944,10 @@ describe('Operating Orgnization Data Model Tests', () => {
             await loginPage.login('qkatawazi');
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('adam');
+            await quickCasePo.setCaseSummary(commonNameForOtherLoB);
+            expect(await quickCasePo.selectCaseTemplate(facilitiesGlobalTemplateData.templateName)).toBeFalsy('template is present');
             expect(await quickCasePo.selectCaseTemplate(facilitiesTemplateData.templateName)).toBeFalsy('template is present');
-            await quickCasePo.setCaseSummary('new case');
+            expect(await resourcesPo.isRecommendedKnowledgePresent(facilitiesarticleData.title)).toBeFalsy();
             await resourcesPo.clickOnAdvancedSearchOptions();
             await resourcesPo.enterAdvancedSearchText(facilitiesarticleData.title);
             await resourcesPo.clickOnAdvancedSearchSettingsIconToOpen();
@@ -932,6 +965,8 @@ describe('Operating Orgnization Data Model Tests', () => {
     describe('[DRDMV-23624,DRDMV-23614]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB with diff Company', async () => {
         let caseTemplateData, facilitiesTemplateData, caseTemplateDataPsilon, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let commonName = randomStr + "Case DRDMV23488";
+        let commonNameForOtherLoB = randomStr + "FacilitiesDRDMV23488";
+        let facilitiescaseData, facilitiesGlobalTemplateData,facilitiesarticleData;
         beforeAll(async () => {
             caseTemplateData = {
                 "templateName": commonName,
@@ -985,7 +1020,7 @@ describe('Operating Orgnization Data Model Tests', () => {
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'SMEReview', 'qkatawazi', 'Compensation and Benefits', 'Petramco')).toBeTruthy("Article with SME Review status not updated.");
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'PublishApproval', 'qkatawazi', 'Compensation and Benefits', 'Petramco')).toBeTruthy('Status Not Set');
             facilitiesTemplateData = {
-                "templateName": randomStr + "FacilitiesDRDMV23488",
+                "templateName": commonNameForOtherLoB,
                 "templateSummary": randomStr + "FacilitiesDRDMV23488",
                 "caseStatus": "Assigned",
                 "templateStatus": "Active",
@@ -995,8 +1030,46 @@ describe('Operating Orgnization Data Model Tests', () => {
                 "assignee": "Fritz",
                 "casePriority": "Low",
             };
+            facilitiesGlobalTemplateData = {
+                "templateName": commonNameForOtherLoB,
+                "templateSummary": randomStr + "FacilitiesDRDMV23488",
+                "caseStatus": "Assigned",
+                "templateStatus": "Active",
+                "company": "- GLobal -",
+                "businessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
+                "assignee": "Fritz",
+                "casePriority": "Low",
+            };
+            facilitiescaseData = {
+                "Requester": "frieda",
+                "Summary": commonNameForOtherLoB,
+                "Assigned Company": "Petramco",
+                "Business Unit": "Facilities Support",
+                "Support Group": "Facilities",
+                "categoryTier1": "Phones",
+                "categoryTier2": "Cellular Phones",
+                "categoryTier3": "Service",
+                "Assignee": "Frieda"
+            };
+            facilitiesarticleData = {
+                "knowledgeSet": "HR",
+                "title": commonNameForOtherLoB,
+                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "Facilities Support",
+                "assigneeSupportGroup": "Facilities",
+                "assignee": "Fritz"
+            };
             await apiHelper.apiLogin('fritz');
             await apiHelper.createCaseTemplate(facilitiesTemplateData);
+            await apiHelper.createCaseTemplate(facilitiesGlobalTemplateData);
+            await apiHelper.createCase(facilitiescaseData);
+            let knowledgeArticleData1 = await apiHelper.createKnowledgeArticle(articleData);
+            let knowledgeArticleGUID1 = knowledgeArticleData1.id;
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID1, 'Draft')).toBeTruthy('Status Not Set');
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID1, 'SMEReview', 'Fritz', 'Facilities', 'Petramco')).toBeTruthy("Article with SME Review status not updated.");
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID1, 'PublishApproval', 'Fritz', 'Facilities', 'Petramco')).toBeTruthy('Status Not Set');
         });
         it('[DRDMV-23624,DRDMV-23614]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB with diff Company', async () => {
             await navigationPage.signOut();
@@ -1059,10 +1132,28 @@ describe('Operating Orgnization Data Model Tests', () => {
             await utilityCommon.closePopUpMessage();
             await navigationPage.gotoCaseConsole();
             expect(await utilityGrid.isGridRecordPresent(randomStr + "2Case DRDMV23488")).toBeTruthy('DRDMV-23519Summary' + randomStr);
+            await navigationPage.gotoQuickCase();
+            await quickCasePo.selectRequesterName('Frieda');
+            await quickCasePo.setCaseSummary(commonNameForOtherLoB);
+            expect(await quickCasePo.selectCaseTemplate(facilitiesGlobalTemplateData.templateName)).toBeFalsy('template is present');
+            expect(await quickCasePo.selectCaseTemplate(facilitiesTemplateData.templateName)).toBeFalsy('template is present');
+            expect(await resourcesPo.isRecommendedKnowledgePresent(facilitiesarticleData.title)).toBeFalsy();
+            await resourcesPo.clickOnAdvancedSearchOptions();
+            await resourcesPo.enterAdvancedSearchText(facilitiesarticleData.title);
+            await resourcesPo.clickOnAdvancedSearchSettingsIconToOpen();
+            await resourcesPo.clickOnAdvancedSearchFiltersButton('Apply');
+            await resourcesPo.clickOnAdvancedSearchSettingsIconToClose();
+            expect(await resourcesPo.isRecommendedKnowledgePresent(facilitiesarticleData.title)).toBeFalsy();
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await utilityGrid.clearFilter();
             expect(await utilityGrid.isGridRecordPresent(randomStr + "2Case DRDMV23488")).toBeFalsy('DRDMV-23519Summary' + randomStr);
+            await navigationPage.gotoQuickCase();
+            await quickCasePo.selectRequesterName('gderuno');
+            expect(await quickCasePo.selectCaseTemplate(caseTemplateData.templateName)).toBeFalsy('template is present');
+            await quickCasePo.clickStartOverButton();
+            await quickCasePo.selectRequesterName('adam');
+            expect(await quickCasePo.selectCaseTemplate(caseTemplateDataPsilon.templateName)).toBeFalsy('template is present');
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
             await navigationPage.gotoQuickCase();
@@ -1085,13 +1176,19 @@ describe('Operating Orgnization Data Model Tests', () => {
             await navigationPage.signOut();
             await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoQuickCase();
-            await quickCasePo.selectRequesterName('adam');
+            await quickCasePo.selectRequesterName('gderuno');
             await quickCasePo.setCaseSummary('PsilonCaseSummary' + randomStr);
             await quickCasePo.selectCaseTemplate(caseTemplateDataPsilon.templateName);
             await quickCasePo.createCaseButton();
             await utilityCommon.closePopUpMessage();
             expect(await previewCasePage.getLineOfBusinessValue()).toBe('Human Resource');
             await quickCasePo.gotoCaseButton();
+            await navigationPage.gotoQuickCase();
+            await quickCasePo.selectRequesterName('gderuno');
+            expect(await quickCasePo.selectCaseTemplate(caseTemplateData.templateName)).toBeTruthy('template is present');
+            await quickCasePo.clickStartOverButton();
+            await quickCasePo.selectRequesterName('adam');
+            expect(await quickCasePo.selectCaseTemplate(caseTemplateDataPsilon.templateName)).toBeTruthy('template is present');
             await navigationPage.signOut();
             await loginPage.login('idphylum1@petramco.com', 'Password_1234');
             await utilityGrid.clearFilter();
