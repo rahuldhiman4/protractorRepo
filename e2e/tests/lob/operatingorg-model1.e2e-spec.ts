@@ -39,7 +39,7 @@ import knowledgeArticlesConsolePo from '../../pageobject/knowledge/knowledge-art
 import statusBladeKnowledgeArticlePo from '../../pageobject/knowledge/status-blade-knowledge-article.po';
 
 
-let userData1;
+let supportGroupDataHR, supportGroupDataFacilities, userData0, userData1, userData2, supportGroupDataEricssonHR, supportGroupDataEricssonSAM, userData3, userData4;
 
 describe('Operating Orgnization Data Model Tests', () => {
     let personDataFile = require('../../data/ui/foundation/person.ui.json');
@@ -47,6 +47,7 @@ describe('Operating Orgnization Data Model Tests', () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
         await createNewUsers();
+        await createFoundationDataForAssigneeValidations();
     });
 
     afterAll(async () => {
@@ -74,11 +75,91 @@ describe('Operating Orgnization Data Model Tests', () => {
         await apiHelper.associatePersonToCompany(personData1.userId, 'Phylum');
     }
 
+    async function createFoundationDataForAssigneeValidations() {
+        await apiHelper.apiLogin('tadmin');
+        supportGroupDataHR = {
+            "orgName": "Petramco HR",
+            "relatedOrgId": null,
+            "domainTag": "Human Resource"
+        }
+
+        supportGroupDataFacilities = {
+            "orgName": "Petramco Facilities",
+            "relatedOrgId": null,
+            "domainTag": "Facilities"
+        }
+
+        userData0 = {
+            "firstName": "xod user23625_1",
+            "lastName": "test",
+            "userId": "user23625_1",
+            "userPermission": ["Case Agent", "Human Resource", "Case Business Analyst", "Knowledge Publisher"]
+        }
+
+        userData2 = {
+            "firstName": "bto user23625_2",
+            "lastName": "test",
+            "userId": "user23625_2",
+            "userPermission": ["Case Agent", "Facilities", "Case Business Analyst", "Knowledge Publisher"]
+        }
+
+        await apiHelper.createNewUser(userData0);
+        await apiHelper.createNewUser(userData2);
+        let orgId = await coreApi.getBusinessUnitGuid('Canada Support');
+        supportGroupDataHR.relatedOrgId = orgId;
+        supportGroupDataFacilities.relatedOrgId = orgId;
+        await apiHelper.createSupportGroup(supportGroupDataHR);
+        await apiHelper.createSupportGroup(supportGroupDataFacilities);
+        await apiHelper.associatePersonToCompany(userData0.userId, "Petramco");
+        await apiHelper.associatePersonToSupportGroup(userData0.userId, "US Support 3");
+        await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
+        await apiHelper.associatePersonToSupportGroup(userData2.userId, "US Support 3");
+
+        //Create data for Assignment value validations for Ericsson
+        await apiHelper.apiLogin('tadmin');
+        supportGroupDataEricssonHR = {
+            "orgName": "EricssonCo HR",
+            "relatedOrgId": null,
+            "domainTag": "Ericsson HR"
+        }
+
+        supportGroupDataEricssonSAM = {
+            "orgName": "EricssonCo SAM",
+            "relatedOrgId": null,
+            "domainTag": "Ericsson SAM"
+        }
+
+        userData3 = {
+            "firstName": "ercsn hr tst",
+            "lastName": "usr",
+            "userId": "ercsnhrusr",
+            "userPermission": ["Case Agent", "Ericsson HR", "Case Business Analyst", "Knowledge Publisher"]
+        }
+
+        userData4 = {
+            "firstName": "ercsn sam tst",
+            "lastName": "usr",
+            "userId": "ercsnsamusr",
+            "userPermission": ["Case Agent", "Ericsson SAM", "Case Business Analyst", "Knowledge Publisher"]
+        }
+
+        await apiHelper.createNewUser(userData3);
+        await apiHelper.createNewUser(userData4);
+        let orgId1 = await coreApi.getBusinessUnitGuid('Ericsson HR Support');
+        supportGroupDataHR.relatedOrgId = orgId1;
+        supportGroupDataFacilities.relatedOrgId = orgId1;
+        await apiHelper.createSupportGroup(supportGroupDataEricssonHR);
+        await apiHelper.createSupportGroup(supportGroupDataEricssonSAM);
+        await apiHelper.associatePersonToCompany(userData3.userId, "Ericsson HR");
+        await apiHelper.associatePersonToSupportGroup(userData3.userId, "US Support 2");
+        await apiHelper.associatePersonToCompany(userData4.userId, "Ericsson HR");
+        await apiHelper.associatePersonToSupportGroup(userData4.userId, "US Support 2");
+    }
 
     //asahitya
     describe('[DRDMV-23621]: [Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when user has access to multiple companies for the single Line of Business', () => {
         let randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let supportGroupDataHR, supportGroupDataFacilities, userData1, userData2, twoCompanyUser;
+        let twoCompanyUser;
         let caseTemplateDataPetramcoHR = {
             "templateName": 'DRDMV-23621 Name HR' + randomStr,
             "templateSummary": 'DRDMV-23621 Summary HR' + randomStr,
@@ -149,45 +230,6 @@ describe('Operating Orgnization Data Model Tests', () => {
             await apiHelper.createCaseTemplate(caseTemplateDataGlobalHR);
             await apiHelper.createCaseTemplate(caseTemplateDataGlobalFacilities);
 
-            //Create data for Assignment value validations
-            supportGroupDataHR = {
-                "orgName": "Petramco HR",
-                "relatedOrgId": null,
-                "domainTag": "Human Resource"
-            }
-
-            supportGroupDataFacilities = {
-                "orgName": "Petramco Facilities",
-                "relatedOrgId": null,
-                "domainTag": "Facilities"
-            }
-
-            userData1 = {
-                "firstName": "xod user23625_1",
-                "lastName": "test",
-                "userId": "user23625_1",
-                "userPermission": ["Case Agent", "Human Resource", "Case Business Analyst", "Knowledge Publisher"]
-            }
-
-            userData2 = {
-                "firstName": "bto user23625_2",
-                "lastName": "test",
-                "userId": "user23625_2",
-                "userPermission": ["Case Agent", "Facilities", "Case Business Analyst", "Knowledge Publisher"]
-            }
-
-            await apiHelper.createNewUser(userData1);
-            await apiHelper.createNewUser(userData2);
-            let orgId = await coreApi.getBusinessUnitGuid('Canada Support');
-            supportGroupDataHR.relatedOrgId = orgId;
-            supportGroupDataFacilities.relatedOrgId = orgId;
-            await apiHelper.createSupportGroup(supportGroupDataHR);
-            await apiHelper.createSupportGroup(supportGroupDataFacilities);
-            await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
-            await apiHelper.associatePersonToSupportGroup(userData1.userId, "US Support 3");
-            await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
-            await apiHelper.associatePersonToSupportGroup(userData2.userId, "US Support 3");
-
             twoCompanyUser = {
                 "firstName": "CopyTask",
                 "lastName": "Psilon",
@@ -222,7 +264,7 @@ describe('Operating Orgnization Data Model Tests', () => {
             expect(await changeAssignmentBlade.isValuePresentInDropdown('Support Group', 'Petramco Facilities')).toBeFalsy();
             await changeAssignmentBlade.selectBusinessUnit('United States Support');
             await changeAssignmentBlade.selectSupportGroup('US Support 3');
-            expect(await changeAssignmentBlade.isPersonAvailableOnAssignBlade(`${userData1.firstName} ${userData1.lastName}`)).toBeTruthy('User is not present on Assignment blade');
+            expect(await changeAssignmentBlade.isPersonAvailableOnAssignBlade(`${userData0.firstName} ${userData0.lastName}`)).toBeTruthy('User is not present on Assignment blade');
             expect(await changeAssignmentBlade.isPersonAvailableOnAssignBlade(`${userData2.firstName} ${userData2.lastName}`)).toBeFalsy('User is present on Assignment blade');
             await changeAssignmentBlade.clickOnCancelButton();
             await createCasePage.setSummary('DRDMV23621');
@@ -269,7 +311,7 @@ describe('Operating Orgnization Data Model Tests', () => {
             expect(await changeAssignmentBlade.isValuePresentInDropdown('Support Group', 'Petramco Facilities')).toBeFalsy();
             await changeAssignmentBlade.selectBusinessUnit('United States Support');
             await changeAssignmentBlade.selectSupportGroup('US Support 3');
-            expect(await changeAssignmentBlade.isPersonAvailableOnAssignBlade(`${userData1.firstName} ${userData1.lastName}`)).toBeTruthy('User is not present on Assignment blade');
+            expect(await changeAssignmentBlade.isPersonAvailableOnAssignBlade(`${userData0.firstName} ${userData0.lastName}`)).toBeTruthy('User is not present on Assignment blade');
             expect(await changeAssignmentBlade.isPersonAvailableOnAssignBlade(`${userData2.firstName} ${userData2.lastName}`)).toBeFalsy('User is present on Assignment blade');
             await changeAssignmentBlade.clickOnCancelButton();
         });
@@ -323,7 +365,6 @@ describe('Operating Orgnization Data Model Tests', () => {
     //asahitya
     describe('[DRDMV-23608]: [Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to multiple LOB', () => {
         let caseId = undefined;
-        let supportGroupDataHR, supportGroupDataFacilities, userData1, userData2;
         let randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateDataPetramcoHR = {
             "templateName": 'DRDMV-23621 Name HR' + randomStr,
@@ -390,45 +431,6 @@ describe('Operating Orgnization Data Model Tests', () => {
             await apiHelper.createCaseTemplate(caseTemplateDataPetramcoFacilities);
             await apiHelper.createCaseTemplate(caseTemplateDataGlobalHR);
             await apiHelper.createCaseTemplate(caseTemplateDataGlobalFacilities);
-
-            //Create data for Assignment value validations
-            supportGroupDataHR = {
-                "orgName": "Petramco HR",
-                "relatedOrgId": null,
-                "domainTag": "Human Resource"
-            }
-
-            supportGroupDataFacilities = {
-                "orgName": "Petramco Facilities",
-                "relatedOrgId": null,
-                "domainTag": "Facilities"
-            }
-
-            userData1 = {
-                "firstName": "xod user23625_1",
-                "lastName": "test",
-                "userId": "user23625_1",
-                "userPermission": ["Case Agent", "Human Resource", "Case Business Analyst", "Knowledge Publisher"]
-            }
-
-            userData2 = {
-                "firstName": "bto user23625_2",
-                "lastName": "test",
-                "userId": "user23625_2",
-                "userPermission": ["Case Agent", "Facilities", "Case Business Analyst", "Knowledge Publisher"]
-            }
-
-            await apiHelper.createNewUser(userData1);
-            await apiHelper.createNewUser(userData2);
-            let orgId = await coreApi.getBusinessUnitGuid('Canada Support');
-            supportGroupDataHR.relatedOrgId = orgId;
-            supportGroupDataFacilities.relatedOrgId = orgId;
-            await apiHelper.createSupportGroup(supportGroupDataHR);
-            await apiHelper.createSupportGroup(supportGroupDataFacilities);
-            await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
-            await apiHelper.associatePersonToSupportGroup(userData1.userId, "US Support 3");
-            await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
-            await apiHelper.associatePersonToSupportGroup(userData2.userId, "US Support 3");
             await apiHelper.associatePersonToCompany('ncage', 'Psilon');
         });
         it('[DRDMV-23608]: [Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to multiple LOB', async () => {
@@ -451,7 +453,7 @@ describe('Operating Orgnization Data Model Tests', () => {
             expect(await changeAssignmentBlade.isValuePresentInDropdown('Support Group', 'Petramco Facilities')).toBeFalsy();
             await changeAssignmentBlade.selectBusinessUnit('United States Support');
             await changeAssignmentBlade.selectSupportGroup('US Support 3');
-            expect(await changeAssignmentBlade.isPersonAvailableOnAssignBlade(`${userData1.firstName} ${userData1.lastName}`)).toBeTruthy('User is not present on Assignment blade');
+            expect(await changeAssignmentBlade.isPersonAvailableOnAssignBlade(`${userData0.firstName} ${userData0.lastName}`)).toBeTruthy('User is not present on Assignment blade');
             expect(await changeAssignmentBlade.isPersonAvailableOnAssignBlade(`${userData2.firstName} ${userData2.lastName}`)).toBeFalsy('User is present on Assignment blade');
             await changeAssignmentBlade.clickOnCancelButton();
 
@@ -498,7 +500,7 @@ describe('Operating Orgnization Data Model Tests', () => {
             expect(await changeAssignmentBlade.isValuePresentInDropdown('Support Group', 'Petramco Facilities')).toBeFalsy();
             await changeAssignmentBlade.selectBusinessUnit('United States Support');
             await changeAssignmentBlade.selectSupportGroup('US Support 3');
-            expect(await changeAssignmentBlade.isPersonAvailableOnAssignBlade(`${userData1.firstName} ${userData1.lastName}`)).toBeTruthy('User is not present on Assignment blade');
+            expect(await changeAssignmentBlade.isPersonAvailableOnAssignBlade(`${userData0.firstName} ${userData0.lastName}`)).toBeTruthy('User is not present on Assignment blade');
             expect(await changeAssignmentBlade.isPersonAvailableOnAssignBlade(`${userData2.firstName} ${userData2.lastName}`)).toBeFalsy('User is present on Assignment blade');
             await changeAssignmentBlade.clickOnCancelButton();
         });
@@ -518,7 +520,7 @@ describe('Operating Orgnization Data Model Tests', () => {
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateDataPetramcoHR.templateName);
 
             await createCasePage.clickChangeAssignmentButton();
-            expect(await changeAssignmentBlade.isValuePresentInDropdown('Petramco', 'Psilon')).toBeFalsy();
+            expect(await changeAssignmentBlade.isValuePresentInDropdown('Company', 'Psilon')).toBeFalsy();
             await changeAssignmentBlade.clickOnCancelButton();
             await createCasePage.clickSaveCaseButton();
 
@@ -707,7 +709,7 @@ describe('Operating Orgnization Data Model Tests', () => {
     });
 
     describe('[DRDMV-23488]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
-        let facilitiescaseData, facilitiesarticleData, caseTemplateDataGlobal, caseTemplateData, facilitiesTemplateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let facilitiescaseData, facilitiesGlobalTemplateData,facilitiesarticleData, caseTemplateDataGlobal, caseTemplateData, facilitiesTemplateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let commonName = randomStr + "Case DRDMV23488";
         let commonNameForOtherLoB = randomStr + "FacilitiesDRDMV23488";
         beforeAll(async () => {
@@ -773,8 +775,19 @@ describe('Operating Orgnization Data Model Tests', () => {
                 "assignee": "Fritz",
                 "casePriority": "Low",
             };
+            facilitiesGlobalTemplateData = {
+                "templateName": commonNameForOtherLoB,
+                "templateSummary": randomStr + "FacilitiesDRDMV23488",
+                "caseStatus": "Assigned",
+                "templateStatus": "Active",
+                "company": "- GLobal -",
+                "businessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
+                "assignee": "Fritz",
+                "casePriority": "Low",
+            };
             facilitiescaseData = {
-                "Requester": "qtao",
+                "Requester": "frieda",
                 "Summary": commonNameForOtherLoB,
                 "Assigned Company": "Petramco",
                 "Business Unit": "Facilities Support",
@@ -796,11 +809,13 @@ describe('Operating Orgnization Data Model Tests', () => {
             await apiHelper.apiLogin('fritz');
             await apiHelper.createCaseTemplate(facilitiesTemplateData);
             await apiHelper.createCase(caseData);
+            await apiHelper.createCaseTemplate(facilitiesGlobalTemplateData);
+            await apiHelper.createCase(facilitiescaseData);
             let knowledgeArticleData1 = await apiHelper.createKnowledgeArticle(articleData);
             let knowledgeArticleGUID1 = knowledgeArticleData1.id;
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID1, 'Draft')).toBeTruthy('Status Not Set');
-            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID1, 'SMEReview', 'qkatawazi', 'Compensation and Benefits', 'Petramco')).toBeTruthy("Article with SME Review status not updated.");
-            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID1, 'PublishApproval', 'qkatawazi', 'Compensation and Benefits', 'Petramco')).toBeTruthy('Status Not Set');
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID1, 'SMEReview', 'Fritz', 'Facilities', 'Petramco')).toBeTruthy("Article with SME Review status not updated.");
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID1, 'PublishApproval', 'Fritz', 'Facilities', 'Petramco')).toBeTruthy('Status Not Set');
         });
         it('[DRDMV-23488]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
             await navigationPage.gotoQuickCase();
@@ -824,6 +839,15 @@ describe('Operating Orgnization Data Model Tests', () => {
             await previewCasePage.clickBackButton();
             await quickCasePo.createCaseButton();
             await previewCasePage.clickGoToCaseButton();
+            await viewCasePage.clickEditCaseButton();
+            await viewCasePage.clickOnTab('Resources');
+            expect(await resourcesPo.getKnowledgeArticleInfo()).toContain('Human Resource', 'LOB is not correct');
+            await quickCasePo.clickFirstRecommendedCases();
+            expect(await previewCasePage.getLineOfBusinessValue()).toBe('Human Resource');
+            await previewCasePage.clickBackButton();
+            await quickCasePo.clickArrowFirstRecommendedCaseTemplate();
+            expect(await previewCaseTemplateCasesPo.getLineOfBusinessValue()).toBe('Human Resource');
+            await previewCaseTemplateCasesPo.clickOnBackButton();
         });
         it('[DRDMV-23488]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
             await viewCasePage.clickEditCaseButton();
@@ -864,6 +888,11 @@ describe('Operating Orgnization Data Model Tests', () => {
             await loginPage.login('fritz');
             await utilityGrid.clearFilter();
             expect(await utilityGrid.isGridRecordPresent(randomStr + "2Case DRDMV23488")).toBeFalsy('DRDMV-23519Summary' + randomStr);
+            await navigationPage.gotoQuickCase();
+            await quickCasePo.selectRequesterName('frieda');
+            await quickCasePo.setCaseSummary(commonName);
+            expect(await quickCasePo.selectCaseTemplate(caseTemplateDataGlobal.templateName)).toBeFalsy('template is present');
+            expect(await quickCasePo.selectCaseTemplate(caseTemplateData.templateName)).toBeFalsy('template is present');
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
             await navigationPage.gotoQuickCase();
@@ -897,6 +926,10 @@ describe('Operating Orgnization Data Model Tests', () => {
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('adam');
             await quickCasePo.selectCaseTemplate(facilitiesTemplateData.templateName);
+            expect(await resourcesPo.getKnowledgeArticleInfo()).toContain('Facilities', 'LOB is not correct');
+            await quickCasePo.clickFirstRecommendedCases();
+            expect(await previewCasePage.getLineOfBusinessValue()).toBe('Facilities');
+            await previewCasePage.clickBackButton();
             await quickCasePo.createCaseButton();
             await utilityCommon.closePopUpMessage();
             expect(await previewCasePage.getLineOfBusinessValue()).toBe('Facilities');
@@ -913,8 +946,10 @@ describe('Operating Orgnization Data Model Tests', () => {
             await loginPage.login('qkatawazi');
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('adam');
+            await quickCasePo.setCaseSummary(commonNameForOtherLoB);
+            expect(await quickCasePo.selectCaseTemplate(facilitiesGlobalTemplateData.templateName)).toBeFalsy('template is present');
             expect(await quickCasePo.selectCaseTemplate(facilitiesTemplateData.templateName)).toBeFalsy('template is present');
-            await quickCasePo.setCaseSummary('new case');
+            expect(await resourcesPo.isRecommendedKnowledgePresent(facilitiesarticleData.title)).toBeFalsy();
             await resourcesPo.clickOnAdvancedSearchOptions();
             await resourcesPo.enterAdvancedSearchText(facilitiesarticleData.title);
             await resourcesPo.clickOnAdvancedSearchSettingsIconToOpen();
@@ -932,6 +967,8 @@ describe('Operating Orgnization Data Model Tests', () => {
     describe('[DRDMV-23624,DRDMV-23614]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB with diff Company', async () => {
         let caseTemplateData, facilitiesTemplateData, caseTemplateDataPsilon, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let commonName = randomStr + "Case DRDMV23488";
+        let commonNameForOtherLoB = randomStr + "FacilitiesDRDMV23488";
+        let facilitiescaseData, facilitiesGlobalTemplateData,facilitiesarticleData;
         beforeAll(async () => {
             caseTemplateData = {
                 "templateName": commonName,
@@ -985,7 +1022,7 @@ describe('Operating Orgnization Data Model Tests', () => {
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'SMEReview', 'qkatawazi', 'Compensation and Benefits', 'Petramco')).toBeTruthy("Article with SME Review status not updated.");
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'PublishApproval', 'qkatawazi', 'Compensation and Benefits', 'Petramco')).toBeTruthy('Status Not Set');
             facilitiesTemplateData = {
-                "templateName": randomStr + "FacilitiesDRDMV23488",
+                "templateName": commonNameForOtherLoB,
                 "templateSummary": randomStr + "FacilitiesDRDMV23488",
                 "caseStatus": "Assigned",
                 "templateStatus": "Active",
@@ -995,8 +1032,46 @@ describe('Operating Orgnization Data Model Tests', () => {
                 "assignee": "Fritz",
                 "casePriority": "Low",
             };
+            facilitiesGlobalTemplateData = {
+                "templateName": commonNameForOtherLoB,
+                "templateSummary": randomStr + "FacilitiesDRDMV23488",
+                "caseStatus": "Assigned",
+                "templateStatus": "Active",
+                "company": "- GLobal -",
+                "businessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
+                "assignee": "Fritz",
+                "casePriority": "Low",
+            };
+            facilitiescaseData = {
+                "Requester": "frieda",
+                "Summary": commonNameForOtherLoB,
+                "Assigned Company": "Petramco",
+                "Business Unit": "Facilities Support",
+                "Support Group": "Facilities",
+                "categoryTier1": "Phones",
+                "categoryTier2": "Cellular Phones",
+                "categoryTier3": "Service",
+                "Assignee": "Frieda"
+            };
+            facilitiesarticleData = {
+                "knowledgeSet": "HR",
+                "title": commonNameForOtherLoB,
+                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "Facilities Support",
+                "assigneeSupportGroup": "Facilities",
+                "assignee": "Fritz"
+            };
             await apiHelper.apiLogin('fritz');
             await apiHelper.createCaseTemplate(facilitiesTemplateData);
+            await apiHelper.createCaseTemplate(facilitiesGlobalTemplateData);
+            await apiHelper.createCase(facilitiescaseData);
+            let knowledgeArticleData1 = await apiHelper.createKnowledgeArticle(articleData);
+            let knowledgeArticleGUID1 = knowledgeArticleData1.id;
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID1, 'Draft')).toBeTruthy('Status Not Set');
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID1, 'SMEReview', 'Fritz', 'Facilities', 'Petramco')).toBeTruthy("Article with SME Review status not updated.");
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID1, 'PublishApproval', 'Fritz', 'Facilities', 'Petramco')).toBeTruthy('Status Not Set');
         });
         it('[DRDMV-23624,DRDMV-23614]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB with diff Company', async () => {
             await navigationPage.signOut();
@@ -1059,10 +1134,28 @@ describe('Operating Orgnization Data Model Tests', () => {
             await utilityCommon.closePopUpMessage();
             await navigationPage.gotoCaseConsole();
             expect(await utilityGrid.isGridRecordPresent(randomStr + "2Case DRDMV23488")).toBeTruthy('DRDMV-23519Summary' + randomStr);
+            await navigationPage.gotoQuickCase();
+            await quickCasePo.selectRequesterName('Frieda');
+            await quickCasePo.setCaseSummary(commonNameForOtherLoB);
+            expect(await quickCasePo.selectCaseTemplate(facilitiesGlobalTemplateData.templateName)).toBeFalsy('template is present');
+            expect(await quickCasePo.selectCaseTemplate(facilitiesTemplateData.templateName)).toBeFalsy('template is present');
+            expect(await resourcesPo.isRecommendedKnowledgePresent(facilitiesarticleData.title)).toBeFalsy();
+            await resourcesPo.clickOnAdvancedSearchOptions();
+            await resourcesPo.enterAdvancedSearchText(facilitiesarticleData.title);
+            await resourcesPo.clickOnAdvancedSearchSettingsIconToOpen();
+            await resourcesPo.clickOnAdvancedSearchFiltersButton('Apply');
+            await resourcesPo.clickOnAdvancedSearchSettingsIconToClose();
+            expect(await resourcesPo.isRecommendedKnowledgePresent(facilitiesarticleData.title)).toBeFalsy();
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await utilityGrid.clearFilter();
             expect(await utilityGrid.isGridRecordPresent(randomStr + "2Case DRDMV23488")).toBeFalsy('DRDMV-23519Summary' + randomStr);
+            await navigationPage.gotoQuickCase();
+            await quickCasePo.selectRequesterName('gderuno');
+            expect(await quickCasePo.selectCaseTemplate(caseTemplateData.templateName)).toBeFalsy('template is present');
+            await quickCasePo.clickStartOverButton();
+            await quickCasePo.selectRequesterName('adam');
+            expect(await quickCasePo.selectCaseTemplate(caseTemplateDataPsilon.templateName)).toBeFalsy('template is present');
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
             await navigationPage.gotoQuickCase();
@@ -1085,13 +1178,19 @@ describe('Operating Orgnization Data Model Tests', () => {
             await navigationPage.signOut();
             await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoQuickCase();
-            await quickCasePo.selectRequesterName('adam');
+            await quickCasePo.selectRequesterName('gderuno');
             await quickCasePo.setCaseSummary('PsilonCaseSummary' + randomStr);
             await quickCasePo.selectCaseTemplate(caseTemplateDataPsilon.templateName);
             await quickCasePo.createCaseButton();
             await utilityCommon.closePopUpMessage();
             expect(await previewCasePage.getLineOfBusinessValue()).toBe('Human Resource');
             await quickCasePo.gotoCaseButton();
+            await navigationPage.gotoQuickCase();
+            await quickCasePo.selectRequesterName('gderuno');
+            expect(await quickCasePo.selectCaseTemplate(caseTemplateData.templateName)).toBeTruthy('template is present');
+            await quickCasePo.clickStartOverButton();
+            await quickCasePo.selectRequesterName('adam');
+            expect(await quickCasePo.selectCaseTemplate(caseTemplateDataPsilon.templateName)).toBeTruthy('template is present');
             await navigationPage.signOut();
             await loginPage.login('idphylum1@petramco.com', 'Password_1234');
             await utilityGrid.clearFilter();
@@ -1133,7 +1232,6 @@ describe('Operating Orgnization Data Model Tests', () => {
             expect(await utilityGrid.isGridRecordPresent(caseTemplateData.templateName)).toBeTruthy('DRDMV-23519Summary' + randomStr);
         });
         afterAll(async () => {
-            await utilityCommon.closeAllBlades();            
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -1412,8 +1510,8 @@ describe('Operating Orgnization Data Model Tests', () => {
         });
     });
 
-    describe('[DRDMV-23625]: [Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when user has access to multiple companies for the single Line of Business', () => {
-        let twoCompanyUser, supportGroupDataHR, supportGroupDataFacilities, knowledgeSetDataHR, knowledgeSetDataFacilities, userData1, userData2, knowledgeArticleDataDiffLOB, articleId;
+    describe('[DRDMV-23625]: [Operating Organization] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple companies for the single Line of Business', () => {
+        let twoCompanyUser, knowledgeSetDataHR, knowledgeSetDataFacilities, knowledgeArticleDataDiffLOB, articleId;
         let randomStr = [...Array(7)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             twoCompanyUser = {
@@ -1422,7 +1520,6 @@ describe('Operating Orgnization Data Model Tests', () => {
                 "userId": "DRDMV_23625_test",
                 "userPermission": ["Case Agent", "Human Resource", "Case Business Analyst", "Knowledge Publisher"]
             }
-
 
             knowledgeSetDataHR = {
                 knowledgeSetTitle: `KS HR ${randomStr}`,
@@ -1460,47 +1557,9 @@ describe('Operating Orgnization Data Model Tests', () => {
             await browser.sleep(9000); //Waiting for user data to be reflected
             await apiHelper.createKnowledgeArticle(knowledgeArticleDataDiffLOB);
             await apiHelper.associatePersonToCompany('ncage', "Psilon");
-            //Create data for Assignment value validations
-            supportGroupDataHR = {
-                "orgName": "Petramco HR",
-                "relatedOrgId": null,
-                "domainTag": "Human Resource"
-            }
-
-            supportGroupDataFacilities = {
-                "orgName": "Petramco Facilities",
-                "relatedOrgId": null,
-                "domainTag": "Facilities"
-            }
-
-            userData1 = {
-                "firstName": "xod user23625_1",
-                "lastName": "test",
-                "userId": "user23625_1",
-                "userPermission": ["Case Agent", "Human Resource", "Case Business Analyst", "Knowledge Publisher"]
-            }
-
-            userData2 = {
-                "firstName": "bto user23625_2",
-                "lastName": "test",
-                "userId": "user23625_2",
-                "userPermission": ["Case Agent", "Facilities", "Case Business Analyst", "Knowledge Publisher"]
-            }
-
-            await apiHelper.createNewUser(userData1);
-            await apiHelper.createNewUser(userData2);
-            let orgId = await coreApi.getBusinessUnitGuid('Canada Support');
-            supportGroupDataHR.relatedOrgId = orgId;
-            supportGroupDataFacilities.relatedOrgId = orgId;
-            await apiHelper.createSupportGroup(supportGroupDataHR);
-            await apiHelper.createSupportGroup(supportGroupDataFacilities);
-            await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
-            await apiHelper.associatePersonToSupportGroup(userData1.userId, "US Support 3");
-            await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
-            await apiHelper.associatePersonToSupportGroup(userData2.userId, "US Support 3");
         });
 
-        it('[DRDMV-23625]: [Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when user has access to multiple companies for the single Line of Business', async () => {
+        it('[DRDMV-23625]: [Operating Organization] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple companies for the single Line of Business', async () => {
             await navigationPage.signOut();
             await loginPage.login(`${twoCompanyUser.userId}@petramco.com`, 'Password_1234');
             await navigationPage.gotoCreateKnowledge();
@@ -1528,7 +1587,7 @@ describe('Operating Orgnization Data Model Tests', () => {
             expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'Petramco Facilities')).toBeFalsy();
             await changeAssignmentBladePo.selectBusinessUnit('United States Support');
             await changeAssignmentBladePo.selectSupportGroup('US Support 3');
-            expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData1.firstName} ${userData1.lastName}`)).toBeTruthy('User is not present on Assignment blade');
+            expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData0.firstName} ${userData0.lastName}`)).toBeTruthy('User is not present on Assignment blade');
             expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData2.firstName} ${userData2.lastName}`)).toBeTruthy('User is present on Assignment blade');
             await changeAssignmentBladePo.clickOnCancelButton();
 
@@ -1538,7 +1597,7 @@ describe('Operating Orgnization Data Model Tests', () => {
             articleId = await viewKnowledgeArticlePo.getKnowledgeArticleId();
         });
 
-        it('[DRDMV-23625]: [Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when user has access to multiple companies for the single Line of Business', async () => {
+        it('[DRDMV-23625]: [Operating Organization] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple companies for the single Line of Business', async () => {
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePo.getLineOfBusinessValue()).toBe('Human Resource');
             expect(await editKnowledgePo.isLobSectionEnabled()).toBeTruthy();
@@ -1553,7 +1612,7 @@ describe('Operating Orgnization Data Model Tests', () => {
             expect(await accessTabPo.isValuePresentInDropdown('Support Group', 'Petramco Facilities')).toBeFalsy();
 
             await accessTabPo.clickToExpandAccessEntitiySearch('Agent Access', 'Knowledge');
-            expect(await accessTabPo.isAgentPresent(userData1.firstName)).toBeTruthy('User is not Present');
+            expect(await accessTabPo.isAgentPresent(userData0.firstName)).toBeTruthy('User is not Present');
             expect(await accessTabPo.isAgentPresent(userData2.firstName)).toBeFalsy('User is Present');
             await accessTabPo.clickCloseKnowledgeAccessBlade();
 
@@ -1575,7 +1634,7 @@ describe('Operating Orgnization Data Model Tests', () => {
             expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'Petramco Facilities')).toBeFalsy();
             await changeAssignmentBladePo.selectBusinessUnit('United States Support');
             await changeAssignmentBladePo.selectSupportGroup('US Support 3');
-            expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData1.firstName} ${userData1.lastName}`)).toBeTruthy('User is not present on Assignment blade');
+            expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData0.firstName} ${userData0.lastName}`)).toBeTruthy('User is not present on Assignment blade');
             expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData2.firstName} ${userData2.lastName}`)).toBeFalsy('User is present on Assignment blade');
             await changeAssignmentBladePo.clickOnCancelButton();
 
@@ -1588,7 +1647,7 @@ describe('Operating Orgnization Data Model Tests', () => {
             expect(await utilityGrid.isGridRecordPresent(articleId)).toBeFalsy(articleId + ' Record is present');
         });
 
-        it('[DRDMV-23625]: [Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when user has access to multiple companies for the single Line of Business', async () => {
+        it('[DRDMV-23625]: [Operating Organization] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple companies for the single Line of Business', async () => {
             await navigationPage.signOut();
             await loginPage.login('ppeter');
             await navigationPage.gotoKnowledgeConsole();
@@ -1614,7 +1673,7 @@ describe('Operating Orgnization Data Model Tests', () => {
             expect(await utilityGrid.isGridRecordPresent(articleId)).toBeTruthy(articleId + ' Record is not present');
         });
 
-        it('[DRDMV-23625]: [Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when user has access to multiple companies for the single Line of Business', async () => {
+        it('[DRDMV-23625]: [Operating Organization] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple companies for the single Line of Business', async () => {
             await navigationPage.signOut();
             await loginPage.login('ncage');
             await navigationPage.gotoCreateKnowledge();
@@ -1624,17 +1683,18 @@ describe('Operating Orgnization Data Model Tests', () => {
             await createKnowledgePage.addTextInKnowlegeTitleField('DRDMV23625');
             await createKnowledgePage.selectKnowledgeSet('HR');
             await createKnowledgePage.clickChangeAssignmentButton();
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Company', 'Psilon')).toBeFalsy();
+            await changeAssignmentBladePo.selectCompany('Psilon');
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Australia Support')).toBeFalsy();
             await changeAssignmentBladePo.clickOnCancelButton();
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
             await editKnowledgePo.setKnowledgeStatus('Draft');
             await editKnowledgePo.setKnowledgeStatusWithoutSave('SME Review');
             await statusBladeKnowledgeArticlePo.clickChangeReviewerBtn();
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Company', 'Psilon')).toBeFalsy();
+            await changeAssignmentBladePo.selectCompany('Psilon');
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Australia Support')).toBeFalsy();
             await utilityCommon.closeAllBlades();
         });
-
 
         afterAll(async () => {
             await navigationPage.signOut();
@@ -1642,4 +1702,549 @@ describe('Operating Orgnization Data Model Tests', () => {
         });
     });
 
+    describe('[DRDMV-23618]: [Operating Organization] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple Line of Business', () => {
+        let knowledgeSetDataHR, knowledgeSetDataFacilities, articleId, knowledgeArticleTemplateDataHR, knowledgeArticleTemplateDataFacilities, knowledgeArticleDataSameLOB;
+        let randomStr = [...Array(7)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        beforeAll(async () => {
+            knowledgeSetDataHR = {
+                knowledgeSetTitle: `KS HR ${randomStr}`,
+                knowledgeSetDesc: `${randomStr}_Desc_HR`,
+                company: 'Petramco'
+            }
+
+            knowledgeSetDataFacilities = {
+                knowledgeSetTitle: `KS HR ${randomStr}`,
+                knowledgeSetDesc: `${randomStr}_Desc_HR`,
+                company: 'Petramco',
+                lineOfBusiness: 'Facilities'
+            }
+
+            knowledgeArticleTemplateDataHR = {
+                templateName: `tname HR ${randomStr}`,
+                sectionTitle: "articleSection",
+                lineOfBusiness: "Human Resource"
+            }
+
+            knowledgeArticleTemplateDataFacilities = {
+                templateName: `tname Facilities ${randomStr}`,
+                sectionTitle: "articleSection",
+                lineOfBusiness: "Facilities"
+            }
+
+            knowledgeArticleDataSameLOB = {
+                "knowledgeSet": 'HR',
+                "title": `${randomStr} title Diff LOB`,
+                "templateId": "AGGAA5V0HGVMIAOK04TZO94MC355RA",
+                "assignedCompany": "Petramco",
+                "assigneeBusinessUnit": "United States Support",
+                "assigneeSupportGroup": "US Support 1",
+                "assignee": "qfeng",
+                "lineOfBusiness": "Human Resource"
+            }
+
+            await apiHelper.apiLogin("tadmin");
+            await apiHelper.createKnowledgeSet(knowledgeSetDataHR);
+            await apiHelper.createKnowledgeSet(knowledgeSetDataFacilities);
+            await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateDataHR);
+            await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateDataFacilities);
+        });
+
+        it('[DRDMV-23618]: [Operating Organization] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple Line of Business', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qyuan');
+
+            await navigationPage.gotoCreateKnowledge();
+            await utilityGrid.selectLineOfBusiness('Facilities');
+            expect(await createKnowledgePage.isTemplatePresent(knowledgeArticleTemplateDataHR.templateName)).toBeFalsy('Template is present');
+            await createKnowledgePage.clickOnTemplate('Reference');
+            await createKnowledgePage.clickOnUseSelectedTemplateButton();
+
+            expect(await createKnowledgePage.isValuePresentInDropdown('Knowledge Set', knowledgeSetDataFacilities.knowledgeSetTitle)).toBeTruthy('Failure: Knowledge Set is missing');
+            expect(await createKnowledgePage.isValuePresentInDropdown('Knowledge Set', knowledgeSetDataHR.knowledgeSetTitle)).toBeFalsy('Failure: Knowledge Set is available');
+
+            expect(await createKnowledgePage.isValuePresentInDropdown('Category Tier 1', 'Facilities')).toBeTruthy('Failure: Operational Category 1 is missing');
+            expect(await createKnowledgePage.isValuePresentInDropdown('Category Tier 1', 'Applications')).toBeTruthy('Failure: Operational Category 1 is present');
+
+            //Validating Assignment fields
+            await navigationPage.gotoCreateKnowledge();
+            await utilityGrid.selectLineOfBusiness('Human Resource');
+            await createKnowledgePage.clickOnTemplate('Reference');
+            await createKnowledgePage.clickOnUseSelectedTemplateButton();
+
+            await createKnowledgePage.clickChangeAssignmentButton();
+            await changeAssignmentBladePo.selectCompany('Petramco');
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Australia Support')).toBeTruthy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Facilities Support')).toBeFalsy();
+            await changeAssignmentBladePo.selectBusinessUnit('Canada Support');
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'Petramco HR')).toBeTruthy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'Petramco Facilities')).toBeFalsy();
+            await changeAssignmentBladePo.selectBusinessUnit('United States Support');
+            await changeAssignmentBladePo.selectSupportGroup('US Support 3');
+            expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData0.firstName} ${userData0.lastName}`)).toBeTruthy('User is not present on Assignment blade');
+            expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData2.firstName} ${userData2.lastName}`)).toBeFalsy('User is present on Assignment blade');
+            await changeAssignmentBladePo.clickOnCancelButton();
+
+            //Creating the Article
+            await createKnowledgePage.addTextInKnowlegeTitleField(`Title ${randomStr}`);
+            await createKnowledgePage.selectKnowledgeSet('HR');
+            await createKnowledgePage.selectCategoryTier1Option('Employee Relations');
+            await createKnowledgePage.clickOnSaveKnowledgeButton();
+            await previewKnowledgePo.clickGoToArticleButton();
+            articleId = await viewKnowledgeArticlePo.getKnowledgeArticleId();
+        });
+
+        it('[DRDMV-23618]: [Operating Organization] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple Line of Business', async () => {
+            await editKnowledgePo.setKnowledgeStatus('Draft');
+            await editKnowledgePo.setKnowledgeStatusWithoutSave('SME Review');
+            await statusBladeKnowledgeArticlePo.clickChangeReviewerBtn();
+            await changeAssignmentBladePo.selectCompany('Petramco');
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Australia Support')).toBeTruthy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Facilities Support')).toBeFalsy();
+            await changeAssignmentBladePo.selectBusinessUnit('Canada Support');
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'Petramco HR')).toBeTruthy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'Petramco Facilities')).toBeFalsy();
+            await changeAssignmentBladePo.selectBusinessUnit('United States Support');
+            await changeAssignmentBladePo.selectSupportGroup('US Support 3');
+            expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData0.firstName} ${userData0.lastName}`)).toBeTruthy('User is not present on Assignment blade');
+            expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData2.firstName} ${userData2.lastName}`)).toBeFalsy('User is present on Assignment blade');
+            await changeAssignmentBladePo.clickOnCancelButton();
+
+            await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
+            expect(await editKnowledgePo.getLineOfBusinessValue()).toBe('Human Resource');
+            expect(await editKnowledgePo.isLobSectionEnabled()).toBeTruthy();
+            await editKnowledgePo.cancelKnowledgeMedataDataChanges();
+            await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
+            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Knowledge');
+            await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
+            expect(await accessTabPo.isValuePresentInDropdown('Business Unit', 'Australia Support')).toBeTruthy();
+            expect(await accessTabPo.isValuePresentInDropdown('Business Unit', 'Facilities Support')).toBeFalsy();
+            await accessTabPo.selectAccessEntityDropDown('Australia Support', 'Select Business Unit');
+            expect(await accessTabPo.isValuePresentInDropdown('Support Group', 'Petramco HR')).toBeTruthy();
+            expect(await accessTabPo.isValuePresentInDropdown('Support Group', 'Petramco Facilities')).toBeFalsy();
+
+            await accessTabPo.clickToExpandAccessEntitiySearch('Agent Access', 'Knowledge');
+            expect(await accessTabPo.isAgentPresent(userData0.firstName)).toBeTruthy('User is not Present');
+            expect(await accessTabPo.isAgentPresent(userData2.firstName)).toBeFalsy('User is Present');
+            await accessTabPo.clickCloseKnowledgeAccessBlade();
+        });
+
+        it('[DRDMV-23618]: [Operating Organization] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple Line of Business', async () => {
+            await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
+            expect(await createKnowledgePage.isValuePresentInDropdown('Category Tier 1', 'Applications')).toBeTruthy('Failure: Operational Category 1 is missing');
+            expect(await createKnowledgePage.isValuePresentInDropdown('Category Tier 1', 'Facilties')).toBeFalsy('Failure: Operational Category 1 is present');
+            await editKnowledgePo.setCategoryTier1('Payroll');
+            await editKnowledgePo.saveKnowledgeMedataDataChanges();
+            expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe('Payroll');
+
+            await createKnowledgePage.clickChangeAssignmentButton();
+            await changeAssignmentBladePo.selectCompany('Petramco');
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Australia Support')).toBeTruthy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Facilities Support')).toBeFalsy();
+            await changeAssignmentBladePo.selectBusinessUnit('Canada Support');
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'Petramco HR')).toBeTruthy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'Petramco Facilities')).toBeFalsy();
+            await changeAssignmentBladePo.selectBusinessUnit('United States Support');
+            await changeAssignmentBladePo.selectSupportGroup('US Support 3');
+            expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData0.firstName} ${userData0.lastName}`)).toBeTruthy('User is not present on Assignment blade');
+            expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData2.firstName} ${userData2.lastName}`)).toBeFalsy('User is present on Assignment blade');
+            await changeAssignmentBladePo.clickOnCancelButton();
+
+            //Validating that Knowledge Template is filtered on the basis of LOB
+            await navigationPage.gotoCreateKnowledge();
+            expect(await createKnowledgePage.isTemplatePresent(knowledgeArticleTemplateDataHR.templateName)).toBeTruthy('Template is not present');
+            expect(await createKnowledgePage.isTemplatePresent(knowledgeArticleTemplateDataFacilities.templateName)).toBeFalsy('Template is present');
+
+            await navigationPage.gotoKnowledgeConsole();
+            expect(await utilityGrid.isGridRecordPresent(knowledgeArticleDataSameLOB.title)).toBeFalsy('Record is present');
+
+            await navigationPage.signOut();
+            await loginPage.login('gwixillian');
+            await navigationPage.gotoKnowledgeConsole();
+            expect(await utilityGrid.isGridRecordPresent(articleId)).toBeTruthy(articleId + ' Record is not present');
+        });
+
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+    })
+
+    describe('[DRDMV-23636]: [Ericsson Model] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to single Line of Business', () => {
+        let randomStr = [...Array(7)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let knowledgeSetDataEricssonHR, knowledgeSetDataEricssonSAM, articleId, knowledgeArticleDataDiffLOB, knowledgeArticleTemplateDataHR, knowledgeArticleTemplateDataSAM, knowledgeSetDataEricssonGlobal, knowledgeArticleTemplateDataGlobal, knowledgeArticleDataDiffLOBGlobal;
+
+        beforeAll(async () => {
+            knowledgeArticleTemplateDataHR = {
+                templateName: `tname HR ${randomStr}`,
+                sectionTitle: "articleSection",
+                lineOfBusiness: "Ericsson HR"
+            }
+
+            knowledgeArticleTemplateDataSAM = {
+                templateName: `tname HR ${randomStr}`,
+                sectionTitle: "articleSection",
+                lineOfBusiness: "Ericsson SAM"
+            }
+
+            knowledgeArticleTemplateDataGlobal = {
+                templateName: `tname Global ${randomStr}`,
+                sectionTitle: "articleSection",
+                lineOfBusiness: "Ericsson Global"
+            }
+
+            knowledgeSetDataEricssonHR = {
+                knowledgeSetTitle: `DRDMV-23636 ER HR ${randomStr}`,
+                knowledgeSetDesc: `${randomStr}_Desc_ER_HR`,
+                company: 'Ericsson HR',
+                lineOfBusiness: 'Ericsson HR'
+            }
+
+            knowledgeSetDataEricssonSAM = {
+                knowledgeSetTitle: `DRDMV-23636 ER SAM ${randomStr}`,
+                knowledgeSetDesc: `${randomStr}_Desc_ER_SAM`,
+                company: 'Ericsson SAM',
+                lineOfBusiness: 'Ericsson SAM'
+            }
+
+            knowledgeSetDataEricssonGlobal = {
+                knowledgeSetTitle: `DRDMV-23636 Global SAM ${randomStr}`,
+                knowledgeSetDesc: `${randomStr}_Desc_ER_Global`,
+                company: 'Ericsson Global',
+                lineOfBusiness: 'Ericsson Global'
+            }
+
+            knowledgeArticleDataDiffLOBGlobal = {
+                "knowledgeSet": `${knowledgeSetDataEricssonGlobal.knowledgeSetTitle}`,
+                "title": `${randomStr} title Diff LOB`,
+                "templateId": "AGGAA5V0HGVMIAOK04TZO94MC355RA",
+                "assignee": "Smith",
+                "lineOfBusiness": "Ericsson SAM"
+            }
+
+            knowledgeArticleDataDiffLOB = {
+                "knowledgeSet": `${knowledgeSetDataEricssonSAM.knowledgeSetTitle}`,
+                "title": `${randomStr} title Diff LOB`,
+                "templateId": "AGGAA5V0HGVMIAOK04TZO94MC355RA",
+                "assignedCompany": "Ericsson SAM",
+                "assigneeBusinessUnit": "Ericsson Asset Management - India",
+                "assigneeSupportGroup": "New Asset Management",
+                "assignee": "Smith",
+                "lineOfBusiness": "Ericsson SAM"
+            }
+
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateDataHR);
+            await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateDataSAM);
+            await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateDataGlobal);
+            await apiHelper.createKnowledgeSet(knowledgeSetDataEricssonHR);
+            await apiHelper.createKnowledgeSet(knowledgeSetDataEricssonSAM);
+            await apiHelper.createKnowledgeSet(knowledgeSetDataEricssonGlobal);
+            await apiHelper.createKnowledgeArticle(knowledgeArticleDataDiffLOB);
+            await apiHelper.createKnowledgeArticle(knowledgeArticleDataDiffLOBGlobal);
+        });
+
+        it('[DRDMV-23636]: [Ericsson Model] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to single Line of Business', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('rwillie');
+            await navigationPage.gotoCreateKnowledge();
+            expect(await createKnowledgePage.isTemplatePresent(knowledgeArticleTemplateDataHR.templateName)).toBeTruthy('Template is not present');
+            expect(await createKnowledgePage.isTemplatePresent(knowledgeArticleTemplateDataSAM.templateName)).toBeFalsy('Template is present');
+            expect(await createKnowledgePage.isTemplatePresent(knowledgeArticleTemplateDataGlobal.templateName)).toBeFalsy('Template is present');
+            await createKnowledgePage.clickOnTemplate('Reference');
+            await createKnowledgePage.clickOnUseSelectedTemplateButton();
+            expect(await createKnowledgePage.getValueOfLineOFBusiness()).toBe('Ericsson HR');
+            expect(await createKnowledgePage.isLineOfBusinessDisable()).toBeTruthy();
+            expect(await createKnowledgePage.isValuePresentInDropdown('Knowledge Set', knowledgeSetDataEricssonHR.knowledgeSetTitle)).toBeTruthy('Failure: Knowledge Set is missing');
+            expect(await createKnowledgePage.isValuePresentInDropdown('Knowledge Set', knowledgeSetDataEricssonSAM.knowledgeSetTitle)).toBeFalsy('Failure: Knowledge Set is available');
+            expect(await createKnowledgePage.isValuePresentInDropdown('Knowledge Set', knowledgeSetDataEricssonGlobal.knowledgeSetTitle)).toBeFalsy('Failure: Knowledge Set is available');
+
+            expect(await createKnowledgePage.isValuePresentInDropdown('Category Tier 1', 'Applications')).toBeTruthy('Failure: Operational Category 1 is missing');
+            expect(await createKnowledgePage.isValuePresentInDropdown('Category Tier 1', 'Facilties')).toBeFalsy('Failure: Operational Category 1 is present');
+
+            await createKnowledgePage.addTextInKnowlegeTitleField(`DRDMV23636 Title ${randomStr}`);
+            await createKnowledgePage.selectKnowledgeSet(knowledgeSetDataEricssonHR.knowledgeSetTitle);
+            await createKnowledgePage.selectCategoryTier1Option('Applications');
+
+            //Validating Assignment fields
+            await createKnowledgePage.clickChangeAssignmentButton();
+            await changeAssignmentBladePo.selectCompany('Ericsson HR');
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Ericsson HR Support')).toBeTruthy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Ericsson Asset Management - India')).toBeFalsy();
+            await changeAssignmentBladePo.selectBusinessUnit('Ericsson HR Support');
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'EricssonCo HR')).toBeTruthy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'EricssonCo SAM')).toBeFalsy();
+            await changeAssignmentBladePo.selectBusinessUnit('Ericsson United States Support');
+            await changeAssignmentBladePo.selectSupportGroup('US Support 2');
+            expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData3.firstName} ${userData3.lastName}`)).toBeTruthy('User is not present on Assignment blade');
+            expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData4.firstName} ${userData4.lastName}`)).toBeTruthy('User is present on Assignment blade');
+            await changeAssignmentBladePo.clickOnCancelButton();
+
+            //Saving the Article
+            await createKnowledgePage.clickOnSaveKnowledgeButton();
+            await previewKnowledgePo.clickGoToArticleButton();
+            articleId = await viewKnowledgeArticlePo.getKnowledgeArticleId();
+        });
+
+        it('[DRDMV-23636]: [Ericsson Model] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to single Line of Business', async () => {
+            await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
+            expect(await editKnowledgePo.getLineOfBusinessValue()).toBe('Ericsson HR');
+            expect(await editKnowledgePo.isLobSectionEnabled()).toBeTruthy();
+            await editKnowledgePo.cancelKnowledgeMedataDataChanges();
+            await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
+            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Knowledge');
+            await accessTabPo.selectAccessEntityDropDown('Ericsson HR', 'Select Company');
+            expect(await accessTabPo.isValuePresentInDropdown('Business Unit', 'Ericsson HR Support')).toBeTruthy();
+            expect(await accessTabPo.isValuePresentInDropdown('Business Unit', 'Ericsson Asset Management - India')).toBeFalsy();
+            await accessTabPo.selectAccessEntityDropDown('Ericsson HR Support', 'Select Business Unit');
+            expect(await accessTabPo.isValuePresentInDropdown('Support Group', 'Petramco HR')).toBeTruthy();
+            expect(await accessTabPo.isValuePresentInDropdown('Support Group', 'Petramco Facilities')).toBeFalsy();
+
+            await accessTabPo.clickToExpandAccessEntitiySearch('Agent Access', 'Knowledge');
+            expect(await accessTabPo.isAgentPresent(userData3.firstName)).toBeTruthy('User is not Present');
+            expect(await accessTabPo.isAgentPresent(userData4.firstName)).toBeFalsy('User is Present');
+            await accessTabPo.clickCloseKnowledgeAccessBlade();
+
+            await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
+            expect(await createKnowledgePage.isValuePresentInDropdown('Category Tier 1', 'Applications')).toBeTruthy('Failure: Operational Category 1 is missing');
+            expect(await createKnowledgePage.isValuePresentInDropdown('Category Tier 1', 'Facilties')).toBeFalsy('Failure: Operational Category 1 is present');
+            await editKnowledgePo.setCategoryTier1('Total Rewards');
+            await editKnowledgePo.saveKnowledgeMedataDataChanges();
+            expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe('Total Rewards');
+
+            await editKnowledgePo.setKnowledgeStatus('Draft');
+            await editKnowledgePo.setKnowledgeStatusWithoutSave('SME Review');
+            await statusBladeKnowledgeArticlePo.clickChangeReviewerBtn();
+            await changeAssignmentBladePo.selectCompany('Ericsson HR');
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Ericsson HR Support')).toBeTruthy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Ericsson Asset Management - India')).toBeFalsy();
+            await changeAssignmentBladePo.selectBusinessUnit('Ericsson HR Support');
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'EricssonCo HR')).toBeTruthy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'EricssonCo SAM')).toBeFalsy();
+            await changeAssignmentBladePo.selectBusinessUnit('Ericsson United States Support');
+            await changeAssignmentBladePo.selectSupportGroup('US Support 2');
+            expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData3.firstName} ${userData3.lastName}`)).toBeTruthy('User is not present on Assignment blade');
+            expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData4.firstName} ${userData4.lastName}`)).toBeTruthy('User is present on Assignment blade');
+            await changeAssignmentBladePo.clickOnCancelButton();
+
+            await navigationPage.gotoKnowledgeConsole();
+            expect(await utilityGrid.isGridRecordPresent(knowledgeArticleDataDiffLOB.title)).toBeFalsy('Record is present');
+            expect(await utilityGrid.isGridRecordPresent(knowledgeArticleDataDiffLOBGlobal.title)).toBeFalsy('Record is present');
+
+            await navigationPage.signOut();
+            await loginPage.login('sbruce');
+            await navigationPage.gotoKnowledgeConsole();
+            expect(await utilityGrid.isGridRecordPresent(articleId)).toBeFalsy(articleId + ' Record is present');
+        });
+
+        it('[DRDMV-23636]: [Ericsson Model] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to single Line of Business', async () => {
+            await editKnowledgePo.setKnowledgeStatus('Draft');
+            await editKnowledgePo.setKnowledgeStatusWithoutSave('SME Review');
+            await statusBladeKnowledgeArticlePo.clickChangeReviewerBtn();
+            await changeAssignmentBladePo.selectCompany('Ericsson HR');
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Ericsson HR Support')).toBeTruthy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Ericsson Asset Management - India')).toBeFalsy();
+            await changeAssignmentBladePo.selectBusinessUnit('Ericsson HR Support');
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'EricssonCo HR')).toBeTruthy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'EricssonCo SAM')).toBeFalsy();
+            await changeAssignmentBladePo.selectBusinessUnit('Ericsson United States Support');
+            await changeAssignmentBladePo.selectSupportGroup('US Support 2');
+            expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData3.firstName} ${userData3.lastName}`)).toBeTruthy('User is not present on Assignment blade');
+            expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData4.firstName} ${userData4.lastName}`)).toBeTruthy('User is present on Assignment blade');
+            await changeAssignmentBladePo.clickOnCancelButton();
+
+            await navigationPage.gotoKnowledgeConsole();
+            expect(await utilityGrid.isGridRecordPresent(knowledgeArticleDataDiffLOB.title)).toBeFalsy('Record is present');
+
+            await navigationPage.signOut();
+            await loginPage.login('sbruce');
+            await navigationPage.gotoKnowledgeConsole();
+            expect(await utilityGrid.isGridRecordPresent(articleId)).toBeFalsy(articleId + ' Record is present');
+        });
+
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+    });
+
+    describe('[DRDMV-23666]: [Ericsson Model] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple Line of Business', () => {
+        let randomStr = [...Array(7)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let knowledgeSetDataEricssonHR, knowledgeSetDataEricssonSAM, articleId, knowledgeArticleDataDiffLOB, knowledgeArticleTemplateDataHR, knowledgeArticleTemplateDataSAM, knowledgeArticleTemplateDataGlobal, knowledgeSetDataEricssonGlobal, knowledgeArticleDataDiffLOBGlobal;
+
+        beforeAll(async () => {
+            knowledgeArticleTemplateDataHR = {
+                templateName: `tname HR ${randomStr}`,
+                sectionTitle: "articleSection",
+                lineOfBusiness: "Ericsson HR"
+            }
+
+            knowledgeArticleTemplateDataSAM = {
+                templateName: `tname HR ${randomStr}`,
+                sectionTitle: "articleSection",
+                lineOfBusiness: "Ericsson SAM"
+            }
+
+            knowledgeArticleTemplateDataGlobal = {
+                templateName: `tname Global ${randomStr}`,
+                sectionTitle: "articleSection",
+                lineOfBusiness: "Ericsson Global"
+            }
+
+            knowledgeSetDataEricssonHR = {
+                knowledgeSetTitle: `DRDMV-23636 ER HR ${randomStr}`,
+                knowledgeSetDesc: `${randomStr}_Desc_ER_HR`,
+                company: 'Ericsson HR',
+                lineOfBusiness: 'Ericsson HR'
+            }
+
+            knowledgeSetDataEricssonSAM = {
+                knowledgeSetTitle: `DRDMV-23636 ER SAM ${randomStr}`,
+                knowledgeSetDesc: `${randomStr}_Desc_ER_SAM`,
+                company: 'Ericsson SAM',
+                lineOfBusiness: 'Ericsson SAM'
+            }
+
+            knowledgeSetDataEricssonGlobal = {
+                knowledgeSetTitle: `DRDMV-23636 Global SAM ${randomStr}`,
+                knowledgeSetDesc: `${randomStr}_Desc_ER_Global`,
+                company: 'Ericsson Global',
+                lineOfBusiness: 'Ericsson Global'
+            }
+
+            knowledgeArticleDataDiffLOBGlobal = {
+                "knowledgeSet": `${knowledgeSetDataEricssonGlobal.knowledgeSetTitle} 1`,
+                "title": `${randomStr} title Diff LOB`,
+                "templateId": "AGGAA5V0HGVMIAOK04TZO94MC355RA",
+                "assignee": "Smith",
+                "lineOfBusiness": "Ericsson SAM"
+            }
+
+            knowledgeArticleDataDiffLOB = {
+                "knowledgeSet": `${knowledgeSetDataEricssonSAM.knowledgeSetTitle}`,
+                "title": `${randomStr} title Diff LOB`,
+                "templateId": "AGGAA5V0HGVMIAOK04TZO94MC355RA",
+                "assignedCompany": "Ericsson SAM",
+                "assigneeBusinessUnit": "Ericsson Asset Management - India",
+                "assigneeSupportGroup": "New Asset Management",
+                "assignee": "Smith",
+                "lineOfBusiness": "Ericsson SAM"
+            }
+
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateDataHR);
+            await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateDataSAM);
+            await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateDataGlobal);
+            await apiHelper.createKnowledgeSet(knowledgeSetDataEricssonHR);
+            await apiHelper.createKnowledgeSet(knowledgeSetDataEricssonSAM);
+            await apiHelper.createKnowledgeSet(knowledgeSetDataEricssonGlobal);
+            await apiHelper.createKnowledgeArticle(knowledgeArticleDataDiffLOB);
+            await apiHelper.createKnowledgeArticle(knowledgeArticleDataDiffLOBGlobal);
+        });
+
+        it('[DRDMV-23666]: [Ericsson Model] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple Line of Business', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('sbruce');
+            await navigationPage.gotoCreateKnowledge();
+            await utilityGrid.selectLineOfBusiness('Ericsson HR');
+            expect(await createKnowledgePage.isTemplatePresent(knowledgeArticleTemplateDataHR.templateName)).toBeTruthy('Template is not present');
+            expect(await createKnowledgePage.isTemplatePresent(knowledgeArticleTemplateDataSAM.templateName)).toBeFalsy('Template is present');
+            expect(await createKnowledgePage.isTemplatePresent(knowledgeArticleTemplateDataGlobal.templateName)).toBeFalsy('Template is present');
+            await createKnowledgePage.clickOnTemplate('Reference');
+            await createKnowledgePage.clickOnUseSelectedTemplateButton();
+            await utilityGrid.selectLineOfBusiness('Ericsson SAM');
+            expect(await createKnowledgePage.isTemplatePresent(knowledgeArticleTemplateDataSAM.templateName)).toBeTruthy('Template is not present');
+            expect(await createKnowledgePage.isTemplatePresent(knowledgeArticleTemplateDataHR.templateName)).toBeFalsy('Template is present');
+            expect(await createKnowledgePage.isTemplatePresent(knowledgeArticleTemplateDataGlobal.templateName)).toBeFalsy('Template is present');
+            expect(await createKnowledgePage.getValueOfLineOFBusiness()).toBe('Ericsson SAM');
+            expect(await createKnowledgePage.isValuePresentInDropdown('Knowledge Set', knowledgeSetDataEricssonSAM.knowledgeSetTitle)).toBeTruthy('Failure: Knowledge Set is missing');
+            expect(await createKnowledgePage.isValuePresentInDropdown('Knowledge Set', knowledgeSetDataEricssonHR.knowledgeSetTitle)).toBeFalsy('Failure: Knowledge Set is available');
+            expect(await createKnowledgePage.isTemplatePresent(knowledgeArticleTemplateDataGlobal.templateName)).toBeFalsy('Template is present');
+
+            expect(await createKnowledgePage.isValuePresentInDropdown('Category Tier 1', 'Facilities')).toBeTruthy('Failure: Operational Category 1 is missing');
+            expect(await createKnowledgePage.isValuePresentInDropdown('Category Tier 1', 'Employee Relations')).toBeFalsy('Failure: Operational Category 1 is present');
+
+            await navigationPage.gotoKnowledgeConsole();
+            await createKnowledgePage.clickOnTemplate('Reference');
+            await createKnowledgePage.clickOnUseSelectedTemplateButton();
+            await utilityGrid.selectLineOfBusiness('Ericsson HR');
+
+            //Validating Assignment fields
+            await createKnowledgePage.clickChangeAssignmentButton();
+            await changeAssignmentBladePo.selectCompany('Ericsson HR');
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Ericsson HR Support')).toBeTruthy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Ericsson Asset Management - India')).toBeFalsy();
+            await changeAssignmentBladePo.selectBusinessUnit('Ericsson HR Support');
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'EricssonCo HR')).toBeTruthy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'EricssonCo SAM')).toBeFalsy();
+            await changeAssignmentBladePo.selectBusinessUnit('Ericsson United States Support');
+            await changeAssignmentBladePo.selectSupportGroup('US Support 2');
+            expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData3.firstName} ${userData3.lastName}`)).toBeTruthy('User is not present on Assignment blade');
+            expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData4.firstName} ${userData4.lastName}`)).toBeTruthy('User is present on Assignment blade');
+            await changeAssignmentBladePo.clickOnCancelButton();
+
+            //Saving the Article
+            await createKnowledgePage.addTextInKnowlegeTitleField(`DRDMV23666 Title ${randomStr}`);
+            await createKnowledgePage.selectKnowledgeSet(knowledgeSetDataEricssonHR.knowledgeSetTitle);
+            await createKnowledgePage.selectCategoryTier1Option('Applications');
+
+            await createKnowledgePage.clickOnSaveKnowledgeButton();
+            await previewKnowledgePo.clickGoToArticleButton();
+            articleId = await viewKnowledgeArticlePo.getKnowledgeArticleId();
+        });
+
+        it('[DRDMV-23666]: [Ericsson Model] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple Line of Business', async () => {
+            await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
+            expect(await editKnowledgePo.getLineOfBusinessValue()).toBe('Ericsson HR');
+            expect(await editKnowledgePo.isLobSectionEnabled()).toBeFalsy();
+            await editKnowledgePo.cancelKnowledgeMedataDataChanges();
+            await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
+            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Knowledge');
+            await accessTabPo.selectAccessEntityDropDown('Ericsson HR', 'Select Company');
+            expect(await accessTabPo.isValuePresentInDropdown('Business Unit', 'Ericsson HR Support')).toBeTruthy();
+            expect(await accessTabPo.isValuePresentInDropdown('Business Unit', 'Ericsson Asset Management - India')).toBeFalsy();
+            await accessTabPo.selectAccessEntityDropDown('Ericsson HR Support', 'Select Business Unit');
+            expect(await accessTabPo.isValuePresentInDropdown('Support Group', 'Petramco HR')).toBeTruthy();
+            expect(await accessTabPo.isValuePresentInDropdown('Support Group', 'Petramco Facilities')).toBeFalsy();
+
+            await accessTabPo.clickToExpandAccessEntitiySearch('Agent Access', 'Knowledge');
+            expect(await accessTabPo.isAgentPresent(userData3.firstName)).toBeTruthy('User is not Present');
+            expect(await accessTabPo.isAgentPresent(userData4.firstName)).toBeFalsy('User is Present');
+            await accessTabPo.clickCloseKnowledgeAccessBlade();
+
+            await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
+            expect(await createKnowledgePage.isValuePresentInDropdown('Category Tier 1', 'Applications')).toBeTruthy('Failure: Operational Category 1 is missing');
+            expect(await createKnowledgePage.isValuePresentInDropdown('Category Tier 1', 'Facilties')).toBeFalsy('Failure: Operational Category 1 is present');
+            await editKnowledgePo.setCategoryTier1('Total Rewards');
+            await editKnowledgePo.saveKnowledgeMedataDataChanges();
+            expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe('Total Rewards');
+
+            await editKnowledgePo.setKnowledgeStatus('Draft');
+            await editKnowledgePo.setKnowledgeStatusWithoutSave('SME Review');
+            await statusBladeKnowledgeArticlePo.clickChangeReviewerBtn();
+            await changeAssignmentBladePo.selectCompany('Ericsson HR');
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Ericsson HR Support')).toBeTruthy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Ericsson Asset Management - India')).toBeFalsy();
+            await changeAssignmentBladePo.selectBusinessUnit('Ericsson HR Support');
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'EricssonCo HR')).toBeTruthy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'EricssonCo SAM')).toBeFalsy();
+            await changeAssignmentBladePo.selectBusinessUnit('Ericsson United States Support');
+            await changeAssignmentBladePo.selectSupportGroup('US Support 2');
+            expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData3.firstName} ${userData3.lastName}`)).toBeTruthy('User is not present on Assignment blade');
+            expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData4.firstName} ${userData4.lastName}`)).toBeTruthy('User is present on Assignment blade');
+            await changeAssignmentBladePo.clickOnCancelButton();
+
+            await navigationPage.gotoKnowledgeConsole();
+            expect(await utilityGrid.isGridRecordPresent(knowledgeArticleDataDiffLOB.title)).toBeFalsy('Record is present');
+            expect(await utilityGrid.isGridRecordPresent(knowledgeArticleDataDiffLOBGlobal.title)).toBeFalsy('Record is present');
+
+            await navigationPage.signOut();
+            await loginPage.login('sherbert');
+            await navigationPage.gotoKnowledgeConsole();
+            expect(await utilityGrid.isGridRecordPresent(articleId)).toBeFalsy(articleId + ' Record is present');
+        });
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+    });
 });    
