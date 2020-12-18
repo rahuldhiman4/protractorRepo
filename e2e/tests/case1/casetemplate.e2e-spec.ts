@@ -29,7 +29,7 @@ import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
 describe('Case Template', () => {
-    let userData = undefined;
+    let userData = undefined,userData1 = undefined,userData2 = undefined;
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
@@ -720,6 +720,8 @@ describe('Case Template', () => {
             await createCaseTemplate.clickSaveCaseTemplate();
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
 
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
             await createCaseTemplate.setTemplateName(caseTemplateGlobal);
             await createCaseTemplate.setCompanyName('Petramco');
@@ -786,7 +788,6 @@ describe('Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await utilGrid.selectLineOfBusiness('Facilities');
             expect(await utilGrid.isGridRecordPresent(caseTemplateGlobal)).toBeFalsy('Case Template is displayed to Case BA having access to multiple LOBs.');

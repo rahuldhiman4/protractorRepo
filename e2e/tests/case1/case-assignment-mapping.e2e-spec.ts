@@ -532,7 +532,7 @@ describe("Create Case Assignment Mapping", () => {
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await viewCasePo.clickOnTab('Case Access');
-            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('AU Support 3', 'Write')).toBeTruthy('Support Group does not have write access');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Workforce Administration', 'Write')).toBeTruthy('Support Group does not have write access');
         });
 
         afterAll(async () => {
