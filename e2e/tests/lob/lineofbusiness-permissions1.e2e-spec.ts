@@ -546,7 +546,6 @@ describe('Line of Business Permission Tests', () => {
         });
     });
 
-
     //ankagraw
     //this test case failed due to defect DRDMV-24208 
     it('[DRDMV-24248]: Adobe, DocuSign and White configuration should visible to Tadmin only', async () => {
@@ -1183,7 +1182,4 @@ describe('Line of Business Permission Tests', () => {
             await loginPage.login('qkatawazi');
         });
     });
-
-
-
 });
