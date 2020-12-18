@@ -1,4 +1,5 @@
 import { browser } from "protractor";
+import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from '../../api/api.helper';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
@@ -14,7 +15,6 @@ import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-import apiCoreUtil from '../../api/api.core.util';
 describe('Line of Business Permissions Tests Extended', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
@@ -154,7 +154,7 @@ describe('Line of Business Permissions Tests Extended', () => {
             await editEmailConfigPo.setNewTrustedEmail("testingCheck@gmail.com");
             await editEmailConfigPo.selectMappedRequesterDropDown("Adam Pavlik");
             await editEmailConfigPo.clickNewTrustedEmailSaveBtn();
-            
+
             await editEmailConfigPo.setNewTrustedEmail("testingCheck@gmail.com");
             await editEmailConfigPo.selectMappedRequesterDropDown("Adam Warlock");
             await editEmailConfigPo.clickNewTrustedEmailSaveBtn();
@@ -283,7 +283,7 @@ describe('Line of Business Permissions Tests Extended', () => {
             await lobManagementConsolePo.setLobDescription(' Human Resource');
             await lobManagementConsolePo.clickOnSaveButton();
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
-           
+
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Line of Business--Manage Line of Business', 'LOB Configuration - Edit - Business Workflows');
             await utilGrid.selectLineOfBusiness("Facilities");

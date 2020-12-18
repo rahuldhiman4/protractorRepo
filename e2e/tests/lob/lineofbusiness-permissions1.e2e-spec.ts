@@ -6,12 +6,12 @@ import { AUTO_STATUS_TRANSITION_MANDATORY_FIELDS } from '../../data/ui/case/auto
 import { ALL_FIELD } from '../../data/ui/case/casetemplate.data.ui';
 import { flowsetGlobalFields, flowsetGlobalInActiveFields } from '../../data/ui/flowset/flowset.ui';
 import caseConsolePo from '../../pageobject/case/case-console.po';
-import { default as casePreviewPo, default as previewCasePage } from '../../pageobject/case/case-preview.po';
-import { default as createCasePage, default as createCasePo } from '../../pageobject/case/create-case.po';
+import casePreviewPo from '../../pageobject/case/case-preview.po';
+import createCasePo from '../../pageobject/case/create-case.po';
 import editCasePo from '../../pageobject/case/edit-case.po';
 import quickCasePo from '../../pageobject/case/quick-case.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
-import { default as viewCasePage, default as viewCasePo } from '../../pageobject/case/view-case.po';
+import viewCasePo from '../../pageobject/case/view-case.po';
 import localizeValuePopPo from '../../pageobject/common/localize-value-pop.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
@@ -24,10 +24,10 @@ import dynamicGroupLibraryConfigConsolePo from '../../pageobject/settings/applic
 import menuItemsConfigConsolePo from '../../pageobject/settings/application-config/menu-items-config-console.po';
 import approvalMappingConsolePo from '../../pageobject/settings/case-management/approval-mapping-console.po';
 import assignmentsConfigConsolePo from '../../pageobject/settings/case-management/assignments-config-console.po';
-import { default as automatedStatusTransitionConsole, default as automatedStatusTransitionConsolePo } from '../../pageobject/settings/case-management/automated-status-transition-console.po';
-import { default as consoleCasetemplatePage, default as consoleCasetemplatePo } from '../../pageobject/settings/case-management/console-casetemplate.po';
+import automatedStatusTransitionConsolePo from '../../pageobject/settings/case-management/automated-status-transition-console.po';
+import consoleCasetemplatePo from '../../pageobject/settings/case-management/console-casetemplate.po';
 import automatedStatusTransitionCreatePage from "../../pageobject/settings/case-management/create-automated-status-config.po";
-import { default as createCaseTemplatePage, default as createCasetemplatePo } from '../../pageobject/settings/case-management/create-casetemplate.po';
+import createCasetemplatePo from '../../pageobject/settings/case-management/create-casetemplate.po';
 import automatedStatusTransitionEditPage from "../../pageobject/settings/case-management/edit-automated-status-config.po";
 import readAccessConsolePo from '../../pageobject/settings/case-management/read-access-console.po';
 import viewCasetemplatePo from '../../pageobject/settings/case-management/view-casetemplate.po';
@@ -47,7 +47,7 @@ import consoleKnowledgeTemplatePo from '../../pageobject/settings/knowledge-mana
 import defineLobCreate from '../../pageobject/settings/lob/create-lob-config.po';
 import consoleDefineLob from '../../pageobject/settings/lob/define-lob-config.po';
 import editLobConfig from '../../pageobject/settings/lob/edit-lob-config.po';
-import { default as consoleFlowsetConfigPage, default as consoleFlowsetConfigPo } from '../../pageobject/settings/manage-flowset/console-flowset-config.po';
+import consoleFlowsetConfigPo from '../../pageobject/settings/manage-flowset/console-flowset-config.po';
 import editFlowsetConfigPo from '../../pageobject/settings/manage-flowset/edit-flowset-config.po';
 import consoleNotificationEventPo from '../../pageobject/settings/notification-config/console-notification-event.po';
 import notificationTempGridPage from "../../pageobject/settings/notification-config/console-notification-template.po";
@@ -63,7 +63,6 @@ import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-
 
 let userData1;
 describe('Line of Business Permission Tests', () => {
@@ -884,7 +883,7 @@ describe('Line of Business Permission Tests', () => {
             //Create first Record
             configName1 = AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.name = 'ConfigName1' + randomStr;
             AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.changeStatusAfter = Math.floor(Math.random() * 180) + 1;
-            await automatedStatusTransitionConsole.clickAddAutomatedStatusTransitionBtn();
+            await automatedStatusTransitionConsolePo.clickAddAutomatedStatusTransitionBtn();
             await automatedStatusTransitionCreatePage.createAutomatedStatusTransition(AUTO_STATUS_TRANSITION_MANDATORY_FIELDS);
         });
         it('[DRDMV-17555]: Create new automatic case status transition rule for one line of Business', async () => {
@@ -929,7 +928,7 @@ describe('Line of Business Permission Tests', () => {
             tempData.fromStatus = "In Progress";
             tempData.toStatus = "Pending";
             await utilGrid.selectLineOfBusiness('Human Resource');
-            await automatedStatusTransitionConsole.clickAddAutomatedStatusTransitionBtn();
+            await automatedStatusTransitionConsolePo.clickAddAutomatedStatusTransitionBtn();
             await utilCommon.isDrpDownvalueDisplayed(automatedStatusTransitionCreatePage.selectors.categoryTier1, ['Applications', 'Facilities', 'Fixed Assets', 'Phones', 'Projectors', 'Purchasing Card']);
             await automatedStatusTransitionCreatePage.createAutomatedStatusTransition(tempData);
             expect(await utilCommon.isPopUpMessagePresent('ERROR (10000): Automated Status Configuration with same name already exists. Please select a different name.')).toBeTruthy("Error message absent");
@@ -939,7 +938,7 @@ describe('Line of Business Permission Tests', () => {
         it('[DRDMV-17555]: create same name record in different LOB', async () => {
             //create same name record in different LOB
             await utilGrid.selectLineOfBusiness('Facilities');
-            await automatedStatusTransitionConsole.clickAddAutomatedStatusTransitionBtn();
+            await automatedStatusTransitionConsolePo.clickAddAutomatedStatusTransitionBtn();
             await automatedStatusTransitionCreatePage.setName(tempData.name);
             await automatedStatusTransitionCreatePage.setCompany(tempData.company);
             await automatedStatusTransitionCreatePage.setFromStatus(tempData.toStatus);
@@ -950,7 +949,7 @@ describe('Line of Business Permission Tests', () => {
             await automatedStatusTransitionCreatePage.saveConfig();
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
             // verify LOB on edit page
-            await automatedStatusTransitionConsole.openAutomatedTransitionConfig(tempData.name);
+            await automatedStatusTransitionConsolePo.openAutomatedTransitionConfig(tempData.name);
             expect(await automatedStatusTransitionEditPage.getLobValue()).toBe("Facilities");
             await automatedStatusTransitionEditPage.clickCancel();
             await utilGrid.selectLineOfBusiness('Human Resource');
@@ -1022,7 +1021,7 @@ describe('Line of Business Permission Tests', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', 'Flowsets - Console - Business Workflows');
             await utilGrid.selectLineOfBusiness('Facilities');
-            await consoleFlowsetConfigPage.searchAndSelectFlowset(flowsetName3);
+            await consoleFlowsetConfigPo.searchAndSelectFlowset(flowsetName3);
             await editFlowsetConfigPo.setFlowset("edit Flowset" + randomStr);
             await editFlowsetConfigPo.setDescription("edit description" + randomStr);
             await expect(editFlowsetConfigPo.getStatusvalue()).toBe("Active");
@@ -1034,30 +1033,30 @@ describe('Line of Business Permission Tests', () => {
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await utilGrid.selectLineOfBusiness('Facilities');
             ALL_FIELD.templateName = ALL_FIELD.templateName + Math.floor(Math.random() * 100000);
-            await consoleCasetemplatePage.clickOnCreateCaseTemplateButton();
-            await createCaseTemplatePage.setTemplateName(ALL_FIELD.templateName);
-            await createCaseTemplatePage.setCompanyName(ALL_FIELD.company);
-            await createCaseTemplatePage.setCaseSummary(ALL_FIELD.templateSummary);
-            await createCaseTemplatePage.setPriorityValue(ALL_FIELD.casePriority);
-            await createCaseTemplatePage.setOwnerCompanyValue('Petramco')
-            await createCaseTemplatePage.setBusinessUnitDropdownValue('Facilities Support');
-            await createCaseTemplatePage.setOwnerGroupDropdownValue('Facilities');
-            await createCaseTemplatePage.setTemplateStatusDropdownValue(ALL_FIELD.templateStatus);
+            await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
+            await createCasetemplatePo.setTemplateName(ALL_FIELD.templateName);
+            await createCasetemplatePo.setCompanyName(ALL_FIELD.company);
+            await createCasetemplatePo.setCaseSummary(ALL_FIELD.templateSummary);
+            await createCasetemplatePo.setPriorityValue(ALL_FIELD.casePriority);
+            await createCasetemplatePo.setOwnerCompanyValue('Petramco')
+            await createCasetemplatePo.setBusinessUnitDropdownValue('Facilities Support');
+            await createCasetemplatePo.setOwnerGroupDropdownValue('Facilities');
+            await createCasetemplatePo.setTemplateStatusDropdownValue(ALL_FIELD.templateStatus);
             let flowsetValues: string[] = [flowsetName2, flowsetName3];
             expect(await createCasetemplatePo.flowsetOptionsPresent(flowsetValues)).toBeFalsy('Status in dropdown does not match');
-            await createCaseTemplatePage.setCompanyName(ALL_FIELD.company);
-            await createCaseTemplatePage.setFlowsetValue(flowsetName1);
-            await createCaseTemplatePage.clickSaveCaseTemplate();
+            await createCasetemplatePo.setCompanyName(ALL_FIELD.company);
+            await createCasetemplatePo.setFlowsetValue(flowsetName1);
+            await createCasetemplatePo.clickSaveCaseTemplate();
         });
         it('[DRDMV-1357]: [Flowsets] Case Template creation with Flowset', async () => {
             //Create a case using above casetemplate
             await navigationPage.gotoCreateCase();
-            await createCasePage.selectRequester('fritz');
-            await createCasePage.clickSelectCaseTemplateButton();
+            await createCasePo.selectRequester('fritz');
+            await createCasePo.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectCaseTemplate(ALL_FIELD.templateName);
-            await createCasePage.clickSaveCaseButton();
-            await previewCasePage.clickGoToCaseButton();
-            expect(await viewCasePage.getFlowsetValue()).toBe(flowsetName1);
+            await createCasePo.clickSaveCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
+            expect(await viewCasePo.getFlowsetValue()).toBe(flowsetName1);
         });
         it('[DRDMV-1357]: [Flowsets] Case Template creation with Flowset', async () => {
             await navigationPage.gotoSettingsPage();
@@ -1069,7 +1068,7 @@ describe('Line of Business Permission Tests', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await utilGrid.selectLineOfBusiness('Human Resource');
-            await consoleCasetemplatePage.clickOnCreateCaseTemplateButton();
+            await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
             let flowsetValues: string[] = [flowsetName1, flowsetName2, flowsetName3];
             expect(await createCasetemplatePo.flowsetOptionsPresent(flowsetValues)).toBeFalsy('Status in dropdown does not match');
         });

@@ -1,27 +1,26 @@
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
-import loginPage from "../../pageobject/common/login.po";
-import navigationPage from "../../pageobject/common/navigation.po";
-import { BWF_BASE_URL } from '../../utils/constants';
-import utilityCommon from '../../utils/utility.common';
-import createCasePage from '../../pageobject/case/create-case.po';
 import previewCasePage from '../../pageobject/case/case-preview.po';
+import { default as createCasePage, default as createCasePo } from '../../pageobject/case/create-case.po';
+import editCasePo from '../../pageobject/case/edit-case.po';
+import quickCasePo from '../../pageobject/case/quick-case.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePage from '../../pageobject/case/view-case.po';
-import createCasePo from '../../pageobject/case/create-case.po';
-import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
-import editCasePo from '../../pageobject/case/edit-case.po';
-import utilityGrid from '../../utils/utility.grid';
-import quickCasePo from '../../pageobject/case/quick-case.po';
-import previewCaseTemplateCasesPo from '../../pageobject/settings/case-management/preview-case-template.po';
 import accessTabPo from '../../pageobject/common/access-tab.po';
+import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
+import ckeditorValidationPo from '../../pageobject/common/ck-editor/ckeditor-validation.po';
+import loginPage from "../../pageobject/common/login.po";
+import navigationPage from "../../pageobject/common/navigation.po";
+import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
 import composeMailPo from '../../pageobject/email/compose-mail.po';
 import selectEmailTemplateBladePo from '../../pageobject/email/select-email-template-blade.po';
+import previewCaseTemplateCasesPo from '../../pageobject/settings/case-management/preview-case-template.po';
 import activityTabPo from '../../pageobject/social/activity-tab.po';
-import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import notesTemplateUsage from '../../pageobject/social/note-template-usage.po';
-import ckeditorValidationPo from '../../pageobject/common/ck-editor/ckeditor-validation.po';
-import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
+import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
+import { BWF_BASE_URL } from '../../utils/constants';
+import utilityCommon from '../../utils/utility.common';
+import utilityGrid from '../../utils/utility.grid';
 
 let userData1;
 describe('Ericsson Data Model Tests', () => {
@@ -518,5 +517,5 @@ describe('Ericsson Data Model Tests', () => {
         });
     });
 
-    
+
 });

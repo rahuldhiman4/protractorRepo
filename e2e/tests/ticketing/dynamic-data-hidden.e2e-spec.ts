@@ -31,7 +31,7 @@ import editTaskTemplate from "../../pageobject/settings/task-management/edit-tas
 import viewTaskTemplate from "../../pageobject/settings/task-management/view-tasktemplate.po";
 import activityTabPo from '../../pageobject/social/activity-tab.po';
 import editTaskPo from '../../pageobject/task/edit-task.po';
-import { default as manageTask, default as manageTaskBladePo } from "../../pageobject/task/manage-task-blade.po";
+import manageTaskBladePo from "../../pageobject/task/manage-task-blade.po";
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
@@ -225,8 +225,8 @@ describe('Dynamic Hidden Data', () => {
             await viewCasePo.clickAddTaskButton();
         });
         it('[DRDMV-13169]: Add above task template and verify above dynamic field', async () => {
-            await manageTask.addTaskFromTaskTemplate(templateData.templateName)
-            await manageTask.clickTaskLink(templateData.templateSummary);
+            await manageTaskBladePo.addTaskFromTaskTemplate(templateData.templateName)
+            await manageTaskBladePo.clickTaskLink(templateData.templateSummary);
             expect(await viewTaskPo.isDynamicFieldPresent('Field Description')).toBeTruthy('Field Description');
             expect(await viewTaskPo.isAssignmentSectionDisplayed()).toBeFalsy('Assignment Section is present');
             await viewTaskPo.clickOnEditTask();
@@ -295,8 +295,8 @@ describe('Dynamic Hidden Data', () => {
             await previewCasePo.clickGoToCaseButton();
             await viewCasePo.getCaseID()
             await viewCasePo.clickAddTaskButton();
-            await manageTask.addTaskFromTaskTemplate(templateData.templateName);
-            await manageTask.clickTaskLink(templateData.templateSummary);
+            await manageTaskBladePo.addTaskFromTaskTemplate(templateData.templateName);
+            await manageTaskBladePo.clickTaskLink(templateData.templateSummary);
             await viewTaskPo.clickOnViewCase();
         });
         it('[DRDMV-21451]: Validate dynamic field and change the status', async () => {
@@ -382,8 +382,8 @@ describe('Dynamic Hidden Data', () => {
             await viewCasePo.getCaseID()
             await viewCasePo.clickAddTaskButton();
             await browser.sleep(2000);
-            await manageTask.addTaskFromTaskTemplate(templateData.templateName);
-            await manageTask.clickTaskLink(templateData.templateSummary);
+            await manageTaskBladePo.addTaskFromTaskTemplate(templateData.templateName);
+            await manageTaskBladePo.clickTaskLink(templateData.templateSummary);
             await viewTaskPo.clickOnViewCase();
             expect(await viewCasePo.isDynamicFieldDisplayed('Field1OutsideDRDMV21452')).toBeFalsy();
         });
@@ -437,8 +437,8 @@ describe('Dynamic Hidden Data', () => {
             caseId = await viewCasePo.getCaseID();
             await viewCasePo.clickAddTaskButton();
             await browser.sleep(2000);
-            await manageTask.addTaskFromTaskTemplate(templateData.templateName);
-            await manageTask.clickTaskLink(templateData.templateSummary);
+            await manageTaskBladePo.addTaskFromTaskTemplate(templateData.templateName);
+            await manageTaskBladePo.clickTaskLink(templateData.templateSummary);
             await viewTaskPo.clickOnViewCase();
         });
         it('[DRDMV-21422,DRDMV-21414]: Validate dynamic field and change the it teask template status', async () => {
@@ -570,8 +570,8 @@ describe('Dynamic Hidden Data', () => {
             await previewCasePo.clickGoToCaseButton();
             await viewCasePo.clickAddTaskButton();
             await browser.sleep(2000);
-            await manageTask.addTaskFromTaskTemplate(templateData.templateName);
-            await manageTask.clickTaskLink(templateData.templateSummary);
+            await manageTaskBladePo.addTaskFromTaskTemplate(templateData.templateName);
+            await manageTaskBladePo.clickTaskLink(templateData.templateSummary);
             await viewTaskPo.clickOnViewCase();
             caseId = await viewCasePo.getCaseID();
             expect(await viewCasePo.isDynamicFieldDisplayed('FieldGroup1')).toBeFalsy();
@@ -779,7 +779,7 @@ describe('Dynamic Hidden Data', () => {
         it('[DRDMV-21418]: Validate dynamic field ', async () => {
             expect(await viewCasePo.isDynamicFieldDisplayed('Field1OutsideDRDMV21415')).toBeTruthy();
             await viewCasePo.clickAddTaskButton();
-            await manageTask.addTaskFromTaskTemplate(`manualTaskTemplate1 ${randomStr}`);
+            await manageTaskBladePo.addTaskFromTaskTemplate(`manualTaskTemplate1 ${randomStr}`);
             await manageTaskBladePo.clickCloseButton();
             expect(await viewCasePo.isDynamicFieldDisplayed('Field1OutsideDRDMV21415')).toBeTruthy();
         });
