@@ -21,8 +21,8 @@ class CreateNewMenuOptionPage {
         cancelButton: '[rx-view-component-id="4d21900d-87ce-40b1-839b-01c72ff77014"] .d-button_secondary',
         createNewMenuOptionDialogueBox: 'a.modal-dialog .modal-contentsf',
         menuOptionGuid: 'd40aa6f2-090d-4641-9779-ae724673575c',
-        lobValue: '[rx-view-component-id="21ec7b66-2f5f-4c92-baa1-ce5721dafa4d"] .pull-left',
         lob: '[rx-view-component-id="21ec7b66-2f5f-4c92-baa1-ce5721dafa4d"] input',
+        lobValue: '[rx-view-component-id="21ec7b66-2f5f-4c92-baa1-ce5721dafa4d"] .pull-left',
     }
 
     async isCreateNewMenuOptionBladeDisplayed(): Promise<boolean> {
@@ -70,7 +70,7 @@ class CreateNewMenuOptionPage {
     }
 
     async isLineOfBusinessEnabled(): Promise<boolean> {
-        return await $(this.selectors.lob).isEnabled();
+        return await $(this.selectors.lobValue).isEnabled();
     }
 
     async isMenuNameDropDownPresent(): Promise<boolean> {
@@ -129,7 +129,7 @@ class CreateNewMenuOptionPage {
     }
 
     async getLobValue(): Promise<string> {
-        return await $(this.selectors.lobValue).getText();
+        return await $(this.selectors.lob).getText();
     }
 }
 
