@@ -23,6 +23,7 @@ class CreateCaseTemplate {
         caseStatus: '6b1d1112-129e-4c27-82b2-2248f12dc09a',
         statusReason: 'b6a6fc24-c3e7-4565-b2d2-848dd4a6747b',
         label: '57a61ccd-d80f-4490-b1d7-ec16d19c551f',
+        caseCategoryTier1Guid: '08ebbf12-f517-46bb-a60c-e3996f133e37',
         caseCategoryTier1: '[rx-view-component-id="08ebbf12-f517-46bb-a60c-e3996f133e37"], [rx-view-component-id="c8ce4fd2-d864-4544-baf7-4b27b59c12c3"]',
         caseCategoryTier2: '42e3edda-f057-41e2-8160-7a9482e847dc',
         caseCategoryTier3: 'bb675d8f-82bc-497b-8b99-dfc1baa1dd41',
@@ -71,7 +72,7 @@ class CreateCaseTemplate {
         if (flowsetgetText == '') {
             await utilCommon.selectDropDown('08ebbf12-f517-46bb-a60c-e3996f133e37', tier1Value);
         } else {
-            await utilCommon.selectDropDown2($(this.selectors.caseCategoryTier1), tier1Value);
+            await utilCommon.selectDropDown2(await $(this.selectors.caseCategoryTier1), tier1Value);
         }
     }
 
