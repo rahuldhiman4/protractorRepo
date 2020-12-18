@@ -341,22 +341,70 @@ describe('Document Library', () => {
     });
 
     //kgaikwad
-    it('[DRDMV-13085]: Verify document created will not listed in Knowledge articles grid', async () => {
+    describe('[DRDMV-13085]: Verify document created will not listed in Knowledge articles grid', async () => {
         let filePath = '../../../data/ui/attachment/demo.txt';
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
-        await createDocumentLibraryPo.openAddNewDocumentBlade();
-        await createDocumentLibraryPo.addAttachment(filePath);
-        await createDocumentLibraryPo.setTitle(titleRandVal);
-        await createDocumentLibraryPo.selectCompany('Petramco');
-        await createDocumentLibraryPo.selectBusinessUnit('HR Support');
-        await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
-        await createDocumentLibraryPo.clickOnSaveButton();
-        // await utilCommon.closePopUpMessage();
-        await navigationPage.gotoKnowledgeConsole();
-        await utilityGrid.clearFilter();
-        expect(await consoleKnowledgePo.isGridRecordPresent(titleRandVal)).toBeFalsy('Record is present on knowledge article grid');
+        it('[DRDMV-13085]: Verify document created will not listed in Knowledge articles grid', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+            await createDocumentLibraryPo.openAddNewDocumentBlade();
+            await createDocumentLibraryPo.addAttachment(filePath);
+            await createDocumentLibraryPo.setTitle(titleRandVal);
+            await createDocumentLibraryPo.selectCompany('Petramco');
+            await createDocumentLibraryPo.selectBusinessUnit('HR Support');
+            await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
+            await createDocumentLibraryPo.clickOnSaveButton();
+            await navigationPage.gotoKnowledgeConsole();
+            await utilityGrid.clearFilter();
+            expect(await consoleKnowledgePo.isGridRecordPresent(titleRandVal)).toBeFalsy('Record is present on knowledge article grid');
+        });
+        it('[DRDMV-13085]: create same name record in same LOB', async () => {
+            //create same name record in same LOB
+            await navigationPage.signOut();
+            await loginPage.login('jbarnes');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            await createDocumentLibraryPo.openAddNewDocumentBlade();
+            await createDocumentLibraryPo.addAttachment(filePath);
+            await createDocumentLibraryPo.setTitle(titleRandVal);
+            await createDocumentLibraryPo.selectCompany('Petramco');
+            await createDocumentLibraryPo.selectBusinessUnit('HR Support');
+            await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
+            await createDocumentLibraryPo.clickOnSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");// there will not be error message
+        });
+        it('[DRDMV-13085]: create same name record in different LOB', async () => {
+            //create same name record in different LOB
+            await utilGrid.selectLineOfBusiness('Facilities');
+            await createDocumentLibraryPo.openAddNewDocumentBlade();
+            await createDocumentLibraryPo.addAttachment(filePath);
+            await createDocumentLibraryPo.setTitle(titleRandVal);
+            await utilCommon.isDrpDownvalueDisplayed(createDocumentLibraryPo.selectors.category1, ['Applications', 'Facilities', 'Fixed Assets', 'Phones', 'Projectors', 'Purchasing Card']);
+            await createDocumentLibraryPo.selectCompany('Petramco');
+            await utilCommon.isDrpDownvalueDisplayed(createDocumentLibraryPo.selectors.businessUnitFieldGuid, ['Facilities', 'Facilities Support']);
+            await createDocumentLibraryPo.selectCompany('Petramco');
+            await createDocumentLibraryPo.selectBusinessUnit('Facilities Support');
+            await utilCommon.isDrpDownvalueDisplayed(createDocumentLibraryPo.selectors.ownerGroupFieldGuid, ['Facilities', 'Pantry Service']);
+            await createDocumentLibraryPo.selectBusinessUnit('Facilities Support');
+            await createDocumentLibraryPo.selectOwnerGroup('Facilities');
+            // verify LOB on create page
+            expect(await createDocumentLibraryPo.getLobValue()).toBe("Facilities");
+            await createDocumentLibraryPo.clickOnSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
+            // verify LOB on edit page
+            await utilGrid.searchAndOpenHyperlink(titleRandVal);
+            expect(await editDocumentLibraryPo.getLobValue()).toBe("Facilities");
+            await editDocumentLibraryPo.clickOnCancelButton();
+            await utilCommon.clickOnWarningOk();
+            await browser.sleep(2000); // required to see LOB dropdown, else it fails
+            await utilGrid.selectLineOfBusiness('Human Resource');
+        });
+        afterAll(async () => {
+            await utilCommon.closeBladeOnSettings();
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
     });
 
     //kgaikwad

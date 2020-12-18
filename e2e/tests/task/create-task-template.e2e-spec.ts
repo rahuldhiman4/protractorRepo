@@ -1,4 +1,4 @@
-import { browser, $ } from "protractor";
+import { browser } from "protractor";
 import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from '../../api/api.helper';
 import caseConsolePo from '../../pageobject/case/case-console.po';
@@ -7,9 +7,6 @@ import createCasePage from '../../pageobject/case/create-case.po';
 import editCasePo from '../../pageobject/case/edit-case.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
-import attachDocumentBladePo from '../../pageobject/common/attach-document-blade.po';
-import accessTabPo from '../../pageobject/common/access-tab.po';
-import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
@@ -20,7 +17,6 @@ import selectTaskTemplate from "../../pageobject/settings/task-management/consol
 import taskTemplate from "../../pageobject/settings/task-management/create-tasktemplate.po";
 import editTaskTemplate from "../../pageobject/settings/task-management/edit-tasktemplate.po";
 import viewTaskTemplate from "../../pageobject/settings/task-management/view-tasktemplate.po";
-import activityTabPo from '../../pageobject/social/activity-tab.po';
 import editTaskPo from '../../pageobject/task/edit-task.po';
 import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
@@ -29,6 +25,7 @@ import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import changeAssignmentOldBladePo from '../../pageobject/common/change-assignment-old-blade.po';
 
 describe('Create Task Template', () => {
     let businessData, departmentData, suppGrpData, personData;
@@ -310,10 +307,65 @@ describe('Create Task Template', () => {
             await utilGrid.clearFilter();
             await utilGrid.addFilter("Display ID", taskTemplateId, 'text');
             expect(await utilGrid.isGridRecordPresent(taskTemplateId)).toBeTruthy(taskTemplateId + '  not present');
-        });
-        afterAll(async () => {
             await utilGrid.clearFilter();
             await selectTaskTemplate.removeColumn(addColoumn);
+        });
+        it('[DRDMV-3768]: create same name record in same LOB', async () => {
+            //create same name record in same LOB
+            await navigationPage.signOut();
+            await loginPage.login('jbarnes');
+            await navigationPage.gotoSettingsPage();
+            expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'));
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            await selectTaskTemplate.clickOnManualTaskTemplateButton();
+            await taskTemplate.setTemplateName(taskTemplateName);
+            await taskTemplate.setTaskSummary(taskTemplateSummary);
+            await taskTemplate.setTaskDescription('Description in manual task');
+            await taskTemplate.selectCompanyByName('Petramco');
+            await taskTemplate.clickOnSaveTaskTemplate();
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (12734): The Template Name already exists. Please select a different name.')).toBeTruthy("Error message absent");
+            await taskTemplate.clickOnCancelTaskTemplate();
+            await utilCommon.clickOnWarningOk();
+        });
+        it('[DRDMV-3768]: create same name record in different LOB', async () => {
+            //create same name record in different LOB
+            await utilGrid.selectLineOfBusiness('Facilities');
+            await selectTaskTemplate.clickOnManualTaskTemplateButton();
+            await taskTemplate.setTemplateName(taskTemplateName);
+            await taskTemplate.setTaskSummary(taskTemplateSummary);
+            await taskTemplate.setTaskDescription('Description in manual task');
+            await taskTemplate.selectCompanyByName('Petramco');
+
+            // verify categ1, BU and SG as per LOB
+            await utilCommon.isDrpDownvalueDisplayed(taskTemplate.selectors.taskCategoryDrpDown1, ['Applications', 'Facilities', 'Fixed Assets', 'Phones', 'Projectors', 'Purchasing Card']);
+            await taskTemplate.selectOwnerCompany('Petramco');
+            await utilCommon.isDrpDownvalueDisplayed(taskTemplate.selectors.buisnessUnit, ['Facilities', 'Facilities Support']);
+            await taskTemplate.selectOwnerCompany('Petramco');
+            await taskTemplate.selectBuisnessUnit('Facilities Support');
+            await utilCommon.isDrpDownvalueDisplayed(taskTemplate.selectors.ownerGroup, ['Facilities', 'Pantry Service']);
+            await taskTemplate.selectBuisnessUnit('Facilities Support');
+            await taskTemplate.selectOwnerGroup('Facilities');
+            await taskTemplate.clickOnAssignment();
+            await changeAssignmentOldBladePo.selectCompany('Petramco');
+            await changeAssignmentOldBladePo.isAllDropDownValuesMatches('Business Unit', ['Facilities', 'Facilities Support']);
+            await changeAssignmentOldBladePo.selectCompany('Petramco');
+            await changeAssignmentOldBladePo.selectBusinessUnit('Facilities Support');
+            await changeAssignmentOldBladePo.isAllDropDownValuesMatches('Support Group', ['Facilities', 'Pantry Service']);
+            await changeAssignmentOldBladePo.clickOnCancelButton();
+            // verify LOB is there
+            expect(await taskTemplate.getLobValue()).toBe("Facilities");
+            await taskTemplate.clickOnSaveTaskTemplate();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
+            // open the record and verify LOB is on edit screen
+            await viewTaskTemplate.clickBackArrowBtn();
+            await selectTaskTemplate.searchAndOpenTaskTemplate(taskTemplateName);
+            expect(await viewTaskTemplate.getLobValue()).toBe("Facilities");
+            await viewTaskTemplate.clickBackArrowBtn();
+            await utilGrid.selectLineOfBusiness('Human Resource');
+        });
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
         });
     });
 
@@ -444,7 +496,7 @@ describe('Create Task Template', () => {
             expect(await utilityGrid.isGridRecordPresent('Closed')).toBeTruthy('Closed not present');
         });
     });
-    
+
     describe('[DRDMV-5284]: [Tasks] Tasks status when resolving the case', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase, taskName1, taskName2;
@@ -582,7 +634,7 @@ describe('Create Task Template', () => {
             expect(await viewCasePage.isAddtaskButtonDisplayed()).toBeFalsy();
         });
     });
-    
+
     describe('[DRDMV-12111,DRDMV-12110,DRDMV-12109]: Verify Company, Business Unit, Department and Support Group selection hierarchy in Change Owner.', async () => {
         let randomStr = 'Manual  task' + Math.floor(Math.random() * 1000000);
         it('[DRDMV-12111,DRDMV-12110,DRDMV-12109]: Create Case tempate template', async () => {

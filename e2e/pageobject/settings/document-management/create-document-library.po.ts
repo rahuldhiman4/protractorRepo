@@ -1,5 +1,5 @@
 import { resolve } from "path";
-import { $, browser, protractor, ProtractorExpectedConditions, element, by } from "protractor";
+import { $, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../../utils/util.common';
 import utilGrid from '../../../utils/util.grid';
 
@@ -45,7 +45,8 @@ class DocumentLibraryPage {
         buisnessUnit: '3b6ebf9c-13f1-4924-8740-3f720ae8335a',
         keyWordGuid: 'afdfcbdf-13c4-45ec-8870-f53a0bf32bac',
         cancelGuid: '00107b90-bb31-4776-a855-44fea128a0de',
-        cancelButton: '[rx-view-component-id="00107b90-bb31-4776-a855-44fea128a0de"] button'
+        cancelButton: '[rx-view-component-id="00107b90-bb31-4776-a855-44fea128a0de"] button',
+        lobValue: '[rx-view-component-id="b7ce46f7-92b4-4847-901f-a6d8f4e4fef9"] .pull-left'
     }
 
     async addAttachment(fileToUpload: string): Promise<void> {
@@ -161,7 +162,7 @@ class DocumentLibraryPage {
 
     async isAddNewDocumentBladeEnabled(): Promise<boolean> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.addDocumentButton)));
-       return await $(this.selectors.addDocumentButton).isEnabled();
+        return await $(this.selectors.addDocumentButton).isEnabled();
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.titleField)));
     }
 
@@ -183,6 +184,10 @@ class DocumentLibraryPage {
     async clickOnSaveButton(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
+    }
+
+    async clickCancelButton(): Promise<void> {
+        await $(this.selectors.cancelButton).click();
     }
 
     async isSaveButtonEnabled(): Promise<boolean> {
@@ -258,6 +263,9 @@ class DocumentLibraryPage {
         return await $(this.selectors.attachmentMaxLimitMsgText).getText();
     }
 
+    async getLobValue(): Promise<string> {
+        return await $(this.selectors.lobValue).getText();
+    }
 }
 
 export default new DocumentLibraryPage();

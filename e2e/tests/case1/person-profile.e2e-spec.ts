@@ -9,6 +9,8 @@ import relatedTabPage from '../../pageobject/common/related-person-tab.po';
 import relationshipsConfigsPage from '../../pageobject/settings/relationship/relationships-configs.po';
 import activityTabPage from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL } from '../../utils/constants';
+import utilCommon from '../../utils/util.common';
+import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
@@ -442,7 +444,7 @@ describe('Person Profile test', () => {
             await navigationPage.signOut();
             await loginPage.login("elizabeth");
         }
-    });//, 190 * 1000);
+    });
 
     //asahitya
     it('[DRDMV-14028]: Verify Requested Cases tab of My Profile console', async () => {
@@ -561,7 +563,7 @@ describe('Person Profile test', () => {
             "lastName": "Person1",
             "userId": "userData1",
             "company": "Petramco",
-            "userPermission": ["Case Business Analyst","Human Resource"]
+            "userPermission": ["Case Business Analyst", "Human Resource"]
         }
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
@@ -808,6 +810,98 @@ describe('Person Profile test', () => {
             await loginPage.login('qtao');
             await navigationPage.gotoPersonProfile();
             expect(await relatedTabPage.isRelatedPersonPresent('Quinn Norton')).toBeFalsy('Quinn Norton is available in Related tab');
+        });
+    });
+
+    describe('[DRDMV-24390]: Create case-case, case-person and person-person relationships using tadmin', async () => {
+        it('[DRDMV-24390]:Case to Case Relation same name LOB validation', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('tadmin');
+            let caseToCaseRelation = 'HR C2C';
+            let caseToCaseReverseRelation = 'HR C2C Reverse';
+            //create same name record in same LOB
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Relationships--Case to Case', 'Case to Case Relationship Console - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            await relationshipsConfigsPage.clickAddRelationshipButton();
+            await relationshipsConfigsPage.setNewRelationshipName(caseToCaseRelation);
+            await relationshipsConfigsPage.setNewReverseRelationshipName(caseToCaseReverseRelation);
+            await relationshipsConfigsPage.saveConfig();
+            // add same relation again in same LOB
+            await relationshipsConfigsPage.clickAddRelationshipButton();
+            await relationshipsConfigsPage.setNewRelationshipName(caseToCaseRelation);
+            await relationshipsConfigsPage.setNewReverseRelationshipName(caseToCaseReverseRelation);
+            await relationshipsConfigsPage.saveConfig();
+            // verify error
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (10000): Relationship Type already exists.')).toBeTruthy("Error message absent");
+            // expect(await relationshipsConfigsPage.isRelationshipPresent(caseToCaseRelation)).toBeFalsy("Other LOB relation present");
+            // verify HR LOB record not present
+            await utilGrid.selectLineOfBusiness('Facilities');
+            expect(await relationshipsConfigsPage.isRelationshipPresent(caseToCaseRelation)).toBeFalsy("Other LOB relation present");
+            await relationshipsConfigsPage.clickAddRelationshipButton();
+            await relationshipsConfigsPage.setNewRelationshipName(caseToCaseRelation);
+            await relationshipsConfigsPage.setNewReverseRelationshipName(caseToCaseReverseRelation);
+            await relationshipsConfigsPage.saveConfig();
+            expect(await utilCommon.isPopUpMessagePresent('Saved Successfully')).toBeTruthy("Success message absent");
+            //expect(await relationshipsConfigsPage.isRelationshipPresent(caseToCaseRelation)).toBeFalsy("same name relation created");
+        });
+        it('[DRDMV-24390]:Person to Person Relation same name LOB validation', async () => {
+            //create same name record in same LOB
+            let caseToPersonRelation = 'HR C2P';
+            let caseToPersonReverseRelation = 'HR C2P Reverse';
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Relationships--Case to Person', 'Case To Person Relationship Console - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            await relationshipsConfigsPage.clickAddRelationshipButton();
+            await relationshipsConfigsPage.setNewRelationshipName(caseToPersonRelation);
+            await relationshipsConfigsPage.setNewReverseRelationshipName(caseToPersonReverseRelation);
+            await relationshipsConfigsPage.saveConfig();
+            // add same relation again in same LOB
+            await relationshipsConfigsPage.clickAddRelationshipButton();
+            await relationshipsConfigsPage.setNewRelationshipName(caseToPersonRelation);
+            await relationshipsConfigsPage.setNewReverseRelationshipName(caseToPersonReverseRelation);
+            await relationshipsConfigsPage.saveConfig();
+            // verify error
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (10000): Relationship Type already exists.')).toBeTruthy("Error message absent");
+            //expect(await relationshipsConfigsPage.isRelationshipPresent(caseToPersonRelation)).toBeFalsy("Other LOB relation present");
+            // verify HR LOB record not present
+            await utilGrid.selectLineOfBusiness('Facilities');
+            expect(await relationshipsConfigsPage.isRelationshipPresent(caseToPersonRelation)).toBeFalsy("Other LOB relation present");
+            await relationshipsConfigsPage.clickAddRelationshipButton();
+            await relationshipsConfigsPage.setNewRelationshipName(caseToPersonRelation);
+            await relationshipsConfigsPage.setNewReverseRelationshipName(caseToPersonReverseRelation);
+            await relationshipsConfigsPage.saveConfig();
+            expect(await utilCommon.isPopUpMessagePresent('Saved Successfully')).toBeTruthy("Success message absent");
+            //expect(await relationshipsConfigsPage.isRelationshipPresent(caseToPersonRelation)).toBeFalsy("same name relation created");
+        });
+        it('[DRDMV-24390]:Person to Person Relation same name LOB validation', async () => {
+            //create same name record in same LOB
+            let personToPersonRelation = 'HR P2P';
+            let personToPersonReverseRelation = 'HR P2P Reverse';
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Relationships--Person to Person', 'Person To Person Relationship console - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            await relationshipsConfigsPage.clickAddRelationshipButton();
+            await relationshipsConfigsPage.setNewRelationshipName(personToPersonRelation);
+            await relationshipsConfigsPage.setNewReverseRelationshipName(personToPersonReverseRelation);
+            await relationshipsConfigsPage.saveConfig();
+            // add same relation again in same LOB
+            await relationshipsConfigsPage.clickAddRelationshipButton();
+            await relationshipsConfigsPage.setNewRelationshipName(personToPersonRelation);
+            await relationshipsConfigsPage.setNewReverseRelationshipName(personToPersonReverseRelation);
+            await relationshipsConfigsPage.saveConfig();
+            // verify error
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (10000): Relationship Type already exists.')).toBeTruthy("Error message absent");
+            //expect(await relationshipsConfigsPage.isRelationshipPresent(personToPersonRelation)).toBeFalsy("Other LOB relation present");
+            // verify HR LOB record not present
+            await utilGrid.selectLineOfBusiness('Facilities');
+            expect(await relationshipsConfigsPage.isRelationshipPresent(personToPersonRelation)).toBeFalsy("Other LOB relation present"); // Defect
+            await relationshipsConfigsPage.clickAddRelationshipButton();
+            await relationshipsConfigsPage.setNewRelationshipName(personToPersonRelation);
+            await relationshipsConfigsPage.setNewReverseRelationshipName(personToPersonReverseRelation);
+            await relationshipsConfigsPage.saveConfig();
+            expect(await utilCommon.isPopUpMessagePresent('Saved Successfully')).toBeTruthy("Success message absent");
+            //expect(await relationshipsConfigsPage.isRelationshipPresent(personToPersonRelation)).toBeFalsy("same name relation created");
         });
     });
 });
