@@ -8,6 +8,8 @@ import quickCasePo from '../../pageobject/case/quick-case.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePo from "../../pageobject/case/view-case.po";
 import addFieldsPopPo from '../../pageobject/common/add-fields-pop.po';
+import changeAssignmentOldBladePo from '../../pageobject/common/change-assignment-old-blade.po';
+import applicationConfigPo from '../../pageobject/common/common-services/application-config.po';
 import dynamicFieldsPage from '../../pageobject/common/dynamic-fields.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
@@ -29,15 +31,13 @@ import editTaskTemplate from "../../pageobject/settings/task-management/edit-tas
 import viewTaskTemplate from "../../pageobject/settings/task-management/view-tasktemplate.po";
 import activityTabPo from '../../pageobject/social/activity-tab.po';
 import editTaskPo from '../../pageobject/task/edit-task.po';
-import manageTask from "../../pageobject/task/manage-task-blade.po";
+import manageTaskBladePo from "../../pageobject/task/manage-task-blade.po";
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
-import applicationConfigPo from '../../pageobject/common/common-services/application-config.po';
-import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
-let userData, userData1 = undefined, userData2;
+let userData1 = undefined, userData2;
 
 describe('Dynamic Hidden Data', () => {
     beforeAll(async () => {
@@ -123,6 +123,63 @@ describe('Dynamic Hidden Data', () => {
             expect(await editTaskTemplate.getTaskTypeValueAttribute('disabled')).toBeTruthy(" Attribute value is disabled");
             expect(await editTaskTemplate.isManageProcessLinkDisplayed()).toBeTruthy(" Manage process link present");
         });
+        it('[DRDMV-13168]: create same name record in same LOB', async () => {
+            //create same name record in same LOB
+            await navigationPage.signOut();
+            await loginPage.login('jbarnes');
+            await navigationPage.gotoSettingsPage();
+            expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'));
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            await selectTaskTemplate.clickOnAutomationTaskTemplateButton();
+            await createTaskTemplate.setTemplateName(automatedTaskTemplate1);
+            await createTaskTemplate.setTaskSummary(automatedTaskSummary1);
+            await createTaskTemplate.selectCompanyByName('Petramco');
+            await createTaskTemplate.setNewProcessName('Process' + randomStr);
+            await createTaskTemplate.clickOnSaveTaskTemplate();
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (12734): The Template Name already exists. Please select a different name.')).toBeTruthy("Error message absent");
+            await createTaskTemplate.clickOnCancelTaskTemplate();
+            await utilCommon.clickOnWarningOk();
+        });
+        it('[DRDMV-13168]: create same name record in different LOB', async () => {
+            //create same name record in different LOB
+            await utilGrid.selectLineOfBusiness('Facilities');
+            await selectTaskTemplate.clickOnManualTaskTemplateButton();
+            await createTaskTemplate.setTemplateName(automatedTaskTemplate1);
+            await createTaskTemplate.setTaskSummary(automatedTaskSummary1);
+            await createTaskTemplate.setTaskDescription('Description in manual task');
+            await createTaskTemplate.selectCompanyByName('Petramco');
+
+            // verify categ1, BU and SG as per LOB
+            await utilCommon.isDrpDownvalueDisplayed(createTaskTemplate.selectors.taskCategoryDrpDown1, ['Applications', 'Facilities', 'Fixed Assets', 'Phones', 'Projectors', 'Purchasing Card']);
+            await createTaskTemplate.selectOwnerCompany('Petramco');
+            await utilCommon.isDrpDownvalueDisplayed(createTaskTemplate.selectors.buisnessUnit, ['Facilities', 'Facilities Support']);
+            await createTaskTemplate.selectOwnerCompany('Petramco');
+            await createTaskTemplate.selectBuisnessUnit('Facilities Support');
+            await utilCommon.isDrpDownvalueDisplayed(createTaskTemplate.selectors.ownerGroup, ['Facilities', 'Pantry Service']);
+            await createTaskTemplate.selectBuisnessUnit('Facilities Support');
+            await createTaskTemplate.selectOwnerGroup('Facilities');
+            await createTaskTemplate.clickOnAssignment();
+            await changeAssignmentOldBladePo.selectCompany('Petramco');
+            await changeAssignmentOldBladePo.isAllDropDownValuesMatches('Business Unit', ['Facilities', 'Facilities Support']);
+            await changeAssignmentOldBladePo.selectCompany('Petramco');
+            await changeAssignmentOldBladePo.selectBusinessUnit('Facilities Support');
+            await changeAssignmentOldBladePo.isAllDropDownValuesMatches('Support Group', ['Facilities', 'Pantry Service']);
+            await changeAssignmentOldBladePo.clickOnCancelButton();
+            // verify LOB is there
+            expect(await createTaskTemplate.getLobValue()).toBe("Facilities");
+            await createTaskTemplate.clickOnSaveTaskTemplate();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
+            // open the record and verify LOB is on edit screen
+            await viewTaskTemplate.clickBackArrowBtn();
+            await selectTaskTemplate.searchAndOpenTaskTemplate(automatedTaskTemplate1);
+            expect(await viewTaskTemplate.getLobValue()).toBe("Facilities");
+            await viewTaskTemplate.clickBackArrowBtn();
+            await utilGrid.selectLineOfBusiness('Human Resource');
+        });
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
     });
 
     //ankagraw
@@ -168,8 +225,8 @@ describe('Dynamic Hidden Data', () => {
             await viewCasePo.clickAddTaskButton();
         });
         it('[DRDMV-13169]: Add above task template and verify above dynamic field', async () => {
-            await manageTask.addTaskFromTaskTemplate(templateData.templateName)
-            await manageTask.clickTaskLink(templateData.templateSummary);
+            await manageTaskBladePo.addTaskFromTaskTemplate(templateData.templateName)
+            await manageTaskBladePo.clickTaskLink(templateData.templateSummary);
             expect(await viewTaskPo.isDynamicFieldPresent('Field Description')).toBeTruthy('Field Description');
             expect(await viewTaskPo.isAssignmentSectionDisplayed()).toBeFalsy('Assignment Section is present');
             await viewTaskPo.clickOnEditTask();
@@ -238,8 +295,8 @@ describe('Dynamic Hidden Data', () => {
             await previewCasePo.clickGoToCaseButton();
             await viewCasePo.getCaseID()
             await viewCasePo.clickAddTaskButton();
-            await manageTask.addTaskFromTaskTemplate(templateData.templateName);
-            await manageTask.clickTaskLink(templateData.templateSummary);
+            await manageTaskBladePo.addTaskFromTaskTemplate(templateData.templateName);
+            await manageTaskBladePo.clickTaskLink(templateData.templateSummary);
             await viewTaskPo.clickOnViewCase();
         });
         it('[DRDMV-21451]: Validate dynamic field and change the status', async () => {
@@ -325,8 +382,8 @@ describe('Dynamic Hidden Data', () => {
             await viewCasePo.getCaseID()
             await viewCasePo.clickAddTaskButton();
             await browser.sleep(2000);
-            await manageTask.addTaskFromTaskTemplate(templateData.templateName);
-            await manageTask.clickTaskLink(templateData.templateSummary);
+            await manageTaskBladePo.addTaskFromTaskTemplate(templateData.templateName);
+            await manageTaskBladePo.clickTaskLink(templateData.templateSummary);
             await viewTaskPo.clickOnViewCase();
             expect(await viewCasePo.isDynamicFieldDisplayed('Field1OutsideDRDMV21452')).toBeFalsy();
         });
@@ -380,8 +437,8 @@ describe('Dynamic Hidden Data', () => {
             caseId = await viewCasePo.getCaseID();
             await viewCasePo.clickAddTaskButton();
             await browser.sleep(2000);
-            await manageTask.addTaskFromTaskTemplate(templateData.templateName);
-            await manageTask.clickTaskLink(templateData.templateSummary);
+            await manageTaskBladePo.addTaskFromTaskTemplate(templateData.templateName);
+            await manageTaskBladePo.clickTaskLink(templateData.templateSummary);
             await viewTaskPo.clickOnViewCase();
         });
         it('[DRDMV-21422,DRDMV-21414]: Validate dynamic field and change the it teask template status', async () => {
@@ -513,8 +570,8 @@ describe('Dynamic Hidden Data', () => {
             await previewCasePo.clickGoToCaseButton();
             await viewCasePo.clickAddTaskButton();
             await browser.sleep(2000);
-            await manageTask.addTaskFromTaskTemplate(templateData.templateName);
-            await manageTask.clickTaskLink(templateData.templateSummary);
+            await manageTaskBladePo.addTaskFromTaskTemplate(templateData.templateName);
+            await manageTaskBladePo.clickTaskLink(templateData.templateSummary);
             await viewTaskPo.clickOnViewCase();
             caseId = await viewCasePo.getCaseID();
             expect(await viewCasePo.isDynamicFieldDisplayed('FieldGroup1')).toBeFalsy();
@@ -722,7 +779,7 @@ describe('Dynamic Hidden Data', () => {
         it('[DRDMV-21418]: Validate dynamic field ', async () => {
             expect(await viewCasePo.isDynamicFieldDisplayed('Field1OutsideDRDMV21415')).toBeTruthy();
             await viewCasePo.clickAddTaskButton();
-            await manageTask.addTaskFromTaskTemplate(`manualTaskTemplate1 ${randomStr}`);
+            await manageTaskBladePo.addTaskFromTaskTemplate(`manualTaskTemplate1 ${randomStr}`);
             await manageTaskBladePo.clickCloseButton();
             expect(await viewCasePo.isDynamicFieldDisplayed('Field1OutsideDRDMV21415')).toBeTruthy();
         });

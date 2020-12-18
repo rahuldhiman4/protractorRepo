@@ -1,43 +1,39 @@
+import { cloneDeep } from 'lodash';
 import { browser } from "protractor";
-import apiHelper from '../../api/api.helper';
 import coreApi from '../../api/api.core.util';
-import loginPage from "../../pageobject/common/login.po";
-import navigationPage from "../../pageobject/common/navigation.po";
-import { BWF_BASE_URL } from '../../utils/constants';
-import utilityCommon from '../../utils/utility.common';
-import createCasePage from '../../pageobject/case/create-case.po';
+import apiHelper from '../../api/api.helper';
+import * as notesTemplateData from '../../data/ui/Social/notesTemplate.api';
+import { RESOLUTION_CODE_ACTIVE_ON_UI } from '../../data/ui/ticketing/menu.item.ui';
 import previewCasePage from '../../pageobject/case/case-preview.po';
+import { default as createCasePage, default as createCasePo } from '../../pageobject/case/create-case.po';
+import { default as editCasePage, default as editCasePo } from '../../pageobject/case/edit-case.po';
+import quickCasePo from '../../pageobject/case/quick-case.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePage from '../../pageobject/case/view-case.po';
-import utilGrid from '../../utils/util.grid';
-import changeAssignmentBlade from '../../pageobject/common/change-assignment-blade.po';
-import editCasePage from '../../pageobject/case/edit-case.po';
-import utilityGrid from '../../utils/utility.grid';
-import editCasePo from '../../pageobject/case/edit-case.po';
-import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
-import quickCasePo from '../../pageobject/case/quick-case.po';
-import resourcesPo from '../../pageobject/common/resources-tab.po';
-import previewCaseTemplateCasesPo from '../../pageobject/settings/case-management/preview-case-template.po';
-import createCasePo from '../../pageobject/case/create-case.po';
 import accessTabPo from '../../pageobject/common/access-tab.po';
-import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
+import { default as changeAssignmentBlade, default as changeAssignmentBladePo } from '../../pageobject/common/change-assignment-blade.po';
+import ckeditorValidationPo from '../../pageobject/common/ck-editor/ckeditor-validation.po';
+import loginPage from "../../pageobject/common/login.po";
+import navigationPage from "../../pageobject/common/navigation.po";
+import resourcesPo from '../../pageobject/common/resources-tab.po';
+import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
 import composeMailPo from '../../pageobject/email/compose-mail.po';
 import selectEmailTemplateBladePo from '../../pageobject/email/select-email-template-blade.po';
-import activityTabPo from '../../pageobject/social/activity-tab.po';
-import notesTemplateUsage from '../../pageobject/social/note-template-usage.po';
-import { cloneDeep } from 'lodash';
-import { RESOLUTION_CODE_ACTIVE_ON_UI } from '../../data/ui/ticketing/menu.item.ui';
-let emailTemplateData = require('../../data/ui/email/email.template.api.json');
-import * as notesTemplateData from '../../data/ui/Social/notesTemplate.api';
-import ckeditorValidationPo from '../../pageobject/common/ck-editor/ckeditor-validation.po';
-import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
 import createKnowledgePage from "../../pageobject/knowledge/create-knowlege.po";
-import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
-import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
 import editKnowledgePo from '../../pageobject/knowledge/edit-knowledge.po';
 import knowledgeArticlesConsolePo from '../../pageobject/knowledge/knowledge-articles-console.po';
+import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
 import statusBladeKnowledgeArticlePo from '../../pageobject/knowledge/status-blade-knowledge-article.po';
-
+import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
+import previewCaseTemplateCasesPo from '../../pageobject/settings/case-management/preview-case-template.po';
+import activityTabPo from '../../pageobject/social/activity-tab.po';
+import notesTemplateUsage from '../../pageobject/social/note-template-usage.po';
+import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
+import { BWF_BASE_URL } from '../../utils/constants';
+import utilGrid from '../../utils/util.grid';
+import utilityCommon from '../../utils/utility.common';
+import utilityGrid from '../../utils/utility.grid';
+let emailTemplateData = require('../../data/ui/email/email.template.api.json');
 
 let supportGroupDataHR, supportGroupDataFacilities, userData0, userData1, userData2, supportGroupDataEricssonHR, supportGroupDataEricssonSAM, userData3, userData4;
 
@@ -709,7 +705,7 @@ describe('Operating Orgnization Data Model Tests', () => {
     });
 
     describe('[DRDMV-23488]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
-        let facilitiescaseData, facilitiesGlobalTemplateData,facilitiesarticleData, caseTemplateDataGlobal, caseTemplateData, facilitiesTemplateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let facilitiescaseData, facilitiesGlobalTemplateData, facilitiesarticleData, caseTemplateDataGlobal, caseTemplateData, facilitiesTemplateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let commonName = randomStr + "Case DRDMV23488";
         let commonNameForOtherLoB = randomStr + "FacilitiesDRDMV23488";
         beforeAll(async () => {
@@ -968,7 +964,7 @@ describe('Operating Orgnization Data Model Tests', () => {
         let caseTemplateData, facilitiesTemplateData, caseTemplateDataPsilon, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let commonName = randomStr + "Case DRDMV23488";
         let commonNameForOtherLoB = randomStr + "FacilitiesDRDMV23488";
-        let facilitiescaseData, facilitiesGlobalTemplateData,facilitiesarticleData;
+        let facilitiescaseData, facilitiesGlobalTemplateData, facilitiesarticleData;
         beforeAll(async () => {
             caseTemplateData = {
                 "templateName": commonName,

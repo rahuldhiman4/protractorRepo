@@ -36,8 +36,7 @@ class AutomatedStatusTransitionConfigEditPage {
     }
 
     async clickCancel(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)))
-        await $(this.selectors.cancelButton);
+        await $(this.selectors.cancelButton).click();
     }
 
     async isToStatusFieldEnabled(): Promise<boolean> {

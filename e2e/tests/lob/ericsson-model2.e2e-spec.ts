@@ -1,18 +1,18 @@
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
-import loginPage from "../../pageobject/common/login.po";
-import navigationPage from "../../pageobject/common/navigation.po";
-import { BWF_BASE_URL } from '../../utils/constants';
-import utilityCommon from '../../utils/utility.common';
 import previewCasePage from '../../pageobject/case/case-preview.po';
+import editCasePo from '../../pageobject/case/edit-case.po';
+import quickCasePo from '../../pageobject/case/quick-case.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePage from '../../pageobject/case/view-case.po';
 import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
-import editCasePo from '../../pageobject/case/edit-case.po';
-import utilityGrid from '../../utils/utility.grid';
-import quickCasePo from '../../pageobject/case/quick-case.po';
-import previewCaseTemplateCasesPo from '../../pageobject/settings/case-management/preview-case-template.po';
+import loginPage from "../../pageobject/common/login.po";
+import navigationPage from "../../pageobject/common/navigation.po";
 import resourcesPo from '../../pageobject/common/resources-tab.po';
+import previewCaseTemplateCasesPo from '../../pageobject/settings/case-management/preview-case-template.po';
+import { BWF_BASE_URL } from '../../utils/constants';
+import utilityCommon from '../../utils/utility.common';
+import utilityGrid from '../../utils/utility.grid';
 
 describe('Ericsson Model Test Extended', () => {
     beforeAll(async () => {
@@ -27,7 +27,7 @@ describe('Ericsson Model Test Extended', () => {
 
     describe('[DRDMV-23634]:[Ericsson Model][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
         let ericssonSAMcaseTemplateData, caseTemplateDataEricssonSAMGlobal;
-        let articleData,caseTemplateDataGlobal, ericssonGlobalcaseTemplateData, ericssonHRcaseTemplateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let articleData, caseTemplateDataGlobal, ericssonGlobalcaseTemplateData, ericssonHRcaseTemplateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let commonName = randomStr + "Case DRDMV23488";
         let commonNameForOtherLoB = randomStr + "ericssonSAMDRDMV23488";
         beforeAll(async () => {

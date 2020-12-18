@@ -1,7 +1,6 @@
-import utilCommon from '../../../utils/util.common';
-import { $, browser, protractor, ProtractorExpectedConditions, element, by, $$ } from "protractor";
-import { lstat } from 'fs';
+import { $, $$, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import ckeditorValidationPo from '../../../pageobject/common/ck-editor/ckeditor-validation.po';
+import utilCommon from '../../../utils/util.common';
 
 class ViewTaskTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -26,7 +25,6 @@ class ViewTaskTemplate {
         buisnessunitValue: '[rx-view-component-id="787a1a66-06fc-4e1c-8bf4-172c32be397d"] p',
         departmentValue: '[rx-view-component-id="03314749-1da7-4741-8b0d-8296933e966f"] p',
         label: '[rx-view-component-id="bae4bb58-1146-4f96-a695-543deecc5cc1"] p',
-
         editLink: '[rx-view-component-id="0ff4dfc7-09f3-4d12-bc32-5c9426f6cc6c"] .rx-record-editor-edit',
         taskTemplateId: '.text-field',
         taskSummaryGuid: '80087f51-1b1f-4b47-9fde-36aed981db13',
@@ -52,6 +50,8 @@ class ViewTaskTemplate {
         priorityValue: '.selection-field',
         showMoreDescriptionLink: '[rx-view-component-id="cce67ce7-e6a5-4ed6-aa50-c57ea75d2854"] button.more',
         taskDescription: 'cce67ce7-e6a5-4ed6-aa50-c57ea75d2854',
+        backArrowButton: '[rx-view-component-id="ae1743d3-c8e3-47f7-b257-fba698a2e6e0"] button',
+        lobValue: '[rx-view-component-id="0785d5e5-8f5d-432f-b5c7-fadc110fd26a"] p'
     }
 
     async getDynamicFieldTitle(): Promise<string> {
@@ -313,7 +313,14 @@ class ViewTaskTemplate {
     async isCopyTaskButtonEnabled(): Promise<boolean> {
         return await $(this.selectors.copyTaskButton).isEnabled();
     }
-  
+
+    async clickBackArrowBtn(): Promise<void> {
+        await $(this.selectors.backArrowButton).click();
+    }
+
+    async getLobValue(): Promise<string> {
+        return await $(this.selectors.lobValue).getText();
+    }
 }
 
 export default new ViewTaskTemplate();

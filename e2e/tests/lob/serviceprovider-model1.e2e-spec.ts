@@ -1,31 +1,30 @@
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
-import previewCasePage from '../../pageobject/case/case-preview.po';
+import caseConsolePo from "../../pageobject/case/case-console.po";
+import { default as casePreviewPo, default as previewCasePage } from '../../pageobject/case/case-preview.po';
 import createCasePage from '../../pageobject/case/create-case.po';
 import editCasePo from '../../pageobject/case/edit-case.po';
+import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePage from '../../pageobject/case/view-case.po';
 import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
+import resourcesTabPo from "../../pageobject/common/resources-tab.po";
 import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
 import composeMailPo from '../../pageobject/email/compose-mail.po';
 import selectEmailTemplateBladePo from '../../pageobject/email/select-email-template-blade.po';
+import createKnowledgePage from "../../pageobject/knowledge/create-knowlege.po";
+import editKnowledgePo from "../../pageobject/knowledge/edit-knowledge.po";
+import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
+import previewCaseTemplatePo from '../../pageobject/settings/case-management/preview-case-template.po';
 import activityTabPo from '../../pageobject/social/activity-tab.po';
 import notesTemplateUsage from '../../pageobject/social/note-template-usage.po';
 import createAdhocTaskPo from '../../pageobject/task/create-adhoc-task.po';
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
+import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-import viewTaskPo from '../../pageobject/task/view-task.po';
-import casePreviewPo from '../../pageobject/case/case-preview.po';
-import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
-import previewCaseTemplatePo from '../../pageobject/settings/case-management/preview-case-template.po';
-import createKnowledgePage from "../../pageobject/knowledge/create-knowlege.po";
-import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
-import editKnowledgePo from "../../pageobject/knowledge/edit-knowledge.po";
-import caseConsolePo from "../../pageobject/case/case-console.po";
-import resourcesTabPo from "../../pageobject/common/resources-tab.po";
 
 describe('Create Process in Flowset', () => {
     let kingstoneHRUserName = 'smoran@petramco.com';
@@ -536,10 +535,10 @@ describe('Create Process in Flowset', () => {
     //kiran
     describe('[DRDMV-23681]: [Service Provider Model][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to multiple LOB', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let caseTemplateDataGlobalKingstonHR, caseTemplateDataKingstoneHR , caseIdKingstoneHR, caseIdOracleHR, caseTemplateDataOracleHR, caseTemplateDataGlobalOracleHR, caseTemplateDataGlobalKingstoneLegal, caseTemplateDataKingstoneLegal;
+        let caseTemplateDataGlobalKingstonHR, caseTemplateDataKingstoneHR, caseIdKingstoneHR, caseIdOracleHR, caseTemplateDataOracleHR, caseTemplateDataGlobalOracleHR, caseTemplateDataGlobalKingstoneLegal, caseTemplateDataKingstoneLegal;
         let taskTemplateNameSummaryKingstoneHR = "1taskTemplateNameSummaryDRDMV23681" + randomStr;
         let taskTemplateNameSummaryOracleHR = "2taskTemplateNameSummaryDRDMV23681" + randomStr;
-        
+
         beforeAll(async () => {
             // Create Data with Kingston HR LOB
             await apiHelper.apiLogin(kingstoneOracleLOBUserName, password);
@@ -596,7 +595,7 @@ describe('Create Process in Flowset', () => {
             let manualTaskTemplate = await apiHelper.createManualTaskTemplate(taskTemplateDataSet);
             await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId);
 
-                // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+            // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Create data with Oracle HR Data
             caseTemplateDataGlobalOracleHR = {
                 "templateName": 'GlobalcaseTemplateNameOracleHR' + randomStr,
@@ -650,7 +649,7 @@ describe('Create Process in Flowset', () => {
             let manualTaskTemplate2 = await apiHelper.createManualTaskTemplate(taskTemplateDataSet2);
             await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate2.displayId, manualTaskTemplate2.displayId);
 
-    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+            // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Create data with Kingstone Legal Data
             await apiHelper.apiLogin(kingstoneLegalUserName, password);
             caseTemplateDataGlobalKingstoneLegal = {
@@ -695,58 +694,58 @@ describe('Create Process in Flowset', () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Ueshiba Morihei');
             await createCasePage.selectLineOfBusiness('Oracle HR');
-            
+
             await createCasePage.setSummary('DRDMV23681CaseSummary');
-        // Verify negative scenario for Kingston Legal and Kingston HR LOB case template should not display
+            // Verify negative scenario for Kingston Legal and Kingston HR LOB case template should not display
             await createCasePage.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.clickOnAllTemplateTab();
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataKingstoneLegal.templateName)).toBeFalsy('caseTemplateDataKingstoneLegal.templateName is missing');
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalKingstoneLegal.templateName)).toBeFalsy('caseTemplateDataGlobalKingstoneLegal.templateName is missing');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataKingstoneLegal.templateName)).toBeFalsy('caseTemplateDataKingstoneLegal.templateName is missing');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalKingstoneLegal.templateName)).toBeFalsy('caseTemplateDataGlobalKingstoneLegal.templateName is missing');
 
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataKingstoneHR.templateName)).toBeFalsy('caseTemplateDataKingstoneHR is missing');
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalKingstonHR.templateName)).toBeFalsy('caseTemplateDataGlobalKingstonHR is missing');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataKingstoneHR.templateName)).toBeFalsy('caseTemplateDataKingstoneHR is missing');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalKingstonHR.templateName)).toBeFalsy('caseTemplateDataGlobalKingstonHR is missing');
 
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataOracleHR.templateName)).toBeTruthy('caseTemplateDataOracleHR.templateName is missing');
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalOracleHR.templateName)).toBeTruthy('caseTemplateDataGlobalOracleHR.templateName is missing');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataOracleHR.templateName)).toBeTruthy('caseTemplateDataOracleHR.templateName is missing');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalOracleHR.templateName)).toBeTruthy('caseTemplateDataGlobalOracleHR.templateName is missing');
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateDataOracleHR.templateName);
-            
-            expect (await createCasePage.getCategoryTier1Value()).toBe('Workforce Administration');
-            expect (await createCasePage.getCategoryTier2Value()).toBe('HR Operations');
-            expect (await createCasePage.getCategoryTier3Value()).toBe('Adjustments');
-            expect (await createCasePage.getAssigneeBusinessUnitValue()).toBe('Oracle HR');
-            expect (await createCasePage.getAssigneeGroupValue()).toBe('Oracle AskHR');
-            expect (await createCasePage.getAssigneeValue()).toBe('Unamuno Miguel de');
-            
+
+            expect(await createCasePage.getCategoryTier1Value()).toBe('Workforce Administration');
+            expect(await createCasePage.getCategoryTier2Value()).toBe('HR Operations');
+            expect(await createCasePage.getCategoryTier3Value()).toBe('Adjustments');
+            expect(await createCasePage.getAssigneeBusinessUnitValue()).toBe('Oracle HR');
+            expect(await createCasePage.getAssigneeGroupValue()).toBe('Oracle AskHR');
+            expect(await createCasePage.getAssigneeValue()).toBe('Unamuno Miguel de');
+
             // Verify negative scenario for Kingston Legal LOB should not display
-            expect (await createCasePage.isValuePresentInLineOfBusinessDropDown('Kingston Legal')).toBeFalsy ('Kingston lob is displayed');
+            expect(await createCasePage.isValuePresentInLineOfBusinessDropDown('Kingston Legal')).toBeFalsy('Kingston lob is displayed');
 
             // verify negative scenario for categoryTier1 with Finance LOB
-            expect (await createCasePage.isCategoryTier1DropDownValueDisplayed('General Ledger')).toBeFalsy('General Ledger CategoryTier1 drop down value displayed');
+            expect(await createCasePage.isCategoryTier1DropDownValueDisplayed('General Ledger')).toBeFalsy('General Ledger CategoryTier1 drop down value displayed');
 
             await createCasePage.clickChangeAssignmentButton();
             // Verify negative scenario for Kingston LOB for change assignment
             await changeAssignmentBladePo.selectCompany('Kingston')
-            expect (await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Kingston Legal')).toBeFalsy('BU is diaplayed');
-            expect (await changeAssignmentBladePo.isValuePresentInDropdown('Support', 'Legal Support')).toBeFalsy('Support Group is displayed');
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Kingston Legal')).toBeFalsy('BU is diaplayed');
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support', 'Legal Support')).toBeFalsy('Support Group is displayed');
             await changeAssignmentBladePo.clickOnCancelButton();
 
             await createCasePage.clickChangeAssignmentButton();
             await changeAssignmentBladePo.setAssignee('Phyto', 'Oracle HR', 'Oracle AskHR', 'Vixie Paul');
-            
-            expect (await createCasePage.getAssigneeValue()).toBe('Vixie Paul');
-            
+
+            expect(await createCasePage.getAssigneeValue()).toBe('Vixie Paul');
+
             // Change verify with change LOB and should be clear all selected values
             await createCasePage.selectLineOfBusiness('KingstonOracle Finance');
 
-            expect (await createCasePage.getCategoryTier1Value()).toBe('Select');
-            expect (await createCasePage.getCategoryTier2Value()).toBe('Select');
-            expect (await createCasePage.getCategoryTier3Value()).toBe('Select');
+            expect(await createCasePage.getCategoryTier1Value()).toBe('Select');
+            expect(await createCasePage.getCategoryTier2Value()).toBe('Select');
+            expect(await createCasePage.getCategoryTier3Value()).toBe('Select');
 
-            expect (await createCasePage.getAssigneeBusinessUnitValue()).toBe('');
-            expect (await createCasePage.getAssigneeBusinessUnitValue()).toBe('');
-            expect (await createCasePage.getAssigneeValue()).toBe('Select');
+            expect(await createCasePage.getAssigneeBusinessUnitValue()).toBe('');
+            expect(await createCasePage.getAssigneeBusinessUnitValue()).toBe('');
+            expect(await createCasePage.getAssigneeValue()).toBe('Select');
 
-            expect (await createCasePage.isCategoryTier1DropDownValueDisplayed('General Ledger')).toBeTruthy('General Ledger CategoryTier1 drop down value missing');
+            expect(await createCasePage.isCategoryTier1DropDownValueDisplayed('General Ledger')).toBeTruthy('General Ledger CategoryTier1 drop down value missing');
         });
 
         it('[DRDMV-23681]: Create case without case template', async () => {
@@ -754,7 +753,7 @@ describe('Create Process in Flowset', () => {
             await utilityGrid.selectLineOfBusiness('Kingston HR');
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Samara Moran');
-            expect (await createCasePage.isCategoryTier1DropDownValueDisplayed('General Ledger')).toBeFalsy('General Ledger CategoryTier1 drop down value displayed');
+            expect(await createCasePage.isCategoryTier1DropDownValueDisplayed('General Ledger')).toBeFalsy('General Ledger CategoryTier1 drop down value displayed');
             await createCasePage.selectLineOfBusiness('Kingston HR');
             await createCasePage.setSummary('DRDMV23681CaseSummary');
             await createCasePage.selectCategoryTier1('Applications');
@@ -763,38 +762,38 @@ describe('Create Process in Flowset', () => {
             await createCasePage.clickChangeAssignmentButton();
             await changeAssignmentBladePo.setAssignee('Phyto', 'Kingston HR', 'Kingston AskHR', 'Sherri Ochoa');
             await createCasePage.clickSaveCaseButton();
-            expect (await casePreviewPo.getLineOfBusinessValue()).toBe('Kingston HR');
+            expect(await casePreviewPo.getLineOfBusinessValue()).toBe('Kingston HR');
             await casePreviewPo.clickOncreateNewCaseButton();
         });
 
         it('[DRDMV-23681]: Create case with case template', async () => {
             await createCasePage.selectRequester('Stuart Rexroad');
-            expect (await createCasePage.getLineOfBusinessValue()).toBe('Kingston HR');
+            expect(await createCasePage.getLineOfBusinessValue()).toBe('Kingston HR');
             await createCasePage.setSummary('DRDMV23681CaseSummary');
 
             await createCasePage.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.clickOnAllTemplateTab();
 
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataOracleHR.templateName)).toBeFalsy('caseTemplateDataOracleHR.templateName is missing');
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalOracleHR.templateName)).toBeFalsy('caseTemplateDataGlobalOracleHR.templateName is missing');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataOracleHR.templateName)).toBeFalsy('caseTemplateDataOracleHR.templateName is missing');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalOracleHR.templateName)).toBeFalsy('caseTemplateDataGlobalOracleHR.templateName is missing');
 
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataKingstoneHR.templateName)).toBeFalsy('caseTemplateDataKingstoneHR is missing');
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalKingstonHR.templateName)).toBeFalsy('caseTemplateDataGlobalKingstonHR is missing');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataKingstoneHR.templateName)).toBeFalsy('caseTemplateDataKingstoneHR is missing');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalKingstonHR.templateName)).toBeFalsy('caseTemplateDataGlobalKingstonHR is missing');
 
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataKingstoneHR.templateName)).toBeTruthy('caseTemplateDataKingstoneHR is missing');
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalKingstonHR.templateName)).toBeTruthy('caseTemplateDataGlobalKingstonHR is missing');
-         
-            await selectCasetemplateBladePo.searchAndOpenCaseTemplate(caseTemplateDataGlobalKingstonHR.templateName); 
-            expect(await previewCaseTemplatePo.isLabelTitleDisplayed('Case Summary')).toBeTruthy('Case Summary label is missing'); 
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataKingstoneHR.templateName)).toBeTruthy('caseTemplateDataKingstoneHR is missing');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalKingstonHR.templateName)).toBeTruthy('caseTemplateDataGlobalKingstonHR is missing');
+
+            await selectCasetemplateBladePo.searchAndOpenCaseTemplate(caseTemplateDataGlobalKingstonHR.templateName);
+            expect(await previewCaseTemplatePo.isLabelTitleDisplayed('Case Summary')).toBeTruthy('Case Summary label is missing');
             await previewCaseTemplatePo.clickOnBackButton();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateDataGlobalKingstonHR.templateName);
 
-            expect (await createCasePage.getCategoryTier1Value()).toBe('Employee Relations');
-            expect (await createCasePage.getCategoryTier2Value()).toBe('Compensation');
-            expect (await createCasePage.getCategoryTier3Value()).toBe('Bonus');
-            expect (await createCasePage.getAssigneeBusinessUnitValue()).toBe('Kingston HR');
-            expect (await createCasePage.getAssigneeBusinessUnitValue()).toBe('Kingston AskHR');
-            expect (await createCasePage.getAssigneeValue()).toBe('Samara Moran');
+            expect(await createCasePage.getCategoryTier1Value()).toBe('Employee Relations');
+            expect(await createCasePage.getCategoryTier2Value()).toBe('Compensation');
+            expect(await createCasePage.getCategoryTier3Value()).toBe('Bonus');
+            expect(await createCasePage.getAssigneeBusinessUnitValue()).toBe('Kingston HR');
+            expect(await createCasePage.getAssigneeBusinessUnitValue()).toBe('Kingston AskHR');
+            expect(await createCasePage.getAssigneeValue()).toBe('Samara Moran');
 
             await createCasePage.clickSaveCaseButton();
             await previewCasePage.clickGoToCaseButton();
@@ -803,25 +802,25 @@ describe('Create Process in Flowset', () => {
 
         it('[DRDMV-23681]: Verify Edit Case Page', async () => {
             await viewCasePage.clickEditCaseButton();
-            expect (await editCasePo.isLineOfBusinessReadOnly()).toBeTruthy('Line of business is not readonly');
+            expect(await editCasePo.isLineOfBusinessReadOnly()).toBeTruthy('Line of business is not readonly');
             await editCasePo.updateCaseCategoryTier1('Total Rewards');
             await editCasePo.updateCaseCategoryTier2('Benefits');
             await editCasePo.updateCaseCategoryTier3('Beneficiaries');
 
             await editCasePo.clickOnChangeCaseTemplate();
             await selectCasetemplateBladePo.clickOnAllTemplateTab();
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataKingstoneHR.templateName)).toBeTruthy('caseTemplateDataKingstoneHR is missing');
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalKingstonHR.templateName)).toBeTruthy('caseTemplateDataGlobalKingstonHR is missing');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataKingstoneHR.templateName)).toBeTruthy('caseTemplateDataKingstoneHR is missing');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalKingstonHR.templateName)).toBeTruthy('caseTemplateDataGlobalKingstonHR is missing');
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateDataKingstoneHR.templateName);
-           
-            expect (await editCasePo.getCategoryTier1()).toBe('Workforce Administration');
-            expect (await editCasePo.getCategoryTier2()).toBe('HR Operations');
-            expect (await editCasePo.getCategoryTier3()).toBe('Adjustments');
-            expect (await editCasePo.getAssigneeValue()).toBe('Sherri Ochoa');
+
+            expect(await editCasePo.getCategoryTier1()).toBe('Workforce Administration');
+            expect(await editCasePo.getCategoryTier2()).toBe('HR Operations');
+            expect(await editCasePo.getCategoryTier3()).toBe('Adjustments');
+            expect(await editCasePo.getAssigneeValue()).toBe('Sherri Ochoa');
 
             await editCasePo.clickChangeAssignmentButton();
             await changeAssignmentBladePo.setAssignee('Phyto', 'Kingston HR', 'Kingston AskHR', 'David Kramer');
-            expect (await editCasePo.getAssigneeValue()).toBe('David Kramer');
+            expect(await editCasePo.getAssigneeValue()).toBe('David Kramer');
 
             await editCasePo.clickSaveCase();
             await viewCasePage.clickOnTaskLink(taskTemplateNameSummaryKingstoneHR);
@@ -832,14 +831,14 @@ describe('Create Process in Flowset', () => {
             await utilityGrid.selectLineOfBusiness('Oracle HR');
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Vixie Paul');
-            expect (await createCasePage.getLineOfBusinessValue()).toBe('Oracle HR');
+            expect(await createCasePage.getLineOfBusinessValue()).toBe('Oracle HR');
             await createCasePage.setSummary('DRDMV23681CaseSummary');
-            expect (await createCasePage.isCategoryTier1DropDownValueDisplayed('General Ledger')).toBeFalsy('General Ledger CategoryTier1 drop down value displayed');
-            
+            expect(await createCasePage.isCategoryTier1DropDownValueDisplayed('General Ledger')).toBeFalsy('General Ledger CategoryTier1 drop down value displayed');
+
             await createCasePage.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.clickOnAllTemplateTab();
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataKingstoneHR.templateName)).toBeFalsy('caseTemplateDataKingstoneHR is missing');
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalKingstonHR.templateName)).toBeFalsy('caseTemplateDataGlobalKingstonHR is missing');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataKingstoneHR.templateName)).toBeFalsy('caseTemplateDataKingstoneHR is missing');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalKingstonHR.templateName)).toBeFalsy('caseTemplateDataGlobalKingstonHR is missing');
             await selectCasetemplateBladePo.clickOnCancelButton();
 
             await createCasePage.selectCategoryTier1('Total Rewards');
@@ -854,15 +853,15 @@ describe('Create Process in Flowset', () => {
         });
 
         it('[DRDMV-23681]: Verify KingstoneHR case access to Oracle HR LOB', async () => {
-            await navigationPage.gotoCaseConsole(); 
+            await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
-            expect (await utilityGrid.isGridRecordPresent(caseIdOracleHR)).toBeTruthy('caseIdOracleHR Missing on grid');
-            expect (await utilityGrid.isGridRecordPresent(caseIdKingstoneHR)).toBeFalsy('caseIdKingstoneHR Missing on grid');
+            expect(await utilityGrid.isGridRecordPresent(caseIdOracleHR)).toBeTruthy('caseIdOracleHR Missing on grid');
+            expect(await utilityGrid.isGridRecordPresent(caseIdKingstoneHR)).toBeFalsy('caseIdKingstoneHR Missing on grid');
 
             await utilityGrid.selectLineOfBusiness('Kingston HR');
             await utilityGrid.clearFilter();
-            expect (await utilityGrid.isGridRecordPresent(caseIdOracleHR)).toBeFalsy('caseIdOracleHR Missing on grid');
-            expect (await utilityGrid.isGridRecordPresent(caseIdKingstoneHR)).toBeTruthy('caseIdKingstoneHR Missing on grid');
+            expect(await utilityGrid.isGridRecordPresent(caseIdOracleHR)).toBeFalsy('caseIdOracleHR Missing on grid');
+            expect(await utilityGrid.isGridRecordPresent(caseIdKingstoneHR)).toBeTruthy('caseIdKingstoneHR Missing on grid');
         });
 
         afterAll(async () => {
@@ -874,10 +873,10 @@ describe('Create Process in Flowset', () => {
     //kiran
     describe('[DRDMV-23760]: [Service Provider Model][Create Case]: Verify the behavior when the case agent is able to create a case when one of the supporting organization supports a Line of Business for its own.', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let caseTemplateDataKingstoneHR, caseTemplateDataGlobalKingstonHR, caseIdKingstoneLegal, caseIdFinance, caseTemplateDataGlobalKingstoneLegal, caseTemplateDataKingstoneLegal , caseTemplateDataGlobalFinanceBackOffice, caseTemplateDataFinanceBackOffice;
+        let caseTemplateDataKingstoneHR, caseTemplateDataGlobalKingstonHR, caseIdKingstoneLegal, caseIdFinance, caseTemplateDataGlobalKingstoneLegal, caseTemplateDataKingstoneLegal, caseTemplateDataGlobalFinanceBackOffice, caseTemplateDataFinanceBackOffice;
         let taskTemplateNameSummaryKingstoneLegal = "1taskTemplateNameSummaryDRDMV23760" + randomStr;
         let taskTemplateNameSummaryFinanceBackOffice = "2taskTemplateNameSummaryDRDMV23760" + randomStr;
-        
+
         beforeAll(async () => {
             // Create Data with Kingston HR LOB
             await apiHelper.apiLogin(kingstoneLegalUserName, password);
@@ -933,8 +932,8 @@ describe('Create Process in Flowset', () => {
             let manualTaskTemplate = await apiHelper.createManualTaskTemplate(taskTemplateDataSet);
             await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId);
 
-    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        // Create data with Oracle Finance HR Data 
+            // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+            // Create data with Oracle Finance HR Data 
             await apiHelper.apiLogin(kingstoneOracleLOBUserName, password);
             caseTemplateDataGlobalFinanceBackOffice = {
                 "templateName": 'GlobalcaseTemplateNameOracleHR' + randomStr,
@@ -1029,8 +1028,8 @@ describe('Create Process in Flowset', () => {
             await navigationPage.gotoCaseConsole();
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Young Neil');
-            expect (await createCasePage.getCompany()).toBe('Kingston');
-            expect (await createCasePage.getLineOfBusinessValue()).toBe('Kingston Legal');
+            expect(await createCasePage.getCompany()).toBe('Kingston');
+            expect(await createCasePage.getLineOfBusinessValue()).toBe('Kingston Legal');
             expect(await createCasePage.isLineOfBusinessDisabled).toBeTruthy('LOB is not disabled');
             await createCasePage.setSummary('DRDMV23760CaseSummary');
             await createCasePage.selectCategoryTier1('Applications');
@@ -1038,76 +1037,76 @@ describe('Create Process in Flowset', () => {
             await createCasePage.selectCategoryTier3('Incident');
             await createCasePage.clickChangeAssignmentButton();
             await changeAssignmentBladePo.setAssignee('Kingston', 'Kingston Legal', 'Legal Support', 'Youngman Henny');
-            
+
             // Verify  category of finance with kingston legal as it should not display
-            expect (await createCasePage.isCategoryTier1DropDownValueDisplayed('General Ledger')).toBeFalsy('General Ledger CategoryTier1 drop down value displayed');
+            expect(await createCasePage.isCategoryTier1DropDownValueDisplayed('General Ledger')).toBeFalsy('General Ledger CategoryTier1 drop down value displayed');
 
-            expect (await createCasePage.getCategoryTier1Value()).toBe('Applications');
-            expect (await createCasePage.getCategoryTier2Value()).toBe('Help Desk');
-            expect (await createCasePage.getCategoryTier3Value()).toBe('Incident');
+            expect(await createCasePage.getCategoryTier1Value()).toBe('Applications');
+            expect(await createCasePage.getCategoryTier2Value()).toBe('Help Desk');
+            expect(await createCasePage.getCategoryTier3Value()).toBe('Incident');
 
-            expect (await createCasePage.getAssigneeBusinessUnitValue()).toBe('Kingston Legal');
-            expect (await createCasePage.getAssigneeGroupValue()).toBe('Legal Support');
-            expect (await createCasePage.getAssigneeValue()).toBe('Youngman Henny');
+            expect(await createCasePage.getAssigneeBusinessUnitValue()).toBe('Kingston Legal');
+            expect(await createCasePage.getAssigneeGroupValue()).toBe('Legal Support');
+            expect(await createCasePage.getAssigneeValue()).toBe('Youngman Henny');
 
             // Verify negative scenario for Finance LOB for change assignment
             await createCasePage.clickChangeAssignmentButton();
             await changeAssignmentBladePo.selectCompany('Phyto')
-            expect (await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Finance Back Office')).toBeFalsy('BU is diaplayed');
-            expect (await changeAssignmentBladePo.isValuePresentInDropdown('Support', 'Finance Back Support')).toBeFalsy('Support Group is displayed');
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Finance Back Office')).toBeFalsy('BU is diaplayed');
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support', 'Finance Back Support')).toBeFalsy('Support Group is displayed');
             await changeAssignmentBladePo.clickOnCancelButton();
 
             // Verify negative scenario for Kingston HR LOB for change assignment
             await createCasePage.clickChangeAssignmentButton();
             await changeAssignmentBladePo.selectCompany('Phyto')
-            expect (await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Kingston HR')).toBeFalsy('BU is diaplayed');
-            expect (await changeAssignmentBladePo.isValuePresentInDropdown('Support', 'Kingston AskHR')).toBeFalsy('Support Group is displayed');
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Kingston HR')).toBeFalsy('BU is diaplayed');
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support', 'Kingston AskHR')).toBeFalsy('Support Group is displayed');
             await changeAssignmentBladePo.clickOnCancelButton();
-            
+
             await createCasePage.clickSaveCaseButton();
-            expect (await casePreviewPo.getLineOfBusinessValue()).toBe('Kingston Legal');
+            expect(await casePreviewPo.getLineOfBusinessValue()).toBe('Kingston Legal');
             await casePreviewPo.clickOncreateNewCaseButton();
         });
 
         it('[DRDMV-23760]: Create case with case template', async () => {
             await createCasePage.selectRequester('Young Edward');
-            expect (await createCasePage.getLineOfBusinessValue()).toBe('Kingston Legal');
+            expect(await createCasePage.getLineOfBusinessValue()).toBe('Kingston Legal');
             await createCasePage.setSummary('DRDMV23760CaseSummary');
 
             await createCasePage.clickSelectCaseTemplateButton();
-            await selectCasetemplateBladePo.clickOnAllTemplateTab();caseTemplateDataGlobalKingstoneLegal
+            await selectCasetemplateBladePo.clickOnAllTemplateTab(); caseTemplateDataGlobalKingstoneLegal
 
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataKingstoneHR.templateName)).toBeFalsy('caseTemplateDataFinanceBackOffice is missing');
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalKingstonHR.templateName)).toBeFalsy('caseTemplateDataGlobalFinanceBackOffice is missing');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataKingstoneHR.templateName)).toBeFalsy('caseTemplateDataFinanceBackOffice is missing');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalKingstonHR.templateName)).toBeFalsy('caseTemplateDataGlobalFinanceBackOffice is missing');
 
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataFinanceBackOffice.templateName)).toBeFalsy('caseTemplateDataFinanceBackOffice is missing');
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalFinanceBackOffice.templateName)).toBeFalsy('caseTemplateDataGlobalFinanceBackOffice is missing');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataFinanceBackOffice.templateName)).toBeFalsy('caseTemplateDataFinanceBackOffice is missing');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalFinanceBackOffice.templateName)).toBeFalsy('caseTemplateDataGlobalFinanceBackOffice is missing');
 
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataKingstoneLegal.templateName)).toBeTruthy('caseTemplateDataKingstoneLegal is missing');
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalKingstoneLegal.templateName)).toBeTruthy('caseTemplateDataGlobalKingstoneLegal is missing');
-         
-            await selectCasetemplateBladePo.searchAndOpenCaseTemplate(caseTemplateDataKingstoneLegal.templateName); 
-            expect(await previewCaseTemplatePo.isLabelTitleDisplayed('Case Summary')).toBeTruthy('Case Summary label is missing'); 
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataKingstoneLegal.templateName)).toBeTruthy('caseTemplateDataKingstoneLegal is missing');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalKingstoneLegal.templateName)).toBeTruthy('caseTemplateDataGlobalKingstoneLegal is missing');
+
+            await selectCasetemplateBladePo.searchAndOpenCaseTemplate(caseTemplateDataKingstoneLegal.templateName);
+            expect(await previewCaseTemplatePo.isLabelTitleDisplayed('Case Summary')).toBeTruthy('Case Summary label is missing');
             await previewCaseTemplatePo.clickOnBackButton();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateDataGlobalKingstoneLegal.templateName);
 
-            expect (await createCasePage.getCategoryTier1Value()).toBe('Employee Relations');
-            expect (await createCasePage.getCategoryTier2Value()).toBe('Compensation');
-            expect (await createCasePage.getCategoryTier3Value()).toBe('Bonus');
+            expect(await createCasePage.getCategoryTier1Value()).toBe('Employee Relations');
+            expect(await createCasePage.getCategoryTier2Value()).toBe('Compensation');
+            expect(await createCasePage.getCategoryTier3Value()).toBe('Bonus');
 
-            expect (await createCasePage.getAssigneeBusinessUnitValue()).toBe('Kingston Legal');
-            expect (await createCasePage.getAssigneeGroupValue()).toBe('Legal Support');
-            expect (await createCasePage.getAssigneeValue()).toBe('Youngman Henny');
+            expect(await createCasePage.getAssigneeBusinessUnitValue()).toBe('Kingston Legal');
+            expect(await createCasePage.getAssigneeGroupValue()).toBe('Legal Support');
+            expect(await createCasePage.getAssigneeValue()).toBe('Youngman Henny');
 
-            expect (await createCasePage.isCategoryTier1DropDownValueDisplayed('General Ledger')).toBeFalsy('General Ledger CategoryTier1 drop down value displayed');
+            expect(await createCasePage.isCategoryTier1DropDownValueDisplayed('General Ledger')).toBeFalsy('General Ledger CategoryTier1 drop down value displayed');
 
             // Verify negative scenario for Finance LOB for change assignment
             await createCasePage.clickChangeAssignmentButton();
             await changeAssignmentBladePo.selectCompany('Phyto')
-            expect (await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Finance Back Office')).toBeFalsy('BU is diaplayed');
-            expect (await changeAssignmentBladePo.isValuePresentInDropdown('Support', 'Finance Back Support')).toBeFalsy('Support Group is displayed');
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Finance Back Office')).toBeFalsy('BU is diaplayed');
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support', 'Finance Back Support')).toBeFalsy('Support Group is displayed');
             await changeAssignmentBladePo.clickOnCancelButton();
-            
+
             await createCasePage.clickSaveCaseButton();
             await previewCasePage.clickGoToCaseButton();
             caseIdKingstoneLegal = await viewCasePage.getCaseID();
@@ -1115,36 +1114,36 @@ describe('Create Process in Flowset', () => {
 
         it('[DRDMV-23760]: Verify Edit Case Page', async () => {
             await viewCasePage.clickEditCaseButton();
-            expect (await editCasePo.isLineOfBusinessReadOnly()).toBeTruthy('Line of business is not readonly');
+            expect(await editCasePo.isLineOfBusinessReadOnly()).toBeTruthy('Line of business is not readonly');
             await editCasePo.updateCaseCategoryTier1('Total Rewards');
             await editCasePo.updateCaseCategoryTier2('Benefits');
             await editCasePo.updateCaseCategoryTier3('Beneficiaries');
 
             // Verify  category of finance with kingston legal as it should not display
-            expect (await editCasePo.isValuePresentInCategoryTier1('General Ledger')).toBeFalsy('General Ledger CategoryTier1 drop down value displayed');
+            expect(await editCasePo.isValuePresentInCategoryTier1('General Ledger')).toBeFalsy('General Ledger CategoryTier1 drop down value displayed');
 
             await editCasePo.clickOnChangeCaseTemplate();
             await selectCasetemplateBladePo.clickOnAllTemplateTab();
 
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataKingstoneHR.templateName)).toBeFalsy('caseTemplateDataFinanceBackOffice is missing');
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalKingstonHR.templateName)).toBeFalsy('caseTemplateDataGlobalFinanceBackOffice is missing');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataKingstoneHR.templateName)).toBeFalsy('caseTemplateDataFinanceBackOffice is missing');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalKingstonHR.templateName)).toBeFalsy('caseTemplateDataGlobalFinanceBackOffice is missing');
 
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataFinanceBackOffice.templateName)).toBeFalsy('caseTemplateDataFinanceBackOffice is missing');
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalFinanceBackOffice.templateName)).toBeFalsy('caseTemplateDataGlobalFinanceBackOffice is missing');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataFinanceBackOffice.templateName)).toBeFalsy('caseTemplateDataFinanceBackOffice is missing');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalFinanceBackOffice.templateName)).toBeFalsy('caseTemplateDataGlobalFinanceBackOffice is missing');
 
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataKingstoneLegal.templateName)).toBeTruthy('caseTemplateDataKingstoneLegal is missing');
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalKingstoneLegal.templateName)).toBeTruthy('caseTemplateDataGlobalKingstoneLegal is missing');
-            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateDataKingstoneLegal.templateName);      
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataKingstoneLegal.templateName)).toBeTruthy('caseTemplateDataKingstoneLegal is missing');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalKingstoneLegal.templateName)).toBeTruthy('caseTemplateDataGlobalKingstoneLegal is missing');
+            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateDataKingstoneLegal.templateName);
 
-            expect (await editCasePo.getCategoryTier1()).toBe('Workforce Administration');
-            expect (await editCasePo.getCategoryTier2()).toBe('HR Operations');
-            expect (await editCasePo.getCategoryTier3()).toBe('Adjustments');
+            expect(await editCasePo.getCategoryTier1()).toBe('Workforce Administration');
+            expect(await editCasePo.getCategoryTier2()).toBe('HR Operations');
+            expect(await editCasePo.getCategoryTier3()).toBe('Adjustments');
 
-            expect (await editCasePo.getAssigneeValue()).toBe('Young Tyler Shell');
+            expect(await editCasePo.getAssigneeValue()).toBe('Young Tyler Shell');
 
             await editCasePo.clickChangeAssignmentButton();
             await changeAssignmentBladePo.setAssignee('Kingston', 'Kingston Legal', 'Legal Support', 'Young Neil');
-            expect (await editCasePo.getAssigneeValue()).toBe('Young Neil');
+            expect(await editCasePo.getAssigneeValue()).toBe('Young Neil');
 
             await editCasePo.clickSaveCase();
             await viewCasePage.clickAddTaskButton();
@@ -1162,37 +1161,37 @@ describe('Create Process in Flowset', () => {
             await navigationPage.gotoCaseConsole();
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Wright Steven');
-            expect (await createCasePage.getLineOfBusinessValue()).toBe('KingstonOracle Finance');
+            expect(await createCasePage.getLineOfBusinessValue()).toBe('KingstonOracle Finance');
             await createCasePage.setSummary('DRDMV23760CaseSummary');
-            expect (await createCasePage.isCategoryTier1DropDownValueDisplayed('General Ledger')).toBeTruthy('General Ledger CategoryTier1 drop down value displayed');
-            
+            expect(await createCasePage.isCategoryTier1DropDownValueDisplayed('General Ledger')).toBeTruthy('General Ledger CategoryTier1 drop down value displayed');
+
             await createCasePage.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.clickOnAllTemplateTab();
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataKingstoneLegal.templateName)).toBeFalsy('caseTemplateDataKingstoneLegal is missing');
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalKingstoneLegal.templateName)).toBeFalsy('caseTemplateDataGlobalKingstoneLegal is missing');
-            
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataFinanceBackOffice.templateName)).toBeTruthy('caseTemplateDataFinanceBackOffice is missing');
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalFinanceBackOffice.templateName)).toBeTruthy('caseTemplateDataGlobalFinanceBackOffice is missing');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataKingstoneLegal.templateName)).toBeFalsy('caseTemplateDataKingstoneLegal is missing');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalKingstoneLegal.templateName)).toBeFalsy('caseTemplateDataGlobalKingstoneLegal is missing');
+
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataFinanceBackOffice.templateName)).toBeTruthy('caseTemplateDataFinanceBackOffice is missing');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalFinanceBackOffice.templateName)).toBeTruthy('caseTemplateDataGlobalFinanceBackOffice is missing');
 
 
-            await selectCasetemplateBladePo.searchAndOpenCaseTemplate(caseTemplateDataFinanceBackOffice.templateName); 
-            expect(await previewCaseTemplatePo.isLabelTitleDisplayed('Case Summary')).toBeTruthy('Case Summary label is missing'); 
+            await selectCasetemplateBladePo.searchAndOpenCaseTemplate(caseTemplateDataFinanceBackOffice.templateName);
+            expect(await previewCaseTemplatePo.isLabelTitleDisplayed('Case Summary')).toBeTruthy('Case Summary label is missing');
             await previewCaseTemplatePo.clickOnBackButton();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateDataFinanceBackOffice.templateName);
 
-            expect (await createCasePage.getCategoryTier1Value()).toBe('General Ledger');
-            expect (await createCasePage.getCategoryTier2Value()).toBe('Assets');
+            expect(await createCasePage.getCategoryTier1Value()).toBe('General Ledger');
+            expect(await createCasePage.getCategoryTier2Value()).toBe('Assets');
 
-            expect (await createCasePage.getAssigneeBusinessUnitValue()).toBe('Finance Back Office');
-            expect (await createCasePage.getAssigneeGroupValue()).toBe('Finance Back Support');
-            expect (await createCasePage.getAssigneeValue()).toBe('Russell Townsend');
+            expect(await createCasePage.getAssigneeBusinessUnitValue()).toBe('Finance Back Office');
+            expect(await createCasePage.getAssigneeGroupValue()).toBe('Finance Back Support');
+            expect(await createCasePage.getAssigneeValue()).toBe('Russell Townsend');
 
-            expect (await editCasePo.isValuePresentInCategoryTier1('Total Rewards')).toBeFalsy('Total Rewards CategoryTier1 drop down value displayed');
+            expect(await editCasePo.isValuePresentInCategoryTier1('Total Rewards')).toBeFalsy('Total Rewards CategoryTier1 drop down value displayed');
             // Verify negative scenario for Finance LOB for change assignment
             await createCasePage.clickChangeAssignmentButton();
             await changeAssignmentBladePo.selectCompany('Kingston')
-            expect (await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Kingston Legal')).toBeFalsy('BU is diaplayed');
-            expect (await changeAssignmentBladePo.isValuePresentInDropdown('Support', 'Legal Support')).toBeFalsy('Support Group is displayed');
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Kingston Legal')).toBeFalsy('BU is diaplayed');
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support', 'Legal Support')).toBeFalsy('Support Group is displayed');
             await changeAssignmentBladePo.clickOnCancelButton();
 
             // Verify negative scenario for Kingston HR LOB for change assignment
@@ -1200,9 +1199,9 @@ describe('Create Process in Flowset', () => {
             await changeAssignmentBladePo.selectCompany('Phyto');
             await changeAssignmentBladePo.selectBusinessUnit('Kingston HR');
             await changeAssignmentBladePo.selectSupportGroup('Kingston AskHR');
-            expect (await changeAssignmentBladePo.isAssigneeDisplayed('Samara Moran')).toBeFalsy('BU is diaplayed');
+            expect(await changeAssignmentBladePo.isAssigneeDisplayed('Samara Moran')).toBeFalsy('BU is diaplayed');
             await changeAssignmentBladePo.clickOnCancelButton();
-            
+
             await createCasePage.clickSaveCaseButton();
             await previewCasePage.clickGoToCaseButton();
 
@@ -1211,17 +1210,17 @@ describe('Create Process in Flowset', () => {
         });
 
         it('[DRDMV-23760]: Verify KingstoneHR case access to Oracle HR LOB', async () => {
-            await navigationPage.gotoCaseConsole(); 
+            await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
-            expect (await utilityGrid.isGridRecordPresent(caseIdFinance)).toBeTruthy('caseIdFinance Missing on grid');
-            expect (await utilityGrid.isGridRecordPresent(caseIdKingstoneLegal)).toBeFalsy('caseIdKingstoneLegal Missing on grid');
+            expect(await utilityGrid.isGridRecordPresent(caseIdFinance)).toBeTruthy('caseIdFinance Missing on grid');
+            expect(await utilityGrid.isGridRecordPresent(caseIdKingstoneLegal)).toBeFalsy('caseIdKingstoneLegal Missing on grid');
 
             await navigationPage.signOut();
             await loginPage.login(kingstoneLegalUserName, password);
-            
+
             await utilityGrid.clearFilter();
-            expect (await utilityGrid.isGridRecordPresent(caseIdFinance)).toBeFalsy('caseIdFinance Missing on grid');
-            expect (await utilityGrid.isGridRecordPresent(caseIdKingstoneLegal)).toBeTruthy('caseIdKingstoneLegal Missing on grid');
+            expect(await utilityGrid.isGridRecordPresent(caseIdFinance)).toBeFalsy('caseIdFinance Missing on grid');
+            expect(await utilityGrid.isGridRecordPresent(caseIdKingstoneLegal)).toBeTruthy('caseIdKingstoneLegal Missing on grid');
         });
 
         afterAll(async () => {
@@ -1233,13 +1232,13 @@ describe('Create Process in Flowset', () => {
     //kiran
     describe('[DRDMV-23744]: [Service Provider Model][Create Case]: Verify the behavior when the case agent is able to create a case when a single line of business is shared between multiple organizations', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let caseTemplateDataFinanceBackOffice, caseTemplateDataGlobalFinanceBackOffice, caseIdFinance, caseIdOracleHR, caseTemplateDataOracleHR, caseTemplateDataGlobalOracleHR, caseTemplateDataGlobalKingstoneLegal, caseTemplateDataKingstoneLegal ,knowledgeSetData, KADetails;
-        
+        let caseTemplateDataFinanceBackOffice, caseTemplateDataGlobalFinanceBackOffice, caseIdFinance, caseIdOracleHR, caseTemplateDataOracleHR, caseTemplateDataGlobalOracleHR, caseTemplateDataGlobalKingstoneLegal, caseTemplateDataKingstoneLegal, knowledgeSetData, KADetails;
+
         let taskTemplateNameSummaryFinanceBackOffice = "1taskTemplateNameSummaryDRDMV23744" + randomStr;
         let taskTemplateNameSummaryOracleHR = "3taskTemplateNameSummaryDRDMV23744" + randomStr;
         let knowledgeTitle = "3knowledgeTitleDRDMV23744" + randomStr;
         let summary = "DRDMV23744Summary" + randomStr;
-        
+
         beforeAll(async () => {
             // Create Data with Finance LOB
             await apiHelper.apiLogin(kingstoneOracleLOBUserName, password);
@@ -1294,17 +1293,17 @@ describe('Create Process in Flowset', () => {
             let manualTaskTemplate = await apiHelper.createManualTaskTemplate(taskTemplateDataSet);
             await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId);
 
-        //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+            //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Create data knowledge set for KingstonOracle Finance 
             knowledgeSetData = {
                 'knowledgeSetTitle': 'KASetPhyto' + randomStr,
-                'knowledgeSetDesc': 'KAPsilon_Desc'+ randomStr,
+                'knowledgeSetDesc': 'KAPsilon_Desc' + randomStr,
                 'company': 'Phyto',
                 "lineOfBusiness": "KingstonOracle Finance"
             }
             await apiHelper.createKnowledgeSet(knowledgeSetData);
-            
-        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+            // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Create data with Oracle HR Data
             caseTemplateDataGlobalOracleHR = {
                 "templateName": 'GlobalcaseTemplateNameOracleHR' + randomStr,
@@ -1358,7 +1357,7 @@ describe('Create Process in Flowset', () => {
             let manualTaskTemplate2 = await apiHelper.createManualTaskTemplate(taskTemplateDataSet2);
             await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate2.displayId, manualTaskTemplate2.displayId);
 
-    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+            // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             // Create data with Kingstone Legal Data
             await apiHelper.apiLogin(kingstoneLegalUserName, password);
             caseTemplateDataGlobalKingstoneLegal = {
@@ -1403,64 +1402,64 @@ describe('Create Process in Flowset', () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectLineOfBusiness('KingstonOracle Finance');
             await createCasePage.selectRequester('Wright Steven');
-            
+
             await createCasePage.setSummary('DRDMV23744CaseSummary');
             // Verify negative scenario for Kingston Legal and Kingston HR LOB case template should not display
             await createCasePage.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.clickOnAllTemplateTab();
-            
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataKingstoneLegal.templateName)).toBeFalsy('caseTemplateDataKingstoneHR is display');
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalKingstoneLegal.templateName)).toBeFalsy('caseTemplateDataGlobalKingstonHR is display');
 
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataOracleHR.templateName)).toBeFalsy('caseTemplateDataOracleHR.templateName is display');
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalOracleHR.templateName)).toBeFalsy('caseTemplateDataGlobalOracleHR.templateName is display');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataKingstoneLegal.templateName)).toBeFalsy('caseTemplateDataKingstoneHR is display');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalKingstoneLegal.templateName)).toBeFalsy('caseTemplateDataGlobalKingstonHR is display');
 
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalFinanceBackOffice.templateName)).toBeTruthy('caseTemplateDataGlobalKingstoneLegal.templateName is missing');
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataFinanceBackOffice.templateName)).toBeTruthy('caseTemplateDataGlobalKingstoneLegal.templateName is missing');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataOracleHR.templateName)).toBeFalsy('caseTemplateDataOracleHR.templateName is display');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalOracleHR.templateName)).toBeFalsy('caseTemplateDataGlobalOracleHR.templateName is display');
+
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalFinanceBackOffice.templateName)).toBeTruthy('caseTemplateDataGlobalKingstoneLegal.templateName is missing');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataFinanceBackOffice.templateName)).toBeTruthy('caseTemplateDataGlobalKingstoneLegal.templateName is missing');
 
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateDataFinanceBackOffice.templateName);
-            
-            expect (await createCasePage.getCategoryTier1Value()).toBe('General Ledger');
-            expect (await createCasePage.getCategoryTier2Value()).toBe('Assets');
 
-            expect (await createCasePage.getAssigneeBusinessUnitValue()).toBe('Finance Back Office');
-            expect (await createCasePage.getAssigneeGroupValue()).toBe('Finance Back Support');
-            expect (await createCasePage.getAssigneeValue()).toBe('Wright Frank Lloyd');
+            expect(await createCasePage.getCategoryTier1Value()).toBe('General Ledger');
+            expect(await createCasePage.getCategoryTier2Value()).toBe('Assets');
+
+            expect(await createCasePage.getAssigneeBusinessUnitValue()).toBe('Finance Back Office');
+            expect(await createCasePage.getAssigneeGroupValue()).toBe('Finance Back Support');
+            expect(await createCasePage.getAssigneeValue()).toBe('Wright Frank Lloyd');
 
             // Verify negative scenario for Kingston Legal LOB should not display
-            expect (await createCasePage.isValuePresentInLineOfBusinessDropDown('Kingston Legal')).toBeFalsy ('Kingston lob is displayed');
+            expect(await createCasePage.isValuePresentInLineOfBusinessDropDown('Kingston Legal')).toBeFalsy('Kingston lob is displayed');
 
             // Verify negative scenario for Kingston Legal and Oracle HR LOB for change assignment
             await createCasePage.clickChangeAssignmentButton();
             await changeAssignmentBladePo.selectCompany('Kingston')
-            expect (await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Kingston Legal')).toBeFalsy('BU is diaplayed');
-            expect (await changeAssignmentBladePo.isValuePresentInDropdown('Support', 'Legal Support')).toBeFalsy('Support Group is displayed');
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Kingston Legal')).toBeFalsy('BU is diaplayed');
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support', 'Legal Support')).toBeFalsy('Support Group is displayed');
             await changeAssignmentBladePo.clickOnCancelButton();
 
             await createCasePage.clickChangeAssignmentButton();
             await changeAssignmentBladePo.selectCompany('Phyto');
             await changeAssignmentBladePo.selectBusinessUnit('Oracle HR');
             await changeAssignmentBladePo.selectSupportGroup('Oracle AskHR');
-            expect (await changeAssignmentBladePo.isAssigneeDisplayed('Ueshiba Morihei')).toBeFalsy('Assignee name is displayed');
+            expect(await changeAssignmentBladePo.isAssigneeDisplayed('Ueshiba Morihei')).toBeFalsy('Assignee name is displayed');
             await changeAssignmentBladePo.clickOnCancelButton();
 
             await createCasePage.clickChangeAssignmentButton();
             await changeAssignmentBladePo.setAssignee('Phyto', 'Finance Back Office', 'Finance Back Support', 'Yourcenar Marguerite');
-            
-            expect (await createCasePage.getAssigneeValue()).toBe('Yourcenar Marguerite');
-            
+
+            expect(await createCasePage.getAssigneeValue()).toBe('Yourcenar Marguerite');
+
             // Change verify with change LOB and should be clear all selected values
             await createCasePage.selectLineOfBusiness('Oracle HR');
 
-            expect (await createCasePage.getCategoryTier1Value()).toBe('Select');
-            expect (await createCasePage.getCategoryTier2Value()).toBe('Select');
-            expect (await createCasePage.getCategoryTier3Value()).toBe('Select');
+            expect(await createCasePage.getCategoryTier1Value()).toBe('Select');
+            expect(await createCasePage.getCategoryTier2Value()).toBe('Select');
+            expect(await createCasePage.getCategoryTier3Value()).toBe('Select');
 
-            expect (await createCasePage.getAssigneeBusinessUnitValue()).toBe('');
-            expect (await createCasePage.getAssigneeBusinessUnitValue()).toBe('');
-            expect (await createCasePage.getAssigneeValue()).toBe('Select');
+            expect(await createCasePage.getAssigneeBusinessUnitValue()).toBe('');
+            expect(await createCasePage.getAssigneeBusinessUnitValue()).toBe('');
+            expect(await createCasePage.getAssigneeValue()).toBe('Select');
 
-            expect (await createCasePage.isCategoryTier1DropDownValueDisplayed('General Ledger')).toBeFalsy('General Ledger CategoryTier1 drop down value display');
+            expect(await createCasePage.isCategoryTier1DropDownValueDisplayed('General Ledger')).toBeFalsy('General Ledger CategoryTier1 drop down value display');
         });
 
         it('[DRDMV-23744]: Create case without case template', async () => {
@@ -1475,51 +1474,51 @@ describe('Create Process in Flowset', () => {
             await createCasePage.clickChangeAssignmentButton();
             await changeAssignmentBladePo.setAssignee('Phyto', 'Finance Back Office', 'Finance Back Support', 'Wright Frank Lloyd');
 
-            expect (await createCasePage.getCategoryTier1Value()).toBe('General Ledger');
-            expect (await createCasePage.getCategoryTier2Value()).toBe('Equity');
+            expect(await createCasePage.getCategoryTier1Value()).toBe('General Ledger');
+            expect(await createCasePage.getCategoryTier2Value()).toBe('Equity');
 
-            expect (await createCasePage.getAssigneeBusinessUnitValue()).toBe('Finance Back Office');
-            expect (await createCasePage.getAssigneeGroupValue()).toBe('Finance Back Support');
-            expect (await createCasePage.getAssigneeValue()).toBe('Wright Frank Lloyd');
+            expect(await createCasePage.getAssigneeBusinessUnitValue()).toBe('Finance Back Office');
+            expect(await createCasePage.getAssigneeGroupValue()).toBe('Finance Back Support');
+            expect(await createCasePage.getAssigneeValue()).toBe('Wright Frank Lloyd');
 
             // Verify Kingston HR Category with finance LOB
-            expect (await createCasePage.isCategoryTier1DropDownValueDisplayed('Total Rewards')).toBeFalsy('Employee Relations CategoryTier1 drop down value display');
-            expect (await createCasePage.isCategoryTier1DropDownValueDisplayed('Benefits')).toBeFalsy('Compensation CategoryTier1 drop down value display');
-            expect (await createCasePage.isCategoryTier1DropDownValueDisplayed('Adoption Assistance')).toBeFalsy('Bonus CategoryTier1 drop down value display');
+            expect(await createCasePage.isCategoryTier1DropDownValueDisplayed('Total Rewards')).toBeFalsy('Employee Relations CategoryTier1 drop down value display');
+            expect(await createCasePage.isCategoryTier1DropDownValueDisplayed('Benefits')).toBeFalsy('Compensation CategoryTier1 drop down value display');
+            expect(await createCasePage.isCategoryTier1DropDownValueDisplayed('Adoption Assistance')).toBeFalsy('Bonus CategoryTier1 drop down value display');
 
             await createCasePage.clickSaveCaseButton();
-            expect (await casePreviewPo.getLineOfBusinessValue()).toBe('KingstonOracle Finance');
+            expect(await casePreviewPo.getLineOfBusinessValue()).toBe('KingstonOracle Finance');
             await casePreviewPo.clickOncreateNewCaseButton();
         });
 
         it('[DRDMV-23744]: Create case with case template', async () => {
             await createCasePage.selectRequester('Yourcenar Marguerite');
-            expect (await createCasePage.getLineOfBusinessValue()).toBe('KingstonOracle Finance');
+            expect(await createCasePage.getLineOfBusinessValue()).toBe('KingstonOracle Finance');
             await createCasePage.setSummary(summary);
 
             await createCasePage.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.clickOnAllTemplateTab();
 
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataKingstoneLegal.templateName)).toBeFalsy('caseTemplateDataKingstoneHR is display');
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalKingstoneLegal.templateName)).toBeFalsy('caseTemplateDataGlobalKingstonHR is display');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataKingstoneLegal.templateName)).toBeFalsy('caseTemplateDataKingstoneHR is display');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalKingstoneLegal.templateName)).toBeFalsy('caseTemplateDataGlobalKingstonHR is display');
 
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataOracleHR.templateName)).toBeFalsy('caseTemplateDataOracleHR.templateName is display');
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalOracleHR.templateName)).toBeFalsy('caseTemplateDataGlobalOracleHR.templateName is display');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataOracleHR.templateName)).toBeFalsy('caseTemplateDataOracleHR.templateName is display');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalOracleHR.templateName)).toBeFalsy('caseTemplateDataGlobalOracleHR.templateName is display');
 
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalFinanceBackOffice.templateName)).toBeTruthy('caseTemplateDataGlobalKingstoneLegal.templateName is missing');
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataFinanceBackOffice.templateName)).toBeTruthy('caseTemplateDataGlobalKingstoneLegal.templateName is missing');
-            
-            await selectCasetemplateBladePo.searchAndOpenCaseTemplate(caseTemplateDataFinanceBackOffice.templateName); 
-            expect(await previewCaseTemplatePo.isLabelTitleDisplayed('Case Summary')).toBeTruthy('Case Summary label is missing'); 
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalFinanceBackOffice.templateName)).toBeTruthy('caseTemplateDataGlobalKingstoneLegal.templateName is missing');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataFinanceBackOffice.templateName)).toBeTruthy('caseTemplateDataGlobalKingstoneLegal.templateName is missing');
+
+            await selectCasetemplateBladePo.searchAndOpenCaseTemplate(caseTemplateDataFinanceBackOffice.templateName);
+            expect(await previewCaseTemplatePo.isLabelTitleDisplayed('Case Summary')).toBeTruthy('Case Summary label is missing');
             await previewCaseTemplatePo.clickOnBackButton();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateDataGlobalFinanceBackOffice.templateName);
 
-            expect (await createCasePage.getCategoryTier1Value()).toBe('General Ledger');
-            expect (await createCasePage.getCategoryTier2Value()).toBe('Expenses');
+            expect(await createCasePage.getCategoryTier1Value()).toBe('General Ledger');
+            expect(await createCasePage.getCategoryTier2Value()).toBe('Expenses');
 
-            expect (await createCasePage.getAssigneeBusinessUnitValue()).toBe('Finance Back Office');
-            expect (await createCasePage.getAssigneeGroupValue()).toBe('Finance Back Support');
-            expect (await createCasePage.getAssigneeValue()).toBe('Wright Steven');
+            expect(await createCasePage.getAssigneeBusinessUnitValue()).toBe('Finance Back Office');
+            expect(await createCasePage.getAssigneeGroupValue()).toBe('Finance Back Support');
+            expect(await createCasePage.getAssigneeValue()).toBe('Wright Steven');
 
             await createCasePage.clickSaveCaseButton();
             await previewCasePage.clickGoToCaseButton();
@@ -1528,7 +1527,7 @@ describe('Create Process in Flowset', () => {
 
         it('[DRDMV-23744]: Verify Edit Case Page', async () => {
             await viewCasePage.clickEditCaseButton();
-            expect (await editCasePo.isLineOfBusinessReadOnly()).toBeTruthy('Line of business is not readonly');
+            expect(await editCasePo.isLineOfBusinessReadOnly()).toBeTruthy('Line of business is not readonly');
             await editCasePo.updateCaseCategoryTier1('Applications');
             await editCasePo.updateCaseCategoryTier2('Help Desk');
             await editCasePo.updateCaseCategoryTier3('Incident');
@@ -1537,24 +1536,24 @@ describe('Create Process in Flowset', () => {
             await selectCasetemplateBladePo.clickOnAllTemplateTab();
 
 
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataKingstoneLegal.templateName)).toBeFalsy('caseTemplateDataKingstoneHR is display');
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalKingstoneLegal.templateName)).toBeFalsy('caseTemplateDataGlobalKingstonHR is display');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataKingstoneLegal.templateName)).toBeFalsy('caseTemplateDataKingstoneHR is display');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalKingstoneLegal.templateName)).toBeFalsy('caseTemplateDataGlobalKingstonHR is display');
 
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataOracleHR.templateName)).toBeFalsy('caseTemplateDataOracleHR.templateName is display');
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalOracleHR.templateName)).toBeFalsy('caseTemplateDataGlobalOracleHR.templateName is display');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataOracleHR.templateName)).toBeFalsy('caseTemplateDataOracleHR.templateName is display');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalOracleHR.templateName)).toBeFalsy('caseTemplateDataGlobalOracleHR.templateName is display');
 
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalFinanceBackOffice.templateName)).toBeTruthy('caseTemplateDataGlobalKingstoneLegal.templateName is missing');
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataFinanceBackOffice.templateName)).toBeTruthy('caseTemplateDataGlobalKingstoneLegal.templateName is missing');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalFinanceBackOffice.templateName)).toBeTruthy('caseTemplateDataGlobalKingstoneLegal.templateName is missing');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataFinanceBackOffice.templateName)).toBeTruthy('caseTemplateDataGlobalKingstoneLegal.templateName is missing');
 
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateDataFinanceBackOffice.templateName);
-            
-            expect (await editCasePo.getCategoryTier1()).toBe('General Ledger');
-            expect (await editCasePo.getCategoryTier2()).toBe('Assets');
-            expect (await editCasePo.getAssigneeValue()).toBe('Wright Frank Lloyd');
+
+            expect(await editCasePo.getCategoryTier1()).toBe('General Ledger');
+            expect(await editCasePo.getCategoryTier2()).toBe('Assets');
+            expect(await editCasePo.getAssigneeValue()).toBe('Wright Frank Lloyd');
 
             await editCasePo.clickChangeAssignmentButton();
             await changeAssignmentBladePo.setAssignee('Phyto', 'Finance Back Office', 'Finance Back Support', 'Jack Torrance');
-            expect (await editCasePo.getAssigneeValue()).toBe('Jack Torrance');
+            expect(await editCasePo.getAssigneeValue()).toBe('Jack Torrance');
 
             await editCasePo.clickSaveCase();
             await viewCasePage.clickOnTaskLink(taskTemplateNameSummaryFinanceBackOffice);
@@ -1587,44 +1586,44 @@ describe('Create Process in Flowset', () => {
             await utilityGrid.selectLineOfBusiness('Oracle HR');
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Vixie Paul');
-            expect (await createCasePage.getLineOfBusinessValue()).toBe('Oracle HR');
+            expect(await createCasePage.getLineOfBusinessValue()).toBe('Oracle HR');
             await createCasePage.setSummary('DRDMV23744Summary');
-            expect (await createCasePage.isCategoryTier1DropDownValueDisplayed('General Ledger')).toBeFalsy('General Ledger CategoryTier1 drop down value displayed');
-            
+            expect(await createCasePage.isCategoryTier1DropDownValueDisplayed('General Ledger')).toBeFalsy('General Ledger CategoryTier1 drop down value displayed');
+
             await createCasePage.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.clickOnAllTemplateTab();
 
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataKingstoneLegal.templateName)).toBeFalsy('caseTemplateDataKingstoneHR is display');
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalKingstoneLegal.templateName)).toBeFalsy('caseTemplateDataGlobalKingstonHR is display');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataKingstoneLegal.templateName)).toBeFalsy('caseTemplateDataKingstoneHR is display');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalKingstoneLegal.templateName)).toBeFalsy('caseTemplateDataGlobalKingstonHR is display');
 
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalFinanceBackOffice.templateName)).toBeFalsy('caseTemplateDataGlobalKingstoneLegal.templateName is display');
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataFinanceBackOffice.templateName)).toBeFalsy('caseTemplateDataGlobalKingstoneLegal.templateName is display');
-            
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataOracleHR.templateName)).toBeTruthy('caseTemplateDataOracleHR.templateName is missing');
-            expect (await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalOracleHR.templateName)).toBeTruthy('caseTemplateDataGlobalOracleHR.templateName is missing');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalFinanceBackOffice.templateName)).toBeFalsy('caseTemplateDataGlobalKingstoneLegal.templateName is display');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataFinanceBackOffice.templateName)).toBeFalsy('caseTemplateDataGlobalKingstoneLegal.templateName is display');
+
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataOracleHR.templateName)).toBeTruthy('caseTemplateDataOracleHR.templateName is missing');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalOracleHR.templateName)).toBeTruthy('caseTemplateDataGlobalOracleHR.templateName is missing');
 
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateDataOracleHR.templateName);
 
-            expect (await createCasePage.getCategoryTier1Value()).toBe('Workforce Administration');
-            expect (await createCasePage.getCategoryTier2Value()).toBe('HR Operations');
-            expect (await createCasePage.getCategoryTier3Value()).toBe('Adjustments');
+            expect(await createCasePage.getCategoryTier1Value()).toBe('Workforce Administration');
+            expect(await createCasePage.getCategoryTier2Value()).toBe('HR Operations');
+            expect(await createCasePage.getCategoryTier3Value()).toBe('Adjustments');
 
-            expect (await createCasePage.getAssigneeBusinessUnitValue()).toBe('Oracle HR');
-            expect (await createCasePage.getAssigneeGroupValue()).toBe('Oracle AskHR');
-            expect (await createCasePage.getAssigneeValue()).toBe('Unamuno Miguel de');
+            expect(await createCasePage.getAssigneeBusinessUnitValue()).toBe('Oracle HR');
+            expect(await createCasePage.getAssigneeGroupValue()).toBe('Oracle AskHR');
+            expect(await createCasePage.getAssigneeValue()).toBe('Unamuno Miguel de');
 
             // Verify negative scenario for Kingston Legal and Finance HR LOB for change assignment
             await createCasePage.clickChangeAssignmentButton();
             await changeAssignmentBladePo.selectCompany('Kingston')
-            expect (await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Kingston Legal')).toBeFalsy('BU is diaplayed');
-            expect (await changeAssignmentBladePo.isValuePresentInDropdown('Support', 'Legal Support')).toBeFalsy('Support Group is displayed');
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Kingston Legal')).toBeFalsy('BU is diaplayed');
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support', 'Legal Support')).toBeFalsy('Support Group is displayed');
             await changeAssignmentBladePo.clickOnCancelButton();
 
             await createCasePage.clickChangeAssignmentButton();
             await changeAssignmentBladePo.selectCompany('Phyto');
             await changeAssignmentBladePo.selectBusinessUnit('Finance Back Office');
             await changeAssignmentBladePo.selectSupportGroup('Finance Back Support');
-            expect (await changeAssignmentBladePo.isAssigneeDisplayed('Wright Steven')).toBeFalsy('Assignee name is displayed');
+            expect(await changeAssignmentBladePo.isAssigneeDisplayed('Wright Steven')).toBeFalsy('Assignee name is displayed');
             await changeAssignmentBladePo.clickOnCancelButton();
 
             await createCasePage.clickSaveCaseButton();
@@ -1645,16 +1644,16 @@ describe('Create Process in Flowset', () => {
         });
 
         it('[DRDMV-23744]: Verify KingstoneHR case access to Oracle HR LOB', async () => {
-            await navigationPage.gotoCaseConsole(); 
+            await navigationPage.gotoCaseConsole();
             await utilityGrid.selectLineOfBusiness('Oracle HR');
             await utilityGrid.clearFilter();
-            expect (await utilityGrid.isGridRecordPresent(caseIdOracleHR)).toBeTruthy('caseIdOracleHR Missing on grid');
-            expect (await utilityGrid.isGridRecordPresent(caseIdFinance)).toBeFalsy('caseIdKingstoneHR Missing on grid');
+            expect(await utilityGrid.isGridRecordPresent(caseIdOracleHR)).toBeTruthy('caseIdOracleHR Missing on grid');
+            expect(await utilityGrid.isGridRecordPresent(caseIdFinance)).toBeFalsy('caseIdKingstoneHR Missing on grid');
 
             await utilityGrid.selectLineOfBusiness('KingstonOracle Finance');
             await utilityGrid.clearFilter();
-            expect (await utilityGrid.isGridRecordPresent(caseIdOracleHR)).toBeFalsy('caseIdOracleHR Missing on grid');
-            expect (await utilityGrid.isGridRecordPresent(caseIdFinance)).toBeTruthy('caseIdKingstoneHR Missing on grid');
+            expect(await utilityGrid.isGridRecordPresent(caseIdOracleHR)).toBeFalsy('caseIdOracleHR Missing on grid');
+            expect(await utilityGrid.isGridRecordPresent(caseIdFinance)).toBeTruthy('caseIdKingstoneHR Missing on grid');
         });
 
         afterAll(async () => {

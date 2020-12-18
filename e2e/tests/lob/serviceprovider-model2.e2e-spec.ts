@@ -1,22 +1,23 @@
-import quickCasePo from '../../pageobject/case/quick-case.po';
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
+import casePreviewPo from '../../pageobject/case/case-preview.po';
+import editCasePo from '../../pageobject/case/edit-case.po';
+import quickCasePo from '../../pageobject/case/quick-case.po';
+import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
+import viewCasePo from '../../pageobject/case/view-case.po';
 import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import { default as createKnowledgePage } from "../../pageobject/knowledge/create-knowlege.po";
+import createKnowledgePage from "../../pageobject/knowledge/create-knowlege.po";
 import editKnowledgePo from '../../pageobject/knowledge/edit-knowledge.po';
 import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
+import statusBladeKnowledgeArticlePo from '../../pageobject/knowledge/status-blade-knowledge-article.po';
 import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
+import previewCaseTemplateCasesPo from '../../pageobject/settings/case-management/preview-case-template.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-import casePreviewPo from '../../pageobject/case/case-preview.po';
-import editCasePo from '../../pageobject/case/edit-case.po';
-import viewCasePo from '../../pageobject/case/view-case.po';
-import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
-import previewCaseTemplateCasesPo from '../../pageobject/settings/case-management/preview-case-template.po';
-import statusBladeKnowledgeArticlePo from '../../pageobject/knowledge/status-blade-knowledge-article.po';
+
 describe('Service Provider Model Tests Extended', () => {
     let kingstoneUserName = 'smoran@petramco.com';
     let oracleUserName = 'umiguelde@petramco.com';
@@ -403,7 +404,7 @@ describe('Service Provider Model Tests Extended', () => {
         it('[DRDMV-23674,DRDMV-23745,DRDMV-23761]: [Service Provider Model][Quick Case]: Verify the behavior when the case agent from service provider company is able to create a case for requester company', async () => {
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('David Kramer');
-           
+
             await quickCasePo.setCaseSummary(templateDataPhytoCompany.templateName);
             expect(await quickCasePo.isCaseSummaryPresentInRecommendedCases(templateDataPhytoCompany.templateName)).toBeTruthy();
             await quickCasePo.isRecommendedKnowledgeEmpty();
