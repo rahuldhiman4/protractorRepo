@@ -11,6 +11,7 @@ import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 import viewCasePo from '../../pageobject/case/view-case.po';
+import { CaseTemplate } from 'e2e/api/constant.api';
 let userData, userData1, userData2 = undefined;
 
 
@@ -308,6 +309,8 @@ describe("Case Approval Mapping Tests", () => {
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
+
+
         afterAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.deleteApprovalMapping(caseModule);
@@ -320,9 +323,13 @@ describe("Case Approval Mapping Tests", () => {
         let approvalMappingName = 'Approval Mapping' + randomStr;
         let globalCaseTemplateStr = 'GlobalTemplate_' + randomStr;
         let petramcoCaseTemplateStr = 'PetramcoTemplate_' + randomStr;
+        let globalFacilitiesCaseTemplateStr = 'FacilitiesGlobalTemplate_' + randomStr;
+        let petramcoFacilitiesCaseTemplateStr = 'FacilitiesPetramcoTemplate_' + randomStr;
+
+        let caseTemplate, caseTemplateFacilitiesData = undefined;
 
         beforeAll(async () => {
-            let caseTemplate = {
+            caseTemplate = {
                 "templateName": 'CaseTemplateName',
                 "templateSummary": 'Case Template Summary',
                 "categoryTier1": 'Purchasing Card',
@@ -331,8 +338,10 @@ describe("Case Approval Mapping Tests", () => {
                 "company": "Petramco",
                 "businessUnit": "United States Support",
                 "supportGroup": "US Support 3",
+                "assignee": "qfeng",
                 "ownerBU": "United States Support",
-                "ownerGroup": "US Support 3"
+                "ownerGroup": "US Support 3",
+                "lineOfBusiness":"Human Resource"
             }
             await apiHelper.apiLogin('qkatawazi');
             // create global case template
@@ -344,6 +353,44 @@ describe("Case Approval Mapping Tests", () => {
             // create Petramco Active case template
             caseTemplate.templateName = petramcoCaseTemplateStr;
             caseTemplate.templateSummary = 'Case Summary for petramco case template';
+            await apiHelper.createCaseTemplate(caseTemplate);
+
+            caseTemplateFacilitiesData = {
+                "templateName": 'CaseTemplateName',
+                "templateSummary": 'Case Template Summary',
+                "categoryTier1": 'Purchasing Card',
+                "casePriority": "Critical",
+                "templateStatus": "Active",
+                "company": "Petramco",
+                "businessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
+                "assignee": "Franz",
+                "ownerBU": "Facilities Support",
+                "ownerGroup": "Facilities",
+                "lineOfBusiness":"Facilities"
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            // create global case template
+            caseTemplate.templateName = globalCaseTemplateStr;
+            caseTemplate.templateSummary = 'Case Summary for global case template';
+            caseTemplate.company = '- Global -';
+            await apiHelper.createCaseTemplate(caseTemplate);
+
+            // create Petramco Active case template
+            caseTemplate.templateName = petramcoCaseTemplateStr;
+            caseTemplate.templateSummary = 'Case Summary for petramco case template';
+            await apiHelper.createCaseTemplate(caseTemplate);
+
+            await apiHelper.apiLogin('qkatawazi');
+            // create global case template
+            caseTemplate.templateName = globalFacilitiesCaseTemplateStr;
+            caseTemplate.templateSummary = 'Case Summary for global Facilities case template';
+            caseTemplate.company = '- Global -';
+            await apiHelper.createCaseTemplate(caseTemplate);
+
+            // create Petramco Active case template
+            caseTemplate.templateName = petramcoFacilitiesCaseTemplateStr;
+            caseTemplate.templateSummary = 'Case Summary for petramco Facilities case template';
             await apiHelper.createCaseTemplate(caseTemplate);
         });
 
@@ -363,9 +410,29 @@ describe("Case Approval Mapping Tests", () => {
             await createApprovalMappingPage.clickSaveApprovalMappingBtn();
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
             expect(await editApprovalMappingPage.getApprovalMappingName()).toBe(approvalMappingName);
+            await editApprovalMappingPage.searchCaseTemplate(petramcoCaseTemplateStr);
+            expect(await editApprovalMappingPage.isSearchedCaseTemplateDisplayed()).toBeTruthy('Searched case template from Human Resource LOB is not displayed.');
+            await editApprovalMappingPage.searchCaseTemplate(globalCaseTemplateStr);
+            expect(await editApprovalMappingPage.isSearchedCaseTemplateDisplayed()).toBeTruthy('Searched case template from Human Resource LOB is not displayed.');
+            await editApprovalMappingPage.searchCaseTemplate(globalFacilitiesCaseTemplateStr);
+            expect(await editApprovalMappingPage.isSearchedCaseTemplateDisplayed()).toBeFalsy('Searched case template from Facilities LOB is displayed.');
+            await editApprovalMappingPage.searchCaseTemplate(petramcoFacilitiesCaseTemplateStr);
+            expect(await editApprovalMappingPage.isSearchedCaseTemplateDisplayed()).toBeFalsy('Searched case template from Facilities LOB is displayed.');
+            
+            await editApprovalMappingPage.searchAssociatedCaseTemplate(petramcoCaseTemplateStr);
+            expect(await editApprovalMappingPage.isSearchedAssociatedCaseTemplateDisplayed()).toBeFalsy('Searched case template from Human Resource LOB is not displayed.');
+            await editApprovalMappingPage.searchAssociatedCaseTemplate(globalCaseTemplateStr);
+            expect(await editApprovalMappingPage.isSearchedAssociatedCaseTemplateDisplayed()).toBeFalsy('Searched case template from Human Resource LOB is not displayed.');
+            await editApprovalMappingPage.searchAssociatedCaseTemplate(globalFacilitiesCaseTemplateStr);
+            expect(await editApprovalMappingPage.isSearchedAssociatedCaseTemplateDisplayed()).toBeFalsy('Searched case template from Facilities LOB is displayed.');
+            await editApprovalMappingPage.searchAssociatedCaseTemplate(petramcoFacilitiesCaseTemplateStr);
+            expect(await editApprovalMappingPage.isSearchedAssociatedCaseTemplateDisplayed()).toBeFalsy('Searched case template from Facilities LOB is displayed.');
+
             await editApprovalMappingPage.searchCaseTemplate(globalCaseTemplateStr);
             await editApprovalMappingPage.selectCaseTemplateCheckbox();
             await editApprovalMappingPage.clickCaseTemplateforApprovalRightArrawBtn();
+
+
             await editApprovalMappingPage.clickCancelApprovalMappingBtn();
         });
         it('[DRDMV-10703,DRDMV-1303]: Verify Duplicate Approval Mapping', async () => {
@@ -426,6 +493,15 @@ describe("Case Approval Mapping Tests", () => {
             expect(await editApprovalMappingPage.isDropdownDisabled('StatusApproved')).toBeTruthy('StatusApproved dropdown is editable');
             expect(await editApprovalMappingPage.isCasesCreatedWithoutTemplateToggleDisabled()).toBeTruthy('CasesCreatedWithoutTemplateToggleButton is editable');
             await editApprovalMappingPage.searchCaseTemplate(petramcoCaseTemplateStr);
+            expect(await editApprovalMappingPage.isSearchedCaseTemplateDisplayed()).toBeTruthy('Searched case template from Human Resource LOB is not displayed.');
+            await editApprovalMappingPage.searchCaseTemplate(globalCaseTemplateStr);
+            expect(await editApprovalMappingPage.isSearchedCaseTemplateDisplayed()).toBeTruthy('Searched case template from Human Resource LOB is not displayed.');
+            await editApprovalMappingPage.searchCaseTemplate(globalFacilitiesCaseTemplateStr);
+            expect(await editApprovalMappingPage.isSearchedCaseTemplateDisplayed()).toBeFalsy('Searched case template from Facilities LOB is displayed.');
+            await editApprovalMappingPage.searchCaseTemplate(petramcoFacilitiesCaseTemplateStr);
+            expect(await editApprovalMappingPage.isSearchedCaseTemplateDisplayed()).toBeFalsy('Searched case template from Facilities LOB is displayed.');
+
+            await editApprovalMappingPage.searchCaseTemplate(petramcoCaseTemplateStr);
             await editApprovalMappingPage.selectCaseTemplateCheckbox();
             expect(await editApprovalMappingPage.isSelectCaseTemplateforApprovalRightArrawBtnEnabled()).toBeFalsy('Case template can be associated');
             await editApprovalMappingPage.searchAssociatedCaseTemplate(globalCaseTemplateStr);
@@ -449,6 +525,51 @@ describe("Case Approval Mapping Tests", () => {
             await utilGrid.searchRecord(newApprovalName);
             await expect(utilGrid.isGridRecordPresent(newApprovalName)).toBeFalsy('Grid record displayed on grid console after deletion.');
         });
+
+        it('[DRDMV-10703,DRDMV-1303]: Create case approval mapping with same name for different LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login("fritz");
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', 'Configure Case Approvals - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(approvalMappingName)).toBeFalsy('Human Resources LOB approval mapping is not visible in Psilon-Human Resources');
+            await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
+            expect(await createApprovalMappingPage.getCreateApprovalMappingHeaderText()).toBe('Add Approval Mapping');
+            await createApprovalMappingPage.setApprovalMappingName(approvalMappingName);
+            await createApprovalMappingPage.selectCompany('Petramco');
+            await createApprovalMappingPage.selectStatusTrigger('Assigned');
+            await createApprovalMappingPage.selectStatusMappingApproved('In Progress');
+            await createApprovalMappingPage.selectStatusMappingRejected('Canceled');
+            await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Pending');
+            await createApprovalMappingPage.selectStatusMappingError('New');
+            expect(await createApprovalMappingPage.isSaveApprovalMappingBtnEnabled()).toBeFalsy();
+            await createApprovalMappingPage.clickSaveApprovalMappingBtn();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await editApprovalMappingPage.getApprovalMappingName()).toBe(approvalMappingName);
+
+            await editApprovalMappingPage.searchCaseTemplate(petramcoCaseTemplateStr);
+            expect(await editApprovalMappingPage.isSearchedCaseTemplateDisplayed()).toBeFalsy('Searched case template from Human Resource LOB is displayed.');
+            await editApprovalMappingPage.searchCaseTemplate(globalCaseTemplateStr);
+            expect(await editApprovalMappingPage.isSearchedCaseTemplateDisplayed()).toBeFalsy('Searched case template from Human Resource LOB is displayed.');
+            await editApprovalMappingPage.searchCaseTemplate(globalFacilitiesCaseTemplateStr);
+            expect(await editApprovalMappingPage.isSearchedCaseTemplateDisplayed()).toBeTruthy('Searched case template from Facilities LOB is not displayed.');
+            await editApprovalMappingPage.searchCaseTemplate(petramcoFacilitiesCaseTemplateStr);
+            expect(await editApprovalMappingPage.isSearchedCaseTemplateDisplayed()).toBeTruthy('Searched case template from Facilities LOB is not displayed.');
+            
+            await editApprovalMappingPage.searchAssociatedCaseTemplate(petramcoCaseTemplateStr);
+            expect(await editApprovalMappingPage.isSearchedAssociatedCaseTemplateDisplayed()).toBeFalsy('Searched case template from Human Resource LOB is displayed.');
+            await editApprovalMappingPage.searchAssociatedCaseTemplate(globalCaseTemplateStr);
+            expect(await editApprovalMappingPage.isSearchedAssociatedCaseTemplateDisplayed()).toBeFalsy('Searched case template from Human Resource LOB is displayed.');
+            await editApprovalMappingPage.searchAssociatedCaseTemplate(globalFacilitiesCaseTemplateStr);
+            expect(await editApprovalMappingPage.isSearchedAssociatedCaseTemplateDisplayed()).toBeFalsy('Searched case template from Facilities LOB is displayed.');
+            await editApprovalMappingPage.searchAssociatedCaseTemplate(petramcoFacilitiesCaseTemplateStr);
+            expect(await editApprovalMappingPage.isSearchedAssociatedCaseTemplateDisplayed()).toBeFalsy('Searched case template from Facilities LOB is displayed.');
+
+            await editApprovalMappingPage.searchCaseTemplate(globalFacilitiesCaseTemplateStr);
+            await editApprovalMappingPage.selectCaseTemplateCheckbox();
+            await editApprovalMappingPage.clickCaseTemplateforApprovalRightArrawBtn();
+            await editApprovalMappingPage.clickCancelApprovalMappingBtn();
+        });
+
         afterAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.deleteApprovalMapping(caseModule);

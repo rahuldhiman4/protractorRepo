@@ -26,6 +26,17 @@ class ServiceTargetMilestoneConfig {
         mileStoneExecuteWhenCondition: '[name="milestoneForm"] .ui-select-match',
         mileStoneActionFieldSelectionDropDown : '.ui-select-choices-row-inner',
         mileStoneActionFieldSelectionSearch : 'input.ui-select-search',
+        dropDownOption: '.ui-select-choices-row',
+
+        mileStoneNotificationForm: '[name="emailAlertForm"]',
+        mileStoneNotificationFormEnterTitleInput: '[name="emailAlertForm"] input[placeholder="Enter Action Title"]',
+        mileStoneNotificationFormEnterDescInput: '[name="emailAlertForm"] div[placeholder="Enter Description"]',
+        mileStoneNotificationFormSelectDeliveryMethod:'[name="emailAlertForm"] input[placeholder="Select Delivery Method"]',
+        mileStoneNotificationFormEnterToInput: '[name="emailAlertForm"] input[aria-label="To"]',
+        mileStoneNotificationFormSelectNotificationTemplate:'[name="emailAlertForm"] div[placeholder="Select Notification Template"]',
+        mileStoneNotificationFormSelectNotificationTemplateInput:'[name="emailAlertForm"] input[placeholder="Select Notification Template"]',
+        mileStoneActionNotificationFormSaveBtn: '[name="emailAlertForm"] button.d-button_primary',
+
     }
 
     async isSLMMileStonePopUpDisplayed(): Promise<boolean> {
@@ -81,7 +92,6 @@ class ServiceTargetMilestoneConfig {
         });
     }
 
-
     async setMileStoneActionTitle(mileStoneActionTitle:string):Promise<void>{
         await $(this.selectors.mileStoneActionTitle).clear();
         await $(this.selectors.mileStoneActionTitle).sendKeys(mileStoneActionTitle);
@@ -116,6 +126,59 @@ class ServiceTargetMilestoneConfig {
 
     async clickAddNewMileStoneActionBtn():Promise<void>{
         await $(this.selectors.addNewMileStoneBtn).click();
+    }
+
+    //Fields for Milestone Notification Form
+
+    async isSetMileStoneNotificationActionPopUpDisplayed(): Promise<boolean> {
+        return await $(this.selectors.mileStoneNotificationForm).isPresent().then(async (result) => {
+            if (result) return await $(this.selectors.mileStoneNotificationForm).isDisplayed();
+            else return false;
+        })
+    }
+
+    async setMileStoneNotificationTitle(mileStoneActionTitle:string):Promise<void>{
+        await $(this.selectors.mileStoneNotificationFormEnterTitleInput).clear();
+        await $(this.selectors.mileStoneNotificationFormEnterTitleInput).sendKeys(mileStoneActionTitle);
+    }
+
+    async setMileStoneNotificationDescription(mileStoneActionTitle:string):Promise<void>{
+        await $(this.selectors.mileStoneNotificationFormEnterDescInput).clear();
+        await $(this.selectors.mileStoneNotificationFormEnterDescInput).sendKeys(mileStoneActionTitle);
+    }
+
+    async selectMileStoneNotificationDeliveryMethod(fieldValue:string):Promise<void>{
+        await utilCommon.selectDropDown2($(this.selectors.mileStoneNotificationFormSelectDeliveryMethod), fieldValue);
+    }
+
+    async setMileStoneNotificationToField(mileStoneActionTitle:string):Promise<void>{
+        await $(this.selectors.mileStoneNotificationFormEnterToInput).clear();
+        await $(this.selectors.mileStoneNotificationFormEnterToInput).sendKeys(mileStoneActionTitle);
+    }
+
+    async selectMileStoneNotificationTemplate(fieldValue:string):Promise<void>{
+        await utilCommon.selectDropDown2($(this.selectors.mileStoneNotificationFormSelectNotificationTemplate), fieldValue);
+    }
+
+    async clickOnNotificationTemplateDropDown():Promise<void>{
+        await $(this.selectors.mileStoneNotificationFormSelectNotificationTemplate).click();
+    }
+
+    async isNotificationTemplatePresentInDropDown(fieldValue: string): Promise<boolean> {
+        await $(this.selectors.mileStoneNotificationFormSelectNotificationTemplateInput).clear();
+        await $(this.selectors.mileStoneNotificationFormSelectNotificationTemplateInput).sendKeys(fieldValue);
+        let values= await $$(this.selectors.dropDownOption).count();
+        if (values >= 1) { return true; } else { return false; }
+    } 
+
+    async selectMileStoneNotificationTemplateValue(fieldValue:string):Promise<void>{
+        await $(this.selectors.mileStoneNotificationFormSelectNotificationTemplate).click();
+        await $(this.selectors.mileStoneNotificationFormSelectNotificationTemplateInput).sendKeys(fieldValue);
+        await element(by.cssContainingText(this.selectors.dropDownOption, fieldValue)).click();
+    }
+
+    async clickSaveMileStoneActionNotification():Promise<void>{
+        await $(this.selectors.mileStoneActionNotificationFormSaveBtn).click();
     }
 
 

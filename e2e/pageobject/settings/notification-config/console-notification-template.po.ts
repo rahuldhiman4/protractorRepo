@@ -18,7 +18,8 @@ class NotificationTemplateGridPage {
         createNotificationTemplate: "[rx-view-component-id='750e4190-378a-4f76-b7a7-1b37e0baa5e0'] button",
         searchBox: "[rx-view-component-id='adabdd0a-24fb-4d75-a265-ce0d72aeccb1'] [rx-id='search-text-input']",
         guid: 'adabdd0a-24fb-4d75-a265-ce0d72aeccb1',
-        deleteButton: '[rx-view-component-id="5dffa163-d72d-4af5-9751-76252d6cd21a"] button'
+        deleteButton: '[rx-view-component-id="5dffa163-d72d-4af5-9751-76252d6cd21a"] button',
+        notificationTemplateChk:'[rx-view-component-id="adabdd0a-24fb-4d75-a265-ce0d72aeccb1"] div[class="ui-grid-selection-row-header-buttons ui-grid-icon-ok"]'
     }
 
     async isCopyTemplateButtonDisabled(): Promise<boolean> {
@@ -26,7 +27,7 @@ class NotificationTemplateGridPage {
     }
 
     async selectTemplate() {
-        await $$(this.selectors.selectTemplateCheckBox).first().click();
+        await $$(this.selectors.notificationTemplateChk).first().click();
     }
 
     async clickCopyTemplate() {
