@@ -26,7 +26,7 @@ describe('Service Provider Model Tests Extended', () => {
     let password = 'Password_1234';
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
-        await loginPage.login('qkatawazi');
+        await loginPage.login(kingstoneUserName, password);
     });
 
     afterAll(async () => {
@@ -83,16 +83,17 @@ describe('Service Provider Model Tests Extended', () => {
                 "assigneeBusinessUnit": "Finance Back Office",
                 "assigneeSupportGroup": "Finance Back Support",
                 "assignee": "jstuart",
+                "lineOfBusiness": "KingstonOracle Finance",
             }
             //Creating an Article Template from API
-             knowledgeArticleTemplateData = {
+            knowledgeArticleTemplateData = {
                 templateName: "KnowledgetemplateName" + randomStr,
                 sectionTitle: "articleSection",
                 lineOfBusiness: "Kingston Legal"
 
             }
 
-            await apiHelper.apiLogin('jbarnes');
+            await apiHelper.apiLogin(kingstoneUserName, password);
             await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateData);
             await apiHelper.apiLogin(kingstoneUserName, password);
             await apiHelper.createKnowledgeSet(knowledgeSetDataKingstan);
@@ -236,6 +237,242 @@ describe('Service Provider Model Tests Extended', () => {
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login(kingstoneUserName, password);
+        });
+    });
+
+    //ankagraw
+    describe('[DRDMV-23674,DRDMV-23745,DRDMV-23761]: [Service Provider Model][Quick Case]: Verify the behavior when the case agent from service provider company is able to create a case for requester company', () => {
+        let response1, response2, response3, caseDataKingston, caseDataOracle, caseDataGlobal, templateDataPhytoCompany, newCaseTemplateKingston, newCaseTemplateOracle, newCaseTemplateGlobal, templateDataGlobalCompany, templateDataKingstanCompany, templateDataOracleCompany, newCaseTemplatePhyto, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseId, response11, response21, response31, caseDataKingston1, caseDataOracle1, caseDataGlobal1, newCaseTemplatePhyto1, templateDataPhytoCompany1, newCaseTemplateKingston1, newCaseTemplateOracle1, newCaseTemplateGlobal1, templateDataGlobalCompany1, templateDataKingstanCompany1, templateDataOracleCompany1;
+        beforeAll(async () => {
+            templateDataPhytoCompany = {
+                "templateName": randomStr + "CaseTemplateDRDMV23674",
+                "templateSummary": randomStr + "SummaryDRDMV23674",
+                "templateStatus": 'Active',
+                "company": 'Phyto',
+                "businessUnit": "Kingston HR",
+                "supportGroup": "Kingston AskHR",
+                "assignee": "smoran",
+                "ownerBU": 'Kingston HR',
+                "ownerGroup": "Kingston AskHR",
+                "lineOfBusiness": "Kingston HR"
+            }
+            templateDataKingstanCompany = {
+                "templateName": randomStr + "CaseTemplate1DRDMV23674",
+                "templateSummary": randomStr + "Summary1DRDMV23674",
+                "templateStatus": 'Active',
+                "company": 'Kingston',
+                "businessUnit": "Kingston HR",
+                "supportGroup": "Kingston AskHR",
+                "assignee": "smoran",
+                "ownerBU": 'Kingston HR',
+                "ownerGroup": "Kingston AskHR",
+                "lineOfBusiness": "Kingston HR"
+            }
+            templateDataOracleCompany = {
+                "templateName": randomStr + "CaseTemplate2DRDMV23674",
+                "templateSummary": randomStr + "Summary2DRDMV23674",
+                "templateStatus": 'Active',
+                "company": 'Oracle',
+                "businessUnit": "Kingston HR",
+                "supportGroup": "Kingston AskHR",
+                "assignee": "smoran",
+                "ownerBU": 'Kingston HR',
+                "ownerGroup": "Kingston AskHR",
+                "lineOfBusiness": "Kingston HR"
+            }
+            templateDataGlobalCompany = {
+                "templateName": randomStr + "CaseTemplate3DRDMV23674",
+                "templateSummary": randomStr + "Summary3 DRDMV23674",
+                "templateStatus": 'Active',
+                "company": '- Global -',
+                "businessUnit": "Kingston HR",
+                "supportGroup": "Kingston AskHR",
+                "assignee": "smoran",
+                "ownerBU": 'Kingston HR',
+                "ownerGroup": "Kingston AskHR",
+                "lineOfBusiness": "Kingston HR"
+            }
+            await apiHelper.apiLogin(kingstoneUserName, password);
+            newCaseTemplatePhyto = await apiHelper.createCaseTemplate(templateDataPhytoCompany);
+            newCaseTemplateKingston = await apiHelper.createCaseTemplate(templateDataKingstanCompany);
+            newCaseTemplateOracle = await apiHelper.createCaseTemplate(templateDataOracleCompany);
+            newCaseTemplateGlobal = await apiHelper.createCaseTemplate(templateDataGlobalCompany);
+
+            caseDataKingston = {
+                "Requester": "Trump",
+                "Summary": "Automated Manager Level Approval" + randomStr,
+                "Case Template ID": newCaseTemplateKingston.id
+            }
+
+            caseDataOracle = {
+                "Requester": "dkramer",
+                "Summary": "Automated Manager Level Approval" + randomStr,
+                "Case Template ID": newCaseTemplateOracle.id
+            }
+
+            caseDataGlobal = {
+                "Requester": "dkramer",
+                "Summary": "Automated Manager Level Approval" + randomStr,
+                "Case Template ID": newCaseTemplateGlobal.id
+            }
+            await apiHelper.apiLogin(kingstoneUserName, password);
+            response1 = await apiHelper.createCase(caseDataKingston);
+            response2 = await apiHelper.createCase(caseDataOracle);
+            response3 = await apiHelper.createCase(caseDataGlobal);
+
+            templateDataPhytoCompany1 = {
+                "templateName": "CaseTemplate DRDMV23674" + randomStr,
+                "templateSummary": "Summary DRDMV23674" + randomStr,
+                "templateStatus": 'Active',
+                "company": 'Phyto',
+                "businessUnit": "Oracle HR",
+                "supportGroup": "Oracle AskHR",
+                "assignee": "umiguelde",
+                "ownerBU": 'Oracle HR',
+                "ownerGroup": "Oracle AskHR",
+                "lineOfBusiness": "Oracle HR"
+            }
+            templateDataKingstanCompany1 = {
+                "templateName": "CaseTemplate1 DRDMV23674" + randomStr,
+                "templateSummary": "Summary1 DRDMV23674" + randomStr,
+                "templateStatus": 'Active',
+                "company": 'Kingston',
+                "businessUnit": "Oracle HR",
+                "supportGroup": "Oracle AskHR",
+                "assignee": "umiguelde",
+                "ownerBU": 'Oracle HR',
+                "ownerGroup": "Oracle AskHR",
+                "lineOfBusiness": "Oracle HR"
+            }
+            templateDataOracleCompany1 = {
+                "templateName": "CaseTemplate2 DRDMV23674" + randomStr,
+                "templateSummary": "Summary2 DRDMV23674" + randomStr,
+                "templateStatus": 'Active',
+                "company": 'Oracle',
+                "businessUnit": "Oracle HR",
+                "supportGroup": "Oracle AskHR",
+                "assignee": "umiguelde",
+                "ownerBU": 'Oracle HR',
+                "ownerGroup": "Oracle AskHR",
+                "lineOfBusiness": "Oracle HR"
+            }
+            templateDataGlobalCompany1 = {
+                "templateName": "CaseTemplate3 DRDMV23674 " + randomStr,
+                "templateSummary": "Summary3 DRDMV23674" + randomStr,
+                "templateStatus": 'Active',
+                "company": '- Global -',
+                "businessUnit": "Oracle HR",
+                "supportGroup": "Oracle AskHR",
+                "assignee": "umiguelde",
+                "ownerBU": 'Oracle HR',
+                "ownerGroup": "Oracle AskHR",
+                "lineOfBusiness": "Oracle HR"
+            }
+            await apiHelper.apiLogin(oracleUserName, password);
+            newCaseTemplatePhyto1 = await apiHelper.createCaseTemplate(templateDataPhytoCompany);
+            newCaseTemplateKingston1 = await apiHelper.createCaseTemplate(templateDataKingstanCompany);
+            newCaseTemplateOracle1 = await apiHelper.createCaseTemplate(templateDataOracleCompany);
+            newCaseTemplateGlobal1 = await apiHelper.createCaseTemplate(templateDataGlobalCompany);
+
+            caseDataKingston1 = {
+                "Requester": "jstuart",
+                "Summary": "Automated Manager Level Approval" + randomStr,
+                "Origin": "Agent",
+                "Case Template ID": newCaseTemplateKingston1.displayId
+            }
+
+            caseDataOracle1 = {
+                "Requester": "jstuart",
+                "Summary": "Automated Manager Level Approval" + randomStr,
+                "Origin": "Agent",
+                "Case Template ID": newCaseTemplateOracle1.displayId
+            }
+
+            caseDataGlobal1 = {
+                "Requester": "jstuart",
+                "Summary": "Automated Manager Level Approval" + randomStr,
+                "Origin": "Agent",
+                "Case Template ID": newCaseTemplateGlobal1.displayId
+            }
+            await apiHelper.apiLogin(oracleUserName, password);
+            response11 = await apiHelper.createCase(caseDataKingston1);
+            response21 = await apiHelper.createCase(caseDataOracle1);
+            response31 = await apiHelper.createCase(caseDataGlobal1);
+        });
+        it('[DRDMV-23674,DRDMV-23745,DRDMV-23761]: [Service Provider Model][Quick Case]: Verify the behavior when the case agent from service provider company is able to create a case for requester company', async () => {
+            await navigationPage.gotoQuickCase();
+            await quickCasePo.selectRequesterName('David Kramer');
+           
+            await quickCasePo.setCaseSummary(templateDataPhytoCompany.templateName);
+            expect(await quickCasePo.isCaseSummaryPresentInRecommendedCases(templateDataPhytoCompany.templateName)).toBeTruthy();
+            await quickCasePo.isRecommendedKnowledgeEmpty();
+            await quickCasePo.clickArrowFirstRecommendedCaseTemplate();
+            expect(await previewCaseTemplateCasesPo.getCaseTemplateName()).toBe(templateDataPhytoCompany.templateName);
+            expect(await previewCaseTemplateCasesPo.getLineOfBusinessValue()).toBe("Kingston HR");
+            await previewCaseTemplateCasesPo.clickOnBackButton();
+            await quickCasePo.saveCase();
+            await casePreviewPo.clickGoToCaseButton();
+
+            await navigationPage.gotoQuickCase();
+            await quickCasePo.selectRequesterName('David Kramer');
+            await quickCasePo.selectCaseTemplate(newCaseTemplatePhyto.templateName);
+            await quickCasePo.getRecommendedTemplateHeaderValue("Kingston HR");
+            await quickCasePo.clickArrowFirstRecommendedCaseTemplate();
+            expect(await previewCaseTemplateCasesPo.getCaseTemplateName()).toBe(templateDataPhytoCompany.templateName);
+            expect(await previewCaseTemplateCasesPo.getLineOfBusinessValue()).toBe("Kingston HR");
+            await previewCaseTemplateCasesPo.clickOnBackButton();
+            await quickCasePo.saveCase();
+
+        });
+        it('[DRDMV-23674,DRDMV-23745,DRDMV-23761]: [Service Provider Model][Quick Case]: Verify the behavior when the case agent from service provider company is able to create a case for requester company', async () => {
+            await casePreviewPo.clickGoToCaseButton();
+            expect(await viewCasePo.getLineOfBusinessValue()).toBe("Kingston HR");
+            await viewCasePo.clickEditCaseButton();
+            expect(await editCasePo.isLineOfBusinessReadOnly()).toBeTruthy();
+            await editCasePo.updateCaseCategoryTier1("Applications");
+            await editCasePo.updateCaseCategoryTier2("Social");
+            await editCasePo.clickOnChangeCaseTemplate();
+            expect(await selectCasetemplateBladePo.isRecordPresent(templateDataKingstanCompany1.templateName)).toBeFalsy();
+            expect(await selectCasetemplateBladePo.isRecordPresent(templateDataOracleCompany1.templateName)).toBeFalsy();
+            expect(await selectCasetemplateBladePo.isRecordPresent(templateDataGlobalCompany1.templateName)).toBeFalsy();
+            expect(await selectCasetemplateBladePo.isRecordPresent(templateDataKingstanCompany.templateName)).toBeTruthy();
+            expect(await selectCasetemplateBladePo.isRecordPresent(templateDataOracleCompany.templateName)).toBeTruthy();
+            expect(await selectCasetemplateBladePo.isRecordPresent(templateDataKingstanCompany1.templateName)).toBeTruthy();
+            await selectCasetemplateBladePo.selectCaseTemplate(templateDataGlobalCompany.templateName);
+            await editCasePo.clickChangeAssignmentButton();
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Oracle HR')).toBeFalsy();
+            await changeAssignmentBladePo.selectBusinessUnit('Kingston HR');
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'Oracle AskHR')).toBeFalsy();
+            await changeAssignmentBladePo.selectSupportGroup('Kingston AskHR');
+            expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade('Unamuno Miguel de')).toBeTruthy('User is not present on Assignment blade');
+            await changeAssignmentBladePo.selectAssignee('David Kramer');
+            await changeAssignmentBladePo.clickOnAssignButton();
+            await editCasePo.clickSaveCase();
+            caseId = await viewCasePo.getCaseID();
+            expect(await viewCasePo.getRequesterName()).toBe('David Kramer');
+        });
+        it('[DRDMV-23674,DRDMV-23745,DRDMV-23761]: [Service Provider Model][Quick Case]: Verify the behavior when the case agent from service provider company is able to create a case for requester company', async () => {
+            await navigationPage.gotoCaseConsole();
+            expect(await utilityGrid.isGridRecordPresent(response1.displayId)).toBeTruthy();
+            expect(await utilityGrid.isGridRecordPresent(response2.displayId)).toBeTruthy();
+            expect(await utilityGrid.isGridRecordPresent(response3.displayId)).toBeTruthy();
+            expect(await utilityGrid.isGridRecordPresent(response11.displayId)).toBeFalsy();
+            expect(await utilityGrid.isGridRecordPresent(response21.displayId)).toBeFalsy();
+            expect(await utilityGrid.isGridRecordPresent(response31.displayId)).toBeFalsy();
+
+        });
+        it('[DRDMV-23674,DRDMV-23745,DRDMV-23761]: [Service Provider Model][Quick Case]: Verify the behavior when the case agent from service provider company is able to create a case for requester company', async () => {
+            await navigationPage.signOut();
+            await loginPage.login(oracleUserName, password);
+            await navigationPage.gotoCaseConsole();
+            expect(await utilityGrid.isGridRecordPresent(caseId)).toBeFalsy();
+            expect(await utilityGrid.isGridRecordPresent(response1.displayId)).toBeFalsy();
+            expect(await utilityGrid.isGridRecordPresent(response2.displayId)).toBeFalsy();
+            expect(await utilityGrid.isGridRecordPresent(response3.displayId)).toBeFalsy();
+            expect(await utilityGrid.isGridRecordPresent(response11.displayId)).toBeTruthy();
+            expect(await utilityGrid.isGridRecordPresent(response21.displayId)).toBeTruthy();
+            expect(await utilityGrid.isGridRecordPresent(response31.displayId)).toBeTruthy();
         });
     });
 })
