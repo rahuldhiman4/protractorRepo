@@ -10,6 +10,7 @@ import editCasePo from '../../pageobject/case/edit-case.po';
 import quickCasePo from '../../pageobject/case/quick-case.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
+import changeAssignmentOldBladePo from '../../pageobject/common/change-assignment-old-blade.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
@@ -137,11 +138,24 @@ describe('Case Template', () => {
             await utilGrid.selectLineOfBusiness('Facilities');
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
             await createCaseTemplate.setTemplateName(ALL_FIELD.templateName);
-            await createCaseTemplate.setCompanyName(ALL_FIELD.company);
             await createCaseTemplate.setCaseSummary(ALL_FIELD.templateSummary);
+            await createCaseTemplate.setCompanyName(ALL_FIELD.company);
+            // verify categ1, BU and SG as per LOB
+            await utilCommon.isDrpDownvalueDisplayed(createCaseTemplate.selectors.caseCategoryTier1Guid, ['Applications', 'Facilities', 'Fixed Assets', 'Phones', 'Projectors', 'Purchasing Card']);
+            await createCaseTemplate.setOwnerCompanyValue(ALL_FIELD.ownerCompany);
+            await utilCommon.isDrpDownvalueDisplayed(createCaseTemplate.selectors.businessUnitDropdown, ['Facilities', 'Facilities Support']);
             await createCaseTemplate.setOwnerCompanyValue(ALL_FIELD.ownerCompany);
             await createCaseTemplate.setBusinessUnitDropdownValue('Facilities Support');
+            await utilCommon.isDrpDownvalueDisplayed(createCaseTemplate.selectors.ownerGroupDropdown, ['Facilities', 'Pantry Service']);
+            await createCaseTemplate.setBusinessUnitDropdownValue('Facilities Support');
             await createCaseTemplate.setOwnerGroupDropdownValue('Facilities');
+            await createCaseTemplate.clickOnChangeAssignmentButton();
+            await changeAssignmentOldBladePo.selectCompany(ALL_FIELD.ownerCompany);
+            await changeAssignmentOldBladePo.isAllDropDownValuesMatches('Business Unit', ['Facilities', 'Facilities Support']);
+            await changeAssignmentOldBladePo.selectCompany(ALL_FIELD.ownerCompany);
+            await changeAssignmentOldBladePo.selectBusinessUnit('Facilities Support');
+            await changeAssignmentOldBladePo.isAllDropDownValuesMatches('Support Group', ['Facilities', 'Pantry Service']);
+            await changeAssignmentOldBladePo.clickOnCancelButton();
             // verify LOB is there
             expect(await createCaseTemplate.getLobValue()).toBe("Facilities");
             await createCaseTemplate.clickSaveCaseTemplate();
@@ -636,9 +650,9 @@ describe('Case Template', () => {
 
     describe('[DRDMV-1216]: [Case Template] Create Case Template with all fields data populated', async () => {
         let casetemplatePetramco, randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let caseTemplateGlobal = "CaseTempateHRGlobal_"+randomStr;
-        let caseTemplateCompany = "CaseTempateHRCompany_"+randomStr;
-        
+        let caseTemplateGlobal = "CaseTempateHRGlobal_" + randomStr;
+        let caseTemplateCompany = "CaseTempateHRCompany_" + randomStr;
+
         beforeAll(async () => {
             casetemplatePetramco = {
                 "templateName": 'caseTemplateName' + randomStr,
@@ -697,7 +711,7 @@ describe('Case Template', () => {
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
             await createCaseTemplate.setTemplateName(caseTemplateCompany);
             await createCaseTemplate.setCompanyName('Petramco');
-            await createCaseTemplate.setCaseSummary(caseTemplateCompany+' summary');
+            await createCaseTemplate.setCaseSummary(caseTemplateCompany + ' summary');
             await createCaseTemplate.setPriorityValue('High');
             await createCaseTemplate.isResolveCaseOnLastTaskCompletion(true);
             await createCaseTemplate.setBusinessUnitDropdownValue('United States Support');
@@ -709,7 +723,7 @@ describe('Case Template', () => {
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
             await createCaseTemplate.setTemplateName(caseTemplateGlobal);
             await createCaseTemplate.setCompanyName('Petramco');
-            await createCaseTemplate.setCaseSummary(caseTemplateGlobal+' summary');
+            await createCaseTemplate.setCaseSummary(caseTemplateGlobal + ' summary');
             await createCaseTemplate.setPriorityValue('Low');
             await createCaseTemplate.isResolveCaseOnLastTaskCompletion(true);
             await createCaseTemplate.setBusinessUnitDropdownValue('United States Support');
