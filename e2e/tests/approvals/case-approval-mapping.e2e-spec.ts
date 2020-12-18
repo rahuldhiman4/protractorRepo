@@ -302,7 +302,8 @@ describe("Case Approval Mapping Tests", () => {
             expect(await utilGrid.isGridRecordPresent(approvalMappingName)).toBeTruthy('Human Resources LOB case approval mapping is not visible to case BA with multiple LOB access');
             expect(await utilGrid.isGridRecordPresent(approvalMappingName2)).toBeTruthy('Human Resources LOB case approval mapping is not visible to case BA with multiple LOB access');
             expect(await utilGrid.isGridRecordPresent(globalApprovalMapping)).toBeTruthy('Human Resources LOB case approval mapping is not visible to case BA with multiple LOB access');
-
+        });
+        it('[DRDMV-10698,DRDMV-10710,DRDMV-10700,DRDMV-10701]: Verify if case approval mappings are accessible to Case BA user having access to multiple LOB', async () => {  
             await utilGrid.searchAndOpenHyperlink(approvalMappingName);
             await editApprovalMappingPage.setApprovalMappingName(approvalMappingName+"_updated");
             await editApprovalMappingPage.clickSaveApprovalMappingBtn();

@@ -80,7 +80,7 @@ describe('Service Target Configs', () => {
             "firstName": "caseBA",
             "lastName": "MultiLOB",
             "userId": "caseBAMultiLOB",
-            "userPermission": ["Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
+            "userPermission": ["SLM User","SLM Viewer","SLM Administrator","Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
         }
         await apiHelper.createNewUser(userData1);
         await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
@@ -90,7 +90,7 @@ describe('Service Target Configs', () => {
             "firstName": "caseMngr",
             "lastName": "MultiLOB",
             "userId": "caseMngrMultiLOB",
-            "userPermission": ["Case Manager", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
+            "userPermission": ["SLM User","SLM Viewer","SLM Administrator","Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
         }
         await apiHelper.createNewUser(userData2);
         await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
