@@ -306,7 +306,10 @@ class CreateAdhocTaskTemplatePage {
     }
 
     async getLineOfBussinessValue(): Promise<string> {
-    return await $(this.selectors.lineOfBussiness).getAttribute('placeholder');
+    let elementPresent = await $(this.selectors.lineOfBussiness).isPresent()
+    if (elementPresent == true) return await $(this.selectors.lineOfBussiness).getAttribute("placeholder");
+    else return await $('[rx-view-component-id="832baf9f-dd74-44f2-b63d-6f240baaab9b"] .dropdown-toggle').getText();
+
     }
 }
 
