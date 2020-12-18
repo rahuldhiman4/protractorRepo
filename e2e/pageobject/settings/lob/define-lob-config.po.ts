@@ -18,6 +18,14 @@ class ConsoleDefineLOB {
         return await utilGrid.getSelectedGridRecordValue(this.selectors.consoleGuid, columnName);
     }
 
+    async searchAndOpenLob(lob: string): Promise<void> {
+        await utilGrid.searchAndOpenHyperlink(lob, this.selectors.consoleGuid)
+    }
+
+    async isLobPresent(lob: string): Promise<void> {
+        await utilGrid.isGridRecordPresent(lob, this.selectors.consoleGuid)
+    }
+
 }
 
 export default new ConsoleDefineLOB();

@@ -33,6 +33,7 @@ class QuickCasePage {
         recommendedCaseTemplateGuid: '[rx-view-component-id="b01aa3f3-0371-4b7e-a956-b1cf025927d6"]',
         recommendedKnowledgeGuid: '[rx-view-component-id="dceba6c7-a422-4937-8314-e7c6c1bc2ce1"]',
         dropdownSourceValue: '.dropdown-item span',
+        recommendedTemplateDetail: '.rx-ellipsis span'
     }
 
     async pinRecommendedCases(numberOfCases: number): Promise<void> {
@@ -131,6 +132,10 @@ class QuickCasePage {
 
     async saveCase(): Promise<void> {
         await $(this.selectors.createCaseButton).click();
+    }
+
+    async getRecommendedTemplateHeaderValue(headerValue: string): Promise<string> {
+        return await browser.element(by.cssContainingText(this.selectors.recommendedTemplateDetail, headerValue)).getText();
     }
 
     async selectCaseTemplate(templateName: string): Promise<boolean> {
