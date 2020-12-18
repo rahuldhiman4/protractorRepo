@@ -1664,7 +1664,7 @@ describe('Create Process in Flowset', () => {
     });
 
     //kiran
-    describe('[DRDMV-23673]: [Service Provider Model][Create Case]: Verify the behavior when the case agent is able to create a case when one of the supporting organization supports a Line of Business for its own.', () => {
+    describe('[DRDMV-23673]: [Service Provide Model][Create Case]: Verify the behavior when the case agent from service provider company is able to create a case for requester company', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let knowledgeSetData, caseTemplateDataGlobalOracleHR, caseTemplateDataOracleHR, caseTemplateDataGlobalKingstonHR, caseTemplateDataKingstoneHR, caseIdKingstoneHR, caseIdOracleHR;
         let taskTemplateNameSummaryKingstoneHR = "1taskTemplateNameSummaryDRDMV23673" + randomStr;
@@ -1794,7 +1794,7 @@ describe('Create Process in Flowset', () => {
 
         });
 
-        it('[DRDMV-DRDMV-23673]: Create case without case template for Kingston HR', async () => {
+        it('[DRDMV-23673]: Create case without case template for Kingston HR', async () => {
             await navigationPage.gotoCaseConsole();
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('David Kramer');
@@ -1833,7 +1833,7 @@ describe('Create Process in Flowset', () => {
             await casePreviewPo.clickOncreateNewCaseButton();
         });
 
-        it('[DRDMV-DRDMV-23673]: Create case with case template for Kingston HR', async () => {
+        it('[DRDMV-23673]: Create case with case template for Kingston HR', async () => {
             await createCasePage.selectRequester('Stuart Rexroad');
             expect(await createCasePage.getLineOfBusinessValue()).toBe('Kingston HR');
             await createCasePage.setSummary(summary);
@@ -1865,7 +1865,7 @@ describe('Create Process in Flowset', () => {
             caseIdKingstoneHR = await viewCasePage.getCaseID();
         });
 
-        it('[DRDMV-DRDMV-23673]: Verify Edit Case Page', async () => {
+        it('[DRDMV-23673]: Verify Edit Case Page', async () => {
             await viewCasePage.clickEditCaseButton();
             expect(await editCasePo.isLineOfBusinessReadOnly()).toBeTruthy('Line of business is not readonly');
             await editCasePo.updateCaseCategoryTier1('Total Rewards');
@@ -1916,7 +1916,7 @@ describe('Create Process in Flowset', () => {
             await viewCasePage.clickOnTaskLink(taskTemplateNameSummaryKingstoneHR);
         });
 
-        it('[DRDMV-23744]: create knowledge article and verify with Resources Tab', async () => {
+        it('[DRDMV-23673]: create knowledge article and verify with Resources Tab', async () => {
             await navigationPage.gotoCreateKnowledge();
             await createKnowledgePage.clickOnTemplate('Reference');
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
@@ -1938,7 +1938,7 @@ describe('Create Process in Flowset', () => {
             await expect(await resourcesTabPo.getAdvancedSearchResultForParticularSection(summary)).toEqual(summary);
         });
 
-        it('[DRDMV-DRDMV-23673]: Login And Create case With Oracle HR User and verify data', async () => {
+        it('[DRDMV-23673]: Login And Create case With Oracle HR User and verify data', async () => {
             await navigationPage.signOut();
             await loginPage.login(oracleUserName, password);
             await navigationPage.gotoCaseConsole();
@@ -1986,7 +1986,7 @@ describe('Create Process in Flowset', () => {
             await viewTaskPo.clickOnViewCase();
         });
 
-        it('[DRDMV-23744]: Verify Knowledge Article and case with Resources Tab', async () => {
+        it('[DRDMV-23673]: Verify Knowledge Article and case with Resources Tab', async () => {
             await viewCasePage.clickOnTab('Resources');
             await resourcesTabPo.clickOnAdvancedSearchOptions();
             await resourcesTabPo.searchTextAndEnter(knowledgeTitle);
@@ -1995,7 +1995,7 @@ describe('Create Process in Flowset', () => {
             await expect(await resourcesTabPo.getAdvancedSearchResultForParticularSection('DRDMV23673CaseSummary123')).toEqual(undefined);
         });
 
-        it('[DRDMV-DRDMV-23673]: Verify KingstoneHR and Oracle HR Case Access in between LOB', async () => {
+        it('[DRDMV-23673]: Verify KingstoneHR and Oracle HR Case Access in between LOB', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
             expect(await utilityGrid.isGridRecordPresent(caseIdOracleHR)).toBeTruthy('caseIdOracleHR Missing on grid');
@@ -2018,13 +2018,7 @@ describe('Create Process in Flowset', () => {
     //kiran
     describe('[DRDMV-23682]: [Service Provider Model][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to multiple LOB', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        // let randomStr2 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        // let randomStr3 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-
         let knowledgeSetData2, knowledgeSetData, caseTemplateDataGlobalOracleHR, caseTemplateDataOracleHR, caseTemplateDataGlobalKingstonHR, caseTemplateDataKingstoneHR, caseIdKingstoneHR, caseIdOracleHR;
-        let taskTemplateNameSummaryKingstoneHR = "1taskTemplateNameSummaryDRDMV23682" + randomStr;
-        let taskTemplateNameSummaryOracleHR = "2taskTemplateNameSummaryDRDMV23682" + randomStr;
-        let summary = 'DRDMV23682CaseSummary';
 
         let caseSummaryKingstoneHR1 = "1caseSummaryKingstoneHR" + randomStr;
         let articleKingstoneHR1 = "1articleKingstoneHR" + randomStr;
@@ -2426,5 +2420,4 @@ describe('Create Process in Flowset', () => {
             await loginPage.login(kingstoneOracleLOBUserName, password);
         });
     });
-
 });
