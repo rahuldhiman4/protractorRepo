@@ -26,54 +26,55 @@ class AssignmentConfigCreatePage {
         assigneeGrpDrpDwn: 'c855a4ae-1283-4369-bbae-8daf38371c16',
         saveButton: '[rx-view-component-id="d7f16b2d-fe68-481b-a0f6-2144bb6403f1"] button',
         cancelButton: '[rx-view-component-id="8956a9fb-4fbd-4e11-96e8-13dc7bb81abe"] button',
+        lobValue: '[rx-view-component-id="ccb87a1e-2ebe-400b-92ff-2d26f4e8a1bb"] .pull-left'
     }
 
-    async setAssignmentMapName(mappingName:string){
+    async setAssignmentMapName(mappingName: string) {
         await $(this.selectors.assignmentMappingName).clear();
         await $(this.selectors.assignmentMappingName).sendKeys(mappingName);
     }
 
-    async setCompany(company:string){
+    async setCompany(company: string) {
         await utilCommon.selectDropDown(this.selectors.companyDrpDwn, company);
     }
 
-    async setBusinessUnit(bu:string){
+    async setBusinessUnit(bu: string) {
         await utilCommon.selectDropDown(this.selectors.businessUnitDrpDwn, bu);
     }
 
-    async setDepartement(department:string){
+    async setDepartement(department: string) {
         await utilCommon.selectDropDown(this.selectors.departmentDrpDwn, department);
     }
 
-    async setFlowset(flowset:string){
+    async setFlowset(flowset: string) {
         await utilCommon.selectDropDown(this.selectors.flowsetDrpDwn, flowset);
     }
 
-    async setCategoryTier1(category1:string){
+    async setCategoryTier1(category1: string) {
         await utilCommon.selectDropDown(this.selectors.catTier1DrpDwn, category1);
     }
 
-    async setCategoryTier2(category2:string){
+    async setCategoryTier2(category2: string) {
         await utilCommon.selectDropDown(this.selectors.catTier2DrpDwn, category2);
     }
 
-    async setCategoryTier3(category3:string){
+    async setCategoryTier3(category3: string) {
         await utilCommon.selectDropDown(this.selectors.catTier3DrpDwn, category3);
     }
 
-    async setCategoryTier4(category4:string){
+    async setCategoryTier4(category4: string) {
         await utilCommon.selectDropDown(this.selectors.catTier4DrpDwn, category4);
     }
 
-    async setPriority(company:string){
+    async setPriority(company: string) {
         await utilCommon.selectDropDown(this.selectors.priorityDrpDwn, company);
     }
 
-    async setSupportCompany(suppCompany:string){
+    async setSupportCompany(suppCompany: string) {
         await utilCommon.selectDropDown(this.selectors.supportCompanyDrpDwn, suppCompany);
     }
 
-    async setSupportGroup(supportGrp:string){
+    async setSupportGroup(supportGrp: string) {
         await utilCommon.selectDropDown(this.selectors.supportGrpDrpDwn, supportGrp);
     }
 
@@ -86,33 +87,33 @@ class AssignmentConfigCreatePage {
     }
 
     async areAllFieldsPresentOnUI(data: string[]): Promise<boolean> {
-            let arr: string[] = [];
-            let fieldsCount: number  = await $$(this.selectors.addAssignmentMappingFields).count();
-            for (let i = 0; i < fieldsCount; i++) {
-                let labelTxt: string = await $$(this.selectors.addAssignmentMappingFields).get(i).getText();
-                arr[i] = labelTxt;
-            }
-            arr = arr.sort();
-            arr = arr.filter(v=>v!='');
-            data = data.sort();          
-            return arr.length === data.length && arr.every(
-                (value, index) => (value === data[index])
-            );
+        let arr: string[] = [];
+        let fieldsCount: number = await $$(this.selectors.addAssignmentMappingFields).count();
+        for (let i = 0; i < fieldsCount; i++) {
+            let labelTxt: string = await $$(this.selectors.addAssignmentMappingFields).get(i).getText();
+            arr[i] = labelTxt;
+        }
+        arr = arr.sort();
+        arr = arr.filter(v => v != '');
+        data = data.sort();
+        return arr.length === data.length && arr.every(
+            (value, index) => (value === data[index])
+        );
     }
 
     async isCompanyDropdownValueMatches(values: string[]): Promise<boolean> {
         return await utilCommon.isDrpDownvalueDisplayed('471bbeb3-3965-46b6-b74d-4f2a10fe3cce', values);
     }
 
-    async setAssignee(assigneeName:string){
+    async setAssignee(assigneeName: string) {
         await utilCommon.selectDropDown(this.selectors.assigneeGrpDrpDwn, assigneeName);
     }
 
-    async setRegion(Region:string){
+    async setRegion(Region: string) {
         await utilCommon.selectDropDown(this.selectors.regionDrpDwn, Region);
     }
 
-    async setSite(Site:string){
+    async setSite(Site: string) {
         await utilCommon.selectDropDown(this.selectors.siteDrpDwn, Site);
     }
 
@@ -124,7 +125,7 @@ class AssignmentConfigCreatePage {
         return await utilCommon.isDrpDownvalueDisplayed(this.selectors.siteDrpDwn, data);
     }
 
-    async setLabel(label:string){
+    async setLabel(label: string) {
         await utilCommon.selectDropDown(this.selectors.labelDrpDwn, label);
     }
 
@@ -161,6 +162,10 @@ class AssignmentConfigCreatePage {
             }
         }
         return await utilCommon.isValuePresentInDropDown(guid, value);
+    }
+
+    async getLobValue(): Promise<string> {
+        return await $(this.selectors.lobValue).getText();
     }
 }
 

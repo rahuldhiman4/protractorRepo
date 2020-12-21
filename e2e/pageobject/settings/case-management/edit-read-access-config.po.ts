@@ -1,5 +1,5 @@
-import { $, $$, browser, protractor, ProtractorExpectedConditions, element, by } from "protractor";
-import utilCommon from '../../../utils/util.common'
+import { $, $$, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import utilCommon from '../../../utils/util.common';
 
 class ReadAccessConfigEditPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -19,23 +19,21 @@ class ReadAccessConfigEditPage {
         businessUnitGuid: '2d897e8d-c447-4a0f-b494-50c0eb0fc3ac',
         categoryTier4Guid: '0ad049c9-856d-4945-82f1-9981d2d62465',
         labelValue: '[rx-view-component-id="0ea3f865-68f7-45a8-859c-a1dc86e69742"] .ui-select-match-text',
-        labelGuid: '324d4505-e365-4371-a28b-4ab8bdd2565c'
+        labelGuid: '324d4505-e365-4371-a28b-4ab8bdd2565c',
+        lobValue: '[rx-view-component-id="fa35a8a4-bcb2-4617-ba34-11361be50488"] .pull-left'
     }
 
     async isAccessMappingNameDisabled(): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.supportGroup)));
         return await $(this.selectors.editName).getAttribute("readonly") == "true";
     }
 
     async isDefaultToggleBtnDisabled(): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.supportGroup)));
         let readProperty1: string = await $$(this.selectors.defaultToggle).get(0).getAttribute("disabled");
         let readProperty2: string = await $$(this.selectors.defaultToggle).get(1).getAttribute("disabled");
         return (readProperty1 == "true" && readProperty2 == "true")
     }
 
     async isSaveBtnDisabled(): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.saveButton)));
         return await $(this.selectors.saveButton).getAttribute("disabled") == "true";
     }
 
@@ -80,15 +78,15 @@ class ReadAccessConfigEditPage {
         await $(this.selectors.editName).sendKeys(mappingName);
     }
 
-    async selectSupportGroup(supportGroup:string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.supportGroupGuid,supportGroup);
-     }
+    async selectSupportGroup(supportGroup: string): Promise<void> {
+        await utilCommon.selectDropDown(this.selectors.supportGroupGuid, supportGroup);
+    }
 
-     async selectBusinessUnit(businessUnit:string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.businessUnitGuid,businessUnit);
-     }
+    async selectBusinessUnit(businessUnit: string): Promise<void> {
+        await utilCommon.selectDropDown(this.selectors.businessUnitGuid, businessUnit);
+    }
 
-     async getCategoryTier4(): Promise<string> {
+    async getCategoryTier4(): Promise<string> {
         return await $(`[rx-view-component-id="${this.selectors.categoryTier4Guid}"] .ui-select-match-text`).getText();
     }
 
@@ -99,6 +97,9 @@ class ReadAccessConfigEditPage {
         });
     }
 
+    async getLobValue(): Promise<string> {
+        return await $(this.selectors.lobValue).getText();
+    }
 }
 
 export default new ReadAccessConfigEditPage();
