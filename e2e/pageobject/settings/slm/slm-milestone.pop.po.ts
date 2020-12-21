@@ -30,8 +30,8 @@ class ServiceTargetMilestoneConfig {
 
         mileStoneNotificationForm: '[name="emailAlertForm"]',
         mileStoneNotificationFormEnterTitleInput: '[name="emailAlertForm"] input[placeholder="Enter Action Title"]',
-        mileStoneNotificationFormEnterDescInput: '[name="emailAlertForm"] div[placeholder="Enter Description"]',
-        mileStoneNotificationFormSelectDeliveryMethod:'[name="emailAlertForm"] input[placeholder="Select Delivery Method"]',
+        mileStoneNotificationFormEnterDescInput: '[name="emailAlertForm"] input[placeholder="Enter Description"]',
+        mileStoneNotificationFormSelectDeliveryMethod:'[name="emailAlertForm"] div[placeholder="Select Delivery Method"]',
         mileStoneNotificationFormEnterToInput: '[name="emailAlertForm"] input[aria-label="To"]',
         mileStoneNotificationFormSelectNotificationTemplate:'[name="emailAlertForm"] div[placeholder="Select Notification Template"]',
         mileStoneNotificationFormSelectNotificationTemplateInput:'[name="emailAlertForm"] input[placeholder="Select Notification Template"]',
@@ -162,6 +162,10 @@ class ServiceTargetMilestoneConfig {
 
     async clickOnNotificationTemplateDropDown():Promise<void>{
         await $(this.selectors.mileStoneNotificationFormSelectNotificationTemplate).click();
+    }
+
+    async clearNotificationTemplateSelectionFromMilestone():Promise<void>{
+        await $(this.selectors.mileStoneNotificationFormSelectNotificationTemplateInput).clear();
     }
 
     async isNotificationTemplatePresentInDropDown(fieldValue: string): Promise<boolean> {
