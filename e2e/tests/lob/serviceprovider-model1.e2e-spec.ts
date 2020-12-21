@@ -4,6 +4,7 @@ import caseConsolePo from "../../pageobject/case/case-console.po";
 import { default as casePreviewPo, default as previewCasePage } from '../../pageobject/case/case-preview.po';
 import createCasePage from '../../pageobject/case/create-case.po';
 import editCasePo from '../../pageobject/case/edit-case.po';
+import quickCasePo from "../../pageobject/case/quick-case.po";
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePage from '../../pageobject/case/view-case.po';
 import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
@@ -1659,6 +1660,764 @@ describe('Create Process in Flowset', () => {
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login(kingstoneHRUserName, password);
+        });
+    });
+
+    //kiran
+    describe('[DRDMV-23673]: [Service Provide Model][Create Case]: Verify the behavior when the case agent from service provider company is able to create a case for requester company', () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let knowledgeSetData, caseTemplateDataGlobalOracleHR, caseTemplateDataOracleHR, caseTemplateDataGlobalKingstonHR, caseTemplateDataKingstoneHR, caseIdKingstoneHR, caseIdOracleHR;
+        let taskTemplateNameSummaryKingstoneHR = "1taskTemplateNameSummaryDRDMV23673" + randomStr;
+        let taskTemplateNameSummaryOracleHR = "2taskTemplateNameSummaryDRDMV23673" + randomStr;
+        let summary = 'DRDMV23673CaseSummary';
+        let knowledgeTitle = "KATitleDRDMV23673" + randomStr;
+
+        beforeAll(async () => {
+            // Create Data with Kingston HR LOB
+            await apiHelper.apiLogin(kingstoneHRUserName, password);
+            caseTemplateDataGlobalKingstonHR = {
+                "templateName": 'GlobalcaseTemplateNameKingstonHR' + randomStr,
+                "templateSummary": 'GlobalCaseTemplateSummaryKingstonHR' + randomStr,
+                "categoryTier1": 'Employee Relations',
+                "categoryTier2": 'Compensation',
+                "categoryTier3": 'Bonus',
+                "casePriority": "Low",
+                "templateStatus": "Active",
+                "company": "- Global -",
+                "businessUnit": "Kingston HR",
+                "supportGroup": "Kingston AskHR",
+                "assignee": "smoran",
+                "ownerBU": "Kingston HR",
+                "ownerGroup": "Kingston AskHR",
+                "lineOfBusiness": "Kingston HR"
+            }
+            await apiHelper.createCaseTemplate(caseTemplateDataGlobalKingstonHR);
+
+            caseTemplateDataKingstoneHR = {
+                "templateName": '2caseTemplateNameKingstonHR' + randomStr,
+                "templateSummary": '2caseTemplateSummaryKingstonHR' + randomStr,
+                "categoryTier1": 'Workforce Administration',
+                "categoryTier2": 'HR Operations',
+                "categoryTier3": 'Adjustments',
+                "casePriority": "High",
+                "templateStatus": "Active",
+                "company": "Phyto",
+                "businessUnit": "Kingston HR",
+                "supportGroup": "Kingston AskHR",
+                "assignee": "sochoa",
+                "ownerBU": "Kingston HR",
+                "ownerGroup": "Kingston AskHR",
+                "lineOfBusiness": "Kingston HR"
+            }
+            let newCaseTemplate = await apiHelper.createCaseTemplate(caseTemplateDataKingstoneHR);
+
+            let taskTemplateDataSet = {
+                "templateName": `${taskTemplateNameSummaryKingstoneHR}`,
+                "templateSummary": `${taskTemplateNameSummaryKingstoneHR}`,
+                "templateStatus": "Active",
+                "taskCompany": 'Phyto',
+                "assignee": "smoran",
+                "businessUnit": "Kingston HR",
+                "supportGroup": "Kingston AskHR",
+                "ownerCompany": "Phyto",
+                "ownerBusinessUnit": "Kingston HR",
+                "ownerGroup": "Kingston AskHR",
+                "lineOfBusiness": "Kingston HR"
+            }
+            let manualTaskTemplate = await apiHelper.createManualTaskTemplate(taskTemplateDataSet);
+            await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId);
+
+            //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+            // Create data knowledge set for KingstonOracle Finance 
+            knowledgeSetData = {
+                'knowledgeSetTitle': 'KASetPhyto' + randomStr,
+                'knowledgeSetDesc': 'KAPhyto_Desc' + randomStr,
+                'company': 'Phyto',
+                "lineOfBusiness": "Kingston HR"
+            }
+            await apiHelper.createKnowledgeSet(knowledgeSetData);
+
+            // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+            // Create data with Oracle HR Data
+            await apiHelper.apiLogin(oracleUserName, password);
+            caseTemplateDataGlobalOracleHR = {
+                "templateName": 'GlobalcaseTemplateNameOracleHR' + randomStr,
+                "templateSummary": 'GlobalCaseTemplateSummaryOracleHR' + randomStr,
+                "categoryTier1": 'Employee Relations',
+                "categoryTier2": 'Compensation',
+                "categoryTier3": 'Bonus',
+                "casePriority": "Low",
+                "templateStatus": "Active",
+                "company": "- Global -",
+                "businessUnit": "Oracle HR",
+                "supportGroup": "Oracle AskHR",
+                "assignee": "umiguelde",
+                "ownerBU": "Oracle HR",
+                "ownerGroup": "Oracle AskHR",
+                "lineOfBusiness": "Oracle HR"
+            }
+            await apiHelper.createCaseTemplate(caseTemplateDataGlobalOracleHR);
+
+            caseTemplateDataOracleHR = {
+                "templateName": '2caseTemplateNameOracleHR' + randomStr,
+                "templateSummary": '2caseTemplateSummaryOracleHR' + randomStr,
+                "categoryTier1": 'Workforce Administration',
+                "categoryTier2": 'HR Operations',
+                "categoryTier3": 'Adjustments',
+                "casePriority": "High",
+                "templateStatus": "Active",
+                "company": "Phyto",
+                "businessUnit": "Oracle HR",
+                "supportGroup": "Oracle AskHR",
+                "assignee": "umiguelde",
+                "ownerBU": "Oracle HR",
+                "ownerGroup": "Oracle AskHR",
+                "lineOfBusiness": "Oracle HR"
+            }
+            let newCaseTemplate2 = await apiHelper.createCaseTemplate(caseTemplateDataOracleHR);
+
+            let taskTemplateDataSet2 = {
+                "templateName": `${taskTemplateNameSummaryOracleHR}`,
+                "templateSummary": `${taskTemplateNameSummaryOracleHR}`,
+                "templateStatus": "Active",
+                "taskCompany": 'Phyto',
+                "assignee": "umorihei",
+                "businessUnit": "Oracle HR",
+                "supportGroup": "Oracle AskHR",
+                "ownerCompany": "Phyto",
+                "ownerBusinessUnit": "Oracle HR",
+                "ownerGroup": "Oracle AskHR",
+                "lineOfBusiness": "Oracle HR"
+            }
+            let manualTaskTemplate2 = await apiHelper.createManualTaskTemplate(taskTemplateDataSet2);
+            await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate2.displayId, manualTaskTemplate2.displayId);
+
+        });
+
+        it('[DRDMV-23673]: Create case without case template for Kingston HR', async () => {
+            await navigationPage.gotoCaseConsole();
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester('David Kramer');
+            expect(await createCasePage.getCompany()).toBe('Phyto');
+            expect(await createCasePage.getLineOfBusinessValue()).toBe('Kingston HR');
+            expect(await createCasePage.isLineOfBusinessDisabled).toBeTruthy('LOB is not disabled');
+            await createCasePage.setSummary(summary);
+            await createCasePage.selectCategoryTier1('Applications');
+            await createCasePage.selectCategoryTier2('Help Desk');
+            await createCasePage.selectCategoryTier3('Incident');
+
+            // Verify CategorTIer of Ericsson SAM LOB which don't have access to Kingston HR
+            expect(await createCasePage.isCategoryTier1DropDownValueDisplayed('General Ledger')).toBeFalsy('General Ledger CategoryTier1 drop down value displayed');
+
+            await createCasePage.clickChangeAssignmentButton();
+            await changeAssignmentBladePo.setAssignee('Phyto', 'Kingston HR', 'Kingston AskHR', 'Sherri Ochoa');
+
+            expect(await createCasePage.getCategoryTier1Value()).toBe('Applications');
+            expect(await createCasePage.getCategoryTier2Value()).toBe('Help Desk');
+            expect(await createCasePage.getCategoryTier3Value()).toBe('Incident');
+
+            expect(await createCasePage.getAssigneeBusinessUnitValue()).toBe('Kingston HR');
+            expect(await createCasePage.getAssigneeGroupValue()).toBe('Kingston AskHR');
+            expect(await createCasePage.getAssigneeValue()).toBe('Sherri Ochoa');
+
+            // Verify negative scenario for Ericsson SAM LOB for change assignment
+            await createCasePage.clickChangeAssignmentButton();
+            await changeAssignmentBladePo.selectCompany('Phyto');
+            await changeAssignmentBladePo.selectBusinessUnit('Oracle HR');
+            await changeAssignmentBladePo.selectSupportGroup('Oracle AskHR');
+            expect(await changeAssignmentBladePo.isAssigneeDisplayed('Unamuno Miguel de')).toBeFalsy('Assignee is diaplayed');
+            await changeAssignmentBladePo.clickOnCancelButton();
+
+            await createCasePage.clickSaveCaseButton();
+            expect(await casePreviewPo.getLineOfBusinessValue()).toBe('Kingston HR');
+            await casePreviewPo.clickOncreateNewCaseButton();
+        });
+
+        it('[DRDMV-23673]: Create case with case template for Kingston HR', async () => {
+            await createCasePage.selectRequester('Stuart Rexroad');
+            expect(await createCasePage.getLineOfBusinessValue()).toBe('Kingston HR');
+            await createCasePage.setSummary(summary);
+
+            await createCasePage.clickSelectCaseTemplateButton();
+            await selectCasetemplateBladePo.clickOnAllTemplateTab();
+
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalOracleHR.templateName)).toBeFalsy('caseTemplateDataGlobalEricssonSAM is display');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataOracleHR.templateName)).toBeFalsy('caseTemplateDataEricssonSAM is display');
+
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataKingstoneHR.templateName)).toBeTruthy('caseTemplateDataKingstoneHR is missing');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalKingstonHR.templateName)).toBeTruthy('caseTemplateDataGlobalKingstonHR is missing');
+
+            await selectCasetemplateBladePo.searchAndOpenCaseTemplate(caseTemplateDataGlobalKingstonHR.templateName);
+            expect(await previewCaseTemplatePo.isLabelTitleDisplayed('Case Summary')).toBeTruthy('Case Summary label is missing');
+            await previewCaseTemplatePo.clickOnBackButton();
+            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateDataGlobalKingstonHR.templateName);
+
+            expect(await createCasePage.getCategoryTier1Value()).toBe('Employee Relations');
+            expect(await createCasePage.getCategoryTier2Value()).toBe('Compensation');
+            expect(await createCasePage.getCategoryTier3Value()).toBe('Bonus');
+
+            expect(await createCasePage.getAssigneeBusinessUnitValue()).toBe('Kingston HR');
+            expect(await createCasePage.getAssigneeGroupValue()).toBe('Kingston AskHR');
+            expect(await createCasePage.getAssigneeValue()).toBe('Samara Moran');
+
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePage.clickGoToCaseButton();
+            caseIdKingstoneHR = await viewCasePage.getCaseID();
+        });
+
+        it('[DRDMV-23673]: Verify Edit Case Page', async () => {
+            await viewCasePage.clickEditCaseButton();
+            expect(await editCasePo.isLineOfBusinessReadOnly()).toBeTruthy('Line of business is not readonly');
+            await editCasePo.updateCaseCategoryTier1('Total Rewards');
+            await editCasePo.updateCaseCategoryTier2('Benefits');
+            await editCasePo.updateCaseCategoryTier3('Beneficiaries');
+
+            await editCasePo.clickOnChangeCaseTemplate();
+            await selectCasetemplateBladePo.clickOnAllTemplateTab();
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalOracleHR.templateName)).toBeFalsy('caseTemplateDataGlobalOracleHR is display');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataOracleHR.templateName)).toBeFalsy('caseTemplateDataGlobalOracleHR is display');
+
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataKingstoneHR.templateName)).toBeTruthy('caseTemplateDataKingstoneHR is missing');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalKingstonHR.templateName)).toBeTruthy('caseTemplateDataGlobalKingstonHR is missing');
+
+            await selectCasetemplateBladePo.searchAndOpenCaseTemplate(caseTemplateDataGlobalKingstonHR.templateName);
+            expect(await previewCaseTemplatePo.isLabelTitleDisplayed('Case Summary')).toBeTruthy('Case Summary label is missing');
+            await previewCaseTemplatePo.clickOnBackButton();
+            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateDataKingstoneHR.templateName);
+
+            expect(await editCasePo.getCategoryTier1()).toBe('Workforce Administration');
+            expect(await editCasePo.getCategoryTier2()).toBe('HR Operations');
+            expect(await editCasePo.getCategoryTier3()).toBe('Adjustments');
+
+            expect(await editCasePo.getAssigneeValue()).toBe('Sherri Ochoa');
+
+            await editCasePo.clickChangeAssignmentButton();
+            await changeAssignmentBladePo.setAssignee('Phyto', 'Kingston HR', 'Kingston AskHR', 'Jack Torrance');
+            expect(await editCasePo.getAssigneeValue()).toBe('Jack Torrance');
+
+            // Verify CategorTIer of Ericsson SAM LOB which don't have access to Kingston HR
+            expect(await editCasePo.isValuePresentInCategoryTier1('General Ledger')).toBeFalsy('General Ledger CategoryTier1 drop down value displayed');
+
+            // Verify negative scenario for Ericsson SAM LOB for change assignment
+            await editCasePo.clickChangeAssignmentButton();
+            await changeAssignmentBladePo.selectCompany('Phyto');
+            await changeAssignmentBladePo.selectBusinessUnit('Oracle HR');
+            await changeAssignmentBladePo.selectSupportGroup('Oracle AskHR');
+            expect(await changeAssignmentBladePo.isAssigneeDisplayed('Unamuno Miguel de')).toBeFalsy('Assignee is diaplayed');
+            await changeAssignmentBladePo.clickOnCancelButton();
+
+            await editCasePo.clickSaveCase();
+            await viewCasePage.clickAddTaskButton();
+            await manageTaskBladePo.clickAddAdhocTaskButton();
+            await createAdhocTaskPo.setSummary('adhocTask')
+            expect(await createAdhocTaskPo.getLineOfBussinessValue()).toBe('Kingston HR');
+            await createAdhocTaskPo.clickSaveAdhoctask();
+            await manageTaskBladePo.clickCloseButton();
+            await viewCasePage.clickOnTaskLink(taskTemplateNameSummaryKingstoneHR);
+        });
+
+        it('[DRDMV-23673]: create knowledge article and verify with Resources Tab', async () => {
+            await navigationPage.gotoCreateKnowledge();
+            await createKnowledgePage.clickOnTemplate('Reference');
+            await createKnowledgePage.clickOnUseSelectedTemplateButton();
+            await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeTitle);
+            await createKnowledgePage.selectKnowledgeSet(knowledgeSetData.knowledgeSetTitle);
+            await createKnowledgePage.clickOnSaveKnowledgeButton();
+            await previewKnowledgePo.clickGoToArticleButton();
+            await editKnowledgePo.setKnowledgeStatus('Draft');
+            await editKnowledgePo.setKnowledgeStatus('Publish Approval');
+
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseIdKingstoneHR);
+
+            await viewCasePage.clickOnTab('Resources');
+            await resourcesTabPo.clickOnAdvancedSearchOptions();
+            await resourcesTabPo.searchTextAndEnter(knowledgeTitle);
+            await resourcesTabPo.searchTextAndEnter(knowledgeTitle);
+            await expect(await resourcesTabPo.getAdvancedSearchResultForParticularSection(knowledgeTitle)).toEqual(knowledgeTitle);
+            await expect(await resourcesTabPo.getAdvancedSearchResultForParticularSection(summary)).toEqual(summary);
+        });
+
+        it('[DRDMV-23673]: Login And Create case With Oracle HR User and verify data', async () => {
+            await navigationPage.signOut();
+            await loginPage.login(oracleUserName, password);
+            await navigationPage.gotoCaseConsole();
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester('Ueshiba Morihei');
+            expect(await createCasePage.getLineOfBusinessValue()).toBe('Oracle HR');
+            await createCasePage.setSummary('DRDMV23673CaseSummary123');
+
+            await createCasePage.clickSelectCaseTemplateButton();
+            await selectCasetemplateBladePo.clickOnAllTemplateTab();
+
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataKingstoneHR.templateName)).toBeFalsy('caseTemplateDataKingstoneHR is display');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalKingstonHR.templateName)).toBeFalsy('caseTemplateDataGlobalKingstonHR is display');
+
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalOracleHR.templateName)).toBeTruthy('caseTemplateDataGlobalEricssonSAM is missing');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataOracleHR.templateName)).toBeTruthy('caseTemplateDataEricssonSAM is missing');
+
+            await selectCasetemplateBladePo.searchAndOpenCaseTemplate(caseTemplateDataOracleHR.templateName);
+            expect(await previewCaseTemplatePo.isLabelTitleDisplayed('Case Summary')).toBeTruthy('Case Summary label is missing');
+            await previewCaseTemplatePo.clickOnBackButton();
+            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateDataOracleHR.templateName);
+
+            expect(await createCasePage.getCategoryTier1Value()).toBe('Workforce Administration');
+            expect(await createCasePage.getCategoryTier2Value()).toBe('HR Operations');
+            expect(await createCasePage.getCategoryTier3Value()).toBe('Adjustments');
+
+
+            expect(await createCasePage.getAssigneeBusinessUnitValue()).toBe('Oracle HR');
+            expect(await createCasePage.getAssigneeGroupValue()).toBe('Oracle AskHR');
+            expect(await createCasePage.getAssigneeValue()).toBe('Unamuno Miguel de');
+
+            // Verify negative scenario for kingston HR LOB for change assignment
+            await createCasePage.clickChangeAssignmentButton();
+            await changeAssignmentBladePo.selectCompany('Phyto');
+            await changeAssignmentBladePo.selectBusinessUnit('Kingston HR');
+            await changeAssignmentBladePo.selectSupportGroup('Kingston AskHR');
+            expect(await changeAssignmentBladePo.isAssigneeDisplayed('Samara Moran')).toBeFalsy('Assignee is diaplayed');
+            await changeAssignmentBladePo.clickOnCancelButton();
+
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePage.clickGoToCaseButton();
+
+            caseIdOracleHR = await viewCasePage.getCaseID();
+            await viewCasePage.clickOnTaskLink(taskTemplateNameSummaryOracleHR);
+            await viewTaskPo.clickOnViewCase();
+        });
+
+        it('[DRDMV-23673]: Verify Knowledge Article and case with Resources Tab', async () => {
+            await viewCasePage.clickOnTab('Resources');
+            await resourcesTabPo.clickOnAdvancedSearchOptions();
+            await resourcesTabPo.searchTextAndEnter(knowledgeTitle);
+            await browser.sleep(3000); // wait untile result gets reflect
+            await expect(await resourcesTabPo.getAdvancedSearchResultForParticularSection(knowledgeTitle)).toEqual(undefined);
+            await expect(await resourcesTabPo.getAdvancedSearchResultForParticularSection('DRDMV23673CaseSummary123')).toEqual(undefined);
+        });
+
+        it('[DRDMV-23673]: Verify KingstoneHR and Oracle HR Case Access in between LOB', async () => {
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
+            expect(await utilityGrid.isGridRecordPresent(caseIdOracleHR)).toBeTruthy('caseIdOracleHR Missing on grid');
+            expect(await utilityGrid.isGridRecordPresent(caseIdKingstoneHR)).toBeFalsy('caseIdKingstoneHR Missing on grid');
+
+            await navigationPage.signOut();
+            await loginPage.login(kingstoneHRUserName, password);
+
+            await utilityGrid.clearFilter();
+            expect(await utilityGrid.isGridRecordPresent(caseIdOracleHR)).toBeFalsy('caseIdOracleHR Missing on grid');
+            expect(await utilityGrid.isGridRecordPresent(caseIdKingstoneHR)).toBeTruthy('caseIdKingstoneHR Missing on grid');
+        });
+
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login(kingstoneOracleLOBUserName, password);
+        });
+    });
+
+    //kiran
+    describe('[DRDMV-23682]: [Service Provider Model][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to multiple LOB', () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let knowledgeSetData2, knowledgeSetData, caseTemplateDataGlobalOracleHR, caseTemplateDataOracleHR, caseTemplateDataGlobalKingstonHR, caseTemplateDataKingstoneHR, caseIdKingstoneHR, caseIdOracleHR;
+
+        let caseSummaryKingstoneHR1 = "1caseSummaryKingstoneHR" + randomStr;
+        let articleKingstoneHR1 = "1articleKingstoneHR" + randomStr;
+
+        let caseSummaryOracleHR2 = "2caseSummaryOracleHR" + randomStr;
+        let articleOracleHR2 = "2articleOracleHR" + randomStr;
+
+        beforeAll(async () => {
+            // Create Data with Kingston HR LOB
+            await apiHelper.apiLogin(kingstoneOracleLOBUserName, password);
+            caseTemplateDataGlobalKingstonHR = {
+                "templateName": 'GlobalcaseTemplateNameKingstonHR' + randomStr,
+                "templateSummary": 'GlobalCaseTemplateSummaryKingstonHR' + randomStr,
+                "categoryTier1": 'Employee Relations',
+                "categoryTier2": 'Compensation',
+                "categoryTier3": 'Bonus',
+                "casePriority": "Low",
+                "templateStatus": "Active",
+                "company": "- Global -",
+                "businessUnit": "Kingston HR",
+                "supportGroup": "Kingston AskHR",
+                "assignee": "smoran",
+                "ownerBU": "Kingston HR",
+                "ownerGroup": "Kingston AskHR",
+                "lineOfBusiness": "Kingston HR"
+            }
+            await apiHelper.createCaseTemplate(caseTemplateDataGlobalKingstonHR);
+
+            caseTemplateDataKingstoneHR = {
+                "templateName": 'CaseTemplateNameKingstonHR' + randomStr,
+                "templateSummary": 'CaseTemplateNameKingstonHR' + randomStr,
+                "categoryTier1": 'Workforce Administration',
+                "categoryTier2": 'HR Operations',
+                "categoryTier3": 'Adjustments',
+                "casePriority": "High",
+                "templateStatus": "Active",
+                "company": "Phyto",
+                "businessUnit": "Kingston HR",
+                "supportGroup": "Kingston AskHR",
+                "assignee": "sochoa",
+                "ownerBU": "Kingston HR",
+                "ownerGroup": "Kingston AskHR",
+                "lineOfBusiness": "Kingston HR"
+            }
+            await apiHelper.createCaseTemplate(caseTemplateDataKingstoneHR);
+
+            // Create data knowledge set for Kingston HR 
+            knowledgeSetData = {
+                'knowledgeSetTitle': 'KASetKingstonHR' + randomStr,
+                'knowledgeSetDesc': 'KingstonHR_Desc' + randomStr,
+                'company': 'Phyto',
+                "lineOfBusiness": "Kingston HR"
+            }
+            await apiHelper.createKnowledgeSet(knowledgeSetData);
+
+
+            // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+            // Create data with Oracle HR Data
+
+            // Create data knowledge set for Oracle HR 
+            knowledgeSetData2 = {
+                'knowledgeSetTitle': 'KASetOracleHR' + randomStr,
+                'knowledgeSetDesc': 'KAPhyto_Desc' + randomStr,
+                'company': 'Phyto',
+                "lineOfBusiness": "Oracle HR"
+            }
+            await apiHelper.createKnowledgeSet(knowledgeSetData2);
+
+            caseTemplateDataGlobalOracleHR = {
+                "templateName": 'GlobalcaseTemplateNameOracleHR' + randomStr,
+                "templateSummary": 'GlobalCaseTemplateSummaryOracleHR' + randomStr,
+                "categoryTier1": 'Employee Relations',
+                "categoryTier2": 'Compensation',
+                "categoryTier3": 'Bonus',
+                "casePriority": "Low",
+                "templateStatus": "Active",
+                "company": "- Global -",
+                "businessUnit": "Oracle HR",
+                "supportGroup": "Oracle AskHR",
+                "assignee": "jtorrance",
+                "ownerBU": "Oracle HR",
+                "ownerGroup": "Oracle AskHR",
+                "lineOfBusiness": "Oracle HR"
+            }
+            await apiHelper.createCaseTemplate(caseTemplateDataGlobalOracleHR);
+
+            caseTemplateDataOracleHR = {
+                "templateName": 'CaseTemplateNameOracleHR' + randomStr,
+                "templateSummary": 'CaseTemplateNameOracleHR' + randomStr,
+                "categoryTier1": 'Workforce Administration',
+                "categoryTier2": 'HR Operations',
+                "categoryTier3": 'Adjustments',
+                "casePriority": "High",
+                "templateStatus": "Active",
+                "company": "Phyto",
+                "businessUnit": "Oracle HR",
+                "supportGroup": "Oracle AskHR",
+                "assignee": "umiguelde",
+                "ownerBU": "Oracle HR",
+                "ownerGroup": "Oracle AskHR",
+                "lineOfBusiness": "Oracle HR"
+            }
+            await apiHelper.createCaseTemplate(caseTemplateDataOracleHR);
+        });
+
+        it('[DRDMV-23682]: Create Case And Article Data For Kingston HR', async () => {
+            // Create Case For Kingston HR
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.selectLineOfBusiness('Kingston HR');
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester('David Kramer');
+            await createCasePage.setSummary(caseSummaryKingstoneHR1);
+            await createCasePage.clickChangeAssignmentButton();
+            await changeAssignmentBladePo.setAssignee('Phyto', 'Kingston HR', 'Kingston AskHR', 'Sherri Ochoa');
+            await createCasePage.clickSaveCaseButton();
+            await casePreviewPo.clickOncreateNewCaseButton();
+
+            //Create Knowledge Article Kingston HR
+            await navigationPage.gotoCreateKnowledge();
+            await createKnowledgePage.clickOnTemplate('Reference');
+            await createKnowledgePage.clickOnUseSelectedTemplateButton();
+            await createKnowledgePage.addTextInKnowlegeTitleField(articleKingstoneHR1);
+            await createKnowledgePage.selectKnowledgeSet(knowledgeSetData.knowledgeSetTitle);
+            await createKnowledgePage.clickOnSaveKnowledgeButton();
+            await previewKnowledgePo.clickGoToArticleButton();
+            await editKnowledgePo.setKnowledgeStatus('Draft');
+            await editKnowledgePo.setKnowledgeStatus('Publish Approval');
+        });
+
+        it('[DRDMV-23682]: Create Case And Article Data For Oracle HR', async () => {
+            // // Create Case For Oracle HR
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.selectLineOfBusiness('Oracle HR');
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester('Ueshiba Morihei');
+            await createCasePage.setSummary(caseSummaryOracleHR2);
+            await createCasePage.clickChangeAssignmentButton();
+            await changeAssignmentBladePo.setAssignee('Phyto', 'Oracle HR', 'Oracle AskHR', 'Vixie Paul');
+            await createCasePage.clickSaveCaseButton();
+            await casePreviewPo.clickOncreateNewCaseButton();
+
+            //Create Knowledge Article Oracle HR
+            await navigationPage.gotoCreateKnowledge();
+            await createKnowledgePage.clickOnTemplate('Reference');
+            await createKnowledgePage.clickOnUseSelectedTemplateButton();
+            await createKnowledgePage.addTextInKnowlegeTitleField(articleOracleHR2);
+            await createKnowledgePage.selectKnowledgeSet(knowledgeSetData2.knowledgeSetTitle);
+            await createKnowledgePage.clickOnSaveKnowledgeButton();
+            await previewKnowledgePo.clickGoToArticleButton();
+            await editKnowledgePo.setKnowledgeStatus('Draft');
+            await editKnowledgePo.setKnowledgeStatus('Publish Approval');
+        });
+
+        it('[DRDMV-23682]: Create Quick Case Negative scenario With Kingston HR', async () => {
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.selectLineOfBusiness('Kingston HR');
+            await navigationPage.gotoQuickCase();
+
+            await quickCasePo.selectRequesterName('smoran');
+            await quickCasePo.setCaseSummary(caseSummaryOracleHR2);
+            expect(await resourcesTabPo.isRecommendedCasePresent(caseSummaryOracleHR2)).toBeTruthy(`${caseSummaryOracleHR2} commonNameKingstonHR displayed in Recommended Knowledge`);
+            await quickCasePo.clickStartOverButton();
+
+            await quickCasePo.selectRequesterName('smoran');
+            await quickCasePo.setCaseSummary(caseTemplateDataOracleHR.templateName);
+            expect(await resourcesTabPo.isRecommendedTemplatePresent(caseTemplateDataOracleHR.templateName)).toBeTruthy(`${caseTemplateDataOracleHR.templateName} commonNameKingstonHR missing in Recommended Knowledge`);
+            await quickCasePo.clickStartOverButton();
+
+            await quickCasePo.selectRequesterName('smoran');
+            await quickCasePo.setCaseSummary(caseTemplateDataGlobalOracleHR.templateName);
+            expect(await resourcesTabPo.isRecommendedTemplatePresent(caseTemplateDataGlobalOracleHR.templateName)).toBeTruthy(`${caseTemplateDataGlobalOracleHR.templateName} commonNameKingstonHR missing in Recommended Knowledge`);
+            await quickCasePo.clickStartOverButton();
+
+            await quickCasePo.selectRequesterName('smoran');
+            await quickCasePo.setCaseSummary(articleOracleHR2);
+            expect(await resourcesTabPo.isRecommendedKnowledgePresent(articleOracleHR2)).toBeTruthy(`${articleOracleHR2} commonNameKingstonHR displayed in Recommended Knowledge`);
+            await quickCasePo.clickStartOverButton();
+        });
+
+        it('[DRDMV-23682]: Create Quick Case without template and verify Kingston HR in recommended data', async () => {
+            await quickCasePo.selectRequesterName('smoran');
+            await quickCasePo.setCaseSummary(caseSummaryKingstoneHR1);
+            expect(await resourcesTabPo.isRecommendedCasePresent(caseSummaryKingstoneHR1)).toBeTruthy(`${caseSummaryKingstoneHR1} caseSummaryKingstoneHR1 displayed in Recommended Knowledge`);
+            await quickCasePo.clickStartOverButton();
+
+            await quickCasePo.selectRequesterName('smoran');
+            await quickCasePo.setCaseSummary(caseTemplateDataKingstoneHR.templateName);
+            expect(await resourcesTabPo.isRecommendedTemplatePresent(caseTemplateDataKingstoneHR.templateName)).toBeTruthy(`${caseTemplateDataKingstoneHR.templateName} caseTemplateDataKingstoneHR.templateName displayed in Recommended Knowledge`);
+            await quickCasePo.clickStartOverButton();
+
+            await quickCasePo.selectRequesterName('smoran');
+            await quickCasePo.setCaseSummary(caseTemplateDataGlobalKingstonHR.templateName);
+            expect(await resourcesTabPo.isRecommendedTemplatePresent(caseTemplateDataGlobalKingstonHR.templateName)).toBeTruthy(`${caseTemplateDataGlobalKingstonHR.templateName} caseTemplateDataGlobalKingstonHR.templateName displayed in Recommended Knowledge`);
+            await quickCasePo.clickStartOverButton();
+
+            await quickCasePo.selectRequesterName('smoran');
+            await quickCasePo.setCaseSummary(articleKingstoneHR1);
+            expect(await resourcesTabPo.isRecommendedKnowledgePresent(articleKingstoneHR1)).toBeTruthy(`${articleKingstoneHR1} articleKingstoneHR1 displayed in Recommended Knowledge`);
+            await quickCasePo.clickStartOverButton();
+
+            await quickCasePo.clickStartOverButton();
+            await quickCasePo.selectRequesterName('smoran');
+            await quickCasePo.setCaseSummary(caseSummaryKingstoneHR1);
+            await quickCasePo.saveCase();
+            expect(await previewCasePage.getLineOfBusinessValue()).toBe('Kingston HR');
+            await previewCasePage.clickOncreateNewCaseButton();
+        });
+
+        it('[DRDMV-23682]: Create Quick Case with case template', async () => {
+            await quickCasePo.selectRequesterName('smoran');
+            await quickCasePo.selectCaseTemplate(caseTemplateDataKingstoneHR.templateName);
+            await quickCasePo.saveCase();
+            await previewCasePage.clickGoToCaseButton();
+        });
+
+        it('[DRDMV-23682]: Verify Edit Case Page', async () => {
+            await viewCasePage.clickEditCaseButton();
+            expect(await editCasePo.isLineOfBusinessReadOnly()).toBeTruthy('Line of business is not readonly');
+            expect(await editCasePo.getLobValue()).toBe('Kingston HR');
+
+            expect(await editCasePo.getCategoryTier1()).toBe('Workforce Administration');
+            expect(await editCasePo.getCategoryTier2()).toBe('HR Operations');
+            expect(await editCasePo.getCategoryTier3()).toBe('Adjustments');
+
+            expect(await editCasePo.getAssigneeValue()).toBe('Sherri Ochoa');
+
+
+            await editCasePo.updateCaseCategoryTier1('Total Rewards');
+            await editCasePo.updateCaseCategoryTier2('Benefits');
+            await editCasePo.updateCaseCategoryTier3('Beneficiaries');
+
+            await editCasePo.clickOnChangeCaseTemplate();
+            await selectCasetemplateBladePo.clickOnAllTemplateTab();
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalOracleHR.templateName)).toBeFalsy('caseTemplateDataGlobalOracleHR is display');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataOracleHR.templateName)).toBeFalsy('caseTemplateDataGlobalOracleHR is display');
+
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataKingstoneHR.templateName)).toBeTruthy('caseTemplateDataKingstoneHR is missing');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalKingstonHR.templateName)).toBeTruthy('caseTemplateDataGlobalKingstonHR is missing');
+
+            await selectCasetemplateBladePo.searchAndOpenCaseTemplate(caseTemplateDataGlobalKingstonHR.templateName);
+            expect(await previewCaseTemplatePo.isLabelTitleDisplayed('Case Summary')).toBeTruthy('Case Summary label is missing');
+            await previewCaseTemplatePo.clickOnBackButton();
+            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateDataGlobalKingstonHR.templateName);
+
+            expect(await editCasePo.getCategoryTier1()).toBe('Employee Relations');
+            expect(await editCasePo.getCategoryTier2()).toBe('Compensation');
+            expect(await editCasePo.getCategoryTier3()).toBe('Bonus');
+            expect(await editCasePo.getAssigneeValue()).toBe('Samara Moran');
+
+            await editCasePo.clickChangeAssignmentButton();
+            await changeAssignmentBladePo.setAssignee('Phyto', 'Kingston HR', 'Kingston AskHR', 'Jack Torrance');
+            expect(await editCasePo.getAssigneeValue()).toBe('Jack Torrance');
+
+            // Verify CategorTIer of Ericsson SAM LOB which don't have access to Kingston HR
+            expect(await editCasePo.isValuePresentInCategoryTier1('General Ledger')).toBeFalsy('General Ledger CategoryTier1 drop down value displayed');
+
+            // Verify negative scenario for Ericsson SAM LOB for change assignment
+            await editCasePo.clickChangeAssignmentButton();
+            await changeAssignmentBladePo.selectCompany('Phyto');
+            await changeAssignmentBladePo.selectBusinessUnit('Oracle HR');
+            await changeAssignmentBladePo.selectSupportGroup('Oracle AskHR');
+            expect(await changeAssignmentBladePo.isAssigneeDisplayed('Unamuno Miguel de')).toBeFalsy('Assignee is diaplayed');
+            await changeAssignmentBladePo.clickOnCancelButton();
+
+            await editCasePo.clickSaveCase();
+            await viewCasePage.clickAddTaskButton();
+            await manageTaskBladePo.clickAddAdhocTaskButton();
+            await createAdhocTaskPo.setSummary('adhocTask')
+            expect(await createAdhocTaskPo.getLineOfBussinessValue()).toBe('Oracle HR');
+            await createAdhocTaskPo.clickSaveAdhoctask();
+            await manageTaskBladePo.clickCloseButton();
+            await viewCasePage.clickOnTaskLink('adhocTask');
+        });
+
+        it('[DRDMV-23682]: Create Quick Case scenario With Oracle HR', async () => {
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.selectLineOfBusiness('Oracle HR');
+            await navigationPage.gotoQuickCase();
+
+            await quickCasePo.selectRequesterName('rtownsend');
+            await quickCasePo.setCaseSummary(caseSummaryKingstoneHR1);
+            expect(await resourcesTabPo.isRecommendedCasePresent(caseSummaryKingstoneHR1)).toBeTruthy(`${caseSummaryKingstoneHR1} commonNameKingstonHR displayed in Recommended Knowledge`);
+            await quickCasePo.clickStartOverButton();
+
+            await quickCasePo.selectRequesterName('rtownsend');
+            await quickCasePo.setCaseSummary(caseTemplateDataKingstoneHR.templateName);
+            expect(await resourcesTabPo.isRecommendedTemplatePresent(caseTemplateDataKingstoneHR.templateName)).toBeTruthy(`${caseTemplateDataKingstoneHR.templateName} commonNameKingstonHR missing in Recommended Knowledge`);
+            await quickCasePo.clickStartOverButton();
+
+            await quickCasePo.selectRequesterName('rtownsend');
+            await quickCasePo.setCaseSummary(caseTemplateDataGlobalKingstonHR.templateName);
+            expect(await resourcesTabPo.isRecommendedTemplatePresent(caseTemplateDataGlobalKingstonHR.templateName)).toBeTruthy(`${caseTemplateDataGlobalKingstonHR.templateName} commonNameKingstonHR missing in Recommended Knowledge`);
+            await quickCasePo.clickStartOverButton();
+
+            await quickCasePo.selectRequesterName('rtownsend');
+            await quickCasePo.setCaseSummary(articleKingstoneHR1);
+            expect(await resourcesTabPo.isRecommendedKnowledgePresent(articleKingstoneHR1)).toBeTruthy(`${articleKingstoneHR1} commonNameKingstonHR displayed in Recommended Knowledge`);
+            await quickCasePo.clickStartOverButton();
+        });
+
+        it('[DRDMV-23682]: Create Quick Case without template and verify Oracle HR in recommended data ', async () => {
+            await quickCasePo.selectRequesterName('rtownsend');
+            await quickCasePo.setCaseSummary(caseSummaryOracleHR2);
+            expect(await resourcesTabPo.isRecommendedCasePresent(caseSummaryOracleHR2)).toBeTruthy(`${caseSummaryOracleHR2} caseSummaryOracleHR2 displayed in Recommended Knowledge`);
+            await quickCasePo.clickStartOverButton();
+
+            await quickCasePo.selectRequesterName('rtownsend');
+            await quickCasePo.setCaseSummary(caseTemplateDataOracleHR.templateName);
+            expect(await resourcesTabPo.isRecommendedTemplatePresent(caseTemplateDataOracleHR.templateName)).toBeTruthy(`${caseTemplateDataOracleHR.templateName} caseTemplateDataOracleHR.templateName displayed in Recommended Knowledge`);
+            await quickCasePo.clickStartOverButton();
+
+            await quickCasePo.selectRequesterName('rtownsend');
+            await quickCasePo.setCaseSummary(caseTemplateDataGlobalOracleHR.templateName);
+            expect(await resourcesTabPo.isRecommendedTemplatePresent(caseTemplateDataGlobalOracleHR.templateName)).toBeTruthy(`${caseTemplateDataGlobalOracleHR.templateName} caseTemplateDataGlobalOracleHR.templateName displayed in Recommended Knowledge`);
+            await quickCasePo.clickStartOverButton();
+
+            await quickCasePo.selectRequesterName('rtownsend');
+            await quickCasePo.setCaseSummary(articleOracleHR2);
+            expect(await resourcesTabPo.isRecommendedKnowledgePresent(articleOracleHR2)).toBeTruthy(`${articleOracleHR2} articleOracleHR2 displayed in Recommended Knowledge`);
+            await quickCasePo.clickStartOverButton();
+
+            await quickCasePo.clickStartOverButton();
+            await quickCasePo.selectRequesterName('rtownsend');
+            await quickCasePo.setCaseSummary(caseSummaryOracleHR2);
+            await quickCasePo.saveCase();
+            expect(await previewCasePage.getLineOfBusinessValue()).toBe('Kingston HR');
+            await previewCasePage.clickOncreateNewCaseButton();
+        });
+
+        it('[DRDMV-23682]: Create Quick Case with case template Oracle HR', async () => {
+            await quickCasePo.selectRequesterName('smoran');
+            await quickCasePo.selectCaseTemplate(caseTemplateDataOracleHR.templateName);
+            await quickCasePo.saveCase();
+            await previewCasePage.clickGoToCaseButton();
+        });
+
+        it('[DRDMV-23682]: Verify Edit Case Page for Oracle HR', async () => {
+            await viewCasePage.clickEditCaseButton();
+            expect(await editCasePo.isLineOfBusinessReadOnly()).toBeTruthy('Line of business is not readonly');
+            expect(await editCasePo.getLobValue()).toBe('Oracle HR');
+
+            expect(await editCasePo.getCategoryTier1()).toBe('Workforce Administration');
+            expect(await editCasePo.getCategoryTier2()).toBe('HR Operations');
+            expect(await editCasePo.getCategoryTier3()).toBe('Adjustments');
+
+            expect(await editCasePo.getAssigneeValue()).toBe('Unamuno Miguel de');
+
+            await editCasePo.updateCaseCategoryTier1('Total Rewards');
+            await editCasePo.updateCaseCategoryTier2('Benefits');
+            await editCasePo.updateCaseCategoryTier3('Beneficiaries');
+
+            await editCasePo.clickOnChangeCaseTemplate();
+            await selectCasetemplateBladePo.clickOnAllTemplateTab();
+
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataKingstoneHR.templateName)).toBeFalsy('caseTemplateDataKingstoneHR is missing');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalKingstonHR.templateName)).toBeFalsy('caseTemplateDataGlobalKingstonHR is missing');
+
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalOracleHR.templateName)).toBeTruthy('caseTemplateDataGlobalOracleHR is display');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataOracleHR.templateName)).toBeTruthy('caseTemplateDataGlobalOracleHR is display');
+
+            await selectCasetemplateBladePo.searchAndOpenCaseTemplate(caseTemplateDataOracleHR.templateName);
+            expect(await previewCaseTemplatePo.isLabelTitleDisplayed('Case Summary')).toBeTruthy('Case Summary label is missing');
+            await previewCaseTemplatePo.clickOnBackButton();
+            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateDataGlobalOracleHR.templateName);
+
+            expect(await editCasePo.getCategoryTier1()).toBe('Employee Relations');
+            expect(await editCasePo.getCategoryTier2()).toBe('Compensation');
+            expect(await editCasePo.getCategoryTier3()).toBe('Bonus');
+            expect(await editCasePo.getAssigneeValue()).toBe('Jack Torrance');
+
+            await editCasePo.clickChangeAssignmentButton();
+
+            await changeAssignmentBladePo.setAssignee('Phyto', 'Oracle HR', 'Oracle AskHR', 'Vixie Paul');
+            expect(await editCasePo.getAssigneeValue()).toBe('Vixie Paul');
+
+            // Verify CategorTIer of Ericsson SAM LOB which don't have access to Kingston HR
+            expect(await editCasePo.isValuePresentInCategoryTier1('General Ledger')).toBeFalsy('General Ledger CategoryTier1 drop down value displayed');
+
+            // Verify negative scenario for Ericsson SAM LOB for change assignment
+            await editCasePo.clickChangeAssignmentButton();
+            await changeAssignmentBladePo.selectCompany('Phyto');
+            await changeAssignmentBladePo.selectBusinessUnit('Kingston HR');
+            await changeAssignmentBladePo.selectSupportGroup('Kingston AskHR');
+            expect(await changeAssignmentBladePo.isAssigneeDisplayed('Sherri Ochoa')).toBeFalsy('Assignee is diaplayed');
+            await changeAssignmentBladePo.clickOnCancelButton();
+
+            await editCasePo.clickSaveCase();
+            await viewCasePage.clickAddTaskButton();
+            await manageTaskBladePo.clickAddAdhocTaskButton();
+            await createAdhocTaskPo.setSummary('adhocTask2')
+            expect(await createAdhocTaskPo.getLineOfBussinessValue()).toBe('Oracle HR');
+            await createAdhocTaskPo.clickSaveAdhoctask();
+            await manageTaskBladePo.clickCloseButton();
+            await viewCasePage.clickOnTaskLink('adhocTask2');
+        });
+
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login(kingstoneOracleLOBUserName, password);
         });
     });
 });
