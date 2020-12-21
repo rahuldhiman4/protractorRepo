@@ -536,6 +536,9 @@ describe('Line of Business Permission Tests', () => {
             expect(await selectTaskTemplate.isAutomationTaskTemplateButtonEnabled()).toBeTruthy();
             expect(await selectTaskTemplate.isExtrnalTaskTemplateButtonEnabled()).toBeTruthy();
         });
+        afterAll(async () => {
+            utilityCommon.closedWarningTextOfLineOfBuisness();
+        });
     });
 
     //ankagraw
@@ -605,6 +608,9 @@ describe('Line of Business Permission Tests', () => {
             expect(await utilityGrid.isGridRecordPresent(TaskID)).toBeFalsy();
             await navigationPage.gotoKnowledgeConsole();
             expect(await utilityGrid.isGridRecordPresent(KnowledgeArticleID)).toBeFalsy();
+        });
+        afterAll(async () => {
+            utilityCommon.closedWarningTextOfLineOfBuisness();
         });
     });
 
@@ -684,7 +690,7 @@ describe('Line of Business Permission Tests', () => {
             await editEmailConfigPo.clearDefaultCaseTemplateToUseField();
             expect(await editEmailConfigPo.isDefaultCaseTemplatePresentinDropDown('templateName123' + randomStr)).toBeTruthy();
             await editEmailConfigPo.clearDefaultCaseTemplateToUseField();
-            expect(await editEmailConfigPo.isDefaultCaseTemplatePresentinDropDown(casetemplatePsilon.templateName)).toBeTruthy();
+            expect(await editEmailConfigPo.isDefaultCaseTemplatePresentinDropDown(casetemplatePsilon.templateName)).toBeFalsy();
             await editEmailConfigPo.clearDefaultCaseTemplateToUseField();
             expect(await editEmailConfigPo.isDefaultCaseTemplatePresentinDropDown(templateData.templateName)).toBeTruthy();
             await editEmailConfigPo.clickSaveButton();
@@ -764,7 +770,7 @@ describe('Line of Business Permission Tests', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target Group', 'Service Target Group - Administration - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(randomStr + "Group");
-            await editServiceTargetGroupConfigPo.selectAvailableServiceTarget('Low Case Response Time');
+            expect(await editServiceTargetGroupConfigPo.getServiceTargetInGroup()).toBe('DRDMV-3230');
             await editServiceTargetGroupConfigPo.clickSaveButton();
 
             await navigationPage.signOut();
@@ -793,7 +799,7 @@ describe('Line of Business Permission Tests', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target Group', 'Service Target Group - Administration - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(randomStr + "Group");
-            await editServiceTargetGroupConfigPo.selectAvailableServiceTarget('DRDMV-3230');
+            expect(await editServiceTargetGroupConfigPo.getServiceTargetInGroup()).toBe('DRDMV-3230');
             await editServiceTargetGroupConfigPo.clickSaveButton();
         });
         afterAll(async () => {
