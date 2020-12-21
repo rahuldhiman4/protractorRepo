@@ -1,10 +1,13 @@
+import { cloneDeep } from 'lodash';
 import { browser } from "protractor";
 import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from '../../api/api.helper';
+import { flowsetGlobalFields } from '../../data/ui/flowset/flowset.ui';
+import { SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
 import caseConsolePage from "../../pageobject/case/case-console.po";
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePage from "../../pageobject/case/create-case.po";
-import QuickCasePage from "../../pageobject/case/quick-case.po";
+import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePo from "../../pageobject/case/view-case.po";
 import accessTabPo from '../../pageobject/common/access-tab.po';
 import changeAssignmentPage from '../../pageobject/common/change-assignment-blade.po';
@@ -15,7 +18,8 @@ import assignmentConfigConsolePage from "../../pageobject/settings/case-manageme
 import consoleCasetemplatePage from '../../pageobject/settings/case-management/console-casetemplate.po';
 import assignmentConfigCreatePage from "../../pageobject/settings/case-management/create-assignments-config.po";
 import createCaseTemplate from '../../pageobject/settings/case-management/create-casetemplate.po';
-import assignmentConfigEditPage from "../../pageobject/settings/case-management/edit-assignments-config.po";
+import editAssignmentsConfigPo from "../../pageobject/settings/case-management/edit-assignments-config.po";
+import editCasetemplatePo from '../../pageobject/settings/case-management/edit-casetemplate.po';
 import viewCaseTemplate from '../../pageobject/settings/case-management/view-casetemplate.po';
 import selectTaskTemplate from "../../pageobject/settings/task-management/console-tasktemplate.po";
 import taskTemplate from "../../pageobject/settings/task-management/create-tasktemplate.po";
@@ -28,12 +32,7 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
-import editCasetemplatePo from '../../pageobject/settings/case-management/edit-casetemplate.po';
-import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
-import editAssignmentsConfigPo from '../../pageobject/settings/case-management/edit-assignments-config.po';
-import { SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
-import { cloneDeep } from 'lodash';
-import { flowsetGlobalFields } from '../../data/ui/flowset/flowset.ui';
+
 describe("Create Case Assignment Mapping", () => {
     const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
     const departmentDataFile = require('../../data/ui/foundation/department.ui.json');
@@ -196,25 +195,73 @@ describe("Create Case Assignment Mapping", () => {
     });
 
     //radhiman
-    it('[DRDMV-1242]: [Assignment Mapping] Add/Edit Assignment Mapping views (UI verification)', async () => {
+    describe('[DRDMV-1242]: [Assignment Mapping] Add/Edit Assignment Mapping views (UI verification)', async () => {
         let assignmentFields: string[] = ["Assignment Mapping Name", "Line of Business", "Company", "Flowset", "Category Tier 1", "Category Tier 2", "Category Tier 3", "Category Tier 4", "Priority", "Label", "Region", "Site", "Use as Default", "Support Company", "Business Unit", "Department", "Support Group", "Assignee"];
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let assignmentMappingName = "DRDMV-1242 " + randomStr;
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
-        await assignmentConfigConsolePage.clearFilter();
-        await assignmentConfigConsolePage.clickOnCreateAssignmentConfiguration();
-        expect(await assignmentConfigCreatePage.areAllFieldsPresentOnUI(assignmentFields)).toBeTruthy("Expected fields are not matching with actual fields present on Create Assignent UI");
-        await assignmentConfigCreatePage.setAssignmentMapName(assignmentMappingName);
-        await assignmentConfigCreatePage.setCompany("Petramco");
-        await assignmentConfigCreatePage.setSupportCompany("Petramco");
-        await assignmentConfigCreatePage.setBusinessUnit('Australia Support');
-        await assignmentConfigCreatePage.setSupportGroup("AU Support 1");
-        await assignmentConfigCreatePage.clickonSaveButton();
-        await assignmentConfigConsolePage.searchAndClickOnAssignmentConfig(assignmentMappingName);
-        expect(await assignmentConfigEditPage.areAllFieldsPresentOnUI(assignmentFields)).toBeTruthy("Expected fields are not matching with actual fields present on Edit Assignent UI");
-        await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteReadAccessOrAssignmentMapping(assignmentMappingName);
+        let assignmentMappingName = "DRDMV1242 " + randomStr;
+        it('[DRDMV-1242]: [Assignment Mapping] Add/Edit Assignment Mapping views (UI verification)', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
+            await assignmentConfigConsolePage.clickOnCreateAssignmentConfiguration();
+            expect(await assignmentConfigCreatePage.areAllFieldsPresentOnUI(assignmentFields)).toBeTruthy("Expected fields are not matching with actual fields present on Create Assignent UI");
+            await assignmentConfigCreatePage.setAssignmentMapName(assignmentMappingName);
+            await assignmentConfigCreatePage.setCompany("Petramco");
+            await assignmentConfigCreatePage.setSupportCompany("Petramco");
+            await assignmentConfigCreatePage.setBusinessUnit('Australia Support');
+            await assignmentConfigCreatePage.setSupportGroup("AU Support 1");
+            await assignmentConfigCreatePage.clickonSaveButton();
+            await assignmentConfigConsolePage.searchAndClickOnAssignmentConfig(assignmentMappingName);
+            expect(await editAssignmentsConfigPo.areAllFieldsPresentOnUI(assignmentFields)).toBeTruthy("Expected fields are not matching with actual fields present on Edit Assignent UI");
+        });
+        it('[DRDMV-1242]: create same name record in same LOB', async () => {
+            //create same name record in same LOB
+            await navigationPage.signOut();
+            await loginPage.login('jbarnes');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            await assignmentConfigConsolePage.clickOnCreateAssignmentConfiguration();
+            await assignmentConfigCreatePage.setAssignmentMapName(assignmentMappingName);
+            await assignmentConfigCreatePage.setCompany("Petramco");
+            await assignmentConfigCreatePage.setSupportCompany("Petramco");
+            await assignmentConfigCreatePage.setBusinessUnit("Australia Support");
+            await assignmentConfigCreatePage.setSupportGroup("AU Support 1");
+            await assignmentConfigCreatePage.clickonSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (222099): The Assignment Mapping Name already exists. Please select a different name.')).toBeTruthy("Error message absent");
+            await assignmentConfigCreatePage.clickOnCancelButton();
+            await utilCommon.clickOnWarningOk();
+        });
+        it('[DRDMV-1242]: create same name record in different LOB', async () => {
+            //create same name record in different LOB
+            await utilGrid.selectLineOfBusiness('Facilities');
+            await assignmentConfigConsolePage.clickOnCreateAssignmentConfiguration();
+            await assignmentConfigCreatePage.setAssignmentMapName(assignmentMappingName);
+            await assignmentConfigCreatePage.setCompany("Petramco");
+            // verify categ1, BU and SG as per LOB
+            await utilCommon.isDrpDownvalueDisplayed(assignmentConfigCreatePage.selectors.catTier1DrpDwn, ['Applications', 'Facilities', 'Fixed Assets', 'Phones', 'Projectors', 'Purchasing Card']);
+            await assignmentConfigCreatePage.setSupportCompany("Petramco");
+            await utilCommon.isDrpDownvalueDisplayed(assignmentConfigCreatePage.selectors.businessUnitDrpDwn, ['Facilities', 'Facilities Support']);
+            await assignmentConfigCreatePage.setSupportCompany("Petramco");
+            await assignmentConfigCreatePage.setBusinessUnit('Facilities Support');
+            await utilCommon.isDrpDownvalueDisplayed(assignmentConfigCreatePage.selectors.supportGrpDrpDwn, ['Facilities', 'Pantry Service']);
+            await assignmentConfigCreatePage.setBusinessUnit('Facilities Support');
+            await assignmentConfigCreatePage.setSupportGroup('Facilities');
+            // verify LOB is there
+            expect(await assignmentConfigCreatePage.getLobValue()).toBe("Facilities");
+            await assignmentConfigCreatePage.clickonSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
+            // open the record and verify LOB is on edit screen
+            await assignmentConfigConsolePage.searchAndClickOnAssignmentConfig(assignmentMappingName);
+            expect(await editAssignmentsConfigPo.getLobValue()).toBe("Facilities");
+            await editAssignmentsConfigPo.clickOnCancelButton();
+            await utilGrid.selectLineOfBusiness('Human Resource');
+        });
+        afterAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteReadAccessOrAssignmentMapping(assignmentMappingName);
+            await navigationPage.signOut();
+            await loginPage.login("qkatawazi");
+        });
     });
 
     //radhiman
@@ -252,8 +299,8 @@ describe("Create Case Assignment Mapping", () => {
         await assignmentConfigCreatePage.setSupportGroup("AU Support 1");
         await assignmentConfigCreatePage.clickonSaveButton();
         await assignmentConfigConsolePage.searchAndClickOnAssignmentConfig(assignmentMappingName);
-        await assignmentConfigEditPage.setCompany("- Global -");
-        await assignmentConfigEditPage.clickonSaveButton();
+        await editAssignmentsConfigPo.setCompany("- Global -");
+        await editAssignmentsConfigPo.clickonSaveButton();
         await assignmentConfigConsolePage.searchAndselectAssignmentConfig(assignmentMappingName);
         expect(await assignmentConfigConsolePage.getValueOnAssignmentConfigGrid("Company")).toContain("- Global -");
         await assignmentConfigConsolePage.clickDeleteButton();
@@ -508,8 +555,8 @@ describe("Create Case Assignment Mapping", () => {
             expect(await utilGrid.isGridRecordPresent(companyAssignmentMappingName)).toBeTruthy('Case Assignment Mapping are not displayed to multiple LOB Case BA.');
             expect(await utilGrid.isGridRecordPresent(facilitiesAssignmentMappingName)).toBeFalsy('Case Assignment Mapping are displayed to multiple LOB Case BA.');
             await assignmentConfigConsolePage.searchAndClickOnAssignmentConfig(companyAssignmentMappingName);
-            await assignmentConfigEditPage.setAssignee('RA3 Liu');
-            await assignmentConfigEditPage.clickonSaveButton();
+            await editAssignmentsConfigPo.setAssignee('RA3 Liu');
+            await editAssignmentsConfigPo.clickonSaveButton();
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
@@ -714,8 +761,8 @@ describe("Create Case Assignment Mapping", () => {
 
             //Update assignment mapping
             await utilGrid.searchAndOpenHyperlink('Assignement Mapping' + randomStr);
-            await assignmentConfigEditPage.setAssignmentMappingName("Assignement Mapping_updated " + randomStr);
-            await assignmentConfigEditPage.clickonSaveButton();
+            await editAssignmentsConfigPo.setAssignmentMappingName("Assignement Mapping_updated " + randomStr);
+            await editAssignmentsConfigPo.clickonSaveButton();
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Successfull message is not appeared');
 
             //Delete Assignment mapping
@@ -931,8 +978,8 @@ describe("Create Case Assignment Mapping", () => {
             await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
             await assignmentConfigConsolePage.deleteDefaultAssignmentConfig();
             await assignmentConfigConsolePage.searchAndClickOnAssignmentConfig(assignmentData1.assignmentMappingName);
-            await assignmentConfigEditPage.setDefaultToggleButton(true);
-            await assignmentConfigEditPage.clickonSaveButton();
+            await editAssignmentsConfigPo.setDefaultToggleButton(true);
+            await editAssignmentsConfigPo.clickonSaveButton();
             await utilCommon.closePopUpMessage();
             await assignmentConfigConsolePage.clearFilter();
             await assignmentConfigConsolePage.addFilter('Company', 'Phylum', 'text');
@@ -1271,8 +1318,8 @@ describe("Create Case Assignment Mapping", () => {
             await assignmentConfigConsolePage.deleteFilteredAssignmentConfig();
             await assignmentConfigConsolePage.deleteDefaultAssignmentConfig();
             await assignmentConfigConsolePage.searchAndClickOnAssignmentConfig(assignmentData.assignmentMappingName);
-            await assignmentConfigEditPage.setDefaultToggleButton(true);
-            await assignmentConfigEditPage.clickonSaveButton();
+            await editAssignmentsConfigPo.setDefaultToggleButton(true);
+            await editAssignmentsConfigPo.clickonSaveButton();
             await utilCommon.closePopUpMessage();
         });
         it('[DRDMV-1206,DRDMV-1208]:[Assignment Mapping] Applying Assignment Mappings to cases with partial match', async () => {
@@ -1376,10 +1423,10 @@ describe("Create Case Assignment Mapping", () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
             await assignmentConfigConsolePage.searchAndClickOnAssignmentConfig(assignmentData.assignmentMappingName);
-            await assignmentConfigEditPage.setDefaultToggleButton(true);
-            await assignmentConfigEditPage.clickonSaveButton();
+            await editAssignmentsConfigPo.setDefaultToggleButton(true);
+            await editAssignmentsConfigPo.clickonSaveButton();
             expect(await utilCommon.isPopUpMessagePresent('ERROR (10000): Only one default record is allowed for a company. Please change the default flag and save the record.')).toBeTruthy('Message Not Present');
-            await assignmentConfigEditPage.clickOnCancelButton();
+            await editAssignmentsConfigPo.clickOnCancelButton();
             await utilCommon.clickOnWarningOk();
         });
         it('[DRDMV-1206,DRDMV-1208]:[Assignment Mapping] Applying Assignment Mappings to cases with partial match', async () => {

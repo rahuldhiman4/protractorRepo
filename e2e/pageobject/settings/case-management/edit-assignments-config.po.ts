@@ -18,27 +18,28 @@ class AssignmentConfigEditPage {
         categoryTier3Guid: 'a373976b-498a-46da-a97f-5573fc6c3b03',
         categoryTier4Guid: '647bd05c-d3b3-46dd-8747-b67a87013d1b',
         labelValue: '[rx-view-component-id="ef7b61e9-8bc0-49cb-8fdc-d1ba41db5bcd"] .ui-select-match-text',
-        labelGuid: 'ef7b61e9-8bc0-49cb-8fdc-d1ba41db5bcd'
+        labelGuid: 'ef7b61e9-8bc0-49cb-8fdc-d1ba41db5bcd',
+        lobValue: '[rx-view-component-id="168c91ba-ee0e-4f79-8287-a6859be12778"] .pull-left'
     }
 
     async isEditAssignmentNameDisabled(): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.assignee)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.assignee)));
         return await $(this.selectors.editName).getAttribute("readonly") == "true";
     }
 
     async isSaveBtnDisabled(): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.saveButton)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.saveButton)));
         return await $(this.selectors.saveButton).getAttribute("disabled") == "true";
     }
 
     async isDefaultToggleBtnDisabled(): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.assignee)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.assignee)));
         let readProperty1: string = await $$(this.selectors.defaultToggle).get(0).getAttribute("disabled");
         let readProperty2: string = await $$(this.selectors.defaultToggle).get(1).getAttribute("disabled");
         return (readProperty1 == "true" && readProperty2 == "true");
     }
 
-    async setCompany(company:string){
+    async setCompany(company: string) {
         await utilCommon.selectDropDown(this.selectors.companyDrpDwn, company);
     }
 
@@ -48,18 +49,18 @@ class AssignmentConfigEditPage {
 
     async areAllFieldsPresentOnUI(data: string[]): Promise<boolean> {
         let arr: string[] = [];
-        let fieldsCount: number  = await $$(this.selectors.editAssignmentMappingFields).count();
+        let fieldsCount: number = await $$(this.selectors.editAssignmentMappingFields).count();
         for (let i = 0; i < fieldsCount; i++) {
             let labelTxt: string = await $$(this.selectors.editAssignmentMappingFields).get(i).getText();
             arr[i] = labelTxt;
         }
         arr = arr.sort();
-        arr = arr.filter(v=>v!='');
+        arr = arr.filter(v => v != '');
         data = data.sort();
         return arr.length === data.length && arr.every(
             (value, index) => (value === data[index])
         );
-}
+    }
 
     async setAssignmentMappingName(templateName: string): Promise<void> {
         await $(this.selectors.editName).clear();
@@ -67,9 +68,9 @@ class AssignmentConfigEditPage {
     }
 
     async setAssignee(assignee: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.assigneeGuid,assignee);
+        await utilCommon.selectDropDown(this.selectors.assigneeGuid, assignee);
     }
-    
+
     async setDefaultToggleButton(value: boolean): Promise<void> {
         await utilCommon.selectToggleButton(this.selectors.defaultToggleGuid, value);
     }
@@ -99,6 +100,10 @@ class AssignmentConfigEditPage {
             if (result) return await element(by.cssContainingText(this.selectors.labelValue, labelName)).isDisplayed();
             else return false;
         });
+    }
+
+    async getLobValue(): Promise<string> {
+        return await $(this.selectors.lobValue).getText();
     }
 }
 
