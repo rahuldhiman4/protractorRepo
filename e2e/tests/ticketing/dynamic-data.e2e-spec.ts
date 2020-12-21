@@ -1210,4 +1210,167 @@ describe('Dynamic data', () => {
         expect(await viewCasePo.isDynamicFieldDisplayed('attachment3')).toBeTruthy('dynamic fields not present');
         expect(await viewCasePo.isDynamicFieldDisplayed('dynamicList')).toBeTruthy('dynamic fields not present');
     });
+
+    describe('[DRDMV-24405]: Verify Dynamic Fields for Task are populated if Case template has been changed', () => {
+        const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseTemplatePetramcoWithTaskFlowData, caseTemplatePetramcoWithoutTaskFlowData, manualTaskTemplateData, externalTaskTemplateData, automatedTaskTemplateData;
+        beforeAll(async () => {
+            await apiHelper.apiLogin('qkatawazi');
+            caseTemplatePetramcoWithTaskFlowData = {
+                "templateName": `TaskFlow ${randomStr}`,
+                "templateSummary": randomStr + ' caseTemplate with TF',
+                "templateStatus": "Active",
+                "casePriority": "Low",
+                "company": "Petramco",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3"
+            }
+            let caseTemplateResponse = await apiHelper.createCaseTemplate(caseTemplatePetramcoWithTaskFlowData);
+
+            caseTemplatePetramcoWithoutTaskFlowData = {
+                "templateName":`Simple flow ${randomStr}`,
+                "templateSummary": randomStr + ' caseTemplate without TF',
+                "templateStatus": "Active",
+                "casePriority": "Low",
+                "company": "Petramco",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3"
+            }
+            await apiHelper.createCaseTemplate(caseTemplatePetramcoWithoutTaskFlowData);
+
+            manualTaskTemplateData = {
+                "templateName": `DRDMV14901 Manual ${randomStr}`,
+                "templateSummary": `DRDMV14901 Manual${randomStr}`,
+                "templateStatus": "Active",
+                "category1": 'Applications',
+                "category2": 'Help Desk',
+                "category3": 'Incident',
+                "taskCompany": 'Petramco',
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
+                "description": randomStr
+            }
+            let manualTasktemplateResponse = await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
+            await apiHelper.createDynamicDataOnTemplate(manualTasktemplateResponse.id, 'TASK_TEMPLATE__DYNAMIC_FIELDS_MANUAL');
+
+            externalTaskTemplateData = {
+                "templateName": `DRDMV14901 External ${randomStr}`,
+                "templateSummary": `DRDMV14901 External${randomStr}`,
+                "templateStatus": "Active",
+                "category1": 'Applications',
+                "category2": 'Help Desk',
+                "category3": 'Incident',
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
+                "description": randomStr
+            }
+            let externalTasktemplateResponse = await apiHelper.createExternalTaskTemplate(externalTaskTemplateData);
+            await apiHelper.createDynamicDataOnTemplate(externalTasktemplateResponse.id, 'TASK_TEMPLATE__DYNAMIC_FIELDS_EXTERNAL');
+
+            automatedTaskTemplateData = {
+                "templateName": `DRDMV14901 Automated ${randomStr}`,
+                "templateSummary": `DRDMV14901 Automated${randomStr}`,
+                "templateStatus": "Active",
+                "processBundle": "com.bmc.dsm.case-lib",
+                "category1": 'Applications',
+                "category2": 'Help Desk',
+                "category3": 'Incident',
+                "processName": 'Auto Proces' + randomStr,
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
+                "description": randomStr
+            }
+            let automatedTasktemplateResponse = await apiHelper.createAutomatedTaskTemplate(automatedTaskTemplateData);
+            await apiHelper.createDynamicDataOnTemplate(automatedTasktemplateResponse.id, 'TASK_TEMPLATE__DYNAMIC_FIELDS_AUTOMATED');
+            await apiHelper.associateCaseTemplateWithThreeTaskTemplate(caseTemplateResponse.displayId, manualTasktemplateResponse.displayId, externalTasktemplateResponse.displayId, automatedTasktemplateResponse.displayId);
+        });
+
+        it('[DRDMV-24405]: Verify Dynamic Fields for Task are populated if Case template has been changed', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qfeng');
+            await navigationPage.gotoCreateCase();
+            await createCasePo.selectRequester('adam');
+            await createCasePo.setSummary('Summary of Customer defect' + randomStr);
+            await createCasePo.clickSelectCaseTemplateButton();
+            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplatePetramcoWithoutTaskFlowData.templateName);
+            await createCasePo.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            await viewCasePo.clickEditCaseButton();
+            await editCasePo.clickOnChangeCaseTemplate();
+            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplatePetramcoWithTaskFlowData.templateName);
+            await editCasePo.clickSaveCase();
+            await viewCasePo.clickOnRefreshTaskList();
+            await viewCasePo.clickOnTaskLink(manualTaskTemplateData.templateName);
+            expect(await viewTaskPo.isDynamicFieldDisplayed('manualtempTextC')).toBeTruthy();
+            expect(await viewTaskPo.isDynamicFieldDisplayed('manualtempNumberC')).toBeTruthy();
+            expect(await viewTaskPo.isDynamicFieldDisplayed('manualtempDateC')).toBeTruthy();
+            expect(await viewTaskPo.isDynamicFieldDisplayed('manualtempBooleanC')).toBeTruthy();
+            expect(await viewTaskPo.isDynamicFieldDisplayed('manualtempDateTimeC')).toBeTruthy();
+            expect(await viewTaskPo.isDynamicFieldDisplayed('manualtempTimeC')).toBeTruthy();
+            expect(await viewTaskPo.isDynamicFieldDisplayed('manualtempAttachmentC')).toBeTruthy();
+            expect(await viewTaskPo.isDynamicFieldDisplayed('manualtempText')).toBeTruthy();
+            expect(await viewTaskPo.isDynamicFieldDisplayed('manualtempNumber')).toBeTruthy();
+            expect(await viewTaskPo.isDynamicFieldDisplayed('manualtempDate')).toBeTruthy();
+            expect(await viewTaskPo.isDynamicFieldDisplayed('manualtempBoolean')).toBeTruthy();
+            expect(await viewTaskPo.isDynamicFieldDisplayed('manualtempDateTime')).toBeTruthy();
+            expect(await viewTaskPo.isDynamicFieldDisplayed('manualtempTime')).toBeTruthy();
+            expect(await viewTaskPo.isDynamicFieldDisplayed('manualtempAttachment')).toBeTruthy();
+            await viewTaskPo.clickOnViewCase();
+
+            await viewCasePo.clickOnTaskLink(externalTaskTemplateData.templateName);
+            expect(await viewTaskPo.isDynamicFieldDisplayed('externaltempTextC')).toBeTruthy();
+            expect(await viewTaskPo.isDynamicFieldDisplayed('externaltempNumberC')).toBeTruthy();
+            expect(await viewTaskPo.isDynamicFieldDisplayed('externaltempDateC')).toBeTruthy();
+            expect(await viewTaskPo.isDynamicFieldDisplayed('externaltempBooleanC')).toBeTruthy();
+            expect(await viewTaskPo.isDynamicFieldDisplayed('externaltempDateTimeC')).toBeTruthy();
+            expect(await viewTaskPo.isDynamicFieldDisplayed('externaltempTimeC')).toBeTruthy();
+            expect(await viewTaskPo.isDynamicFieldDisplayed('externaltempAttachmentC')).toBeTruthy();
+            expect(await viewTaskPo.isDynamicFieldDisplayed('externaltempText')).toBeTruthy();
+            expect(await viewTaskPo.isDynamicFieldDisplayed('externaltempNumber')).toBeTruthy();
+            expect(await viewTaskPo.isDynamicFieldDisplayed('externaltempDate')).toBeTruthy();
+            expect(await viewTaskPo.isDynamicFieldDisplayed('externaltempBoolean')).toBeTruthy();
+            expect(await viewTaskPo.isDynamicFieldDisplayed('externaltempDateTime')).toBeTruthy();
+            expect(await viewTaskPo.isDynamicFieldDisplayed('externaltempTime')).toBeTruthy();
+            expect(await viewTaskPo.isDynamicFieldDisplayed('externaltempAttachment')).toBeTruthy();
+            await viewTaskPo.clickOnViewCase();
+
+            await viewCasePo.clickOnTaskLink(automatedTaskTemplateData.templateName);
+            expect(await viewTaskPo.isDynamicFieldDisplayed('automatedtempTextC')).toBeTruthy();
+            expect(await viewTaskPo.isDynamicFieldDisplayed('automatedtempNumberC')).toBeTruthy();
+            expect(await viewTaskPo.isDynamicFieldDisplayed('automatedtempDateC')).toBeTruthy();
+            expect(await viewTaskPo.isDynamicFieldDisplayed('automatedtempBooleanC')).toBeTruthy();
+            expect(await viewTaskPo.isDynamicFieldDisplayed('automatedtempDateTimeC')).toBeTruthy();
+            expect(await viewTaskPo.isDynamicFieldDisplayed('automatedtempTimeC')).toBeTruthy();
+            expect(await viewTaskPo.isDynamicFieldDisplayed('automatedtempAttachmentC')).toBeTruthy();
+            expect(await viewTaskPo.isDynamicFieldDisplayed('automatedtempText')).toBeTruthy();
+            expect(await viewTaskPo.isDynamicFieldDisplayed('automatedtempNumber')).toBeTruthy();
+            expect(await viewTaskPo.isDynamicFieldDisplayed('automatedtempDate')).toBeTruthy();
+            expect(await viewTaskPo.isDynamicFieldDisplayed('automatedtempBoolean')).toBeTruthy();
+            expect(await viewTaskPo.isDynamicFieldDisplayed('automatedtempDateTime')).toBeTruthy();
+            expect(await viewTaskPo.isDynamicFieldDisplayed('automatedtempTime')).toBeTruthy();
+            expect(await viewTaskPo.isDynamicFieldDisplayed('automatedtempAttachment')).toBeTruthy();
+            await viewTaskPo.clickOnViewCase();
+
+        });
+    });
 });

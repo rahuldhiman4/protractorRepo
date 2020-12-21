@@ -1058,6 +1058,16 @@ class ApiHelper {
         return response.status == 204;
     }
 
+    async associatePersonToDepartmentOrBU(userId: string, departmentOrBUName: string): Promise<boolean> {
+        let userGuid = await apiCoreUtil.getPersonGuid(userId);
+        let id = await apiCoreUtil.getBusinessUnitGuid(departmentOrBUName).then(async (result) => {
+            if(result == null) return await apiCoreUtil.getDepartmentGuid(departmentOrBUName);
+            else return result
+        });
+        let response = await apiCoreUtil.associateFoundationElements("Person to Secondary Organization", userGuid, id);
+        return response.status == 204;
+    }
+
     async associateCategoryToOrganization(category: string, organization: string): Promise<boolean> {
         let organizationGuid = await apiCoreUtil.getOrganizationGuid(organization);
         let categoryGuid = await apiCoreUtil.getCategoryGuid(category);
@@ -2219,6 +2229,14 @@ class ApiHelper {
                 "value": labelGuid
             }
             adhocTaskPayload.fieldInstances["450000173"] = taskLabel;
+        }
+        if (taskData.requester) {
+            let requesterGuid = await apiCoreUtil.getPersonGuid(taskData.requester);
+            let taskRequester = {
+                "id": "1000000337",
+                "value": requesterGuid
+            }
+            adhocTaskPayload.fieldInstances["1000000337"] = taskRequester;
         }
         let createTaskResponse = await apiCoreUtil.createRecordInstance(adhocTaskPayload);
         console.log('Create Task API Status =============>', createTaskResponse.status);

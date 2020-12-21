@@ -7,7 +7,8 @@ class BusinessTimeSegmentConfigEditPage {
         svtSelect: '.slm-group__list i',
         saveButton: 'button[ng-click*="submitForm"]',
         closeButton: '.slm-modal-footer button',
-        selectAvailabelServiceTargetIcon: '.slm-group-list-item__icon-container i'
+        selectAvailabelServiceTargetIcon: '.slm-group-list-item__icon-container i',
+        serviceTargetInGroup: 'slm-group-list-item__description'
     }
 
     async isSVTGroupNameEnabled(): Promise<boolean> {
@@ -16,6 +17,10 @@ class BusinessTimeSegmentConfigEditPage {
 
     async selectAvailableServiceTarget(serviceTarget: string): Promise<void> {
         await $(this.selectors.selectAvailabelServiceTargetIcon).click();
+    }
+
+    async getServiceTargetInGroup(): Promise<void> {
+        await $(this.selectors.serviceTargetInGroup).getText();
     }
 
     async isSVTSelectRadioBtnDisabled(): Promise<boolean> {

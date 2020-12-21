@@ -26,7 +26,9 @@ class PersonProfilePage {
         loginId: '[rx-view-component-id="a97bb771-1f17-49a1-a043-dc778e5e0658"] .read-only-content, [rx-view-component-id="00e01e18-c688-4c97-b103-0eeed0f71f83"] .read-only-content',
         functionalRoles: '[rx-view-component-id="88f61dee-a8a7-4a06-b0c8-6fcd060cf7d1"] .read-only-content',
         corporateId: '[rx-view-component-id="5aa010cd-978c-4556-a25f-889e1f140b35"] .read-only-content',
-        relatedCasesDisplayId: '.case-card .case-summary__meta-data__display-id'
+        relatedCasesDisplayId: '.case-card .case-summary__meta-data__display-id',
+        organizationTooltip: '.adapt-tooltip-inner',
+        organizations: '.person-organization span'
     }
 
     async getCaseViewCount(TitleText: string): Promise<number> {
@@ -199,6 +201,12 @@ class PersonProfilePage {
             }
         }
         return await utilityCommon.isFieldLabelDisplayed(guid, labelName);
+    }
+
+    async getOrganizationDetailsTooltip(): Promise<string> {
+        await browser.actions().mouseMove($(this.selectors.organizations)).perform();
+        console.log('a', await $(this.selectors.organizationTooltip).getText());
+        return await $(this.selectors.organizationTooltip).getText();
     }
 }
 

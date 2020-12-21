@@ -349,6 +349,10 @@ class EditCaseTemplate {
         return await $(this.selectors.saveTemplateMetaData).isEnabled();
     }
 
+    async isFlowsetPresentInDropDown(list: string[]): Promise<boolean> {
+        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.flowset, list);
+    }
+
     async isCaseTemplateLabelValueDisplayed(labelName: string): Promise<boolean> {
         return await element(by.cssContainingText(this.selectors.labelValue, labelName)).isPresent().then(async (result) => {
             if (result) return await element(by.cssContainingText(this.selectors.labelValue, labelName)).isDisplayed();

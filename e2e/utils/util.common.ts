@@ -463,6 +463,12 @@ export class Util {
         let textAfterTag:string = await browser.executeScript('return window.getComputedStyle(arguments[0], ":after").content;', nameElement.getWebElement());
         return textAfterTag;
     }
+
+    async getNthLineBRText(lineNo: number, locator: ElementFinder): Promise<string> {
+        if (await locator.$$('br').isPresent())
+            return await locator.$$('br').get(lineNo - 1).getText();
+        else return null;
+    }
 }
 
 export default new Util();
