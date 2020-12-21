@@ -18,4 +18,5 @@ export interface IAdhocTask {
     category3?: string;
     targetDate?: string;
     lineOfBusiness?: string;
+    requester?: string;
 };

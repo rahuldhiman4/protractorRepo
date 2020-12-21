@@ -182,5 +182,9 @@
 	"sherbert": {
 		"userName": "sherbert@petramco.com",
 		"userPassword": "Password_1234"
+	},
+	"qcespedes": {
+		"userName": "qcespedes@petramco.com",
+		"userPassword": "Password_1234"
 	}
 }

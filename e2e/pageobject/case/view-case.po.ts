@@ -588,6 +588,15 @@ class ViewCasePage {
     async getLineOfBusinessValue(): Promise<string>{
         return await $(this.selectors.lineofbusiness).getText();
     }
+
+    async isDuplicateFieldsAreNotPresentOnCase(): Promise<boolean> {
+        let allFieldsText: string[] = undefined;
+        for (let i = 0; i < await $$('.btn-link, label').length; i++) {
+            allFieldsText[i] = await $$('.btn-link, label').get(i).getText();
+        }
+        let findDuplicates = arr => arr.filter((item, index) => arr.indexOf(item) != index);
+        return findDuplicates.length == 0;
+    }
 }
 
 export default new ViewCasePage();

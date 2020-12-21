@@ -8,13 +8,21 @@ import personProfile from "../../pageobject/common/person-profile.po";
 import relatedTabPage from '../../pageobject/common/related-person-tab.po';
 import relationshipsConfigsPage from '../../pageobject/settings/relationship/relationships-configs.po';
 import activityTabPage from '../../pageobject/social/activity-tab.po';
-import { BWF_BASE_URL } from '../../utils/constants';
+import { BWF_BASE_URL, operation, security, type } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import apiCoreUtil from '../../api/api.core.util';
+import viewTaskPage from '../../pageobject/task/view-task.po';
 
 describe('Person Profile test', () => {
+    const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
+    const departmentDataFile = require('../../data/ui/foundation/department.ui.json');
+    const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
+    const personDataFile = require('../../data/ui/foundation/person.ui.json');
+    let businessData, departmentData, suppGrpData, personData, orgId;
+
     beforeAll(async () => {
         await apiHelper.apiLogin('tadmin');
         await apiHelper.updateFoundationEntity('Person', 'Elizabeth', { vipStatus: 'Yes' });
@@ -30,6 +38,31 @@ describe('Person Profile test', () => {
         await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
+
+    async function foundationDataCreation() {
+        //Create Foundation data
+        businessData = businessDataFile['BusinessUnitData_BulkOperation'];
+        departmentData = departmentDataFile['DepartmentData_BulkOperation'];
+        suppGrpData = supportGrpDataFile['SuppGrpData_BulkOperation'];
+        personData = personDataFile['PersonData_BulkOperation'];
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.createNewUser(personData);
+        await apiHelper.associatePersonToCompany(personData.userId, 'Petramco');
+        orgId = await apiCoreUtil.getOrganizationGuid('Petramco');
+        businessData.relatedOrgId = orgId;
+        let businessUnitId = await apiHelper.createBusinessUnit(businessData);
+        await browser.sleep(3000); // timeout requried to reflect data on UI
+        departmentData.relatedOrgId = businessUnitId;
+        let depId = await apiHelper.createDepartment(departmentData);
+        await browser.sleep(3000); //sleep to reflect data on UI
+        suppGrpData.relatedOrgId = depId;
+        await apiHelper.createSupportGroup(suppGrpData);
+        await browser.sleep(3000); // timeout requried to reflect data on UI
+        await apiHelper.associatePersonToSupportGroup(personData.userId, suppGrpData.orgName);
+        await apiHelper.associatePersonToDepartmentOrBU(personData.userId, businessData.orgName);
+        await apiHelper.associatePersonToDepartmentOrBU(personData.userId, departmentData.orgName);
+        await apiHelper.associatePersonToDepartmentOrBU(personData.userId, 'United States Support');
+    }
 
     //asahitya
     it('[DRDMV-17018]: Check agent can not add notes to own Person profile in agent work history tab', async () => {
@@ -813,6 +846,146 @@ describe('Person Profile test', () => {
         });
     });
 
+    describe('[DRDMV-24406]: Verify whether Requesters sub organization details are displayed on person profile when case agent clicks on requesters name from case / task', () => {
+        let caseResponse;
+        let caseData = {
+            "Status": "2000",
+            "Assigned Company": "Petramco",
+            "Description": "DRDMV16799 Desc",
+            "Requester": "idPersonBO",
+            "Summary": "DRDMV16799 Summary",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
+            "Assignee": "qfeng"
+        }
+
+        let taskData = {
+            "taskName": 'Name DRDMV16799',
+            "company": "Petramco",
+            "lineOfBusiness": "Human Resource",
+            "businessUnit": "United States Support",
+            "supportGroup": "US Support 3",
+            "assignee": "qkatawazi",
+            "requester": "qfeng"
+        }
+
+        let updateCaseAccessDataQdu = {
+            "operation": operation['addAccess'],
+            "type": type['user'],
+            "security": security['writeAccess'],
+            "username": 'qdu'
+        }
+
+        let updateCaseAccessDataQstrong = {
+            "operation": operation['addAccess'],
+            "type": type['user'],
+            "security": security['readAccess'],
+            "username": 'qstrong'
+        }
+
+        let updateCaseAccessDataQliu = {
+            "operation": operation['addAccess'],
+            "type": type['user'],
+            "security": security['writeAccess'],
+            "username": 'qliu'
+        }
+
+        let updateCaseAccessDataQcespedes = {
+            "operation": operation['addAccess'],
+            "type": type['user'],
+            "security": security['writeAccess'],
+            "username": 'qcespedes'
+        }
+
+        beforeAll(async () => {
+            await foundationDataCreation();
+            await apiHelper.apiLogin('qtao');
+            caseResponse = await apiHelper.createCase(caseData);
+            await apiHelper.apiLogin('qtao');
+            await apiHelper.createAdhocTask(caseResponse.id, taskData);
+            await apiHelper.updateCaseAccess(caseResponse.id, updateCaseAccessDataQdu);
+            await apiHelper.updateCaseAccess(caseResponse.id, updateCaseAccessDataQstrong);
+            await apiHelper.updateCaseAccess(caseResponse.id, updateCaseAccessDataQliu);
+            await apiHelper.updateCaseAccess(caseResponse.id, updateCaseAccessDataQcespedes);
+        });
+
+        it('[DRDMV-24406]: Verify whether Requesters sub organization details are displayed on person profile when case agent clicks on requesters name from case / task', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qfeng');
+            await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
+            await viewCasePage.clickRequsterName();
+            await utilityCommon.switchToNewTab(1);
+            expect(await personProfile.getCompany()).toBe('Petramco > United States Support, BulkOperationBusinessUnit, BulkOperationDepartment', 'Organization details not match');
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+
+            await viewCasePage.clickOnTaskLink('Name DRDMV16799');
+            await viewTaskPage.clickOnRequesterName();
+            await utilityCommon.switchToNewTab(1);
+            expect(await personProfile.getCompany()).toBe('Petramco > United States Support, BulkOperationBusinessUnit, BulkOperationDepartment', 'Organization details not match');
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+
+            await navigationPage.signOut();
+            await loginPage.login('qdu');
+            await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
+            await viewCasePage.clickRequsterName();
+            await utilityCommon.switchToNewTab(1);
+            expect(await personProfile.getCompany()).toBe('Petramco > United States Support, BulkOperationBusinessUnit, BulkOperationDepartment', 'Organization details not match');
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+
+            await viewCasePage.clickOnTaskLink('Name DRDMV16799');
+            await viewTaskPage.clickOnRequesterName();
+            await utilityCommon.switchToNewTab(1);
+            expect(await personProfile.getCompany()).toBe('Petramco > United States Support, BulkOperationBusinessUnit, BulkOperationDepartment', 'Organization details not match');
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+            await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
+            await viewCasePage.clickRequsterName();
+            await utilityCommon.switchToNewTab(1);
+            expect(await personProfile.getCompany()).toBe('Petramco > United States Support, BulkOperationBusinessUnit, BulkOperationDepartment', 'Organization details not match');
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+
+            await viewCasePage.clickOnTaskLink('Name DRDMV16799');
+            await viewTaskPage.clickOnRequesterName();
+            await utilityCommon.switchToNewTab(1);
+            expect(await personProfile.getCompany()).toBe('Petramco > United States Support, BulkOperationBusinessUnit, BulkOperationDepartment', 'Organization details not match');
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+        });
+
+        it('[DRDMV-24406]: Verify whether Requesters sub organization details are displayed on person profile when case agent clicks on requesters name from case / task', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qcespedes');
+            await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
+            await viewCasePage.clickRequsterName();
+            await utilityCommon.switchToNewTab(1);
+            expect(await personProfile.getCompany()).toBe('Petramco > United States Support, BulkOperationBusinessUnit, BulkOperationDepartment', 'Organization details not match');
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+
+            await navigationPage.signOut();
+            await loginPage.login('qstrong');
+            await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
+            await viewCasePage.clickRequsterName();
+            await utilityCommon.switchToNewTab(1);
+            expect(await personProfile.getCompany()).toBe('Petramco > United States Support, BulkOperationBusinessUnit, BulkOperationDepartment', 'Organization details not match');
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+
+            await navigationPage.signOut();
+            await loginPage.login('qliu');
+            await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
+            await viewCasePage.clickRequsterName();
+            await utilityCommon.switchToNewTab(1);
+            expect(await personProfile.getCompany()).toBe('Petramco > United States Support, BulkOperationBusinessUnit, BulkOperationDepartment', 'Organization details not match');
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+        });
+
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('elizabeth');
+
+        });
+    });
+    
     describe('[DRDMV-24390]: Create case-case, case-person and person-person relationships using tadmin', async () => {
         it('[DRDMV-24390]:Case to Case Relation same name LOB validation', async () => {
             await navigationPage.signOut();
