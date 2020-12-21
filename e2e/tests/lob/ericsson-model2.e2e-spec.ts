@@ -621,7 +621,7 @@ describe('Ericsson Model Test Extended', () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('tted');
             expect(await createCasePage.getLineOfBusinessValue()).toBe('Ericsson SAM');
-            await createCasePage.setSummary('DRDMV23664CaseSummary1234');
+            await createCasePage.setSummary(summary);
             expect(await createCasePage.isCategoryTier1DropDownValueDisplayed('Total Rewards')).toBeFalsy('General Ledger CategoryTier1 drop down value displayed');
 
             await createCasePage.clickSelectCaseTemplateButton();
@@ -642,8 +642,8 @@ describe('Ericsson Model Test Extended', () => {
             expect(await createCasePage.getCategoryTier3Value()).toBe('Card Activity');
             expect(await createCasePage.getAssigneeValue()).toBe('Springsteen Bruce');
 
-            await editCasePo.updateCaseCategoryTier1('Fixed Assets');
-            await editCasePo.updateCaseCategoryTier2('Capitalization');
+            await createCasePage.selectCategoryTier1('Fixed Assets');
+            await createCasePage.selectCategoryTier2('Capitalization');
 
             await createCasePage.clickChangeAssignmentButton();
             await changeAssignmentBladePo.setAssignee('Ericsson SAM', 'Ericsson Asset Management - USA', 'Asset Disposal', 'Spolsky Joel');
@@ -666,7 +666,7 @@ describe('Ericsson Model Test Extended', () => {
             await resourcesTabPo.searchTextAndEnter(knowledgeTitle);
             await browser.sleep(3000); // wait untile result gets reflect
             await expect(await resourcesTabPo.getAdvancedSearchResultForParticularSection(knowledgeTitle)).toEqual(undefined);
-            await expect(await resourcesTabPo.getAdvancedSearchResultForParticularSection('DRDMV23673CaseSummary1234')).toEqual(undefined);
+            await expect(await resourcesTabPo.getAdvancedSearchResultForParticularSection(summary)).toEqual(undefined);
         });
 
         it('[DRDMV-23664]: Verify case access between Ericsson HR and Ericsson SAM LOB', async () => {
