@@ -50,8 +50,7 @@ describe('Document Library', () => {
         await apiHelper.createNewUser(userData2);
         await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
         await apiHelper.associatePersonToSupportGroup(userData2.userId, "US Support 3");
-
-
+        await apiHelper.associatePersonToSupportGroup(userData2.userId, "Employee Relations");
     });
 
     afterAll(async () => {
@@ -125,7 +124,7 @@ describe('Document Library', () => {
             await createDocumentLibraryPo.setTitle(titleRandVal);
             await createDocumentLibraryPo.selectCompany('Petramco');
             await createDocumentLibraryPo.selectBusinessUnit('HR Support');
-            await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
+            await createDocumentLibraryPo.selectOwnerGroup('Employee Relations');
             await createDocumentLibraryPo.clickOnSaveButton();
             await utilCommon.closePopUpMessage();
             await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
@@ -142,12 +141,13 @@ describe('Document Library', () => {
         });
 
         it('[DRDMV-13045,DRDMV-13014,DRDMV-13017]: Verify if document library is accessible to same LOB Case Manager', async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.updateFoundationEntity('Person', 'qdu', { functionalRole: "Document Manager" });
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
             expect(await utilGrid.isGridRecordPresent(titleRandVal)).toBeTruthy('Human Resources LOB document library is not visible to same LOB case manager');
-
         });
 
         it('[DRDMV-13045,DRDMV-13014,DRDMV-13017]: Verify if document library is accessible to different LOB Case BA', async () => {
@@ -159,6 +159,8 @@ describe('Document Library', () => {
         });
 
         it('[DRDMV-13045,DRDMV-13014,DRDMV-13017]: Verify if document library is accessible to different LOB Case Manager', async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.updateFoundationEntity('Person', 'Frieda', { functionalRole: "Document Manager" });
             await navigationPage.signOut();
             await loginPage.login('frieda');
             await navigationPage.gotoSettingsPage();
@@ -171,10 +173,12 @@ describe('Document Library', () => {
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
-            expect(await utilGrid.isGridRecordPresent(titleRandVal)).toBeFalsy('Human Resources LOB document library is not visible to same LOB with different case BA');
+            expect(await utilGrid.isGridRecordPresent(titleRandVal)).toBeTruthy('Human Resources LOB document library is not visible to same LOB with different case BA');
         });
 
         it('[DRDMV-13045,DRDMV-13014,DRDMV-13017]: Verify if document library is accessible to Case Manager user having access to multiple LOB', async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.updateFoundationEntity('Person', 'caseMngrMultiLOB', { functionalRole: "Document Manager" });
             await navigationPage.signOut();
             await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -196,14 +200,12 @@ describe('Document Library', () => {
 
             await utilGrid.selectLineOfBusiness('Human Resource');
             expect(await utilGrid.isGridRecordPresent(titleRandVal)).toBeTruthy('Human Resources LOB document libraryssssss is not visible to case BA with multiple LOB access');
-
-            await utilGrid.searchOnGridConsole(titleRandVal);
-            await editDocumentLibraryPo.selectStatus('Published');
+            await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
+            await editDocumentLibraryPo.selectStatus('Draft');
             await editDocumentLibraryPo.clickOnSaveButton();
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
-            await utilCommon.closePopUpMessage();
+           
         });
-
     });
 
 
@@ -336,7 +338,7 @@ describe('Document Library', () => {
         let column: string[] = ["Author"];
         await documentLibraryConsolePo.addColumnOnGrid(column);
         await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
-        expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Author')).toBe('Qadim Katawazi', 'Author is not displayed');
+        expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Author')).toBe('caseBA MultiLOB', 'Author is not displayed');
         await documentLibraryConsolePo.removeColumnOnGrid(column);
     });
 
