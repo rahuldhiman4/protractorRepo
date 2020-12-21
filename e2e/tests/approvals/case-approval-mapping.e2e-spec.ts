@@ -14,7 +14,6 @@ import viewCasePo from '../../pageobject/case/view-case.po';
 import { CaseTemplate } from 'e2e/api/constant.api';
 let userData, userData1, userData2 = undefined;
 
-
 describe("Case Approval Mapping Tests", () => {
     const approvalMappingNameStr = "Approval Mapping Name";
     const companyStr = "Company";
@@ -382,7 +381,33 @@ describe("Case Approval Mapping Tests", () => {
             caseTemplate.templateSummary = 'Case Summary for petramco case template';
             await apiHelper.createCaseTemplate(caseTemplate);
 
+            caseTemplateFacilitiesData = {
+                "templateName": 'CaseTemplateName',
+                "templateSummary": 'Case Template Summary',
+                "categoryTier1": 'Purchasing Card',
+                "casePriority": "Critical",
+                "templateStatus": "Active",
+                "company": "Petramco",
+                "businessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
+                "assignee": "Franz",
+                "ownerBU": "Facilities Support",
+                "ownerGroup": "Facilities",
+                "lineOfBusiness":"Facilities"
+            }
             await apiHelper.apiLogin('qkatawazi');
+            // create global case template
+            caseTemplate.templateName = globalCaseTemplateStr;
+            caseTemplate.templateSummary = 'Case Summary for global case template';
+            caseTemplate.company = '- Global -';
+            await apiHelper.createCaseTemplate(caseTemplate);
+
+            // create Petramco Active case template
+            caseTemplate.templateName = petramcoCaseTemplateStr;
+            caseTemplate.templateSummary = 'Case Summary for petramco case template';
+            await apiHelper.createCaseTemplate(caseTemplate);
+
+            await apiHelper.apiLogin('fritz');
             // create global case template
             caseTemplate.templateName = globalFacilitiesCaseTemplateStr;
             caseTemplate.templateSummary = 'Case Summary for global Facilities case template';

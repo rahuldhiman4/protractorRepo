@@ -19,7 +19,7 @@ class NotificationTemplateGridPage {
         searchBox: "[rx-view-component-id='adabdd0a-24fb-4d75-a265-ce0d72aeccb1'] [rx-id='search-text-input']",
         guid: 'adabdd0a-24fb-4d75-a265-ce0d72aeccb1',
         deleteButton: '[rx-view-component-id="5dffa163-d72d-4af5-9751-76252d6cd21a"] button',
-        notificationTemplateChk:'[rx-view-component-id="adabdd0a-24fb-4d75-a265-ce0d72aeccb1"] div[class="ui-grid-selection-row-header-buttons ui-grid-icon-ok"]'
+        notificationTemplateChk:'[rx-view-component-id="adabdd0a-24fb-4d75-a265-ce0d72aeccb1"] .ui-grid-icon-ok'
     }
 
     async isCopyTemplateButtonDisabled(): Promise<boolean> {

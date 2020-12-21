@@ -4,19 +4,15 @@ import utilCommon from '../../../utils/util.common';
 class NotificationEventCreatePage {
 
     selectors = {
-        eventNameInput: '[rx-view-component-id="f03dfbfc-f14f-4a82-89a2-12333c11bcc6"] input',
-        companyGuid: 'ddcc4de1-4507-4b2f-92c1-7dbdde873a65',
-        descriptionInput: '[rx-view-component-id="e93a2f93-ba5c-433d-b1a0-7dd79c000ab7"] textarea',
-        saveButton: '[rx-view-component-id="2ed4dab4-ff30-4cb2-a836-042847927b08"] button'
+        eventNameInput: '[rx-view-component-id="bbf60c0a-1fa9-49f2-8505-e85e5e2b23b6"] input',
+        descriptionInput: '[rx-view-component-id="2d3d41dc-cd5c-4364-9880-e336c452d46b"] textarea',
+        saveButton: '[rx-view-component-id="9a11a8a9-68d4-4ef2-9d48-4a11edcb55ba"] button',
+        cancelButton: '[rx-view-component-id="8d104a08-f329-41f7-a843-f47581937923"] button',
     }
 
     async setEventName(eventName: string): Promise<void> {
         await $(this.selectors.eventNameInput).clear();
         await $(this.selectors.eventNameInput).sendKeys(eventName);
-    }
-
-    async setCompanyValue(company: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.companyGuid, company);
     }
 
     async setDescription(description: string): Promise<void> {
@@ -28,6 +24,9 @@ class NotificationEventCreatePage {
         await $(this.selectors.saveButton).click();
     }
 
+    async cancelEventConfig(): Promise<void> {
+        await $(this.selectors.cancelButton).click();
+    }
     
 
 }

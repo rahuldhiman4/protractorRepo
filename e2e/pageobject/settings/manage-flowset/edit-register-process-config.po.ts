@@ -12,6 +12,7 @@ class EditRegisterProcessPage {
         saveButton: '[rx-view-component-id="03d04373-17d2-4b19-af55-1a26e04ee7f1"] button',
         summaryField1: 'input[role="search"]',
         searchButton1: 'button[rx-id="submit-search-button"]',
+        cancelButton: '[rx-view-component-id="65530a7e-0b78-471c-b355-4196f98a3baa"] button'
     }
 
     async setAliasName(alias: string): Promise<void> {
@@ -39,6 +40,11 @@ class EditRegisterProcessPage {
     async clickOnSaveButton(): Promise<void> {
         await $(this.selectors.saveButton).click();
     }
+
+    async clickOnCancelButton(): Promise<void> {
+        await $(this.selectors.cancelButton).click();
+    }
+
 }
 
 export default new EditRegisterProcessPage();

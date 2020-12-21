@@ -34,6 +34,10 @@ class EditFlowsetPage {
         addConfidentialSupportGroup: '[ng-if="enableAddSupportGroup"]',
         confidentialSupportGroupAssignToMe: '[class="d-checkbox__item ac-label-assign-confidential-write"]',
         supportGroupWarningText: '[class="rx-case-access-remove ac-group-not-unique"] .rx-case-access-remove-text',
+        selectProcessNameDropDown: '[rx-view-component-id="8ed57f59-49e6-4ef5-bc10-30fc55bc5556"] .ui-select-toggle',
+        selectProcessNameDropDownInput: '[rx-view-component-id="8ed57f59-49e6-4ef5-bc10-30fc55bc5556"] input',
+        dropDownOption: '[rx-view-component-id="8ed57f59-49e6-4ef5-bc10-30fc55bc5556"] .ui-select-choices-row',
+        cancelFlowsetBtn: '[rx-view-component-id="af475a83-2370-4fea-a805-b749a315ae99"] button'
     }
 
     async isFlowsetNameDisabled(): Promise<boolean> {
@@ -183,6 +187,22 @@ class EditFlowsetPage {
     async getComapanyValue(): Promise<string> {
         return await $(this.selectors.companyValue).getText();
     }
+
+    async clickOnSelectProcessDropDown():Promise<void>{
+        await $(this.selectors.selectProcessNameDropDown).click();
+    }
+
+    async isProcessNameOptionPresentInDropDown(processName: string): Promise<boolean> {
+        await $(this.selectors.selectProcessNameDropDownInput).clear();
+        await $(this.selectors.selectProcessNameDropDownInput).sendKeys(processName);
+        let values= await $$(this.selectors.dropDownOption).count();
+        if (values >= 2) { return true; } else { return false; }
+    } 
+
+    async clickCancelFlowsetBtn(): Promise<void> {
+        await $(this.selectors.cancelFlowsetBtn).click();
+    }
+
 
 }
 
