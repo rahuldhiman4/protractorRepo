@@ -444,8 +444,8 @@ describe('Ericsson Model Test Extended', () => {
             expect(await createCasePage.getCategoryTier1Value()).toBe('Employee Relations');
             expect(await createCasePage.getCategoryTier2Value()).toBe('Compensation');
             expect(await createCasePage.getCategoryTier3Value()).toBe('Bonus');
-            // expect(await createCasePage.getAssigneeBusinessUnitValue()).toBe('Ericsson United States Support');
-            // expect(await createCasePage.getAssigneeGroupValue()).toBe('US Support 1');
+            expect(await createCasePage.getAssigneeBusinessUnitValue()).toBe('Ericsson United States Support');
+            expect(await createCasePage.getAssigneeGroupValue()).toBe('US Support 1');
             expect(await createCasePage.getAssigneeValue()).toBe('Rushton Willie');
 
             // verify negative scenario for categoryTier1 with Ericsson LOB
