@@ -67,6 +67,29 @@ describe('Create Process in Flowset', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let drpDownStatus: string[] = ['Draft', 'Active', 'Inactive'];
         let processName = undefined;
+        let processLibConfData;
+        let processAliasNameCaseHR = "case process HR" + randomStr;
+
+        beforeAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            let case_management = CASE_MANAGEMENT_LIB_PROCESS;
+            let case_Management_Process = case_management.name + randomStr;
+            case_management.name = case_Management_Process;
+            await apiCoreUtil.createProcess(case_management);
+
+            await apiHelper.apiLogin('qkatawazi');
+            processLibConfData = {
+                applicationServicesLib: "com.bmc.dsm.case-lib",
+                processName: case_Management_Process,
+                processAliasName: processAliasNameCaseHR,
+                company: "Petramco",
+                description: `First Descritpion${randomStr}`,
+                status: "Active",
+                lineOfBusiness: "Human Resource"
+            }
+
+            await apiHelper.createProcessLibConfig(processLibConfData);
+        });
 
         it('[DRDMV-6216]: [Flowsets] Create new Register Process', async () => {
             await navigationPage.gotoSettingsPage();
@@ -80,7 +103,7 @@ describe('Create Process in Flowset', () => {
 
             processName = case_Management_Process.split(':')[1];
 
-            await expect(consoleFlowsetProcessLibrary.isRegisterProcessEnable()).toBeTruthy("Add flowset register Process is disabled");
+            expect(await consoleFlowsetProcessLibrary.isRegisterProcessEnable()).toBeTruthy("Add flowset register Process is disabled");
             await consoleFlowsetProcessLibrary.clickOnRegisterProcess();
 
             //verify the Titles
@@ -173,7 +196,43 @@ describe('Create Process in Flowset', () => {
             await editFlowsetProcessLibrary.selectStatus('Draft');
             await editFlowsetProcessLibrary.clickOnSaveButton();
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
-            await expect(consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid('UpdateAlias' + randomStr)).toBeTruthy('UpdateAlias' + randomStr + "name is not present");    
+            expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid('UpdateAlias' + randomStr)).toBeTruthy('UpdateAlias' + randomStr + "name is not present");
+        });
+
+        it('[DRDMV-6216]: Validate create new record with same name in same LOB', async () => {
+            await consoleFlowsetProcessLibrary.clickOnRegisterProcess();
+            await createFlowsetProcessLibrary.selectCompany('Petramco');
+            await createFlowsetProcessLibrary.selectApplicationService("Case Management Service");
+            await createFlowsetProcessLibrary.setDescription("description" + randomStr);
+            await createFlowsetProcessLibrary.selectStatus("Active");
+            await createFlowsetProcessLibrary.selectProcessName(processName);
+            await createFlowsetProcessLibrary.setAliasName('UpdateAlias' + randomStr);
+            await createFlowsetProcessLibrary.clickSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (22096): The process alias name already exists for the line of business. Please select a different process alias name.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            await createFlowsetProcessLibrary.clickCancelButton();
+            await utilCommon.clickOnWarningOk();
+
+            await consoleFlowsetProcessLibrary.searchAndSelectFlowset(processAliasNameCaseHR);
+            await editFlowsetProcessLibrary.setAliasName('UpdateAlias' + randomStr);
+            await editFlowsetProcessLibrary.setDescription('UpdataDescription' + randomStr);
+            await editFlowsetProcessLibrary.selectStatus('Draft');
+            await editFlowsetProcessLibrary.clickOnSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (22096): The process alias name already exists for the line of business. Please select a different process alias name.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            await editFlowsetProcessLibrary.clickOnCancelButton();
+            await utilCommon.clickOnWarningOk();
+        });
+
+        it('[DRDMV-6216]:  Validate create new record with same name in different LOB', async () => {
+            await utilGrid.selectLineOfBusiness('Facilities');
+            await consoleFlowsetProcessLibrary.clickOnRegisterProcess();
+            await createFlowsetProcessLibrary.selectCompany('Petramco');
+            await createFlowsetProcessLibrary.selectApplicationService("Case Management Service");
+            await createFlowsetProcessLibrary.setDescription("description" + randomStr);
+            await createFlowsetProcessLibrary.selectStatus("Active");
+            await createFlowsetProcessLibrary.selectProcessName(processName);
+            await createFlowsetProcessLibrary.setAliasName('UpdateAlias' + randomStr);
+            await createFlowsetProcessLibrary.clickSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
         afterAll(async () => {
@@ -211,9 +270,9 @@ describe('Create Process in Flowset', () => {
         await editFlowsetProcessLibrary.selectStatus('Draft');
         await editFlowsetProcessLibrary.clickOnSaveButton();
         await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
-        await expect(consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid('UpdateAlias' + randomStr)).toBeTruthy('UpdateAlias' + randomStr + "name is not present");
-        await expect(editFlowsetProcessLibrary.getDescription('UpdataDescription' + randomStr)).toBe('UpdataDescription' + randomStr);
-        await expect(consoleFlowsetProcessLibrary.isProcessPresentOnGrid('No Name Process')).toBeFalsy('Unnecessary register is not display');
+        expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid('UpdateAlias' + randomStr)).toBeTruthy('UpdateAlias' + randomStr + "name is not present");
+        expect(await editFlowsetProcessLibrary.getDescription('UpdataDescription' + randomStr)).toBe('UpdataDescription' + randomStr);
+        expect(await consoleFlowsetProcessLibrary.isProcessPresentOnGrid('No Name Process')).toBeFalsy('Unnecessary register is not display');
         await apiHelper.apiLogin('tadmin');
         let processName = 'com.bmc.dsm.social-lib:Social - Sample Activity Update By User';
         await apiHelper.deleteFlowsetProcessLibConfig(processName);
@@ -263,7 +322,7 @@ describe('Create Process in Flowset', () => {
             await editFlowsetProcessLibrary.setAliasName(alias);
             await editFlowsetProcessLibrary.clickOnSaveButton();
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
-            await expect(consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid(alias)).toBeTruthy(alias + "Name is not present");
+            expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid(alias)).toBeTruthy(alias + "Name is not present");
         });
 
         it('[DRDMV-7607]: [Permissions] Process Library access', async () => {
@@ -272,14 +331,14 @@ describe('Create Process in Flowset', () => {
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
-            await expect(consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid(alias)).toBeFalsy(alias + "Name is present");
+            expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid(alias)).toBeFalsy(alias + "Name is present");
 
             //login with different company Manager
             await navigationPage.signOut();
             await loginPage.login('rrovnitov');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
-            await expect(consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid(alias)).toBeFalsy(alias + "Name is present");
+            expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid(alias)).toBeFalsy(alias + "Name is present");
 
             //login with same company Agent
             await navigationPage.signOut();

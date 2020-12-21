@@ -311,6 +311,10 @@ class ServiceTargetConfig {
         await $(this.selectors.selectGoalType).click();
     }
 
+    async clearGoalTypeDropDownOption():Promise<void>{
+        await $(this.selectors.goalTypeDropDownInput).clear();
+    }
+
     async isGoalTypeOptionPresentInDropDown(goalType: string): Promise<boolean> {
         await $(this.selectors.goalTypeDropDownInput).clear();
         await $(this.selectors.goalTypeDropDownInput).sendKeys(goalType);

@@ -1,4 +1,4 @@
-import { $, by, element, protractor, ProtractorExpectedConditions, browser } from "protractor";
+import { $,$$, by, element, protractor, ProtractorExpectedConditions, browser } from "protractor";
 import utilCommon from '../../../utils/util.common';
 
 class createNotificationTemplate {
@@ -24,7 +24,10 @@ class createNotificationTemplate {
         notificationMethodGuid: '0f634bc9-63ce-4515-99d1-525fdb4e44a9',
         generateClickableLinkIconAlert: '[rx-view-component-id="34d2b4a6-5403-4e22-809d-5d26fe2f4ad8"] .cke_button__clickablelink_icon',
         generateClickableLinkIconEmail: '[rx-view-component-id="ac6ba449-9c5a-46f9-85fb-8384bf57fc92"] .cke_button__clickablelink_icon',
-        emailBodyGuid: '7ecf7b01-9de9-45a6-a448-2806fe51cece'
+        emailBodyGuid: '7ecf7b01-9de9-45a6-a448-2806fe51cece',
+        eventDropDownInput: '[rx-view-component-id="38aba7a1-c142-41f7-9017-d261971c2429"] input',
+        eventDropDown: '[rx-view-component-id="38aba7a1-c142-41f7-9017-d261971c2429"] .ui-select-match',
+        dropDownOption: '.ui-select-choices-row',
     }
     async selectModuleName(value: string): Promise<void> {
         await utilCommon.selectDropDown(this.selectors.moduleName, value);
@@ -124,5 +127,22 @@ class createNotificationTemplate {
     async clickOnGenerateClickableLinkIconOnEmail(): Promise<void> {
         await $(this.selectors.generateClickableLinkIconEmail).click();
     }
+
+    async clickOnNotificationEventDropDown():Promise<void>{
+        await $(this.selectors.eventDropDown).click();
+    }
+
+    async clearNotificationEventFromDropDown():Promise<void>{
+        await $(this.selectors.eventDropDownInput).clear();
+    }
+
+    async isNotificationEventOptionPresentInDropDown(notificationEvent: string): Promise<boolean> {
+        await $(this.selectors.eventDropDownInput).clear();
+        await $(this.selectors.eventDropDownInput).sendKeys(notificationEvent);
+        let values= await $$(this.selectors.dropDownOption).count();
+        if (values >= 1) { return true; } else { return false; }
+    } 
+
+
 }
 export default new createNotificationTemplate(); 

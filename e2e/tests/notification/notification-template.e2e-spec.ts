@@ -11,7 +11,10 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
+import editNotificationEventPage from '../../pageobject/settings/notification-config/edit-notification-event.po';
+
 import { async } from 'q';
+import editNotificationEventPo from '../../pageobject/settings/notification-config/edit-notification-event.po';
 
 describe("Notification Template", () => {
     let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -38,19 +41,19 @@ describe("Notification Template", () => {
             await utilGrid.searchAndSelectGridRecord("Task SLA Missed");
             await notificationTempGridPage.clickCopyTemplate();
             //Validate 'Copy Template' Window title and fields present
-            await expect(notificationTempGridPage.getTitleCopyNotificationTemplateWindow()).toBe("Copy Template");
-            await expect(notificationTempGridPage.isCompanyDropDownPresentInCopyTempWindow()).toBeTruthy();
-            await expect(notificationTempGridPage.isTemplateNameTxtBoxPresentInCopyTempWindow()).toBeTruthy();
+            expect(await notificationTempGridPage.getTitleCopyNotificationTemplateWindow()).toBe("Copy Template");
+            expect(await notificationTempGridPage.isCompanyDropDownPresentInCopyTempWindow()).toBeTruthy();
+            expect(await notificationTempGridPage.isTemplateNameTxtBoxPresentInCopyTempWindow()).toBeTruthy();
             //Clear All fields and validate if the Copy button is disabled
             await notificationTempGridPage.setTemplateNamePresentInCopyTempWindow(" ");
             await expect(notificationTempGridPage.isCopyTemplateButtonDisabledInCopyTempWindow()).toBeTruthy();
             // Select company drpdwn value and keep tempName empty and validate if the Copy button is disabled
             await notificationTempGridPage.setCompanyDropDownValPresentInCopyTempWindow("Petramco");
-            await expect(notificationTempGridPage.isCopyTemplateButtonDisabledInCopyTempWindow()).toBeTruthy();
+            expect(await notificationTempGridPage.isCopyTemplateButtonDisabledInCopyTempWindow()).toBeTruthy();
             //Clear company drpdwn value and Enter some tempName and validate if the Copy button is disabled
             await notificationTempGridPage.clearCompanyDropDownValPresentInCopyTempWindow();
             await notificationTempGridPage.setTemplateNamePresentInCopyTempWindow(notificationTemplateName);
-            await expect(notificationTempGridPage.isCopyTemplateButtonDisabledInCopyTempWindow()).toBeTruthy();
+            expect(await notificationTempGridPage.isCopyTemplateButtonDisabledInCopyTempWindow()).toBeTruthy();
             //Select Company drpdown value again, and click Copy Template button
             await notificationTempGridPage.setCompanyDropDownValPresentInCopyTempWindow("Petramco");
             await notificationTempGridPage.clickCopyTemplateButtonInCopyTempWindow();
@@ -142,38 +145,225 @@ describe("Notification Template", () => {
     });
 
     //asahitya  
-    it('[DRDMV-14062]: To create new template with an event', async () => {
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Events', 'Manage Notification Event - Business Workflows');
-        await notificationEventConsolePage.clickAddNotificationEventBtn();
-        await createNotificationEventPage.setEventName('Case Priority Change' + randomStr);
-        await createNotificationEventPage.setCompanyValue('Petramco');
-        await createNotificationEventPage.setDescription('DRDMV-14062 Desc');
-        await createNotificationEventPage.saveEventConfig();
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Notification Template - Business Workflows');
-        await notificationTempGridPage.clickOnCreateNotificationTemplate();
-        await createNotificationTemplatePage.selectModuleName('Cases');
-        expect(await createNotificationTemplatePage.areRecipientsMatches(["Assigned Business Unit's Manager", "Assigned Department's Manager", "Assigned Group's Manager", "Assignee", "Assignee's Manager", "Contact", "Contact's Manager", "External Requester", "Requester", "Requester's Manager", "Assigned Business Unit", "Assigned Department", "Assigned Group"])).toBeTruthy('Recipient List is not matching');
-        await createNotificationTemplatePage.selectEvent('Case Priority Change' + randomStr);
-        await createNotificationTemplatePage.setTemplateName('DRDMV-14062' + randomStr);
-        await createNotificationTemplatePage.setDescription('DRDMV-14062' + randomStr);
-        await createNotificationTemplatePage.setAlertMessage('Priority is change');
-        await createNotificationTemplatePage.clickOnEmailTab();
-        await createNotificationTemplatePage.setSubject('Priority is change');
-        await editNotificationTemplate.clickRecipientsCheckbox("Assignee's Manager", "BCC");
-        await editNotificationTemplate.clickRecipientsCheckbox("External Requester", "TO");
-        await editNotificationTemplate.clickRecipientsCheckbox("Assigned Group", "CC");
-        await createNotificationTemplatePage.clickOnSaveButton();
-        await utilCommon.closeBladeOnSettings();
-        await utilGrid.searchAndOpenHyperlink('DRDMV-14062' + randomStr);
-        expect(await editNotificationTemplate.getEventName()).toBe('Case Priority Change' + randomStr);
-        expect(await editNotificationTemplate.getModuleName()).toBe('Cases');
-        expect(await editNotificationTemplate.isRecipientsCheckboxChecked("Assignee's Manager", "BCC")).toBeTruthy();
-        expect(await editNotificationTemplate.isRecipientsCheckboxChecked("External Requester", "TO")).toBeTruthy();
-        expect(await editNotificationTemplate.isRecipientsCheckboxChecked("Assigned Group", "CC")).toBeTruthy();
-        await utilCommon.closeBladeOnSettings();
-        await utilGrid.clearGridSearchBox();
+    describe('[DRDMV-14062]: To create new template with an event', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let notificationEventHRGlobal = "Case Notification Event HR Global" + randomStr;
+        let notificationEventHRPetramco = "Case Notification Event HR Petramco" + randomStr;
+        let notificationEventHRGlobalInactive = "Case Notification Event HR Global Inactive" + randomStr;
+        let notificationEventHRPetramcoInactive = "Case Notification Event HR Petramco Inactive" + randomStr;
+        let notificationEventFacilitiesGlobal = "Case Notification Event Facilities Global" + randomStr;
+        let notificationEventFacilitiesPetramco = "Case Notification Event Facilities Petramco" + randomStr;
+        let notificationEventFacilitiesGlobalInactive = "Case Notification Event Facilities Global Inactive" + randomStr;
+        let notificationEventFacilitiesPetramcoInactive = "Case Notification Event Facilities Petramco Inactive" + randomStr;
+
+        beforeAll(async () => {
+
+            let eventDataHRPetramco = {
+                "eventName": notificationEventHRPetramco,
+                "status": 1,
+                "company": "Petramco",
+                "eventDescription": notificationEventHRPetramco + "_Desc",
+                "lineOfBusiness": "Human Resource"
+            }
+
+            let eventDataHRGlobal = {
+                "eventName": notificationEventHRGlobal,
+                "status": 1,
+                "company": "- Global -",
+                "eventDescription": notificationEventHRGlobal + "_Desc",
+                "lineOfBusiness": "Human Resource"
+            }
+            let eventDataHRPetramcoInactive = {
+                "eventName": notificationEventHRPetramcoInactive,
+                "status": 2,
+                "company": "Petramco",
+                "eventDescription": notificationEventHRPetramcoInactive + "_Desc",
+                "lineOfBusiness": "Human Resource"
+            }
+            let eventDataHRGlobalInactive = {
+                "eventName": notificationEventHRGlobalInactive,
+                "status": 2,
+                "company": "- Global -",
+                "eventDescription": notificationEventHRGlobalInactive + "_Desc",
+                "lineOfBusiness": "Human Resource"
+            }
+
+            let eventDataFacilitiesPetramco = {
+                "eventName": notificationEventFacilitiesPetramco,
+                "status": 1,
+                "company": "Petramco",
+                "eventDescription": notificationEventFacilitiesPetramco + "_Desc",
+                "lineOfBusiness": "Facilities"
+            }
+
+            let eventDataFacilitiesGlobal = {
+                "eventName": notificationEventFacilitiesGlobal,
+                "status": 1,
+                "company": "- Global -",
+                "eventDescription": notificationEventFacilitiesGlobal + "_Desc",
+                "lineOfBusiness": "Facilities"
+            }
+            let eventDataFacilitiesPetramcoInactive = {
+                "eventName": notificationEventFacilitiesPetramcoInactive,
+                "status": 2,
+                "company": "Petramco",
+                "eventDescription": notificationEventFacilitiesPetramcoInactive + "_Desc",
+                "lineOfBusiness": "Facilities"
+            }
+            let eventDataFacilitiesGlobalInactive = {
+                "eventName": notificationEventFacilitiesGlobalInactive,
+                "status": 2,
+                "company": "- Global -",
+                "eventDescription": notificationEventFacilitiesGlobalInactive + "_Desc",
+                "lineOfBusiness": "Facilities"
+            }
+
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createNotificationEvent(eventDataHRPetramco);
+            await apiHelper.createNotificationEvent(eventDataHRGlobal);
+            await apiHelper.createNotificationEvent(eventDataHRPetramcoInactive);
+            await apiHelper.createNotificationEvent(eventDataHRGlobalInactive);
+
+            await apiHelper.apiLogin('fritz');
+            await apiHelper.createNotificationEvent(eventDataFacilitiesPetramco);
+            await apiHelper.createNotificationEvent(eventDataFacilitiesGlobal);
+            await apiHelper.createNotificationEvent(eventDataFacilitiesPetramcoInactive);
+            await apiHelper.createNotificationEvent(eventDataFacilitiesGlobalInactive);
+
+        });
+
+        it('[DRDMV-14062]: Verify notification event validation wrt same LOB ', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Events', 'Manage Notification Event - Business Workflows');
+            await notificationEventConsolePage.clickAddNotificationEventBtn();
+            await createNotificationEventPage.setEventName(notificationEventHRGlobal);
+            await createNotificationEventPage.setCompanyValue('Petramco');
+            await createNotificationEventPage.setDescription('DRDMV-14062 Desc');
+            await createNotificationEventPage.saveEventConfig();
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (222104): An Event with same name already exists.')).toBeTruthy("Error message absent");
+            await createNotificationEventPage.setEventName('Case Priority Change' + randomStr);
+            await createNotificationEventPage.saveEventConfig();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Error message absent");
+
+            //validate on edit mode
+            await utilGrid.searchAndOpenHyperlink('Case Priority Change' + randomStr);
+            await editNotificationEventPage.setEventName(notificationEventHRGlobal);
+            await editNotificationEventPage.saveEventConfig();
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (10000): Event Name is not allowed to change.')).toBeTruthy("Error message absent");
+            await editNotificationEventPage.setEventName(notificationEventHRGlobal + "_updated");
+            await editNotificationEventPage.saveEventConfig();
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (10000): Event Name is not allowed to change.')).toBeTruthy("Error message absent");
+            await editNotificationEventPage.cancelEventConfig();
+        });
+
+        it('[DRDMV-14062]: To create new template with an event', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Notification Template - Business Workflows');
+            await notificationTempGridPage.clickOnCreateNotificationTemplate();
+            await createNotificationTemplatePage.selectModuleName('Cases');
+            expect(await createNotificationTemplatePage.areRecipientsMatches(["Assigned Business Unit's Manager", "Assigned Department's Manager", "Assigned Group's Manager", "Assignee", "Assignee's Manager", "Contact", "Contact's Manager", "External Requester", "Requester", "Requester's Manager", "Assigned Business Unit", "Assigned Department", "Assigned Group"])).toBeTruthy('Recipient List is not matching');
+
+            //Validations for notification event wrt LOB
+            await createNotificationTemplatePage.clickOnNotificationEventDropDown();
+            expect(await createNotificationTemplatePage.isNotificationEventOptionPresentInDropDown(notificationEventHRGlobal)).toBeTruthy('Notification Event is not displayed.');
+            await createNotificationTemplatePage.clearNotificationEventFromDropDown();
+            expect(await createNotificationTemplatePage.isNotificationEventOptionPresentInDropDown(notificationEventFacilitiesGlobal)).toBeFalsy('Notification Event is displayed.');
+            await createNotificationTemplatePage.clearNotificationEventFromDropDown();
+            expect(await createNotificationTemplatePage.isNotificationEventOptionPresentInDropDown('Access Change')).toBeTruthy('Notification Event is not displayed.');
+            await createNotificationTemplatePage.clearNotificationEventFromDropDown();
+            expect(await createNotificationTemplatePage.isNotificationEventOptionPresentInDropDown(notificationEventFacilitiesPetramco)).toBeFalsy('Notification Event is displayed.');
+            await createNotificationTemplatePage.clearNotificationEventFromDropDown();
+            expect(await createNotificationTemplatePage.isNotificationEventOptionPresentInDropDown(notificationEventHRPetramco)).toBeTruthy('Notification Event is not displayed.');
+            await createNotificationTemplatePage.clearNotificationEventFromDropDown();
+            expect(await createNotificationTemplatePage.isNotificationEventOptionPresentInDropDown(notificationEventHRPetramcoInactive)).toBeFalsy('Notification Event is displayed.');
+            await createNotificationTemplatePage.clearNotificationEventFromDropDown();
+            expect(await createNotificationTemplatePage.isNotificationEventOptionPresentInDropDown(notificationEventHRGlobalInactive)).toBeFalsy('Notification Event is displayed.');
+            await createNotificationTemplatePage.clearNotificationEventFromDropDown();
+            expect(await createNotificationTemplatePage.isNotificationEventOptionPresentInDropDown('Agent Assignment')).toBeTruthy('Notification Event is not displayed.');
+            await createNotificationTemplatePage.clearNotificationEventFromDropDown();
+            expect(await createNotificationTemplatePage.isNotificationEventOptionPresentInDropDown(notificationEventFacilitiesGlobalInactive)).toBeFalsy('Notification Event is displayed.');
+            await createNotificationTemplatePage.clearNotificationEventFromDropDown();
+            expect(await createNotificationTemplatePage.isNotificationEventOptionPresentInDropDown(notificationEventFacilitiesPetramcoInactive)).toBeFalsy('Notification Event is displayed.');
+            await createNotificationTemplatePage.clearNotificationEventFromDropDown();
+            await createNotificationTemplatePage.setTemplateName('DRDMV-14062' + randomStr);
+            await createNotificationTemplatePage.setDescription('DRDMV-14062' + randomStr);
+            await createNotificationTemplatePage.selectEvent('Case Priority Change' + randomStr);
+            await createNotificationTemplatePage.setAlertMessage('Priority is change');
+            await createNotificationTemplatePage.clickOnEmailTab();
+            await createNotificationTemplatePage.setSubject('Priority is change');
+            await editNotificationTemplate.clickRecipientsCheckbox("Assignee's Manager", "BCC");
+            await editNotificationTemplate.clickRecipientsCheckbox("External Requester", "TO");
+            await editNotificationTemplate.clickRecipientsCheckbox("Assigned Group", "CC");
+            await createNotificationTemplatePage.clickOnSaveButton();
+            await utilCommon.closeBladeOnSettings();
+            await utilGrid.searchAndOpenHyperlink('DRDMV-14062' + randomStr);
+            expect(await editNotificationTemplate.getEventName()).toBe('Case Priority Change' + randomStr);
+            expect(await editNotificationTemplate.getModuleName()).toBe('Cases');
+            expect(await editNotificationTemplate.isRecipientsCheckboxChecked("Assignee's Manager", "BCC")).toBeTruthy();
+            expect(await editNotificationTemplate.isRecipientsCheckboxChecked("External Requester", "TO")).toBeTruthy();
+            expect(await editNotificationTemplate.isRecipientsCheckboxChecked("Assigned Group", "CC")).toBeTruthy();
+            await utilCommon.closeBladeOnSettings();
+            await utilGrid.clearGridSearchBox();
+        });
+
+        it('[DRDMV-14062]: Verify notification template validation wrt same LOB ', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Notification Template - Business Workflows');
+            await notificationTempGridPage.clickOnCreateNotificationTemplate();
+            await createNotificationTemplatePage.selectModuleName('Cases');
+            expect(await createNotificationTemplatePage.areRecipientsMatches(["Assigned Business Unit's Manager", "Assigned Department's Manager", "Assigned Group's Manager", "Assignee", "Assignee's Manager", "Contact", "Contact's Manager", "External Requester", "Requester", "Requester's Manager", "Assigned Business Unit", "Assigned Department", "Assigned Group"])).toBeTruthy('Recipient List is not matching');
+            await createNotificationTemplatePage.setTemplateName('DRDMV-14062' + randomStr);
+            await createNotificationTemplatePage.setDescription('DRDMV-14062' + randomStr);
+            await createNotificationTemplatePage.selectEvent('Case Priority Change' + randomStr);
+            await createNotificationTemplatePage.setAlertMessage('Priority is change');
+            await createNotificationTemplatePage.clickOnEmailTab();
+            await createNotificationTemplatePage.setSubject('Priority is change');
+            await editNotificationTemplate.clickRecipientsCheckbox("Assignee's Manager", "BCC");
+            await editNotificationTemplate.clickRecipientsCheckbox("External Requester", "TO");
+            await editNotificationTemplate.clickRecipientsCheckbox("Assigned Group", "CC");
+            await createNotificationTemplatePage.clickOnSaveButton();
+            await utilCommon.closeBladeOnSettings();
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (222107): A template already exists for the selected combination of event, module, and line of business. Specify a different combination.')).toBeTruthy("record saved successful message is not displayed.");
+        });
+
+        it('[DRDMV-14062]: Verify notification event validation wrt different LOB ', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Events', 'Manage Notification Event - Business Workflows');
+            await notificationEventConsolePage.clickAddNotificationEventBtn();
+            await createNotificationEventPage.setEventName(notificationEventHRGlobal);
+            await createNotificationEventPage.setCompanyValue('Petramco');
+            await createNotificationEventPage.setDescription('DRDMV-14062 Desc');
+            await createNotificationEventPage.saveEventConfig();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("record saved successful message is not displayed.");
+        });
+
+        it('[DRDMV-14062]: Verify notification template validation wrt different LOB ', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Notification Template - Business Workflows');
+            await notificationTempGridPage.clickOnCreateNotificationTemplate();
+            await createNotificationTemplatePage.selectModuleName('Cases');
+            expect(await createNotificationTemplatePage.areRecipientsMatches(["Assigned Business Unit's Manager", "Assigned Department's Manager", "Assigned Group's Manager", "Assignee", "Assignee's Manager", "Contact", "Contact's Manager", "External Requester", "Requester", "Requester's Manager", "Assigned Business Unit", "Assigned Department", "Assigned Group"])).toBeTruthy('Recipient List is not matching');
+            await createNotificationTemplatePage.setTemplateName('DRDMV-14062' + randomStr);
+            await createNotificationTemplatePage.setDescription('DRDMV-14062' + randomStr);
+            await createNotificationTemplatePage.setAlertMessage('Priority is change');
+            await createNotificationTemplatePage.clickOnEmailTab();
+            await createNotificationTemplatePage.setSubject('Priority is change');
+            await editNotificationTemplate.clickRecipientsCheckbox("Assignee's Manager", "BCC");
+            await editNotificationTemplate.clickRecipientsCheckbox("External Requester", "TO");
+            await editNotificationTemplate.clickRecipientsCheckbox("Assigned Group", "CC");
+            await createNotificationTemplatePage.selectEvent('Case Priority Change' + randomStr);
+            await createNotificationTemplatePage.clickOnSaveButton();
+            await utilCommon.closeBladeOnSettings();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("record saved successful message is not displayed.");
+        });
+
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login("qkatawazi");
+        });
+
     });
 
     //asahitya
