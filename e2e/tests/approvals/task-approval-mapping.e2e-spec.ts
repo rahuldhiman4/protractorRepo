@@ -69,7 +69,8 @@ describe("Task Approval Mapping Tests", () => {
     describe('[DRDMV-21582,DRDMV-22120]:[Task Approval] - Create/Update Approval Mapping', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let taskApprovalMappingStr = `Task Mapping ${randomStr}`;
-        let manualTaskTemplateData, autoTaskTemplateData, manualTaskGlobalTemplateData, manualTaskTemplateDraftData, manualTaskTemplateInactiveData, psilonManualTaskTemplateData, manualTaskId, automatedTaskId = "";
+        let manualTaskTemplateData, autoTaskTemplateData, manualTaskGlobalTemplateData, manualTaskTemplateDraftData, manualTaskTemplateInactiveData, psilonManualTaskTemplateData, autoTaskTemplateFacilitiesGlobalData, manualTaskId, automatedTaskId = "";
+        let globalHRManualTaskTemplateData, petramcoHRManualTaskTemplateData, manualHRTaskTemplateDataDraft, manualHRTaskTemplateDataInactive, autoTaskTemplateDataHRGlobal, autoTaskTemplateDataHRPetramco, externaltemplateDataHRGlobal, externaltemplateDataHRPetramco, externaltemplateDataFacilitiesGlobal, externaltemplateDataFacilitiesPetramco;
         let statusTriggerDropDownOptions: string[] = ["Assigned", "In Progress", "Completed", "Canceled"];
         let statusMappingApprovedWhenStatusTriggerAssigned: string[] = ["Assigned", "In Progress", "Completed", "Canceled", "Closed"];
         let statusMappingNoApprovalFoundWhenStatusTriggerAssigned: string[] = ["Assigned", "In Progress", "Completed", "Canceled", "Closed"];
@@ -98,78 +99,239 @@ describe("Task Approval Mapping Tests", () => {
 
         beforeAll(async () => {
             manualTaskTemplateData = {
-                "templateName": `manualTaskTemplate ${randomStr}`,
-                "templateSummary": 'Automated Approval without process for task',
+                "templateName": `manualTaskTemplatePetramcoFacilitiesActive ${randomStr}`,
+                "templateSummary": 'Manual task petramco Facilities Active',
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "Facilities Support",
                 "ownerGroup": "Facilities",
-                "lineOfBusiness":"Facilities"
+                "lineOfBusiness": "Facilities"
             }
 
             psilonManualTaskTemplateData = {
                 "templateName": `manualTaskTemplatePsilon ${randomStr}`,
-                "templateSummary": 'Automated Approval without process for task',
+                "templateSummary": 'Manual task psilon HR Active',
                 "templateStatus": "Active",
                 "taskCompany": 'Psilon',
                 "ownerCompany": "Psilon",
                 "ownerBusinessUnit": "Psilon Support Org1",
                 "ownerGroup": "Psilon Support Group1",
-                "lineOfBusiness":"Facilities"
+                "lineOfBusiness": "Human Resource"
             }
 
             manualTaskGlobalTemplateData = {
-                "templateName": `manualTaskTemplateGlobal ${randomStr}`,
-                "templateSummary": 'Automated Approval without process for task',
+                "templateName": `manualTaskTemplateGlobalFacilitiesActive ${randomStr}`,
+                "templateSummary": 'Manual task global Facilities Active',
                 "templateStatus": "Active",
                 "taskCompany": '- Global -',
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "Facilities Support",
                 "ownerGroup": "Facilities",
-                "lineOfBusiness":"Facilities"
+                "lineOfBusiness": "Facilities"
             }
 
             manualTaskTemplateDraftData = {
-                "templateName": `manualTaskTemplateDraft ${randomStr}`,
-                "templateSummary": 'Automated Approval without process for task',
+                "templateName": `manualTaskTemplatePetramcoFacilitiesDraft ${randomStr}`,
+                "templateSummary": 'Manual task petramco Facilities draft',
                 "templateStatus": "Draft",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "Facilities Support",
                 "ownerGroup": "Facilities",
-                "lineOfBusiness":"Facilities"
+                "lineOfBusiness": "Facilities"
             }
 
             manualTaskTemplateInactiveData = {
-                "templateName": `manualTaskTemplateInactive ${randomStr}`,
-                "templateSummary": 'Automated Approval without process for task',
+                "templateName": `manualTaskTemplatePetramcoFacilitiesInactive ${randomStr}`,
+                "templateSummary": 'Manual task petramco Facilities inactive',
                 "templateStatus": "Inactive",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "Facilities Support",
                 "ownerGroup": "Facilities",
-                "lineOfBusiness":"Facilities"
+                "lineOfBusiness": "Facilities"
             }
 
             autoTaskTemplateData = {
-                "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
-                "templateSummary": 'Automated Approval without process for task',
+                "templateName": `automatedTaskTemplatePetramcoFacilitiesActive ${randomStr}`,
+                "templateSummary": 'automated task petramco Facilities Active',
                 "templateStatus": "Active",
                 "processBundle": "com.bmc.dsm.case-lib",
-                "processName": `Case Process 1 ${randomStr}`,
+                "processName": `Case Process facilities petramco ${randomStr}`,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "Facilities Support",
                 "ownerGroup": "Facilities",
-                "lineOfBusiness":"Facilities"
+                "lineOfBusiness": "Facilities"
             }
+
+            autoTaskTemplateFacilitiesGlobalData = {
+                "templateName": `automatedTaskTemplateGlobalFacilitiesActive ${randomStr}`,
+                "templateSummary": 'automated task global Active',
+                "templateStatus": "Active",
+                "processBundle": "com.bmc.dsm.case-lib",
+                "processName": `Case Process facilities global ${randomStr}`,
+                "taskCompany": "- Global -",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities",
+                "lineOfBusiness": "Facilities"
+            }
+
+            petramcoHRManualTaskTemplateData = {
+                "templateName": `manualTaskTemplatePetramcoHumanResourceActive ${randomStr}`,
+                "templateSummary": 'Manual task petramco HR Active',
+                "templateStatus": "Active",
+                "taskCompany": 'Petramco',
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+                "lineOfBusiness": "Human Resource"
+            }
+
+            globalHRManualTaskTemplateData = {
+                "templateName": `manualTaskTemplateGlobalHumanResourceActive ${randomStr}`,
+                "templateSummary": 'Manual task global HR Active',
+                "templateStatus": "Active",
+                "taskCompany": '- Global -',
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+                "lineOfBusiness": "Human Resource"
+            }
+
+            manualHRTaskTemplateDataDraft = {
+                "templateName": `manualTaskTemplatePetramcoHumanResourceDraft ${randomStr}`,
+                "templateSummary": 'Manual task petramco HR Draft',
+                "templateStatus": "Draft",
+                "taskCompany": 'Petramco',
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+                "lineOfBusiness": "Human Resource"
+            }
+
+            manualHRTaskTemplateDataInactive = {
+                "templateName": `manualTaskTemplatePetramcoHumanResourceInactive ${randomStr}`,
+                "templateSummary": 'Manual task petramco HR inactive',
+                "templateStatus": "Inactive",
+                "taskCompany": 'Petramco',
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+                "lineOfBusiness": "Human Resource"
+            }
+
+            autoTaskTemplateDataHRPetramco = {
+                "templateName": `automatedTaskTemplatePetramcoHumanResourceActive ${randomStr}`,
+                "templateSummary": 'Automated task petramco HR Active',
+                "templateStatus": "Active",
+                "processBundle": "com.bmc.dsm.case-lib",
+                "processName": `Case Process petramco ${randomStr}`,
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+                "lineOfBusiness": "Human Resource"
+            }
+
+            autoTaskTemplateDataHRGlobal = {
+                "templateName": `automatedTaskTemplateGlobalHumanResourceActive ${randomStr}`,
+                "templateSummary": 'Automated task global HR Active',
+                "templateStatus": "Active",
+                "processBundle": "com.bmc.dsm.case-lib",
+                "processName": `Case Process global ${randomStr}`,
+                "taskCompany": "- Global -",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+                "lineOfBusiness": "Human Resource"
+            }
+
+            externaltemplateDataHRPetramco = {
+                "templateName": 'externalTaskTemplatePetramcoHumanResourceActive' + randomStr,
+                "templateSummary": 'External task19011' + randomStr,
+                "templateStatus": "Active",
+                "taskCompany": "Petramco",
+                "category1": 'Workforce Administration',
+                "category2": 'HR Operations',
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
+                "lineOfBusiness": "Human Resource"
+
+            }
+
+            externaltemplateDataHRGlobal = {
+                "templateName": 'externalTaskTemplateGlobalHumanResourceActive' + randomStr,
+                "templateSummary": 'externalTaskTemplateGlobalHumanResourceActive' + randomStr,
+                "templateStatus": "Active",
+                "taskCompany": "- Global -",
+                "category1": 'Workforce Administration',
+                "category2": 'HR Operations',
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
+                "lineOfBusiness": "Human Resource"
+            }
+
+            externaltemplateDataFacilitiesPetramco = {
+                "templateName": 'externalTaskTemplatePetramcoFacilitiesActive' + randomStr,
+                "templateSummary": 'externalTaskTemplatePetramcoFacilitiesActive' + randomStr,
+                "templateStatus": "Active",
+                "taskCompany": "Petramco",
+                "category1": 'Workforce Administration',
+                "category2": 'HR Operations',
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities",
+                "businessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
+                "assignee": "Franz",
+                "lineOfBusiness": "Facilities"
+
+            }
+
+            externaltemplateDataFacilitiesGlobal = {
+                "templateName": 'externalTaskTemplateGlobalFacilitiesActive' + randomStr,
+                "templateSummary": 'externalTaskTemplateGlobalFacilitiesActive' + randomStr,
+                "templateStatus": "Active",
+                "taskCompany": "- Global -",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "Facilities Support",
+                "ownerGroup": "Facilities",
+                "businessUnit": "Facilities Support",
+                "supportGroup": "Facilities",
+                "assignee": "Franz",
+                "lineOfBusiness": "Facilities"
+            }
+
             await apiHelper.apiLogin('fritz');
             await apiHelper.createAutomatedTaskTemplate(autoTaskTemplateData);
+            await apiHelper.createAutomatedTaskTemplate(autoTaskTemplateFacilitiesGlobalData);
             await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
             await apiHelper.createManualTaskTemplate(manualTaskGlobalTemplateData);
             await apiHelper.createManualTaskTemplate(manualTaskTemplateDraftData);
             await apiHelper.createManualTaskTemplate(manualTaskTemplateInactiveData);
+            await apiHelper.createExternalTaskTemplate(externaltemplateDataFacilitiesPetramco);
+            await apiHelper.createExternalTaskTemplate(externaltemplateDataFacilitiesGlobal);
+
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createAutomatedTaskTemplate(autoTaskTemplateDataHRPetramco);
+            await apiHelper.createAutomatedTaskTemplate(autoTaskTemplateDataHRGlobal);
+            await apiHelper.createManualTaskTemplate(globalHRManualTaskTemplateData);
+            await apiHelper.createManualTaskTemplate(petramcoHRManualTaskTemplateData);
+            await apiHelper.createManualTaskTemplate(manualHRTaskTemplateDataDraft);
+            await apiHelper.createManualTaskTemplate(manualHRTaskTemplateDataInactive);
+            await apiHelper.createExternalTaskTemplate(externaltemplateDataHRPetramco);
+            await apiHelper.createExternalTaskTemplate(externaltemplateDataHRGlobal);
 
             await apiHelper.apiLogin('gderuno');
             await apiHelper.createManualTaskTemplate(psilonManualTaskTemplateData);
@@ -243,6 +405,7 @@ describe("Task Approval Mapping Tests", () => {
             // await createApprovalMappingPage.isStatusMappingErrorDropDownOptionsMatches(statusMappingErrorWhenStatusTriggerApprovalRejected);
 
         });
+
         it('[DRDMV-21582,DRDMV-22120]: Create Task Approval Mapping', async () => {
             await createApprovalMappingPage.setApprovalMappingName(taskApprovalMappingStr);
             await createApprovalMappingPage.selectCompany('Petramco');
@@ -262,6 +425,7 @@ describe("Task Approval Mapping Tests", () => {
             expect(await editApprovalMappingPage.getStatusMappingRejectedOption()).toBe('Approval Rejected');
             expect(await editApprovalMappingPage.getStatusMappingErrorOption()).toBe('Canceled');
         });
+
         it('[DRDMV-21582,DRDMV-22120]: Create Task Approval Mapping Task Template Selection Validation', async () => {
             await editApprovalMappingPage.searchTaskTemplate(manualTaskGlobalTemplateData.templateName);
             expect(await editApprovalMappingPage.getSearchedTaskTemplate()).toBe(manualTaskGlobalTemplateData.templateName);
@@ -306,6 +470,50 @@ describe("Task Approval Mapping Tests", () => {
             expect(await editApprovalMappingPage.isSearchedAssociatedTaskTemplateDisplayed()).toBeTruthy('Searched case template is not displayed.');
             await editApprovalMappingPage.searchTaskTemplate(manualTaskTemplateData.templateName);
             expect(await editApprovalMappingPage.isSearchedTaskTemplateDisplayed()).toBeTruthy('Searched case template is not displayed.');
+        });
+
+        it('[DRDMV-21582,DRDMV-22120]: Task template filteration validation on task approval mapping', async () => {
+            //Validations for different LOB task templates not displayed on task approval mapping of Facilities LOB
+            await editApprovalMappingPage.searchTaskTemplate(autoTaskTemplateDataHRPetramco.templateName);
+            expect(await editApprovalMappingPage.isSearchedTaskTemplateDisplayed()).toBeFalsy('Petramco Automated task template for Facilities LOB is displayed on Human Resource task approval mapping.');
+            await editApprovalMappingPage.searchTaskTemplate(autoTaskTemplateDataHRGlobal.templateName);
+            expect(await editApprovalMappingPage.isSearchedTaskTemplateDisplayed()).toBeFalsy('Global Automated task template for Facilities LOB is displayed on Human Resource task approval mapping.');
+
+            await editApprovalMappingPage.searchTaskTemplate(externaltemplateDataHRPetramco.templateName);
+            expect(await editApprovalMappingPage.isSearchedTaskTemplateDisplayed()).toBeFalsy('Petramco external task template for Facilities LOB is displayed on Human Resource task approval mapping.');
+            await editApprovalMappingPage.searchTaskTemplate(externaltemplateDataHRGlobal.templateName);
+            expect(await editApprovalMappingPage.isSearchedTaskTemplateDisplayed()).toBeFalsy('Global external task template for Facilities LOB is displayed on Human Resource task approval mapping.');
+
+            await editApprovalMappingPage.searchTaskTemplate(globalHRManualTaskTemplateData.templateName);
+            expect(await editApprovalMappingPage.isSearchedTaskTemplateDisplayed()).toBeFalsy('Global Manual task template for Facilities LOB is displayed on Human Resource task approval mapping.');
+            await editApprovalMappingPage.searchTaskTemplate(petramcoHRManualTaskTemplateData.templateName);
+            expect(await editApprovalMappingPage.isSearchedTaskTemplateDisplayed()).toBeFalsy('Petramco Manual task template for Facilities LOB is displayed on Human Resource task approval mapping.');
+
+            await editApprovalMappingPage.searchTaskTemplate(manualHRTaskTemplateDataDraft.templateName);
+            expect(await editApprovalMappingPage.isSearchedTaskTemplateDisplayed()).toBeFalsy('Draft manual task template for Facilities LOB is displayed on Human Resource task approval mapping.');
+            await editApprovalMappingPage.searchTaskTemplate(manualHRTaskTemplateDataInactive.templateName);
+            expect(await editApprovalMappingPage.isSearchedTaskTemplateDisplayed()).toBeFalsy('Inactive manual task template for Facilities LOB is displayed on Human Resource task approval mapping.');
+
+            await editApprovalMappingPage.searchAssociatedTaskTemplate(autoTaskTemplateDataHRPetramco.templateName);
+            expect(await editApprovalMappingPage.isSearchedAssociatedTaskTemplateDisplayed()).toBeFalsy('Petramco Automated task template for Facilities LOB is displayed on Human Resource task approval mapping.');
+            await editApprovalMappingPage.searchAssociatedTaskTemplate(autoTaskTemplateDataHRGlobal.templateName);
+            expect(await editApprovalMappingPage.isSearchedAssociatedTaskTemplateDisplayed()).toBeFalsy('Global Automated task template for Facilities LOB is displayed on Human Resource task approval mapping.');
+
+            await editApprovalMappingPage.searchAssociatedTaskTemplate(externaltemplateDataHRPetramco.templateName);
+            expect(await editApprovalMappingPage.isSearchedAssociatedTaskTemplateDisplayed()).toBeFalsy('Petramco external task template for Facilities LOB is displayed on Human Resource task approval mapping.');
+            await editApprovalMappingPage.searchAssociatedTaskTemplate(externaltemplateDataHRGlobal.templateName);
+            expect(await editApprovalMappingPage.isSearchedAssociatedTaskTemplateDisplayed()).toBeFalsy('Global external task template for Facilities LOB is displayed on Human Resource task approval mapping.');
+
+            await editApprovalMappingPage.searchAssociatedTaskTemplate(globalHRManualTaskTemplateData.templateName);
+            expect(await editApprovalMappingPage.isSearchedAssociatedTaskTemplateDisplayed()).toBeFalsy('Global Manual task template for Facilities LOB is displayed on Human Resource task approval mapping.');
+            await editApprovalMappingPage.searchAssociatedTaskTemplate(petramcoHRManualTaskTemplateData.templateName);
+            expect(await editApprovalMappingPage.isSearchedAssociatedTaskTemplateDisplayed()).toBeFalsy('Petramco Manual task template for Facilities LOB is displayed on Human Resource task approval mapping.');
+
+            await editApprovalMappingPage.searchAssociatedTaskTemplate(manualHRTaskTemplateDataDraft.templateName);
+            expect(await editApprovalMappingPage.isSearchedAssociatedTaskTemplateDisplayed()).toBeFalsy('Draft manual task template for Facilities LOB is displayed on Human Resource task approval mapping.');
+            await editApprovalMappingPage.searchAssociatedTaskTemplate(manualHRTaskTemplateDataInactive.templateName);
+            expect(await editApprovalMappingPage.isSearchedAssociatedTaskTemplateDisplayed()).toBeFalsy('Inactive manual task template for Facilities LOB is displayed on Human Resource task approval mapping.');
+
             await editApprovalMappingPage.clickCancelApprovalMappingBtn();
         });
 
@@ -333,9 +541,21 @@ describe("Task Approval Mapping Tests", () => {
             expect(await utilGrid.isGridRecordPresent(taskApprovalMappingStr)).toBeFalsy('Task Approval Mapping for Facilities LOB are displayed to Human Resource LOB User.');
         });
 
+        it('[DRDMV-21582,DRDMV-22120]: Verify Task Approval Mapping are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Task Management--Approvals', 'Task Approval Mappings - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilGrid.isGridRecordPresent(taskApprovalMappingStr)).toBeFalsy('Task Approval Mapping for Facilities LOB are displayed to Human Resource LOB User.');
+
+            await utilGrid.selectLineOfBusiness('Facilities');
+            expect(await utilGrid.isGridRecordPresent(taskApprovalMappingStr)).toBeTruthy('Task Approval Mapping for Facilities LOB are not displayed to Human Resource LOB User.');
+        });
+
         it('[DRDMV-21582,DRDMV-22120]: Verify Task Approval Mapping are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseBAMultiLOB@petramco.com','Password_1234');
+            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Approvals', 'Task Approval Mappings - Business Workflows');
             await utilGrid.selectLineOfBusiness('Human Resource');
@@ -352,7 +572,7 @@ describe("Task Approval Mapping Tests", () => {
             expect(await editApprovalMappingPage.getStatusMappingRejectedOption()).toBe('Approval Rejected');
             expect(await editApprovalMappingPage.getStatusMappingErrorOption()).toBe('Canceled');
 
-            await editApprovalMappingPage.setApprovalMappingName(taskApprovalMappingStr+'_update');
+            await editApprovalMappingPage.setApprovalMappingName(taskApprovalMappingStr + '_update');
             await editApprovalMappingPage.selectStatusMappingApproved('Completed');
             await editApprovalMappingPage.searchAssociatedTaskTemplate(manualTaskGlobalTemplateData.templateName);
             await editApprovalMappingPage.selectAssociatedTaskTemplateCheckbox();
@@ -364,15 +584,63 @@ describe("Task Approval Mapping Tests", () => {
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
-        it('[DRDMV-21582,DRDMV-22120]: Verify Task Approval Mapping are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
-            await navigationPage.signOut();
-            await loginPage.login('caseMngrMultiLOB@petramco.com','Password_1234');
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Approvals', 'Task Approval Mappings - Business Workflows');
+        it('[DRDMV-21582,DRDMV-22120]: create same name record in same LOB', async () => {
+            //create same name record in same LOB
+            await createApprovalMappingPage.setApprovalMappingName(taskApprovalMappingStr);
+            await createApprovalMappingPage.selectCompany('Petramco');
+            await createApprovalMappingPage.selectStatusTrigger('Assigned');
+            await createApprovalMappingPage.selectStatusMappingApproved('In Progress');
+            await createApprovalMappingPage.selectStatusMappingRejected('Approval Rejected');
+            await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Assigned');
+            await createApprovalMappingPage.selectStatusMappingError('Canceled');
+            expect(await createApprovalMappingPage.isSaveApprovalMappingBtnEnabled()).toBeFalsy();
+            await createApprovalMappingPage.clickSaveApprovalMappingBtn();
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (10000): The Approval Mapping Name already exists. Please select a different name.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            await createApprovalMappingPage.clickCancelApprovalMappingBtn();
+            await utilCommon.clickOnWarningOk();
+
+            //create new record and verify it on update
+            await createApprovalMappingPage.setApprovalMappingName(taskApprovalMappingStr + "_updated");
+            await createApprovalMappingPage.selectCompany('Petramco');
+            await createApprovalMappingPage.selectStatusTrigger('Assigned');
+            await createApprovalMappingPage.selectStatusMappingApproved('In Progress');
+            await createApprovalMappingPage.selectStatusMappingRejected('Approval Rejected');
+            await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Assigned');
+            await createApprovalMappingPage.selectStatusMappingError('Canceled');
+            expect(await createApprovalMappingPage.isSaveApprovalMappingBtnEnabled()).toBeFalsy();
+            await createApprovalMappingPage.clickSaveApprovalMappingBtn();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+
+            expect(await utilGrid.isGridRecordPresent(taskApprovalMappingStr + "_updated")).toBeTruthy('Task Approval Mapping for Facilities LOB are not displayed to Human Resource LOB User.');
+            await utilGrid.searchAndOpenHyperlink(taskApprovalMappingStr + "_updated");
+            await editApprovalMappingPage.setApprovalMappingName(taskApprovalMappingStr);
+            await editApprovalMappingPage.selectStatusMappingApproved('Completed');
+            await editApprovalMappingPage.searchAssociatedTaskTemplate(manualTaskGlobalTemplateData.templateName);
+            await editApprovalMappingPage.selectAssociatedTaskTemplateCheckbox();
+            expect(await editApprovalMappingPage.isSelectTaskTemplateforApprovalRightArrawBtnEnabled()).toBeFalsy('Right Arrow button to select task template is disabled');
+            await editApprovalMappingPage.clickTaskTemplateforApprovalLeftArrawBtn();
+            await editApprovalMappingPage.searchTaskTemplate(manualTaskGlobalTemplateData.templateName);
+            expect(await editApprovalMappingPage.isSearchedTaskTemplateDisplayed()).toBeTruthy('Searched task template is not displayed.');
+            await editApprovalMappingPage.clickSaveApprovalMappingBtn();
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (10000): The Approval Mapping Name already exists. Please select a different name.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            await createApprovalMappingPage.clickCancelApprovalMappingBtn();
+            await utilCommon.clickOnWarningOk();
+        });
+
+        it('[DRDMV-21582,DRDMV-22120]: create same name record in different LOB', async () => {
+            //create same name record in different LOB
             await utilGrid.selectLineOfBusiness('Human Resource');
             expect(await utilGrid.isGridRecordPresent(taskApprovalMappingStr)).toBeFalsy('Task Approval Mapping for Facilities LOB are displayed to Human Resource LOB User.');
-
-            await utilGrid.selectLineOfBusiness('Facilities');
+            await createApprovalMappingPage.setApprovalMappingName(taskApprovalMappingStr);
+            await createApprovalMappingPage.selectCompany('Petramco');
+            await createApprovalMappingPage.selectStatusTrigger('Assigned');
+            await createApprovalMappingPage.selectStatusMappingApproved('In Progress');
+            await createApprovalMappingPage.selectStatusMappingRejected('Approval Rejected');
+            await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Assigned');
+            await createApprovalMappingPage.selectStatusMappingError('Canceled');
+            expect(await createApprovalMappingPage.isSaveApprovalMappingBtnEnabled()).toBeFalsy();
+            await createApprovalMappingPage.clickSaveApprovalMappingBtn();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
             expect(await utilGrid.isGridRecordPresent(taskApprovalMappingStr)).toBeTruthy('Task Approval Mapping for Facilities LOB are not displayed to Human Resource LOB User.');
         });
 

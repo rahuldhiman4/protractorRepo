@@ -35,6 +35,7 @@ class ServiceTargetConfig {
         fieldNameLabel: 'span.d-textfield__item',
         noMileStonesPresentText: '.slm-group-list-item_empty',
         addNewMileStoneBtn: 'button.d-icon-left-plus_circle',
+        goalTypeDropDownInput: 'input[aria-label="Goal Type"]'
     }
 
     async isServiceTargetBladeDisplayed(): Promise<boolean> {
@@ -306,6 +307,16 @@ class ServiceTargetConfig {
         await $(this.selectors.addNewMileStoneBtn).click();
     }
 
+    async clickOnGoalTypeDropDown():Promise<void>{
+        await $(this.selectors.selectGoalType).click();
+    }
+
+    async isGoalTypeOptionPresentInDropDown(goalType: string): Promise<boolean> {
+        await $(this.selectors.goalTypeDropDownInput).clear();
+        await $(this.selectors.goalTypeDropDownInput).sendKeys(goalType);
+        let values= await $$(this.selectors.dropDownOption).count();
+        if (values >= 1) { return true; } else { return false; }
+    } 
 
 
 

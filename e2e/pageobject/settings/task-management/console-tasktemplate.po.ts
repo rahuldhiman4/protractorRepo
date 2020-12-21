@@ -60,7 +60,6 @@ class TaskTemplateGridPage {
       return await $(this.selectors.automationtaskTemplateButton).isEnabled();
     }
 
-
     async clickOnExtrnalTaskTemplateButton(): Promise<void> {
         await $(this.selectors.externalTaskTemplateButton).click();
     }

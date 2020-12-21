@@ -21,6 +21,7 @@ class AutomatedStatusTransitionConfigCreatePage {
         flowsetGuid: '0cfddbcb-0905-4c1b-a1a7-2baa548e1a9b',
         fromStatusReasonGuid: '49178f00-fd4d-4bd2-8ce0-f9912af5caf2',
         toStatusReasonGuid: '422772e5-851f-4a96-aad1-7445ff75b519',
+        categoryTier1: 'e4ad048c-8033-4308-9055-2276a140d4df',
         categoryTier2: '0ffc06aa-d9dd-4158-bb95-090b1a366577',
         categoryTier3: 'b9b68d67-302e-4e3c-815b-bdfd67698e7f',
         categoryTier4: '6f11bf75-31c3-4088-8e30-b539e385db0c',
@@ -32,9 +33,9 @@ class AutomatedStatusTransitionConfigCreatePage {
         await $(this.selectors.name).sendKeys(name);
     }
 
-    async setCategoryTier1Value(categoryTier1: string): Promise<void> {
-        await utilCommon.selectDropDown('d84b98ad-9983-41e2-b6f2-6c5b9d404b7c', categoryTier1).catch(async (error) => {
-            if (error) await utilCommon.selectDropDown('e4ad048c-8033-4308-9055-2276a140d4df', categoryTier1);
+    async setCategoryTier1Value(value: string): Promise<void> {
+        await utilCommon.selectDropDown('d84b98ad-9983-41e2-b6f2-6c5b9d404b7c', value).catch(async (error) => {
+            if (error) await utilCommon.selectDropDown(this.selectors.categoryTier1, value);
         });
     }
 

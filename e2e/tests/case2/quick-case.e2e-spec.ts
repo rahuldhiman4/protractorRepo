@@ -1118,7 +1118,7 @@ describe("Quick Case", () => {
         });
         it('[DRDMV-22711,DRDMV-22703]: Verify Case Template access while Creating case for Global and Petramco Company', async () => {
             await navigationPo.signOut();
-            await loginPo.login('elizabeth');
+            await loginPo.login('fritz');
             await navigationPo.gotoQuickCase();
             await quickCasePo.selectRequesterName("adam");
             expect(await quickCasePo.selectCaseTemplate(templateData1.templateName)).toBeFalsy('template is present');

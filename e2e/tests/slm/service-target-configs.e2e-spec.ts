@@ -25,25 +25,62 @@ import milestoneConfig from '../../pageobject/settings/slm/slm-milestone.pop.po'
 import activityTabPo from '../../pageobject/social/activity-tab.po';
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
+import consoleNotificationTemplatePo from '../../pageobject/settings/notification-config/console-notification-template.po';
+import copyNotificationTemplatePo from '../../pageobject/settings/notification-config/copy-notification-template.po';
+import editNotificationTemplatePo from '../../pageobject/settings/notification-config/edit-notification-template.po';
 
 let caseBAUser = 'qkatawazi';
+let goalTypeInactive, goalTypeActive, goalTypeFacilities, goalTypeFacilitiesInactive = undefined;
 
 describe('Service Target Configs', () => {
     const caseModule = 'Case';
     let userData, userData1, userData2 = undefined;
 
     beforeAll(async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+
         await browser.get(BWF_BASE_URL);
         await loginPage.login(caseBAUser);
         await apiHelper.apiLogin(caseBAUser);
         await apiHelper.deleteApprovalMapping(caseModule);
         await apiHelper.apiLogin('tadmin');
 
+
+        goalTypeInactive = {
+            "svtGoalTypeName": "Goal Type Inactive HR" + randomStr,
+            "status": 1,
+            "lineOfBusiness": "Human Resource"
+        }
+        goalTypeActive = {
+            "svtGoalTypeName": "Goal Type Active HR" + randomStr,
+            "status": 0,
+            "lineOfBusiness": "Human Resource"
+        }
+
+        goalTypeFacilities = {
+            "svtGoalTypeName": "Goal Type Active Facilities" + randomStr,
+            "status": 0,
+            "lineOfBusiness": "Facilities"
+        }
+
+        goalTypeFacilitiesInactive = {
+            "svtGoalTypeName": "Goal Type Active Facilities" + randomStr,
+            "status": 1,
+            "lineOfBusiness": "Facilities"
+        }
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.createSVTGoalType(goalTypeInactive);
+        await apiHelper.createSVTGoalType(goalTypeActive);
+        await apiHelper.apiLogin('fritz');
+        await apiHelper.createSVTGoalType(goalTypeFacilities);
+        await apiHelper.createSVTGoalType(goalTypeFacilitiesInactive);
+
+
         userData1 = {
             "firstName": "caseBA",
             "lastName": "MultiLOB",
             "userId": "caseBAMultiLOB",
-            "userPermission": ["Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
+            "userPermission": ["SLM User","SLM Viewer","SLM Administrator","Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
         }
         await apiHelper.createNewUser(userData1);
         await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
@@ -53,7 +90,7 @@ describe('Service Target Configs', () => {
             "firstName": "caseMngr",
             "lastName": "MultiLOB",
             "userId": "caseMngrMultiLOB",
-            "userPermission": ["Case Manager", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
+            "userPermission": ["SLM User","SLM Viewer","SLM Administrator","Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
         }
         await apiHelper.createNewUser(userData2);
         await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
@@ -741,20 +778,78 @@ describe('Service Target Configs', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let updatedCaseSummary = "Updating Case summary from SVT";
         let svttile = "SVT for Case fields" + randomStr;
+        let caseNotificationHR = "Case SLA Missed HR";
+        let caseNotificationFacilities = "Case SLA Missed Facilities";
+        let taskNotificationHR = "Task SLA Missed HR";
+        let taskNotificationFacilities = "Task SLA Missed Facilities";
+
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
         });
 
+        it('[DRDMV-6148]: Create Copy of notification templates for SVT', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Notification Template - Business Workflows');
+            await utilGrid.clearFilter();
+            await utilGrid.searchAndSelectGridRecord('Case SLA Missed');
+            await consoleNotificationTemplatePo.clickCopyTemplate();
+            await copyNotificationTemplatePo.setCompanyValue('Petramco');
+            await copyNotificationTemplatePo.setTemplateName(caseNotificationHR);
+            await copyNotificationTemplatePo.clickOnCreateCopyButton();
+            await editNotificationTemplatePo.clickOnCancelButton();
+            await consoleNotificationTemplatePo.selectTemplate();
+            await utilGrid.searchAndSelectGridRecord('Task SLA Missed');
+            await consoleNotificationTemplatePo.clickCopyTemplate();
+            await copyNotificationTemplatePo.setCompanyValue('Petramco');
+            await copyNotificationTemplatePo.setTemplateName(taskNotificationHR);
+            await copyNotificationTemplatePo.clickOnCreateCopyButton();
+            await editNotificationTemplatePo.clickOnCancelButton();
+            await consoleNotificationTemplatePo.selectTemplate();
+        });
+
+        it('[DRDMV-6148]: Create Copy of notification templates for SVT', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Notification Template - Business Workflows');
+            await utilGrid.clearFilter();
+            await utilGrid.searchAndSelectGridRecord('Case SLA Missed');
+            await consoleNotificationTemplatePo.clickCopyTemplate();
+            await copyNotificationTemplatePo.setCompanyValue('Petramco');
+            await copyNotificationTemplatePo.setTemplateName(caseNotificationFacilities);
+            await copyNotificationTemplatePo.clickOnCreateCopyButton();
+            await editNotificationTemplatePo.clickOnCancelButton();
+            await consoleNotificationTemplatePo.selectTemplate();
+            await utilGrid.searchAndSelectGridRecord('Task SLA Missed');
+            await consoleNotificationTemplatePo.clickCopyTemplate();
+            await copyNotificationTemplatePo.setCompanyValue('Petramco');
+            await copyNotificationTemplatePo.setTemplateName(taskNotificationFacilities);
+            await copyNotificationTemplatePo.clickOnCreateCopyButton();
+            await editNotificationTemplatePo.clickOnCancelButton();
+            await consoleNotificationTemplatePo.selectTemplate();
+        });
+
         it('[DRDMV-6148]: Verify Processing of Set field Milestone Action for Task SLA', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             await serviceTargetConfig.createServiceTargetConfig(svttile, 'Petramco', 'Case Management');
             await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
             await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
-            await serviceTargetConfig.selectGoalType('Case Resolution Time');
+            await serviceTargetConfig.clickOnGoalTypeDropDown();
+            expect(serviceTargetConfig.isGoalTypeOptionPresentInDropDown('Case Resolution Time')).toBeTruthy('OOTB goal type is not displayed.');
+            expect(serviceTargetConfig.isGoalTypeOptionPresentInDropDown('Case Response Time')).toBeTruthy('OOTB goal type is not displayed.');
+            expect(serviceTargetConfig.isGoalTypeOptionPresentInDropDown('Task Resolution Time')).toBeTruthy('OOTB goal type is not displayed.');
+            expect(serviceTargetConfig.isGoalTypeOptionPresentInDropDown(goalTypeActive.svtGoalTypeName)).toBeTruthy('Active goal type of Human Resource LOB is not displayed.');
+            expect(serviceTargetConfig.isGoalTypeOptionPresentInDropDown(goalTypeInactive.svtGoalTypeName)).toBeTruthy('Inactive goal type of Human Resource LOB is displayed.');
+            expect(serviceTargetConfig.isGoalTypeOptionPresentInDropDown(goalTypeFacilities.svtGoalTypeName)).toBeTruthy('Active goal type of Facilities LOB is not displayed.');
+            expect(serviceTargetConfig.isGoalTypeOptionPresentInDropDown(goalTypeFacilitiesInactive.svtGoalTypeName)).toBeTruthy('Inactive goal type of Facilities LOB is displayed.');
+
             await serviceTargetConfig.enterSVTDescription('SVT with all fields Desc' + randomStr);
+            await serviceTargetConfig.selectGoalType('Case Resolution Time');
             await serviceTargetConfig.selectGoal("3");
             await serviceTargetConfig.selectMeasurement();
             await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
@@ -775,6 +870,15 @@ describe('Service Target Configs', () => {
             let expectedSelectedExp = "'" + "Requester > Email" + "'" + "=" + '"' + "qdu@petramco1.com" + '"';
             expect(selectedExpx).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
+            await serviceTargetConfig.clickOnGoalTypeDropDown();
+            expect(serviceTargetConfig.isGoalTypeOptionPresentInDropDown('Case Resolution Time')).toBeTruthy('OOTB goal type is not displayed.');
+            expect(serviceTargetConfig.isGoalTypeOptionPresentInDropDown('Case Response Time')).toBeTruthy('OOTB goal type is not displayed.');
+            expect(serviceTargetConfig.isGoalTypeOptionPresentInDropDown('Task Resolution Time')).toBeTruthy('OOTB goal type is not displayed.');
+            expect(serviceTargetConfig.isGoalTypeOptionPresentInDropDown(goalTypeActive.svtGoalTypeName)).toBeTruthy('Active goal type of Human Resource LOB is not displayed.');
+            expect(serviceTargetConfig.isGoalTypeOptionPresentInDropDown(goalTypeInactive.svtGoalTypeName)).toBeTruthy('Inactive goal type of Human Resource LOB is displayed.');
+            expect(serviceTargetConfig.isGoalTypeOptionPresentInDropDown(goalTypeFacilities.svtGoalTypeName)).toBeTruthy('Active goal type of Facilities LOB is not displayed.');
+            expect(serviceTargetConfig.isGoalTypeOptionPresentInDropDown(goalTypeFacilitiesInactive.svtGoalTypeName)).toBeTruthy('Inactive goal type of Facilities LOB is displayed.');
+
             await milestoneConfig.clickMileStoneActionsSegment();
             await milestoneConfig.clickAddNewMileStoneActionBtn();
             await milestoneConfig.selectMileStoneActionCondition("New Set Fields Action");
@@ -784,6 +888,43 @@ describe('Service Target Configs', () => {
             await milestoneConfig.setMileStoneActionFieldValue(updatedCaseSummary);
             await milestoneConfig.clickAddMileStoneActionBtn();
             await milestoneConfig.clickSaveMileStoneAction();
+            await milestoneConfig.selectMileStoneAction();
+            await milestoneConfig.clickSaveMileStone();
+            await serviceTargetConfig.clickOnSaveSVTButton();
+            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+        });
+
+        it('[DRDMV-6148]: Milestone notification template validation with respect to LOB', async () => {
+            await utilGrid.searchAndOpenHyperlink(svttile);
+            await serviceTargetConfig.selectMilestone();
+            await serviceTargetConfig.clickAddNewMileStoneBtn();
+            expect(await milestoneConfig.isSLMMileStonePopUpDisplayed()).toBeTruthy("SLM Milestone Pop up window not displayed");
+            await milestoneConfig.setMileStoneTitle("SVT Milestone" + randomStr);
+            await milestoneConfig.setMileStoneDescription("SVT Milestone Desc" + randomStr);
+            await milestoneConfig.setMileStonePercentage("10");
+            await milestoneConfig.clickMileStoneExpression();
+            await SlmExpressionBuilder.selectSecondLevelExpressionQualification('Requester', 'Email', "=", 'TEXT', "qdu@petramco1.com");
+            let selectedExpx = await SlmExpressionBuilder.getSelectedExpression();
+            let expectedSelectedExp = "'" + "Requester > Email" + "'" + "=" + '"' + "qdu@petramco1.com" + '"';
+            expect(selectedExpx).toEqual(expectedSelectedExp);
+            await SlmExpressionBuilder.clickOnSaveExpressionButton();
+            await milestoneConfig.clickMileStoneActionsSegment();
+            await milestoneConfig.clickAddNewMileStoneActionBtn();
+            await milestoneConfig.selectMileStoneActionCondition("New Alert or Email Action");
+            expect(await milestoneConfig.isSetMileStoneNotificationActionPopUpDisplayed()).toBeTruthy("SLM Milestone Action Pop up window not displayed");
+            await milestoneConfig.setMileStoneNotificationTitle("SVT Notification Action" + randomStr);
+            await milestoneConfig.setMileStoneNotificationDescription("Summary");
+            await milestoneConfig.selectMileStoneNotificationDeliveryMethod('Alert');
+            await milestoneConfig.clickOnNotificationTemplateDropDown();
+            expect(await milestoneConfig.isNotificationTemplatePresentInDropDown('Case SLA Missed')).toBeTruthy();
+            expect(await milestoneConfig.isNotificationTemplatePresentInDropDown('Case SLA - Warning 50%')).toBeTruthy();
+            expect(await milestoneConfig.isNotificationTemplatePresentInDropDown(caseNotificationHR)).toBeTruthy();
+            expect(await milestoneConfig.isNotificationTemplatePresentInDropDown(caseNotificationFacilities)).toBeFalsy();
+            expect(await milestoneConfig.isNotificationTemplatePresentInDropDown(taskNotificationFacilities)).toBeFalsy();
+            expect(await milestoneConfig.isNotificationTemplatePresentInDropDown(taskNotificationHR)).toBeFalsy();
+            await milestoneConfig.setMileStoneNotificationToField('qkatawazi@petramco.com');
+            await milestoneConfig.selectMileStoneNotificationTemplate('caseNotificationHR');
+            await milestoneConfig.clickSaveMileStoneActionNotification();
             await milestoneConfig.selectMileStoneAction();
             await milestoneConfig.clickSaveMileStone();
             await serviceTargetConfig.clickOnSaveSVTButton();
@@ -899,11 +1040,43 @@ describe('Service Target Configs', () => {
             expect(await utilGrid.isGridRecordPresent(svttile)).toBeFalsy('SVT with milestone is not dispayed to user with multiple LOB case manager');
         });
 
+        it('[DRDMV-6148]: create same name record in same LOB', async () => {
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            await serviceTargetConfig.createServiceTargetConfig(svttile, 'Petramco', 'Case Management');
+            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
+            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await SlmExpressionBuilder.clickOnSaveExpressionButton();
+            await serviceTargetConfig.enterSVTDescription('SVT with all fields Desc' + randomStr);
+            await serviceTargetConfig.selectGoalType('Case Resolution Time');
+            await serviceTargetConfig.selectGoal("3");
+            await serviceTargetConfig.selectMeasurement();
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.clickOnSaveSVTButton();
+            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+        });
+        it('[DRDMV-6148]: create same name record in different LOB', async () => {
+            await utilGrid.selectLineOfBusiness('Facilities');
+            await serviceTargetConfig.createServiceTargetConfig(svttile, 'Petramco', 'Case Management');
+            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
+            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await SlmExpressionBuilder.clickOnSaveExpressionButton();
+            await serviceTargetConfig.enterSVTDescription('SVT with all fields Desc' + randomStr);
+            await serviceTargetConfig.selectGoalType('Case Resolution Time');
+            await serviceTargetConfig.selectGoal("3");
+            await serviceTargetConfig.selectMeasurement();
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.clickOnSaveSVTButton();
+            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+        });
+
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
-
 
     });
 
@@ -911,10 +1084,17 @@ describe('Service Target Configs', () => {
     describe('[DRDMV-2354]: Verify Processing of Set field Milestone Action for Task SLA', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let updatedTaskSummary = "Updating Task summary from SVT";
+
+        let caseNotificationHR = "Case SLA Missed HR";
+        let caseNotificationFacilities = "Case SLA Missed Facilities";
+        let taskNotificationHR = "Task SLA Missed HR";
+        let taskNotificationFacilities = "Task SLA Missed Facilities";
         let svttile = "SVT for Task fields" + randomStr;
+
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
+
         });
 
         it('[DRDMV-2354]: Verify Processing of Set field Milestone Action for Task SLA', async () => {
@@ -924,6 +1104,15 @@ describe('Service Target Configs', () => {
             await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
             await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
             await SlmExpressionBuilder.clickOnSaveExpressionButtonForTask();
+            await serviceTargetConfig.clickOnGoalTypeDropDown();
+            expect(serviceTargetConfig.isGoalTypeOptionPresentInDropDown('Case Resolution Time')).toBeTruthy('OOTB goal type is not displayed.');
+            expect(serviceTargetConfig.isGoalTypeOptionPresentInDropDown('Case Response Time')).toBeTruthy('OOTB goal type is not displayed.');
+            expect(serviceTargetConfig.isGoalTypeOptionPresentInDropDown('Task Resolution Time')).toBeTruthy('OOTB goal type is not displayed.');
+            expect(serviceTargetConfig.isGoalTypeOptionPresentInDropDown(goalTypeActive.svtGoalTypeName)).toBeTruthy('Active goal type of Human Resource LOB is not displayed.');
+            expect(serviceTargetConfig.isGoalTypeOptionPresentInDropDown(goalTypeInactive.svtGoalTypeName)).toBeTruthy('Inactive goal type of Human Resource LOB is displayed.');
+            expect(serviceTargetConfig.isGoalTypeOptionPresentInDropDown(goalTypeFacilities.svtGoalTypeName)).toBeTruthy('Active goal type of Facilities LOB is not displayed.');
+            expect(serviceTargetConfig.isGoalTypeOptionPresentInDropDown(goalTypeFacilitiesInactive.svtGoalTypeName)).toBeTruthy('Inactive goal type of Facilities LOB is displayed.');
+
             await serviceTargetConfig.selectGoal("2");
             await serviceTargetConfig.selectMeasurement();
             await serviceTargetConfig.selectExpressionForMeasurementForTask(0, "status", "=", "STATUS", "Staged");
@@ -954,6 +1143,44 @@ describe('Service Target Configs', () => {
             await milestoneConfig.setMileStoneActionFieldValue(updatedTaskSummary);
             await milestoneConfig.clickAddMileStoneActionBtn();
             await milestoneConfig.clickSaveMileStoneAction();
+            await milestoneConfig.selectMileStoneAction();
+            await milestoneConfig.clickSaveMileStone();
+            await serviceTargetConfig.clickOnSaveSVTButton();
+            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+        });
+
+        it('[DRDMV-2354]: Milestone notification template validation with respect to LOB', async () => {
+            await utilGrid.searchAndOpenHyperlink(svttile);
+            await serviceTargetConfig.selectMilestone();
+            await serviceTargetConfig.clickAddNewMileStoneBtn();
+            expect(await milestoneConfig.isSLMMileStonePopUpDisplayed()).toBeTruthy("SLM Milestone Pop up window not displayed");
+            await milestoneConfig.setMileStoneTitle("SVT Milestone" + randomStr);
+            await milestoneConfig.setMileStoneDescription("SVT Milestone Desc" + randomStr);
+            await milestoneConfig.setMileStonePercentage("10");
+            await milestoneConfig.clickMileStoneExpression();
+            await SlmExpressionBuilder.selectSecondLevelExpressionQualification('Requester', 'Email', "=", 'TEXT', "qdu@petramco1.com");
+            let selectedExpx = await SlmExpressionBuilder.getSelectedExpression();
+            let expectedSelectedExp = "'" + "Requester > Email" + "'" + "=" + '"' + "qdu@petramco1.com" + '"';
+            expect(selectedExpx).toEqual(expectedSelectedExp);
+            await SlmExpressionBuilder.clickOnSaveExpressionButton();
+            await milestoneConfig.clickMileStoneActionsSegment();
+            await milestoneConfig.clickAddNewMileStoneActionBtn();
+            await milestoneConfig.selectMileStoneActionCondition("New Alert or Email Action");
+            expect(await milestoneConfig.isSetMileStoneNotificationActionPopUpDisplayed()).toBeTruthy("SLM Milestone Action Pop up window not displayed");
+            await milestoneConfig.setMileStoneNotificationTitle("SVT Notification Action" + randomStr);
+            await milestoneConfig.setMileStoneNotificationDescription("Summary");
+            await milestoneConfig.selectMileStoneNotificationDeliveryMethod('Alert');
+            await milestoneConfig.clickOnNotificationTemplateDropDown();
+            expect(await milestoneConfig.isNotificationTemplatePresentInDropDown('Task SLA Missed')).toBeTruthy();
+            expect(await milestoneConfig.isNotificationTemplatePresentInDropDown('Case SLA Missed')).toBeFalsy();
+            expect(await milestoneConfig.isNotificationTemplatePresentInDropDown('Case SLA - Warning 50%')).toBeFalsy();
+            expect(await milestoneConfig.isNotificationTemplatePresentInDropDown(caseNotificationHR)).toBeFalsy();
+            expect(await milestoneConfig.isNotificationTemplatePresentInDropDown(caseNotificationFacilities)).toBeFalsy();
+            expect(await milestoneConfig.isNotificationTemplatePresentInDropDown(taskNotificationFacilities)).toBeTruthy();
+            expect(await milestoneConfig.isNotificationTemplatePresentInDropDown(taskNotificationHR)).toBeFalsy();
+            await milestoneConfig.setMileStoneNotificationToField('qkatawazi@petramco.com');
+            await milestoneConfig.selectMileStoneNotificationTemplate(taskNotificationFacilities);
+            await milestoneConfig.clickSaveMileStoneActionNotification();
             await milestoneConfig.selectMileStoneAction();
             await milestoneConfig.clickSaveMileStone();
             await serviceTargetConfig.clickOnSaveSVTButton();
@@ -1035,6 +1262,11 @@ describe('Service Target Configs', () => {
             await utilityGrid.searchAndOpenHyperlink(taskId);
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
             expect(await viewTaskPo.getTaskSummaryValue()).toBe(automatedtemplateData.templateSummary);
+        });
+
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
         });
 
     });

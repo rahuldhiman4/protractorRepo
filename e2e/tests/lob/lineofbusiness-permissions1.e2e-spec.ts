@@ -1,22 +1,20 @@
+import { cloneDeep } from 'lodash';
 import { browser } from "protractor";
-import apiHelper from '../../api/api.helper';
 import coreApi from '../../api/api.core.util';
-import loginPage from "../../pageobject/common/login.po";
-import navigationPage from "../../pageobject/common/navigation.po";
-import { BWF_BASE_URL } from '../../utils/constants';
-import utilityCommon from '../../utils/utility.common';
-import utilGrid from '../../utils/util.grid';
-import utilCommon from '../../utils/util.common';
-import consoleDefineLob from '../../pageobject/settings/lob/define-lob-config.po';
-import defineLobCreate from '../../pageobject/settings/lob/create-lob-config.po';
-import editLobConfig from '../../pageobject/settings/lob/edit-lob-config.po';
+import apiHelper from '../../api/api.helper';
+import { AUTO_STATUS_TRANSITION_MANDATORY_FIELDS } from '../../data/ui/case/automated-status-transition.data.ui';
+import { ALL_FIELD } from '../../data/ui/case/casetemplate.data.ui';
+import { flowsetGlobalFields, flowsetGlobalInActiveFields } from '../../data/ui/flowset/flowset.ui';
 import caseConsolePo from '../../pageobject/case/case-console.po';
 import casePreviewPo from '../../pageobject/case/case-preview.po';
 import createCasePo from '../../pageobject/case/create-case.po';
 import editCasePo from '../../pageobject/case/edit-case.po';
 import quickCasePo from '../../pageobject/case/quick-case.po';
+import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
 import localizeValuePopPo from '../../pageobject/common/localize-value-pop.po';
+import loginPage from "../../pageobject/common/login.po";
+import navigationPage from "../../pageobject/common/navigation.po";
 import createKnowledgePage from "../../pageobject/knowledge/create-knowlege.po";
 import knowledgeArticlesConsolePo from '../../pageobject/knowledge/knowledge-articles-console.po';
 import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
@@ -28,7 +26,9 @@ import approvalMappingConsolePo from '../../pageobject/settings/case-management/
 import assignmentsConfigConsolePo from '../../pageobject/settings/case-management/assignments-config-console.po';
 import automatedStatusTransitionConsolePo from '../../pageobject/settings/case-management/automated-status-transition-console.po';
 import consoleCasetemplatePo from '../../pageobject/settings/case-management/console-casetemplate.po';
+import automatedStatusTransitionCreatePage from "../../pageobject/settings/case-management/create-automated-status-config.po";
 import createCasetemplatePo from '../../pageobject/settings/case-management/create-casetemplate.po';
+import automatedStatusTransitionEditPage from "../../pageobject/settings/case-management/edit-automated-status-config.po";
 import readAccessConsolePo from '../../pageobject/settings/case-management/read-access-console.po';
 import viewCasetemplatePo from '../../pageobject/settings/case-management/view-casetemplate.po';
 import consoleNotestemplatePo from '../../pageobject/settings/common/console-notestemplate.po';
@@ -38,11 +38,17 @@ import createDocumentTemplatePo from '../../pageobject/settings/document-managem
 import consoleAcknowledgmentTemplatePo from '../../pageobject/settings/email/console-acknowledgment-template.po';
 import consoleEmailConfigurationPo from '../../pageobject/settings/email/console-email-configuration.po';
 import consoleEmailTemplatePo from '../../pageobject/settings/email/console-email-template.po';
+import createAcknowledgmentTemplatesPo from '../../pageobject/settings/email/create-acknowledgment-template.po';
+import createEmailTemplatePo from '../../pageobject/settings/email/create-email-template.po';
 import editEmailConfigPo from '../../pageobject/settings/email/edit-email-config.po';
 import approvalMappingConsoleKnowledgePo from "../../pageobject/settings/knowledge-management/approval-mapping-console.po";
 import consoleKnowledgeSetPo from '../../pageobject/settings/knowledge-management/console-knowledge-set.po';
 import consoleKnowledgeTemplatePo from '../../pageobject/settings/knowledge-management/console-knowledge-template.po';
+import defineLobCreate from '../../pageobject/settings/lob/create-lob-config.po';
+import consoleDefineLob from '../../pageobject/settings/lob/define-lob-config.po';
+import editLobConfig from '../../pageobject/settings/lob/edit-lob-config.po';
 import consoleFlowsetConfigPo from '../../pageobject/settings/manage-flowset/console-flowset-config.po';
+import editFlowsetConfigPo from '../../pageobject/settings/manage-flowset/edit-flowset-config.po';
 import consoleNotificationEventPo from '../../pageobject/settings/notification-config/console-notification-event.po';
 import notificationTempGridPage from "../../pageobject/settings/notification-config/console-notification-template.po";
 import createServiceTargetGroupPo from '../../pageobject/settings/slm/create-service-target-group.po';
@@ -52,25 +58,11 @@ import selectTaskTemplate from "../../pageobject/settings/task-management/consol
 import createAdhocTaskPo from '../../pageobject/task/create-adhoc-task.po';
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
+import { BWF_BASE_URL } from '../../utils/constants';
+import utilCommon from '../../utils/util.common';
+import utilGrid from '../../utils/util.grid';
+import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-import { AUTO_STATUS_TRANSITION_MANDATORY_FIELDS } from '../../data/ui/case/automated-status-transition.data.ui';
-import automatedStatusTransitionConsole from "../../pageobject/settings/case-management/automated-status-transition-console.po";
-import automatedStatusTransitionCreatePage from "../../pageobject/settings/case-management/create-automated-status-config.po";
-import automatedStatusTransitionEditPage from "../../pageobject/settings/case-management/edit-automated-status-config.po";
-import { cloneDeep } from 'lodash';
-import consoleFlowsetConfigPage from '../../pageobject/settings/manage-flowset/console-flowset-config.po';
-import editFlowsetConfigPo from '../../pageobject/settings/manage-flowset/edit-flowset-config.po';
-import createCaseTemplatePage from '../../pageobject/settings/case-management/create-casetemplate.po';
-import consoleCasetemplatePage from '../../pageobject/settings/case-management/console-casetemplate.po';
-import { flowsetGlobalFields, flowsetGlobalInActiveFields } from '../../data/ui/flowset/flowset.ui';
-import { ALL_FIELD } from '../../data/ui/case/casetemplate.data.ui';
-import createCasePage from '../../pageobject/case/create-case.po';
-import previewCasePage from '../../pageobject/case/case-preview.po';
-import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
-import viewCasePage from '../../pageobject/case/view-case.po';
-import createAcknowledgmentTemplatesPo from '../../pageobject/settings/email/create-acknowledgment-template.po';
-import createEmailTemplatePo from '../../pageobject/settings/email/create-email-template.po';
-
 
 let userData1;
 describe('Line of Business Permission Tests', () => {
@@ -891,7 +883,7 @@ describe('Line of Business Permission Tests', () => {
             //Create first Record
             configName1 = AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.name = 'ConfigName1' + randomStr;
             AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.changeStatusAfter = Math.floor(Math.random() * 180) + 1;
-            await automatedStatusTransitionConsole.clickAddAutomatedStatusTransitionBtn();
+            await automatedStatusTransitionConsolePo.clickAddAutomatedStatusTransitionBtn();
             await automatedStatusTransitionCreatePage.createAutomatedStatusTransition(AUTO_STATUS_TRANSITION_MANDATORY_FIELDS);
         });
         it('[DRDMV-17555]: Create new automatic case status transition rule for one line of Business', async () => {
@@ -936,7 +928,8 @@ describe('Line of Business Permission Tests', () => {
             tempData.fromStatus = "In Progress";
             tempData.toStatus = "Pending";
             await utilGrid.selectLineOfBusiness('Human Resource');
-            await automatedStatusTransitionConsole.clickAddAutomatedStatusTransitionBtn();
+            await automatedStatusTransitionConsolePo.clickAddAutomatedStatusTransitionBtn();
+            await utilCommon.isDrpDownvalueDisplayed(automatedStatusTransitionCreatePage.selectors.categoryTier1, ['Applications', 'Facilities', 'Fixed Assets', 'Phones', 'Projectors', 'Purchasing Card']);
             await automatedStatusTransitionCreatePage.createAutomatedStatusTransition(tempData);
             expect(await utilCommon.isPopUpMessagePresent('ERROR (10000): Automated Status Configuration with same name already exists. Please select a different name.')).toBeTruthy("Error message absent");
             await automatedStatusTransitionCreatePage.clickCancelBtn();
@@ -945,18 +938,18 @@ describe('Line of Business Permission Tests', () => {
         it('[DRDMV-17555]: create same name record in different LOB', async () => {
             //create same name record in different LOB
             await utilGrid.selectLineOfBusiness('Facilities');
-            await automatedStatusTransitionConsole.clickAddAutomatedStatusTransitionBtn();
+            await automatedStatusTransitionConsolePo.clickAddAutomatedStatusTransitionBtn();
             await automatedStatusTransitionCreatePage.setName(tempData.name);
             await automatedStatusTransitionCreatePage.setCompany(tempData.company);
-            await automatedStatusTransitionCreatePage.setFromStatus(tempData.fromStatus);
-            await automatedStatusTransitionCreatePage.setToStatus(tempData.toStatus);
+            await automatedStatusTransitionCreatePage.setFromStatus(tempData.toStatus);
+            await automatedStatusTransitionCreatePage.setToStatus(tempData.fromStatus);
             await automatedStatusTransitionCreatePage.setChangeStatusAfter(tempData.changeStatusAfter.toString());
             // verify LOB on create page
             expect(await automatedStatusTransitionCreatePage.getLobValue()).toBe("Facilities");
             await automatedStatusTransitionCreatePage.saveConfig();
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
             // verify LOB on edit page
-            await automatedStatusTransitionConsole.openAutomatedTransitionConfig(tempData.name);
+            await automatedStatusTransitionConsolePo.openAutomatedTransitionConfig(tempData.name);
             expect(await automatedStatusTransitionEditPage.getLobValue()).toBe("Facilities");
             await automatedStatusTransitionEditPage.clickCancel();
             await utilGrid.selectLineOfBusiness('Human Resource');
@@ -1028,7 +1021,7 @@ describe('Line of Business Permission Tests', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', 'Flowsets - Console - Business Workflows');
             await utilGrid.selectLineOfBusiness('Facilities');
-            await consoleFlowsetConfigPage.searchAndSelectFlowset(flowsetName3);
+            await consoleFlowsetConfigPo.searchAndSelectFlowset(flowsetName3);
             await editFlowsetConfigPo.setFlowset("edit Flowset" + randomStr);
             await editFlowsetConfigPo.setDescription("edit description" + randomStr);
             await expect(editFlowsetConfigPo.getStatusvalue()).toBe("Active");
@@ -1040,30 +1033,30 @@ describe('Line of Business Permission Tests', () => {
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await utilGrid.selectLineOfBusiness('Facilities');
             ALL_FIELD.templateName = ALL_FIELD.templateName + Math.floor(Math.random() * 100000);
-            await consoleCasetemplatePage.clickOnCreateCaseTemplateButton();
-            await createCaseTemplatePage.setTemplateName(ALL_FIELD.templateName);
-            await createCaseTemplatePage.setCompanyName(ALL_FIELD.company);
-            await createCaseTemplatePage.setCaseSummary(ALL_FIELD.templateSummary);
-            await createCaseTemplatePage.setPriorityValue(ALL_FIELD.casePriority);
-            await createCaseTemplatePage.setOwnerCompanyValue('Petramco')
-            await createCaseTemplatePage.setBusinessUnitDropdownValue('Facilities Support');
-            await createCaseTemplatePage.setOwnerGroupDropdownValue('Facilities');
-            await createCaseTemplatePage.setTemplateStatusDropdownValue(ALL_FIELD.templateStatus);
+            await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
+            await createCasetemplatePo.setTemplateName(ALL_FIELD.templateName);
+            await createCasetemplatePo.setCompanyName(ALL_FIELD.company);
+            await createCasetemplatePo.setCaseSummary(ALL_FIELD.templateSummary);
+            await createCasetemplatePo.setPriorityValue(ALL_FIELD.casePriority);
+            await createCasetemplatePo.setOwnerCompanyValue('Petramco')
+            await createCasetemplatePo.setBusinessUnitDropdownValue('Facilities Support');
+            await createCasetemplatePo.setOwnerGroupDropdownValue('Facilities');
+            await createCasetemplatePo.setTemplateStatusDropdownValue(ALL_FIELD.templateStatus);
             let flowsetValues: string[] = [flowsetName2, flowsetName3];
             expect(await createCasetemplatePo.flowsetOptionsPresent(flowsetValues)).toBeFalsy('Status in dropdown does not match');
-            await createCaseTemplatePage.setCompanyName(ALL_FIELD.company);
-            await createCaseTemplatePage.setFlowsetValue(flowsetName1);
-            await createCaseTemplatePage.clickSaveCaseTemplate();
+            await createCasetemplatePo.setCompanyName(ALL_FIELD.company);
+            await createCasetemplatePo.setFlowsetValue(flowsetName1);
+            await createCasetemplatePo.clickSaveCaseTemplate();
         });
         it('[DRDMV-1357]: [Flowsets] Case Template creation with Flowset', async () => {
             //Create a case using above casetemplate
             await navigationPage.gotoCreateCase();
-            await createCasePage.selectRequester('fritz');
-            await createCasePage.clickSelectCaseTemplateButton();
+            await createCasePo.selectRequester('fritz');
+            await createCasePo.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectCaseTemplate(ALL_FIELD.templateName);
-            await createCasePage.clickSaveCaseButton();
-            await previewCasePage.clickGoToCaseButton();
-            expect(await viewCasePage.getFlowsetValue()).toBe(flowsetName1);
+            await createCasePo.clickSaveCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
+            expect(await viewCasePo.getFlowsetValue()).toBe(flowsetName1);
         });
         it('[DRDMV-1357]: [Flowsets] Case Template creation with Flowset', async () => {
             await navigationPage.gotoSettingsPage();
@@ -1075,7 +1068,7 @@ describe('Line of Business Permission Tests', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await utilGrid.selectLineOfBusiness('Human Resource');
-            await consoleCasetemplatePage.clickOnCreateCaseTemplateButton();
+            await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
             let flowsetValues: string[] = [flowsetName1, flowsetName2, flowsetName3];
             expect(await createCasetemplatePo.flowsetOptionsPresent(flowsetValues)).toBeFalsy('Status in dropdown does not match');
         });

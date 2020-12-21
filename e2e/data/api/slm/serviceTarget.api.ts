@@ -225,3 +225,22 @@ export const BUSINESS_TIME_SEGMENT = {
     }
   }
 };
+
+export const SERVICE_TARGET_GOALTYPE_PAYLOAD = {
+  "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
+  "recordDefinitionName": "com.bmc.dsm.slm-lib:SLM Goal Type",
+  "fieldInstances": {
+    "300473700": {
+      "id": 300473700,
+      "value": 1,
+    },
+    "301263100": {
+      "id": 301263100,
+      "value": "testgoal",
+    },
+    "450000420": {
+      "id": 450000420,
+      "value": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
+    }
+  }
+};

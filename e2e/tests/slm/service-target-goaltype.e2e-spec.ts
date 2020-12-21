@@ -146,12 +146,30 @@ describe('Service Level Management - Goal Type Tests', () => {
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
+        it('[DRDMV-2247]: create same name record in same LOB', async () => {
+            await createGoalType.clickCreateGoalTypeConfigButton();
+            await createGoalType.enterGoalTypeName(goalTypeTitle);
+            await createGoalType.selectGoalTypeStatus('Active');
+            await createGoalType.clickSaveGoalTypeButton();
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (222179): A goal with the specified name already exists. Specify a different goal name')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            await createGoalType.clickCloseGoalTypeButton();
+            await utilCommon.clickOnWarningOk();
+            //on update verification is not possible since goal type name field is disabled on edit.
+        });
+        it('[DRDMV-2247]: create same name record in different LOB', async () => {
+            await utilGrid.selectLineOfBusiness('Facilities');
+            await createGoalType.clickCreateGoalTypeConfigButton();
+            await createGoalType.enterGoalTypeName(goalTypeTitle);
+            await createGoalType.selectGoalTypeStatus('Active');
+            await createGoalType.clickSaveGoalTypeButton();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilGrid.isGridRecordPresent(goalTypeTitle)).toBeTruthy('SVT Goal Type is dispayed to user with multiple LOB case manager');
+        });
+
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
-
-
     });
 
     //skhobrag

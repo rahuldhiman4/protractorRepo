@@ -20,3 +20,8 @@ export interface ICreateSVTGroup {​​
     "lineOfBusiness"?: string
 }​​;
 
+export interface ICreateSVTGoalType {​​
+    "svtGoalTypeName": string,
+    "status":number,
+    "lineOfBusiness"?: string
+}​​;

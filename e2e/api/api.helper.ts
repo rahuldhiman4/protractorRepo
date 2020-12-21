@@ -33,7 +33,7 @@ import * as processes from '../data/api/shared-services/create-new-process.api';
 import { ACTIONABLE_NOTIFICATIONS_ENABLEMENT_SETTING, NOTIFICATIONS_EVENT_STATUS_CHANGE } from '../data/api/shared-services/enabling.actionable.notifications.api';
 import { MENU_ITEM } from '../data/api/shared-services/menu.item.api';
 import { AUTOMATED_CASE_STATUS_TRANSITION, ENABLE_DISABLE_PROCESS } from '../data/api/shared-services/process.data.api';
-import { BUSINESS_TIME_SEGMENT, BUSINESS_TIME_SHARED_ENTITY, CASE_MILESTONE, SERVICE_TARGET_GROUP, SERVICE_TARGET_PAYLOAD, TASK_MILESTONE } from '../data/api/slm/serviceTarget.api';
+import { BUSINESS_TIME_SEGMENT, BUSINESS_TIME_SHARED_ENTITY, CASE_MILESTONE, SERVICE_TARGET_GROUP, SERVICE_TARGET_PAYLOAD, TASK_MILESTONE, SERVICE_TARGET_GOALTYPE_PAYLOAD } from '../data/api/slm/serviceTarget.api';
 import { POST_ACTIVITY, POST_ACTIVITY_WITH_ATTACHMENT } from '../data/api/social/post.activity.api';
 import { ADHOC_TASK_PAYLOAD, REGISTER_ADHOC_TASK, TASK_CREATION_FROM_TEMPLATE, UPDATE_TASK, UPDATE_TASK_STATUS } from '../data/api/task/task.creation.api';
 import { AUTO_TASK_TEMPLATE_PAYLOAD, DOC_FOR_AUTO_TASK_TEMPLATE, EXTERNAL_TASK_TEMPLATE_PAYLOAD, MANUAL_TASK_TEMPLATE_PAYLOAD, PROCESS_FOR_AUTO_TASK_TEMPLATE } from '../data/api/task/task.template.api';
@@ -48,7 +48,7 @@ import { IFlowset, IFlowsetProcess, IFlowsetProcessMapping } from '../data/inter
 import { IBusinessUnit, IDepartment, IDomainTag, IFoundationEntity, IMenuItem, IPerson, ISupportGroup, ILOB } from '../data/interface/foundation.interface';
 import { IDocumentLib, IDocumentTemplate, IKnowledgeArticles, IKnowledgeArticleTemplate, IKnowledgeSet, IknowledgeSetPermissions, IUpdateKnowledgeArticle } from '../data/interface/knowledge.interface';
 import { IEmailConfig, INotificationEvent, INotificationTemplate, IEmailMailboxConfig } from '../data/interface/notification.interface';
-import { ICreateSVT, ICreateSVTGroup } from '../data/interface/svt.interface';
+import { ICreateSVT, ICreateSVTGroup, ICreateSVTGoalType } from '../data/interface/svt.interface';
 import { IAdhocTask, ITaskUpdate } from '../data/interface/task.interface';
 import { ICaseTemplate, IEmailTemplate, INotesTemplate, ITaskTemplate } from '../data/interface/template.interface';
 import loginPage from "../pageobject/common/login.po";
@@ -3274,6 +3274,19 @@ class ApiHelper {
         console.log('Relationship status =============> ', relationshipResponse.status);
         return relationshipResponse.status == 201;
     }
+
+    async createSVTGoalType(svtData: ICreateSVTGoalType): Promise<boolean> {
+        let serviceTargetPayload = cloneDeep(SERVICE_TARGET_GOALTYPE_PAYLOAD);
+        serviceTargetPayload.fieldInstances[301263100].value = svtData.svtGoalTypeName;
+        serviceTargetPayload.fieldInstances[300473700].value = svtData.status;
+        serviceTargetPayload.fieldInstances[450000420].value = svtData.lineOfBusiness ? await constants.LOB[svtData.lineOfBusiness] : serviceTargetPayload.fieldInstances[450000420].value;
+        let slmResponse: AxiosResponse = await apiCoreUtil.createRecordInstance(serviceTargetPayload);
+        console.log('Create Service Target Goal Type API Status =============>', slmResponse.status);
+
+        return slmResponse.status == 201;
+    }
+
+
 }
 
 export default new ApiHelper();

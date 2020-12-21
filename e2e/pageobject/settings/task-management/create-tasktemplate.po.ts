@@ -36,6 +36,7 @@ class CreateTaskTemplatePage {
         templateMetadataTitle: '[rx-view-component-id="24bd49d8-5ca3-451a-86a1-eb26b687e801"] span',
         processBundleIdRequiredTxt: '5f30b3d4-caa2-4c28-8af6-cebf094bc2e8',
         newprocessGuid: 'eefdf45b-47af-48cb-8c8b-a82c73f7d5a4',
+        lobValue: '[rx-view-component-id="0edb7a40-d165-475b-88e9-fa0d5ec5feb0"] .pull-left'
     }
 
     async setTemplateName(inputValue: string): Promise<void> {
@@ -235,6 +236,10 @@ class CreateTaskTemplatePage {
             }
         }
         return await utilCommon.isValuePresentInDropDown(guid, value);
+    }
+
+    async getLobValue(): Promise<string> {
+        return await $(this.selectors.lobValue).getText();
     }
 }
 
