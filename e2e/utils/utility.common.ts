@@ -64,7 +64,13 @@ export class Utility {
     }
 
     async closedWarningTextOfLineOfBuisness(): Promise<void> {
-        await $(this.selectors.warningWindowCloseBtn).click();
+        await $(this.selectors.warningWindowCloseBtn).isPresent().then(async (result) => {
+            if (result) {
+                await $(this.selectors.warningWindowCloseBtn).click();
+            } else {
+                console.log( "Closed window not present");
+            }
+        });
     }
 
     async clearDropDown(guid: string, optionValue: string): Promise<void> {

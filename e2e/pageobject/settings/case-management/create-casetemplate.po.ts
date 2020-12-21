@@ -287,6 +287,14 @@ class CreateCaseTemplate {
                 guid = this.selectors.caseCategoryTier4;
                 break;
             }
+            case "flowset": {
+                guid = this.selectors.flowset;
+                break;
+            }
+            case "caseStatus": {
+                guid = this.selectors.caseStatus;
+                break;
+            }
             default: {
                 console.log('Drop Down name does not match');
                 break;
