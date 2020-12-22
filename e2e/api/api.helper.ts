@@ -19,7 +19,7 @@ import { MAILBOX_CONFIG, INCOMINGMAIL_DEFAULT, EMAIL_PROFILE, EMAIL_OUTGOING, UP
 import { EMAIL_WHITELIST } from '../data/api/email/email.whitelist.data.api';
 import { NEW_PROCESS_LIB, PROCESS_FLOWSET_MAPPING } from '../data/api/flowset/create-process-lib';
 import { ENABLE_USER, NEW_USER } from '../data/api/foundation/create-foundation-entity.api';
-import { UPDATE_ORGANIZATION, UPDATE_PERSON, UPDATE_SUPPORT_GROUP } from '../data/api/foundation/update-foundation-entity.data.api';
+import { UPDATE_ORGANIZATION, UPDATE_PERSON, UPDATE_SUPPORT_GROUP,DELETE_PERSON } from '../data/api/foundation/update-foundation-entity.data.api';
 import { FLAG_UNFLAG_KA } from '../data/api/knowledge/flag-unflag.data.api';
 import { KNOWLEDGE_APPROVAL_CONFIG, KNOWLEDGE_APPROVAL_FLOW_CONFIG } from '../data/api/knowledge/knowledge-approvals-config.api';
 import { KNOWLEDGE_ARTICLE_EXTERNAL_FLAG } from "../data/api/knowledge/knowledge-article-external.api";
@@ -976,7 +976,7 @@ class ApiHelper {
         // this time required because lob creation took time to reflection
         await browser.sleep(30000);
 
-        await this.updateLineOfBuisness(data); 
+        await this.updateLineOfBuisness(data);
         return recordGUID;
     }
 
@@ -1061,7 +1061,7 @@ class ApiHelper {
     async associatePersonToDepartmentOrBU(userId: string, departmentOrBUName: string): Promise<boolean> {
         let userGuid = await apiCoreUtil.getPersonGuid(userId);
         let id = await apiCoreUtil.getBusinessUnitGuid(departmentOrBUName).then(async (result) => {
-            if(result == null) return await apiCoreUtil.getDepartmentGuid(departmentOrBUName);
+            if (result == null) return await apiCoreUtil.getDepartmentGuid(departmentOrBUName);
             else return result
         });
         let response = await apiCoreUtil.associateFoundationElements("Person to Secondary Organization", userGuid, id);
@@ -2076,6 +2076,25 @@ class ApiHelper {
         );
         console.log('Alert API Status =============>', updateArticleHelpfulCounterResponse.status);
         return updateArticleHelpfulCounterResponse.status == 204;
+    }
+
+    async deleteFoundationEntity(entityName: string, data: IFoundationEntity): Promise<boolean> {
+        let recordName: string, recordGUID: string, jsonBody: any;
+        recordName = 'com.bmc.arsys.rx.foundation:Person';
+        recordGUID = await apiCoreUtil.getPersonGuid(entityName);
+        if (data.functionalRole) {
+            jsonBody = cloneDeep(DELETE_PERSON);
+            jsonBody.id = recordGUID;
+            let newUserRoles: string = constants.FunctionalRoleGuid[data.functionalRole]
+            let updateFunctionalRolePayload = {
+                "id": "430000002",
+                "value": newUserRoles
+            }
+            jsonBody.fieldInstances[430000002] = updateFunctionalRolePayload;
+        }
+        let updateFoundationEntityResponse = await apiCoreUtil.updateRecordInstance(recordName, recordGUID, jsonBody);
+        console.log('Update Foundation Entity API Status =============>', updateFoundationEntityResponse.status);
+        return updateFoundationEntityResponse.status == 204;
     }
 
     async updateFoundationEntity(entityType: string, entityName: string, data: IFoundationEntity): Promise<boolean> {

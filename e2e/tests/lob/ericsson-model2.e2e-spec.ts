@@ -1,3 +1,4 @@
+import { BWF_BASE_URL } from '../../utils/constants';
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
 import previewCasePage from '../../pageobject/case/case-preview.po';
@@ -9,14 +10,18 @@ import changeAssignmentBladePo from '../../pageobject/common/change-assignment-b
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import resourcesPo from '../../pageobject/common/resources-tab.po';
+import createKnowledgePage from "../../pageobject/knowledge/create-knowlege.po";
+import editKnowledgePo from '../../pageobject/knowledge/edit-knowledge.po';
+import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
+import statusBladeKnowledgeArticlePo from '../../pageobject/knowledge/status-blade-knowledge-article.po';
+import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
 import previewCaseTemplateCasesPo from '../../pageobject/settings/case-management/preview-case-template.po';
-import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import accessTabPo from '../../pageobject/common/access-tab.po';
+import coreApi from '../../api/api.core.util';
+let supportGroupDataHR, supportGroupDataFacilities, supportGroupDataEricssonHR, supportGroupDataEricssonSAM, userData3, userData4;
 import resourcesTabPo from "../../pageobject/common/resources-tab.po";
-import editKnowledgePo from "../../pageobject/knowledge/edit-knowledge.po";
-import previewKnowledgePo from "../../pageobject/knowledge/preview-knowledge.po";
-import createKnowledgePage from "../../pageobject/knowledge/create-knowlege.po";
 import previewCaseTemplatePo from "../../pageobject/settings/case-management/preview-case-template.po";
 import manageTaskBladePo from "../../pageobject/task/manage-task-blade.po";
 import createAdhocTaskPo from "../../pageobject/task/create-adhoc-task.po";
@@ -31,6 +36,32 @@ describe('Ericsson Model Test Extended', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
+
+        userData3 = {
+            "firstName": "ercsn hr tst",
+            "lastName": "usr",
+            "userId": "ercsnhrusr",
+            "userPermission": ["Case Agent", "Ericsson HR", "Case Business Analyst", "Knowledge Publisher"]
+        }
+
+        userData4 = {
+            "firstName": "ercsn sam tst",
+            "lastName": "usr",
+            "userId": "ercsnsamusr",
+            "userPermission": ["Case Agent", "Ericsson SAM", "Case Business Analyst", "Knowledge Publisher"]
+        }
+
+        await apiHelper.createNewUser(userData3);
+        await apiHelper.createNewUser(userData4);
+        let orgId1 = await coreApi.getBusinessUnitGuid('Ericsson HR Support');
+        supportGroupDataHR.relatedOrgId = orgId1;
+        supportGroupDataFacilities.relatedOrgId = orgId1;
+        await apiHelper.createSupportGroup(supportGroupDataEricssonHR);
+        await apiHelper.createSupportGroup(supportGroupDataEricssonSAM);
+        await apiHelper.associatePersonToCompany(userData3.userId, "Ericsson HR");
+        await apiHelper.associatePersonToSupportGroup(userData3.userId, "US Support 2");
+        await apiHelper.associatePersonToCompany(userData4.userId, "Ericsson HR");
+        await apiHelper.associatePersonToSupportGroup(userData4.userId, "US Support 2");
     });
 
     afterAll(async () => {
@@ -1208,6 +1239,385 @@ describe('Ericsson Model Test Extended', () => {
 
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+    });
+
+    describe('[DRDMV-23636]: [Ericsson Model] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to single Line of Business', () => {
+        let randomStr = [...Array(7)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let knowledgeSetDataEricssonHR, knowledgeSetDataEricssonSAM, articleId, knowledgeArticleDataDiffLOB, knowledgeArticleTemplateDataHR, knowledgeArticleTemplateDataSAM, knowledgeSetDataEricssonGlobal, knowledgeArticleTemplateDataGlobal, knowledgeArticleDataDiffLOBGlobal;
+
+        beforeAll(async () => {
+            knowledgeArticleTemplateDataHR = {
+                templateName: `tname HR ${randomStr}`,
+                sectionTitle: "articleSection",
+                lineOfBusiness: "Ericsson HR"
+            }
+
+            knowledgeArticleTemplateDataSAM = {
+                templateName: `tname HR ${randomStr}`,
+                sectionTitle: "articleSection",
+                lineOfBusiness: "Ericsson SAM"
+            }
+
+            knowledgeArticleTemplateDataGlobal = {
+                templateName: `tname Global ${randomStr}`,
+                sectionTitle: "articleSection",
+                lineOfBusiness: "Ericsson Global"
+            }
+
+            knowledgeSetDataEricssonHR = {
+                knowledgeSetTitle: `DRDMV-23636 ER HR ${randomStr}`,
+                knowledgeSetDesc: `${randomStr}_Desc_ER_HR`,
+                company: 'Ericsson HR',
+                lineOfBusiness: 'Ericsson HR'
+            }
+
+            knowledgeSetDataEricssonSAM = {
+                knowledgeSetTitle: `DRDMV-23636 ER SAM ${randomStr}`,
+                knowledgeSetDesc: `${randomStr}_Desc_ER_SAM`,
+                company: 'Ericsson SAM',
+                lineOfBusiness: 'Ericsson SAM'
+            }
+
+            knowledgeSetDataEricssonGlobal = {
+                knowledgeSetTitle: `DRDMV-23636 Global SAM ${randomStr}`,
+                knowledgeSetDesc: `${randomStr}_Desc_ER_Global`,
+                company: 'Ericsson Global',
+                lineOfBusiness: 'Ericsson Global'
+            }
+
+            knowledgeArticleDataDiffLOBGlobal = {
+                "knowledgeSet": `${knowledgeSetDataEricssonGlobal.knowledgeSetTitle}`,
+                "title": `${randomStr} title Diff LOB`,
+                "templateId": "AGGAA5V0HGVMIAOK04TZO94MC355RA",
+                "assignee": "Smith",
+                "lineOfBusiness": "Ericsson SAM"
+            }
+
+            knowledgeArticleDataDiffLOB = {
+                "knowledgeSet": `${knowledgeSetDataEricssonSAM.knowledgeSetTitle}`,
+                "title": `${randomStr} title Diff LOB`,
+                "templateId": "AGGAA5V0HGVMIAOK04TZO94MC355RA",
+                "assignedCompany": "Ericsson SAM",
+                "assigneeBusinessUnit": "Ericsson Asset Management - India",
+                "assigneeSupportGroup": "New Asset Management",
+                "assignee": "Smith",
+                "lineOfBusiness": "Ericsson SAM"
+            }
+
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateDataHR);
+            await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateDataSAM);
+            await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateDataGlobal);
+            await apiHelper.createKnowledgeSet(knowledgeSetDataEricssonHR);
+            await apiHelper.createKnowledgeSet(knowledgeSetDataEricssonSAM);
+            await apiHelper.createKnowledgeSet(knowledgeSetDataEricssonGlobal);
+            await apiHelper.createKnowledgeArticle(knowledgeArticleDataDiffLOB);
+            await apiHelper.createKnowledgeArticle(knowledgeArticleDataDiffLOBGlobal);
+        });
+
+        it('[DRDMV-23636]: [Ericsson Model] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to single Line of Business', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('rwillie');
+            await navigationPage.gotoCreateKnowledge();
+            expect(await createKnowledgePage.isTemplatePresent(knowledgeArticleTemplateDataHR.templateName)).toBeTruthy('Template is not present');
+            expect(await createKnowledgePage.isTemplatePresent(knowledgeArticleTemplateDataSAM.templateName)).toBeFalsy('Template is present');
+            expect(await createKnowledgePage.isTemplatePresent(knowledgeArticleTemplateDataGlobal.templateName)).toBeFalsy('Template is present');
+            await createKnowledgePage.clickOnTemplate('Reference');
+            await createKnowledgePage.clickOnUseSelectedTemplateButton();
+            expect(await createKnowledgePage.getValueOfLineOFBusiness()).toBe('Ericsson HR');
+            expect(await createKnowledgePage.isLineOfBusinessDisable()).toBeTruthy();
+            expect(await createKnowledgePage.isValuePresentInDropdown('Knowledge Set', knowledgeSetDataEricssonHR.knowledgeSetTitle)).toBeTruthy('Failure: Knowledge Set is missing');
+            expect(await createKnowledgePage.isValuePresentInDropdown('Knowledge Set', knowledgeSetDataEricssonSAM.knowledgeSetTitle)).toBeFalsy('Failure: Knowledge Set is available');
+            expect(await createKnowledgePage.isValuePresentInDropdown('Knowledge Set', knowledgeSetDataEricssonGlobal.knowledgeSetTitle)).toBeFalsy('Failure: Knowledge Set is available');
+
+            expect(await createKnowledgePage.isValuePresentInDropdown('Category Tier 1', 'Applications')).toBeTruthy('Failure: Operational Category 1 is missing');
+            expect(await createKnowledgePage.isValuePresentInDropdown('Category Tier 1', 'Facilties')).toBeFalsy('Failure: Operational Category 1 is present');
+
+            await createKnowledgePage.addTextInKnowlegeTitleField(`DRDMV23636 Title ${randomStr}`);
+            await createKnowledgePage.selectKnowledgeSet(knowledgeSetDataEricssonHR.knowledgeSetTitle);
+            await createKnowledgePage.selectCategoryTier1Option('Applications');
+
+            //Validating Assignment fields
+            await createKnowledgePage.clickChangeAssignmentButton();
+            await changeAssignmentBladePo.selectCompany('Ericsson HR');
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Ericsson HR Support')).toBeTruthy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Ericsson Asset Management - India')).toBeFalsy();
+            await changeAssignmentBladePo.selectBusinessUnit('Ericsson HR Support');
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'EricssonCo HR')).toBeTruthy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'EricssonCo SAM')).toBeFalsy();
+            await changeAssignmentBladePo.selectBusinessUnit('Ericsson United States Support');
+            await changeAssignmentBladePo.selectSupportGroup('US Support 2');
+            expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData3.firstName} ${userData3.lastName}`)).toBeTruthy('User is not present on Assignment blade');
+            expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData4.firstName} ${userData4.lastName}`)).toBeTruthy('User is present on Assignment blade');
+            await changeAssignmentBladePo.clickOnCancelButton();
+
+            //Saving the Article
+            await createKnowledgePage.clickOnSaveKnowledgeButton();
+            await previewKnowledgePo.clickGoToArticleButton();
+            articleId = await viewKnowledgeArticlePo.getKnowledgeArticleId();
+        });
+
+        it('[DRDMV-23636]: [Ericsson Model] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to single Line of Business', async () => {
+            await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
+            expect(await editKnowledgePo.getLineOfBusinessValue()).toBe('Ericsson HR');
+            expect(await editKnowledgePo.isLobSectionEnabled()).toBeTruthy();
+            await editKnowledgePo.cancelKnowledgeMedataDataChanges();
+            await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
+            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Knowledge');
+            await accessTabPo.selectAccessEntityDropDown('Ericsson HR', 'Select Company');
+            expect(await accessTabPo.isValuePresentInDropdown('Business Unit', 'Ericsson HR Support')).toBeTruthy();
+            expect(await accessTabPo.isValuePresentInDropdown('Business Unit', 'Ericsson Asset Management - India')).toBeFalsy();
+            await accessTabPo.selectAccessEntityDropDown('Ericsson HR Support', 'Select Business Unit');
+            expect(await accessTabPo.isValuePresentInDropdown('Support Group', 'Petramco HR')).toBeTruthy();
+            expect(await accessTabPo.isValuePresentInDropdown('Support Group', 'Petramco Facilities')).toBeFalsy();
+
+            await accessTabPo.clickToExpandAccessEntitiySearch('Agent Access', 'Knowledge');
+            expect(await accessTabPo.isAgentPresent(userData3.firstName)).toBeTruthy('User is not Present');
+            expect(await accessTabPo.isAgentPresent(userData4.firstName)).toBeFalsy('User is Present');
+            await accessTabPo.clickCloseKnowledgeAccessBlade();
+
+            await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
+            expect(await createKnowledgePage.isValuePresentInDropdown('Category Tier 1', 'Applications')).toBeTruthy('Failure: Operational Category 1 is missing');
+            expect(await createKnowledgePage.isValuePresentInDropdown('Category Tier 1', 'Facilties')).toBeFalsy('Failure: Operational Category 1 is present');
+            await editKnowledgePo.setCategoryTier1('Total Rewards');
+            await editKnowledgePo.saveKnowledgeMedataDataChanges();
+            expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe('Total Rewards');
+
+            await editKnowledgePo.setKnowledgeStatus('Draft');
+            await editKnowledgePo.setKnowledgeStatusWithoutSave('SME Review');
+            await statusBladeKnowledgeArticlePo.clickChangeReviewerBtn();
+            await changeAssignmentBladePo.selectCompany('Ericsson HR');
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Ericsson HR Support')).toBeTruthy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Ericsson Asset Management - India')).toBeFalsy();
+            await changeAssignmentBladePo.selectBusinessUnit('Ericsson HR Support');
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'EricssonCo HR')).toBeTruthy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'EricssonCo SAM')).toBeFalsy();
+            await changeAssignmentBladePo.selectBusinessUnit('Ericsson United States Support');
+            await changeAssignmentBladePo.selectSupportGroup('US Support 2');
+            expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData3.firstName} ${userData3.lastName}`)).toBeTruthy('User is not present on Assignment blade');
+            expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData4.firstName} ${userData4.lastName}`)).toBeTruthy('User is present on Assignment blade');
+            await changeAssignmentBladePo.clickOnCancelButton();
+
+            await navigationPage.gotoKnowledgeConsole();
+            expect(await utilityGrid.isGridRecordPresent(knowledgeArticleDataDiffLOB.title)).toBeFalsy('Record is present');
+            expect(await utilityGrid.isGridRecordPresent(knowledgeArticleDataDiffLOBGlobal.title)).toBeFalsy('Record is present');
+
+            await navigationPage.signOut();
+            await loginPage.login('sbruce');
+            await navigationPage.gotoKnowledgeConsole();
+            expect(await utilityGrid.isGridRecordPresent(articleId)).toBeFalsy(articleId + ' Record is present');
+        });
+
+        it('[DRDMV-23636]: [Ericsson Model] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to single Line of Business', async () => {
+            await editKnowledgePo.setKnowledgeStatus('Draft');
+            await editKnowledgePo.setKnowledgeStatusWithoutSave('SME Review');
+            await statusBladeKnowledgeArticlePo.clickChangeReviewerBtn();
+            await changeAssignmentBladePo.selectCompany('Ericsson HR');
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Ericsson HR Support')).toBeTruthy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Ericsson Asset Management - India')).toBeFalsy();
+            await changeAssignmentBladePo.selectBusinessUnit('Ericsson HR Support');
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'EricssonCo HR')).toBeTruthy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'EricssonCo SAM')).toBeFalsy();
+            await changeAssignmentBladePo.selectBusinessUnit('Ericsson United States Support');
+            await changeAssignmentBladePo.selectSupportGroup('US Support 2');
+            expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData3.firstName} ${userData3.lastName}`)).toBeTruthy('User is not present on Assignment blade');
+            expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData4.firstName} ${userData4.lastName}`)).toBeTruthy('User is present on Assignment blade');
+            await changeAssignmentBladePo.clickOnCancelButton();
+
+            await navigationPage.gotoKnowledgeConsole();
+            expect(await utilityGrid.isGridRecordPresent(knowledgeArticleDataDiffLOB.title)).toBeFalsy('Record is present');
+
+            await navigationPage.signOut();
+            await loginPage.login('sbruce');
+            await navigationPage.gotoKnowledgeConsole();
+            expect(await utilityGrid.isGridRecordPresent(articleId)).toBeFalsy(articleId + ' Record is present');
+        });
+
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+    });
+
+    describe('[DRDMV-23666]: [Ericsson Model] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple Line of Business', () => {
+        let randomStr = [...Array(7)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let knowledgeSetDataEricssonHR, knowledgeSetDataEricssonSAM, articleId, knowledgeArticleDataDiffLOB, knowledgeArticleTemplateDataHR, knowledgeArticleTemplateDataSAM, knowledgeArticleTemplateDataGlobal, knowledgeSetDataEricssonGlobal, knowledgeArticleDataDiffLOBGlobal;
+
+        beforeAll(async () => {
+            knowledgeArticleTemplateDataHR = {
+                templateName: `tname HR ${randomStr}`,
+                sectionTitle: "articleSection",
+                lineOfBusiness: "Ericsson HR"
+            }
+
+            knowledgeArticleTemplateDataSAM = {
+                templateName: `tname HR ${randomStr}`,
+                sectionTitle: "articleSection",
+                lineOfBusiness: "Ericsson SAM"
+            }
+
+            knowledgeArticleTemplateDataGlobal = {
+                templateName: `tname Global ${randomStr}`,
+                sectionTitle: "articleSection",
+                lineOfBusiness: "Ericsson Global"
+            }
+
+            knowledgeSetDataEricssonHR = {
+                knowledgeSetTitle: `DRDMV-23636 ER HR ${randomStr}`,
+                knowledgeSetDesc: `${randomStr}_Desc_ER_HR`,
+                company: 'Ericsson HR',
+                lineOfBusiness: 'Ericsson HR'
+            }
+
+            knowledgeSetDataEricssonSAM = {
+                knowledgeSetTitle: `DRDMV-23636 ER SAM ${randomStr}`,
+                knowledgeSetDesc: `${randomStr}_Desc_ER_SAM`,
+                company: 'Ericsson SAM',
+                lineOfBusiness: 'Ericsson SAM'
+            }
+
+            knowledgeSetDataEricssonGlobal = {
+                knowledgeSetTitle: `DRDMV-23636 Global SAM ${randomStr}`,
+                knowledgeSetDesc: `${randomStr}_Desc_ER_Global`,
+                company: 'Ericsson Global',
+                lineOfBusiness: 'Ericsson Global'
+            }
+
+            knowledgeArticleDataDiffLOBGlobal = {
+                "knowledgeSet": `${knowledgeSetDataEricssonGlobal.knowledgeSetTitle} 1`,
+                "title": `${randomStr} title Diff LOB`,
+                "templateId": "AGGAA5V0HGVMIAOK04TZO94MC355RA",
+                "assignee": "Smith",
+                "lineOfBusiness": "Ericsson SAM"
+            }
+
+            knowledgeArticleDataDiffLOB = {
+                "knowledgeSet": `${knowledgeSetDataEricssonSAM.knowledgeSetTitle}`,
+                "title": `${randomStr} title Diff LOB`,
+                "templateId": "AGGAA5V0HGVMIAOK04TZO94MC355RA",
+                "assignedCompany": "Ericsson SAM",
+                "assigneeBusinessUnit": "Ericsson Asset Management - India",
+                "assigneeSupportGroup": "New Asset Management",
+                "assignee": "Smith",
+                "lineOfBusiness": "Ericsson SAM"
+            }
+
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateDataHR);
+            await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateDataSAM);
+            await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateDataGlobal);
+            await apiHelper.createKnowledgeSet(knowledgeSetDataEricssonHR);
+            await apiHelper.createKnowledgeSet(knowledgeSetDataEricssonSAM);
+            await apiHelper.createKnowledgeSet(knowledgeSetDataEricssonGlobal);
+            await apiHelper.createKnowledgeArticle(knowledgeArticleDataDiffLOB);
+            await apiHelper.createKnowledgeArticle(knowledgeArticleDataDiffLOBGlobal);
+        });
+
+        it('[DRDMV-23666]: [Ericsson Model] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple Line of Business', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('sbruce');
+            await navigationPage.gotoCreateKnowledge();
+            await utilityGrid.selectLineOfBusiness('Ericsson HR');
+            expect(await createKnowledgePage.isTemplatePresent(knowledgeArticleTemplateDataHR.templateName)).toBeTruthy('Template is not present');
+            expect(await createKnowledgePage.isTemplatePresent(knowledgeArticleTemplateDataSAM.templateName)).toBeFalsy('Template is present');
+            expect(await createKnowledgePage.isTemplatePresent(knowledgeArticleTemplateDataGlobal.templateName)).toBeFalsy('Template is present');
+            await createKnowledgePage.clickOnTemplate('Reference');
+            await createKnowledgePage.clickOnUseSelectedTemplateButton();
+            await utilityGrid.selectLineOfBusiness('Ericsson SAM');
+            expect(await createKnowledgePage.isTemplatePresent(knowledgeArticleTemplateDataSAM.templateName)).toBeTruthy('Template is not present');
+            expect(await createKnowledgePage.isTemplatePresent(knowledgeArticleTemplateDataHR.templateName)).toBeFalsy('Template is present');
+            expect(await createKnowledgePage.isTemplatePresent(knowledgeArticleTemplateDataGlobal.templateName)).toBeFalsy('Template is present');
+            expect(await createKnowledgePage.getValueOfLineOFBusiness()).toBe('Ericsson SAM');
+            expect(await createKnowledgePage.isValuePresentInDropdown('Knowledge Set', knowledgeSetDataEricssonSAM.knowledgeSetTitle)).toBeTruthy('Failure: Knowledge Set is missing');
+            expect(await createKnowledgePage.isValuePresentInDropdown('Knowledge Set', knowledgeSetDataEricssonHR.knowledgeSetTitle)).toBeFalsy('Failure: Knowledge Set is available');
+            expect(await createKnowledgePage.isTemplatePresent(knowledgeArticleTemplateDataGlobal.templateName)).toBeFalsy('Template is present');
+
+            expect(await createKnowledgePage.isValuePresentInDropdown('Category Tier 1', 'Facilities')).toBeTruthy('Failure: Operational Category 1 is missing');
+            expect(await createKnowledgePage.isValuePresentInDropdown('Category Tier 1', 'Employee Relations')).toBeFalsy('Failure: Operational Category 1 is present');
+
+            await navigationPage.gotoKnowledgeConsole();
+            await createKnowledgePage.clickOnTemplate('Reference');
+            await createKnowledgePage.clickOnUseSelectedTemplateButton();
+            await utilityGrid.selectLineOfBusiness('Ericsson HR');
+
+            //Validating Assignment fields
+            await createKnowledgePage.clickChangeAssignmentButton();
+            await changeAssignmentBladePo.selectCompany('Ericsson HR');
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Ericsson HR Support')).toBeTruthy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Ericsson Asset Management - India')).toBeFalsy();
+            await changeAssignmentBladePo.selectBusinessUnit('Ericsson HR Support');
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'EricssonCo HR')).toBeTruthy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'EricssonCo SAM')).toBeFalsy();
+            await changeAssignmentBladePo.selectBusinessUnit('Ericsson United States Support');
+            await changeAssignmentBladePo.selectSupportGroup('US Support 2');
+            expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData3.firstName} ${userData3.lastName}`)).toBeTruthy('User is not present on Assignment blade');
+            expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData4.firstName} ${userData4.lastName}`)).toBeTruthy('User is present on Assignment blade');
+            await changeAssignmentBladePo.clickOnCancelButton();
+
+            //Saving the Article
+            await createKnowledgePage.addTextInKnowlegeTitleField(`DRDMV23666 Title ${randomStr}`);
+            await createKnowledgePage.selectKnowledgeSet(knowledgeSetDataEricssonHR.knowledgeSetTitle);
+            await createKnowledgePage.selectCategoryTier1Option('Applications');
+
+            await createKnowledgePage.clickOnSaveKnowledgeButton();
+            await previewKnowledgePo.clickGoToArticleButton();
+            articleId = await viewKnowledgeArticlePo.getKnowledgeArticleId();
+        });
+
+        it('[DRDMV-23666]: [Ericsson Model] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple Line of Business', async () => {
+            await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
+            expect(await editKnowledgePo.getLineOfBusinessValue()).toBe('Ericsson HR');
+            expect(await editKnowledgePo.isLobSectionEnabled()).toBeFalsy();
+            await editKnowledgePo.cancelKnowledgeMedataDataChanges();
+            await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
+            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Knowledge');
+            await accessTabPo.selectAccessEntityDropDown('Ericsson HR', 'Select Company');
+            expect(await accessTabPo.isValuePresentInDropdown('Business Unit', 'Ericsson HR Support')).toBeTruthy();
+            expect(await accessTabPo.isValuePresentInDropdown('Business Unit', 'Ericsson Asset Management - India')).toBeFalsy();
+            await accessTabPo.selectAccessEntityDropDown('Ericsson HR Support', 'Select Business Unit');
+            expect(await accessTabPo.isValuePresentInDropdown('Support Group', 'Petramco HR')).toBeTruthy();
+            expect(await accessTabPo.isValuePresentInDropdown('Support Group', 'Petramco Facilities')).toBeFalsy();
+
+            await accessTabPo.clickToExpandAccessEntitiySearch('Agent Access', 'Knowledge');
+            expect(await accessTabPo.isAgentPresent(userData3.firstName)).toBeTruthy('User is not Present');
+            expect(await accessTabPo.isAgentPresent(userData4.firstName)).toBeFalsy('User is Present');
+            await accessTabPo.clickCloseKnowledgeAccessBlade();
+
+            await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
+            expect(await createKnowledgePage.isValuePresentInDropdown('Category Tier 1', 'Applications')).toBeTruthy('Failure: Operational Category 1 is missing');
+            expect(await createKnowledgePage.isValuePresentInDropdown('Category Tier 1', 'Facilties')).toBeFalsy('Failure: Operational Category 1 is present');
+            await editKnowledgePo.setCategoryTier1('Total Rewards');
+            await editKnowledgePo.saveKnowledgeMedataDataChanges();
+            expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe('Total Rewards');
+
+            await editKnowledgePo.setKnowledgeStatus('Draft');
+            await editKnowledgePo.setKnowledgeStatusWithoutSave('SME Review');
+            await statusBladeKnowledgeArticlePo.clickChangeReviewerBtn();
+            await changeAssignmentBladePo.selectCompany('Ericsson HR');
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Ericsson HR Support')).toBeTruthy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Ericsson Asset Management - India')).toBeFalsy();
+            await changeAssignmentBladePo.selectBusinessUnit('Ericsson HR Support');
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'EricssonCo HR')).toBeTruthy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'EricssonCo SAM')).toBeFalsy();
+            await changeAssignmentBladePo.selectBusinessUnit('Ericsson United States Support');
+            await changeAssignmentBladePo.selectSupportGroup('US Support 2');
+            expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData3.firstName} ${userData3.lastName}`)).toBeTruthy('User is not present on Assignment blade');
+            expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData4.firstName} ${userData4.lastName}`)).toBeTruthy('User is present on Assignment blade');
+            await changeAssignmentBladePo.clickOnCancelButton();
+
+            await navigationPage.gotoKnowledgeConsole();
+            expect(await utilityGrid.isGridRecordPresent(knowledgeArticleDataDiffLOB.title)).toBeFalsy('Record is present');
+            expect(await utilityGrid.isGridRecordPresent(knowledgeArticleDataDiffLOBGlobal.title)).toBeFalsy('Record is present');
+
+            await navigationPage.signOut();
+            await loginPage.login('sherbert');
+            await navigationPage.gotoKnowledgeConsole();
+            expect(await utilityGrid.isGridRecordPresent(articleId)).toBeFalsy(articleId + ' Record is present');
+        });
+        afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });

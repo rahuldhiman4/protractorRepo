@@ -88,7 +88,6 @@ describe('Line of Business Permissions Tests Extended', () => {
             await createEmailConfigPo.clickSave();
             expect(await utilCommon.isPopUpMessagePresent('ERROR (10000): The alternate email IDs are already used. Specify different alternate email IDs.')).toBeTruthy();
             await createEmailConfigPo.clickCancel();
-            await createEmailConfigPo.clickCancel();
             await utilCommon.clickOnWarningOk();
         });
         it('[DRDMV-8504]: [Email Configuration] Configure email with One Line of Business', async () => {
@@ -155,11 +154,14 @@ describe('Line of Business Permissions Tests Extended', () => {
             await editEmailConfigPo.selectMappedRequesterDropDown("Adam Pavlik");
             await editEmailConfigPo.clickNewTrustedEmailSaveBtn();
 
+            await editEmailConfigPo.clickAddTrustedEmailBtn();
             await editEmailConfigPo.setNewTrustedEmail("testingCheck@gmail.com");
             await editEmailConfigPo.selectMappedRequesterDropDown("Adam Warlock");
             await editEmailConfigPo.clickNewTrustedEmailSaveBtn();
             expect(await utilCommon.isPopUpMessagePresent('ERROR (222323): Mapping for same email address or domain already exists.')).toBeTruthy();
+            await editEmailConfigPo.clickNewTrustedEmailCancelBtn();
             await utilCommon.clickOnWarningOk();
+
             await editEmailConfigPo.selectAndClickCheckboxOnTrustedEmail("testingCheck@gmail.com");
             await editEmailConfigPo.clickEditTrustedEmailButtonOnTrustedEmail();
             await editEmailConfigPo.setEmailOnEditTrustedEmail("Test");
@@ -196,7 +198,7 @@ describe('Line of Business Permissions Tests Extended', () => {
         it('[DRDMV-18309]: Verify Case BA can configure to allow all external users in trusted domain and Blocked email', async () => {
             await editEmailConfigPo.setEmailOnBlockedNewEmail("*@*");
             await editEmailConfigPo.clickOnSaveBlockedEmailBtn();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (222345): Please enter valid Blocked Email')).toBeTruthy();
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (222345): Please enter valid email address')).toBeTruthy();
             await utilCommon.closePopUpMessage();
             await editEmailConfigPo.setEmailOnBlockedNewEmail("testing123@acc.com");
             await editEmailConfigPo.clickOnSaveBlockedEmailBtn();

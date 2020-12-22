@@ -216,7 +216,7 @@ class AccessTab {
         let dropDownListRows = 'ux-access-manager .support-group-form div.d-flex.flex-row';
         let dropDownListCount: number = await $$('ux-access-manager .support-group-form div.d-flex.flex-row').count();
         if (isConfidential) {
-            await utilityCommon.isValuePresentInDropDown(this.selectors.confidentialSupportGroupGuid, entityValue);
+            return await utilityCommon.isValuePresentInDropDown(this.selectors.confidentialSupportGroupGuid, entityValue);
         }
         else {
             for (let i: number = 0; i < dropDownListCount; i++) {
