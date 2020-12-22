@@ -11,7 +11,7 @@ class GoalTypeCreateConfigPage {
         goalType: '[rx-view-component-id="9a13d83a-2ad4-451e-a31d-36c7eda0f709"] .ui-select-container',
         statusDropDown: '[rx-view-component-id="19e691e1-656f-4e4c-8afa-108cdb6093e5"] .ui-select-match',
         saveButton: '[rx-view-component-id="c0d3c6c3-7625-4236-971f-5fc0c0875955"] button',
-        closeButton: 'div[rx-view-component-id="0d0a565e-b611-4975-b952-34ff4576172d"] .d-button_secondary',
+        closeButton: '[rx-view-component-id="0d0a565e-b611-4975-b952-34ff4576172d"] .d-button_secondary',
         lineofbusiness: '[rx-view-component-id="1572778c-0019-4609-a496-4944a98ac738"] .ui-select-container',
         lineofbusinessValue: '[rx-view-component-id="1572778c-0019-4609-a496-4944a98ac738"] .ui-select-container span.ui-select-match-text',
         goalTypeValue: '[rx-view-component-id="9a13d83a-2ad4-451e-a31d-36c7eda0f709"] .ui-select-container  span.ui-select-match-text',

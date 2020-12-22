@@ -776,6 +776,7 @@ describe('Service Target Configs', () => {
     });
 
     //skhobrag
+    //failing due to defect DRDMV-24409
     describe('[DRDMV-6148]: Create SVT for one line of Business with Milestone action', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let updatedCaseSummary = "Updating Case summary from SVT";
@@ -1093,7 +1094,6 @@ describe('Service Target Configs', () => {
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
-
         });
 
         it('[DRDMV-2354]: Verify Processing of Set field Milestone Action for Task SLA', async () => {
@@ -1104,14 +1104,20 @@ describe('Service Target Configs', () => {
             await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
             await SlmExpressionBuilder.clickOnSaveExpressionButtonForTask();
             await serviceTargetConfig.clickOnGoalTypeDropDown();
-            expect(serviceTargetConfig.isGoalTypeOptionPresentInDropDown('Case Resolution Time')).toBeTruthy('OOTB goal type is not displayed.');
-            expect(serviceTargetConfig.isGoalTypeOptionPresentInDropDown('Case Response Time')).toBeTruthy('OOTB goal type is not displayed.');
-            expect(serviceTargetConfig.isGoalTypeOptionPresentInDropDown('Task Resolution Time')).toBeTruthy('OOTB goal type is not displayed.');
-            expect(serviceTargetConfig.isGoalTypeOptionPresentInDropDown(goalTypeActive.svtGoalTypeName)).toBeTruthy('Active goal type of Human Resource LOB is not displayed.');
-            expect(serviceTargetConfig.isGoalTypeOptionPresentInDropDown(goalTypeInactive.svtGoalTypeName)).toBeTruthy('Inactive goal type of Human Resource LOB is displayed.');
-            expect(serviceTargetConfig.isGoalTypeOptionPresentInDropDown(goalTypeFacilities.svtGoalTypeName)).toBeTruthy('Active goal type of Facilities LOB is not displayed.');
-            expect(serviceTargetConfig.isGoalTypeOptionPresentInDropDown(goalTypeFacilitiesInactive.svtGoalTypeName)).toBeTruthy('Inactive goal type of Facilities LOB is displayed.');
-
+            expect(await serviceTargetConfig.isGoalTypeOptionPresentInDropDown('Case Response Time')).toBeTruthy('OOTB goal type is not displayed.');
+            await serviceTargetConfig.clearGoalTypeDropDownOption();
+            expect(await serviceTargetConfig.isGoalTypeOptionPresentInDropDown('Task Resolution Time')).toBeTruthy('OOTB goal type is not displayed.');
+            await serviceTargetConfig.clearGoalTypeDropDownOption();
+            expect(await serviceTargetConfig.isGoalTypeOptionPresentInDropDown(goalTypeInactive.svtGoalTypeName)).toBeFalsy('Inactive goal type of Human Resource LOB is displayed.');
+            await serviceTargetConfig.clearGoalTypeDropDownOption();
+            expect(await serviceTargetConfig.isGoalTypeOptionPresentInDropDown('Case Resolution Time')).toBeTruthy('OOTB goal type is not displayed.');
+            await serviceTargetConfig.clearGoalTypeDropDownOption();
+            expect(await serviceTargetConfig.isGoalTypeOptionPresentInDropDown(goalTypeFacilities.svtGoalTypeName)).toBeFalsy('Active goal type of Facilities LOB is not displayed.');
+            await serviceTargetConfig.clearGoalTypeDropDownOption();
+            expect(await serviceTargetConfig.isGoalTypeOptionPresentInDropDown(goalTypeActive.svtGoalTypeName)).toBeTruthy('Active goal type of Human Resource LOB is not displayed.');
+            await serviceTargetConfig.clearGoalTypeDropDownOption();
+            expect(await serviceTargetConfig.isGoalTypeOptionPresentInDropDown(goalTypeFacilitiesInactive.svtGoalTypeName)).toBeFalsy('Inactive goal type of Facilities LOB is displayed.');
+            await serviceTargetConfig.clearGoalTypeDropDownOption();
             await serviceTargetConfig.selectGoal("2");
             await serviceTargetConfig.selectMeasurement();
             await serviceTargetConfig.selectExpressionForMeasurementForTask(0, "status", "=", "STATUS", "Staged");
@@ -1161,7 +1167,7 @@ describe('Service Target Configs', () => {
             let selectedExpx = await SlmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Requester > Email" + "'" + "=" + '"' + "qdu@petramco1.com" + '"';
             expect(selectedExpx).toEqual(expectedSelectedExp);
-            await SlmExpressionBuilder.clickOnSaveExpressionButton();
+            await SlmExpressionBuilder.clickOnSaveExpressionButtonForTask();
             await milestoneConfig.clickMileStoneActionsSegment();
             await milestoneConfig.clickAddNewMileStoneActionBtn();
             await milestoneConfig.selectMileStoneActionCondition("New Alert or Email Action");
@@ -1171,12 +1177,19 @@ describe('Service Target Configs', () => {
             await milestoneConfig.selectMileStoneNotificationDeliveryMethod('Alert');
             await milestoneConfig.clickOnNotificationTemplateDropDown();
             expect(await milestoneConfig.isNotificationTemplatePresentInDropDown('Task SLA Missed')).toBeTruthy();
+            await milestoneConfig.clearNotificationTemplateSelectionFromMilestone();
             expect(await milestoneConfig.isNotificationTemplatePresentInDropDown('Case SLA Missed')).toBeFalsy();
+            await milestoneConfig.clearNotificationTemplateSelectionFromMilestone();
             expect(await milestoneConfig.isNotificationTemplatePresentInDropDown('Case SLA - Warning 50%')).toBeFalsy();
+            await milestoneConfig.clearNotificationTemplateSelectionFromMilestone();
             expect(await milestoneConfig.isNotificationTemplatePresentInDropDown(caseNotificationHR)).toBeFalsy();
+            await milestoneConfig.clearNotificationTemplateSelectionFromMilestone();
             expect(await milestoneConfig.isNotificationTemplatePresentInDropDown(caseNotificationFacilities)).toBeFalsy();
-            expect(await milestoneConfig.isNotificationTemplatePresentInDropDown(taskNotificationFacilities)).toBeTruthy();
+            await milestoneConfig.clearNotificationTemplateSelectionFromMilestone();
+            expect(await milestoneConfig.isNotificationTemplatePresentInDropDown(taskNotificationFacilities)).toBeFalsy();
+            await milestoneConfig.clearNotificationTemplateSelectionFromMilestone();
             expect(await milestoneConfig.isNotificationTemplatePresentInDropDown(taskNotificationHR)).toBeFalsy();
+            await milestoneConfig.clearNotificationTemplateSelectionFromMilestone();
             await milestoneConfig.setMileStoneNotificationToField('qkatawazi@petramco.com');
             await milestoneConfig.selectMileStoneNotificationTemplate(taskNotificationFacilities);
             await milestoneConfig.clickSaveMileStoneActionNotification();
@@ -1322,8 +1335,8 @@ describe('Service Target Configs', () => {
             await configureDataSourceConsolePage.clickConfigDataSourceBtn();
             await createConfigureDataSourceConfigPo.setDataSourceDisplayName(dataSourceTitle);
             await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Application Name', 'Case Management Service');
-            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Record Definition Name', 'com.bmc.dsm.case-lib:Case Approval Mapping');
-            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Company Field', 'Company');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Record Definition Name', 'com.bmc.dsm.case-lib:Case Template');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Company Field', 'Case Company');
             expect(await createConfigureDataSourceConfigPo.isSaveBtnDisabled()).toBeFalsy('Save button is found disabled.');
             await createConfigureDataSourceConfigPo.clickSaveButton();
             expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message is not displayed.');
@@ -1387,10 +1400,11 @@ describe('Service Target Configs', () => {
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Configure Data Source', 'Configure Data Source - Administration - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(dataSourceTitle)).toBeTruthy();
             await configureDataSourceConsolePage.clickConfigDataSourceBtn();
             await createConfigureDataSourceConfigPo.setDataSourceDisplayName(dataSourceTitleFacilities);
             await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Application Name', 'Case Management Service');
-            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Record Definition Name', 'com.bmc.dsm.case-lib:Case Approval Mapping');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Record Definition Name', 'com.bmc.dsm.case-lib:Case Assignment Mapping');
             await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Company Field', 'Company');
             expect(await createConfigureDataSourceConfigPo.isSaveBtnDisabled()).toBeFalsy('Save button is found disabled.');
             await createConfigureDataSourceConfigPo.clickSaveButton();
@@ -1449,7 +1463,7 @@ describe('Service Target Configs', () => {
             await createServiceTargetGroupPo.clearDataSourceOptionFromDropDown();
             expect(await createServiceTargetGroupPo.isDataSourceOptionPresentInDropDown('Case Management')).toBeTruthy();
             await createServiceTargetGroupPo.clearDataSourceOptionFromDropDown();
-            expect(await createServiceTargetGroupPo.isDataSourceOptionPresentInDropDown(dataSourceTitleFacilities)).toBeFalsy();
+            expect(await createServiceTargetGroupPo.isDataSourceOptionPresentInDropDown(dataSourceTitleFacilities)).toBeTruthy();
             await createServiceTargetGroupPo.clearDataSourceOptionFromDropDown();
             expect(await createServiceTargetGroupPo.isDataSourceOptionPresentInDropDown('Task Management')).toBeTruthy();
             await createServiceTargetGroupPo.clearDataSourceOptionFromDropDown();
@@ -1470,7 +1484,7 @@ describe('Service Target Configs', () => {
         it('[DRDMV-2600]: Verify SVT reflection based on company / data source / goal type selection', async () => {
             //Service target filteration based on company
             await createServiceTargetGroupPo.selectCompany('- Global -');
-            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameHR)).toBeTruthy();
+            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameHR)).toBeFalsy();
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithGoalType)).toBeTruthy();
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithoutGoalType)).toBeFalsy();
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithGoalTypeFacilities)).toBeFalsy();
@@ -1490,7 +1504,7 @@ describe('Service Target Configs', () => {
             await createServiceTargetGroupPo.selectDataSource('Case Management');
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameHR)).toBeTruthy();
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithGoalType)).toBeFalsy();
-            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithoutGoalType)).toBeFalsy();
+            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithoutGoalType)).toBeTruthy();
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithGoalTypeFacilities)).toBeFalsy();
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithoutGoalTypeFacilities)).toBeFalsy();
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameFacilities)).toBeFalsy();
@@ -1525,7 +1539,7 @@ describe('Service Target Configs', () => {
             await createServiceTargetGroupPo.selectCompany('- Global -');
             await createServiceTargetGroupPo.selectGoalType('Case Resolution Time');
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameHR)).toBeFalsy();
-            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithGoalType)).toBeFalsy();
+            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithGoalType)).toBeTruthy();
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithoutGoalType)).toBeFalsy();
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithGoalTypeFacilities)).toBeFalsy();
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithoutGoalTypeFacilities)).toBeFalsy();
@@ -1538,7 +1552,7 @@ describe('Service Target Configs', () => {
            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithDSGT)).toBeTruthy();
            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameFacilities)).toBeFalsy();
            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameHR)).toBeFalsy();
-           expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithGoalType)).toBeFalsy();
+           expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithGoalType)).toBeTruthy();
            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithoutGoalType)).toBeFalsy();
            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithGoalTypeFacilities)).toBeFalsy();
            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithoutGoalTypeFacilities)).toBeFalsy();
