@@ -276,8 +276,6 @@ describe('Ericsson Model Test Extended', () => {
             await loginPage.login(ericssonHRAndSamLOBUserName, password);
         });
     });
-
-
     
     //kiran
     describe('[DRDMV-23664]: [Service Provider Model][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to multiple LOB', () => {
@@ -285,7 +283,6 @@ describe('Ericsson Model Test Extended', () => {
         let caseTemplateDataGlobalEricssonGlobalSAM, knowledgeSetDataEricssonHR, caseTemplateDataGlobalEricssonHR, caseTemplateDataEricssonHR, caseIdEricssonHR, caseIdEricssonSAM, caseTemplateDataEricssonSAM, caseTemplateDataGlobalEricssonSAM, caseTemplateDataGlobalEricssonGlobalHR;
         let knowledgeTitle = "knowledgeTitleDRDMV23664" + randomStr;
         let summary = "DRDMV23664CaseSummary" + randomStr;
-        console.log('randomStr>>>>>>>>>.',randomStr);
         
         beforeAll(async () => {
             // Create Data with Ericsson HR LOB
@@ -593,7 +590,7 @@ describe('Ericsson Model Test Extended', () => {
             await viewCasePage.clickOnTaskLink('adhocTask');
         });
 
-        it('[DRDMV-23673]: create knowledge article and verify with Resources Tab', async () => {
+        it('[DRDMV-23664]: create knowledge article and verify with Resources Tab', async () => {
             await navigationPage.gotoCreateKnowledge();
             await createKnowledgePage.clickOnTemplate('Reference');
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
@@ -660,7 +657,7 @@ describe('Ericsson Model Test Extended', () => {
             caseIdEricssonSAM = await viewCasePage.getCaseID();
         });
 
-        it('[DRDMV-23673]: Verify Knowledge Article and case with Resources Tab', async () => {
+        it('[DRDMV-23664]: Verify Knowledge Article and case with Resources Tab', async () => {
             await viewCasePage.clickOnTab('Resources');
             await resourcesTabPo.clickOnAdvancedSearchOptions();
             await resourcesTabPo.searchTextAndEnter(knowledgeTitle);
@@ -687,7 +684,6 @@ describe('Ericsson Model Test Extended', () => {
             await loginPage.login(ericssonHRAndSamLOBUserName, password);
         });
     });
-
 
     //kiran
     describe('[DRDMV-23665]: [Ericsson Model][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to multiple LOB', () => {
@@ -866,7 +862,7 @@ describe('Ericsson Model Test Extended', () => {
 
         });
 
-        it('[DRDMV-23665]: Create Case And Article Data For Ericsson HR', async () => {
+        it('[DRDMV-23665]: Create Article Data For Ericsson HR', async () => {
             //Create Knowledge Article Ericsson HR
             await navigationPage.gotoCaseConsole();
             await utilityGrid.selectLineOfBusiness('Ericsson HR');
@@ -882,7 +878,7 @@ describe('Ericsson Model Test Extended', () => {
             await editKnowledgePo.setKnowledgeStatus('Publish Approval');
         });
 
-        it('[DRDMV-23665]: Create Case And Article Data For Ericsson SAM', async () => {
+        it('[DRDMV-23665]: Create Article Data For Ericsson SAM', async () => {
             //Create Knowledge Article Ericsson SAM
             await navigationPage.gotoCaseConsole();
             await utilityGrid.selectLineOfBusiness('Ericsson SAM');
@@ -1036,6 +1032,45 @@ describe('Ericsson Model Test Extended', () => {
             await createAdhocTaskPo.clickSaveAdhoctask();
             await manageTaskBladePo.clickCloseButton();
             await viewCasePage.clickOnTaskLink('adhocTask');
+        });
+
+        it('[DRDMV-23665]: Create Quick Case without case template with Ericson HR Requester', async () => {
+            await navigationPage.gotoQuickCase();
+            await quickCasePo.selectRequesterName('rwillie');
+            await quickCasePo.setCaseSummary('DRDMV23665TestCaseSummaryEricssonHR');
+            await quickCasePo.saveCase();
+            expect(await previewCasePage.getLineOfBusinessValue()).toBe('Ericsson HR');
+            await previewCasePage.clickOncreateNewCaseButton();
+        });
+
+        it('[DRDMV-23665]: Verify Edit Case Page with Ericson HR', async () => {
+            await viewCasePage.clickEditCaseButton();
+            expect(await editCasePo.isLineOfBusinessReadOnly()).toBeTruthy('Line of business is not readonly');
+            expect(await editCasePo.getLobValue()).toBe('Ericsson HR');
+
+            await editCasePo.updateCaseCategoryTier1('Total Rewards');
+            await editCasePo.updateCaseCategoryTier2('Benefits');
+            await editCasePo.updateCaseCategoryTier3('Beneficiaries');
+
+            await editCasePo.clickChangeAssignmentButton();
+            await changeAssignmentBladePo.setAssignee('Ericsson HR', 'Ericsson United States Support', 'US Support 1', 'Rumsfeld Donald');
+
+            expect(await editCasePo.getCategoryTier1()).toBe('Total Rewards');
+            expect(await editCasePo.getCategoryTier2()).toBe('Benefits');
+            expect(await editCasePo.getCategoryTier3()).toBe('Beneficiaries');
+            expect(await editCasePo.getAssigneeValue()).toBe('Rumsfeld Donald');
+
+            // Verify CategorTIer of Ericsson SAM LOB which don't have access to Ericsson HR
+            expect(await editCasePo.isValuePresentInCategoryTier1('Purchasing Card')).toBeFalsy('Purchasing Card CategoryTier1 drop down value displayed');
+            expect(await editCasePo.isValuePresentInCategoryTier1('Fixed Assets')).toBeFalsy('Fixed Assets CategoryTier1 drop down value displayed');
+
+            // Verify negative scenario for Ericsson SAM LOB for change assignment
+            await editCasePo.clickChangeAssignmentButton();
+            await changeAssignmentBladePo.selectCompany('Ericsson SAM');
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Ericsson Asset Management - USA')).toBeFalsy('BU is displayed');
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'Asset Disposal')).toBeFalsy('SG is displayed');
+            await changeAssignmentBladePo.clickOnCancelButton();
+            await editCasePo.clickSaveCase();
         });
 
         it('[DRDMV-23665]: Create Quick Case scenario With Ericsson SAM', async () => {
