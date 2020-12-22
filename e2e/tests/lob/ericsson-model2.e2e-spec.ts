@@ -647,7 +647,6 @@ describe('Ericsson Model Test Extended', () => {
 
             await createCasePage.clickChangeAssignmentButton();
             await changeAssignmentBladePo.setAssignee('Ericsson SAM', 'Ericsson Asset Management - USA', 'Asset Disposal', 'Spolsky Joel');
-            await createCasePage.clickSaveCaseButton();
 
             // Verify negative scenario for Ericsson HR LOB for change assignment
             await createCasePage.clickChangeAssignmentButton();
@@ -656,6 +655,7 @@ describe('Ericsson Model Test Extended', () => {
             expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support', 'US Support 1')).toBeFalsy('Support Group is displayed');
             await changeAssignmentBladePo.clickOnCancelButton();
 
+            await createCasePage.clickSaveCaseButton();
             await previewCasePage.clickGoToCaseButton();
             caseIdEricssonSAM = await viewCasePage.getCaseID();
         });
@@ -672,13 +672,13 @@ describe('Ericsson Model Test Extended', () => {
         it('[DRDMV-23664]: Verify case access between Ericsson HR and Ericsson SAM LOB', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
-            expect(await utilityGrid.isGridRecordPresent(caseIdEricssonSAM)).toBeTruthy('caseIdOracleHR Missing on grid');
-            expect(await utilityGrid.isGridRecordPresent(caseIdEricssonHR)).toBeFalsy('caseIdKingstoneHR Missing on grid');
+            expect(await utilityGrid.isGridRecordPresent(caseIdEricssonSAM)).toBeTruthy('caseIdEricssonSAM Missing on grid');
+            expect(await utilityGrid.isGridRecordPresent(caseIdEricssonHR)).toBeFalsy('caseIdEricssonHR Missing on grid');
 
             await utilityGrid.selectLineOfBusiness('Ericsson HR');
             await utilityGrid.clearFilter();
-            expect(await utilityGrid.isGridRecordPresent(caseIdEricssonSAM)).toBeFalsy('caseIdOracleHR Missing on grid');
-            expect(await utilityGrid.isGridRecordPresent(caseIdEricssonHR)).toBeTruthy('caseIdKingstoneHR Missing on grid');
+            expect(await utilityGrid.isGridRecordPresent(caseIdEricssonSAM)).toBeFalsy('caseIdEricssonSAM Missing on grid');
+            expect(await utilityGrid.isGridRecordPresent(caseIdEricssonHR)).toBeTruthy('caseIdEricssonHR Missing on grid');
         });
 
         afterAll(async () => {
