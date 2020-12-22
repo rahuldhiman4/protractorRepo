@@ -1,37 +1,33 @@
+import { cloneDeep } from 'lodash';
 import { browser } from "protractor";
 import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from '../../api/api.helper';
+import { flowsetGlobalFields } from '../../data/ui/flowset/flowset.ui';
 import casePreviewPo from '../../pageobject/case/case-preview.po';
 import createCasePage from "../../pageobject/case/create-case.po";
+import editCasePo from '../../pageobject/case/edit-case.po';
 import quickCasePo from '../../pageobject/case/quick-case.po';
+import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
 import accessTabPo from '../../pageobject/common/access-tab.po';
 import changeAssignmentPage from '../../pageobject/common/change-assignment-blade.po';
-import changAssignmentOldPage from '../../pageobject/common/change-assignment-old-blade.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPo from "../../pageobject/common/navigation.po";
 import addReadAccess from '../../pageobject/settings/case-management/add-read-access-configuration.po';
 import consoleCasetemplatePo from '../../pageobject/settings/case-management/console-casetemplate.po';
 import createCaseTemplate from '../../pageobject/settings/case-management/create-casetemplate.po';
-import editCaseTemplate from '../../pageobject/settings/case-management/edit-casetemplate.po';
+import editCasetemplatePo from '../../pageobject/settings/case-management/edit-casetemplate.po';
 import editReadAccess from "../../pageobject/settings/case-management/edit-read-access-config.po";
 import consoleReadAcess from '../../pageobject/settings/case-management/read-access-console.po';
 import viewCaseTemplate from '../../pageobject/settings/case-management/view-casetemplate.po';
+import activityTabPo from '../../pageobject/social/activity-tab.po';
+import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-import editCasetemplatePo from "../../pageobject/settings/case-management/edit-casetemplate.po";
-import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
-import activityTabPo from '../../pageobject/social/activity-tab.po';
-import editCasePo from '../../pageobject/case/edit-case.po';
-import previewCasePo from '../../pageobject/case/case-preview.po';
-import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
-import { flowsetGlobalFields } from '../../data/ui/flowset/flowset.ui';
-import { cloneDeep } from 'lodash';
 let flowsetGlobalFieldsData = undefined;
-let userData, userData1, userData2 = undefined;
 
 describe("Case Read Access", () => {
     const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
@@ -170,40 +166,92 @@ describe("Case Read Access", () => {
         expect(await utilCommon.isPopUpMessagePresent('Record(s) deleted successfully.')).toBeTruthy('Successfull message is not appeared');
     });
 
-    it('[DRDMV-11985]:[Read Access] Verify Global read acess configuration applied to case if read acess configuration qualification matches', async () => {
+    describe('[DRDMV-11985]:[Read Access] Verify Global read acess configuration applied to case if read acess configuration qualification matches', async () => {
         let randVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        await navigationPo.gotoSettingsPage();
-        await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
-        await consoleReadAcess.clickOnReadAccessConfiguration();
-        await addReadAccess.setReadAccessConfigurationName("ReadAccess" + randVal);
-        await addReadAccess.selectCompany('Global');
-        await addReadAccess.selectPriority('Critical');
-        await addReadAccess.selectCategoryTier1('Employee Relations');
-        await addReadAccess.selectSupportCompany('Petramco');
-        await addReadAccess.selectBusinessUnit(businessData1.orgName);
-        await addReadAccess.selectDepartment(departmentData1.orgName);
-        await addReadAccess.selectSupportGroup(suppGrpData1.orgName);
-        await addReadAccess.clickOnSave();
-        await utilCommon.closePopUpMessage();
+        let readAccessName = "ReadAccess" + randVal;
+        it('[DRDMV-11985]:[Read Access] Verify Global read acess configuration applied to case if read acess configuration qualification matches', async () => {
+            await navigationPo.gotoSettingsPage();
+            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            await consoleReadAcess.clickOnReadAccessConfiguration();
+            await addReadAccess.setReadAccessConfigurationName(readAccessName);
+            await addReadAccess.selectCompany('Global');
+            await addReadAccess.selectPriority('Critical');
+            await addReadAccess.selectCategoryTier1('Employee Relations');
+            await addReadAccess.selectSupportCompany('Petramco');
+            await addReadAccess.selectBusinessUnit(businessData1.orgName);
+            await addReadAccess.selectDepartment(departmentData1.orgName);
+            await addReadAccess.selectSupportGroup(suppGrpData1.orgName);
+            await addReadAccess.clickOnSave();
+            await utilCommon.closePopUpMessage();
 
-        await navigationPo.gotoCreateCase();
-        await createCasePage.selectRequester('adam');
-        await createCasePage.setSummary('set summary');
-        await createCasePage.selectCategoryTier1('Employee Relations');
-        await createCasePage.setPriority('Critical');
-        await createCasePage.clickChangeAssignmentButton();
-        await changeAssignmentPage.selectCompany('Petramco');
-        await changeAssignmentPage.selectBusinessUnit('United States Support')
-        await changeAssignmentPage.selectSupportGroup('US Support 3');
-        await changeAssignmentPage.selectAssignee('Qadim Katawazi');
-        await changeAssignmentPage.clickOnAssignButton();
-        await createCasePage.clickSaveCaseButton();
-        await casePreviewPo.clickGoToCaseButton();
-        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
-        await viewCasePage.clickOnTab('Case Access');
-        expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Qadim Katawazi', 'Write')).toBeTruthy('FailuerMsg1: Agent Name is missing');
-        expect(await accessTabPo.isAccessTypeOfEntityDisplayed('US Support 3', 'Write')).toBeTruthy('Support Group does not have write access');
-        expect(await accessTabPo.isAccessTypeOfEntityDisplayed(suppGrpData1.orgName, 'Read')).toBeTruthy('Support Group does not have read access');
+            await navigationPo.gotoCreateCase();
+            await createCasePage.selectRequester('adam');
+            await createCasePage.setSummary('set summary');
+            await createCasePage.selectCategoryTier1('Employee Relations');
+            await createCasePage.setPriority('Critical');
+            await createCasePage.clickChangeAssignmentButton();
+            await changeAssignmentPage.selectCompany('Petramco');
+            await changeAssignmentPage.selectBusinessUnit('United States Support')
+            await changeAssignmentPage.selectSupportGroup('US Support 3');
+            await changeAssignmentPage.selectAssignee('Qadim Katawazi');
+            await changeAssignmentPage.clickOnAssignButton();
+            await createCasePage.clickSaveCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+            await viewCasePage.clickOnTab('Case Access');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Qadim Katawazi', 'Write')).toBeTruthy('FailuerMsg1: Agent Name is missing');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('US Support 3', 'Write')).toBeTruthy('Support Group does not have write access');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed(suppGrpData1.orgName, 'Read')).toBeTruthy('Support Group does not have read access');
+        });
+        it('[DRDMV-11985]: create same name record in same LOB', async () => {
+            //create same name record in same LOB
+            await navigationPo.signOut();
+            await loginPage.login('jbarnes');
+            await navigationPo.gotoSettingsPage();
+            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            await consoleReadAcess.clickOnReadAccessConfiguration();
+            await addReadAccess.setReadAccessConfigurationName(readAccessName);
+            await addReadAccess.selectCompany('Global');
+            await addReadAccess.selectPriority('Critical');
+            await addReadAccess.selectCategoryTier1('Employee Relations');
+            await addReadAccess.selectSupportCompany('Petramco');
+            await addReadAccess.selectBusinessUnit('Australia Support');
+            await addReadAccess.selectSupportGroup('AU Support 1');
+            await addReadAccess.clickOnSave();
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (10000): The Access Mapping Name already exists. Please select a different name.')).toBeTruthy("Error message absent");
+            await addReadAccess.clickOnCancel();
+            await utilCommon.clickOnWarningOk();
+        });
+        it('[DRDMV-11985]: create same name record in different LOB', async () => {
+            //create same name record in different LOB
+            await utilGrid.selectLineOfBusiness('Facilities');
+            await consoleReadAcess.clickOnReadAccessConfiguration();
+            await addReadAccess.setReadAccessConfigurationName(readAccessName);
+            await addReadAccess.selectCompany('Global');
+            // verify categ1, BU and SG as per LOB
+            await utilCommon.isDrpDownvalueDisplayed(addReadAccess.selectors.categoryTier1Guid, ['Applications', 'Facilities', 'Fixed Assets', 'Phones', 'Projectors', 'Purchasing Card']);
+            await addReadAccess.selectSupportCompany('Petramco');
+            await utilCommon.isDrpDownvalueDisplayed(addReadAccess.selectors.businessUnitGuid, ['Facilities', 'Facilities Support']);
+            await addReadAccess.selectSupportCompany('Petramco');
+            await addReadAccess.selectBusinessUnit('Facilities Support');
+            await utilCommon.isDrpDownvalueDisplayed(addReadAccess.selectors.supportGroupGuid, ['Facilities', 'Pantry Service']);
+            await addReadAccess.selectBusinessUnit('Facilities Support');
+            await addReadAccess.selectSupportGroup('Facilities');
+            // verify LOB is there
+            expect(await addReadAccess.getLobValue()).toBe("Facilities");
+            await addReadAccess.clickOnSave();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
+            // open the record and verify LOB is on edit screen
+            await utilGrid.searchAndOpenHyperlink(readAccessName);
+            expect(await editReadAccess.getLobValue()).toBe("Facilities");
+            await editReadAccess.clickOnCancel();
+            await utilGrid.selectLineOfBusiness('Human Resource');
+        });
+        afterAll(async () => {
+            await navigationPo.signOut();
+            await loginPage.login("qkatawazi");
+        });
     });
 
     describe('[DRDMV-11818,DRDMV-11821]: [Global Case Template] Create/Update Case template with company and flowset as Global', async () => {
@@ -224,7 +272,7 @@ describe("Case Read Access", () => {
             expect(await viewCaseTemplate.getCaseCompanyValue()).toBe('- Global -');
             expect(await viewCaseTemplate.getFlowsetValue()).toBe(flowsetGlobalFieldsData.flowsetName);
             await viewCaseTemplate.clickOnEditCaseTemplateButton();
-            expect(await editCaseTemplate.isCaseCompanyDisabled()).toBeTruthy();
+            expect(await editCasetemplatePo.isCaseCompanyDisabled()).toBeTruthy();
         });
         it('[DRDMV-11818,DRDMV-11821]: [Global Case Template] Create/Update Case template with company and flowset as Global', async () => {
             await navigationPo.gotoSettingsPage();
@@ -244,7 +292,7 @@ describe("Case Read Access", () => {
             await consoleCasetemplatePo.searchAndClickOnCaseTemplate(caseTemplate1);
             expect(await viewCaseTemplate.getCaseCompanyValue()).toBe('- Global -');
             await viewCaseTemplate.clickOnEditCaseTemplateButton();
-            expect(await editCaseTemplate.isCaseSummaryReadOnly()).toBeTruthy();
+            expect(await editCasetemplatePo.isCaseSummaryReadOnly()).toBeTruthy();
         });
         afterAll(async () => {
             await navigationPo.signOut();
@@ -571,9 +619,9 @@ describe("Case Read Access", () => {
             await editCasetemplatePo.changeFlowsetValue(flowsetGlobalFieldsData.flowsetName);
             await editCasetemplatePo.clickSaveCaseTemplate();
             await utilCommon.closePopUpMessage();
-            await editCaseTemplate.clickOnEditCaseTemplateMetadata();
-            await editCaseTemplate.changeTemplateStatusDropdownValue('Active');
-            await editCaseTemplate.clickOnSaveCaseTemplateMetadata();
+            await editCasetemplatePo.clickOnEditCaseTemplateMetadata();
+            await editCasetemplatePo.changeTemplateStatusDropdownValue('Active');
+            await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
             await utilCommon.closePopUpMessage();
             await navigationPo.gotoSettingsPage();
             await navigationPo.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
@@ -582,9 +630,9 @@ describe("Case Read Access", () => {
             await editCasetemplatePo.changeFlowsetValue(flowsetGlobalFieldsData.flowsetName);
             await editCasetemplatePo.clickSaveCaseTemplate();
             await utilCommon.closePopUpMessage();
-            await editCaseTemplate.clickOnEditCaseTemplateMetadata();
-            await editCaseTemplate.changeTemplateStatusDropdownValue('Active');
-            await editCaseTemplate.clickOnSaveCaseTemplateMetadata();
+            await editCasetemplatePo.clickOnEditCaseTemplateMetadata();
+            await editCasetemplatePo.changeTemplateStatusDropdownValue('Active');
+            await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
             await utilCommon.closePopUpMessage();
         });
         it('[DRDMV-2004]: [Read Access] Applying mapping with flowset in case of best match', async () => {
@@ -942,7 +990,7 @@ describe("Case Read Access", () => {
             await createCasePage.setSummary('ReadAccessCase' + randomStr);
             await createCasePage.setPriority('Low');
             await createCasePage.clickSaveCaseButton();
-            await previewCasePo.clickGoToCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             await viewCasePage.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(templateData.templateName);
             await manageTaskBladePo.clickCloseButton();
@@ -971,7 +1019,7 @@ describe("Case Read Access", () => {
             await createCasePage.setSummary('SummaryWithmapping1');
             await createCasePage.setPriority('Low');
             await createCasePage.clickSaveCaseButton();
-            await previewCasePo.clickGoToCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Case Access');
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('US Support 1', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
             await navigationPo.gotoCreateCase();
@@ -982,7 +1030,7 @@ describe("Case Read Access", () => {
             await createCasePage.selectCategoryTier3('Cost Centers');
             await createCasePage.setPriority('Low');
             await createCasePage.clickSaveCaseButton();
-            await previewCasePo.clickGoToCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Case Access');
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Sensitive Personal Data (HR)', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
         });
@@ -995,7 +1043,7 @@ describe("Case Read Access", () => {
             await createCasePage.selectCategoryTier3('Cost Centers');
             await createCasePage.setPriority('High');
             await createCasePage.clickSaveCaseButton();
-            await previewCasePo.clickGoToCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Case Access');
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Staffing', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
             await navigationPo.gotoCreateCase();
@@ -1006,7 +1054,7 @@ describe("Case Read Access", () => {
             await createCasePage.selectCategoryTier3('Cost Centers');
             await createCasePage.setPriority('Low');
             await createCasePage.clickSaveCaseButton();
-            await previewCasePo.clickGoToCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Case Access');
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Sensitive Personal Data (HR)', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
             await navigationPo.gotoCreateCase();
@@ -1016,7 +1064,7 @@ describe("Case Read Access", () => {
             await createCasePage.selectCategoryTier2('Finance');
             await createCasePage.setPriority('Low');
             await createCasePage.clickSaveCaseButton();
-            await previewCasePo.clickGoToCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Case Access');
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Employee Relations', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
         });
@@ -1037,7 +1085,7 @@ describe("Case Read Access", () => {
             await createCasePage.selectCategoryTier1('Talent Management');
             await createCasePage.setPriority('Low');
             await createCasePage.clickSaveCaseButton();
-            await previewCasePo.clickGoToCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Case Access');
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Sensitive Personal Data (HR)', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
         });

@@ -2351,3 +2351,306 @@ export const MULTIPLE_ATTACHMENTS = {
     }
     ]
 }; 
+
+export const TASK_TEMPLATE__DYNAMIC_FIELDS_MANUAL =
+{
+    "name": "case template",
+    "templateRecordDefinition": "com.bmc.dsm.task-lib:Task Template",
+    "templateId": "nnn",
+    "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
+    "attributeDefinitions": [
+        {
+            "name": "manualtempTextC",
+            "description": "manualtempTextC",
+            "dataType": "TEXT",
+            "confidential": true,
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "manualtempNumberC",
+            "description": "manualtempNumberC",
+            "dataType": "NUMBER",
+            "confidential": true,
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "manualtempDateC",
+            "description": "manualtempDateC",
+            "dataType": "DATE",
+            "confidential": true,
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "manualtempBooleanC",
+            "description": "manualtempBooleanC",
+            "dataType": "BOOLEAN",
+            "confidential": true,
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "manualtempDateTimeC",
+            "description": "manualtempDateTimeC",
+            "dataType": "DATE_TIME",
+            "confidential": true,
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "manualtempTimeC",
+            "description": "manualtempTimeC",
+            "dataType": "TIME",
+            "confidential": true,
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "manualtempAttachmentC",
+            "description": "manualtempAttachmentC",
+            "dataType": "ATTACHMENT",
+            "confidential": true,
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "manualtempText",
+            "description": "manualtempText",
+            "dataType": "TEXT",
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "manualtempNumber",
+            "description": "manualtempNumber",
+            "dataType": "NUMBER",
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "manualtempDate",
+            "description": "manualtempDate",
+            "dataType": "DATE",
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "manualtempBoolean",
+            "description": "manualtempBoolean",
+            "dataType": "BOOLEAN",
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "manualtempDateTime",
+            "description": "manualtempDateTime",
+            "dataType": "DATE_TIME",
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "manualtempTime",
+            "description": "manualtempTime",
+            "dataType": "TIME",
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "manualtempAttachment",
+            "description": "manualtempAttachment",
+            "dataType": "ATTACHMENT",
+            "dataProviderUserRole": "Agent",
+        }
+    ]
+};
+
+export const TASK_TEMPLATE__DYNAMIC_FIELDS_EXTERNAL =
+{
+    "name": "case template",
+    "templateRecordDefinition": "com.bmc.dsm.task-lib:Task Template",
+    "templateId": "nnn",
+    "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
+    "attributeDefinitions": [
+        {
+            "name": "externaltempTextC",
+            "description": "externaltempTextC",
+            "dataType": "TEXT",
+            "confidential": true,
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "externaltempNumberC",
+            "description": "externaltempNumberC",
+            "dataType": "NUMBER",
+            "confidential": true,
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "externaltempDateC",
+            "description": "externaltempDateC",
+            "dataType": "DATE",
+            "confidential": true,
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "externaltempBooleanC",
+            "description": "externaltempBooleanC",
+            "dataType": "BOOLEAN",
+            "confidential": true,
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "externaltempDateTimeC",
+            "description": "externaltempDateTimeC",
+            "dataType": "DATE_TIME",
+            "confidential": true,
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "externaltempTimeC",
+            "description": "externaltempTimeC",
+            "dataType": "TIME",
+            "confidential": true,
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "externaltempAttachmentC",
+            "description": "externaltempAttachmentC",
+            "dataType": "ATTACHMENT",
+            "confidential": true,
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "externaltempText",
+            "description": "externaltempText",
+            "dataType": "TEXT",
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "externaltempNumber",
+            "description": "externaltempNumber",
+            "dataType": "NUMBER",
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "externaltempDate",
+            "description": "externaltempDate",
+            "dataType": "DATE",
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "externaltempBoolean",
+            "description": "externaltempBoolean",
+            "dataType": "BOOLEAN",
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "externaltempDateTime",
+            "description": "externaltempDateTime",
+            "dataType": "DATE_TIME",
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "externaltempTime",
+            "description": "externaltempTime",
+            "dataType": "TIME",
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "externaltempAttachment",
+            "description": "externaltempAttachment",
+            "dataType": "ATTACHMENT",
+            "dataProviderUserRole": "Agent",
+        }
+    ]
+};
+
+export const TASK_TEMPLATE__DYNAMIC_FIELDS_AUTOMATED =
+{
+    "name": "case template",
+    "templateRecordDefinition": "com.bmc.dsm.task-lib:Task Template",
+    "templateId": "nnn",
+    "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
+    "attributeDefinitions": [
+        {
+            "name": "automatedtempTextC",
+            "description": "automatedtempTextC",
+            "dataType": "TEXT",
+            "confidential": true,
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "automatedtempNumberC",
+            "description": "automatedtempNumberC",
+            "dataType": "NUMBER",
+            "confidential": true,
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "automatedtempDateC",
+            "description": "automatedtempDateC",
+            "dataType": "DATE",
+            "confidential": true,
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "automatedtempBooleanC",
+            "description": "automatedtempBooleanC",
+            "dataType": "BOOLEAN",
+            "confidential": true,
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "externaltempDateTimeC",
+            "description": "externaltempDateTimeC",
+            "dataType": "DATE_TIME",
+            "confidential": true,
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "automatedtempTimeC",
+            "description": "automatedtempTimeC",
+            "dataType": "TIME",
+            "confidential": true,
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "automatedtempAttachmentC",
+            "description": "externaltempAttachmentC",
+            "dataType": "ATTACHMENT",
+            "confidential": true,
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "externaltempText",
+            "description": "externaltempText",
+            "dataType": "TEXT",
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "automatedtempNumber",
+            "description": "automatedtempNumber",
+            "dataType": "NUMBER",
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "automatedtempDate",
+            "description": "automatedtempDate",
+            "dataType": "DATE",
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "automatedtempBoolean",
+            "description": "externaltempBoolean",
+            "dataType": "BOOLEAN",
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "automatedtempDateTime",
+            "description": "externaltempDateTime",
+            "dataType": "DATE_TIME",
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "automatedtempTime",
+            "description": "externaltempTime",
+            "dataType": "TIME",
+            "dataProviderUserRole": "Agent",
+        },
+        {
+            "name": "automatedtempAttachment",
+            "description": "externaltempAttachment",
+            "dataType": "ATTACHMENT",
+            "dataProviderUserRole": "Agent",
+        }
+    ]
+};

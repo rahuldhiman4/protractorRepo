@@ -1,11 +1,14 @@
+import { cloneDeep } from 'lodash';
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
+import { flowsetMandatoryFields, flowsetGlobalFields} from '../../data/ui/flowset/flowset.ui';
 import casePreviewPo from '../../pageobject/case/case-preview.po';
 import editCasePo from '../../pageobject/case/edit-case.po';
 import quickCasePo from '../../pageobject/case/quick-case.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
 import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
+import changeAssignmentOldBladePo from '../../pageobject/common/change-assignment-old-blade.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import createKnowledgePage from "../../pageobject/knowledge/create-knowlege.po";
@@ -13,8 +16,14 @@ import editKnowledgePo from '../../pageobject/knowledge/edit-knowledge.po';
 import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
 import statusBladeKnowledgeArticlePo from '../../pageobject/knowledge/status-blade-knowledge-article.po';
 import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
+import consoleCasetemplatePo from '../../pageobject/settings/case-management/console-casetemplate.po';
+import createCasetemplatePo from '../../pageobject/settings/case-management/create-casetemplate.po';
+import editCasetemplatePo from '../../pageobject/settings/case-management/edit-casetemplate.po';
 import previewCaseTemplateCasesPo from '../../pageobject/settings/case-management/preview-case-template.po';
+import viewCasetemplatePo from '../../pageobject/settings/case-management/view-casetemplate.po';
+import statusConfigPo from '../../pageobject/settings/common/status-config.po';
 import { BWF_BASE_URL } from '../../utils/constants';
+import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
@@ -404,7 +413,6 @@ describe('Service Provider Model Tests Extended', () => {
         it('[DRDMV-23674,DRDMV-23745,DRDMV-23761]: [Service Provider Model][Quick Case]: Verify the behavior when the case agent from service provider company is able to create a case for requester company', async () => {
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('David Kramer');
-
             await quickCasePo.setCaseSummary(templateDataPhytoCompany.templateName);
             expect(await quickCasePo.isCaseSummaryPresentInRecommendedCases(templateDataPhytoCompany.templateName)).toBeTruthy();
             await quickCasePo.isRecommendedKnowledgeEmpty();
@@ -476,4 +484,107 @@ describe('Service Provider Model Tests Extended', () => {
             expect(await utilityGrid.isGridRecordPresent(response31.displayId)).toBeTruthy();
         });
     });
+
+    //ankagraw
+    describe('[DRDMV-18473]: Flowset in existing template can be changed and other dependent fields respond correctly.', () => {
+        let flowsetHumanResourceData, flowsetHumanResourceData1, flowsetHumanResourceGlobalData, flowsetFacilitiesData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        beforeAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+
+            // Create Data with Human Resource LOB
+            flowsetHumanResourceData = cloneDeep(flowsetMandatoryFields);
+            flowsetHumanResourceData.flowsetName = flowsetHumanResourceData.flowsetName + "Human" + randomStr;
+            await apiHelper.apiLogin('tadmin');
+            flowsetHumanResourceData["lineOfBusiness"] = "Human Resource";
+            await apiHelper.createNewFlowset(flowsetHumanResourceData);
+
+            // Create Data with Human Resource LOB with Global Company
+            flowsetHumanResourceGlobalData = cloneDeep(flowsetGlobalFields);
+            flowsetHumanResourceGlobalData.flowsetName = flowsetHumanResourceGlobalData.flowsetName + "GlobalHuman" + randomStr;
+            await apiHelper.apiLogin('tadmin');
+            flowsetHumanResourceData["lineOfBusiness"] = "Human Resource";
+            await apiHelper.createNewFlowset(flowsetHumanResourceGlobalData);
+
+            // Create Data with Human Resource LOB
+            flowsetHumanResourceData1 = cloneDeep(flowsetMandatoryFields);
+            flowsetHumanResourceData1.flowsetName = flowsetHumanResourceData1.flowsetName + randomStr + "Human";
+            await apiHelper.apiLogin('tadmin');
+            flowsetHumanResourceData["lineOfBusiness"] = "Human Resource";
+            await apiHelper.createNewFlowset(flowsetHumanResourceData1);
+
+            //Create Data with Facilities LOB
+            flowsetFacilitiesData = cloneDeep(flowsetMandatoryFields);
+            flowsetFacilitiesData.flowsetName = flowsetFacilitiesData.flowsetName + "Facility" + randomStr;
+            await apiHelper.apiLogin('tadmin');
+            flowsetFacilitiesData["lineOfBusiness"] = "Facilities";
+            await apiHelper.createNewFlowset(flowsetFacilitiesData);
+        });
+        it('[DRDMV-18473]: Flowset in existing template can be changed and other dependent fields respond correctly.', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
+            await statusConfigPo.setCompanyDropdown("Petramco", 'case');
+            await statusConfigPo.selectFlowset(flowsetHumanResourceData.flowsetName);
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.addCustomStatus("New", "Assigned", "customStatus");
+            await statusConfigPo.clickOnBackButton();
+        });
+        it('[DRDMV-18473]: Flowset in existing template can be changed and other dependent fields respond correctly.', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
+            await createCasetemplatePo.setTemplateName("CaseTemplate" + randomStr);
+            await createCasetemplatePo.setCompanyName("- Global -");
+            expect(await createCasetemplatePo.flowsetOptionsPresent( [flowsetHumanResourceData.flowsetName])).toBeFalsy();
+            await createCasetemplatePo.setCompanyName("- Global -");
+            expect(await createCasetemplatePo.flowsetOptionsPresent( [flowsetHumanResourceGlobalData.flowsetName])).toBeTruthy();
+            await createCasetemplatePo.setCompanyName("Petramco");
+            await createCasetemplatePo.setCategoryTier1("Applications");
+            expect(await createCasetemplatePo.flowsetOptionsPresent( [flowsetFacilitiesData.flowsetName])).toBeFalsy();
+            await createCasetemplatePo.setCompanyName("Petramco");
+            expect(await createCasetemplatePo.flowsetOptionsPresent( [flowsetHumanResourceGlobalData.flowsetName])).toBeTruthy();
+            await createCasetemplatePo.setCompanyName("Petramco");
+            await createCasetemplatePo.setFlowsetValue(flowsetHumanResourceData.flowsetName);
+            await createCasetemplatePo.clickOnChangeAssignmentButton();
+            await changeAssignmentOldBladePo.clickOnAssignToMeCheckBox();
+            await changeAssignmentOldBladePo.clickOnAssignButton();
+             await createCasetemplatePo.setCaseSummary("CaseSummary" + randomStr);
+            await createCasetemplatePo.setCaseStatusValue('customStatus');
+            await createCasetemplatePo.clickSaveCaseTemplate();
+        });
+        it('[DRDMV-18473]: Flowset in existing template can be changed and other dependent fields respond correctly.', async () => {
+            expect(await viewCasetemplatePo.getCategoryTier1()).toBe("Applications");
+            expect(await viewCasetemplatePo.getCaseStatusValue()).toBe("customStatus");
+            await viewCasetemplatePo.clickOnEditCaseTemplateButton();
+            expect(await editCasetemplatePo.isFlowsetPresentInDropDown([flowsetFacilitiesData.flowsetName])).toBeFalsy();
+            await editCasetemplatePo.changeFlowsetValue(flowsetHumanResourceData1.flowsetName);
+            await editCasetemplatePo.clickSaveCaseTemplate();
+            expect(await viewCasetemplatePo.getCategoryTier1()).toBe("Applications");
+            expect(await viewCasetemplatePo.getCaseStatusValue()).toBe("New");
+            await navigationPage.signOut();
+            await loginPage.login('jbarnes');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Facilities');
+        });
+        it('[DRDMV-18473]: Flowset in existing template can be changed and other dependent fields respond correctly.', async () => {
+            await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
+            await createCasetemplatePo.setTemplateName("CaseTemplateFacilities" + randomStr);
+            await createCasetemplatePo.setCompanyName("Petramco");
+            await createCasetemplatePo.setCaseSummary("CaseSummary" + randomStr);
+            await createCasetemplatePo.setCategoryTier1("Applications");
+            await createCasetemplatePo.setOwnerCompanyValue("Petramco");
+            await createCasetemplatePo.setBusinessUnitDropdownValue('Facilities Support');
+            await createCasetemplatePo.setOwnerGroupDropdownValue('Facilities');
+            expect(await createCasetemplatePo.flowsetOptionsPresent([flowsetHumanResourceData.flowsetName, flowsetHumanResourceData1.flowsetName])).toBeFalsy();
+            await createCasetemplatePo.setCompanyName("Petramco");
+            await createCasetemplatePo.setFlowsetValue(flowsetFacilitiesData.flowsetName);
+            await createCasetemplatePo.clickOnChangeAssignmentButton();
+            await changeAssignmentOldBladePo.clickOnAssignToMeCheckBox();
+            await changeAssignmentOldBladePo.clickOnAssignButton();
+            expect(await createCasetemplatePo.isValuePresentInDropdown("caseStatus", "customStatus")).toBeFalsy();
+            await createCasetemplatePo.clickSaveCaseTemplate();
+            expect(await viewCasetemplatePo.getCategoryTier1()).toBe("Applications");
+        })
+    })
 })

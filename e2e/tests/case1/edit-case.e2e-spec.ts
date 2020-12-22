@@ -12,6 +12,7 @@ import composemailPage from '../../pageobject/email/compose-mail.po';
 import activityTabPo from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import { default as utilCommon, default as utilityCommon } from '../../utils/utility.common';
+import apiHelper from '../../api/api.helper';
 
 describe('Edit Case', () => {
     beforeAll(async () => {
@@ -156,5 +157,49 @@ describe('Edit Case', () => {
         await changeAssignmentPage.clickOnAssignButton();
         await editCasePage.clickSaveCase();
         await utilCommon.closePopUpMessage();
+    });
+
+    it('[DRDMV-24403]: UI fields should be visible for user with login ID contains @ sign', async () => {
+        await apiHelper.apiLogin('tadmin');
+        let personData: {
+            "firstName": "at Rate",
+            "lastName": "test",
+            "userId": "j@an",
+            "company": "Petramco",
+            "userPermission": ["Case Agent", "Human Resource"]
+        }
+        let personData1: {
+            "firstName": "at Rate1",
+            "lastName": "test",
+            "userId": "r@han",
+            "company": "Petramco",
+            "userPermission": ["Case Agent", "Human Resource"]
+        }
+        await apiHelper.createNewUser(personData);
+        await apiHelper.associatePersonToSupportGroup(personData.userId, 'US Support 1');
+        await apiHelper.associatePersonToCompany(personData.userId, 'Petramco');
+        await apiHelper.createNewUser(personData1);
+        await apiHelper.associatePersonToCompany(personData1.userId, 'Petramco');
+        
+        await browser.sleep(10000); //Wait to update the user in backend
+        await navigationPage.signOut();
+        await loginPage.login('j@an@petramco.com', 'Password_1234');
+        
+        await navigationPage.gotoCreateCase();
+        await createCasePage.selectRequester("adam");
+        await createCasePage.setSummary('Summary of Customer defect');
+        await createCasePage.clickAssignToMeButton();
+        await createCasePage.setContactName('qtao');
+        await createCasePage.clickSaveCaseButton();
+        await previewCasePo.clickGoToCaseButton();
+        expect(await viewCasePage.isDuplicateFieldsAreNotPresentOnCase()).toBeTruthy();
+
+        await navigationPage.gotoCreateCase();
+        await createCasePage.selectRequester("r@han");
+        await createCasePage.setSummary('Summary of Customer defect 1');
+        await createCasePage.clickAssignToMeButton();
+        await createCasePage.clickSaveCaseButton();
+        await previewCasePo.clickGoToCaseButton();
+        expect(await viewCasePage.isDuplicateFieldsAreNotPresentOnCase()).toBeTruthy();
     });
 });

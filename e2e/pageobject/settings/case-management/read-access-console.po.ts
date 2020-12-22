@@ -22,12 +22,10 @@ class ReadAccessConsolePage {
     }
 
     async isDeleteButtonDisplayed(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.deleteButton)));
         return await $(this.selectors.deleteButton).isPresent();
     }
 
     async clickOnReadAccessConfiguration(): Promise<void> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.addReadAccessBtn)));
         await $(this.selectors.addReadAccessBtn).click();
     }
 
