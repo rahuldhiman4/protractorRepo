@@ -70,7 +70,7 @@ class CreateNewMenuOptionPage {
     }
 
     async isLineOfBusinessEnabled(): Promise<boolean> {
-        return await $(this.selectors.lobValue).isEnabled();
+        return await $(this.selectors.lob).isEnabled();
     }
 
     async isMenuNameDropDownPresent(): Promise<boolean> {
@@ -91,6 +91,10 @@ class CreateNewMenuOptionPage {
 
     async isMenuOptionLinkEnabled(): Promise<boolean> {
         return await $(this.selectors.menuOptionLink).isEnabled();
+    }
+
+    async isMenuOptionLinkPresent(): Promise<boolean> {
+        return await $(this.selectors.menuOptionLink).isPresent();
     }
 
     async isSaveButtonDisplayed(): Promise<boolean> {
