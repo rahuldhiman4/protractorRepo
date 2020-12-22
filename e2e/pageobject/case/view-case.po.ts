@@ -70,7 +70,8 @@ class ViewCasePage {
         text: 'p',
         refreshActivity: '.d-icon-left-refresh',
         flowset: '[rx-view-component-id="73fb70b0-2992-4dc5-b7ed-3d3d13cc4d6b"] .read-only-content',
-        lineofbusiness: '[rx-view-component-id="694535e8-ab22-4ddc-8d2a-ceb017cf4fbf"] .read-only-content'
+        lineofbusiness: '[rx-view-component-id="694535e8-ab22-4ddc-8d2a-ceb017cf4fbf"] .read-only-content',
+        recommendedCaseGuid: '[rx-view-component-id="1bd34505-c98c-4046-a129-5d3c09e87955"]',
     }
 
     async clickDescriptionShowMore(): Promise<void> {
@@ -596,6 +597,10 @@ class ViewCasePage {
         }
         let findDuplicates = arr => arr.filter((item, index) => arr.indexOf(item) != index);
         return findDuplicates.length == 0;
+    }
+
+    async clickFirstRecommendedCases(): Promise<void> {
+        await $(this.selectors.recommendedCaseGuid).$$('.flex-column bwf-search-result-fields div span').first().click();
     }
 }
 
