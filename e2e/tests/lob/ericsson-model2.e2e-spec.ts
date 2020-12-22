@@ -1040,7 +1040,7 @@ describe('Ericsson Model Test Extended', () => {
             await quickCasePo.setCaseSummary('DRDMV23665TestCaseSummaryEricssonHR');
             await quickCasePo.saveCase();
             expect(await previewCasePage.getLineOfBusinessValue()).toBe('Ericsson HR');
-            await previewCasePage.clickOncreateNewCaseButton();
+            await previewCasePage.clickGoToCaseButton();
         });
 
         it('[DRDMV-23665]: Verify Edit Case Page with Ericson HR', async () => {
