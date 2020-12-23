@@ -65,14 +65,17 @@ describe("Notification Template", () => {
         });
 
         it('[DRDMV-19109]: [Copy Notification] - UI behavior when copying a notification template', async () => {
-            await utilGrid.searchAndSelectGridRecord("Case Group Assignment");
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Notification Template - Business Workflows');
+            await utilGrid.searchAndSelectGridRecord("Case Agent Assignment");
             await notificationTempGridPage.clickCopyTemplate();
             //Select Company drpdown value again, and click Copy Template button
             await notificationTempGridPage.setCompanyDropDownValPresentInCopyTempWindow("Petramco");
             await notificationTempGridPage.setTemplateNamePresentInCopyTempWindow(notificationTemplateNameUpdated);
             await notificationTempGridPage.clickCopyTemplateButtonInCopyTempWindow();
-            expect(await utilCommon.isPopUpMessagePresent('Template is copied successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilCommon.isPopUpMessagePresent('Template is copied successfully')).toBeTruthy('Record saved successfully confirmation message not displayed.');
             await editNotificationTemplate.clickOnCancelButton();
+            await utilGrid.clickCheckBoxOfValueInGrid("Case Agent Assignment");
             await utilGrid.clearFilter();
             expect(await utilGrid.isGridRecordPresent(notificationTemplateNameUpdated)).toBeTruthy("Notification template not copied");
         });
@@ -131,9 +134,7 @@ describe("Notification Template", () => {
             await utilGrid.selectLineOfBusiness('Human Resource');
             expect(await utilGrid.isGridRecordPresent(notificationTemplateNameUpdated)).toBeTruthy('Human Resources LOB copied notification templates is not visible to case BA with multiple LOB access');
             await utilGrid.searchOnGridConsole(notificationTemplateNameUpdated);
-            await editNotificationTemplate.clickRecipientsCheckbox("Assignee's Manager", "BCC");
-            await editNotificationTemplate.clickRecipientsCheckbox("External Requester", "TO");
-            await editNotificationTemplate.clickRecipientsCheckbox("Assigned Group", "CC");
+            await editNotificationTemplate.updateDescription('updated desc');
             await createNotificationTemplatePage.clickOnSaveButton();
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
@@ -287,13 +288,13 @@ describe("Notification Template", () => {
             await createNotificationTemplatePage.clearNotificationEventFromDropDown();
             await createNotificationTemplatePage.setTemplateName('DRDMV-14062' + randomStr);
             await createNotificationTemplatePage.setDescription('DRDMV-14062' + randomStr);
-            await createNotificationTemplatePage.selectEvent('Case Priority Change' + randomStr);
             await createNotificationTemplatePage.setAlertMessage('Priority is change');
             await createNotificationTemplatePage.clickOnEmailTab();
             await createNotificationTemplatePage.setSubject('Priority is change');
             await editNotificationTemplate.clickRecipientsCheckbox("Assignee's Manager", "BCC");
             await editNotificationTemplate.clickRecipientsCheckbox("External Requester", "TO");
             await editNotificationTemplate.clickRecipientsCheckbox("Assigned Group", "CC");
+            await createNotificationTemplatePage.selectEvent('Case Priority Change' + randomStr);
             await createNotificationTemplatePage.clickOnSaveButton();
             await utilCommon.closeBladeOnSettings();
             await utilGrid.searchAndOpenHyperlink('DRDMV-14062' + randomStr);
@@ -303,7 +304,6 @@ describe("Notification Template", () => {
             expect(await editNotificationTemplate.isRecipientsCheckboxChecked("External Requester", "TO")).toBeTruthy();
             expect(await editNotificationTemplate.isRecipientsCheckboxChecked("Assigned Group", "CC")).toBeTruthy();
             await utilCommon.closeBladeOnSettings();
-            await utilGrid.clearGridSearchBox();
         });
 
         it('[DRDMV-14062]: Verify notification template validation wrt same LOB ', async () => {
@@ -322,8 +322,8 @@ describe("Notification Template", () => {
             await editNotificationTemplate.clickRecipientsCheckbox("External Requester", "TO");
             await editNotificationTemplate.clickRecipientsCheckbox("Assigned Group", "CC");
             await createNotificationTemplatePage.clickOnSaveButton();
-            await utilCommon.closeBladeOnSettings();
             expect(await utilCommon.isPopUpMessagePresent('ERROR (222107): A template already exists for the selected combination of event, module, and line of business. Specify a different combination.')).toBeTruthy("record saved successful message is not displayed.");
+            await utilCommon.closeBladeOnSettings();
         });
 
         it('[DRDMV-14062]: Verify notification event validation wrt different LOB ', async () => {

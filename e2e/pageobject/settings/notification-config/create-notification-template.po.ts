@@ -29,6 +29,7 @@ class createNotificationTemplate {
         eventDropDown: '[rx-view-component-id="38aba7a1-c142-41f7-9017-d261971c2429"] .ui-select-match',
         dropDownOption: '.ui-select-choices-row',
     }
+    
     async selectModuleName(value: string): Promise<void> {
         await utilCommon.selectDropDown(this.selectors.moduleName, value);
     }

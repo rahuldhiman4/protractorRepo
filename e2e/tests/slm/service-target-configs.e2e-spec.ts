@@ -1188,10 +1188,11 @@ describe('Service Target Configs', () => {
             await milestoneConfig.clearNotificationTemplateSelectionFromMilestone();
             expect(await milestoneConfig.isNotificationTemplatePresentInDropDown(taskNotificationFacilities)).toBeFalsy();
             await milestoneConfig.clearNotificationTemplateSelectionFromMilestone();
-            expect(await milestoneConfig.isNotificationTemplatePresentInDropDown(taskNotificationHR)).toBeFalsy();
+            expect(await milestoneConfig.isNotificationTemplatePresentInDropDown(taskNotificationHR)).toBeTruthy();
             await milestoneConfig.clearNotificationTemplateSelectionFromMilestone();
             await milestoneConfig.setMileStoneNotificationToField('qkatawazi@petramco.com');
-            await milestoneConfig.selectMileStoneNotificationTemplate(taskNotificationFacilities);
+            await milestoneConfig.selectMileStoneNotificationDeliveryMethod('Alert');
+            await milestoneConfig.selectMileStoneNotificationTemplate(taskNotificationHR);
             await milestoneConfig.clickSaveMileStoneActionNotification();
             await milestoneConfig.selectMileStoneAction();
             await milestoneConfig.clickSaveMileStone();
@@ -1228,7 +1229,7 @@ describe('Service Target Configs', () => {
             await browser.sleep(40000); // wait added for milestone to trigger and reflect the changes
 
             await navigationPage.gotoTaskConsole();
-            await utilityGrid.searchAndOpenHyperlink(taskId);
+            await utilGrid.searchAndOpenHyperlink(taskId);
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
             expect(await viewTaskPo.getTaskSummaryValue()).toBe(updatedTaskSummary);
             await activityTabPo.clickOnRefreshButton();
@@ -1425,7 +1426,7 @@ describe('Service Target Configs', () => {
             await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.enterSVTDescription('SVT with all fields Desc' + randomStr);
-            await serviceTargetConfig.selectGoalType('Case Resolution Time');
+            await serviceTargetConfig.selectGoalType(goalTypeTitleFacilities);
             await serviceTargetConfig.selectGoal("3");
             await serviceTargetConfig.selectMeasurement();
             await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
@@ -1484,22 +1485,32 @@ describe('Service Target Configs', () => {
         it('[DRDMV-2600]: Verify SVT reflection based on company / data source / goal type selection', async () => {
             //Service target filteration based on company
             await createServiceTargetGroupPo.selectCompany('- Global -');
+            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithDSGT)).toBeFalsy();
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameHR)).toBeFalsy();
-            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithGoalType)).toBeTruthy();
+            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithGoalType)).toBeFalsy();
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithoutGoalType)).toBeFalsy();
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithGoalTypeFacilities)).toBeFalsy();
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithoutGoalTypeFacilities)).toBeFalsy();
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameFacilities)).toBeFalsy();
+            await createServiceTargetGroupPo.clickCancelButton();
+            await utilCommon.clickOnWarningOk();
 
+            await serviceTargetGroupConsolePo.clickAddServiceTargetGroupBtn();
+            await createServiceTargetGroupPo.setGroupName(svtGroupNameHR);
             await createServiceTargetGroupPo.selectCompany('Petramco');
-            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameHR)).toBeTruthy();
+            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithDSGT)).toBeFalsy();
+            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameHR)).toBeFalsy();
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithGoalType)).toBeFalsy();
-            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithoutGoalType)).toBeTruthy();
+            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithoutGoalType)).toBeFalsy();
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithGoalTypeFacilities)).toBeFalsy();
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithoutGoalTypeFacilities)).toBeFalsy();
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameFacilities)).toBeFalsy();
+            await createServiceTargetGroupPo.clickCancelButton();
+            await utilCommon.clickOnWarningOk();
 
             //Service target filteration based on company and data source
+            await serviceTargetGroupConsolePo.clickAddServiceTargetGroupBtn();
+            await createServiceTargetGroupPo.setGroupName(svtGroupNameHR);
             await createServiceTargetGroupPo.selectCompany('Petramco');
             await createServiceTargetGroupPo.selectDataSource('Case Management');
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameHR)).toBeTruthy();
@@ -1508,7 +1519,12 @@ describe('Service Target Configs', () => {
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithGoalTypeFacilities)).toBeFalsy();
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithoutGoalTypeFacilities)).toBeFalsy();
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameFacilities)).toBeFalsy();
+            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithDSGT)).toBeTruthy();
+            await createServiceTargetGroupPo.clickCancelButton();
+            await utilCommon.clickOnWarningOk();
 
+            await serviceTargetGroupConsolePo.clickAddServiceTargetGroupBtn();
+            await createServiceTargetGroupPo.setGroupName(svtGroupNameHR);
             await createServiceTargetGroupPo.selectCompany('- Global -');
             await createServiceTargetGroupPo.selectDataSource('Case Management');
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameHR)).toBeFalsy();
@@ -1517,17 +1533,28 @@ describe('Service Target Configs', () => {
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithGoalTypeFacilities)).toBeFalsy();
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithoutGoalTypeFacilities)).toBeFalsy();
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameFacilities)).toBeFalsy();
+            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithDSGT)).toBeFalsy();
+            await createServiceTargetGroupPo.clickCancelButton();
+            await utilCommon.clickOnWarningOk();
 
             //Service target filteration based on company and goal type
+            await serviceTargetGroupConsolePo.clickAddServiceTargetGroupBtn();
+            await createServiceTargetGroupPo.setGroupName(svtGroupNameHR);
             await createServiceTargetGroupPo.selectCompany('Petramco');
             await createServiceTargetGroupPo.selectGoalType('Case Resolution Time');
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameHR)).toBeFalsy();
-            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithGoalType)).toBeTruthy();
+            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithGoalType)).toBeFalsy();
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithoutGoalType)).toBeFalsy();
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithGoalTypeFacilities)).toBeFalsy();
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithoutGoalTypeFacilities)).toBeFalsy();
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameFacilities)).toBeFalsy();
+            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithDSGT)).toBeFalsy();
+            await createServiceTargetGroupPo.clickCancelButton();
+            await utilCommon.clickOnWarningOk();
 
+            await serviceTargetGroupConsolePo.clickAddServiceTargetGroupBtn();
+            await createServiceTargetGroupPo.setGroupName(svtGroupNameHR);
+            await createServiceTargetGroupPo.selectCompany('Petramco');
             await createServiceTargetGroupPo.selectGoalType('Case Response Time');
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameHR)).toBeFalsy();
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithGoalType)).toBeFalsy();
@@ -1535,29 +1562,45 @@ describe('Service Target Configs', () => {
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithGoalTypeFacilities)).toBeFalsy();
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithoutGoalTypeFacilities)).toBeFalsy();
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameFacilities)).toBeFalsy();
+            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithDSGT)).toBeFalsy();
+            await createServiceTargetGroupPo.clickCancelButton();
+            await utilCommon.clickOnWarningOk();
 
+            await serviceTargetGroupConsolePo.clickAddServiceTargetGroupBtn();
+            await createServiceTargetGroupPo.setGroupName(svtGroupNameHR);
             await createServiceTargetGroupPo.selectCompany('- Global -');
             await createServiceTargetGroupPo.selectGoalType('Case Resolution Time');
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameHR)).toBeFalsy();
-            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithGoalType)).toBeTruthy();
+            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithGoalType)).toBeFalsy();
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithoutGoalType)).toBeFalsy();
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithGoalTypeFacilities)).toBeFalsy();
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithoutGoalTypeFacilities)).toBeFalsy();
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameFacilities)).toBeFalsy();
+            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithDSGT)).toBeFalsy();
+            await createServiceTargetGroupPo.clickCancelButton();
+            await utilCommon.clickOnWarningOk();
 
            //Service target filteration based on company, data source and goal type
+           await serviceTargetGroupConsolePo.clickAddServiceTargetGroupBtn();
+           await createServiceTargetGroupPo.setGroupName(svtGroupNameHR);
            await createServiceTargetGroupPo.selectCompany('Petramco');
            await createServiceTargetGroupPo.selectGoalType('Case Resolution Time');
            await createServiceTargetGroupPo.selectDataSource('Case Management');
            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithDSGT)).toBeTruthy();
            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameFacilities)).toBeFalsy();
            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameHR)).toBeFalsy();
-           expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithGoalType)).toBeTruthy();
+           expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithGoalType)).toBeFalsy();
            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithoutGoalType)).toBeFalsy();
            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithGoalTypeFacilities)).toBeFalsy();
            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithoutGoalTypeFacilities)).toBeFalsy();
            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameFacilities)).toBeFalsy();
+           await createServiceTargetGroupPo.clickCancelButton();
+           await utilCommon.clickOnWarningOk();
 
+           await serviceTargetGroupConsolePo.clickAddServiceTargetGroupBtn();
+           await createServiceTargetGroupPo.setGroupName(svtGroupNameHR);
+           await createServiceTargetGroupPo.selectCompany('Petramco');
+           await createServiceTargetGroupPo.selectGoalType('Case Resolution Time');
            await createServiceTargetGroupPo.selectDataSource('Task Management');
            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithDSGT)).toBeFalsy();
            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameFacilities)).toBeFalsy();
@@ -1567,6 +1610,8 @@ describe('Service Target Configs', () => {
            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithGoalTypeFacilities)).toBeFalsy();
            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithoutGoalTypeFacilities)).toBeFalsy();
            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameFacilities)).toBeFalsy();
+           await createServiceTargetGroupPo.clickCancelButton();
+           await utilCommon.clickOnWarningOk();
         });
 
         it('[DRDMV-2600]: create Service target group for same LOB', async () => {
@@ -1575,16 +1620,19 @@ describe('Service Target Configs', () => {
             await serviceTargetGroupConsolePo.clickAddServiceTargetGroupBtn();
             await createServiceTargetGroupPo.setGroupName(svtGroupNameHR);
             await createServiceTargetGroupPo.selectCompany('Petramco');
+            await createServiceTargetGroupPo.selectDataSource('Case Management');
             await createServiceTargetGroupPo.selectServiceTarget(svttileWithoutGoalType);
             await createServiceTargetGroupPo.clickSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
+            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy();
 
             await serviceTargetGroupConsolePo.clickAddServiceTargetGroupBtn();
             await createServiceTargetGroupPo.setGroupName(svtGroupNameHR);
             await createServiceTargetGroupPo.selectCompany('Petramco');
+            await createServiceTargetGroupPo.selectDataSource('Case Management');
             await createServiceTargetGroupPo.selectServiceTarget(svttileWithoutGoalType);
+            await utilCommon.clickOnWarningOk();
             await createServiceTargetGroupPo.clickSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
+            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy();
         });
 
         it('[DRDMV-2600]: create Service target group for different LOB', async () => {
@@ -1592,13 +1640,14 @@ describe('Service Target Configs', () => {
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target Group', 'Service Target Group - Administration - Business Workflows');
-            expect(await utilGrid.isGridRecordPresent(svtGroupNameHR)).toBeTruthy();
+            expect(await utilGrid.isGridRecordPresent(svtGroupNameHR)).toBeFalsy();
             await serviceTargetGroupConsolePo.clickAddServiceTargetGroupBtn();
             await createServiceTargetGroupPo.setGroupName(svtGroupNameHR);
             await createServiceTargetGroupPo.selectCompany('Petramco');
-            await createServiceTargetGroupPo.selectServiceTarget(svttileWithoutGoalType);
+            await createServiceTargetGroupPo.selectDataSource('Case Management');
+            await createServiceTargetGroupPo.selectServiceTarget(svttileWithoutGoalTypeFacilities);
             await createServiceTargetGroupPo.clickSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
+            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy();
         });
 
         afterAll(async () => {
