@@ -152,18 +152,7 @@ class ViewCaseTemplate {
         await $(this.selectors.manageDynamicField).click();
     }
 
-    async isDynamicFieldDisplayed(fieldName: string): Promise<boolean> {
-        let dynamicFields: number = await $$(this.selectors.dynamicFieldsName).count();
-        for (let i = 0; i < dynamicFields; i++) {
-            let field = await $$(this.selectors.dynamicFieldsName).get(i).getText();
-            if (fieldName == field) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    async isDynamicFieldDisplayed2(value: string): Promise<boolean> {
+    async isDynamicFieldDisplayed(value: string): Promise<boolean> {
         return await element(by.cssContainingText(this.selectors.dynamicFieldsName, value)).isPresent().then(async (link) => {
             if (link) return await element(by.cssContainingText(this.selectors.dynamicFieldsName, value)).isDisplayed();
             else return false;

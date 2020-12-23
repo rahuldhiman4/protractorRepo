@@ -428,19 +428,8 @@ class ViewCasePage {
     }
 
     async isDynamicFieldDisplayed(fieldName: string): Promise<boolean> {
-        let dynamicFields: number = await $$(this.selectors.dynamicFieldsName).count();
-        for (let i = 0; i < dynamicFields; i++) {
-            let field = await (await $$(this.selectors.dynamicFieldsName).get(i).getText()).trim();
-            if (fieldName == field) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    async isDynamicFieldDisplayed2(value: string): Promise<boolean> {
-        return await element(by.cssContainingText(this.selectors.dynamicFieldsName, value)).isPresent().then(async (link) => {
-            if (link) return await element(by.cssContainingText(this.selectors.dynamicFieldsName, value)).isDisplayed();
+        return await element(by.cssContainingText(this.selectors.dynamicFieldsName, fieldName)).isPresent().then(async (link) => {
+            if (link) return await element(by.cssContainingText(this.selectors.dynamicFieldsName, fieldName)).isDisplayed();
             else return false;
         });
     }
