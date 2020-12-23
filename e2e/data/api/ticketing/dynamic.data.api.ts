@@ -2654,3 +2654,1708 @@ export const TASK_TEMPLATE__DYNAMIC_FIELDS_AUTOMATED =
         }
     ]
 };
+
+
+export const BULK_DYNAMIC_FIELDS_INSIDE_OUTSIDE_GROUP = {
+    "name": null,
+    "processDocumentDefinitionId": null,
+    "processInputDocName": null,
+    "processName": null,
+    "templateId": "",
+    "id": null,
+    "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
+    "attributeDefinitions": [
+        {
+            "name": "GroupOne",
+            "description": "GroupOne",
+            "externalId": "",
+            "type": "GROUP_FIELD",
+            "active": true,
+            "attributes": [
+                {
+                    "name": "WithInGroupNUMBER1",
+                    "description": "WithInGroupNUMBER1",
+                    "dataType": "NUMBER",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupNUMBER2",
+                    "description": "WithInGroupNUMBER2",
+                    "dataType": "NUMBER",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupNUMBER3",
+                    "description": "WithInGroupNUMBER3",
+                    "dataType": "NUMBER",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupNUMBER4",
+                    "description": "WithInGroupNUMBER4",
+                    "dataType": "NUMBER",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupNUMBER5",
+                    "description": "WithInGroupNUMBER5",
+                    "dataType": "NUMBER",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupNUMBER6",
+                    "description": "WithInGroupNUMBER6",
+                    "dataType": "NUMBER",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupNUMBER7",
+                    "description": "WithInGroupNUMBER7",
+                    "dataType": "NUMBER",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupNUMBER8",
+                    "description": "WithInGroupNUMBER8",
+                    "dataType": "NUMBER",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupNUMBER9",
+                    "description": "WithInGroupNUMBER9",
+                    "dataType": "NUMBER",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupNUMBER10",
+                    "description": "WithInGroupNUMBER10",
+                    "dataType": "NUMBER",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupNUMBER11",
+                    "description": "WithInGroupNUMBER11",
+                    "dataType": "NUMBER",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupNUMBER12",
+                    "description": "WithInGroupNUMBER12",
+                    "dataType": "NUMBER",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupNUMBER13",
+                    "description": "WithInGroupNUMBER13",
+                    "dataType": "NUMBER",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupNUMBER14",
+                    "description": "WithInGroupNUMBER14",
+                    "dataType": "NUMBER",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupNUMBER15",
+                    "description": "WithInGroupNUMBER15",
+                    "dataType": "NUMBER",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupDATE1",
+                    "description": "WithInGroupDATE1",
+                    "dataType": "DATE",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupDATE2",
+                    "description": "WithInGroupDATE2",
+                    "dataType": "DATE",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupDATE3",
+                    "description": "WithInGroupDATE3",
+                    "dataType": "DATE",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupDATE4",
+                    "description": "WithInGroupDATE4",
+                    "dataType": "DATE",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupDATE5",
+                    "description": "WithInGroupDATE5",
+                    "dataType": "DATE",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupDATE6",
+                    "description": "WithInGroupDATE6",
+                    "dataType": "DATE",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupDATE7",
+                    "description": "WithInGroupDATE7",
+                    "dataType": "DATE",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupDATE8",
+                    "description": "WithInGroupDATE8",
+                    "dataType": "DATE",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupDATE9",
+                    "description": "WithInGroupDATE9",
+                    "dataType": "DATE",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupDATE10",
+                    "description": "WithInGroupDATE10",
+                    "dataType": "DATE",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupDATE11",
+                    "description": "WithInGroupDATE11",
+                    "dataType": "DATE",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupDATE12",
+                    "description": "WithInGroupDATE12",
+                    "dataType": "DATE",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupDATE13",
+                    "description": "WithInGroupDATE13",
+                    "dataType": "DATE",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupDATE14",
+                    "description": "WithInGroupDATE14",
+                    "dataType": "DATE",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupDATE15",
+                    "description": "WithInGroupDATE15",
+                    "dataType": "DATE",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupBOOLEAN1",
+                    "description": "WithInGroupBOOLEAN1",
+                    "dataType": "BOOLEAN",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupBOOLEAN2",
+                    "description": "WithInGroupBOOLEAN2",
+                    "dataType": "BOOLEAN",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupBOOLEAN3",
+                    "description": "WithInGroupBOOLEAN3",
+                    "dataType": "BOOLEAN",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupBOOLEAN4",
+                    "description": "WithInGroupBOOLEAN4",
+                    "dataType": "BOOLEAN",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupBOOLEAN5",
+                    "description": "WithInGroupBOOLEAN5",
+                    "dataType": "BOOLEAN",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupBOOLEAN6",
+                    "description": "WithInGroupBOOLEAN6",
+                    "dataType": "BOOLEAN",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupBOOLEAN7",
+                    "description": "WithInGroupBOOLEAN7",
+                    "dataType": "BOOLEAN",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupBOOLEAN8",
+                    "description": "WithInGroupBOOLEAN8",
+                    "dataType": "BOOLEAN",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupBOOLEAN9",
+                    "description": "WithInGroupBOOLEAN9",
+                    "dataType": "BOOLEAN",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupBOOLEAN10",
+                    "description": "WithInGroupBOOLEAN10",
+                    "dataType": "BOOLEAN",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupBOOLEAN11",
+                    "description": "WithInGroupBOOLEAN11",
+                    "dataType": "BOOLEAN",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupBOOLEAN12",
+                    "description": "WithInGroupBOOLEAN12",
+                    "dataType": "BOOLEAN",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupBOOLEAN13",
+                    "description": "WithInGroupBOOLEAN13",
+                    "dataType": "BOOLEAN",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupBOOLEAN14",
+                    "description": "WithInGroupBOOLEAN14",
+                    "dataType": "BOOLEAN",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupBOOLEAN15",
+                    "description": "WithInGroupBOOLEAN15",
+                    "dataType": "BOOLEAN",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupDATETIME1",
+                    "description": "WithInGroupDATETIME1",
+                    "dataType": "DATE_TIME",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupDATETIME2",
+                    "description": "WithInGroupDATETIME2",
+                    "dataType": "DATE_TIME",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupDATETIME3",
+                    "description": "WithInGroupDATETIME3",
+                    "dataType": "DATE_TIME",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupDATETIME4",
+                    "description": "WithInGroupDATETIME4",
+                    "dataType": "DATE_TIME",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupDATETIME5",
+                    "description": "WithInGroupDATETIME5",
+                    "dataType": "DATE_TIME",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupDATETIME6",
+                    "description": "WithInGroupDATETIME6",
+                    "dataType": "DATE_TIME",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupDATETIME7",
+                    "description": "WithInGroupDATETIME7",
+                    "dataType": "DATE_TIME",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupDATETIME8",
+                    "description": "WithInGroupDATETIME8",
+                    "dataType": "DATE_TIME",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupDATETIME9",
+                    "description": "WithInGroupDATETIME9",
+                    "dataType": "DATE_TIME",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupDATETIME10",
+                    "description": "WithInGroupDATETIME10",
+                    "dataType": "DATE_TIME",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupDATETIME11",
+                    "description": "WithInGroupDATETIME11",
+                    "dataType": "DATE_TIME",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupDATETIME12",
+                    "description": "WithInGroupDATETIME12",
+                    "dataType": "DATE_TIME",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupDATETIME13",
+                    "description": "WithInGroupDATETIME13",
+                    "dataType": "DATE_TIME",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupDATETIME14",
+                    "description": "WithInGroupDATETIME14",
+                    "dataType": "DATE_TIME",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupDATETIME15",
+                    "description": "WithInGroupDATETIME15",
+                    "dataType": "DATE_TIME",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupTIME1",
+                    "description": "WithInGroupTIME1",
+                    "dataType": "TIME",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupTIME2",
+                    "description": "WithInGroupTIME2",
+                    "dataType": "TIME",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupTIME3",
+                    "description": "WithInGroupTIME3",
+                    "dataType": "TIME",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupTIME4",
+                    "description": "WithInGroupTIME4",
+                    "dataType": "TIME",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupTIME5",
+                    "description": "WithInGroupTIME5",
+                    "dataType": "TIME",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupTIME6",
+                    "description": "WithInGroupTIME6",
+                    "dataType": "TIME",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupTIME7",
+                    "description": "WithInGroupTIME7",
+                    "dataType": "TIME",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupTIME8",
+                    "description": "WithInGroupTIME8",
+                    "dataType": "TIME",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupTIME9",
+                    "description": "WithInGroupTIME9",
+                    "dataType": "TIME",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupTIME10",
+                    "description": "WithInGroupTIME10",
+                    "dataType": "TIME",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupTIME11",
+                    "description": "WithInGroupTIME11",
+                    "dataType": "TIME",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupTIME12",
+                    "description": "WithInGroupTIME12",
+                    "dataType": "TIME",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupTIME13",
+                    "description": "WithInGroupTIME13",
+                    "dataType": "TIME",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupTIME14",
+                    "description": "WithInGroupTIME14",
+                    "dataType": "TIME",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupTIME15",
+                    "description": "WithInGroupTIME15",
+                    "dataType": "TIME",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupNewLIST1",
+                    "description": "WithInGroupLIST1",
+                    "dataType": "LIST",
+                    "dataProviderUserRole": "Requester",
+                    "displayDataListDefinitions": [
+                        {
+                            "nameKey": "listvalues",
+                            "displayText": "listvalues"
+                        }
+                    ],
+                    "active": true,
+                    "type": "SIMPLE_FIELD"
+                },
+                {
+                    "name": "WithInGroupNewLIST2",
+                    "description": "WithInGroupLIST2",
+                    "dataType": "LIST",
+                    "dataProviderUserRole": "Requester",
+                    "displayDataListDefinitions": [
+                        {
+                            "nameKey": "listvalues",
+                            "displayText": "listvalues"
+                        }
+                    ],
+                    "active": true,
+                    "type": "SIMPLE_FIELD"
+                },
+                {
+                    "name": "WithInGroupNewLIST3",
+                    "description": "WithInGroupLIST3",
+                    "dataType": "LIST",
+                    "dataProviderUserRole": "Requester",
+                    "displayDataListDefinitions": [
+                        {
+                            "nameKey": "listvalues",
+                            "displayText": "listvalues"
+                        }
+                    ],
+                    "active": true,
+                    "type": "SIMPLE_FIELD"
+                },
+                {
+                    "name": "WithInGroupNewLIST4",
+                    "description": "WithInGroupLIST4",
+                    "dataType": "LIST",
+                    "dataProviderUserRole": "Requester",
+                    "displayDataListDefinitions": [
+                        {
+                            "nameKey": "listvalues",
+                            "displayText": "listvalues"
+                        }
+                    ],
+                    "active": true,
+                    "type": "SIMPLE_FIELD"
+                },
+                {
+                    "name": "WithInGroupNewLIST5",
+                    "description": "WithInGroupLIST5",
+                    "dataType": "LIST",
+                    "dataProviderUserRole": "Requester",
+                    "displayDataListDefinitions": [
+                        {
+                            "nameKey": "listvalues",
+                            "displayText": "listvalues"
+                        }
+                    ],
+                    "active": true,
+                    "type": "SIMPLE_FIELD"
+                },
+                {
+                    "name": "WithInGroupNewLIST6",
+                    "description": "WithInGroupLIST6",
+                    "dataType": "LIST",
+                    "dataProviderUserRole": "Requester",
+                    "displayDataListDefinitions": [
+                        {
+                            "nameKey": "listvalues",
+                            "displayText": "listvalues"
+                        }
+                    ],
+                    "active": true,
+                    "type": "SIMPLE_FIELD"
+                },
+                {
+                    "name": "WithInGroupNewLIST7",
+                    "description": "WithInGroupLIST7",
+                    "dataType": "LIST",
+                    "dataProviderUserRole": "Requester",
+                    "displayDataListDefinitions": [
+                        {
+                            "nameKey": "listvalues",
+                            "displayText": "listvalues"
+                        }
+                    ],
+                    "active": true,
+                    "type": "SIMPLE_FIELD"
+                },
+                {
+                    "name": "WithInGroupNewLIST8",
+                    "description": "WithInGroupLIST8",
+                    "dataType": "LIST",
+                    "dataProviderUserRole": "Requester",
+                    "displayDataListDefinitions": [
+                        {
+                            "nameKey": "listvalues",
+                            "displayText": "listvalues"
+                        }
+                    ],
+                    "active": true,
+                    "type": "SIMPLE_FIELD"
+                },
+                {
+                    "name": "WithInGroupNewLIST9",
+                    "description": "WithInGroupLIST9",
+                    "dataType": "LIST",
+                    "dataProviderUserRole": "Requester",
+                    "displayDataListDefinitions": [
+                        {
+                            "nameKey": "listvalues",
+                            "displayText": "listvalues"
+                        }
+                    ],
+                    "active": true,
+                    "type": "SIMPLE_FIELD"
+                },
+                {
+                    "name": "WithInGroupNewLIST10",
+                    "description": "WithInGroupLIST10",
+                    "dataType": "LIST",
+                    "dataProviderUserRole": "Requester",
+                    "displayDataListDefinitions": [
+                        {
+                            "nameKey": "listvalues",
+                            "displayText": "listvalues"
+                        }
+                    ],
+                    "active": true,
+                    "type": "SIMPLE_FIELD"
+                },
+                {
+                    "name": "WithInGroupNewLIST11",
+                    "description": "WithInGroupLIST11",
+                    "dataType": "LIST",
+                    "dataProviderUserRole": "Requester",
+                    "displayDataListDefinitions": [
+                        {
+                            "nameKey": "listvalues",
+                            "displayText": "listvalues"
+                        }
+                    ],
+                    "active": true,
+                    "type": "SIMPLE_FIELD"
+                },
+                {
+                    "name": "WithInGroupNewLIST12",
+                    "description": "WithInGroupLIST12",
+                    "dataType": "LIST",
+                    "dataProviderUserRole": "Requester",
+                    "displayDataListDefinitions": [
+                        {
+                            "nameKey": "listvalues",
+                            "displayText": "listvalues"
+                        }
+                    ],
+                    "active": true,
+                    "type": "SIMPLE_FIELD"
+                },
+                {
+                    "name": "WithInGroupNewLIST13",
+                    "description": "WithInGroupLIST13",
+                    "dataType": "LIST",
+                    "dataProviderUserRole": "Requester",
+                    "displayDataListDefinitions": [
+                        {
+                            "nameKey": "listvalues",
+                            "displayText": "listvalues"
+                        }
+                    ],
+                    "active": true,
+                    "type": "SIMPLE_FIELD"
+                },
+                {
+                    "name": "WithInGroupNewLIST14",
+                    "description": "WithInGroupLIST14",
+                    "dataType": "LIST",
+                    "dataProviderUserRole": "Requester",
+                    "displayDataListDefinitions": [
+                        {
+                            "nameKey": "listvalues",
+                            "displayText": "listvalues"
+                        }
+                    ],
+                    "active": true,
+                    "type": "SIMPLE_FIELD"
+                },
+                {
+                    "name": "WithInGroupNewLIST15",
+                    "description": "WithInGroupLIST15",
+                    "dataType": "LIST",
+                    "dataProviderUserRole": "Requester",
+                    "displayDataListDefinitions": [
+                        {
+                            "nameKey": "listvalues",
+                            "displayText": "listvalues"
+                        }
+                    ],
+                    "active": true,
+                    "type": "SIMPLE_FIELD"
+                },
+                {
+                    "name": "WithInGroupAttachment1",
+                    "description": "WithInGroupATTACHMENT1",
+                    "dataType": "ATTACHMENT",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupAttachment2",
+                    "description": "WithInGroupATTACHMENT2",
+                    "dataType": "ATTACHMENT",
+                    "dataProviderUserRole": "Requester",
+                },                
+                {
+                    "name": "WithInGroupAttachment3",
+                    "description": "WithInGroupATTACHMENT3",
+                    "dataType": "ATTACHMENT",
+                    "dataProviderUserRole": "Requester",
+                },                
+                {
+                    "name": "WithInGroupAttachment4",
+                    "description": "WithInGroupATTACHMENT4",
+                    "dataType": "ATTACHMENT",
+                    "dataProviderUserRole": "Requester",
+                },                
+                {
+                    "name": "WithInGroupAttachment5",
+                    "description": "WithInGroupATTACHMENT5",
+                    "dataType": "ATTACHMENT",
+                    "dataProviderUserRole": "Requester",
+                },                
+                {
+                    "name": "WithInGroupAttachment6",
+                    "description": "WithInGroupATTACHMENT6",
+                    "dataType": "ATTACHMENT",
+                    "dataProviderUserRole": "Requester",
+                },                
+                {
+                    "name": "WithInGroupAttachment7",
+                    "description": "WithInGroupATTACHMENT7",
+                    "dataType": "ATTACHMENT",
+                    "dataProviderUserRole": "Requester",
+                },                
+                {
+                    "name": "WithInGroupAttachment8",
+                    "description": "WithInGroupATTACHMENT8",
+                    "dataType": "ATTACHMENT",
+                    "dataProviderUserRole": "Requester",
+                },                
+                {
+                    "name": "WithInGroupAttachment9",
+                    "description": "WithInGroupATTACHMENT9",
+                    "dataType": "ATTACHMENT",
+                    "dataProviderUserRole": "Requester",
+                },                
+                {
+                    "name": "WithInGroupAttachment10",
+                    "description": "WithInGroupATTACHMENT10",
+                    "dataType": "ATTACHMENT",
+                    "dataProviderUserRole": "Requester",
+                },                
+                {
+                    "name": "WithInGroupAttachment11",
+                    "description": "WithInGroupATTACHMENT11",
+                    "dataType": "ATTACHMENT",
+                    "dataProviderUserRole": "Requester",
+                },                
+                {
+                    "name": "WithInGroupAttachment12",
+                    "description": "WithInGroupATTACHMENT12",
+                    "dataType": "ATTACHMENT",
+                    "dataProviderUserRole": "Requester",
+                },                
+                {
+                    "name": "WithInGroupAttachment13",
+                    "description": "WithInGroupATTACHMENT13",
+                    "dataType": "ATTACHMENT",
+                    "dataProviderUserRole": "Requester",
+                },                
+                {
+                    "name": "WithInGroupAttachment14",
+                    "description": "WithInGroupATTACHMENT14",
+                    "dataType": "ATTACHMENT",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupAttachment15",
+                    "description": "WithInGroupATTACHMENT15",
+                    "dataType": "ATTACHMENT",
+                    "dataProviderUserRole": "Requester",
+                },                
+                {
+                    "name": "WithInGroupTempTEXT1",
+                    "description": "WithInGroupTempTEXT1",
+                    "dataType": "TEXT",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupTempTEXT2",
+                    "description": "WithInGroupTempTEXT2",
+                    "dataType": "TEXT",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupTempTEXT3",
+                    "description": "WithInGroupTempTEXT3",
+                    "dataType": "TEXT",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupTempTEXT4",
+                    "description": "WithInGroupTempTEXT4",
+                    "dataType": "TEXT",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupTempTEXT5",
+                    "description": "WithInGroupTempTEXT5",
+                    "dataType": "TEXT",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupTempTEXT6",
+                    "description": "WithInGroupTempTEXT6",
+                    "dataType": "TEXT",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupTempTEXT7",
+                    "description": "WithInGroupTempTEXT7",
+                    "dataType": "TEXT",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupTempTEXT8",
+                    "description": "WithInGroupTempTEXT8",
+                    "dataType": "TEXT",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupTempTEXT9",
+                    "description": "WithInGroupTempTEXT9",
+                    "dataType": "TEXT",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupTempTEXT10",
+                    "description": "WithInGroupTempTEXT10",
+                    "dataType": "TEXT",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupTempTEXT11",
+                    "description": "WithInGroupTempTEXT11",
+                    "dataType": "TEXT",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupTempTEXT12",
+                    "description": "WithInGroupTempTEXT12",
+                    "dataType": "TEXT",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupTempTEXT13",
+                    "description": "WithInGroupTempTEXT13",
+                    "dataType": "TEXT",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupTempTEXT14",
+                    "description": "WithInGroupTempTEXT14",
+                    "dataType": "TEXT",
+                    "dataProviderUserRole": "Requester",
+                },
+                {
+                    "name": "WithInGroupTempTEXT15",
+                    "description": "WithInGroupTempTEXT15",
+                    "dataType": "TEXT",
+                    "dataProviderUserRole": "Requester",
+                }
+            ]
+        },
+        {
+            "name": "OutOfGroupNUMBER1",
+            "description": "OutOfGroupNUMBER1",
+            "dataType": "NUMBER",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupNUMBER2",
+            "description": "OutOfGroupNUMBER2",
+            "dataType": "NUMBER",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupNUMBER3",
+            "description": "OutOfGroupNUMBER3",
+            "dataType": "NUMBER",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupNUMBER4",
+            "description": "OutOfGroupNUMBER4",
+            "dataType": "NUMBER",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupNUMBER5",
+            "description": "OutOfGroupNUMBER5",
+            "dataType": "NUMBER",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupNUMBER6",
+            "description": "OutOfGroupNUMBER6",
+            "dataType": "NUMBER",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupNUMBER7",
+            "description": "OutOfGroupNUMBER7",
+            "dataType": "NUMBER",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupNUMBER8",
+            "description": "OutOfGroupNUMBER8",
+            "dataType": "NUMBER",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupNUMBER9",
+            "description": "OutOfGroupNUMBER9",
+            "dataType": "NUMBER",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupNUMBER10",
+            "description": "OutOfGroupNUMBER10",
+            "dataType": "NUMBER",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupNUMBER11",
+            "description": "OutOfGroupNUMBER11",
+            "dataType": "NUMBER",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupNUMBER12",
+            "description": "OutOfGroupNUMBER12",
+            "dataType": "NUMBER",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupNUMBER13",
+            "description": "OutOfGroupNUMBER13",
+            "dataType": "NUMBER",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupNUMBER14",
+            "description": "OutOfGroupNUMBER14",
+            "dataType": "NUMBER",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupNUMBER15",
+            "description": "OutOfGroupNUMBER15",
+            "dataType": "NUMBER",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupDATE1",
+            "description": "OutOfGroupDATE1",
+            "dataType": "DATE",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupDATE2",
+            "description": "OutOfGroupDATE2",
+            "dataType": "DATE",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupDATE3",
+            "description": "OutOfGroupDATE3",
+            "dataType": "DATE",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupDATE4",
+            "description": "OutOfGroupDATE4",
+            "dataType": "DATE",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupDATE5",
+            "description": "OutOfGroupDATE5",
+            "dataType": "DATE",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupDATE6",
+            "description": "OutOfGroupDATE6",
+            "dataType": "DATE",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupDATE7",
+            "description": "OutOfGroupDATE7",
+            "dataType": "DATE",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupDATE8",
+            "description": "OutOfGroupDATE8",
+            "dataType": "DATE",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupDATE9",
+            "description": "OutOfGroupDATE9",
+            "dataType": "DATE",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupDATE10",
+            "description": "OutOfGroupDATE10",
+            "dataType": "DATE",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupDATE11",
+            "description": "OutOfGroupDATE11",
+            "dataType": "DATE",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupDATE12",
+            "description": "OutOfGroupDATE12",
+            "dataType": "DATE",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupDATE13",
+            "description": "OutOfGroupDATE13",
+            "dataType": "DATE",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupDATE14",
+            "description": "OutOfGroupDATE14",
+            "dataType": "DATE",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupDATE15",
+            "description": "OutOfGroupDATE15",
+            "dataType": "DATE",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupBOOLEAN1",
+            "description": "OutOfGroupBOOLEAN1",
+            "dataType": "BOOLEAN",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupBOOLEAN2",
+            "description": "OutOfGroupBOOLEAN2",
+            "dataType": "BOOLEAN",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupBOOLEAN3",
+            "description": "OutOfGroupBOOLEAN3",
+            "dataType": "BOOLEAN",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupBOOLEAN4",
+            "description": "OutOfGroupBOOLEAN4",
+            "dataType": "BOOLEAN",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupBOOLEAN5",
+            "description": "OutOfGroupBOOLEAN5",
+            "dataType": "BOOLEAN",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupBOOLEAN6",
+            "description": "OutOfGroupBOOLEAN6",
+            "dataType": "BOOLEAN",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupBOOLEAN7",
+            "description": "OutOfGroupBOOLEAN7",
+            "dataType": "BOOLEAN",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupBOOLEAN8",
+            "description": "OutOfGroupBOOLEAN8",
+            "dataType": "BOOLEAN",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupBOOLEAN9",
+            "description": "OutOfGroupBOOLEAN9",
+            "dataType": "BOOLEAN",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupBOOLEAN10",
+            "description": "OutOfGroupBOOLEAN10",
+            "dataType": "BOOLEAN",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupBOOLEAN11",
+            "description": "OutOfGroupBOOLEAN11",
+            "dataType": "BOOLEAN",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupBOOLEAN12",
+            "description": "OutOfGroupBOOLEAN12",
+            "dataType": "BOOLEAN",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupBOOLEAN13",
+            "description": "OutOfGroupBOOLEAN13",
+            "dataType": "BOOLEAN",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupBOOLEAN14",
+            "description": "OutOfGroupBOOLEAN14",
+            "dataType": "BOOLEAN",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupBOOLEAN15",
+            "description": "OutOfGroupBOOLEAN15",
+            "dataType": "BOOLEAN",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupDATETIME1",
+            "description": "OutOfGroupDATETIME1",
+            "dataType": "DATE_TIME",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupDATETIME2",
+            "description": "OutOfGroupDATETIME2",
+            "dataType": "DATE_TIME",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupDATETIME3",
+            "description": "OutOfGroupDATETIME3",
+            "dataType": "DATE_TIME",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupDATETIME4",
+            "description": "OutOfGroupDATETIME4",
+            "dataType": "DATE_TIME",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupDATETIME5",
+            "description": "OutOfGroupDATETIME5",
+            "dataType": "DATE_TIME",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupDATETIME6",
+            "description": "OutOfGroupDATETIME6",
+            "dataType": "DATE_TIME",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupDATETIME7",
+            "description": "OutOfGroupDATETIME7",
+            "dataType": "DATE_TIME",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupDATETIME8",
+            "description": "OutOfGroupDATETIME8",
+            "dataType": "DATE_TIME",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupDATETIME9",
+            "description": "OutOfGroupDATETIME9",
+            "dataType": "DATE_TIME",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupDATETIME10",
+            "description": "OutOfGroupDATETIME10",
+            "dataType": "DATE_TIME",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupDATETIME11",
+            "description": "OutOfGroupDATETIME11",
+            "dataType": "DATE_TIME",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupDATETIME12",
+            "description": "OutOfGroupDATETIME12",
+            "dataType": "DATE_TIME",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupDATETIME13",
+            "description": "OutOfGroupDATETIME13",
+            "dataType": "DATE_TIME",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupDATETIME14",
+            "description": "OutOfGroupDATETIME14",
+            "dataType": "DATE_TIME",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupDATETIME15",
+            "description": "OutOfGroupDATETIME15",
+            "dataType": "DATE_TIME",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupTIME1",
+            "description": "OutOfGroupTIME1",
+            "dataType": "TIME",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupTIME2",
+            "description": "OutOfGroupTIME2",
+            "dataType": "TIME",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupTIME3",
+            "description": "OutOfGroupTIME3",
+            "dataType": "TIME",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupTIME4",
+            "description": "OutOfGroupTIME4",
+            "dataType": "TIME",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupTIME5",
+            "description": "OutOfGroupTIME5",
+            "dataType": "TIME",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupTIME6",
+            "description": "OutOfGroupTIME6",
+            "dataType": "TIME",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupTIME7",
+            "description": "OutOfGroupTIME7",
+            "dataType": "TIME",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupTIME8",
+            "description": "OutOfGroupTIME8",
+            "dataType": "TIME",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupTIME9",
+            "description": "OutOfGroupTIME9",
+            "dataType": "TIME",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupTIME10",
+            "description": "OutOfGroupTIME10",
+            "dataType": "TIME",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupTIME11",
+            "description": "OutOfGroupTIME11",
+            "dataType": "TIME",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupTIME12",
+            "description": "OutOfGroupTIME12",
+            "dataType": "TIME",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupTIME13",
+            "description": "OutOfGroupTIME13",
+            "dataType": "TIME",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupTIME14",
+            "description": "OutOfGroupTIME14",
+            "dataType": "TIME",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupTIME15",
+            "description": "OutOfGroupTIME15",
+            "dataType": "TIME",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupNewLIST1",
+            "description": "OutOfGroupLIST1",
+            "dataType": "LIST",
+            "dataProviderUserRole": "Requester",
+            "displayDataListDefinitions": [
+                {
+                    "nameKey": "listvalues",
+                    "displayText": "listvalues"
+                }
+            ],
+            "active": true,
+            "type": "SIMPLE_FIELD"
+        },
+        {
+            "name": "OutOfGroupNewLIST2",
+            "description": "OutOfGroupLIST2",
+            "dataType": "LIST",
+            "dataProviderUserRole": "Requester",
+            "displayDataListDefinitions": [
+                {
+                    "nameKey": "listvalues",
+                    "displayText": "listvalues"
+                }
+            ],
+            "active": true,
+            "type": "SIMPLE_FIELD"
+        },
+        {
+            "name": "OutOfGroupNewLIST3",
+            "description": "OutOfGroupLIST3",
+            "dataType": "LIST",
+            "dataProviderUserRole": "Requester",
+            "displayDataListDefinitions": [
+                {
+                    "nameKey": "listvalues",
+                    "displayText": "listvalues"
+                }
+            ],
+            "active": true,
+            "type": "SIMPLE_FIELD"
+        },
+        {
+            "name": "OutOfGroupNewLIST4",
+            "description": "OutOfGroupLIST4",
+            "dataType": "LIST",
+            "dataProviderUserRole": "Requester",
+            "displayDataListDefinitions": [
+                {
+                    "nameKey": "listvalues",
+                    "displayText": "listvalues"
+                }
+            ],
+            "active": true,
+            "type": "SIMPLE_FIELD"
+        },
+        {
+            "name": "OutOfGroupNewLIST5",
+            "description": "OutOfGroupLIST5",
+            "dataType": "LIST",
+            "dataProviderUserRole": "Requester",
+            "displayDataListDefinitions": [
+                {
+                    "nameKey": "listvalues",
+                    "displayText": "listvalues"
+                }
+            ],
+            "active": true,
+            "type": "SIMPLE_FIELD"
+        },
+        {
+            "name": "OutOfGroupNewLIST6",
+            "description": "OutOfGroupLIST6",
+            "dataType": "LIST",
+            "dataProviderUserRole": "Requester",
+            "displayDataListDefinitions": [
+                {
+                    "nameKey": "listvalues",
+                    "displayText": "listvalues"
+                }
+            ],
+            "active": true,
+            "type": "SIMPLE_FIELD"
+        },
+        {
+            "name": "OutOfGroupNewLIST7",
+            "description": "OutOfGroupLIST7",
+            "dataType": "LIST",
+            "dataProviderUserRole": "Requester",
+            "displayDataListDefinitions": [
+                {
+                    "nameKey": "listvalues",
+                    "displayText": "listvalues"
+                }
+            ],
+            "active": true,
+            "type": "SIMPLE_FIELD"
+        },
+        {
+            "name": "OutOfGroupNewLIST8",
+            "description": "OutOfGroupLIST8",
+            "dataType": "LIST",
+            "dataProviderUserRole": "Requester",
+            "displayDataListDefinitions": [
+                {
+                    "nameKey": "listvalues",
+                    "displayText": "listvalues"
+                }
+            ],
+            "active": true,
+            "type": "SIMPLE_FIELD"
+        },
+        {
+            "name": "OutOfGroupNewLIST9",
+            "description": "OutOfGroupLIST9",
+            "dataType": "LIST",
+            "dataProviderUserRole": "Requester",
+            "displayDataListDefinitions": [
+                {
+                    "nameKey": "listvalues",
+                    "displayText": "listvalues"
+                }
+            ],
+            "active": true,
+            "type": "SIMPLE_FIELD"
+        },
+        {
+            "name": "OutOfGroupNewLIST10",
+            "description": "OutOfGroupLIST10",
+            "dataType": "LIST",
+            "dataProviderUserRole": "Requester",
+            "displayDataListDefinitions": [
+                {
+                    "nameKey": "listvalues",
+                    "displayText": "listvalues"
+                }
+            ],
+            "active": true,
+            "type": "SIMPLE_FIELD"
+        },
+        {
+            "name": "OutOfGroupNewLIST11",
+            "description": "OutOfGroupLIST11",
+            "dataType": "LIST",
+            "dataProviderUserRole": "Requester",
+            "displayDataListDefinitions": [
+                {
+                    "nameKey": "listvalues",
+                    "displayText": "listvalues"
+                }
+            ],
+            "active": true,
+            "type": "SIMPLE_FIELD"
+        },
+        {
+            "name": "OutOfGroupNewLIST12",
+            "description": "OutOfGroupLIST12",
+            "dataType": "LIST",
+            "dataProviderUserRole": "Requester",
+            "displayDataListDefinitions": [
+                {
+                    "nameKey": "listvalues",
+                    "displayText": "listvalues"
+                }
+            ],
+            "active": true,
+            "type": "SIMPLE_FIELD"
+        },
+        {
+            "name": "OutOfGroupNewLIST13",
+            "description": "OutOfGroupLIST13",
+            "dataType": "LIST",
+            "dataProviderUserRole": "Requester",
+            "displayDataListDefinitions": [
+                {
+                    "nameKey": "listvalues",
+                    "displayText": "listvalues"
+                }
+            ],
+            "active": true,
+            "type": "SIMPLE_FIELD"
+        },
+        {
+            "name": "OutOfGroupNewLIST14",
+            "description": "OutOfGroupLIST14",
+            "dataType": "LIST",
+            "dataProviderUserRole": "Requester",
+            "displayDataListDefinitions": [
+                {
+                    "nameKey": "listvalues",
+                    "displayText": "listvalues"
+                }
+            ],
+            "active": true,
+            "type": "SIMPLE_FIELD"
+        },
+        {
+            "name": "OutOfGroupNewLIST15",
+            "description": "OutOfGroupLIST15",
+            "dataType": "LIST",
+            "dataProviderUserRole": "Requester",
+            "displayDataListDefinitions": [
+                {
+                    "nameKey": "listvalues",
+                    "displayText": "listvalues"
+                }
+            ],
+            "active": true,
+            "type": "SIMPLE_FIELD"
+        },
+        {
+            "name": "OutOfGroupAttachment1",
+            "description": "OutOfGroupATTACHMENT1",
+            "dataType": "ATTACHMENT",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupAttachment2",
+            "description": "OutOfGroupATTACHMENT2",
+            "dataType": "ATTACHMENT",
+            "dataProviderUserRole": "Requester",
+        },                
+        {
+            "name": "OutOfGroupAttachment3",
+            "description": "OutOfGroupATTACHMENT3",
+            "dataType": "ATTACHMENT",
+            "dataProviderUserRole": "Requester",
+        },                
+        {
+            "name": "OutOfGroupAttachment4",
+            "description": "OutOfGroupATTACHMENT4",
+            "dataType": "ATTACHMENT",
+            "dataProviderUserRole": "Requester",
+        },                
+        {
+            "name": "OutOfGroupAttachment5",
+            "description": "OutOfGroupATTACHMENT5",
+            "dataType": "ATTACHMENT",
+            "dataProviderUserRole": "Requester",
+        },                
+        {
+            "name": "OutOfGroupAttachment6",
+            "description": "OutOfGroupATTACHMENT6",
+            "dataType": "ATTACHMENT",
+            "dataProviderUserRole": "Requester",
+        },                
+        {
+            "name": "OutOfGroupAttachment7",
+            "description": "OutOfGroupATTACHMENT7",
+            "dataType": "ATTACHMENT",
+            "dataProviderUserRole": "Requester",
+        },                
+        {
+            "name": "OutOfGroupAttachment8",
+            "description": "OutOfGroupATTACHMENT8",
+            "dataType": "ATTACHMENT",
+            "dataProviderUserRole": "Requester",
+        },                
+        {
+            "name": "OutOfGroupAttachment9",
+            "description": "OutOfGroupATTACHMENT9",
+            "dataType": "ATTACHMENT",
+            "dataProviderUserRole": "Requester",
+        },                
+        {
+            "name": "OutOfGroupAttachment10",
+            "description": "OutOfGroupATTACHMENT10",
+            "dataType": "ATTACHMENT",
+            "dataProviderUserRole": "Requester",
+        },                
+        {
+            "name": "OutOfGroupAttachment11",
+            "description": "OutOfGroupATTACHMENT11",
+            "dataType": "ATTACHMENT",
+            "dataProviderUserRole": "Requester",
+        },                
+        {
+            "name": "OutOfGroupAttachment12",
+            "description": "OutOfGroupATTACHMENT12",
+            "dataType": "ATTACHMENT",
+            "dataProviderUserRole": "Requester",
+        },                
+        {
+            "name": "OutOfGroupAttachment13",
+            "description": "OutOfGroupATTACHMENT13",
+            "dataType": "ATTACHMENT",
+            "dataProviderUserRole": "Requester",
+        },                
+        {
+            "name": "OutOfGroupAttachment14",
+            "description": "OutOfGroupATTACHMENT14",
+            "dataType": "ATTACHMENT",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupAttachment15",
+            "description": "OutOfGroupATTACHMENT15",
+            "dataType": "ATTACHMENT",
+            "dataProviderUserRole": "Requester",
+        },                
+        {
+            "name": "OutOfGroupTempTEXT1",
+            "description": "OutOfGroupTempTEXT1",
+            "dataType": "TEXT",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupTempTEXT2",
+            "description": "OutOfGroupTempTEXT2",
+            "dataType": "TEXT",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupTempTEXT3",
+            "description": "OutOfGroupTempTEXT3",
+            "dataType": "TEXT",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupTempTEXT4",
+            "description": "OutOfGroupTempTEXT4",
+            "dataType": "TEXT",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupTempTEXT5",
+            "description": "OutOfGroupTempTEXT5",
+            "dataType": "TEXT",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupTempTEXT6",
+            "description": "OutOfGroupTempTEXT6",
+            "dataType": "TEXT",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupTempTEXT7",
+            "description": "OutOfGroupTempTEXT7",
+            "dataType": "TEXT",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupTempTEXT8",
+            "description": "OutOfGroupTempTEXT8",
+            "dataType": "TEXT",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupTempTEXT9",
+            "description": "OutOfGroupTempTEXT9",
+            "dataType": "TEXT",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupTempTEXT10",
+            "description": "OutOfGroupTempTEXT10",
+            "dataType": "TEXT",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupTempTEXT11",
+            "description": "OutOfGroupTempTEXT11",
+            "dataType": "TEXT",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupTempTEXT12",
+            "description": "OutOfGroupTempTEXT12",
+            "dataType": "TEXT",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupTempTEXT13",
+            "description": "OutOfGroupTempTEXT13",
+            "dataType": "TEXT",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupTempTEXT14",
+            "description": "OutOfGroupTempTEXT14",
+            "dataType": "TEXT",
+            "dataProviderUserRole": "Requester",
+        },
+        {
+            "name": "OutOfGroupTempTEXT15",
+            "description": "OutOfGroupTempTEXT15",
+            "dataType": "TEXT",
+            "dataProviderUserRole": "Requester",
+        }
+    ]
+};
+
+
+
