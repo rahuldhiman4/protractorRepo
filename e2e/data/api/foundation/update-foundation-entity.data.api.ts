@@ -21,3 +21,11 @@ export const UPDATE_ORGANIZATION = {
     "fieldInstances": {
     }
 };
+
+export const DELETE_PERSON = {
+    "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
+    "id": "371aeb153f2b91229e2c1e6f223d962e0415a7fa30ce8e592b6bdba9004f62e58af213d22c2ad54c69815865363b140732c1d3f768d218c52a1e87083ee97b84",
+    "recordDefinitionName": "com.bmc.arsys.rx.foundation:Person",
+    "fieldInstances": {
+    }
+};

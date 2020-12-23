@@ -10,7 +10,7 @@ class CreateServiceTargetGroup {
         dataSource: 'span[aria-label="Data Source activate"]',
         goalType: 'span[aria-label="Goal Type activate"]',
         saveButton: '[class="d-button d-button_primary d-button_large"]',
-        lob: '[class="ui-select-match-text pull-left"]',
+        lob: '[class="bwf-lob-selection d-textfield"] [class="btn btn-default form-control ui-select-toggle"]',
         serviceTarget: 'input[aria-label="Search for available Service Targets"]',
         serviceTargetdrpdwn: '.slm-group-list-item__description',
         selectServiceTarget: '.d-icon-circle_o',
@@ -31,8 +31,8 @@ class CreateServiceTargetGroup {
         await $(this.selectors.serviceTarget).sendKeys(servicetarget);
     }
 
-    async isLobEnabled(): Promise<boolean> {
-        return await $(this.selectors.lob).isEnabled();
+    async isLobEnabled(attribute:string): Promise<string> {
+        return await $(this.selectors.lob).getAttribute(attribute);
     }
 
     async isServiceTargetPresent(serviceTarget: string): Promise<boolean> {

@@ -345,7 +345,7 @@ describe('Line of Business Permission Tests', () => {
 
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
-            expect(await createMenuItemsBladePo.isMenuOptionLinkEnabled()).toBeFalsy();
+            expect(await createMenuItemsBladePo.isMenuOptionLinkPresent()).toBeFalsy();
 
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', 'Field Management Console - Business Workflows');
             expect(await dynamicFieldLibraryConfigConsolePo.isAddDynamicFieldButtonEnabled()).toBeFalsy();
@@ -754,9 +754,10 @@ describe('Line of Business Permission Tests', () => {
             await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target Group', 'Service Target Group - Administration - Business Workflows');
+            await utilGrid.selectLineOfBusiness("Human Resource");
             await serviceTargetGroupConsolePo.clickAddServiceTargetGroupBtn();
             await createServiceTargetGroupPo.setGroupName(randomStr + "Group");
-            expect(await createServiceTargetGroupPo.isLobEnabled()).toBeFalsy();
+            expect(await createServiceTargetGroupPo.isLobEnabled('disabled')).toBeTruthy();
             await createServiceTargetGroupPo.selectCompany('Petramco');
             await createServiceTargetGroupPo.selectDataSource('Case Management');
             await createServiceTargetGroupPo.searchServiceTarget('DRDMV-3230');
@@ -771,7 +772,7 @@ describe('Line of Business Permission Tests', () => {
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target Group', 'Service Target Group - Administration - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(randomStr + "Group");
             expect(await editServiceTargetGroupConfigPo.getServiceTargetInGroup()).toBe('DRDMV-3230');
-            await editServiceTargetGroupConfigPo.clickSaveButton();
+            await editServiceTargetGroupConfigPo.clickClose();
 
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
@@ -800,7 +801,7 @@ describe('Line of Business Permission Tests', () => {
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target Group', 'Service Target Group - Administration - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(randomStr + "Group");
             expect(await editServiceTargetGroupConfigPo.getServiceTargetInGroup()).toBe('DRDMV-3230');
-            await editServiceTargetGroupConfigPo.clickSaveButton();
+            await editServiceTargetGroupConfigPo.clickClose();
         });
         afterAll(async () => {
             await navigationPage.signOut();
@@ -853,9 +854,9 @@ describe('Line of Business Permission Tests', () => {
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
-            expect(await createMenuItemsBladePo.isMenuOptionLinkEnabled()).toBeFalsy();
+            expect(await createMenuItemsBladePo.isMenuOptionLinkPresent()).toBeFalsy();
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.searchAndOpenHyperlink(caseId);
+            await utilityGrid.searchAndOpenHyperlink(caseId.displayId);
             await viewCasePo.clickEditCaseButton();
             expect(await editCasePo.isResolutionCodePresent(label)).toBeTruthy();
 
@@ -870,10 +871,8 @@ describe('Line of Business Permission Tests', () => {
             await navigationPage.signOut();
             await loginPage.login('peter');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
             expect(await navigationPage.isSettingMenuPresent('Application Configuration')).toBeFalsy();
         });
-
     });
 
     //apurva

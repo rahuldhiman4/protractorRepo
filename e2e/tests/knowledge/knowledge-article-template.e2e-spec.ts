@@ -189,15 +189,17 @@ describe('Knowledge Article Template', () => {
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await createKnowledgePage.clickBackBtn();
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
-            await navigationPage.switchToApplication("Knowledge Management");
-            await utilityGrid.searchRecord('Article Title KCS');
-            expect(await utilityGrid.isGridRecordPresent('Article Title KCS')).toBeTruthy('Article is not present');
-            await utilityGrid.searchRecord('Article Title 619');
-            expect(await utilityGrid.isGridRecordPresent('Article Title 619')).toBeTruthy('Article is not present');
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoCreateKnowledge();
             expect(await createKnowledgePage.isTemplatePresent('Article Template Name Petramco')).toBeFalsy('Template Article Template Name Petramco is present');
+            await navigationPage.signOut();
+            await loginPage.login('kWilliamson');
+            await navigationPage.switchToApplication("Knowledge Management");
+            await utilityGrid.clearFilter();
+            expect(await utilityGrid.isGridRecordPresent('Article Title KCS')).toBeTruthy('Article1 is not present');
+            await utilityGrid.clearFilter();
+            expect(await utilityGrid.isGridRecordPresent('Article Title 619')).toBeTruthy('Article2 is not present');
         })
     });
 });

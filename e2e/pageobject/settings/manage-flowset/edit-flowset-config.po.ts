@@ -90,7 +90,9 @@ class EditFlowsetPage {
     }
 
     async selectStatus(status: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.statusGuid, status);
+        await utilCommon.selectDropDown(this.selectors.statusGuid, status).catch(async () => {
+            await utilCommon.selectDropDown('b48823c7-8eb0-4b30-bd9a-b44e53fcc195', status)
+        });
     }
 
     async selectProcessStatus(status: string): Promise<void> {

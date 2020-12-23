@@ -360,8 +360,11 @@ describe("Notification Template", () => {
         });
 
         afterAll(async () => {
+            await utilCommon.closeBladeOnSettings();
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Notification Template - Business Workflows');
         });
 
     });

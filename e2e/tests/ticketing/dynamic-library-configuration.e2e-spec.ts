@@ -536,15 +536,15 @@ describe('Dynamic Library Configuration', () => {
         });
     });
 
-    describe('[4846]: [Dynamic Data]- Add Dynamic Fields and Groups to Case Template', async () => {
+    describe('[DRDMV-13117]: [Dynamic Data]- Add Dynamic Fields and Groups to Case Template', async () => {
         let caseTemplate, casetemplateData, randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseResponse;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
             casetemplateData = {
-                "templateName": randomStr + 'caseTemplate4846',
-                "templateSummary": randomStr + 'caseTemplate4846',
+                "templateName": randomStr + 'caseTemplate13117',
+                "templateSummary": randomStr + 'caseTemplate13117',
                 "templateStatus": "Draft",
                 "assignee": "qkatawazi",
                 "company": "Petramco",
@@ -555,11 +555,10 @@ describe('Dynamic Library Configuration', () => {
             }
             await apiHelper.apiLogin('qkatawazi');
             caseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
-            console.log('CaseTemplate>>>>>>>>', caseTemplate);
             await apiHelper.createDynamicDataOnTemplate(caseTemplate.id, 'BULK_DYNAMIC_FIELDS_INSIDE_OUTSIDE_GROUP');
 
         });
-        it('[4846]: [Dynamic Data]- Add Dynamic Fields and Groups to Case Template', async () => {
+        it('[DRDMV-13117]: [Dynamic Data]- Add Dynamic Fields and Groups to Case Template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(casetemplateData.templateName);
@@ -568,91 +567,91 @@ describe('Dynamic Library Configuration', () => {
             await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
             expect(await viewCasetemplatePo.isGroupDisplayed('GroupOne')).toBeTruthy();
         });
-        it('[4846]: Verify Numbers Field InSide Of Group on Case template', async () => {
+        it('[DRDMV-13117]: Verify Numbers Field InSide Of Group on Case template', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasetemplatePo.isDynamicFieldDisplayed2(`${'WithInGroupNUMBER' + i}`)).toBeTruthy(`${'WithInGroupNUMBER' + i} is missing`);
             }
         });
-        it('[4846]: Verify DATE Field InSide Of Group on Case template', async () => {
+        it('[DRDMV-13117]: Verify DATE Field InSide Of Group on Case template', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasetemplatePo.isDynamicFieldDisplayed2(`${'WithInGroupDATE' + i}`)).toBeTruthy(`${'WithInGroupDATE' + i} is missing`);
             }
         });
-        it('[4846]: Verify BOOLEAN Field InSide Of Group on Case template', async () => {
+        it('[DRDMV-13117]: Verify BOOLEAN Field InSide Of Group on Case template', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasetemplatePo.isDynamicFieldDisplayed2(`${'WithInGroupBOOLEAN' + i}`)).toBeTruthy(`${'WithInGroupBOOLEAN' + i} is missing`);
             }
         });
-        it('[4846]: Verify DATE_TIME Field InSide Of Group on Case template', async () => {
+        it('[DRDMV-13117]: Verify DATE_TIME Field InSide Of Group on Case template', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasetemplatePo.isDynamicFieldDisplayed2(`${'WithInGroupDATETIME' + i}`)).toBeTruthy(`${'WithInGroupDATETIME' + i} is missing`);
             }
         });
-        it('[4846]: Verify TIME Field InSide Of Group on Case template', async () => {
+        it('[DRDMV-13117]: Verify TIME Field InSide Of Group on Case template', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasetemplatePo.isDynamicFieldDisplayed2(`${'WithInGroupTIME' + i}`)).toBeTruthy(`${'WithInGroupTIME' + i} is missing`);
             }
         });
-        it('[4846]: Verify LIST Field InSide Of Group on Case template', async () => {
+        it('[DRDMV-13117]: Verify LIST Field InSide Of Group on Case template', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasetemplatePo.isDynamicFieldDisplayed2(`${'WithInGroupLIST' + i}`)).toBeTruthy(`${'WithInGroupLIST' + i} is missing`);
             }
         });
-        it('[4846]: Verify ATTACHMENT Field InSide Of Group on Case template', async () => {
+        it('[DRDMV-13117]: Verify ATTACHMENT Field InSide Of Group on Case template', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasetemplatePo.isDynamicFieldDisplayed2(`${'WithInGroupATTACHMENT' + i}`)).toBeTruthy(`${'WithInGroupATTACHMENT' + i} is missing`);
             }
         });
-        it('[4846]: Verify TEXT Field InSide Of Group on Case template', async () => {
+        it('[DRDMV-13117]: Verify TEXT Field InSide Of Group on Case template', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasetemplatePo.isDynamicFieldDisplayed2(`${'WithInGroupTempTEXT' + i}`)).toBeTruthy(`${'WithInGroupTempTEXT' + i} is missing`);
             }
         });
-        it('[4846]: Verify Numbers Field Out Of Group on Case template', async () => {
+        it('[DRDMV-13117]: Verify Numbers Field Out Of Group on Case template', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasetemplatePo.isDynamicFieldDisplayed2(`${'OutOfGroupNUMBER' + i}`)).toBeTruthy(`${'OutOfGroupNUMBER' + i} is missing`);
             }
         });
-        it('[4846]: Verify DATE Field Out Of Group on Case template', async () => {
+        it('[DRDMV-13117]: Verify DATE Field Out Of Group on Case template', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasetemplatePo.isDynamicFieldDisplayed2(`${'OutOfGroupDATE' + i}`)).toBeTruthy(`${'OutOfGroupDATE' + i} is missing`);
             }
         });
-        it('[4846]: Verify BOOLEAN Field Out Of Group on Case template', async () => {
+        it('[DRDMV-13117]: Verify BOOLEAN Field Out Of Group on Case template', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasetemplatePo.isDynamicFieldDisplayed2(`${'OutOfGroupBOOLEAN' + i}`)).toBeTruthy(`${'OutOfGroupBOOLEAN' + i} is missing`);
             }
         });
-        it('[4846]:Verify DATE_TIME Field Out Of Group on Case template', async () => {
+        it('[DRDMV-13117]:Verify DATE_TIME Field Out Of Group on Case template', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasetemplatePo.isDynamicFieldDisplayed2(`${'OutOfGroupDATETIME' + i}`)).toBeTruthy(`${'OutOfGroupDATETIME' + i} is missing`);
             }
         });
-        it('[4846]: Verify TIME Field Out Of Group on Case template', async () => {
+        it('[DRDMV-13117]: Verify TIME Field Out Of Group on Case template', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasetemplatePo.isDynamicFieldDisplayed2(`${'OutOfGroupTIME' + i}`)).toBeTruthy(`${'OutOfGroupTIME' + i} is missing`);
             }
         });
-        it('[4846]: Verify LIST Field Out Of Group on Case template', async () => {
+        it('[DRDMV-13117]: Verify LIST Field Out Of Group on Case template', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasetemplatePo.isDynamicFieldDisplayed2(`${'OutOfGroupLIST' + i}`)).toBeTruthy(`${'OutOfGroupLIST' + i} is missing`);
             }
         });
-        it('[4846]: Verify ATTACHMENT Field Out Of Group on Case template', async () => {
+        it('[DRDMV-13117]: Verify ATTACHMENT Field Out Of Group on Case template', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasetemplatePo.isDynamicFieldDisplayed2(`${'OutOfGroupATTACHMENT' + i}`)).toBeTruthy(`${'OutOfGroupATTACHMENT' + i} is missing`);
             }
         });
-        it('[4846]: Verify TEXT Field Out Of Group on Case template', async () => {
+        it('[DRDMV-13117]: Verify TEXT Field Out Of Group on Case template', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasetemplatePo.isDynamicFieldDisplayed2(`${'OutOfGroupTempTEXT' + i}`)).toBeTruthy(`${'OutOfGroupTempTEXT' + i} is missing`);
             }
         });
 
-        it('[4846]: Search and open case', async () => {
+        it('[DRDMV-13117]: Search and open case', async () => {
             let caseData = {
                 "Requester": "apavlik",
-                "Summary": "caseSummaryForDynamicData4846",
+                "Summary": "caseSummaryForDynamicData13117",
                 "Origin": "Agent",
                 "Case Template ID": caseTemplate.displayId
             }
@@ -661,82 +660,82 @@ describe('Dynamic Library Configuration', () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseResponse.displayId);
         });
-        it('[4846]: Verify Numbers Field InSide Of Group on Case', async () => {
+        it('[DRDMV-13117]: Verify Numbers Field InSide Of Group on Case', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasePo.isDynamicFieldDisplayed2(`${'WithInGroupNUMBER' + i}`)).toBeTruthy(`${'WithInGroupNUMBER' + i} is missing`);
             }
         });
-        it('[4846]: Verify DATE Field InSide Of Group on Case', async () => {
+        it('[DRDMV-13117]: Verify DATE Field InSide Of Group on Case', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasePo.isDynamicFieldDisplayed2(`${'WithInGroupDATE' + i}`)).toBeTruthy(`${'WithInGroupDATE' + i} is missing`);
             }
         });
-        it('[4846]: Verify BOOLEAN Field InSide Of Group on Case', async () => {
+        it('[DRDMV-13117]: Verify BOOLEAN Field InSide Of Group on Case', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasePo.isDynamicFieldDisplayed2(`${'WithInGroupBOOLEAN' + i}`)).toBeTruthy(`${'WithInGroupBOOLEAN' + i} is missing`);
             }
         });
-        it('[4846]: Verify DATE_TIME Field InSide Of Group on Case', async () => {
+        it('[DRDMV-13117]: Verify DATE_TIME Field InSide Of Group on Case', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasePo.isDynamicFieldDisplayed2(`${'WithInGroupDATETIME' + i}`)).toBeTruthy(`${'WithInGroupDATETIME' + i} is missing`);
             }
         });
-        it('[4846]: Verify TIME Field InSide Of Group on Case', async () => {
+        it('[DRDMV-13117]: Verify TIME Field InSide Of Group on Case', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasePo.isDynamicFieldDisplayed2(`${'WithInGroupTIME' + i}`)).toBeTruthy(`${'WithInGroupTIME' + i} is missing`);
             }
         });
-        it('[4846]: Verify LIST Field InSide Of Group on Case', async () => {
+        it('[DRDMV-13117]: Verify LIST Field InSide Of Group on Case', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasePo.isDynamicFieldDisplayed2(`${'WithInGroupLIST' + i}`)).toBeTruthy(`${'WithInGroupLIST' + i} is missing`);
             }
         });
-        it('[4846]: Verify ATTACHMENT Field InSide Of Group on Case', async () => {
+        it('[DRDMV-13117]: Verify ATTACHMENT Field InSide Of Group on Case', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasePo.isDynamicFieldDisplayed2(`${'WithInGroupATTACHMENT' + i}`)).toBeTruthy(`${'WithInGroupATTACHMENT' + i} is missing`);
             }
         });
-        it('[4846]: Verify TEXT Field InSide Of Group on Case', async () => {
+        it('[DRDMV-13117]: Verify TEXT Field InSide Of Group on Case', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasePo.isDynamicFieldDisplayed2(`${'WithInGroupTempTEXT' + i}`)).toBeTruthy(`${'WithInGroupTempTEXT' + i} is missing`);
             }
         });
-        it('[4846]: Verify Numbers Field Out Of Group on Case', async () => {
+        it('[DRDMV-13117]: Verify Numbers Field Out Of Group on Case', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasePo.isDynamicFieldDisplayed2(`${'OutOfGroupNUMBER' + i}`)).toBeTruthy(`${'OutOfGroupNUMBER' + i} is missing`);
             }
         });
-        it('[4846]: Verify DATE Field Out Of Group on Case', async () => {
+        it('[DRDMV-13117]: Verify DATE Field Out Of Group on Case', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasePo.isDynamicFieldDisplayed2(`${'OutOfGroupDATE' + i}`)).toBeTruthy(`${'OutOfGroupDATE' + i} is missing`);
             }
         });
-        it('[4846]: Verify BOOLEAN Field Out Of Group on Case', async () => {
+        it('[DRDMV-13117]: Verify BOOLEAN Field Out Of Group on Case', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasePo.isDynamicFieldDisplayed2(`${'OutOfGroupBOOLEAN' + i}`)).toBeTruthy(`${'OutOfGroupBOOLEAN' + i} is missing`);
             }
         });
-        it('[4846]:Verify DATE_TIME Field Out Of Group on Case', async () => {
+        it('[DRDMV-13117]:Verify DATE_TIME Field Out Of Group on Case', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasePo.isDynamicFieldDisplayed2(`${'OutOfGroupDATETIME' + i}`)).toBeTruthy(`${'OutOfGroupDATETIME' + i} is missing`);
             }
         });
-        it('[4846]: Verify TIME Field Out Of Group on Case', async () => {
+        it('[DRDMV-13117]: Verify TIME Field Out Of Group on Case', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasePo.isDynamicFieldDisplayed2(`${'OutOfGroupTIME' + i}`)).toBeTruthy(`${'OutOfGroupTIME' + i} is missing`);
             }
         });
-        it('[4846]: Verify LIST Field Out Of Group on Case', async () => {
+        it('[DRDMV-13117]: Verify LIST Field Out Of Group on Case', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasePo.isDynamicFieldDisplayed2(`${'OutOfGroupLIST' + i}`)).toBeTruthy(`${'OutOfGroupLIST' + i} is missing`);
             }
         });
-        it('[4846]: Verify ATTACHMENT Field Out Of Group on Case', async () => {
+        it('[DRDMV-13117]: Verify ATTACHMENT Field Out Of Group on Case', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasePo.isDynamicFieldDisplayed2(`${'OutOfGroupATTACHMENT' + i}`)).toBeTruthy(`${'OutOfGroupATTACHMENT' + i} is missing`);
             }
         });
-        it('[4846]: Verify TEXT Field Out Of Group on Case', async () => {
+        it('[DRDMV-13117]: Verify TEXT Field Out Of Group on Case', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasePo.isDynamicFieldDisplayed2(`${'OutOfGroupTempTEXT' + i}`)).toBeTruthy(`${'OutOfGroupTempTEXT' + i} is missing`);
             }

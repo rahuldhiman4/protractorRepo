@@ -192,7 +192,6 @@ describe('Create Flowset', () => {
         });
 
         it('[DRDMV-10022,DRDMV-10325,DRDMV-10005,DRDMV-10027]: Flowset Configuration with Process Mapping for Initialization function', async () => {
-
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', 'Flowsets - Console - Business Workflows');
             await consoleFlowset.searchAndSelectFlowset(flowsetMandatoryFieldsData.flowsetName);
@@ -204,8 +203,11 @@ describe('Create Flowset', () => {
             expect(await editFlowset.isProcessNameOptionPresentInDropDown(processAliasNameSocialFacilities)).toBeFalsy();
             expect(await editFlowset.isProcessNameOptionPresentInDropDown(processAliasNameCaseHR)).toBeTruthy();
             expect(await editFlowset.isProcessNameOptionPresentInDropDown(processAliasNameSocialHR)).toBeTruthy();
-            await editFlowset.selectStatus("Active");
+            await utilCommon.closeBladeOnSettings();
+
+            await editFlowset.clickOnAddNewMappingBtn();
             await editFlowset.selectProcessName(processAliasNameCaseHR);
+            await editFlowset.selectStatus("Active");
             await editFlowset.clickSaveBtnOnProcessMapping();
             await expect(editFlowset.searchProcessMappingName(processAliasNameCaseHR)).toBeTruthy(`First Process ${randomStr}` + "Processing mapping not visible");
             await expect(editFlowset.isProcessExecutionTypePresent('Additive')).toBeTruthy("Additive not present on grid");
