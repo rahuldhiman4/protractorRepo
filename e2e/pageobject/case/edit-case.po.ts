@@ -186,8 +186,8 @@ class CaseEditPage {
         await utilityCommon.isValuePresentInDropDown(this.selectors.resolutionCodeGuid, resolutionCode);
     }
 
-    async isValuePresentInCategoryTier1(categoryTier1: string): Promise<void> {
-        await utilityCommon.isValuePresentInDropDown(this.selectors.categoryTier1Guid, categoryTier1);
+    async isValuePresentInCategoryTier1(categoryTier1: string): Promise<boolean> {
+        return await utilityCommon.isValuePresentInDropDown(this.selectors.categoryTier1Guid, categoryTier1);
     }
 
     async setResolutionDescription(resolutionDescription: string): Promise<void> {

@@ -208,7 +208,7 @@ describe('Create Process in Flowset', () => {
             await createFlowsetProcessLibrary.selectProcessName(processName);
             await createFlowsetProcessLibrary.setAliasName('UpdateAlias' + randomStr);
             await createFlowsetProcessLibrary.clickSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (22096): The process alias name already exists for the line of business. Please select a different process alias name.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (22096): The process alias name already existsfor the line of business. Please select a different process alias name.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
             await createFlowsetProcessLibrary.clickCancelButton();
             await utilCommon.clickOnWarningOk();
 

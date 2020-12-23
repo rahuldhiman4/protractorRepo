@@ -1059,6 +1059,8 @@ describe('Preset Filter Funcational Verification', () => {
             expect(dynamicFilterArr2.includes('Article ID')).toBeFalsy(`Article ID is displayed`);
         });
         afterAll(async () => {
+            await utilityGrid.clickEditFilterCancelButton();
+            await utilityCommon.closeAllBlades();
             await utilityGrid.clearFilter();
         });
     });
