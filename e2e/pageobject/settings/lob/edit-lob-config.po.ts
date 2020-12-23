@@ -50,8 +50,8 @@ class DefineLOBEdit {
     }
 
     async setDescription(description:string): Promise<void> {
-        await $(this.selectors.name).clear();
-        await $(this.selectors.name).sendKeys(description);
+        await $(this.selectors.description).clear();
+        await $(this.selectors.description).sendKeys(description);
    }
 
     async getDescription(): Promise<string> {

@@ -783,7 +783,8 @@ describe('Email Configuration', () => {
             expect(await utilGrid.isGridRecordPresent('templateName' + randomStr)).toBeFalsy('Company specific Email Acknowledgement template for Human Resource LOB are displayed to the Case BA of Facilities LOB');
             expect(await utilGrid.isGridRecordPresent('FacilitiesGlobalAckTemplate' + randomStr)).toBeTruthy('Global Email Acknowledgement template for Facilities LOB are displayed to the Case BA of Human Resource LOB');
             expect(await utilGrid.isGridRecordPresent('FacilitiesAckTemplate' + randomStr)).toBeTruthy('Company specific Email Acknowledgement template for Facilities LOB are displayed to the Case BA of Human Resource LOB');
-
+        });
+        it('[DRDMV-9403,DRDMV-9402]: Verify acknowledgment template are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
             await utilGrid.selectLineOfBusiness('Human Resource');
             expect(await utilGrid.isGridRecordPresent(templateData.templateName)).toBeTruthy('Global Email Acknowledgement template for Human resource LOB are not displayed to the Case BA of Facilities LOB');
             expect(await utilGrid.isGridRecordPresent('templateName' + randomStr)).toBeTruthy('Company specific Email Acknowledgement template for Human resource LOB are not displayed to the Case BA of Facilities LOB');
@@ -799,7 +800,6 @@ describe('Email Configuration', () => {
             expect(await editEmailConfigPo.isAcknowledgementPresentnDropDown(templateData.templateName)).toBeTruthy();
             expect(await editEmailConfigPo.isAcknowledgementDropDownPresent('FacilitiesGlobalAckTemplate' + randomStr)).toBeFalsy();
             expect(await editEmailConfigPo.isAcknowledgementPresentnDropDown('FacilitiesAckTemplate' + randomStr)).toBeFalsy();
-
         });
 
         it('[DRDMV-9403,DRDMV-9402]: Verify acknowledgment template are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
@@ -816,6 +816,8 @@ describe('Email Configuration', () => {
             await utilGrid.selectLineOfBusiness('Human Resource');
             expect(await utilGrid.isGridRecordPresent(templateData.templateName)).toBeTruthy('Global Email Acknowledgement template for Human resource LOB are not displayed to the Case BA of Facilities LOB');
             expect(await utilGrid.isGridRecordPresent('templateName' + randomStr)).toBeTruthy('Company specific Email Acknowledgement template for Human resource LOB are not displayed to the Case BA of Facilities LOB');
+        });
+        it('[DRDMV-9403,DRDMV-9402]: Verify acknowledgment template are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
             expect(await utilGrid.isGridRecordPresent('FacilitiesGlobalAckTemplate' + randomStr)).toBeFalsy('Global Email Acknowledgement template for Facilities LOB are displayed to the Case BA of Human resource LOB');
             expect(await utilGrid.isGridRecordPresent('FacilitiesAckTemplate' + randomStr)).toBeFalsy('Company specific Email Acknowledgement template for Facilities LOB are displayed to the Case BA of Human resource LOB');
 
