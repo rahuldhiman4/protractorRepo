@@ -163,6 +163,13 @@ class ViewCaseTemplate {
         return false;
     }
 
+    async isDynamicFieldDisplayed2(value: string): Promise<boolean> {
+        return await element(by.cssContainingText(this.selectors.dynamicFieldsName, value)).isPresent().then(async (link) => {
+            if (link) return await element(by.cssContainingText(this.selectors.dynamicFieldsName, value)).isDisplayed();
+            else return false;
+        });
+    }
+    
     async isGroupDisplayed(groupName: string): Promise<boolean> {
         return await $(`[rx-view-component-id="ba0546ff-0bf1-4678-8312-630242b43e3c"] .group-container__name div[title=${groupName}]`).isDisplayed();
     }

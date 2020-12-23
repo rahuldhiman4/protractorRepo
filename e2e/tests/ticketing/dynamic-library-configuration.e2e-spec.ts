@@ -1,5 +1,7 @@
+
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
+import caseConsolePo from "../../pageobject/case/case-console.po";
 import casePreviewPo from '../../pageobject/case/case-preview.po';
 import createCasePo from '../../pageobject/case/create-case.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
@@ -11,6 +13,7 @@ import createDynamicFieldLibraryConfigPo from '../../pageobject/settings/applica
 import dynamicFieldLibraryConfigConsolePo from '../../pageobject/settings/application-config/dynamic-field-library-config-console.po';
 import editDynamicFieldLibraryConfigPo from '../../pageobject/settings/application-config/edit-dynamic-field-library-config.po';
 import consoleCasetemplatePo from '../../pageobject/settings/case-management/console-casetemplate.po';
+import editCasetemplatePo from "../../pageobject/settings/case-management/edit-casetemplate.po";
 import viewCasetemplatePo from '../../pageobject/settings/case-management/view-casetemplate.po';
 import selectTaskTemplate from "../../pageobject/settings/task-management/console-tasktemplate.po";
 import viewTasktemplatePo from '../../pageobject/settings/task-management/view-tasktemplate.po';
@@ -72,7 +75,7 @@ describe('Dynamic Library Configuration', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', 'Field Management Console - Business Workflows');
             let headers: string[] = ["Field Description", "Field Name", "Field Value Type", "Status"];
-            let updatedHeaders: string[] = ["Field Description", "Field Name", "Field Value Type", "Status", "InformationSource", "Confidential" ];
+            let updatedHeaders: string[] = ["Field Description", "Field Name", "Field Value Type", "Status", "InformationSource", "Confidential"];
             let header: string[] = ["InformationSource", "Confidential"]
             //field Text type    
             expect(await dynamicFieldLibraryConfigConsolePo.areRequestedColumnMatches(headers)).toBeTruthy();
@@ -163,7 +166,7 @@ describe('Dynamic Library Configuration', () => {
         it('[DRDMV-13104,DRDMV-13103,DRDMV-13107]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
             await utilGrid.clearFilter();
             await utilGrid.addFilter("Field Value Type", "LIST", "checkbox");
-            expect( await utilGrid.isGridRecordPresent('List' + randomString)).toBeTruthy();
+            expect(await utilGrid.isGridRecordPresent('List' + randomString)).toBeTruthy();
             await utilGrid.clearFilter();
             await utilGrid.addFilter("InformationSource", "Requester", "checkbox");
             expect(await utilGrid.isGridRecordPresent('List' + randomString)).toBeTruthy();
@@ -530,6 +533,213 @@ describe('Dynamic Library Configuration', () => {
             await dynamicFieldsPage.removeField('GroupOne');
             await dynamicFieldsPage.clickSaveButton();
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed("FieldGroup1")).toBeFalsy();
+        });
+    });
+
+    describe('[4846]: [Dynamic Data]- Add Dynamic Fields and Groups to Case Template', async () => {
+        let caseTemplate, casetemplateData, randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseResponse;
+        beforeAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteDynamicFieldAndGroup();
+            casetemplateData = {
+                "templateName": randomStr + 'caseTemplate4846',
+                "templateSummary": randomStr + 'caseTemplate4846',
+                "templateStatus": "Draft",
+                "assignee": "qkatawazi",
+                "company": "Petramco",
+                "businessUnit": "United States Support",
+                "ownerBU": "United States Support",
+                "supportGroup": "US Support 3",
+                "ownerGroup": "US Support 3"
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            caseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
+            console.log('CaseTemplate>>>>>>>>', caseTemplate);
+            await apiHelper.createDynamicDataOnTemplate(caseTemplate.id, 'BULK_DYNAMIC_FIELDS_INSIDE_OUTSIDE_GROUP');
+
+        });
+        it('[4846]: [Dynamic Data]- Add Dynamic Fields and Groups to Case Template', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await utilGrid.searchAndOpenHyperlink(casetemplateData.templateName);
+            await viewCasetemplatePo.clickEditTemplateMetaData();
+            await editCasetemplatePo.changeTemplateStatusDropdownValue('Active');
+            await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
+            expect(await viewCasetemplatePo.isGroupDisplayed('GroupOne')).toBeTruthy();
+        });
+        it('[4846]: Verify Numbers Field InSide Of Group on Case template', async () => {
+            for (let i = 1; i <= 15; i++) {
+                expect(await viewCasetemplatePo.isDynamicFieldDisplayed2(`${'WithInGroupNUMBER' + i}`)).toBeTruthy(`${'WithInGroupNUMBER' + i} is missing`);
+            }
+        });
+        it('[4846]: Verify DATE Field InSide Of Group on Case template', async () => {
+            for (let i = 1; i <= 15; i++) {
+                expect(await viewCasetemplatePo.isDynamicFieldDisplayed2(`${'WithInGroupDATE' + i}`)).toBeTruthy(`${'WithInGroupDATE' + i} is missing`);
+            }
+        });
+        it('[4846]: Verify BOOLEAN Field InSide Of Group on Case template', async () => {
+            for (let i = 1; i <= 15; i++) {
+                expect(await viewCasetemplatePo.isDynamicFieldDisplayed2(`${'WithInGroupBOOLEAN' + i}`)).toBeTruthy(`${'WithInGroupBOOLEAN' + i} is missing`);
+            }
+        });
+        it('[4846]: Verify DATE_TIME Field InSide Of Group on Case template', async () => {
+            for (let i = 1; i <= 15; i++) {
+                expect(await viewCasetemplatePo.isDynamicFieldDisplayed2(`${'WithInGroupDATETIME' + i}`)).toBeTruthy(`${'WithInGroupDATETIME' + i} is missing`);
+            }
+        });
+        it('[4846]: Verify TIME Field InSide Of Group on Case template', async () => {
+            for (let i = 1; i <= 15; i++) {
+                expect(await viewCasetemplatePo.isDynamicFieldDisplayed2(`${'WithInGroupTIME' + i}`)).toBeTruthy(`${'WithInGroupTIME' + i} is missing`);
+            }
+        });
+        it('[4846]: Verify LIST Field InSide Of Group on Case template', async () => {
+            for (let i = 1; i <= 15; i++) {
+                expect(await viewCasetemplatePo.isDynamicFieldDisplayed2(`${'WithInGroupLIST' + i}`)).toBeTruthy(`${'WithInGroupLIST' + i} is missing`);
+            }
+        });
+        it('[4846]: Verify ATTACHMENT Field InSide Of Group on Case template', async () => {
+            for (let i = 1; i <= 15; i++) {
+                expect(await viewCasetemplatePo.isDynamicFieldDisplayed2(`${'WithInGroupATTACHMENT' + i}`)).toBeTruthy(`${'WithInGroupATTACHMENT' + i} is missing`);
+            }
+        });
+        it('[4846]: Verify TEXT Field InSide Of Group on Case template', async () => {
+            for (let i = 1; i <= 15; i++) {
+                expect(await viewCasetemplatePo.isDynamicFieldDisplayed2(`${'WithInGroupTempTEXT' + i}`)).toBeTruthy(`${'WithInGroupTempTEXT' + i} is missing`);
+            }
+        });
+        it('[4846]: Verify Numbers Field Out Of Group on Case template', async () => {
+            for (let i = 1; i <= 15; i++) {
+                expect(await viewCasetemplatePo.isDynamicFieldDisplayed2(`${'OutOfGroupNUMBER' + i}`)).toBeTruthy(`${'OutOfGroupNUMBER' + i} is missing`);
+            }
+        });
+        it('[4846]: Verify DATE Field Out Of Group on Case template', async () => {
+            for (let i = 1; i <= 15; i++) {
+                expect(await viewCasetemplatePo.isDynamicFieldDisplayed2(`${'OutOfGroupDATE' + i}`)).toBeTruthy(`${'OutOfGroupDATE' + i} is missing`);
+            }
+        });
+        it('[4846]: Verify BOOLEAN Field Out Of Group on Case template', async () => {
+            for (let i = 1; i <= 15; i++) {
+                expect(await viewCasetemplatePo.isDynamicFieldDisplayed2(`${'OutOfGroupBOOLEAN' + i}`)).toBeTruthy(`${'OutOfGroupBOOLEAN' + i} is missing`);
+            }
+        });
+        it('[4846]:Verify DATE_TIME Field Out Of Group on Case template', async () => {
+            for (let i = 1; i <= 15; i++) {
+                expect(await viewCasetemplatePo.isDynamicFieldDisplayed2(`${'OutOfGroupDATETIME' + i}`)).toBeTruthy(`${'OutOfGroupDATETIME' + i} is missing`);
+            }
+        });
+        it('[4846]: Verify TIME Field Out Of Group on Case template', async () => {
+            for (let i = 1; i <= 15; i++) {
+                expect(await viewCasetemplatePo.isDynamicFieldDisplayed2(`${'OutOfGroupTIME' + i}`)).toBeTruthy(`${'OutOfGroupTIME' + i} is missing`);
+            }
+        });
+        it('[4846]: Verify LIST Field Out Of Group on Case template', async () => {
+            for (let i = 1; i <= 15; i++) {
+                expect(await viewCasetemplatePo.isDynamicFieldDisplayed2(`${'OutOfGroupLIST' + i}`)).toBeTruthy(`${'OutOfGroupLIST' + i} is missing`);
+            }
+        });
+        it('[4846]: Verify ATTACHMENT Field Out Of Group on Case template', async () => {
+            for (let i = 1; i <= 15; i++) {
+                expect(await viewCasetemplatePo.isDynamicFieldDisplayed2(`${'OutOfGroupATTACHMENT' + i}`)).toBeTruthy(`${'OutOfGroupATTACHMENT' + i} is missing`);
+            }
+        });
+        it('[4846]: Verify TEXT Field Out Of Group on Case template', async () => {
+            for (let i = 1; i <= 15; i++) {
+                expect(await viewCasetemplatePo.isDynamicFieldDisplayed2(`${'OutOfGroupTempTEXT' + i}`)).toBeTruthy(`${'OutOfGroupTempTEXT' + i} is missing`);
+            }
+        });
+
+        it('[4846]: Search and open case', async () => {
+            let caseData = {
+                "Requester": "apavlik",
+                "Summary": "caseSummaryForDynamicData4846",
+                "Origin": "Agent",
+                "Case Template ID": caseTemplate.displayId
+            }
+            caseResponse = await apiHelper.createCase(caseData);
+
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseResponse.displayId);
+        });
+        it('[4846]: Verify Numbers Field InSide Of Group on Case', async () => {
+            for (let i = 1; i <= 15; i++) {
+                expect(await viewCasePo.isDynamicFieldDisplayed2(`${'WithInGroupNUMBER' + i}`)).toBeTruthy(`${'WithInGroupNUMBER' + i} is missing`);
+            }
+        });
+        it('[4846]: Verify DATE Field InSide Of Group on Case', async () => {
+            for (let i = 1; i <= 15; i++) {
+                expect(await viewCasePo.isDynamicFieldDisplayed2(`${'WithInGroupDATE' + i}`)).toBeTruthy(`${'WithInGroupDATE' + i} is missing`);
+            }
+        });
+        it('[4846]: Verify BOOLEAN Field InSide Of Group on Case', async () => {
+            for (let i = 1; i <= 15; i++) {
+                expect(await viewCasePo.isDynamicFieldDisplayed2(`${'WithInGroupBOOLEAN' + i}`)).toBeTruthy(`${'WithInGroupBOOLEAN' + i} is missing`);
+            }
+        });
+        it('[4846]: Verify DATE_TIME Field InSide Of Group on Case', async () => {
+            for (let i = 1; i <= 15; i++) {
+                expect(await viewCasePo.isDynamicFieldDisplayed2(`${'WithInGroupDATETIME' + i}`)).toBeTruthy(`${'WithInGroupDATETIME' + i} is missing`);
+            }
+        });
+        it('[4846]: Verify TIME Field InSide Of Group on Case', async () => {
+            for (let i = 1; i <= 15; i++) {
+                expect(await viewCasePo.isDynamicFieldDisplayed2(`${'WithInGroupTIME' + i}`)).toBeTruthy(`${'WithInGroupTIME' + i} is missing`);
+            }
+        });
+        it('[4846]: Verify LIST Field InSide Of Group on Case', async () => {
+            for (let i = 1; i <= 15; i++) {
+                expect(await viewCasePo.isDynamicFieldDisplayed2(`${'WithInGroupLIST' + i}`)).toBeTruthy(`${'WithInGroupLIST' + i} is missing`);
+            }
+        });
+        it('[4846]: Verify ATTACHMENT Field InSide Of Group on Case', async () => {
+            for (let i = 1; i <= 15; i++) {
+                expect(await viewCasePo.isDynamicFieldDisplayed2(`${'WithInGroupATTACHMENT' + i}`)).toBeTruthy(`${'WithInGroupATTACHMENT' + i} is missing`);
+            }
+        });
+        it('[4846]: Verify TEXT Field InSide Of Group on Case', async () => {
+            for (let i = 1; i <= 15; i++) {
+                expect(await viewCasePo.isDynamicFieldDisplayed2(`${'WithInGroupTempTEXT' + i}`)).toBeTruthy(`${'WithInGroupTempTEXT' + i} is missing`);
+            }
+        });
+        it('[4846]: Verify Numbers Field Out Of Group on Case', async () => {
+            for (let i = 1; i <= 15; i++) {
+                expect(await viewCasePo.isDynamicFieldDisplayed2(`${'OutOfGroupNUMBER' + i}`)).toBeTruthy(`${'OutOfGroupNUMBER' + i} is missing`);
+            }
+        });
+        it('[4846]: Verify DATE Field Out Of Group on Case', async () => {
+            for (let i = 1; i <= 15; i++) {
+                expect(await viewCasePo.isDynamicFieldDisplayed2(`${'OutOfGroupDATE' + i}`)).toBeTruthy(`${'OutOfGroupDATE' + i} is missing`);
+            }
+        });
+        it('[4846]: Verify BOOLEAN Field Out Of Group on Case', async () => {
+            for (let i = 1; i <= 15; i++) {
+                expect(await viewCasePo.isDynamicFieldDisplayed2(`${'OutOfGroupBOOLEAN' + i}`)).toBeTruthy(`${'OutOfGroupBOOLEAN' + i} is missing`);
+            }
+        });
+        it('[4846]:Verify DATE_TIME Field Out Of Group on Case', async () => {
+            for (let i = 1; i <= 15; i++) {
+                expect(await viewCasePo.isDynamicFieldDisplayed2(`${'OutOfGroupDATETIME' + i}`)).toBeTruthy(`${'OutOfGroupDATETIME' + i} is missing`);
+            }
+        });
+        it('[4846]: Verify TIME Field Out Of Group on Case', async () => {
+            for (let i = 1; i <= 15; i++) {
+                expect(await viewCasePo.isDynamicFieldDisplayed2(`${'OutOfGroupTIME' + i}`)).toBeTruthy(`${'OutOfGroupTIME' + i} is missing`);
+            }
+        });
+        it('[4846]: Verify LIST Field Out Of Group on Case', async () => {
+            for (let i = 1; i <= 15; i++) {
+                expect(await viewCasePo.isDynamicFieldDisplayed2(`${'OutOfGroupLIST' + i}`)).toBeTruthy(`${'OutOfGroupLIST' + i} is missing`);
+            }
+        });
+        it('[4846]: Verify ATTACHMENT Field Out Of Group on Case', async () => {
+            for (let i = 1; i <= 15; i++) {
+                expect(await viewCasePo.isDynamicFieldDisplayed2(`${'OutOfGroupATTACHMENT' + i}`)).toBeTruthy(`${'OutOfGroupATTACHMENT' + i} is missing`);
+            }
+        });
+        it('[4846]: Verify TEXT Field Out Of Group on Case', async () => {
+            for (let i = 1; i <= 15; i++) {
+                expect(await viewCasePo.isDynamicFieldDisplayed2(`${'OutOfGroupTempTEXT' + i}`)).toBeTruthy(`${'OutOfGroupTempTEXT' + i} is missing`);
+            }
         });
     });
 });
