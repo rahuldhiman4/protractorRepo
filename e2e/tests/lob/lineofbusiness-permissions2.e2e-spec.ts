@@ -237,7 +237,7 @@ describe('Line of Business Permissions Tests Extended', () => {
             await lobManagmentCreatePo.setDescription('descriptionLOB');
             await lobManagmentCreatePo.saveLob();
             //waiting for lob create
-            await browser.sleep(30000);
+            await browser.sleep(200000);
             await apiHelper.apiLogin('tadmin');
             await apiHelper.updateFoundationEntity('Person', 'qkatawazi', { functionalRole: "testLOB" });
             await lobManagmentConsolePo.searchAndOpenLob('testLOB');

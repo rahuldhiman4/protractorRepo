@@ -403,14 +403,10 @@ class ViewCasePage {
     }
 
     async isFileDisplayed(fileName: string): Promise<boolean> {
-        let fileCount: number = await $$('span.bwf-attachment-container__file-name').count();
-        for (let i = 0; i < fileCount; i++) {
-            let fileNameText = await $$('span.bwf-attachment-container__file-name').get(i).getText();
-            if (fileName == fileNameText) {
-                return true;
-            }
-        }
-        return false;
+        return await element(by.cssContainingText('span.bwf-attachment-container__file-name', fileName)).isPresent().then(async (result) => {
+            if(result) return await element(by.cssContainingText('span.bwf-attachment-container__file-name', fileName)).isDisplayed();
+            else return false;
+        })
     }
 
     async getSlaBarColor(): Promise<string> {

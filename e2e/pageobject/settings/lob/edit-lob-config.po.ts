@@ -44,15 +44,15 @@ class DefineLOBEdit {
         return await $(this.selectors.name).getAttribute('value');
     }
 
-    async setName(lob:string): Promise<void> {
-         await $(this.selectors.name).clear();
-         await $(this.selectors.name).sendKeys(lob);
+    async setName(lob: string): Promise<void> {
+        await $(this.selectors.name).clear();
+        await $(this.selectors.name).sendKeys(lob);
     }
 
-    async setDescription(description:string): Promise<void> {
+    async setDescription(description: string): Promise<void> {
         await $(this.selectors.description).clear();
         await $(this.selectors.description).sendKeys(description);
-   }
+    }
 
     async getDescription(): Promise<string> {
         return await $(this.selectors.description).getAttribute('value');
@@ -71,7 +71,7 @@ class DefineLOBEdit {
     }
 
     async getBundleNameText(): Promise<string> {
-        return await $(this.selectors.bundleName).getText();
+        return await $(this.selectors.bundleName).getAttribute("value");
     }
 
 }

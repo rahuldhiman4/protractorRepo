@@ -252,7 +252,7 @@ describe('Notes template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'people notes template Console - Person - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'Activity Notes template Console - Person - Business Workflows');
             expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy('people notes template for Facilities LOB are displayed to Human Resource LOB User.');
         });
 
