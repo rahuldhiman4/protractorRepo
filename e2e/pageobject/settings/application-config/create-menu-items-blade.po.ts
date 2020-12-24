@@ -133,7 +133,7 @@ class CreateNewMenuOptionPage {
     }
 
     async getLobValue(): Promise<string> {
-        return await $(this.selectors.lob).getText();
+        return await $(this.selectors.lobValue).getText();
     }
 }
 

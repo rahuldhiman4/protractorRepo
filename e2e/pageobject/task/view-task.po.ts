@@ -461,8 +461,8 @@ class ViewTask {
     }
 
     async isDynamicFieldDisplayed(fieldName: string): Promise<boolean> {
-        return await element(by.cssContainingText('bwf-read-only-field label', fieldName)).isPresent().then(async (result) => {
-            if(result) return await element(by.cssContainingText('bwf-read-only-field label', fieldName)).isDisplayed();
+        return await element(by.cssContainingText('[class="d-textfield ng-star-inserted"] label', fieldName)).isPresent().then(async (result) => {
+            if(result) return await element(by.cssContainingText('[class="d-textfield ng-star-inserted"] label', fieldName)).isDisplayed();
             else return false;
         })
     }
