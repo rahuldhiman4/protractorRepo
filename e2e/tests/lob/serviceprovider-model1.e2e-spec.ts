@@ -382,7 +382,7 @@ describe('Service Provider Data Model Tests', () => {
             await createCasePage.selectRequester('Young Neil');
             await createCasePage.setSummary('DRDMV23763CaseSummary');
             await createCasePage.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.setAssignee('Phyto', 'Kingston HR', 'Kingston AskHR', 'Samara Moran');
+            await changeAssignmentBladePo.setAssignee('Kingston', 'Kingston Legal', 'Legal Support', 'Youngman Henny');
             await createCasePage.clickSaveCaseButton();
             await previewCasePage.clickGoToCaseButton();
             await viewCasePage.clickOnStatus();
