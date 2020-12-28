@@ -37,6 +37,7 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
+import utilityGrid from '../../utils/utility.grid';
 let userData1 = undefined, userData2;
 
 describe('Dynamic Hidden Data', () => {
@@ -778,9 +779,12 @@ describe('Dynamic Hidden Data', () => {
         });
         it('[DRDMV-21418]: Validate dynamic field ', async () => {
             expect(await viewCasePo.isDynamicFieldDisplayed('Field1OutsideDRDMV21415')).toBeTruthy();
+           let caseid =  await viewCasePo.getCaseID();
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(`manualTaskTemplate1 ${randomStr}`);
             await manageTaskBladePo.clickCloseButton();
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(caseid);
             expect(await viewCasePo.isDynamicFieldDisplayed('Field1OutsideDRDMV21415')).toBeTruthy();
         });
         afterAll(async () => {
