@@ -186,5 +186,13 @@
 	"qcespedes": {
 		"userName": "qcespedes@petramco.com",
 		"userPassword": "Password_1234"
+	},
+	"cbarton": {
+		"userName": "cbarton@petramco.com",
+		"userPassword": "Password_1234"
+	},
+	"ajoshi": {
+		"userName": "ajoshi@petramco.com",
+		"userPassword": "Password_1234"
 	}
 }

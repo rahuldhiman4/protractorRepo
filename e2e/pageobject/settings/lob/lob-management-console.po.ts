@@ -37,15 +37,15 @@ class LobManagementConsole {
         await utilCommon.selectDropDown(this.selectors.statusGuid, status);
     }
 
-    async isTabPresent(giventab: string): Promise<void> {
-        await element(by.cssContainingText(this.selectors.tab, giventab)).isPresent().then(async (present) => {
-            if (present) return element(by.cssContainingText(this.selectors.tab, giventab)).getText();
+    async isTabPresent(giventab: string): Promise<boolean> {
+        return await element(by.cssContainingText(this.selectors.tab, giventab)).isPresent().then(async (result) => {
+            if (result) return element(by.cssContainingText(this.selectors.tab, giventab)).isDisplayed();
             else return null;
         });
     }
 
-    async isLobBundleEnabled(): Promise<boolean> {
-     return await $(this.selectors.lobBundleName).isEnabled();
+    async isLobBundleDisabled(): Promise<string> {
+        return await $(this.selectors.lobBundleName).getAttribute('disabled');
     }
 
 }

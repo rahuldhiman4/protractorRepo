@@ -1245,8 +1245,8 @@ describe('Dynamic data', () => {
             await apiHelper.createCaseTemplate(caseTemplatePetramcoWithoutTaskFlowData);
 
             manualTaskTemplateData = {
-                "templateName": `DRDMV14901 Manual ${randomStr}`,
-                "templateSummary": `DRDMV14901 Manual${randomStr}`,
+                "templateName": `DRDMV14901Manual${randomStr}`,
+                "templateSummary": `DRDMV14901Manual${randomStr}`,
                 "templateStatus": "Active",
                 "category1": 'Applications',
                 "category2": 'Help Desk',
@@ -1264,8 +1264,8 @@ describe('Dynamic data', () => {
             await apiHelper.createDynamicDataOnTemplate(manualTasktemplateResponse.id, 'TASK_TEMPLATE__DYNAMIC_FIELDS_MANUAL');
 
             externalTaskTemplateData = {
-                "templateName": `DRDMV14901 External ${randomStr}`,
-                "templateSummary": `DRDMV14901 External${randomStr}`,
+                "templateName": `DRDMV14901External${randomStr}`,
+                "templateSummary": `DRDMV14901External${randomStr}`,
                 "templateStatus": "Active",
                 "category1": 'Applications',
                 "category2": 'Help Desk',
@@ -1283,8 +1283,8 @@ describe('Dynamic data', () => {
             await apiHelper.createDynamicDataOnTemplate(externalTasktemplateResponse.id, 'TASK_TEMPLATE__DYNAMIC_FIELDS_EXTERNAL');
 
             automatedTaskTemplateData = {
-                "templateName": `DRDMV14901 Automated ${randomStr}`,
-                "templateSummary": `DRDMV14901 Automated${randomStr}`,
+                "templateName": `DRDMV14901Automated${randomStr}`,
+                "templateSummary": `DRDMV14901Automated${randomStr}`,
                 "templateStatus": "Active",
                 "processBundle": "com.bmc.dsm.case-lib",
                 "category1": 'Applications',
@@ -1319,7 +1319,12 @@ describe('Dynamic data', () => {
             await editCasePo.clickOnChangeCaseTemplate();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplatePetramcoWithTaskFlowData.templateName);
             await editCasePo.clickSaveCase();
-            await viewCasePo.clickOnRefreshTaskList();
+            let caseId= await viewCasePo.getCaseID();
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(caseId)
+        });
+        it('[DRDMV-24405]: Verify Dynamic Fields for Task are populated if Case template has been changed', async () => {
             await viewCasePo.clickOnTaskLink(manualTaskTemplateData.templateName);
             expect(await viewTaskPo.isDynamicFieldDisplayed('manualtempTextC')).toBeTruthy();
             expect(await viewTaskPo.isDynamicFieldDisplayed('manualtempNumberC')).toBeTruthy();

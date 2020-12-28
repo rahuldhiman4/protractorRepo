@@ -27,7 +27,7 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
-describe('Service Provider Model Tests', () => {
+describe('Service Provider Data Model Tests', () => {
     let kingstoneHRUserName = 'smoran@petramco.com';
     let oracleUserName = 'umiguelde@petramco.com';
     let kingstoneLegalUserName = 'yhenny@petramco.com';
@@ -381,7 +381,8 @@ describe('Service Provider Model Tests', () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Young Neil');
             await createCasePage.setSummary('DRDMV23763CaseSummary');
-            await createCasePage.clickAssignToMeButton();
+            await createCasePage.clickChangeAssignmentButton();
+            await changeAssignmentBladePo.setAssignee('Kingston', 'Kingston Legal', 'Legal Support', 'Youngman Henny');
             await createCasePage.clickSaveCaseButton();
             await previewCasePage.clickGoToCaseButton();
             await viewCasePage.clickOnStatus();

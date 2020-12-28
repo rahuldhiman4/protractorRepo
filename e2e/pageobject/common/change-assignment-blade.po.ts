@@ -188,6 +188,13 @@ class ChangeAssignmentBlade {
             else return false;
         });
     }
+
+    async selectNoneCompany(): Promise<void> {
+        const companyDropDown = await $$(this.selectors.assignmentDropDownList).get(0);
+        await companyDropDown.$('button').click();
+        let option = await element(by.cssContainingText(this.selectors.selectOptions, 'None'));
+        await option.click();
+    }
 }
 
 export default new ChangeAssignmentBlade();

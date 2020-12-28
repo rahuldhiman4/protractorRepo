@@ -15,10 +15,11 @@ class AccessTab {
         closeKnowledgeAccessBlade: '[rx-view-component-id="0d8d9c7d-7e85-4277-9452-64fbba8df10d"] button',
         knowledgeAccess: '[rx-view-component-id="a99704e0-5441-4ddc-8357-bd4fc7d078d4"] .bwf-access-manager .access-group .btn-title',
         confidencialAccess: '[rx-view-component-id="b1606736-7480-4368-aac6-a8273f0ff0d5"] .bwf-access-manager .access-group .btn-title',
-        entityDropDown: '.support-group-form button.dropdown-toggle'
+        entityDropDown: '.support-group-form button.dropdown-toggle',
+        dropDownOption: '.dropdown_select__menu-content button',
     }
 
-    async clickToExpandAccessEntitiySearch(accessName: string, moduleName:string): Promise<void> {
+    async clickToExpandAccessEntitiySearch(accessName: string, moduleName: string): Promise<void> {
         switch (moduleName) {
             case "Confidential Group": {
                 await element(by.cssContainingText(this.selectors.confidencialAccess, accessName)).click();                
@@ -81,7 +82,7 @@ class AccessTab {
         }
     }
 
-    async selectAgent(agentName: string,agentInput:string): Promise<void> {
+    async selectAgent(agentName: string, agentInput: string): Promise<void> {
         let agentList = '.bwf-flexi-type-ahead';
         let agentCount: number = await $$('.bwf-flexi-type-ahead').count();
         for (let i: number = 0; i < agentCount; i++) {
@@ -98,11 +99,11 @@ class AccessTab {
         await $$('.person-field input').last().clear();
         await $$('.person-field input').last().sendKeys(agentName);
         return await $('.rx-typeahead-popup-content').isPresent().then(async (result) => {
-            if(result) return await $('.rx-typeahead-popup-content').isDisplayed();
+            if (result) return await $('.rx-typeahead-popup-content').isDisplayed();
             else return false;
         })
 
-     }
+    }
 
     async clickAccessEntitiyAddButton(dropdownName: string): Promise<void> {
         let accessList = 'ux-access-manager .access-group div.d-flex.flex-row';
@@ -126,8 +127,8 @@ class AccessTab {
         }
     }
 
-    async clickAccessRemoveWarningBtn(btnName:string): Promise<void> {
-        if(btnName == "Yes") await $(this.selectors.removeAccessOptionYes).click();
+    async clickAccessRemoveWarningBtn(btnName: string): Promise<void> {
+        if (btnName == "Yes") await $(this.selectors.removeAccessOptionYes).click();
         else await $(this.selectors.removeAccessOptionNo).click();
     }
 
@@ -135,27 +136,27 @@ class AccessTab {
         await $(this.selectors.closeKnowledgeAccessBlade).click();
     }
 
-    async isAccessEntityDisplayed(entityName: string,moduleName:string): Promise<boolean> {
+    async isAccessEntityDisplayed(entityName: string, moduleName: string): Promise<boolean> {
         switch (moduleName) {
             case "Confidential Group": {
                 return await element(by.cssContainingText(this.selectors.confidencialAccess, entityName)).isPresent().then(async (result) => {
                     if (result) return await element(by.cssContainingText(this.selectors.confidencialAccess, entityName)).isDisplayed();
                     else return false;
-                });                
+                });
                 break;
             }
             case "Case": {
                 return await element(by.cssContainingText(this.selectors.caseAccess, entityName)).isPresent().then(async (result) => {
                     if (result) return await element(by.cssContainingText(this.selectors.caseAccess, entityName)).isDisplayed();
                     else return false;
-                });                
+                });
                 break;
             }
             case "Knowledge": {
                 return await element(by.cssContainingText(this.selectors.knowledgeAccess, entityName)).isPresent().then(async (result) => {
                     if (result) return await element(by.cssContainingText(this.selectors.knowledgeAccess, entityName)).isDisplayed();
                     else return false;
-                });                
+                });
                 break;
             }
             default: {
@@ -165,9 +166,9 @@ class AccessTab {
         }
     }
 
-    async clickRemoveAccess(accessGroupName: string,isKnowledgeAccess?: boolean): Promise<void> {
-        let entityAccessName:string = 'span.badge-text';
-        let accessCrossIcon:string = 'ux-access-manager div.bfw-badge >span.d-icon-cross';
+    async clickRemoveAccess(accessGroupName: string, isKnowledgeAccess?: boolean): Promise<void> {
+        let entityAccessName: string = 'span.badge-text';
+        let accessCrossIcon: string = 'ux-access-manager div.bfw-badge >span.d-icon-cross';
         if (isKnowledgeAccess) {
             entityAccessName = '[rx-view-component-id= "a99704e0-5441-4ddc-8357-bd4fc7d078d4"] span.badge-text';
             accessCrossIcon = 'ux-access-manager[rx-view-component-id= "a99704e0-5441-4ddc-8357-bd4fc7d078d4"] div.bfw-badge >span.d-icon-cross';
@@ -181,31 +182,22 @@ class AccessTab {
         }
     }
 
-    async isValuePresentInDropdown(dropDownLabel: string, dropDownValue: string): Promise<boolean> {
-        let locator: ElementFinder = undefined;
-        switch (dropDownLabel) {
-            case "Company": {
-                locator = await $$(this.selectors.entityDropDown).get(4);
-                break;
-            }
-            case "Business Unit": {
-                locator = await $$(this.selectors.entityDropDown).get(5);
-                break;
-            }
-            case "Business Unit": {
-                locator = await $$(this.selectors.entityDropDown).get(5);
-                break;
-            }
-            case "Support Group": {
-                locator = await $$(this.selectors.entityDropDown).get(7);
-                break;
-            }
-            default: {
-                console.log(dropDownLabel, ' is not a valid parameter');
-                break;
+    async isValuePresentInDropdown(dropDownList: string, entityValue: string): Promise<boolean> {
+        let count: number;
+        let dropDownListRows = 'ux-access-manager .support-group-form div.d-flex.flex-row';
+        let dropDownListCount: number = await $$('ux-access-manager .support-group-form div.d-flex.flex-row').count();
+        let dropDown;
+        for (let i: number = 0; i < dropDownListCount; i++) {
+            let dropDownName = await $$(dropDownListRows).get(i).$('.dropdown-toggle').getText();
+            if (dropDownName == dropDownList) {
+                dropDown = await $$(dropDownListRows).get(i).$('.dropdown-toggle');
+                dropDown.click();
+                await $(this.selectors.searchInputField).sendKeys(entityValue);
+                count = await $$(this.selectors.dropDownOption).count();
+                dropDown.click();
             }
         }
-        return await utilityCommon.isValuePresentInDropDown(locator, dropDownValue);
+        if (count >= 1) { return true; } else { return false; }
     }
 
     async clickOnResetToDefault(): Promise<void> {

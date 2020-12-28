@@ -144,7 +144,10 @@ class PreviewCaseTemplateBlade {
     }
 
     async isGroupDisplayed(groupName: string): Promise<boolean> {
-        return await $(`[rx-view-component-id="3cacaba4-7a3b-411f-85c1-cb76bb7bc789"] .group-container__name div[title=${groupName}]`).isDisplayed();
+        return await  $(`[rx-view-component-id="3cacaba4-7a3b-411f-85c1-cb76bb7bc789"] .group-container__name div[title=${groupName}]`).isPresent().then(async (result) => {
+            if(result) return await  $(`[rx-view-component-id="3cacaba4-7a3b-411f-85c1-cb76bb7bc789"] .group-container__name div[title=${groupName}]`).isDisplayed();
+            else return false;
+        })
     }
 
     async isDynamicFieldDisplayed(fieldName: string): Promise<boolean> {
