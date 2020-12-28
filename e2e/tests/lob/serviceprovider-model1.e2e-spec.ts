@@ -27,7 +27,7 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
-describe('Create Process in Flowset', () => {
+describe('Service Provider Model Tests', () => {
     let kingstoneHRUserName = 'smoran@petramco.com';
     let oracleUserName = 'umiguelde@petramco.com';
     let kingstoneLegalUserName = 'yhenny@petramco.com';
@@ -757,9 +757,9 @@ describe('Create Process in Flowset', () => {
             expect(await createCasePage.isCategoryTier1DropDownValueDisplayed('General Ledger')).toBeFalsy('General Ledger CategoryTier1 drop down value displayed');
             await createCasePage.selectLineOfBusiness('Kingston HR');
             await createCasePage.setSummary('DRDMV23681CaseSummary');
-            await createCasePage.selectCategoryTier1('Applications');
-            await createCasePage.selectCategoryTier2('Help Desk');
-            await createCasePage.selectCategoryTier3('Incident');
+            await createCasePage.selectCategoryTier1('Workforce Administration');
+            await createCasePage.selectCategoryTier2('HR Operations');
+            await createCasePage.selectCategoryTier3('Adjustments');
             await createCasePage.clickChangeAssignmentButton();
             await changeAssignmentBladePo.setAssignee('Phyto', 'Kingston HR', 'Kingston AskHR', 'Sherri Ochoa');
             await createCasePage.clickSaveCaseButton();
@@ -775,11 +775,11 @@ describe('Create Process in Flowset', () => {
             await createCasePage.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.clickOnAllTemplateTab();
 
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataKingstoneLegal.templateName)).toBeFalsy('caseTemplateDataKingstoneLegal.templateName is missing');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalKingstoneLegal.templateName)).toBeFalsy('caseTemplateDataGlobalKingstoneLegal.templateName is missing');
+
             expect(await utilityGrid.isGridRecordPresent(caseTemplateDataOracleHR.templateName)).toBeFalsy('caseTemplateDataOracleHR.templateName is missing');
             expect(await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalOracleHR.templateName)).toBeFalsy('caseTemplateDataGlobalOracleHR.templateName is missing');
-
-            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataKingstoneHR.templateName)).toBeFalsy('caseTemplateDataKingstoneHR is missing');
-            expect(await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalKingstonHR.templateName)).toBeFalsy('caseTemplateDataGlobalKingstonHR is missing');
 
             expect(await utilityGrid.isGridRecordPresent(caseTemplateDataKingstoneHR.templateName)).toBeTruthy('caseTemplateDataKingstoneHR is missing');
             expect(await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalKingstonHR.templateName)).toBeTruthy('caseTemplateDataGlobalKingstonHR is missing');
@@ -793,7 +793,7 @@ describe('Create Process in Flowset', () => {
             expect(await createCasePage.getCategoryTier2Value()).toBe('Compensation');
             expect(await createCasePage.getCategoryTier3Value()).toBe('Bonus');
             expect(await createCasePage.getAssigneeBusinessUnitValue()).toBe('Kingston HR');
-            expect(await createCasePage.getAssigneeBusinessUnitValue()).toBe('Kingston AskHR');
+            expect(await createCasePage.getAssigneeGroupValue()).toBe('Kingston AskHR');
             expect(await createCasePage.getAssigneeValue()).toBe('Samara Moran');
 
             await createCasePage.clickSaveCaseButton();
@@ -1033,18 +1033,18 @@ describe('Create Process in Flowset', () => {
             expect(await createCasePage.getLineOfBusinessValue()).toBe('Kingston Legal');
             expect(await createCasePage.isLineOfBusinessDisabled).toBeTruthy('LOB is not disabled');
             await createCasePage.setSummary('DRDMV23760CaseSummary');
-            await createCasePage.selectCategoryTier1('Applications');
-            await createCasePage.selectCategoryTier2('Help Desk');
-            await createCasePage.selectCategoryTier3('Incident');
+            await createCasePage.selectCategoryTier1('Workforce Administration');
+            await createCasePage.selectCategoryTier2('HR Operations');
+            await createCasePage.selectCategoryTier3('Adjustments');
             await createCasePage.clickChangeAssignmentButton();
             await changeAssignmentBladePo.setAssignee('Kingston', 'Kingston Legal', 'Legal Support', 'Youngman Henny');
 
             // Verify  category of finance with kingston legal as it should not display
             expect(await createCasePage.isCategoryTier1DropDownValueDisplayed('General Ledger')).toBeFalsy('General Ledger CategoryTier1 drop down value displayed');
 
-            expect(await createCasePage.getCategoryTier1Value()).toBe('Applications');
-            expect(await createCasePage.getCategoryTier2Value()).toBe('Help Desk');
-            expect(await createCasePage.getCategoryTier3Value()).toBe('Incident');
+            expect(await createCasePage.getCategoryTier1Value()).toBe('Workforce Administration');
+            expect(await createCasePage.getCategoryTier2Value()).toBe('HR Operations');
+            expect(await createCasePage.getCategoryTier3Value()).toBe('Adjustments');
 
             expect(await createCasePage.getAssigneeBusinessUnitValue()).toBe('Kingston Legal');
             expect(await createCasePage.getAssigneeGroupValue()).toBe('Legal Support');
@@ -1187,7 +1187,7 @@ describe('Create Process in Flowset', () => {
             expect(await createCasePage.getAssigneeGroupValue()).toBe('Finance Back Support');
             expect(await createCasePage.getAssigneeValue()).toBe('Russell Townsend');
 
-            expect(await editCasePo.isValuePresentInCategoryTier1('Total Rewards')).toBeFalsy('Total Rewards CategoryTier1 drop down value displayed');
+            expect(await createCasePage.isCategoryTier1DropDownValueDisplayed('Total Rewards')).toBeFalsy('Total Rewards CategoryTier1 drop down value displayed');
             // Verify negative scenario for Finance LOB for change assignment
             await createCasePage.clickChangeAssignmentButton();
             await changeAssignmentBladePo.selectCompany('Kingston')
@@ -1529,9 +1529,9 @@ describe('Create Process in Flowset', () => {
         it('[DRDMV-23744]: Verify Edit Case Page', async () => {
             await viewCasePage.clickEditCaseButton();
             expect(await editCasePo.isLineOfBusinessReadOnly()).toBeTruthy('Line of business is not readonly');
-            await editCasePo.updateCaseCategoryTier1('Applications');
-            await editCasePo.updateCaseCategoryTier2('Help Desk');
-            await editCasePo.updateCaseCategoryTier3('Incident');
+            await editCasePo.updateCaseCategoryTier1('Accounts Receivable');
+            await editCasePo.updateCaseCategoryTier2('Collection');
+            await editCasePo.updateCaseCategoryTier3('Past Due');
 
             await editCasePo.clickOnChangeCaseTemplate();
             await selectCasetemplateBladePo.clickOnAllTemplateTab();
@@ -1560,7 +1560,7 @@ describe('Create Process in Flowset', () => {
             await viewCasePage.clickOnTaskLink(taskTemplateNameSummaryFinanceBackOffice);
         });
 
-        it('[DRDMV-23744]: create knowledge article and verify with Resources Tab', async () => {
+        it('[DRDMV-23744]: create knowledge article', async () => {
             await navigationPage.gotoCreateKnowledge();
             await createKnowledgePage.clickOnTemplate('Reference');
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
@@ -1569,8 +1569,12 @@ describe('Create Process in Flowset', () => {
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
             await editKnowledgePo.setKnowledgeStatus('Draft');
+            await utilityCommon.closePopUpMessage();
             await editKnowledgePo.setKnowledgeStatus('Publish Approval');
+        });
 
+        it('[DRDMV-23744]: Verify with Resources Tab  with case', async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseIdFinance);
 
@@ -1581,7 +1585,6 @@ describe('Create Process in Flowset', () => {
             await expect(await resourcesTabPo.getAdvancedSearchResultForParticularSection(knowledgeTitle)).toEqual(knowledgeTitle);
             await expect(await resourcesTabPo.getAdvancedSearchResultForParticularSection(summary)).toEqual(summary);
         });
-
         it('[DRDMV-23744]: Create case With Oracle HR User and verify data', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.selectLineOfBusiness('Oracle HR');
@@ -1658,6 +1661,7 @@ describe('Create Process in Flowset', () => {
         });
 
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login(kingstoneHRUserName, password);
         });
@@ -1802,9 +1806,9 @@ describe('Create Process in Flowset', () => {
             expect(await createCasePage.getLineOfBusinessValue()).toBe('Kingston HR');
             expect(await createCasePage.isLineOfBusinessDisabled).toBeTruthy('LOB is not disabled');
             await createCasePage.setSummary(summary);
-            await createCasePage.selectCategoryTier1('Applications');
-            await createCasePage.selectCategoryTier2('Help Desk');
-            await createCasePage.selectCategoryTier3('Incident');
+            await createCasePage.selectCategoryTier1('Workforce Administration');
+            await createCasePage.selectCategoryTier2('HR Operations');
+            await createCasePage.selectCategoryTier3('Adjustments');
 
             // Verify CategorTIer of Ericsson SAM LOB which don't have access to Kingston HR
             expect(await createCasePage.isCategoryTier1DropDownValueDisplayed('General Ledger')).toBeFalsy('General Ledger CategoryTier1 drop down value displayed');
@@ -1812,9 +1816,9 @@ describe('Create Process in Flowset', () => {
             await createCasePage.clickChangeAssignmentButton();
             await changeAssignmentBladePo.setAssignee('Phyto', 'Kingston HR', 'Kingston AskHR', 'Sherri Ochoa');
 
-            expect(await createCasePage.getCategoryTier1Value()).toBe('Applications');
-            expect(await createCasePage.getCategoryTier2Value()).toBe('Help Desk');
-            expect(await createCasePage.getCategoryTier3Value()).toBe('Incident');
+            expect(await createCasePage.getCategoryTier1Value()).toBe('Workforce Administration');
+            expect(await createCasePage.getCategoryTier2Value()).toBe('HR Operations');
+            expect(await createCasePage.getCategoryTier3Value()).toBe('Adjustments');
 
             expect(await createCasePage.getAssigneeBusinessUnitValue()).toBe('Kingston HR');
             expect(await createCasePage.getAssigneeGroupValue()).toBe('Kingston AskHR');
@@ -1916,7 +1920,7 @@ describe('Create Process in Flowset', () => {
             await viewCasePage.clickOnTaskLink(taskTemplateNameSummaryKingstoneHR);
         });
 
-        it('[DRDMV-23673]: create knowledge article and verify with Resources Tab', async () => {
+        it('[DRDMV-23673]: create knowledge article', async () => {
             await navigationPage.gotoCreateKnowledge();
             await createKnowledgePage.clickOnTemplate('Reference');
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
@@ -1925,8 +1929,12 @@ describe('Create Process in Flowset', () => {
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
             await editKnowledgePo.setKnowledgeStatus('Draft');
+            await utilityCommon.closePopUpMessage();
             await editKnowledgePo.setKnowledgeStatus('Publish Approval');
+        });
 
+        it('[DRDMV-23673]: Verify with Resources Tab', async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseIdKingstoneHR);
 
@@ -1992,7 +2000,7 @@ describe('Create Process in Flowset', () => {
             await resourcesTabPo.searchTextAndEnter(knowledgeTitle);
             await browser.sleep(3000); // wait untile result gets reflect
             await expect(await resourcesTabPo.getAdvancedSearchResultForParticularSection(knowledgeTitle)).toEqual(undefined);
-            await expect(await resourcesTabPo.getAdvancedSearchResultForParticularSection('DRDMV23673CaseSummary123')).toEqual(undefined);
+            await expect(await resourcesTabPo.getAdvancedSearchResultForParticularSection('DRDMV23673CaseSummary123')).toContain('DRDMV23673CaseSummary123');
         });
 
         it('[DRDMV-23673]: Verify KingstoneHR and Oracle HR Case Access in between LOB', async () => {
@@ -2010,6 +2018,7 @@ describe('Create Process in Flowset', () => {
         });
 
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login(kingstoneOracleLOBUserName, password);
         });
