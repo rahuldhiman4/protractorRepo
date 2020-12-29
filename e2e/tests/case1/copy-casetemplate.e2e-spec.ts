@@ -1013,18 +1013,24 @@ describe('Copy Case Template', () => {
         it('[DRDMV-15256]: Verify For Copy template, Category Tier 4 and Label Data also get copied', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
-            await consoleCasetemplatePo.searchAndselectCaseTemplate('caseTemplateName' + randomStr);
+            await consoleCasetemplatePo.searchAndselectCaseTemplate(caseTemplateData.templateName);
             await consoleCasetemplatePo.clickOnCopyCaseTemplate();
             await createCaseTemplate.setTemplateName('caseTemplateName1' + randomStr);
+            await createCaseTemplate.setOwnerCompanyValue('Petramco');
+            await createCaseTemplate.setBusinessUnitDropdownValue('United States Support');
+            await createCaseTemplate.setOwnerGroupDropdownValue('US Support 3');
             await createCaseTemplate.clickSaveCaseTemplate();
             expect(await viewCasetemplatePo.getCategoryTier4()).toBe(caseTemplateData.categoryTier4);
             expect(await viewCasetemplatePo.getLabelValue()).toBe(label);
 
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-            await selectTaskTemplate.searchAndSelectTaskTemplate('task template name ' + randomStr);
+            await selectTaskTemplate.searchAndSelectTaskTemplate(taskTemplateData.templateName);
             await selectTaskTemplate.clickOnCopyTaskTemplateButton();
             await taskTemplate.setTemplateName('Copied Task Template' + randomStr);
+            await taskTemplate.selectOwnerCompany('Petramco');
+            await taskTemplate.selectBuisnessUnit('United States Support');
+            await taskTemplate.selectOwnerGroup('US Support 3');
             await taskTemplate.clickOnSaveTaskTemplate();
             expect(await viewTasktemplatePo.getCategoryTier4Value()).toBe(taskTemplateData.category4);
             expect(await viewTasktemplatePo.getLabelValue()).toBe(label);
