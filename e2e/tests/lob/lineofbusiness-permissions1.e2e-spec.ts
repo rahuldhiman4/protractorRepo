@@ -64,8 +64,8 @@ import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
-let userData1;
 describe('Line of Business Permission Tests', () => {
+    let userData1;
     const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
     const departmentDataFile = require('../../data/ui/foundation/department.ui.json');
     const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
@@ -194,7 +194,6 @@ describe('Line of Business Permission Tests', () => {
         await apiHelper.associatePersonToCompany(personData1.userId, 'Phylum');
     }
 
-
     //asahitya
     describe('[DRDMV-23619]: Validate that tenant admin is able to create the LOB and upon LOB creation Domain Tag is created of LOB name in the Domain Tag registry', () => {
         let randomString: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -207,7 +206,6 @@ describe('Line of Business Permission Tests', () => {
             let response1 = await apiHelper.createEmailBox('outgoing');
             await apiHelper.createEmailProfile(response1.id);
         });
-
         it('[DRDMV-23619]: Validate that tenant admin is able to create the LOB and upon LOB creation Domain Tag is created of LOB name in the Domain Tag registry', async () => {
             let lobConfigPageList = ['Define Line of Business', 'Manage Line of Business', 'Line of Business'];
             await navigationPage.signOut();
@@ -263,7 +261,6 @@ describe('Line of Business Permission Tests', () => {
             let guid = await consoleDefineLob.getColumnValueOfRecord('Domain ID', lobName);
             expect(await coreApi.getDomainTagGuid(lobName)).toBe(guid);
         });
-
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
@@ -317,9 +314,7 @@ describe('Line of Business Permission Tests', () => {
             expect(await navigationPage.isSettingMenuPresent('Relationships')).toBeFalsy();
             expect(await navigationPage.isSettingMenuPresent('Email')).toBeFalsy();
             expect(await navigationPage.isSettingMenuPresent('Task Management')).toBeFalsy();
-
         });
-
         it('[DRDMV-23739,DRDMV-23740]: Validate that LOB specific Functional Role available for the foundation users', async () => {
             await navigationPage.signOut();
             await loginPage.login(personData2.userId + "@petramco.com", 'Password_1234')
@@ -383,7 +378,6 @@ describe('Line of Business Permission Tests', () => {
             expect(await createDocumentTemplatePo.isAddTemplateEnabled()).toBeFalsy();
 
         });
-
         it('[DRDMV-23739,DRDMV-23740]: Validate that LOB specific Functional Role available for the foundation users', async () => {
             await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
             expect(await consoleAcknowledgmentTemplatePo.isAddAcknowledgeTemplateButtonEnabled()).toBeFalsy();
@@ -426,7 +420,6 @@ describe('Line of Business Permission Tests', () => {
             expect(await selectTaskTemplate.isAutomationTaskTemplateButtonEnabled()).toBeFalsy();
             expect(await selectTaskTemplate.isExtrnalTaskTemplateButtonEnabled()).toBeFalsy();
         });
-
         it('[DRDMV-23739,DRDMV-23740]: Validate that LOB specific Functional Role available for the foundation users', async () => {
             await navigationPage.signOut();
             await loginPage.login(personData.userId + "@petramco.com", 'Password_1234');
@@ -493,7 +486,6 @@ describe('Line of Business Permission Tests', () => {
             expect(await createDocumentTemplatePo.isAddTemplateEnabled()).toBeTruthy();
 
         });
-
         it('[DRDMV-23739,DRDMV-23740]: Validate that LOB specific Functional Role available for the foundation users', async () => {
             await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
             expect(await consoleAcknowledgmentTemplatePo.isAddAcknowledgeTemplateButtonEnabled()).toBeTruthy();
@@ -537,7 +529,7 @@ describe('Line of Business Permission Tests', () => {
             expect(await selectTaskTemplate.isExtrnalTaskTemplateButtonEnabled()).toBeTruthy();
         });
         afterAll(async () => {
-            utilityCommon.closedWarningTextOfLineOfBuisness();
+            await utilityCommon.closedWarningTextOfLineOfBuisness();
         });
     });
 
@@ -608,9 +600,6 @@ describe('Line of Business Permission Tests', () => {
             expect(await utilityGrid.isGridRecordPresent(TaskID)).toBeFalsy();
             await navigationPage.gotoKnowledgeConsole();
             expect(await utilityGrid.isGridRecordPresent(KnowledgeArticleID)).toBeFalsy();
-        });
-        afterAll(async () => {
-            utilityCommon.closedWarningTextOfLineOfBuisness();
         });
     });
 
@@ -1000,14 +989,14 @@ describe('Line of Business Permission Tests', () => {
             let flowsetMandatoryFieldsData2 = cloneDeep(flowsetGlobalInActiveFields);
             flowsetMandatoryFieldsData2.flowsetName = flowsetName2;
             flowsetMandatoryFieldsData2["lineOfBusiness"] = "Facilities";
-            let flowsetResponse2 = await apiHelper.createNewFlowset(flowsetMandatoryFieldsData2);
+            await apiHelper.createNewFlowset(flowsetMandatoryFieldsData2);
 
             //Create new flowset
             flowsetName3 = `DRDMV-1357 ${randomStr} Draft`;
             let flowsetMandatoryFieldsData3 = cloneDeep(flowsetGlobalFields);
             flowsetMandatoryFieldsData3.flowsetName = flowsetName3;
             flowsetMandatoryFieldsData3["lineOfBusiness"] = "Facilities";
-            let flowsetResponse3 = await apiHelper.createNewFlowset(flowsetMandatoryFieldsData3);
+            await apiHelper.createNewFlowset(flowsetMandatoryFieldsData3);
 
             //Map Process to Flowset
             let flowsetProcessMappingData = {
@@ -1076,10 +1065,6 @@ describe('Line of Business Permission Tests', () => {
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
             let flowsetValues: string[] = [flowsetName1, flowsetName2, flowsetName3];
             expect(await createCasetemplatePo.flowsetOptionsPresent(flowsetValues)).toBeFalsy('Status in dropdown does not match');
-        });
-        afterAll(async () => {
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
         });
     });
 
@@ -1173,11 +1158,6 @@ describe('Line of Business Permission Tests', () => {
             expect(await utilGrid.isGridRecordPresent(emailID)).toBeFalsy();
             await apiHelper.apiLogin('tadmin');
             await apiHelper.updateFoundationEntity('Person', 'Fritz', { functionalRole: "Facilities" });
-        });
-        afterAll(async () => {
-            await utilityCommon.closeAllBlades();
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
         });
     });
 });

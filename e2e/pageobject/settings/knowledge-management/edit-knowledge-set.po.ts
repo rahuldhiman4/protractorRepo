@@ -7,7 +7,7 @@ class EditKnowledgeSet {
         saveButton: '[rx-view-component-id="9845bc7c-ac13-4989-aba2-4751bbba8c6c"] button',
         cancelButton: '[rx-view-component-id="0720cb03-bcfd-405f-810f-85c5191b8de6"] button',
         knowledgeSetInput: '[rx-view-component-id="19901ec7-e019-4c63-a5c5-c02074086645"] input',
-        lobValue: '[rx-view-component-id="728753d8c-c1a7-48f0-8e9d-7997762aedd4"] .pull-left'
+        lobValue: '[rx-view-component-id="28753d8c-c1a7-48f0-8e9d-7997762aedd4"] .pull-left'
     }
 
     async isApplicationNameListed(applicationName: string): Promise<boolean> {

@@ -143,7 +143,7 @@ describe('Knowledge Article Set', () => {
 
             await utilGrid.searchAndOpenHyperlink('DRDMV-1062' + randomStr);
             await editKnowledgeSet.setKnowledgeSetName('DRDMV-1062_updated' + randomStr);
-            await editKnowledgeSet.removeApplicationAssociation('com.bmc.dsm.bwfa');
+            await editKnowledgeSet.removeApplicationAssociation('com.bmc.arsys.rx.approval');
             await editKnowledgeSet.clickSaveButton();
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
             await utilCommon.closePopUpMessage();

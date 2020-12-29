@@ -15,6 +15,7 @@ import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+
 describe('Line of Business Permissions Tests Extended', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
@@ -109,10 +110,6 @@ describe('Line of Business Permissions Tests Extended', () => {
             expect(await consoleEmailConfigurationPo.isClickNewEmailConfigurationBtnPresent()).toBeFalsy();
             await consoleEmailConfigurationPo.searchAndSelectCheckbox(emailID);
         });
-        afterAll(async () => {
-            await navigationPage.signOut();
-            await loginPage.login('jbarnes');
-        });
     });
 
     //ankagraw
@@ -129,6 +126,8 @@ describe('Line of Business Permissions Tests Extended', () => {
         }
 
         beforeAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('jbarnes');
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteAllEmailConfiguration();
             await apiHelper.createEmailBox('incoming', incomingEmail);
@@ -221,15 +220,13 @@ describe('Line of Business Permissions Tests Extended', () => {
             await editEmailConfigPo.selectTab("Blocked Email");
             expect(await editEmailConfigPo.isRecordPresentonBlockedEmail("testing@bmc.com")).toBeFalsy();
         });
-        afterAll(async () => {
-            await navigationPage.signOut();
-            await loginPage.login('tadmin');
-        });
     });
 
     //ankagraw
     describe('[DRDMV-23667]: Validate that tenant admin/case BA is able to view/update the LOB record', async () => {
         it('[DRDMV-23667]: Validate that tenant admin/case BA is able to view/update the LOB record', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('tadmin');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Line of Business--Define Line of Business', 'LOB Management Console - Business Workflows');
             await lobManagmentConsolePo.clickAddLobBtn();
@@ -295,4 +292,4 @@ describe('Line of Business Permissions Tests Extended', () => {
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
     });
-})
+});

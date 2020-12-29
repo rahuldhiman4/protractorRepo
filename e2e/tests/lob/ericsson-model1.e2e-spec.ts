@@ -1,7 +1,7 @@
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
 import previewCasePage from '../../pageobject/case/case-preview.po';
-import { default as createCasePage, default as createCasePo } from '../../pageobject/case/create-case.po';
+import createCasePo from '../../pageobject/case/create-case.po';
 import editCasePo from '../../pageobject/case/edit-case.po';
 import quickCasePo from '../../pageobject/case/quick-case.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
@@ -22,12 +22,12 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
-let userData1;
 describe('Ericsson Data Model Tests', () => {
+    let userData1;
     let personDataFile = require('../../data/ui/foundation/person.ui.json');
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
-        await loginPage.login('qkatawazi');
+        await loginPage.login('rwillie');
         await createNewUsers();
     });
 
@@ -129,32 +129,30 @@ describe('Ericsson Data Model Tests', () => {
             await apiHelper.createCaseTemplate(caseTemplateDataEricssonSAMGlobal);
         });
         it('[DRDMV-23629]:[Ericsson Model][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
-            await navigationPage.signOut();
-            await loginPage.login('rwillie');
             await navigationPage.gotoCreateCase();
-            await createCasePage.selectRequester('syakov');
-            expect(await createCasePage.isLineOfBusinessDisabled()).toBeTruthy('Line of Buisness Field is Enabled');
-            expect(await createCasePage.getLineOfBusinessValue()).toBe('Ericsson HR', 'Line of Buisness Field is Enabled');
-            await createCasePage.setSummary('DRDMV-23629Summary' + randomStr);
-            expect(await createCasePage.isValuePresentInDropdown("Category Tier 1", 'Purchasing Card')).toBeFalsy('Value is present in  Category Tier 1 drop down');
-            await createCasePage.clickAssignToMeButton();
-            expect(await createCasePage.isValuePresentInDropdown("Category Tier 1", 'Employee Relations')).toBeTruthy('Value is present in  Category Tier 1 drop down');
-            await createCasePage.setPriority('Low');
-            await createCasePage.selectCategoryTier1("Employee Relations");
-            await createCasePage.selectCategoryTier2("Compensation");
-            await createCasePage.selectCategoryTier3("Bonus");
+            await createCasePo.selectRequester('syakov');
+            expect(await createCasePo.isLineOfBusinessDisabled()).toBeTruthy('Line of Buisness Field is Enabled');
+            expect(await createCasePo.getLineOfBusinessValue()).toBe('Ericsson HR', 'Line of Buisness Field is Enabled');
+            await createCasePo.setSummary('DRDMV-23629Summary' + randomStr);
+            expect(await createCasePo.isValuePresentInDropdown("Category Tier 1", 'Purchasing Card')).toBeFalsy('Value is present in  Category Tier 1 drop down');
+            await createCasePo.clickAssignToMeButton();
+            expect(await createCasePo.isValuePresentInDropdown("Category Tier 1", 'Employee Relations')).toBeTruthy('Value is present in  Category Tier 1 drop down');
+            await createCasePo.setPriority('Low');
+            await createCasePo.selectCategoryTier1("Employee Relations");
+            await createCasePo.selectCategoryTier2("Compensation");
+            await createCasePo.selectCategoryTier3("Bonus");
             expect(await createCasePo.getCategoryTier1Value()).toBe('Employee Relations');
             expect(await createCasePo.getCategoryTier2Value()).toBe('Compensation');
             expect(await createCasePo.getCategoryTier3Value()).toBe('Bonus');
         });
         it('[DRDMV-23629]:[Ericsson Model][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
-            await createCasePage.clickChangeAssignmentButton();
+            await createCasePo.clickChangeAssignmentButton();
             expect(await changeAssignmentBladePo.businessUnitOptionsPresent('Ericsson Asset Management - USA')).toBeFalsy();
             await changeAssignmentBladePo.clickOnCancelButton();
-            await createCasePage.clickChangeAssignmentButton();
+            await createCasePo.clickChangeAssignmentButton();
             expect(await changeAssignmentBladePo.businessUnitOptionsPresent('Ericsson United States Support')).toBeTruthy();
             await changeAssignmentBladePo.clickOnCancelButton();
-            await createCasePage.clickSaveCaseButton();
+            await createCasePo.clickSaveCaseButton();
             await previewCasePage.clickGoToCaseButton();
             await viewCasePage.clickEditCaseButton();
             await editCasePo.clickOnSelectCaseTemplate();
@@ -199,19 +197,19 @@ describe('Ericsson Data Model Tests', () => {
         });
         it('[DRDMV-23629]:[Ericsson Model][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
             await navigationPage.gotoCreateCase();
-            await createCasePage.selectRequester('rdustin');
-            await createCasePage.setSummary('New Case 3');
-            await createCasePage.clickSelectCaseTemplateButton();
+            await createCasePo.selectRequester('rdustin');
+            await createCasePo.setSummary('New Case 3');
+            await createCasePo.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateDataEricssonGlobal.templateName);
-            await createCasePage.clickSaveCaseButton();
+            await createCasePo.clickSaveCaseButton();
             await previewCasePage.clickGoToCaseButton();
             expect(await viewCasePage.getLineOfBusinessValue()).toBe('Ericsson HR');
             await navigationPage.gotoCreateCase();
-            await createCasePage.selectRequester('rdustin');
-            await createCasePage.setSummary('New Case 3');
-            await createCasePage.clickSelectCaseTemplateButton();
+            await createCasePo.selectRequester('rdustin');
+            await createCasePo.setSummary('New Case 3');
+            await createCasePo.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateDataGlobal.templateName);
-            await createCasePage.clickSaveCaseButton();
+            await createCasePo.clickSaveCaseButton();
             await previewCasePage.clickGoToCaseButton();
             expect(await viewCasePage.getLineOfBusinessValue()).toBe('Ericsson HR');
             await viewCasePage.clickEditCaseButton();
@@ -219,9 +217,9 @@ describe('Ericsson Data Model Tests', () => {
             await editCasePo.clickSaveCase();
             expect(await viewCasePage.getLineOfBusinessValue()).toBe('Ericsson HR');
             await navigationPage.gotoCreateCase();
-            await createCasePage.selectRequester('rdustin');
-            await createCasePage.setSummary('New Case 3');
-            await createCasePage.clickSelectCaseTemplateButton();
+            await createCasePo.selectRequester('rdustin');
+            await createCasePo.setSummary('New Case 3');
+            await createCasePo.clickSelectCaseTemplateButton();
             expect(await selectCasetemplateBladePo.isRecordPresent(ericssonSAMcaseTemplateData.templateName)).toBeFalsy();
             expect(await selectCasetemplateBladePo.isRecordPresent(caseTemplateDataEricssonSAMGlobal.templateName)).toBeFalsy();
             await selectCasetemplateBladePo.clickOnCancelButton();
@@ -269,7 +267,7 @@ describe('Ericsson Data Model Tests', () => {
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
+            await loginPage.login('rwillie');
         });
     });
 
@@ -437,8 +435,6 @@ describe('Ericsson Data Model Tests', () => {
             await apiHelper.createNotesTemplate("Case", notesTemplate);
         });
         it('[DRDMV-23635]:[Ericsson Model] [Cases] : Verify the behavior where Email Templates, Task Templates, Resolution Codes, Notes templates are filtered / displayed based on the Line of Business on Cases.', async () => {
-            await navigationPage.signOut();
-            await loginPage.login('rwillie');
             await utilityGrid.searchAndOpenHyperlink(response.displayId);
             await viewCasePage.clickOnEmailLink();
             await composeMailPo.clickOnSelectEmailTemplateLink();
@@ -512,10 +508,8 @@ describe('Ericsson Data Model Tests', () => {
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
+            await composeMailPo.clickOnDiscardButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
     });
-
-
 });
