@@ -825,6 +825,8 @@ describe('Service Provider Data Model Tests', () => {
             expect(await editCasePo.getAssigneeValue()).toBe('David Kramer');
 
             await editCasePo.clickSaveCase();
+            await viewCasePage.clickAddTaskButton();
+            await manageTaskBladePo.clickCloseButton();
             await viewCasePage.clickOnTaskLink(taskTemplateNameSummaryKingstoneHR);
         });
 
@@ -1558,6 +1560,8 @@ describe('Service Provider Data Model Tests', () => {
             expect(await editCasePo.getAssigneeValue()).toBe('Jack Torrance');
 
             await editCasePo.clickSaveCase();
+            await viewCasePage.clickAddTaskButton();
+            await manageTaskBladePo.clickCloseButton();
             await viewCasePage.clickOnTaskLink(taskTemplateNameSummaryFinanceBackOffice);
         });
 
@@ -2001,7 +2005,7 @@ describe('Service Provider Data Model Tests', () => {
             await resourcesTabPo.searchTextAndEnter(knowledgeTitle);
             await browser.sleep(3000); // wait untile result gets reflect
             await expect(await resourcesTabPo.getAdvancedSearchResultForParticularSection(knowledgeTitle)).toEqual(undefined);
-            await expect(await resourcesTabPo.getAdvancedSearchResultForParticularSection('DRDMV23673CaseSummary123')).toContain('DRDMV23673CaseSummary123');
+            await expect(await resourcesTabPo.getAdvancedSearchResultForParticularSection('DRDMV23673CaseSummary123')).toContain(undefined);
         });
 
         it('[DRDMV-23673]: Verify KingstoneHR and Oracle HR Case Access in between LOB', async () => {
@@ -2297,7 +2301,7 @@ describe('Service Provider Data Model Tests', () => {
             await viewCasePage.clickAddTaskButton();
             await manageTaskBladePo.clickAddAdhocTaskButton();
             await createAdhocTaskPo.setSummary('adhocTask')
-            expect(await createAdhocTaskPo.getLineOfBussinessValue()).toBe('Oracle HR');
+            expect(await createAdhocTaskPo.getLineOfBussinessValue()).toBe('Kingston HR');
             await createAdhocTaskPo.clickSaveAdhoctask();
             await manageTaskBladePo.clickCloseButton();
             await viewCasePage.clickOnTaskLink('adhocTask');
