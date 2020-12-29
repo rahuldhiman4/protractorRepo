@@ -564,9 +564,12 @@ describe('Email Template', () => {
             await viewCasePo.clickOnEmailLink();
             await composeMailPo.clickOnSelectEmailTemplateLink();
             expect(await selectEmailTemplateBladePo.getGridRecordValue(emailTemplateName)).toBeTruthy("emailTemplateName");
+        });
+        it('[DRDMV-10385]: Active Email Temlate list in Grid', async () => {
             expect(await selectEmailTemplateBladePo.isRecordPresent(emailTemplateNameDraft)).toBeFalsy();
             expect(await selectEmailTemplateBladePo.isRecordPresent(emailTemplateNamePsilon)).toBeFalsy();
         });
+
         afterAll(async () => {
             await selectEmailTemplateBladePo.clickOnCancelButton();
             await composeMailPo.clickOnDiscardButton();
