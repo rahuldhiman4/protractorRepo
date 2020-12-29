@@ -397,7 +397,7 @@ describe('Conditional Task', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(draftCaseTemplatePetramcoData.templateName);
-            expect(await viewCaseTemplatePage.isTaskFlowBtnEnabled()).toBeTruthy('Task Flow button is enabled for Case Manager'); //Defect
+            expect(await viewCaseTemplatePage.isTaskFlowBtnEnabled()).toBeFalsy('Task Flow button is enabled for Case Manager'); //Defect
         });
         afterAll(async () => {
             await navigationPage.signOut();
@@ -669,17 +669,17 @@ describe('Conditional Task', () => {
             expect(await processEditorPage.isTemplatePresent(`globalActiveTemplate${randomStr}`)).toBeTruthy();
             expect(await processEditorPage.isTemplatePresent(`globalInactiveTemplate${randomStr}`)).toBeFalsy();
             expect(await processEditorPage.isTemplatePresent(`petramcoDraftTemplate${randomStr}`)).toBeFalsy();
-            expect(await processEditorPage.isTemplatePresent(`petramcoActiveTemplate${randomStr}`)).toBeFalsy();
+            expect(await processEditorPage.isTemplatePresent(`petramcoActiveTemplate${randomStr}`)).toBeTruthy();
             expect(await processEditorPage.isTemplatePresent(`petramcoInactiveTemplate${randomStr}`)).toBeFalsy();
             expect(await processEditorPage.isTemplatePresent(`psilonDraftTemplate${randomStr}`)).toBeFalsy();
-            expect(await processEditorPage.isTemplatePresent(`psilonActiveTemplate${randomStr}`)).toBeFalsy();
+            expect(await processEditorPage.isTemplatePresent(`psilonActiveTemplate${randomStr}`)).toBeTruthy();
             expect(await processEditorPage.isTemplatePresent(`psilonInactiveTemplate${randomStr}`)).toBeFalsy();
             expect(await processEditorPage.isTemplatePresent(`globalActiveAutomatedTemplate${randomStr}`)).toBeTruthy();
-            expect(await processEditorPage.isTemplatePresent(`petramcoActiveAutomatedTemplate${randomStr}`)).toBeFalsy();
-            expect(await processEditorPage.isTemplatePresent(`psilonActiveAutomatedTemplate${randomStr}`)).toBeFalsy();
+            expect(await processEditorPage.isTemplatePresent(`petramcoActiveAutomatedTemplate${randomStr}`)).toBeTruthy();
+            expect(await processEditorPage.isTemplatePresent(`psilonActiveAutomatedTemplate${randomStr}`)).toBeTruthy();
             expect(await processEditorPage.isTemplatePresent(`globalActiveExternalTemplate${randomStr}`)).toBeTruthy();
-            expect(await processEditorPage.isTemplatePresent(`petramcoActiveExternalTemplate${randomStr}`)).toBeFalsy();
-            expect(await processEditorPage.isTemplatePresent(`psilonActiveExternalTemplate${randomStr}`)).toBeFalsy();
+            expect(await processEditorPage.isTemplatePresent(`petramcoActiveExternalTemplate${randomStr}`)).toBeTruthy();
+            expect(await processEditorPage.isTemplatePresent(`psilonActiveExternalTemplate${randomStr}`)).toBeTruthy();
             await processEditorPage.clickCancelOnTemplateSelectBlade();
             await processEditorPage.clickGoBackToTemplateBtn();
             await utilCommon.clickOnWarningOk();
@@ -699,14 +699,14 @@ describe('Conditional Task', () => {
             expect(await processEditorPage.isTemplatePresent(`petramcoActiveTemplate${randomStr}`)).toBeTruthy();
             expect(await processEditorPage.isTemplatePresent(`petramcoInactiveTemplate${randomStr}`)).toBeFalsy();
             expect(await processEditorPage.isTemplatePresent(`psilonDraftTemplate${randomStr}`)).toBeFalsy();
-            expect(await processEditorPage.isTemplatePresent(`psilonActiveTemplate${randomStr}`)).toBeFalsy();
+            expect(await processEditorPage.isTemplatePresent(`psilonActiveTemplate${randomStr}`)).toBeTruthy();
             expect(await processEditorPage.isTemplatePresent(`psilonInactiveTemplate${randomStr}`)).toBeFalsy();
             expect(await processEditorPage.isTemplatePresent(`globalActiveAutomatedTemplate${randomStr}`)).toBeTruthy();
             expect(await processEditorPage.isTemplatePresent(`petramcoActiveAutomatedTemplate${randomStr}`)).toBeTruthy();
-            expect(await processEditorPage.isTemplatePresent(`psilonActiveAutomatedTemplate${randomStr}`)).toBeFalsy();
+            expect(await processEditorPage.isTemplatePresent(`psilonActiveAutomatedTemplate${randomStr}`)).toBeTruthy();
             expect(await processEditorPage.isTemplatePresent(`globalActiveExternalTemplate${randomStr}`)).toBeTruthy();
             expect(await processEditorPage.isTemplatePresent(`petramcoActiveExternalTemplate${randomStr}`)).toBeTruthy();
-            expect(await processEditorPage.isTemplatePresent(`psilonActiveExternalTemplate${randomStr}`)).toBeFalsy();
+            expect(await processEditorPage.isTemplatePresent(`psilonActiveExternalTemplate${randomStr}`)).toBeTruthy();
             await processEditorPage.clickCancelOnTemplateSelectBlade();
             await processEditorPage.clickGoBackToTemplateBtn();
             await utilCommon.clickOnWarningOk();
@@ -723,16 +723,16 @@ describe('Conditional Task', () => {
             expect(await processEditorPage.isTemplatePresent(`globalActiveTemplate${randomStr}`)).toBeTruthy();
             expect(await processEditorPage.isTemplatePresent(`globalInactiveTemplate${randomStr}`)).toBeFalsy();
             expect(await processEditorPage.isTemplatePresent(`petramcoDraftTemplate${randomStr}`)).toBeFalsy();
-            expect(await processEditorPage.isTemplatePresent(`petramcoActiveTemplate${randomStr}`)).toBeFalsy();
+            expect(await processEditorPage.isTemplatePresent(`petramcoActiveTemplate${randomStr}`)).toBeTruthy();
             expect(await processEditorPage.isTemplatePresent(`petramcoInactiveTemplate${randomStr}`)).toBeFalsy();
             expect(await processEditorPage.isTemplatePresent(`psilonDraftTemplate${randomStr}`)).toBeFalsy();
             expect(await processEditorPage.isTemplatePresent(`psilonActiveTemplate${randomStr}`)).toBeTruthy();
             expect(await processEditorPage.isTemplatePresent(`psilonInactiveTemplate${randomStr}`)).toBeFalsy();
             expect(await processEditorPage.isTemplatePresent(`globalActiveAutomatedTemplate${randomStr}`)).toBeTruthy();
-            expect(await processEditorPage.isTemplatePresent(`petramcoActiveAutomatedTemplate${randomStr}`)).toBeFalsy();
+            expect(await processEditorPage.isTemplatePresent(`petramcoActiveAutomatedTemplate${randomStr}`)).toBeTruthy();
             expect(await processEditorPage.isTemplatePresent(`psilonActiveAutomatedTemplate${randomStr}`)).toBeTruthy();
             expect(await processEditorPage.isTemplatePresent(`globalActiveExternalTemplate${randomStr}`)).toBeTruthy();
-            expect(await processEditorPage.isTemplatePresent(`petramcoActiveExternalTemplate${randomStr}`)).toBeFalsy();
+            expect(await processEditorPage.isTemplatePresent(`petramcoActiveExternalTemplate${randomStr}`)).toBeTruthy();
             expect(await processEditorPage.isTemplatePresent(`psilonActiveExternalTemplate${randomStr}`)).toBeTruthy();
             await processEditorPage.clickCancelOnTemplateSelectBlade();
             await processEditorPage.clickGoBackToTemplateBtn();
@@ -906,7 +906,7 @@ describe('Conditional Task', () => {
 
         it('[DRDMV-15002]: [Task] Copy Case Template', async () => {
             await navigationPage.signOut();
-            await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
+             await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(caseTemplatePetramcoData.templateName);
