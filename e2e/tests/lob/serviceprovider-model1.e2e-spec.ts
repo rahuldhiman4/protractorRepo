@@ -1,7 +1,7 @@
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
 import caseConsolePo from "../../pageobject/case/case-console.po";
-import { default as casePreviewPo, default as previewCasePage } from '../../pageobject/case/case-preview.po';
+import casePreviewPo from '../../pageobject/case/case-preview.po';
 import createCasePage from '../../pageobject/case/create-case.po';
 import editCasePo from '../../pageobject/case/edit-case.po';
 import quickCasePo from "../../pageobject/case/quick-case.po";
@@ -212,7 +212,7 @@ describe('Service Provider Data Model Tests', () => {
             await createCasePage.clickChangeAssignmentButton();
             await changeAssignmentBladePo.setAssignee('Phyto', 'Kingston HR', 'Kingston AskHR', 'Samara Moran');
             await createCasePage.clickSaveCaseButton();
-            await previewCasePage.clickGoToCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
 
             await viewCasePage.clickOnRequestersEmail();
             await composeMailPo.clickOnSelectEmailTemplateLink();
@@ -384,7 +384,7 @@ describe('Service Provider Data Model Tests', () => {
             await createCasePage.clickChangeAssignmentButton();
             await changeAssignmentBladePo.setAssignee('Kingston', 'Kingston Legal', 'Legal Support', 'Youngman Henny');
             await createCasePage.clickSaveCaseButton();
-            await previewCasePage.clickGoToCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             await viewCasePage.clickOnStatus();
             await updateStatusBladePo.changeStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
@@ -477,7 +477,7 @@ describe('Service Provider Data Model Tests', () => {
             await createCasePage.clickChangeAssignmentButton();
             await changeAssignmentBladePo.setAssignee('Phyto', 'Kingston HR', 'Kingston AskHR', 'Samara Moran');
             await createCasePage.clickSaveCaseButton();
-            await previewCasePage.clickGoToCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
 
             await viewCasePage.clickOnRequestersEmail();
             await composeMailPo.clickOnSelectEmailTemplateLink();
@@ -798,7 +798,7 @@ describe('Service Provider Data Model Tests', () => {
             expect(await createCasePage.getAssigneeValue()).toBe('Samara Moran');
 
             await createCasePage.clickSaveCaseButton();
-            await previewCasePage.clickGoToCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             caseIdKingstoneHR = await viewCasePage.getCaseID();
         });
 
@@ -850,7 +850,7 @@ describe('Service Provider Data Model Tests', () => {
             await changeAssignmentBladePo.setAssignee('Phyto', 'Oracle HR', 'Oracle AskHR', 'Ueshiba Morihei');
             await createCasePage.clickSaveCaseButton();
 
-            await previewCasePage.clickGoToCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             caseIdOracleHR = await viewCasePage.getCaseID();
         });
 
@@ -1110,7 +1110,7 @@ describe('Service Provider Data Model Tests', () => {
             await changeAssignmentBladePo.clickOnCancelButton();
 
             await createCasePage.clickSaveCaseButton();
-            await previewCasePage.clickGoToCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             caseIdKingstoneLegal = await viewCasePage.getCaseID();
         });
 
@@ -1205,7 +1205,7 @@ describe('Service Provider Data Model Tests', () => {
             await changeAssignmentBladePo.clickOnCancelButton();
 
             await createCasePage.clickSaveCaseButton();
-            await previewCasePage.clickGoToCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
 
             caseIdFinance = await viewCasePage.getCaseID();
             await viewCasePage.clickOnTaskLink(taskTemplateNameSummaryFinanceBackOffice);
@@ -1523,7 +1523,7 @@ describe('Service Provider Data Model Tests', () => {
             expect(await createCasePage.getAssigneeValue()).toBe('Wright Steven');
 
             await createCasePage.clickSaveCaseButton();
-            await previewCasePage.clickGoToCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             caseIdFinance = await viewCasePage.getCaseID();
         });
 
@@ -1633,7 +1633,7 @@ describe('Service Provider Data Model Tests', () => {
 
             await createCasePage.clickSaveCaseButton();
 
-            await previewCasePage.clickGoToCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             caseIdOracleHR = await viewCasePage.getCaseID();
             await viewCasePage.clickOnTaskLink(taskTemplateNameSummaryOracleHR);
             await viewTaskPo.clickOnViewCase();
@@ -1866,7 +1866,7 @@ describe('Service Provider Data Model Tests', () => {
             expect(await createCasePage.getAssigneeValue()).toBe('Samara Moran');
 
             await createCasePage.clickSaveCaseButton();
-            await previewCasePage.clickGoToCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             caseIdKingstoneHR = await viewCasePage.getCaseID();
         });
 
@@ -1988,7 +1988,7 @@ describe('Service Provider Data Model Tests', () => {
             await changeAssignmentBladePo.clickOnCancelButton();
 
             await createCasePage.clickSaveCaseButton();
-            await previewCasePage.clickGoToCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
 
             caseIdOracleHR = await viewCasePage.getCaseID();
             await viewCasePage.clickOnTaskLink(taskTemplateNameSummaryOracleHR);
@@ -2021,7 +2021,7 @@ describe('Service Provider Data Model Tests', () => {
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
-            await loginPage.login(kingstoneOracleLOBUserName, password);
+            await loginPage.login(kingstoneHRUserName, password);
         });
     });
 
@@ -2233,15 +2233,15 @@ describe('Service Provider Data Model Tests', () => {
             await quickCasePo.selectRequesterName('smoran');
             await quickCasePo.setCaseSummary(caseSummaryKingstoneHR1);
             await quickCasePo.saveCase();
-            expect(await previewCasePage.getLineOfBusinessValue()).toBe('Kingston HR');
-            await previewCasePage.clickOncreateNewCaseButton();
+            expect(await casePreviewPo.getLineOfBusinessValue()).toBe('Kingston HR');
+            await casePreviewPo.clickOncreateNewCaseButton();
         });
 
         it('[DRDMV-23682]: Create Quick Case with case template', async () => {
             await quickCasePo.selectRequesterName('smoran');
             await quickCasePo.selectCaseTemplate(caseTemplateDataKingstoneHR.templateName);
             await quickCasePo.saveCase();
-            await previewCasePage.clickGoToCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
         });
 
         it('[DRDMV-23682]: Verify Edit Case Page', async () => {
@@ -2354,15 +2354,15 @@ describe('Service Provider Data Model Tests', () => {
             await quickCasePo.selectRequesterName('rtownsend');
             await quickCasePo.setCaseSummary(caseSummaryOracleHR2);
             await quickCasePo.saveCase();
-            expect(await previewCasePage.getLineOfBusinessValue()).toBe('Kingston HR');
-            await previewCasePage.clickOncreateNewCaseButton();
+            expect(await casePreviewPo.getLineOfBusinessValue()).toBe('Kingston HR');
+            await casePreviewPo.clickOncreateNewCaseButton();
         });
 
         it('[DRDMV-23682]: Create Quick Case with case template Oracle HR', async () => {
             await quickCasePo.selectRequesterName('smoran');
             await quickCasePo.selectCaseTemplate(caseTemplateDataOracleHR.templateName);
             await quickCasePo.saveCase();
-            await previewCasePage.clickGoToCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
         });
 
         it('[DRDMV-23682]: Verify Edit Case Page for Oracle HR', async () => {
@@ -2398,9 +2398,7 @@ describe('Service Provider Data Model Tests', () => {
             expect(await editCasePo.getCategoryTier2()).toBe('Compensation');
             expect(await editCasePo.getCategoryTier3()).toBe('Bonus');
             expect(await editCasePo.getAssigneeValue()).toBe('Jack Torrance');
-
             await editCasePo.clickChangeAssignmentButton();
-
             await changeAssignmentBladePo.setAssignee('Phyto', 'Oracle HR', 'Oracle AskHR', 'Vixie Paul');
             expect(await editCasePo.getAssigneeValue()).toBe('Vixie Paul');
 
@@ -2423,11 +2421,6 @@ describe('Service Provider Data Model Tests', () => {
             await createAdhocTaskPo.clickSaveAdhoctask();
             await manageTaskBladePo.clickCloseButton();
             await viewCasePage.clickOnTaskLink('adhocTask2');
-        });
-
-        afterAll(async () => {
-            await navigationPage.signOut();
-            await loginPage.login(kingstoneOracleLOBUserName, password);
         });
     });
 });

@@ -1,7 +1,7 @@
 import { cloneDeep } from 'lodash';
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
-import { flowsetMandatoryFields, flowsetGlobalFields} from '../../data/ui/flowset/flowset.ui';
+import { flowsetGlobalFields, flowsetMandatoryFields } from '../../data/ui/flowset/flowset.ui';
 import casePreviewPo from '../../pageobject/case/case-preview.po';
 import editCasePo from '../../pageobject/case/edit-case.po';
 import quickCasePo from '../../pageobject/case/quick-case.po';
@@ -483,6 +483,10 @@ describe('Service Provider Model Tests Extended', () => {
             expect(await utilityGrid.isGridRecordPresent(response21.displayId)).toBeTruthy();
             expect(await utilityGrid.isGridRecordPresent(response31.displayId)).toBeTruthy();
         });
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login(kingstoneUserName, password);
+        });
     });
 
     //ankagraw
@@ -535,20 +539,20 @@ describe('Service Provider Model Tests Extended', () => {
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
             await createCasetemplatePo.setTemplateName("CaseTemplate" + randomStr);
             await createCasetemplatePo.setCompanyName("- Global -");
-            expect(await createCasetemplatePo.flowsetOptionsPresent( [flowsetHumanResourceData.flowsetName])).toBeFalsy();
+            expect(await createCasetemplatePo.flowsetOptionsPresent([flowsetHumanResourceData.flowsetName])).toBeFalsy();
             await createCasetemplatePo.setCompanyName("- Global -");
-            expect(await createCasetemplatePo.flowsetOptionsPresent( [flowsetHumanResourceGlobalData.flowsetName])).toBeTruthy();
+            expect(await createCasetemplatePo.flowsetOptionsPresent([flowsetHumanResourceGlobalData.flowsetName])).toBeTruthy();
             await createCasetemplatePo.setCompanyName("Petramco");
             await createCasetemplatePo.setCategoryTier1("Applications");
-            expect(await createCasetemplatePo.flowsetOptionsPresent( [flowsetFacilitiesData.flowsetName])).toBeFalsy();
+            expect(await createCasetemplatePo.flowsetOptionsPresent([flowsetFacilitiesData.flowsetName])).toBeFalsy();
             await createCasetemplatePo.setCompanyName("Petramco");
-            expect(await createCasetemplatePo.flowsetOptionsPresent( [flowsetHumanResourceGlobalData.flowsetName])).toBeTruthy();
+            expect(await createCasetemplatePo.flowsetOptionsPresent([flowsetHumanResourceGlobalData.flowsetName])).toBeTruthy();
             await createCasetemplatePo.setCompanyName("Petramco");
             await createCasetemplatePo.setFlowsetValue(flowsetHumanResourceData.flowsetName);
             await createCasetemplatePo.clickOnChangeAssignmentButton();
             await changeAssignmentOldBladePo.clickOnAssignToMeCheckBox();
             await changeAssignmentOldBladePo.clickOnAssignButton();
-             await createCasetemplatePo.setCaseSummary("CaseSummary" + randomStr);
+            await createCasetemplatePo.setCaseSummary("CaseSummary" + randomStr);
             await createCasetemplatePo.setCaseStatusValue('customStatus');
             await createCasetemplatePo.clickSaveCaseTemplate();
         });
@@ -585,6 +589,6 @@ describe('Service Provider Model Tests Extended', () => {
             expect(await createCasetemplatePo.isValuePresentInDropdown("caseStatus", "customStatus")).toBeFalsy();
             await createCasetemplatePo.clickSaveCaseTemplate();
             expect(await viewCasetemplatePo.getCategoryTier1()).toBe("Applications");
-        })
-    })
-})
+        });
+    });
+});
