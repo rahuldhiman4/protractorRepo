@@ -3,13 +3,41 @@ import apiHelper from '../../api/api.helper';
 import attachmentBladePo from '../../pageobject/attachment/attachment-blade.po';
 import attachmentInformationBladePo from '../../pageobject/attachment/attachment-information-blade.po';
 import caseConsole from '../../pageobject/case/case-console.po';
-import previewCasePo from '../../pageobject/case/case-preview.po';
+import casePreviewPo from '../../pageobject/case/case-preview.po';
 import createCasePo from '../../pageobject/case/create-case.po';
 import editCasePo from '../../pageobject/case/edit-case.po';
+import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
+import attachDocumentBladePo from '../../pageobject/common/attach-document-blade.po';
+import dynamicFieldsPo from '../../pageobject/common/dynamic-fields.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import composeMail from '../../pageobject/email/compose-mail.po';
+import createKnowledgePage from "../../pageobject/knowledge/create-knowlege.po";
+import editKnowledgePo from '../../pageobject/knowledge/edit-knowledge.po';
+import knowledgeArticlesConsolePo from '../../pageobject/knowledge/knowledge-articles-console.po';
+import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
+import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
+import approvalConfigurationPage from "../../pageobject/settings/approval/approval-configuration.po";
+import addReadAccess from '../../pageobject/settings/case-management/add-read-access-configuration.po';
+import assignmentsConfigConsolePo from '../../pageobject/settings/case-management/assignments-config-console.po';
+import consoleCasetemplatePo from '../../pageobject/settings/case-management/console-casetemplate.po';
+import createAssignmentsConfigPo from '../../pageobject/settings/case-management/create-assignments-config.po';
+import createCasetemplatePo from '../../pageobject/settings/case-management/create-casetemplate.po';
+import editAssignmentsConfigPo from '../../pageobject/settings/case-management/edit-assignments-config.po';
+import editCasetemplatePo from '../../pageobject/settings/case-management/edit-casetemplate.po';
+import editReadAccess from "../../pageobject/settings/case-management/edit-read-access-config.po";
+import consoleReadAcess from '../../pageobject/settings/case-management/read-access-console.po';
+import viewCasetemplatePo from '../../pageobject/settings/case-management/view-casetemplate.po';
+import createDocumentLibraryPo from '../../pageobject/settings/document-management/create-document-library.po';
+import documentLibraryConsolePo from '../../pageobject/settings/document-management/document-library-console.po';
+import editDocumentLibraryPo from '../../pageobject/settings/document-management/edit-document-library.po';
+import serviceTargetConfig from '../../pageobject/settings/slm/service-target-blade.po';
+import slmExpressionBuilder from '../../pageobject/settings/slm/slm-expressionbuilder.pop.po';
+import selectTaskTemplate from "../../pageobject/settings/task-management/console-tasktemplate.po";
+import createTasktemplatePo from '../../pageobject/settings/task-management/create-tasktemplate.po';
+import editTasktemplatePo from '../../pageobject/settings/task-management/edit-tasktemplate.po';
+import viewTasktemplatePo from '../../pageobject/settings/task-management/view-tasktemplate.po';
 import activityTabPo from '../../pageobject/social/activity-tab.po';
 import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
 import editTaskPo from '../../pageobject/task/edit-task.po';
@@ -17,42 +45,9 @@ import manageTaskPo from "../../pageobject/task/manage-task-blade.po";
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
+import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-import manageTask from "../../pageobject/task/manage-task-blade.po";
-import consoleCasetemplatePo from '../../pageobject/settings/case-management/console-casetemplate.po';
-import createCasetemplatePo from '../../pageobject/settings/case-management/create-casetemplate.po';
-import viewCasetemplatePo from '../../pageobject/settings/case-management/view-casetemplate.po';
-import editCasetemplatePo from '../../pageobject/settings/case-management/edit-casetemplate.po';
-import createTasktemplatePo from '../../pageobject/settings/task-management/create-tasktemplate.po';
-import selectTaskTemplate from "../../pageobject/settings/task-management/console-tasktemplate.po";
-import viewTasktemplatePo from '../../pageobject/settings/task-management/view-tasktemplate.po';
-import editTasktemplatePo from '../../pageobject/settings/task-management/edit-tasktemplate.po';
-import assignmentsConfigConsolePo from '../../pageobject/settings/case-management/assignments-config-console.po';
-import createAssignmentsConfigPo from '../../pageobject/settings/case-management/create-assignments-config.po';
-import editAssignmentsConfigPo from '../../pageobject/settings/case-management/edit-assignments-config.po';
-import consoleReadAcess from '../../pageobject/settings/case-management/read-access-console.po';
-import addReadAccess from '../../pageobject/settings/case-management/add-read-access-configuration.po';
-import utilGrid from '../../utils/util.grid';
-import editReadAccess from "../../pageobject/settings/case-management/edit-read-access-config.po";
-import documentLibraryConsolePo from '../../pageobject/settings/document-management/document-library-console.po';
-import createDocumentLibraryPo from '../../pageobject/settings/document-management/create-document-library.po';
-import editDocumentLibraryPo from '../../pageobject/settings/document-management/edit-document-library.po';
-import { default as createKnowledgePage } from "../../pageobject/knowledge/create-knowlege.po";
-import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
-import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
-import serviceTargetConfig from '../../pageobject/settings/slm/service-target-blade.po';
-import slmExpressionBuilder from '../../pageobject/settings/slm/slm-expressionbuilder.pop.po';
-import approvalConfigurationPage from "../../pageobject/settings/approval/approval-configuration.po";
-import { SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
-import { cloneDeep } from 'lodash';
-import attachDocumentBladePo from '../../pageobject/common/attach-document-blade.po';
-import knowledgeArticlesConsolePo from '../../pageobject/knowledge/knowledge-articles-console.po';
-import editKnowledgePo from '../../pageobject/knowledge/edit-knowledge.po';
-import dynamicFieldsPo from '../../pageobject/common/dynamic-fields.po';
-import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
-import casePreviewPo from '../../pageobject/case/case-preview.po';
-
 
 describe("Attachment", () => {
     beforeAll(async () => {
@@ -86,7 +81,7 @@ describe("Attachment", () => {
         await createCasePo.selectRequester('Elizabeth Peters');
         await createCasePo.setSummary(caseSummary);
         await createCasePo.clickSaveCaseButton();
-        await previewCasePo.clickGoToCaseButton();
+        await casePreviewPo.clickGoToCaseButton();
         await viewCasePo.clickAttachmentsLink();
 
         expect(await attachmentBladePo.isDownloadButtonDisplayed()).toBeTruthy('Download button is missing');
@@ -270,7 +265,7 @@ describe("Attachment", () => {
             let filesToUpload = fileName.map((file) => { return `../../data/ui/attachment/${file}` });
             await createCasePo.addDescriptionAttachment(filesToUpload);
             await createCasePo.clickSaveCaseButton();
-            await previewCasePo.clickGoToCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             await viewCasePo.clickAttachmentsLink();
             await utilityGrid.sortGridColumn("Attachments", "asc");
         });
@@ -366,7 +361,7 @@ describe("Attachment", () => {
             await createCasePo.setSummary(caseSummary);
             await createCasePo.addDescriptionAttachment(['../../data/ui/attachment/bwfJpg.jpg', '../../data/ui/attachment/articleStatus.png']);
             await createCasePo.clickSaveCaseButton();
-            await previewCasePo.clickGoToCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             await viewCasePo.clickAttachmentsLink();
             await attachmentBladePo.searchAttachment('bwfJpg');
             expect(await attachmentBladePo.isAttachmentPresent('bwfJpg')).toBeTruthy('bwfJpg Attachment is missing on grid');
@@ -398,7 +393,7 @@ describe("Attachment", () => {
         let fileName: string[] = ['articleStatus.png', 'bwfJpg.jpg'];
         await createCasePo.addDescriptionAttachment(['../../data/ui/attachment/articleStatus.png', '../../data/ui/attachment/bwfJpg.jpg']);
         await createCasePo.clickSaveCaseButton();
-        await previewCasePo.clickGoToCaseButton();
+        await casePreviewPo.clickGoToCaseButton();
         await viewCasePo.clickAttachmentsLink();
         await attachmentBladePo.clickAllCheckboxButton();
         expect(await utilCommon.deleteAlreadyDownloadedFile(`${fileName[0]}`)).toBeTruthy('File is delete sucessfully');
@@ -423,7 +418,7 @@ describe("Attachment", () => {
             let filesToUpload1 = fileName1.map((file) => { return `../../data/ui/attachment/${file}` });
             await createCasePo.addDescriptionAttachment(filesToUpload1);
             await createCasePo.clickSaveCaseButton();
-            await previewCasePo.clickGoToCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             await activityTabPo.addActivityNote("Total 20 Files");
             await activityTabPo.addAttachment(filesToUpload1);
             await activityTabPo.clickOnPostButton();
@@ -524,7 +519,7 @@ describe("Attachment", () => {
         if (date1 <= 9) date = '0' + date1.toString();
         else date = date1.toString();
         finalDate = date + '/' + month + '/' + year;
-        await previewCasePo.clickGoToCaseButton();
+        await casePreviewPo.clickGoToCaseButton();
         await viewCasePo.clickAttachmentsLink();
         expect(await utilCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('File is delete sucessfully');
         await attachmentBladePo.searchAndSelectCheckBox('bwfJpg');
@@ -558,7 +553,7 @@ describe("Attachment", () => {
         await attachmentInformationBladePo.clickCloseButton();
         await attachmentBladePo.clickCloseButton();
     });
-      
+
     //kgaikwad
     describe('[DRDMV-15252]: Verify Category tier 4 and Label field is added on views', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -567,8 +562,8 @@ describe("Attachment", () => {
         let categName3 = 'Bonus';
         let categName4 = 'Retention Bonus';
         let label = 'Payroll';
-        let summary= 'summaryDRDMV15252'+randomStr;
-        let title= 'titleDRDMV15252'+randomStr;
+        let summary = 'summaryDRDMV15252' + randomStr;
+        let title = 'titleDRDMV15252' + randomStr;
 
         beforeAll(async () => {
             await navigationPage.signOut();
@@ -585,34 +580,34 @@ describe("Attachment", () => {
             await createCasePo.selectCategoryTier3(categName3);
             await createCasePo.selectCategoryTier4(categName4);
             await createCasePo.clickSaveCaseButton();
-            await previewCasePo.clickGoToCaseButton();
-            expect (await viewCasePo.getCategoryTier4Value()).toBe(categName4,'FailureMsg1: CategoryTier4 is displayed');
-            expect (await viewCasePo.getlabel()).toBe(label,'FailureMsg2: Label is displayed');
+            await casePreviewPo.clickGoToCaseButton();
+            expect(await viewCasePo.getCategoryTier4Value()).toBe(categName4, 'FailureMsg1: CategoryTier4 is displayed');
+            expect(await viewCasePo.getlabel()).toBe(label, 'FailureMsg2: Label is displayed');
             // Verify CategoryTier4 on Edit Case
             await viewCasePo.clickEditCaseButton();
-            expect (await editCasePo.getCategoryTier4()).toBe(categName4,'FailureMsg3: CategoryTier4 is displayed');
-            expect (await editCasePo.isCaseLabelValueDisplayed(label)).toBeTruthy('FailureMsg2: Case Label is missing');
+            expect(await editCasePo.getCategoryTier4()).toBe(categName4, 'FailureMsg3: CategoryTier4 is displayed');
+            expect(await editCasePo.isCaseLabelValueDisplayed(label)).toBeTruthy('FailureMsg2: Case Label is missing');
             await editCasePo.clickOnCancelCaseButton();
         });
 
         it('[DRDMV-15252]: Verify Category Tier 4 With Task ', async () => {
             await viewCasePo.clickAddTaskButton();
-            await manageTask.clickAddAdhocTaskButton();
+            await manageTaskPo.clickAddAdhocTaskButton();
             await adhoctaskTemplate.setSummary(summary);
             await adhoctaskTemplate.setDescription("Description");
             await adhoctaskTemplate.selectLabel(label);
-            expect (await adhoctaskTemplate.getCategoryTier1()).toBe(categName1,'FailureMsg1: CategoryTier1 is displayed');
-            expect (await adhoctaskTemplate.getCategoryTier2()).toBe(categName2,'FailureMsg2: CategoryTier2 is displayed');
-            expect (await adhoctaskTemplate.getCategoryTier3()).toBe(categName3,'FailureMsg3: CategoryTier3 is displayed');
-            expect (await adhoctaskTemplate.getCategoryTier4()).toBe(categName4,'FailureMsg4: CategoryTier4 is displayed');
+            expect(await adhoctaskTemplate.getCategoryTier1()).toBe(categName1, 'FailureMsg1: CategoryTier1 is displayed');
+            expect(await adhoctaskTemplate.getCategoryTier2()).toBe(categName2, 'FailureMsg2: CategoryTier2 is displayed');
+            expect(await adhoctaskTemplate.getCategoryTier3()).toBe(categName3, 'FailureMsg3: CategoryTier3 is displayed');
+            expect(await adhoctaskTemplate.getCategoryTier4()).toBe(categName4, 'FailureMsg4: CategoryTier4 is displayed');
             await adhoctaskTemplate.clickSaveAdhoctask();
-            await manageTask.clickTaskLink(summary);
-            expect (await viewTaskPo.getCategoryTier4Value()).toBe(categName4,'FailureMsg5: CategoryTier4 is displayed');
-            expect (await viewTaskPo.getLabelValue()).toContain(label,'FailureMsg5: label is displayed');
+            await manageTaskPo.clickTaskLink(summary);
+            expect(await viewTaskPo.getCategoryTier4Value()).toBe(categName4, 'FailureMsg5: CategoryTier4 is displayed');
+            expect(await viewTaskPo.getLabelValue()).toContain(label, 'FailureMsg5: label is displayed');
 
             await viewTaskPo.clickOnEditTask();
-            expect (await editTaskPo.getTaskCategoryTier4()).toBe(categName4,'FailureMsg6: CategoryTier4 is displayed');
-            expect (await editTaskPo.isTaskLabelValueDisplayed(label)).toBeTruthy('FailureMsg5: Task label is displayed');
+            expect(await editTaskPo.getTaskCategoryTier4()).toBe(categName4, 'FailureMsg6: CategoryTier4 is displayed');
+            expect(await editTaskPo.isTaskLabelValueDisplayed(label)).toBeTruthy('FailureMsg5: Task label is displayed');
             await editTaskPo.clickOnCancelButton();
         });
 
@@ -620,7 +615,7 @@ describe("Attachment", () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
-            
+
             await createCasetemplatePo.setTemplateName(title);
             await createCasetemplatePo.setCompanyName('Petramco');
             await createCasetemplatePo.setCaseSummary(summary);
@@ -629,18 +624,18 @@ describe("Attachment", () => {
             await createCasetemplatePo.setCategoryTier2(categName2);
             await createCasetemplatePo.setCategoryTier3(categName3);
             await createCasetemplatePo.setCategoryTier4(categName4);
-            
+
             await createCasetemplatePo.clickSaveCaseTemplate();
-            
-            expect (await viewCasetemplatePo.getCategoryTier4()).toBe(categName4,'FailureMsg7: CategoryTier4 is displayed');
-            expect (await viewCasetemplatePo.getLabelValue()).toBe(label,'FailureMsg7: Label is displayed');
+
+            expect(await viewCasetemplatePo.getCategoryTier4()).toBe(categName4, 'FailureMsg7: CategoryTier4 is displayed');
+            expect(await viewCasetemplatePo.getLabelValue()).toBe(label, 'FailureMsg7: Label is displayed');
             await viewCasetemplatePo.clickOnEditCaseTemplateButton();
-            expect (await editCasetemplatePo.getValueOfTier4()).toBe(categName4,'FailureMsg6: CategoryTier4 is displayed');
-            expect (await editCasetemplatePo.isCaseTemplateLabelValueDisplayed(label)).toBeTruthy('FailureMsg6: label is missing');
+            expect(await editCasetemplatePo.getValueOfTier4()).toBe(categName4, 'FailureMsg6: CategoryTier4 is displayed');
+            expect(await editCasetemplatePo.isCaseTemplateLabelValueDisplayed(label)).toBeTruthy('FailureMsg6: label is missing');
             await editCasetemplatePo.clickOnCancelButton();
             await utilCommon.clickOnWarningOk();
         });
-     
+
         it('[DRDMV-15252]: Verify Category Tier 4 With Assignment Mapping ', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
@@ -658,8 +653,8 @@ describe("Attachment", () => {
             await createAssignmentsConfigPo.clickonSaveButton();
 
             await assignmentsConfigConsolePo.searchAndClickOnAssignmentConfig(title);
-            expect (await editAssignmentsConfigPo.getCategoryTier4()).toBe(categName4,'FailureMsg8: CategoryTier4 is displayed');
-            expect (await editAssignmentsConfigPo.isLabelValueDisplayed(label)).toBeTruthy('FailureMsg6: label is missing');
+            expect(await editAssignmentsConfigPo.getCategoryTier4()).toBe(categName4, 'FailureMsg8: CategoryTier4 is displayed');
+            expect(await editAssignmentsConfigPo.isLabelValueDisplayed(label)).toBeTruthy('FailureMsg6: label is missing');
 
             await editAssignmentsConfigPo.clickOnCancelButton();
         });
@@ -680,29 +675,29 @@ describe("Attachment", () => {
             await addReadAccess.selectLabel(label);
             await addReadAccess.clickOnSave();
             await utilGrid.searchAndOpenHyperlink(title);
-            expect (await editReadAccess.getCategoryTier4()).toBe(categName4,'FailureMsg8: CategoryTier4 is displayed');
-            expect (await editReadAccess.isLabelValueDisplayed(label)).toBeTruthy('FailureMsg6: label is missing');
+            expect(await editReadAccess.getCategoryTier4()).toBe(categName4, 'FailureMsg8: CategoryTier4 is displayed');
+            expect(await editReadAccess.isLabelValueDisplayed(label)).toBeTruthy('FailureMsg6: label is missing');
             await editReadAccess.clickOnCancel();
         });
 
         it('[DRDMV-15252]: Verify Category Tier 4 With Document Library ', async () => {
-        let filePath = '../../../data/ui/attachment/demo.txt';
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
-        await createDocumentLibraryPo.openAddNewDocumentBlade();
-        await createDocumentLibraryPo.addAttachment(filePath);
-        await createDocumentLibraryPo.setTitle(title);
-        await createDocumentLibraryPo.selectCompany('Petramco');
-        await createDocumentLibraryPo.selectBusinessUnit('Canada Support');
-        await createDocumentLibraryPo.selectOwnerGroup('CA Support 1');
-        await createDocumentLibraryPo.selectCategoryTier1(categName1);
-        await createDocumentLibraryPo.selectCategoryTier2(categName2);
-        await createDocumentLibraryPo.selectCategoryTier3(categName3);
-        await createDocumentLibraryPo.selectCategoryTier4(categName4);
-        await createDocumentLibraryPo.clickOnSaveButton();
-        await utilGrid.searchRecord(title);
-        await documentLibraryConsolePo.searchAndOpenDocumentLibrary(title);
-        expect (await editDocumentLibraryPo.getCategoryTier4()).toBe(categName4,'FailureMsg8: CategoryTier4 is displayed');
+            let filePath = '../../../data/ui/attachment/demo.txt';
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+            await createDocumentLibraryPo.openAddNewDocumentBlade();
+            await createDocumentLibraryPo.addAttachment(filePath);
+            await createDocumentLibraryPo.setTitle(title);
+            await createDocumentLibraryPo.selectCompany('Petramco');
+            await createDocumentLibraryPo.selectBusinessUnit('Canada Support');
+            await createDocumentLibraryPo.selectOwnerGroup('CA Support 1');
+            await createDocumentLibraryPo.selectCategoryTier1(categName1);
+            await createDocumentLibraryPo.selectCategoryTier2(categName2);
+            await createDocumentLibraryPo.selectCategoryTier3(categName3);
+            await createDocumentLibraryPo.selectCategoryTier4(categName4);
+            await createDocumentLibraryPo.clickOnSaveButton();
+            await utilGrid.searchRecord(title);
+            await documentLibraryConsolePo.searchAndOpenDocumentLibrary(title);
+            expect(await editDocumentLibraryPo.getCategoryTier4()).toBe(categName4, 'FailureMsg8: CategoryTier4 is displayed');
         });
 
         it('[DRDMV-15252]: Verify Category Tier 4 With Knowledge Article ', async () => {
@@ -718,16 +713,16 @@ describe("Attachment", () => {
             await createKnowledgePage.selectCategoryTier4Option(categName4);
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
-            expect (await viewKnowledgeArticlePo.getCategoryTier4Value()).toBe(categName4,'FailureMsg1: CategoryTier4 is displayed');
+            expect(await viewKnowledgeArticlePo.getCategoryTier4Value()).toBe(categName4, 'FailureMsg1: CategoryTier4 is displayed');
         });
 
         it('[DRDMV-15252]: Verify Category Tier 4 With SLM Build Expression ', async () => {
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
-        await serviceTargetConfig.createServiceTargetConfig('SVT with all fields', 'Petramco', 'Case Management');
-        await slmExpressionBuilder.selectFields('category Tier 4');
-        await slmExpressionBuilder.clearSearchField();
-        await slmExpressionBuilder.selectFields('Label');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
+            await serviceTargetConfig.createServiceTargetConfig('SVT with all fields', 'Petramco', 'Case Management');
+            await slmExpressionBuilder.selectFields('category Tier 4');
+            await slmExpressionBuilder.clearSearchField();
+            await slmExpressionBuilder.selectFields('Label');
         });
 
         it('[DRDMV-15252]: Verify Category Tier 4 With Approval Configuration ', async () => {
@@ -748,15 +743,15 @@ describe("Attachment", () => {
             expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Create New Approval Flow');
             await browser.sleep(3000); // sleep added for expression builder loading time
             await approvalConfigurationPage.searchExpressionFieldOption('Category Tier 4');
-            
+
             await approvalConfigurationPage.clickRecordOption('Record Definition');
             await approvalConfigurationPage.clickRecordOption('Case');
-            
+
             await browser.sleep(2000); // sleep added for expression builder loading time
             await approvalConfigurationPage.selectExpressionFieldOption();
             await browser.sleep(2000); // sleep added for expression builder loading time
             await approvalConfigurationPage.selectExpressionOperator('=');
-            
+
             await approvalConfigurationPage.searchExpressionFieldOption('LABEL_ID');
             await browser.sleep(2000); // sleep added for expression builder loading time
             await approvalConfigurationPage.selectExpressionFieldOption();
@@ -776,11 +771,11 @@ describe("Attachment", () => {
             await createTasktemplatePo.selectTaskCategoryTier4(categName4);
             await createTasktemplatePo.selectLabel(label);
             await createTasktemplatePo.clickOnSaveTaskTemplate();
-            expect (await viewTasktemplatePo.getCategoryTier4Value()).toBe(categName4,'FailureMsg7: CategoryTier4 is displayed');
-            expect (await viewTasktemplatePo.getLabelValue()).toBe(label,'FailureMsg7: label is displayed');
+            expect(await viewTasktemplatePo.getCategoryTier4Value()).toBe(categName4, 'FailureMsg7: CategoryTier4 is displayed');
+            expect(await viewTasktemplatePo.getLabelValue()).toBe(label, 'FailureMsg7: label is displayed');
             await viewTasktemplatePo.clickOnEditLink();
-            expect (await editTasktemplatePo.getTaskCategoryTier4()).toBe(categName4,'FailureMsg8: CategoryTier4 is displayed');
-            expect (await editTasktemplatePo.getLabelValue()).toBe(label,'FailureMsg8: label is displayed');
+            expect(await editTasktemplatePo.getTaskCategoryTier4()).toBe(categName4, 'FailureMsg8: CategoryTier4 is displayed');
+            expect(await editTasktemplatePo.getLabelValue()).toBe(label, 'FailureMsg8: label is displayed');
 
             await navigationPage.gotoCaseConsole();
         });
@@ -793,14 +788,14 @@ describe("Attachment", () => {
     });
 
     //kgaikwad
-	describe('[DRDMV-23413]: Verify Thai Character On Multiple Screens', async () => {
+    describe('[DRDMV-23413]: Verify Thai Character On Multiple Screens', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let caseTempateName = 'caseTemplateNameDRDMV23413' +randomStr;
+        let caseTempateName = 'caseTemplateNameDRDMV23413' + randomStr;
         let newCase1;
         let newCase2;
         let caseData1;
         let caseTemplateData;
-        let docLibTitle = 'docLibTitleDRDMV23413'+randomStr;
+        let docLibTitle = 'docLibTitleDRDMV23413' + randomStr;
         let knowledgeArticleData;
         let newCaseTemplate;
         let fileName1 = '1!@#$%^&()+_-={}[}.,123.jpg';
@@ -818,8 +813,8 @@ describe("Attachment", () => {
         let fileName11 = '3ทรัพยากรมนุษย์-นโยบายการแพทย์-รายงานการต__รวจสอบ.docx';
         let fileName12 = '3Google+Translate+เป็นบริการแปลระบบประสาทด้วยเครื่องฟรีหลายภาษาที่พัฒนาโดย+Google.xlsx';
 
-        let addNoteRandomText = 'addNoteDRDMV23413'+randomStr;
-        
+        let addNoteRandomText = 'addNoteDRDMV23413' + randomStr;
+
         beforeAll(async () => {
 
             caseTemplateData = {
@@ -843,7 +838,7 @@ describe("Attachment", () => {
             caseTemplateData.templateName = caseTempateName;
             newCaseTemplate = await apiHelper.createCaseTemplate(caseTemplateData);
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'MULTIPLE_ATTACHMENTS');
-           
+
             //  Create Case
             caseData1 = {
                 "Requester": "araisin",
@@ -855,7 +850,7 @@ describe("Attachment", () => {
             }
             newCase1 = await apiHelper.createCase(caseData1);
             newCase2 = await apiHelper.createCase(caseData1);
-            
+
             // Create Document Library
             let publishDocData = {
                 docLibTitle: 'docLibTitle',
@@ -864,23 +859,23 @@ describe("Attachment", () => {
                 ownerGroup: "US Support 1",
             }
 
-            publishDocData.docLibTitle = docLibTitle+1;
+            publishDocData.docLibTitle = docLibTitle + 1;
             let docLib1 = await apiHelper.createDocumentLibrary(publishDocData, `e2e/data/ui/attachment/${fileName9}`);
             await apiHelper.publishDocumentLibrary(docLib1);
 
-            publishDocData.docLibTitle =docLibTitle+2;
+            publishDocData.docLibTitle = docLibTitle + 2;
             let docLib2 = await apiHelper.createDocumentLibrary(publishDocData, `e2e/data/ui/attachment/${fileName10}`);
             await apiHelper.publishDocumentLibrary(docLib2);
 
-            publishDocData.docLibTitle =docLibTitle+3;
+            publishDocData.docLibTitle = docLibTitle + 3;
             let docLib3 = await apiHelper.createDocumentLibrary(publishDocData, `e2e/data/ui/attachment/${fileName11}`);
             await apiHelper.publishDocumentLibrary(docLib3);
 
-            publishDocData.docLibTitle =docLibTitle+4;
+            publishDocData.docLibTitle = docLibTitle + 4;
             let docLib4 = await apiHelper.createDocumentLibrary(publishDocData, `e2e/data/ui/attachment/${fileName12}`);
             await apiHelper.publishDocumentLibrary(docLib4);
-        
-        // Create Knowledge
+
+            // Create Knowledge
             let articleData = {
                 "knowledgeSet": "HR",
                 "title": "KATitle",
@@ -897,10 +892,10 @@ describe("Attachment", () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(newCase1.displayId);
             await viewCasePo.clickEditCaseButton();
-            await editCasePo.addDescriptionAttachment([`../../data/ui/attachment/${fileName1}`,`../../data/ui/attachment/${fileName2}`,`../../data/ui/attachment/${fileName3}`,`../../data/ui/attachment/${fileName4}`]);
+            await editCasePo.addDescriptionAttachment([`../../data/ui/attachment/${fileName1}`, `../../data/ui/attachment/${fileName2}`, `../../data/ui/attachment/${fileName3}`, `../../data/ui/attachment/${fileName4}`]);
             await editCasePo.clickSaveCase();
             await viewCasePo.clickShowMoreShowLessLink();
-            
+
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName1}`)).toBeTruthy(`FailuerMsg: ${fileName1} File is delete sucessfully`);
             await viewCasePo.clickOnAttachedDocumentFile(`${fileName1}`);
             expect(await utilityCommon.isFileDownloaded(`${fileName1}`)).toBeTruthy(`FailuerMsg: ${fileName1} File is not downloaded.`);
@@ -923,7 +918,7 @@ describe("Attachment", () => {
             await attachmentBladePo.clickDownloadButton();
             await attachmentBladePo.selectCheckBox(1);
             expect(await utilityCommon.isFileDownloaded(`${fileName1}`)).toBeTruthy(`FailuerMsg: ${fileName1} File is not downloaded.`);
-            
+
             expect(await utilityCommon.deleteAlreadyDownloadedFile('1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: ${fileName2} File is delete sucessfully`);
             await attachmentBladePo.selectCheckBox(2);
             await attachmentBladePo.clickDownloadButton();
@@ -946,7 +941,7 @@ describe("Attachment", () => {
 
         it('[DRDMV-23413]: Verify Locally Attachment On Case Activity Tab', async () => {
             await activityTabPo.addActivityNote(addNoteRandomText);
-            await activityTabPo.addAttachment([`../../data/ui/attachment/${fileName5}`,`../../data/ui/attachment/${fileName6}`,`../../data/ui/attachment/${fileName7}`,`../../data/ui/attachment/${fileName8}`]);
+            await activityTabPo.addAttachment([`../../data/ui/attachment/${fileName5}`, `../../data/ui/attachment/${fileName6}`, `../../data/ui/attachment/${fileName7}`, `../../data/ui/attachment/${fileName8}`]);
             await activityTabPo.clickOnPostButton();
             await activityTabPo.clickShowMoreLinkInAttachmentActivity(1);
 
@@ -970,14 +965,14 @@ describe("Attachment", () => {
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName8}`)).toBeTruthy(`FailuerMsg: ${fileName8} File is delete sucessfully`);
             await activityTabPo.clickAttachedFile(`${fileName8}`);
             expect(await utilityCommon.isFileDownloaded(`${fileName8}`)).toBeTruthy(`FailuerMsg: ${fileName8} File is not downloaded.`);
-            
+
             await viewCasePo.clickAttachmentsLink();
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName5}`)).toBeTruthy(`FailuerMsg: ${fileName5} File is delete sucessfully`);
             await attachmentBladePo.selectCheckBox(5);
             await attachmentBladePo.clickDownloadButton();
             await attachmentBladePo.selectCheckBox(5);
             expect(await utilityCommon.isFileDownloaded(`${fileName5}`)).toBeTruthy(`FailuerMsg: ${fileName5} File is not downloaded.`);
-            
+
             expect(await utilityCommon.deleteAlreadyDownloadedFile('2ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: 2ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf File is delete sucessfully`);
             await attachmentBladePo.selectCheckBox(6);
             await attachmentBladePo.clickDownloadButton();
@@ -1001,13 +996,13 @@ describe("Attachment", () => {
         it('[DRDMV-23413]: Verify Document Libaray Attachment On Case Activity Tab ', async () => {
             await activityTabPo.addActivityNote(addNoteRandomText);
             await activityTabPo.clickOnAttachLink();
-            await attachDocumentBladePo.searchAndAttachDocument(docLibTitle+1);
+            await attachDocumentBladePo.searchAndAttachDocument(docLibTitle + 1);
             await activityTabPo.clickOnAttachLink();
-            await attachDocumentBladePo.searchAndAttachDocument(docLibTitle+2);
+            await attachDocumentBladePo.searchAndAttachDocument(docLibTitle + 2);
             await activityTabPo.clickOnAttachLink();
-            await attachDocumentBladePo.searchAndAttachDocument(docLibTitle+3);
+            await attachDocumentBladePo.searchAndAttachDocument(docLibTitle + 3);
             await activityTabPo.clickOnAttachLink();
-            await attachDocumentBladePo.searchAndAttachDocument(docLibTitle+4);
+            await attachDocumentBladePo.searchAndAttachDocument(docLibTitle + 4);
             await activityTabPo.clickOnPostButton();
             await activityTabPo.clickShowMoreLinkInAttachmentActivity(1);
 
@@ -1032,7 +1027,7 @@ describe("Attachment", () => {
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName12}`)).toBeTruthy(`FailuerMsg: ${fileName12} File is delete sucessfully`);
             await activityTabPo.clickAttachedFile(`${fileName12}`);
             expect(await utilityCommon.isFileDownloaded(`${fileName12}`)).toBeTruthy(`FailuerMsg: ${fileName12} File is not downloaded.`);
-            
+
             await viewCasePo.clickAttachmentsLink();
             expect(await attachmentBladePo.isCheckBoxSelected(fileName12)).toBeFalsy(`${fileName12} CheckBox is selected`);
 
@@ -1041,7 +1036,7 @@ describe("Attachment", () => {
             await attachmentBladePo.clickDownloadButton();
             await attachmentBladePo.selectCheckBox(9);
             expect(await utilityCommon.isFileDownloaded(`${fileName9}`)).toBeTruthy(`FailuerMsg: ${fileName9} File is not downloaded.`);
-            
+
             expect(await utilityCommon.deleteAlreadyDownloadedFile('3ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: 3ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf File is delete sucessfully`);
             await attachmentBladePo.selectCheckBox(10);
             await attachmentBladePo.clickDownloadButton();
@@ -1072,10 +1067,10 @@ describe("Attachment", () => {
             await manageTaskPo.clickTaskLink('AdhocTaskSummaryDRDMV15252');
 
             await viewTaskPo.clickOnEditTask();
-            await editTaskPo.addAttachment([`../../data/ui/attachment/${fileName1}`,`../../data/ui/attachment/${fileName2}`,`../../data/ui/attachment/${fileName3}`,`../../data/ui/attachment/${fileName4}`]);
+            await editTaskPo.addAttachment([`../../data/ui/attachment/${fileName1}`, `../../data/ui/attachment/${fileName2}`, `../../data/ui/attachment/${fileName3}`, `../../data/ui/attachment/${fileName4}`]);
             await editTaskPo.clickOnSaveButton();
             await viewCasePo.clickShowMoreShowLessLink();
-            
+
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName1}`)).toBeTruthy(`FailuerMsg: ${fileName1} File is delete sucessfully`);
             await viewTaskPo.isAttachedFileNamePresent(fileName1);
             await viewTaskPo.clickOnAttachedDocumentFile(`${fileName1}`);
@@ -1099,7 +1094,7 @@ describe("Attachment", () => {
 
         it('[DRDMV-23413]: Verify Locally Attachment On Task Activity Tab', async () => {
             await activityTabPo.addActivityNote(addNoteRandomText);
-            await activityTabPo.addAttachment([`../../data/ui/attachment/${fileName5}`,`../../data/ui/attachment/${fileName6}`,`../../data/ui/attachment/${fileName7}`,`../../data/ui/attachment/${fileName8}`]);
+            await activityTabPo.addAttachment([`../../data/ui/attachment/${fileName5}`, `../../data/ui/attachment/${fileName6}`, `../../data/ui/attachment/${fileName7}`, `../../data/ui/attachment/${fileName8}`]);
             await activityTabPo.clickOnPostButton();
             await activityTabPo.clickShowMoreLinkInAttachmentActivity(1);
 
@@ -1128,13 +1123,13 @@ describe("Attachment", () => {
         it('[DRDMV-23413]: Verify Document Libaray Attachment On Task Activity Tab ', async () => {
             await activityTabPo.addActivityNote(addNoteRandomText);
             await activityTabPo.clickOnAttachLink();
-            await attachDocumentBladePo.searchAndAttachDocument(docLibTitle+1);
+            await attachDocumentBladePo.searchAndAttachDocument(docLibTitle + 1);
             await activityTabPo.clickOnAttachLink();
-            await attachDocumentBladePo.searchAndAttachDocument(docLibTitle+2);
+            await attachDocumentBladePo.searchAndAttachDocument(docLibTitle + 2);
             await activityTabPo.clickOnAttachLink();
-            await attachDocumentBladePo.searchAndAttachDocument(docLibTitle+3);
+            await attachDocumentBladePo.searchAndAttachDocument(docLibTitle + 3);
             await activityTabPo.clickOnAttachLink();
-            await attachDocumentBladePo.searchAndAttachDocument(docLibTitle+4);
+            await attachDocumentBladePo.searchAndAttachDocument(docLibTitle + 4);
             await activityTabPo.clickOnPostButton();
             await activityTabPo.clickShowMoreLinkInAttachmentActivity(1);
 
@@ -1169,7 +1164,7 @@ describe("Attachment", () => {
             await attachmentBladePo.clickDownloadButton();
             await attachmentBladePo.selectCheckBox(1);
             expect(await utilityCommon.isFileDownloaded(`${fileName1}`)).toBeTruthy(`FailuerMsg: ${fileName1} File is not downloaded.`);
-            
+
             expect(await utilityCommon.deleteAlreadyDownloadedFile('1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: ${fileName2} File is delete sucessfully`);
             await attachmentBladePo.selectCheckBox(2);
             await attachmentBladePo.clickDownloadButton();
@@ -1187,13 +1182,13 @@ describe("Attachment", () => {
             await attachmentBladePo.clickDownloadButton();
             await attachmentBladePo.selectCheckBox(4);
             expect(await utilityCommon.isFileDownloaded(`${fileName4}`)).toBeTruthy(`FailuerMsg: ${fileName4} File is not downloaded.`);
-       
+
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName5}`)).toBeTruthy(`FailuerMsg: ${fileName5} File is delete sucessfully`);
             await attachmentBladePo.selectCheckBox(5);
             await attachmentBladePo.clickDownloadButton();
             await attachmentBladePo.selectCheckBox(5);
             expect(await utilityCommon.isFileDownloaded(`${fileName5}`)).toBeTruthy(`FailuerMsg: ${fileName5} File is not downloaded.`);
-            
+
             expect(await utilityCommon.deleteAlreadyDownloadedFile('2ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '2ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf' File is delete sucessfully`);
             await attachmentBladePo.selectCheckBox(6);
             await attachmentBladePo.clickDownloadButton();
@@ -1211,7 +1206,7 @@ describe("Attachment", () => {
             await attachmentBladePo.clickDownloadButton();
             await attachmentBladePo.selectCheckBox(8);
             expect(await utilityCommon.isFileDownloaded(`${fileName8}`)).toBeTruthy(`FailuerMsg: ${fileName8} File is not downloaded.`);
-       
+
             expect(await attachmentBladePo.isCheckBoxSelected(fileName12)).toBeFalsy(`${fileName12} CheckBox is selected`);
 
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName9}`)).toBeTruthy(`FailuerMsg: ${fileName9} File is delete sucessfully`);
@@ -1219,7 +1214,7 @@ describe("Attachment", () => {
             await attachmentBladePo.clickDownloadButton();
             await attachmentBladePo.selectCheckBox(9);
             expect(await utilityCommon.isFileDownloaded(`${fileName9}`)).toBeTruthy(`FailuerMsg: ${fileName9} File is not downloaded.`);
-            
+
             expect(await utilityCommon.deleteAlreadyDownloadedFile('3ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: 3ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf File is delete sucessfully`);
             await attachmentBladePo.selectCheckBox(10);
             await attachmentBladePo.clickDownloadButton();
@@ -1239,13 +1234,13 @@ describe("Attachment", () => {
             expect(await utilityCommon.isFileDownloaded(`${fileName12}`)).toBeTruthy(`FailuerMsg: ${fileName12} File is not downloaded.`);
             await attachmentBladePo.clickCloseButton();
         });
-        
+
         it('[DRDMV-23413]: Verify Files On Edit Knowledge MetaData', async () => {
             await navigationPage.gotoKnowledgeConsole();
             await knowledgeArticlesConsolePo.searchAndOpenKnowledgeArticle(knowledgeArticleData.displayId);
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             await editKnowledgePo.setCategoryTier1('Employee Relations');
-            await editKnowledgePo.addAttachment([`../../data/ui/attachment/${fileName1}`,`../../data/ui/attachment/${fileName2}`,`../../data/ui/attachment/${fileName3}`,`../../data/ui/attachment/${fileName4}`]);
+            await editKnowledgePo.addAttachment([`../../data/ui/attachment/${fileName1}`, `../../data/ui/attachment/${fileName2}`, `../../data/ui/attachment/${fileName3}`, `../../data/ui/attachment/${fileName4}`]);
             await editKnowledgePo.clickSaveKnowledgeMetadata();
 
             await viewKnowledgeArticlePo.clickShowMoreButton();
@@ -1276,7 +1271,7 @@ describe("Attachment", () => {
             await viewKnowledgeArticlePo.clickOnActivityTab();
 
             await activityTabPo.addActivityNote(addNoteRandomText);
-            await activityTabPo.addAttachment([`../../data/ui/attachment/${fileName5}`,`../../data/ui/attachment/${fileName6}`,`../../data/ui/attachment/${fileName7}`,`../../data/ui/attachment/${fileName8}`]);
+            await activityTabPo.addAttachment([`../../data/ui/attachment/${fileName5}`, `../../data/ui/attachment/${fileName6}`, `../../data/ui/attachment/${fileName7}`, `../../data/ui/attachment/${fileName8}`]);
             await activityTabPo.clickOnPostButton();
             await activityTabPo.clickShowMoreLinkInAttachmentActivity(1);
 
@@ -1301,17 +1296,17 @@ describe("Attachment", () => {
             await activityTabPo.clickAttachedFile(`${fileName8}`);
             expect(await utilityCommon.isFileDownloaded(`${fileName8}`)).toBeTruthy(`FailuerMsg: ${fileName8} File is not downloaded.`);
         });
-       
+
         it('[DRDMV-23413]: Verify Document Libaray Attachment On Knowledge Activity Tab ', async () => {
             await activityTabPo.addActivityNote(addNoteRandomText);
             await activityTabPo.clickOnAttachLink();
-            await attachDocumentBladePo.searchAndAttachDocument(docLibTitle+1);
+            await attachDocumentBladePo.searchAndAttachDocument(docLibTitle + 1);
             await activityTabPo.clickOnAttachLink();
-            await attachDocumentBladePo.searchAndAttachDocument(docLibTitle+2);
+            await attachDocumentBladePo.searchAndAttachDocument(docLibTitle + 2);
             await activityTabPo.clickOnAttachLink();
-            await attachDocumentBladePo.searchAndAttachDocument(docLibTitle+3);
+            await attachDocumentBladePo.searchAndAttachDocument(docLibTitle + 3);
             await activityTabPo.clickOnAttachLink();
-            await attachDocumentBladePo.searchAndAttachDocument(docLibTitle+4);
+            await attachDocumentBladePo.searchAndAttachDocument(docLibTitle + 4);
             await activityTabPo.clickOnPostButton();
             await activityTabPo.clickShowMoreLinkInAttachmentActivity(1);
 
@@ -1367,7 +1362,7 @@ describe("Attachment", () => {
             await casePreviewPo.clickGoToCaseButton();
             await viewCasePo.clickEditCaseButton();
         });
-        
+
         it('[DRDMV-23413]: Verify Dynamic Fields On Case', async () => {
             await browser.sleep(15000);//Wait untile download icon displayed.
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName5}`)).toBeTruthy(`FailuerMsg: ${fileName5} File is delete sucessfully`);
@@ -1392,7 +1387,7 @@ describe("Attachment", () => {
             await editCasePo.addAttachment('attachmentFour', [`../../data/ui/attachment/${fileName4}`]);
             await editCasePo.clickSaveCase();
         });
-        
+
         it('[DRDMV-23413]: Verify Dynamic Fields On View Case & Activity', async () => {
             await activityTabPo.clickShowMoreLinkInActivity(1);
             await activityTabPo.isTextPresentInActivityLog('1Google+Translate+เป็นบริการแปลระบบประสาทด้วยเครื่องฟรีหลายภาษาที่พัฒนาโดย+Google.xlsx(+)')
@@ -1400,7 +1395,7 @@ describe("Attachment", () => {
             await activityTabPo.isTextPresentInActivityLog('1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf(+)');
             await activityTabPo.isTextPresentInActivityLog('1!@#$%^&()+_-={}[}.');
             await activityTabPo.isTextPresentInActivityLog('123.jpg(+)');
-             
+
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName1}`)).toBeTruthy(`FailuerMsg: ${fileName1} File is delete sucessfully`);
             await viewCasePo.clickDynamicAttachmentValue(fileName1);
             expect(await utilityCommon.isFileDownloaded(`${fileName1}`)).toBeTruthy(`FailuerMsg: ${fileName1} File is not downloaded.`);
@@ -1417,7 +1412,7 @@ describe("Attachment", () => {
             await viewCasePo.clickDynamicAttachmentValue(fileName4);
             expect(await utilityCommon.isFileDownloaded(`${fileName4}`)).toBeTruthy(`FailuerMsg: ${fileName4} File is not downloaded.`);
         });
-        
+
         it('[DRDMV-23413]: Verify Dynamic Fields On Attachment', async () => {
             await viewCasePo.clickAttachmentsLink();
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName1}`)).toBeTruthy(`FailuerMsg: ${fileName1} File is delete sucessfully`);
@@ -1425,7 +1420,7 @@ describe("Attachment", () => {
             await attachmentBladePo.clickDownloadButton();
             await attachmentBladePo.selectCheckBox(1);
             expect(await utilityCommon.isFileDownloaded(`${fileName1}`)).toBeTruthy(`FailuerMsg: ${fileName1} File is not downloaded.`);
-            
+
             expect(await utilityCommon.deleteAlreadyDownloadedFile('1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: 1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf file is delete sucessfully`);
             await attachmentBladePo.selectCheckBox(2);
             await attachmentBladePo.clickDownloadButton();
@@ -1445,14 +1440,14 @@ describe("Attachment", () => {
             expect(await utilityCommon.isFileDownloaded(`${fileName4}`)).toBeTruthy(`FailuerMsg: ${fileName4} File is not downloaded.`);
             await attachmentBladePo.clickCloseButton();
         });
-        
+
         it('[DRDMV-23413]: Verify thai character on social', async () => {
             await viewCasePo.clickOnEmailLink();
             await composeMail.setToOrCCInputTextbox('To', 'qtao@petramco.com');
             await composeMail.setEmailBody("With thai attachmnents");
-            await composeMail.addAttachment([`../../data/ui/attachment/${fileName9}`,`../../data/ui/attachment/${fileName10}`,`../../data/ui/attachment/${fileName11}`,`../../data/ui/attachment/${fileName12}`]);
+            await composeMail.addAttachment([`../../data/ui/attachment/${fileName9}`, `../../data/ui/attachment/${fileName10}`, `../../data/ui/attachment/${fileName11}`, `../../data/ui/attachment/${fileName12}`]);
             await composeMail.clickOnSendButton();
-            
+
             await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickShowMoreLinkInAttachmentActivity(1);
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName9}`)).toBeTruthy(`FailuerMsg: ${fileName9} File is delete sucessfully`);
@@ -1470,12 +1465,6 @@ describe("Attachment", () => {
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName12}`)).toBeTruthy(`FailuerMsg: ${fileName12} File is delete sucessfully`);
             await activityTabPo.clickAndDownloadAttachmentFile(fileName12);
             expect(await utilityCommon.isFileDownloaded(`${fileName12}`)).toBeTruthy(`FailuerMsg: ${fileName12} File is not downloaded.`);
-        });
-     
-        afterAll(async () => {
-            await utilityCommon.closeAllBlades();
-            await navigationPage.signOut();
-            await loginPage.login('qtao');
         });
     });
 });

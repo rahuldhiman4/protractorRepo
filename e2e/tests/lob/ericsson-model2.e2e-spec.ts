@@ -1,41 +1,38 @@
-import { BWF_BASE_URL } from '../../utils/constants';
 import { browser } from "protractor";
+import coreApi from '../../api/api.core.util';
 import apiHelper from '../../api/api.helper';
-import previewCasePage from '../../pageobject/case/case-preview.po';
+import caseConsolePo from "../../pageobject/case/case-console.po";
+import casePreviewPo from '../../pageobject/case/case-preview.po';
+import createCasePage from '../../pageobject/case/create-case.po';
 import editCasePo from '../../pageobject/case/edit-case.po';
 import quickCasePo from '../../pageobject/case/quick-case.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePage from '../../pageobject/case/view-case.po';
+import accessTabPo from '../../pageobject/common/access-tab.po';
 import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import resourcesPo from '../../pageobject/common/resources-tab.po';
+import resourcesTabPo from '../../pageobject/common/resources-tab.po';
 import createKnowledgePage from "../../pageobject/knowledge/create-knowlege.po";
 import editKnowledgePo from '../../pageobject/knowledge/edit-knowledge.po';
 import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
 import statusBladeKnowledgeArticlePo from '../../pageobject/knowledge/status-blade-knowledge-article.po';
 import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
-import previewCaseTemplateCasesPo from '../../pageobject/settings/case-management/preview-case-template.po';
+import caseTemplatePreviewPo from '../../pageobject/settings/case-management/preview-case-template.po';
+import createAdhocTaskPo from "../../pageobject/task/create-adhoc-task.po";
+import manageTaskBladePo from "../../pageobject/task/manage-task-blade.po";
+import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-import accessTabPo from '../../pageobject/common/access-tab.po';
-import coreApi from '../../api/api.core.util';
-let supportGroupDataHR, supportGroupDataFacilities, supportGroupDataEricssonHR, supportGroupDataEricssonSAM, userData3, userData4;
-import resourcesTabPo from "../../pageobject/common/resources-tab.po";
-import previewCaseTemplatePo from "../../pageobject/settings/case-management/preview-case-template.po";
-import manageTaskBladePo from "../../pageobject/task/manage-task-blade.po";
-import createAdhocTaskPo from "../../pageobject/task/create-adhoc-task.po";
-import createCasePage from '../../pageobject/case/create-case.po';
-import casePreviewPo from "../../pageobject/case/case-preview.po";
-import caseConsolePo from "../../pageobject/case/case-console.po";
 
 describe('Ericsson Model Test Extended', () => {
+    let supportGroupDataHR, supportGroupDataFacilities, supportGroupDataEricssonHR, supportGroupDataEricssonSAM, userData3, userData4;
     let ericssonHRAndSamLOBUserName = 'sbruce@petramco.com';
     let password = 'Password_1234';
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
-        await loginPage.login('qkatawazi');
+        await loginPage.login('rwillie');
 
         userData3 = {
             "firstName": "ercsn hr tst",
@@ -183,31 +180,29 @@ describe('Ericsson Model Test Extended', () => {
             await apiHelper.createCaseTemplate(caseTemplateDataEricssonSAMGlobal);
         });
         it('[DRDMV-23634]:[Ericsson Model][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
-            await navigationPage.signOut();
-            await loginPage.login('rwillie');
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('rdustin');
             expect(await quickCasePo.selectCaseTemplate(ericssonSAMcaseTemplateData.templateName)).toBeFalsy('template is present');
             expect(await quickCasePo.selectCaseTemplate(caseTemplateDataEricssonSAMGlobal.templateName)).toBeFalsy('template is present');
             await quickCasePo.selectCaseTemplate(ericssonHRcaseTemplateData.templateName);
             await quickCasePo.clickArrowFirstRecommendedCaseTemplate();
-            expect(await previewCaseTemplateCasesPo.getLineOfBusinessValue()).toBe('Ericsson HR');
-            await previewCaseTemplateCasesPo.clickOnBackButton();
+            expect(await caseTemplatePreviewPo.getLineOfBusinessValue()).toBe('Ericsson HR');
+            await caseTemplatePreviewPo.clickOnBackButton();
         });
         it('[DRDMV-23634]:[Ericsson Model][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
             await browser.sleep(7000); //Hard wait for KA Indexing
-            expect(await resourcesPo.getKnowledgeArticleInfo()).toContain('Ericsson HR', 'LOB is not correct');
-            await resourcesPo.clickOnAdvancedSearchOptions();
-            await resourcesPo.enterAdvancedSearchText(articleData.title);
-            await resourcesPo.clickOnAdvancedSearchSettingsIconToOpen();
-            await resourcesPo.clickOnAdvancedSearchFiltersButton('Apply');
-            await resourcesPo.clickOnAdvancedSearchSettingsIconToClose();
-            expect(await resourcesPo.getKnowledgeArticleInfo()).toContain('Ericsson HR', 'LOB is not correct');
+            expect(await resourcesTabPo.getKnowledgeArticleInfo()).toContain('Ericsson HR', 'LOB is not correct');
+            await resourcesTabPo.clickOnAdvancedSearchOptions();
+            await resourcesTabPo.enterAdvancedSearchText(articleData.title);
+            await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
+            await resourcesTabPo.clickOnAdvancedSearchFiltersButton('Apply');
+            await resourcesTabPo.clickOnAdvancedSearchSettingsIconToClose();
+            expect(await resourcesTabPo.getKnowledgeArticleInfo()).toContain('Ericsson HR', 'LOB is not correct');
             await quickCasePo.clickFirstRecommendedCases();
-            expect(await previewCasePage.getLineOfBusinessValue()).toBe('Ericsson HR');
-            await previewCasePage.clickBackButton();
+            expect(await casePreviewPo.getLineOfBusinessValue()).toBe('Ericsson HR');
+            await casePreviewPo.clickBackButton();
             await quickCasePo.createCaseButton();
-            await previewCasePage.clickGoToCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
         });
         it('[DRDMV-23634]:[Ericsson Model][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
             await viewCasePage.clickEditCaseButton();
@@ -249,7 +244,7 @@ describe('Ericsson Model Test Extended', () => {
             await quickCasePo.setCaseSummary('new case');
             await quickCasePo.createCaseButton();
             await utilityCommon.closePopUpMessage();
-            expect(await previewCasePage.getLineOfBusinessValue()).toBe('Ericsson SAM');
+            expect(await casePreviewPo.getLineOfBusinessValue()).toBe('Ericsson SAM');
             await quickCasePo.gotoCaseButton();
             await viewCasePage.clickEditCaseButton();
             expect(await editCasePo.isValuePresentInDropdown("Category Tier 1", 'Employee Relations')).toBeFalsy('Value is present in  Category Tier 1 drop down');
@@ -276,7 +271,7 @@ describe('Ericsson Model Test Extended', () => {
             await quickCasePo.selectCaseTemplate(ericssonSAMcaseTemplateData.templateName);
             await quickCasePo.createCaseButton();
             await utilityCommon.closePopUpMessage();
-            expect(await previewCasePage.getLineOfBusinessValue()).toBe('Ericsson SAM');
+            expect(await casePreviewPo.getLineOfBusinessValue()).toBe('Ericsson SAM');
             await quickCasePo.gotoCaseButton();
         });
         it('[DRDMV-23634]:[Ericsson Model][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
@@ -284,18 +279,18 @@ describe('Ericsson Model Test Extended', () => {
             await quickCasePo.selectRequesterName('tkenneth');
             await quickCasePo.selectCaseTemplate(caseTemplateDataEricssonSAMGlobal.templateName);
             await quickCasePo.clickArrowFirstRecommendedCaseTemplate();
-            expect(await previewCaseTemplateCasesPo.getLineOfBusinessValue()).toBe('Ericsson SAM');
-            await previewCaseTemplateCasesPo.clickOnBackButton();
+            expect(await caseTemplatePreviewPo.getLineOfBusinessValue()).toBe('Ericsson SAM');
+            await caseTemplatePreviewPo.clickOnBackButton();
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('tkenneth');
             expect(await quickCasePo.selectCaseTemplate(caseTemplateDataGlobal.templateName)).toBeFalsy('template is present');
             await quickCasePo.setCaseSummary('new case');
-            await resourcesPo.clickOnAdvancedSearchOptions();
-            await resourcesPo.enterAdvancedSearchText(articleData.title);
-            await resourcesPo.clickOnAdvancedSearchSettingsIconToOpen();
-            await resourcesPo.clickOnAdvancedSearchFiltersButton('Apply');
-            await resourcesPo.clickOnAdvancedSearchSettingsIconToClose();
-            expect(await resourcesPo.isRecommendedKnowledgePresent(articleData.title)).toBeFalsy();
+            await resourcesTabPo.clickOnAdvancedSearchOptions();
+            await resourcesTabPo.enterAdvancedSearchText(articleData.title);
+            await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
+            await resourcesTabPo.clickOnAdvancedSearchFiltersButton('Apply');
+            await resourcesTabPo.clickOnAdvancedSearchSettingsIconToClose();
+            expect(await resourcesTabPo.isRecommendedKnowledgePresent(articleData.title)).toBeFalsy();
             await quickCasePo.clickStartOverButton();
             await quickCasePo.selectRequesterName('tkenneth');
             expect(await quickCasePo.selectCaseTemplate(ericssonGlobalcaseTemplateData.templateName)).toBeFalsy('template is present');
@@ -303,18 +298,16 @@ describe('Ericsson Model Test Extended', () => {
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
-            await navigationPage.signOut();
-            await loginPage.login(ericssonHRAndSamLOBUserName, password);
         });
     });
-    
+
     //kiran
     describe('[DRDMV-23664]: [Service Provider Model][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to multiple LOB', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateDataGlobalEricssonGlobalSAM, knowledgeSetDataEricssonHR, caseTemplateDataGlobalEricssonHR, caseTemplateDataEricssonHR, caseIdEricssonHR, caseIdEricssonSAM, caseTemplateDataEricssonSAM, caseTemplateDataGlobalEricssonSAM, caseTemplateDataGlobalEricssonGlobalHR;
         let knowledgeTitle = "knowledgeTitleDRDMV23664" + randomStr;
         let summary = "DRDMV23664CaseSummary" + randomStr;
-        
+
         beforeAll(async () => {
             // Create Data with Ericsson HR LOB
             await apiHelper.apiLogin('tadmin');
@@ -446,13 +439,14 @@ describe('Ericsson Model Test Extended', () => {
         });
 
         it('[DRDMV-23664]: Verify Negative Scenrio between Ericsson HR and Ericsson SAM with Global Requester', async () => {
-            await navigationPage.gotoCaseConsole();
+            await navigationPage.signOut();
+            await loginPage.login(ericssonHRAndSamLOBUserName, password);
             await utilityGrid.selectLineOfBusiness('Ericsson HR');
 
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('tted');
-            expect (await createCasePage.getCompany()).toBe('Ericsson Global');
-            expect (await createCasePage.getLineOfBusinessValue()).toBe('Ericsson HR');
+            expect(await createCasePage.getCompany()).toBe('Ericsson Global');
+            expect(await createCasePage.getLineOfBusinessValue()).toBe('Ericsson HR');
 
             await createCasePage.setSummary(summary);
             // Verify negative scenario for Ericsson HR and Ericsson SAM LOB case template should not display
@@ -556,8 +550,8 @@ describe('Ericsson Model Test Extended', () => {
             expect(await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalEricssonHR.templateName)).toBeTruthy(`${caseTemplateDataGlobalEricssonHR} caseTemplateDataGlobalEricssonHR is missing`);
 
             await selectCasetemplateBladePo.searchAndOpenCaseTemplate(caseTemplateDataGlobalEricssonHR.templateName);
-            expect(await previewCaseTemplatePo.isLabelTitleDisplayed('Case Summary')).toBeTruthy('Case Summary label is missing');
-            await previewCaseTemplatePo.clickOnBackButton();
+            expect(await caseTemplatePreviewPo.isLabelTitleDisplayed('Case Summary')).toBeTruthy('Case Summary label is missing');
+            await caseTemplatePreviewPo.clickOnBackButton();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateDataGlobalEricssonHR.templateName);
 
             expect(await createCasePage.getCategoryTier1Value()).toBe('Employee Relations');
@@ -572,7 +566,7 @@ describe('Ericsson Model Test Extended', () => {
 
 
             await createCasePage.clickSaveCaseButton();
-            await previewCasePage.clickGoToCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             caseIdEricssonHR = await viewCasePage.getCaseID();
         });
 
@@ -684,7 +678,7 @@ describe('Ericsson Model Test Extended', () => {
             await changeAssignmentBladePo.clickOnCancelButton();
 
             await createCasePage.clickSaveCaseButton();
-            await previewCasePage.clickGoToCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             caseIdEricssonSAM = await viewCasePage.getCaseID();
         });
 
@@ -711,8 +705,6 @@ describe('Ericsson Model Test Extended', () => {
 
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
-            await navigationPage.signOut();
-            await loginPage.login(ericssonHRAndSamLOBUserName, password);
         });
     });
 
@@ -994,15 +986,15 @@ describe('Ericsson Model Test Extended', () => {
             await quickCasePo.selectRequesterName('tted');
             await quickCasePo.setCaseSummary(caseSummaryEricssonHR);
             await quickCasePo.saveCase();
-            expect(await previewCasePage.getLineOfBusinessValue()).toBe('Ericsson HR');
-            await previewCasePage.clickOncreateNewCaseButton();
+            expect(await casePreviewPo.getLineOfBusinessValue()).toBe('Ericsson HR');
+            await casePreviewPo.clickOncreateNewCaseButton();
         });
 
         it('[DRDMV-23665]: Create Quick Case with case template', async () => {
             await quickCasePo.selectRequesterName('rwillie');
             await quickCasePo.selectCaseTemplate(caseTemplateDataEricssonHR.templateName);
             await quickCasePo.saveCase();
-            await previewCasePage.clickGoToCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
         });
 
         it('[DRDMV-23665]: Verify Edit Case Page', async () => {
@@ -1029,8 +1021,8 @@ describe('Ericsson Model Test Extended', () => {
             expect(await utilityGrid.isGridRecordPresent(caseTemplateDataGlobalEricssonHR.templateName)).toBeTruthy('caseTemplateDataGlobalKingstonHR is missing');
 
             await selectCasetemplateBladePo.searchAndOpenCaseTemplate(caseTemplateDataGlobalEricssonHR.templateName);
-            expect(await previewCaseTemplatePo.isLabelTitleDisplayed('Case Summary')).toBeTruthy('Case Summary label is missing');
-            await previewCaseTemplatePo.clickOnBackButton();
+            expect(await caseTemplatePreviewPo.isLabelTitleDisplayed('Case Summary')).toBeTruthy('Case Summary label is missing');
+            await caseTemplatePreviewPo.clickOnBackButton();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateDataGlobalEricssonHR.templateName);
 
             expect(await editCasePo.getCategoryTier1()).toBe('Employee Relations');
@@ -1070,8 +1062,8 @@ describe('Ericsson Model Test Extended', () => {
             await quickCasePo.selectRequesterName('rwillie');
             await quickCasePo.setCaseSummary('DRDMV23665TestCaseSummaryEricssonHR');
             await quickCasePo.saveCase();
-            expect(await previewCasePage.getLineOfBusinessValue()).toBe('Ericsson HR');
-            await previewCasePage.clickGoToCaseButton();
+            expect(await casePreviewPo.getLineOfBusinessValue()).toBe('Ericsson HR');
+            await casePreviewPo.clickGoToCaseButton();
         });
 
         it('[DRDMV-23665]: Verify Edit Case Page with Ericson HR', async () => {
@@ -1166,15 +1158,15 @@ describe('Ericsson Model Test Extended', () => {
             await quickCasePo.selectRequesterName('tted');
             await quickCasePo.setCaseSummary(caseSummaryEricssonSAM);
             await quickCasePo.saveCase();
-            expect(await previewCasePage.getLineOfBusinessValue()).toBe('Ericsson HR');
-            await previewCasePage.clickOncreateNewCaseButton();
+            expect(await casePreviewPo.getLineOfBusinessValue()).toBe('Ericsson HR');
+            await casePreviewPo.clickOncreateNewCaseButton();
         });
 
         it('[DRDMV-23665]: Create Quick Case with case template Ericsson SAM', async () => {
             await quickCasePo.selectRequesterName('sbenjamin');
             await quickCasePo.selectCaseTemplate(caseTemplateDataEricssonSAM.templateName);
             await quickCasePo.saveCase();
-            await previewCasePage.clickGoToCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
         });
 
         it('[DRDMV-23665]: Verify Edit Case Page for Ericsson SAM', async () => {
@@ -1200,8 +1192,8 @@ describe('Ericsson Model Test Extended', () => {
             expect(await utilityGrid.isGridRecordPresent(caseTemplateDataEricssonSAM.templateName)).toBeTruthy('caseTemplateDataGlobalOracleHR is display');
 
             await selectCasetemplateBladePo.searchAndOpenCaseTemplate(caseTemplateDataEricssonSAM.templateName);
-            expect(await previewCaseTemplatePo.isLabelTitleDisplayed('Case Summary')).toBeTruthy('Case Summary label is missing');
-            await previewCaseTemplatePo.clickOnBackButton();
+            expect(await caseTemplatePreviewPo.isLabelTitleDisplayed('Case Summary')).toBeTruthy('Case Summary label is missing');
+            await caseTemplatePreviewPo.clickOnBackButton();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateDataGlobalEricssonSAM.templateName);
 
             expect(await editCasePo.getCategoryTier1()).toBe('Purchasing Card');
@@ -1236,11 +1228,8 @@ describe('Ericsson Model Test Extended', () => {
             await manageTaskBladePo.clickCloseButton();
             await viewCasePage.clickOnTaskLink('adhocTask2');
         });
-
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
         });
     });
 
@@ -1435,10 +1424,9 @@ describe('Ericsson Model Test Extended', () => {
             await navigationPage.gotoKnowledgeConsole();
             expect(await utilityGrid.isGridRecordPresent(articleId)).toBeFalsy(articleId + ' Record is present');
         });
-
         afterAll(async () => {
             await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
+            await loginPage.login('rwillie');
         });
     });
 
@@ -1616,10 +1604,6 @@ describe('Ericsson Model Test Extended', () => {
             await loginPage.login('sherbert');
             await navigationPage.gotoKnowledgeConsole();
             expect(await utilityGrid.isGridRecordPresent(articleId)).toBeFalsy(articleId + ' Record is present');
-        });
-        afterAll(async () => {
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
         });
     });
 });

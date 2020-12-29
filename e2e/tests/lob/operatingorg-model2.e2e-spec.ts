@@ -5,13 +5,12 @@ import apiHelper from '../../api/api.helper';
 import * as notesTemplateData from '../../data/ui/Social/notesTemplate.api';
 import { RESOLUTION_CODE_ACTIVE_ON_UI } from '../../data/ui/ticketing/menu.item.ui';
 import previewCasePage from '../../pageobject/case/case-preview.po';
-import { default as createCasePage, default as createCasePo } from '../../pageobject/case/create-case.po';
-import { default as editCasePage, default as editCasePo } from '../../pageobject/case/edit-case.po';
+import editCasePo from '../../pageobject/case/edit-case.po';
 import quickCasePo from '../../pageobject/case/quick-case.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePage from '../../pageobject/case/view-case.po';
 import accessTabPo from '../../pageobject/common/access-tab.po';
-import { default as changeAssignmentBlade, default as changeAssignmentBladePo } from '../../pageobject/common/change-assignment-blade.po';
+import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
 import ckeditorValidationPo from '../../pageobject/common/ck-editor/ckeditor-validation.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
@@ -513,8 +512,6 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             await apiHelper.createEmailTemplate(emailTemplateOraclePsilon);
         });
         it('[DRDMV-23617]:[Operating Organization] [Cases] : Verify the behavior where Email Templates, Task Templates, Resolution Codes, Notes templates are filtered / displayed based on the Line of Business on Cases.', async () => {
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
             await utilityGrid.searchAndOpenHyperlink(response.displayId);
             await viewCasePage.clickOnEmailLink();
             await composeMailPo.clickOnSelectEmailTemplateLink();
@@ -609,7 +606,7 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
                 sectionTitle: "articleSection"
             }
             await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateData);
-            let knowledgeTemplateId = await coreApi.getKnowledgeTemplateGuid(knowledgeTemplateStr);
+            await coreApi.getKnowledgeTemplateGuid(knowledgeTemplateStr);
         });
         it('[DRDMV-23597]: [Operating Organization] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to single Line of Business', async () => {
             await navigationPage.gotoCreateKnowledge();
@@ -716,7 +713,6 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             await apiHelper.createKnowledgeArticle(knowledgeArticleDataDiffLOB);
             await apiHelper.associatePersonToCompany('ncage', "Psilon");
         });
-
         it('[DRDMV-23625]: [Operating Organization] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple companies for the single Line of Business', async () => {
             await navigationPage.signOut();
             await loginPage.login(`${twoCompanyUser.userId}@petramco.com`, 'Password_1234');
@@ -754,7 +750,6 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             await previewKnowledgePo.clickGoToArticleButton();
             articleId = await viewKnowledgeArticlePo.getKnowledgeArticleId();
         });
-
         it('[DRDMV-23625]: [Operating Organization] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple companies for the single Line of Business', async () => {
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePo.getLineOfBusinessValue()).toBe('Human Resource');
@@ -804,7 +799,6 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             await navigationPage.gotoKnowledgeConsole();
             expect(await utilityGrid.isGridRecordPresent(articleId)).toBeFalsy(articleId + ' Record is present');
         });
-
         it('[DRDMV-23625]: [Operating Organization] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple companies for the single Line of Business', async () => {
             await navigationPage.signOut();
             await loginPage.login('ppeter');
@@ -830,7 +824,6 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             await utilityGrid.selectLineOfBusiness('Human Resource');
             expect(await utilityGrid.isGridRecordPresent(articleId)).toBeTruthy(articleId + ' Record is not present');
         });
-
         it('[DRDMV-23625]: [Operating Organization] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple companies for the single Line of Business', async () => {
             await navigationPage.signOut();
             await loginPage.login('ncage');
@@ -851,12 +844,9 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             await statusBladeKnowledgeArticlePo.clickChangeReviewerBtn();
             await changeAssignmentBladePo.selectCompany('Psilon');
             expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Australia Support')).toBeFalsy();
-            await utilityCommon.closeAllBlades();
         });
-
         afterAll(async () => {
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
+            await utilityCommon.closeAllBlades();
         });
     });
 
@@ -906,7 +896,6 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateDataHR);
             await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateDataFacilities);
         });
-
         it('[DRDMV-23618]: [Operating Organization] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple Line of Business', async () => {
             await navigationPage.signOut();
             await loginPage.login('qyuan');
@@ -950,7 +939,6 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             await previewKnowledgePo.clickGoToArticleButton();
             articleId = await viewKnowledgeArticlePo.getKnowledgeArticleId();
         });
-
         it('[DRDMV-23618]: [Operating Organization] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple Line of Business', async () => {
             await editKnowledgePo.setKnowledgeStatus('Draft');
             await editKnowledgePo.setKnowledgeStatusWithoutSave('SME Review');
@@ -985,7 +973,6 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             expect(await accessTabPo.isAgentPresent(userData2.firstName)).toBeFalsy('User is Present');
             await accessTabPo.clickCloseKnowledgeAccessBlade();
         });
-
         it('[DRDMV-23618]: [Operating Organization] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple Line of Business', async () => {
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await createKnowledgePage.isValuePresentInDropdown('Category Tier 1', 'Applications')).toBeTruthy('Failure: Operational Category 1 is missing');
@@ -1020,8 +1007,8 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             await navigationPage.gotoKnowledgeConsole();
             expect(await utilityGrid.isGridRecordPresent(articleId)).toBeTruthy(articleId + ' Record is not present');
         });
-
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -1227,7 +1214,6 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             expect(await changeAssignmentBladePo.businessUnitOptionsPresent('Facilities Support')).toBeFalsy();
             await changeAssignmentBladePo.clickOnCancelButton();
         });
-
         it('[DRDMV-23488]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
             await editCasePo.clickChangeAssignmentButton();
             await changeAssignmentBladePo.selectBusinessUnit('Australia Support');
@@ -1274,12 +1260,5 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             await resourcesPo.clickOnAdvancedSearchSettingsIconToClose();
             expect(await resourcesPo.isRecommendedKnowledgePresent(facilitiesarticleData.title)).toBeFalsy();
         });
-        afterAll(async () => {
-            await utilityCommon.closeAllBlades();
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
-        });
     });
-
-
-})
+});
