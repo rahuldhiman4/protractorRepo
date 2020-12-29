@@ -245,13 +245,13 @@ describe('Global Search Category Validation', () => {
         beforeAll(async () => {
             await apiHelper.apiLogin('qtao');
             // Create Case with summary
-            for (let a = 0; a < 5; a++) {
+            for (let a = 0; a < 2; a++) {
                 let caseDetails = await createCase(summary);
                 caseDisplayId1[a] = caseDetails.displayId;
             }
 
             // Create Case For Description
-            for (let b = 0; b < 5; b++) {
+            for (let b = 0; b < 2; b++) {
                 let caseDetails = await createCase(summary, description);
                 caseDisplayId2[b] = caseDetails.displayId;
             }
@@ -261,40 +261,21 @@ describe('Global Search Category Validation', () => {
 
             // Non access to case
             await apiHelper.apiLogin('qdu');
-            for (let c = 0; c < 2; c++) {
                 let caseDetails3 = await createCase(summary, description);
-                caseDisplayId4[c] = caseDetails3.displayId;
-            }
+                caseDisplayId4[0] = caseDetails3.displayId;
         });
 
         it('[DRDMV-16102]: Verify Module Title & Pagination', async () => {
             await navigationPage.gotoSearch();
             expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
             await searchPo.selectCategoryDropDownValue(caseModule);
-            expect(await searchPo.isModuleTitleDisplayed(summary, 'Cases (10)', caseModule)).toBeTruthy('FailureMsg2: Case module title is missing');
-            expect(await searchPo.isPaginationDisplayed(caseModule)).toBeTruthy('FailureMsg3: Pagination is missing for CaseModule');
+            expect(await searchPo.isModuleTitleDisplayed(summary, 'Cases (4)', caseModule)).toBeTruthy('FailureMsg2: Case module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[0], caseModule)).toBeTruthy(`FailureMsg4: ${caseDisplayId1[0]} case id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(summary, caseModule)).toBeTruthy(`FailureMsg5: ${summary} case summary is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, caseModule)).toBeTruthy(`${updatedDate} updatedDate is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[1], caseModule)).toBeTruthy(`FailureMsg6: ${caseDisplayId1[1]} case id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[2], caseModule)).toBeTruthy(`FailureMsg7: ${caseDisplayId1[2]} case id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[3], caseModule)).toBeTruthy(`FailureMsg8: ${caseDisplayId1[3]} case id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[4], caseModule)).toBeTruthy(`FailureMsg9: ${caseDisplayId1[4]} case id  is missing`);
-
-            await searchPo.clickOnPaginationPageNo(caseModule, "2");
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId2[0], caseModule)).toBeTruthy(`FailureMsg10: ${caseDisplayId2[0]} case id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId2[1], caseModule)).toBeTruthy(`FailureMsg11: ${caseDisplayId2[1]} case id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId2[2], caseModule)).toBeTruthy(`FailureMsg12: ${caseDisplayId2[2]} case id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId2[3], caseModule)).toBeTruthy(`FailureMsg13: ${caseDisplayId2[3]} case id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId2[4], caseModule)).toBeTruthy(`FailureMsg14: ${caseDisplayId2[4]} case id  is missing`);
-
-            await searchPo.clickOnPaginationPageNo(caseModule, "1");
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[0], caseModule)).toBeTruthy(`FailureMsg15: ${caseDisplayId1[0]} case id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[1], caseModule)).toBeTruthy(`FailureMsg16: ${caseDisplayId1[1]} case id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[2], caseModule)).toBeTruthy(`FailureMsg17: ${caseDisplayId1[2]} case id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[3], caseModule)).toBeTruthy(`FailureMsg18: ${caseDisplayId1[3]} case id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[4], caseModule)).toBeTruthy(`FailureMsg19: ${caseDisplayId1[4]} case id  is missing`);
-
             await searchPo.clickOnLeftPannelRecord(caseDisplayId1[0], caseModule);
         });
 
@@ -329,7 +310,7 @@ describe('Global Search Category Validation', () => {
             expect(await casePreviewPo.isDescriptionDisplayed(description)).toBeFalsy('FailureMsg46: case Description displayed');
             // Search Case with case description
             await searchPo.searchRecord(description);
-            expect(await searchPo.isModuleTitleDisplayed(description, 'Cases (5)', caseModule)).toBeTruthy('FailureMsg47: Case module title is missing');
+            expect(await searchPo.isModuleTitleDisplayed(description, 'Cases (2)', caseModule)).toBeTruthy('FailureMsg47: Case module title is missing');
             await searchPo.clickOnLeftPannelRecord(caseDisplayId2[0], caseModule);
             expect(await casePreviewPo.isGlobalSearchCaseIdDisplayed(caseDisplayId2[0])).toBeTruthy('FailureMsg48: Case id is missing');
             expect(await casePreviewPo.isDescriptionDisplayed(description)).toBeTruthy('FailureMsg49: Case Description is missing');
@@ -343,26 +324,23 @@ describe('Global Search Category Validation', () => {
         it('[DRDMV-16102]: Verify Case with non matching Case summary and description Also Verify case summary and description who have not access of the case', async () => {
             await navigationPage.gotoSearch();
             await searchPo.searchRecord(summary);
-            expect(await searchPo.isModuleTitleDisplayed(summary, 'Cases (10)', caseModule)).toBeTruthy('FailureMsg47: Case module title is missing');
+            expect(await searchPo.isModuleTitleDisplayed(summary, 'Cases (4)', caseModule)).toBeTruthy('FailureMsg47: Case module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(nonMatchingSummary, caseModule)).toBeFalsy(`FailureMsg51: ${nonMatchingSummary} case Summary is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId3, caseModule)).toBeFalsy(`FailureMsg55: ${caseDisplayId3} case id  is displayed`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId4[0], caseModule)).toBeFalsy(`FailureMsg55: ${caseDisplayId4[0]} case id  is displayed`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId4[1], caseModule)).toBeFalsy(`FailureMsg56: ${caseDisplayId4[1]} case id  is displayed`);
 
-            await searchPo.clickOnPaginationPageNo(caseModule, "2");
             expect(await searchPo.isRecordDisplayedOnLeftPannel(nonMatchingSummary, caseModule)).toBeFalsy(`FailureMsg53: ${nonMatchingSummary} case Summary is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId3, caseModule)).toBeFalsy(`FailureMsg55: ${caseDisplayId3} case id  is displayed`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId4[0], caseModule)).toBeFalsy(`FailureMsg57: ${caseDisplayId4[0]} case id  is displayed`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId4[1], caseModule)).toBeFalsy(`FailureMsg58: ${caseDisplayId4[1]} case id  is displayed`);
 
             await searchPo.searchRecord(description);
-            expect(await searchPo.isModuleTitleDisplayed(description, 'Cases (5)', caseModule)).toBeTruthy('FailureMsg59: Case module title is missing');
+            expect(await searchPo.isModuleTitleDisplayed(description, 'Cases (2)', caseModule)).toBeTruthy('FailureMsg59: Case module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId3, caseModule)).toBeFalsy(`FailureMsg60: ${caseDisplayId3} case id  is displayed`);
         });
 
         it('[DRDMV-16102]: Clear search and verify record displayed on left pannel ', async () => {
             await searchPo.searchRecord(summary);
-            expect(await searchPo.isModuleTitleDisplayed(summary, 'Cases (10)', caseModule)).toBeTruthy('FailureMsg61: Case module title is missing');
+            expect(await searchPo.isModuleTitleDisplayed(summary, 'Cases (4)', caseModule)).toBeTruthy('FailureMsg61: Case module title is missing');
             await searchPo.clickClearSearchButton();
             expect(await searchPo.isClearSearchButtonDisplayed()).toBeFalsy('FailureMsg62: Search box is cleared and cross button gets hide');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[0], caseModule)).toBeTruthy(`FailureMsg63: ${caseDisplayId4[0]} case id  is missing`);
@@ -405,38 +383,21 @@ describe('Global Search Category Validation', () => {
             await navigationPage.gotoSearch();
             await searchPo.searchRecord(summary);
 
-            expect(await searchPo.isModuleTitleDisplayed(summary, 'Cases (12)', caseModule)).toBeTruthy('FailureMsg78: Case module title is missing');
+            expect(await searchPo.isModuleTitleDisplayed(summary, 'Cases (5)', caseModule)).toBeTruthy('FailureMsg78: Case module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(summary, caseModule)).toBeTruthy(`FailureMsg79: ${summary} case Summary is missing`);
 
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[0], caseModule)).toBeTruthy(`FailureMsg80: ${caseDisplayId1[0]} case id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[1], caseModule)).toBeTruthy(`FailureMsg81: ${caseDisplayId1[1]} case id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[2], caseModule)).toBeTruthy(`FailureMsg82: ${caseDisplayId1[2]} case id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[3], caseModule)).toBeTruthy(`FailureMsg83: ${caseDisplayId1[3]} case id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[4], caseModule)).toBeTruthy(`FailureMsg84: ${caseDisplayId1[4]} case id  is missing`);
-
-            await searchPo.clickOnPaginationPageNo(caseModule, "2");
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId2[0], caseModule)).toBeTruthy(`FailureMsg85: ${caseDisplayId2[0]} case id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId2[1], caseModule)).toBeTruthy(`FailureMsg86: ${caseDisplayId2[1]} case id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId2[2], caseModule)).toBeTruthy(`FailureMsg87: ${caseDisplayId2[2]} case id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId2[3], caseModule)).toBeTruthy(`FailureMsg88: ${caseDisplayId2[3]} case id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId2[4], caseModule)).toBeTruthy(`FailureMsg89: ${caseDisplayId2[4]} case id  is missing`);
-
-            await searchPo.clickOnPaginationPageNo(caseModule, "3");
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId4[0], caseModule)).toBeTruthy(`FailureMsg90: ${caseDisplayId4[0]} case id  is displayed`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId4[1], caseModule)).toBeTruthy(`FailureMsg91: ${caseDisplayId4[1]} case id  is displayed`);
-
             await searchPo.searchRecord(description);
-            expect(await searchPo.isModuleTitleDisplayed(description, 'Cases (7)', caseModule)).toBeTruthy('FailureMsg92: Case module title is missing');
+            expect(await searchPo.isModuleTitleDisplayed(description, 'Cases (3)', caseModule)).toBeTruthy('FailureMsg92: Case module title is missing');
 
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId2[0], caseModule)).toBeTruthy(`FailureMsg93: ${caseDisplayId2[0]} case id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId2[1], caseModule)).toBeTruthy(`FailureMsg94: ${caseDisplayId2[1]} case id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId2[2], caseModule)).toBeTruthy(`FailureMsg95: ${caseDisplayId2[2]} case id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId2[3], caseModule)).toBeTruthy(`FailureMsg96: ${caseDisplayId2[3]} case id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId2[4], caseModule)).toBeTruthy(`FailureMsg97: ${caseDisplayId2[4]} case id  is missing`);
 
-            await searchPo.clickOnPaginationPageNo(caseModule, "2");
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId4[0], caseModule)).toBeTruthy(`FailureMsg98: ${caseDisplayId4[0]} case id  is displayed`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId4[1], caseModule)).toBeTruthy(`FailureMsg99: ${caseDisplayId4[0]} case id  is displayed`);
         });
 
         it('[DRDMV-16102]: Verify search case by other group user  ', async () => {
@@ -468,7 +429,7 @@ describe('Global Search Category Validation', () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSearch();
-            await searchPo.selectCategoryDropDownValue(taskModule);
+            await searchPo.selectCategoryDropDownValue(caseModule);
             await searchPo.searchRecord(summary);
             expect(await searchPo.isModuleTitleDisplayed(summary, 'Cases (0)', caseModule)).toBeTruthy('FailureMsg105: Case module title is missing');
             expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(caseModule)).toBeTruthy(`FailureMsg106: No result found validation is missing`);
@@ -481,7 +442,7 @@ describe('Global Search Category Validation', () => {
             await navigationPage.signOut();
             await loginPage.login('frieda');
             await navigationPage.gotoSearch();
-            await searchPo.selectCategoryDropDownValue(taskModule);
+            await searchPo.selectCategoryDropDownValue(caseModule);
             await searchPo.searchRecord(summary);
             expect(await searchPo.isModuleTitleDisplayed(summary, 'Cases (0)', caseModule)).toBeTruthy('FailureMsg105: Case module title is missing');
             expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(caseModule)).toBeTruthy(`FailureMsg106: No result found validation is missing`);
@@ -496,24 +457,13 @@ describe('Global Search Category Validation', () => {
             await navigationPage.gotoSearch();
             await searchPo.selectCategoryDropDownValue(caseModule);
             await searchPo.searchRecord(summary);
-            expect(await searchPo.isModuleTitleDisplayed(summary, 'Cases (10)', caseModule)).toBeTruthy('FailureMsg2: Case module title is missing');
-            expect(await searchPo.isPaginationDisplayed(caseModule)).toBeTruthy('FailureMsg3: Pagination is missing for CaseModule');
+            expect(await searchPo.isModuleTitleDisplayed(summary, 'Cases (5)', caseModule)).toBeTruthy('FailureMsg2: Case module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[0], caseModule)).toBeTruthy(`FailureMsg4: ${caseDisplayId1[0]} case id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(summary, caseModule)).toBeTruthy(`FailureMsg5: ${summary} case summary is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, caseModule)).toBeTruthy(`${updatedDate} updatedDate is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[1], caseModule)).toBeTruthy(`FailureMsg6: ${caseDisplayId1[1]} case id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[2], caseModule)).toBeTruthy(`FailureMsg7: ${caseDisplayId1[2]} case id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[3], caseModule)).toBeTruthy(`FailureMsg8: ${caseDisplayId1[3]} case id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[4], caseModule)).toBeTruthy(`FailureMsg9: ${caseDisplayId1[4]} case id  is missing`);
-
-            await searchPo.clickOnPaginationPageNo(caseModule, "2");
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId2[0], caseModule)).toBeTruthy(`FailureMsg10: ${caseDisplayId2[0]} case id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId2[1], caseModule)).toBeTruthy(`FailureMsg11: ${caseDisplayId2[1]} case id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId2[2], caseModule)).toBeTruthy(`FailureMsg12: ${caseDisplayId2[2]} case id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId2[3], caseModule)).toBeTruthy(`FailureMsg13: ${caseDisplayId2[3]} case id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId2[4], caseModule)).toBeTruthy(`FailureMsg14: ${caseDisplayId2[4]} case id  is missing`);
-
-            await searchPo.clickOnPaginationPageNo(caseModule, "1");
         });
 
         it('[DRDMV-16102]: Verify Cases are accessible to user belonging to multiple Line of business Case Manager', async () => {
@@ -523,26 +473,15 @@ describe('Global Search Category Validation', () => {
             await searchPo.selectCategoryDropDownValue(caseModule);
             await searchPo.searchRecord(summary);
             await searchPo.searchRecord(summary);
-            expect(await searchPo.isModuleTitleDisplayed(summary, 'Cases (10)', caseModule)).toBeTruthy('FailureMsg2: Case module title is missing');
-            expect(await searchPo.isPaginationDisplayed(caseModule)).toBeTruthy('FailureMsg3: Pagination is missing for CaseModule');
+            expect(await searchPo.isModuleTitleDisplayed(summary, 'Cases (4)', caseModule)).toBeTruthy('FailureMsg2: Case module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[0], caseModule)).toBeTruthy(`FailureMsg4: ${caseDisplayId1[0]} case id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(summary, caseModule)).toBeTruthy(`FailureMsg5: ${summary} case summary is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, caseModule)).toBeTruthy(`${updatedDate} updatedDate is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[1], caseModule)).toBeTruthy(`FailureMsg6: ${caseDisplayId1[1]} case id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[2], caseModule)).toBeTruthy(`FailureMsg7: ${caseDisplayId1[2]} case id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[3], caseModule)).toBeTruthy(`FailureMsg8: ${caseDisplayId1[3]} case id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[4], caseModule)).toBeTruthy(`FailureMsg9: ${caseDisplayId1[4]} case id  is missing`);
 
-            await searchPo.clickOnPaginationPageNo(caseModule, "2");
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId2[0], caseModule)).toBeTruthy(`FailureMsg10: ${caseDisplayId2[0]} case id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId2[1], caseModule)).toBeTruthy(`FailureMsg11: ${caseDisplayId2[1]} case id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId2[2], caseModule)).toBeTruthy(`FailureMsg12: ${caseDisplayId2[2]} case id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId2[3], caseModule)).toBeTruthy(`FailureMsg13: ${caseDisplayId2[3]} case id  is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId2[4], caseModule)).toBeTruthy(`FailureMsg14: ${caseDisplayId2[4]} case id  is missing`);
-
-            await searchPo.clickOnPaginationPageNo(caseModule, "1");
         });
-
 
         afterAll(async () => {
             await navigationPage.signOut();
