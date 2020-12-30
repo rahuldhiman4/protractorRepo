@@ -8,6 +8,7 @@ import previewDocumentLibraryPo from '../../pageobject/settings/document-managem
 import previewTaskTemplatePo from '../../pageobject/settings/task-management/preview-task-template.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
+import utilityGrid from "../../utils/utility.grid";
 
 export interface IIDs {
     id: string;
@@ -1081,6 +1082,7 @@ describe('Global Search Template', () => {
         it('[DRDMV-16123]: Verify document library record are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseMngrMultiLOB@petramco.com','Password_1234');
+            await utilityGrid.selectLineOfBusiness('Facilities');
             await navigationPage.gotoSearch();
             expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
             await searchPo.selectCategoryDropDownValue('Document');
@@ -1092,6 +1094,7 @@ describe('Global Search Template', () => {
         it('[DRDMV-16123]: Verify document library record are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseBAMultiLOB@petramco.com','Password_1234');
+            await utilityGrid.selectLineOfBusiness('Facilities');
             await navigationPage.gotoSearch();
             expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
             await searchPo.selectCategoryDropDownValue('Document');
