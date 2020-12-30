@@ -288,12 +288,16 @@ describe('Multi Search Validation', () => {
 
         it('[DRDMV-16124]: Verify Person With FirstName & LastName At a Same Time ', async () => {
             await searchPo.searchRecord(`${firstName} ${lastName}`);
-            expect(await searchPo.isModuleTitleDisplayed(`${firstName} ${lastName}`, 'People (5)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule, 1)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName} 1 Person Name is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule, 2)).toBeTruthy(`FailureMsg5: ${firstName} ${lastName} 2 Person Name is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule, 3)).toBeTruthy(`FailureMsg6: ${firstName} ${lastName} 3 Person Name is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule, 4)).toBeTruthy(`FailureMsg7: ${firstName} ${lastName} 4 Person Name is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule, 5)).toBeTruthy(`FailureMsg8: ${firstName} ${lastName} 5 Person Name is missing`);
+            expect(await searchPo.isModuleTitleDisplayed(`${firstName} ${lastName}`, 'People (5)', peopleModule)).toBeTruthy('FailureMsg1: People module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule, 1)).toBeTruthy(`FailureMsg2: ${firstName} ${lastName} 1 Person Name is missing`);
+            await browser.sleep(1000); // Added wait becoz multiple record find failing in full run for people.
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule, 2)).toBeTruthy(`FailureMsg3: ${firstName} ${lastName} 2 Person Name is missing`);
+            await browser.sleep(1000); // Added wait becoz multiple record find failing in full run for people.
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule, 3)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName} 3 Person Name is missing`);
+            await browser.sleep(1000); // Added wait becoz multiple record find failing in full run for people.
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule, 4)).toBeTruthy(`FailureMsg5: ${firstName} ${lastName} 4 Person Name is missing`);
+            await browser.sleep(1000); // Added wait becoz multiple record find failing in full run for people.
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule, 5)).toBeTruthy(`FailureMsg6: ${firstName} ${lastName} 5 Person Name is missing`);
         });
 
         it('[DRDMV-16124]: Clear search and verify record displayed on left pannel ', async () => {

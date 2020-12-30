@@ -120,8 +120,8 @@ class CaseConsolePage {
 
     async isAllCasesUnSelected(): Promise<boolean> {
         let allCheckboxCount: number = await $$(this.selectors.allCheckboxes).count();
-        let unSelectedCheckboxCount: number = await $$(this.selectors.unselectedCheckboxes).count();
-        return unSelectedCheckboxCount == allCheckboxCount;
+        let selectedCheckboxCount: number = await $$(this.selectors.selectedCheckboxes).count();
+        return selectedCheckboxCount == 0 && allCheckboxCount > 0;
     }
 
     async areCaseGridColumnMatches(columnNames: string[]): Promise<boolean> {
