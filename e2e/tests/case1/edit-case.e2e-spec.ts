@@ -160,14 +160,14 @@ describe('Edit Case', () => {
     });
 
     describe('[DRDMV-24403]: UI fields should be visible for user with login ID contains @ sign', async () => {
-        let personData: {
+        let personData = {
             "firstName": "at Rate",
             "lastName": "test",
             "userId": "j@an",
             "emailId": "j@an@petramco.com",
             "userPermission": ["Case Agent", "Human Resource"]
         }
-        let personData1: {
+        let personData1 = {
             "firstName": "at Rate1",
             "lastName": "test",
             "userId": "r@han",

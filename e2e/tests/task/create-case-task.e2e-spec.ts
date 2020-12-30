@@ -232,7 +232,7 @@ describe('Create Case Task', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             let templateData = {
-                "templateName": `manualTaskTemplateActive ${randomStr}`,
+                "templateName": `${randomStr} manualTaskTemplateActive`,
                 "templateSummary": `manualTaskTemplateActive ${randomStr}`,
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
@@ -292,17 +292,17 @@ describe('Create Case Task', () => {
                 "ownerGroup": "US Support 1"
             }
             await apiHelper.apiLogin('qkatawazi');
-            await apiHelper.createAutomatedTaskTemplate(templateData4);
-            await apiHelper.createAutomatedTaskTemplate(templateData5);
-            await apiHelper.createAutomatedTaskTemplate(templateData6);
             await apiHelper.createManualTaskTemplate(templateData);
             await apiHelper.createManualTaskTemplate(templateData1);
             await apiHelper.createManualTaskTemplate(templateData2);
+            await apiHelper.createAutomatedTaskTemplate(templateData4);
+            await apiHelper.createAutomatedTaskTemplate(templateData5);
+            await apiHelper.createAutomatedTaskTemplate(templateData6);
         });
         it('[DRDMV-7124]: Verify the manual Active task template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-            await selectTaskTemplate.searchAndOpenTaskTemplate(`manualTaskTemplateActive ${randomStr}`);
+            await selectTaskTemplate.searchAndOpenTaskTemplate(`${randomStr} manualTaskTemplateActive`);
             expect(await viewTasktemplatePo.getTaskTypeValue()).toBe('Manual');
             await viewTasktemplatePo.clickOnEditLink();
             expect(await editTaskTemplate.getTaskTypeValue()).toBe('Manual');

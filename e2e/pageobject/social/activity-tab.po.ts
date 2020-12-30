@@ -551,7 +551,7 @@ class ActivityTabPage {
         let activityValue: string = "";
         let countVal = await $$(this.selectors.activityLog).count();
         for (let i: number = 0; i < countVal; i++) {
-            activityValue = activityValue + await $$(this.selectors.activityLog).get(i).getText();
+            activityValue = activityValue + " " + await $$(this.selectors.activityLog).get(i).getText();
         }
         return activityValue.includes(caseActivityLogText);
     }
