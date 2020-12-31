@@ -498,8 +498,8 @@ describe('Operating Orgnization Data Model Tests', () => {
             expect(await createCasePo.getCategoryTier1Value()).toBe(emptyStr);
             expect(await createCasePo.getCategoryTier2Value()).toBe(emptyStr);
             expect(await createCasePo.getCategoryTier3Value()).toBe(emptyStr);
-            expect(await createCasePo.getAssigneeBusinessUnitValue()).toBe(emptyStr);
-            expect(await createCasePo.getAssigneeGroupValue()).toBe(emptyStr);
+            expect(await createCasePo.getAssigneeBusinessUnitValue()).toBe('');
+            expect(await createCasePo.getAssigneeGroupValue()).toBe('');
             expect(await createCasePo.getAssigneeValue()).toBe(emptyStr);
 
             await createCasePo.selectLineOfBusiness('Human Resource');
