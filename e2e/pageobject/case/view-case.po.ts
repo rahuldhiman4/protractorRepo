@@ -585,15 +585,9 @@ class ViewCasePage {
     async isDuplicateFieldsAreNotPresentOnCase(): Promise<boolean> {
         let allFieldsText: string[] = undefined;
         for (let i = 0; i < await $$('.btn-link').length; i++) {
-            console.log(`reached here for first time {i}`);
-            
             allFieldsText[i] = await $$('.btn-link').get(i).getText();
-            console.log(">>><1",allFieldsText[i]);
-            console.log("<<<<<<<<<<<2",await $$('.btn-link').get(i).getText());
         }
         let findDuplicates = arr => arr.filter((item, index) => arr.indexOf(item) != index);
-        console.log(">>>>><<<<<<<<<",findDuplicates.length);
-        
         return findDuplicates.length == 0;
     }
 

@@ -51,7 +51,7 @@ class ApiCoreUtil {
         let allRecords = await axios.get(
             dataPageUri
         );
-        console.log('Get GUID Status =============>', allRecords.status);
+        console.log(`Get GUID Status ${recordName} =============>`, allRecords.status);
         return allRecords;
     }
 
