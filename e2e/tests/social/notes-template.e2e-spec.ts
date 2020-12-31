@@ -251,6 +251,7 @@ describe('Notes template', () => {
         it('[DRDMV-16028]: Verify people notes template is accessible to other Line of business Case BA', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
+            await navigationPage.gotoCaseConsole();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'Activity Notes template Console - Person - Business Workflows');
             expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy('people notes template for Facilities LOB are displayed to Human Resource LOB User.');
