@@ -404,7 +404,7 @@ class ViewCasePage {
 
     async isFileDisplayed(fileName: string): Promise<boolean> {
         return await element(by.cssContainingText('span.bwf-attachment-container__file-name', fileName)).isPresent().then(async (result) => {
-            if(result) return await element(by.cssContainingText('span.bwf-attachment-container__file-name', fileName)).isDisplayed();
+            if (result) return await element(by.cssContainingText('span.bwf-attachment-container__file-name', fileName)).isDisplayed();
             else return false;
         })
     }
@@ -578,16 +578,22 @@ class ViewCasePage {
         return await $(this.selectors.flowset).getText();
     }
 
-    async getLineOfBusinessValue(): Promise<string>{
+    async getLineOfBusinessValue(): Promise<string> {
         return await $(this.selectors.lineofbusiness).getText();
     }
 
     async isDuplicateFieldsAreNotPresentOnCase(): Promise<boolean> {
         let allFieldsText: string[] = undefined;
-        for (let i = 0; i < await $$('.btn-link, label').length; i++) {
-            allFieldsText[i] = await $$('.btn-link, label').get(i).getText();
+        for (let i = 0; i < await $$('.btn-link').length; i++) {
+            console.log(`reached here for first time {i}`);
+            
+            allFieldsText[i] = await $$('.btn-link').get(i).getText();
+            console.log(">>><1",allFieldsText[i]);
+            console.log("<<<<<<<<<<<2",await $$('.btn-link').get(i).getText());
         }
         let findDuplicates = arr => arr.filter((item, index) => arr.indexOf(item) != index);
+        console.log(">>>>><<<<<<<<<",findDuplicates.length);
+        
         return findDuplicates.length == 0;
     }
 

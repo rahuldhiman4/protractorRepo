@@ -310,7 +310,7 @@ describe('Service Provider Model Tests Extended', () => {
             newCaseTemplateGlobal = await apiHelper.createCaseTemplate(templateDataGlobalCompany);
 
             caseDataKingston = {
-                "Requester": "Trump",
+                "Requester": "dkramer",
                 "Summary": "Automated Manager Level Approval" + randomStr,
                 "Case Template ID": newCaseTemplateKingston.id
             }
@@ -414,17 +414,24 @@ describe('Service Provider Model Tests Extended', () => {
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('David Kramer');
             await quickCasePo.setCaseSummary(templateDataPhytoCompany.templateName);
+            await browser.sleep(10000); // sleep added to reflect case templates
             expect(await quickCasePo.isCaseSummaryPresentInRecommendedCases(templateDataPhytoCompany.templateName)).toBeTruthy();
             await quickCasePo.isRecommendedKnowledgeEmpty();
             await quickCasePo.clickArrowFirstRecommendedCaseTemplate();
             expect(await previewCaseTemplateCasesPo.getCaseTemplateName()).toBe(templateDataPhytoCompany.templateName);
             expect(await previewCaseTemplateCasesPo.getLineOfBusinessValue()).toBe("Kingston HR");
             await previewCaseTemplateCasesPo.clickOnBackButton();
+
+            await navigationPage.gotoCaseConsole();
+            await navigationPage.gotoQuickCase();
+            await quickCasePo.selectRequesterName('David Kramer');
+            await quickCasePo.selectCaseTemplate(templateDataPhytoCompany.templateName);
             await quickCasePo.saveCase();
             await casePreviewPo.clickGoToCaseButton();
 
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('David Kramer');
+            await browser.sleep(10000); // sleep added to reflect case templates
             await quickCasePo.selectCaseTemplate(newCaseTemplatePhyto.templateName);
             await quickCasePo.getRecommendedTemplateHeaderValue("Kingston HR");
             await quickCasePo.clickArrowFirstRecommendedCaseTemplate();
@@ -541,12 +548,12 @@ describe('Service Provider Model Tests Extended', () => {
             await createCasetemplatePo.setCompanyName("- Global -");
             expect(await createCasetemplatePo.flowsetOptionsPresent([flowsetHumanResourceData.flowsetName])).toBeFalsy();
             await createCasetemplatePo.setCompanyName("- Global -");
-            expect(await createCasetemplatePo.flowsetOptionsPresent([flowsetHumanResourceGlobalData.flowsetName])).toBeTruthy();
+            expect(await createCasetemplatePo.flowsetOptionsPresent(['Benefits',flowsetHumanResourceGlobalData.flowsetName])).toBeTruthy();
             await createCasetemplatePo.setCompanyName("Petramco");
             await createCasetemplatePo.setCategoryTier1("Applications");
             expect(await createCasetemplatePo.flowsetOptionsPresent([flowsetFacilitiesData.flowsetName])).toBeFalsy();
             await createCasetemplatePo.setCompanyName("Petramco");
-            expect(await createCasetemplatePo.flowsetOptionsPresent([flowsetHumanResourceGlobalData.flowsetName])).toBeTruthy();
+            expect(await createCasetemplatePo.flowsetOptionsPresent(['Human Resources','Benefits',flowsetHumanResourceData.flowsetName, flowsetHumanResourceData1.flowsetName,flowsetHumanResourceGlobalData.flowsetName])).toBeTruthy();
             await createCasetemplatePo.setCompanyName("Petramco");
             await createCasetemplatePo.setFlowsetValue(flowsetHumanResourceData.flowsetName);
             await createCasetemplatePo.clickOnChangeAssignmentButton();
@@ -560,7 +567,9 @@ describe('Service Provider Model Tests Extended', () => {
             expect(await viewCasetemplatePo.getCategoryTier1()).toBe("Applications");
             expect(await viewCasetemplatePo.getCaseStatusValue()).toBe("customStatus");
             await viewCasetemplatePo.clickOnEditCaseTemplateButton();
+            await editCasetemplatePo.changePriorityValue('High');
             expect(await editCasetemplatePo.isFlowsetPresentInDropDown([flowsetFacilitiesData.flowsetName])).toBeFalsy();
+            await editCasetemplatePo.changePriorityValue('Medium');
             await editCasetemplatePo.changeFlowsetValue(flowsetHumanResourceData1.flowsetName);
             await editCasetemplatePo.clickSaveCaseTemplate();
             expect(await viewCasetemplatePo.getCategoryTier1()).toBe("Applications");
@@ -576,7 +585,7 @@ describe('Service Provider Model Tests Extended', () => {
             await createCasetemplatePo.setTemplateName("CaseTemplateFacilities" + randomStr);
             await createCasetemplatePo.setCompanyName("Petramco");
             await createCasetemplatePo.setCaseSummary("CaseSummary" + randomStr);
-            await createCasetemplatePo.setCategoryTier1("Applications");
+            await createCasetemplatePo.setCategoryTier1("Facilities");
             await createCasetemplatePo.setOwnerCompanyValue("Petramco");
             await createCasetemplatePo.setBusinessUnitDropdownValue('Facilities Support');
             await createCasetemplatePo.setOwnerGroupDropdownValue('Facilities');
@@ -588,7 +597,7 @@ describe('Service Provider Model Tests Extended', () => {
             await changeAssignmentOldBladePo.clickOnAssignButton();
             expect(await createCasetemplatePo.isValuePresentInDropdown("caseStatus", "customStatus")).toBeFalsy();
             await createCasetemplatePo.clickSaveCaseTemplate();
-            expect(await viewCasetemplatePo.getCategoryTier1()).toBe("Applications");
+            expect(await viewCasetemplatePo.getCategoryTier1()).toBe("Facilities");
         });
     });
 });
